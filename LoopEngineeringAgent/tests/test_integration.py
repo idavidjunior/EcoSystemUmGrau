@@ -42,7 +42,7 @@ def test_full_loop():
         print(f"Result: {json.dumps(result, indent=2, default=str)}")
         assert result["status"] in ["completed", "failed", "max_iterations"], f"Unexpected status: {result['status']}"
         if result["status"] == "completed":
-            print("\n✓ Integration test passed - goal achieved")
+            print("\n[OK] Integration test passed - goal achieved")
         else:
             print(f"\n△ Integration test ended with status: {result['status']}")
             print(f"  Steps: {result.get('steps_completed', 0)}/{result.get('steps_total', 0)}")
@@ -88,11 +88,11 @@ def test_checkpoint_recovery():
         restored_state = AgentState.deserialize(loaded["state"])
         assert restored_state.current == AgentState.EXECUTING
 
-        print("\n✓ Checkpoint recovery test passed")
+        print("\n[OK] Checkpoint recovery test passed")
     finally:
         shutil.rmtree(tmpdir, ignore_errors=True)
 
 if __name__ == "__main__":
     test_full_loop()
     test_checkpoint_recovery()
-    print("\n=== All integration tests passed ===")
+    print("\n[OK] All integration tests passed")
