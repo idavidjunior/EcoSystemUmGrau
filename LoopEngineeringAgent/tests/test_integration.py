@@ -65,8 +65,8 @@ def test_checkpoint_recovery():
 
         init_checkpoint_dir(tmpdir)
         state = AgentState()
-        state.transition(AgentState.PLANNING)
-        state.transition(AgentState.EXECUTING)
+        state.transition(AgentState.INIT)
+        state.transition(AgentState.ANALYZING_GOAL)
 
         plan = {"steps": [{"id": 1, "action": "test"}]}
         progress = {"steps": [{"id": 1}], "current_step": 1, "completed_steps": [], "failed_steps": []}
@@ -86,7 +86,7 @@ def test_checkpoint_recovery():
 
         from core.state import AgentState
         restored_state = AgentState.deserialize(loaded["state"])
-        assert restored_state.current == AgentState.EXECUTING
+        assert restored_state.current == AgentState.ANALYZING_GOAL
 
         print("\n[OK] Checkpoint recovery test passed")
     finally:
