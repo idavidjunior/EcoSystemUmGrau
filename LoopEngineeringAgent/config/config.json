@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "agent_name": "LoopEngineeringAgent",
   "environment": {
     "os": "windows",
@@ -14,14 +14,20 @@
     "config": "config",
     "projects": "projects",
     "scripts": "scripts",
-    "omni_route": "omni_route"
+    "omni_route": "omni_route",
+    "integrations": "integrations",
+    "reports": "reports"
   },
   "loop": {
     "max_iterations": 100,
     "checkpoint_enabled": true,
     "auto_recovery": true,
     "validation_required": true,
-    "max_retries_per_step": 3
+    "max_retries_per_step": 3,
+    "adaptive_replanning": true,
+    "learning_enabled": true,
+    "success_threshold": 95,
+    "audit_required": true
   },
   "git": {
     "enabled": true,
@@ -44,6 +50,24 @@
     "progress_file": "memory/progress.json",
     "context_file": "memory/context.json",
     "decisions_file": "memory/decisions.md",
-    "errors_file": "memory/errors.log"
+    "errors_file": "memory/errors.log",
+    "long_term": {
+      "projects": "memory/projects",
+      "knowledge": "memory/knowledge",
+      "user_preferences": "memory/user_preferences",
+      "technical_history": "memory/technical_history",
+      "successful_architectures": "memory/successful_architectures"
+    }
+  },
+  "learning": {
+    "enabled": true,
+    "rules_file": "memory/learned_rules.json",
+    "success_file": "memory/successful_patterns.json",
+    "failed_file": "memory/failed_patterns.json",
+    "max_rules": 200
+  },
+  "rules": {
+    "rules_file": "config/agent_rules.json",
+    "enforcement": "strict"
   }
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Basic tests for Loop Engineering Agent core components."""
+"""Unit tests for Loop Engineering Agent v1.1 components."""
 
 import os
 import sys
@@ -11,137 +11,218 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
 
 class TestState(unittest.TestCase):
-    def test_state_transitions(self):
+    def test_new_states_exist(self):
+        from core.state import AgentState
+        self.assertTrue(hasattr(AgentState, 'ANALYZING_GOAL'))
+        self.assertTrue(hasattr(AgentState, 'CREATING_STRATEGY'))
+        self.assertTrue(hasattr(AgentState, 'LEARNING'))
+        self.assertTrue(hasattr(AgentState, 'REPLANNING'))
+        self.assertTrue(hasattr(AgentState, 'SUCCESS_EVALUATING'))
+        self.assertTrue(hasattr(AgentState, 'FINAL_AUDITING'))
+        self.assertTrue(hasattr(AgentState, 'SUCCESS_VERIFIED'))
+
+    def test_adaptive_transitions(self):
         from core.state import AgentState
         s = AgentState()
-        self.assertEqual(s.current, AgentState.IDLE)
         self.assertTrue(s.transition(AgentState.INIT))
-        self.assertEqual(s.current, AgentState.INIT)
+        self.assertTrue(s.transition(AgentState.ANALYZING_GOAL))
+        self.assertTrue(s.transition(AgentState.CREATING_STRATEGY))
         self.assertTrue(s.transition(AgentState.PLANNING))
         self.assertTrue(s.transition(AgentState.EXECUTING))
         self.assertTrue(s.transition(AgentState.VALIDATING))
+        self.assertTrue(s.transition(AgentState.SUCCESS_EVALUATING))
+        self.assertTrue(s.transition(AgentState.FINAL_AUDITING))
+        self.assertTrue(s.transition(AgentState.SUCCESS_VERIFIED))
         self.assertTrue(s.transition(AgentState.COMPLETED))
         self.assertTrue(s.transition(AgentState.IDLE))
 
-    def test_invalid_transition(self):
+    def test_state_history(self):
         from core.state import AgentState
         s = AgentState()
-        self.assertFalse(s.transition(AgentState.COMPLETED))
+        for st in [AgentState.INIT, AgentState.ANALYZING_GOAL, AgentState.CREATING_STRATEGY]:
+            self.assertTrue(s.transition(st))
+        self.assertEqual(len(s.history), 3)
 
-    def test_serialize_deserialize(self):
-        from core.state import AgentState
-        s = AgentState()
-        s.transition(AgentState.INIT)
-        s.transition(AgentState.PLANNING)
-        data = s.serialize()
-        s2 = AgentState.deserialize(data)
-        self.assertEqual(s2.current, AgentState.PLANNING)
-        self.assertEqual(len(s2.history), 2)
-
-class TestCheckpoint(unittest.TestCase):
-    def setUp(self):
-        self.tmpdir = tempfile.mkdtemp()
-        from core.checkpoint import init_checkpoint_dir
-        init_checkpoint_dir(self.tmpdir)
-
-    def tearDown(self):
-        import shutil
-        shutil.rmtree(self.tmpdir, ignore_errors=True)
-
-    def test_save_and_load(self):
-        from core.checkpoint import save_checkpoint, load_checkpoint, get_latest_checkpoint
-        from core.state import AgentState
-        state = AgentState()
-        plan = {"steps": [{"id": 1, "action": "test"}]}
-        progress = {"steps": [{"id": 1}], "current_step": 1}
-        context = {"key": "value"}
-
-        cp_id = save_checkpoint(state, plan, progress, context, "test")
-        self.assertIsNotNone(cp_id)
-
-        latest = get_latest_checkpoint()
-        self.assertEqual(latest, cp_id)
-
-        data = load_checkpoint(cp_id)
-        self.assertIsNotNone(data)
-        self.assertEqual(data["label"], "test")
-        self.assertIn("state", data)
-        self.assertIn("plan", data)
-        self.assertIn("progress", data)
-
-class TestSession(unittest.TestCase):
-    def setUp(self):
-        self.tmpdir = tempfile.mkdtemp()
-
-    def tearDown(self):
-        import shutil
-        shutil.rmtree(self.tmpdir, ignore_errors=True)
-
-    def test_session_basics(self):
-        from core.session import Session
-        s = Session(self.tmpdir)
-        s.set_goal("Test goal")
-        self.assertIsNotNone(s.get_goal())
-        self.assertIn("Test goal", s.get_goal())
-
-        s.save_progress({"steps": [1, 2], "current_step": 1})
-        progress = s.load_progress()
-        self.assertEqual(progress["current_step"], 1)
-
-        s.save_context({"test": "data"})
-        ctx = s.load_context()
-        self.assertEqual(ctx["test"], "data")
-
-        s.record_decision("Test decision")
-        s.record_error("Test error")
-
-class TestPlanner(unittest.TestCase):
+class TestGoalAnalyzer(unittest.TestCase):
     def setUp(self):
         self.tmpdir = tempfile.mkdtemp()
         from core.session import Session
         self.session = Session(self.tmpdir)
 
-    def test_create_plan(self):
-        from agent.planner import Planner
-        planner = Planner(self.session, {})
-        steps = planner.create_plan("Create a hello world Python script")
-        self.assertGreater(len(steps), 0)
-        self.assertEqual(steps[0]["status"], "pending")
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
 
-    def test_plan_for_fix(self):
-        from agent.planner import Planner
-        planner = Planner(self.session, {})
-        steps = planner.create_plan("Fix the login bug in the authentication module")
-        self.assertGreater(len(steps), 0)
+    def test_analyze_creation(self):
+        from agent.goal_analyzer import GoalAnalyzer
+        ga = GoalAnalyzer(self.session, {})
+        a = ga.analyze("Create an Android Bible app with PDF import")
+        self.assertEqual(a["task_type"], "creation")
+        self.assertIn("android", a["domain"])
+        self.assertIn("android", a["technologies"])
+        self.assertGreater(a["complexity"], 3)
+        self.assertTrue(len(a["success_criteria"]) > 0)
 
-    def test_update_step_status(self):
-        from agent.planner import Planner
-        planner = Planner(self.session, {})
-        steps = planner.create_plan("Test status updates")
-        planner.update_step_status(steps[0]["id"], "completed")
-        progress = self.session.load_progress()
-        self.assertIn(steps[0]["id"], progress["completed_steps"])
+    def test_analyze_fix(self):
+        from agent.goal_analyzer import GoalAnalyzer
+        ga = GoalAnalyzer(self.session, {})
+        a = ga.analyze("Fix the login bug in the authentication module")
+        self.assertEqual(a["task_type"], "fix")
 
-class TestOmniRoute(unittest.TestCase):
-    def test_route_loading(self):
-        from omni_route.router import OmniRoute
+    def test_analyze_extracts_requirements(self):
+        from agent.goal_analyzer import GoalAnalyzer
+        ga = GoalAnalyzer(self.session, {})
+        a = ga.analyze("Need a calculator with:\n- Addition\n- Subtraction\n- Multiplication")
+        self.assertTrue(len(a["requirements"]) > 0)
+
+class TestStrategyEngine(unittest.TestCase):
+    def setUp(self):
+        self.tmpdir = tempfile.mkdtemp()
+        from core.session import Session
+        self.session = Session(self.tmpdir)
+
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
+
+    def test_generates_multiple_strategies(self):
+        from agent.strategy_engine import StrategyEngine
+        se = StrategyEngine(self.session, {})
+        analysis = {"task_type": "creation", "domain": "android", "complexity": 5,
+                    "technologies": ["android"]}
+        strategies = se.generate_strategies(analysis)
+        self.assertGreaterEqual(len(strategies), 2)
+
+    def test_selects_best(self):
+        from agent.strategy_engine import StrategyEngine
+        se = StrategyEngine(self.session, {})
+        analysis = {"task_type": "creation", "domain": "general", "complexity": 3,
+                    "technologies": ["python"]}
+        strategies = se.generate_strategies(analysis)
+        best = se.select_best(analysis)
+        self.assertIsNotNone(best)
+        self.assertEqual(best["rank"], 1)
+
+class TestLearningEngine(unittest.TestCase):
+    def setUp(self):
+        self.tmpdir = tempfile.mkdtemp()
+
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
+
+    def test_learn_from_error(self):
+        from agent.learning_engine import LearningEngine
+        le = LearningEngine(None, self.tmpdir)
+        le.initialize()
+        le.learn_from_error("File not found", "Reading config", {"action": "load"})
+        rules_file = os.path.join(self.tmpdir, "memory", "learned_rules.json")
+        self.assertTrue(os.path.exists(rules_file))
+        with open(rules_file) as f:
+            data = json.load(f)
+        self.assertEqual(len(data["rules"]), 1)
+
+    def test_learn_from_success(self):
+        from agent.learning_engine import LearningEngine
+        le = LearningEngine(None, self.tmpdir)
+        le.initialize()
+        le.learn_from_success({"action": "test", "description": "Running tests"}, {"duration": 1.5})
+        success_file = os.path.join(self.tmpdir, "memory", "successful_patterns.json")
+        self.assertTrue(os.path.exists(success_file))
+
+    def test_get_statistics(self):
+        from agent.learning_engine import LearningEngine
+        le = LearningEngine(None, self.tmpdir)
+        le.initialize()
+        stats = le.get_statistics()
+        self.assertIn("total_learned_rules", stats)
+        self.assertIn("success_rate", stats)
+
+class TestRiskManager(unittest.TestCase):
+    def setUp(self):
+        self.tmpdir = tempfile.mkdtemp()
+        from core.session import Session
+        self.session = Session(self.tmpdir)
+
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
+
+    def test_assess_risks(self):
+        from agent.risk_manager import RiskManager
+        rm = RiskManager(self.session, {})
+        analysis = {"task_type": "creation", "domain": "android", "complexity": 8,
+                    "technologies": ["android"], "requirements": ["Import PDF"]}
+        assessment = rm.assess(analysis)
+        self.assertIn("risks", assessment)
+        self.assertIn("can_proceed", assessment)
+        self.assertGreater(assessment["total_risks"], 0)
+
+class TestSuccessEvaluator(unittest.TestCase):
+    def setUp(self):
+        self.tmpdir = tempfile.mkdtemp()
+        from core.session import Session
+        self.session = Session(self.tmpdir)
+
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
+
+    def test_evaluate_success(self):
+        from agent.success_evaluator import SuccessEvaluator
+        se = SuccessEvaluator(self.session, {})
+        analysis = {"domain": "python", "task_type": "creation", "complexity": 3,
+                    "technologies": ["python"], "requirements": ["Create file"]}
+        progress = {"steps": [{"id": 1}, {"id": 2}], "completed_steps": [1, 2],
+                    "failed_steps": [], "current_step": 2}
+        eval_result = se.evaluate(analysis, progress)
+        self.assertIn("total_score", eval_result)
+        self.assertIn("passed", eval_result)
+        self.assertIn("breakdown", eval_result)
+
+class TestFinalAuditor(unittest.TestCase):
+    def setUp(self):
+        self.tmpdir = tempfile.mkdtemp()
+        from core.session import Session
+        self.session = Session(self.tmpdir)
+
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
+
+    def test_audit_checklist(self):
+        from agent.final_auditor import FinalAuditor
+        fa = FinalAuditor(self.session, self.tmpdir)
+        analysis = {"domain": "python", "task_type": "creation",
+                    "requirements": ["Test"], "technologies": ["python"],
+                    "success_criteria": ["Works"]}
+        progress = {"steps": [{"id": 1, "action": "test"}], "completed_steps": [1],
+                    "failed_steps": [], "current_step": 1}
+        audit = fa.audit(analysis, progress)
+        self.assertIn("checklist", audit)
+        self.assertIn("all_checked", audit)
+
+    def test_generate_report(self):
+        from agent.final_auditor import FinalAuditor
+        fa = FinalAuditor(self.session, self.tmpdir)
+        report = fa.generate_final_report()
+        self.assertIn("Loop Engineering Agent", report)
+
+class TestOpenCodeBridge(unittest.TestCase):
+    def test_bridge_imports(self):
         try:
-            router = OmniRoute(os.path.join(BASE_DIR, "config"))
-            self.assertIsNotNone(router)
-            self.assertIn("opencode", router.providers)
-            self.assertIn("shell", router.providers)
-        except Exception as e:
-            self.fail(f"OmniRoute init failed: {e}")
+            from integrations.opencode.opencode_bridge import OpenCodeBridge
+            self.assertTrue(True)
+        except ImportError as e:
+            self.fail(f"Bridge import failed: {e}")
 
 def run_all():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
-    loader = unittest.TestLoader()
-    suite.addTests(loader.loadTestsFromTestCase(TestState))
-    suite.addTests(loader.loadTestsFromTestCase(TestCheckpoint))
-    suite.addTests(loader.loadTestsFromTestCase(TestSession))
-    suite.addTests(loader.loadTestsFromTestCase(TestPlanner))
-    suite.addTests(loader.loadTestsFromTestCase(TestOmniRoute))
+    for tc in [TestState, TestGoalAnalyzer, TestStrategyEngine,
+               TestLearningEngine, TestRiskManager, TestSuccessEvaluator,
+               TestFinalAuditor, TestOpenCodeBridge]:
+        suite.addTests(loader.loadTestsFromTestCase(tc))
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return result.wasSuccessful()

@@ -1,0 +1,35 @@
+{
+  "agent": {
+    "name": "LoopEngineeringAgent",
+    "version": "1.1.0",
+    "description": "Autonomous engineering agent for OpenCode integration"
+  },
+  "capabilities": [
+    "goal_analysis",
+    "strategy_planning",
+    "risk_assessment",
+    "task_execution",
+    "validation",
+    "error_recovery",
+    "learning",
+    "success_evaluation",
+    "final_audit"
+  ],
+  "workflow": {
+    "entry_point": "integrations.opencode.opencode_bridge.OpenCodeBridge.delegate_goal",
+    "status_query": "get_status",
+    "command_execution": "execute_command",
+    "report_generation": "generate_report"
+  },
+  "commands": {
+    "start": "python loop.py \"<goal>\"",
+    "status": "python loop.py --status",
+    "reset": "python loop.py --reset",
+    "resume": "python loop.py --resume"
+  },
+  "communication": {
+    "method": "subprocess",
+    "encoding": "utf-8",
+    "timeout_seconds": 300
+  }
+}

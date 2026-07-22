@@ -3,6 +3,7 @@ import os
 import time
 from datetime import datetime
 
+
 class Session:
     def __init__(self, base_dir):
         self.base_dir = base_dir
@@ -18,6 +19,12 @@ class Session:
         self.errors_file = os.path.join(self.memory_dir, "errors.log")
         os.makedirs(self.memory_dir, exist_ok=True)
         os.makedirs(self.log_dir, exist_ok=True)
+        self._init_long_term_memory()
+
+    def _init_long_term_memory(self):
+        lt_dirs = ["projects", "knowledge", "user_preferences", "technical_history", "successful_architectures"]
+        for d in lt_dirs:
+            os.makedirs(os.path.join(self.memory_dir, d), exist_ok=True)
 
     def log(self, message, level="INFO"):
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -52,10 +59,12 @@ class Session:
     def save_progress(self, data):
         with open(self.progress_file, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
+        self._archive_progress(data)
 
     def load_progress(self):
         if not os.path.exists(self.progress_file):
-            return {"steps": [], "current_step": 0, "completed_steps": [], "failed_steps": []}
+            return {"steps": [], "current_step": 0, "completed_steps": [], "failed_steps": [],
+                    "strategy_used": None, "analysis": None}
         with open(self.progress_file, "r", encoding="utf-8") as f:
             return json.load(f)
 
@@ -82,3 +91,32 @@ class Session:
 
     def elapsed(self):
         return time.time() - self.start_time
+
+    def save_long_term(self, category, key, data):
+        base = os.path.join(self.memory_dir, category)
+        os.makedirs(base, exist_ok=True)
+        path = os.path.join(base, f"{key}.json")
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+
+    def load_long_term(self, category, key):
+        path = os.path.join(self.memory_dir, category, f"{key}.json")
+        if not os.path.exists(path):
+            return None
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+
+    def list_long_term(self, category):
+        base = os.path.join(self.memory_dir, category)
+        if not os.path.isdir(base):
+            return []
+        return [f.replace(".json", "") for f in os.listdir(base) if f.endswith(".json")]
+
+    def _archive_progress(self, progress):
+        if progress.get("completed_steps") or progress.get("failed_steps"):
+            archive_dir = os.path.join(self.memory_dir, "technical_history")
+            os.makedirs(archive_dir, exist_ok=True)
+            timestamp = datetime.now().strftime("%H%M%S")
+            path = os.path.join(archive_dir, f"progress_{timestamp}.json")
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(progress, f, indent=2, ensure_ascii=False)
