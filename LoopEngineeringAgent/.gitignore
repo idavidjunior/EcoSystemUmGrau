@@ -1,0 +1,37 @@
+# Loop Engineering Agent - .gitignore
+
+# Environment
+.env
+config/.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Checkpoints and logs
+checkpoints/*
+logs/*
+!checkpoints/.gitkeep
+!logs/.gitkeep
+
+# Memory (keep structure, not content)
+memory/*
+!memory/.gitkeep
+
+# Projects
+projects/*
+!projects/.gitkeep
+
+# OS
+Thumbs.db
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

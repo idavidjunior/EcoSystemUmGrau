@@ -1,0 +1,35 @@
+{
+  "routes": [
+    {
+      "name": "opencode",
+      "type": "local",
+      "priority": 1,
+      "enabled": true
+    },
+    {
+      "name": "shell",
+      "type": "local",
+      "priority": 2,
+      "enabled": true
+    },
+    {
+      "name": "nvidia_build",
+      "type": "api",
+      "priority": 3,
+      "enabled": false,
+      "endpoint": "https://build.nvidia.com/",
+      "requires_key": true
+    },
+    {
+      "name": "openai",
+      "type": "api",
+      "priority": 4,
+      "enabled": false,
+      "endpoint": "https://api.openai.com/v1",
+      "requires_key": true
+    }
+  ],
+  "routing_strategy": "priority",
+  "failover": true,
+  "timeout_seconds": 60
+}

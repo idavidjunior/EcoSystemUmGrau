@@ -1,0 +1,49 @@
+{
+  "version": "1.0.0",
+  "agent_name": "LoopEngineeringAgent",
+  "environment": {
+    "os": "windows",
+    "shell": "powershell"
+  },
+  "paths": {
+    "agent": "agent",
+    "core": "core",
+    "memory": "memory",
+    "logs": "logs",
+    "checkpoints": "checkpoints",
+    "config": "config",
+    "projects": "projects",
+    "scripts": "scripts",
+    "omni_route": "omni_route"
+  },
+  "loop": {
+    "max_iterations": 100,
+    "checkpoint_enabled": true,
+    "auto_recovery": true,
+    "validation_required": true,
+    "max_retries_per_step": 3
+  },
+  "git": {
+    "enabled": true,
+    "auto_commit": true,
+    "commit_prefix": "[LEA]"
+  },
+  "omniroute": {
+    "default_provider": "opencode",
+    "fallback_providers": ["shell"]
+  },
+  "checkpoint": {
+    "auto_save": true,
+    "save_before_each_step": true,
+    "max_checkpoints": 50,
+    "compression": false
+  },
+  "memory": {
+    "goal_file": "memory/goal.md",
+    "plan_file": "memory/plan.md",
+    "progress_file": "memory/progress.json",
+    "context_file": "memory/context.json",
+    "decisions_file": "memory/decisions.md",
+    "errors_file": "memory/errors.log"
+  }
+}
