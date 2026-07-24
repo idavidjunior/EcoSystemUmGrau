@@ -1,24 +1,22 @@
 {
-  "version": "1.1.0",
-  "agent_name": "LoopEngineeringAgent",
+  "version": "2.0",
+  "system": "Loop Engineering Runtime (LER)",
   "environment": {
     "os": "windows",
     "shell": "powershell"
   },
-  "paths": {
-    "agent": "agent",
-    "core": "core",
-    "memory": "memory",
-    "logs": "logs",
-    "checkpoints": "checkpoints",
-    "config": "config",
-    "projects": "projects",
-    "scripts": "scripts",
-    "omni_route": "omni_route",
-    "integrations": "integrations",
-    "reports": "reports"
+  "layers": {
+    "1_governance": "governance/",
+    "2_architecture": "architecture/",
+    "3_planning": "agent/ (planner, strategy_engine)",
+    "4_execution": "agent/ (executor), runtime/mission",
+    "5_validation": "agent/ (validator)",
+    "6_recovery": "agent/ (recovery)",
+    "7_persistence": "runtime/persistence",
+    "8_versioning": "git",
+    "9_audit": "agent/ (final_auditor)"
   },
-  "loop": {
+  "mission": {
     "max_iterations": 100,
     "checkpoint_enabled": true,
     "auto_recovery": true,
@@ -27,12 +25,13 @@
     "adaptive_replanning": true,
     "learning_enabled": true,
     "success_threshold": 95,
-    "audit_required": true
+    "audit_required": true,
+    "survive_interruptions": true
   },
   "git": {
     "enabled": true,
     "auto_commit": true,
-    "commit_prefix": "[LEA]"
+    "commit_prefix": "[LER]"
   },
   "omniroute": {
     "default_provider": "opencode",
@@ -41,8 +40,7 @@
   "checkpoint": {
     "auto_save": true,
     "save_before_each_step": true,
-    "max_checkpoints": 50,
-    "compression": false
+    "max_checkpoints": 50
   },
   "memory": {
     "goal_file": "memory/goal.md",
@@ -56,7 +54,12 @@
       "knowledge": "memory/knowledge",
       "user_preferences": "memory/user_preferences",
       "technical_history": "memory/technical_history",
-      "successful_architectures": "memory/successful_architectures"
+      "projects": "memory/projects",
+      "knowledge": "memory/knowledge",
+      "patterns": "memory/patterns",
+      "solutions": "memory/solutions",
+      "architectures": "memory/architectures",
+      "decisions": "memory/decisions"
     }
   },
   "learning": {
@@ -66,8 +69,22 @@
     "failed_file": "memory/failed_patterns.json",
     "max_rules": 200
   },
-  "rules": {
-    "rules_file": "config/agent_rules.json",
-    "enforcement": "strict"
+  "governance": {
+    "responsibility_map": "governance/responsibility_map.json",
+    "enforcement": "strict",
+    "conflict_detection": true
+  },
+  "architecture": {
+    "validation_enabled": true,
+    "preserve_compatibility": true,
+    "preserve_simplicity": true,
+    "preserve_stability": true,
+    "preserve_testability": true,
+    "preserve_auditability": true
+  },
+  "security": {
+    "check_before_commit": true,
+    "block_destructive_ops": true,
+    "backup_before_modify": true
   }
 }

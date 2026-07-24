@@ -4,11 +4,16 @@ import json
 import time
 import re
 
+MAX_RESULTS = 50
+
+
 class Executor:
     def __init__(self, session, config):
         self.session = session
         self.config = config
         self.results = {}
+        self._test_cache = None
+        self._test_cache_hash = None
 
     def execute(self, step, context=None):
         self.session.log(f"Executing step {step['id']}: {step['action']}")
@@ -41,6 +46,9 @@ class Executor:
 
         result["duration"] = time.time() - result["start_time"]
         self.results[step["id"]] = result
+        if len(self.results) > MAX_RESULTS:
+            oldest = min(self.results.keys())
+            del self.results[oldest]
         self.session.log(f"Step {step['id']} {result['status']} ({result['duration']:.1f}s)")
         return result
 
@@ -109,6 +117,10 @@ class Executor:
         test_dir = os.path.join(self.session.base_dir, "tests")
         results = []
         if os.path.isdir(test_dir):
+            current_hash = self._compute_test_hash(test_dir)
+            if self._test_cache_hash == current_hash and self._test_cache is not None:
+                self.session.log("Test cache hit — no changes detected")
+                return json.dumps(self._test_cache, indent=2)
             for f in sorted(os.listdir(test_dir)):
                 if f.endswith(".py"):
                     try:
@@ -123,7 +135,22 @@ class Executor:
                         })
                     except Exception as e:
                         results.append({"file": f, "passed": False, "output": str(e)})
+            self._test_cache = {"tests_run": len(results), "results": results}
+            self._test_cache_hash = current_hash
         return json.dumps({"tests_run": len(results), "results": results}, indent=2)
+
+    def _compute_test_hash(self, test_dir):
+        import hashlib
+        h = hashlib.md5()
+        for f in sorted(os.listdir(test_dir)):
+            if f.endswith(".py"):
+                fpath = os.path.join(test_dir, f)
+                try:
+                    with open(fpath, "rb") as fh:
+                        h.update(fh.read())
+                except Exception:
+                    pass
+        return h.hexdigest()
 
     def _action_git_commit(self, desc):
         try:

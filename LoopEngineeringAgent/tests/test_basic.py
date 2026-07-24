@@ -206,7 +206,7 @@ class TestFinalAuditor(unittest.TestCase):
         from agent.final_auditor import FinalAuditor
         fa = FinalAuditor(self.session, self.tmpdir)
         report = fa.generate_final_report()
-        self.assertIn("Loop Engineering Agent", report)
+        self.assertTrue("Loop Engineering" in report or "Loop Engineering Runtime" in report)
 
 class TestOpenCodeBridge(unittest.TestCase):
     def test_bridge_imports(self):

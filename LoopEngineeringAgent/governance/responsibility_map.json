@@ -1,0 +1,82 @@
+{
+  "version": "1.2",
+  "principle": "Cada responsabilidade possui um unico proprietario",
+  "agents": [
+    {
+      "name": "GoalAnalyzer",
+      "module": "agent.goal_analyzer",
+      "class": "GoalAnalyzer",
+      "responsibility": "Analisar e traduzir objetivos humanos em requisitos tecnicos",
+      "ownership": ["goal_analysis"]
+    },
+    {
+      "name": "StrategyEngine",
+      "module": "agent.strategy_engine",
+      "class": "StrategyEngine",
+      "responsibility": "Gerar e avaliar multiplas estrategias de execucao",
+      "ownership": ["strategy_generation"]
+    },
+    {
+      "name": "RiskManager",
+      "module": "agent.risk_manager",
+      "class": "RiskManager",
+      "responsibility": "Avaliar riscos tecnicos antes da execucao",
+      "ownership": ["risk_assessment"]
+    },
+    {
+      "name": "Planner",
+      "module": "agent.planner",
+      "class": "Planner",
+      "responsibility": "Transformar estrategia em plano de passos executaveis",
+      "ownership": ["plan_creation", "step_management"]
+    },
+    {
+      "name": "Executor",
+      "module": "agent.executor",
+      "class": "Executor",
+      "responsibility": "Executar tarefas e comandos",
+      "ownership": ["task_execution"]
+    },
+    {
+      "name": "Validator",
+      "module": "agent.validator",
+      "class": "Validator",
+      "responsibility": "Validar resultados de cada etapa",
+      "ownership": ["result_validation"]
+    },
+    {
+      "name": "Recovery",
+      "module": "agent.recovery",
+      "class": "Recovery",
+      "responsibility": "Recuperacao de falhas e erros de execucao",
+      "ownership": ["error_recovery"]
+    },
+    {
+      "name": "LearningEngine",
+      "module": "agent.learning_engine",
+      "class": "LearningEngine",
+      "responsibility": "Aprender com erros e sucessos",
+      "ownership": ["pattern_learning"]
+    },
+    {
+      "name": "SuccessEvaluator",
+      "module": "agent.success_evaluator",
+      "class": "SuccessEvaluator",
+      "responsibility": "Avaliar pontuacao de sucesso da missao",
+      "ownership": ["success_scoring"]
+    },
+    {
+      "name": "FinalAuditor",
+      "module": "agent.final_auditor",
+      "class": "FinalAuditor",
+      "responsibility": "Auditar entrega final e gerar relatorio",
+      "ownership": ["final_audit"]
+    }
+  ],
+  "governance_rules": [
+    "Nenhum agente pode possuir responsabilidades duplicadas",
+    "Nenhum agente pode executar tarefas sem responsabilidade definida",
+    "Toda responsabilidade deve possuir um unico proprietario",
+    "Conflitos devem ser detectados antes da execucao"
+  ]
+}

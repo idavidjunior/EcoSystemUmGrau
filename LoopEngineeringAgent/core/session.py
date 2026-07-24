@@ -1,7 +1,11 @@
 import json
 import os
+import shutil
 import time
 from datetime import datetime
+
+
+LOG_MAX_BYTES = 512 * 1024
 
 
 class Session:
@@ -26,10 +30,22 @@ class Session:
         for d in lt_dirs:
             os.makedirs(os.path.join(self.memory_dir, d), exist_ok=True)
 
+    def _rotate_log(self, log_file):
+        if os.path.exists(log_file) and os.path.getsize(log_file) > LOG_MAX_BYTES:
+            base, ext = os.path.splitext(log_file)
+            for i in range(4, 0, -1):
+                older = f"{base}.{i}{ext}"
+                newer = f"{base}.{i - 1}{ext}" if i > 1 else log_file
+                if os.path.exists(newer):
+                    if os.path.exists(older):
+                        os.remove(older)
+                    os.rename(newer, older)
+
     def log(self, message, level="INFO"):
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         line = f"[{timestamp}] [{level}] {message}"
         log_file = os.path.join(self.log_dir, f"session_{self.session_id}.log")
+        self._rotate_log(log_file)
         with open(log_file, "a", encoding="utf-8") as f:
             f.write(line + "\n")
         print(line)

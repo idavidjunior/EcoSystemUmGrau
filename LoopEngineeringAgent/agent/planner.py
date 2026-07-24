@@ -9,10 +9,10 @@ class Planner:
         self.config = config
         self.max_steps = 50
 
-    def create_plan(self, goal_text):
+    def create_plan(self, goal_text, goal_analysis=None):
         self.session.log("Creating plan from goal...")
         goal_text = self._clean_goal(goal_text)
-        steps = self._generate_steps(goal_text)
+        steps = self._generate_steps(goal_text, goal_analysis)
         plan = self._build_plan_document(goal_text, steps)
         self.session.set_plan(plan)
         progress = {
@@ -31,8 +31,16 @@ class Planner:
         goal = re.sub(r'^["\']|["\']$', '', goal.strip())
         return goal
 
-    def _generate_steps(self, goal):
-        analysis = self._analyze_goal(goal)
+    def _generate_steps(self, goal, goal_analysis=None):
+        if goal_analysis and goal_analysis.get("task_type"):
+            analysis = {
+                "task_type": goal_analysis.get("task_type", "general"),
+                "needs_research": goal_analysis.get("complexity", 5) >= 7,
+                "needs_git": any("Git" in c for c in goal_analysis.get("constraints", [])),
+                "implementation_steps": self._steps_from_goal_analysis(goal_analysis, goal),
+            }
+        else:
+            analysis = self._analyze_goal(goal)
         steps = []
         step_num = 1
 
@@ -189,6 +197,23 @@ class Planner:
         lines.append("- [ ] All validations passed\n")
         lines.append("- [ ] Goal achieved\n")
         return "\n".join(lines)
+
+    def _steps_from_goal_analysis(self, analysis, goal):
+        steps = []
+        action_map = {
+            "creation": ("implement", "Implementar funcionalidade principal"),
+            "fix": ("fix", "Corrigir problema identificado"),
+            "improvement": ("refactor", "Aplicar melhorias"),
+            "validation": ("test", "Executar testes de validacao"),
+            "learning": ("gather_information", "Pesquisar e aprender"),
+        }
+        action, desc = action_map.get(analysis.get("task_type", "creation"), ("implement", "Implementar"))
+        steps.append({
+            "action": action,
+            "description": f"{desc}: {goal[:60]}",
+            "validation": "check_output"
+        })
+        return steps
 
     def update_step_status(self, step_id, status):
         progress = self.session.load_progress()

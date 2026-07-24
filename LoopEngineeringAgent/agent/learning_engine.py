@@ -11,10 +11,21 @@ class LearningEngine:
         self.learned_file = os.path.join(self.memory_dir, "learned_rules.json")
         self.success_file = os.path.join(self.memory_dir, "successful_patterns.json")
         self.failed_file = os.path.join(self.memory_dir, "failed_patterns.json")
+        self.tool_stats_file = os.path.join(self.memory_dir, "tool_statistics.json")
+        self.arch_patterns_file = os.path.join(self.memory_dir, "architecture_patterns.json")
+        self.knowledge_dir = os.path.join(self.memory_dir, "knowledge")
+        self.patterns_dir = os.path.join(self.memory_dir, "patterns")
+        self.solutions_dir = os.path.join(self.memory_dir, "solutions")
+        self.architectures_dir = os.path.join(self.memory_dir, "architectures")
+        self.decisions_dir = os.path.join(self.memory_dir, "decisions")
 
     def initialize(self):
         os.makedirs(self.memory_dir, exist_ok=True)
-        for path in [self.learned_file, self.success_file, self.failed_file]:
+        for d in [self.knowledge_dir, self.patterns_dir, self.solutions_dir,
+                  self.architectures_dir, self.decisions_dir]:
+            os.makedirs(d, exist_ok=True)
+        for path in [self.learned_file, self.success_file, self.failed_file,
+                     self.tool_stats_file, self.arch_patterns_file]:
             if not os.path.exists(path):
                 with open(path, "w", encoding="utf-8") as f:
                     json.dump({"rules": []} if "rules" in path else {"patterns": []}, f, indent=2)
@@ -23,9 +34,7 @@ class LearningEngine:
         self._ensure_initialized()
         rules = self._load_json(self.learned_file)
         failed = self._load_json(self.failed_file)
-
         error_key = self._normalize_error(error)
-
         existing = [r for r in rules.get("rules", []) if r.get("error_key") == error_key]
         if existing:
             existing[0]["count"] += 1
@@ -43,18 +52,14 @@ class LearningEngine:
                 "applied_successfully": False,
             }
             rules["rules"].append(rule)
-
         pattern = {
-            "error": error[:200],
-            "context": context[:200] if context else "",
-            "timestamp": datetime.now().isoformat(),
-            "step": step_info,
+            "error": error[:200], "context": context[:200] if context else "",
+            "timestamp": datetime.now().isoformat(), "step": step_info,
         }
         failed["patterns"].append(pattern)
-
         self._save_json(self.learned_file, rules)
         self._save_json(self.failed_file, failed)
-
+        self._archive_pattern("failed", pattern)
         return rules
 
     def learn_from_success(self, step_info, result):
@@ -69,6 +74,37 @@ class LearningEngine:
         }
         success["patterns"].append(pattern)
         self._save_json(self.success_file, success)
+        self._archive_pattern("successful", pattern)
+
+    def learn_from_mission(self, mission_result):
+        self._ensure_initialized()
+        knowledge = self._load_json(os.path.join(self.knowledge_dir, "mission_experience.json")) \
+            if os.path.exists(os.path.join(self.knowledge_dir, "mission_experience.json")) \
+            else {"missions": []}
+        entry = {
+            "status": mission_result.get("status"),
+            "iterations": mission_result.get("iterations", 0),
+            "steps_completed": mission_result.get("steps", {}).get("completed", 0),
+            "steps_total": mission_result.get("steps", {}).get("total", 0),
+            "elapsed": mission_result.get("elapsed_seconds", 0),
+            "domain": mission_result.get("domain"),
+            "complexity": mission_result.get("complexity"),
+            "timestamp": datetime.now().isoformat(),
+        }
+        knowledge["missions"].append(entry)
+        with open(os.path.join(self.knowledge_dir, "mission_experience.json"), "w", encoding="utf-8") as f:
+            json.dump(knowledge, f, indent=2, ensure_ascii=False)
+
+    def learn_architecture_pattern(self, name, description, pattern_data):
+        self._ensure_initialized()
+        patterns = self._load_json(self.arch_patterns_file)
+        patterns["patterns"].append({
+            "name": name,
+            "description": description,
+            "data": pattern_data,
+            "timestamp": datetime.now().isoformat(),
+        })
+        self._save_json(self.arch_patterns_file, patterns)
 
     def get_relevant_rules(self, error_message):
         self._ensure_initialized()
@@ -83,6 +119,13 @@ class LearningEngine:
                     relevant.append(rule)
         return relevant
 
+    def get_knowledge_for_domain(self, domain):
+        path = os.path.join(self.knowledge_dir, "mission_experience.json")
+        if not os.path.exists(path):
+            return []
+        data = self._load_json(path)
+        return [m for m in data.get("missions", []) if m.get("domain") == domain]
+
     def mark_rule_applied(self, error_key):
         rules = self._load_json(self.learned_file)
         for rule in rules.get("rules", []):
@@ -96,10 +139,18 @@ class LearningEngine:
         rules = self._load_json(self.learned_file)
         success = self._load_json(self.success_file)
         failed = self._load_json(self.failed_file)
+        tool_stats = self._load_json(self.tool_stats_file)
+        arch_patterns = self._load_json(self.arch_patterns_file)
+        prev_missions = self._load_json(os.path.join(self.knowledge_dir, "mission_experience.json")) \
+            if os.path.exists(os.path.join(self.knowledge_dir, "mission_experience.json")) \
+            else {"missions": []}
         return {
             "total_learned_rules": len(rules.get("rules", [])),
             "total_successes": len(success.get("patterns", [])),
             "total_failures": len(failed.get("patterns", [])),
+            "total_tools_tracked": len(tool_stats.get("tools", {})),
+            "total_arch_patterns": len(arch_patterns.get("patterns", [])),
+            "total_prev_missions": len(prev_missions.get("missions", [])),
             "success_rate": self._calculate_success_rate(success, failed),
         }
 
@@ -125,6 +176,12 @@ class LearningEngine:
                 return suggestion
         return "Analisar erro manualmente e ajustar abordagem."
 
+    def _archive_pattern(self, pattern_type, pattern):
+        filename = f"{pattern_type}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        path = os.path.join(self.patterns_dir, filename)
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(pattern, f, indent=2, ensure_ascii=False)
+
     def _ensure_initialized(self):
         if not os.path.exists(self.learned_file):
             self.initialize()
@@ -134,7 +191,7 @@ class LearningEngine:
         if os.path.exists(path):
             with open(path, "r", encoding="utf-8") as f:
                 return json.load(f)
-        return {"rules": []}
+        return {"rules": []} if "rules" in path else {"patterns": []}
 
     def _save_json(self, path, data):
         with open(path, "w", encoding="utf-8") as f:
