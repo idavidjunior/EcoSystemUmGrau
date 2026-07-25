@@ -1,0 +1,97 @@
+{
+  "version": 2,
+  "last_updated": "2026-07-25T14:40:29.543839",
+  "projects": {},
+  "patterns": [
+    {
+      "source": "MonitorPane.ps1",
+      "title": "RichTextBox for multi-colored status",
+      "action": "Use RichTextBox instead of Label for PowerShell status widgets",
+      "description": "RichTextBox allows per-line colors (different status = different colors), Label only supports single color",
+      "domain": "windows",
+      "extracted_at": "2026-07-25T14:40:29.543839"
+    },
+    {
+      "source": "MonitorPane.ps1",
+      "title": "PowerShell + Python helper architecture",
+      "action": "Call Python helper scripts from PowerShell via subprocess, parse JSON output",
+      "description": "Status widget architecture: call Python helper scripts from PowerShell via subprocess, parse JSON output for structured data",
+      "domain": "windows",
+      "extracted_at": "2026-07-25T14:40:29.543839"
+    },
+    {
+      "source": "MonitorPane.ps1",
+      "title": "Windows auto-start via shortcut",
+      "action": "Create .lnk shortcut via WScript.Shell COM object in shell:startup folder",
+      "description": "Auto-start Windows: create .lnk shortcut via WScript.Shell COM object in shell:startup folder",
+      "domain": "windows",
+      "extracted_at": "2026-07-25T14:40:29.543839"
+    }
+  ],
+  "decisions": [
+    {
+      "source": "MonitorPane.ps1",
+      "decision": "Usar RichTextBox em vez de Label para widget de status",
+      "rationale": "RichTextBox permite cores por linha (diferentes status = diferentes cores), Label suporta apenas uma cor",
+      "extracted_at": "2026-07-25T14:40:29.543839"
+    },
+    {
+      "source": "MonitorPane.ps1",
+      "decision": "Widget PowerShell puro sem dependencias externas",
+      "rationale": "Zero instalacao, funciona em qualquer Windows 10 com PowerShell 5.1+",
+      "extracted_at": "2026-07-25T14:40:29.543839"
+    },
+    {
+      "source": "MonitorPane.ps1",
+      "decision": "Atualizar a cada 8 segundos via System.Windows.Forms.Timer",
+      "rationale": "Timer evita travar UI (diferente de Start-Sleep em loop), 8s e frequente o bastante para monitoramento sem sobrecarregar CPU",
+      "extracted_at": "2026-07-25T14:40:29.543839"
+    }
+  ],
+  "bug_fixes": [
+    {
+      "source": "scripts/status_check.py",
+      "issue": "Script Python status_check.py falhava com relative import",
+      "root_cause": "manager.py usa imports relativos (from .base), precisa do diretorio raiz no sys.path",
+      "fix": "Adicionar BASE_DIR ao sys.path e usar from provider_manager.manager import ProviderManager (import absoluto)",
+      "extracted_at": "2026-07-25T14:40:29.543839"
+    }
+  ],
+  "cognitive_patterns": [],
+  "heuristics": [
+    {
+      "source": "session",
+      "title": "PowerShell widget startup",
+      "description": "Usar -WindowStyle Hidden para iniciar widget sem janela de console aparecendo",
+      "domain": "windows",
+      "extracted_at": "2026-07-25T14:40:29.543839"
+    },
+    {
+      "source": "session",
+      "title": "Widget keyboard refresh",
+      "description": "Adicionar F5 como hotkey para refresh manual no widget, alem do timer automatico",
+      "domain": "ui",
+      "extracted_at": "2026-07-25T14:40:29.543839"
+    }
+  ],
+  "frameworks": [],
+  "tool_knowledge": {},
+  "skill_references": [],
+  "mission_learnings": [
+    {
+      "timestamp": "2026-07-25T14:40:29.543839",
+      "status": "session_learning",
+      "goal_objective": "Criado widget desktop MonitorPane.ps1 com RichTextBox colorido mostrando status em tempo real de 6 provedores LLM, servidores primary/secondary (por porta TCP), RustDesk (servico Windows), ADB (dispositivo conectado), e MCP server (processo Python). Instalado com auto-start via atalho em shell:startup. Corrigido status_check.py com imports absolutos.",
+      "tags": [
+        "widget",
+        "desktop",
+        "monitoring",
+        "powershell"
+      ],
+      "files_modified": [
+        "LoopEngineeringAgent/scripts/status_check.py",
+        "Desktop/MonitorPane.ps1"
+      ]
+    }
+  ]
+}
