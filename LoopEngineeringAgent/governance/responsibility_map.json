@@ -1,82 +1,322 @@
 {
-  "version": "1.2",
-  "principle": "Cada responsabilidade possui um unico proprietario",
+  "version": "2.0",
+  "ecosystem": "Intelligent Agent Ecosystem - LER + OpenCode + Obsidian",
+  "principle": "Cada responsabilidade possui um unico proprietario. Nenhum overlap. Nenhuma acao sem dono.",
   "agents": [
     {
       "name": "GoalAnalyzer",
       "module": "agent.goal_analyzer",
       "class": "GoalAnalyzer",
-      "responsibility": "Analisar e traduzir objetivos humanos em requisitos tecnicos",
-      "ownership": ["goal_analysis"]
+      "layer": "ler",
+      "responsibility": "Analisar e traduzir objetivos humanos em requisitos tecnicos estruturados",
+      "ownership": ["goal_analysis"],
+      "can_delegate_to": ["01-estrategista"],
+      "triggers": "nova missao LER",
+      "reads_from": ["vault:goals", "vault:requirements"],
+      "writes_to": ["vault:missions", "vault:decisions"]
     },
     {
       "name": "StrategyEngine",
       "module": "agent.strategy_engine",
       "class": "StrategyEngine",
-      "responsibility": "Gerar e avaliar multiplas estrategias de execucao",
-      "ownership": ["strategy_generation"]
+      "layer": "ler",
+      "responsibility": "Gerar e avaliar multiplas estrategias de execucao com scoring",
+      "ownership": ["strategy_generation", "strategy_scoring"],
+      "can_delegate_to": ["07-criativo", "05-futuro"],
+      "triggers": "goal_analysis concluida",
+      "reads_from": ["vault:strategies", "vault:patterns"],
+      "writes_to": ["vault:strategies", "vault:decisions"]
     },
     {
       "name": "RiskManager",
       "module": "agent.risk_manager",
       "class": "RiskManager",
-      "responsibility": "Avaliar riscos tecnicos antes da execucao",
-      "ownership": ["risk_assessment"]
+      "layer": "ler",
+      "responsibility": "Avaliar riscos tecnicos, de ambiente, dependencias e APIs antes da execucao",
+      "ownership": ["risk_assessment"],
+      "can_delegate_to": ["02-cetico", "03-realista"],
+      "triggers": "estrategia selecionada",
+      "reads_from": ["vault:risks", "vault:failures"],
+      "writes_to": ["vault:risks", "vault:decisions"]
     },
     {
       "name": "Planner",
       "module": "agent.planner",
       "class": "Planner",
-      "responsibility": "Transformar estrategia em plano de passos executaveis",
-      "ownership": ["plan_creation", "step_management"]
+      "layer": "ler",
+      "responsibility": "Transformar estrategia em plano de passos executaveis e ordenados",
+      "ownership": ["plan_creation", "step_management"],
+      "can_delegate_to": [],
+      "triggers": "riscos mitigados",
+      "reads_from": ["vault:plans"],
+      "writes_to": ["vault:plans", "vault:progress"]
     },
     {
       "name": "Executor",
       "module": "agent.executor",
       "class": "Executor",
-      "responsibility": "Executar tarefas e comandos",
-      "ownership": ["task_execution"]
+      "layer": "ler",
+      "responsibility": "Executar tarefas e comandos do plano via ferramentas apropriadas",
+      "ownership": ["task_execution", "command_execution"],
+      "can_delegate_to": ["explore", "general"],
+      "triggers": "plano criado",
+      "reads_from": ["vault:plans"],
+      "writes_to": ["vault:results", "vault:evidence"]
     },
     {
       "name": "Validator",
       "module": "agent.validator",
       "class": "Validator",
-      "responsibility": "Validar resultados de cada etapa",
-      "ownership": ["result_validation"]
+      "layer": "ler",
+      "responsibility": "Validar saidas de cada etapa contra criterios de aceite",
+      "ownership": ["result_validation", "step_validation"],
+      "can_delegate_to": ["08-revisor"],
+      "triggers": "execucao concluida",
+      "reads_from": ["vault:criteria", "vault:results"],
+      "writes_to": ["vault:validation"]
     },
     {
       "name": "Recovery",
       "module": "agent.recovery",
       "class": "Recovery",
-      "responsibility": "Recuperacao de falhas e erros de execucao",
-      "ownership": ["error_recovery"]
+      "layer": "ler",
+      "responsibility": "Recuperacao de falhas, rollback parcial e retry inteligente",
+      "ownership": ["error_recovery", "failure_diagnosis"],
+      "can_delegate_to": ["03-realista"],
+      "triggers": "validacao falhou",
+      "reads_from": ["vault:failures", "vault:solutions"],
+      "writes_to": ["vault:failures", "vault:learned_rules"]
     },
     {
       "name": "LearningEngine",
       "module": "agent.learning_engine",
       "class": "LearningEngine",
-      "responsibility": "Aprender com erros e sucessos",
-      "ownership": ["pattern_learning"]
+      "layer": "ler",
+      "responsibility": "Aprender com erros e sucessos, consolidar padroes no vault",
+      "ownership": ["pattern_learning", "rule_memory", "knowledge_consolidation"],
+      "can_delegate_to": [],
+      "triggers": "fim de cada iteracao + fim de missao",
+      "reads_from": ["vault:patterns", "vault:rules"],
+      "writes_to": ["vault:patterns", "vault:rules", "vault:learned_rules"]
     },
     {
       "name": "SuccessEvaluator",
       "module": "agent.success_evaluator",
       "class": "SuccessEvaluator",
-      "responsibility": "Avaliar pontuacao de sucesso da missao",
-      "ownership": ["success_scoring"]
+      "layer": "ler",
+      "responsibility": "Calcular pontuacao de sucesso da missao (requisitos, testes, DoD, evidencias)",
+      "ownership": ["success_scoring", "outcome_evaluation"],
+      "can_delegate_to": [],
+      "triggers": "missao executada e validada",
+      "reads_from": ["vault:criteria", "vault:results"],
+      "writes_to": ["vault:scores"]
     },
     {
       "name": "FinalAuditor",
       "module": "agent.final_auditor",
       "class": "FinalAuditor",
-      "responsibility": "Auditar entrega final e gerar relatorio",
-      "ownership": ["final_audit"]
+      "layer": "ler",
+      "responsibility": "Auditar entrega final contra DoD e Acceptance Criteria, gerar relatorio",
+      "ownership": ["final_audit", "report_generation"],
+      "can_delegate_to": ["08-revisor", "04-etica"],
+      "triggers": "score >= 95%",
+      "reads_from": ["vault:dod", "vault:reports"],
+      "writes_to": ["vault:reports", "vault:audit"]
+    },
+    {
+      "name": "EvidenceCollector",
+      "module": "agent.evidence_collector",
+      "class": "EvidenceCollector",
+      "layer": "ler",
+      "responsibility": "Coletar logs, hashes, artefatos e evidencias de cada missao",
+      "ownership": ["evidence_collection"],
+      "can_delegate_to": [],
+      "triggers": "durante toda execucao",
+      "reads_from": ["vault:evidence"],
+      "writes_to": ["vault:evidence", "vault:artifacts"]
+    },
+    {
+      "name": "ToolSelector",
+      "module": "agent.tool_selector",
+      "class": "ToolSelector",
+      "layer": "ler",
+      "responsibility": "Roteamento automatico de tarefas para ferramenta correta com tracking",
+      "ownership": ["tool_routing", "tool_tracking"],
+      "can_delegate_to": [],
+      "triggers": "antes de cada execucao",
+      "reads_from": ["vault:tool_stats"],
+      "writes_to": ["vault:tool_stats"]
+    },
+    {
+      "name": "SelfImprovement",
+      "module": "agent.self_improvement",
+      "class": "SelfImprovement",
+      "layer": "ler",
+      "responsibility": "Detectar gargalos, retrabalho, padroes de falha recorrentes e sugerir melhorias",
+      "ownership": ["self_improvement"],
+      "can_delegate_to": ["07-criativo"],
+      "triggers": "pos-missao",
+      "reads_from": ["vault:metrics", "vault:patterns"],
+      "writes_to": ["vault:improvements"]
+    },
+    {
+      "name": "Supervisor",
+      "module": "agent.supervisor",
+      "class": "Supervisor",
+      "layer": "ler",
+      "responsibility": "Monitorar saude de todos os modulos LER e recuperar individualmente",
+      "ownership": ["module_monitoring", "health_check"],
+      "can_delegate_to": [],
+      "triggers": "cada iteracao do loop",
+      "reads_from": [],
+      "writes_to": ["vault:health"]
+    },
+    {
+      "name": "01-estrategista",
+      "module": "opencode.subagent",
+      "class": "estrategista",
+      "layer": "opencode",
+      "responsibility": "Definir direcao, objetivos e estrategia de alto nivel das solucoes",
+      "ownership": ["high_level_strategy"],
+      "triggers": "delegado por GoalAnalyzer ou StrategyEngine",
+      "agent_type": "task_subagent"
+    },
+    {
+      "name": "02-cetico",
+      "module": "opencode.subagent",
+      "class": "cetico",
+      "layer": "opencode",
+      "responsibility": "Desafiar hipoteses, identificar riscos nao obvios, evitar conclusoes precipitadas",
+      "ownership": ["hypothesis_challenge", "blind_spot_detection"],
+      "triggers": "delegado por RiskManager",
+      "agent_type": "task_subagent"
+    },
+    {
+      "name": "03-realista",
+      "module": "opencode.subagent",
+      "class": "realista",
+      "layer": "opencode",
+      "responsibility": "Avaliar viabilidade pratica, prazos e custos reais de implementacao",
+      "ownership": ["feasibility_assessment"],
+      "triggers": "delegado por RiskManager ou Recovery",
+      "agent_type": "task_subagent"
+    },
+    {
+      "name": "04-etica",
+      "module": "opencode.subagent",
+      "class": "etica",
+      "layer": "opencode",
+      "responsibility": "Avaliar impactos eticos, legais, privacidade e conformidade",
+      "ownership": ["ethical_review", "compliance_check"],
+      "triggers": "delegado por FinalAuditor",
+      "agent_type": "task_subagent"
+    },
+    {
+      "name": "05-futuro",
+      "module": "opencode.subagent",
+      "class": "futuro",
+      "layer": "opencode",
+      "responsibility": "Antecipar tendencias, evolucao tecnologica e escalabilidade futura",
+      "ownership": ["future_trend_analysis"],
+      "triggers": "delegado por StrategyEngine",
+      "agent_type": "task_subagent"
+    },
+    {
+      "name": "06-recursos",
+      "module": "opencode.subagent",
+      "class": "recursos",
+      "layer": "opencode",
+      "responsibility": "Mapear recursos internos, bibliotecas, ferramentas e conhecimento reutilizavel",
+      "ownership": ["resource_mapping"],
+      "triggers": "delegado por Executor",
+      "agent_type": "task_subagent"
+    },
+    {
+      "name": "07-criativo",
+      "module": "opencode.subagent",
+      "class": "criativo",
+      "layer": "opencode",
+      "responsibility": "Propor solucoes inovadoras, alternativas nao obvias e abordagens criativas",
+      "ownership": ["creative_solutions", "innovation_proposals"],
+      "triggers": "delegado por StrategyEngine ou SelfImprovement",
+      "agent_type": "task_subagent"
+    },
+    {
+      "name": "08-revisor",
+      "module": "opencode.subagent",
+      "class": "revisor",
+      "layer": "opencode",
+      "responsibility": "Revisar codigo, arquitetura, documentacao e consistencia tecnica",
+      "ownership": ["code_review", "architecture_review"],
+      "triggers": "delegado por Validator ou FinalAuditor",
+      "agent_type": "task_subagent"
+    },
+    {
+      "name": "explore",
+      "module": "opencode.subagent",
+      "class": "explore",
+      "layer": "opencode",
+      "responsibility": "Exploracao rapida de codebase: busca de arquivos, padroes e estrutura",
+      "ownership": ["codebase_exploration"],
+      "triggers": "delegado por Executor quando precisa de contexto",
+      "agent_type": "task_subagent"
+    },
+    {
+      "name": "general",
+      "module": "opencode.subagent",
+      "class": "general",
+      "layer": "opencode",
+      "responsibility": "Tarefas gerais de pesquisa e execucao multi-passo",
+      "ownership": ["general_purpose_tasks"],
+      "triggers": "delegado por Executor",
+      "agent_type": "task_subagent"
+    },
+    {
+      "name": "Ponytail",
+      "module": "opencode.plugin",
+      "class": "ponytail",
+      "layer": "opencode",
+      "responsibility": "Plugin de qualidade: simplificar codigo, reduzir tokens, eliminar desperdicio",
+      "ownership": ["code_simplification", "token_reduction"],
+      "triggers": "toda sessaopermanente",
+      "agent_type": "plugin"
+    },
+    {
+      "name": "ObsidianVault",
+      "module": "mcpvault",
+      "class": "mcpvault",
+      "layer": "obsidian",
+      "responsibility": "Memoria persistente do ecossistema: conhecimento, governanca, decisoes, padroes",
+      "ownership": ["knowledge_persistence", "shared_memory"],
+      "triggers": "leitura/escrita por qualquer agente",
+      "interface": "MCP tools (read_note, write_note, search_notes, manage_tags, etc.)",
+      "agent_type": "mcp_resource"
+    },
+    {
+      "name": "99-gerador-de-agentes",
+      "module": "opencode.subagent",
+      "class": "gerador_de_agentes",
+      "layer": "opencode",
+      "responsibility": "Criar novos agentes especializados para o ecossistema",
+      "ownership": ["agent_generation"],
+      "triggers": "delegado por SelfImprovement ou usuario direto",
+      "agent_type": "task_subagent"
     }
   ],
-  "governance_rules": [
+  "ecosystem_rules": [
     "Nenhum agente pode possuir responsabilidades duplicadas",
     "Nenhum agente pode executar tarefas sem responsabilidade definida",
     "Toda responsabilidade deve possuir um unico proprietario",
-    "Conflitos devem ser detectados antes da execucao"
-  ]
+    "LER agents coordenam o fluxo; OpenCode agents sao revisores especialistas on-demand",
+    "Obsidian vault e a memoria compartilhada - todo conhecimento relevante vai para o vault",
+    "Ponytail revisa todo codigo gerado por qualquer agente automaticamente",
+    "Agentes LER delegam para OpenCode agents quando precisam de perspectiva especializada",
+    "Conflitos detectados pelo ConflictDetector bloqueiam execucao ate resolucao"
+  ],
+  "flow": {
+    "default": "GoalAnalyzer -> StrategyEngine -> RiskManager -> Planner -> Executor -> Validator -> LearningEngine -> SuccessEvaluator -> FinalAuditor",
+    "on_failure": "Validator -> Recovery -> LearningEngine -> StrategyEngine (replan)",
+    "on_audit": "FinalAuditor -> 08-revisor -> 04-etica -> vault:reports",
+    "on_strategy": "StrategyEngine -> 07-criativo -> 05-futuro -> RiskManager -> 02-cetico"
+  }
 }

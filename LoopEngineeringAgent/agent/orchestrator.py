@@ -20,6 +20,9 @@ from agent.evidence_collector import EvidenceCollector
 from agent.tool_selector import ToolSelector
 from agent.self_improvement import SelfImprovement
 from agent.supervisor import Supervisor
+from governance.agent_governance import AgentGovernance
+from governance.conflict_detector import ConflictDetector
+from governance.vault_bridge import VaultBridge
 
 
 class Orchestrator:
@@ -41,6 +44,9 @@ class Orchestrator:
         self.tool_selector = ToolSelector(session, session.base_dir)
         self.self_improvement = SelfImprovement(session, session.base_dir)
         self.supervisor = Supervisor(session, config)
+        self.governance = AgentGovernance(session, session.base_dir)
+        self.conflict_detector = ConflictDetector(session.base_dir)
+        self.vault = VaultBridge(session, session.base_dir)
         self.max_iterations = config.get("loop", {}).get("max_iterations", 100)
         self.iteration = 0
         self.goal_analysis = None
@@ -75,6 +81,28 @@ class Orchestrator:
         self.evidence_collector.start_mission(
             datetime.now().strftime("%Y%m%d_%H%M%S")
         )
+
+        # Initialize Agent Governance System
+        gov_result = self.governance.initialize()
+        self.session.log(f"[Orchestrator] Governance: {gov_result['agents']} agents, "
+                        f"{len(gov_result.get('conflicts', []))} conflicts")
+
+        # Check Agent Governance System conflicts
+        conflicts = self.conflict_detector.detect_all()
+        if not conflicts.get("safe", True):
+            self.session.log(f"[Orchestrator] GOVERNANCE CONFLICTS: {conflicts['conflicts']}",
+                           level="WARNING")
+            for c in conflicts["conflicts"]:
+                self.session.record_decision(
+                    f"Conflict: {c['responsibility']} owned by {c['owners']}")
+
+        # Sync knowledge from vault
+        vault_rules = self.vault.search_notes("regras aprendidas")
+        if vault_rules:
+            self.session.log("[Orchestrator] Loaded context from Obsidian vault")
+
+        self.session.log(f"[Orchestrator] Ecosystem ready: LER {gov_result['agents']} agents + "
+                        f"OpenCode subagents + Ponytail + Obsidian vault")
         self.state.transition(AgentState.INIT)
         return self._execution_loop()
 
@@ -520,6 +548,16 @@ class Orchestrator:
         self.session.log("=" * 60)
         save_checkpoint(self.state, progress.get("steps", []), progress,
                        self.session.load_context(), f"final_{reason}")
+
+        # Sync knowledge to Obsidian vault
+        rules_file = os.path.join(self.session.base_dir, "memory", "learned_rules.json")
+        patterns_file = os.path.join(self.session.base_dir, "memory", "successful_patterns.json")
+        self.vault.sync_learned_rules(rules_file)
+        self.vault.sync_successful_patterns(patterns_file)
+        vault_stats = self.vault.get_vault_stats()
+        if vault_stats.get("available"):
+            self.session.log(f"[Orchestrator] Vault sync complete - ecosystem memory updated")
+
         return report
 
     def run_iteration(self):
