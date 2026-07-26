@@ -24,5 +24,9 @@ _test_*.ps1
 __pycache__/
 *.pyc
 
+# Projects outside ecosystem
+WindowGUI/
+WMS.bat
+
 # Runtime data (auto-generated, churns on every session)
 memory/provider_events.json
