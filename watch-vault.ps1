@@ -51,141 +51,20 @@ $VaultInRepo = "$RepoRoot\vault"
 # ============================================================
 # POPUP DE NOTIFICACAO
 # ============================================================
-function Show-SyncNotification {
-    param(
-        [string[]]$ChangedFiles,
-        [string]$Status,  # "ok" | "error"
-        [string]$ErrorMessage = ""
-    )
-
-    Add-Type -AssemblyName System.Windows.Forms
-    Add-Type -AssemblyName System.Drawing
-
-    $form = New-Object System.Windows.Forms.Form
-    $form.Text = "Vault Sync - Obsidian para GitHub"
-    $form.Size = New-Object System.Drawing.Size(520, 380)
-    $form.StartPosition = "CenterScreen"
-    $form.TopMost = $true
-    $form.ControlBox = $true
-    $form.ShowInTaskbar = $true
-    $form.Icon = [System.Drawing.Icon]::ExtractAssociatedIcon("powershell.exe")
-
-    # Cor de fundo
-    $form.BackColor = [System.Drawing.Color]::FromArgb(240, 240, 245)
-
-    # Titulo
-    $title = New-Object System.Windows.Forms.Label
-    $title.Text = if ($Status -eq "ok") {
-        "✅ VAULT SINCRONIZADO COM GITHUB"
-    } else {
-        "❌ ERRO NA SINCRONIZACAO"
-    }
-    $title.Font = New-Object System.Drawing.Font("Segoe UI", 11, [System.Drawing.FontStyle]::Bold)
-    $title.ForeColor = if ($Status -eq "ok") { [System.Drawing.Color]::DarkGreen } else { [System.Drawing.Color]::DarkRed }
-    $title.Size = New-Object System.Drawing.Size(480, 30)
-    $title.Location = New-Object System.Drawing.Point(20, 15)
-    $form.Controls.Add($title)
-
-    # Timestamp
-    $ts = New-Object System.Windows.Forms.Label
-    $ts.Text = (Get-Date -Format "dd/MM/yyyy HH:mm:ss")
-    $ts.Font = New-Object System.Drawing.Font("Segoe UI", 9)
-    $ts.ForeColor = [System.Drawing.Color]::Gray
-    $ts.Size = New-Object System.Drawing.Size(480, 20)
-    $ts.Location = New-Object System.Drawing.Point(20, 48)
-    $form.Controls.Add($ts)
-
-    # Origem
-    $srcLabel = New-Object System.Windows.Forms.Label
-    $srcLabel.Text = "DE: $VaultPath"
-    $srcLabel.Font = New-Object System.Drawing.Font("Segoe UI", 8)
-    $srcLabel.ForeColor = [System.Drawing.Color]::DimGray
-    $srcLabel.Size = New-Object System.Drawing.Size(480, 18)
-    $srcLabel.Location = New-Object System.Drawing.Point(20, 72)
-    $form.Controls.Add($srcLabel)
-
-    # Destino
-    $dstLabel = New-Object System.Windows.Forms.Label
-    $dstLabel.Text = "PARA: $VaultInRepo -> GitHub (opencode/mighty-meadow)"
-    $dstLabel.Font = New-Object System.Drawing.Font("Segoe UI", 8)
-    $dstLabel.ForeColor = [System.Drawing.Color]::DimGray
-    $dstLabel.Size = New-Object System.Drawing.Size(480, 18)
-    $dstLabel.Location = New-Object System.Drawing.Point(20, 92)
-    $form.Controls.Add($dstLabel)
-
-    if ($Status -eq "error") {
-        $errBox = New-Object System.Windows.Forms.TextBox
-        $errBox.Text = $ErrorMessage
-        $errBox.Multiline = $true
-        $errBox.ReadOnly = $true
-        $errBox.ScrollBars = "Vertical"
-        $errBox.Size = New-Object System.Drawing.Size(480, 150)
-        $errBox.Location = New-Object System.Drawing.Point(20, 120)
-        $errBox.BackColor = [System.Drawing.Color]::FromArgb(255, 240, 240)
-        $form.Controls.Add($errBox)
-    } else {
-        # Lista de arquivos alterados
-        $listLabel = New-Object System.Windows.Forms.Label
-        $listLabel.Text = "ARQUIVOS ATUALIZADOS ($($ChangedFiles.Count)):"
-        $listLabel.Font = New-Object System.Drawing.Font("Segoe UI", 9, [System.Drawing.FontStyle]::Bold)
-        $listLabel.Size = New-Object System.Drawing.Size(480, 20)
-        $listLabel.Location = New-Object System.Drawing.Point(20, 120)
-        $form.Controls.Add($listLabel)
-
-        $listBox = New-Object System.Windows.Forms.ListBox
-        $listBox.Size = New-Object System.Drawing.Size(480, 150)
-        $listBox.Location = New-Object System.Drawing.Point(20, 145)
-        $listBox.Font = New-Object System.Drawing.Font("Consolas", 8)
-        $listBox.ScrollAlwaysVisible = $true
-
-        # Max 50 items for display
-        $displayFiles = $ChangedFiles | Select-Object -First 50
-        if ($ChangedFiles.Count -gt 50) {
-            $displayFiles += "... e mais $($ChangedFiles.Count - 50) arquivos"
-        }
-        $displayFiles | ForEach-Object { [void]$listBox.Items.Add($_) }
-        $form.Controls.Add($listBox)
-    }
-
-    # Botao Fechar
-    $btn = New-Object System.Windows.Forms.Button
-    $btn.Text = "FECHAR"
-    $btn.Size = New-Object System.Drawing.Size(100, 30)
-    $btn.Location = New-Object System.Drawing.Point(400, $form.Height - 65)
-    $btn.BackColor = [System.Drawing.Color]::FromArgb(50, 50, 55)
-    $btn.ForeColor = [System.Drawing.Color]::White
-    $btn.FlatStyle = "Flat"
-    $btn.Add_Click({ $form.Close() })
-    $form.Controls.Add($btn)
-
-    # Auto-fechar em 30s
-    $timer = New-Object System.Windows.Forms.Timer
-    $timer.Interval = 30000
-    $timer.Add_Tick({ $form.Close() })
-    $timer.Start()
-
-    # Mostrar (nao bloqueante)
-    $form.ShowDialog() | Out-Null
-}
-
 # ============================================================
 # SOM DE NOTIFICACAO
 # ============================================================
 function Play-SyncSound {
-    param([string]$Type = "success")  # "success" | "error"
-
+    param([string]$Type = "success")
+    Add-Type -AssemblyName System.Media
     if ($Type -eq "success") {
-        # 3 beeps ascendentes: som caracteristico de sync completo
-        [System.Console]::Beep(660, 150)
-        Start-Sleep -Milliseconds 80
-        [System.Console]::Beep(880, 150)
-        Start-Sleep -Milliseconds 80
-        [System.Console]::Beep(1100, 250)
+        [System.Media.SystemSounds]::Asterisk.Play()
+        Start-Sleep -Milliseconds 200
+        [System.Media.SystemSounds]::Asterisk.Play()
     } else {
-        # 2 beeps graves descendentes: erro
-        [System.Console]::Beep(400, 200)
-        Start-Sleep -Milliseconds 100
-        [System.Console]::Beep(300, 300)
+        [System.Media.SystemSounds]::Hand.Play()
+        Start-Sleep -Milliseconds 300
+        [System.Media.SystemSounds]::Hand.Play()
     }
 }
 
@@ -373,7 +252,7 @@ function Invoke-Sync {
         }
     }
 
-    # 4. NOTIFICAR USUARIO
+    # 4. NOTIFICAR USUARIO (som + popup)
     if ($syncOk) {
         Play-SyncSound -Type "success"
         Write-Host "[NOTIFICACAO] Sync concluido. Exibindo popup..." -ForegroundColor Cyan
@@ -382,17 +261,20 @@ function Invoke-Sync {
         Write-Host "[NOTIFICACAO] Sync falhou. Exibindo popup de erro..." -ForegroundColor Red
     }
 
-    # Mostrar popup (em segundo plano para nao travar o watcher)
-    $notifParams = @{
-        ChangedFiles  = $changedFiles
-        Status        = if ($syncOk) { "ok" } else { "error" }
-        ErrorMessage  = $errorMsg
+    # Popup em processo separado (nao bloqueia o watcher)
+    $notifyScript = Join-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) "notify-vault-sync.ps1"
+    if (Test-Path $notifyScript) {
+        $notifArgs = @(
+            "-NoProfile", "-ExecutionPolicy", "Bypass",
+            "-File", "`"$notifyScript`"",
+            "-ChangedFiles", ($changedFiles -join ","),
+            "-Status", $(if ($syncOk) { "ok" } else { "error" }),
+            "-ErrorMessage", "`"$errorMsg`"",
+            "-VaultPath", "`"$VaultPath`"",
+            "-RepoRoot", "`"$RepoRoot`""
+        )
+        Start-Process -FilePath "powershell.exe" -ArgumentList $notifArgs -WindowStyle Normal -LoadUserProfile
     }
-    # Iniciar em job separado para nao bloquear
-    Start-Job -ScriptBlock {
-        param($p) Show-SyncNotification @p
-        Play-SyncSound -Type $p.Status
-    } -ArgumentList $notifParams | Out-Null
 
     $isSyncing = $false
     Write-Host "[SYNC] Watcher retomando monitoramento..." -ForegroundColor Cyan
