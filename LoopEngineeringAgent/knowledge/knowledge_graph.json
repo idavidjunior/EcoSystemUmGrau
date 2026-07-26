@@ -12,6 +12,14 @@
       "extracted_at": "2026-07-26T16:00:00.000000"
     },
     {
+      "source": "bootstrap.ps1",
+      "title": "Bootstrap de maquina nova — um comando",
+      "action": "Em maquina Windows nova: powershell -c \"iex (iwr -useb https://raw.githubusercontent.com/idavidjunior/EcoSystemUmGrau/opencode/mighty-meadow/bootstrap.ps1)\"",
+      "description": "O bootstrap.ps1 automatiza: verificacao de pre-requisitos, instalacao do OpenCode (npm install -g opencode-ai), config de VAULT_PATH, clone do repositorio, execucao do setup.ps1 completo, e verificacao final. Requer apenas Git, Node.js/npm e PowerShell.",
+      "domain": "opencode",
+      "extracted_at": "2026-07-26T16:00:00.000000"
+    },
+    {
       "source": "MonitorPane.ps1",
       "title": "RichTextBox for multi-colored status",
       "action": "Use RichTextBox instead of Label for PowerShell status widgets",

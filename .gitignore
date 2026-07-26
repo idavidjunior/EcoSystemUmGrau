@@ -23,3 +23,6 @@ _test_*.ps1
 .pytest_cache/
 __pycache__/
 *.pyc
+
+# Runtime data (auto-generated, churns on every session)
+memory/provider_events.json
