@@ -1,6 +1,6 @@
 # EcoSystemUmGrau
 
-Ecossistema de engenharia autônoma integrando **LER** (Loop Engineering Runtime), **OpenCode**, **Obsidian Vault** e **Windows Maintenance Suite**.
+Ecossistema de engenharia autônoma integrando **LER** (Loop Engineering Runtime), **OpenCode** e **Obsidian Vault**.
 
 ## Arquitetura
 
@@ -15,32 +15,22 @@ Ecossistema de engenharia autônoma integrando **LER** (Loop Engineering Runtime
 │  Loop Engineering       │  │  ├── NVIDIA (DeepSeek V4)│
 │  Runtime                │  │  ├── OpenAI (GPT-4o)     │
 │                         │  │  └── OpenRouter/Anthropic│
-│  Orchestrator ─► 13     │  └─────────────────────────┘
+│  Orchestrator ─► 16     │  └─────────────────────────┘
 │  agentes em pipeline    │
 │  (GoalAnalyzer,         │
 │   StrategyEngine,       │
 │   Planner, Executor,    │
-│   Validator, Recovery,  │
-│   LearningEngine, ...)  │  ┌─────────────────────────┐
-│                         │  │  Obsidian Vault          │
-│  knowledge_graph.json   │  │  (Notas LER + AI-Agents) │
-│  memory/                │  └──────────┬──────────────┘
-└─────────────────────────┘             │ sync automático
-                                        │ (FileSystemWatcher)
-                              ┌─────────▼────────────────┐
-                              │  Watch-Vault (Scheduled   │
-                              │  Task) ─► sync-vault.ps1 │
-                              │  ─► git commit + push    │
-                              └─────────────────────────┘
-
-┌──────────────────────────────────────────────────────┐
-│          Windows Maintenance Suite (WMS) v3            │
-│  20 módulos PowerShell + Electron GUI (opcional)      │
-│  ├── Manutenção (DeepCleaning, EssentialMaintenance)   │
-│  ├── Diagnóstico (SmartDiagnostics, HealthEngine)      │
-│  ├── Segurança (Hardening, SecurityScan, Registry)     │
-│  └── Performance (DiskSpace, Memory, Performance)      │
-└──────────────────────────────────────────────────────┘
+│   Validator, Recovery,  │  ┌─────────────────────────┐
+│   LearningEngine, ...)  │  │  Obsidian Vault          │
+│                         │  │  (Notas LER + AI-Agents) │
+│  knowledge_graph.json   │  └──────────┬──────────────┘
+│  memory/                │             │ sync automático
+└─────────────────────────┘             │ (FileSystemWatcher)
+                               ┌─────────▼────────────────┐
+                               │  Watch-Vault (Scheduled   │
+                               │  Task) ─► sync-vault.ps1 │
+                               │  ─► git commit + push    │
+                               └─────────────────────────┘
 ```
 
 ## Componentes
@@ -57,9 +47,6 @@ MCP server (`provider_mcp_server.py`) para gerenciamento de providers + `opencod
 
 ### Obsidian Vault Sync
 Watcher automático via Scheduled Task que monitora alterações no vault, sincroniza com o repositório via `robocopy /MIR`, e faz git commit+push com notificação visual.
-
-### Windows Maintenance Suite (WMS) v3
-20 módulos PowerShell de manutenção, diagnóstico e otimização do Windows, com GUI Electron opcional.
 
 ## Quick Start — Máquina Nova
 
@@ -79,11 +66,9 @@ ler --resume              # Retomar de checkpoint
 ler --learn               # Consolidar conhecimento
 ```
 
-### WMS
+### Setup
 ```powershell
-.\Modules\EssentialMaintenance.ps1     # Manutenção essencial
-.\Modules\DeepCleaning.ps1             # Limpeza profunda
-.\Modules\SmartDiagnostics.ps1         # Diagnóstico inteligente
+.\setup.ps1               # Configurar/reconfigurar ecossistema
 ```
 
 ## Estrutura
@@ -91,8 +76,6 @@ ler --learn               # Consolidar conhecimento
 ```
 mighty-meadow/
 ├── LoopEngineeringAgent/     # LER v2.0 core + agentes + provider manager
-├── Modules/                  # 20 módulos PowerShell WMS v3
-├── Tests/                    # Testes Pester dos módulos WMS
 ├── vault/                    # Vault Obsidian versionado
 │   ├── LER/                  # Notas sobre o LER
 │   └── AI-Agents/            # Notas sobre agentes de IA
