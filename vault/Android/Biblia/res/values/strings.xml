@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bíblia de Estudo Completa</string>
+    <string name="title_library">Biblioteca</string>
+    <string name="title_bible_reader">Leitor Bíblico</string>
+    <string name="title_search">Pesquisa</string>
+    <string name="title_commentaries">Comentários</string>
+    <string name="title_dictionary">Dicionário Bíblico</string>
+    <string name="title_favorites">Favoritos</string>
+    <string name="title_notes">Minhas Notas</string>
+    <string name="title_reading_plan">Plano de Leitura</string>
+    <string name="title_maps">Mapas Bíblicos</string>
+    <string name="title_timeline">Linha do Tempo</string>
+    <string name="title_settings">Configurações</string>
+    <string name="title_about">Sobre</string>
+    <string name="title_cross_references">Referências Cruzadas</string>
+    <string name="title_topic_index">Índice Temático</string>
+    <string name="title_home">Início</string>
+
+    <string name="old_testament">Antigo Testamento</string>
+    <string name="new_testament">Novo Testamento</string>
+    <string name="apocryphal_books">Livros Apócrifos</string>
+
+    <string name="menu_home">Início</string>
+    <string name="menu_bible">Bíblia</string>
+    <string name="menu_search">Pesquisar</string>
+    <string name="menu_favorites">Favoritos</string>
+    <string name="menu_notes">Notas</string>
+    <string name="menu_more">Mais</string>
+
+    <string name="last_reading">Continuação da Leitura</string>
+    <string name="verse_of_day">Versículo do Dia</string>
+    <string name="daily_reading">Leitura Diária</string>
+    <string name="reading_progress">Progresso da Leitura</string>
+    <string name="continue_reading">Continuar Lendo</string>
+    <string name="start_reading">Iniciar Leitura</string>
+
+    <string name="search_hint">Pesquisar na Bíblia…</string>
+    <string name="search_by_word">Por Palavra</string>
+    <string name="search_by_phrase">Por Frase</string>
+    <string name="search_by_book">Por Livro</string>
+    <string name="search_by_topic">Por Tema</string>
+    <string name="search_no_results">Nenhum resultado encontrado</string>
+    <string name="search_results_count">%d resultados encontrados</string>
+
+    <string name="txt_chapter">Capítulo %d</string>
+    <string name="txt_verse">Versículo %d</string>
+    <string name="txt_book">Livro</string>
+    <string name="txt_chapter_short">Cap.</string>
+    <string name="txt_verse_short">Ver.</string>
+
+    <string name="action_share">Compartilhar</string>
+    <string name="action_favorite">Favoritar</string>
+    <string name="action_unfavorite">Remover Favorito</string>
+    <string name="action_add_note">Adicionar Nota</string>
+    <string name="action_highlight">Destacar</string>
+    <string name="action_copy">Copiar</string>
+    <string name="action_audio">Ouvir Áudio</string>
+    <string name="action_commentary">Comentário</string>
+    <string name="action_cross_ref">Referências Cruzadas</string>
+    <string name="action_dictionary">Dicionário</string>
+
+    <string name="label_chapter">Capítulo</string>
+    <string name="label_verse">Versículo</string>
+    <string name="label_reading">Leitura</string>
+    <string name="label_notes">Anotações</string>
+    <string name="label_highlights">Destaques</string>
+    <string name="label_bookmarks">Marcadores</string>
+    <string name="label_history">Histórico</string>
+
+    <string name="settings_theme">Tema</string>
+    <string name="settings_theme_light">Claro</string>
+    <string name="settings_theme_dark">Escuro</string>
+    <string name="settings_theme_sepia">Sépia</string>
+    <string name="settings_theme_amoled">Preto AMOLED</string>
+    <string name="settings_font_size">Tamanho da Fonte</string>
+    <string name="settings_font_family">Família da Fonte</string>
+    <string name="settings_font_serif">Com Serifa</string>
+    <string name="settings_font_sans_serif">Sem Serifa</string>
+    <string name="settings_line_spacing">Espaçamento</string>
+    <string name="settings_margins">Margens</string>
+    <string name="settings_column_width">Largura da Coluna</string>
+    <string name="settings_show_verse_numbers">Mostrar Números dos Versículos</string>
+    <string name="settings_show_notes">Mostrar Notas</string>
+    <string name="settings_show_commentaries">Mostrar Comentários</string>
+    <string name="settings_show_cross_refs">Mostrar Referências Cruzadas</string>
+    <string name="settings_scroll_mode">Modo de Rolagem</string>
+    <string name="settings_scroll_continuous">Contínua</string>
+    <string name="settings_scroll_by_chapter">Por Capítulo</string>
+    <string name="settings_language">Idioma</string>
+    <string name="settings_backup">Backup</string>
+    <string name="settings_restore">Restaurar Backup</string>
+    <string name="settings_export_notes">Exportar Notas</string>
+    <string name="settings_reset">Redefinir Configurações</string>
+
+    <string name="about_version">Versão 1.0.0</string>
+    <string name="about_credits">Desenvolvido com dedicação para o estudo da Palavra.</string>
+    <string name="about_copyright">© 2026 Bíblia de Estudo Completa</string>
+    <string name="about_license">Licenciado sob termos de uso.</string>
+    <string name="about_content_disclaimer">Os textos bíblicos e materiais de estudo utilizados são de domínio público ou devidamente licenciados.</string>
+
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="btn_save">Salvar</string>
+    <string name="btn_delete">Excluir</string>
+    <string name="btn_edit">Editar</string>
+    <string name="btn_close">Fechar</string>
+    <string name="btn_share">Compartilhar</string>
+    <string name="btn_retry">Tentar Novamente</string>
+    <string name="confirm_exit">Sair do aplicativo?</string>
+    <string name="confirm_delete">Tem certeza que deseja excluir?</string>
+    <string name="no_notes">Nenhuma anotação ainda</string>
+    <string name="no_favorites">Nenhum favorito ainda</string>
+    <string name="no_history">Nenhum histórico de leitura</string>
+    <string name="note_hint">Escreva sua anotação…</string>
+    <string name="note_saved">Anotação salva</string>
+    <string name="note_deleted">Anotação excluída</string>
+    <string name="favorite_added">Adicionado aos favoritos</string>
+    <string name="favorite_removed">Removido dos favoritos</string>
+    <string name="backup_success">Backup realizado com sucesso</string>
+    <string name="restore_success">Restauração concluída com sucesso</string>
+    <string name="error_no_connection">Sem conexão com a internet</string>
+    <string name="error_load_failed">Falha ao carregar conteúdo</string>
+    <string name="error_generic">Ocorreu um erro</string>
+    <string name="error_database">Erro ao acessar o banco de dados</string>
+    <string name="error_no_content">Conteúdo não encontrado</string>
+
+    <string name="pentateuch">Pentateuco</string>
+    <string name="historical_books">Livros Históricos</string>
+    <string name="poetic_books">Livros Poéticos</string>
+    <string name="major_prophets">Profetas Maiores</string>
+    <string name="minor_prophets">Profetas Menores</string>
+    <string name="gospels">Evangelhos</string>
+    <string name="acts">Atos</string>
+    <string name="pauline_epistles">Cartas Paulinas</string>
+    <string name="general_epistles">Cartas Gerais</string>
+    <string name="revelation">Apocalipse</string>
+
+    <string name="book_introduction">Introdução</string>
+    <string name="book_author">Autoria</string>
+    <string name="book_context">Contexto Histórico</string>
+    <string name="book_structure">Estrutura Literária</string>
+    <string name="book_outline">Esboço do Livro</string>
+    <string name="book_themes">Temas Principais</string>
+    <string name="book_curiosities">Curiosidades</string>
+
+    <string name="tab_text">Texto</string>
+    <string name="tab_study">Estudo</string>
+    <string name="tab_notes">Notas</string>
+    <string name="tab_highlights">Destaques</string>
+
+    <string name="reading_plan_title">Plano de Leitura Bíblica</string>
+    <string name="reading_plan_one_year">Em 1 Ano</string>
+    <string name="reading_plan_six_months">Em 6 Meses</string>
+    <string name="reading_plan_three_months">Em 3 Meses</string>
+
+    <string name="font_small">Pequeno</string>
+    <string name="font_medium">Médio</string>
+    <string name="font_large">Grande</string>
+    <string name="font_xlarge">Extra Grande</string>
+
+    <string name="my_resources">Meus Recursos</string>
+    <string name="apocryphal_narratives">Narrativas Apócrifas</string>
+    <string name="previous">Anterior</string>
+    <string name="next">Próximo</string>
+    <string name="resources_hint">Adicione PDFs, documentos e esboços</string>
+    <string name="add_resource">+ Importar</string>
+    <string name="resource_imported">Importado com sucesso</string>
+    <string name="resource_deleted">Removido</string>
+    <string name="resource_open_error">Erro ao abrir arquivo</string>
+</resources>

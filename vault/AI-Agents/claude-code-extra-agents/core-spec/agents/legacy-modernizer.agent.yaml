@@ -1,0 +1,8 @@
+id: legacy-modernizer
+kind: agent
+version: 1.0.0
+source: agents/legacy-modernizer.md
+title: legacy-modernizer
+description: legacy-modernizer
+allowed_tools: []
+platforms: [claude-code, ollama, openwebui, continue]

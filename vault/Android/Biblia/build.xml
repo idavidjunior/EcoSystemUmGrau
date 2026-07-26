@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="BibliaEstudoCompleta" default="help">
+
+    <property file="local.properties" />
+    <property file="project.properties" />
+
+    <path id="android.antlibs">
+        <pathelement path="${sdk.dir}/tools/lib/ant-tasks.jar" />
+    </path>
+
+    <import file="${sdk.dir}/tools/ant/build.xml" optional="true" />
+
+    <property name="app.package" value="com.biblia.estudo" />
+    <property name="app.name" value="BibliaEstudoCompleta" />
+    <property name="out.dir" value="bin" />
+    <property name="gen.dir" value="gen" />
+    <property name="libs.dir" value="libs" />
+    <property name="src.dir" value="src" />
+    <property name="res.dir" value="res" />
+    <property name="assets.dir" value="assets" />
+
+    <target name="clean">
+        <delete dir="${out.dir}" />
+        <delete dir="${gen.dir}" />
+    </target>
+
+    <target name="init">
+        <mkdir dir="${out.dir}" />
+        <mkdir dir="${gen.dir}" />
+        <mkdir dir="${out.dir}/classes" />
+    </target>
+
+    <target name="aidl" depends="init">
+        <!-- AIDL files if any -->
+    </target>
+
+    <target name="renderscript" depends="aidl">
+        <!-- RenderScript files if any -->
+    </target>
+
+    <target name="resource-src" depends="renderscript">
+        <exec executable="${sdk.dir}/tools/bin/aapt" failonerror="true">
+            <arg value="package" />
+            <arg value="-f" />
+            <arg value="-m" />
+            <arg value="-J" />
+            <arg value="${gen.dir}" />
+            <arg value="-S" />
+            <arg value="${res.dir}" />
+            <arg value="-M" />
+            <arg value="AndroidManifest.xml" />
+            <arg value="-I" />
+            <arg value="${sdk.dir}/platforms/android-33/android.jar" />
+        </exec>
+    </target>
+
+    <target name="compile" depends="resource-src">
+        <javac srcdir="${src.dir}:${gen.dir}"
+               destdir="${out.dir}/classes"
+               classpath="${sdk.dir}/platforms/android-33/android.jar"
+               includeantruntime="false"
+               source="1.7"
+               target="1.7"
+               debug="true"
+               encoding="UTF-8">
+            <classpath>
+                <fileset dir="${libs.dir}" includes="*.jar" />
+                <pathelement path="${sdk.dir}/platforms/android-33/android.jar" />
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="dex" depends="compile">
+        <exec executable="${sdk.dir}/build-tools/34.0.0/dx.bat" failonerror="true">
+            <arg value="--dex" />
+            <arg value="--output=${out.dir}/classes.dex" />
+            <arg value="${out.dir}/classes" />
+            <arg value="${libs.dir}" />
+        </exec>
+    </target>
+
+    <target name="package-res" depends="dex">
+        <exec executable="${sdk.dir}/tools/bin/aapt" failonerror="true">
+            <arg value="package" />
+            <arg value="-f" />
+            <arg value="-M" />
+            <arg value="AndroidManifest.xml" />
+            <arg value="-S" />
+            <arg value="${res.dir}" />
+            <arg value="-A" />
+            <arg value="${assets.dir}" />
+            <arg value="-I" />
+            <arg value="${sdk.dir}/platforms/android-33/android.jar" />
+            <arg value="-F" />
+            <arg value="${out.dir}/${app.name}.unaligned.apk" />
+        </exec>
+    </target>
+
+    <target name="package" depends="package-res">
+        <exec executable="${sdk.dir}/build-tools/34.0.0/apksigner.bat" failonerror="true">
+            <arg value="sign" />
+            <arg value="--ks" />
+            <arg value="debug.keystore" />
+            <arg value="--ks-pass" />
+            <arg value="pass:android" />
+            <arg value="--out" />
+            <arg value="${out.dir}/${app.name}.apk" />
+            <arg value="${out.dir}/${app.name}.unaligned.apk" />
+        </exec>
+    </target>
+
+    <target name="install" depends="package">
+        <exec executable="${sdk.dir}/platform-tools/adb" failonerror="true">
+            <arg value="install" />
+            <arg value="-r" />
+            <arg value="${out.dir}/${app.name}.apk" />
+        </exec>
+    </target>
+
+    <target name="help">
+        <echo message="Build targets:" />
+        <echo message="  ant clean        - Remove build artifacts" />
+        <echo message="  ant compile      - Compile Java sources" />
+        <echo message="  ant dex          - Convert to Dalvik bytecode" />
+        <echo message="  ant package      - Build APK" />
+        <echo message="  ant install      - Build and install on device" />
+    </target>
+
+</project>

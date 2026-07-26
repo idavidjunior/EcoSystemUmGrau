@@ -1,0 +1,8 @@
+id: schema-evolution-planner
+kind: agent
+version: 1.0.0
+source: agents/schema-evolution-planner.md
+title: schema-evolution-planner
+description: schema-evolution-planner
+allowed_tools: []
+platforms: [claude-code, ollama, openwebui, continue]

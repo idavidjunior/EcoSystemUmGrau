@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Open Bible - left page -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M30,36 L30,72 L48,76 L48,40 Z" />
+    <!-- Open Bible - right page -->
+    <path
+        android:fillColor="#F5F3EE"
+        android:pathData="M48,40 L48,76 L66,72 L66,36 Z" />
+    <!-- Book spine -->
+    <path
+        android:fillColor="#C9A84C"
+        android:pathData="M47,39 L47,77 L49,77 L49,39 Z" />
+    <!-- Cross vertical -->
+    <path
+        android:fillColor="#C9A84C"
+        android:strokeWidth="2.5"
+        android:strokeColor="#C9A84C"
+        android:pathData="M54,44 L54,62" />
+    <!-- Cross horizontal -->
+    <path
+        android:fillColor="#C9A84C"
+        android:strokeWidth="2.5"
+        android:strokeColor="#C9A84C"
+        android:pathData="M48,50 L60,50" />
+    <!-- Left page lines (text) -->
+    <path
+        android:fillColor="#D4C5A9"
+        android:pathData="M34,44 L44,46 M34,49 L44,51 M34,54 L44,56 M34,59 L44,61 M34,64 L44,66" />
+    <!-- Right page lines (text) -->
+    <path
+        android:fillColor="#D4C5A9"
+        android:pathData="M50,44 L62,46 M50,49 L62,51 M50,54 L62,56 M50,59 L62,61" />
+</vector>

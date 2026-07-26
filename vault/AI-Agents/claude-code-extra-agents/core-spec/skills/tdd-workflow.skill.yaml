@@ -1,0 +1,8 @@
+id: tdd-workflow
+kind: skill
+version: 1.1.0
+source: skills/tdd-workflow/skill.md
+title: TDD Workflow — Red, Green, Refactor com Disciplina
+description: "Fluxo TDD completo (Red-Green-Refactor) com foco em comportamento, segurança de refactor e feedback rápido.\nTrigger phrases: \"TDD\", \"test driven\", \"red green refactor\", \"escreva um teste\", \"cobertura de teste\""
+allowed_tools: [Read, Grep, Bash, Write, Edit]
+platforms: [claude-code, ollama, openwebui, continue]

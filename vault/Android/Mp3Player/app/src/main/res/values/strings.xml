@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">1GRAU MP3 Player</string>
+
+    <string name="nav_songs">Músicas</string>
+    <string name="nav_albums">Álbuns</string>
+    <string name="nav_artists">Artistas</string>
+    <string name="nav_folders">Pastas</string>
+    <string name="nav_settings">Config</string>
+
+    <string name="perm_title">Permissão necessária</string>
+    <string name="perm_message">O MP3 Player precisa acessar suas músicas para funcionar.\n\nPermita o acesso à biblioteca de áudio para:\n• Listar todas as suas músicas\n• Ler metadados (título, artista, álbum)\n• Reproduzir os arquivos de áudio</string>
+    <string name="perm_allow">Permitir</string>
+    <string name="perm_deny">Negar</string>
+    <string name="perm_denied">Permissão negada. O app não funcionará corretamente.</string>
+    <string name="perm_blocked_title">Permissão bloqueada</string>
+    <string name="perm_blocked_message">A permissão foi negada permanentemente. Vá em Configurações > Aplicativos > MP3 Player > Permissões e ative manualmente.</string>
+    <string name="perm_open_settings">Abrir Configurações</string>
+
+    <string name="no_song">Nenhuma música selecionada</string>
+    <string name="unknown_title">Desconhecida</string>
+    <string name="unknown_artist">Desconhecido</string>
+    <string name="error_loading">Erro ao carregar músicas</string>
+</resources>

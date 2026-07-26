@@ -46,14 +46,23 @@
             "enabled": true,
             "timeout": 30000
         },
-        "mcpvault": {
-            "type": "local",
-            "command": [
-                "cmd",
-                "/c",
-                "npx @bitbonsai/mcpvault \"{{VAULT_PATH}}\""
-            ],
-            "enabled": true
-        }
+"mcpvault": {
+    "type": "local",
+    "command": [
+        "cmd",
+        "/c",
+        "npx @bitbonsai/mcpvault \"{{VAULT_PATH}}\""
+    ],
+    "enabled": true
+},
+"mcpvault-repo": {
+    "type": "local",
+    "command": [
+        "cmd",
+        "/c",
+        "npx @bitbonsai/mcpvault \"{{REPO_DIR}}\\vault\""
+    ],
+    "enabled": false
+}
     }
 }

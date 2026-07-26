@@ -1,0 +1,8 @@
+id: i18n-l10n-engineer
+kind: agent
+version: 1.0.0
+source: agents/i18n-l10n-engineer.md
+title: i18n-l10n-engineer
+description: i18n-l10n-engineer
+allowed_tools: []
+platforms: [claude-code, ollama, openwebui, continue]

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background">#121212</color>
+    <color name="background_light">#FFFFFF</color>
+    <color name="surface">#1E1E1E</color>
+    <color name="surface_light">#F5F5F5</color>
+    <color name="primary">#1DB954</color>
+    <color name="onPrimary">#FFFFFF</color>
+    <color name="textPrimary">#FFFFFF</color>
+    <color name="textPrimary_light">#212121</color>
+    <color name="textSecondary">#AAAAAA</color>
+    <color name="textSecondary_light">#666666</color>
+    <color name="divider">#333333</color>
+    <color name="favorite">#FF4444</color>
+</resources>

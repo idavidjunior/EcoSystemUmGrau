@@ -1,0 +1,8 @@
+id: mobile-specific-patterns
+kind: skill
+version: 1.1.0
+source: skills/mobile-specific-patterns/skill.md
+title: Mobile-Specific Patterns — Produto Bom no Mundo Real
+description: "Padrões mobile (iOS/Android/React Native/Flutter): ciclo de app, bateria, rede instável e UX nativa.\nTrigger phrases: \"mobile patterns\", \"react native\", \"flutter\", \"ios\", \"android\""
+allowed_tools: [Read, Grep, Bash]
+platforms: [claude-code, ollama, openwebui, continue]

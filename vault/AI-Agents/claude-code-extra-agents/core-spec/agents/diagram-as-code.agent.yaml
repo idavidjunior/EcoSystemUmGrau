@@ -1,0 +1,8 @@
+id: diagram-as-code
+kind: agent
+version: 1.0.0
+source: agents/diagram-as-code.md
+title: diagram-as-code
+description: diagram-as-code
+allowed_tools: []
+platforms: [claude-code, ollama, openwebui, continue]

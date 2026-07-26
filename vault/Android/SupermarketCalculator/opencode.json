@@ -1,0 +1,10 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "ARQUITETURA.md",
+    "METODOLOGIA.md",
+    "PLAYBOOK.md",
+    ".opencode/skills/android-pure-sdk/SKILL.md",
+    "AGENTS.md"
+  ]
+}

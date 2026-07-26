@@ -1,0 +1,8 @@
+id: docker-patterns
+kind: skill
+version: 1.1.0
+source: skills/docker-patterns/skill.md
+title: Docker Patterns — Build Seguro e Reproduzível
+description: "Padrões Docker para build reproduzível, imagem mínima, segurança e deploy previsível.\nTrigger phrases: \"Dockerfile\", \"containerizar\", \"imagem\", \"multi-stage\""
+allowed_tools: [Read, Grep, Bash]
+platforms: [claude-code, ollama, openwebui, continue]

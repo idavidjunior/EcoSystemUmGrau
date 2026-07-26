@@ -150,9 +150,35 @@ try {
 }
 
 # ============================================================
-# PASSO 5: MCPVault (Obsidian)
+# PASSO 5: Copiar vault do repositorio
 # ============================================================
-Step "5/8 - Instalando MCPVault (Obsidian)"
+Step "5/8 - Copiando vault (notas + docs do ecossistema)"
+
+$repoVault = "$InstallDir\vault"
+if (Test-Path $repoVault) {
+    Write-Host "Copiando vault do repositorio para $VaultPath ..." -ForegroundColor Cyan
+    New-Item -ItemType Directory -Force -Path $VaultPath | Out-Null
+    cmd /c "robocopy `"$repoVault`" `"$VaultPath`" /MIR /NDL /NFL /NJH /NJS /R:0 /W:0 /xd `.git 2>&1" | Out-Null
+
+    $count = (Get-ChildItem $VaultPath -Recurse -File -ErrorAction SilentlyContinue | Measure-Object).Count
+    CheckSuccess "Vault copiado: $count arquivos em $VaultPath"
+} else {
+    Write-Host "[AVISO] Nenhum vault no repositorio. Criando vault vazio..." -ForegroundColor Yellow
+    New-Item -ItemType Directory -Force -Path $VaultPath | Out-Null
+}
+
+# Criar .obsidian se nao existir
+$obsidianDir = "$VaultPath\.obsidian"
+if (-not (Test-Path $obsidianDir)) {
+    New-Item -ItemType Directory -Force -Path $obsidianDir | Out-Null
+    @{workspace = "main"} | ConvertTo-Json | Set-Content "$obsidianDir\workspace.json" -Encoding UTF8
+    @{theme = "moonstone"} | ConvertTo-Json | Set-Content "$obsidianDir\appearance.json" -Encoding UTF8
+}
+
+# ============================================================
+# PASSO 6: Instalar MCPVault
+# ============================================================
+Step "6/8 - Instalando MCPVault"
 
 Write-Host "Testando @bitbonsai/mcpvault..." -ForegroundColor Cyan
 $mcpTest = cmd /c "npx @bitbonsai/mcpvault --version 2>&1"
@@ -162,17 +188,6 @@ if ($mcpTest -match "\d+\.\d+\.\d+") {
     Write-Host "[FALHA] Nao foi possivel instalar MCPVault. Execute manualmente:" -ForegroundColor Red
     Write-Host "  npx @bitbonsai/mcpvault --version" -ForegroundColor Yellow
     exit 1
-}
-
-# Criar .obsidian no vault se nao existir
-$obsidianDir = "$VaultPath\.obsidian"
-if (-not (Test-Path $obsidianDir)) {
-    New-Item -ItemType Directory -Force -Path $obsidianDir | Out-Null
-    @{workspace = "main"} | ConvertTo-Json | Set-Content "$obsidianDir\workspace.json" -Encoding UTF8
-    @{theme = "moonstone"} | ConvertTo-Json | Set-Content "$obsidianDir\appearance.json" -Encoding UTF8
-    CheckSuccess "Vault criado em $VaultPath"
-} else {
-    Write-Host "[OK] Vault ja existe em $VaultPath" -ForegroundColor Green
 }
 
 # ============================================================
@@ -206,9 +221,9 @@ Write-Host "  VAULT_PATH -> $VaultPath"
 Write-Host "  PLUGIN -> $OPENCODE_CONFIG\plugin\ponytail.mjs"
 
 # ============================================================
-# PASSO 7: Inicializar LER Governance
+# PASSO 8: Inicializar LER Governance
 # ============================================================
-Step "7/8 - Inicializando LER Governance"
+Step "8/8 - Inicializando LER Governance"
 
 $govDir = "$InstallDir\LoopEngineeringAgent\memory\governance"
 New-Item -ItemType Directory -Force -Path $govDir | Out-Null
@@ -231,9 +246,9 @@ if ($lerTest -match "OK") {
 }
 
 # ============================================================
-# PASSO 8: Verificacao final
+# PASSO 9: Verificacao final
 # ============================================================
-Step "8/8 - Verificacao final"
+Step "9/9 - Verificacao final"
 
 $checks = @(
     @{Desc="Repositorio clonado"; Path="$InstallDir\.git"},

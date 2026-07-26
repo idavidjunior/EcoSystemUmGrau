@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#1B2838</color>
+    <color name="primary_dark">#0F1722</color>
+    <color name="primary_light">#D4C5A9</color>
+    <color name="accent">#C9A84C</color>
+    <color name="accent_gold">#C9A84C</color>
+
+    <color name="text_primary">#1A1A2E</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="text_light">#FFFFFF</color>
+    <color name="text_link">#2563EB</color>
+
+    <color name="background">#F5F3EE</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#F0EDE6</color>
+    <color name="divider">#E5E0D8</color>
+    <color name="card_back">#FFFFFF</color>
+
+    <color name="dark_primary">#0F1722</color>
+    <color name="dark_primary_dark">#080D16</color>
+    <color name="dark_surface">#1E293B</color>
+    <color name="dark_surface_variant">#2D3A4E</color>
+    <color name="dark_background">#0B1120</color>
+    <color name="dark_text_primary">#E2E8F0</color>
+    <color name="dark_text_secondary">#94A3B8</color>
+
+    <color name="sepia_background">#F5F0E8</color>
+    <color name="sepia_surface">#EDE4D4</color>
+    <color name="sepia_surface_variant">#E0D5C0</color>
+    <color name="sepia_text">#4A3728</color>
+    <color name="sepia_text_secondary">#7A6B58</color>
+    <color name="sepia_accent">#8B6914</color>
+
+    <color name="amoled_background">#000000</color>
+    <color name="amoled_surface">#0A0A0A</color>
+    <color name="amoled_surface_variant">#141414</color>
+    <color name="amoled_text">#E0E0E0</color>
+    <color name="amoled_text_secondary">#808080</color>
+
+    <color name="highlight_yellow">#FEF08A</color>
+    <color name="highlight_green">#86EFAC</color>
+    <color name="highlight_blue">#93C5FD</color>
+    <color name="highlight_pink">#F9A8D4</color>
+    <color name="highlight_orange">#FDBA74</color>
+
+    <color name="verse_number">#C9A84C</color>
+    <color name="chapter_number">#1B2838</color>
+    <color name="jesus_words">#B91C1C</color>
+    <color name="cross_ref">#2563EB</color>
+    <color name="note_marker">#D97706</color>
+    <color name="commentary_bg">#FFF7ED</color>
+
+    <color name="toolbar_light">#1B2838</color>
+    <color name="toolbar_dark">#0F1722</color>
+    <color name="statusbar_light">#0F1722</color>
+    <color name="statusbar_dark">#080D16</color>
+
+    <color name="translucent_overlay">#80000000</color>
+    <color name="section_header">#C9A84C</color>
+    <color name="tab_selected">#C9A84C</color>
+    <color name="tab_unselected">#94A3B8</color>
+
+    <color name="paper_background">#FFFFFF</color>
+    <color name="paper_surface">#FFFFFF</color>
+    <color name="paper_text">#1A1A2E</color>
+    <color name="paper_text_secondary">#6B7280</color>
+
+    <color name="nav_icon_home">#C9A84C</color>
+    <color name="nav_icon_bible">#3B82F6</color>
+    <color name="nav_icon_search">#8B5CF6</color>
+    <color name="nav_icon_fav">#EF4444</color>
+    <color name="nav_icon_more">#6B7280</color>
+</resources>

@@ -1,0 +1,8 @@
+id: agentic-search
+kind: skill
+version: 1.1.0
+source: skills/agentic-search/skill.md
+title: Agentic Search — Navegação Web Autônoma com Ferramentas Reais
+description: "Navegação web autônoma para pesquisa e extração com estratégia API-first, DOM-first e fallback visual.\nTrigger phrases: \"agentic search\", \"web navigation\", \"scraping\", \"playwright mcp\", \"stagehand\""
+allowed_tools: [Read, Grep, Bash, WebSearch, WebFetch]
+platforms: [claude-code, ollama, openwebui, continue]

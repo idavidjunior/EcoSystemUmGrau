@@ -1,0 +1,8 @@
+id: api-design
+kind: skill
+version: 1.1.0
+source: skills/api-design/skill.md
+title: API Design — Contratos Claros e Evolutivos
+description: "Design de APIs HTTP/REST com contratos consistentes, versionamento, erros previsíveis e foco em evolutividade.\nTrigger phrases: \"API design\", \"REST\", \"endpoint contract\", \"versioning\""
+allowed_tools: [Read, Grep, Bash]
+platforms: [claude-code, ollama, openwebui, continue]

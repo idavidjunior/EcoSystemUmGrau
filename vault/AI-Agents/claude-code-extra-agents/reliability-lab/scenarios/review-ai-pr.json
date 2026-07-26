@@ -1,0 +1,8 @@
+{
+  "id": "review-ai-pr",
+  "agent": "ai-code-verifier",
+  "title": "Revisao de PR gerado por IA",
+  "prompt": "Revisar PR com foco em bugs, seguranca e regressao.",
+  "must_include": ["achados", "severidade", "arquivo", "teste"],
+  "forbidden": ["elogio sem evidencias"]
+}

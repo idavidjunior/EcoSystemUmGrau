@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="old_testament_books">
+        <item>Gênesis</item>
+        <item>Êxodo</item>
+        <item>Levítico</item>
+        <item>Números</item>
+        <item>Deuteronômio</item>
+        <item>Josué</item>
+        <item>Juízes</item>
+        <item>Rute</item>
+        <item>1 Samuel</item>
+        <item>2 Samuel</item>
+        <item>1 Reis</item>
+        <item>2 Reis</item>
+        <item>1 Crônicas</item>
+        <item>2 Crônicas</item>
+        <item>Esdras</item>
+        <item>Neemias</item>
+        <item>Ester</item>
+        <item>Jó</item>
+        <item>Salmos</item>
+        <item>Provérbios</item>
+        <item>Eclesiastes</item>
+        <item>Cânticos</item>
+        <item>Isaías</item>
+        <item>Jeremias</item>
+        <item>Lamentações</item>
+        <item>Ezequiel</item>
+        <item>Daniel</item>
+        <item>Oseias</item>
+        <item>Joel</item>
+        <item>Amós</item>
+        <item>Obadias</item>
+        <item>Jonas</item>
+        <item>Miqueias</item>
+        <item>Naum</item>
+        <item>Habacuque</item>
+        <item>Sofonias</item>
+        <item>Ageu</item>
+        <item>Zacarias</item>
+        <item>Malaquias</item>
+    </string-array>
+
+    <string-array name="new_testament_books">
+        <item>Mateus</item>
+        <item>Marcos</item>
+        <item>Lucas</item>
+        <item>João</item>
+        <item>Atos</item>
+        <item>Romanos</item>
+        <item>1 Coríntios</item>
+        <item>2 Coríntios</item>
+        <item>Gálatas</item>
+        <item>Efésios</item>
+        <item>Filipenses</item>
+        <item>Colossenses</item>
+        <item>1 Tessalonicenses</item>
+        <item>2 Tessalonicenses</item>
+        <item>1 Timóteo</item>
+        <item>2 Timóteo</item>
+        <item>Tito</item>
+        <item>Filemom</item>
+        <item>Hebreus</item>
+        <item>Tiago</item>
+        <item>1 Pedro</item>
+        <item>2 Pedro</item>
+        <item>1 João</item>
+        <item>2 João</item>
+        <item>3 João</item>
+        <item>Judas</item>
+        <item>Apocalipse</item>
+    </string-array>
+
+    <string-array name="font_sizes">
+        <item>14</item>
+        <item>16</item>
+        <item>18</item>
+        <item>20</item>
+        <item>22</item>
+        <item>24</item>
+        <item>28</item>
+        <item>32</item>
+        <item>36</item>
+    </string-array>
+
+    <string-array name="font_size_labels">
+        <item>Pequeno (14)</item>
+        <item>Normal (16)</item>
+        <item>Médio (18)</item>
+        <item>Grande (20)</item>
+        <item>Extra Grande (22)</item>
+        <item>Muito Grande (24)</item>
+        <item>Enorme (28)</item>
+        <item>Gigante (32)</item>
+        <item>Máximo (36)</item>
+    </string-array>
+
+    <string-array name="line_spacing_options">
+        <item>1.0</item>
+        <item>1.2</item>
+        <item>1.5</item>
+        <item>1.8</item>
+        <item>2.0</item>
+    </string-array>
+
+    <string-array name="line_spacing_labels">
+        <item>Compacto</item>
+        <item>Normal</item>
+        <item>Confortável</item>
+        <item>Amplo</item>
+        <item>Muito Amplo</item>
+    </string-array>
+
+    <integer-array name="old_testament_chapters">
+        <item>50</item><item>40</item><item>27</item><item>36</item><item>34</item>
+        <item>24</item><item>21</item><item>4</item><item>31</item><item>24</item>
+        <item>22</item><item>25</item><item>29</item><item>36</item><item>10</item>
+        <item>13</item><item>10</item><item>42</item><item>150</item><item>31</item>
+        <item>12</item><item>8</item><item>66</item><item>52</item><item>5</item>
+        <item>48</item><item>12</item><item>14</item><item>3</item><item>9</item>
+        <item>1</item><item>4</item><item>7</item><item>3</item><item>3</item>
+        <item>3</item><item>2</item><item>14</item><item>4</item>
+    </integer-array>
+
+    <integer-array name="new_testament_chapters">
+        <item>28</item><item>16</item><item>24</item><item>21</item><item>28</item>
+        <item>16</item><item>16</item><item>13</item><item>6</item><item>6</item>
+        <item>4</item><item>4</item><item>5</item><item>3</item><item>6</item>
+        <item>4</item><item>3</item><item>1</item><item>13</item><item>5</item>
+        <item>5</item><item>3</item><item>5</item><item>1</item><item>1</item>
+        <item>1</item><item>22</item>
+    </integer-array>
+</resources>

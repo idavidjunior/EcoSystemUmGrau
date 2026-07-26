@@ -1,0 +1,8 @@
+id: local-first-architecture
+kind: skill
+version: 1.1.0
+source: skills/local-first-architecture/skill.md
+title: Local-First Architecture — Produto Funciona Mesmo Offline
+description: "Arquiteturas local-first/offline-first com sincronização, resolução de conflitos e UX resiliente.\nTrigger phrases: \"local first\", \"offline first\", \"sync\", \"CRDT\""
+allowed_tools: [Read, Grep, Bash]
+platforms: [claude-code, ollama, openwebui, continue]

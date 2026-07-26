@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Biblia" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorPrimaryDark">@color/primary_dark</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:statusBarColor">@color/statusbar_light</item>
+        <item name="android:navigationBarColor">@color/primary_dark</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+    </style>
+
+    <style name="Theme.Biblia.Dark" parent="android:Theme.Material.NoActionBar">
+        <item name="android:colorPrimary">@color/dark_primary</item>
+        <item name="android:colorPrimaryDark">@color/dark_primary_dark</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:statusBarColor">@color/statusbar_dark</item>
+        <item name="android:navigationBarColor">@color/dark_primary_dark</item>
+        <item name="android:windowBackground">@color/dark_background</item>
+        <item name="android:textColorPrimary">@color/dark_text_primary</item>
+        <item name="android:textColorSecondary">@color/dark_text_secondary</item>
+    </style>
+
+    <style name="Theme.Biblia.Sepia" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/sepia_accent</item>
+        <item name="android:colorPrimaryDark">@color/sepia_accent</item>
+        <item name="android:colorAccent">@color/sepia_accent</item>
+        <item name="android:statusBarColor">@color/sepia_accent</item>
+        <item name="android:navigationBarColor">@color/sepia_accent</item>
+        <item name="android:windowBackground">@color/sepia_background</item>
+        <item name="android:textColorPrimary">@color/sepia_text</item>
+        <item name="android:textColorSecondary">@color/sepia_text_secondary</item>
+    </style>
+
+    <style name="Theme.Biblia.AMOLED" parent="android:Theme.Material.NoActionBar">
+        <item name="android:colorPrimary">@color/amoled_background</item>
+        <item name="android:colorPrimaryDark">@color/amoled_background</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:statusBarColor">@color/amoled_background</item>
+        <item name="android:navigationBarColor">@color/amoled_background</item>
+        <item name="android:windowBackground">@color/amoled_background</item>
+        <item name="android:textColorPrimary">@color/amoled_text</item>
+        <item name="android:textColorSecondary">@color/amoled_text_secondary</item>
+    </style>
+
+    <style name="Theme.Biblia.Paper" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorPrimaryDark">@color/primary_dark</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:statusBarColor">@color/statusbar_light</item>
+        <item name="android:navigationBarColor">@color/primary_dark</item>
+        <item name="android:windowBackground">@color/paper_background</item>
+        <item name="android:textColorPrimary">@color/paper_text</item>
+        <item name="android:textColorSecondary">@color/paper_text_secondary</item>
+    </style>
+
+</resources>

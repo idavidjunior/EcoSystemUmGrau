@@ -1,0 +1,8 @@
+id: semantic-release-automation
+kind: skill
+version: 1.1.0
+source: skills/semantic-release-automation/skill.md
+title: Semantic Release Automation — Release sem Surpresas
+description: "Automação de versionamento e changelog com conventional commits e pipeline de release confiável.\nTrigger phrases: \"semantic release\", \"conventional commits\", \"changelog\", \"versioning\""
+allowed_tools: [Read, Grep, Bash]
+platforms: [claude-code, ollama, openwebui, continue]

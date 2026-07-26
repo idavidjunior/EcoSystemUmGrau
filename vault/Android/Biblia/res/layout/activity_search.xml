@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?android:attr/actionBarSize"
+        android:background="@color/primary"
+        android:elevation="4dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_search"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+    </Toolbar>
+
+    <EditText
+        android:id="@+id/searchInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/search_hint"
+        android:padding="14dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:maxLines="1"
+        android:inputType="text"
+        android:background="@drawable/search_field"
+        android:layout_margin="12dp"
+        android:drawableLeft="@android:drawable/ic_menu_search"
+        android:drawablePadding="10dp"
+        android:textSize="15sp" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        android:elevation="2dp">
+
+        <RadioGroup
+            android:id="@+id/searchTabs"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/searchWord"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/search_by_word"
+                android:button="@null"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:gravity="center"
+                android:textSize="13sp"
+                android:checked="true"
+                android:textColor="@color/accent" />
+
+            <RadioButton
+                android:id="@+id/searchPhrase"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/search_by_phrase"
+                android:button="@null"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:gravity="center"
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary" />
+
+            <RadioButton
+                android:id="@+id/searchBook"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/search_by_book"
+                android:button="@null"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:gravity="center"
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary" />
+
+            <RadioButton
+                android:id="@+id/searchTopic"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/search_by_topic"
+                android:button="@null"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:gravity="center"
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary" />
+
+        </RadioGroup>
+
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/noResults"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/search_no_results"
+        android:textSize="16sp"
+        android:textColor="@color/text_secondary"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/resultsList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:visibility="gone" />
+
+</LinearLayout>

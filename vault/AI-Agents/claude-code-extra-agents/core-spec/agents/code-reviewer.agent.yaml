@@ -1,0 +1,8 @@
+id: code-reviewer
+kind: agent
+version: 1.0.0
+source: agents/code-reviewer.md
+title: Code Reviewer Agent
+description: Code Reviewer Agent
+allowed_tools: []
+platforms: [claude-code, ollama, openwebui, continue]

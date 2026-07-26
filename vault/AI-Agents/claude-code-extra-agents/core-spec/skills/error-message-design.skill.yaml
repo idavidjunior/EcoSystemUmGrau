@@ -1,0 +1,8 @@
+id: error-message-design
+kind: skill
+version: 1.1.0
+source: skills/error-message-design/skill.md
+title: Error Message Design — Clareza que Resolve
+description: "Design de mensagens de erro claras e acionáveis para usuários finais e developers.\nTrigger phrases: \"error message\", \"mensagem de erro\", \"UX de erro\", \"debuggability\""
+allowed_tools: [Read, Grep, Bash]
+platforms: [claude-code, ollama, openwebui, continue]

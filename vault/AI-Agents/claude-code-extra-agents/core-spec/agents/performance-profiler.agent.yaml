@@ -1,0 +1,8 @@
+id: performance-profiler
+kind: agent
+version: 1.0.0
+source: agents/performance-profiler.md
+title: performance-profiler
+description: performance-profiler
+allowed_tools: []
+platforms: [claude-code, ollama, openwebui, continue]

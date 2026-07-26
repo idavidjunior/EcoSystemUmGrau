@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#1A73E8</color>
+    <color name="primary_dark">#1557B0</color>
+    <color name="primary_light">#4A9AF5</color>
+    <color name="accent">#00BFA5</color>
+    <color name="accent_dark">#00897B</color>
+
+    <color name="background">#F5F7FA</color>
+    <color name="card_bg">#FFFFFF</color>
+    <color name="card_border">#E8ECF0</color>
+    <color name="text_primary">#1A1A2E</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="text_hint">#9CA3AF</color>
+    <color name="text_on_primary">#FFFFFF</color>
+
+    <color name="danger">#E53935</color>
+    <color name="danger_light">#FFEBEE</color>
+    <color name="success">#43A047</color>
+    <color name="success_light">#E8F5E9</color>
+    <color name="warning">#FB8C00</color>
+    <color name="warning_light">#FFF3E0</color>
+    <color name="info">#039BE5</color>
+    <color name="info_light">#E1F5FE</color>
+
+    <color name="cache_color">#FF6D00</color>
+    <color name="temp_color">#F4511E</color>
+    <color name="apk_color">#E53935</color>
+    <color name="log_color">#8E24AA</color>
+    <color name="empty_color">#3949AB</color>
+    <color name="large_color">#00897B</color>
+
+    <color name="tab_inactive">#9CA3AF</color>
+    <color name="tab_active">@color/primary</color>
+    <color name="tab_bg">#FFFFFF</color>
+
+    <color name="divider">#E5E7EB</color>
+    <color name="transparent">#00000000</color>
+    <color name="scrim">#80000000</color>
+
+    <color name="ripple">#1A1A73E8</color>
+    <color name="scan_button_bg">#E8F0FE</color>
+    <color name="scan_button_icon">@color/primary</color>
+    <color name="progress_track">#E5E7EB</color>
+    <color name="progress_fill">@color/primary</color>
+
+    <color name="row_even">#F9FAFB</color>
+    <color name="row_odd">#FFFFFF</color>
+</resources>

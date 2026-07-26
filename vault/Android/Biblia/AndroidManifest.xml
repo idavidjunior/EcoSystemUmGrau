@@ -1,0 +1,137 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.biblia.estudo"
+    android:versionCode="1"
+    android:versionName="1.0.0">
+
+    <uses-sdk
+        android:minSdkVersion="21"
+        android:targetSdkVersion="36" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
+    <application
+        android:name=".app.BibliaApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:roundIcon="@drawable/ic_launcher_foreground"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.Biblia"
+        android:hardwareAccelerated="true"
+        android:largeHeap="true"
+        android:supportsRtl="true"
+        android:configChanges="orientation|screenSize|keyboardHidden">
+
+        <activity
+            android:name=".ui.library.SplashActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Material.NoActionBar"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.library.HomeActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.library.LibraryActivity"
+            android:label="@string/app_name" />
+
+        <activity
+            android:name=".ui.bible.BibleReaderActivity"
+            android:label="@string/title_bible_reader"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.search.SearchActivity"
+            android:label="@string/title_search"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <activity
+            android:name=".ui.study.StudyCommentaryActivity"
+            android:label="@string/title_commentaries"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <activity
+            android:name=".ui.dictionary.DictionaryActivity"
+            android:label="@string/title_dictionary"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <activity
+            android:name=".ui.favorites.FavoritesActivity"
+            android:label="@string/title_favorites"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <activity
+            android:name=".ui.notes.NotesActivity"
+            android:label="@string/title_notes"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <activity
+            android:name=".ui.readingplan.ReadingPlanActivity"
+            android:label="@string/title_reading_plan"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <activity
+            android:name=".ui.maps.MapsActivity"
+            android:label="@string/title_maps"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <activity
+            android:name=".ui.timeline.TimelineActivity"
+            android:label="@string/title_timeline"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:label="@string/title_settings"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <activity
+            android:name=".ui.about.AboutActivity"
+            android:label="@string/title_about"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <activity
+            android:name=".ui.study.CrossReferenceActivity"
+            android:label="@string/title_cross_references"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <activity
+            android:name=".ui.study.TopicIndexActivity"
+            android:label="@string/title_topic_index"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <activity
+            android:name=".ui.resources.ResourcesActivity"
+            android:label="@string/my_resources"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <activity
+            android:name=".ui.apocrypha.ApocryphaBookListActivity"
+            android:label="@string/apocryphal_narratives"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <activity
+            android:name=".ui.apocrypha.ApocryphaReaderActivity"
+            android:label="@string/apocryphal_narratives"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <service
+            android:name=".audio.AudioService"
+            android:exported="false" />
+
+    </application>
+
+</manifest>

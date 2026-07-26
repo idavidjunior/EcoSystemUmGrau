@@ -1,0 +1,8 @@
+id: deployment-patterns
+kind: skill
+version: 1.1.0
+source: skills/deployment-patterns/skill.md
+title: Deployment Patterns — Entrega Confiável em Produção
+description: "Estratégias de deploy confiável com CI/CD, health checks, rollout gradual e rollback operacional.\nTrigger phrases: \"deploy\", \"CI/CD\", \"health check\", \"rollback\", \"blue green\", \"canary\""
+allowed_tools: [Read, Grep, Bash]
+platforms: [claude-code, ollama, openwebui, continue]
