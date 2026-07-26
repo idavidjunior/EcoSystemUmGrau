@@ -21,7 +21,7 @@
 #>
 
 param(
-    [string]$RepoUrl = "https://github.com/idavidjunior/WindowsMaintenanceSuite_v3.git",
+    [string]$RepoUrl = "https://github.com/idavidjunior/EcoSystemUmGrau.git",
     [string]$Branch = "opencode/mighty-meadow",
     [string]$VaultPath = "$env:USERPROFILE\Desktop\Codigos",
     [string]$InstallDir = "$env:LOCALAPPDATA\opencode\worktree\mighty-meadow",
@@ -219,12 +219,12 @@ if ($mcpTest -match "\d+\.\d+\.\d+") {
 }
 
 # ============================================================
-# PASSO 6: Gerar opencode.json
+# PASSO 6: Gerar opencode.jsonc
 # ============================================================
-Step "8/9 - Gerando opencode.json"
+Step "8/9 - Gerando opencode.jsonc"
 
 $templatePath = "$InstallDir\opencode.template.json"
-$outputPath = "$OPENCODE_CONFIG\opencode.json"
+$outputPath = "$OPENCODE_CONFIG\opencode.jsonc"
 
 if (-not (Test-Path $templatePath)) {
     Write-Host "[FALHA] Template nao encontrado em $templatePath" -ForegroundColor Red
@@ -233,20 +233,19 @@ if (-not (Test-Path $templatePath)) {
 
 $content = Get-Content $templatePath -Raw -Encoding UTF8
 $content = $content -replace "{{SKILLS_DIR}}", $SKILLS_DIR
-$content = $content -replace "{{OPENCODE_CONFIG}}", $OPENCODE_CONFIG
 $content = $content -replace "{{REPO_DIR}}", $REPO_DIR
 $content = $content -replace "{{VAULT_PATH}}", $VaultPath
 
 New-Item -ItemType Directory -Force -Path "$OPENCODE_CONFIG" | Out-Null
 $content | Set-Content $outputPath -Encoding UTF8
-CheckSuccess "opencode.json gerado em $outputPath"
+CheckSuccess "opencode.jsonc gerado em $outputPath"
 
 Write-Host "`nConteudo gerado:" -ForegroundColor Cyan
 Write-Host "  SKILLS_DIR -> $SKILLS_DIR"
 Write-Host "  OPENCODE_CONFIG -> $OPENCODE_CONFIG"
 Write-Host "  REPO_DIR -> $REPO_DIR"
 Write-Host "  VAULT_PATH -> $VaultPath"
-Write-Host "  PLUGIN -> $OPENCODE_CONFIG\plugin\ponytail.mjs"
+Write-Host "  PLUGIN (instalado, nao referenciado no JSON) -> $OPENCODE_CONFIG\plugin\ponytail.mjs"
 
 # ============================================================
 # PASSO 8: Inicializar LER Governance
@@ -281,7 +280,7 @@ Step "10/10 - Verificacao final"
 $checks = @(
     @{Desc="Repositorio clonado"; Path="$InstallDir\.git"},
     @{Desc="Ponytail instalado"; Path=$ponytailPath},
-    @{Desc="opencode.json gerado"; Path=$outputPath},
+    @{Desc="opencode.jsonc gerado"; Path=$outputPath},
     @{Desc="Vault existe"; Path=$VaultPath},
     @{Desc="Vault .obsidian"; Path=$obsidianDir},
     @{Desc="LER governance"; Path="$InstallDir\LoopEngineeringAgent\governance\responsibility_map.json"},
@@ -334,7 +333,7 @@ if ($allOk) {
     Write-Host "`nPara ver o ecossistema completo no vault:"
     Write-Host "  vault note: LER/EcossistemaAgentes.md"
     Write-Host "`nArquivos importantes:"
-    Write-Host "  Config:        $outputPath"
+    Write-Host "  Config:        $outputPath (formato restrito — sem plugins)"
     Write-Host "  Repo:          $InstallDir"
     Write-Host "  Vault:         $VaultPath"
     Write-Host "  Governance:    $InstallDir\LoopEngineeringAgent\governance\responsibility_map.json"
