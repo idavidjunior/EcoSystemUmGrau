@@ -1,8 +1,16 @@
 {
   "version": 2,
-  "last_updated": "2026-07-25T14:40:29.543839",
+  "last_updated": "2026-07-26T16:00:00.000000",
   "projects": {},
   "patterns": [
+    {
+      "source": "opencode.jsonc",
+      "title": "Formato exato do opencode.jsonc — restricao critica de carregamento",
+      "action": "O arquivo ~/.config/opencode/opencode.jsonc DEVE conter APENAS: $schema, model, shell, instructions, disabled_providers, provider (nvidia + openai), mcp (provider-manager + mcpvault). NAO pode conter chave 'plugins' — causa falha no carregamento do OpenCode.",
+      "description": "OpenCode trava na inicializacao se o opencode.jsonc contiver qualquer chave extra nao suportada. O formato validado e testado e o unico que funciona sem erros. Qualquer atualizacao futura deve preservar exatamente esta estrutura.",
+      "domain": "opencode",
+      "extracted_at": "2026-07-26T16:00:00.000000"
+    },
     {
       "source": "MonitorPane.ps1",
       "title": "RichTextBox for multi-colored status",
@@ -29,6 +37,18 @@
     }
   ],
   "decisions": [
+    {
+      "source": "sessao_26_07_2026",
+      "decision": "Remover chave 'plugins' do opencode.jsonc — causa falha no carregamento",
+      "rationale": "O OpenCode trava na inicializacao se encontrar a chave 'plugins' no ~/.config/opencode/opencode.jsonc. Plugins como Ponytail devem ser carregados por outro mecanismo. O unico formato que funciona contem apenas: $schema, model, shell, instructions, disabled_providers, provider, mcp.",
+      "extracted_at": "2026-07-26T16:00:00.000000"
+    },
+    {
+      "source": "sessao_26_07_2026",
+      "decision": "Remover 'mcpvault-repo' do template — desnecessario e nunca usado",
+      "rationale": "O servidor mcpvault-repo estava com enabled:false no template, poluindo a config. Foi removido para manter o template limpo e consistente com o unico formato que funciona.",
+      "extracted_at": "2026-07-26T16:00:00.000000"
+    },
     {
       "source": "MonitorPane.ps1",
       "decision": "Usar RichTextBox em vez de Label para widget de status",
@@ -59,6 +79,20 @@
   ],
   "cognitive_patterns": [],
   "heuristics": [
+    {
+      "source": "opencode",
+      "title": "Nunca adicionar chave 'plugins' no opencode.jsonc",
+      "description": "OpenCode rejeita config com chave 'plugins' no ~/.config/opencode/opencode.jsonc. A config deve conter apenas: $schema, model, shell, instructions, disabled_providers, provider, mcp. Plugins sao carregados por outros mecanismos.",
+      "domain": "opencode",
+      "extracted_at": "2026-07-26T16:00:00.000000"
+    },
+    {
+      "source": "opencode",
+      "title": "Config do OpenCode deve ser validada antes de aplicar",
+      "description": "Sempre verificar se o opencode.jsonc gerado corresponde exatamente ao formato aprovado. Nunca adicionar campos extras nao listados no template validado. Testar com reload do OpenCode apos alteracao.",
+      "domain": "opencode",
+      "extracted_at": "2026-07-26T16:00:00.000000"
+    },
     {
       "source": "session",
       "title": "PowerShell widget startup",

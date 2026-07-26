@@ -7,9 +7,6 @@
         "{{SKILLS_DIR}}/mp3player-metadata-rescue/SKILL.md",
         "{{SKILLS_DIR}}/ler/SKILL.md"
     ],
-    "plugins": [
-        "{{OPENCODE_CONFIG}}/plugin/ponytail.mjs"
-    ],
     "disabled_providers": [],
     "provider": {
         "nvidia": {
@@ -46,23 +43,14 @@
             "enabled": true,
             "timeout": 30000
         },
-"mcpvault": {
-    "type": "local",
-    "command": [
-        "cmd",
-        "/c",
-        "npx @bitbonsai/mcpvault \"{{VAULT_PATH}}\""
-    ],
-    "enabled": true
-},
-"mcpvault-repo": {
-    "type": "local",
-    "command": [
-        "cmd",
-        "/c",
-        "npx @bitbonsai/mcpvault \"{{REPO_DIR}}\\vault\""
-    ],
-    "enabled": false
-}
+        "mcpvault": {
+            "type": "local",
+            "command": [
+                "cmd",
+                "/c",
+                "npx @bitbonsai/mcpvault \"{{VAULT_PATH}}\""
+            ],
+            "enabled": true
+        }
     }
 }

@@ -18,3 +18,8 @@ dist_latest/
 # Test scripts
 FixEncoding.ps1
 _test_*.ps1
+
+# Python cache
+.pytest_cache/
+__pycache__/
+*.pyc
