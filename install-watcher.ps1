@@ -79,20 +79,22 @@ $launchScript = @"
 `$watcher = "$watcherScript"
 `$logFile = "`$env:USERPROFILE\Desktop\watch-vault.log"
 
-# Iniciar watcher em janela oculta
-`$ps = Start-Process -FilePath "powershell.exe" -ArgumentList @(
+# Iniciar watcher em janela oculta (usar $proc, nao $ps - $ps e var automatica do PowerShell)
+`$proc = Start-Process -FilePath "powershell.exe" -ArgumentList @(
     "-NoProfile",
     "-ExecutionPolicy", "Bypass",
     "-File", "`$watcher"
 ) -WindowStyle Hidden -PassThru
 
 # Salvar PID para referencia
-"`$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') [START] Watch-Vault iniciado (PID: `$($ps.Id))" | Out-File -FilePath `$logFile -Append
+$pidValue = if (`$proc) { `$proc.Id } else { "desconhecido" }
+"`$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') [START] Watch-Vault iniciado (PID: $pidValue)" | Out-File -FilePath `$logFile -Append
 
 # Aguardar
-`$ps.WaitForExit()
+if (`$proc) { `$proc.WaitForExit() }
 
-"`$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') [EXIT] Watch-Vault encerrado (ExitCode: `$($ps.ExitCode))" | Out-File -FilePath `$logFile -Append
+$exitCode = if (`$proc) { `$proc.ExitCode } else { "?" }
+"`$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') [EXIT] Watch-Vault encerrado (ExitCode: $exitCode)" | Out-File -FilePath `$logFile -Append
 "@
 
 $launcherPath = "$env:USERPROFILE\.vault-watch-launcher.ps1"
