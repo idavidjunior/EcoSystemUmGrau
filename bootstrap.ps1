@@ -27,6 +27,21 @@ param(
 $ErrorActionPreference = "Stop"
 $Host.UI.RawUI.WindowTitle = "Bootstrap Ecossistema LER v2.0"
 $RepoUrl = "https://github.com/idavidjunior/EcoSystemUmGrau.git"
+$EnvLevel = "Machine"
+$EnvLevelLabel = "maquina (Machine, todos os usuarios)"
+
+# Auto-elevar se necessario para Machine-level env vars
+$isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
+if (-not $isAdmin) {
+    Write-Host "`nReiniciando como Administrator para configurar em nivel $EnvLevelLabel..." -ForegroundColor Yellow
+    Write-Host "(Aceite o UAC para continuar)" -ForegroundColor Cyan
+    Start-Process -FilePath powershell.exe -Verb RunAs -ArgumentList @(
+        "-NoProfile", "-ExecutionPolicy", "Bypass",
+        "-Command", "iex (iwr -useb 'https://raw.githubusercontent.com/idavidjunior/EcoSystemUmGrau/opencode/mighty-meadow/bootstrap.ps1')"
+    )
+    exit 0
+}
+
 $nvidiaOk = $false
 $openaiOk = $false
 
@@ -121,7 +136,7 @@ function Configure-ApiKey($name, $varName, $testFn) {
     Write-Host ""
     Write-Host "--- $name ---" -ForegroundColor Cyan
 
-    $existing = [Environment]::GetEnvironmentVariable($varName, "User")
+    $existing = [Environment]::GetEnvironmentVariable($varName, $EnvLevel)
     if ($existing) {
         $masked = $existing.Substring(0, [Math]::Min(8, $existing.Length)) + "..."
         Write-Host "Chave existente: $masked" -ForegroundColor Gray
@@ -146,9 +161,9 @@ function Configure-ApiKey($name, $varName, $testFn) {
     if ($valid) {
         Write-Host " OK!" -ForegroundColor Green
         Ok "$($name): $msg"
-        [Environment]::SetEnvironmentVariable($varName, $key, "User")
+        [Environment]::SetEnvironmentVariable($varName, $key, $EnvLevel)
         Set-Item -Path "Env:$varName" -Value $key
-        Ok "Chave salva em variavel de ambiente (usuario)"
+        Ok "Chave salva em variavel de ambiente ($EnvLevelLabel)"
         return $true
     } else {
         Write-Host " FALHOU" -ForegroundColor Red
@@ -203,8 +218,9 @@ if ($oc) {
 # ============================================================
 Step "3/6 - Configurando VAULT_PATH"
 
-[Environment]::SetEnvironmentVariable("VAULT_PATH", $VaultPath, "User")
+[Environment]::SetEnvironmentVariable("VAULT_PATH", $VaultPath, $EnvLevel)
 Set-Item -Path "Env:VAULT_PATH" -Value $VaultPath
+Info "Nivel: $EnvLevelLabel (requer Admin/UAC)"
 Ok "VAULT_PATH = $VaultPath"
 
 # ============================================================
@@ -235,9 +251,9 @@ if ($configureNow -eq "S" -or $configureNow -eq "s" -or $configureNow -eq "" -or
     if ($openaiOk) { Ok "OPENAI_API_KEY: configurada e testada" } else { Warn "OPENAI_API_KEY: pendente" }
 } else {
     Warn "Configuracao de chaves pulada."
-    Warn "Para configurar manualmente depois:"
-    Write-Host '  [Environment]::SetEnvironmentVariable("NVIDIA_API_KEY", "nvapi-...", "User")' -ForegroundColor Gray
-    Write-Host '  [Environment]::SetEnvironmentVariable("OPENAI_API_KEY", "sk-proj-...", "User")' -ForegroundColor Gray
+    Warn "Para configurar manualmente depois (como Admin):"
+    Write-Host '  [Environment]::SetEnvironmentVariable("NVIDIA_API_KEY", "nvapi-...", "Machine")' -ForegroundColor Gray
+    Write-Host '  [Environment]::SetEnvironmentVariable("OPENAI_API_KEY", "sk-proj-...", "Machine")' -ForegroundColor Gray
 }
 
 # ============================================================
