@@ -128,6 +128,7 @@ class SongsFragment : Fragment() {
         adapter.onEditTag = { song ->
             (activity as? MainActivity)?.openTagEditor(song)
         }
+        adapter.viewMode = currentView
         adapter.currentSongPath = currentSongPath
         recyclerView.adapter = adapter
         applyFilter()

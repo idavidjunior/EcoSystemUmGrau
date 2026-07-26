@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Music Player</string>
+    <string name="notification_channel_name">Reprodução de música</string>
+    <string name="notification_channel_description">Controles de mídia e reprodução em segundo plano.</string>
+</resources>

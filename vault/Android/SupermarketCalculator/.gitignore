@@ -1,0 +1,7 @@
+*.apk
+local.properties
+debug.keystore
+release.keystore
+build/
+gen/
+bin/

@@ -1,0 +1,13 @@
+bin/
+gen/
+local.properties
+*.apk
+*.keystore
+*.dex
+*.class
+.classpath
+.project
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
