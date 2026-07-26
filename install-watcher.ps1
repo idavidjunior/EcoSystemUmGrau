@@ -87,14 +87,14 @@ $launchScript = @"
 ) -WindowStyle Hidden -PassThru
 
 # Salvar PID para referencia
-$pidValue = if (`$proc) { `$proc.Id } else { "desconhecido" }
-"`$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') [START] Watch-Vault iniciado (PID: $pidValue)" | Out-File -FilePath `$logFile -Append
+`$pidValue = if (`$proc) { `$proc.Id } else { "desconhecido" }
+"`$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') [START] Watch-Vault iniciado (PID: `$pidValue)" | Out-File -FilePath `$logFile -Append
 
 # Aguardar
 if (`$proc) { `$proc.WaitForExit() }
 
-$exitCode = if (`$proc) { `$proc.ExitCode } else { "?" }
-"`$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') [EXIT] Watch-Vault encerrado (ExitCode: $exitCode)" | Out-File -FilePath `$logFile -Append
+`$exitCode = if (`$proc) { `$proc.ExitCode } else { "?" }
+"`$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') [EXIT] Watch-Vault encerrado (ExitCode: `$exitCode)" | Out-File -FilePath `$logFile -Append
 "@
 
 $launcherPath = "$env:USERPROFILE\.vault-watch-launcher.ps1"
