@@ -253,6 +253,9 @@ function Invoke-Sync {
     }
 
     # 4. NOTIFICAR USUARIO (som + popup)
+    # 4a. Sync para pendrive se disponivel
+    if ($syncOk) { Sync-Pendrive }
+
     if ($syncOk) {
         Play-SyncSound -Type "success"
         Write-Host "[NOTIFICACAO] Sync concluido. Exibindo popup..." -ForegroundColor Cyan
@@ -279,6 +282,26 @@ function Invoke-Sync {
     $isSyncing = $false
     Write-Host "[SYNC] Watcher retomando monitoramento..." -ForegroundColor Cyan
 }
+
+# ============================================================
+# SINCRONIZAR PARA PENDRIVE (se disponivel)
+# ============================================================
+function Sync-Pendrive {
+    $pendriveScript = Join-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) "sync-pendrive.ps1"
+    if (-not (Test-Path $pendriveScript)) { return }
+    if (-not (Test-Path "E:")) {
+        Write-Host "[PENDRIVE] Pendrive E: nao detectado" -ForegroundColor DarkGray
+        return
+    }
+    Write-Host "[PENDRIVE] Pendrive detectado! Sincronizando..." -ForegroundColor Cyan
+    & $pendriveScript -Pendrive "E:" -RepoDir $RepoRoot
+    if ($?) {
+        [System.Media.SystemSounds]::Exclamation.Play()
+        Write-Host "[PENDRIVE] Pendrive sincronizado!" -ForegroundColor Green
+    }
+}
+
+
 
 # ============================================================
 # INICIALIZACAO
