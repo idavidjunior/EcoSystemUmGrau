@@ -289,16 +289,15 @@ function Invoke-Sync {
 function Sync-Pendrive {
     $pendriveScript = Join-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) "sync-pendrive.ps1"
     if (-not (Test-Path $pendriveScript)) { return }
-    if (-not (Test-Path "E:")) {
-        Write-Host "[PENDRIVE] Pendrive E: nao detectado" -ForegroundColor DarkGray
-        return
-    }
-    Write-Host "[PENDRIVE] Pendrive detectado! Sincronizando..." -ForegroundColor Cyan
-    & $pendriveScript -Pendrive "E:" -RepoDir $RepoRoot
-    if ($?) {
-        [System.Media.SystemSounds]::Exclamation.Play()
-        Write-Host "[PENDRIVE] Pendrive sincronizado!" -ForegroundColor Green
-    }
+    if (-not (Test-Path "E:")) { return }
+    if ((Get-PSDrive E).Used -eq 0) { return }  # pendrive montado mas vazio?
+    Write-Host "[PENDRIVE] Pendrive E: detectado! Sync em background..." -ForegroundColor Cyan
+    Start-Process -FilePath "powershell.exe" -ArgumentList @(
+        "-NoProfile", "-ExecutionPolicy", "Bypass",
+        "-File", "`"$pendriveScript`"",
+        "-Pendrive", "E:",
+        "-RepoDir", "`"$RepoRoot`""
+    ) -WindowStyle Hidden
 }
 
 
