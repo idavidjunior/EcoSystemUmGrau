@@ -25,6 +25,8 @@ __pycache__/
 *.pyc
 
 # Projects outside ecosystem
+Modules/
+Tests/
 WindowGUI/
 WMS.bat
 
