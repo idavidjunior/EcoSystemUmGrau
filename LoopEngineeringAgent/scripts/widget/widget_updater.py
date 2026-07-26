@@ -1,7 +1,7 @@
 import subprocess, json, time, os, sys
 
 PYTHONW = os.path.join(os.path.dirname(sys.executable), "pythonw.exe")
-HELPER = r"C:\Users\Playtec-bancada\.local\share\opencode\worktree\699a669f2471f9aad160ee2785dc9a1ba96b1245\mighty-meadow\LoopEngineeringAgent\scripts\status_check.py"
+HELPER = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "status_check.py")
 JSON_FILE = os.path.join(os.path.expanduser("~"), "Desktop", "widget_status.json")
 WATCHDOG_FILE = os.path.join(os.path.expanduser("~"), "Desktop", "watchdog_recovery.json")
 
