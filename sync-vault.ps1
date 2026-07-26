@@ -80,3 +80,4 @@ Write-Host "`n=== SYNC CONCLUIDO ===" -ForegroundColor Green
 Write-Host "  Arquivos: $($final.Count)"
 Write-Host "  Tamanho: $('{0:N2}' -f ($finalSize / 1MB)) MB"
 Write-Host "`nAgora execute git add vault/ && git commit para versionar as notas."
+exit 0

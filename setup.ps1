@@ -178,7 +178,35 @@ if (-not (Test-Path $obsidianDir)) {
 # ============================================================
 # PASSO 6: Instalar MCPVault
 # ============================================================
-Step "6/8 - Instalando MCPVault"
+# ============================================================
+# PASSO 6a: Instalar Watch-Vault (Watcher automatico)
+# ============================================================
+Step "6a/9 - Instalando Watch-Vault (monitor+sync+notificacao)"
+
+$watcherScript = "$InstallDir\watch-vault.ps1"
+$installerScript = "$InstallDir\install-watcher.ps1"
+
+if (Test-Path $watcherScript -and (Test-Path $installerScript)) {
+    Write-Host "Instalando watcher como servico Windows..." -ForegroundColor Cyan
+    & $installerScript
+    if ($LASTEXITCODE -and $LASTEXITCODE -ne 0) {
+        Write-Host "[AVISO] Watcher pode nao ter instalado corretamente." -ForegroundColor Yellow
+        Write-Host "  Execute manualmente: $installerScript" -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "[AVISO] Scripts do watcher nao encontrados. Instale manualmente:" -ForegroundColor Yellow
+    Write-Host "  .\install-watcher.ps1" -ForegroundColor Yellow
+}
+
+Write-Host "`nWatcher configurado: inicia automaticamente no login." -ForegroundColor Green
+Write-Host "  - Monitora alteracoes no vault"
+Write-Host "  - Sincroniza automaticamente com GitHub"
+Write-Host "  - Exibe popup + som a cada sincronizacao"
+
+# ============================================================
+# PASSO 6b: Instalar MCPVault
+# ============================================================
+Step "7/9 - Instalando MCPVault"
 
 Write-Host "Testando @bitbonsai/mcpvault..." -ForegroundColor Cyan
 $mcpTest = cmd /c "npx @bitbonsai/mcpvault --version 2>&1"
@@ -193,7 +221,7 @@ if ($mcpTest -match "\d+\.\d+\.\d+") {
 # ============================================================
 # PASSO 6: Gerar opencode.json
 # ============================================================
-Step "6/8 - Gerando opencode.json"
+Step "8/9 - Gerando opencode.json"
 
 $templatePath = "$InstallDir\opencode.template.json"
 $outputPath = "$OPENCODE_CONFIG\opencode.json"
@@ -223,7 +251,7 @@ Write-Host "  PLUGIN -> $OPENCODE_CONFIG\plugin\ponytail.mjs"
 # ============================================================
 # PASSO 8: Inicializar LER Governance
 # ============================================================
-Step "8/8 - Inicializando LER Governance"
+Step "9/9 - Inicializando LER Governance"
 
 $govDir = "$InstallDir\LoopEngineeringAgent\memory\governance"
 New-Item -ItemType Directory -Force -Path $govDir | Out-Null
@@ -248,7 +276,7 @@ if ($lerTest -match "OK") {
 # ============================================================
 # PASSO 9: Verificacao final
 # ============================================================
-Step "9/9 - Verificacao final"
+Step "10/10 - Verificacao final"
 
 $checks = @(
     @{Desc="Repositorio clonado"; Path="$InstallDir\.git"},
@@ -258,7 +286,9 @@ $checks = @(
     @{Desc="Vault .obsidian"; Path=$obsidianDir},
     @{Desc="LER governance"; Path="$InstallDir\LoopEngineeringAgent\governance\responsibility_map.json"},
     @{Desc="LER vault bridge"; Path="$InstallDir\LoopEngineeringAgent\governance\vault_bridge.py"},
-    @{Desc="MCP server"; Path="$InstallDir\LoopEngineeringAgent\integrations\opencode\provider_mcp_server.py"}
+    @{Desc="MCP server"; Path="$InstallDir\LoopEngineeringAgent\integrations\opencode\provider_mcp_server.py"},
+    @{Desc="Watch-Vault script"; Path=$watcherScript},
+    @{Desc="Watch-Vault installer"; Path=$installerScript}
 )
 
 $allOk = $true
@@ -279,6 +309,15 @@ if ($mcpResult -match "dirs") {
     CheckSuccess "MCPVault respondendo (vault acessivel)"
 } else {
     Write-Host "[AVISO] MCPVault nao respondeu. Verifique se o vault path esta correto." -ForegroundColor Yellow
+}
+
+# Verificar watcher
+try {
+    $watcherTask = Get-ScheduledTask -TaskName "VaultAutoSyncWatcher" -ErrorAction Stop
+    Write-Host "  [OK] Watch-Vault instalado como servico ($($watcherTask.State))" -ForegroundColor Green
+} catch {
+    Write-Host "  [AVISO] Watch-Vault nao instalado como servico" -ForegroundColor Yellow
+    Write-Host "    Execute: .\install-watcher.ps1" -ForegroundColor Yellow
 }
 
 Write-Host "`n========================================" -ForegroundColor Cyan
