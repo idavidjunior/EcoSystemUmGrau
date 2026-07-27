@@ -1,0 +1,8 @@
+id: doctor
+kind: agent
+version: 1.0.0
+source: agents/doctor.md
+title: Doctor Agent — Auto-Diagnóstico e Correção de Ambiente
+description: Doctor Agent — Auto-Diagnóstico e Correção de Ambiente
+allowed_tools: []
+platforms: [claude-code, ollama, openwebui, continue]

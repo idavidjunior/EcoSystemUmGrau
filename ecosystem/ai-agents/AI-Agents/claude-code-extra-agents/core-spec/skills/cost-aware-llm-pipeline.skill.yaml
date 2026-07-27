@@ -1,0 +1,8 @@
+id: cost-aware-llm-pipeline
+kind: skill
+version: 1.1.0
+source: skills/cost-aware-llm-pipeline/skill.md
+title: Cost-Aware LLM Pipeline — Custo sem Perder Qualidade
+description: "Pipeline de LLM orientado a custo: roteamento por modelo, caching semântico, limites de tokens e observabilidade financeira.\nTrigger phrases: \"LLM cost\", \"token budget\", \"model routing\", \"optimize inference\""
+allowed_tools: [Read, Grep, Bash]
+platforms: [claude-code, ollama, openwebui, continue]

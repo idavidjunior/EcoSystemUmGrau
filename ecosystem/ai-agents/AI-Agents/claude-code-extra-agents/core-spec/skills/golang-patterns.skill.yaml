@@ -1,0 +1,8 @@
+id: golang-patterns
+kind: skill
+version: 1.1.0
+source: skills/golang-patterns/skill.md
+title: Golang Patterns — Go Idiomático para Produção
+description: "Padrões Go para serviços robustos: contexto, concorrência segura, erros explícitos e organização idiomática.\nTrigger phrases: \"golang\", \"go routines\", \"go patterns\", \"idiomatic go\""
+allowed_tools: [Read, Grep, Bash]
+platforms: [claude-code, ollama, openwebui, continue]

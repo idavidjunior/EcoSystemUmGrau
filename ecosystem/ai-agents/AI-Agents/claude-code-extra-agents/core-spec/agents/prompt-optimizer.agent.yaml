@@ -1,0 +1,8 @@
+id: prompt-optimizer
+kind: agent
+version: 1.0.0
+source: agents/prompt-optimizer.md
+title: prompt-optimizer
+description: prompt-optimizer
+allowed_tools: []
+platforms: [claude-code, ollama, openwebui, continue]

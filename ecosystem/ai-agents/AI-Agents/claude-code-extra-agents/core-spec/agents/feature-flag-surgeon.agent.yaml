@@ -1,0 +1,8 @@
+id: feature-flag-surgeon
+kind: agent
+version: 1.0.0
+source: agents/feature-flag-surgeon.md
+title: feature-flag-surgeon
+description: feature-flag-surgeon
+allowed_tools: []
+platforms: [claude-code, ollama, openwebui, continue]

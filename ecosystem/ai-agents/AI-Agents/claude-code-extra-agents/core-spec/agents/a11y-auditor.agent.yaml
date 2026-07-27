@@ -1,0 +1,8 @@
+id: a11y-auditor
+kind: agent
+version: 1.0.0
+source: agents/a11y-auditor.md
+title: a11y-auditor
+description: a11y-auditor
+allowed_tools: []
+platforms: [claude-code, ollama, openwebui, continue]

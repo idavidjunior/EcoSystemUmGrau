@@ -1,0 +1,8 @@
+id: developer-experience-dx
+kind: skill
+version: 1.1.0
+source: skills/developer-experience-dx/skill.md
+title: Developer Experience (DX) — Velocidade Sustentável de Time
+description: "Melhoria de experiência de desenvolvimento: onboarding, tooling, feedback loop e ergonomia de CLI/CI.\nTrigger phrases: \"DX\", \"developer experience\", \"onboarding\", \"tooling\""
+allowed_tools: [Read, Grep, Bash]
+platforms: [claude-code, ollama, openwebui, continue]

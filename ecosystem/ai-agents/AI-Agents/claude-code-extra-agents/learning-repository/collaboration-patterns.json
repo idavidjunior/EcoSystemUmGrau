@@ -1,0 +1,134 @@
+{
+  "generated_at": "2026-06-16T23:09:00.408266+00:00",
+  "top_collaborations": [
+    {
+      "pair": "debug-forensic+incident-postmortem",
+      "success_count": 1
+    },
+    {
+      "pair": "debug-forensic+sentinel",
+      "success_count": 1
+    },
+    {
+      "pair": "ai-code-verifier+code-reviewer",
+      "success_count": 1
+    },
+    {
+      "pair": "ai-code-verifier+prompt-optimizer",
+      "success_count": 1
+    }
+  ],
+  "effective_skill_combinations": [
+    {
+      "skills": [
+        "search-first"
+      ],
+      "usage_count": 3
+    },
+    {
+      "skills": [
+        "observability-stack",
+        "resilience-engineering"
+      ],
+      "usage_count": 1
+    }
+  ],
+  "agent_summaries": [
+    {
+      "agent_id": "schema-evolution-planner",
+      "avg_score": 85.0,
+      "top_strengths": [
+        [
+          "avoided_forbidden_terms",
+          3
+        ]
+      ],
+      "areas_for_improvement": [
+        [
+          "missing_requirements",
+          3
+        ],
+        [
+          "weak_clarity",
+          3
+        ],
+        [
+          "weak_actionability",
+          3
+        ]
+      ]
+    },
+    {
+      "agent_id": "debug-forensic",
+      "avg_score": 100.0,
+      "top_strengths": [
+        [
+          "avoided_forbidden_terms",
+          3
+        ]
+      ],
+      "areas_for_improvement": [
+        [
+          "missing_requirements",
+          3
+        ],
+        [
+          "weak_clarity",
+          3
+        ],
+        [
+          "weak_actionability",
+          3
+        ]
+      ]
+    },
+    {
+      "agent_id": "ai-code-verifier",
+      "avg_score": 85.0,
+      "top_strengths": [
+        [
+          "avoided_forbidden_terms",
+          3
+        ]
+      ],
+      "areas_for_improvement": [
+        [
+          "missing_requirements",
+          3
+        ],
+        [
+          "weak_clarity",
+          3
+        ],
+        [
+          "weak_actionability",
+          3
+        ]
+      ]
+    },
+    {
+      "agent_id": "dependency-auditor",
+      "avg_score": 75.0,
+      "top_strengths": [
+        [
+          "avoided_forbidden_terms",
+          3
+        ]
+      ],
+      "areas_for_improvement": [
+        [
+          "missing_requirements",
+          3
+        ],
+        [
+          "weak_clarity",
+          3
+        ],
+        [
+          "weak_actionability",
+          3
+        ]
+      ]
+    }
+  ]
+}

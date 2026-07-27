@@ -23,12 +23,14 @@ _test_*.ps1
 .pytest_cache/
 __pycache__/
 *.pyc
+*.pyo
 
-# Projects outside ecosystem
-Modules/
-Tests/
-WindowGUI/
-WMS.bat
-
-# Runtime data (auto-generated, churns on every session)
+# LER runtime data (auto-generated)
 memory/provider_events.json
+checkpoints/
+logs/
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store

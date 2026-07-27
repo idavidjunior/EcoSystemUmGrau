@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "dimensions": [
+    {"id": "clarity", "weight": 0.25, "required_sections": ["contexto", "analise", "acoes"]},
+    {"id": "actionability", "weight": 0.30, "required_sections": ["passos", "comandos", "validacao"]},
+    {"id": "hallucination_risk", "weight": 0.20, "required_sections": ["fontes", "limitacoes", "nao_verificado"]},
+    {"id": "consistency", "weight": 0.25, "required_sections": ["objetivo", "escopo", "resultado"]}
+  ]
+}

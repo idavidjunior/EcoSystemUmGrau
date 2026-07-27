@@ -23,7 +23,7 @@
 #>
 
 param(
-    [string]$VaultPath = "$env:USERPROFILE\Desktop\Codigos",
+    [string]$VaultPath = "$env:USERPROFILE\Desktop\Codigos\EcoSystemUmGrau",
     [string]$RepoRoot = "",
     [int]$DebounceSeconds = 10,
     [switch]$TestMode = $false

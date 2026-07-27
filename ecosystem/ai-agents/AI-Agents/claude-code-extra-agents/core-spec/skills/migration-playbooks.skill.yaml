@@ -1,0 +1,8 @@
+id: migration-playbooks
+kind: skill
+version: 1.1.0
+source: skills/migration-playbooks/skill.md
+title: Migration Playbooks — Mudança Grande sem Aposta Cega
+description: "Playbooks de migração (REST->GraphQL, monólito->serviços, JS->TS) com fases, riscos e rollback.\nTrigger phrases: \"migration\", \"playbook\", \"modernization\", \"incremental migration\""
+allowed_tools: [Read, Grep, Bash]
+platforms: [claude-code, ollama, openwebui, continue]

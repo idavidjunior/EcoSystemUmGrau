@@ -1,0 +1,8 @@
+id: api-integration-specialist
+kind: agent
+version: 1.0.0
+source: agents/api-integration-specialist.md
+title: api-integration-specialist
+description: api-integration-specialist
+allowed_tools: []
+platforms: [claude-code, ollama, openwebui, continue]

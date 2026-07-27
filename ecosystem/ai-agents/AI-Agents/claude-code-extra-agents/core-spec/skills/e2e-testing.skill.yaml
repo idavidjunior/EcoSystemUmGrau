@@ -1,0 +1,8 @@
+id: e2e-testing
+kind: skill
+version: 1.1.0
+source: skills/e2e-testing/skill.md
+title: E2E Testing — Playwright e Confiabilidade de Fluxos
+description: "Estratégia de testes E2E com Playwright: cobertura de fluxos críticos, estabilidade, isolamento e diagnóstico.\nTrigger phrases: \"E2E\", \"end to end\", \"Playwright\", \"page object\", \"teste de interface\""
+allowed_tools: [Read, Grep, Bash]
+platforms: [claude-code, ollama, openwebui, continue]

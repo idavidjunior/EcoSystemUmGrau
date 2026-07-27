@@ -14,7 +14,7 @@
 #>
 
 param(
-    [string]$VaultSource = "$env:USERPROFILE\Desktop\Codigos",
+    [string]$VaultSource = "$env:USERPROFILE\Desktop\Codigos\EcoSystemUmGrau",
     [string]$VaultDest = ""
 )
 

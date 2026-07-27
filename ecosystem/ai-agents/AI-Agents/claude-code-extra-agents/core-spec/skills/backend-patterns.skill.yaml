@@ -1,0 +1,8 @@
+id: backend-patterns
+kind: skill
+version: 1.1.0
+source: skills/backend-patterns/skill.md
+title: Backend Patterns — Serviços Confiáveis
+description: "Padrões backend para serviços resilientes: contratos claros, separação de camadas, observabilidade e confiabilidade.\nTrigger phrases: \"backend architecture\", \"service layer\", \"repository pattern\", \"API backend\""
+allowed_tools: [Read, Grep, Bash]
+platforms: [claude-code, ollama, openwebui, continue]

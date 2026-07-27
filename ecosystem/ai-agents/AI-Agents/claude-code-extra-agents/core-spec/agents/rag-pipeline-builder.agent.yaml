@@ -1,0 +1,8 @@
+id: rag-pipeline-builder
+kind: agent
+version: 1.0.0
+source: agents/rag-pipeline-builder.md
+title: rag-pipeline-builder
+description: rag-pipeline-builder
+allowed_tools: []
+platforms: [claude-code, ollama, openwebui, continue]

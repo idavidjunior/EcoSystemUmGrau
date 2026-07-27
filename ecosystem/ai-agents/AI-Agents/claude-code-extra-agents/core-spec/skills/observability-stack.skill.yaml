@@ -1,0 +1,8 @@
+id: observability-stack
+kind: skill
+version: 1.1.0
+source: skills/observability-stack/skill.md
+title: Observability Stack — Ver, Entender e Agir Rápido
+description: "Observabilidade ponta a ponta com logs, métricas, traces e SLOs para detectar e resolver incidentes rapidamente.\nTrigger phrases: \"observability\", \"opentelemetry\", \"tracing\", \"slo\", \"grafana\""
+allowed_tools: [Read, Grep, Bash]
+platforms: [claude-code, ollama, openwebui, continue]

@@ -1,0 +1,8 @@
+{
+  "id": "migration-db-zero-downtime",
+  "agent": "schema-evolution-planner",
+  "title": "Migracao de schema sem downtime",
+  "prompt": "Planejar migracao expand-contract com rollback seguro.",
+  "must_include": ["expand", "backfill", "contract", "rollback"],
+  "forbidden": ["big bang"]
+}

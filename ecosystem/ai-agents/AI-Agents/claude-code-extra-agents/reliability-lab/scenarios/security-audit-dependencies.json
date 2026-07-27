@@ -1,0 +1,8 @@
+{
+  "id": "security-audit-dependencies",
+  "agent": "dependency-auditor",
+  "title": "Auditoria de dependencias",
+  "prompt": "Avaliar CVEs, risco de supply chain e mitigacoes priorizadas.",
+  "must_include": ["cve", "impacto", "mitigacao", "prioridade"],
+  "forbidden": ["zero risco garantido"]
+}

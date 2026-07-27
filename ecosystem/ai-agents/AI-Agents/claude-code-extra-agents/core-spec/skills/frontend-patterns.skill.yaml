@@ -1,0 +1,8 @@
+id: frontend-patterns
+kind: skill
+version: 1.1.0
+source: skills/frontend-patterns/skill.md
+title: Frontend Patterns — UI Sustentável e Escalável
+description: "Padrões frontend para arquitetura de componentes, estado, acessibilidade e performance.\nTrigger phrases: \"frontend architecture\", \"component design\", \"UI patterns\", \"React patterns\""
+allowed_tools: [Read, Grep, Bash]
+platforms: [claude-code, ollama, openwebui, continue]

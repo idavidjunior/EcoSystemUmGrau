@@ -1,0 +1,79 @@
+{
+  "errors": {
+    "kotlin_kgp_fix": {
+      "pattern": "Kotlin Gradle Plugin (KGP): on_audio_query_android",
+      "first_seen": "2026-07-11T10:47:10.236477",
+      "occurrences": 5,
+      "solutions": [
+        {
+          "solution": "Remover build.gradle.kts e usar build.gradle com compileSdk 34 e kotlin 1.9.22",
+          "attempts": 3,
+          "success": 3,
+          "last_used": "2026-07-11T10:47:10.236477"
+        }
+      ],
+      "success_rate": 1.0
+    },
+    "cfc5f5bdf8afadfe2523f97f4acedfdb": {
+      "pattern": "WARNING: Your app uses the following plugins that apply Kotlin Gradle Plugin (KGP): on_audio_query_android\nFuture versions of Flutter will fail to build if your app uses plugins that apply KGP.\n\nPlease check the changelogs of these plugins and upgrade to a version that supports Built-in Kotlin.\nIf no such version exists, report the issue to the plugin. If necessary, here is a guide on filing \nan issue against a plugin: https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/",
+      "first_seen": "2026-07-11T19:13:57.397092",
+      "occurrences": 3,
+      "solutions": [
+        {
+          "solution": "KotlinGradleFixer: remove .kts + recria build.gradle",
+          "attempts": 3,
+          "success": 3,
+          "last_used": "2026-07-11T19:52:20.834766"
+        }
+      ],
+      "success_rate": 0
+    },
+    "9526514653b99a4bfd0d9cddbfe8a647": {
+      "pattern": "[!] Your app is using an unsupported Gradle project. To fix this problem, create a new project by running `flutter create -t app <app-directory>` and then move the dart code, assets and pubspec.yaml to the new project.\n",
+      "first_seen": "2026-07-11T20:12:28.317255",
+      "occurrences": 2,
+      "solutions": [
+        {
+          "solution": "KotlinGradleFixer: remove .kts + recria build.gradle",
+          "attempts": 2,
+          "success": 2,
+          "last_used": "2026-07-11T20:12:32.693371"
+        }
+      ],
+      "success_rate": 0
+    },
+    "unsupported_gradle_structural": {
+      "pattern": "unsupported Gradle project",
+      "first_seen": "2026-07-11T20:27:04.948963",
+      "occurrences": 200,
+      "solutions": [
+        {
+          "solution": "Recriar estrutura Android via BuildFixer.fix_unsupported_gradle()",
+          "attempts": 100,
+          "success": 100,
+          "last_used": "2026-07-11T20:27:04.948963"
+        }
+      ],
+      "success_rate": 1.0
+    }
+  },
+  "patterns": {
+    "member": {
+      "context": "WARNING: Your app uses the following plugins that apply Kotlin Gradle Plugin (KGP): on_audio_query_android\nFuture versions of Flutter will fail to build if your app uses plugins that apply KGP.\n\nPlease check the changelogs of these plugins and upgrade to a version that supports Built-in Kotlin.\nIf no such version exists, report the issue to the plugin. If necessary, here is a guide on filing \nan issue against a plugin: https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/",
+      "first_seen": "2026-07-11T19:13:57.410018",
+      "occurrences": 3
+    },
+    "versions": {
+      "context": "WARNING: Your app uses the following plugins that apply Kotlin Gradle Plugin (KGP): on_audio_query_android\nFuture versions of Flutter will fail to build if your app uses plugins that apply KGP.\n\nPlease check the changelogs of these plugins and upgrade to a version that supports Built-in Kotlin.\nIf no such version exists, report the issue to the plugin. If necessary, here is a guide on filing \nan issue against a plugin: https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/",
+      "first_seen": "2026-07-11T19:13:57.410018",
+      "occurrences": 3
+    }
+  },
+  "solutions": {},
+  "stats": {
+    "total_errors": 4,
+    "solved_errors": 4,
+    "learning_rate": 1.0
+  },
+  "learned_patterns": []
+}

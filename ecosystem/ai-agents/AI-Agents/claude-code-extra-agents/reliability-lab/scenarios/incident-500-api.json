@@ -1,0 +1,8 @@
+{
+  "id": "incident-500-api",
+  "agent": "debug-forensic",
+  "title": "Incidente 500 apos deploy",
+  "prompt": "API retornando 500 apos deploy. Encontrar causa raiz, hotfix e prevencao.",
+  "must_include": ["causa raiz", "hotfix", "prevencao", "rollback"],
+  "forbidden": ["certeza sem evidencia", "ignorar logs"]
+}

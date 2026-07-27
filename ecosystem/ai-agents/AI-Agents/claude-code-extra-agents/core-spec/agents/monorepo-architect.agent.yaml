@@ -1,0 +1,8 @@
+id: monorepo-architect
+kind: agent
+version: 1.0.0
+source: agents/monorepo-architect.md
+title: monorepo-architect
+description: monorepo-architect
+allowed_tools: []
+platforms: [claude-code, ollama, openwebui, continue]

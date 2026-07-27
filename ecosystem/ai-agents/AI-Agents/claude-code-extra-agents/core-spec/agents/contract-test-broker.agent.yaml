@@ -1,0 +1,8 @@
+id: contract-test-broker
+kind: agent
+version: 1.0.0
+source: agents/contract-test-broker.md
+title: contract-test-broker
+description: contract-test-broker
+allowed_tools: []
+platforms: [claude-code, ollama, openwebui, continue]

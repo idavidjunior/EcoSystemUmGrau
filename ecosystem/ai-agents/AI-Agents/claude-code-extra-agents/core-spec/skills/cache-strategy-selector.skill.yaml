@@ -1,0 +1,8 @@
+id: cache-strategy-selector
+kind: skill
+version: 1.1.0
+source: skills/cache-strategy-selector/skill.md
+title: Cache Strategy Selector — Velocidade com Coerência
+description: "Seleção de estratégia de cache por caso de uso: HTTP/CDN, Redis, cache local, SWR e invalidação.\nTrigger phrases: \"cache strategy\", \"redis\", \"cdn\", \"swr\", \"invalidation\""
+allowed_tools: [Read, Grep, Bash]
+platforms: [claude-code, ollama, openwebui, continue]
