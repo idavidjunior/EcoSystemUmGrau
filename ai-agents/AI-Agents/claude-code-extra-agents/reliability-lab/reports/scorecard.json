@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-06-16T23:09:00.230665+00:00",
+  "scenarios_total": 4,
+  "scenarios_with_results": 4,
+  "overall_score": 96.25,
+  "rows": [
+    {
+      "scenario": "incident-500-api",
+      "agent": "debug-forensic",
+      "status": "ok",
+      "score": 100.0,
+      "details": []
+    },
+    {
+      "scenario": "migration-db-zero-downtime",
+      "agent": "schema-evolution-planner",
+      "status": "ok",
+      "score": 100.0,
+      "details": []
+    },
+    {
+      "scenario": "review-ai-pr",
+      "agent": "ai-code-verifier",
+      "status": "ok",
+      "score": 100.0,
+      "details": []
+    },
+    {
+      "scenario": "security-audit-dependencies",
+      "agent": "dependency-auditor",
+      "status": "ok",
+      "score": 85.0,
+      "details": [
+        "missing must_include: mitigacao"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+mede resultado.
+
+
+O ciclo só encerra quando:
+
+META = ATINGIDA
++
+VALIDAÇÃO = APROVADA
++
+RESUALTADO = ENTREGUE
+
+
+---
+
+2. LOOP PRINCIPAL
+
+RECEBER OBJETIVO
+
+        ↓
+
+INTERPRETAR META
+
+        ↓
+
+CRIAR PLANO INICIAL
+
+        ↓
+
+EXECUTAR
+
+        ↓
+
+MEDIR RESULTADO
+
+        ↓
+
+SUCESSO?
+
+   SIM ─────→ FINALIZAR
+
+   N

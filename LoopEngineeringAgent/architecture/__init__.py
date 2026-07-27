@@ -1,1 +1,0 @@
-# Architecture Review Engine - ARE

@@ -1,0 +1,38 @@
+[
+  {
+    "version": "1.1.0",
+    "generated_at": "2026-05-22T00:56:16.558689+00:00",
+    "overall_score": 0.0,
+    "scenarios_with_results": 0
+  },
+  {
+    "version": "1.1.0",
+    "generated_at": "2026-05-22T00:57:19.718162+00:00",
+    "overall_score": 0.0,
+    "scenarios_with_results": 0
+  },
+  {
+    "version": "1.1.0",
+    "generated_at": "2026-06-16T22:43:06.267852+00:00",
+    "overall_score": 0.0,
+    "scenarios_with_results": 0
+  },
+  {
+    "version": "1.1.0",
+    "generated_at": "2026-06-16T23:01:56.445246+00:00",
+    "overall_score": 66.25,
+    "scenarios_with_results": 4
+  },
+  {
+    "version": "1.1.0",
+    "generated_at": "2026-06-16T23:03:31.011964+00:00",
+    "overall_score": 96.25,
+    "scenarios_with_results": 4
+  },
+  {
+    "version": "1.1.0",
+    "generated_at": "2026-06-16T23:09:00.230665+00:00",
+    "overall_score": 96.25,
+    "scenarios_with_results": 4
+  }
+]
