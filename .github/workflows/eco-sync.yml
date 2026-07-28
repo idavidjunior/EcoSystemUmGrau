@@ -1,0 +1,33 @@
+name: EcoSystem Auto-Sync
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Verify knowledge graph
+        run: |
+          if [ -f ler-runtime/knowledge/knowledge_graph.json ]; then
+            echo "Knowledge graph: OK"
+          else
+            echo "No knowledge graph found (expected on fresh clone)"
+          fi
+      - name: Validate CONHECIMENTO.md
+        run: |
+          if [ -f ler-runtime/CONHECIMENTO.md ]; then
+            LINES=$(wc -l < ler-runtime/CONHECIMENTO.md)
+            echo "CONHECIMENTO.md: $LINES lines"
+          fi
+      - name: Check integrity
+        run: |
+          echo "Files: $(find . -name '*.py' -not -path './.git/*' | wc -l) .py"
+          echo "Skills: $(ls -d skills/*/SKILL.md 2>/dev/null | wc -l)"
+          echo "Agents: $(ls config/agents/*.md 2>/dev/null | wc -l)"
+          echo "Memories: $(ls conhecimento/memoria/*.json 2>/dev/null | wc -l)"

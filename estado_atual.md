@@ -1,8 +1,8 @@
-# Snapshot do Ecossistema — 2026-07-28 (v11 - Abastecer, nao criar estruturas novas)
+# Snapshot do Ecossistema — 2026-07-28 (v12 - Estágio 3: Orquestrado)
 
-> Estado funcional com sistema automático de captura de conhecimento em 3 camadas.
-> Vigilante agora monitora TODOS os projetos Android em tempo real + auto-sync remoto.
-> Skills unificadas em EcoSystemUmGrau/skills/. VAULT_PATH redirecionado.
+> **Evolução:** Estágio 2 (Estruturado) → **Estágio 3 (Orquestrado)** ✅
+> Adicionado: memória entre sessões (Ebbinghaus), busca semântica (BM25), MCP (3 servidores),
+> SDLC gates (5 gates formais), CI/CD (GitHub Actions), e métricas de performance.
 >
 > ## FONTE ÚNICA: O REPOSITÓRIO
 > Toda config, agente e skill vive no repo `EcoSystemUmGrau/config/` e `skills/`.
@@ -57,6 +57,94 @@
 > ecosystem scan    → varre projetos, extrai métricas
 > ecosystem repair  → reconstrói knowledge graph dos aprendizados crus
 > ecosystem status  → status completo (inclui status git de cada projeto Android)
+
+## ESTÁGIO 3 — ORQUESTRADO (v12)
+
+### O que foi adicionado
+
+| Capacidade | Antes | Agora | Status |
+|---|---|---|---|
+| **Memória entre sessões** | ❌ Nada | ✅ Ebbinghaus decay + reforço + sessões JSONL | ✅ |
+| **Busca semântica** | ❌ Só grep | ✅ BM25 lexical + tag fusion em 4 fontes | ✅ |
+| **MCP** | ❌ Nada | ✅ 3 servidores: knowledge, filesystem, github | ✅ |
+| **SDLC Gates** | ❌ Maestro simples | ✅ G1-G5 com critérios de evidência | ✅ |
+| **Métricas** | ❌ Nada | ✅ Memory engine stats + CI report | ✅ |
+| **CI/CD** | ❌ Só vigilante local | ✅ GitHub Actions (eco-sync + report) | ✅ |
+
+### Arquitetura atual (3 cérebros)
+
+```
+1. KNOWLEDGE GRAPH (248 entradas) — conhecimento explícito
+   KnowledgeConsolidator.register_learning() → knowledge_graph.json → CONHECIMENTO.md
+
+2. MEMORY ENGINE (Ebbinghaus decay) — memória de sessão
+   memory_engine.py → sessions JSONL → memories.json → index.json
+   → Score: strength * (0.5 ^ (days / half_life))
+   → Half-life: erro=90d, padrao=60d, decisao=30d, episodio=7d
+   → Acesso frequente = reforço (strength += 0.15)
+
+3. SEMANTIC SEARCH (BM25 fusion) — busca unificada
+   search_knowledge.py → corpus de 4 fontes (KG + memória + notas + skills)
+   → BM25 scoring → top 20 resultados
+```
+
+### Fluxo de tarefa (com quality gates)
+
+```
+Usuário → Maestro
+  → Carrega contexto de memória (memory_engine.py context)
+  → Classifica (Rota A/B/C)
+  → G1 PLAN → G2 IMPLEMENT → G3 VERIFY → G4 REVIEW → G5 MERGE
+    → Se gate falha: retorna ao passo anterior
+  → Registra aprendizado (aprendizados/)
+  → Registra memória (memory_engine.py add)
+  → git push (via vigilante)
+```
+
+### Diagrama do ecossistema completo
+
+```
+┌─────────────────────────────────────────────────┐
+│                  OPENCODE                       │
+│  15 agents → Maestro roteia + 5 gates SDLC      │
+│  MCP: 3 servidores (knowledge+filesystem+github)│
+└──────────────┬──────────────────────────────────┘
+               │
+    ┌──────────┴──────────┐
+    ▼                     ▼
+┌──────────┐     ┌──────────────┐
+│ LER      │     │ VIGILANTE    │
+│ Python   │     │ FSWatcher    │
+│ loop     │     │ 5 repos      │
+│ autonomo │     │ tempo real   │
+└──────────┘     └──────┬───────┘
+                        │
+               ┌────────┴────────┐
+               ▼                 ▼
+        ┌──────────┐     ┌──────────────┐
+        │ CRANIO 1 │     │ CRANIO 2     │
+        │ KNOWLEDGE│     │ MEMORY       │
+        │ GRAPH    │     │ ENGINE       │
+        │ 248 ents │     │ Ebbinghaus   │
+        └──────────┘     └──────────────┘
+               │                 │
+               └────────┬────────┘
+                        ▼
+                ┌──────────────┐
+                │ OBSIDIAN     │
+                │ 228 notas    │
+                │ Dataview MOCs│
+                │ Graph View   │
+                └──────────────┘
+                        │
+                        ▼
+                ┌──────────────┐
+                │ GITHUB       │
+                │ EcoSystemUmGrau│
+                │ + 4 projetos │
+                │ + CI/CD      │
+                └──────────────┘
+```
 
 ### Arquitetura final do conhecimento automático
 

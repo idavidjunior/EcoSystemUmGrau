@@ -35,7 +35,6 @@
   "instructions": [
     "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/skills/*/SKILL.md",
     "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/skills/**/SKILL.md",
-    "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/ler-runtime/CONHECIMENTO.md",
-    "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/conhecimento/memoria/memories.json"
+    "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/ler-runtime/CONHECIMENTO.md"
   ]
 }

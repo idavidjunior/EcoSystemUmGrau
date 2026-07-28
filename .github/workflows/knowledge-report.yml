@@ -1,0 +1,47 @@
+name: Knowledge Report
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Generate metrics
+        run: |
+          echo "## EcoSystem Report" > report.md
+          echo "" >> report.md
+          echo "### Knowledge Graph" >> report.md
+          if [ -f ler-runtime/knowledge/knowledge_graph.json ]; then
+            python3 -c "
+import json
+with open('ler-runtime/knowledge/knowledge_graph.json') as f:
+    g = json.load(f)
+for k,v in g.items():
+    if isinstance(v, list): print(f'- {k}: {len(v)}')
+" >> report.md
+          fi
+          echo "" >> report.md
+          echo "### Memory Stats" >> report.md
+          if [ -f conhecimento/memoria/memories.json ]; then
+            python3 -c "
+import json
+with open('conhecimento/memoria/memories.json') as f:
+    mems = json.load(f)
+by_kind = {}
+for m in mems:
+    k = m.get('kind', 'unknown')
+    by_kind[k] = by_kind.get(k, 0) + 1
+for k,v in by_kind.items():
+    print(f'- {k}: {v}')
+" >> report.md
+          fi
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ecosystem-report
+          path: report.md
