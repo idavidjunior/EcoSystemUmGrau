@@ -1,4 +1,4 @@
-# Snapshot do Ecossistema — 2026-07-27 (v10 - Monitoramento total dos projetos)
+# Snapshot do Ecossistema — 2026-07-28 (v11 - Abastecer, nao criar estruturas novas)
 
 > Estado funcional com sistema automático de captura de conhecimento em 3 camadas.
 > Vigilante agora monitora TODOS os projetos Android em tempo real + auto-sync remoto.
@@ -7,6 +7,17 @@
 > ## FONTE ÚNICA: O REPOSITÓRIO
 > Toda config, agente e skill vive no repo `EcoSystemUmGrau/config/` e `skills/`.
 > Nada duplicado. setup.bat gera os arquivos no destino a partir dos templates.
+>
+> ## REGRA DE OURO: ABASTECER, NÃO CRIAR ESTRUTURA NOVA
+> O ecossistema já está estruturado. Todo projeto deve apenas **abastecer** as
+> estruturas existentes — conhecimento, decisões, padrões, bugs — sem criar novas
+> pastas, novos repositórios, novos tipos de aprendizado fora do que já foi definido.
+> Antes de criar algo, pergunte: "Isso abastece uma estrutura existente ou cria
+> uma nova?" Se for nova, não faça. Use as categorias já existentes no CONHECIMENTO.md:
+> Decisoes, Padroes Tecnicos, Bug Fixes, Padroes Cognitivos, Heuristicas, Frameworks,
+> Missoes Aprendidas. Qualquer projeto que precisar de algo novo primeiro deve
+> conversar com o ecossistema para ver se já existe. Só criar se realmente não existir,
+> e mesmo assim deve ser feito dentro da estrutura estabelecida, não fora dela.
 >
 > ## REGRA OBRIGATÓRIA: TESTAR SEMPRE
 > Toda alteração no opencode.jsonc, plugins, agents ou skills deve ser testada

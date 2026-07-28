@@ -3,7 +3,7 @@
 **Exportado em:** 2026-07-28T12:00:00.000000
 **Projetos:** 4
 **Padroes Tecnicos:** 71
-**Decisoes:** 40
+**Decisoes:** 41
 **Bug Fixes:** 47
 **Padroes Cognitivos:** 22
 **Heuristicas:** 32
@@ -129,6 +129,10 @@ OCR e 10-100x mais lento que seletores diretos e sujeito a falsos positivos; usa
 ### Mudar config MCP de objeto para array no opencode.json
 **Fonte:** provider_mcp_debug
 Schema v1.17.14 exige array
+
+### Abastecer estruturas existentes — nao criar novas fora do ecossistema
+**Fonte:** ecosistema_regra_ouro
+O ecossistema ja esta estruturado em 7 categorias: Decisoes, Padroes Tecnicos, Bug Fixes, Padroes Cognitivos, Heuristicas, Frameworks, Missoes Aprendidas. Todo novo conhecimento deve abastecer uma dessas categorias existentes. Nada de criar pastas, repositorios ou tipos novos sem antes verificar se ja existe estrutura adequada. Se nao existir, criar DENTRO do ecossistema, nao fora dele.
 
 ### Organizar Desktop\Codigos\ como raiz unica de projetos
 **Fonte:** workspace_organization
