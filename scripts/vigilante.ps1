@@ -1,167 +1,173 @@
 param(
     [switch]$Stop,
-    [switch]$Status
+    [switch]$Status,
+    [switch]$Foreground
 )
 
 $ErrorActionPreference = "Continue"
 $scriptLabel = "[Vigilante]"
-$pidFilePath = "$env:USERPROFILE\.vigilante.pid"
-$logFilePath = "$env:USERPROFILE\.vigilante.log"
-$learnDir = "C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau\conhecimento\aprendizados"
+$pidFile = "$env:USERPROFILE\.vigilante.pid"
+$logFile = "$env:USERPROFILE\.vigilante.log"
 $ecoDir = "C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau"
-$lerDir = "C:\Users\Playtec-bancada\.ler"
-$lerBase = $lerDir
+$lerDir = "$ecoDir\ler-runtime"
+$learnDir = "$ecoDir\conhecimento\aprendizados"
+$gitInterval = 300  # 5 min entre git sync
 
 function Write-Log {
     param($Msg)
     $line = "[$(Get-Date -Format 'HH:mm:ss')] $Msg"
-    try { Add-Content -Path $logFilePath -Value $line -Encoding UTF8 -ErrorAction Stop } catch {}
-    Write-Host "$scriptLabel $line"
+    try { Add-Content -Path $logFile -Value $line -Encoding UTF8 -ErrorAction Stop } catch {}
+    if ($Foreground) { Write-Host "$scriptLabel $line" } else { Write-Host "$scriptLabel $line" }
 }
 
 # ─── Stop ──────────────────────────────────────────────────────────────
 if ($Stop) {
-    if (Test-Path $pidFilePath) {
-        $savedPid = Get-Content $pidFilePath -Raw
-        if ($savedPid) {
-            $savedPid = $savedPid.Trim()
-            try { Stop-Process -Id $savedPid -Force -ErrorAction SilentlyContinue } catch {}
-            Write-Host "$scriptLabel Processo $savedPid parado."
-        }
-        Remove-Item $pidFilePath -Force -ErrorAction SilentlyContinue
-    } else {
-        Write-Host "$scriptLabel Nenhum processo ativo."
-    }
+    if (Test-Path $pidFile) {
+        $savedPid = (Get-Content $pidFile -Raw).Trim()
+        try { Stop-Process -Id $savedPid -Force -ErrorAction SilentlyContinue; Write-Host "$scriptLabel Processo $savedPid parado." } catch {}
+        Remove-Item $pidFile -Force -ErrorAction SilentlyContinue
+    } else { Write-Host "$scriptLabel Nenhum processo ativo." }
     return
 }
 
 # ─── Status ────────────────────────────────────────────────────────────
 if ($Status) {
-    if (Test-Path $pidFilePath) {
-        $savedPid = (Get-Content $pidFilePath -Raw).Trim()
+    if (Test-Path $pidFile) {
+        $savedPid = (Get-Content $pidFile -Raw).Trim()
         $proc = Get-Process -Id $savedPid -ErrorAction SilentlyContinue
         if ($proc) {
             Write-Host "$scriptLabel ATIVO (PID $savedPid)" -ForegroundColor Green
-            if (Test-Path $logFilePath) { Get-Content $logFilePath -Tail 5 }
+            if (Test-Path $logFile) { Get-Content $logFile -Tail 6 }
         } else {
-            Write-Host "$scriptLabel PID $savedPid encontrado mas processo morto." -ForegroundColor Yellow
-            Remove-Item $pidFilePath -Force -ErrorAction SilentlyContinue
+            Write-Host "$scriptLabel PID $savedPid encontrado mas morto." -ForegroundColor Yellow
+            Remove-Item $pidFile -Force -ErrorAction SilentlyContinue
         }
-    } else {
-        Write-Host "$scriptLabel INATIVO" -ForegroundColor Yellow
-    }
+    } else { Write-Host "$scriptLabel INATIVO" -ForegroundColor Yellow }
     return
 }
 
 # ─── Prevent duplicate ─────────────────────────────────────────────────
 $myPid = [System.Diagnostics.Process]::GetCurrentProcess().Id
-if (Test-Path $pidFilePath) {
-    $oldPid = (Get-Content $pidFilePath -Raw).Trim()
+if (Test-Path $pidFile) {
+    $oldPid = (Get-Content $pidFile -Raw).Trim()
     $oldProc = Get-Process -Id $oldPid -ErrorAction SilentlyContinue
-    if ($oldProc) {
-        Write-Host "$scriptLabel Ja esta rodando (PID $oldPid). Use -Stop primeiro." -ForegroundColor Yellow
-        return
-    }
-    Remove-Item $pidFilePath -Force -ErrorAction SilentlyContinue
+    if ($oldProc) { Write-Host "$scriptLabel Ja rodando (PID $oldPid). Use -Stop primeiro." -ForegroundColor Yellow; return }
+    Remove-Item $pidFile -Force -ErrorAction SilentlyContinue
 }
-$myPid | Out-File $pidFilePath -Encoding UTF8 -Force
+$myPid | Out-File $pidFile -Encoding UTF8 -Force
 
-Write-Log "=== VIGILANTE INICIADO (PID $myPid) ==="
-Write-Log "Monitorando: $learnDir"
-Write-Log "LER: $lerBase"
-
-$env:PYTHONPATH = "$lerBase;$env:PYTHONPATH"
-
-# ─── Ensure dirs exist ────────────────────────────────────────────────
+$env:PYTHONPATH = "$lerDir;$env:PYTHONPATH"
 if (-not (Test-Path $learnDir)) { New-Item -ItemType Directory -Path $learnDir -Force | Out-Null }
 
-# ─── Polling state ──────────────────────────────────────────────────────
-$knownHashes = @{}
-$ecoGitSyncFile = "$env:USERPROFILE\.vigilante.gitsync.eco"
-$lerGitSyncFile = "$env:USERPROFILE\.vigilante.gitsync.ler"
-$pollInterval = 30      # segundos entre polls
-$gitInterval = 300      # 5 min entre git sync
-$debounceSeconds = 3    # aguarda estabilizacao do arquivo
+Write-Log "=== VIGILANTE INICIADO (PID $myPid) ==="
+Write-Log "Eco: $ecoDir | LER: $lerDir"
 
-function Invoke-Register {
-    param($FilePath)
-    if (-not (Test-Path $FilePath)) { return }
-    $fileName = Split-Path $FilePath -Leaf
-    Write-Log "Novo aprendizado: $fileName"
+# ══════════════════════════════════════════════════════════════════════
+# WATCHER: FileSystemWatcher para aprendizado (tempo real, sem polling)
+# ══════════════════════════════════════════════════════════════════════
+$watcher = New-Object System.IO.FileSystemWatcher
+$watcher.Path = $learnDir
+$watcher.Filter = "*.md"
+$watcher.IncludeSubdirectories = $false
+$watcher.EnableRaisingEvents = $true
 
-    try {
-        $result = python -c @"
-import sys
-sys.path.insert(0, r'$lerBase')
+# Timer de debounce (300ms) para evitar multiplos eventos no mesmo arquivo
+$debounce = New-Object System.Timers.Timer
+$debounce.Interval = 300
+$debounce.AutoReset = $false
+$pendingFiles = New-Object System.Collections.Generic.List[string]
+
+$onEvent = {
+    $path = $Event.SourceArgs[1].FullPath
+    $pendingFiles.Add($path)
+    $debounce.Stop()
+    $debounce.Start()
+}
+
+$onDebounce = {
+    $debounce.Stop()
+    $unique = $pendingFiles.ToArray() | Select-Object -Unique
+    $pendingFiles.Clear()
+    foreach ($file in $unique) {
+        if (-not (Test-Path $file)) { continue }
+        $fileName = Split-Path $file -Leaf
+        Write-Log "Novo aprendizado: $fileName"
+        try {
+            $python = @"
+import sys, os
+sys.path.insert(0, r'$lerDir')
 from agent.knowledge_consolidator import register_learning
-register_learning(r'$FilePath')
+with open(r'$file', encoding='utf-8') as f: register_learning(r'$file')
 print('OK')
-"@ 2>&1
-        Write-Log "Consolidator: $result"
-    } catch {
-        Write-Log "ERRO: $_"
+"@
+            $result = python -c $python 2>&1
+            Write-Log "Consolidator: $result"
+        } catch { Write-Log "ERRO: $_" }
     }
 }
 
-function Invoke-GitSync {
-    param([string]$RepoPath, [string]$Label, [string]$SyncFile, [switch]$Push)
+# Registrar eventos
+Register-ObjectEvent $watcher "Created" -Action $onEvent > $null
+Register-ObjectEvent $watcher "Changed" -Action $onEvent > $null
+Register-ObjectEvent $debounce "Elapsed" -Action $onDebounce > $null
+
+# ══════════════════════════════════════════════════════════════════════
+# GIT SYNC: Push + Pull automatico (5 min)
+# ══════════════════════════════════════════════════════════════════════
+$ecoLastSync = [datetime]::MinValue
+$lerLastSync = [datetime]::MinValue
+
+function Sync-GitRepo {
+    param([string]$Path, [string]$Label, [switch]$Push, [ref]$LastSync)
     $now = Get-Date
-    $lastSync = if (Test-Path $SyncFile) { Get-Content $SyncFile -Raw -ErrorAction SilentlyContinue | ForEach-Object { try { [datetime]$_ } catch { [datetime]::MinValue } } } else { [datetime]::MinValue }
-    if ($lastSync -eq $null) { $lastSync = [datetime]::MinValue }
-    $elapsed = [math]::Round(($now - $lastSync).TotalSeconds)
-    if ($elapsed -lt $gitInterval) { return }
+    if (($now - $LastSync.Value).TotalSeconds -lt $gitInterval) { return }
 
     try {
-        Push-Location $RepoPath -ErrorAction Stop
-        $gitStatus = git status --porcelain 2>&1 | Out-String
-        if ($gitStatus.Trim()) {
-            git add -A 2>&1 | Out-Null
-            $dateStr = Get-Date -Format "yyyy-MM-dd HH:mm"
-            $msg = "[auto] $Label - $dateStr"
-            git commit -m $msg 2>&1 | Out-Null
-            if ($Push) { git push 2>&1 | Out-Null }
-            Write-Log "Git sync ($Label): commit + push OK"
-        }
-        Pop-Location
-        (Get-Date).ToString("o") | Out-File $SyncFile -Encoding UTF8 -Force
-    } catch {
-        Write-Log "Git sync ($Label) ignorado: $_"
-    }
-}
+        Push-Location $Path -ErrorAction Stop
 
-Write-Log "Vigilante pronto (polling a cada ${pollInterval}s)."
-
-# ─── Keep alive: polling loop ─────────────────────────────────────────
-while ($true) {
-    try {
-        Start-Sleep -Seconds $pollInterval
-
-        # Poll for new/modified files
-        if (Test-Path $learnDir) {
-            $files = Get-ChildItem $learnDir -Filter "*.md" -ErrorAction Stop
-            foreach ($f in $files) {
-                try {
-                    $hash = Get-FileHash $f.FullName -Algorithm MD5 -ErrorAction Stop
-                    $key = $f.FullName.ToLower()
-                    $lastHash = $knownHashes[$key]
-
-                    if ($lastHash -ne $hash.Hash) {
-                        $knownHashes[$key] = $hash.Hash
-                        Start-Sleep -Seconds $debounceSeconds
-                        if (Test-Path $f.FullName) {
-                            Invoke-Register $f.FullName
-                        }
-                    }
-                } catch {
-                    Write-Log "Erro processando $($f.Name): $_"
-                }
+        # PULL primeiro (traz mudancas remotas)
+        if ($Push) {
+            $pullOut = git pull --ff-only 2>&1
+            if ($LASTEXITCODE -eq 0 -and $pullOut -match "Fast-forward|Updating") {
+                Write-Log "Git pull ($Label): ${pullOut}"
             }
         }
 
-        Invoke-GitSync -RepoPath $ecoDir -Label "EcoSystemUmGrau" -SyncFile $ecoGitSyncFile -Push
-        Invoke-GitSync -RepoPath $lerDir -Label "LER" -SyncFile $lerGitSyncFile
-    } catch {
-        Write-Log "Erro no loop principal: $_"
-        Write-Log "Detalhes: $($_.ScriptStackTrace)"
-    }
+        # Depois COMMIT + PUSH (se houver mudancas locais)
+        $status = git status --porcelain 2>&1 | Out-String
+        if ($status.Trim()) {
+            git add -A 2>&1 | Out-Null
+            $dateStr = Get-Date -Format "yyyy-MM-dd HH:mm"
+            git commit -m "[auto] $Label - $dateStr" 2>&1 | Out-Null
+            if ($Push) {
+                $pushOut = git push 2>&1
+                Write-Log "Git sync ($Label): commit + push OK"
+            } else {
+                Write-Log "Git sync ($Label): commit local OK"
+            }
+        }
+
+        Pop-Location
+        $LastSync.Value = $now
+    } catch { Write-Log "Git sync ($Label) ignorado: $_" }
 }
+
+Write-Log "Vigilante pronto (FSW + git sync a cada ${gitInterval}s)"
+
+# ══════════════════════════════════════════════════════════════════════
+# LOOP PRINCIPAL: timer de sincronizacao git
+# ══════════════════════════════════════════════════════════════════════
+$gitTimer = New-Object System.Timers.Timer
+$gitTimer.Interval = 30000  # check a cada 30s (mas so executa a cada 300s)
+$gitTimer.AutoReset = $true
+
+$onGitSync = {
+    Sync-GitRepo -Path $ecoDir -Label "EcoSystemUmGrau" -Push -LastSync ([ref]$ecoLastSync)
+    Sync-GitRepo -Path $lerDir -Label "LER" -LastSync ([ref]$lerLastSync)
+}
+
+Register-ObjectEvent $gitTimer "Elapsed" -Action $onGitSync > $null
+$gitTimer.Start()
+
+# Mantem vivo
+while ($true) { Start-Sleep -Seconds 10 }
