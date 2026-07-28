@@ -5,17 +5,19 @@
 .DESCRIPTION
     ecosystem sync   → pull + push forcado em EcoSystemUmGrau e LER
     ecosystem scan   → varre projetos Android e extrai patterns/conhecimento
+    ecosystem repair → reconstrói knowledge graph dos aprendizados crus + limpa runtime
     ecosystem status → status completo de todos os componentes
     ecosystem help   → esta ajuda
 .EXAMPLE
     ecosystem sync
     ecosystem scan
+    ecosystem repair
     ecosystem status
 #>
 
 param(
     [Parameter(Position = 0)]
-    [ValidateSet("sync", "scan", "status", "help")]
+    [ValidateSet("sync", "scan", "repair", "status", "help")]
     [string]$Command = "help"
 )
 
@@ -184,14 +186,100 @@ function Invoke-Status {
 }
 
 # ══════════════════════════════════════════════════════════════════════
+# REPAIR
+# ══════════════════════════════════════════════════════════════════════
+function Invoke-Repair {
+    Write-Step "Reconstruindo knowledge graph dos aprendizados crus"
+
+    $env:PYTHONPATH = "$lerDir;$env:PYTHONPATH"
+
+    # 1. Recreate runtime directories if missing
+    Write-Step "Verificando diretorios runtime"
+    $runtimeDirs = @("$lerDir\checkpoints", "$lerDir\logs", "$lerDir\memory", "$lerDir\reports", "$lerDir\projects")
+    foreach ($dir in $runtimeDirs) {
+        if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir -Force | Out-Null; Write-OK "Recriado: $dir" }
+    }
+
+    # 2. Check if knowledge_graph.json is valid
+    Write-Step "Verificando integridade do knowledge graph"
+    $graphFile = "$lerDir\knowledge\knowledge_graph.json"
+    if (Test-Path $graphFile) {
+        try {
+            $graph = Get-Content $graphFile -Raw -Encoding UTF8 | ConvertFrom-Json
+            Write-OK "Knowledge graph valido ($(($graph | Measure-Object).Count) entradas)"
+        } catch {
+            Write-Err "Knowledge graph corrompido! Reconstruindo..."
+            Remove-Item $graphFile -Force
+        }
+    } else {
+        Write-Info "Knowledge graph nao encontrado - sera criado"
+    }
+
+    # 3. Re-register all aprendizado files
+    Write-Step "Re-registrando aprendizados em $learnDir"
+    $files = Get-ChildItem $learnDir -Filter "*.md" -ErrorAction SilentlyContinue | Sort-Object Name
+    if (-not $files) { Write-Info "Nenhum aprendizado encontrado"; return }
+
+    $count = 0
+    $errors = 0
+    foreach ($f in $files) {
+        try {
+            $python = @"
+import sys, os, json
+sys.path.insert(0, r'$lerDir')
+from agent.knowledge_consolidator import register_learning
+register_learning(r'$($f.FullName)')
+print('OK')
+"@
+            $result = python -c $python 2>&1
+            if ($result -eq "OK") { $count++ } else { throw $result }
+        } catch {
+            Write-Err "  Falha em $($f.Name): $_"
+            $errors++
+        }
+    }
+    Write-OK "$count aprendizados registrados"
+
+    # 4. Export CONHECIMENTO.md
+    Write-Step "Exportando CONHECIMENTO.md"
+    try {
+        python -c "import sys; sys.path.insert(0, r'$lerDir'); from agent.knowledge_consolidator import export_markdown; export_markdown()" 2>&1
+        Write-OK "CONHECIMENTO.md atualizado"
+    } catch { Write-Err "Falha na exportacao: $_" }
+
+    # 5. Summary
+    $newGraph = Get-ChildItem $graphFile -ErrorAction SilentlyContinue
+    if ($newGraph) {
+        $kbSize = [math]::Round($newGraph.Length / 1KB, 1)
+        $entries = (Get-Content $graphFile -Raw -Encoding UTF8 | ConvertFrom-Json | Measure-Object).Count
+        Write-OK "Knowledge graph: ${kbSize}KB, $entries entradas"
+    }
+
+    if ($errors -gt 0) { Write-Err "$errors erros durante reparo" }
+    else { Write-OK "Reparo concluido sem erros" }
+
+    # 6. Git commit
+    Write-Step "Versionando reparo"
+    Push-Location $ecoDir
+    $status = git status --porcelain
+    if ($status) {
+        git add -A
+        git commit -m "[ecosystem repair] $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
+        Write-OK "Commit realizado"
+    } else { Write-OK "Nada a commitar" }
+    Pop-Location
+}
+
+# ══════════════════════════════════════════════════════════════════════
 # MAIN
 # ══════════════════════════════════════════════════════════════════════
 switch ($Command) {
     "sync"   { Invoke-Sync }
     "scan"   { Invoke-Scan }
+    "repair" { Invoke-Repair }
     "status" { Invoke-Status }
     default {
         Get-Help $PSCommandPath -Detailed
-        Write-Host "`nUso: ecosystem [sync|scan|status|help]" -ForegroundColor Yellow
+        Write-Host "`nUso: ecosystem [sync|scan|repair|status|help]" -ForegroundColor Yellow
     }
 }

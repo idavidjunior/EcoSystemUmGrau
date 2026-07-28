@@ -1,6 +1,6 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-07-27T22:58:47.490630
+**Exportado em:** 2026-07-27T23:12:18.684846
 **Projetos:** 4
 **Padroes Tecnicos:** 70
 **Decisoes:** 39
@@ -8,7 +8,7 @@
 **Padroes Cognitivos:** 21
 **Heuristicas:** 31
 **Frameworks:** 10
-**Missoes Aprendidas:** 24
+**Missoes Aprendidas:** 28
 
 ---
 
@@ -704,7 +704,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-07-27T22:58:47.467871
+**Ultima atualizacao:** 2026-07-27T23:12:18.397983
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*
