@@ -10,10 +10,12 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("vox")
 
 OPENCODE_URL = "http://127.0.0.1:4096"
-TTS_VOICE = "pt-BR-AntonioNeural"
+TTS_VOICE = "en-US-AndrewMultilingualNeural"
+TTS_PITCH = "-30Hz"
+TTS_RATE = "+0%"
 
 async def gerar_audio(texto):
-    communicate = edge_tts.Communicate(texto, TTS_VOICE)
+    communicate = edge_tts.Communicate(texto, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
     audio = b""
     async for chunk in communicate.stream():
         if chunk["type"] == "audio":
