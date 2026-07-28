@@ -21,9 +21,9 @@ param(
     [string]$Command = "help"
 )
 
-$ecoDir = "C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau"
+$ecoDir = "$env:USERPROFILE\Desktop\Codigos\EcoSystemUmGrau"
 $lerDir = "$ecoDir\ler-runtime"
-$projectsDir = "C:\Users\Playtec-bancada\Desktop\Codigos\Android"
+$projectsDir = "$env:USERPROFILE\Desktop\Codigos\Android"
 $learnDir = "$ecoDir\conhecimento\aprendizados"
 
 function Write-Step { param($Msg) Write-Host "`n>>> $Msg" -ForegroundColor Cyan }
@@ -171,7 +171,7 @@ function Invoke-Status {
     Write-OK "Aprendizados registrados: $(($aprendizados | Measure-Object).Count)"
 
     # Projetos Android
-    $projects = Get-ChildItem "C:\Users\Playtec-bancada\Desktop\Codigos\Android" -Directory -ErrorAction SilentlyContinue
+    $projects = Get-ChildItem $projectsDir -Directory -ErrorAction SilentlyContinue
     Write-OK "Projetos Android: $(($projects | Measure-Object).Count)"
 
     # Git remotes

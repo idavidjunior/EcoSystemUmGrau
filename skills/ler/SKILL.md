@@ -23,8 +23,25 @@ ler --fix                        # Escanear + aplicar correcoes auto-aplicaveis
 ler --learn                      # Consolidar conhecimento (skills + memorias + git log)
 ```
 
-**Localizacao:** `C:\Users\Playtec-bancada\.ler\` (independente do workspace)
-**Launcher:** `C:\Users\Playtec-bancada\.local\bin\ler.bat` (ja no PATH)
+**Localizacao:** `{USERPROFILE}\Desktop\Codigos\EcoSystemUmGrau\ler-runtime\` (junction em `~/.ler/`)
+**Launcher:** `{USERPROFILE}\.local\bin\ler.bat` (ja no PATH)
+
+## Arquitetura: LER ≠ OpenCode (sao complementares)
+
+LER e OpenCode NAO duplicam funcionalidade. Cada um tem um proposito distinto:
+
+| Camada | LER | OpenCode |
+|---|---|---|
+| **O que é** | Engine de loop autonoma (Python) | CLI de agente LLM (Node.js) |
+| **Componentes** | Engine modules: Planner, Executor, Validator, etc. (código Python, sem LLM) | Agentes: Estrategista, Executor, Revisor, etc. (prompts LLM, com custo de tokens) |
+| **Quando usar** | Tarefas que exigem loop, exploração, risco de perda de contexto | Tarefas diretas: editar código, responder perguntas, revisar PR |
+| **Custo** | ~0 (roda local, sem chamadas de API para engine modules) | Cada agente consome tokens (API calls) |
+| **Velocidade** | Rapido (Python nativo) | Lento (depende do modelo LLM) |
+| **Integração** | Invocado via `ler "missao"` ou 11-LER-Executor | Invocado via OpenCode, orquestrado pelo Maestro |
+
+**Regra:** LER engine modules executam a mecanica do loop autonomo.
+OpenCode agents fornecem raciocinio e tomada de decisao com LLM.
+Nao ha duplicacao — ha especializacao.
 
 ## Princípios
 
