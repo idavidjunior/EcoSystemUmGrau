@@ -148,9 +148,9 @@ function Invoke-Status {
     # Vigilante
     $pidFile = "$env:USERPROFILE\.vigilante.pid"
     if (Test-Path $pidFile) {
-        $pid = (Get-Content $pidFile -Raw).Trim()
-        $proc = Get-Process -Id $pid -ErrorAction SilentlyContinue
-        if ($proc) { Write-OK "Vigilante: ATIVO (PID $pid)" } else { Write-Err "Vigilante: PID encontrado mas morto" }
+        $vigPid = (Get-Content $pidFile -Raw).Trim()
+        $proc = Get-Process -Id $vigPid -ErrorAction SilentlyContinue
+        if ($proc) { Write-OK "Vigilante: ATIVO (PID $vigPid)" } else { Write-Err "Vigilante: PID encontrado mas morto" }
     } else { Write-Info "Vigilante: INATIVO" }
 
     # LER
