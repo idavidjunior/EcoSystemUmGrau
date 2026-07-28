@@ -1,14 +1,14 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-07-27T23:12:18.684846
+**Exportado em:** 2026-07-27T23:24:40.241074
 **Projetos:** 4
 **Padroes Tecnicos:** 70
 **Decisoes:** 39
 **Bug Fixes:** 46
-**Padroes Cognitivos:** 21
+**Padroes Cognitivos:** 22
 **Heuristicas:** 31
 **Frameworks:** 10
-**Missoes Aprendidas:** 28
+**Missoes Aprendidas:** 33
 
 ---
 
@@ -611,6 +611,19 @@ Tempos de carregamento variam por tipo: HTML inicial (rede), CSS (bloqueante ate
 - config/opencode-model-fallback.jsonc: config do plugin fallback
 - Vigilante atualizado:
 
+### ﻿# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema
+**Dominio:** general
+**Fonte:** opencode
+
+﻿# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema
+
+## Problemas resolvidos
+1. **Paths fixos**: vigilante.ps1, ecosystem.ps1, SKILL.md agora usam env:USERPROFILE
+2. **LER vs OpenCode**: documentado que LER tem engine MODULES (Python), OpenCode tem AGENTES (LLM). Sao complementares, nao duplicados.
+3. **ecosystem learn**: varredura proativa que escaneia projetos Android + registra no knowledge graph
+4. **Vigilante aprende sozinho**: timer diario executa ecosystem learn automaticamente
+5.
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -704,7 +717,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-07-27T23:12:18.397983
+**Ultima atualizacao:** 2026-07-27T23:24:40.003289
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*
