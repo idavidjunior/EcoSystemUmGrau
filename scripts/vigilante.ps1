@@ -76,25 +76,14 @@ if (-not (Test-Path $learnDir)) { New-Item -ItemType Directory -Path $learnDir -
 
 # ─── Polling state ──────────────────────────────────────────────────────
 $knownHashes = @{}
-$script:lastGitPush = [datetime]::MinValue
+$gitSyncFile = "$env:USERPROFILE\.vigilante.gitsync"
 $pollInterval = 30      # segundos entre polls
 $gitInterval = 300      # 5 min entre git sync
 $debounceSeconds = 3    # aguarda estabilizacao do arquivo
 
 function Invoke-Register {
     param($FilePath)
-    $now = Get-Date
-    $key = $FilePath.ToLower()
-    if ($script:debounceTable.ContainsKey($key)) {
-        $elapsed = [math]::Round(($now - $script:debounceTable[$key]).TotalSeconds)
-        if ($elapsed -lt 3) { return }
-    }
-    $script:debounceTable[$key] = $now
-
     if (-not (Test-Path $FilePath)) { return }
-    $content = Get-Content $FilePath -Raw -Encoding UTF8 -ErrorAction SilentlyContinue
-    if ([string]::IsNullOrWhiteSpace($content)) { return }
-
     $fileName = Split-Path $FilePath -Leaf
     Write-Log "Novo aprendizado: $fileName"
 
@@ -114,9 +103,10 @@ print('OK')
 
 function Invoke-GitSync {
     $now = Get-Date
-    $elapsed = [math]::Round(($now - $script:lastGitPush).TotalSeconds)
-    if ($elapsed -lt $script:gitInterval) { return }
-    $script:lastGitPush = $now
+    $lastSync = if (Test-Path $gitSyncFile) { Get-Content $gitSyncFile -Raw -ErrorAction SilentlyContinue | ForEach-Object { try { [datetime]$_ } catch { [datetime]::MinValue } } } else { [datetime]::MinValue }
+    if ($lastSync -eq $null) { $lastSync = [datetime]::MinValue }
+    $elapsed = [math]::Round(($now - $lastSync).TotalSeconds)
+    if ($elapsed -lt $gitInterval) { return }
 
     try {
         Push-Location $ecoDir -ErrorAction Stop
@@ -130,6 +120,7 @@ function Invoke-GitSync {
             Write-Log "Git sync: commit + push OK"
         }
         Pop-Location
+        (Get-Date).ToString("o") | Out-File $gitSyncFile -Encoding UTF8 -Force
     } catch {
         Write-Log "Git sync ignorado: $_"
     }
