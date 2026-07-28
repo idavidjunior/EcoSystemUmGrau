@@ -1,4 +1,4 @@
-# Snapshot do Ecossistema — 2026-07-27 (v7 - Setup Plug & Play)
+# Snapshot do Ecossistema — 2026-07-27 (v8 - Unificado + FSW + ecosystem.ps1)
 
 > Estado funcional com sistema automático de captura de conhecimento em 3 camadas.
 > Skills unificadas em EcoSystemUmGrau/skills/. VAULT_PATH redirecionado.

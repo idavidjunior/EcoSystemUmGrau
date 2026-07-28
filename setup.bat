@@ -27,7 +27,7 @@ echo.
 
 :: ─── Diretorios ─────────────────────────────────────────
 set ECO_DIR=%USERPROFILE%\Desktop\Codigos\EcoSystemUmGrau
-set LER_DIR=%USERPROFILE%\.ler
+set LER_DIR=%ECO_DIR%\ler-runtime
 set OCODE_DIR=%USERPROFILE%\.config\opencode
 set AGENTS_SRC=%ECO_DIR%\config\agents
 set PROFILE_DIR=%USERPROFILE%\Documents\WindowsPowerShell
@@ -78,15 +78,15 @@ xcopy /E /Y "%AGENTS_SRC%\*" "%OCODE_DIR%\agents\" >nul
 echo [OK] Agents copiados (fonte: repo/config/agents/)
 echo.
 
-:: ─── 4. Configurar LER Runtime ─────────────────────────
-echo [4/7] Configurando LER runtime em %LER_DIR%...
-if not exist "%LER_DIR%" (
-    mkdir "%LER_DIR%"
-    git init "%LER_DIR%"
-    git -C "%LER_DIR%" config user.email "ecosystem@umgrau.ao"
-    git -C "%LER_DIR%" config user.name "EcoSystemUmGrau"
-    echo [OK] LER runtime iniciado (git init)
-) else ( echo [OK] LER runtime ja existe )
+:: ─── 4. LER Runtime (vem dentro do repo) ────────────────
+echo [4/7] Verificando LER runtime em %LER_DIR%...
+if exist "%LER_DIR%\run.py" (
+    echo [OK] LER runtime: %LER_DIR%
+    if not exist "%USERPROFILE%\.ler" (
+        cmd /c "mklink /J `"%USERPROFILE%\.ler`" `"%LER_DIR%`"" >nul
+        echo [OK] Junction ~/.ler/ criada para compatibilidade
+    )
+) else ( echo [AVISO] LER runtime nao encontrado em %LER_DIR%. Ja deve vir clonado. )
 echo.
 
 :: ─── 5. Instalar Plugin Fallback ───────────────────────
@@ -122,6 +122,11 @@ if %errorlevel% neq 0 (
         echo }
         echo function stop-vigilante  { powershell -NoProfile -ExecutionPolicy Bypass -File "%ECO_DIR%\scripts\vigilante.ps1" -Stop }
         echo function status-vigilante { powershell -NoProfile -ExecutionPolicy Bypass -File "%ECO_DIR%\scripts\vigilante.ps1" -Status }
+        echo function ecosystem {
+        echo     $script = "%ECO_DIR%\scripts\ecosystem.ps1"
+        echo     if ^(Test-Path $script^) { ^& $script @args }
+        echo     else { Write-Host "[ERRO] ecosystem.ps1 nao encontrado" -ForegroundColor Red }
+        echo }
         echo.
         echo start-vigilante
     ) >> "%PROFILE_PS1%"
@@ -161,8 +166,10 @@ echo.
 echo   Proximos passos:
 echo     1. Feche e reabra o PowerShell
 echo     2. Teste: opencode --version
-echo     3. Status: status-vigilante
-echo     4. Use:   opencode
+echo     3. Status: ecosystem status
+echo     4. Sync:  ecosystem sync
+echo     5. Scan:  ecosystem scan
+echo     6. Use:   opencode
 echo.
 echo   Repositorio: https://github.com/idavidjunior/EcoSystemUmGrau
 echo ====================================================
