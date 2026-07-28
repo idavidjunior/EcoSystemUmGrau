@@ -1,4 +1,4 @@
-# Snapshot do Ecossistema — 2026-07-27 (v8 - Unificado + FSW + ecosystem.ps1)
+# Snapshot do Ecossistema — 2026-07-27 (v9 - Maestro real + repair + ler-runtime enxuto)
 
 > Estado funcional com sistema automático de captura de conhecimento em 3 camadas.
 > Skills unificadas em EcoSystemUmGrau/skills/. VAULT_PATH redirecionado.
@@ -21,19 +21,28 @@
 > clona, instala OpenCode, gera configs, configura LER, pergunta API Keys.
 > Unico comando: `git clone ... && cd EcoSystemUmGrau && setup.bat`
 >
-> ## LER UNIFICADO NO REPO
-> `~/.ler/` é junction → `EcoSystemUmGrau/ler-runtime/`. Tudo versionado
-> junto, sem repositório separado. Nada se perde se o PC morrer.
+> ## LER ENXUTO (64 ARQUIVOS, SÓ CÓDIGO + CONFIG + CONHECIMENTO)
+> Checkpoints, logs, memória de missão e relatórios foram removidos do
+> versionamento (.gitignore restritivo). Só o que importa: .py, configs,
+> knowledge_graph.json, CONHECIMENTO.md.
+>
+> ## MAESTRO COM MATRIZ DE DECISÃO
+> Rota A (OpenCode): tarefa simples, 1-3 arquivos, resultado óbvio.
+> Rota B (LER): multi-passo, exploração, loop, 4+ arquivos, >15min.
+> Rota C (Híbrido): começa A, vira B se o contexto crescer.
+>
+> ## ECOSYSTEM REPAIR
+> Reconstrói o knowledge_graph.json a partir dos .md crus em
+> conhecimento/aprendizados/. Útil se o grafo corromper.
 >
 > ## VIGILANTE COM FILESYSTEMWATCHER
-> Não faz mais polling. Reage em tempo real a qualquer mudança nos
-> aprendizados. Sync bidirecional: pull antes, commit+push depois.
-> Git sync a cada 5 min (timer, não polling de arquivo).
+> Tempo real (sem polling), sync bidirecional (pull → commit → push).
 >
-> ## ECOSYSTEM.PS1 — COMANDO CENTRAL
-> ecosystem sync   → pull + push forcado em ambos os repos
-> ecosystem scan   → varre projetos, extrai metrics, registra aprendizado
-> ecosystem status → status completo de todos os componentes
+> ## ECOSYSTEM.PS1 — 4 COMANDOS
+> ecosystem sync    → pull + push forcado
+> ecosystem scan    → varre projetos, extrai métricas
+> ecosystem repair  → reconstrói knowledge graph dos aprendizados crus
+> ecosystem status  → status completo
 
 ### Arquitetura final do conhecimento automático
 
