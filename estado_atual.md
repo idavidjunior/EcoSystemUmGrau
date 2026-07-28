@@ -1,7 +1,11 @@
-# Snapshot do Ecossistema — 2026-07-27 (v6 - GitHub completo)
+# Snapshot do Ecossistema — 2026-07-27 (v7 - Setup Plug & Play)
 
 > Estado funcional com sistema automático de captura de conhecimento em 3 camadas.
 > Skills unificadas em EcoSystemUmGrau/skills/. VAULT_PATH redirecionado.
+>
+> ## FONTE ÚNICA: O REPOSITÓRIO
+> Toda config, agente e skill vive no repo `EcoSystemUmGrau/config/` e `skills/`.
+> Nada duplicado. setup.bat gera os arquivos no destino a partir dos templates.
 >
 > ## REGRA OBRIGATÓRIA: TESTAR SEMPRE
 > Toda alteração no opencode.jsonc, plugins, agents ou skills deve ser testada
@@ -12,9 +16,14 @@
 > troca automaticamente para o próximo modelo na cadeia (nvidia/deepseek-v3.1)
 > sem intervenção manual. Cooldown de 60s com auto-recovery.
 >
-> ## VIGILANTE — AUTO-APRENDIZADO + GIT SYNC (ECO + LER)
-> O vigilante.ps1 sincroniza automaticamente os dois repositórios:
-> EcoSystemUmGrau (git push cada 5min) + LER (~/.ler/ com remote GitHub).
+> ## SETUP.BAT — PLUG & PLAY
+> `setup.bat` na raiz do repo faz tudo automaticamente em PC novo:
+> clona, instala OpenCode, gera configs, configura LER, pergunta API Keys.
+> Unico comando: `git clone ... && cd EcoSystemUmGrau && setup.bat`
+>
+> ## VIGILANTE — AUTO-APRENDIZADO + GIT SYNC
+> Sincroniza automaticamente o EcoSystemUmGrau (git push cada 5min).
+> LER nao tem remote proprio — o conhecimento viaja no EcoSystemUmGrau.
 
 ### Arquitetura final do conhecimento automático
 
@@ -39,21 +48,25 @@ Maestro (passo 11 obrigatório)
 
 ## 1. Estrutura de Pastas
 
-### `Desktop/Codigos/` (projetos) — todos com remote GitHub
-```
-Android/
-├── Biblia/              → idavidjunior/BibliaEstudoCompleta
-├── CellCleaner/         → idavidjunior/CellCleaner
-├── Mp3Player/           → idavidjunior/Mp3Player
-├── SupermarketCalculator/ → idavidjunior/SupermarketCalculator
-Midia/               # (vazio, neutro)
-EcoSystemUmGrau/     → idavidjunior/EcoSystemUmGrau (ecossistema)
-```
+### GitHub (12 repos, 1 ecossistema)
 
-### `~/.ler/` — agora com remote
-```
-LER runtime           → idavidjunior/LER
-```
+| Repo | Local | Tipo |
+|---|---|---|
+| `EcoSystemUmGrau` | `Desktop\Codigos\EcoSystemUmGrau\` | **Ecossistema** (config, agents, skills, setup.bat) |
+| `Mp3Player` | `Desktop\Codigos\Android\Mp3Player\` | Android/Kotlin |
+| `CellCleaner` | `Desktop\Codigos\Android\CellCleaner\` | Android/Java |
+| `SupermarketCalculator` | `Desktop\Codigos\Android\SupermarketCalculator\` | Android/Java |
+| `BibliaEstudoCompleta` | `Desktop\Codigos\Android\Biblia\` | Android/Java |
+| `WindowsMaintenanceSuite_v3` | (so remoto) | PowerShell |
+| `OrquestradorAPK-FLUTTER` | (so remoto) | Python |
+| `compiladorAPK` | `~/.apk_compiler\` | PowerShell |
+| `roboumgrau` | (so remoto) | HTML |
+| `Rob-Trader` | (so remoto) | JS |
+| `claude-code-extra-agents` | (so remoto) | Python |
+
+> **LER runtime** (`~/.ler/`) nao tem remote proprio. O conhecimento
+> viaja no EcoSystemUmGrau via conhecimento/aprendizados/ + CONHECIMENTO.md.
+> setup.bat inicializa o LER em qualquer maquina.
 
 ### `Desktop/Codigos/EcoSystemUmGrau/` (ecossistema)
 ```

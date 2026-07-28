@@ -1,0 +1,12 @@
+{
+  // Plugin config for @razroo/opencode-model-fallback
+  "enabled": true,
+  "retry_on_errors": [429, 500, 502, 503, 504],
+  "cooldown_seconds": 60,
+  "timeout_seconds": 30,
+  "notify_on_fallback": true,
+  // Global chain: used when an agent has no per-agent fallback_models
+  "fallback_models": [
+    "nvidia/deepseek-ai/deepseek-v3.1"
+  ]
+}

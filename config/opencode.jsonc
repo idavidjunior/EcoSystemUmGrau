@@ -1,0 +1,22 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "file:///{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/plugins/ponytail/.opencode/plugins/ponytail.mjs",
+    "@razroo/opencode-model-fallback"
+  ],
+  "provider": {
+    "nvidia": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "NVIDIA",
+      "options": {
+        "baseURL": "https://integrate.api.nvidia.com/v1",
+        "apiKey": "{env:NVIDIA_API_KEY}"
+      }
+    }
+  },
+  "instructions": [
+    "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/skills/*/SKILL.md",
+    "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/skills/**/SKILL.md",
+    "{{USERPROFILE}}/.ler/CONHECIMENTO.md"
+  ]
+}

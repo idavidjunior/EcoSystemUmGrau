@@ -104,7 +104,7 @@ print('OK')
 }
 
 function Invoke-GitSync {
-    param([string]$RepoPath, [string]$Label, [string]$SyncFile)
+    param([string]$RepoPath, [string]$Label, [string]$SyncFile, [switch]$Push)
     $now = Get-Date
     $lastSync = if (Test-Path $SyncFile) { Get-Content $SyncFile -Raw -ErrorAction SilentlyContinue | ForEach-Object { try { [datetime]$_ } catch { [datetime]::MinValue } } } else { [datetime]::MinValue }
     if ($lastSync -eq $null) { $lastSync = [datetime]::MinValue }
@@ -119,7 +119,7 @@ function Invoke-GitSync {
             $dateStr = Get-Date -Format "yyyy-MM-dd HH:mm"
             $msg = "[auto] $Label - $dateStr"
             git commit -m $msg 2>&1 | Out-Null
-            git push 2>&1 | Out-Null
+            if ($Push) { git push 2>&1 | Out-Null }
             Write-Log "Git sync ($Label): commit + push OK"
         }
         Pop-Location
@@ -158,7 +158,7 @@ while ($true) {
             }
         }
 
-        Invoke-GitSync -RepoPath $ecoDir -Label "EcoSystemUmGrau" -SyncFile $ecoGitSyncFile
+        Invoke-GitSync -RepoPath $ecoDir -Label "EcoSystemUmGrau" -SyncFile $ecoGitSyncFile -Push
         Invoke-GitSync -RepoPath $lerDir -Label "LER" -SyncFile $lerGitSyncFile
     } catch {
         Write-Log "Erro no loop principal: $_"
