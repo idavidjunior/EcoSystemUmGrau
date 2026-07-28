@@ -9,7 +9,8 @@ $pidFilePath = "$env:USERPROFILE\.vigilante.pid"
 $logFilePath = "$env:USERPROFILE\.vigilante.log"
 $learnDir = "C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau\conhecimento\aprendizados"
 $ecoDir = "C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau"
-$lerBase = "C:\Users\Playtec-bancada\.ler"
+$lerDir = "C:\Users\Playtec-bancada\.ler"
+$lerBase = $lerDir
 
 function Write-Log {
     param($Msg)
@@ -76,7 +77,8 @@ if (-not (Test-Path $learnDir)) { New-Item -ItemType Directory -Path $learnDir -
 
 # ─── Polling state ──────────────────────────────────────────────────────
 $knownHashes = @{}
-$gitSyncFile = "$env:USERPROFILE\.vigilante.gitsync"
+$ecoGitSyncFile = "$env:USERPROFILE\.vigilante.gitsync.eco"
+$lerGitSyncFile = "$env:USERPROFILE\.vigilante.gitsync.ler"
 $pollInterval = 30      # segundos entre polls
 $gitInterval = 300      # 5 min entre git sync
 $debounceSeconds = 3    # aguarda estabilizacao do arquivo
@@ -102,27 +104,28 @@ print('OK')
 }
 
 function Invoke-GitSync {
+    param([string]$RepoPath, [string]$Label, [string]$SyncFile)
     $now = Get-Date
-    $lastSync = if (Test-Path $gitSyncFile) { Get-Content $gitSyncFile -Raw -ErrorAction SilentlyContinue | ForEach-Object { try { [datetime]$_ } catch { [datetime]::MinValue } } } else { [datetime]::MinValue }
+    $lastSync = if (Test-Path $SyncFile) { Get-Content $SyncFile -Raw -ErrorAction SilentlyContinue | ForEach-Object { try { [datetime]$_ } catch { [datetime]::MinValue } } } else { [datetime]::MinValue }
     if ($lastSync -eq $null) { $lastSync = [datetime]::MinValue }
     $elapsed = [math]::Round(($now - $lastSync).TotalSeconds)
     if ($elapsed -lt $gitInterval) { return }
 
     try {
-        Push-Location $ecoDir -ErrorAction Stop
+        Push-Location $RepoPath -ErrorAction Stop
         $gitStatus = git status --porcelain 2>&1 | Out-String
         if ($gitStatus.Trim()) {
             git add -A 2>&1 | Out-Null
             $dateStr = Get-Date -Format "yyyy-MM-dd HH:mm"
-            $msg = "[auto] Sincronizacao $dateStr"
+            $msg = "[auto] $Label - $dateStr"
             git commit -m $msg 2>&1 | Out-Null
             git push 2>&1 | Out-Null
-            Write-Log "Git sync: commit + push OK"
+            Write-Log "Git sync ($Label): commit + push OK"
         }
         Pop-Location
-        (Get-Date).ToString("o") | Out-File $gitSyncFile -Encoding UTF8 -Force
+        (Get-Date).ToString("o") | Out-File $SyncFile -Encoding UTF8 -Force
     } catch {
-        Write-Log "Git sync ignorado: $_"
+        Write-Log "Git sync ($Label) ignorado: $_"
     }
 }
 
@@ -155,7 +158,8 @@ while ($true) {
             }
         }
 
-        Invoke-GitSync
+        Invoke-GitSync -RepoPath $ecoDir -Label "EcoSystemUmGrau" -SyncFile $ecoGitSyncFile
+        Invoke-GitSync -RepoPath $lerDir -Label "LER" -SyncFile $lerGitSyncFile
     } catch {
         Write-Log "Erro no loop principal: $_"
         Write-Log "Detalhes: $($_.ScriptStackTrace)"

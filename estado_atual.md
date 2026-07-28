@@ -1,4 +1,4 @@
-# Snapshot do Ecossistema — 2026-07-27 (v5 - Conhecimento automático)
+# Snapshot do Ecossistema — 2026-07-27 (v6 - GitHub completo)
 
 > Estado funcional com sistema automático de captura de conhecimento em 3 camadas.
 > Skills unificadas em EcoSystemUmGrau/skills/. VAULT_PATH redirecionado.
@@ -12,9 +12,9 @@
 > troca automaticamente para o próximo modelo na cadeia (nvidia/deepseek-v3.1)
 > sem intervenção manual. Cooldown de 60s com auto-recovery.
 >
-> ## VIGILANTE — AUTO-APRENDIZADO + GIT SYNC (NOVO)
-> O vigilante.ps1 é um processo Windows persistente que monitora automaticamente
-> a pasta de aprendizados e sincroniza tudo sem intervenção manual.
+> ## VIGILANTE — AUTO-APRENDIZADO + GIT SYNC (ECO + LER)
+> O vigilante.ps1 sincroniza automaticamente os dois repositórios:
+> EcoSystemUmGrau (git push cada 5min) + LER (~/.ler/ com remote GitHub).
 
 ### Arquitetura final do conhecimento automático
 
@@ -26,8 +26,8 @@ Maestro (passo 11 obrigatório)
           → Chama KnowledgeConsolidator.register_learning()
               → Atualiza knowledge_graph.json (merge Jaccard)
               → Exporta CONHECIMENTO.md
-          → A cada 5 min: git add, commit, push (se houver mudanças)
-      → CONHECIMENTO.md carregado no contexto de todo agente via opencode.jsonc
+           → A cada 5 min: git add, commit, push em EcoSystemUmGrau + LER (~/.ler/)
+       → CONHECIMENTO.md carregado no contexto de todo agente via opencode.jsonc
 ```
 
 ### Gatilhos de inicialização
@@ -39,15 +39,20 @@ Maestro (passo 11 obrigatório)
 
 ## 1. Estrutura de Pastas
 
-### `Desktop/Codigos/` (projetos)
+### `Desktop/Codigos/` (projetos) — todos com remote GitHub
 ```
 Android/
-├── Biblia/
-├── CellCleaner/
-├── Mp3Player/
-├── SupermarketCalculator/
+├── Biblia/              → idavidjunior/BibliaEstudoCompleta
+├── CellCleaner/         → idavidjunior/CellCleaner
+├── Mp3Player/           → idavidjunior/Mp3Player
+├── SupermarketCalculator/ → idavidjunior/SupermarketCalculator
 Midia/               # (vazio, neutro)
-EcoSystemUmGrau/     # (ecossistema — ver abaixo)
+EcoSystemUmGrau/     → idavidjunior/EcoSystemUmGrau (ecossistema)
+```
+
+### `~/.ler/` — agora com remote
+```
+LER runtime           → idavidjunior/LER
 ```
 
 ### `Desktop/Codigos/EcoSystemUmGrau/` (ecossistema)
@@ -113,6 +118,7 @@ estado_atual.md      # Este arquivo
 | **Python** | `3.12.7` | `C:\Program Files\Python312\` |
 | **pip** | `24.2` | — |
 | **Git** | `2.55.0.windows.2` | `C:\Program Files\Git\cmd` |
+| **gh CLI** | `2.96.0` | `C:\Program Files\GitHub CLI\gh.exe` |
 | **OS** | Windows (PowerShell 5.1) | — |
 
 ---
@@ -193,7 +199,8 @@ Carregados de `~/.config/opencode/agents/`:
 | **Seed knowledge** | `tools/seed_knowledge.py` (595 linhas, seed inicial de padrões) |
 | **CONHECIMENTO.md** | Exportado pelo próprio `KnowledgeConsolidator.export_to_markdown()` |
 | **knowledge_bridge.py** | Removido — função absorvida pelo consolidator |
-| **Vigilante** | `scripts/vigilante.ps1` — processo Windows oculto, polling 30s, git sync 5min |
+| **Remote** | `github.com/idavidjunior/LER.git` — configurado e com push inicial |
+| **Vigilante** | `scripts/vigilante.ps1` — processo Windows oculto, polling 30s, git sync 5min (EcoSystemUmGrau + LER) |
 
 ---
 
@@ -216,7 +223,8 @@ Carregados de `~/.config/opencode/agents/`:
 | Vigilante (watcher + git sync) | `EcoSystemUmGrau/scripts/vigilante.ps1` |
 | Registro no LER | `register_learning()` no `KnowledgeConsolidator` (automático via vigilante) |
 | Knowledge graph | `~/.ler/knowledge/knowledge_graph.json` (67 patterns, 39 decisões, 46 bugs) |
-| Git sync | Automático a cada 5 min via vigilante (se houver mudanças) |
+| Git sync (EcoSystemUmGrau) | Automático a cada 5 min via vigilante → `idavidjunior/EcoSystemUmGrau` |
+| Git sync (LER) | Automático a cada 5 min via vigilante → `idavidjunior/LER` |
 | Scheduled task | `EcoSystemVigilante` — inicia no logon |
 | Profile helpers | `start-vigilante`, `stop-vigilante`, `status-vigilante` |
 | Aprendizados registrados | 2 (seed inicial) |
