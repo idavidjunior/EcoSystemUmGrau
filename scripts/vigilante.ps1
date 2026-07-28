@@ -99,6 +99,7 @@ $onDebounce = {
     $debounce.Stop()
     $unique = $pendingFiles.ToArray() | Select-Object -Unique
     $pendingFiles.Clear()
+    $graphUpdated = $false
     foreach ($file in $unique) {
         if (-not (Test-Path $file)) { continue }
         $fileName = Split-Path $file -Leaf
@@ -113,7 +114,14 @@ print('OK')
 "@
             $result = python -c $python 2>&1
             Write-Log "Consolidator: $result"
+            $graphUpdated = $true
         } catch { Write-Log "ERRO: $_" }
+    }
+    if ($graphUpdated) {
+        try {
+            $output = python "$ecoDir\scripts\generate-obsidian-notes.py" 2>&1
+            Write-Log "Obsidian notes: $output"
+        } catch { Write-Log "Obsidian notes ignorado: $_" }
     }
 }
 
@@ -282,6 +290,9 @@ $onLearn = {
         try {
             $result = & "$ecoDir\scripts\ecosystem.ps1" learn 2>&1 | Out-String
             Write-Log "Learn: $($result.Trim())"
+            # Regenera notas do Obsidian apos learn
+            $output = python "$ecoDir\scripts\generate-obsidian-notes.py" 2>&1
+            Write-Log "Obsidian notes: $output"
         } catch { Write-Log "Learn ignorado: $_" }
     }
 }

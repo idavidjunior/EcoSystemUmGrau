@@ -1,0 +1,11 @@
+---
+tags: [heuristica, security]
+aliases: [Nunca armazenar API keys em config files]
+date: 2026-07-27
+---
+
+# Nunca armazenar API keys em config files
+
+**Dominio:** security | **Fonte:** session
+
+Auth tokens e chaves API devem ficar em env vars ou auth.json criptografado, nunca em opencode.json

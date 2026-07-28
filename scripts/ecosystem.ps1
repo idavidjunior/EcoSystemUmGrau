@@ -83,6 +83,7 @@ function Invoke-Sync {
     $env:PYTHONPATH = "$lerDir;$env:PYTHONPATH"
     python -c "import sys; sys.path.insert(0, r'$lerDir'); from agent.knowledge_consolidator import export_markdown; export_markdown()" 2>&1
     Write-OK "CONHECIMENTO.md atualizado"
+    python "$ecoDir\scripts\generate-obsidian-notes.py" 2>&1 | ForEach-Object { Write-Info "Obsidian: $_" }
 }
 
 # ══════════════════════════════════════════════════════════════════════
@@ -275,10 +276,11 @@ print('OK')
     Write-OK "$count aprendizados registrados"
 
     # 4. Export CONHECIMENTO.md
-    Write-Step "Exportando CONHECIMENTO.md"
+    Write-Step "Exportando CONHECIMENTO.md + notas Obsidian"
     try {
         python -c "import sys; sys.path.insert(0, r'$lerDir'); from agent.knowledge_consolidator import export_markdown; export_markdown()" 2>&1
         Write-OK "CONHECIMENTO.md atualizado"
+        python "$ecoDir\scripts\generate-obsidian-notes.py" 2>&1 | ForEach-Object { Write-Info "Obsidian: $_" }
     } catch { Write-Err "Falha na exportacao: $_" }
 
     # 5. Summary
@@ -346,6 +348,8 @@ function Invoke-Learn {
         $g = Get-Content "$lerDir\knowledge\knowledge_graph.json" -Raw -Encoding UTF8 | ConvertFrom-Json
         $total = ($g.patterns | Measure-Object).Count + ($g.decisions | Measure-Object).Count + ($g.bugs | Measure-Object).Count + ($g.mission_learnings | Measure-Object).Count
         Write-OK "Knowledge graph: $total entradas ($learned novos aprendizados)"
+        # Regenera notas do Obsidian
+        python "$ecoDir\scripts\generate-obsidian-notes.py" 2>&1 | ForEach-Object { Write-Info "Obsidian: $_" }
     } catch { Write-Err "Falha na consolidacao: $_" }
 
     # 3. Commit

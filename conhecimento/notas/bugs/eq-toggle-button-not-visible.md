@@ -1,0 +1,15 @@
+---
+tags: [bug, mp3player-metadata-rescue]
+aliases: [**EQ toggle button not visible**]
+date: 2026-07-27
+---
+
+# Bug: **EQ toggle button not visible**
+
+**Projeto:** mp3player-metadata-rescue
+
+## Causa Raiz
+`Switch` widget may not render correctly on some MIUI versions or was too small to notice.
+
+## Correcao
+Replaced `Switch` with `Button` styled as toggle (`EQ ON`/`EQ OFF`), matching existing button styles (`bg_preset_active`/`bg_preset_btn`). Uses `isSelected` for state.

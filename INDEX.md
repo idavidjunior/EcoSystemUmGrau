@@ -1,43 +1,93 @@
-# EcoSystemUmGrau — Mapa do Conhecimento
+---
+tags: [index, ecossistema]
+---
 
-Bem-vindo ao cérebro do ecossistema. Tudo que aprendemos, decidimos e construímos está aqui.
+# EcoSystemUmGrau — Mapa Vivo do Conhecimento
 
-## 🎯 Projetos Ativos
+> Tudo gerado automaticamente pelo ecossistema. Nada escrito à mão.
+> Última atualização: `= date(today)`
 
-- [[MOC - Projetos]] — Mp3Player, CellCleaner, SupermarketCalculator, Biblia
+## Projetos Monitorados
 
-## 🧠 Conhecimento Técnico
+`= this.file.folder`
 
-- [[MOC - Padroes]] — Padrões de código, pipelines, arquitetura
-- [[MOC - Decisoes]] — Decisões arquiteturais e porquês
-- [[MOC - Bugs]] — Bugs corrigidos e causas raiz
+```dataview
+TABLE rows.file.link as Arquivos
+FROM "conhecimento/notas"
+GROUP BY split(file.folder, "/")[2] as Categoria
+SORT Categoria ASC
+```
 
-## 🔬 Metaconhecimento
+## Últimos Aprendizados
 
-- [[MOC - Heuristicas]] — Heurísticas de debugging e eficiência
-- [[MOC - Frameworks]] — Frameworks de raciocínio
-- [[MOC - Cognitive]] — Padrões cognitivos
-
-## 📚 Referências
-
-- [[conhecimento/aprendizados/]] — Aprendizados registrados por tarefa
-- [[ler-runtime/CONHECIMENTO.md]] — Base exportada (carregada no contexto de todo agente)
-- [[skills/]] — Skills do ecossistema (34)
-
-## ⚙️ Ecossistema
-
-- [[scripts/vigilante.ps1]] — Vigilante automático
-- [[scripts/ecosystem.ps1]] — Comandos do ecossistema
-- [[config/opencode.jsonc]] — Configuração do OpenCode
-- [[estado_atual.md]] — Snapshot completo do ecossistema
-- [[setup.bat]] — Plug & Play para PC novo
-
-## 📊 Dataview Queries
-
-\`\`\`dataview
-TABLE file.cday as Criado, file.tags as Tags
+```dataview
+TABLE file.cday as Data, file.etags as Tags
 FROM "conhecimento/aprendizados"
 SORT file.cday DESC
-\`\`\`
+LIMIT 10
+```
 
-> **Atalhos:** `Ctrl+P` palette | `Ctrl+O` quick switcher | `Ctrl+Shift+T` insert template | `Ctrl+Shift+S` git commit+push | `Ctrl+Shift+G` graph view
+## Conhecimento por Tipo
+
+### Padrões Técnicos
+```dataview
+TABLE source as Fonte
+FROM "conhecimento/notas/padroes"
+SORT file.name ASC
+```
+
+### Decisões
+```dataview
+TABLE source as Fonte
+FROM "conhecimento/notas/decisoes"
+SORT file.name ASC
+```
+
+### Bugs Corrigidos
+```dataview
+TABLE source as Projeto
+FROM "conhecimento/notas/bugs"
+SORT file.name ASC
+```
+
+### Heurísticas
+```dataview
+TABLE domain as Dominio
+FROM "conhecimento/notas/heuristicas"
+SORT file.name ASC
+```
+
+### Padrões Cognitivos
+```dataview
+TABLE domain as Dominio
+FROM "conhecimento/notas/cognitivo"
+SORT file.name ASC
+```
+
+### Frameworks
+```dataview
+TABLE description as Descricao
+FROM "conhecimento/notas/frameworks"
+SORT file.name ASC
+```
+
+### Missões (LER)
+```dataview
+TABLE status as Status, file.cday as Data
+FROM "conhecimento/notas/missoes"
+SORT file.cday DESC
+LIMIT 15
+```
+
+## Tags
+
+```dataview
+TABLE rows.file.link as Notas
+FROM "conhecimento/notas"
+FLATTEN file.tags as Tag
+GROUP BY Tag
+SORT Tag ASC
+```
+
+---
+> **Atalhos:** `Ctrl+P` palette | `Ctrl+O` switcher | `Ctrl+Shift+T` template | `Ctrl+Shift+S` git | `Ctrl+Shift+G` graph

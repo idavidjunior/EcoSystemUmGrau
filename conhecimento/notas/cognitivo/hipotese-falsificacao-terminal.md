@@ -1,0 +1,11 @@
+---
+tags: [cognitivo, debugging]
+aliases: [Hipotese-falsificacao terminal]
+date: 2026-07-27
+---
+
+# Hipotese-falsificacao terminal
+
+**Dominio:** debugging
+
+Para cada hipotese de causa, execute o experimento MAIS RAPIDO que pode FALSIFICA-LA, nao confirma-la. Se a hipotese for 'o arquivo X nao foi carregado', nao verifique se X foi carregado (confirmacao), mas sim INTRODUZA UM ERRO OBVIO em X e veja se o sintoma muda (falsificacao). Isso eviesa para descobrir a verdade rapidamente em vez de acumular evidencias confirmatorias.

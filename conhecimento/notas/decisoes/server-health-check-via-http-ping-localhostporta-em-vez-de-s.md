@@ -1,0 +1,11 @@
+---
+tags: [decisao, sessaoservermanager]
+aliases: [Server health check via HTTP ping (localhost:porta) em vez d]
+date: 2026-07-27
+---
+
+# Server health check via HTTP ping (localhost:porta) em vez de stdin/stdout
+
+**Fonte:** sessao_servermanager
+
+HTTP permite verificar se processo esta vivo mesmo com threads ocupadas; mais confiavel

@@ -1,0 +1,11 @@
+---
+tags: [cognitivo, framework-detection]
+aliases: [Reconhecimento instantaneo de framework]
+date: 2026-07-27
+---
+
+# Reconhecimento instantaneo de framework
+
+**Dominio:** framework-detection
+
+Identificar o framework da interface em <500ms: React tem #root vazio, Vue tem #app, Angular tem <app-root>, jQuery tem muitos elementos com IDs, Bootstrap tem classes container/row/col, Material UI tem Mui-* classes. Framework define o comportamento da navegacao
