@@ -21,6 +21,10 @@ async def handler(ws):
             opencode_ok = False
             logger.warning(f"OpenCode offline: {e}. Modo eco ativado.")
 
+        saudacao = "Olá! Sou o Jarvis do EcoSystemUmGrau. Estou ouvindo."
+        await ws.send(saudacao)
+        logger.info(f"→ Android: {saudacao}")
+
         async for msg in ws:
             logger.info(f"← Android: {msg}")
 
