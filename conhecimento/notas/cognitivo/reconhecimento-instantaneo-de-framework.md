@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, framework-detection]
 aliases: [Reconhecimento instantaneo de framework]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Reconhecimento instantaneo de framework

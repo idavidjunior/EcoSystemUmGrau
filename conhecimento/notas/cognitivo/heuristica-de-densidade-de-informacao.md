@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, efficiency]
 aliases: [Heuristica de densidade de informacao]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Heuristica de densidade de informacao

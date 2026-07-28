@@ -1,7 +1,7 @@
 ---
 tags: [decisao, ecosistema-opencode]
 aliases: [2026-07-27: Sistema automático de captura de conhecimento do]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # 2026-07-27: Sistema automático de captura de conhecimento do ecossistema

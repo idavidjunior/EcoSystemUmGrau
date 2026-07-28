@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, organization]
 aliases: [Workspace root]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Workspace root

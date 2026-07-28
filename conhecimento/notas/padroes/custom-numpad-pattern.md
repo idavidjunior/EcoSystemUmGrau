@@ -1,7 +1,7 @@
 ---
 tags: [padrao, android-pure-sdkandroid-pure-sdk]
 aliases: [Custom Numpad Pattern]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Custom Numpad Pattern

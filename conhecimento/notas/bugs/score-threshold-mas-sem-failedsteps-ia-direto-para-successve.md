@@ -1,7 +1,7 @@
 ---
 tags: [bug, lerauditoria]
 aliases: [Score < threshold mas sem failed_steps ia direto para SUCCES]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Bug: Score < threshold mas sem failed_steps ia direto para SUCCESS_VERIFIED

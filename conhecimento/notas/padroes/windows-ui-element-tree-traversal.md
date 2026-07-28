@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [Windows UI element tree traversal]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Windows UI element tree traversal

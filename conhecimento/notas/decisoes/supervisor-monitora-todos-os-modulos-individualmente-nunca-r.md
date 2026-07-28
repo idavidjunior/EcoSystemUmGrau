@@ -1,7 +1,7 @@
 ---
 tags: [decisao, lerarquitetura]
 aliases: [Supervisor monitora todos os modulos individualmente — nunca]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Supervisor monitora todos os modulos individualmente — nunca reinicia missao inteira por falha de um modulo.

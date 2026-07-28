@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, architecture]
 aliases: [Lei de Postel aplicada a engenharia]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Lei de Postel aplicada a engenharia

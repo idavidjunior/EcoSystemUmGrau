@@ -1,7 +1,7 @@
 ---
 tags: [bug, lerauditoria]
 aliases: [Executor nao validava resultado real da implementacao]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Bug: Executor nao validava resultado real da implementacao

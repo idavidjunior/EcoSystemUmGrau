@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [Template matching para botoes graficos]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Template matching para botoes graficos

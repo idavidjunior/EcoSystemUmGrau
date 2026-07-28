@@ -1,7 +1,7 @@
 ---
 tags: [decisao, mp3player-metadata-rescue]
 aliases: [User taps "Buscar na Internet"]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # User taps "Buscar na Internet"

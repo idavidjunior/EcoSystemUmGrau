@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, debugging]
 aliases: [Stale element = re-query, nao re-tentar]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Stale element = re-query, nao re-tentar

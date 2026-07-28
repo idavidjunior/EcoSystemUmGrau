@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, protocol]
 aliases: [MCP tool naming]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # MCP tool naming

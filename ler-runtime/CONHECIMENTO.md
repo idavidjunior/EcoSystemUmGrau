@@ -1,14 +1,14 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-07-28T12:00:00.000000
+**Exportado em:** 2026-07-28T14:26:10.211100
 **Projetos:** 4
-**Padroes Tecnicos:** 71
-**Decisoes:** 41
-**Bug Fixes:** 47
+**Padroes Tecnicos:** 70
+**Decisoes:** 39
+**Bug Fixes:** 46
 **Padroes Cognitivos:** 22
-**Heuristicas:** 32
+**Heuristicas:** 31
 **Frameworks:** 10
-**Missoes Aprendidas:** 38
+**Missoes Aprendidas:** 41
 
 ---
 
@@ -130,10 +130,6 @@ OCR e 10-100x mais lento que seletores diretos e sujeito a falsos positivos; usa
 **Fonte:** provider_mcp_debug
 Schema v1.17.14 exige array
 
-### Abastecer estruturas existentes — nao criar novas fora do ecossistema
-**Fonte:** ecosistema_regra_ouro
-O ecossistema ja esta estruturado em 7 categorias: Decisoes, Padroes Tecnicos, Bug Fixes, Padroes Cognitivos, Heuristicas, Frameworks, Missoes Aprendidas. Todo novo conhecimento deve abastecer uma dessas categorias existentes. Nada de criar pastas, repositorios ou tipos novos sem antes verificar se ja existe estrutura adequada. Se nao existir, criar DENTRO do ecossistema, nao fora dele.
-
 ### Organizar Desktop\Codigos\ como raiz unica de projetos
 **Fonte:** workspace_organization
 Evitar dispersao de projetos pelo Desktop e Documentos
@@ -141,10 +137,6 @@ Evitar dispersao de projetos pelo Desktop e Documentos
 ### Renomear pastas com espacos para nomes sem espaco
 **Fonte:** workspace_organization
 Evitar bugs em scripts PowerShell que nao escapam caminhos
-
-### Preferir TextView sobre Button para botoes customizados com background drawable
-**Fonte:** mp3player_android
-`<Button>` no tema `MaterialComponents` infla como `MaterialButton`, que aplica `app:backgroundTint` padrao sobrescrevendo o background drawable e tem padding interno que corta texto. `TextView` com `clickable=true` + `focusable=true` + `gravity=center` evita essas complicacoes e renderiza texto sem cortes.
 
 ### 2026-07-27: Sistema automático de captura de conhecimento do ecossistema
 **Fonte:** ecosistema-opencode
@@ -250,7 +242,6 @@ Instalamos Bun 1.3.14 e o plugin `@razroo/opencode-model-fallback` v0.3.2 para f
 | 68 | opencode+opencode+opencode | Config: 2026-07-27: Teste do vigilante automático |
 | 69 | opencode+opencode | Config: 2026-07-27-4: Teste do ciclo de polling |
 | 70 | opencode | Config: 2026-07-27-5: Teste final do vigilante em processo real |
-| 71 | mp3player_android | TextView > Button para botoes customizados |
 
 ## Bug Fixes e Corrigidos
 
@@ -480,11 +471,6 @@ Instalamos Bun 1.3.14 e o plugin `@razroo/opencode-model-fallback` v0.3.2 para f
 **Causa Raiz:** Method tools/call nao estava no dispatch de handle_request()
 **Correcao:** Adicionado elif method == tools/call e _handle_tools_call() com mapping de nomes
 
-### Botões de filtro sem texto visível — MaterialButton corrompe background e corta texto
-**Fonte:** mp3player_android
-**Causa Raiz:** Três problemas em cascata: (1) `MaterialButton` aplica `app:backgroundTint` padrao que sobrescreve `android:background` drawable, tintando todos botoes de verde. (2) `android:backgroundTint` e ignorado pelo MaterialButton (precisa de `app:`). (3) MaterialButton tem padding interno de ~20dp cada lado que corta texto mesmo com `insetLeft/Right=0dp`.
-**Correcao:** Substituir `<Button>` por `<TextView clickable=true focusable=true gravity=center>` no XML e trocar tipo das variaveis no Kotlin de `Button` para `TextView`. TextView nao tem backgroundTint nem padding interno de botao.
-
 ## Padroes Cognitivos
 
 ### Debugging em cascata reversa
@@ -673,7 +659,6 @@ Tempos de carregamento variam por tipo: HTML inicial (rede), CSS (bloqueante ate
 | 29 | protocol | JSON-RPC notifications | Sempre verificar se request tem id antes de responder. Se nao tem, e notification - nao responda. |
 | 30 | protocol | MCP tool naming | MCP tools/list pode expor nomes kebab-case, mas tools/call precisa de mapping explicito para metodos internos |
 | 31 | organization | Workspace root | Manter projetos em raiz unica sem espacos no caminho para compatibilidade com scripts |
-| 32 | debugging | Screenshot + Python PIL para debug visual | Texto invisivel? Nao chute. Capture a tela com screencap e analise os pixels com Python/Pillow: compare bg vs text color, meça largura real do texto. uiautomator confirma se texto existe na arvore, pixels confirmam se e visivel. |
 
 ## Frameworks
 
@@ -732,7 +717,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-07-28T12:00:00.000000
+**Ultima atualizacao:** 2026-07-28T14:26:09.923179
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

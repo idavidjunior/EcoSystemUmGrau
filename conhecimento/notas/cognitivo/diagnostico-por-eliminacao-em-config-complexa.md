@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, debugging]
 aliases: [Diagnostico por eliminacao em config complexa]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Diagnostico por eliminacao em config complexa

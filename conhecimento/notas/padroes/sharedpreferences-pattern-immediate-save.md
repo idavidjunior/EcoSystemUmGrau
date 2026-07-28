@@ -1,7 +1,7 @@
 ---
 tags: [padrao, android-pure-sdkandroid-pure-sdk]
 aliases: [SharedPreferences Pattern (immediate save)]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # SharedPreferences Pattern (immediate save)

@@ -1,7 +1,7 @@
 ---
 tags: [framework]
 aliases: [3-Scan Pre-Action]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # 3-Scan Pre-Action

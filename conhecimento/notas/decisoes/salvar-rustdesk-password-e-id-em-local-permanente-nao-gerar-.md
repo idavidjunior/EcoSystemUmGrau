@@ -1,7 +1,7 @@
 ---
 tags: [decisao, sessaorustdesk]
 aliases: [Salvar RustDesk password e ID em local permanente, nao gerar]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Salvar RustDesk password e ID em local permanente, nao gerar OTP

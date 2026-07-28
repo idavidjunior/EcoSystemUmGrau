@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, adaptability]
 aliases: [Antecipacao de comportamento adaptativo]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Antecipacao de comportamento adaptativo

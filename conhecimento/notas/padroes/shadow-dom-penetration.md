@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [Shadow DOM penetration]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Shadow DOM penetration

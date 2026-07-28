@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, debugging]
 aliases: [Elemento existe? 3 fontes de verdade]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Elemento existe? 3 fontes de verdade

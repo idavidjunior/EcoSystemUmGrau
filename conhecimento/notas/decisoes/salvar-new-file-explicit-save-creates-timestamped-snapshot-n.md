@@ -1,7 +1,7 @@
 ---
 tags: [decisao, android-pure-sdk]
 aliases: [**Salvar = new file** — Explicit save creates timestamped sn]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # **Salvar = new file** — Explicit save creates timestamped snapshot, never overwrites existing saved files

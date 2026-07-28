@@ -1,7 +1,7 @@
 ---
 tags: [decisao, treinamentonavegacao]
 aliases: [Usar keyboard shortcuts como fallback universal]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Usar keyboard shortcuts como fallback universal

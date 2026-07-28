@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, web-navigation]
 aliases: [Scroll forcado revela conteudo oculto]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Scroll forcado revela conteudo oculto

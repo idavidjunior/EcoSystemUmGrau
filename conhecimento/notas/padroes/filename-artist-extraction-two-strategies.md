@@ -1,7 +1,7 @@
 ---
 tags: [padrao, mp3player]
 aliases: [Filename artist extraction (two strategies)]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Filename artist extraction (two strategies)

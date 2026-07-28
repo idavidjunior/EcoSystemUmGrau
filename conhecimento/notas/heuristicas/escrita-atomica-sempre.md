@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, persistence]
 aliases: [Escrita atomica sempre]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Escrita atomica sempre

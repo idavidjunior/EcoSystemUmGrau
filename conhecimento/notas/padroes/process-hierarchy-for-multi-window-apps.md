@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [Process hierarchy for multi-window apps]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Process hierarchy for multi-window apps

@@ -1,7 +1,7 @@
 ---
 tags: [bug, lerauditoria]
 aliases: [max_iterations hard stop forca parada prematura mesmo sem ob]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Bug: max_iterations hard stop forca parada prematura mesmo sem objetivo atingido

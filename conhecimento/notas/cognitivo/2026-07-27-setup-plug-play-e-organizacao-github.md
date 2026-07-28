@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, general]
 aliases: [﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # ﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub
@@ -59,5 +59,37 @@ date: 2026-07-27
 ﻿# 2026-07-27 - Scan proativo: SupermarketCalculator
 ## Marcadores encontrados
 - MainActivity.java: 2 marcadores
+
+
+
+﻿# 2026-07-28 - Scan proativo: Biblia
+## Marcadores encontrados
+- parse_apocrypha.py: 1 marcadores
+- parse_apocrypha2.py: 1 marcadores
+- parse_apocrypha3.py: 1 marcadores
+- ResourcesActivity.java: 3 marcadores
+
+
+
+﻿# 2026-07-28 - Scan proativo: CellCleaner
+## Marcadores encontrados
+- MainActivity.java: 1 marcadores
+
+
+
+﻿# 2026-07-28 - Scan proativo: Mp3Player
+## Marcadores encontrados
+- BiquadFilter.kt: 1 marcadores
+- EqualizerAudioProcessor.kt: 2 marcadores
+- AudioDecoder.kt: 1 marcadores
+- EqPresetManager.kt: 2 marcadores
+- MainActivity.kt: 2 marcadores
+- TagEditorActivity.kt: 1 marcadores
+
+
+
+﻿# 2026-07-28 - Scan proativo: SupermarketCalculator
+## Marcadores encontrados
+- MainActivity.java: 4 marcadores
 
 

@@ -1,7 +1,7 @@
 ---
 tags: [framework]
 aliases: [OODA-Nav]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # OODA-Nav

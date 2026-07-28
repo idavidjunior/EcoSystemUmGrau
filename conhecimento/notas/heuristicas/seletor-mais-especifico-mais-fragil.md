@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, element-detection]
 aliases: [Seletor mais especifico = mais fragil]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Seletor mais especifico = mais fragil

@@ -1,7 +1,7 @@
 ---
 tags: [framework]
 aliases: [FIRST Principles para testes]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # FIRST Principles para testes

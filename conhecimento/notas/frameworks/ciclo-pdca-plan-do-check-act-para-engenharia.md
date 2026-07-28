@@ -1,7 +1,7 @@
 ---
 tags: [framework]
 aliases: [Ciclo PDCA (Plan-Do-Check-Act) para engenharia]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Ciclo PDCA (Plan-Do-Check-Act) para engenharia

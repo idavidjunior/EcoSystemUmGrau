@@ -1,7 +1,7 @@
 ---
 tags: [bug, mp3player-metadata-rescue]
 aliases: [**Preset not persisting across sessions**]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Bug: **Preset not persisting across sessions**

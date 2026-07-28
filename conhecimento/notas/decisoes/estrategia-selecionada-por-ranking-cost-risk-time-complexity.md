@@ -1,7 +1,7 @@
 ---
 tags: [decisao, lerarquitetura]
 aliases: [Estrategia selecionada por ranking (cost + risk + time + com]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Estrategia selecionada por ranking (cost + risk + time + complexity + success_probability).

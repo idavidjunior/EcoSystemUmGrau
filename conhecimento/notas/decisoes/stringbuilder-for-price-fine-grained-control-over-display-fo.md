@@ -1,7 +1,7 @@
 ---
 tags: [decisao, android-pure-sdk]
 aliases: [**StringBuilder for price** — Fine-grained control over disp]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # **StringBuilder for price** — Fine-grained control over display format, avoids floating-point display issues

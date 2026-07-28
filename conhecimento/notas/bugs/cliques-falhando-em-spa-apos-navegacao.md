@@ -1,7 +1,7 @@
 ---
 tags: [bug, treinamentonavegacao]
 aliases: [Cliques falhando em SPA apos navegacao]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Bug: Cliques falhando em SPA apos navegacao

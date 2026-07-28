@@ -1,7 +1,7 @@
 ---
 tags: [bug, mp3player-metadata-rescue]
 aliases: [**No EQ on/off button**]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Bug: **No EQ on/off button**

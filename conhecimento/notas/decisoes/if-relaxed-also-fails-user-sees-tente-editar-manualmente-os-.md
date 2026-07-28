@@ -1,7 +1,7 @@
 ---
 tags: [decisao, mp3player-metadata-rescue]
 aliases: [If RELAXED also fails → user sees "Tente editar manualmente ]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # If RELAXED also fails → user sees "Tente editar manualmente os campos e buscar novamente"

@@ -1,7 +1,7 @@
 ---
 tags: [padrao, androidpuresdk]
 aliases: [aapt + javac + d8 + apksigner]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # aapt + javac + d8 + apksigner

@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, decision-making]
 aliases: [Ciclo OODA aplicado a navegacao]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Ciclo OODA aplicado a navegacao

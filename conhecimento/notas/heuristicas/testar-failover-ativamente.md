@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, testing]
 aliases: [Testar failover ativamente]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Testar failover ativamente

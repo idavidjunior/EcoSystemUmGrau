@@ -1,7 +1,7 @@
 ---
 tags: [bug, providermcpserverpy52-55]
 aliases: [MCP server Failed to get tools no OpenCode]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Bug: MCP server Failed to get tools no OpenCode

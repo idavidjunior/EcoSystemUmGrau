@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, debugging]
 aliases: [Debugging em cascata reversa]
-date: 2026-07-27
+date: 2026-07-28
 ---
 
 # Debugging em cascata reversa
