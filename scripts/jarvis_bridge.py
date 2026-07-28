@@ -1,24 +1,38 @@
 import asyncio
 import websockets
 import httpx
-import edge_tts
 import base64
 import json
+import io
+import wave
 import logging
+
+from piper import PiperVoice
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("vox")
 
 OPENCODE_URL = "http://127.0.0.1:4096"
-TTS_VOICE = "pt-BR-AntonioNeural"
+JARVIS_MODEL = "C:\\Users\\Playtec-bancada\\.cache\\huggingface\\hub\\models--jgkawell--jarvis\\snapshots\\37f8763122312665f091d1fc760abaf1f79b02cc\\en\\en_GB\\jarvis\\medium\\jarvis-medium.onnx"
 
-async def gerar_audio(texto):
-    communicate = edge_tts.Communicate(texto, TTS_VOICE)
+voice = PiperVoice.load(JARVIS_MODEL)
+
+def gerar_wav(texto):
+    chunks = list(voice.synthesize(texto))
     audio = b""
-    async for chunk in communicate.stream():
-        if chunk["type"] == "audio":
-            audio += chunk["data"]
-    return base64.b64encode(audio).decode()
+    sr, ch, sw = 22050, 1, 2
+    for c in chunks:
+        audio += c.audio_int16_bytes
+        sr = c.sample_rate or sr
+        ch = c.sample_channels or ch
+        sw = c.sample_width or sw
+    buf = io.BytesIO()
+    with wave.open(buf, "wb") as w:
+        w.setnchannels(ch)
+        w.setsampwidth(sw)
+        w.setframerate(sr)
+        w.writeframes(audio)
+    return base64.b64encode(buf.getvalue()).decode()
 
 async def handler(ws):
     async with httpx.AsyncClient(timeout=120) as http:
@@ -28,22 +42,23 @@ async def handler(ws):
         try:
             r = await http.post(f"{OPENCODE_URL}/session")
             sess_id = r.json()["id"]
-            logger.info(f"OpenCode conectado. Sessão: {sess_id}")
+            logger.info(f"OpenCode OK. Sessão: {sess_id}")
         except Exception as e:
             opencode_ok = False
-            logger.warning(f"OpenCode offline: {e}. Modo eco ativado.")
+            logger.warning(f"OpenCode offline: {e}")
 
-        saudacao = "Olá! Sou o Jarvis do EcoSystemUmGrau. Estou ouvindo."
-        audio = await gerar_audio(saudacao)
+        saudacao = "Ola, sou o Jarvis do EcoSystemUmGrau. Estou ouvindo."
+        logger.info(f"Gerando áudio para saudação...")
+        audio = gerar_wav(saudacao)
         await ws.send(json.dumps({"audio": audio, "text": saudacao}))
-        logger.info(f"→ Android: {saudacao} ({len(audio)} chars base64)")
+        logger.info(f"Enviada saudação ({len(audio)} chars base64)")
 
         try:
             async for msg in ws:
-                logger.info(f"← Android: {msg}")
+                logger.info(f"Recebido: {msg}")
 
                 if not opencode_ok:
-                    resposta = f"[Vox UmGrau] Recebi: '{msg}'. (OpenCode offline)"
+                    resposta = f"Recebi sua mensagem: '{msg}'. Estou em modo offline."
                 else:
                     try:
                         r = await http.post(
@@ -52,20 +67,21 @@ async def handler(ws):
                         )
                         resposta = r.json()["parts"][0]["text"]
                     except Exception as e:
-                        resposta = f"[Vox UmGrau] Erro no OpenCode: {e}"
+                        resposta = f"Erro ao processar: {e}"
                         opencode_ok = False
 
-                audio = await gerar_audio(resposta)
+                logger.info(f"Gerando áudio para resposta...")
+                audio = gerar_wav(resposta)
                 await ws.send(json.dumps({"audio": audio, "text": resposta}))
-                logger.info(f"→ Android: {resposta[:120]}")
+                logger.info(f"Resposta enviada ({len(audio)} chars base64)")
         except websockets.exceptions.ConnectionClosed:
-            logger.info("Android desconectou.")
+            logger.info("Conexão encerrada pelo cliente.")
 
 async def main():
     logger.info("=" * 50)
-    logger.info("  Vox UmGrau — Bridge aguardando conexões")
+    logger.info("  Vox UmGrau — Bridge")
+    logger.info("  Piper TTS + Modelo Jarvis (Hugging Face)")
     logger.info("  ws://0.0.0.0:8765")
-    logger.info(f"  TTS: {TTS_VOICE}")
     logger.info("=" * 50)
     async with websockets.serve(handler, "0.0.0.0", 8765):
         await asyncio.Future()
