@@ -5,11 +5,14 @@ import edge_tts
 import base64
 import json
 import logging
+import os
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("vox")
 
 OPENCODE_URL = "http://127.0.0.1:4096"
+OPENCODE_USER = os.environ.get("OPENCODE_SERVER_USERNAME", "opencode")
+OPENCODE_PASS = os.environ.get("OPENCODE_SERVER_PASSWORD", "8c194f96-5ad2-409d-8b26-6052c634972d")
 TTS_VOICE = "en-US-AndrewMultilingualNeural"
 TTS_PITCH = "-30Hz"
 TTS_RATE = "+0%"
@@ -23,7 +26,8 @@ async def gerar_audio(texto):
     return base64.b64encode(audio).decode()
 
 async def handler(ws):
-    async with httpx.AsyncClient(timeout=120) as http:
+    auth = httpx.BasicAuth(OPENCODE_USER, OPENCODE_PASS)
+    async with httpx.AsyncClient(timeout=120, auth=auth) as http:
         opencode_ok = True
         sess_id = None
 
@@ -53,7 +57,9 @@ async def handler(ws):
                             f"{OPENCODE_URL}/session/{sess_id}/message",
                             json={"parts": [{"type": "text", "text": msg}]}
                         )
-                        resposta = r.json()["parts"][0]["text"]
+                        parts = r.json().get("parts", [])
+                        text_part = next((p for p in parts if p.get("type") == "text"), None)
+                        resposta = text_part["text"] if text_part else "Sem resposta."
                     except Exception as e:
                         resposta = f"Erro ao processar: {e}"
                         opencode_ok = False
