@@ -123,6 +123,17 @@ print('OK')
             Write-Log "Obsidian notes: $output"
         } catch { Write-Log "Obsidian notes ignorado: $_" }
     }
+
+    # Pre-flight check: validar config se houve mudanca no template
+    $templatePath = "$ecoDir\config\opencode.jsonc"
+    $templateChanged = (Get-Item $templatePath -ErrorAction SilentlyContinue).LastWriteTime
+    if ($templateChanged -and ((Get-Date) - $templateChanged).TotalSeconds -lt 600) {
+        Write-Log "Template alterado recentemente. Executando pre-flight..."
+        try {
+            $result = python "$ecoDir\scripts\preflight_check.py" 2>&1
+            Write-Log "Pre-flight: $result"
+        } catch { Write-Log "Pre-flight ignorado: $_" }
+    }
 }
 
 # Registrar eventos

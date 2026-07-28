@@ -508,6 +508,43 @@ Sem quebrar compatibilidade.
 
 ---
 
+# CLÁUSULA PÉTREA — RESILIÊNCIA DO ECOSSISTEMA
+
+Regra **IMUTÁVEL**. Nenhum agente pode ignorar. Prioridade ABSOLUTA.
+
+## Toda alteração no ecossistema deve ser testada antes de aplicar
+
+Qualquer modificação em:
+- `config/opencode.jsonc` (template ou deployed)
+- `scripts/mcp-*-server.py` ou novos servidores MCP
+- `config/agents/*.md`
+- `plugins/*`
+- `config/opencode-model-fallback.jsonc`
+
+DEVE obrigatoriamente:
+1. Executar `python scripts/preflight_check.py`
+2. PASSAR EM TODOS OS TESTES antes de aplicar/deployar
+3. Se falhar: BLOQUEAR a alteração e relatar os erros
+
+## Servidores MCP
+
+- **PROIBIDO** usar servidores MCP via `npx` (travam inicialização do OpenCode)
+- **OBRIGATÓRIO** usar Python puro para servidores MCP
+- **OBRIGATÓRIO** testar cada servidor com initialize + tools/list antes de incluir no config
+
+## Backup
+
+- Antes de alterar o `opencode.jsonc` deployed, **SEMPRE** criar backup em `opencode.jsonc.bak`
+- Se o pre-flight falhar: restaurar backup automaticamente
+
+## Rollback
+
+Se após aplicar uma alteração o OpenCode não iniciar:
+1. Restaurar `opencode.jsonc.bak`
+2. Remover servidores MCP problemáticos
+3. Rodar pre-flight novamente
+4. Reportar o erro na base de conhecimento (aprendizados/)
+
 # REGRA DE OURO
 
 Nenhuma solução deve ser escolhida apenas porque funciona.
