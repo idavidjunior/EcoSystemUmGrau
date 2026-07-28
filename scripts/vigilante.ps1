@@ -190,7 +190,7 @@ $lastLearnDate = (Get-Date).Date.AddDays(-1)  # roda no primeiro ciclo
 function Sync-GitRepo {
     param([string]$Path, [string]$Label, [switch]$Push, [ref]$LastSync, [int]$Cooldown = $gitInterval)
     $now = Get-Date
-    if (($now - $LastSync.Value).TotalSeconds -lt $Cooldown) { return }
+    if (($now - $LastSync.Value).TotalSeconds -lt $Cooldown) { return $false }
 
     try {
         Push-Location $Path -ErrorAction Stop
@@ -206,20 +206,24 @@ function Sync-GitRepo {
         # Depois COMMIT + PUSH (se houver mudancas locais)
         $status = git status --porcelain 2>&1 | Out-String
         if ($status.Trim()) {
-            git add -A 2>&1 | Out-Null
-            $dateStr = Get-Date -Format "yyyy-MM-dd HH:mm"
-            git commit -m "[auto] $Label - $dateStr" 2>&1 | Out-Null
-            if ($Push) {
-                $pushOut = git push 2>&1
-                Write-Log "Git sync ($Label): commit + push OK"
-            } else {
-                Write-Log "Git sync ($Label): commit local OK"
-            }
+        git add -A 2>&1 | Out-Null
+        $dateStr = Get-Date -Format "yyyy-MM-dd HH:mm"
+        git commit -m "[auto] $Label - $dateStr" 2>&1 | Out-Null
+        if ($Push) {
+            $pushOut = git push 2>&1
+            Write-Log "Git sync ($Label): commit + push OK"
+        } else {
+            Write-Log "Git sync ($Label): commit local OK"
         }
-
         Pop-Location
         $LastSync.Value = $now
-    } catch { Write-Log "Git sync ($Label) ignorado: $_" }
+        return $true
+    }
+
+    Pop-Location
+    $LastSync.Value = $now
+    return $false
+} catch { Write-Log "Git sync ($Label) ignorado: $_"; return $false }
 }
 
 # Sincroniza um repo de projeto Android (pull + commit + push)
@@ -262,18 +266,29 @@ $gitTimer.Interval = 30000  # check a cada 30s
 $gitTimer.AutoReset = $true
 
 $onGitSync = {
-    Sync-GitRepo -Path $ecoDir -Label "EcoSystemUmGrau" -Push -LastSync ([ref]$ecoLastSync)
+    $changed = Sync-GitRepo -Path $ecoDir -Label "EcoSystemUmGrau" -Push -LastSync ([ref]$ecoLastSync)
     Sync-GitRepo -Path $lerDir -Label "LER" -LastSync ([ref]$lerLastSync)
+    # Log memory on git activity
+    if ($changed) { python "$ecoDir\scripts\memory_engine.py" log "git-sync: EcoSystemUmGrau" 2>$null }
     # Sincroniza projetos Android (cada um tem seu proprio cooldown)
     foreach ($proj in $projectRepos) {
         $lastRef = [ref]$proj.LastSync
         $projName = $proj.Name
-        Sync-GitRepo -Path $proj.Path -Label "Android/$projName" -Push -LastSync $lastRef -Cooldown $projectGitInterval
+        $projChanged = Sync-GitRepo -Path $proj.Path -Label "Android/$projName" -Push -LastSync $lastRef -Cooldown $projectGitInterval
+        if ($projChanged) { python "$ecoDir\scripts\memory_engine.py" log "git-sync: $projName" 2>$null }
     }
 }
 
 Register-ObjectEvent $gitTimer "Elapsed" -Action $onGitSync > $null
 $gitTimer.Start()
+
+# Memory decay pass diario
+$decayTimer = New-Object System.Timers.Timer
+$decayTimer.Interval = 86400000  # 24h
+$decayTimer.AutoReset = $true
+$onDecay = { python "$ecoDir\scripts\memory_engine.py" decay 2>$null | Out-Null }
+Register-ObjectEvent $decayTimer "Elapsed" -Action $onDecay > $null
+$decayTimer.Start()
 
 # ══════════════════════════════════════════════════════════════════════
 # LEARN TIMER: varredura proativa uma vez por dia
