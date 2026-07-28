@@ -174,6 +174,7 @@ Carregados de `~/.config/opencode/agents/`:
 | `08-revisor.md` | `subagent` | Revisão |
 | `09-executor.md` | `subagent` | Implementar |
 | `10-aprendizado.md` | `subagent` | Extrair e persistir conhecimento (passo final obrigatório) |
+| `11-ler-executor.md` | `subagent` | Delegar tarefas complexas ao LER (loop autônomo até resultado) |
 | `99-gerador-de-agentes.md` | — | Criar agentes |
 
 ---
@@ -248,3 +249,7 @@ Carregados de `~/.config/opencode/agents/`:
 - [x] **Profile helpers** `start-vigilante`, `stop-vigilante`, `status-vigilante`
 - [x] **Testado**: vigilante detecta arquivo → consolidator registra → git commit + push — tudo automático
 - [x] **Obsidian**: vault em `EcoSystemUmGrau/` já reflete mudanças automaticamente
+- [x] **Skill LER** atualizada com protocolo de delegação para agentes OpenCode
+- [x] **Agente 11-ler-executor** criado e reconhecido — ponte OpenCode ↔ LER
+- [x] **Maestro** atualizado: critério de delegação LER + agende listado
+- [x] **Total agents**: 15 (00 a 11 + 99) — Maestro, System Rules, Template, Estrategista, Cetico, Realista, Etica, Futuro, Recursos, Criativo, Revisor, Executor, Aprendizado, LER-Executor, Gerador
