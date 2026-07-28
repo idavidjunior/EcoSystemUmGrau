@@ -1,6 +1,12 @@
 ﻿{
-    "accentColor":  "",
-    "showRibbon":  true,
-    "nativeMenus":  true,
-    "theme":  "moonstone"
+  "accentColor": "#6c5ce7",
+  "showRibbon": true,
+  "nativeMenus": true,
+  "theme": "obsidian",
+  "cssTheme": "",
+  "enabledCssSnippets": [],
+  "baseFontSize": 15,
+  "interfaceFontFamily": "Inter",
+  "textFontFamily": "Inter",
+  "monospaceFontFamily": "JetBrains Mono, Fira Code, Cascadia Code"
 }

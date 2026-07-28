@@ -1,3 +1,70 @@
 ﻿{
-    "workspace":  "main"
+  "workspace": "main",
+  "main": {
+    "type": "split",
+    "children": [
+      {
+        "type": "tabs",
+        "children": [
+          {
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "INDEX.md",
+                "mode": "source",
+                "source": true
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "left": {
+    "type": "split",
+    "children": [
+      {
+        "type": "tabs",
+        "children": [
+          {
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer"
+            }
+          },
+          {
+            "type": "leaf",
+            "state": {
+              "type": "search"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "right": {
+    "type": "split",
+    "children": [
+      {
+        "type": "tabs",
+        "children": [
+          {
+            "type": "leaf",
+            "state": {
+              "type": "graph"
+            }
+          },
+          {
+            "type": "leaf",
+            "state": {
+              "type": "tag-overview"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "active": "INDEX.md",
+  "lastOpenFiles": ["INDEX.md", "MOC - Projetos.md", "MOC - Conhecimento.md", "MOC - Decisoes.md", "MOC - Bugs.md"]
 }

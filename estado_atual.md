@@ -92,6 +92,61 @@ Maestro (passo 11 obrigatório)
 
 ---
 
+## OBSIDIAN VAULT INTELIGENTE (vault = raiz do ecossistema)
+
+> Vault completamente integrado: plugins, templates, MOCs, workspace, autosync.
+
+**Plugins instalados:**
+- **Obsidian Git** — auto-commit local a cada 5 min; vigilante faz o push
+- **Dataview** — queries SQL-like nas notas (tabelas dinâmicas nas MOCs)
+
+**Config:**
+- `core-plugins.json`: 20 core plugins ativos (file-explorer, graph, templates, etc.)
+- `community-plugins.json`: obsidian-git + dataview
+- `appearance.json`: tema Obsidian (dark), accent #6c5ce7, fonte Inter
+- `hotkeys.json`: Ctrl+P palette, Ctrl+O switcher, Ctrl+Shift+T template, Ctrl+Shift+S git, Ctrl+Shift+G graph
+- `templates.json`: pasta `conhecimento/templates/`
+- `workspace.json`: INDEX.md central + file-explorer/search à esquerda + graph/tags à direita
+- `graph.json`: showTags, showArrow, linkDistance 250
+
+**Templates (4):**
+| Template | Uso |
+|----------|-----|
+| `template-aprendizado.md` | Nova entrada de aprendizado |
+| `template-decisao.md` | Nova decisão arquitetural |
+| `template-bug.md` | Novo bug corrigido |
+| `template-padrao.md` | Novo padrão técnico |
+
+**MOCs (8 Mapas de Conteúdo):**
+| MOC | Cobre |
+|-----|-------|
+| `INDEX.md` | Entry point do vault |
+| `MOC - Projetos.md` | Mp3Player, CellCleaner, Biblia, SupermarketCalculator |
+| `MOC - Conhecimento.md` | Decisões, padrões, skills (34) |
+| `MOC - Decisoes.md` | 20+ decisões arquiteturais + infra |
+| `MOC - Bugs.md` | 30+ bugs com causa raiz e correção |
+| `MOC - Heuristicas.md` | 32 heurísticas de debugging/código |
+| `MOC - Frameworks.md` | 10 frameworks de raciocínio |
+| `MOC - Padroes Cognitivos.md` | 22 padrões cognitivos |
+| `MOC - Padroes.md` | 71 padrões técnicos tabelados |
+
+**Integração:**
+- Obsidian Git commita localmente → vigilante detecta mudanças no `.obsidian/` → push automático
+- Mudanças no `conhecimento/aprendizados/` aparecem automaticamente no Obsidian (mesmo filesystem)
+- Dataview queries nas MOCs listam dinamicamente os aprendizados
+- Templates disponíveis via `Ctrl+Shift+T`
+
+**Atalhos:**
+| Atalho | Ação |
+|--------|------|
+| `Ctrl+P` | Command palette |
+| `Ctrl+O` | Quick switcher |
+| `Ctrl+K` | Inserir wikilink |
+| `Ctrl+Shift+T` | Inserir template |
+| `Ctrl+Shift+S` | Git commit + push |
+| `Ctrl+Shift+G` | Graph view |
+| `Ctrl+Shift+R` | Refresh Dataview |
+
 ## 1. Estrutura de Pastas
 
 ### GitHub (12 repos, 1 ecossistema)

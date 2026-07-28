@@ -1,0 +1,13 @@
+{
+  "commitMessage": "[obsidian] {{date}}",
+  "commitDateFormat": "YYYY-MM-DD HH:mm",
+  "autoSaveInterval": 5,
+  "autoPullInterval": 10,
+  "autoPushInterval": 0,
+  "pushOnCommit": false,
+  "autoCommitMessage": "[obsidian] auto: {{date}}",
+  "syncMethod": "merge",
+  "pullBeforePush": false,
+  "disablePopups": false,
+  "disableNotifications": false
+}
