@@ -262,12 +262,84 @@ python tests\test_ler_v12.py    # 13 testes (v1.2: segurança, persistência, go
 python tests\test_ler_v20.py    # 31 testes (v2.0: GoalSpec, StrategyRanking, Risk6Cat, LearningTools, Evidence, ToolSelect, SelfImprove, Supervisor, DoD)
 ```
 
-## Integração com OpenCode
+## Integração com OpenCode — Protocolo para Agentes
 
-O arquivo `integrations/opencode/opencode_bridge.py` contém `OpenCodeBridge` que permite:
-- `delegate_goal(goal_text)` — delega missão para LER executar
-- `get_status()` — consulta status atual
-- `generate_report()` — gera relatório final
+### Quando delegar para o LER
+
+O Maestro DEVE delegar para o LER quando a tarefa envolver:
+
+| Situação | Exemplo |
+|---|---|
+| Múltiplos passos encadeados | "Buildar APK, instalar no dispositivo, testar" |
+| Loop até atingir critério | "Ajustar EQ até o áudio ficar limpo" |
+| Risco de perder contexto | Tarefa que exigiria >5 interações |
+| Necessidade de evidências | "Corrigir bug e provar que foi corrigido" |
+| Decisão arquitetural | "Escolher entre SQLite e JSON para persistência" |
+| Qualquer coisa que você não faria manualmente | Automatizar, iterar, validar |
+
+### Como delegar (do agente OpenCode)
+
+```powershell
+# Delegar missão ao LER
+ler "Seu objetivo claro aqui"
+
+# Ou diretamente pelo Python
+cd C:\Users\Playtec-bancada\.ler
+python run.py "Seu objetivo claro aqui"
+
+# A missão SÓ TERMINA quando TODOS os critérios forem atingidos
+```
+
+### O que retorna
+
+LER retorna um relatório completo com:
+- **Status**: completed | failed | stagnation
+- **Evidências**: logs, testes, hashes, artefatos
+- **Aprendizados**: patterns, decisions, bug_fixes registrados no knowledge_graph.json
+- **Score**: breakdown por categoria (Req, Func, Testes, DoD, Evidências, Auditoria)
+- **Auditoria**: checklist de verificação
+
+### Garantias do LER
+
+| Garantia | Mecanismo |
+|---|---|
+| **Não inventa** | Valida contra Acceptance Criteria + DoD; coleta evidências reais (git diff, test pass, compilação) |
+| **Não perde memória** | Checkpoint a cada passo; knowledge_graph.json permanente; CONHECIMENTO.md exportado |
+| **Não perde contexto** | GoalSpecification completa; mission_learnings preservados; resume retoma exatamente de onde parou |
+| **Não para antes do resultado** | Score < 95% → replanejamento autônomo; detecção de estagnação (30 iterações sem progresso) |
+| **Aprende com erros** | failed_patterns.json; learned_rules.json; estratégias falhas nunca repetidas sem alterações |
+
+### Fluxo completo de conhecimento
+
+```
+Maestro (identifica tarefa complexa)
+  → 11-LER-Executor (invoca LER)
+    → LER executa missão autônoma (13 camadas)
+      → checkpoint a cada passo
+      → valida contra critérios
+      → coleta evidências
+      → registra no knowledge_graph.json
+    → LER retorna relatório
+  → 11-LER-Executor reporta ao Maestro
+→ Vigilante detecta novos aprendizados e sincroniza
+→ CONHECIMENTO.md atualizado
+→ Próxima sessão carrega todo o conhecimento
+```
+
+### Integração via código
+
+```python
+# OpenCodeBridge (já existe em integrations/opencode/opencode_bridge.py)
+from integrations.opencode.opencode_bridge import OpenCodeBridge
+
+bridge = OpenCodeBridge(base_dir="C:/Users/Playtec-bancada/.ler")
+resultado = bridge.delegate_goal("Seu objetivo")
+status = bridge.get_status()
+relatorio = bridge.generate_report()
+```
+
+O bridge já está instalado e funcional. A única ação necessária por parte do agente
+é invocar `ler "objetivo"` ou `python run.py "objetivo"`.
 
 ### Restrição Crítica: Formato do opencode.jsonc
 
