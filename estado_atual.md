@@ -12,24 +12,28 @@
 > troca automaticamente para o próximo modelo na cadeia (nvidia/deepseek-v3.1)
 > sem intervenção manual. Cooldown de 60s com auto-recovery.
 >
-> ## CONHECIMENTO AUTOMÁTICO (NOVO)
+> ## VIGILANTE — AUTO-APRENDIZADO + GIT SYNC (NOVO)
+> O vigilante.ps1 é um processo Windows persistente que monitora automaticamente
+> a pasta de aprendizados e sincroniza tudo sem intervenção manual.
 
-Estrutura da pasta conhecimento/:
+### Arquitetura final do conhecimento automático
 
 ```
-conhecimento/
-├── INDEX.md              ← Carregado nas instructions do opencode.jsonc
-├── aprendizados/         ← Entradas por tarefa (YYYY-MM-DD-N.md)
-├── decisoes/             ← Decisões arquiteturais
-└── padroes/              ← Padrões técnicos/cognitivos
+Maestro (passo 11 obrigatório)
+  → 10-Aprendizado escreve conhecimento/aprendizados/YYYY-MM-DD-N.md
+      → Vigilante.ps1 (processo Windows oculto, polling 30s)
+          → Detecta novo .md por hash
+          → Chama KnowledgeConsolidator.register_learning()
+              → Atualiza knowledge_graph.json (merge Jaccard)
+              → Exporta CONHECIMENTO.md
+          → A cada 5 min: git add, commit, push (se houver mudanças)
+      → CONHECIMENTO.md carregado no contexto de todo agente via opencode.jsonc
 ```
 
-### Como funciona:
-1. Maestro invoca 10-Aprendizado como passo 11 do fluxo obrigatório
-2. 10-Aprendizado extrai decisões, padrões, bugs, configs, riscos
-3. Persiste em `conhecimento/aprendizados/YYYY-MM-DD-N.md`
-4. Bridge sincroniza com LER (`knowledge_bridge.py`)
-5. `INDEX.md` é carregado no contexto de todos os agentes via instructions
+### Gatilhos de inicialização
+- **Logon do Windows**: Scheduled Task `EcoSystemVigilante`
+- **PowerShell profile**: `start-vigilante` (auto-start ao abrir terminal)
+- **Manual**: `start-vigilante`, `stop-vigilante`, `status-vigilante`
 
 ---
 
@@ -188,6 +192,7 @@ Carregados de `~/.config/opencode/agents/`:
 | **Seed knowledge** | `tools/seed_knowledge.py` (595 linhas, seed inicial de padrões) |
 | **CONHECIMENTO.md** | Exportado pelo próprio `KnowledgeConsolidator.export_to_markdown()` |
 | **knowledge_bridge.py** | Removido — função absorvida pelo consolidator |
+| **Vigilante** | `scripts/vigilante.ps1` — processo Windows oculto, polling 30s, git sync 5min |
 
 ---
 
@@ -200,15 +205,19 @@ Carregados de `~/.config/opencode/agents/`:
 | `VAULT_PATH` | `C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau` |
 | BUN | `~\.bun\bin` no `Path` via `profile.ps1` |
 
-### Conhecimento (novo)
+### Conhecimento
 
 | Item | Caminho |
-|---|---|---|
+|---|---|
 | Base local (entradas por tarefa) | `EcoSystemUmGrau/conhecimento/aprendizados/` |
 | Base exportada (contexto global) | `~/.ler/CONHECIMENTO.md` (carregado nas instructions do opencode.jsonc) |
 | Agente de aprendizado | `~/.config/opencode/agents/10-aprendizado.md` |
-| Registro no LER | `register_learning()` no `KnowledgeConsolidator` (chamada Python direta) |
+| Vigilante (watcher + git sync) | `EcoSystemUmGrau/scripts/vigilante.ps1` |
+| Registro no LER | `register_learning()` no `KnowledgeConsolidator` (automático via vigilante) |
 | Knowledge graph | `~/.ler/knowledge/knowledge_graph.json` (67 patterns, 39 decisões, 46 bugs) |
+| Git sync | Automático a cada 5 min via vigilante (se houver mudanças) |
+| Scheduled task | `EcoSystemVigilante` — inicia no logon |
+| Profile helpers | `start-vigilante`, `stop-vigilante`, `status-vigilante` |
 | Aprendizados registrados | 2 (seed inicial) |
 
 ---
@@ -232,5 +241,10 @@ Carregados de `~/.config/opencode/agents/`:
 - [x] `conhecimento/INDEX.md` removido — instructions aponta para `~/.ler/CONHECIMENTO.md`
 - [x] `10-aprendizado.md` atualizado — chama `register_learning()` direto no consolidator
 - [x] `opencode.jsonc` atualizado — instructions aponta para CONHECIMENTO.md do LER
-- [x] 2 aprendizados seed registrados no consolidator, CONHECIMENTO.md exportado (693 linhas)
+- [x] 2 aprendizados seed registrados no consolidator, CONHECIMENTO.md exportado
 - [x] Arquivos pré-existentes mantidos: `knowledge_consolidator.py`, `learning_engine.py`, `seed_knowledge.py`
+- [x] **Vigilante.ps1** criado — polling 30s, detecta novos aprendizados, registra no consolidator, git sync 5min
+- [x] **Scheduled Task** `EcoSystemVigilante` criada — inicia no logon do Windows
+- [x] **Profile helpers** `start-vigilante`, `stop-vigilante`, `status-vigilante`
+- [x] **Testado**: vigilante detecta arquivo → consolidator registra → git commit + push — tudo automático
+- [x] **Obsidian**: vault em `EcoSystemUmGrau/` já reflete mudanças automaticamente
