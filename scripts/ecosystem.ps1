@@ -3,21 +3,23 @@
 .SYNOPSIS
     EcoSystemUmGrau - Comandos centralizados do ecossistema.
 .DESCRIPTION
-    ecosystem sync   → pull + push forcado em EcoSystemUmGrau e LER
-    ecosystem scan   → varre projetos Android e extrai patterns/conhecimento
-    ecosystem repair → reconstrói knowledge graph dos aprendizados crus + limpa runtime
-    ecosystem status → status completo de todos os componentes
-    ecosystem help   → esta ajuda
+    ecosystem sync     → pull + push forcado em EcoSystemUmGrau e LER
+    ecosystem scan     → varre projetos e extrai metricas (leve, rapido)
+    ecosystem learn    → varre projetos + aprendizados + registra no knowledge graph (profundo)
+    ecosystem repair   → reconstrói knowledge graph dos aprendizados crus
+    ecosystem status   → status completo de todos os componentes
+    ecosystem help     → esta ajuda
 .EXAMPLE
     ecosystem sync
     ecosystem scan
+    ecosystem learn
     ecosystem repair
     ecosystem status
 #>
 
 param(
     [Parameter(Position = 0)]
-    [ValidateSet("sync", "scan", "repair", "status", "help")]
+    [ValidateSet("sync", "scan", "learn", "repair", "status", "help")]
     [string]$Command = "help"
 )
 
@@ -273,15 +275,71 @@ print('OK')
 }
 
 # ══════════════════════════════════════════════════════════════════════
+# LEARN — Varredura proativa de conhecimento
+# ══════════════════════════════════════════════════════════════════════
+function Invoke-Learn {
+    $env:PYTHONPATH = "$lerDir;$env:PYTHONPATH"
+    $learned = 0
+
+    Write-Step "Varredura proativa de conhecimento"
+
+    # 1. Scan projetos Android
+    Write-Step "Procurando padrões em projetos Android"
+    $projects = Get-ChildItem $projectsDir -Directory -ErrorAction SilentlyContinue
+    foreach ($proj in $projects) {
+        $files = Get-ChildItem $proj.FullName -Recurse -Include "*.kt", "*.java", "*.py", "*.ps1" -ErrorAction SilentlyContinue
+        $todos = $files | Select-String -Pattern "(TODO|FIXME|HACK|XXX)" -ErrorAction SilentlyContinue
+        $count = ($todos | Measure-Object).Count
+
+        if ($count -gt 0) {
+            $date = Get-Date -Format "yyyy-MM-dd"
+            $content = "# $date - Scan proativo: $($proj.Name)`n"
+            $content += "## Marcadores encontrados`n"
+            $todos | Group-Object Filename | ForEach-Object {
+                $content += "- $($_.Name): $($_.Count) marcadores`n"
+            }
+            $filePath = "$learnDir\$date-scan-$($proj.Name).md"
+            Set-Content -Path $filePath -Value $content -Encoding UTF8
+
+            try {
+                python -c "import sys; sys.path.insert(0, r'$lerDir'); from agent.knowledge_consolidator import register_learning; register_learning(r'$filePath')" 2>&1 | Out-Null
+                $learned++
+            } catch { Write-Err "Falha ao registrar $($proj.Name): $_" }
+        }
+    }
+
+    # 2. Re-consolidate tudo
+    Write-Step "Consolidando conhecimento"
+    try {
+        python -c "import sys; sys.path.insert(0, r'$lerDir'); from agent.knowledge_consolidator import export_markdown; export_markdown()" 2>&1
+        $g = Get-Content "$lerDir\knowledge\knowledge_graph.json" -Raw -Encoding UTF8 | ConvertFrom-Json
+        $total = ($g.patterns | Measure-Object).Count + ($g.decisions | Measure-Object).Count + ($g.bugs | Measure-Object).Count + ($g.mission_learnings | Measure-Object).Count
+        Write-OK "Knowledge graph: $total entradas ($learned novos aprendizados)"
+    } catch { Write-Err "Falha na consolidacao: $_" }
+
+    # 3. Commit
+    Push-Location $ecoDir
+    $status = git status --porcelain
+    if ($status) {
+        git add -A
+        git commit -m "[ecosystem learn] $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
+        git push
+        Write-OK "Conhecimento versionado"
+    } else { Write-OK "Nada novo" }
+    Pop-Location
+}
+
+# ══════════════════════════════════════════════════════════════════════
 # MAIN
 # ══════════════════════════════════════════════════════════════════════
 switch ($Command) {
     "sync"   { Invoke-Sync }
     "scan"   { Invoke-Scan }
+    "learn"  { Invoke-Learn }
     "repair" { Invoke-Repair }
     "status" { Invoke-Status }
     default {
         Get-Help $PSCommandPath -Detailed
-        Write-Host "`nUso: ecosystem [sync|scan|repair|status|help]" -ForegroundColor Yellow
+        Write-Host "`nUso: ecosystem [sync|scan|learn|repair|status|help]" -ForegroundColor Yellow
     }
 }

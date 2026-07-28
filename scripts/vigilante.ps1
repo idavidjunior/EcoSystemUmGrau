@@ -116,6 +116,7 @@ Register-ObjectEvent $debounce "Elapsed" -Action $onDebounce > $null
 # ══════════════════════════════════════════════════════════════════════
 $ecoLastSync = [datetime]::MinValue
 $lerLastSync = [datetime]::MinValue
+$lastLearnDate = (Get-Date).Date.AddDays(-1)  # roda no primeiro ciclo
 
 function Sync-GitRepo {
     param([string]$Path, [string]$Label, [switch]$Push, [ref]$LastSync)
@@ -168,6 +169,27 @@ $onGitSync = {
 
 Register-ObjectEvent $gitTimer "Elapsed" -Action $onGitSync > $null
 $gitTimer.Start()
+
+# ══════════════════════════════════════════════════════════════════════
+# LEARN TIMER: varredura proativa uma vez por dia
+# ══════════════════════════════════════════════════════════════════════
+$learnTimer = New-Object System.Timers.Timer
+$learnTimer.Interval = 3600000  # check a cada 1h
+$learnTimer.AutoReset = $true
+
+$onLearn = {
+    $today = (Get-Date).Date
+    if ($lastLearnDate -lt $today) {
+        $lastLearnDate = $today
+        Write-Log "Varredura proativa diaria..."
+        try {
+            $result = & "$ecoDir\scripts\ecosystem.ps1" learn 2>&1 | Out-String
+            Write-Log "Learn: $($result.Trim())"
+        } catch { Write-Log "Learn ignorado: $_" }
+    }
+}
+Register-ObjectEvent $learnTimer "Elapsed" -Action $onLearn > $null
+$learnTimer.Start()
 
 # Mantem vivo
 while ($true) { Start-Sleep -Seconds 10 }
