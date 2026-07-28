@@ -13,9 +13,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("vox")
 
 OPENCODE_URL = "http://127.0.0.1:4096"
-JARVIS_MODEL = "C:\\Users\\Playtec-bancada\\.cache\\huggingface\\hub\\models--jgkawell--jarvis\\snapshots\\37f8763122312665f091d1fc760abaf1f79b02cc\\en\\en_GB\\jarvis\\medium\\jarvis-medium.onnx"
+VOZ_MODELO = "C:\\Users\\Playtec-bancada\\.cache\\huggingface\\hub\\models--jgkawell--jarvis\\snapshots\\37f8763122312665f091d1fc760abaf1f79b02cc\\en\\en_GB\\jarvis\\medium\\jarvis-medium.onnx"
 
-voice = PiperVoice.load(JARVIS_MODEL)
+voice = PiperVoice.load(VOZ_MODELO)
 
 def gerar_wav(texto):
     chunks = list(voice.synthesize(texto))
