@@ -21,9 +21,9 @@
 > clona, instala OpenCode, gera configs, configura LER, pergunta API Keys.
 > Unico comando: `git clone ... && cd EcoSystemUmGrau && setup.bat`
 >
-> ## VIGILANTE — AUTO-APRENDIZADO + GIT SYNC
-> Sincroniza automaticamente o EcoSystemUmGrau (git push cada 5min).
-> LER nao tem remote proprio — o conhecimento viaja no EcoSystemUmGrau.
+> ## VIGILANTE — AUTO-APRENDIZADO + GIT SYNC (DUAL)
+> Sincroniza EcoSystemUmGrau (git add+commit+push cada 5min) e LER
+> (git add+commit local, sem remote). Conhecimento viaja no EcoSystemUmGrau.
 
 ### Arquitetura final do conhecimento automático
 
