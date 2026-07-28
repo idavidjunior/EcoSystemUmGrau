@@ -160,8 +160,9 @@ function Invoke-Status {
         Write-OK "LER runtime: $(Get-ChildItem "$lerDir\run.py" | Select-Object Length)"
         $graph = Get-ChildItem "$lerDir\knowledge\knowledge_graph.json" -ErrorAction SilentlyContinue
         if ($graph) {
-            $patterns = (Get-Content $graph.FullName -Raw | ConvertFrom-Json | Measure-Object).Count
-            Write-OK "Knowledge graph: $(($graph.Length / 1KB).ToString('N1')) KB, $patterns entradas"
+        $graphObj = Get-Content $graph.FullName -Raw | ConvertFrom-Json
+        $totalEntries = ($graphObj.patterns | Measure-Object).Count + ($graphObj.decisions | Measure-Object).Count + ($graphObj.bugs | Measure-Object).Count + ($graphObj.mission_learnings | Measure-Object).Count
+        Write-OK "Knowledge graph: $(($graph.Length / 1KB).ToString('N1')) KB, $totalEntries patterns+decisoes+bugs+aprendizados"
         }
     } else { Write-Err "LER runtime: NAO ENCONTRADO" }
 
@@ -251,8 +252,9 @@ print('OK')
     $newGraph = Get-ChildItem $graphFile -ErrorAction SilentlyContinue
     if ($newGraph) {
         $kbSize = [math]::Round($newGraph.Length / 1KB, 1)
-        $entries = (Get-Content $graphFile -Raw -Encoding UTF8 | ConvertFrom-Json | Measure-Object).Count
-        Write-OK "Knowledge graph: ${kbSize}KB, $entries entradas"
+        $g = Get-Content $graphFile -Raw -Encoding UTF8 | ConvertFrom-Json
+        $total = ($g.patterns | Measure-Object).Count + ($g.decisions | Measure-Object).Count + ($g.bugs | Measure-Object).Count + ($g.mission_learnings | Measure-Object).Count
+        Write-OK "Knowledge graph: ${kbSize}KB, $total patterns+decisoes+bugs+aprendizados"
     }
 
     if ($errors -gt 0) { Write-Err "$errors erros durante reparo" }
