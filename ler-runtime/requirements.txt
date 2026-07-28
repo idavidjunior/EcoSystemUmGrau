@@ -1,0 +1,6 @@
+# Loop Engineering Agent - Python dependencies
+# Core uses only standard library (zero external deps)
+# These are optional enhancements
+
+# requests>=2.31.0
+# urllib3>=2.0.0

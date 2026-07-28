@@ -1,0 +1,20 @@
+{
+  "project": "C:\\Users\\Playtec-bancada\\Desktop\\Codigos\\Mp3Player",
+  "type": "kotlin",
+  "scanned_at": "2026-07-22T15:45:04.677516",
+  "total_issues": 1,
+  "by_category": {
+    "info": 1
+  },
+  "issues": [
+    {
+      "category": "info",
+      "file": "..\\..\\..\\.local\\share\\opencode\\worktree\\699a669f2471f9aad160ee2785dc9a1ba96b1245\\mighty-meadow\\project",
+      "line": 0,
+      "message": "gradlew found. Run 'gradlew lint' for Android Lint results.",
+      "code": null
+    }
+  ],
+  "issues_truncated": false,
+  "files_scanned": 0
+}

@@ -1,0 +1,90 @@
+{
+  "version": "2.0",
+  "system": "Loop Engineering Runtime (LER)",
+  "environment": {
+    "os": "windows",
+    "shell": "powershell"
+  },
+  "layers": {
+    "1_governance": "governance/",
+    "2_architecture": "architecture/",
+    "3_planning": "agent/ (planner, strategy_engine)",
+    "4_execution": "agent/ (executor), runtime/mission",
+    "5_validation": "agent/ (validator)",
+    "6_recovery": "agent/ (recovery)",
+    "7_persistence": "runtime/persistence",
+    "8_versioning": "git",
+    "9_audit": "agent/ (final_auditor)"
+  },
+  "mission": {
+    "max_iterations": 100,
+    "checkpoint_enabled": true,
+    "auto_recovery": true,
+    "validation_required": true,
+    "max_retries_per_step": 3,
+    "adaptive_replanning": true,
+    "learning_enabled": true,
+    "success_threshold": 95,
+    "audit_required": true,
+    "survive_interruptions": true
+  },
+  "git": {
+    "enabled": true,
+    "auto_commit": true,
+    "commit_prefix": "[LER]"
+  },
+  "omniroute": {
+    "default_provider": "opencode",
+    "fallback_providers": ["shell"]
+  },
+  "checkpoint": {
+    "auto_save": true,
+    "save_before_each_step": true,
+    "max_checkpoints": 50
+  },
+  "memory": {
+    "goal_file": "memory/goal.md",
+    "plan_file": "memory/plan.md",
+    "progress_file": "memory/progress.json",
+    "context_file": "memory/context.json",
+    "decisions_file": "memory/decisions.md",
+    "errors_file": "memory/errors.log",
+    "long_term": {
+      "projects": "memory/projects",
+      "knowledge": "memory/knowledge",
+      "user_preferences": "memory/user_preferences",
+      "technical_history": "memory/technical_history",
+      "projects": "memory/projects",
+      "knowledge": "memory/knowledge",
+      "patterns": "memory/patterns",
+      "solutions": "memory/solutions",
+      "architectures": "memory/architectures",
+      "decisions": "memory/decisions"
+    }
+  },
+  "learning": {
+    "enabled": true,
+    "rules_file": "memory/learned_rules.json",
+    "success_file": "memory/successful_patterns.json",
+    "failed_file": "memory/failed_patterns.json",
+    "max_rules": 200
+  },
+  "governance": {
+    "responsibility_map": "governance/responsibility_map.json",
+    "enforcement": "strict",
+    "conflict_detection": true
+  },
+  "architecture": {
+    "validation_enabled": true,
+    "preserve_compatibility": true,
+    "preserve_simplicity": true,
+    "preserve_stability": true,
+    "preserve_testability": true,
+    "preserve_auditability": true
+  },
+  "security": {
+    "check_before_commit": true,
+    "block_destructive_ops": true,
+    "backup_before_modify": true
+  }
+}

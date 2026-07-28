@@ -1,0 +1,710 @@
+# Base de Conhecimento — Exportacao Completa
+
+**Exportado em:** 2026-07-27T22:58:47.490630
+**Projetos:** 4
+**Padroes Tecnicos:** 70
+**Decisoes:** 39
+**Bug Fixes:** 46
+**Padroes Cognitivos:** 21
+**Heuristicas:** 31
+**Frameworks:** 10
+**Missoes Aprendidas:** 24
+
+---
+
+## Como Usar Esta Base de Conhecimento
+
+Esta base contem **conhecimento cognitivo e tecnico** acumulado entre projetos.
+Ela e organizada em 3 niveis:
+
+1. **Conhecimento Tecnico** — Padroes de codigo, pipelines de build, decisoes arquiteturais, bug fixes
+2. **Conhecimento Cognitivo** — Heuristicas de debugging, frameworks de raciocinio, estrategias validadas
+3. **Meta-Conhecimento** — Como a propria base e estruturada e auto-melhorada
+
+---
+
+## Decisoes Arquiteturais
+
+### LER usa Python puro (stdlib only) — zero dependencias externas intencionalmente.
+**Fonte:** ler_arquitetura
+Portabilidade maxima, sem conflitos de versao, instalavel em qualquer ambiente com Python.
+
+### Estado persiste em JSON (nao SQLite) — legivel, editavel fora do LER, sem migrations.
+**Fonte:** ler_arquitetura
+Mesma razao do Android Pure SDK: JSON e human-readable, debuggavel, versionavel no git.
+
+### Checkpoints salvos antes de cada iteracao — sobrevive a crash a qualquer momento.
+**Fonte:** ler_arquitetura
+Missao nunca recomeca do zero. restart/resume carrega ultimo checkpoint viavel.
+
+### Pontuacao ponderada com 6 categorias (Req 30%, Func 30%, Testes 10%, DoD 10%, Evidencias 10%, Auditoria 10%).
+**Fonte:** ler_arquitetura
+DoD granular com dod_satisfaction forcando verificacao de git commit + passos completados.
+
+### Estrategia selecionada por ranking (cost + risk + time + complexity + success_probability).
+**Fonte:** ler_arquitetura
+Estrategias falhas nunca repetidas sem alteracoes. Forca variacao de abordagem.
+
+### Supervisor monitora todos os modulos individualmente — nunca reinicia missao inteira por falha de um modulo.
+**Fonte:** ler_arquitetura
+Isolamento de falha: se o validator falha, recupera so o validator, nao o planner.
+
+### Metadata busca em multi-fontes: AcoustID -> iTunes BR -> MusicBrainz -> iTunes US fallback.
+**Fonte:** mp3player
+AcoustID falha sempre (API key invalida), mas e aceito — fallback natural para iTunes/MusicBrainz.
+
+### SearchMode.NORMAL -> RELAXED auto-fallback se NORMAL retorna null.
+**Fonte:** mp3player
+RELAXED usa thresholds mais baixos e queries mais amplas (title-only, artist-only).
+
+### Album art download com redirect loop manual (instanceFollowRedirects=false).
+**Fonte:** mp3player
+Cover Art Archive retorna 302 para archive.org, que falha com FileNotFoundException sem loop explicito.
+
+### Single Activity com FrameLayout + visibilidade (setVisibility) — sem Fragments.
+**Fonte:** android_pure_sdk
+Suficiente para ate 5 telas, mais simples, sem dependencias de suporte.
+
+### Form Starts Empty — input forms nunca auto-carregam arquivo ao trocar de aba.
+**Fonte:** android_pure_sdk
+Usuario espera blank slate em formularios. Carga explicita via file browser.
+
+### Salvar cria novo arquivo timestampado, nunca sobrescreve existente.
+**Fonte:** android_pure_sdk
+Preserva historico. Nao ha 'overwrite' no design — cada salvamento e um snapshot.
+
+- **Why:** d8 doesn't accept directory trees of .class files; it needs a JAR. This is a historical Android toolchain require** (fonte: android-pure-sdk)
+- **Why
+- User expects a blank slate when entering a form tab, consistent with "new calculation" mental model** (fonte: android-pure-sdk)
+- ****StringBuilder for price** — Fine-grained control over display format, avoids floating-point display issues** (fonte: android-pure-sdk)
+- ****Merge by name** — If name matches existing item, increment quantity instead of duplicating; NEVER merge unnamed items** (fonte: android-pure-sdk)
+- ****Form Starts Empty** — Input forms never auto-load from file; user loads explicitly via file browser** (fonte: android-pure-sdk)
+- ****Salvar = new file** — Explicit save creates timestamped snapshot, never overwrites existing saved files** (fonte: android-pure-sdk)
+- ****`-encoding UTF-8` in javac** — Required on Windows to prevent corrupted Portuguese characters (ç, ã, é, etc.)** (fonte: android-pure-sdk)
+- ****Step 0: AcoustID fingerprint** — `AcoustIDService.searchByFile()` — almost always fails because API key `4m9Q2k9p` is ** (fonte: mp3player-metadata-rescue)
+- **Calls `searchOnline(SearchMode.RELAXED)` — uses relaxed thresholds and also tries title-only / artist-only queries** (fonte: mp3player-metadata-rescue)
+- **User taps "Buscar na Internet"** (fonte: mp3player-metadata-rescue)
+- **If RELAXED also fails → user sees "Tente editar manualmente os campos e buscar novamente"** (fonte: mp3player-metadata-rescue)
+- **The issue description and root cause** (fonte: mp3player-metadata-rescue)
+### Chaves API exclusivamente em env vars (NVIDIA_API_KEY, OPENAI_API_KEY, etc.)
+**Fonte:** sessao_seguranca
+Config files podem ser commitados ou expostos; env vars sao seguras e isoladas por sessao
+
+### Server health check via HTTP ping (localhost:porta) em vez de stdin/stdout
+**Fonte:** sessao_servermanager
+HTTP permite verificar se processo esta vivo mesmo com threads ocupadas; mais confiavel
+
+### Salvar RustDesk password e ID em local permanente, nao gerar OTP
+**Fonte:** sessao_rustdesk
+Acesso remoto previsivel requer credenciais fixas, nao one-time tokens que mudam
+
+### Priorizar data-testid sobre classes CSS em automacao web
+**Fonte:** treinamento_navegacao
+data-testid e o unico atributo projetado exclusivamente para automacao; classes CSS mudam com refactors de estilo, IDs sao frequentemente dinamicos
+
+### Usar coordenadas relativas (porcentagem) em vez de absolutas para gestos mobile
+**Fonte:** treinamento_navegacao
+Dispositivos Android tem resolucoes variadas; coordenadas relativas adaptam-se automaticamente sem recalculo manual
+
+### Preferir AutomationId sobre Name em UI Automation Windows
+**Fonte:** treinamento_navegacao
+Name de controles Windows muda com idioma do sistema operacional e versoes do app; AutomationId e estavel entre versoes
+
+### Verificar modais antes de cada interacao
+**Fonte:** treinamento_navegacao
+Modais e dialogs interceptam cliques e causam ElementClickInterceptedException; verificacao preventiva evita retries desnecessarios
+
+### Usar keyboard shortcuts como fallback universal
+**Fonte:** treinamento_navegacao
+Atalhos de teclado funcionam independentemente de layout, tema, zoom, ou resolucao; sao o denominador comum entre todas as plataformas
+
+### Sempre fechar teclado virtual Android antes do proximo clique
+**Fonte:** treinamento_navegacao
+Teclado ocupa 30-50% da tela e intercepta toques; fecha-lo preventivamente reduz falhas de interacao em 70%
+
+### Usar OCR como fallback final, nao primario
+**Fonte:** treinamento_navegacao
+OCR e 10-100x mais lento que seletores diretos e sujeito a falsos positivos; usar apenas quando arvore de acessibilidade nao existe
+
+### Mudar config MCP de objeto para array no opencode.json
+**Fonte:** provider_mcp_debug
+Schema v1.17.14 exige array
+
+### Organizar Desktop\Codigos\ como raiz unica de projetos
+**Fonte:** workspace_organization
+Evitar dispersao de projetos pelo Desktop e Documentos
+
+### Renomear pastas com espacos para nomes sem espaco
+**Fonte:** workspace_organization
+Evitar bugs em scripts PowerShell que nao escapam caminhos
+
+### 2026-07-27: Sistema automático de captura de conhecimento do ecossistema
+**Fonte:** ecosistema-opencode
+# 2026-07-27: Sistema automático de captura de conhecimento do ecossistema
+
+**Categoria:** decisao
+**Contexto:** Implementação das três camadas de aprendizado contínuo para o ecossistema OpenCode + LER
+**Agentes envolvidos:** Maestro, Aprendizado
+
+## Decisão
+
+Criamos um sistema de três camadas para garantir que todo aprendizado do ecossistema seja automaticamente capturado, persistido e reutilizado:
+
+1. **Base de conhecimento local** (`EcoSystemUmGrau/conhecimento/`) — entradas markdown com meta
+
+### 2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback
+**Fonte:** ecosistema-opencode
+# 2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback
+
+**Categoria:** decisao
+**Contexto:** Necessidade de fallback automático quando o modelo primário do OpenCode bate limite de uso
+**Agentes envolvidos:** Maestro
+
+## Decisão
+
+Instalamos Bun 1.3.14 e o plugin `@razroo/opencode-model-fallback` v0.3.2 para fallback automático de modelos LLM no OpenCode.
+
+- Plugin adicionado ao `opencode.jsonc`
+- Config global em `opencode-model-fallback.jsonc` com fallback para
+
+
+## Padroes Tecnicos
+
+| # | Fonte | Titulo |
+|---|-------|--------|
+| 1 | android_pure_sdk | aapt + javac + d8 + apksigner |
+| 2 | android_pure_sdk | EditText inline editing toggle |
+| 3 | android_pure_sdk | Numpad with StringBuilder buffer |
+| 4 | android_pure_sdk | JSON persistence com File parameter |
+| 5 | mp3player | Filename artist extraction (two strategies) |
+| 6 | mp3player | iTunes search with scoring thresholds |
+| 7 | mp3player | AudioProcessor.isActive() must be dynamic |
+| 8 | mp3player | RenderersFactory for custom AudioProcessor |
+| 9 | android-pure-sdk+android-pure-sdk | Complete Build Pipeline Intelligence |
+| 10 | android-pure-sdk+android-pure-sdk | Step-by-Step Pipeline |
+| 11 | android-pure-sdk+mp3player-metadata-rescue+android-pure-sdk+mp3player-metadata-rescue | ADB Workflow |
+| 12 | android-pure-sdk+android-pure-sdk | Dependency Inclusion Pattern |
+| 13 | android-pure-sdk+android-pure-sdk | Tab Navigation Pattern |
+| 14 | android-pure-sdk+android-pure-sdk | Sub-tab Pattern (nested tabs) |
+| 15 | android-pure-sdk+android-pure-sdk | ListView + BaseAdapter Pattern |
+| 16 | android-pure-sdk+android-pure-sdk | Inline Editing Pattern |
+| 17 | android-pure-sdk+android-pure-sdk | Custom Numpad Pattern |
+| 18 | android-pure-sdk+android-pure-sdk | JSON Persistence Pattern |
+| 19 | android-pure-sdk+android-pure-sdk | Save/Load Pattern |
+| 20 | android-pure-sdk+android-pure-sdk | Theme System Pattern |
+| 21 | android-pure-sdk+android-pure-sdk | Button Visibility Pattern (maintain grid) |
+| 22 | android-pure-sdk+android-pure-sdk | Dual-mode Dialog Pattern |
+| 23 | android-pure-sdk+android-pure-sdk | Vibration Pattern |
+| 24 | android-pure-sdk+android-pure-sdk | SharedPreferences Pattern (immediate save) |
+| 25 | android-pure-sdk+android-pure-sdk | Form Starts Empty Pattern |
+| 26 | android-pure-sdk+android-pure-sdk+android-pure-sdk+android-pure-sdk | Bug pattern |
+| 27 | android-pure-sdk+android-pure-sdk | Key Design Decisions |
+| 28 | ler+ler | Strategy Engine v2.0 |
+| 29 | mp3player-metadata-rescue+mp3player-metadata-rescue | Build Pipeline |
+| 30 | mp3player-metadata-rescue+mp3player-metadata-rescue | Metadata Search Pipeline |
+| 31 | mp3player-metadata-rescue+mp3player-metadata-rescue | Album Art Download Pipeline |
+| 32 | mp3player-metadata-rescue+mp3player-metadata-rescue | Approach: `MediaCodecAudioRenderer` with `AudioProcessor...` varargs |
+| 33 | ler_memory+ler_memory+ler_memory+ler_memory | analyze_environment |
+| 34 | ler_memory+ler_memory+ler_memory+ler_memory | initialize_project |
+| 35 | ler_memory+ler_memory+ler_memory+ler_memory | implement |
+| 36 | ler_memory+ler_memory+ler_memory+ler_memory | run_tests |
+| 37 | ler_memory+ler_memory+ler_memory+ler_memory | git_commit |
+| 38 | sessao_providermanager | Server failover com auto-return |
+| 39 | sessao_providermanager | Cadeia de provedores com failover inteligente |
+| 40 | sessao_migracao_config | Config opencode v1.17.14 schema |
+| 41 | sessao_providermanager | MCP server handshake obrigatorio |
+| 42 | treinamento_navegacao | DOM element hierarchy mapping |
+| 43 | treinamento_navegacao | CSS selector priority ladder |
+| 44 | treinamento_navegacao | SPA navigation detection |
+| 45 | treinamento_navegacao | Iframe/contenteditable text entry |
+| 46 | treinamento_navegacao | Shadow DOM penetration |
+| 47 | treinamento_navegacao | Stale element reference recovery |
+| 48 | treinamento_navegacao | Lazy-loaded content detection |
+| 49 | treinamento_navegacao | Modal/dialog overlay detection |
+| 50 | treinamento_navegacao | Windows UI element tree traversal |
+| 51 | treinamento_navegacao | Win32 control pattern recognition |
+| 52 | treinamento_navegacao | Keyboard-only navigation fallback |
+| 53 | treinamento_navegacao | Windows notification/balloon dismissal |
+| 54 | treinamento_navegacao | Process hierarchy for multi-window apps |
+| 55 | treinamento_navegacao | Android View hierarchy scanning |
+| 56 | treinamento_navegacao | Android gesture patterns |
+| 57 | treinamento_navegacao | MIUI/HyperOS permission dialogs |
+| 58 | treinamento_navegacao | Android keyboard dismissal |
+| 59 | treinamento_navegacao | Package/activity launch pattern |
+| 60 | treinamento_navegacao | OCR fallback para elementos sem identificador |
+| 61 | treinamento_navegacao | Template matching para botoes graficos |
+| 62 | treinamento_navegacao | Wait strategy adaptive |
+| 63 | treinamento_navegacao | Retry com backoff exponencial |
+| 64 | session+session | MCP JSON-RPC notification handling |
+| 65 | session+session | MCP tools/call method dispatch |
+| 66 | session+session | OpenCode MCP config format |
+| 67 | session+session | Workspace organization |
+| 68 | opencode+opencode+opencode | Config: 2026-07-27: Teste do vigilante automático |
+| 69 | opencode+opencode | Config: 2026-07-27-4: Teste do ciclo de polling |
+| 70 | opencode | Config: 2026-07-27-5: Teste final do vigilante em processo real |
+
+## Bug Fixes e Corrigidos
+
+### max_iterations hard stop forca parada prematura mesmo sem objetivo atingido
+**Fonte:** ler_auditoria
+**Causa Raiz:** Loop principal usava while self.iteration < self.max_iterations (100) como criterio de saida, ignorando se o objetivo foi alcancado
+**Correcao:** Substituido por deteccao de estagnacao: 30 iteracoes sem progresso. max_iterations subiu para 1000 como seguranca.
+
+### Score < threshold mas sem failed_steps ia direto para SUCCESS_VERIFIED
+**Fonte:** ler_auditoria
+**Causa Raiz:** _phase_success_eval verificava apenas failed_steps, nao o score real. Se todos steps 'completaram' com bugs, LER considerava sucesso.
+**Correcao:** Score < threshold sempre vai para REPLANNING. Idem para _phase_final_audit.
+
+### Executor nao validava resultado real da implementacao
+**Fonte:** ler_auditoria
+**Causa Raiz:** _action_implement retornava string fixa sem verificar se arquivos foram modificados. _action_test so reportava numero de testes sem all_passed.
+**Correcao:** Executor agora verifica git diff --stat e git status apos implement/fix/refactor. Testes reportam all_passed.
+
+### Nao havia feedback loop do usuario — LER terminava mesmo se objetivo nao fosse atingido
+**Fonte:** ler_auditoria
+**Causa Raiz:** COMPLETED -> _finalize direto, sem perguntar ao usuario se o resultado foi satisfatorio
+**Correcao:** Adicionado _ask_user_feedback() em _finalize e _handle_complete. Se usuario rejeita, registra failed_pattern e chama _restart_mission().
+
+### Persistencia sem atomicidade — crash no meio do json.dump corrompia arquivo
+**Fonte:** ler_auditoria
+**Causa Raiz:** Escrita direta com json.dump() sem arquivo temporario
+**Correcao:** Todas escritas usam arquivo .tmp + os.replace() (atomico em ext4/NTFS).
+
+### Logs sem rotacao — logs cresciam indefinidamente
+**Fonte:** ler_auditoria
+**Causa Raiz:** Session.log escrevia sempre no mesmo arquivo sem limite de tamanho
+**Correcao:** _rotate_log() rotaciona em 5 niveis ao atingir 512KB.
+
+### Executor.results sem limite — memoria crescia indefinidamente
+**Fonte:** ler_auditoria
+**Causa Raiz:** results dict acumulava resultados sem nunca remover entradas antigas
+**Correcao:** MAX_RESULTS=50, remove entrada mais velha ao estourar.
+
+### Code duplication entre checkpoint.py e persistence.py (~200 linhas duplicadas)
+**Fonte:** ler_auditoria
+**Causa Raiz:** Duas implementacoes paralelas de save/load JSON com logica identica
+**Correcao:** Unificado via atomic_write_json()/atomic_read_json() em checkpoint.py, persistence.py delega.
+
+### -------
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** -----------
+**Correcao:** -----
+
+### Artist shows "Desconhecido"
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** YouTube MP3s have no ID3 tags
+**Correcao:** Extract artist from filename (first dash segment or second double-space segment)
+
+### Search returns wrong artist
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** iTunes BR returns irrelevant results
+**Correcao:** Scoring threshold system: NORMAL min=5/3, RELAXED min=3/2
+
+### Album art not found
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** Cover Art Archive redirect to archive.org fails
+**Correcao:** Explicit redirect loop + iTunes artwork fallback with US store
+
+### Logs don't appear
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** MIUI logcat filtering
+**Correcao:** Toast messages as visual feedback
+
+### Filename ambiguity
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** Multiple filename formats
+**Correcao:** Try dash split first, then double-space split as fallback
+
+### AcoustID always fails
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** Invalid API key `4m9Q2k9p` (HTTP 400)
+**Correcao:** Accepted as non-critical; search falls through to iTunes/MusicBrainz
+
+### First search returns nothing
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** Wrong artist extracted from filename, or title too noisy
+**Correcao:** Auto-fallback: NORMAL→RELAXED auto-retry; RELAXED tries title-only and artist-only queries
+
+### User sees wrong/short results
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** Scoring rejected borderline-but-correct match
+**Correcao:** User taps "Tentar Novamente" in dialog → triggers RELAXED mode with lower thresholds
+
+### **Audio stops / EQ not audible**
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** `EqualizerAudioProcessor.queueInput()` never calls `inputBuffer.position(inputBuffer.limit())` after processing. ExoPlayer sees 0 bytes consumed → audio pipeline stalls. Also `isActive()` was initiall
+**Correcao:** 1. Call `inputBuffer.position(inputBuffer.limit())` after successful processing. 2. Make `isActive()` always return `true`; use internal `isActiveState` flag to decide bypass vs processing inside `que
+
+### **Preset not persisting across sessions**
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** The preamp was baked into `currentGains[]` making it irreversible. `syncSoftwareEq()` passed preamp=0 to processor so preamp was never audible.
+**Correcao:** **Refactored:** `currentGains[]` now stores RAW gains only, `currentPreamp` is separate. `applyPreset()` no longer bakes preamp into gains. `syncSoftwareEq()` passes `currentPreamp` to processor. Adde
+
+### **Preamp volume irreversible and cumulative**
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** `showVolumeDialog()` did `currentGains[i] += v` on already-baked gains. Each call added more, preamp could never be undone without reset.
+**Correcao:** Fixed by the same refactoring: preamp is now separate. `showVolumeDialog()` only updates `currentPreamp` and re-applies HW EQ bands without touching `currentGains[]`.
+
+### **Preamp not audible**
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** `syncSoftwareEq()` always called `mp.setEqPreampGain(0f)`, ignoring `currentPreamp`. The preamp was only baked into HW EQ gains, never sent to software EQ.
+**Correcao:** `syncSoftwareEq()` now calls `mp.setEqPreampGain(currentPreamp)` instead of `0f`. Software EQ receives preamp as a master multiplier.
+
+### **Duplicate mini-player on some screens**
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** `openNowPlaying()` could be called multiple times, adding duplicate fragments.
+**Correcao:** Added guard at start of `openNowPlaying()`: if backstack top is already "now_playing", return early.
+
+### **EQ distorts audio at boost settings**
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** 20 cascaded peaking filters + preamp can push signal past 1.0. `coerceIn(-1f, 1f)` causes hard clipping distortion.
+**Correcao:** Replaced `coerceIn(-1f, 1f)` with `Math.tanh(sample)` — soft-clipping (tube-like saturation). Also made `isActive()` always return `true` to prevent ExoPlayer from caching the inactive state.
+
+### **Preset data corrupted on pt_BR locale**
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** `"%.1f".format(-4.0)` produces `"-4,0"` (comma decimal) on Brazilian locale. `joinToString(",")` uses same comma → data splits into 2x the expected parts.
+**Correcao:** Changed separator to `
+
+### **EQ still distorts at high boost**
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** `tanh()` soft-clipping alone insufficient — 20 cascaded peaking filters + preamp can produce cumulative gain >> 6 dB at certain frequencies, exceeding `tanh()` saturation threshold.
+**Correcao:** Added peak limiter in `queueInput()`: measure peak after filter cascade, apply gain reduction (1.0/peak) with per-sample attack/release smoothing (1ms attack, 100ms release). `tanh()` remains as final
+
+### **No EQ on/off button**
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** User had no way to bypass EQ without resetting all gains to zero.
+**Correcao:** Added `enabled` flag in `EqualizerAudioProcessor`, `setEnabled()` method, `Switch` widget in fragment header (default ON). Toggle disables both HW and SW EQ.
+
+### **No visual limiting feedback**
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** User couldn't see when limiter was active or how much reduction was applied.
+**Correcao:** Added `gainReductionDb` property on processor, `TextView` indicator in bottom bar (green=no reduction, yellow=moderate, red=heavy), polled every 250ms via Handler.
+
+### **EQ state not persisted**
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** EQ enabled/disabled state not saved to SharedPreferences — switch reset to ON on every restart.
+**Correcao:** Added `KEY_ENABLED` to `saveActivePreset()`/`loadActivePreset()`. Uses `restoringEqState` flag to prevent listener firing during restoration.
+
+### **No most-played tracking**
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** App had no mechanism to count or sort by play frequency.
+**Correcao:** Added `PlayCountManager` (JSON in SharedPreferences), increment on `playSongFromList()`, `SortMode.PLAY_COUNT` in `SongAdapter.sortSongs()`, "Mais Tocadas" option in sort dialog.
+
+### **EQ only applies after opening fragment**
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** Saved gains/preamp never loaded into processor until `EqualizerFragment.loadActivePreset()` runs. Playing a song without opening EQ meant processor stayed flat.
+**Correcao:** Added `EqStateLoader.restoreTo()` — loads same SharedPreferences used by fragment and applies to processor. Called in `playSongFromList()` before playing.
+
+### **EQ deactivates on song change**
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** `AudioProcessor.reset()` set `isActiveState = false` and `configure()` never recalculated it. ExoPlayer calls `reset()` between songs → processor silently bypassed.
+**Correcao:** Added `updateActiveState()` call in `configure()` and `reset()`. Removed `isActiveState = false` from `reset()` — state is now always recalculated from actual gains/enabled.
+
+### **EQ toggle button not visible**
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** `Switch` widget may not render correctly on some MIUI versions or was too small to notice.
+**Correcao:** Replaced `Switch` with `Button` styled as toggle (`EQ ON`/`EQ OFF`), matching existing button styles (`bg_preset_active`/`bg_preset_btn`). Uses `isSelected` for state.
+
+### ** Track the best score across all results and only return if minimum threshold is met. Perfect matc
+**Fonte:** mp3player-metadata-rescue
+
+### ** Use explicit redirect following in download function (manual loop for 3xx codes)
+**Fonte:** mp3player-metadata-rescue
+
+### -------
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** -----------
+**Correcao:** -----
+
+### OpenCode Go provider crash ao processar mensagem
+**Fonte:** sessao_providermanager
+**Causa Raiz:** _simulate_completion() tratava request.messages[-1] como dict sempre, mas ultima msg pode ser string
+**Correcao:** Adicionado isinstance(last, dict) check; se for string, usa como prompt direto
+
+### MCP server nao respondia nenhum comando
+**Fonte:** sessao_providermanager
+**Causa Raiz:** Faltava handler para metodo initialize, que e obrigatorio no protocolo MCP
+**Correcao:** Adicionado _handle_initialize() com resposta de protocolVersion/capabilities
+
+### auth.json com entradas de chave NVIDIA disfarcadas de outros provedores
+**Fonte:** sessao_limpeza_auth
+**Causa Raiz:** auth.json continha 5 entradas, 2 com chaves nvapi-... mascaradas como deepseek-ai e outra
+**Correcao:** Removidas entradas invalidas mantendo apenas github-copilot (oauth), nvidia (api key), deepseek (api key legitimo)
+
+### Cliques falhando em SPA apos navegacao
+**Fonte:** treinamento_navegacao
+**Causa Raiz:** Stale element reference: o DOM foi substituido pelo React/Vue mas a referencia ao elemento antigo permanece
+**Correcao:** Re-query pelo seletor apos cada navegacao; usar waitForSelector com timeout no novo DOM em vez de manter referencia
+
+### send_keys nao funciona em campos rich-text
+**Fonte:** treinamento_navegacao
+**Causa Raiz:** Contenteditable e iframes rich-text nao tem input visivel; eventos de teclado nao sao processados
+**Correcao:** Clicar no elemento, executar JS para limpar (editor.innerHTML=''), depois enviar caracteres via execCommand('insertText') ou dispatchEvent de InputEvent
+
+### Elementos nao encontrados em Shadow DOM
+**Fonte:** treinamento_navegacao
+**Causa Raiz:** Shadow DOM encapsula elementos; querySelector normal nao penetra shadowRoots
+**Correcao:** Navegar pela arvore de shadowRoots: element.shadowRoot.querySelector(...); usar caminho completo com parent.shadowRoot.child.shadowRoot
+
+### Cliques em coordenadas erram alvo em resolutions diferentes
+**Fonte:** treinamento_navegacao
+**Causa Raiz:** Coordenadas absolutas nao escalam entre dispositivos ou janelas redimensionadas
+**Correcao:** Calcular coordenadas como porcentagem da viewport: x = viewportWidth * 0.5, y = viewportHeight * 0.75; obter viewport via window.innerWidth/innerHeight
+
+### Permission dialogs do MIUI bloqueiam instalacao de APK
+**Fonte:** treinamento_navegacao
+**Causa Raiz:** MIUI/HyperOS adiciona dialogs de permissao apos instalacao que nao existem no Android AOSP
+**Correcao:** Apos adb install, aguardar 3s e aceitar dialog com adb shell input tap com coordenadas do botao 'Permitir'; se falhar, tentar 'Permitir somente durante o uso'
+
+### Dropdown<select> nao responde a send_keys ou click
+**Fonte:** treinamento_navegacao
+**Causa Raiz:** Selects estilizados (custom dropdowns) substituem o elemento <select> nativo por uma div com opcoes ocultas
+**Correcao:** Clicar no select para abrir, depois clicar na opcao pelo texto visivel; se nao funcionar, usar JS para setar valor e disparar evento change
+
+### MCP server Failed to get tools no OpenCode
+**Fonte:** provider_mcp_server.py:52-55
+**Causa Raiz:** Server respondia a notifications JSON-RPC (requests sem id), quebrando protocolo
+**Correcao:** handle_request() retorna None se req_id is None; run() so escreve resposta se not None
+
+### MCP server nao respondia a tools/call
+**Fonte:** provider_mcp_server.py
+**Causa Raiz:** Method tools/call nao estava no dispatch de handle_request()
+**Correcao:** Adicionado elif method == tools/call e _handle_tools_call() com mapping de nomes
+
+## Padroes Cognitivos
+
+### Debugging em cascata reversa
+**Dominio:** debugging
+**Fonte:** meta_cognition
+
+Quando um bug nao tem causa obvia, comeca pela saida (sintoma) e traca o caminho inverso ate a entrada. Para cada passo, pergunte: 'Se este componente funcionasse corretamente, o que eu veria?' Quando a resposta nao corresponde a realidade, voce encontrou o componente defeituoso. Mais eficiente que debugar pra frente porque elimina ramos inteiros da arvore de causas.
+
+Quando metodo A falha, nao repetir A - descer para metodo B imediatamente. Ex: click() falhou? Tenta keyboard. Keyboard falhou? T
+
+### Hipotese-falsificacao terminal
+**Dominio:** debugging
+**Fonte:** meta_cognition
+
+Para cada hipotese de causa, execute o experimento MAIS RAPIDO que pode FALSIFICA-LA, nao confirma-la. Se a hipotese for 'o arquivo X nao foi carregado', nao verifique se X foi carregado (confirmacao), mas sim INTRODUZA UM ERRO OBVIO em X e veja se o sintoma muda (falsificacao). Isso eviesa para descobrir a verdade rapidamente em vez de acumular evidencias confirmatorias.
+
+### Lei de Postel aplicada a engenharia
+**Dominio:** architecture
+**Fonte:** meta_cognition
+
+'Seja conservador no que voce envia, seja liberal no que voce aceita.' Outputs devem ser rigorosos (validacao estrita, tipos fortes, contratos explicitos). Inputs devem ser tolerantes (defaults, fallbacks, parsing flexivel). Isso cria sistemas que funcionam com peers imperfeitos sem propagar erros. Exemplo pratico: seu modulo deve falhar ruidosamente em erros internos mas silenciosamente em erros externos recuperaveis.
+
+### Principio da separacao causa-efeito-temporal
+**Dominio:** debugging
+**Fonte:** meta_cognition
+
+Em sistemas distribuidos ou assincronos, a CAUSA de um bug pode ter ocorrido muito antes do EFEITO ser observado. Nao procure perto do sintoma. Trace estados globais (logs, snapshots, checkpoints) para encontrar quando o estado correto foi violado, nao quando o erro foi reportado. Exemplo: crash no ExoPlayer 30s apos iniciar musica pode ser causado por configuracao do Equalizer que foi aplicada no momento 0.
+
+### Estrategia de fallback em cadeia (Chain of Responsibility)
+**Dominio:** system_design
+**Fonte:** meta_cognition
+
+Quando uma operacao tem multiplas fontes de dados possiveis, organize-as em ordem de preferencia (mais precisa primeiro) com fallback automatico para a proxima. Cada fonte deve reportar claramente se conseguiu ou nao. Nao pare no primeiro resultado — avalie todos e escolha o melhor. Exemplo: MetadataSearch usa AcoustID (fingerprint) -> iTunes BR (scoring) -> MusicBrainz (detalhado) -> iTunes US (fallback).
+
+### Validacao contra-intuitiva: teste o erro, nao o acerto
+**Dominio:** testing
+**Fonte:** meta_cognition
+
+Para cada funcao, o teste mais valioso nao e o 'caminho feliz' mas sim: (1) entrada vazia/nula, (2) entrada no limite, (3) entrada fora do dominio, (4) estado inconsistente, (5) concorrencia. Se sua funcao lida com arquivos: arquivo inexistente, permissao negada, disco cheio, arquivo corrompido. 80% dos bugs estao nos 20% de casos de erro.
+
+### Padrao de escrita atomica para persistencia
+**Dominio:** system_design
+**Fonte:** meta_cognition
+
+NUNCA escreva diretamente no arquivo final. Escreva em um arquivo temporario (.tmp) e use rename atomico (os.replace() no Python, MoveFileEx on Windows, mv no Linux). O rename e atomico a nivel de sistema de arquivos em NTFS e ext4: ou o arquivo inteiro aparece, ou o antigo permanece. SEMPRE. Isso previne corrupcao por crash no meio da escrita. Leitura: se o .tmp existe e o final nao, ignore o .tmp (escrita abortada).
+
+### Estrategia de loop autonomo: planejar-executar-verificar-corrigir
+**Dominio:** system_design
+**Fonte:** meta_cognition
+
+Qualquer sistema autonomo segue um ciclo fechado: (1) Planejar: decompor objetivo em passos verificaveis. (2) Executar: rodar cada passo com ferramentas reais. (3) Verificar: validar saida contra criterios objetivos (git diff, test pass, compilacao). (4) Corrigir: se falhou, registrar causa, replanejar, tentar de novo. O loop termina apenas quando TODOS os criterios de sucesso sao atingidos. Nao use max_iterations como criterio de parada — use deteccao de estagnacao (nenhum progresso em N iterac
+
+### Modelo de scoring para busca multi-resultado
+**Dominio:** algorithm
+**Fonte:** meta_cognition
+
+Quando uma busca retorna multiplos resultados, nao aceite o primeiro. Atribua scores: match exato + peso alto, match parcial + peso medio, overlap lexical + peso baixo. Defina thresholds por modo (estrito vs relaxado). Acompanhe o melhor score entre TODOS os resultados, nao apenas o primeiro. Retorne null se nenhum resultado atingir o threshold minimo — e melhor falhar que retornar informacao errada. O usuario pode entao tentar modo relaxado.
+
+### Diagnostico por eliminacao em config complexa
+**Dominio:** debugging
+**Fonte:** session
+
+Quando config tem multiplos componentes (provedores, servidores, MCP), isolar cada camada: testar provider isolado -> testar servidor -> testar MCP handshake -> testar chain completo
+
+### Pattern matching por estrutura de UI
+**Dominio:** ui-recognition
+**Fonte:** session
+
+Toda interface segue padroes reconheciveis: modais tem header+body+footer, tabelas tem thead+tbody, listas sao scrollaveis com items repetidos, formularios tem labels+inputs. Reconhecer o padrao estrutural e mais rapido que ler cada elemento individualmente
+
+Digitalizar a tela em zonas: topo = header/nav, esquerda = sidebar/menu, centro = conteudo principal, direita = paineis auxiliares, fundo = modais/overlays. Saber onde procurar cada tipo de elemento reduz tempo de busca em 60%
+
+### Modelo mental de DOM virtual
+**Dominio:** web-rendering
+**Fonte:** session
+
+SPAs (React/Vue/Angular) mantem DOM virtual que difere do DOM real. Mudancas de estado nao sao imediatamente visiveis no DOM real. Esperar pelo menos 1 ciclo de renderizacao (requestAnimationFrame ~16ms) apos cada acao antes de consultar o DOM
+
+### Reconhecimento de estado por elementos-chave
+**Dominio:** state-detection
+**Fonte:** session
+
+Cada estado da UI tem elementos-charada: loading tem spinner, empty state tem 'Nenhum resultado', erro tem mensagem vermelha, sucesso tem toast verde. Identificar o estado pelo elemento unico e mais rapido que validar condicoes complexas
+
+### Pre-compilacao de estrategia de interacao
+**Dominio:** planning
+**Fonte:** session
+
+Antes de agir, mentalmente compilar toda a sequencia de passos: (1) onde estou, (2) onde quero chegar, (3) quais elementos preciso atravessar, (4) quais barreiras possiveis (modais, permissoes). Agir sem plano causa 3x mais erros
+
+### Reconhecimento instantaneo de framework
+**Dominio:** framework-detection
+**Fonte:** session
+
+Identificar o framework da interface em <500ms: React tem #root vazio, Vue tem #app, Angular tem <app-root>, jQuery tem muitos elementos com IDs, Bootstrap tem classes container/row/col, Material UI tem Mui-* classes. Framework define o comportamento da navegacao
+
+### Ciclo OODA aplicado a navegacao
+**Dominio:** decision-making
+**Fonte:** session
+
+Observe (scan estado atual) -> Orient (identifique padroes e framework) -> Decide (escolha metodo de interacao) -> Act (execute). Ciclo completo leva <1s para interfaces familiares, <3s para desconhecidas. Repetir apos cada interacao
+
+### Heuristica de densidade de informacao
+**Dominio:** efficiency
+**Fonte:** session
+
+Quanto mais texto/icones em uma tela, mais provavel que o elemento desejado esta em um sub-grupo (modal, accordion, tab). Telas densas quase sempre tem informacao escondida em componentes colapsaveis. Procurar botoes 'Expandir', 'Ver mais', 'Mostrar detalhes'
+
+### Antecipacao de comportamento adaptativo
+**Dominio:** adaptability
+**Fonte:** session
+
+Interfaces modernas sao adaptativas: mudam layout em resize, escondem elementos em mobile, alteram labels por A/B testing. Nunca assumir que um elemento estara no mesmo lugar da ultima vez. Sempre re-scannear o estado atual antes de interagir
+
+### Mapa mental de navegadores web
+**Dominio:** browser-architecture
+**Fonte:** session
+
+Navegadores modernos sao multi-processo: processo browser (UI), processo renderer (DOM/JS), processo GPU (composicao). Cada processo e isolado. Crash no renderer nao derruba o browser. Cada aba tem seu proprio processo renderer. DevTools roda no processo browser
+
+### Espera adaptativa por tipo de recurso
+**Dominio:** performance
+**Fonte:** session
+
+Tempos de carregamento variam por tipo: HTML inicial (rede), CSS (bloqueante ate parsed), JS (bloqueante ate executed), imagens (nao bloqueantes), fontes (FOUT/FOIT), API calls (variavel). Navegacao so esta completa quando HTML+CSS+JS processaram. Imagens podem continuar carregando
+
+### ﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub
+**Dominio:** general
+**Fonte:** opencode
+
+﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub
+
+## O que foi feito
+- Repositorios do GitHub mapeados: 11 existentes, nenhum LER separado
+- setup.bat criado: script unico para qualquer PC novo (clona, instala, configura, pede API keys)
+- config/opencode.jsonc: template com {{USERPROFILE}} placeholder para geracao dinamica
+- config/agents/: fonte unica dos 15 agentes OpenCode (repo eh source of truth)
+- config/opencode-model-fallback.jsonc: config do plugin fallback
+- Vigilante atualizado:
+
+## Heuristicas
+
+| # | Dominio | Titulo | Descricao |
+|---|--------|--------|-----------|
+| 1 | debugging | Regra dos 3 logs | Antes de comecar a debugar, adicione 3 logs: (1) entrada da funcao com parametros, (2) ponto medio/dentro do loop, (3) saida com resultado. Isso cobre 90% dos bugs sem precisar de  |
+| 2 | debugging | Heuristica de isolamento de falha | Quando um sistema falha, isole variaveis UMA de cada vez. Mude exatamente uma coisa entre cada teste. Se voce mudar duas coisas e o bug desaparecer, voce nao sabe qual das duas res |
+| 3 | persistence | Escrita atomica sempre | Qualquer escrita em arquivo que importa: tmp + rename atomico. Nao importa o quao trivial parece. Um crash no meio do json.dump corrompe o arquivo e voce perde tudo. |
+| 4 | coding | Principio do menor escopo de variavel | Declare variaveis no menor escopo possivel. Se uma variavel pode ser local a um if, nao a declare no inicio da funcao. Isso reduz carga cognitiva e previne bugs de reuse de estado. |
+| 5 | coding | Interface sobre implementacao em parametros | Funcoes que aceitam dados devem aceitar o tipo MAIS GENERICO possivel (File, nao um path especifico; List, nao ArrayList; InputStream, nao FileInputStream). Isso maximiza reuso e t |
+| 6 | system_design | Cache de decisoes caras | Se uma computacao e deterministica e custosa, cacheie o resultado. Se o resultado pode mudar, invalide o cache explicitamente. Nunca confie em TTL para invalidação de dados que pre |
+| 7 | system_design | Sempre esperar o inesperado em E/S | Toda operacao de E/S (rede, disco, banco) pode falhar. Sempre tenha: timeout, retry com backoff, fallback, e log do erro. Nao existe excecao 'que nunca acontece' em E/S. |
+| 8 | coding | Regra do 'nao magico' | Numeros magicos, strings literais repetidas, e comportamento implicito sao bugs esperando para acontecer. Extraia para constantes nomeadas com documentacao do porque daquele valor. |
+| 9 | architecture | State deve ser explícito, nunca implícito | Se um componente tem estado (ativo/inativo, conectado/desconectado, editando/visualizando), represente-o como UMA variavel booleana ou enum, nao como combinacao de multiplos sinais |
+| 10 | debugging | Dados > Algoritmos para debugging | Quando um algoritmo parece errado, nao olhe primeiro para o algoritmo. Imprima/inspecione os DADOS que ele esta processando. 90% das vezes o algoritmo esta certo e os dados estao e |
+| 11 | debugging | Verifique o que voce acha que sabe | Toda vez que pensar 'isso nao pode ser a causa porque ja sei como funciona', VERIFIQUE. As suposicoes mais obvias sao as que mais escondem bugs. Um 'confia mas verifica' sistematic |
+| 12 | architecture | Projete para falha, nao para sucesso | Um sistema robusto nao e o que nunca falha — e o que lida graciosamente com cada falha. Pergunte: 'O que acontece se o disco enche? E se a rede cai? E se a memoria acaba? E se o ar |
+| 13 | configuration | Sempre validar schema apos migracao de config | Ferramentas que geram config podem produzir schema invalido; sempre ler spec e validar manualmente apos edicao |
+| 14 | security | Nunca armazenar API keys em config files | Auth tokens e chaves API devem ficar em env vars ou auth.json criptografado, nunca em opencode.json |
+| 15 | testing | Testar failover ativamente | Nao confiar em logica de fallback sem testar: derrubar servico primario e verificar se secundario assume |
+| 16 | debugging | Elemento existe? 3 fontes de verdade | Sempre cruzar 3 fontes antes de afirmar que elemento nao existe: (1) DOM/arvore atual, (2) screenshot com OCR, (3) viewport/scroll position. Se 2 de 3 concordam, elemento existe |
+| 17 | web-navigation | Navegacao em SPA: 3 sinais de sucesso | SPA navegou corretamente se 2 de 3 mudarem: (1) URL (pushState), (2) title da pagina, (3) conteudo do container principal (#root, #app). Verificar os 3 apos cada clique |
+| 18 | cross-platform | Antes de clicar, verifique o interceptador | Sempre verificar (1) modal aberto, (2) notificacao, (3) teclado virtual, (4) overlay de loading antes de clicar em qualquer elemento. Cada um desses causa falha misteriosa. |
+| 19 | element-detection | Hierarquia de confianca de seletores | Web: data-testid > #id > [name] > .class-unica > tag[attr] > :contains. Desktop: AutomationId > Name > ClassName > coordenadas. Mobile: resource-id > content-desc > text > coordena |
+| 20 | debugging | Stale element = re-query, nao re-tentar | Elemento stale significa que a referencia morreu; re-tentar a mesma operacao no mesmo objeto nunca funciona. Re-buscar o elemento pelo seletor original e a unica solucao |
+| 21 | web-navigation | Scroll forcado revela conteudo oculto | Conteudo lazy-loaded so aparece quando usuario faz scroll. Scroll ate o fim, espera 1s, scroll de novo, repete 3x. Metade dos 'elementos nao encontrados' sao lazy-loaded |
+| 22 | efficiency | Velocidade = evitar esperas fixas | Esperar 10s 'para garantir' custa 10s por operacao. Usar waitForElement com polling a cada 100ms e timeout de 10s: se elemento aparece em 200ms, voce ganhou 9.8s |
+| 23 | cross-platform | Teclado vence layout | Quando mouse/clique falha, Tab+Enter resolve em 80% dos casos. Atalhos de teclado sao independentes de CSS, tema, idioma, e resolucao. Sempre tenha fallback por teclado |
+| 24 | efficiency | Primeiro scan, depois interaja | Antes de qualquer acao, faca um scan completo do estado atual: elementos visiveis, modais, estado de loading. Agir cegamente leva a 3x mais retries. 1 scan evita 3 falhas |
+| 25 | element-detection | Seletor mais especifico = mais fragil | data-testid=product-123 e exato mas quebra se o ID mudar. Preferir seletores semanticos: [data-testid^=product-] ou .product-card capturam variacoes sem quebrar |
+| 26 | element-detection | Canvas e graficos: template matching | Elementos renderizados em canvas, SVG complexo ou WebGL nao tem arvore DOM utilizavel. Screenshot + template matching (OpenCV) + OCR e o unico caminho confiavel |
+| 27 | efficiency | 30s regra de timeout maximo | Nenhuma operacao de navegacao deve esperar mais que 30s. Se algo demora mais que isso, algo esta quebrado (rede, servidor, loop infinito). Fail fast, nao espere |
+| 28 | debugging | Log de fallback para diagnostico rapido | Sempre logar: (1) o que tentou fazer, (2) qual seletor usou, (3) o que encontrou, (4) o que deu errado. Logs estruturados reduzem tempo de debugging em 5x |
+| 29 | protocol | JSON-RPC notifications | Sempre verificar se request tem id antes de responder. Se nao tem, e notification - nao responda. |
+| 30 | protocol | MCP tool naming | MCP tools/list pode expor nomes kebab-case, mas tools/call precisa de mapping explicito para metodos internos |
+| 31 | organization | Workspace root | Manter projetos em raiz unica sem espacos no caminho para compatibilidade com scripts |
+
+## Frameworks
+
+### Ciclo PDCA (Plan-Do-Check-Act) para engenharia
+**Fonte:** meta_cognition
+
+Loop classico de melhoria continua adaptado para engenharia de software.
+
+### Metodo dos 5 Porques (5 Whys)
+**Fonte:** meta_cognition
+
+Tecnica de analise de causa raiz: pergunte 'por que?' 5 vezes para cada sintoma.
+
+### MECE (Mutually Exclusive, Collectively Exhaustive)
+**Fonte:** meta_cognition
+
+Principio de classificacao: particoes sem sobreposicao que cobrem todo o espaco.
+
+### FIRST Principles para testes
+**Fonte:** meta_cognition
+
+Propriedades de um bom teste unitario: Fast, Isolated, Repeatable, Self-validating, Timely.
+
+### Arvore de Decisao para Fallback de Servico
+**Fonte:** meta_cognition
+
+Estrategia para servicos com multiplas fontes de dados em ordem de preferencia.
+
+### Framework de Persistencia com Snapshot Imutavel
+**Fonte:** meta_cognition
+
+Padrao onde cada salvamento e um snapshot timestampado, nunca overwrite.
+
+### Framework de Aprendizado Continuo (Auto-Learning)
+**Fonte:** meta_cognition
+
+Sistema que acumula conhecimento automaticamente entre sessoes.
+
+### Cascata de Interacao (CI)
+**Fonte:** session
+
+Framework de 4 niveis para interagir com qualquer elemento: N1 = seletor direto (data-testid/resource-id), N2 = seletor semantico (classe/tag/texto), N3 = coordenadas relativas, N4 = OCR + template matching. Subir um nivel a cada 3 falhas consecutivas
+
+### OODA-Nav
+**Fonte:** session
+
+Adaptacao do ciclo Observe-Orient-Decide-Act de Boyd para navegacao automatizada. Ciclo completo <3s. Repetir a cada interacao
+
+### 3-Scan Pre-Action
+**Fonte:** session
+
+Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar falhas evitaveis
+
+---
+
+## Meta-Informacao
+
+**Versao do grafo:** 2
+**Ultima atualizacao:** 2026-07-27T22:58:47.467871
+**Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
+
+*Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

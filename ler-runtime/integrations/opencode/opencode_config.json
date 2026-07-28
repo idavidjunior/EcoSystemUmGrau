@@ -1,0 +1,23 @@
+{
+  "opencode_agent": {
+    "enabled": true,
+    "path": "opencode",
+    "default_args": [],
+    "timeout_seconds": 300
+  },
+  "bridge": {
+    "auto_initialize": true,
+    "save_reports": true,
+    "report_path": "reports/final_report.md"
+  },
+  "delegation": {
+    "max_concurrent_goals": 1,
+    "wait_for_completion": true,
+    "notify_on_complete": true
+  },
+  "security": {
+    "allowed_commands": ["python", "git", "dir", "echo", "type", "copy"],
+    "sandbox_enabled": false,
+    "max_command_timeout": 120
+  }
+}

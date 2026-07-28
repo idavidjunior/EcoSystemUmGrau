@@ -1,0 +1,1975 @@
+{
+  "version": 2,
+  "last_updated": "2026-07-27T22:58:47.467871",
+  "projects": {
+    "android-pure-sdk": {},
+    "ler": {},
+    "mp3player-metadata-rescue": {},
+    "ecosistema-opencode": {}
+  },
+  "patterns": [
+    {
+      "source": "android_pure_sdk",
+      "title": "aapt + javac + d8 + apksigner",
+      "action": "complete_build_pipeline",
+      "description": "Pipeline manual Android sem Gradle: aapt package (R.java) -> javac -> jar -> d8 -> aapt package (APK) -> aapt add (dex) -> zipalign -> apksigner"
+    },
+    {
+      "source": "android_pure_sdk",
+      "title": "EditText inline editing toggle",
+      "action": "inline_editing",
+      "description": "Desabilita EditText (enabled=false, focusable=false, cursorVisible=false, background=null) quando nao esta em edicao. Habilita ao editar. Remove TextWatcher velho antes de setText()."
+    },
+    {
+      "source": "android_pure_sdk",
+      "title": "Numpad with StringBuilder buffer",
+      "action": "numpad_input",
+      "description": "StringBuilder priceBuffer com virgula unica. Formatacao: raw -> pad left with zeros -> insert comma at len-2. setAlpha(0) em vez de setVisibility(GONE) para manter grid."
+    },
+    {
+      "source": "android_pure_sdk",
+      "title": "JSON persistence com File parameter",
+      "action": "json_persistence",
+      "description": "loadFromFile() aceita File parameter (nao so default). saveToFile() cria timestamped file no Salvar. Limpar = screen only, nunca toca em arquivo salvo."
+    },
+    {
+      "source": "mp3player",
+      "title": "Filename artist extraction (two strategies)",
+      "action": "filename_parsing",
+      "description": "Artist 'Desconhecido'/'<unknown>': Strategy 1 = dash-separated (first segment is artist, last is channel), Strategy 2 = double-space separated (second segment is artist). Segment validated: 2-50 chars, at least one uppercase."
+    },
+    {
+      "source": "mp3player",
+      "title": "iTunes search with scoring thresholds",
+      "action": "metadata_search_scoring",
+      "description": "Artist exact match +8, partial +5, title word overlap +3 (words >2 chars), album match +3. NORMAL threshold: artist-known min=5, no-artist min=3. RELAXED: 3/2. Tracks best score across all results."
+    },
+    {
+      "source": "mp3player",
+      "title": "AudioProcessor.isActive() must be dynamic",
+      "action": "equalizer_dsp",
+      "description": "isActive() retorna true apenas quando preampGainDb != 0 || any band gain != 0. queueInput() DEVE chamar inputBuffer.position(inputBuffer.limit()) apos processar. Se nao, ExoPlayer ve 0 bytes consumidos e o audio trava."
+    },
+    {
+      "source": "mp3player",
+      "title": "RenderersFactory for custom AudioProcessor",
+      "action": "exoplayer_wiring",
+      "description": "MediaCodecAudioRenderer(context, selector, handler, listener, capabilities, eqProc as AudioProcessor) via RenderersFactory. Passing eqProc direkt in constructor ohne @UnstableApi annotation."
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk",
+      "title": "Complete Build Pipeline Intelligence",
+      "line": 15,
+      "extracted_at": "2026-07-24T09:34:56.953177",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.166779"
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk",
+      "title": "Step-by-Step Pipeline",
+      "line": 35,
+      "extracted_at": "2026-07-24T09:34:56.953177",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.168779"
+    },
+    {
+      "source": "android-pure-sdk+mp3player-metadata-rescue+android-pure-sdk+mp3player-metadata-rescue",
+      "title": "ADB Workflow",
+      "line": 320,
+      "extracted_at": "2026-07-24T09:34:57.052849",
+      "merged_count": 4,
+      "merged_at": "2026-07-24T09:34:57.177797"
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk",
+      "title": "Dependency Inclusion Pattern",
+      "line": 353,
+      "extracted_at": "2026-07-24T09:34:56.959234",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.178786"
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk",
+      "title": "Tab Navigation Pattern",
+      "line": 410,
+      "extracted_at": "2026-07-24T09:34:56.960206",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.181782"
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk",
+      "title": "Sub-tab Pattern (nested tabs)",
+      "line": 438,
+      "extracted_at": "2026-07-24T09:34:56.960206",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.186200"
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk",
+      "title": "ListView + BaseAdapter Pattern",
+      "line": 449,
+      "extracted_at": "2026-07-24T09:34:56.960206",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.192745"
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk",
+      "title": "Inline Editing Pattern",
+      "line": 485,
+      "extracted_at": "2026-07-24T09:34:56.960206",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.194765"
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk",
+      "title": "Custom Numpad Pattern",
+      "line": 537,
+      "extracted_at": "2026-07-24T09:34:56.960206",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.195735"
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk",
+      "title": "JSON Persistence Pattern",
+      "line": 613,
+      "extracted_at": "2026-07-24T09:34:56.960206",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.198735"
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk",
+      "title": "Save/Load Pattern",
+      "line": 638,
+      "extracted_at": "2026-07-24T09:34:56.960206",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.199731"
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk",
+      "title": "Theme System Pattern",
+      "line": 690,
+      "extracted_at": "2026-07-24T09:34:56.960206",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.200730"
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk",
+      "title": "Button Visibility Pattern (maintain grid)",
+      "line": 715,
+      "extracted_at": "2026-07-24T09:34:56.960206",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.201735"
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk",
+      "title": "Dual-mode Dialog Pattern",
+      "line": 726,
+      "extracted_at": "2026-07-24T09:34:56.960206",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.202732"
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk",
+      "title": "Vibration Pattern",
+      "line": 775,
+      "extracted_at": "2026-07-24T09:34:56.960206",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.203728"
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk",
+      "title": "SharedPreferences Pattern (immediate save)",
+      "line": 787,
+      "extracted_at": "2026-07-24T09:34:56.961181",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.211748"
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk",
+      "title": "Form Starts Empty Pattern",
+      "line": 804,
+      "extracted_at": "2026-07-24T09:34:56.961181",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.214730"
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk+android-pure-sdk+android-pure-sdk",
+      "title": "Bug pattern",
+      "line": 867,
+      "extracted_at": "2026-07-24T09:34:56.961181",
+      "merged_count": 4,
+      "merged_at": "2026-07-24T09:34:57.214730"
+    },
+    {
+      "source": "android-pure-sdk+android-pure-sdk",
+      "title": "Key Design Decisions",
+      "line": 926,
+      "extracted_at": "2026-07-24T09:34:56.961181",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.214730"
+    },
+    {
+      "source": "ler+ler",
+      "title": "Strategy Engine v2.0",
+      "line": 104,
+      "extracted_at": "2026-07-24T09:34:57.035338",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.215735"
+    },
+    {
+      "source": "mp3player-metadata-rescue+mp3player-metadata-rescue",
+      "title": "Build Pipeline",
+      "line": 16,
+      "extracted_at": "2026-07-24T09:34:57.052849",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.215735"
+    },
+    {
+      "source": "mp3player-metadata-rescue+mp3player-metadata-rescue",
+      "title": "Metadata Search Pipeline",
+      "line": 85,
+      "extracted_at": "2026-07-24T09:34:57.052849",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.215735"
+    },
+    {
+      "source": "mp3player-metadata-rescue+mp3player-metadata-rescue",
+      "title": "Album Art Download Pipeline",
+      "line": 218,
+      "extracted_at": "2026-07-24T09:34:57.052849",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.215735"
+    },
+    {
+      "source": "mp3player-metadata-rescue+mp3player-metadata-rescue",
+      "title": "Approach: `MediaCodecAudioRenderer` with `AudioProcessor...` varargs",
+      "line": 252,
+      "extracted_at": "2026-07-24T09:34:57.052849",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.215735"
+    },
+    {
+      "source": "ler_memory+ler_memory+ler_memory+ler_memory",
+      "action": "analyze_environment",
+      "description": "Analyze environment for: general",
+      "duration": 6.3727452754974365,
+      "timestamp": "2026-07-22T05:19:30.899005",
+      "merged_count": 4,
+      "merged_at": "2026-07-24T09:34:57.216738"
+    },
+    {
+      "source": "ler_memory+ler_memory+ler_memory+ler_memory",
+      "action": "initialize_project",
+      "description": "Initialize project structure for: # Goal\n\nValidar funcionamento basico do LER v1.2\n\n---\nSet: 2; Initialize project structure for: # Goal\n\nDemonstrar ciclo completo LER v2.0\n\n---\nSet: 2026-07",
+      "duration": 0.013997554779052734,
+      "timestamp": "2026-07-22T05:19:31.357868",
+      "merged_count": 4,
+      "merged_at": "2026-07-24T09:34:57.217728"
+    },
+    {
+      "source": "ler_memory+ler_memory+ler_memory+ler_memory",
+      "action": "implement",
+      "description": "Implement: # Goal\n\nValidar funcionamento basico do LER v1.2\n\n---\nSet: 2; Implement: # Goal\n\nDemonstrar ciclo completo LER v2.0\n\n---\nSet: 2026-07",
+      "duration": 0.0,
+      "timestamp": "2026-07-22T05:19:31.719319",
+      "merged_count": 4,
+      "merged_at": "2026-07-24T09:34:57.218731"
+    },
+    {
+      "source": "ler_memory+ler_memory+ler_memory+ler_memory",
+      "action": "run_tests",
+      "description": "Run tests to validate implementation",
+      "duration": 27.871468544006348,
+      "timestamp": "2026-07-22T05:19:59.870472",
+      "merged_count": 4,
+      "merged_at": "2026-07-24T09:34:57.219730"
+    },
+    {
+      "source": "ler_memory+ler_memory+ler_memory+ler_memory",
+      "action": "git_commit",
+      "description": "Commit changes to git",
+      "duration": 1.6527974605560303,
+      "timestamp": "2026-07-22T05:20:04.436779",
+      "merged_count": 4,
+      "merged_at": "2026-07-24T09:34:57.226731"
+    },
+    {
+      "source": "sessao_providermanager",
+      "title": "Server failover com auto-return",
+      "action": "Usar ServerManager com health check TCP a cada 120s; primary falha -> secondary assume; primary recupera -> auto-return com flag retired",
+      "description": "Multiplas instancias OpenCode com failover automatico; background thread testa primary a cada 120s",
+      "domain": "infrastructure",
+      "extracted_at": "2026-07-25T07:46:10.233604"
+    },
+    {
+      "source": "sessao_providermanager",
+      "title": "Cadeia de provedores com failover inteligente",
+      "action": "Configurar provedores em ordem de prioridade; falhas rate_limit/auth/timeout/unavailable disparam failover; bad_request NAO falha",
+      "description": "6 provedores: opencode_go -> nvidia_build -> openai -> openrouter -> anthropic -> gemini",
+      "domain": "infrastructure",
+      "extracted_at": "2026-07-25T07:46:10.233604"
+    },
+    {
+      "source": "sessao_migracao_config",
+      "title": "Config opencode v1.17.14 schema",
+      "action": "mcpServers renomeado para mcp (array); cada entrypoint tem type, command (array); provider tem env para chaves; sem description no root",
+      "description": "Schema breaking changes: mcpServers -> mcp, command string -> array, provider.env para chaves API",
+      "domain": "configuration",
+      "extracted_at": "2026-07-25T07:46:10.233604"
+    },
+    {
+      "source": "sessao_providermanager",
+      "title": "MCP server handshake obrigatorio",
+      "action": "Sempre implementar _handle_initialize() que responde com protocolVersion e capabilities; toda requisicao antes de initialize retorna erro",
+      "description": "Cliente MCP envia initialize antes de qualquer outro comando; sem handler, conexao trava silenciosamente",
+      "domain": "protocol",
+      "extracted_at": "2026-07-25T07:46:10.233604"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "DOM element hierarchy mapping",
+      "action": "Identificar elemento-alvo subindo 3 niveis no DOM: target -> parent -> container; usar container para contexto de clique quando target for instavel",
+      "description": "Elementos dinamicos (menus, dropdowns) frequentemente mudam de posicao; mapear pelo container pai estavel em vez do filho instavel",
+      "domain": "web-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "CSS selector priority ladder",
+      "action": "Usar [data-testid] > #id > .class > tag[attr] > :contains como ordem de preferencia para seletores; data-testid e o mais estavel",
+      "description": "IDs podem ser dinamicos, classes mudam com frameworks (Tailwind, CSS modules); data-testid e o unico feito para automacao",
+      "domain": "web-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "SPA navigation detection",
+      "action": "Apos clique, esperar 500ms e verificar se URL mudou (pushState) ou se DOM foi substituido (MutationObserver); nao confiar em navegacao classica",
+      "description": "SPAs como React/Vue nao recarregam pagina; detectar transicao por mudanca de rota ou DOM, nao por load event",
+      "domain": "web-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "Iframe/contenteditable text entry",
+      "action": "Para campos rich-text, clicar no elemento, depois enviar teclas Ctrl+A (select all) + Delete + texto alvo; fallback para execJS(\"editor.innerHTML = ...\")",
+      "description": "Contenteditable e iframes rich-text nao aceitam send_keys() diretamente; requer abordagem em 3 passos com selecao e substituicao",
+      "domain": "web-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "Shadow DOM penetration",
+      "action": "Usar querySelector com caminho completo atravessando shadowRoots: document.querySelector('x-comp').shadowRoot.querySelector('y-comp').shadowRoot.querySelector('button')",
+      "description": "Componentes Web com Shadow DOM encapsulam elementos; necessario atravessar cada shadowRoot manualmente",
+      "domain": "web-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "Stale element reference recovery",
+      "action": "Ao receber StaleElementReferenceException, re-query o elemento pelo mesmo seletor e tentar novamente; se falhar 3x, subir um nivel no DOM e tentar encontrar o componente",
+      "description": "Paginas dinamicas removem e readicionam elementos no DOM, invalidando referencias; re-busca pelo seletor original resolve na maioria dos casos",
+      "domain": "web-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "Lazy-loaded content detection",
+      "action": "Scroll ate o final da pagina 3 vezes (com intervalos de 1s) antes de assumir que conteudo nao existe; observar aparecimento de spinners/loaders",
+      "description": "Infinite scroll e lazy loading sao onipresentes; scroll forcado dispara carregamento de conteudo oculto",
+      "domain": "web-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "Modal/dialog overlay detection",
+      "action": "Antes de qualquer clique, verificar se existe .modal, [role=dialog], .overlay visivel; se sim, fechar com ESC ou clicar no backdrop antes de prosseguir",
+      "description": "Modais interceptam cliques e causam falhas misteriosas; detector preventivo evita ElementClickInterceptedException",
+      "domain": "web-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "Windows UI element tree traversal",
+      "action": "Usar inspect.exe ou Accessibility Insights para obter arvore de elementos; procurar por AutomationId > Name > ClassName como identificadores estaveis",
+      "description": "Aplicacoes Windows expoem arvore de acessibilidade UI Automation; AutomationId e o identificador mais estavel, Name pode mudar com localizacao",
+      "domain": "desktop-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "Win32 control pattern recognition",
+      "action": "Identificar tipo de controle por ClassName: Button, Edit, ComboBox, ListBox, SysListView32, ScrollBar; cada tipo requer interacao especifica",
+      "description": "Controles Win32 classicos tem padroes de interacao previsiveis; Edit aceita WM_SETTEXT, Button aceita BM_CLICK, ComboBox requer CB_SETCURSEL",
+      "domain": "desktop-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "Keyboard-only navigation fallback",
+      "action": "Quando clique falha, usar Tab n vezes + Enter/Space; sequencia de teclas e mais confiavel que coordenadas de mouse em layouts variaveis",
+      "description": "Aplicacoes podem reposicionar botoes; atalhos de teclado e navegacao por Tab sao independentes de layout",
+      "domain": "desktop-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "Windows notification/balloon dismissal",
+      "action": "Antes de interagir, verificar se existe notificacao do sistema (Action Center, toast) e descarta-la com Win+N ou clique no X",
+      "description": "Notificacoes do Windows sobrepoem elementos e consomem foco do teclado; descarte preventivo evita interrupcoes",
+      "domain": "desktop-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "Process hierarchy for multi-window apps",
+      "action": "Mapear arvore de janelas: processo pai -> janela principal -> dialogs filhas; procurar handles por titulo parcial e classe, nao exato",
+      "description": "Apps modernos (Electron, Chromium) tem multiplas janelas; busca por titulo parcial captura variacoes como ' - Chrome' ou ' - Notepad'",
+      "domain": "desktop-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "Android View hierarchy scanning",
+      "action": "Usar uiautomator dump ou adb shell dumpsys window windows para obter arvore de views; resource-id > content-desc > text > class como prioridade",
+      "description": "Views Android tem resource-id (estavel), content-desc (acessibilidade), text (visivel), e class (tipo); resource-id e o mais confiavel",
+      "domain": "mobile-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "Android gesture patterns",
+      "action": "Usar adb shell input swipe para deslizar/tocar; coordenadas relativas (screenWidth*0.5, screenHeight*0.8) para adaptabilidade entre dispositivos",
+      "description": "Coordenadas absolutas quebram entre dispositivos; calcular proporcionalmente a resolucao da tela para gestos consistentes",
+      "domain": "mobile-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "MIUI/HyperOS permission dialogs",
+      "action": "Sempre verificar e aceitar permissoes ao instalar app: 'Permitir' ou 'Permitir somente durante o uso' como padrao; esperar 3s apos instalacao",
+      "description": "MIUI/HyperOS tem dialogs de permissao adicionais alem do Android stock; necessario aceitar explicitamente",
+      "domain": "mobile-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "Android keyboard dismissal",
+      "action": "Apos preencher campo, fechar teclado com adb shell input keyevent KEYCODE_BACK ou tocar em coordenada (width*0.5, height*0.1) para fora do campo",
+      "description": "Teclado virtual sobrepoe metade da tela e esconde elementos; fechar antes de interagir com elementos abaixo",
+      "domain": "mobile-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "Package/activity launch pattern",
+      "action": "Para abrir app Android, usar adb shell monkey -p <package> 1; para abrir tela especifica, adb shell am start -n <package>/<activity>",
+      "description": "Monkey e mais simples para launch basico; am start permite abrir activity especifica diretamente (pula tela inicial)",
+      "domain": "mobile-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "OCR fallback para elementos sem identificador",
+      "action": "Quando nao ha seletor disponivel, capturar screenshot da regiao e usar OCR (Tesseract/Google Vision) para encontrar texto alvo e suas coordenadas",
+      "description": "Elementos renderizados como canvas, imagens ou emuladores de terminal nao expoem arvore de acessibilidade; OCR e o unico caminho",
+      "domain": "cross-platform",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "Template matching para botoes graficos",
+      "action": "Capturar screenshot do botao desejado, salvar como template, usar OpenCV matchTemplate para localizar em screenshots futuras com threshold 0.8",
+      "description": "Botoes personalizados (icones, imagens) nao tem texto ou ID; template matching com correlacao normalizada e a abordagem mais robusta",
+      "domain": "cross-platform",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "Wait strategy adaptive",
+      "action": "Usar espera polinomial: 2s para elementos visiveis no DOM, 5s para elementos que requerem carregamento AJAX, 10s para navegacao entre paginas, 30s para downloads",
+      "description": "Tempos de espera fixos desperdicam segundos; adaptar ao tipo de operacao melhora velocidade sem sacrificar confiabilidade",
+      "domain": "cross-platform",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "title": "Retry com backoff exponencial",
+      "action": "Tentar operacao 3x com delays 0.5s, 2s, 5s; entre tentativas, verificar se DOM/arvore mudou (pode ser stale); 4a tentativa = fallback para metodo alternativo",
+      "description": "Falhas transitorias sao comuns; backoff exponencial nao sobrecarrega o sistema e da tempo para condicoes de corrida se resolverem",
+      "domain": "cross-platform",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session+session",
+      "title": "MCP JSON-RPC notification handling",
+      "action": "skip_response_on_notification",
+      "description": "MCP server must NOT respond to JSON-RPC notifications (requests without id field). Check req_id = request.get(id) - if None, return None from handle_request and skip writing to stdout in run().",
+      "domain": "protocol",
+      "extracted_at": "2026-07-25T14:27:27.740901",
+      "merged_count": 2,
+      "merged_at": "2026-07-25T14:27:27.879500"
+    },
+    {
+      "source": "session+session",
+      "title": "MCP tools/call method dispatch",
+      "action": "implement_tools_call_handler",
+      "description": "MCP v2024-11-05 uses tools/call method (not mcp.tools.call). Must implement _handle_tools_call that maps tool names to handlers.",
+      "domain": "protocol",
+      "extracted_at": "2026-07-25T14:27:27.740901",
+      "merged_count": 2,
+      "merged_at": "2026-07-25T14:27:27.881532"
+    },
+    {
+      "source": "session+session",
+      "title": "OpenCode MCP config format",
+      "action": "use_array_for_mcp_config",
+      "description": "OpenCode MCP config mcp field must be an array of objects, not a single object",
+      "domain": "config",
+      "extracted_at": "2026-07-25T14:27:27.740901",
+      "merged_count": 2,
+      "merged_at": "2026-07-25T14:27:27.881532"
+    },
+    {
+      "source": "session+session",
+      "title": "Workspace organization",
+      "action": "single_root_directory",
+      "description": "Workspace organization: use single root Desktop\\Codigos\\ with subfolders Android/, AI-Agents/, Ferramentas/, Documentos/, Midia/, Scripts/; Use single root Desktop\\Codigos\\ with subfolders Android/, AI-Agents/, Ferramentas/, Documentos/, Midia/, Scripts/",
+      "domain": "organization",
+      "extracted_at": "2026-07-25T14:27:27.740901",
+      "merged_count": 2,
+      "merged_at": "2026-07-25T14:27:27.881532"
+    },
+    {
+      "source": "opencode+opencode+opencode",
+      "title": "Config: 2026-07-27: Teste do vigilante automático",
+      "action": "Teste do sistema de vigilância automática do ecossistema",
+      "description": "# 2026-07-27: Teste do vigilante automático\n\n**Categoria:** config\n**Contexto:** Teste do sistema de vigilância automática do ecossistema\n**Agentes envolvidos:** Maestro, Vigilante\n\n## Teste\n\nVerificar se o vigilante detecta automaticamente novos arquivos em conhecimento/aprendizados/, registra no K",
+      "domain": "config",
+      "extracted_at": "2026-07-27T21:56:11.166592",
+      "merged_count": 3,
+      "merged_at": "2026-07-27T21:56:11.317072"
+    },
+    {
+      "source": "opencode+opencode",
+      "title": "Config: 2026-07-27-4: Teste do ciclo de polling",
+      "action": "Verificar se o vigilante detecta arquivos novos em tempo real",
+      "description": "# 2026-07-27-4: Teste do ciclo de polling\n\n**Categoria:** config\n**Contexto:** Verificar se o vigilante detecta arquivos novos em tempo real\n**Agentes envolvidos:** Vigilante\n\n## Teste\n\nCriado manualmente enquanto o vigilante está rodando para verificar se o polling de 30s detecta.\n",
+      "domain": "config",
+      "extracted_at": "2026-07-27T21:56:14.788390",
+      "merged_count": 2,
+      "merged_at": "2026-07-27T21:56:14.987368"
+    },
+    {
+      "source": "opencode",
+      "title": "Config: 2026-07-27-5: Teste final do vigilante em processo real",
+      "action": "Verificar detecção em processo Windows real (não background job)",
+      "description": "# 2026-07-27-5: Teste final do vigilante em processo real\n\n**Categoria:** config\n**Contexto:** Verificar detecção em processo Windows real (não background job)\n**Agentes envolvidos:** Vigilante\n\n## Teste\n\nCriado enquanto vigilante roda como processo Windows oculto.\n",
+      "domain": "config",
+      "extracted_at": "2026-07-27T21:56:18.437092"
+    }
+  ],
+  "decisions": [
+    {
+      "source": "ler_arquitetura",
+      "decision": "LER usa Python puro (stdlib only) — zero dependencias externas intencionalmente.",
+      "rationale": "Portabilidade maxima, sem conflitos de versao, instalavel em qualquer ambiente com Python."
+    },
+    {
+      "source": "ler_arquitetura",
+      "decision": "Estado persiste em JSON (nao SQLite) — legivel, editavel fora do LER, sem migrations.",
+      "rationale": "Mesma razao do Android Pure SDK: JSON e human-readable, debuggavel, versionavel no git."
+    },
+    {
+      "source": "ler_arquitetura",
+      "decision": "Checkpoints salvos antes de cada iteracao — sobrevive a crash a qualquer momento.",
+      "rationale": "Missao nunca recomeca do zero. restart/resume carrega ultimo checkpoint viavel."
+    },
+    {
+      "source": "ler_arquitetura",
+      "decision": "Pontuacao ponderada com 6 categorias (Req 30%, Func 30%, Testes 10%, DoD 10%, Evidencias 10%, Auditoria 10%).",
+      "rationale": "DoD granular com dod_satisfaction forcando verificacao de git commit + passos completados."
+    },
+    {
+      "source": "ler_arquitetura",
+      "decision": "Estrategia selecionada por ranking (cost + risk + time + complexity + success_probability).",
+      "rationale": "Estrategias falhas nunca repetidas sem alteracoes. Forca variacao de abordagem."
+    },
+    {
+      "source": "ler_arquitetura",
+      "decision": "Supervisor monitora todos os modulos individualmente — nunca reinicia missao inteira por falha de um modulo.",
+      "rationale": "Isolamento de falha: se o validator falha, recupera so o validator, nao o planner."
+    },
+    {
+      "source": "mp3player",
+      "decision": "Metadata busca em multi-fontes: AcoustID -> iTunes BR -> MusicBrainz -> iTunes US fallback.",
+      "rationale": "AcoustID falha sempre (API key invalida), mas e aceito — fallback natural para iTunes/MusicBrainz."
+    },
+    {
+      "source": "mp3player",
+      "decision": "SearchMode.NORMAL -> RELAXED auto-fallback se NORMAL retorna null.",
+      "rationale": "RELAXED usa thresholds mais baixos e queries mais amplas (title-only, artist-only)."
+    },
+    {
+      "source": "mp3player",
+      "decision": "Album art download com redirect loop manual (instanceFollowRedirects=false).",
+      "rationale": "Cover Art Archive retorna 302 para archive.org, que falha com FileNotFoundException sem loop explicito."
+    },
+    {
+      "source": "android_pure_sdk",
+      "decision": "Single Activity com FrameLayout + visibilidade (setVisibility) — sem Fragments.",
+      "rationale": "Suficiente para ate 5 telas, mais simples, sem dependencias de suporte."
+    },
+    {
+      "source": "android_pure_sdk",
+      "decision": "Form Starts Empty — input forms nunca auto-carregam arquivo ao trocar de aba.",
+      "rationale": "Usuario espera blank slate em formularios. Carga explicita via file browser."
+    },
+    {
+      "source": "android_pure_sdk",
+      "decision": "Salvar cria novo arquivo timestampado, nunca sobrescreve existente.",
+      "rationale": "Preserva historico. Nao ha 'overwrite' no design — cada salvamento e um snapshot."
+    },
+    {
+      "source": "android-pure-sdk",
+      "decision": "Why:** d8 doesn't accept directory trees of .class files; it needs a JAR. This is a historical Android toolchain requirement.",
+      "line": 115,
+      "extracted_at": "2026-07-24T09:34:56.964189",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.293494"
+    },
+    {
+      "source": "android-pure-sdk",
+      "decision": "Why\n- User expects a blank slate when entering a form tab, consistent with \"new calculation\" mental model",
+      "line": 808,
+      "extracted_at": "2026-07-24T09:34:56.983341",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.296493"
+    },
+    {
+      "source": "android-pure-sdk",
+      "decision": "**StringBuilder for price** — Fine-grained control over display format, avoids floating-point display issues",
+      "line": 931,
+      "extracted_at": "2026-07-24T09:34:56.995332",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.300488"
+    },
+    {
+      "source": "android-pure-sdk",
+      "decision": "**Merge by name** — If name matches existing item, increment quantity instead of duplicating; NEVER merge unnamed items",
+      "line": 933,
+      "extracted_at": "2026-07-24T09:34:56.995332",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.302488"
+    },
+    {
+      "source": "android-pure-sdk",
+      "decision": "**Form Starts Empty** — Input forms never auto-load from file; user loads explicitly via file browser",
+      "line": 936,
+      "extracted_at": "2026-07-24T09:34:56.996328",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.303490"
+    },
+    {
+      "source": "android-pure-sdk",
+      "decision": "**Salvar = new file** — Explicit save creates timestamped snapshot, never overwrites existing saved files",
+      "line": 938,
+      "extracted_at": "2026-07-24T09:34:56.996328",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.310489"
+    },
+    {
+      "source": "android-pure-sdk",
+      "decision": "**`-encoding UTF-8` in javac** — Required on Windows to prevent corrupted Portuguese characters (ç, ã, é, etc.)",
+      "line": 940,
+      "extracted_at": "2026-07-24T09:34:56.996328",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.312506"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "decision": "**Step 0: AcoustID fingerprint** — `AcoustIDService.searchByFile()` — almost always fails because API key `4m9Q2k9p` is invalid (HTTP 400)",
+      "line": 101,
+      "extracted_at": "2026-07-24T09:34:57.062850",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.313492"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "decision": "Calls `searchOnline(SearchMode.RELAXED)` — uses relaxed thresholds and also tries title-only / artist-only queries",
+      "line": 113,
+      "extracted_at": "2026-07-24T09:34:57.062850",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.313492"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "decision": "User taps \"Buscar na Internet\"",
+      "line": 367,
+      "extracted_at": "2026-07-24T09:34:57.063854",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.314493"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "decision": "If RELAXED also fails → user sees \"Tente editar manualmente os campos e buscar novamente\"",
+      "line": 374,
+      "extracted_at": "2026-07-24T09:34:57.063854",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.314493"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "decision": "The issue description and root cause",
+      "line": 434,
+      "extracted_at": "2026-07-24T09:34:57.064854",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.314493"
+    },
+    {
+      "source": "sessao_seguranca",
+      "decision": "Chaves API exclusivamente em env vars (NVIDIA_API_KEY, OPENAI_API_KEY, etc.)",
+      "rationale": "Config files podem ser commitados ou expostos; env vars sao seguras e isoladas por sessao",
+      "extracted_at": "2026-07-25T07:46:10.233604"
+    },
+    {
+      "source": "sessao_servermanager",
+      "decision": "Server health check via HTTP ping (localhost:porta) em vez de stdin/stdout",
+      "rationale": "HTTP permite verificar se processo esta vivo mesmo com threads ocupadas; mais confiavel",
+      "extracted_at": "2026-07-25T07:46:10.233604"
+    },
+    {
+      "source": "sessao_rustdesk",
+      "decision": "Salvar RustDesk password e ID em local permanente, nao gerar OTP",
+      "rationale": "Acesso remoto previsivel requer credenciais fixas, nao one-time tokens que mudam",
+      "extracted_at": "2026-07-25T07:46:10.233604"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "decision": "Priorizar data-testid sobre classes CSS em automacao web",
+      "rationale": "data-testid e o unico atributo projetado exclusivamente para automacao; classes CSS mudam com refactors de estilo, IDs sao frequentemente dinamicos",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "decision": "Usar coordenadas relativas (porcentagem) em vez de absolutas para gestos mobile",
+      "rationale": "Dispositivos Android tem resolucoes variadas; coordenadas relativas adaptam-se automaticamente sem recalculo manual",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "decision": "Preferir AutomationId sobre Name em UI Automation Windows",
+      "rationale": "Name de controles Windows muda com idioma do sistema operacional e versoes do app; AutomationId e estavel entre versoes",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "decision": "Verificar modais antes de cada interacao",
+      "rationale": "Modais e dialogs interceptam cliques e causam ElementClickInterceptedException; verificacao preventiva evita retries desnecessarios",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "decision": "Usar keyboard shortcuts como fallback universal",
+      "rationale": "Atalhos de teclado funcionam independentemente de layout, tema, zoom, ou resolucao; sao o denominador comum entre todas as plataformas",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "decision": "Sempre fechar teclado virtual Android antes do proximo clique",
+      "rationale": "Teclado ocupa 30-50% da tela e intercepta toques; fecha-lo preventivamente reduz falhas de interacao em 70%",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "decision": "Usar OCR como fallback final, nao primario",
+      "rationale": "OCR e 10-100x mais lento que seletores diretos e sujeito a falsos positivos; usar apenas quando arvore de acessibilidade nao existe",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "provider_mcp_debug",
+      "decision": "Mudar config MCP de objeto para array no opencode.json",
+      "rationale": "Schema v1.17.14 exige array",
+      "extracted_at": "2026-07-25T14:27:27.740901",
+      "merged_count": 2,
+      "merged_at": "2026-07-25T14:27:27.908714"
+    },
+    {
+      "source": "workspace_organization",
+      "decision": "Organizar Desktop\\Codigos\\ como raiz unica de projetos",
+      "rationale": "Evitar dispersao de projetos pelo Desktop e Documentos",
+      "extracted_at": "2026-07-25T14:27:27.740901",
+      "merged_count": 2,
+      "merged_at": "2026-07-25T14:27:27.908714"
+    },
+    {
+      "source": "workspace_organization",
+      "decision": "Renomear pastas com espacos para nomes sem espaco",
+      "rationale": "Evitar bugs em scripts PowerShell que nao escapam caminhos",
+      "extracted_at": "2026-07-25T14:27:27.740901",
+      "merged_count": 2,
+      "merged_at": "2026-07-25T14:27:27.908714"
+    },
+    {
+      "source": "ecosistema-opencode",
+      "decision": "2026-07-27: Sistema automático de captura de conhecimento do ecossistema",
+      "rationale": "# 2026-07-27: Sistema automático de captura de conhecimento do ecossistema\n\n**Categoria:** decisao\n**Contexto:** Implementação das três camadas de aprendizado contínuo para o ecossistema OpenCode + LER\n**Agentes envolvidos:** Maestro, Aprendizado\n\n## Decisão\n\nCriamos um sistema de três camadas para garantir que todo aprendizado do ecossistema seja automaticamente capturado, persistido e reutilizado:\n\n1. **Base de conhecimento local** (`EcoSystemUmGrau/conhecimento/`) — entradas markdown com metadados, categorizadas em aprendizados, decisões e padrões\n2. **Agente 10-Aprendizado** — subagente OpenCode invocado pelo Maestro ao final de toda tarefa para extrair conhecimento estruturado da conversa\n3. **Ponte LER** (`knowledge_bridge.py`) — sincroniza automaticamente os aprendizados com o `CONHECIMENTO.md` e `knowledge_graph.json` do LER\n\n## Por quê\n\nAntes desta implementação, cada interação com o ecossistema gerava conhecimento que era perdido após o término da sessão. Não havia:\n- Persistência estruturada de decisões e padrões\n- Contexto compartilhado entre sessões\n- Alimentação automática do LER com aprendizados do OpenCode\n\n## Impacto\n\n- Toda interação agora deixa um registro permanente\n- O LER é alimentado automaticamente sem intervenção manual\n- Novas sessões carregam todo o histórico de aprendizado via `instructions` do `opencode.jsonc`\n- O ecossistema se torna auto-documentante\n\n## Referências\n\n- `~/.config/opencode/agents/10-aprendizado.md`\n- `~/.config/opencode/agents/00-maestro.md` (fluxo obrigatório atualizado)\n- `EcoSystemUmGrau/conhecimento/INDEX.md`\n- `~/.ler/integrations/opencode/knowledge_bridge.py`\n",
+      "extracted_at": "2026-07-27T21:56:03.886663",
+      "merged_count": 6,
+      "merged_at": "2026-07-27T21:56:04.161909"
+    },
+    {
+      "source": "ecosistema-opencode",
+      "decision": "2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback",
+      "rationale": "# 2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback\n\n**Categoria:** decisao\n**Contexto:** Necessidade de fallback automático quando o modelo primário do OpenCode bate limite de uso\n**Agentes envolvidos:** Maestro\n\n## Decisão\n\nInstalamos Bun 1.3.14 e o plugin `@razroo/opencode-model-fallback` v0.3.2 para fallback automático de modelos LLM no OpenCode.\n\n- Plugin adicionado ao `opencode.jsonc`\n- Config global em `opencode-model-fallback.jsonc` com fallback para `nvidia/deepseek-ai/deepseek-v3.1`\n- Cooldown de 60s com auto-recovery\n- Notificações toast ativadas\n\n## Por quê\n\nO OpenCode 1.18.7 não suporta fallback nativo (PR #26292 ainda em andamento). A alternativa de troca manual via `/model` no TUI interrompe o fluxo de trabalho. O plugin da comunidade resolve isso com detecção automática de rate limits, quota errors e timeouts TTFT.\n\n## Impacto\n\n- Zero downtime quando o modelo primário atinge limite\n- Troca transparente com replay automático da última mensagem\n- Volta ao modelo primário automaticamente após cooldown\n- Bun adicionado como runtime adicional no ecossistema\n\n## Referências\n\n- `~/.config/opencode/opencode.jsonc` (plugin array)\n- `~/.config/opencode/opencode-model-fallback.jsonc`\n- `~/.config/opencode/node_modules/@razroo/opencode-model-fallback/`\n",
+      "extracted_at": "2026-07-27T21:56:07.659175",
+      "merged_count": 6,
+      "merged_at": "2026-07-27T21:56:07.812750"
+    }
+  ],
+  "bug_fixes": [
+    {
+      "source": "ler_auditoria",
+      "issue": "max_iterations hard stop forca parada prematura mesmo sem objetivo atingido",
+      "root_cause": "Loop principal usava while self.iteration < self.max_iterations (100) como criterio de saida, ignorando se o objetivo foi alcancado",
+      "fix": "Substituido por deteccao de estagnacao: 30 iteracoes sem progresso. max_iterations subiu para 1000 como seguranca.",
+      "category": "loop_control"
+    },
+    {
+      "source": "ler_auditoria",
+      "issue": "Score < threshold mas sem failed_steps ia direto para SUCCESS_VERIFIED",
+      "root_cause": "_phase_success_eval verificava apenas failed_steps, nao o score real. Se todos steps 'completaram' com bugs, LER considerava sucesso.",
+      "fix": "Score < threshold sempre vai para REPLANNING. Idem para _phase_final_audit.",
+      "category": "success_evaluation"
+    },
+    {
+      "source": "ler_auditoria",
+      "issue": "Executor nao validava resultado real da implementacao",
+      "root_cause": "_action_implement retornava string fixa sem verificar se arquivos foram modificados. _action_test so reportava numero de testes sem all_passed.",
+      "fix": "Executor agora verifica git diff --stat e git status apos implement/fix/refactor. Testes reportam all_passed.",
+      "category": "execution_validation"
+    },
+    {
+      "source": "ler_auditoria",
+      "issue": "Nao havia feedback loop do usuario — LER terminava mesmo se objetivo nao fosse atingido",
+      "root_cause": "COMPLETED -> _finalize direto, sem perguntar ao usuario se o resultado foi satisfatorio",
+      "fix": "Adicionado _ask_user_feedback() em _finalize e _handle_complete. Se usuario rejeita, registra failed_pattern e chama _restart_mission().",
+      "category": "user_feedback"
+    },
+    {
+      "source": "ler_auditoria",
+      "issue": "Persistencia sem atomicidade — crash no meio do json.dump corrompia arquivo",
+      "root_cause": "Escrita direta com json.dump() sem arquivo temporario",
+      "fix": "Todas escritas usam arquivo .tmp + os.replace() (atomico em ext4/NTFS).",
+      "category": "persistence"
+    },
+    {
+      "source": "ler_auditoria",
+      "issue": "Logs sem rotacao — logs cresciam indefinidamente",
+      "root_cause": "Session.log escrevia sempre no mesmo arquivo sem limite de tamanho",
+      "fix": "_rotate_log() rotaciona em 5 niveis ao atingir 512KB.",
+      "category": "observability"
+    },
+    {
+      "source": "ler_auditoria",
+      "issue": "Executor.results sem limite — memoria crescia indefinidamente",
+      "root_cause": "results dict acumulava resultados sem nunca remover entradas antigas",
+      "fix": "MAX_RESULTS=50, remove entrada mais velha ao estourar.",
+      "category": "resource_management"
+    },
+    {
+      "source": "ler_auditoria",
+      "issue": "Code duplication entre checkpoint.py e persistence.py (~200 linhas duplicadas)",
+      "root_cause": "Duas implementacoes paralelas de save/load JSON com logica identica",
+      "fix": "Unificado via atomic_write_json()/atomic_read_json() em checkpoint.py, persistence.py delega.",
+      "category": "code_quality"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "-------",
+      "root_cause": "-----------",
+      "fix": "-----",
+      "line": 379,
+      "extracted_at": "2026-07-24T09:33:57.930929"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "Artist shows \"Desconhecido\"",
+      "root_cause": "YouTube MP3s have no ID3 tags",
+      "fix": "Extract artist from filename (first dash segment or second double-space segment)",
+      "line": 380,
+      "extracted_at": "2026-07-24T09:34:57.065856",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.367085"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "Search returns wrong artist",
+      "root_cause": "iTunes BR returns irrelevant results",
+      "fix": "Scoring threshold system: NORMAL min=5/3, RELAXED min=3/2",
+      "line": 381,
+      "extracted_at": "2026-07-24T09:34:57.065856",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.368086"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "Album art not found",
+      "root_cause": "Cover Art Archive redirect to archive.org fails",
+      "fix": "Explicit redirect loop + iTunes artwork fallback with US store",
+      "line": 382,
+      "extracted_at": "2026-07-24T09:34:57.066850",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.370083"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "Logs don't appear",
+      "root_cause": "MIUI logcat filtering",
+      "fix": "Toast messages as visual feedback",
+      "line": 383,
+      "extracted_at": "2026-07-24T09:34:57.066850",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.378084"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "Filename ambiguity",
+      "root_cause": "Multiple filename formats",
+      "fix": "Try dash split first, then double-space split as fallback",
+      "line": 384,
+      "extracted_at": "2026-07-24T09:34:57.066850",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.379082"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "AcoustID always fails",
+      "root_cause": "Invalid API key `4m9Q2k9p` (HTTP 400)",
+      "fix": "Accepted as non-critical; search falls through to iTunes/MusicBrainz",
+      "line": 385,
+      "extracted_at": "2026-07-24T09:34:57.066850",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.382091"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "First search returns nothing",
+      "root_cause": "Wrong artist extracted from filename, or title too noisy",
+      "fix": "Auto-fallback: NORMAL→RELAXED auto-retry; RELAXED tries title-only and artist-only queries",
+      "line": 386,
+      "extracted_at": "2026-07-24T09:34:57.066850",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.385084"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "User sees wrong/short results",
+      "root_cause": "Scoring rejected borderline-but-correct match",
+      "fix": "User taps \"Tentar Novamente\" in dialog → triggers RELAXED mode with lower thresholds",
+      "line": 387,
+      "extracted_at": "2026-07-24T09:34:57.066850",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.386081"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "**Audio stops / EQ not audible**",
+      "root_cause": "`EqualizerAudioProcessor.queueInput()` never calls `inputBuffer.position(inputBuffer.limit())` after processing. ExoPlayer sees 0 bytes consumed → audio pipeline stalls. Also `isActive()` was initiall",
+      "fix": "1. Call `inputBuffer.position(inputBuffer.limit())` after successful processing. 2. Make `isActive()` always return `true`; use internal `isActiveState` flag to decide bypass vs processing inside `que",
+      "line": 388,
+      "extracted_at": "2026-07-24T09:34:57.066850",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.386081"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "**Preset not persisting across sessions**",
+      "root_cause": "The preamp was baked into `currentGains[]` making it irreversible. `syncSoftwareEq()` passed preamp=0 to processor so preamp was never audible.",
+      "fix": "**Refactored:** `currentGains[]` now stores RAW gains only, `currentPreamp` is separate. `applyPreset()` no longer bakes preamp into gains. `syncSoftwareEq()` passes `currentPreamp` to processor. Adde",
+      "line": 389,
+      "extracted_at": "2026-07-24T09:34:57.066850",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.392118"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "**Preamp volume irreversible and cumulative**",
+      "root_cause": "`showVolumeDialog()` did `currentGains[i] += v` on already-baked gains. Each call added more, preamp could never be undone without reset.",
+      "fix": "Fixed by the same refactoring: preamp is now separate. `showVolumeDialog()` only updates `currentPreamp` and re-applies HW EQ bands without touching `currentGains[]`.",
+      "line": 390,
+      "extracted_at": "2026-07-24T09:34:57.066850",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.394106"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "**Preamp not audible**",
+      "root_cause": "`syncSoftwareEq()` always called `mp.setEqPreampGain(0f)`, ignoring `currentPreamp`. The preamp was only baked into HW EQ gains, never sent to software EQ.",
+      "fix": "`syncSoftwareEq()` now calls `mp.setEqPreampGain(currentPreamp)` instead of `0f`. Software EQ receives preamp as a master multiplier.",
+      "line": 391,
+      "extracted_at": "2026-07-24T09:34:57.066850",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.394106"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "**Duplicate mini-player on some screens**",
+      "root_cause": "`openNowPlaying()` could be called multiple times, adding duplicate fragments.",
+      "fix": "Added guard at start of `openNowPlaying()`: if backstack top is already \"now_playing\", return early.",
+      "line": 392,
+      "extracted_at": "2026-07-24T09:34:57.066850",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.396081"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "**EQ distorts audio at boost settings**",
+      "root_cause": "20 cascaded peaking filters + preamp can push signal past 1.0. `coerceIn(-1f, 1f)` causes hard clipping distortion.",
+      "fix": "Replaced `coerceIn(-1f, 1f)` with `Math.tanh(sample)` — soft-clipping (tube-like saturation). Also made `isActive()` always return `true` to prevent ExoPlayer from caching the inactive state.",
+      "line": 393,
+      "extracted_at": "2026-07-24T09:34:57.066850",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.397084"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "**Preset data corrupted on pt_BR locale**",
+      "root_cause": "`\"%.1f\".format(-4.0)` produces `\"-4,0\"` (comma decimal) on Brazilian locale. `joinToString(\",\")` uses same comma → data splits into 2x the expected parts.",
+      "fix": "Changed separator to `",
+      "line": 394,
+      "extracted_at": "2026-07-24T09:34:57.066850",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.400093"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "**EQ still distorts at high boost**",
+      "root_cause": "`tanh()` soft-clipping alone insufficient — 20 cascaded peaking filters + preamp can produce cumulative gain >> 6 dB at certain frequencies, exceeding `tanh()` saturation threshold.",
+      "fix": "Added peak limiter in `queueInput()`: measure peak after filter cascade, apply gain reduction (1.0/peak) with per-sample attack/release smoothing (1ms attack, 100ms release). `tanh()` remains as final",
+      "line": 395,
+      "extracted_at": "2026-07-24T09:34:57.066850",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.401397"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "**No EQ on/off button**",
+      "root_cause": "User had no way to bypass EQ without resetting all gains to zero.",
+      "fix": "Added `enabled` flag in `EqualizerAudioProcessor`, `setEnabled()` method, `Switch` widget in fragment header (default ON). Toggle disables both HW and SW EQ.",
+      "line": 396,
+      "extracted_at": "2026-07-24T09:34:57.066850",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.401397"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "**No visual limiting feedback**",
+      "root_cause": "User couldn't see when limiter was active or how much reduction was applied.",
+      "fix": "Added `gainReductionDb` property on processor, `TextView` indicator in bottom bar (green=no reduction, yellow=moderate, red=heavy), polled every 250ms via Handler.",
+      "line": 397,
+      "extracted_at": "2026-07-24T09:34:57.067849",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.401397"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "**EQ state not persisted**",
+      "root_cause": "EQ enabled/disabled state not saved to SharedPreferences — switch reset to ON on every restart.",
+      "fix": "Added `KEY_ENABLED` to `saveActivePreset()`/`loadActivePreset()`. Uses `restoringEqState` flag to prevent listener firing during restoration.",
+      "line": 398,
+      "extracted_at": "2026-07-24T09:34:57.067849",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.402391"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "**No most-played tracking**",
+      "root_cause": "App had no mechanism to count or sort by play frequency.",
+      "fix": "Added `PlayCountManager` (JSON in SharedPreferences), increment on `playSongFromList()`, `SortMode.PLAY_COUNT` in `SongAdapter.sortSongs()`, \"Mais Tocadas\" option in sort dialog.",
+      "line": 399,
+      "extracted_at": "2026-07-24T09:34:57.067849",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.402391"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "**EQ only applies after opening fragment**",
+      "root_cause": "Saved gains/preamp never loaded into processor until `EqualizerFragment.loadActivePreset()` runs. Playing a song without opening EQ meant processor stayed flat.",
+      "fix": "Added `EqStateLoader.restoreTo()` — loads same SharedPreferences used by fragment and applies to processor. Called in `playSongFromList()` before playing.",
+      "line": 400,
+      "extracted_at": "2026-07-24T09:34:57.067849",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.402391"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "**EQ deactivates on song change**",
+      "root_cause": "`AudioProcessor.reset()` set `isActiveState = false` and `configure()` never recalculated it. ExoPlayer calls `reset()` between songs → processor silently bypassed.",
+      "fix": "Added `updateActiveState()` call in `configure()` and `reset()`. Removed `isActiveState = false` from `reset()` — state is now always recalculated from actual gains/enabled.",
+      "line": 401,
+      "extracted_at": "2026-07-24T09:34:57.067849",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.403392"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "**EQ toggle button not visible**",
+      "root_cause": "`Switch` widget may not render correctly on some MIUI versions or was too small to notice.",
+      "fix": "Replaced `Switch` with `Button` styled as toggle (`EQ ON`/`EQ OFF`), matching existing button styles (`bg_preset_active`/`bg_preset_btn`). Uses `isSelected` for state.",
+      "line": 402,
+      "extracted_at": "2026-07-24T09:34:57.067849",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.403392"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "** Track the best score across all results and only return if minimum threshold is met. Perfect matc",
+      "root_cause": "",
+      "fix": "",
+      "line": 188,
+      "extracted_at": "2026-07-24T09:34:57.068851",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.403392"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "** Use explicit redirect following in download function (manual loop for 3xx codes)",
+      "root_cause": "",
+      "fix": "",
+      "line": 214,
+      "extracted_at": "2026-07-24T09:34:57.068851",
+      "merged_count": 2,
+      "merged_at": "2026-07-24T09:34:57.403392"
+    },
+    {
+      "source": "mp3player-metadata-rescue",
+      "issue": "-------",
+      "root_cause": "-----------",
+      "fix": "-----",
+      "line": 379,
+      "extracted_at": "2026-07-24T09:34:57.065856"
+    },
+    {
+      "source": "sessao_providermanager",
+      "issue": "OpenCode Go provider crash ao processar mensagem",
+      "root_cause": "_simulate_completion() tratava request.messages[-1] como dict sempre, mas ultima msg pode ser string",
+      "fix": "Adicionado isinstance(last, dict) check; se for string, usa como prompt direto",
+      "extracted_at": "2026-07-25T07:46:10.233604"
+    },
+    {
+      "source": "sessao_providermanager",
+      "issue": "MCP server nao respondia nenhum comando",
+      "root_cause": "Faltava handler para metodo initialize, que e obrigatorio no protocolo MCP",
+      "fix": "Adicionado _handle_initialize() com resposta de protocolVersion/capabilities",
+      "extracted_at": "2026-07-25T07:46:10.233604"
+    },
+    {
+      "source": "sessao_limpeza_auth",
+      "issue": "auth.json com entradas de chave NVIDIA disfarcadas de outros provedores",
+      "root_cause": "auth.json continha 5 entradas, 2 com chaves nvapi-... mascaradas como deepseek-ai e outra",
+      "fix": "Removidas entradas invalidas mantendo apenas github-copilot (oauth), nvidia (api key), deepseek (api key legitimo)",
+      "extracted_at": "2026-07-25T07:46:10.233604"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "issue": "Cliques falhando em SPA apos navegacao",
+      "root_cause": "Stale element reference: o DOM foi substituido pelo React/Vue mas a referencia ao elemento antigo permanece",
+      "fix": "Re-query pelo seletor apos cada navegacao; usar waitForSelector com timeout no novo DOM em vez de manter referencia",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "issue": "send_keys nao funciona em campos rich-text",
+      "root_cause": "Contenteditable e iframes rich-text nao tem input visivel; eventos de teclado nao sao processados",
+      "fix": "Clicar no elemento, executar JS para limpar (editor.innerHTML=''), depois enviar caracteres via execCommand('insertText') ou dispatchEvent de InputEvent",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "issue": "Elementos nao encontrados em Shadow DOM",
+      "root_cause": "Shadow DOM encapsula elementos; querySelector normal nao penetra shadowRoots",
+      "fix": "Navegar pela arvore de shadowRoots: element.shadowRoot.querySelector(...); usar caminho completo com parent.shadowRoot.child.shadowRoot",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "issue": "Cliques em coordenadas erram alvo em resolutions diferentes",
+      "root_cause": "Coordenadas absolutas nao escalam entre dispositivos ou janelas redimensionadas",
+      "fix": "Calcular coordenadas como porcentagem da viewport: x = viewportWidth * 0.5, y = viewportHeight * 0.75; obter viewport via window.innerWidth/innerHeight",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "issue": "Permission dialogs do MIUI bloqueiam instalacao de APK",
+      "root_cause": "MIUI/HyperOS adiciona dialogs de permissao apos instalacao que nao existem no Android AOSP",
+      "fix": "Apos adb install, aguardar 3s e aceitar dialog com adb shell input tap com coordenadas do botao 'Permitir'; se falhar, tentar 'Permitir somente durante o uso'",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "treinamento_navegacao",
+      "issue": "Dropdown<select> nao responde a send_keys ou click",
+      "root_cause": "Selects estilizados (custom dropdowns) substituem o elemento <select> nativo por uma div com opcoes ocultas",
+      "fix": "Clicar no select para abrir, depois clicar na opcao pelo texto visivel; se nao funcionar, usar JS para setar valor e disparar evento change",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "provider_mcp_server.py:52-55",
+      "issue": "MCP server Failed to get tools no OpenCode",
+      "root_cause": "Server respondia a notifications JSON-RPC (requests sem id), quebrando protocolo",
+      "fix": "handle_request() retorna None se req_id is None; run() so escreve resposta se not None",
+      "extracted_at": "2026-07-25T14:27:27.740901",
+      "merged_count": 2,
+      "merged_at": "2026-07-25T14:27:27.937000"
+    },
+    {
+      "source": "provider_mcp_server.py",
+      "issue": "MCP server nao respondia a tools/call",
+      "root_cause": "Method tools/call nao estava no dispatch de handle_request()",
+      "fix": "Adicionado elif method == tools/call e _handle_tools_call() com mapping de nomes",
+      "extracted_at": "2026-07-25T14:27:27.740901",
+      "merged_count": 2,
+      "merged_at": "2026-07-25T14:27:27.937000"
+    }
+  ],
+  "cognitive_patterns": [
+    {
+      "source": "meta_cognition",
+      "title": "Debugging em cascata reversa",
+      "domain": "debugging",
+      "body": "Quando um bug nao tem causa obvia, comeca pela saida (sintoma) e traca o caminho inverso ate a entrada. Para cada passo, pergunte: 'Se este componente funcionasse corretamente, o que eu veria?' Quando a resposta nao corresponde a realidade, voce encontrou o componente defeituoso. Mais eficiente que debugar pra frente porque elimina ramos inteiros da arvore de causas.\n\nQuando metodo A falha, nao repetir A - descer para metodo B imediatamente. Ex: click() falhou? Tenta keyboard. Keyboard falhou? Tenta JS executor. JS falhou? Tenta OCR. Cada nivel e mais lento mas mais robusto\n\nQuando um cliente diz connected mas ferramentas nao funcionam, o problema geralmente esta no handshake ou na violacao de protocolo - nao na conexao em si. Testar com sequencia manual (initialize -> notification -> tools/list) isola o problema.",
+      "extracted_at": "2026-07-25T14:27:27.740901",
+      "merged_count": 4,
+      "merged_at": "2026-07-25T14:27:27.937000"
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Hipotese-falsificacao terminal",
+      "domain": "debugging",
+      "body": "Para cada hipotese de causa, execute o experimento MAIS RAPIDO que pode FALSIFICA-LA, nao confirma-la. Se a hipotese for 'o arquivo X nao foi carregado', nao verifique se X foi carregado (confirmacao), mas sim INTRODUZA UM ERRO OBVIO em X e veja se o sintoma muda (falsificacao). Isso eviesa para descobrir a verdade rapidamente em vez de acumular evidencias confirmatorias."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Lei de Postel aplicada a engenharia",
+      "domain": "architecture",
+      "body": "'Seja conservador no que voce envia, seja liberal no que voce aceita.' Outputs devem ser rigorosos (validacao estrita, tipos fortes, contratos explicitos). Inputs devem ser tolerantes (defaults, fallbacks, parsing flexivel). Isso cria sistemas que funcionam com peers imperfeitos sem propagar erros. Exemplo pratico: seu modulo deve falhar ruidosamente em erros internos mas silenciosamente em erros externos recuperaveis."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Principio da separacao causa-efeito-temporal",
+      "domain": "debugging",
+      "body": "Em sistemas distribuidos ou assincronos, a CAUSA de um bug pode ter ocorrido muito antes do EFEITO ser observado. Nao procure perto do sintoma. Trace estados globais (logs, snapshots, checkpoints) para encontrar quando o estado correto foi violado, nao quando o erro foi reportado. Exemplo: crash no ExoPlayer 30s apos iniciar musica pode ser causado por configuracao do Equalizer que foi aplicada no momento 0."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Estrategia de fallback em cadeia (Chain of Responsibility)",
+      "domain": "system_design",
+      "body": "Quando uma operacao tem multiplas fontes de dados possiveis, organize-as em ordem de preferencia (mais precisa primeiro) com fallback automatico para a proxima. Cada fonte deve reportar claramente se conseguiu ou nao. Nao pare no primeiro resultado — avalie todos e escolha o melhor. Exemplo: MetadataSearch usa AcoustID (fingerprint) -> iTunes BR (scoring) -> MusicBrainz (detalhado) -> iTunes US (fallback)."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Validacao contra-intuitiva: teste o erro, nao o acerto",
+      "domain": "testing",
+      "body": "Para cada funcao, o teste mais valioso nao e o 'caminho feliz' mas sim: (1) entrada vazia/nula, (2) entrada no limite, (3) entrada fora do dominio, (4) estado inconsistente, (5) concorrencia. Se sua funcao lida com arquivos: arquivo inexistente, permissao negada, disco cheio, arquivo corrompido. 80% dos bugs estao nos 20% de casos de erro."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Padrao de escrita atomica para persistencia",
+      "domain": "system_design",
+      "body": "NUNCA escreva diretamente no arquivo final. Escreva em um arquivo temporario (.tmp) e use rename atomico (os.replace() no Python, MoveFileEx on Windows, mv no Linux). O rename e atomico a nivel de sistema de arquivos em NTFS e ext4: ou o arquivo inteiro aparece, ou o antigo permanece. SEMPRE. Isso previne corrupcao por crash no meio da escrita. Leitura: se o .tmp existe e o final nao, ignore o .tmp (escrita abortada)."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Estrategia de loop autonomo: planejar-executar-verificar-corrigir",
+      "domain": "system_design",
+      "body": "Qualquer sistema autonomo segue um ciclo fechado: (1) Planejar: decompor objetivo em passos verificaveis. (2) Executar: rodar cada passo com ferramentas reais. (3) Verificar: validar saida contra criterios objetivos (git diff, test pass, compilacao). (4) Corrigir: se falhou, registrar causa, replanejar, tentar de novo. O loop termina apenas quando TODOS os criterios de sucesso sao atingidos. Nao use max_iterations como criterio de parada — use deteccao de estagnacao (nenhum progresso em N iteracoes)."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Modelo de scoring para busca multi-resultado",
+      "domain": "algorithm",
+      "body": "Quando uma busca retorna multiplos resultados, nao aceite o primeiro. Atribua scores: match exato + peso alto, match parcial + peso medio, overlap lexical + peso baixo. Defina thresholds por modo (estrito vs relaxado). Acompanhe o melhor score entre TODOS os resultados, nao apenas o primeiro. Retorne null se nenhum resultado atingir o threshold minimo — e melhor falhar que retornar informacao errada. O usuario pode entao tentar modo relaxado."
+    },
+    {
+      "source": "session",
+      "title": "Diagnostico por eliminacao em config complexa",
+      "domain": "debugging",
+      "body": "Quando config tem multiplos componentes (provedores, servidores, MCP), isolar cada camada: testar provider isolado -> testar servidor -> testar MCP handshake -> testar chain completo",
+      "extracted_at": "2026-07-25T07:46:10.233604"
+    },
+    {
+      "source": "session",
+      "title": "Pattern matching por estrutura de UI",
+      "domain": "ui-recognition",
+      "body": "Toda interface segue padroes reconheciveis: modais tem header+body+footer, tabelas tem thead+tbody, listas sao scrollaveis com items repetidos, formularios tem labels+inputs. Reconhecer o padrao estrutural e mais rapido que ler cada elemento individualmente\n\nDigitalizar a tela em zonas: topo = header/nav, esquerda = sidebar/menu, centro = conteudo principal, direita = paineis auxiliares, fundo = modais/overlays. Saber onde procurar cada tipo de elemento reduz tempo de busca em 60%",
+      "extracted_at": "2026-07-25T07:50:31.329508",
+      "merged_count": 2,
+      "merged_at": "2026-07-25T07:50:31.538696"
+    },
+    {
+      "source": "session",
+      "title": "Modelo mental de DOM virtual",
+      "domain": "web-rendering",
+      "body": "SPAs (React/Vue/Angular) mantem DOM virtual que difere do DOM real. Mudancas de estado nao sao imediatamente visiveis no DOM real. Esperar pelo menos 1 ciclo de renderizacao (requestAnimationFrame ~16ms) apos cada acao antes de consultar o DOM",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Reconhecimento de estado por elementos-chave",
+      "domain": "state-detection",
+      "body": "Cada estado da UI tem elementos-charada: loading tem spinner, empty state tem 'Nenhum resultado', erro tem mensagem vermelha, sucesso tem toast verde. Identificar o estado pelo elemento unico e mais rapido que validar condicoes complexas",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Pre-compilacao de estrategia de interacao",
+      "domain": "planning",
+      "body": "Antes de agir, mentalmente compilar toda a sequencia de passos: (1) onde estou, (2) onde quero chegar, (3) quais elementos preciso atravessar, (4) quais barreiras possiveis (modais, permissoes). Agir sem plano causa 3x mais erros",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Reconhecimento instantaneo de framework",
+      "domain": "framework-detection",
+      "body": "Identificar o framework da interface em <500ms: React tem #root vazio, Vue tem #app, Angular tem <app-root>, jQuery tem muitos elementos com IDs, Bootstrap tem classes container/row/col, Material UI tem Mui-* classes. Framework define o comportamento da navegacao",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Ciclo OODA aplicado a navegacao",
+      "domain": "decision-making",
+      "body": "Observe (scan estado atual) -> Orient (identifique padroes e framework) -> Decide (escolha metodo de interacao) -> Act (execute). Ciclo completo leva <1s para interfaces familiares, <3s para desconhecidas. Repetir apos cada interacao",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Heuristica de densidade de informacao",
+      "domain": "efficiency",
+      "body": "Quanto mais texto/icones em uma tela, mais provavel que o elemento desejado esta em um sub-grupo (modal, accordion, tab). Telas densas quase sempre tem informacao escondida em componentes colapsaveis. Procurar botoes 'Expandir', 'Ver mais', 'Mostrar detalhes'",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Antecipacao de comportamento adaptativo",
+      "domain": "adaptability",
+      "body": "Interfaces modernas sao adaptativas: mudam layout em resize, escondem elementos em mobile, alteram labels por A/B testing. Nunca assumir que um elemento estara no mesmo lugar da ultima vez. Sempre re-scannear o estado atual antes de interagir",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Mapa mental de navegadores web",
+      "domain": "browser-architecture",
+      "body": "Navegadores modernos sao multi-processo: processo browser (UI), processo renderer (DOM/JS), processo GPU (composicao). Cada processo e isolado. Crash no renderer nao derruba o browser. Cada aba tem seu proprio processo renderer. DevTools roda no processo browser",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Espera adaptativa por tipo de recurso",
+      "domain": "performance",
+      "body": "Tempos de carregamento variam por tipo: HTML inicial (rede), CSS (bloqueante ate parsed), JS (bloqueante ate executed), imagens (nao bloqueantes), fontes (FOUT/FOIT), API calls (variavel). Navegacao so esta completa quando HTML+CSS+JS processaram. Imagens podem continuar carregando",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "opencode",
+      "title": "﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub",
+      "domain": "general",
+      "body": "﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub\n\n## O que foi feito\n- Repositorios do GitHub mapeados: 11 existentes, nenhum LER separado\n- setup.bat criado: script unico para qualquer PC novo (clona, instala, configura, pede API keys)\n- config/opencode.jsonc: template com {{USERPROFILE}} placeholder para geracao dinamica\n- config/agents/: fonte unica dos 15 agentes OpenCode (repo eh source of truth)\n- config/opencode-model-fallback.jsonc: config do plugin fallback\n- Vigilante atualizado:\n\n﻿# 2026-07-27 - Unificacao completa do ecossistema\n\n## Problemas resolvidos\n1. **LER fora do repo**: movido ~/.ler/ → ler-runtime/ com junction. Tudo versionado.\n2. **Polling ineficiente**: vigilante agora usa FileSystemWatcher + debounce 300ms.\n3. **Sync so push**: agora faz pull antes de push (bidirecional).\n4. **Sem comando central**: ecosystem.ps1 criado (sync, scan, status).\n5. **LER remoto separado**: deletado github.com/idavidjunior/LER, conhecimento unificado.\n\n## Decisoes\n- LER runtime ",
+      "extracted_at": "2026-07-27T22:58:47.148168",
+      "merged_count": 2,
+      "merged_at": "2026-07-27T22:58:47.393638"
+    }
+  ],
+  "heuristics": [
+    {
+      "source": "meta_cognition",
+      "title": "Regra dos 3 logs",
+      "domain": "debugging",
+      "description": "Antes de comecar a debugar, adicione 3 logs: (1) entrada da funcao com parametros, (2) ponto medio/dentro do loop, (3) saida com resultado. Isso cobre 90% dos bugs sem precisar de debugger."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Heuristica de isolamento de falha",
+      "domain": "debugging",
+      "description": "Quando um sistema falha, isole variaveis UMA de cada vez. Mude exatamente uma coisa entre cada teste. Se voce mudar duas coisas e o bug desaparecer, voce nao sabe qual das duas resolveu."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Escrita atomica sempre",
+      "domain": "persistence",
+      "description": "Qualquer escrita em arquivo que importa: tmp + rename atomico. Nao importa o quao trivial parece. Um crash no meio do json.dump corrompe o arquivo e voce perde tudo."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Principio do menor escopo de variavel",
+      "domain": "coding",
+      "description": "Declare variaveis no menor escopo possivel. Se uma variavel pode ser local a um if, nao a declare no inicio da funcao. Isso reduz carga cognitiva e previne bugs de reuse de estado."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Interface sobre implementacao em parametros",
+      "domain": "coding",
+      "description": "Funcoes que aceitam dados devem aceitar o tipo MAIS GENERICO possivel (File, nao um path especifico; List, nao ArrayList; InputStream, nao FileInputStream). Isso maximiza reuso e testabilidade."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Cache de decisoes caras",
+      "domain": "system_design",
+      "description": "Se uma computacao e deterministica e custosa, cacheie o resultado. Se o resultado pode mudar, invalide o cache explicitamente. Nunca confie em TTL para invalidação de dados que precisam ser consistentes."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Sempre esperar o inesperado em E/S",
+      "domain": "system_design",
+      "description": "Toda operacao de E/S (rede, disco, banco) pode falhar. Sempre tenha: timeout, retry com backoff, fallback, e log do erro. Nao existe excecao 'que nunca acontece' em E/S."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Regra do 'nao magico'",
+      "domain": "coding",
+      "description": "Numeros magicos, strings literais repetidas, e comportamento implicito sao bugs esperando para acontecer. Extraia para constantes nomeadas com documentacao do porque daquele valor."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "State deve ser explícito, nunca implícito",
+      "domain": "architecture",
+      "description": "Se um componente tem estado (ativo/inativo, conectado/desconectado, editando/visualizando), represente-o como UMA variavel booleana ou enum, nao como combinacao de multiplos sinais. State implicito (ex: 'se alpha=0 e visibility=GONE entao ta oculto') e fonte de bugs."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Dados > Algoritmos para debugging",
+      "domain": "debugging",
+      "description": "Quando um algoritmo parece errado, nao olhe primeiro para o algoritmo. Imprima/inspecione os DADOS que ele esta processando. 90% das vezes o algoritmo esta certo e os dados estao errados (formato inesperado, null onde nao deveria, encoding errado, valores fora de range)."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Verifique o que voce acha que sabe",
+      "domain": "debugging",
+      "description": "Toda vez que pensar 'isso nao pode ser a causa porque ja sei como funciona', VERIFIQUE. As suposicoes mais obvias sao as que mais escondem bugs. Um 'confia mas verifica' sistematico elimina horas de debugging."
+    },
+    {
+      "source": "meta_cognition",
+      "title": "Projete para falha, nao para sucesso",
+      "domain": "architecture",
+      "description": "Um sistema robusto nao e o que nunca falha — e o que lida graciosamente com cada falha. Pergunte: 'O que acontece se o disco enche? E se a rede cai? E se a memoria acaba? E se o arquivo esta corrompido?' Para cada resposta, implemente um comportamento previsivel."
+    },
+    {
+      "source": "session",
+      "title": "Sempre validar schema apos migracao de config",
+      "description": "Ferramentas que geram config podem produzir schema invalido; sempre ler spec e validar manualmente apos edicao",
+      "domain": "configuration",
+      "extracted_at": "2026-07-25T07:46:10.233604"
+    },
+    {
+      "source": "session",
+      "title": "Nunca armazenar API keys em config files",
+      "description": "Auth tokens e chaves API devem ficar em env vars ou auth.json criptografado, nunca em opencode.json",
+      "domain": "security",
+      "extracted_at": "2026-07-25T07:46:10.233604"
+    },
+    {
+      "source": "session",
+      "title": "Testar failover ativamente",
+      "description": "Nao confiar em logica de fallback sem testar: derrubar servico primario e verificar se secundario assume",
+      "domain": "testing",
+      "extracted_at": "2026-07-25T07:46:10.233604"
+    },
+    {
+      "source": "session",
+      "title": "Elemento existe? 3 fontes de verdade",
+      "description": "Sempre cruzar 3 fontes antes de afirmar que elemento nao existe: (1) DOM/arvore atual, (2) screenshot com OCR, (3) viewport/scroll position. Se 2 de 3 concordam, elemento existe",
+      "domain": "debugging",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Navegacao em SPA: 3 sinais de sucesso",
+      "description": "SPA navegou corretamente se 2 de 3 mudarem: (1) URL (pushState), (2) title da pagina, (3) conteudo do container principal (#root, #app). Verificar os 3 apos cada clique",
+      "domain": "web-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Antes de clicar, verifique o interceptador",
+      "description": "Sempre verificar (1) modal aberto, (2) notificacao, (3) teclado virtual, (4) overlay de loading antes de clicar em qualquer elemento. Cada um desses causa falha misteriosa.",
+      "domain": "cross-platform",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Hierarquia de confianca de seletores",
+      "description": "Web: data-testid > #id > [name] > .class-unica > tag[attr] > :contains. Desktop: AutomationId > Name > ClassName > coordenadas. Mobile: resource-id > content-desc > text > coordenadas relativas",
+      "domain": "element-detection",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Stale element = re-query, nao re-tentar",
+      "description": "Elemento stale significa que a referencia morreu; re-tentar a mesma operacao no mesmo objeto nunca funciona. Re-buscar o elemento pelo seletor original e a unica solucao",
+      "domain": "debugging",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Scroll forcado revela conteudo oculto",
+      "description": "Conteudo lazy-loaded so aparece quando usuario faz scroll. Scroll ate o fim, espera 1s, scroll de novo, repete 3x. Metade dos 'elementos nao encontrados' sao lazy-loaded",
+      "domain": "web-navigation",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Velocidade = evitar esperas fixas",
+      "description": "Esperar 10s 'para garantir' custa 10s por operacao. Usar waitForElement com polling a cada 100ms e timeout de 10s: se elemento aparece em 200ms, voce ganhou 9.8s",
+      "domain": "efficiency",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Teclado vence layout",
+      "description": "Quando mouse/clique falha, Tab+Enter resolve em 80% dos casos. Atalhos de teclado sao independentes de CSS, tema, idioma, e resolucao. Sempre tenha fallback por teclado",
+      "domain": "cross-platform",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Primeiro scan, depois interaja",
+      "description": "Antes de qualquer acao, faca um scan completo do estado atual: elementos visiveis, modais, estado de loading. Agir cegamente leva a 3x mais retries. 1 scan evita 3 falhas",
+      "domain": "efficiency",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Seletor mais especifico = mais fragil",
+      "description": "data-testid=product-123 e exato mas quebra se o ID mudar. Preferir seletores semanticos: [data-testid^=product-] ou .product-card capturam variacoes sem quebrar",
+      "domain": "element-detection",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Canvas e graficos: template matching",
+      "description": "Elementos renderizados em canvas, SVG complexo ou WebGL nao tem arvore DOM utilizavel. Screenshot + template matching (OpenCV) + OCR e o unico caminho confiavel",
+      "domain": "element-detection",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "30s regra de timeout maximo",
+      "description": "Nenhuma operacao de navegacao deve esperar mais que 30s. Se algo demora mais que isso, algo esta quebrado (rede, servidor, loop infinito). Fail fast, nao espere",
+      "domain": "efficiency",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "Log de fallback para diagnostico rapido",
+      "description": "Sempre logar: (1) o que tentou fazer, (2) qual seletor usou, (3) o que encontrou, (4) o que deu errado. Logs estruturados reduzem tempo de debugging em 5x",
+      "domain": "debugging",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "title": "JSON-RPC notifications",
+      "description": "Sempre verificar se request tem id antes de responder. Se nao tem, e notification - nao responda.",
+      "domain": "protocol",
+      "extracted_at": "2026-07-25T14:27:27.740901",
+      "merged_count": 2,
+      "merged_at": "2026-07-25T14:27:27.993968"
+    },
+    {
+      "source": "session",
+      "title": "MCP tool naming",
+      "description": "MCP tools/list pode expor nomes kebab-case, mas tools/call precisa de mapping explicito para metodos internos",
+      "domain": "protocol",
+      "extracted_at": "2026-07-25T14:27:27.740901",
+      "merged_count": 2,
+      "merged_at": "2026-07-25T14:27:27.993968"
+    },
+    {
+      "source": "session",
+      "title": "Workspace root",
+      "description": "Manter projetos em raiz unica sem espacos no caminho para compatibilidade com scripts",
+      "domain": "organization",
+      "extracted_at": "2026-07-25T14:27:27.740901",
+      "merged_count": 2,
+      "merged_at": "2026-07-25T14:27:27.993968"
+    }
+  ],
+  "frameworks": [
+    {
+      "source": "meta_cognition",
+      "name": "Ciclo PDCA (Plan-Do-Check-Act) para engenharia",
+      "description": "Loop classico de melhoria continua adaptado para engenharia de software.",
+      "body": "Plan: Defina objetivo claro com criterios de sucesso mensuraveis. Decomponha em passos atomicos. Identifique riscos e mitigacoes. Do: Execute cada passo com ferramentas reais. Colete evidencias (logs, saidas, diff). Check: Valide resultado contra criterios. Testes passaram? Codigo compilou? Comportamento esperado ocorreu? Act: Se OK, padronize e documente. Se falhou, registre causa raiz, ajuste o plano, repita. NUNCA pule o Check — e onde o aprendizado acontece."
+    },
+    {
+      "source": "meta_cognition",
+      "name": "Metodo dos 5 Porques (5 Whys)",
+      "description": "Tecnica de analise de causa raiz: pergunte 'por que?' 5 vezes para cada sintoma.",
+      "body": "Sintoma -> Por que? -> Causa nivel 1 -> Por que? -> Causa nivel 2 -> ... -> Causa raiz. Exemplo: 'O APK crasha ao abrir' -> Por que? 'Activity nao encontrada' -> Por que? 'AndroidManifest sem entry point' -> Por que? 'Build script nao gerou manifest correto' -> Por que? 'Parametro de output name mudou e script ficou inconsistente' -> Por que? 'Nao havia teste para validar o manifest apos build'. A causa raiz NAO e o crash e sim a falta de validacao pos-build. Corrigir isso previne a classe inteira de bugs, nao apenas este."
+    },
+    {
+      "source": "meta_cognition",
+      "name": "MECE (Mutually Exclusive, Collectively Exhaustive)",
+      "description": "Principio de classificacao: particoes sem sobreposicao que cobrem todo o espaco.",
+      "body": "Ao categorizar problemas, estados, ou causas, cada item deve pertencer a EXATAMENTE UMA categoria (mutuamente exclusiva) e todas as categorias juntas devem cobrir TODAS as possibilidades (coletivamente exaustivas). Exemplo: estado de conexao = {conectado, desconectado, conectando} — sao ME? Sim. CE? Nao — falta 'falha de autenticacao'. MECE garante que voce nao perde casos e nao conta duas vezes o mesmo caso."
+    },
+    {
+      "source": "meta_cognition",
+      "name": "FIRST Principles para testes",
+      "description": "Propriedades de um bom teste unitario: Fast, Isolated, Repeatable, Self-validating, Timely.",
+      "body": "Fast: Teste roda em milissegundos. Se demora, nao e teste unitario. Isolated: Teste nao depende de outros testes, ordem de execucao, ou estado global. Repeatable: Mesmo resultado sempre, em qualquer maquina. Self-validating: Teste passa ou falha — sem interpretacao humana. Timely: Teste escrito antes ou junto com o codigo. Se um teste viola FIRST, ele perde valor como rede de seguranca."
+    },
+    {
+      "source": "meta_cognition",
+      "name": "Arvore de Decisao para Fallback de Servico",
+      "description": "Estrategia para servicos com multiplas fontes de dados em ordem de preferencia.",
+      "body": "1. Tente fonte primaria (mais precisa). Se sucesso com score >= threshold, retorne. 2. Se falhou ou score baixo, armazene melhor resultado ate agora e tente fonte secundaria. 3. Compare scores, fique com o maior. 4. Se nenhuma fonte atingiu threshold minimo, retorne null (ou tente modo relaxado). 5. Registre metricas: qual fonte venceu, scores, tempo de resposta. Isso permite ajustar thresholds e ordem das fontes baseado em dados reais."
+    },
+    {
+      "source": "meta_cognition",
+      "name": "Framework de Persistencia com Snapshot Imutavel",
+      "description": "Padrao onde cada salvamento e um snapshot timestampado, nunca overwrite.",
+      "body": "1. Estado atual e mantido em memoria (mutable). 2. 'Salvar' cria novo arquivo com timestamp no nome: 'dados_YYYY-MM-DD_HH-mm-ss.json'. 3. 'Auto-save' escreve em arquivo temporario para recuperacao de sessao. 4. 'Limpar' so reseta memoria — nunca toca em arquivos. 5. 'Carregar' le um arquivo especifico passado pelo usuario (nunca o auto-save). 6. Historico completo preservado por design. 7. Nao ha botao de 'desfazer' porque cada salvamento e um ponto de restauracao."
+    },
+    {
+      "source": "meta_cognition",
+      "name": "Framework de Aprendizado Continuo (Auto-Learning)",
+      "description": "Sistema que acumula conhecimento automaticamente entre sessoes.",
+      "body": "1. Toda interacao relevante (missao, sessao, correcao de bug) dispara consolidacao. 2. Novos padroes sao extraidos e mergeados com conhecimento existente (dedup inteligente por similaridade de texto). 3. Base de conhecimento tem secoes: tecnicas (padroes, decisoes, bugs) e cognitivas (heuristicas, frameworks, raciocinio). 4. Exportacao portable em Markdown para qualquer IA consumir. 5. Auto-melhoria: detecta gargalos, padroes de erro, e sugestoes de melhoria baseado em metricas reais. 6. Conhecimento sobrevive a reset de sessao, troca de modelo, queda de energia."
+    },
+    {
+      "source": "session",
+      "name": "Cascata de Interacao (CI)",
+      "description": "Framework de 4 niveis para interagir com qualquer elemento: N1 = seletor direto (data-testid/resource-id), N2 = seletor semantico (classe/tag/texto), N3 = coordenadas relativas, N4 = OCR + template matching. Subir um nivel a cada 3 falhas consecutivas",
+      "body": "Implementacao: para cada interacao, tentar N1 com timeout curto (1s). Se falhar, tentar N2 (2s). Se falhar, tentar N3 (3s). Se falhar, N4 (5s). Apos sucesso em N2+, tentar proxima interacao comecando de N1 (reset). Logar em qual nivel cada elemento foi encontrado para aprendizado futuro",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "name": "OODA-Nav",
+      "description": "Adaptacao do ciclo Observe-Orient-Decide-Act de Boyd para navegacao automatizada. Ciclo completo <3s. Repetir a cada interacao",
+      "body": "Observe (0.5s): scan da tela, identificar elementos visiveis, estado atual, modais. Orient (0.5s): reconhecer framework, padroes de layout, estrutura familiar. Decide (0.3s): escolher metodo de interacao, seletor, fallback chain. Act (1-3s): executar interacao, esperar resposta, verificar resultado. Feedback loop: se Act falhou, voltar para Observe e recomecar",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    },
+    {
+      "source": "session",
+      "name": "3-Scan Pre-Action",
+      "description": "Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar falhas evitaveis",
+      "body": "Scan 1 (Estrutura): arvore de elementos, DOM, hierarquia de janelas. Scan 2 (Estado): modais abertos, loadings, notificacoes, teclado visivel. Scan 3 (Alvo): elemento especifico, visibilidade, habilitado, nao obsoleto. So agir apos os 3 scans. 200ms total para os 3 scans em interfaces simples, 800ms em complexas",
+      "extracted_at": "2026-07-25T07:50:31.329508"
+    }
+  ],
+  "tool_knowledge": {
+    "learned_rules": {
+      "rules": []
+    },
+    "tool_statistics": {
+      "tools": {
+        "opencode": {
+          "total_calls": 5,
+          "successes": 5,
+          "failures": 0,
+          "total_duration": 49.528353691101074,
+          "total_cost": 0.0,
+          "avg_duration": 9.906,
+          "avg_cost": 0.0,
+          "success_rate": 100.0,
+          "latency_samples": [
+            5.564,
+            0.05,
+            0.002,
+            41.786,
+            2.126
+          ]
+        }
+      }
+    }
+  },
+  "skill_references": [
+    {
+      "skill": "android-pure-sdk",
+      "path": "C:\\Users\\Playtec-bancada\\.claude\\skills\\android-pure-sdk\\SKILL.md",
+      "hash": "077ddde0123021579c5d50e085eb76fe",
+      "last_extracted": "2026-07-24T09:34:56.952178"
+    },
+    {
+      "skill": "ler",
+      "path": "C:\\Users\\Playtec-bancada\\.claude\\skills\\ler\\SKILL.md",
+      "hash": "f291e6661b43c864d9ceee8afd452691",
+      "last_extracted": "2026-07-24T09:34:57.035338"
+    },
+    {
+      "skill": "mp3player-metadata-rescue",
+      "path": "C:\\Users\\Playtec-bancada\\.claude\\skills\\mp3player-metadata-rescue\\SKILL.md",
+      "hash": "a59f77de14d6ef3a404d660f671798d6",
+      "last_extracted": "2026-07-24T09:34:57.051855"
+    }
+  ],
+  "mission_learnings": [
+    {
+      "timestamp": "2026-07-25T07:46:10.233604",
+      "status": "session_learning",
+      "goal_objective": "Sessao de configuracao do OpenCode com failover de servidor, migracao de config, limpeza de auth, e instalacao RustDesk para acesso remoto do Android ao Windows.",
+      "tags": [
+        "opencode",
+        "rustdesk",
+        "failover",
+        "config-migration",
+        "android",
+        "remote-access"
+      ],
+      "files_modified": [
+        "provider_manager/providers/opencode_go.py",
+        "provider_manager/server_manager.py",
+        "integrations/opencode/provider_mcp_server.py",
+        ".config/opencode/opencode.json",
+        ".local/share/opencode/auth.json",
+        ".config/opencode/opencode.jsonc.bak"
+      ]
+    },
+    {
+      "timestamp": "2026-07-25T07:50:31.329508",
+      "status": "session_learning",
+      "goal_objective": "Treinamento especializado em navegacao multi-plataforma: reconhecimento de elementos UI, padroes de navegacao web/desktop/mobile, atalhos e eficiencia operacional.",
+      "tags": [
+        "navegacao",
+        "web",
+        "desktop",
+        "mobile",
+        "ui-recognition",
+        "efficiency",
+        "automation",
+        "element-detection"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-25T14:27:12.805754",
+      "status": "session_learning",
+      "goal_objective": "Sessao focada em organizacao de workspace (unificacao de projetos em Desktop\\Codigos\\) + correcao de bug no MCP server (provider_mcp_server.py) que impedia conexao com OpenCode devido a violacao do protocolo JSON-RPC 2.0 (servidor respondia a notifications sem id).",
+      "tags": [
+        "workspace_organization",
+        "mcp_protocol",
+        "json_rpc"
+      ],
+      "files_modified": [
+        "provider_mcp_server.py",
+        "opencode.json"
+      ]
+    },
+    {
+      "timestamp": "2026-07-25T14:27:27.740901",
+      "status": "session_learning",
+      "goal_objective": "Sessao focada em organizacao de workspace (unificacao de projetos em Desktop\\Codigos\\) + correcao de bug no MCP server (provider_mcp_server.py) que impedia conexao com OpenCode devido a violacao do protocolo JSON-RPC 2.0 (servidor respondia a notifications sem id).",
+      "tags": [
+        "workspace_organization",
+        "mcp_protocol",
+        "json_rpc"
+      ],
+      "files_modified": [
+        "provider_mcp_server.py",
+        "opencode.json"
+      ]
+    },
+    {
+      "timestamp": "2026-07-27T21:27:12.186939",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27: Sistema automático de captura de conhecimento do ecossistema — Implementação das três camadas de aprendizado contínuo para o ecossistema OpenCode + LER",
+      "tags": [
+        "decisao",
+        "ecosistema-opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T21:27:12.554943",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback — Necessidade de fallback automático quando o modelo primário do OpenCode bate limite de uso",
+      "tags": [
+        "decisao",
+        "ecosistema-opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T21:35:56.377910",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27: Sistema automático de captura de conhecimento do ecossistema — Implementação das três camadas de aprendizado contínuo para o ecossistema OpenCode + LER",
+      "tags": [
+        "decisao",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T21:36:01.801138",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback — Necessidade de fallback automático quando o modelo primário do OpenCode bate limite de uso",
+      "tags": [
+        "decisao",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T21:43:05.152840",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27: Sistema automático de captura de conhecimento do ecossistema — Implementação das três camadas de aprendizado contínuo para o ecossistema OpenCode + LER",
+      "tags": [
+        "decisao",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T21:43:05.925513",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback — Necessidade de fallback automático quando o modelo primário do OpenCode bate limite de uso",
+      "tags": [
+        "decisao",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T21:48:08.608449",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27: Sistema automático de captura de conhecimento do ecossistema — Implementação das três camadas de aprendizado contínuo para o ecossistema OpenCode + LER",
+      "tags": [
+        "decisao",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T21:48:12.203425",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback — Necessidade de fallback automático quando o modelo primário do OpenCode bate limite de uso",
+      "tags": [
+        "decisao",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T21:48:16.286807",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27: Teste do vigilante automático — Teste do sistema de vigilância automática do ecossistema",
+      "tags": [
+        "config",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T21:54:18.491177",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27: Sistema automático de captura de conhecimento do ecossistema — Implementação das três camadas de aprendizado contínuo para o ecossistema OpenCode + LER",
+      "tags": [
+        "decisao",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T21:54:22.029829",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback — Necessidade de fallback automático quando o modelo primário do OpenCode bate limite de uso",
+      "tags": [
+        "decisao",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T21:54:25.566157",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27: Teste do vigilante automático — Teste do sistema de vigilância automática do ecossistema",
+      "tags": [
+        "config",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T21:54:29.093734",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27-4: Teste do ciclo de polling — Verificar se o vigilante detecta arquivos novos em tempo real",
+      "tags": [
+        "config",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T21:56:03.886663",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27: Sistema automático de captura de conhecimento do ecossistema — Implementação das três camadas de aprendizado contínuo para o ecossistema OpenCode + LER",
+      "tags": [
+        "decisao",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T21:56:07.659175",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback — Necessidade de fallback automático quando o modelo primário do OpenCode bate limite de uso",
+      "tags": [
+        "decisao",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T21:56:11.166592",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27: Teste do vigilante automático — Teste do sistema de vigilância automática do ecossistema",
+      "tags": [
+        "config",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T21:56:14.788390",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27-4: Teste do ciclo de polling — Verificar se o vigilante detecta arquivos novos em tempo real",
+      "tags": [
+        "config",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T21:56:18.437092",
+      "status": "session_learning",
+      "goal_objective": "2026-07-27-5: Teste final do vigilante em processo real — Verificar detecção em processo Windows real (não background job)",
+      "tags": [
+        "config",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T22:36:24.014326",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub — ",
+      "tags": [
+        "geral",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-27T22:58:47.148168",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-07-27 - Unificacao completa do ecossistema — ",
+      "tags": [
+        "geral",
+        "opencode"
+      ],
+      "files_modified": []
+    }
+  ],
+  "bugs": []
+}
