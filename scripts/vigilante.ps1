@@ -11,7 +11,18 @@ $logFile = "$env:USERPROFILE\.vigilante.log"
 $ecoDir = "$env:USERPROFILE\Desktop\Codigos\EcoSystemUmGrau"
 $lerDir = "$ecoDir\ler-runtime"
 $learnDir = "$ecoDir\conhecimento\aprendizados"
-$gitInterval = 300  # 5 min entre git sync
+$projectsDir = "$env:USERPROFILE\Desktop\Codigos\Android"
+$gitInterval = 300  # 5 min entre git sync (eco/ler)
+$projectGitInterval = 60  # 1 min entre git sync para projetos (menor = mais responsivo)
+
+# Auto-descoberta de projetos Android com git remote
+$projectRepos = @()
+if (Test-Path $projectsDir) {
+    Get-ChildItem $projectsDir -Directory | Where-Object {
+        $remote = git -C $_.FullName remote -v 2>&1 | Where-Object { $_ -match "fetch" }
+        $remote -and (Test-Path "$($_.FullName)\.git")
+    } | ForEach-Object { $projectRepos += @{Path=$_.FullName; Name=$_.Name; LastSync=[datetime]::MinValue} }
+}
 
 function Write-Log {
     param($Msg)
@@ -112,16 +123,66 @@ Register-ObjectEvent $watcher "Changed" -Action $onEvent > $null
 Register-ObjectEvent $debounce "Elapsed" -Action $onDebounce > $null
 
 # ══════════════════════════════════════════════════════════════════════
-# GIT SYNC: Push + Pull automatico (5 min)
+# PROJECT WATCHERS: FileSystemWatcher para cada repo Android
+# ══════════════════════════════════════════════════════════════════════
+$projectDebounceMs = 3000  # 3s para agrupar salvamentos consecutivos
+$projectPending = New-Object System.Collections.Generic.List[string]
+
+$projectDebounceTimer = New-Object System.Timers.Timer
+$projectDebounceTimer.Interval = $projectDebounceMs
+$projectDebounceTimer.AutoReset = $false
+
+$onProjectEvent = {
+    $path = $Event.SourceArgs[1].FullPath
+    $repopath = $Event.MessageData  # path do repo passado como MessageData
+    $idx = [array]::IndexOf($projectRepos.Path, $repopath)
+    if ($idx -ge 0) {
+        if (-not $projectPending.Contains($repopath)) { $projectPending.Add($repopath) }
+        $projectDebounceTimer.Stop(); $projectDebounceTimer.Start()
+    }
+}
+
+$onProjectDebounce = {
+    $projectDebounceTimer.Stop()
+    $unique = $projectPending.ToArray() | Select-Object -Unique
+    $projectPending.Clear()
+    foreach ($repoPath in $unique) {
+        Write-Log "Mudanca detectada em: $(Split-Path $repoPath -Leaf)"
+        Sync-ProjectRepo -Path $repoPath -Force
+    }
+}
+
+Register-ObjectEvent $projectDebounceTimer "Elapsed" -Action $onProjectDebounce > $null
+
+# Configurar watcher para cada projeto
+$projectExtensions = @("*.kt", "*.java", "*.py", "*.xml", "*.json", "*.ps1", "*.bat", "*.md", "*.gradle", "*.properties")
+foreach ($proj in $projectRepos) {
+    try {
+        $w = New-Object System.IO.FileSystemWatcher
+        $w.Path = $proj.Path
+        $w.IncludeSubdirectories = $true
+        $w.NotifyFilter = [System.IO.NotifyFilters]::FileName -bor [System.IO.NotifyFilters]::LastWrite -bor [System.IO.NotifyFilters]::DirectoryName
+        $w.EnableRaisingEvents = $true
+        # filtro: Created/Changed pra cada extensao
+        Register-ObjectEvent $w "Created" -MessageData $proj.Path -Action $onProjectEvent > $null
+        Register-ObjectEvent $w "Changed" -MessageData $proj.Path -Action $onProjectEvent > $null
+        Register-ObjectEvent $w "Deleted" -MessageData $proj.Path -Action $onProjectEvent > $null
+        Register-ObjectEvent $w "Renamed" -MessageData $proj.Path -Action $onProjectEvent > $null
+        Write-Log "Watcher: $($proj.Name)"
+    } catch { Write-Log "Watcher $($proj.Name) ignorado: $_" }
+}
+
+# ══════════════════════════════════════════════════════════════════════
+# GIT SYNC: Push + Pull automatico (5 min eco/ler, 1 min projetos)
 # ══════════════════════════════════════════════════════════════════════
 $ecoLastSync = [datetime]::MinValue
 $lerLastSync = [datetime]::MinValue
 $lastLearnDate = (Get-Date).Date.AddDays(-1)  # roda no primeiro ciclo
 
 function Sync-GitRepo {
-    param([string]$Path, [string]$Label, [switch]$Push, [ref]$LastSync)
+    param([string]$Path, [string]$Label, [switch]$Push, [ref]$LastSync, [int]$Cooldown = $gitInterval)
     $now = Get-Date
-    if (($now - $LastSync.Value).TotalSeconds -lt $gitInterval) { return }
+    if (($now - $LastSync.Value).TotalSeconds -lt $Cooldown) { return }
 
     try {
         Push-Location $Path -ErrorAction Stop
@@ -153,18 +214,54 @@ function Sync-GitRepo {
     } catch { Write-Log "Git sync ($Label) ignorado: $_" }
 }
 
+# Sincroniza um repo de projeto Android (pull + commit + push)
+function Sync-ProjectRepo {
+    param([string]$Path, [switch]$Force)
+    $proj = $projectRepos | Where-Object { $_.Path -eq $Path }
+    if (-not $proj) { return }
+    $now = Get-Date
+    if (-not $Force -and ($now - $proj.LastSync).TotalSeconds -lt $projectGitInterval) { return }
+
+    try {
+        Push-Location $Path -ErrorAction Stop
+        # pull
+        $pullOut = git pull --ff-only 2>&1
+        if ($LASTEXITCODE -eq 0 -and $pullOut -match "Fast-forward|Updating") { Write-Log "Git pull ($($proj.Name)): $pullOut" }
+        # commit
+        $status = git status --porcelain 2>&1 | Out-String
+        if ($status.Trim()) {
+            git add -A 2>&1 | Out-Null
+            $dateStr = Get-Date -Format "yyyy-MM-dd HH:mm"
+            git commit -m "[auto] $($proj.Name) - $dateStr" 2>&1 | Out-Null
+            $pushOut = git push 2>&1
+            Write-Log "Git sync ($($proj.Name)): commit + push OK"
+        }
+        Pop-Location
+        $proj.LastSync = $now
+    } catch { Write-Log "Git sync ($($proj.Name)) ignorado: $_" }
+}
+
 Write-Log "Vigilante pronto (FSW + git sync a cada ${gitInterval}s)"
+if ($projectRepos.Count -gt 0) {
+    Write-Log "Vigilante monitora $($projectRepos.Count) projetos: $(($projectRepos.Name) -join ', ')"
+}
 
 # ══════════════════════════════════════════════════════════════════════
 # LOOP PRINCIPAL: timer de sincronizacao git
 # ══════════════════════════════════════════════════════════════════════
 $gitTimer = New-Object System.Timers.Timer
-$gitTimer.Interval = 30000  # check a cada 30s (mas so executa a cada 300s)
+$gitTimer.Interval = 30000  # check a cada 30s
 $gitTimer.AutoReset = $true
 
 $onGitSync = {
     Sync-GitRepo -Path $ecoDir -Label "EcoSystemUmGrau" -Push -LastSync ([ref]$ecoLastSync)
     Sync-GitRepo -Path $lerDir -Label "LER" -LastSync ([ref]$lerLastSync)
+    # Sincroniza projetos Android (cada um tem seu proprio cooldown)
+    foreach ($proj in $projectRepos) {
+        $lastRef = [ref]$proj.LastSync
+        $projName = $proj.Name
+        Sync-GitRepo -Path $proj.Path -Label "Android/$projName" -Push -LastSync $lastRef -Cooldown $projectGitInterval
+    }
 }
 
 Register-ObjectEvent $gitTimer "Elapsed" -Action $onGitSync > $null

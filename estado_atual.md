@@ -1,6 +1,7 @@
-# Snapshot do Ecossistema — 2026-07-27 (v9 - Maestro real + repair + ler-runtime enxuto)
+# Snapshot do Ecossistema — 2026-07-27 (v10 - Monitoramento total dos projetos)
 
 > Estado funcional com sistema automático de captura de conhecimento em 3 camadas.
+> Vigilante agora monitora TODOS os projetos Android em tempo real + auto-sync remoto.
 > Skills unificadas em EcoSystemUmGrau/skills/. VAULT_PATH redirecionado.
 >
 > ## FONTE ÚNICA: O REPOSITÓRIO
@@ -36,13 +37,15 @@
 > conhecimento/aprendizados/. Útil se o grafo corromper.
 >
 > ## VIGILANTE COM FILESYSTEMWATCHER
-> Tempo real (sem polling), sync bidirecional (pull → commit → push).
+> Tempo real (sem polling), monitora TODOS os projetos Android (não só aprendizado).
+> Sync bidirecional (pull → commit → push) para EcoSystemUmGrau + Android repos.
+> Auto-descoberta: varre Android/ por pastas com git remote — sem config manual.
 >
 > ## ECOSYSTEM.PS1 — 4 COMANDOS
-> ecosystem sync    → pull + push forcado
+> ecosystem sync    → pull + push forcado (Eco + LER + TODOS os projetos Android)
 > ecosystem scan    → varre projetos, extrai métricas
 > ecosystem repair  → reconstrói knowledge graph dos aprendizados crus
-> ecosystem status  → status completo
+> ecosystem status  → status completo (inclui status git de cada projeto Android)
 
 ### Arquitetura final do conhecimento automático
 
@@ -50,27 +53,30 @@
 Maestro (passo 11 obrigatório)
   → 10-Aprendizado escreve conhecimento/aprendizados/YYYY-MM-DD-N.md
       → Vigilante.ps1 (FileSystemWatcher, tempo real)
-          → Debounce 300ms, detecta Created/Changed
-          → Chama KnowledgeConsolidator.register_learning()
-              → Atualiza knowledge_graph.json (merge Jaccard)
-              → Exporta CONHECIMENTO.md
-          → Timer 30s: verifica git sync (max 1x a cada 5 min)
-              → git pull --ff-only (EcoSystemUmGrau)
-              → git add + commit + push (EcoSystemUmGrau)
-              → git add + commit local (LER)
+          ├── Watcher aprendizado (300ms debounce)
+          │   → Chama KnowledgeConsolidator.register_learning()
+          │       → Atualiza knowledge_graph.json (merge Jaccard)
+          │       → Exporta CONHECIMENTO.md
+          ├── Watcher projetos Android (3s debounce)
+          │   → Detecta alterações em .kt/.java/.py/.xml/.json
+          │   → Marca repo como dirty → sync imediato
+          └── Timer 30s: git sync todos os repos
+              → EcoSystemUmGrau (push, 5min cooldown)
+              → LER (local, 5min cooldown)
+              → Android/Mp3Player, CellCleaner, Biblia, SupermarketCalculator (push, 1min cooldown)
       → CONHECIMENTO.md carregado no contexto de todo agente via opencode.jsonc
 ```
 
 ### Comandos disponíveis
 
 | Comando | Função |
-|---|---|
-| `start-vigilante` | Inicia watcher + git sync em background |
+|---|---|---|
+| `start-vigilante` | Inicia watcher + git sync em background (monitora TODOS os projetos) |
 | `stop-vigilante` | Para o processo |
 | `status-vigilante` | Status do vigilante |
-| `ecosystem sync` | Pull + push forcado (Eco + LER) |
+| `ecosystem sync` | Pull + push forcado (Eco + LER + projetos Android) |
 | `ecosystem scan` | Varre projetos, extrai padrões, registra aprendizado |
-| `ecosystem status` | Status completo do ecossistema |
+| `ecosystem status` | Status completo do ecossistema (inclui status git de cada projeto) |
 | `ecosystem help` | Ajuda detalhada |
 
 ---
@@ -261,7 +267,7 @@ Carregados de `~/.config/opencode/agents/`:
 | Base local (entradas por tarefa) | `EcoSystemUmGrau/conhecimento/aprendizados/` |
 | Base exportada (contexto global) | `~/.ler/CONHECIMENTO.md` (carregado nas instructions do opencode.jsonc) |
 | Agente de aprendizado | `~/.config/opencode/agents/10-aprendizado.md` |
-| Vigilante (watcher + git sync) | `EcoSystemUmGrau/scripts/vigilante.ps1` |
+| Vigilante (watcher + git sync multi-projeto) | `EcoSystemUmGrau/scripts/vigilante.ps1` |
 | Registro no LER | `register_learning()` no `KnowledgeConsolidator` (automático via vigilante) |
 | Knowledge graph | `~/.ler/knowledge/knowledge_graph.json` (67 patterns, 39 decisões, 46 bugs) |
 | Git sync (EcoSystemUmGrau) | Automático: pull → commit → push (FileSystemWatcher + timer) |

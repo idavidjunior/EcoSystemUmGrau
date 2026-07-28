@@ -146,8 +146,29 @@ if (Test-Path $learnDir) {
     else { Test-Warn "Aprendizados" "Nenhum arquivo encontrado" }
 } else { Test-Fail "conhecimento/aprendizados" "Nao encontrado" }
 
-# ─── 14. Git remotes ────────────────────────────────────────
-Write-Host "[14] Git" -ForegroundColor White
+# ─── 14. Projetos Android ────────────────────────────────────
+Write-Host "[14] Projetos Android" -ForegroundColor White
+$projectsDir = "$env:USERPROFILE\Desktop\Codigos\Android"
+$projectCount = 0
+$syncedCount = 0
+if (Test-Path $projectsDir) {
+    $projects = Get-ChildItem $projectsDir -Directory -ErrorAction SilentlyContinue
+    foreach ($proj in $projects) {
+        if (-not (Test-Path "$($proj.FullName)\.git")) { continue }
+        $projectCount++
+        $remote = git -C $proj.FullName remote -v 2>&1 | Where-Object { $_ -match "fetch" }
+        $status = git -C $proj.FullName status --short 2>&1 | Out-String
+        if ($remote) {
+            if ($status.Trim()) { Test-Warn "$($proj.Name)" "Remote OK, mas $($status.Trim().Split("`n").Count) arquivo(s) pendente(s)" }
+            else { Test-Pass "$($proj.Name): sincronizado"; $syncedCount++ }
+        } else { Test-Warn "$($proj.Name)" "Sem git remote" }
+    }
+    if ($projectCount -eq 0) { Test-Warn "Projetos Android" "Nenhum repo git encontrado em $projectsDir" }
+    else { Test-Pass "$syncedCount/$projectCount projetos sincronizados" }
+} else { Test-Warn "Projetos Android" "Diretorio $projectsDir nao existe" }
+
+# ─── 15. Git remotes ────────────────────────────────────────
+Write-Host "[15] Git" -ForegroundColor White
 $remote = git -C $ecoDir remote -v 2>&1 | Select-String "fetch"
 if ($remote) { Test-Pass "Git remote configurado" }
 else { Test-Fail "Git remote" "Nenhum remote encontrado" }

@@ -61,6 +61,24 @@ function Invoke-Sync {
     } else { Write-OK "Nada a commitar" }
     Pop-Location
 
+    # Sincroniza projetos Android
+    $projects = Get-ChildItem $projectsDir -Directory -ErrorAction SilentlyContinue
+    foreach ($proj in $projects) {
+        if (-not (Test-Path "$($proj.FullName)\.git")) { continue }
+        Write-Step "Sincronizando $($proj.Name)"
+        Push-Location $proj.FullName
+        git pull --ff-only 2>&1 | ForEach-Object { Write-Info $_ }
+        $status = git status --porcelain
+        if ($status) {
+            $status | ForEach-Object { Write-Info $_ }
+            git add -A
+            git commit -m "[auto] $($proj.Name) - $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
+            git push
+            Write-OK "Commit + push realizado"
+        } else { Write-OK "Nada a commitar" }
+        Pop-Location
+    }
+
     Write-Step "Consolidando conhecimento"
     $env:PYTHONPATH = "$lerDir;$env:PYTHONPATH"
     python -c "import sys; sys.path.insert(0, r'$lerDir'); from agent.knowledge_consolidator import export_markdown; export_markdown()" 2>&1
@@ -175,6 +193,19 @@ function Invoke-Status {
     # Projetos Android
     $projects = Get-ChildItem $projectsDir -Directory -ErrorAction SilentlyContinue
     Write-OK "Projetos Android: $(($projects | Measure-Object).Count)"
+
+    # Status git dos projetos
+    $projects = Get-ChildItem $projectsDir -Directory -ErrorAction SilentlyContinue
+    foreach ($proj in $projects) {
+        if (-not (Test-Path "$($proj.FullName)\.git")) { continue }
+        $branch = git -C $proj.FullName rev-parse --abbrev-ref HEAD 2>&1
+        $status = git -C $proj.FullName status --short 2>&1 | Out-String
+        if ($status.Trim()) {
+            Write-Info "$($proj.Name) ($branch): $($status.Trim().Split("`n").Count) arquivo(s) nao commitado(s)"
+        } else {
+            Write-OK "$($proj.Name) ($branch): sincronizado"
+        }
+    }
 
     # Git remotes
     Push-Location $ecoDir
