@@ -14,9 +14,28 @@
       }
     }
   },
+  "mcp": {
+    "servers": {
+      "eco-knowledge": {
+        "command": "python",
+        "args": [
+          "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/scripts/mcp-knowledge-server.py"
+        ]
+      },
+      "eco-filesystem": {
+        "command": "npx",
+        "args": ["-y", "@modelcontextprotocol/server-filesystem", "{{USERPROFILE}}/Desktop/Codigos"]
+      },
+      "eco-github": {
+        "command": "npx",
+        "args": ["-y", "@modelcontextprotocol/server-github"]
+      }
+    }
+  },
   "instructions": [
     "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/skills/*/SKILL.md",
     "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/skills/**/SKILL.md",
-    "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/ler-runtime/CONHECIMENTO.md"
+    "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/ler-runtime/CONHECIMENTO.md",
+    "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/conhecimento/memoria/memories.json"
   ]
 }
