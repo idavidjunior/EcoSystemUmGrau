@@ -21,14 +21,6 @@
         "args": [
           "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/scripts/mcp-knowledge-server.py"
         ]
-      },
-      "eco-filesystem": {
-        "command": "npx",
-        "args": ["-y", "@modelcontextprotocol/server-filesystem", "{{USERPROFILE}}/Desktop/Codigos"]
-      },
-      "eco-github": {
-        "command": "npx",
-        "args": ["-y", "@modelcontextprotocol/server-github"]
       }
     }
   },

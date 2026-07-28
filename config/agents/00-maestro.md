@@ -101,6 +101,7 @@ Antes de assumir que não sabe algo, consulte:
 - 09-Executor — implementar
 - 10-Aprendizado — extrair e persistir conhecimento (OBRIGATÓRIO)
 - 11-LER-Executor — delegar loops complexos
+- 12-Parallel-Planner — dividir tarefas grandes em subtarefas paralelas (use quando 4+ arquivos independentes)
 
 # CHECKLIST FINAL
 

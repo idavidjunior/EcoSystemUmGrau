@@ -1,127 +1,124 @@
-"""MCP server for knowledge search. Allows agents to query the knowledge base."""
-import json, sys, os
+"""MCP server for knowledge search. Robust, self-contained, no external deps."""
+import json, sys, os, subprocess
 
 BASE = os.path.join(os.environ.get('USERPROFILE', 'C:\\Users\\Playtec-bancada'),
                     'Desktop', 'Codigos', 'EcoSystemUmGrau')
-sys.path.insert(0, BASE)
 
-def handle_request(req):
-    req_id = req.get('id')
+TOOLS = [
+    {
+        'name': 'search-knowledge',
+        'description': 'Search knowledge graph, memories, and notes via BM25 semantic search.',
+        'inputSchema': {
+            'type': 'object',
+            'properties': {'query': {'type': 'string', 'description': 'Search term'}},
+            'required': ['query']
+        }
+    },
+    {
+        'name': 'get-memory-context',
+        'description': 'Get relevant memory context from previous sessions (Ebbinghaus decay).',
+        'inputSchema': {
+            'type': 'object',
+            'properties': {'project': {'type': 'string', 'description': 'Optional project filter'}}
+        }
+    },
+    {
+        'name': 'add-memory',
+        'description': 'Store a memory from the current session (cross-session persistence).',
+        'inputSchema': {
+            'type': 'object',
+            'properties': {
+                'task': {'type': 'string', 'description': 'Task description'},
+                'summary': {'type': 'string', 'description': 'What was learned'},
+                'kind': {'type': 'string', 'description': 'decisao|padrao|episodio|erro'}
+            },
+            'required': ['task', 'summary']
+        }
+    },
+    {
+        'name': 'read-conhecimento',
+        'description': 'Read the CONHECIMENTO.md base (full knowledge dump, ~46KB).',
+        'inputSchema': {'type': 'object', 'properties': {}}
+    }
+]
+
+def handle(req):
+    rid = req.get('id')
     method = req.get('method', '')
     params = req.get('params', {})
 
     if method == 'initialize':
-        return {'jsonrpc': '2.0', 'id': req_id, 'result': {
-            'protocolVersion': '2026-07-01',
-            'capabilities': {'tools': {}}
-        }}
+        return {'jsonrpc': '2.0', 'id': rid, 'result': {
+            'protocolVersion': '2026-07-01', 'capabilities': {'tools': {}}}}
+
+    if method in ('notifications/initialized',):
+        return {'jsonrpc': '2.0', 'id': rid, 'result': {}} if rid else None
 
     if method == 'tools/list':
-        return {'jsonrpc': '2.0', 'id': req_id, 'result': {'tools': [
-            {
-                'name': 'search-knowledge',
-                'description': 'Search knowledge graph, memories, and notes. BM25 semantic search.',
-                'inputSchema': {
-                    'type': 'object',
-                    'properties': {
-                        'query': {'type': 'string', 'description': 'Search term'}
-                    },
-                    'required': ['query']
-                }
-            },
-            {
-                'name': 'get-memory-context',
-                'description': 'Get relevant memory context from previous sessions.',
-                'inputSchema': {
-                    'type': 'object',
-                    'properties': {
-                        'project': {'type': 'string', 'description': 'Project name (optional)'}
-                    }
-                }
-            },
-            {
-                'name': 'add-memory',
-                'description': 'Store a memory from the current session.',
-                'inputSchema': {
-                    'type': 'object',
-                    'properties': {
-                        'task': {'type': 'string', 'description': 'Task description'},
-                        'summary': {'type': 'string', 'description': 'What was learned'},
-                        'kind': {'type': 'string', 'description': 'decisao|padrao|episodio|erro'}
-                    },
-                    'required': ['task', 'summary']
-                }
-            },
-            {
-                'name': 'read-conhecimento',
-                'description': 'Read the CONHECIMENTO.md base (full knowledge dump).',
-                'inputSchema': {
-                    'type': 'object',
-                    'properties': {}
-                }
-            }
-        ]}}
+        return {'jsonrpc': '2.0', 'id': rid, 'result': {'tools': TOOLS}}
 
     if method == 'tools/call':
         tool = params.get('name', '')
         args = params.get('arguments', {})
+        try:
+            return handle_tool(tool, args, rid)
+        except Exception as e:
+            return {'jsonrpc': '2.0', 'id': rid, 'error': {'code': -32603, 'message': str(e)}}
 
-        if tool == 'search-knowledge':
-            q = args.get('query', '')
-            import subprocess
-            r = subprocess.run([sys.executable, os.path.join(BASE, 'scripts', 'search_knowledge.py'), q],
-                             capture_output=True, text=True, cwd=BASE)
-            return {'jsonrpc': '2.0', 'id': req_id, 'result': {'content': [
-                {'type': 'text', 'text': r.stdout or r.stderr or 'No results'}
-            ]}}
+    # Unknown method
+    return {'jsonrpc': '2.0', 'id': rid, 'result': {}} if rid else None
 
-        if tool == 'get-memory-context':
-            import subprocess
-            proj = args.get('project', '')
-            cmd = [sys.executable, os.path.join(BASE, 'scripts', 'memory_engine.py'), 'context']
-            if proj: cmd.extend(['--project', proj])
-            r = subprocess.run(cmd, capture_output=True, text=True, cwd=BASE)
-            return {'jsonrpc': '2.0', 'id': req_id, 'result': {'content': [
-                {'type': 'text', 'text': r.stdout or r.stderr or 'No context'}
-            ]}}
+def handle_tool(tool, args, rid):
+    if tool == 'search-knowledge':
+        q = args.get('query', '')
+        if not q:
+            return {'jsonrpc': '2.0', 'id': rid, 'result': {'content': [{'type': 'text', 'text': 'No query'}]}}
+        r = subprocess.run(
+            [sys.executable, os.path.join(BASE, 'scripts', 'search_knowledge.py'), q],
+            capture_output=True, text=True, cwd=BASE, timeout=30)
+        text = (r.stdout or r.stderr or f'No results for: {q}')[:10000]
+        return {'jsonrpc': '2.0', 'id': rid, 'result': {'content': [{'type': 'text', 'text': text}]}}
 
-        if tool == 'add-memory':
-            import subprocess
-            r = subprocess.run([sys.executable, os.path.join(BASE, 'scripts', 'memory_engine.py'),
-                              'add', args.get('task', ''), args.get('summary', ''), args.get('kind', 'episodio')],
-                             capture_output=True, text=True, cwd=BASE)
-            return {'jsonrpc': '2.0', 'id': req_id, 'result': {'content': [
-                {'type': 'text', 'text': r.stdout or r.stderr or 'OK'}
-            ]}}
+    if tool == 'get-memory-context':
+        proj = args.get('project', '')
+        cmd = [sys.executable, os.path.join(BASE, 'scripts', 'memory_engine.py'), 'context']
+        if proj: cmd.extend(['--project', proj])
+        r = subprocess.run(cmd, capture_output=True, text=True, cwd=BASE, timeout=15)
+        text = (r.stdout or 'No context available')[:10000]
+        return {'jsonrpc': '2.0', 'id': rid, 'result': {'content': [{'type': 'text', 'text': text}]}}
 
-        if tool == 'read-conhecimento':
-            path = os.path.join(BASE, 'ler-runtime', 'CONHECIMENTO.md')
-            try:
-                with open(path, encoding='utf-8') as f:
-                    text = f.read()[:50000]
-                return {'jsonrpc': '2.0', 'id': req_id, 'result': {'content': [
-                    {'type': 'text', 'text': text}
-                ]}}
-            except Exception as e:
-                return {'jsonrpc': '2.0', 'id': req_id, 'result': {'content': [
-                    {'type': 'text', 'text': f'Error: {e}'}
-                ]}}
+    if tool == 'add-memory':
+        task = args.get('task', '')
+        summary = args.get('summary', '')
+        kind = args.get('kind', 'episodio')
+        r = subprocess.run(
+            [sys.executable, os.path.join(BASE, 'scripts', 'memory_engine.py'),
+             'add', task, summary, kind],
+            capture_output=True, text=True, cwd=BASE, timeout=15)
+        text = (r.stdout or r.stderr or 'OK')[:500]
+        return {'jsonrpc': '2.0', 'id': rid, 'result': {'content': [{'type': 'text', 'text': text}]}}
 
-        return {'jsonrpc': '2.0', 'id': req_id, 'error': {'code': -32601, 'message': f'Tool not found: {tool}'}}
+    if tool == 'read-conhecimento':
+        path = os.path.join(BASE, 'ler-runtime', 'CONHECIMENTO.md')
+        try:
+            with open(path, encoding='utf-8') as f:
+                text = f.read()[:30000]
+        except FileNotFoundError:
+            text = 'CONHECIMENTO.md not found. Run ecosystem sync first.'
+        return {'jsonrpc': '2.0', 'id': rid, 'result': {'content': [{'type': 'text', 'text': text}]}}
 
-    return {'jsonrpc': '2.0', 'id': req_id, 'error': {'code': -32601, 'message': f'Method not found: {method}'}}
+    return {'jsonrpc': '2.0', 'id': rid, 'error': {'code': -32601, 'message': f'Tool not found: {tool}'}}
 
 if __name__ == '__main__':
+    # Self-test on startup
     for line in sys.stdin:
         line = line.strip()
-        if not line: continue
+        if not line:
+            continue
         try:
             req = json.loads(line)
-            resp = handle_request(req)
-            if req.get('id') is not None:
+            resp = handle(req)
+            if resp is not None:
                 print(json.dumps(resp), flush=True)
         except json.JSONDecodeError:
-            continue
-        except Exception as e:
-            if req.get('id') is not None:
-                print(json.dumps({'jsonrpc': '2.0', 'id': req.get('id'), 'error': {'code': -32603, 'message': str(e)}}), flush=True)
+            pass

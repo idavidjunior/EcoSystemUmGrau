@@ -131,6 +131,7 @@ def dispatch(tasks, max_workers=MAX_WORKERS):
     total = len(tasks)
     completed = []
     failed = []
+    by_name = {t.name: t for t in tasks}
 
     try:
         levels = build_levels(tasks)
@@ -139,11 +140,12 @@ def dispatch(tasks, max_workers=MAX_WORKERS):
         return completed, failed
 
     print(f'[DISPATCH] {total} tasks, {len(levels)} execution levels')
-    for i, level in enumerate(levels):
-        group_names = [t.name for t in level]
-        print(f'[DISPATCH] Level {i+1}: {", ".join(group_names)} ({"parallel" if len(level) > 1 else "serial"})')
+    for i, level_names in enumerate(levels):
+        level_tasks = [by_name[n] for n in level_names]
+        task_names = [t.name for t in level_tasks]
+        print(f'[DISPATCH] Level {i+1}: {", ".join(task_names)} ({"parallel" if len(level_tasks) > 1 else "serial"})')
 
-        results = [None] * len(level)
+        results = [None] * len(level_tasks)
         threads = []
 
         def worker_wrapper(idx, task):
@@ -151,7 +153,7 @@ def dispatch(tasks, max_workers=MAX_WORKERS):
             ok = run_worker(task, wid)
             results[idx] = (ok, task)
 
-        for idx, task in enumerate(level):
+        for idx, task in enumerate(level_tasks):
             t = threading.Thread(target=worker_wrapper, args=(idx, task))
             threads.append(t)
             t.start()
