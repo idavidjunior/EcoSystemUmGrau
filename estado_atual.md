@@ -21,28 +21,48 @@
 > clona, instala OpenCode, gera configs, configura LER, pergunta API Keys.
 > Unico comando: `git clone ... && cd EcoSystemUmGrau && setup.bat`
 >
-> ## VIGILANTE — AUTO-APRENDIZADO + GIT SYNC (DUAL)
-> Sincroniza EcoSystemUmGrau (git add+commit+push cada 5min) e LER
-> (git add+commit local, sem remote). Conhecimento viaja no EcoSystemUmGrau.
+> ## LER UNIFICADO NO REPO
+> `~/.ler/` é junction → `EcoSystemUmGrau/ler-runtime/`. Tudo versionado
+> junto, sem repositório separado. Nada se perde se o PC morrer.
+>
+> ## VIGILANTE COM FILESYSTEMWATCHER
+> Não faz mais polling. Reage em tempo real a qualquer mudança nos
+> aprendizados. Sync bidirecional: pull antes, commit+push depois.
+> Git sync a cada 5 min (timer, não polling de arquivo).
+>
+> ## ECOSYSTEM.PS1 — COMANDO CENTRAL
+> ecosystem sync   → pull + push forcado em ambos os repos
+> ecosystem scan   → varre projetos, extrai metrics, registra aprendizado
+> ecosystem status → status completo de todos os componentes
 
 ### Arquitetura final do conhecimento automático
 
 ```
 Maestro (passo 11 obrigatório)
   → 10-Aprendizado escreve conhecimento/aprendizados/YYYY-MM-DD-N.md
-      → Vigilante.ps1 (processo Windows oculto, polling 30s)
-          → Detecta novo .md por hash
+      → Vigilante.ps1 (FileSystemWatcher, tempo real)
+          → Debounce 300ms, detecta Created/Changed
           → Chama KnowledgeConsolidator.register_learning()
               → Atualiza knowledge_graph.json (merge Jaccard)
               → Exporta CONHECIMENTO.md
-           → A cada 5 min: git add, commit, push em EcoSystemUmGrau + LER (~/.ler/)
-       → CONHECIMENTO.md carregado no contexto de todo agente via opencode.jsonc
+          → Timer 30s: verifica git sync (max 1x a cada 5 min)
+              → git pull --ff-only (EcoSystemUmGrau)
+              → git add + commit + push (EcoSystemUmGrau)
+              → git add + commit local (LER)
+      → CONHECIMENTO.md carregado no contexto de todo agente via opencode.jsonc
 ```
 
-### Gatilhos de inicialização
-- **Logon do Windows**: Scheduled Task `EcoSystemVigilante`
-- **PowerShell profile**: `start-vigilante` (auto-start ao abrir terminal)
-- **Manual**: `start-vigilante`, `stop-vigilante`, `status-vigilante`
+### Comandos disponíveis
+
+| Comando | Função |
+|---|---|
+| `start-vigilante` | Inicia watcher + git sync em background |
+| `stop-vigilante` | Para o processo |
+| `status-vigilante` | Status do vigilante |
+| `ecosystem sync` | Pull + push forcado (Eco + LER) |
+| `ecosystem scan` | Varre projetos, extrai padrões, registra aprendizado |
+| `ecosystem status` | Status completo do ecossistema |
+| `ecosystem help` | Ajuda detalhada |
 
 ---
 
@@ -68,9 +88,10 @@ Maestro (passo 11 obrigatório)
 > viaja no EcoSystemUmGrau via conhecimento/aprendizados/ + CONHECIMENTO.md.
 > setup.bat inicializa o LER em qualquer maquina.
 
-### `Desktop/Codigos/EcoSystemUmGrau/` (ecossistema)
+### `Desktop/Codigos/EcoSystemUmGrau/` (ecossistema — fonte unica)
 ```
 .obsidian/           # Vault Obsidian (VAULT_PATH atualizado)
+ler-runtime/         # LER runtime (antigo ~/.ler/) — versionado aqui
 skills/              # 34 skills unificadas
 ├── graphify/
 ├── ler/
@@ -201,19 +222,17 @@ Carregados de `~/.config/opencode/agents/`:
 ## 5. LER (Loop Engineering Runtime v2.0)
 
 | Item | Valor |
-|---|---|
-| **Diretório** | `C:\Users\Playtec-bancada\.ler\` |
-| **Launcher** | `C:\Users\Playtec-bancada\.local\bin\ler.bat` |
+|---|---|---|
+| **Diretório** | `EcoSystemUmGrau/ler-runtime/` (junction em `~/.ler/` p/ compatibilidade) |
+| **Launcher** | `C:\Users\Playtec-bancada\.local\bin\ler.bat` (aponta p/ novo path) |
 | **Camadas** | 13 (Governança → Supervisor) |
-| **Agentes LER** | 16 |
+| **Agentes LER** | 16 (internos, nao duplicam os 15 do OpenCode) |
 | **Providers** | NVIDIA + OpenAI |
-| **Knowledge consolidator** | `agent/knowledge_consolidator.py` (~870 linhas, merge Jaccard, export markdown, registro de aprendizado) |
-| **Learning engine** | `agent/learning_engine.py` (aprendizado por erro/sucesso, tool stats) |
-| **Seed knowledge** | `tools/seed_knowledge.py` (595 linhas, seed inicial de padrões) |
-| **CONHECIMENTO.md** | Exportado pelo próprio `KnowledgeConsolidator.export_to_markdown()` |
-| **knowledge_bridge.py** | Removido — função absorvida pelo consolidator |
-| **Remote** | `github.com/idavidjunior/LER.git` — configurado e com push inicial |
-| **Vigilante** | `scripts/vigilante.ps1` — processo Windows oculto, polling 30s, git sync 5min (EcoSystemUmGrau + LER) |
+| **Knowledge consolidator** | `ler-runtime/agent/knowledge_consolidator.py` (merge Jaccard, export, registro) |
+| **Learning engine** | `ler-runtime/agent/learning_engine.py` |
+| **CONHECIMENTO.md** | Exportado pelo consolidator, carregado no contexto de todo agente |
+| **Versionamento** | Direto no repo EcoSystemUmGrau (sem remote proprio) |
+| **Vigilante** | `scripts/vigilante.ps1` — FileSystemWatcher + git sync bidirecional |
 
 ---
 
@@ -236,8 +255,8 @@ Carregados de `~/.config/opencode/agents/`:
 | Vigilante (watcher + git sync) | `EcoSystemUmGrau/scripts/vigilante.ps1` |
 | Registro no LER | `register_learning()` no `KnowledgeConsolidator` (automático via vigilante) |
 | Knowledge graph | `~/.ler/knowledge/knowledge_graph.json` (67 patterns, 39 decisões, 46 bugs) |
-| Git sync (EcoSystemUmGrau) | Automático a cada 5 min via vigilante → `idavidjunior/EcoSystemUmGrau` |
-| Git sync (LER) | Automático a cada 5 min via vigilante → `idavidjunior/LER` |
+| Git sync (EcoSystemUmGrau) | Automático: pull → commit → push (FileSystemWatcher + timer) |
+| Git sync (LER) | Automático: commit local (dentro do EcoSystemUmGrau) |
 | Scheduled task | `EcoSystemVigilante` — inicia no logon |
 | Profile helpers | `start-vigilante`, `stop-vigilante`, `status-vigilante` |
 | Aprendizados registrados | 2 (seed inicial) |
@@ -274,3 +293,11 @@ Carregados de `~/.config/opencode/agents/`:
 - [x] **Agente 11-ler-executor** criado e reconhecido — ponte OpenCode ↔ LER
 - [x] **Maestro** atualizado: critério de delegação LER + agende listado
 - [x] **Total agents**: 15 (00 a 11 + 99) — Maestro, System Rules, Template, Estrategista, Cetico, Realista, Etica, Futuro, Recursos, Criativo, Revisor, Executor, Aprendizado, LER-Executor, Gerador
+- [x] **LER movido p/ repo**: `~/.ler/` → `ler-runtime/` com junction funcional
+- [x] **ler.bat atualizado**: aponta p/ `EcoSystemUmGrau/ler-runtime/`
+- [x] **Vigilante reescrito**: FileSystemWatcher (sem polling) + git pull antes do push
+- [x] **ecosystem.ps1 criado**: `ecosystem sync|scan|status`
+- [x] **setup.bat atualizado**: LER path correto, junction, ecosystem function no profile
+- [x] **opencode.jsonc template**: `{{USERPROFILE}}/.../ler-runtime/CONHECIMENTO.md`
+- [x] **Profile**: ecosystem function adicionada
+- [x] **LER remoto deletado**: `github.com/idavidjunior/LER` nao existe mais
