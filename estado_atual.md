@@ -1,7 +1,35 @@
-# Snapshot do Ecossistema — 2026-07-27 (v2 - pós reorganização)
+# Snapshot do Ecossistema — 2026-07-27 (v5 - Conhecimento automático)
 
-> Estado funcional após reorganização da estrutura de pastas.
+> Estado funcional com sistema automático de captura de conhecimento em 3 camadas.
 > Skills unificadas em EcoSystemUmGrau/skills/. VAULT_PATH redirecionado.
+>
+> ## REGRA OBRIGATÓRIA: TESTAR SEMPRE
+> Toda alteração no opencode.jsonc, plugins, agents ou skills deve ser testada
+> com `opencode debug config` antes de considerar concluída.
+>
+> ## FALLBACK AUTOMÁTICO
+> Quando um modelo bate limite de uso, o plugin @razroo/opencode-model-fallback
+> troca automaticamente para o próximo modelo na cadeia (nvidia/deepseek-v3.1)
+> sem intervenção manual. Cooldown de 60s com auto-recovery.
+>
+> ## CONHECIMENTO AUTOMÁTICO (NOVO)
+
+Estrutura da pasta conhecimento/:
+
+```
+conhecimento/
+├── INDEX.md              ← Carregado nas instructions do opencode.jsonc
+├── aprendizados/         ← Entradas por tarefa (YYYY-MM-DD-N.md)
+├── decisoes/             ← Decisões arquiteturais
+└── padroes/              ← Padrões técnicos/cognitivos
+```
+
+### Como funciona:
+1. Maestro invoca 10-Aprendizado como passo 11 do fluxo obrigatório
+2. 10-Aprendizado extrai decisões, padrões, bugs, configs, riscos
+3. Persiste em `conhecimento/aprendizados/YYYY-MM-DD-N.md`
+4. Bridge sincroniza com LER (`knowledge_bridge.py`)
+5. `INDEX.md` é carregado no contexto de todos os agentes via instructions
 
 ---
 
@@ -77,6 +105,7 @@ estado_atual.md      # Este arquivo
 | **OpenCode** | `1.18.7` | `npm i -g opencode-ai` |
 | **Node.js** | `v25.9.0` | `C:\Program Files\nodejs\` |
 | **npm** | `11.12.1` | — |
+| **Bun** | `1.3.14` | `~\.bun\bin\bun.exe` |
 | **Python** | `3.12.7` | `C:\Program Files\Python312\` |
 | **pip** | `24.2` | — |
 | **Git** | `2.55.0.windows.2` | `C:\Program Files\Git\cmd` |
@@ -89,16 +118,36 @@ estado_atual.md      # Este arquivo
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "file:///C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/plugins/ponytail/.opencode/plugins/ponytail.mjs",
+    "@razroo/opencode-model-fallback"
+  ],
+  "provider": {
+    "nvidia": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "NVIDIA",
+      "options": {
+        "baseURL": "https://integrate.api.nvidia.com/v1",
+        "apiKey": "{env:NVIDIA_API_KEY}"
+      }
+    }
+  },
   "instructions": [
     "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/skills/*/SKILL.md",
-    "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/skills/**/SKILL.md"
+    "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/skills/**/SKILL.md",
+    "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/conhecimento/INDEX.md"
   ]
 }
 ```
 
-**Plugin ativo:** `ponytail.mjs` em `~/.config/opencode/plugin/ponytail.mjs`
-- Dependência: `@opencode-ai/plugin@1.17.13`
-- Estado: `off` (sem `.ponytail-active`)
+**Plugins ativos:**
+1. `ponytail.mjs` — Modo `full` via `.ponytail-active`
+2. `@razroo/opencode-model-fallback` v0.3.2 — Fallback automático de modelos
+
+**Plugin config:** `~/.config/opencode/opencode-model-fallback.jsonc`
+- Fallback global: `nvidia/deepseek-ai/deepseek-v3.1`
+- Cooldown: 60s, Timeout TTFT: 30s
+- Notificações toast ativadas
 
 ---
 
@@ -120,6 +169,7 @@ Carregados de `~/.config/opencode/agents/`:
 | `07-criativo.md` | — | Soluções inovadoras |
 | `08-revisor.md` | `subagent` | Revisão |
 | `09-executor.md` | `subagent` | Implementar |
+| `10-aprendizado.md` | `subagent` | Extrair e persistir conhecimento (passo final obrigatório) |
 | `99-gerador-de-agentes.md` | — | Criar agentes |
 
 ---
@@ -133,6 +183,11 @@ Carregados de `~/.config/opencode/agents/`:
 | **Camadas** | 13 (Governança → Supervisor) |
 | **Agentes LER** | 16 |
 | **Providers** | NVIDIA + OpenAI |
+| **Knowledge consolidator** | `agent/knowledge_consolidator.py` (~870 linhas, merge Jaccard, export markdown, registro de aprendizado) |
+| **Learning engine** | `agent/learning_engine.py` (aprendizado por erro/sucesso, tool stats) |
+| **Seed knowledge** | `tools/seed_knowledge.py` (595 linhas, seed inicial de padrões) |
+| **CONHECIMENTO.md** | Exportado pelo próprio `KnowledgeConsolidator.export_to_markdown()` |
+| **knowledge_bridge.py** | Removido — função absorvida pelo consolidator |
 
 ---
 
@@ -143,14 +198,39 @@ Carregados de `~/.config/opencode/agents/`:
 | `NVIDIA_API_KEY` | Configurada |
 | `OPENAI_API_KEY` | Configurada |
 | `VAULT_PATH` | `C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau` |
+| BUN | `~\.bun\bin` no `Path` via `profile.ps1` |
+
+### Conhecimento (novo)
+
+| Item | Caminho |
+|---|---|---|
+| Base local (entradas por tarefa) | `EcoSystemUmGrau/conhecimento/aprendizados/` |
+| Base exportada (contexto global) | `~/.ler/CONHECIMENTO.md` (carregado nas instructions do opencode.jsonc) |
+| Agente de aprendizado | `~/.config/opencode/agents/10-aprendizado.md` |
+| Registro no LER | `register_learning()` no `KnowledgeConsolidator` (chamada Python direta) |
+| Knowledge graph | `~/.ler/knowledge/knowledge_graph.json` (67 patterns, 39 decisões, 46 bugs) |
+| Aprendizados registrados | 2 (seed inicial) |
 
 ---
 
 ## 7. Testes Realizados
 
 - [x] `opencode --version` → `1.18.7`
-- [x] `opencode debug config` → config carregado sem erros
+- [x] `opencode debug info` → ambos plugins listados (ponytail + fallback)
 - [x] Agents detectados: 13
 - [x] Skills no novo caminho: 34 skills via glob `skills/**/SKILL.md`
 - [x] VAULT_PATH atualizado para `EcoSystemUmGrau`
 - [x] Estrutura de pastas organizada (projetos vs ecossistema)
+- [x] Bun 1.3.14 instalado e funcional
+- [x] @razroo/opencode-model-fallback v0.3.2 instalado e configurado
+- [x] Bun adicionado ao PATH permanentemente via profile.ps1
+- [x] Agente 10-aprendizado criado e reconhecido (`opencode debug agent 10-aprendizado`)
+- [x] Maestro atualizado com passo 11 (Registrar Aprendizado) no fluxo obrigatório
+- [x] Base de conhecimento criada em `EcoSystemUmGrau/conhecimento/`
+- [x] `KnowledgeConsolidator` atualizado com `export_to_markdown()` e `register_learning_file()` — ~870 linhas
+- [x] `knowledge_bridge.py` removido — função absorvida pelo consolidator
+- [x] `conhecimento/INDEX.md` removido — instructions aponta para `~/.ler/CONHECIMENTO.md`
+- [x] `10-aprendizado.md` atualizado — chama `register_learning()` direto no consolidator
+- [x] `opencode.jsonc` atualizado — instructions aponta para CONHECIMENTO.md do LER
+- [x] 2 aprendizados seed registrados no consolidator, CONHECIMENTO.md exportado (693 linhas)
+- [x] Arquivos pré-existentes mantidos: `knowledge_consolidator.py`, `learning_engine.py`, `seed_knowledge.py`
