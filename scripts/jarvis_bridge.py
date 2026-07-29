@@ -166,16 +166,14 @@ class OpenCodeClient:
             logger.error(f"erro salvando historico: {e}")
 
     def _montar_prompt(self, mensagem: str) -> str:
+        prompt = ""
         if self._historico:
-            if len(self._historico) >= 2:
-                ctx = ""
-                for i in range(0, len(self._historico), 2):
-                    u = self._historico[i] if i < len(self._historico) else ""
-                    j = self._historico[i + 1] if i + 1 < len(self._historico) else ""
-                    ctx += f"{u}\n{j}\n"
-                return f"{ctx}---\nUsuário: {mensagem}\nJarvis:"
-            return f"Usuário: {mensagem}\nJarvis:"
-        return f"Usuário: {mensagem}\nJarvis:"
+            for i in range(0, len(self._historico), 2):
+                u = self._historico[i]
+                j = self._historico[i + 1]
+                prompt += f"{u}\n{j}\n"
+        prompt += f"Usuário: {mensagem}\nJarvis:"
+        return prompt
 
     async def consultar(self, mensagem: str) -> str:
         prompt = self._montar_prompt(mensagem)
@@ -195,9 +193,10 @@ class OpenCodeClient:
         if not resposta:
             resposta = "Sem resposta."
 
-        self._historico.append(f"Usuário: {mensagem}")
-        self._historico.append(f"Jarvis: {resposta[:300]}")
-        self._salvar_historico()
+        if len(resposta) > 60:
+            self._historico.append(f"Usuário: {mensagem}")
+            self._historico.append(f"Jarvis: {resposta[:300]}")
+            self._salvar_historico()
         return resposta
 
 
