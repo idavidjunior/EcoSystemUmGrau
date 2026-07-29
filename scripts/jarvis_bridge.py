@@ -9,6 +9,9 @@ import subprocess
 import re
 
 logging.basicConfig(level=logging.INFO)
+file_handler = logging.FileHandler(r"C:\Users\Playtec-bancada\Desktop\Codigos\bridge_log.txt", mode="a")
+file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s:%(name)s:%(message)s"))
+logging.getLogger().addHandler(file_handler)
 logger = logging.getLogger("vox")
 
 TTS_VOICE = "pt-BR-ThalitaMultilingualNeural"
