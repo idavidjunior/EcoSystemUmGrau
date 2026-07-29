@@ -151,7 +151,10 @@ Cada linha é um JSON com `type`, `part`, etc.:
 - Cache modelos: `C:\Users\Playtec-bancada\.cache\opencode\models.json`
 - Tool output cache: `C:\Users\Playtec-bancada\.local\share\opencode\tool-output\`
 
-### Variáveis de Ambiente
+#### Repositórios GitHub
+- **EcoSystemUmGrau**: `https://github.com/idavidjunior/EcoSystemUmGrau.git` (branch: `opencode/mighty-meadow`)
+- **VoxUmGrau (Android)**: `https://github.com/idavidjunior/VoxUmGrau.git` (branch: `master`)
+## Variáveis de Ambiente
 - `OPENCODE_SERVER_USERNAME=opencode`
 - `OPENCODE_SERVER_PASSWORD=4b988f21-8e53-451a-807d-fe446b3c62f2`
 - `OPENCODE_CLIENT=desktop`
