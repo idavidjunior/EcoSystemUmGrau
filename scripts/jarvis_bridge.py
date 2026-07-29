@@ -24,11 +24,14 @@ WORKDIR = r"C:\Users\Playtec-bancada\Desktop\Codigos"
 
 
 def sanitizar_texto(texto):
-    texto = re.sub(r'[*_~`#]', '', texto)
+    texto = re.sub(r'```[\s\S]*?```', '', texto)
+    texto = re.sub(r'`[^`]+`', '', texto)
+    texto = re.sub(r'[*_~#]', '', texto)
     texto = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', texto)
-    texto = texto.replace('"', '').replace("'", '')
+    texto = re.sub(r'[<>{}()\[\]]', '', texto)
+    texto = texto.replace('"', '').replace("'", '').replace('`', '')
+    texto = re.sub(r'^\s*[-*+]\s+', '', texto, flags=re.MULTILINE)
     texto = texto.replace('\n', ' ').replace('\r', ' ')
-    texto = re.sub(r'[<>{}]', '', texto)
     texto = re.sub(r'\s+', ' ', texto).strip()
     return texto
 
