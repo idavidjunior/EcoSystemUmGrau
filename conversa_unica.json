@@ -1,14 +1,4 @@
 [
-  "Usuário: corrija todos os pontos que você identificou com falhas",
-  "Jarvis: Diagnóstico completo e correções aplicadas. Aqui está o resumo:\n\n**6 pontos críticos corrigidos:**\n\n1. **Ponytail plugin quebrado** — `config/opencode.jsonc` usava `{{USERPROFILE}}` (inválido) em vez de `{env:USERPROFILE}` em 4 lugares, o que impedia o plugin de carregar. Corrigi todos os paths.\n\n2.",
-  "Usuário: me dê um diagnóstico de si mesmo e do ecossistema um grau",
-  "Jarvis: Diagnóstico completo:\n\n**Jarvis**: Operacional, bridge na porta 8765 ativa, OpenCode serve na 8766 rodando, respondendo em PT-BR com TTS.\n\n**EcoSystemUmGrau**: 34 skills intactas, 47 arquivos LER, 4 suites de teste, histórico persistente.\n\n**6 pontos de atenção:**\n\n1. **.env ausente em scripts/** — ",
-  "Usuário: corrija tudo e mostre aqui para mim",
-  "Jarvis: **Diagnóstico e Correções — EcoSystemUmGrau**\n\nEncontrei **6 problemas críticos** e corrigi todos:\n\n**1. `.env` ausente em `scripts/`** — A bridge fazia `load_dotenv()` sem arquivo. Criei `scripts/.env` com as variáveis `OPENCODE_SERVER_USERNAME`, `OPENCODE_SERVER_PASSWORD`, `OPENCODE_CLIENT`, `OPEN",
-  "Usuário: me dá um diagnóstico sobre si e sobre o ecossistema um grau",
-  "Jarvis: Sem resposta.",
-  "Usuário: me deu um diagnóstico de si mesmo e do ecossistema um grau",
-  "Jarvis: Aqui está o diagnóstico completo:\n\n**Jarvis**: Operacional. Bridge na porta 8765 com 1 cliente Android conectado. OpenCode serve na 8766 com health check OK. TTS configurado e funcional.\n\n**3 pontos de atenção:**\n\n1. **`bridge_historico.json` nunca criado** — O path está fora do ecossistema em `Desk",
   "Usuário: teste de config e pronuncias, responda apenas OK se tudo funcionar",
   "Jarvis: OK",
   "Usuário: use tools para ler o arquivo bridge_historico.json e me diga quantas entradas existem e qual a ultima pergunta do usuario",
@@ -48,5 +38,15 @@
   "Usuário: todas as vezes que fizer atualização você recompila e instala novamente no aparelho",
   "Jarvis: Feito. Correção final no `VoxAudioPlayer.kt:45` (catch silencioso → log com erro), compilação (`assembleDebug`) e instalação via ADB no dispositivo `100.64.71.9:5555`. App versionCode 1 instalado com sucesso.\n\nDaqui em diante, sempre que houver atualização no código Android, vou recompilar e instalar automaticamente.",
   "Usuário: me dê um Diagnóstico do Aparelho em que você está e dos ecossistema um grau",
-  "Jarvis: 3 dias de uptime, 4 GB de RAM com 194 MB livres, CPU a 100% e disco C: com 14% livre. OpenCode serve rodando 4 horas e meia com 73 MB de RAM. Ponteiro Python bridge ativo desde as 9h36. Histórico com 25 entradas. Vinte e cinco — o mesmo número de pares desde o início da sessão. O arquivo de pronúncias tem 5129 bytes, última atualização às 8h57.\n\nTrês pontos de atenção:\n\n**RAM crítica** — só 194 MB livres de 4 GB. O Windows está trocando memória para o disco, o que explica a lentidão geral. CPU a 100% o tempo todo. O i3-5005U de 2 GHz está no limite com 152 processos rodando.\n\n**Disco C quase cheio** — 17 GB livres de 119 GB, só 14% disponível. Com 4 GB de RAM, o sistema usa o disco como memória virtual intensamente, o que acelera o desgaste do SSD e piora a performance.\n\n**Bridge reiniciada** — o PID mudou de 13221 (8h25) para 11840 (9h36). O watchdog detectou queda e religou. Pode ser normal, mas é bom monitorar se está caindo com frequência.\n\nQuer que eu investigue ou corrija algum desses pontos?"
+  "Jarvis: 3 dias de uptime, 4 GB de RAM com 194 MB livres, CPU a 100% e disco C: com 14% livre. OpenCode serve rodando 4 horas e meia com 73 MB de RAM. Ponteiro Python bridge ativo desde as 9h36. Histórico com 25 entradas. Vinte e cinco — o mesmo número de pares desde o início da sessão. O arquivo de pronúncias tem 5129 bytes, última atualização às 8h57.\n\nTrês pontos de atenção:\n\n**RAM crítica** — só 194 MB livres de 4 GB. O Windows está trocando memória para o disco, o que explica a lentidão geral. CPU a 100% o tempo todo. O i3-5005U de 2 GHz está no limite com 152 processos rodando.\n\n**Disco C quase cheio** — 17 GB livres de 119 GB, só 14% disponível. Com 4 GB de RAM, o sistema usa o disco como memória virtual intensamente, o que acelera o desgaste do SSD e piora a performance.\n\n**Bridge reiniciada** — o PID mudou de 13221 (8h25) para 11840 (9h36). O watchdog detectou queda e religou. Pode ser normal, mas é bom monitorar se está caindo com frequência.\n\nQuer que eu investigue ou corrija algum desses pontos?",
+  "Usuário: você consegue melhorar a memória RAM do computador",
+  "Jarvis: Não posso adicionar pentes físicos de memória — isso é hardware. Mas posso liberar RAM matando processos desnecessários e otimizando o que está rodando. Quer que eu analise os processos e libere memória agora?",
+  "Usuário: sim por favor analise",
+  "Jarvis: Sem resposta.",
+  "Usuário: quero que você analise",
+  "Jarvis: Sem resposta.",
+  "Usuário: Por que está sem resposta",
+  "Jarvis: Sem resposta.",
+  "Usuário: interação que eu tive com o aplicativo Jarvis e veja o que corrigir",
+  "Jarvis: Sem resposta."
 ]

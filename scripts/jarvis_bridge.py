@@ -184,13 +184,12 @@ def extrair_resposta(stdout: str) -> tuple[str | None, list]:
     return None, tools
 
 
-RETRY_COUNT = 0
 MAX_RETRY = 2
+MAX_PROMPT = 20000
 
 async def executar(prompt: str, timeout=300, retry=True) -> str | None:
-    global RETRY_COUNT
     args = [BIN, "run", "--format", "json", "--auto", "--dir", WORKDIR, prompt]
-    logger.info(f"run: {prompt[:80]}...")
+    logger.info(f"run: {len(prompt)}b prompt...")
     t0 = time.time()
     try:
         proc = await asyncio.create_subprocess_exec(
@@ -213,13 +212,11 @@ async def executar(prompt: str, timeout=300, retry=True) -> str | None:
     resp, tools = extrair_resposta(so_text)
     if resp: return resp
     logger.warning(f"vazio, tools={len(tools)}")
-    if tools and retry and RETRY_COUNT < MAX_RETRY:
-        RETRY_COUNT += 1
+    if tools and retry:
         ctx = "\n".join(f"Resultado: {t[:300]}" for t in tools[-3:])
         prompt2 = f"{ctx}\nResponda em portugues: o que foi encontrado?"
-        logger.info(f"retry {RETRY_COUNT}/{MAX_RETRY} com tools...")
+        logger.info("retry com tools...")
         return await executar(prompt2, timeout=120, retry=False)
-    RETRY_COUNT = 0
     return None
 
 
@@ -253,16 +250,26 @@ class Cliente:
         p = SISTEMA + "\n\n" + estado + "\n\n"
         hist = self._hist[-(MAX_HIST*2):]
         for i in range(0, len(hist), 2):
-            p += f"{hist[i]}\n{hist[i+1]}\n"
+            usuario = hist[i]
+            jarvis = hist[i+1][:500]
+            p += f"{usuario}\n{jarvis}\n"
+            if len(p) > MAX_PROMPT:
+                p = p[:MAX_PROMPT]
+                break
         p += f"Usuário: {msg}\nJarvis:"
-        return p
+        return p[:MAX_PROMPT]
 
     async def perguntar(self, msg):
         prompt = self._montar(msg)
-        logger.info(f"hist={len(self._hist)//2}: {msg[:80]}")
+        logger.info(f"hist={len(self._hist)//2} prompt={len(prompt)}b: {msg[:80]}")
+        if len(prompt) > 30000:
+            logger.error(f"prompt enorme ({len(prompt)}b), forcando limpeza")
+            hist = self._hist[:2]
+            self._hist = hist
+            prompt = self._montar(msg)
         resp = await executar(prompt)
         if not resp:
-            resp = "Sem resposta."
+            resp = "Sem resposta. (opencode nao retornou resultado)"
         self._hist.append(f"Usuário: {msg}")
         self._hist.append(f"Jarvis: {resp}")
         self._salvar()
@@ -303,7 +310,6 @@ async def lidar(ws):
     try:
         estado = {"ultima_conexao": time.strftime("%Y-%m-%d %H:%M:%S"), "ip": client_ip}
         TMP_ESTADO.write_text(json.dumps(estado, indent=2), encoding="utf-8")
-        logger.info(f"estado salvo: {estado}")
     except Exception as e:
         logger.error(f"estado write: {e}")
         try:
@@ -326,21 +332,20 @@ async def lidar(ws):
             try:
                 r = await c.perguntar(m)
             except Exception as e:
-                r = f"Erro: {e}"
+                r = f"Erro no processamento: {e}"
                 logger.error(f"erro: {e}", exc_info=True)
 
             try:
-                logger.info("audio...")
                 a = await gerar_audio(r)
                 if a:
                     await ws.send(json.dumps({"text": r, "audio": a}))
-                    logger.info(f"texto+audio: {len(r)}c/{len(a)}c")
+                    logger.info(f"resp: {len(r)}c / audio {len(a)}c")
                 else:
                     await ws.send(json.dumps({"text": r}))
+                    logger.info(f"resp texto: {len(r)}c")
             except Exception as e:
-                logger.warning(f"audio: {e}, enviando so texto")
                 await ws.send(json.dumps({"text": r}))
-            logger.info(f"texto: {len(r)} chars")
+                logger.warning(f"audio: {e}")
     except websockets.exceptions.ConnectionClosed:
         logger.info("fim")
 
