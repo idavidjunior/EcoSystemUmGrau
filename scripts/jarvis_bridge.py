@@ -12,7 +12,7 @@ import re
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("vox")
 
-TTS_VOICE = "en-US-AndrewMultilingualNeural"
+TTS_VOICE = "pt-BR-ThalitaMultilingualNeural"
 TTS_PITCH = "-30Hz"
 TTS_RATE = "+0%"
 
