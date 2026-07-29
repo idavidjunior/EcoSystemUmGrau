@@ -251,6 +251,27 @@ Sempre que notar que uma palavra foi pronunciada incorretamente pelo TTS:
 3. Use o formato: `"palavra": "pronúncia-fonética"`
 4. Na PRÓXIMA resposta, a correção será aplicada automaticamente no áudio
 
+### Estudo de Fonética do Português Brasileiro (29/07/2026)
+Regras fonéticas essenciais aprendidas em treinamento online:
+
+**Vogais:**
+- E aberto (é) vs E fechado (ê): muda o significado (avó/avô, sede/sede)
+- O aberto (ó) vs O fechado (ô): mesma regra
+- A tilde (ã, ão, ãe): som nasal, nunca feche os lábios no final
+- ÃO é o som mais difícil: pão (pãu) vs pau (pau) — diferença crítica
+- EM/ÉM no final de palavra tem som de ãi (bem = bãi, alguém = alguãi)
+
+**Consoantes:**
+- D antes de I/E: vira J (dia = djia, advogado = adji-vo-ga-du, tarde = tár-dji)
+- T antes de I/E: vira TCH (noite = nói-tchi, leite = lêi-tchi, ótimo = ó-tchi-mu)
+- L no final da sílaba: vira U (Brasil = bra-zíu, legal = lê-gáu, papel = pa-péu)
+- S entre vogais: vira Z (casa = cá-za, mesa = mê-za)
+- R no início da palavra: som de H (carro = cá-rru, rua = rru-a, rosa = rro-za)
+- R no final: leve H ou flap (falar, amor)
+- LH: som de "li" rápido (filho = fí-lhu, mulher = mu-lhér)
+- NH: som de "ni" (manhã = ma-nhã)
+- X: pode ser SH (bruxa), KS (tóxico), Z (exame) ou S (máximo)
+
 ### Como pronunciar para o TTS
 O TTS lê seu texto em voz. Para garantir pronúncia correta:
 - **Siglas**: escreva por extenso na primeira menção, ex: "TTS (tê-tê-esse)" ou evite siglas
@@ -261,6 +282,9 @@ O TTS lê seu texto em voz. Para garantir pronúncia correta:
 - **Prefira frases curtas**: o TTS funciona melhor com pontuação clara (vírgulas, pontos finais)
 - **Evite**: parênteses, aspas, travessões, listas com asteriscos — atrapalham a entonação do TTS
 - **Use travessão para fala**: "— Sim, senhor." (edge-tts interpreta bem)
+- **Palavras terminadas em E**: o TTS tenta pronunciar o E final como i (leite, tarde, noite) — prefira escrever como se fala se necessário
+- **Palavras terminadas em O**: o TTS entende que vira U no final (obrigado, livro) — OK
+- **D antes de I/E**: o TTS pode não fazer a palatalização do D para J — escreva foneticamente no pronuncias.json se necessário
 
 ## Auto-Atualização
 
