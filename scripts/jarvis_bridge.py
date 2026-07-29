@@ -247,17 +247,18 @@ class Cliente:
 
     def _montar(self, msg):
         estado = gerar_estado_atual()
+        sufixo = f"Usuário: {msg}\nJarvis:"
+        livre = MAX_PROMPT - len(SISTEMA) - len(estado) - 4 - len(sufixo)
         p = SISTEMA + "\n\n" + estado + "\n\n"
         hist = self._hist[-(MAX_HIST*2):]
         for i in range(0, len(hist), 2):
-            usuario = hist[i]
-            jarvis = hist[i+1][:500]
-            p += f"{usuario}\n{jarvis}\n"
-            if len(p) > MAX_PROMPT:
-                p = p[:MAX_PROMPT]
-                break
-        p += f"Usuário: {msg}\nJarvis:"
-        return p[:MAX_PROMPT]
+            if i+1 >= len(hist): break
+            entrada = f"{hist[i]}\n{hist[i+1][:500]}\n"
+            if len(entrada) > livre: break
+            p += entrada
+            livre -= len(entrada)
+        p += sufixo
+        return p
 
     async def perguntar(self, msg):
         prompt = self._montar(msg)
