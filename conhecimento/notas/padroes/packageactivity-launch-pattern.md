@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [Package/activity launch pattern]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Package/activity launch pattern

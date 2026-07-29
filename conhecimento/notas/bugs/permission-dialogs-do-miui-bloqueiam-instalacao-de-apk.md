@@ -1,7 +1,7 @@
 ---
 tags: [bug, treinamentonavegacao]
 aliases: [Permission dialogs do MIUI bloqueiam instalacao de APK]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Bug: Permission dialogs do MIUI bloqueiam instalacao de APK

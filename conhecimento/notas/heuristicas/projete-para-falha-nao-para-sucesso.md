@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, architecture]
 aliases: [Projete para falha, nao para sucesso]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Projete para falha, nao para sucesso

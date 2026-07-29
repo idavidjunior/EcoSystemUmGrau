@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [Iframe/contenteditable text entry]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Iframe/contenteditable text entry

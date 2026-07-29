@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, protocol]
 aliases: [JSON-RPC notifications]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # JSON-RPC notifications

@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, browser-architecture]
 aliases: [Mapa mental de navegadores web]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Mapa mental de navegadores web

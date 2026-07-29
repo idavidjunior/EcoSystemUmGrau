@@ -1,7 +1,7 @@
 ---
 tags: [framework]
 aliases: [Arvore de Decisao para Fallback de Servico]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Arvore de Decisao para Fallback de Servico

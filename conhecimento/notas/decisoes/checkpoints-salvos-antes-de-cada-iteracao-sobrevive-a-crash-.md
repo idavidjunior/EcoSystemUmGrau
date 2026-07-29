@@ -1,7 +1,7 @@
 ---
 tags: [decisao, lerarquitetura]
 aliases: [Checkpoints salvos antes de cada iteracao — sobrevive a cras]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Checkpoints salvos antes de cada iteracao — sobrevive a crash a qualquer momento.

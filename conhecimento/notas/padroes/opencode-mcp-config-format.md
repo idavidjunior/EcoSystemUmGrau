@@ -1,7 +1,7 @@
 ---
 tags: [padrao, sessionsession]
 aliases: [OpenCode MCP config format]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # OpenCode MCP config format

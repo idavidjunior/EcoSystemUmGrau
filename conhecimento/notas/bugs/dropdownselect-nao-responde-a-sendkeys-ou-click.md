@@ -1,7 +1,7 @@
 ---
 tags: [bug, treinamentonavegacao]
 aliases: [Dropdown<select> nao responde a send_keys ou click]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Bug: Dropdown<select> nao responde a send_keys ou click

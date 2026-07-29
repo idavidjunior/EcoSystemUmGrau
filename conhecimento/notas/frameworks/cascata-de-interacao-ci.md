@@ -1,7 +1,7 @@
 ---
 tags: [framework]
 aliases: [Cascata de Interacao (CI)]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Cascata de Interacao (CI)

@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, configuration]
 aliases: [Sempre validar schema apos migracao de config]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Sempre validar schema apos migracao de config

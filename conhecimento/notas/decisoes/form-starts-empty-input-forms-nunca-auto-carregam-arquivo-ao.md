@@ -1,7 +1,7 @@
 ---
 tags: [decisao, androidpuresdk]
 aliases: [Form Starts Empty — input forms nunca auto-carregam arquivo ]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Form Starts Empty — input forms nunca auto-carregam arquivo ao trocar de aba.

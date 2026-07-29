@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, debugging]
 aliases: [Hipotese-falsificacao terminal]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Hipotese-falsificacao terminal

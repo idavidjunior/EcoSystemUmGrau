@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, planning]
 aliases: [Pre-compilacao de estrategia de interacao]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Pre-compilacao de estrategia de interacao

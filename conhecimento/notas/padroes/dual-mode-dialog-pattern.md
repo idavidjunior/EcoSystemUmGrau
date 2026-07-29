@@ -1,7 +1,7 @@
 ---
 tags: [padrao, android-pure-sdkandroid-pure-sdk]
 aliases: [Dual-mode Dialog Pattern]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Dual-mode Dialog Pattern

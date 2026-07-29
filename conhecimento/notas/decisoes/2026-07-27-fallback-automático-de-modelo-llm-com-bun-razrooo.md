@@ -1,7 +1,7 @@
 ---
 tags: [decisao, ecosistema-opencode]
 aliases: [2026-07-27: Fallback automático de modelo LLM com Bun + @raz]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # 2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback

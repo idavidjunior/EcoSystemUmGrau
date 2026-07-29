@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, web-navigation]
 aliases: [Navegacao em SPA: 3 sinais de sucesso]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Navegacao em SPA: 3 sinais de sucesso

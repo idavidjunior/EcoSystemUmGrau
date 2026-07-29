@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [Stale element reference recovery]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Stale element reference recovery

@@ -1,7 +1,7 @@
 ---
 tags: [decisao, mp3player-metadata-rescue]
 aliases: [The issue description and root cause]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # The issue description and root cause

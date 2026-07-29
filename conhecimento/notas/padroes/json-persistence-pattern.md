@@ -1,7 +1,7 @@
 ---
 tags: [padrao, android-pure-sdkandroid-pure-sdk]
 aliases: [JSON Persistence Pattern]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # JSON Persistence Pattern

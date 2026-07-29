@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, coding]
 aliases: [Regra do 'nao magico']
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Regra do 'nao magico'

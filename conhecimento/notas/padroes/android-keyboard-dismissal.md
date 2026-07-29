@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [Android keyboard dismissal]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Android keyboard dismissal

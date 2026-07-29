@@ -1,7 +1,7 @@
 ---
 tags: [decisao, treinamentonavegacao]
 aliases: [Priorizar data-testid sobre classes CSS em automacao web]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Priorizar data-testid sobre classes CSS em automacao web

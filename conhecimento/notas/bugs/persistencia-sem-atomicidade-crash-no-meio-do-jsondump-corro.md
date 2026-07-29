@@ -1,7 +1,7 @@
 ---
 tags: [bug, lerauditoria]
 aliases: [Persistencia sem atomicidade — crash no meio do json.dump co]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Bug: Persistencia sem atomicidade — crash no meio do json.dump corrompia arquivo

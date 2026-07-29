@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, systemdesign]
 aliases: [Sempre esperar o inesperado em E/S]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Sempre esperar o inesperado em E/S

@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, efficiency]
 aliases: [Velocidade = evitar esperas fixas]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Velocidade = evitar esperas fixas

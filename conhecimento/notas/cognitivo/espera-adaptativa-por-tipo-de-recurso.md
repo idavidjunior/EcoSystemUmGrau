@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, performance]
 aliases: [Espera adaptativa por tipo de recurso]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Espera adaptativa por tipo de recurso

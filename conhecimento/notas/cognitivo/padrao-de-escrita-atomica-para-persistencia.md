@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, system_design]
 aliases: [Padrao de escrita atomica para persistencia]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Padrao de escrita atomica para persistencia

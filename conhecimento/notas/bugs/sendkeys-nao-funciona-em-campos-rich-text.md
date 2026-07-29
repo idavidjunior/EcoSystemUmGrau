@@ -1,7 +1,7 @@
 ---
 tags: [bug, treinamentonavegacao]
 aliases: [send_keys nao funciona em campos rich-text]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Bug: send_keys nao funciona em campos rich-text

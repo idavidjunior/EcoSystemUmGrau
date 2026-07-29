@@ -1,7 +1,7 @@
 ---
 tags: [padrao, sessaoprovidermanager]
 aliases: [Cadeia de provedores com failover inteligente]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Cadeia de provedores com failover inteligente

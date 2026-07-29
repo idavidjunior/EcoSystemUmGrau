@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, web-rendering]
 aliases: [Modelo mental de DOM virtual]
-date: 2026-07-28
+date: 2026-07-29
 ---
 
 # Modelo mental de DOM virtual
