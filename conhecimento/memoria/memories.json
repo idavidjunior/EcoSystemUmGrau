@@ -102,5 +102,57 @@
     "access_count": 0,
     "created_at": "2026-07-28T13:51:53.898351",
     "last_accessed": "2026-07-28T13:51:53.898351"
+  },
+  {
+    "id": 19,
+    "kind": "decisao",
+    "task": "Arquitetura Jarvis App",
+    "summary": "App Android foreground service + TTS/STT bidirecional + WebSocket MCP. Base: agentic-nexus (MIT).",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-07-28T23:21:33.026260",
+    "last_accessed": "2026-07-28T23:21:33.026260"
+  },
+  {
+    "id": 20,
+    "kind": "decisao",
+    "task": "Pre-flight check criado e testado",
+    "summary": "scripts/preflight_check.py: 7 testes ALL PASS. Vigilante + system-rules integrados.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-07-28T23:21:33.581117",
+    "last_accessed": "2026-07-28T23:21:33.581117"
+  },
+  {
+    "id": 21,
+    "kind": "episodio",
+    "task": "Model-fallback cooldown esclarecido",
+    "summary": "Usuario confirmou cooldown_seconds=60 era o limite. Decidiu manter como esta.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-07-28T23:21:34.306086",
+    "last_accessed": "2026-07-28T23:21:34.306086"
+  },
+  {
+    "id": 22,
+    "kind": "decisao",
+    "task": "Aprendizado automatico permanente",
+    "summary": "Instrucao petrea: aprender ao final de cada tarefa sem esperar. System-rules atualizado.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-07-28T23:21:34.899649",
+    "last_accessed": "2026-07-28T23:21:34.899649"
   }
 ]

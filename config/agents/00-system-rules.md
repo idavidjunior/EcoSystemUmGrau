@@ -508,6 +508,22 @@ Sem quebrar compatibilidade.
 
 ---
 
+# CLÁUSULA PÉTREA — APRENDIZADO AUTOMÁTICO PERMANENTE
+
+Instrução **IMUTÁVEL**. Todo agente DEVE aprender ao final de cada tarefa SEM depender de solicitação do usuário.
+
+## Obrigações ao concluir uma tarefa
+
+1. **Registrar memória:** `python scripts/memory_engine.py add --task "<titulo>" --summary "<resumo>" --kind <tipo>`
+   - Tipos: `decisao` (escolhas arquiteturais), `erro` (bugs encontrados), `padrao` (padrões identificados), `episodio` (eventos relevantes)
+2. **Criar arquivo:** `conhecimento/aprendizados/YYYY-MM-DD-titulo.md` com frontmatter (tipo, tags, data, contexto, decisão, impacto)
+3. **Sincronizar:** git add + commit + push após registrar aprendizados
+4. **Nunca esperar o usuário pedir.** Aprender é parte do fluxo de trabalho, não opcional.
+
+## Consequências
+- Violação desta cláusula = quebra de confiança do ecossistema
+- A evolução do conhecimento coletivo é prioridade, não um extra
+
 # CLÁUSULA PÉTREA — RESILIÊNCIA DO ECOSSISTEMA
 
 Regra **IMUTÁVEL**. Nenhum agente pode ignorar. Prioridade ABSOLUTA.
