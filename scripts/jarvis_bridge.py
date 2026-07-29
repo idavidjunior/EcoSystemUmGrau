@@ -7,6 +7,7 @@ import logging
 import os
 import subprocess
 import shlex
+import re
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("vox")
@@ -22,7 +23,17 @@ OPENCODE_BIN = os.path.join(
 WORKDIR = r"C:\Users\Playtec-bancada\Desktop\Codigos"
 
 
+def sanitizar_texto(texto):
+    texto = re.sub(r'[*_~`#]', '', texto)
+    texto = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', texto)
+    texto = texto.replace('"', '').replace("'", '')
+    texto = texto.replace('\n', ' ').replace('\r', ' ')
+    texto = re.sub(r'[<>{}]', '', texto)
+    texto = re.sub(r'\s+', ' ', texto).strip()
+    return texto
+
 async def gerar_audio(texto):
+    texto = sanitizar_texto(texto)
     communicate = edge_tts.Communicate(texto, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
     audio = b""
     async for chunk in communicate.stream():
