@@ -1,19 +1,22 @@
-import sqlite3, json, datetime
+import sqlite3, json, datetime, sys
 
 db = r"C:\Users\Playtec-bancada\.local\share\opencode\opencode.db"
 conn = sqlite3.connect(db)
 conn.row_factory = sqlite3.Row
 cur = conn.cursor()
 
-# Sessoes criadas ANTES da correcao (19:11 BRT = 22:11 UTC de 29/07/2026)
-# Manter: sessoes com 10+ mensagens (conversas do chat) e sessoes da correcao em diante
 CORTE = 1785363060000  # 29/07/2026 19:11 BRT
+
+def ts(v):
+    if v is None: return "-"
+    if isinstance(v, (int, float)):
+        return datetime.datetime.fromtimestamp(v/1000).strftime("%Y-%m-%d %H:%M:%S")
+    return str(v)[:19]
 
 # Identificar sessoes para deletar
 cur.execute("""
-    SELECT s.id, s.time_created, 
+    SELECT s.id, s.time_created,
            (SELECT COUNT(*) FROM message m WHERE m.session_id = s.id) as msgs,
-           (SELECT MIN(m.time_created) FROM message m WHERE m.session_id = s.id) as primeira_msg,
            (SELECT MAX(m.time_created) FROM message m WHERE m.session_id = s.id) as ultima_msg
     FROM session s
     WHERE s.time_created < ?
@@ -24,45 +27,48 @@ cur.execute("""
 alvos = cur.fetchall()
 
 print(f"Sessoes a deletar: {len(alvos)}")
+if not alvos:
+    print("Nenhuma sessao para deletar.")
+    conn.close()
+    sys.exit(0)
+
 print(f"{'Sessao':<24} | {'Criacao':<20} | {'Msgs':>4} | {'Ultima msg':<20}")
 print("-"*75)
 total_msgs = 0
 for s in alvos:
     sid = s["id"][:24]
-    criacao = datetime.datetime.fromtimestamp(s["time_created"]/1000).strftime("%Y-%m-%d %H:%M:%S") if s["time_created"] else "-"
-    ultima = datetime.datetime.fromtimestamp(s["ultima_msg"]/1000).strftime("%Y-%m-%d %H:%M:%S") if s["ultima_msg"] else "-"
-    print(f"{sid:<24} | {criacao:<20} | {s['msgs']:>4} | {ultima:<20}")
+    print(f"{sid:<24} | {ts(s['time_created']):<20} | {s['msgs']:>4} | {ts(s['ultima_msg']):<20}")
     total_msgs += s["msgs"]
 
 print(f"\nTotal: {len(alvos)} sessoes, {total_msgs} mensagens")
-print(f"\nDigite 'sim' para confirmar a exclusao ou qualquer outra coisa para cancelar")
-resp = input().strip().lower()
-if resp != "sim":
-    print("Cancelado")
-    conn.close()
-    exit()
+print(f"\nConfirma exclusao? Passar argumento 'sim' para executar")
 
-# Deletar parts, messages, depois sessions
+if len(sys.argv) < 2 or sys.argv[1].lower() != "sim":
+    print("Cancelado - passe 'sim' como argumento para confirmar")
+    conn.close()
+    sys.exit(0)
+
+# Deletar
 tot_part = 0
 tot_msg = 0
 tot_ses = 0
+tot_event = 0
 for s in alvos:
     sid = s["id"]
     cur.execute("DELETE FROM part WHERE session_id = ?", (sid,))
     tot_part += cur.rowcount
     cur.execute("DELETE FROM message WHERE session_id = ?", (sid,))
     tot_msg += cur.rowcount
-    # Tambem deletar eventos relacionados
     cur.execute("DELETE FROM event WHERE aggregate_id = ?", (sid,))
+    tot_event += cur.rowcount
+    cur.execute("DELETE FROM todo WHERE session_id = ?", (sid,))
     cur.execute("DELETE FROM session WHERE id = ?", (sid,))
     tot_ses += 1
 
 conn.commit()
-print(f"\nDeletado: {tot_ses} sessoes, {tot_msg} mensagens, {tot_part} parts")
+print(f"\nDeletado: {tot_ses} sessoes, {tot_msg} mensagens, {tot_part} parts, {tot_event} eventos")
 
-# Opcional: vacuum
-print("Compactando banco (VACUUM)... pode levar alguns segundos")
+print("Compactando banco (VACUUM)...")
 cur.execute("VACUUM")
 print("Concluido!")
-
 conn.close()
