@@ -1,12 +1,4 @@
 [
-  "Usuário: todas as vezes que fizer atualização você recompila e instala novamente no aparelho",
-  "Jarvis: Feito. Correção final no `VoxAudioPlayer.kt:45` (catch silencioso → log com erro), compilação (`assembleDebug`) e instalação via ADB no dispositivo `100.64.71.9:5555`. App versionCode 1 instalado com sucesso.\n\nDaqui em diante, sempre que houver atualização no código Android, vou recompilar e instalar automaticamente.",
-  "Usuário: me dê um Diagnóstico do Aparelho em que você está e dos ecossistema um grau",
-  "Jarvis: 3 dias de uptime, 4 GB de RAM com 194 MB livres, CPU a 100% e disco C: com 14% livre. OpenCode serve rodando 4 horas e meia com 73 MB de RAM. Ponteiro Python bridge ativo desde as 9h36. Histórico com 25 entradas. Vinte e cinco — o mesmo número de pares desde o início da sessão. O arquivo de pronúncias tem 5129 bytes, última atualização às 8h57.\n\nTrês pontos de atenção:\n\n**RAM crítica** — só 194 MB livres de 4 GB. O Windows está trocando memória para o disco, o que explica a lentidão geral. CPU a 100% o tempo todo. O i3-5005U de 2 GHz está no limite com 152 processos rodando.\n\n**Disco C quase cheio** — 17 GB livres de 119 GB, só 14% disponível. Com 4 GB de RAM, o sistema usa o disco como memória virtual intensamente, o que acelera o desgaste do SSD e piora a performance.\n\n**Bridge reiniciada** — o PID mudou de 13221 (8h25) para 11840 (9h36). O watchdog detectou queda e religou. Pode ser normal, mas é bom monitorar se está caindo com frequência.\n\nQuer que eu investigue ou corrija algum desses pontos?",
-  "Usuário: você consegue melhorar a memória RAM do computador",
-  "Jarvis: Não posso adicionar pentes físicos de memória — isso é hardware. Mas posso liberar RAM matando processos desnecessários e otimizando o que está rodando. Quer que eu analise os processos e libere memória agora?",
-  "Usuário: sim por favor analise",
-  "Jarvis: Sem resposta.",
   "Usuário: quero que você analise",
   "Jarvis: Sem resposta.",
   "Usuário: Por que está sem resposta",
@@ -48,5 +40,13 @@
   "Usuário: você resolva todos os pontos",
   "Jarvis: Vou identificar quais processos são essenciais e quais estão sobrando.",
   "Usuário: você fica esperando eu falar mas fica apitando isso não é necessário",
-  "Jarvis: Corrigido. O bipe vinha do `SpeechRecognizer` que tocava um som de sistema toda vez que começava a escutar automaticamente depois do áudio do Jarvis. Fiz 3 alterações:\n\n1. **`VoxViewModel.kt`**: Parei de auto-escutar depois do áudio. Agora só mostra \"Pronto para falar\" sem disparar o microfone. Também parei de religar automaticamente quando dá erro de reconhecimento.\n\n2. **`VoxStt.kt`**: Adicionei `AudioFocusRequest` com `AUDIOFOCUS_GAIN_TRANSIENT` que suprime o bipe do sistema quando você pressiona o botão do microfone manualmente.\n\n3. **`build.ps1`**: Corrigi o path do `adb` para encontrar automaticamente no Android SDK.\n\nApp compilado e instalado com sucesso (versionCode 3). Agora o sistema espera em silêncio — você toca no microfone quando quiser falar, sem bipes indesejados."
+  "Jarvis: Corrigido. O bipe vinha do `SpeechRecognizer` que tocava um som de sistema toda vez que começava a escutar automaticamente depois do áudio do Jarvis. Fiz 3 alterações:\n\n1. **`VoxViewModel.kt`**: Parei de auto-escutar depois do áudio. Agora só mostra \"Pronto para falar\" sem disparar o microfone. Também parei de religar automaticamente quando dá erro de reconhecimento.\n\n2. **`VoxStt.kt`**: Adicionei `AudioFocusRequest` com `AUDIOFOCUS_GAIN_TRANSIENT` que suprime o bipe do sistema quando você pressiona o botão do microfone manualmente.\n\n3. **`build.ps1`**: Corrigi o path do `adb` para encontrar automaticamente no Android SDK.\n\nApp compilado e instalado com sucesso (versionCode 3). Agora o sistema espera em silêncio — você toca no microfone quando quiser falar, sem bipes indesejados.",
+  "Usuário: teste de sessao unificada, diga apenas: primeira mensagem",
+  "Jarvis: primeira mensagem",
+  "Usuário: diga apenas: segunda mensagem, continuacao",
+  "Jarvis: segunda mensagem, continuacao",
+  "Usuário: diga: terceira e ultima mensagem",
+  "Jarvis: Terceira e ultima mensagem",
+  "Usuário: me dê um diagnóstico do Windows neste exato momento",
+  "Jarvis: **Diagnóstico do Windows agora:**\n\n**RAM — CRÍTICO**: 0,5 MB livres de 4 GB (0,01%). Seis instâncias do OpenCode consomem ~1,26 GB. Destaque: PID 9144 com 510 MB, PID 13060 com 295 MB, PID 11384 com 257 MB.\n\n**CPU**: Intel Core i3-5005U, 72 horas de uptime.\n\n**Disco C**: 16,3 GB livres de 118,7 GB (13,7%).\n\n**Principal vilão**: múltiplos processos OpenCode acumulados. Sugiro matar os mais pesados (PIDs 9144, 13060, 11384) que não sejam o serve da porta 8766. Quer que eu limpe?"
 ]
