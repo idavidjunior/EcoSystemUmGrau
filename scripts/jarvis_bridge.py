@@ -179,7 +179,12 @@ def extrair_resposta(stdout: str) -> tuple[str | None, list]:
         except json.JSONDecodeError:
             pass
     logger.info(f"eventos={tipos} texts={len(texts)} tools={len(tools)}")
-    if texts: return texts[-1], tools
+    if texts:
+        ultimo = texts[-1]
+        if ultimo.startswith("<path>") or ultimo.startswith("<type>") or ultimo.startswith("{"):
+            logger.warning(f"texto parece raw tool output, ignorando")
+            return None, tools
+        return ultimo, tools
     if tools: return tools[-1][:MAX_TOOL], tools
     return None, tools
 

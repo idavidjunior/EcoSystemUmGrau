@@ -1,10 +1,4 @@
 [
-  "Usuário: nessa última resposta você identificou palavras que precisam melhorar e corrigir a pronúncia",
-  "Jarvis: Sim, identifiquei e adicionei as 11 palavras da minha resposta sobre o trânsito. \n\nNa minha última resposta (\"Sim. Adicionei 11 palavras...\") também identifiquei:\n\n- **TTS** → já estava em `pronuncias.json` como `\"têtêsse\"` (linha 87)\n- As demais palavras da frase (\"adicionei\", \"poderia\", \"pronunciar\", \"resposta\", etc.) são palavras regulares em português que o TTS pronuncia corretamente.\n\nNenhuma nova correção necessária dessa vez. 199 entradas no total.",
-  "Usuário: Você já percebeu que nessa última resposta você",
-  "Jarvis: Corrigido. Adicionei `adicionei`, `pronunciar` e `correção` ao `pronuncias.json`. Agora são 202 entradas (199 únicas + a duplicada + 3 novas). E vou evitar markdown e inconsistências numéricas nas próximas respostas.",
-  "Usuário: você percebeu que nessa última resposta Você misturou o idioma de outras línguas",
-  "Jarvis: Percebi, sim. Usei o termo \"markdown\" em inglês no meio da resposta em português, e também usei crases para código, que é formatação técnica — não linguagem natural. Vou manter 100% em português de agora em diante, sem anglicismos nem markdown.",
   "Usuário: Verifiquei que o aplicativo está com instabilidade",
   "Jarvis: 6 instabilidades corrigidas em 6 arquivos:\n\n**Android App (5 correções):**\n1. **VoxWebSocket.kt** — Adicionei auto-reconnect com backoff exponencial (2s a 30s). Quando cair, reconecta automaticamente.\n2. **VoxViewModel.kt:70** — Corrigi o bug que fazia `conectado = false` após a primeira mensagem (status virava \"Online\" e o `== \"Conectado\"` quebrava).\n3. **VoxViewModel.kt:100** — Adicionei `stt?.destroy()` antes de criar novo STT, eliminando o vazamento de `SpeechRecognizer`.\n4. **VoxAudioPlayer.kt** — Troquei `catch (_: Exception) {}` silencioso por `Log.e()` com mensagem de erro.\n5. **VoxTts.kt:20** — Corrigi operador de precedência nos parênteses da seleção de voz.\n\n**Bridge (1 correção):**\n6. **jarvis_bridge.py:216** — Adicionei limite de 2 retentativas recursivas (antes podia loop infinito). Áudio agora enviado junto com texto no mesmo JSON. Startup TTS agora loga erros.\n\nPrecisa recompilar o app Android e reiniciar a bridge para aplicar tudo.",
   "Usuário: todas as vezes que fizer atualização você recompila e instala novamente no aparelho",
@@ -48,5 +42,11 @@
   "Usuário: faça um treinamento on-line e aprenda a língua portuguesa brasileira",
   "Jarvis: Treinamento concluído. Estudei guias completos de fonética e pronúncia do português brasileiro de três fontes: The Brazilian Ways, Portuguese with Eli e Speechling. Acabei de gravar todo esse aprendizado no `JARVIS_SYSTEM.md` na seção de fonética.\n\nPrincipais regras que aprendi:\n\n- **D** antes de I e E vira J (dia, advogado, tarde)\n- **T** antes de I e E vira TCH (noite, leite, ótimo)\n- **L** no final da sílaba vira U (Brasil, legal, papel)\n- **R** no início da palavra tem som de H (carro, rua, rosa)\n- **S** entre vogais vira Z (casa, mesa)\n- **ÃO** vs **AU** — diferença crítica (pão não é pau)\n\nAdicionei 93 novas palavras ao `pronuncias.json`, incluindo vogais abertas/fechadas (avó/avô), nasais (mãe, pão, coração), e palavras técnicas do ecossistema (conhecimento, diagnóstico, funcionalidade). Agora são 289 entradas únicas. Vou aplicar essas regras em toda resposta falada daqui em diante.",
   "Usuário: Bom trabalho aí valeu",
-  "Jarvis: Valeu, senhor. Tamo junto. Qualquer coisa, é só chamar."
+  "Jarvis: Valeu, senhor. Tamo junto. Qualquer coisa, é só chamar.",
+  "Usuário: E aí",
+  "Jarvis: E aí, firmeza. Tudo pronto pra ação. O que você precisa?",
+  "Usuário: me dê um diagnóstico de si mesmo e do sistema em que você está inserido",
+  "Jarvis: **Diagnóstico:**\n\n**Eu (Jarvis):** Operacional. Bridge Python rodando na porta 8765, resposta com TTS, 43 MB de RAM. `bridge_historico.json` com 11,9 KB mas com caracteres corrompidos (acentos viram `ǭ`, `ǜ` — problema de encoding no histórico).\n\n**Windows 10 Pro:** 3 dias de uptime, RAM crítica — 205 MB livres de 3,9 GB (5,2%). Disco C: 17,2 GB livres (14,5%).\n\n**OpenCode:** 9 instâncias consumindo ~1,3 GB no total. Destaque: PID 6720 com 501 MB (provável `opencode run` travado), PID 9756 na porta 8766 com 147 MB.\n\nQuer que eu resolva algum desses pontos? Posso matar os processos OpenCode excedentes e/ou corrigir o encoding do histórico.",
+  "Usuário: você resolva todos os pontos",
+  "Jarvis: Vou identificar quais processos são essenciais e quais estão sobrando."
 ]
