@@ -62,6 +62,7 @@ async def gerar_audio(texto):
 def extrair_resposta(stdout_text: str) -> str:
     ultimo_texto = None
     tipos = {}
+    textos_raw = []
     for line in stdout_text.splitlines():
         line = line.strip()
         if not line:
@@ -72,19 +73,21 @@ def extrair_resposta(stdout_text: str) -> str:
             tipos[t] = tipos.get(t, 0) + 1
             if t == "text":
                 part = obj.get("part", {})
-                texto = part.get("text", "") if isinstance(part, dict) else ""
-                if texto:
-                    ultimo_texto = texto
-            # tambem captura tool_result que pode ter texto
-            if t == "tool_result" and ultimo_texto is None:
-                result = obj.get("result", "")
-                if isinstance(result, str) and result.strip():
-                    ultimo_texto = result[:500]
+                if isinstance(part, dict):
+                    texto = part.get("text", "")
+                elif isinstance(part, str):
+                    texto = part
+                else:
+                    texto = str(part) if part else ""
+                textos_raw.append(repr(texto[:300]))
+                if texto.strip():
+                    ultimo_texto = texto.strip()
         except json.JSONDecodeError:
             continue
     logger.info(f"tipos de eventos no stdout: {tipos}")
+    logger.info(f"textos encontrados: {textos_raw}")
     if ultimo_texto is None:
-        logger.info(f"stdout (primeiros 500 chars): {stdout_text[:500]}")
+        logger.info(f"stdout (primeiros 800 chars): {stdout_text[:800]}")
     return ultimo_texto or "Sem resposta."
 
 
@@ -94,14 +97,15 @@ class OpenCodeClient:
 
     async def consultar(self, mensagem: str) -> str:
         cmd = list(COMUM_BASE)
-        if self._primeira:
+        eh_primeira = self._primeira
+        if eh_primeira:
             self._primeira = False
         else:
             cmd.append("--continue")
         cmd.append(mensagem)
 
         cmd_str = subprocess.list2cmdline(cmd)
-        logger.info(f"OC {'(continue)' if not self._primeira else '(nova)'}: {mensagem[:80]}")
+        logger.info(f"OC {'(continue)' if not eh_primeira else '(nova)'}: {mensagem[:80]}")
 
         proc = await asyncio.create_subprocess_shell(
             cmd_str,
