@@ -1,11 +1,11 @@
 import asyncio
 import websockets
-import httpx
 import edge_tts
 import base64
 import json
 import logging
 import os
+import subprocess
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("vox")
@@ -14,13 +14,12 @@ TTS_VOICE = "en-US-AndrewMultilingualNeural"
 TTS_PITCH = "-30Hz"
 TTS_RATE = "+0%"
 
-NVIDIA_API_KEY = os.environ.get("NVIDIA_API_KEY", "")
-NVIDIA_BASE = "https://integrate.api.nvidia.com/v1"
-MODEL = "deepseek-ai/deepseek-v4-flash"
+OPENCODE_BIN = os.path.join(
+    os.environ.get("APPDATA", ""),
+    r"npm\node_modules\opencode-ai\bin\opencode.exe"
+)
+WORKDIR = r"C:\Users\Playtec-bancada\Desktop\Codigos"
 
-OPENCODE_URL = "http://127.0.0.1:4096"
-OPENCODE_USER = os.environ.get("OPENCODE_SERVER_USERNAME", "opencode")
-OPENCODE_PASS = os.environ.get("OPENCODE_SERVER_PASSWORD", "8c194f96-5ad2-409d-8b26-6052c634972d")
 
 async def gerar_audio(texto):
     communicate = edge_tts.Communicate(texto, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
@@ -30,73 +29,79 @@ async def gerar_audio(texto):
             audio += chunk["data"]
     return base64.b64encode(audio).decode()
 
-async def consultar_modelo(texto):
-    headers = {
-        "Authorization": f"Bearer {NVIDIA_API_KEY}",
-        "Content-Type": "application/json"
-    }
-    body = {
-        "model": MODEL,
-        "messages": [{"role": "user", "content": texto}],
-        "max_tokens": 500
-    }
-    async with httpx.AsyncClient(timeout=120) as http:
-        r = await http.post(f"{NVIDIA_BASE}/chat/completions", json=body, headers=headers)
-        return r.json()["choices"][0]["message"]["content"]
+
+async def consultar_opencode(mensagem):
+    cmd = [
+        OPENCODE_BIN, "run", mensagem,
+        "--format", "json",
+        "--model", "opencode/deepseek-v4-flash-free",
+        "--dir", WORKDIR,
+        "--print-logs"
+    ]
+    logger.info(f"Executando: {' '.join(cmd)}")
+
+    proc = await asyncio.create_subprocess_exec(
+        *cmd,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+        env={
+            **os.environ,
+            "OPENCODE_SERVER_USERNAME": "opencode",
+            "OPENCODE_SERVER_PASSWORD": "8c194f96-5ad2-409d-8b26-6052c634972d",
+        }
+    )
+
+    stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=180)
+
+    for line in stderr.decode().splitlines():
+        logger.info(f"[opencode] {line}")
+
+    resposta = "Sem resposta."
+    for line in stdout.decode().splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            obj = json.loads(line)
+            if obj.get("type") == "text" and "text" in obj.get("part", {}):
+                resposta = obj["part"]["text"]
+        except json.JSONDecodeError:
+            continue
+
+    logger.info(f"Resposta: {resposta}")
+    return resposta
+
 
 async def handler(ws):
-    auth = httpx.BasicAuth(OPENCODE_USER, OPENCODE_PASS)
-    async with httpx.AsyncClient(timeout=120, auth=auth) as http:
-        opencode_disponivel = True
+    saudacao = "Olá, sou o Jarvis do EcoSystemUmGrau. Estou ouvindo."
+    logger.info("Gerando áudio da saudação...")
+    audio = await gerar_audio(saudacao)
+    await ws.send(json.dumps({"audio": audio, "text": saudacao}))
+    logger.info(f"Saúdação enviada ({len(audio)} chars)")
 
-        try:
-            r = await http.post(f"{OPENCODE_URL}/session")
-            sess_id = r.json()["id"]
-            logger.info(f"OpenCode OK. Sessão: {sess_id}")
-        except Exception as e:
-            opencode_disponivel = False
-            logger.warning(f"OpenCode offline: {e}")
+    try:
+        async for msg in ws:
+            logger.info(f"Recebido: {msg}")
+            try:
+                resposta = await consultar_opencode(msg)
+            except Exception as e:
+                resposta = f"Erro ao processar: {e}"
+                logger.error(f"Erro: {e}")
 
-        saudacao = "Olá, sou o Jarvis do EcoSystemUmGrau. Estou ouvindo."
-        logger.info("Gerando áudio da saudação...")
-        audio = await gerar_audio(saudacao)
-        await ws.send(json.dumps({"audio": audio, "text": saudacao}))
-        logger.info(f"Saudação enviada ({len(audio)} chars)")
+            logger.info("Gerando áudio da resposta...")
+            audio = await gerar_audio(resposta)
+            await ws.send(json.dumps({"audio": audio, "text": resposta}))
+            logger.info(f"Resposta enviada ({len(audio)} chars)")
+    except websockets.exceptions.ConnectionClosed:
+        logger.info("Conexão encerrada pelo cliente.")
 
-        try:
-            async for msg in ws:
-                logger.info(f"Recebido: {msg}")
-
-                try:
-                    if opencode_disponivel:
-                        r = await http.post(
-                            f"{OPENCODE_URL}/session/{sess_id}/message",
-                            json={"parts": [{"type": "text", "text": msg}]}
-                        )
-                        parts = r.json().get("parts", [])
-                        text_part = next((p for p in parts if p.get("type") == "text"), None)
-                        if text_part:
-                            resposta = text_part["text"]
-                        else:
-                            raise ValueError("Sem resposta do OpenCode")
-                    else:
-                        raise ValueError("OpenCode offline")
-                except Exception:
-                    logger.info("OpenCode falhou, usando NVIDIA direto...")
-                    resposta = await consultar_modelo(msg)
-
-                logger.info("Gerando áudio da resposta...")
-                audio = await gerar_audio(resposta)
-                await ws.send(json.dumps({"audio": audio, "text": resposta}))
-                logger.info(f"Resposta enviada ({len(audio)} chars)")
-        except websockets.exceptions.ConnectionClosed:
-            logger.info("Conexão encerrada pelo cliente.")
 
 async def main():
     logger.info("=" * 50)
-    logger.info("  Vox UmGrau — Bridge Edge-TTS")
+    logger.info("  Vox UmGrau — Bridge OpenCode + Edge-TTS")
     logger.info(f"  Voz: {TTS_VOICE}")
     logger.info("  ws://0.0.0.0:8765")
+    logger.info("  Modelo: opencode/deepseek-v4-flash-free")
     logger.info("=" * 50)
     async with websockets.serve(handler, "0.0.0.0", 8765):
         await asyncio.Future()
