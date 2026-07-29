@@ -192,8 +192,11 @@ def extrair_resposta(stdout: str) -> tuple[str | None, list]:
 MAX_RETRY = 2
 MAX_PROMPT = 28000
 
-async def executar(prompt: str, timeout=300, retry=True) -> str | None:
-    args = [BIN, "run", "--format", "json", "--auto", "--dir", WORKDIR, prompt]
+async def executar(prompt: str, timeout=300, retry=True, continue_session=False) -> str | None:
+    args = [BIN, "run", "--format", "json", "--auto", "--dir", WORKDIR]
+    if continue_session:
+        args.append("-c")
+    args.append(prompt)
     logger.info(f"run: {len(prompt)}b prompt...")
     t0 = time.time()
     try:
@@ -216,6 +219,9 @@ async def executar(prompt: str, timeout=300, retry=True) -> str | None:
         if line.strip(): logger.info(f"[oc:err] {line.strip()}")
     resp, tools = extrair_resposta(so_text)
     if resp: return resp
+    if continue_session and retry:
+        logger.warning("-c nao retornou resposta, tentando sem continuacao")
+        return await executar(prompt, timeout=timeout, retry=False, continue_session=False)
     logger.warning(f"vazio, tools={len(tools)}")
     if tools and retry:
         ctx = "\n".join(f"Resultado: {t[:300]}" for t in tools[-3:])
@@ -273,7 +279,12 @@ class Cliente:
             hist = self._hist[:2]
             self._hist = hist
             prompt = self._montar(msg)
-        resp = await executar(prompt)
+        use_continue = len(self._hist) >= 2 and not any(
+            isinstance(h, str) and "LIMPEZA_DE_SESSAO" in h for h in self._hist[-2:]
+        )
+        if use_continue:
+            logger.info("continuando sessao anterior no opencode")
+        resp = await executar(prompt, continue_session=use_continue)
         if not resp:
             resp = "Sem resposta. (opencode nao retornou resultado)"
         self._hist.append(f"Usuário: {msg}")
