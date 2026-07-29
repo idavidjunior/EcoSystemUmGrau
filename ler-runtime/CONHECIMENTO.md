@@ -1,14 +1,14 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-07-28T14:26:10.211100
+**Exportado em:** 2026-07-28T22:19:50.940465
 **Projetos:** 4
 **Padroes Tecnicos:** 70
-**Decisoes:** 39
+**Decisoes:** 40
 **Bug Fixes:** 46
 **Padroes Cognitivos:** 22
 **Heuristicas:** 31
 **Frameworks:** 10
-**Missoes Aprendidas:** 41
+**Missoes Aprendidas:** 46
 
 ---
 
@@ -166,6 +166,18 @@ Instalamos Bun 1.3.14 e o plugin `@razroo/opencode-model-fallback` v0.3.2 para f
 
 - Plugin adicionado ao `opencode.jsonc`
 - Config global em `opencode-model-fallback.jsonc` com fallback para
+
+### 2026-07-28: Cláusula Pétrea — Toda alteração no ecossistema deve ser testada antes de aplicar
+**Fonte:** opencode
+# 2026-07-28: Cláusula Pétrea — Toda alteração no ecossistema deve ser testada antes de aplicar
+
+**Categoria:** decisao
+**Contexto:** Adição de servidores MCP via npx quebraram a inicialização do OpenCode. Ao reiniciar, os modelos não carregavam → sistema inutilizável. O usuário precisou apagar arquivos manualmente para recuperar.
+**Gravidade:** CRÍTICA — impeditiva, sem diagnóstico visível
+
+## Decisão
+
+Estabelecemos a **Cláusula Pétrea de Resiliência**: nenhuma alteração em config, MCP, plugins
 
 
 ## Padroes Tecnicos
@@ -717,7 +729,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-07-28T14:26:09.923179
+**Ultima atualizacao:** 2026-07-28T22:19:50.916474
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

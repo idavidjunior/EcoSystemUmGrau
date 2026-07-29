@@ -150,7 +150,7 @@ async def main():
     logger.info("  Modelo: opencode/deepseek-v4-flash-free")
     logger.info("  Contexto: persistente (--continue)")
     logger.info("=" * 50)
-    async with websockets.serve(lambda ws, _: handler(ws, oc), "0.0.0.0", 8765):
+    async with websockets.serve(lambda ws: handler(ws, oc), "0.0.0.0", 8765):
         await asyncio.Future()
 
 if __name__ == "__main__":

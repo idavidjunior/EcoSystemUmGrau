@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-07-28T14:26:09.923179",
+  "last_updated": "2026-07-28T22:19:50.916474",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -826,6 +826,12 @@
       "extracted_at": "2026-07-27T23:12:16.650516",
       "merged_count": 7,
       "merged_at": "2026-07-27T23:12:16.928194"
+    },
+    {
+      "source": "opencode",
+      "decision": "2026-07-28: Cláusula Pétrea — Toda alteração no ecossistema deve ser testada antes de aplicar",
+      "rationale": "# 2026-07-28: Cláusula Pétrea — Toda alteração no ecossistema deve ser testada antes de aplicar\n\n**Categoria:** decisao\n**Contexto:** Adição de servidores MCP via npx quebraram a inicialização do OpenCode. Ao reiniciar, os modelos não carregavam → sistema inutilizável. O usuário precisou apagar arquivos manualmente para recuperar.\n**Gravidade:** CRÍTICA — impeditiva, sem diagnóstico visível\n\n## Decisão\n\nEstabelecemos a **Cláusula Pétrea de Resiliência**: nenhuma alteração em config, MCP, plugins ou agents pode ser aplicada sem passar por validação prévia.\n\n## Mecanismos criados\n\n1. **Triângulo da Resiliência** (testar sempre antes de aplicar):\n   - Teste de INIT: MCP server responde `initialize` sem travar?\n   - Teste de TOOLS: servidores expõem tools válidas?\n   - Teste de JSON: config gerado é JSON válido?\n   - Teste de ESTRUTURA: todos os campos obrigatórios existem?\n\n2. **Pre-flight check automático** (`scripts/preflight_check.py`):\n   - Valida JSON do config template antes de deploy\n   - Testa cada MCP server com initialize + tools/list\n   - Verifica se providers, plugins e instructions estão íntegros\n   - Só aplica se TODOS os testes passarem\n\n3. **Vigilante com guard rail**:\n   - Antes de deployar config, executa preflight\n   - Se falhar: loga erro, NÃO aplica, notifica\n   - Rollback automático para última config válida\n\n4. **Agentes com cláusula pétrea**:\n   - `00-system-rules.md`: constituição — \"testar antes de aplicar\" é regra imutável\n   - `00-maestro.md`: passo obrigatório — validar antes de implementar\n   - `08-revisor.md`: gate de qualidade que verifica preflight\n\n## Trigger\n\nSempre que qualquer alteração for feita em:\n- `config/opencode.jsonc` (template)\n- `config/agents/*.md`\n- `scripts/mcp-*-server.py`\n- `plugins/*`\n- `config/opencode-model-fallback.jsonc`\n\n## Próximos passos\n\n1. Criar `scripts/preflight_check.py`\n2. Integrar no vigilante\n3. Atualizar system-rules e Maestro\n4. Testar ciclo: alterar config → preflight barra → rollback\n",
+      "extracted_at": "2026-07-28T22:19:45.236934"
     }
   ],
   "bug_fixes": [
@@ -1375,9 +1381,9 @@
       "title": "﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub",
       "domain": "general",
       "body": "﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub\n\n## O que foi feito\n- Repositorios do GitHub mapeados: 11 existentes, nenhum LER separado\n- setup.bat criado: script unico para qualquer PC novo (clona, instala, configura, pede API keys)\n- config/opencode.jsonc: template com {{USERPROFILE}} placeholder para geracao dinamica\n- config/agents/: fonte unica dos 15 agentes OpenCode (repo eh source of truth)\n- config/opencode-model-fallback.jsonc: config do plugin fallback\n- Vigilante atualizado:\n\n﻿# 2026-07-27 - Unificacao completa do ecossistema\n\n## Problemas resolvidos\n1. **LER fora do repo**: movido ~/.ler/ → ler-runtime/ com junction. Tudo versionado.\n2. **Polling ineficiente**: vigilante agora usa FileSystemWatcher + debounce 300ms.\n3. **Sync so push**: agora faz pull antes de push (bidirecional).\n4. **Sem comando central**: ecosystem.ps1 criado (sync, scan, status).\n5. **LER remoto separado**: deletado github.com/idavidjunior/LER, conhecimento unificado.\n\n## Decisoes\n- LER runtime \n\n﻿# 2026-07-27 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-27 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-27 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-27 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 2 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 4 marcadores\n\n",
-      "extracted_at": "2026-07-28T14:26:09.725204",
-      "merged_count": 16,
-      "merged_at": "2026-07-28T14:26:09.880198"
+      "extracted_at": "2026-07-28T22:19:50.306034",
+      "merged_count": 20,
+      "merged_at": "2026-07-28T22:19:50.801436"
     },
     {
       "source": "opencode",
@@ -2139,6 +2145,56 @@
     },
     {
       "timestamp": "2026-07-28T14:26:09.725204",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-07-28 - Scan proativo: SupermarketCalculator — ",
+      "tags": [
+        "geral",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-28T22:19:45.236934",
+      "status": "session_learning",
+      "goal_objective": "2026-07-28: Cláusula Pétrea — Toda alteração no ecossistema deve ser testada antes de aplicar — Adição de servidores MCP via npx quebraram a inicialização do OpenCode. Ao reiniciar, os modelos não carregavam → sistema inutilizável. O usuário precisou apagar arquivos manualmente para recuperar.",
+      "tags": [
+        "decisao",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-28T22:19:46.536617",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-07-28 - Scan proativo: Biblia — ",
+      "tags": [
+        "geral",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-28T22:19:47.457925",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-07-28 - Scan proativo: CellCleaner — ",
+      "tags": [
+        "geral",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-28T22:19:48.591921",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-07-28 - Scan proativo: Mp3Player — ",
+      "tags": [
+        "geral",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-28T22:19:50.306034",
       "status": "session_learning",
       "goal_objective": "﻿# 2026-07-28 - Scan proativo: SupermarketCalculator — ",
       "tags": [
