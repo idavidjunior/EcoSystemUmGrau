@@ -6,6 +6,7 @@ import json
 import logging
 import os
 import subprocess
+import shlex
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("vox")
@@ -31,17 +32,19 @@ async def gerar_audio(texto):
 
 
 async def consultar_opencode(mensagem):
-    cmd = [
+    cmd_list = [
         OPENCODE_BIN, "run", mensagem,
         "--format", "json",
         "--model", "opencode/deepseek-v4-flash-free",
         "--dir", WORKDIR,
+        "--auto",
         "--print-logs"
     ]
-    logger.info(f"Executando: {' '.join(cmd)}")
+    cmd_str = subprocess.list2cmdline(cmd_list)
+    logger.info(f"Executando: {cmd_str}")
 
-    proc = await asyncio.create_subprocess_exec(
-        *cmd,
+    proc = await asyncio.create_subprocess_shell(
+        cmd_str,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
         env={
