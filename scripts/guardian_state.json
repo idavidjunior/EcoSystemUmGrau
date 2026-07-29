@@ -1,8 +1,16 @@
 {
-  "timestamp": "2026-07-29T19:35:41.944208",
-  "ram_mb": 646.6,
-  "ram_pct": 83.9,
+  "timestamp": "2026-07-29T19:36:50.109619",
+  "ram_mb": 249.1,
+  "ram_pct": 93.8,
   "disk_gb": 16.3,
-  "actions": [],
-  "status": "ok"
+  "actions": [
+    {
+      "pid": 6560,
+      "name": "opencode.exe",
+      "mem_mb": 367.7,
+      "reason": "RAM 249MB, alvo maior 368MB"
+    }
+  ],
+  "status": "critical",
+  "level": "WARNING"
 }
