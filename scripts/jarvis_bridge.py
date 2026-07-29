@@ -61,19 +61,30 @@ async def gerar_audio(texto):
 
 def extrair_resposta(stdout_text: str) -> str:
     ultimo_texto = None
+    tipos = {}
     for line in stdout_text.splitlines():
         line = line.strip()
         if not line:
             continue
         try:
             obj = json.loads(line)
-            if obj.get("type") == "text":
+            t = obj.get("type", "?")
+            tipos[t] = tipos.get(t, 0) + 1
+            if t == "text":
                 part = obj.get("part", {})
                 texto = part.get("text", "") if isinstance(part, dict) else ""
                 if texto:
                     ultimo_texto = texto
+            # tambem captura tool_result que pode ter texto
+            if t == "tool_result" and ultimo_texto is None:
+                result = obj.get("result", "")
+                if isinstance(result, str) and result.strip():
+                    ultimo_texto = result[:500]
         except json.JSONDecodeError:
             continue
+    logger.info(f"tipos de eventos no stdout: {tipos}")
+    if ultimo_texto is None:
+        logger.info(f"stdout (primeiros 500 chars): {stdout_text[:500]}")
     return ultimo_texto or "Sem resposta."
 
 
@@ -145,7 +156,6 @@ async def handler(ws, oc):
 
 
 async def main():
-    oc = OpenCodeClient()
     logger.info("=" * 50)
     logger.info("  Vox UmGrau — Bridge OpenCode + Edge-TTS")
     logger.info(f"  Voz: {TTS_VOICE}")
@@ -153,7 +163,7 @@ async def main():
     logger.info("  Modelo: opencode/deepseek-v4-flash-free")
     logger.info("  Contexto: persistente (--continue)")
     logger.info("=" * 50)
-    async with websockets.serve(lambda ws: handler(ws, oc), "0.0.0.0", 8765):
+    async with websockets.serve(lambda ws: handler(ws, OpenCodeClient()), "0.0.0.0", 8765):
         await asyncio.Future()
 
 if __name__ == "__main__":
