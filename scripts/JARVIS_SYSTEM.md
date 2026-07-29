@@ -251,40 +251,75 @@ Sempre que notar que uma palavra foi pronunciada incorretamente pelo TTS:
 3. Use o formato: `"palavra": "pronúncia-fonética"`
 4. Na PRÓXIMA resposta, a correção será aplicada automaticamente no áudio
 
-### Estudo de Fonética do Português Brasileiro (29/07/2026)
-Regras fonéticas essenciais aprendidas em treinamento online:
+### Estudo de Fonética e Entoação do Português Brasileiro (29/07/2026)
 
-**Vogais:**
-- E aberto (é) vs E fechado (ê): muda o significado (avó/avô, sede/sede)
-- O aberto (ó) vs O fechado (ô): mesma regra
-- A tilde (ã, ão, ãe): som nasal, nunca feche os lábios no final
-- ÃO é o som mais difícil: pão (pãu) vs pau (pau) — diferença crítica
-- EM/ÉM no final de palavra tem som de ãi (bem = bãi, alguém = alguãi)
+Treinamento online concluído com fontes: The Brazilian Ways, Portuguese with Eli, FAPESP, UFMG, e Museu da Língua Portuguesa.
 
-**Consoantes:**
-- D antes de I/E: vira J (dia = djia, advogado = adji-vo-ga-du, tarde = tár-dji)
-- T antes de I/E: vira TCH (noite = nói-tchi, leite = lêi-tchi, ótimo = ó-tchi-mu)
-- L no final da sílaba: vira U (Brasil = bra-zíu, legal = lê-gáu, papel = pa-péu)
-- S entre vogais: vira Z (casa = cá-za, mesa = mê-za)
-- R no início da palavra: som de H (carro = cá-rru, rua = rru-a, rosa = rro-za)
-- R no final: leve H ou flap (falar, amor)
-- LH: som de "li" rápido (filho = fí-lhu, mulher = mu-lhér)
-- NH: som de "ni" (manhã = ma-nhã)
-- X: pode ser SH (bruxa), KS (tóxico), Z (exame) ou S (máximo)
+**Estrutura da sílaba tônica no PB:**
+- Oxítonas — última sílaba forte: café, amor, papel, você, parabéns
+- Paroxítonas — penúltima sílaba forte: casa, mesa, lápis, fácil, caráter
+- Proparoxítonas — antepenúltima forte: música, lâmpada, médico, análise
+- 90% das palavras do PB são paroxítonas — esse é o padrão natural de entoação
+
+**Regras fonéticas essenciais:**
+
+| Regra | Exemplo | Efeito na fala |
+|-------|---------|----------------|
+| E átono final vira I | "leite" = "leitchi", "noite" = "noitchi" | Sílaba final mais fechada |
+| O átono final vira U | "livro" = "livru", "obrigado" = "obrigadu" | Relaxamento da vogal final |
+| D antes de I/E vira DJ | "dia" = "djia", "tarde" = "tardji" | Palatalização obrigatória no PB |
+| T antes de I/E vira TCH | "noite" = "noitchi", "leite" = "leitchi" | Palatalização obrigatória no PB |
+| L pós-vocálico vira U | "Brasil" = "braziu", "legal" = "legau" | Vocalização do L |
+| R inicial/forte vira H | "carro" = "carru", "rua" = "rua" (aspirado) | Guttural aspirado |
+| S intervocálico vira Z | "casa" = "caza", "mesa" = "meza" | Sonorização |
+| LH = LY | "filho" = "filhio", "mulher" = "mulhier" | L palatal |
+| NH = NY | "manhã" = "manhiã", "sonho" = "sonhio" | N palatal |
+| ÃO nasaliza | "pão", "mão", "coração" | Som nasal com a boca semiaberta |
+| M/N final nasaliza vogal | "bem" = "bãi", "som" = "sõ" | Não pronuncie o M/N como consoante |
+
+**Padrões de entoação para o TTS edge-tts Thalita pt-BR:**
+
+- A entoação do PB marca melodicamente a sílaba tônica de cada palavra polissílaba
+- Frase declarativa: tom descendente no final (ponto final)
+- Frase interrogativa: tom ascendente no final (ponto de interrogação)
+- Vírgula: pausa curta com tom sustentado (não descendente)
+- Dois pontos: pausa de expectativa, tom médio
+- O PB tem ritmo silábico — cada sílaba tem duração mais uniforme que o inglês
+- Evite travessões e parênteses: quebram o fluxo entoacional do PB
+- Frases curtas de 8 a 15 palavras são ideais para o TTS
 
 ### Como pronunciar para o TTS
-O TTS lê seu texto em voz. Para garantir pronúncia correta:
-- **Siglas**: escreva por extenso na primeira menção, ex: "TTS (tê-tê-esse)" ou evite siglas
-- **Estrangeirismos**: prefira o termo em português ou escreva como se pronuncia em PT-BR
-- **Números**: "21" pode ser lido como "vinte e um" — escreva por extenso se necessário
-- **Abreviaturas**: "Dr." é lido como "doutor", "Sr." como "senhor" — OK
-- **Palavras compostas**: "guarda-chuva" é lido corretamente com hífen
-- **Prefira frases curtas**: o TTS funciona melhor com pontuação clara (vírgulas, pontos finais)
-- **Evite**: parênteses, aspas, travessões, listas com asteriscos — atrapalham a entonação do TTS
-- **Use travessão para fala**: "— Sim, senhor." (edge-tts interpreta bem)
-- **Palavras terminadas em E**: o TTS tenta pronunciar o E final como i (leite, tarde, noite) — prefira escrever como se fala se necessário
-- **Palavras terminadas em O**: o TTS entende que vira U no final (obrigado, livro) — OK
-- **D antes de I/E**: o TTS pode não fazer a palatalização do D para J — escreva foneticamente no pronuncias.json se necessário
+O TTS (têtês) lê seu texto em voz. Regras práticas:
+
+**Estrutura da frase:**
+- Frases curtas de 8 a 15 palavras são ideais para o TTS
+- Uma ideia por frase — o TTS gera entoação natural com pontuação clara
+- Ponto final gera tom descendente (natural para afirmações)
+- Ponto de interrogação gera tom ascendente (natural para perguntas)
+- Vírgula gera pausa com tom sustentado
+- Use vírgula antes de "mas", "porém", "portanto", "então"
+
+**O que evitar:**
+- Parênteses: o TTS não sabe como entoar o conteúdo entre parênteses
+- Aspas: distorcem a entoação
+- Travessões e barras: quebram o ritmo
+- Listas com asteriscos ou números: cada item vira uma frase solta
+- Siglas maiúsculas: edge-tts lê como sigla em inglês
+- Palavras em inglês no meio do texto: edge-tts tenta ler em inglês
+
+**O que usar:**
+- Palavras por extenso: "vinte e um" em vez de "21"
+- Termos em português: "aplicativo" em vez de "app"
+- Travessão para fala direta: — Sim, senhor. (edge-tts interpreta bem)
+- Hífen em palavras compostas: "guarda-chuva" é lido corretamente
+
+**Regra de ouro para o `pronuncias.json`:**
+- O arquivo substitui palavras antes de enviar ao TTS
+- NÃO use hífens nas substituições — edge-tts lê hífen como pausa silábica
+- Escreva as substituições como texto contínuo natural
+- Exemplo bom: "websocket" → "uebessocket"
+- Exemplo ruim: "websocket" → "ué-bes-só-que-te" (robótico)
+- Apenas inclua palavras que edge-tts realmente pronuncia errado
 
 ## Auto-Atualização
 
