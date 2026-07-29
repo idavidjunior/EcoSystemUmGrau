@@ -207,10 +207,14 @@ async def handler(ws):
 
     saudacao = "Olá, sou o Jarvis do EcoSystemUmGrau. Estou ouvindo."
     log = logger
-    log.info("Gerando audio da saudacao...")
-    audio = await gerar_audio(saudacao)
-    await ws.send(json.dumps({"audio": audio, "text": saudacao}))
-    log.info(f"saudacao enviada ({len(audio)} chars)")
+    try:
+        log.info("Gerando audio da saudacao...")
+        audio_s = await gerar_audio(saudacao)
+    except Exception as e:
+        log.warning(f"TTS saudacao falhou: {e}")
+        audio_s = ""
+    await ws.send(json.dumps({"audio": audio_s, "text": saudacao}))
+    log.info(f"saudacao enviada audio={len(audio_s)}")
 
     try:
         async for msg in ws:
@@ -222,7 +226,11 @@ async def handler(ws):
                 log.error(f"Erro handler: {e}", exc_info=True)
 
             log.info("Gerando audio da resposta...")
-            audio = await gerar_audio(resposta)
+            try:
+                audio = await gerar_audio(resposta)
+            except Exception as e:
+                log.warning(f"TTS falhou: {e}")
+                audio = ""
             payload = {"text": resposta}
             if audio:
                 payload["audio"] = audio
