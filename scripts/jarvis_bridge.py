@@ -41,7 +41,7 @@ async def consultar_opencode(mensagem):
         "--print-logs"
     ]
     cmd_str = subprocess.list2cmdline(cmd_list)
-    logger.info(f"Executando: {cmd_str}")
+    logger.info(f"Executando: [{len(cmd_str)} chars] {cmd_str}")
 
     proc = await asyncio.create_subprocess_shell(
         cmd_str,
@@ -56,13 +56,13 @@ async def consultar_opencode(mensagem):
 
     stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=180)
 
-    stderr_text = stderr.decode()
-    stdout_text = stdout.decode()
-    logger.info(f"STDERR ({len(stderr_text)} bytes)")
+    rc = proc.returncode
+    stderr_text = stderr.decode(errors="replace")
+    stdout_text = stdout.decode(errors="replace")
+    logger.info(f"RC={rc} STDERR({len(stderr_text)}) bytes")
     for line in stderr_text.splitlines():
         logger.info(f"[opencode:stderr] {line}")
-
-    logger.info(f"STDOUT ({len(stdout_text)} bytes): {stdout_text[:500]}")
+    logger.info(f"STDOUT({len(stdout_text)} bytes): {stdout_text[:500]}")
     resposta = "Sem resposta."
     for line in stdout_text.splitlines():
         line = line.strip()
