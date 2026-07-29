@@ -1,14 +1,5 @@
-import asyncio
-import websockets
-import edge_tts
-import base64
-import json
-import logging
-import os
-import subprocess
-import re
-import sys
-import time
+import asyncio, websockets, edge_tts, base64, json, logging, os, subprocess, re, time
+from pathlib import Path
 
 logging.basicConfig(level=logging.INFO)
 file_handler = logging.FileHandler(r"C:\Users\Playtec-bancada\Desktop\Codigos\bridge_log.txt", mode="a")
@@ -20,175 +11,171 @@ TTS_VOICE = "pt-BR-ThalitaMultilingualNeural"
 TTS_PITCH = "-30Hz"
 TTS_RATE = "+0%"
 
-OPENCODE_BIN = os.path.join(
-    os.environ.get("APPDATA", ""),
-    r"npm\node_modules\opencode-ai\bin\opencode.exe"
-)
+OPENCODE_BIN = str(Path(os.environ.get("APPDATA", "")) / r"npm\node_modules\opencode-ai\bin\opencode.exe")
 WORKDIR = r"C:\Users\Playtec-bancada\Desktop\Codigos"
 HISTORICO_PATH = r"C:\Users\Playtec-bancada\Desktop\Codigos\bridge_historico.json"
+
+SERVER_URL = "http://127.0.0.1:8766"
+SERVER_USER = os.environ.get("OPENCODE_SERVER_USERNAME", "opencode")
+SERVER_PASS = os.environ.get("OPENCODE_SERVER_PASSWORD", "")
 MAX_HIST = 8
 MAX_TOOL_OUTPUT = 500
 
+WRK = WORKDIR
 
-def sanitizar_texto(texto):
-    if not texto:
-        return ""
-    texto = re.sub(r'```[\s\S]*?```', '', texto)
-    texto = re.sub(r'`[^`]+`', '', texto)
-    texto = re.sub(r'[*_~#]', '', texto)
-    texto = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', texto)
-    texto = re.sub(r'[<>{}()\[\]]', '', texto)
-    texto = texto.replace('"', '').replace("'", '').replace('`', '')
+models = [
+    "opencode/deepseek-v4-flash-free",
+    "opencode/deepseek-v4-flash-free",
+]
+
+def sanitizar(texto):
+    if not texto: return ""
+    for p in [r'```[\s\S]*?```', r'`[^`]+`', r'[*_~#]', r'\[([^\]]+)\]\([^)]+\)', r'[<>{}()\[\]]']:
+        texto = re.sub(p, '', texto)
+    texto = texto.replace('"','').replace("'",'').replace('`','')
     texto = re.sub(r'^\s*[-*+]\s+', '', texto, flags=re.MULTILINE)
-    texto = re.sub(r'\s+', ' ', texto).strip()
-    return texto[:2000]
+    return re.sub(r'\s+', ' ', texto).strip()[:2000]
 
-
-async def gerar_audio(texto):
-    texto = sanitizar_texto(texto)
-    if not texto:
-        logger.warning("texto vazio, pulando TTS")
-        return ""
-    communicate = edge_tts.Communicate(texto, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
+async def tts(texto):
+    texto = sanitizar(texto)
+    if not texto: return ""
+    com = edge_tts.Communicate(texto, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
     audio = b""
-    async for chunk in communicate.stream():
-        if chunk["type"] == "audio":
-            audio += chunk["data"]
+    async for chunk in com.stream():
+        if chunk["type"] == "audio": audio += chunk["data"]
     return base64.b64encode(audio).decode()
 
-
-def extrair_resposta(stdout_text: str) -> str:
-    ultimo_texto = None
+def extrair_resposta(stdout: str) -> tuple[str | None, list]:
+    text_events = []
     tool_outputs = []
     tipos = {}
-    erros_json = 0
-    for line in stdout_text.splitlines():
+    erros = 0
+    ultimo_step_finish = None
+
+    for line in stdout.splitlines():
         line = line.strip()
-        if not line:
-            continue
+        if not line: continue
         try:
             obj = json.loads(line)
             t = obj.get("type", "?")
             tipos[t] = tipos.get(t, 0) + 1
+
             if t == "text":
                 part = obj.get("part")
                 if isinstance(part, dict):
-                    texto = part.get("text", "")
+                    txt = part.get("text", "")
                 elif isinstance(part, str):
-                    texto = part
+                    txt = part
                 else:
                     continue
-                if isinstance(texto, str) and texto.strip():
-                    ultimo_texto = texto.strip()
+                if isinstance(txt, str) and txt.strip():
+                    text_events.append(txt.strip())
+
             if t in ("tool_use", "tool_result"):
                 part = obj.get("part")
                 if isinstance(part, dict):
                     state = part.get("state")
                     if isinstance(state, dict) and state.get("status") == "completed":
-                        output = state.get("output")
-                        if isinstance(output, str) and output.strip():
-                            tool_outputs.append(output.strip())
+                        out = state.get("output")
+                        if isinstance(out, str) and out.strip():
+                            tool_outputs.append(out.strip())
+
+            if t == "step_finish":
+                reason = obj.get("part", {}).get("reason") if isinstance(obj.get("part"), dict) else None
+                if reason == "stop":
+                    ultimo_step_finish = "stop"
+
         except json.JSONDecodeError:
-            erros_json += 1
-            continue
+            erros += 1
 
-    logger.info(f"tipos={tipos} tool_outputs={len(tool_outputs)} erros_json={erros_json}")
+    logger.info(f"tipos={tipos} text_events={len(text_events)} tool_outputs={len(tool_outputs)} step_finish_stop={ultimo_step_finish=='stop'}")
 
-    if ultimo_texto:
-        return ultimo_texto
+    if text_events:
+        return text_events[-1], tool_outputs
 
     if tool_outputs:
-        melhor = tool_outputs[-1][:MAX_TOOL_OUTPUT]
-        return melhor
+        return tool_outputs[-1][:MAX_TOOL_OUTPUT], tool_outputs
 
-    logger.info(f"stdout(800): {stdout_text[:800]}")
-    return None
+    return None, tool_outputs
 
 
-async def executar_opencode(prompt: str, timeout_sec: int = 180) -> str | None:
-    cmd = [
-        OPENCODE_BIN, "run",
-        "--format", "json",
-        "--model", "opencode/deepseek-v4-flash-free",
-        "--dir", WORKDIR,
-        "--auto",
-        prompt,
-    ]
-    cmd_str = subprocess.list2cmdline(cmd)
-
-    proc = await asyncio.create_subprocess_shell(
-        cmd_str,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
-    )
-
+async def _run_cmd(cmd: list, prompt: str, timeout=180) -> tuple[str | None, list]:
+    full = list(cmd) + [prompt]
+    cmd_str = subprocess.list2cmdline(full)
+    logger.info(f"OC: {cmd[0]} ... {prompt[:60]}")
     t0 = time.time()
+    proc = await asyncio.create_subprocess_shell(cmd_str, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
     try:
-        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=timeout_sec)
+        so, se = await asyncio.wait_for(proc.communicate(), timeout=timeout)
     except asyncio.TimeoutError:
         proc.kill()
-        logger.error("timeout exec opencode")
-        return None
+        logger.error("timeout")
+        return None, []
+    so_text = so.decode(errors="replace")
+    se_text = se.decode(errors="replace")
+    logger.info(f"RC={proc.returncode} out={len(so_text)}b t={time.time()-t0:.0f}s")
+    for line in se_text.splitlines():
+        if line.strip(): logger.info(f"[oc:err] {line.strip()}")
+    return extrair_resposta(so_text)
 
-    elapsed = time.time() - t0
-    stdout_text = stdout.decode(errors="replace")
-    stderr_text = stderr.decode(errors="replace")
 
-    logger.info(f"RC={proc.returncode} stdout={len(stdout_text)}b stderr={len(stderr_text)}b t={elapsed:.1f}s")
-
-    for line in stderr_text.splitlines():
-        line = line.strip()
-        if line:
-            logger.info(f"[oc:err] {line}")
-
-    return extrair_resposta(stdout_text)
+async def consultar_modelo(prompt: str, timeout=180) -> tuple[str | None, list]:
+    for modelo in models:
+        cmd = [
+            OPENCODE_BIN, "run",
+            "--attach", SERVER_URL,
+            "--format", "json",
+            "--auto",
+            "--username", SERVER_USER,
+            "--password", SERVER_PASS,
+            "--dir", WRK,
+        ]
+        resp, tools = await _run_cmd(cmd, prompt, timeout)
+        if resp:
+            return resp, tools
+        logger.warning(f"modelo {modelo} retornou vazio, tentando proximo...")
+    return None, []
 
 
 class OpenCodeClient:
     def __init__(self):
-        self._historico = self._carregar_historico()
+        self._historico = self._carregar()
 
-    def _carregar_historico(self) -> list:
+    def _carregar(self) -> list:
         try:
             with open(HISTORICO_PATH, "r", encoding="utf-8") as f:
                 data = json.load(f)
-                if isinstance(data, list):
-                    return data[-MAX_HIST:]
-        except (FileNotFoundError, json.JSONDecodeError):
-            pass
-        return []
+                return data[-MAX_HIST:] if isinstance(data, list) else []
+        except: return []
 
-    def _salvar_historico(self):
+    def _salvar(self):
         try:
             with open(HISTORICO_PATH, "w", encoding="utf-8") as f:
                 json.dump(self._historico[-MAX_HIST:], f, ensure_ascii=False, indent=2)
-        except Exception as e:
-            logger.error(f"erro salvando historico: {e}")
+        except Exception as e: logger.error(f"salvar: {e}")
 
-    def _montar_prompt(self, mensagem: str) -> str:
-        prompt = ""
+    def _montar_prompt(self, msg: str) -> str:
+        p = ""
         if self._historico:
             for i in range(0, len(self._historico), 2):
-                u = self._historico[i]
-                j = self._historico[i + 1]
-                prompt += f"{u}\n{j}\n"
-        prompt += f"Usuário: {mensagem}\nJarvis:"
-        return prompt
+                p += f"{self._historico[i]}\n{self._historico[i+1]}\n"
+        p += f"Usuário: {msg}\nJarvis:"
+        return p
 
     async def consultar(self, mensagem: str) -> str:
         prompt = self._montar_prompt(mensagem)
-        qtd_hist = len(self._historico) // 2
-        logger.info(f"OC hist={qtd_hist}: {mensagem[:80]}")
+        qtd = len(self._historico)//2
+        logger.info(f"hist={qtd}: {mensagem[:60]}")
 
-        resposta = await executar_opencode(prompt)
-
-        if not resposta:
-            logger.warning("resposta vazia, tentando retry com prompt direto")
-            resposta = await executar_opencode(f"Responda em português: {mensagem}")
+        resposta, tools = await consultar_modelo(prompt)
 
         if not resposta:
-            logger.warning("retry falhou, usando fallback tool_output")
-            resposta = None
+            logger.warning("vazio, retry com ferramentas")
+            ctx = ""
+            for t in tools[-3:]:
+                ctx += f"Resultado: {t[:300]}\n"
+            prompt2 = f"{ctx}Com base nos resultados acima, responda em português: {mensagem}\nJarvis:"
+            resposta, _ = await consultar_modelo(prompt2)
 
         if not resposta:
             resposta = "Sem resposta."
@@ -196,63 +183,52 @@ class OpenCodeClient:
         if len(resposta) > 60:
             self._historico.append(f"Usuário: {mensagem}")
             self._historico.append(f"Jarvis: {resposta[:300]}")
-            self._salvar_historico()
+            self._salvar()
         return resposta
 
 
 async def handler(ws):
     oc = OpenCodeClient()
-    qtd_hist = len(oc._historico) // 2
-    logger.info(f"Conexao aberta, historico={qtd_hist} turnos")
+    logger.info(f"Conexao hist={len(oc._historico)//2}")
 
-    saudacao = "Olá, sou o Jarvis do EcoSystemUmGrau. Estou ouvindo."
-    log = logger
     try:
-        log.info("Gerando audio da saudacao...")
-        audio_s = await gerar_audio(saudacao)
-    except Exception as e:
-        log.warning(f"TTS saudacao falhou: {e}")
-        audio_s = ""
-    await ws.send(json.dumps({"audio": audio_s, "text": saudacao}))
-    log.info(f"saudacao enviada audio={len(audio_s)}")
+        audio_s = await tts("Olá, sou o Jarvis do EcoSystemUmGrau. Estou ouvindo.")
+    except: audio_s = ""
+    await ws.send(json.dumps({"audio": audio_s, "text": "Olá, sou o Jarvis do EcoSystemUmGrau. Estou ouvindo."}))
 
     try:
         async for msg in ws:
-            log.info(f"Recebido: {msg[:100]}")
+            logger.info(f"msg: {msg[:80]}")
+            resposta = ""
             try:
                 resposta = await oc.consultar(msg)
             except Exception as e:
-                resposta = f"Erro ao processar: {e}"
-                log.error(f"Erro handler: {e}", exc_info=True)
+                resposta = f"Erro: {e}"
+                logger.error(f"handler: {e}", exc_info=True)
 
-            log.info("Gerando audio da resposta...")
+            await ws.send(json.dumps({"text": resposta}))
+            logger.info(f"texto enviado ({len(resposta)} chars)")
+
             try:
-                audio = await gerar_audio(resposta)
+                logger.info("gerando audio...")
+                audio = await tts(resposta)
+                if audio:
+                    await ws.send(json.dumps({"audio": audio}))
+                    logger.info(f"audio enviado ({len(audio)} chars)")
             except Exception as e:
-                log.warning(f"TTS falhou: {e}")
-                audio = ""
-            payload = {"text": resposta}
-            if audio:
-                payload["audio"] = audio
-            await ws.send(json.dumps(payload))
-            log.info(f"resposta enviada text={len(resposta)} audio={len(audio) if audio else 0}")
+                logger.warning(f"tts: {e}")
     except websockets.exceptions.ConnectionClosed:
-        log.info("Conexao encerrada pelo cliente.")
+        logger.info("cliente desconectou")
 
 
 async def main():
-    log = logger
-    log.info("=" * 50)
-    log.info("  Vox UmGrau — Bridge OpenCode + Edge-TTS")
-    log.info(f"  Voz: {TTS_VOICE}")
-    log.info("  ws://0.0.0.0:8765")
-    log.info("  Modelo: opencode/deepseek-v4-flash-free")
-    log.info(f"  Contexto: injecao + JSON ({MAX_HIST} entradas)")
-    log.info("  Fallback: tool_output + retry")
-    log.info("=" * 50)
-
-    historico_path = HISTORICO_PATH
-    log.info(f"Historico em: {historico_path}")
+    logger.info("="*50)
+    logger.info("  Vox UmGrau Bridge v3")
+    logger.info(f"  serve: {SERVER_URL}")
+    logger.info(f"  auth: {SERVER_USER}:{SERVER_PASS[:4]}...")
+    logger.info(f"  modelos: {models}")
+    logger.info(f"  ws://0.0.0.0:8765")
+    logger.info("="*50)
 
     async with websockets.serve(handler, "0.0.0.0", 8765):
         await asyncio.Future()
