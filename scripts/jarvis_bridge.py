@@ -93,19 +93,20 @@ def extrair_resposta(stdout_text: str) -> str:
 
 class OpenCodeClient:
     def __init__(self):
-        self._primeira = True
+        self._historico = []
 
     async def consultar(self, mensagem: str) -> str:
-        cmd = list(COMUM_BASE)
-        eh_primeira = self._primeira
-        if eh_primeira:
-            self._primeira = False
+        if self._historico:
+            contexto = "\n".join(self._historico[-6:])
+            prompt = f"{contexto}\n\nUsuário: {mensagem}"
         else:
-            cmd.append("--continue")
-        cmd.append(mensagem)
+            prompt = f"Usuário: {mensagem}"
+
+        cmd = list(COMUM_BASE)
+        cmd.append(prompt)
 
         cmd_str = subprocess.list2cmdline(cmd)
-        logger.info(f"OC {'(continue)' if not eh_primeira else '(nova)'}: {mensagem[:80]}")
+        logger.info(f"OC (hist={len(self._historico)//2}): {mensagem[:80]}")
 
         proc = await asyncio.create_subprocess_shell(
             cmd_str,
@@ -128,6 +129,8 @@ class OpenCodeClient:
 
         resposta = extrair_resposta(stdout_text)
         logger.info(f"Resposta: {resposta[:200]}")
+        self._historico.append(f"Usuário: {mensagem}")
+        self._historico.append(f"Jarvis: {resposta}")
         return resposta
 
 
