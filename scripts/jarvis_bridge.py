@@ -6,7 +6,6 @@ import json
 import logging
 import os
 import subprocess
-import shlex
 import re
 
 logging.basicConfig(level=logging.INFO)
@@ -22,6 +21,14 @@ OPENCODE_BIN = os.path.join(
 )
 WORKDIR = r"C:\Users\Playtec-bancada\Desktop\Codigos"
 
+COMUM_BASE = [
+    OPENCODE_BIN, "run",
+    "--format", "json",
+    "--model", "opencode/deepseek-v4-flash-free",
+    "--dir", WORKDIR,
+    "--auto",
+]
+
 
 def sanitizar_texto(texto):
     texto = re.sub(r'```[\s\S]*?```', '', texto)
@@ -35,8 +42,12 @@ def sanitizar_texto(texto):
     texto = re.sub(r'\s+', ' ', texto).strip()
     return texto
 
+
 async def gerar_audio(texto):
     texto = sanitizar_texto(texto)
+    if not texto:
+        logger.warning("texto vazio, pulando TTS")
+        return ""
     communicate = edge_tts.Communicate(texto, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
     audio = b""
     async for chunk in communicate.stream():
@@ -45,82 +56,101 @@ async def gerar_audio(texto):
     return base64.b64encode(audio).decode()
 
 
-async def consultar_opencode(mensagem):
-    cmd_list = [
-        OPENCODE_BIN, "run", mensagem,
-        "--format", "json",
-        "--model", "opencode/deepseek-v4-flash-free",
-        "--dir", WORKDIR,
-        "--auto",
-    ]
-    # --print-logs causa problemas no Windows, logs vao pro stderr msm sem flag
-    cmd_str = subprocess.list2cmdline(cmd_list)
-    logger.info(f"Executando: [{len(cmd_str)} chars] {cmd_str}")
-
-    proc = await asyncio.create_subprocess_shell(
-        cmd_str,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
-    )
-
-    stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=180)
-
-    rc = proc.returncode
-    stderr_text = stderr.decode(errors="replace")
-    stdout_text = stdout.decode(errors="replace")
-    logger.info(f"RC={rc} STDERR({len(stderr_text)}) bytes")
-    for line in stderr_text.splitlines():
-        logger.info(f"[opencode:stderr] {line}")
-    logger.info(f"STDOUT({len(stdout_text)} bytes): {stdout_text[:500]}")
-    resposta = "Sem resposta."
+def extrair_resposta(stdout_text: str) -> str:
+    ultimo_texto = None
     for line in stdout_text.splitlines():
         line = line.strip()
         if not line:
             continue
         try:
             obj = json.loads(line)
-            if obj.get("type") == "text" and "text" in obj.get("part", {}):
-                resposta = obj["part"]["text"]
-                break
+            if obj.get("type") == "text":
+                part = obj.get("part", {})
+                texto = part.get("text", "") if isinstance(part, dict) else ""
+                if texto:
+                    ultimo_texto = texto
         except json.JSONDecodeError:
             continue
-
-    logger.info(f"Resposta: {resposta}")
-    return resposta
+    return ultimo_texto or "Sem resposta."
 
 
-async def handler(ws):
+class OpenCodeClient:
+    def __init__(self):
+        self._primeira = True
+
+    async def consultar(self, mensagem: str) -> str:
+        cmd = list(COMUM_BASE)
+        if self._primeira:
+            self._primeira = False
+        else:
+            cmd.append("--continue")
+        cmd.append(mensagem)
+
+        cmd_str = subprocess.list2cmdline(cmd)
+        logger.info(f"OC {'(continue)' if not self._primeira else '(nova)'}: {mensagem[:80]}")
+
+        proc = await asyncio.create_subprocess_shell(
+            cmd_str,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+
+        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=180)
+
+        stdout_text = stdout.decode(errors="replace")
+        stderr_text = stderr.decode(errors="replace")
+
+        rc = proc.returncode
+        logger.info(f"RC={rc} stdout={len(stdout_text)}b stderr={len(stderr_text)}b")
+
+        for line in stderr_text.splitlines():
+            line = line.strip()
+            if line:
+                logger.info(f"[oc:err] {line}")
+
+        resposta = extrair_resposta(stdout_text)
+        logger.info(f"Resposta: {resposta[:200]}")
+        return resposta
+
+
+async def handler(ws, oc):
     saudacao = "Olá, sou o Jarvis do EcoSystemUmGrau. Estou ouvindo."
     logger.info("Gerando áudio da saudação...")
     audio = await gerar_audio(saudacao)
     await ws.send(json.dumps({"audio": audio, "text": saudacao}))
-    logger.info(f"Saúdação enviada ({len(audio)} chars)")
+    logger.info(f"Saudação enviada ({len(audio)} chars)")
 
     try:
         async for msg in ws:
             logger.info(f"Recebido: {msg}")
             try:
-                resposta = await consultar_opencode(msg)
+                resposta = await oc.consultar(msg)
             except Exception as e:
                 resposta = f"Erro ao processar: {e}"
                 logger.error(f"Erro: {e}")
 
             logger.info("Gerando áudio da resposta...")
             audio = await gerar_audio(resposta)
-            await ws.send(json.dumps({"audio": audio, "text": resposta}))
-            logger.info(f"Resposta enviada ({len(audio)} chars)")
+            if audio:
+                await ws.send(json.dumps({"audio": audio, "text": resposta}))
+                logger.info(f"Resposta enviada ({len(audio)} chars)")
+            else:
+                await ws.send(json.dumps({"text": resposta}))
+                logger.info("Resposta enviada (sem áudio)")
     except websockets.exceptions.ConnectionClosed:
         logger.info("Conexão encerrada pelo cliente.")
 
 
 async def main():
+    oc = OpenCodeClient()
     logger.info("=" * 50)
     logger.info("  Vox UmGrau — Bridge OpenCode + Edge-TTS")
     logger.info(f"  Voz: {TTS_VOICE}")
     logger.info("  ws://0.0.0.0:8765")
     logger.info("  Modelo: opencode/deepseek-v4-flash-free")
+    logger.info("  Contexto: persistente (--continue)")
     logger.info("=" * 50)
-    async with websockets.serve(handler, "0.0.0.0", 8765):
+    async with websockets.serve(lambda ws, _: handler(ws, oc), "0.0.0.0", 8765):
         await asyncio.Future()
 
 if __name__ == "__main__":
