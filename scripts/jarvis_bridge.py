@@ -185,7 +185,7 @@ def extrair_resposta(stdout: str) -> tuple[str | None, list]:
 
 
 MAX_RETRY = 2
-MAX_PROMPT = 20000
+MAX_PROMPT = 28000
 
 async def executar(prompt: str, timeout=300, retry=True) -> str | None:
     args = [BIN, "run", "--format", "json", "--auto", "--dir", WORKDIR, prompt]
