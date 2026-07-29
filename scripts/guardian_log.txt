@@ -1,0 +1,14 @@
+2026-07-29 19:34:59,313 [INFO] System Guardian iniciado
+2026-07-29 19:34:59,314 [INFO] RAM critica: <200 MB, alerta: <500 MB, intervalo: 20s
+2026-07-29 19:34:59,965 [WARNING] RAM critica: 289 MB livre - agindo...
+2026-07-29 19:35:01,874 [WARNING] Morto PID 13060 (opencode.exe) - RAM 289MB, alvo maior 284MB - liberou ~284 MB
+2026-07-29 19:35:01,884 [INFO] RAM ja suficiente (606 MB), parando de matar
+2026-07-29 19:35:11,413 [INFO] System Guardian iniciado
+2026-07-29 19:35:11,414 [INFO] RAM critica: <200 MB, alerta: <500 MB, intervalo: 20s
+2026-07-29 19:35:11,749 [WARNING] RAM critica: 490 MB livre - agindo...
+2026-07-29 19:35:13,982 [WARNING] Morto PID 11384 (opencode.exe) - RAM 490MB, alvo maior 248MB - liberou ~248 MB
+2026-07-29 19:35:13,996 [INFO] RAM ja suficiente (779 MB), parando de matar
+2026-07-29 19:35:34,087 [WARNING] RAM critica: 206 MB livre - agindo...
+2026-07-29 19:35:38,726 [WARNING] Morto PID 8220 (opencode.exe) - RAM 206MB, alvo maior 349MB - liberou ~363 MB
+2026-07-29 19:35:39,671 [WARNING] Morto PID 3540 (opencode.exe) - RAM 206MB, alvo maior 237MB - liberou ~240 MB
+2026-07-29 19:35:39,689 [INFO] RAM ja suficiente (673 MB), parando de matar
