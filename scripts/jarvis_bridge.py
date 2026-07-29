@@ -23,6 +23,7 @@ OPENCODE_BIN = os.path.join(
     r"npm\node_modules\opencode-ai\bin\opencode.exe"
 )
 WORKDIR = r"C:\Users\Playtec-bancada\Desktop\Codigos"
+HISTORICO_PATH = r"C:\Users\Playtec-bancada\Desktop\Codigos\bridge_historico.json"
 
 COMUM_BASE = [
     OPENCODE_BIN, "run",
@@ -34,6 +35,8 @@ COMUM_BASE = [
 
 
 def sanitizar_texto(texto):
+    if not texto:
+        return ""
     texto = re.sub(r'```[\s\S]*?```', '', texto)
     texto = re.sub(r'`[^`]+`', '', texto)
     texto = re.sub(r'[*_~#]', '', texto)
@@ -61,8 +64,8 @@ async def gerar_audio(texto):
 
 def extrair_resposta(stdout_text: str) -> str:
     ultimo_texto = None
+    ultimo_tool_result = None
     tipos = {}
-    textos_raw = []
     for line in stdout_text.splitlines():
         line = line.strip()
         if not line:
@@ -79,58 +82,99 @@ def extrair_resposta(stdout_text: str) -> str:
                     texto = part
                 else:
                     texto = str(part) if part else ""
-                textos_raw.append(repr(texto[:300]))
                 if texto.strip():
                     ultimo_texto = texto.strip()
+            if t == "tool_use":
+                state = obj.get("part", {}).get("state", {}) if isinstance(obj.get("part"), dict) else {}
+                output = state.get("output", "") if isinstance(state, dict) else ""
+                if isinstance(output, str) and output.strip() and not ultimo_texto:
+                    ultimo_tool_result = output.strip()[:1000]
         except json.JSONDecodeError:
             continue
-    logger.info(f"tipos de eventos no stdout: {tipos}")
-    logger.info(f"textos encontrados: {textos_raw}")
-    if ultimo_texto is None:
-        logger.info(f"stdout (primeiros 800 chars): {stdout_text[:800]}")
-    return ultimo_texto or "Sem resposta."
+    logger.info(f"tipos: {tipos}")
+    resposta = ultimo_texto or ultimo_tool_result
+    if resposta:
+        return resposta
+    logger.info(f"stdout (800): {stdout_text[:800]}")
+    return None
+
+
+async def executar_opencode(prompt: str) -> str | None:
+    cmd = list(COMUM_BASE)
+    cmd.append(prompt)
+    cmd_str = subprocess.list2cmdline(cmd)
+    logger.info(f"OC exec: {prompt[:80]}")
+
+    proc = await asyncio.create_subprocess_shell(
+        cmd_str,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+    )
+
+    stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=180)
+    stdout_text = stdout.decode(errors="replace")
+    stderr_text = stderr.decode(errors="replace")
+
+    rc = proc.returncode
+    logger.info(f"RC={rc} stdout={len(stdout_text)}b")
+
+    for line in stderr_text.splitlines():
+        line = line.strip()
+        if line:
+            logger.info(f"[oc:err] {line}")
+
+    return extrair_resposta(stdout_text)
 
 
 class OpenCodeClient:
     def __init__(self):
-        self._historico = []
+        self._historico = self._carregar_historico()
+        logger.info(f"histórico carregado: {len(self._historico)//2} turnos")
+
+    def _carregar_historico(self) -> list:
+        try:
+            with open(HISTORICO_PATH, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                if isinstance(data, list):
+                    return data[-20:]
+        except (FileNotFoundError, json.JSONDecodeError):
+            pass
+        return []
+
+    def _salvar_historico(self):
+        try:
+            with open(HISTORICO_PATH, "w", encoding="utf-8") as f:
+                json.dump(self._historico[-20:], f, ensure_ascii=False)
+        except Exception as e:
+            logger.error(f"erro salvando histórico: {e}")
 
     async def consultar(self, mensagem: str) -> str:
         if self._historico:
-            contexto = "\n".join(self._historico[-6:])
-            prompt = f"{contexto}\n\nUsuário: {mensagem}"
+            ctx = "\n".join(self._historico[-6:])
+            prompt = (
+                f"{ctx}\n"
+                f"---\n"
+                f"Usuário: {mensagem}\n"
+                f"Jarvis:"
+            )
         else:
-            prompt = f"Usuário: {mensagem}"
+            prompt = f"Usuário: {mensagem}\nJarvis:"
 
-        cmd = list(COMUM_BASE)
-        cmd.append(prompt)
+        logger.info(f"OC hist={len(self._historico)//2}: {mensagem[:60]}")
 
-        cmd_str = subprocess.list2cmdline(cmd)
-        logger.info(f"OC (hist={len(self._historico)//2}): {mensagem[:80]}")
+        resposta = await executar_opencode(prompt)
 
-        proc = await asyncio.create_subprocess_shell(
-            cmd_str,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-        )
+        if not resposta:
+            logger.warning("resposta vazia, tentando follow-up...")
+            follow = f"Com base nos resultados das ferramentas, responda em português: {mensagem}"
+            resposta = await executar_opencode(follow)
 
-        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=180)
+        if not resposta:
+            resposta = "Sem resposta."
 
-        stdout_text = stdout.decode(errors="replace")
-        stderr_text = stderr.decode(errors="replace")
-
-        rc = proc.returncode
-        logger.info(f"RC={rc} stdout={len(stdout_text)}b stderr={len(stderr_text)}b")
-
-        for line in stderr_text.splitlines():
-            line = line.strip()
-            if line:
-                logger.info(f"[oc:err] {line}")
-
-        resposta = extrair_resposta(stdout_text)
-        logger.info(f"Resposta: {resposta[:200]}")
         self._historico.append(f"Usuário: {mensagem}")
         self._historico.append(f"Jarvis: {resposta}")
+        self._salvar_historico()
         return resposta
 
 
@@ -168,7 +212,8 @@ async def main():
     logger.info(f"  Voz: {TTS_VOICE}")
     logger.info("  ws://0.0.0.0:8765")
     logger.info("  Modelo: opencode/deepseek-v4-flash-free")
-    logger.info("  Contexto: persistente (--continue)")
+    logger.info("  Contexto: persistente (injeção + JSON)")
+    logger.info("  Fallback: tool_result + retry")
     logger.info("=" * 50)
     async with websockets.serve(lambda ws: handler(ws, OpenCodeClient()), "0.0.0.0", 8765):
         await asyncio.Future()
