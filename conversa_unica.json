@@ -1,8 +1,4 @@
 [
-  "Usuário: teste de config e pronuncias, responda apenas OK se tudo funcionar",
-  "Jarvis: OK",
-  "Usuário: use tools para ler o arquivo bridge_historico.json e me diga quantas entradas existem e qual a ultima pergunta do usuario",
-  "Jarvis: 8 entradas (16 linhas, 8 pares). A última pergunta do usuário foi: \"teste de config e pronuncias, responda apenas OK se tudo funcionar\".",
   "Usuário: me dê um diagnóstico de si mesmo e do ecossistema",
   "Jarvis: **Jarvis**: Operacional. Bridge (PID 12532) na porta 8765 com 1 cliente Android conectado via Tailscale desde as 08:06. OpenCode serve (PID 9756) na porta 8766 ativo.\n\n**EcoSystemUmGrau**: 34 skills, 17 agentes LER, 265 notas Obsidian, config `opencode.jsonc` com paths absolutos corrigidos, `.env` presente, `pronuncias.json` com 190 entradas.\n\n**3 pontos de atenção:**\n\n1. **`bridge_historico.json` fora do ecossistema** — está em `Desktop\\Codigos\\` em vez de `EcoSystemUmGrau\\scripts\\`. O bridge escreve no lugar errado.\n\n2. **Nenhum cliente conectado no histórico recente** — desde o último diagnóstico, não houve novas interações via Android, só via chat aqui.\n\n3. **OpenCode serve sem health check verificado** — a porta 8766 está escutando, mas não confirmei se o health endpoint responde.\n\nQuer que eu corrija o path do histórico?",
   "Usuário: teste simples de diagnostico, leia o arquivo bridge_historico.json e confirme se ele esta dentro do diretorio scripts/ agora",
@@ -48,5 +44,9 @@
   "Usuário: Por que está sem resposta",
   "Jarvis: Sem resposta.",
   "Usuário: interação que eu tive com o aplicativo Jarvis e veja o que corrigir",
-  "Jarvis: Sem resposta."
+  "Jarvis: Sem resposta.",
+  "Usuário: teste apos correcao de bugs, responda OK se funcionou",
+  "Jarvis: Arquivo lido. 25 entradas (pares de usuário/Jarvis), última pergunta: *\"todas as vezes que fizer atualização você recompila e instala novamente no aparelho\"*.",
+  "Usuário: me dê um diagnóstico do sistema em que você está operando",
+  "Jarvis: 26 entradas no `bridge_historico.json`. A última pergunta do usuário foi: \"todas as vezes que fizer atualização você recompila e instala novamente no aparelho\""
 ]
