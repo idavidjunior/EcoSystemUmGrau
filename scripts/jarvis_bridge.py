@@ -53,11 +53,15 @@ async def consultar_opencode(mensagem):
 
     stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=180)
 
-    for line in stderr.decode().splitlines():
-        logger.info(f"[opencode] {line}")
+    stderr_text = stderr.decode()
+    stdout_text = stdout.decode()
+    logger.info(f"STDERR ({len(stderr_text)} bytes)")
+    for line in stderr_text.splitlines():
+        logger.info(f"[opencode:stderr] {line}")
 
+    logger.info(f"STDOUT ({len(stdout_text)} bytes): {stdout_text[:500]}")
     resposta = "Sem resposta."
-    for line in stdout.decode().splitlines():
+    for line in stdout_text.splitlines():
         line = line.strip()
         if not line:
             continue
@@ -65,6 +69,7 @@ async def consultar_opencode(mensagem):
             obj = json.loads(line)
             if obj.get("type") == "text" and "text" in obj.get("part", {}):
                 resposta = obj["part"]["text"]
+                break
         except json.JSONDecodeError:
             continue
 
