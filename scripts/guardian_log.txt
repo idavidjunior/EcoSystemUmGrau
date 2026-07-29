@@ -12,3 +12,27 @@
 2026-07-29 19:35:38,726 [WARNING] Morto PID 8220 (opencode.exe) - RAM 206MB, alvo maior 349MB - liberou ~363 MB
 2026-07-29 19:35:39,671 [WARNING] Morto PID 3540 (opencode.exe) - RAM 206MB, alvo maior 237MB - liberou ~240 MB
 2026-07-29 19:35:39,689 [INFO] RAM ja suficiente (673 MB), parando de matar
+2026-07-29 19:36:19,764 [WARNING] RAM critica: 207 MB livre - agindo...
+2026-07-29 19:36:22,003 [WARNING] RAM critica: 174 MB livre - agindo...
+2026-07-29 19:36:29,441 [WARNING] Morto PID 9636 (opencode.exe) - RAM 207MB, alvo maior 328MB - liberou ~330 MB
+2026-07-29 19:36:29,455 [WARNING] Morto PID 9636 (opencode.exe) - RAM 174MB, alvo maior 330MB - liberou ~330 MB
+2026-07-29 19:36:30,033 [WARNING] Morto PID 2352 (opencode.exe) - RAM 174MB, alvo maior 199MB - liberou ~273 MB
+2026-07-29 19:36:30,042 [INFO] RAM ja suficiente (686 MB), parando de matar
+2026-07-29 19:36:50,108 [WARNING] RAM critica: 249 MB livre - agindo...
+2026-07-29 19:36:50,109 [WARNING] RAM critica: 249 MB livre - agindo...
+2026-07-29 19:36:55,381 [WARNING] Morto PID 6560 (opencode.exe) - RAM 249MB, alvo maior 366MB - liberou ~373 MB
+2026-07-29 19:36:55,387 [INFO] RAM ja suficiente (505 MB), parando de matar
+2026-07-29 19:36:55,393 [WARNING] Morto PID 6560 (opencode.exe) - RAM 249MB, alvo maior 368MB - liberou ~373 MB
+2026-07-29 19:36:55,400 [INFO] RAM ja suficiente (505 MB), parando de matar
+2026-07-29 19:42:55,816 [WARNING] RAM critica: 236 MB livre - agindo...
+2026-07-29 19:42:55,835 [WARNING] RAM critica: 237 MB livre - agindo...
+2026-07-29 19:42:59,026 [WARNING] Morto PID 8920 (opencode.exe) - RAM 236MB, alvo maior 409MB - liberou ~408 MB
+2026-07-29 19:42:59,038 [WARNING] Morto PID 8920 (opencode.exe) - RAM 237MB, alvo maior 409MB - liberou ~409 MB
+2026-07-29 19:42:59,045 [INFO] RAM ja suficiente (652 MB), parando de matar
+2026-07-29 19:42:59,044 [INFO] RAM ja suficiente (652 MB), parando de matar
+2026-07-29 19:49:19,330 [WARNING] RAM critica: 499 MB livre - agindo...
+2026-07-29 19:49:19,336 [WARNING] RAM critica: 499 MB livre - agindo...
+2026-07-29 19:49:21,299 [WARNING] Morto PID 4540 (opencode.exe) - RAM 499MB, alvo maior 451MB - liberou ~336 MB
+2026-07-29 19:49:21,299 [WARNING] Morto PID 4540 (opencode.exe) - RAM 499MB, alvo maior 437MB - liberou ~336 MB
+2026-07-29 19:49:21,303 [INFO] RAM ja suficiente (787 MB), parando de matar
+2026-07-29 19:49:21,305 [INFO] RAM ja suficiente (787 MB), parando de matar
