@@ -31,8 +31,10 @@ def check_json(path, label='JSON'):
         return False, None
 
 def expand_path(path_str):
-    """Expand {{USERPROFILE}} template vars."""
-    return path_str.replace('{{USERPROFILE}}', USERPROFILE.replace('\\', '/'))
+    """Expand {env:USERPROFILE} and legacy {{USERPROFILE}} template vars."""
+    result = path_str.replace('{env:USERPROFILE}', USERPROFILE.replace('\\', '/'))
+    result = result.replace('{{USERPROFILE}}', USERPROFILE.replace('\\', '/'))
+    return result
 
 def test_mcp_server(server_name, command, args):
     """Test an MCP server: initialize + tools/list must complete in 5s."""

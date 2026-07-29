@@ -1,8 +1,13 @@
-import asyncio, websockets, edge_tts, base64, json, logging, os, subprocess, re, time
+import asyncio, websockets, edge_tts, base64, json, logging, os, subprocess, re, time, xml.sax.saxutils, socket
 from pathlib import Path
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 logging.basicConfig(level=logging.INFO)
-file_handler = logging.FileHandler(r"C:\Users\Playtec-bancada\Desktop\Codigos\bridge_log.txt", mode="a")
+file_handler = logging.FileHandler(r"C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau\scripts\bridge_log.txt", mode="a", encoding="utf-8")
 file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s:%(name)s:%(message)s"))
 logging.getLogger().addHandler(file_handler)
 logger = logging.getLogger("vox")
@@ -11,227 +16,347 @@ TTS_VOICE = "pt-BR-ThalitaMultilingualNeural"
 TTS_PITCH = "-30Hz"
 TTS_RATE = "+0%"
 
-OPENCODE_BIN = str(Path(os.environ.get("APPDATA", "")) / r"npm\node_modules\opencode-ai\bin\opencode.exe")
+BIN = str(Path(os.environ["APPDATA"]) / r"npm\node_modules\opencode-ai\bin\opencode.exe")
 WORKDIR = r"C:\Users\Playtec-bancada\Desktop\Codigos"
-HISTORICO_PATH = r"C:\Users\Playtec-bancada\Desktop\Codigos\bridge_historico.json"
+HIST_PATH = Path(WORKDIR) / "EcoSystemUmGrau" / "conversa_unica.json"
+SYS_PATH = r"C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau\scripts\JARVIS_SYSTEM.md"
+PRON_PATH = r"C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau\scripts\pronuncias.json"
 
-SERVER_URL = "http://127.0.0.1:8766"
-SERVER_USER = os.environ.get("OPENCODE_SERVER_USERNAME", "opencode")
-SERVER_PASS = os.environ.get("OPENCODE_SERVER_PASSWORD", "")
-MAX_HIST = 8
-MAX_TOOL_OUTPUT = 500
+MAX_HIST = 50
+MAX_TOOL = 500
+MAX_STDOUT = 5_000_000
 
-WRK = WORKDIR
-
-models = [
-    "opencode/deepseek-v4-flash-free",
-    "opencode/deepseek-v4-flash-free",
+ECOSSISTEMA_DIR = Path(WORKDIR) / "EcoSystemUmGrau"
+LER_DIR = ECOSSISTEMA_DIR / "ler-runtime"
+SCRIPTS_DIR = ECOSSISTEMA_DIR / "scripts"
+TMP_ESTADO = SCRIPTS_DIR / "bridge_estado.json"
+OBSIDIAN_DIRS = [
+    ECOSSISTEMA_DIR / "docs",
+    ECOSSISTEMA_DIR / "conhecimento",
+    ECOSSISTEMA_DIR / "documentos",
 ]
 
-def sanitizar(texto):
-    if not texto: return ""
-    for p in [r'```[\s\S]*?```', r'`[^`]+`', r'[*_~#]', r'\[([^\]]+)\]\([^)]+\)', r'[<>{}()\[\]]']:
-        texto = re.sub(p, '', texto)
-    texto = texto.replace('"','').replace("'",'').replace('`','')
-    texto = re.sub(r'^\s*[-*+]\s+', '', texto, flags=re.MULTILINE)
-    return re.sub(r'\s+', ' ', texto).strip()[:2000]
 
-async def tts(texto):
-    texto = sanitizar(texto)
-    if not texto: return ""
-    com = edge_tts.Communicate(texto, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
+def carregar_sistema():
+    try:
+        with open(SYS_PATH, "r", encoding="utf-8") as f:
+            return f.read().strip()
+    except Exception as e:
+        logger.warning(f"sistema: {e}")
+        return "Você é Jarvis, especialista no EcoSystemUmGrau e OpenCode. Responda em português."
+
+SISTEMA = carregar_sistema()
+
+def carregar_pronuncias():
+    try:
+        with open(PRON_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except: return {}
+
+PRONUNCIAS = carregar_pronuncias()
+
+def gerar_estado_atual():
+    """Gera um resumo dinâmico do estado atual do ecossistema."""
+    linhas = []
+    linhas.append("## Estado Atual do Ecossistema")
+    try:
+        linhas.append(f"### EcoSystemUmGrau/scripts")
+        for f in sorted(SCRIPTS_DIR.iterdir()):
+            if f.suffix in (".py", ".ps1", ".bat", ".js", ".jsonc", ".json", ".md"):
+                linhas.append(f"- {f.name}")
+    except: linhas.append("(scripts indisponivel)")
+    try:
+        linhas.append(f"\n### LER Core Files")
+        cores = ["run.py", "CONHECIMENTO.md", "SYSTEM_SPEC.md"]
+        for c in cores:
+            p = LER_DIR / c
+            if p.exists(): linhas.append(f"- {c} ({p.stat().st_size}b)")
+    except: pass
+    try:
+        config_paths = [
+            Path(os.environ.get("APPDATA","")) / ".." / ".." / ".config" / "opencode" / "opencode.jsonc",
+            ECOSSISTEMA_DIR / "config" / "opencode.jsonc",
+        ]
+        linhas.append("\n### Configs OpenCode")
+        for p in config_paths:
+            p = p.resolve()
+            if p.exists():
+                try:
+                    txt = p.read_text(encoding="utf-8")
+                    linhas.append(f"- {p.name} ({len(txt)}b)")
+                except: linhas.append(f"- {p.name} (ilegivel)")
+    except: pass
+    try:
+        historico = TMP_ESTADO
+        if historico.exists():
+            d = json.loads(historico.read_text(encoding="utf-8"))
+            linhas.append(f"\n### Mudancas recentes: {len(d)} arquivos monitorados")
+    except: pass
+    try:
+        total_md = 0
+        for d in OBSIDIAN_DIRS:
+            if d.exists():
+                files = list(d.rglob("*.md"))
+                linhas.append(f"### Obsidian {d.name}: {len(files)} notas")
+                total_md += len(files)
+        if total_md:
+            linhas.append(f"Total vault: {total_md} notas")
+    except: pass
+    try:
+        skills = list((ECOSSISTEMA_DIR / "skills").iterdir())
+        if skills:
+            linhas.append(f"\n### Skills: {len(skills)} diretorios")
+    except: pass
+    try:
+        plugins = list((ECOSSISTEMA_DIR / "plugins").iterdir())
+        if plugins:
+            linhas.append(f"### Plugins: {len(plugins)}")
+    except: pass
+    try:
+        ler_agent = LER_DIR / "agent"
+        if ler_agent.exists():
+            agents = [f.stem for f in ler_agent.iterdir() if f.suffix == ".py"]
+            linhas.append(f"### Agentes LER: {len(agents)}")
+    except: pass
+    return "\n".join(linhas)
+
+ESTADO_ATUAL = gerar_estado_atual()
+
+
+def sanitizar(t):
+    if not t: return ""
+    for p in [r'```[\s\S]*?```', r'`[^`]+`', r'[*_~#]', r'\[([^\]]+)\]\([^)]+\)', r'[<>{}()\[\]]']:
+        t = re.sub(p, '', t)
+    t = t.replace('"','').replace("'",'').replace('`','')
+    t = re.sub(r'^\s*[-*+]\s+', '', t, flags=re.MULTILINE)
+    return re.sub(r'\s+', ' ', t).strip()[:2000]
+
+def corrigir_pronuncia(texto):
+    """Substitui palavras por suas versoes foneticas para melhor TTS."""
+    if not texto or not PRONUNCIAS: return texto
+    palavras = sorted(PRONUNCIAS.keys(), key=len, reverse=True)
+    for palavra in palavras:
+        alias = PRONUNCIAS[palavra]
+        texto = re.sub(re.escape(palavra), lambda m: alias, texto, flags=re.IGNORECASE)
+    return texto.strip()
+
+
+async def gerar_audio(texto):
+    t = sanitizar(texto)
+    if not t: return ""
+    t = corrigir_pronuncia(t)
+    c = edge_tts.Communicate(t, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
     audio = b""
-    async for chunk in com.stream():
+    async for chunk in c.stream():
         if chunk["type"] == "audio": audio += chunk["data"]
     return base64.b64encode(audio).decode()
 
-def extrair_resposta(stdout: str) -> tuple[str | None, list]:
-    text_events = []
-    tool_outputs = []
-    tipos = {}
-    erros = 0
-    ultimo_step_finish = None
 
+def extrair_resposta(stdout: str) -> tuple[str | None, list]:
+    texts = []
+    tools = []
+    tipos = {}
     for line in stdout.splitlines():
         line = line.strip()
         if not line: continue
         try:
             obj = json.loads(line)
-            t = obj.get("type", "?")
+            t = obj.get("type", "")
             tipos[t] = tipos.get(t, 0) + 1
-
             if t == "text":
                 part = obj.get("part")
-                if isinstance(part, dict):
-                    txt = part.get("text", "")
-                elif isinstance(part, str):
-                    txt = part
-                else:
-                    continue
+                txt = part.get("text", "") if isinstance(part, dict) else (part if isinstance(part, str) else "")
                 if isinstance(txt, str) and txt.strip():
-                    text_events.append(txt.strip())
-
-            if t in ("tool_use", "tool_result"):
+                    texts.append(txt.strip())
+            elif t in ("tool_use",):
                 part = obj.get("part")
                 if isinstance(part, dict):
-                    state = part.get("state")
-                    if isinstance(state, dict) and state.get("status") == "completed":
-                        out = state.get("output")
+                    st = part.get("state")
+                    if isinstance(st, dict) and st.get("status") == "completed":
+                        out = st.get("output")
                         if isinstance(out, str) and out.strip():
-                            tool_outputs.append(out.strip())
-
-            if t == "step_finish":
-                reason = obj.get("part", {}).get("reason") if isinstance(obj.get("part"), dict) else None
-                if reason == "stop":
-                    ultimo_step_finish = "stop"
-
+                            tools.append(out.strip())
         except json.JSONDecodeError:
-            erros += 1
-
-    logger.info(f"tipos={tipos} text_events={len(text_events)} tool_outputs={len(tool_outputs)} step_finish_stop={ultimo_step_finish=='stop'}")
-
-    if text_events:
-        return text_events[-1], tool_outputs
-
-    if tool_outputs:
-        return tool_outputs[-1][:MAX_TOOL_OUTPUT], tool_outputs
-
-    return None, tool_outputs
+            pass
+    logger.info(f"eventos={tipos} texts={len(texts)} tools={len(tools)}")
+    if texts: return texts[-1], tools
+    if tools: return tools[-1][:MAX_TOOL], tools
+    return None, tools
 
 
-async def _run_cmd(cmd: list, prompt: str, timeout=180) -> tuple[str | None, list]:
-    full = list(cmd) + [prompt]
-    cmd_str = subprocess.list2cmdline(full)
-    logger.info(f"OC: {cmd[0]} ... {prompt[:60]}")
+RETRY_COUNT = 0
+MAX_RETRY = 2
+
+async def executar(prompt: str, timeout=300, retry=True) -> str | None:
+    global RETRY_COUNT
+    args = [BIN, "run", "--format", "json", "--auto", "--dir", WORKDIR, prompt]
+    logger.info(f"run: {prompt[:80]}...")
     t0 = time.time()
-    proc = await asyncio.create_subprocess_shell(cmd_str, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
     try:
+        proc = await asyncio.create_subprocess_exec(
+            *args, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+        )
         so, se = await asyncio.wait_for(proc.communicate(), timeout=timeout)
     except asyncio.TimeoutError:
-        proc.kill()
+        try: proc.kill()
+        except: pass
         logger.error("timeout")
-        return None, []
-    so_text = so.decode(errors="replace")
+        return None
+    except Exception as e:
+        logger.error(f"exec: {e}", exc_info=True)
+        return None
+    so_text = so.decode(errors="replace")[:MAX_STDOUT]
     se_text = se.decode(errors="replace")
     logger.info(f"RC={proc.returncode} out={len(so_text)}b t={time.time()-t0:.0f}s")
     for line in se_text.splitlines():
         if line.strip(): logger.info(f"[oc:err] {line.strip()}")
-    return extrair_resposta(so_text)
+    resp, tools = extrair_resposta(so_text)
+    if resp: return resp
+    logger.warning(f"vazio, tools={len(tools)}")
+    if tools and retry and RETRY_COUNT < MAX_RETRY:
+        RETRY_COUNT += 1
+        ctx = "\n".join(f"Resultado: {t[:300]}" for t in tools[-3:])
+        prompt2 = f"{ctx}\nResponda em portugues: o que foi encontrado?"
+        logger.info(f"retry {RETRY_COUNT}/{MAX_RETRY} com tools...")
+        return await executar(prompt2, timeout=120, retry=False)
+    RETRY_COUNT = 0
+    return None
 
 
-async def consultar_modelo(prompt: str, timeout=180) -> tuple[str | None, list]:
-    for modelo in models:
-        cmd = [
-            OPENCODE_BIN, "run",
-            "--attach", SERVER_URL,
-            "--format", "json",
-            "--auto",
-            "--username", SERVER_USER,
-            "--password", SERVER_PASS,
-            "--dir", WRK,
-        ]
-        resp, tools = await _run_cmd(cmd, prompt, timeout)
-        if resp:
-            return resp, tools
-        logger.warning(f"modelo {modelo} retornou vazio, tentando proximo...")
-    return None, []
-
-
-class OpenCodeClient:
+class Cliente:
     def __init__(self):
-        self._historico = self._carregar()
+        self._hist = self._carregar()
+        self._init_estado()
 
-    def _carregar(self) -> list:
+    def _carregar(self):
         try:
-            with open(HISTORICO_PATH, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                return data[-MAX_HIST:] if isinstance(data, list) else []
+            with open(HIST_PATH, "r", encoding="utf-8-sig") as f:
+                d = json.load(f)
+                return d[-MAX_HIST:] if isinstance(d, list) else []
         except: return []
 
     def _salvar(self):
         try:
-            with open(HISTORICO_PATH, "w", encoding="utf-8") as f:
-                json.dump(self._historico[-MAX_HIST:], f, ensure_ascii=False, indent=2)
+            with open(HIST_PATH, "w", encoding="utf-8") as f:
+                json.dump(self._hist[-MAX_HIST:], f, ensure_ascii=False, indent=2)
         except Exception as e: logger.error(f"salvar: {e}")
 
-    def _montar_prompt(self, msg: str) -> str:
-        p = ""
-        if self._historico:
-            for i in range(0, len(self._historico), 2):
-                p += f"{self._historico[i]}\n{self._historico[i+1]}\n"
+    def _init_estado(self):
+        if not TMP_ESTADO.exists():
+            try:
+                TMP_ESTADO.write_text("{}", encoding="utf-8")
+            except Exception as e:
+                logger.warning(f"init estado: {e}")
+
+    def _montar(self, msg):
+        estado = gerar_estado_atual()
+        p = SISTEMA + "\n\n" + estado + "\n\n"
+        hist = self._hist[-(MAX_HIST*2):]
+        for i in range(0, len(hist), 2):
+            p += f"{hist[i]}\n{hist[i+1]}\n"
         p += f"Usuário: {msg}\nJarvis:"
         return p
 
-    async def consultar(self, mensagem: str) -> str:
-        prompt = self._montar_prompt(mensagem)
-        qtd = len(self._historico)//2
-        logger.info(f"hist={qtd}: {mensagem[:60]}")
-
-        resposta, tools = await consultar_modelo(prompt)
-
-        if not resposta:
-            logger.warning("vazio, retry com ferramentas")
-            ctx = ""
-            for t in tools[-3:]:
-                ctx += f"Resultado: {t[:300]}\n"
-            prompt2 = f"{ctx}Com base nos resultados acima, responda em português: {mensagem}\nJarvis:"
-            resposta, _ = await consultar_modelo(prompt2)
-
-        if not resposta:
-            resposta = "Sem resposta."
-
-        if len(resposta) > 60:
-            self._historico.append(f"Usuário: {mensagem}")
-            self._historico.append(f"Jarvis: {resposta[:300]}")
-            self._salvar()
-        return resposta
+    async def perguntar(self, msg):
+        prompt = self._montar(msg)
+        logger.info(f"hist={len(self._hist)//2}: {msg[:80]}")
+        resp = await executar(prompt)
+        if not resp:
+            resp = "Sem resposta."
+        self._hist.append(f"Usuário: {msg}")
+        self._hist.append(f"Jarvis: {resp}")
+        self._salvar()
+        return resp
 
 
-async def handler(ws):
-    oc = OpenCodeClient()
-    logger.info(f"Conexao hist={len(oc._historico)//2}")
+def gerar_status_natural():
+    """Gera uma frase em linguagem natural com o estado do sistema."""
+    ok = []
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(1)
+        r = s.connect_ex(("127.0.0.1", 8765))
+        s.close()
+        if r == 0:
+            ok.append("bridge operante na porta 8765")
+    except: pass
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(1)
+        r = s.connect_ex(("127.0.0.1", 8766))
+        s.close()
+        if r == 0:
+            ok.append("servidor web na porta 8766")
+    except: pass
+    try:
+        if Path(BIN).exists():
+            ok.append("OpenCode pronto")
+    except: pass
+    if ok:
+        return "O sistema está funcionando: " + " e ".join(ok) + ". "
+    return "O sistema está inicializando. "
+
+async def lidar(ws):
+    c = Cliente()
+    client_ip = ws.remote_address[0] if ws.remote_address else "desconhecido"
+    logger.info(f"conectado de {client_ip} hist={len(c._hist)//2}")
+    try:
+        estado = {"ultima_conexao": time.strftime("%Y-%m-%d %H:%M:%S"), "ip": client_ip}
+        TMP_ESTADO.write_text(json.dumps(estado, indent=2), encoding="utf-8")
+        logger.info(f"estado salvo: {estado}")
+    except Exception as e:
+        logger.error(f"estado write: {e}")
+        try:
+            TMP_ESTADO.parent.mkdir(parents=True, exist_ok=True)
+            TMP_ESTADO.write_text(json.dumps(estado, indent=2), encoding="utf-8")
+        except Exception as e2:
+            logger.error(f"estado retry: {e2}")
+    status = gerar_status_natural()
+    saudacao = f"Olá, sou o Jarvis do Ecossistema Um Grau. {status}Estou ouvindo."
+    try:
+        a = await gerar_audio(saudacao)
+    except Exception as e:
+        logger.warning(f"tts startup: {e}")
+        a = ""
+    await ws.send(json.dumps({"audio": a, "text": saudacao}))
 
     try:
-        audio_s = await tts("Olá, sou o Jarvis do EcoSystemUmGrau. Estou ouvindo.")
-    except: audio_s = ""
-    await ws.send(json.dumps({"audio": audio_s, "text": "Olá, sou o Jarvis do EcoSystemUmGrau. Estou ouvindo."}))
-
-    try:
-        async for msg in ws:
-            logger.info(f"msg: {msg[:80]}")
-            resposta = ""
+        async for m in ws:
+            logger.info(f"msg({len(m)}): {m[:120]}")
             try:
-                resposta = await oc.consultar(msg)
+                r = await c.perguntar(m)
             except Exception as e:
-                resposta = f"Erro: {e}"
-                logger.error(f"handler: {e}", exc_info=True)
-
-            await ws.send(json.dumps({"text": resposta}))
-            logger.info(f"texto enviado ({len(resposta)} chars)")
+                r = f"Erro: {e}"
+                logger.error(f"erro: {e}", exc_info=True)
 
             try:
-                logger.info("gerando audio...")
-                audio = await tts(resposta)
-                if audio:
-                    await ws.send(json.dumps({"audio": audio}))
-                    logger.info(f"audio enviado ({len(audio)} chars)")
+                logger.info("audio...")
+                a = await gerar_audio(r)
+                if a:
+                    await ws.send(json.dumps({"text": r, "audio": a}))
+                    logger.info(f"texto+audio: {len(r)}c/{len(a)}c")
+                else:
+                    await ws.send(json.dumps({"text": r}))
             except Exception as e:
-                logger.warning(f"tts: {e}")
+                logger.warning(f"audio: {e}, enviando so texto")
+                await ws.send(json.dumps({"text": r}))
+            logger.info(f"texto: {len(r)} chars")
     except websockets.exceptions.ConnectionClosed:
-        logger.info("cliente desconectou")
+        logger.info("fim")
 
 
-async def main():
+async def servir():
     logger.info("="*50)
-    logger.info("  Vox UmGrau Bridge v3")
-    logger.info(f"  serve: {SERVER_URL}")
-    logger.info(f"  auth: {SERVER_USER}:{SERVER_PASS[:4]}...")
-    logger.info(f"  modelos: {models}")
+    logger.info("  Vox UmGrau Bridge v4 (expert)")
+    logger.info(f"  modelo: deepseek-v4-flash-free")
     logger.info(f"  ws://0.0.0.0:8765")
+    logger.info(f"  sistema: {len(SISTEMA)} chars")
+    logger.info(f"  estado: atualizado por request")
+    logger.info(f"  pronuncias: {len(PRONUNCIAS)} palavras")
+    logger.info(f"  historico: {HIST_PATH.name}")
     logger.info("="*50)
-
-    async with websockets.serve(handler, "0.0.0.0", 8765):
+    async with websockets.serve(lidar, "0.0.0.0", 8765):
         await asyncio.Future()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(servir())

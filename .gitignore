@@ -1,0 +1,24 @@
+# Environment files
+.env
+scripts/.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Runtime logs
+*.log
+bridge_log.txt
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Runtime state files
+scripts/bridge_estado.json
+scripts/bridge_historico.json
