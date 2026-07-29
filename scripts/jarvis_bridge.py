@@ -38,8 +38,8 @@ async def consultar_opencode(mensagem):
         "--model", "opencode/deepseek-v4-flash-free",
         "--dir", WORKDIR,
         "--auto",
-        "--print-logs"
     ]
+    # --print-logs causa problemas no Windows, logs vao pro stderr msm sem flag
     cmd_str = subprocess.list2cmdline(cmd_list)
     logger.info(f"Executando: [{len(cmd_str)} chars] {cmd_str}")
 
@@ -47,11 +47,6 @@ async def consultar_opencode(mensagem):
         cmd_str,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
-        env={
-            **os.environ,
-            "OPENCODE_SERVER_USERNAME": "opencode",
-            "OPENCODE_SERVER_PASSWORD": "8c194f96-5ad2-409d-8b26-6052c634972d",
-        }
     )
 
     stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=180)
