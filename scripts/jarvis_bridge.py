@@ -369,7 +369,7 @@ async def lidar(ws):
 
 async def servir():
     logger.info("="*50)
-    logger.info("  Vox UmGrau Bridge v4 (expert)")
+    logger.info("  Vox UmGrau Bridge v5 (sessao unica)")
     logger.info(f"  modelo: deepseek-v4-flash-free")
     logger.info(f"  ws://0.0.0.0:8765")
     logger.info(f"  sistema: {len(SISTEMA)} chars")
