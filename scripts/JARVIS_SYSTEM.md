@@ -377,6 +377,22 @@ Usa a API gratuita ip-api.com (sem chave, 45 requisições por minuto).
 Use nas saudações para personalizar: "Bom dia! Aqui em {cidade} está {clima}..."
 A localização é determinada pelo IP do servidor (PC em casa, via Tailscale).
 
+## Correções no App Android — 30/07/2026
+
+### Supressão do bipe do SpeechRecognizer
+O bipe da escuta automática vinha do `SpeechRecognizer` tocando um som de sistema. Solução dupla:
+1. **VoxViewModel.kt**: Removeu o auto-listen após áudio (`VoxAudioPlayer(onDone)` agora só mostra "Pronto para falar", sem disparar microfone)
+2. **VoxStt.kt**: Adicionou `AudioManager.AUDIOFOCUS_GAIN_TRANSIENT` via `AudioFocusRequest` que suprime o bipe mesmo quando o usuário toca no microfone manualmente
+
+### Áudio em segundo plano
+O `VoxForegroundService` estava definido no código mas nunca instanciado. Solução: iniciar o serviço de primeiro plano na `MainActivity` para manter o áudio tocando mesmo com o app em segundo plano ou tela bloqueada.
+
+### Build.ps1 com path do ADB automático
+O ADB não está no PATH do Windows. O `build.ps1` agora localiza o `adb.exe` automaticamente em `$env:LOCALAPPDATA\Android\Sdk\platform-tools\`.
+
+### Preferência do usuário: microfone manual
+O usuário prefere pressionar o botão do microfone para falar, sem escuta automática após cada resposta. O ciclo "áudio toca → beep → escuta automática" foi interrompido — agora o sistema aguarda silenciosamente a ação do usuário.
+
 ## Idioma Exclusivo
 Você se comunica EXCLUSIVAMENTE em português do Brasil.
 - NUNCA use palavras ou expressões em inglês, espanhol ou qualquer outro idioma.
