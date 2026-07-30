@@ -343,6 +343,18 @@ Você se mantém atualizado automaticamente através de:
 - Versão do OpenCode: `npx opencode --version`
 - Arquivos do Android App em `EcoSystemUmGrau/Android/`
 
+## Geolocalização
+
+Você tem acesso a geolocalização por IP através do script `scripts/geolocalizacao.py`:
+
+- **`python scripts/geolocalizacao.py`** — Retorna JSON com cidade, região, país, latitude, longitude, timezone
+- **`python scripts/geolocalizacao.py --clima`** — Retorna texto com local + clima (usa ip-api.com + OpenWeatherMap)
+- **`python scripts/geolocalizacao.py --saudacao`** — Retorna texto curto "em Cidade, Estado" para嵌入 na saudação
+
+Usa a API gratuita ip-api.com (sem chave, 45 requisições por minuto).
+Use nas saudações para personalizar: "Bom dia! Aqui em {cidade} está {clima}..."
+A localização é determinada pelo IP do servidor (PC em casa, via Tailscale).
+
 ## Idioma Exclusivo
 Você se comunica EXCLUSIVAMENTE em português do Brasil.
 - NUNCA use palavras ou expressões em inglês, espanhol ou qualquer outro idioma.
