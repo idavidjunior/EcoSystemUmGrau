@@ -1,22 +1,9 @@
 {
-  "timestamp": "2026-07-30T11:29:09.294485",
-  "ram_mb": 150.9,
-  "ram_pct": 96.2,
+  "timestamp": "2026-07-30T11:34:32.492863",
+  "ram_mb": 335.9,
+  "ram_pct": 91.6,
   "disk_gb": 22.3,
-  "actions": [
-    {
-      "pid": 6840,
-      "name": "powershell.exe",
-      "mem_mb": 81.0,
-      "reason": "RAM 151MB, alvo maior 81MB"
-    },
-    {
-      "pid": 2616,
-      "name": "powershell.exe",
-      "mem_mb": 79.7,
-      "reason": "RAM 151MB, alvo maior 80MB"
-    }
-  ],
+  "actions": [],
   "status": "critical",
-  "level": "CRITICAL"
+  "level": "WARNING"
 }
