@@ -371,6 +371,19 @@ def gerar_status_natural():
         return "O sistema está funcionando: " + " e ".join(ok) + ". "
     return "O sistema está inicializando. "
 
+def fix_punctuation(text):
+    text = text.strip()
+    if not text:
+        return text
+    text = text[0].upper() + text[1:] if text[0].islower() else text
+    palavras_q = r"^(qual|quem|onde|quando|como|por que|porque|pq|q|oq|o que|quanto|quantos|quantas|qto|qtos|qtas|pra que|para que|sera que|vai|tem|existe|dá para|da pra|posso|pode|poderia|queria saber|me diga|me fale|explique|conte|preciso saber|sabe me dizer|como que|que que|quem que|onde que)"
+    e_questao = bool(re.match(palavras_q, text.lower().lstrip()))
+    if e_questao and not text.rstrip().endswith(("?", ".")):
+        return text.rstrip() + "?"
+    elif not text.rstrip().endswith((".", "?", "!", ":")):
+        return text.rstrip() + "."
+    return text
+
 async def lidar(ws):
     c = Cliente()
     client_ip = ws.remote_address[0] if ws.remote_address else "desconhecido"
@@ -409,6 +422,10 @@ async def lidar(ws):
 
     try:
         async for m in ws:
+            msg_fix = fix_punctuation(m)
+            if msg_fix != m:
+                logger.info(f"pontuacao corrigida: {m[:80]} -> {msg_fix[:80]}")
+                m = msg_fix
             logger.info(f"msg({len(m)}): {m[:120]}")
             if INTERRUPCAO.match(m.strip()):
                 r = "Interrompido. Pode falar quando quiser."

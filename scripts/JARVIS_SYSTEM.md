@@ -322,6 +322,27 @@ O TTS (têtês) lê seu texto em voz. Regras práticas:
 - Exemplo bom: "websocket" → "uebessocket"
 - Exemplo ruim: "websocket" → "ué-bes-só-que-te" (robótico)
 - Apenas inclua palavras que edge-tts realmente pronuncia errado
+- NUNCA inclua palavras portuguesas que Thalita já pronuncia corretamente (key=value não serve para nada)
+
+### Estudo de Pontuação — 30/07/2026
+**Aprendizado do dia:** Implementei detecção automática de pontuação na bridge.
+- A Android STT não manda pontuação (vírgulas, pontos, interrogação)
+- Adicionei função `fix_punctuation()` no `jarvis_bridge.py:374` que:
+  - Detecta perguntas por palavras-chave: qual, quem, onde, quando, como, por que, etc.
+  - Adiciona ? no final de perguntas sem pontuação
+  - Adiciona . no final de afirmações sem pontuação
+  - Capitaliza a primeira letra da frase
+- Isso melhora o contexto enviado ao OpenCode e a qualidade das respostas de voz
+- Também torna o histórico mais legível com pontuação correta
+
+### Estudo de Pronúncia — 30/07/2026
+**Aprendizado do dia:** Limpeza completa do `pronuncias.json`.
+- Removidas 40 entradas inúteis onde a chave era igual ao valor (key=value não faz nada no edge-tts)
+- Exemplos de remoção: "database": "database", "status": "status", "server": "server", "session": "session"
+- Essas palavras portuguesas e inglesas comuns pronunciadas corretamente por Thalita não precisam de entrada
+- Adicionadas fonéticas corretas: "windows" → "uindous", "android" → "andróid", "kotlin" → "cotlin"
+- Fixadas entradas quebradas: "database" → "databeisi", "server" → "servidor", "session" → "sessãu"
+- Arquivo reduzido de 209 para 169 linhas, mais enxuto e eficaz
 
 ## Auto-Atualização
 
