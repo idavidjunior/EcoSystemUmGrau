@@ -245,7 +245,7 @@ class Cliente:
         return p
 
     async def _ensure_serve(self):
-        h = await _http_async("GET", "/global/health")
+        h = await _http_async("GET", "/api/health")
         if h and h.get("healthy"):
             return True
         logger.info("serve not running, starting...")
@@ -254,7 +254,7 @@ class Cliente:
             stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.DEVNULL)
         for _ in range(15):
             await asyncio.sleep(1)
-            h = await _http_async("GET", "/global/health")
+            h = await _http_async("GET", "/api/health")
             if h and h.get("healthy"):
                 logger.info("serve started")
                 return True
@@ -277,9 +277,9 @@ class Cliente:
             logger.info(f"created session {self._session_id}")
         return self._session_id
 
-    async def perguntar(self, msg):
+    async def perguntar(self, msg, tentativa=1):
         prompt = self._montar(msg)
-        logger.info(f"hist={len(self._hist)//2} prompt={len(prompt)}b: {msg[:80]}")
+        logger.info(f"hist={len(self._hist)//2} prompt={len(prompt)}b tentativa={tentativa}: {msg[:80]}")
 
         if not await self._ensure_serve():
             return "Erro: servidor OpenCode não está disponível."
@@ -293,6 +293,10 @@ class Cliente:
         })
 
         if not result:
+            if tentativa < 2:
+                self._session_id = None
+                logger.info("result vazio, tentando nova sessao")
+                return await self.perguntar(msg, tentativa=2)
             return "Sem resposta do servidor."
 
         parts = result.get("parts", [])
@@ -300,7 +304,10 @@ class Cliente:
         resp = texts[-1] if texts else None
 
         if not resp:
-            logger.warning(f"serve resp sem texto: parts={len(parts)}")
+            if tentativa < 2:
+                self._session_id = None
+                logger.info(f"resp vazia parts={len(parts)}, criando nova sessao")
+                return await self.perguntar(msg, tentativa=2)
             resp = "Sem resposta."
 
         self._hist.append(f"Usuário: {msg}")
@@ -328,7 +335,7 @@ def gerar_status_natural():
             ok.append("servidor OpenCode na porta 8766")
     except: pass
     try:
-        h = _http("GET", "/global/health")
+        h = _http("GET", "/api/health")
         if h and h.get("healthy"):
             ok.append("serve respondendo")
     except: pass
