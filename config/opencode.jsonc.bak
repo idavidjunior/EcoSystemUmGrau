@@ -15,45 +15,12 @@
     }
   },
   "mcp": {
-    "enabled": true,
     "servers": {
       "eco-knowledge": {
-        "type": "local",
         "command": "python",
         "args": [
           "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/scripts/mcp-knowledge-server.py"
         ]
-      },
-      "filesystem": {
-        "type": "local",
-        "command": "node",
-        "args": [
-          "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/mcp-servers/mcp-servers/filesystem/index.js"
-        ]
-      },
-      "search": {
-        "type": "local",
-        "command": "node",
-        "args": [
-          "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/mcp-servers/mcp-servers/search/index.js"
-        ]
-      },
-      "terminal": {
-        "type": "local",
-        "command": "node",
-        "args": [
-          "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/mcp-servers/mcp-servers/terminal/index.js"
-        ]
-      },
-      "github": {
-        "type": "local",
-        "command": "node",
-        "args": [
-          "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/mcp-servers/mcp-servers/github/index.js"
-        ],
-        "env": {
-          "GITHUB_TOKEN": "{env:GH_TOKEN}"
-        }
       }
     }
   },
@@ -62,7 +29,6 @@
     "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/skills/**/SKILL.md",
     "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/skills/*/skill.md",
     "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/skills/**/skill.md",
-    "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/skills/clima-api/skill.md",
     "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/ler-runtime/CONHECIMENTO.md"
   ]
 }
