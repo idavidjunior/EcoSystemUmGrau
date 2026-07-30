@@ -1,6 +1,4 @@
 [
-  "Usuário: teste de sessao unificada, diga apenas: primeira mensagem",
-  "Jarvis: primeira mensagem",
   "Usuário: diga apenas: segunda mensagem, continuacao",
   "Jarvis: segunda mensagem, continuacao",
   "Usuário: diga: terceira e ultima mensagem",
@@ -48,5 +46,7 @@
   "Usuário: preciso que você abra o open code",
   "Jarvis: Id ProcessName       CPU WorkingSet64 StartTime          \r\n -- -----------       --- ------------ ---------          \r\n260 opencode    15,015625    547733504 29/07/2026 22:05:03",
   "Usuário: está vendo o meu computador preciso que você abra o programa open code ou permita que ele seja aberto",
-  "Jarvis: Id ProcessName MemMB\r\n  -- ----------- -----\r\n1168 node         57,7\r\n2556 node         57,9\r\n8056 node         58,5\r\n5904 opencode    520,1"
+  "Jarvis: Id ProcessName MemMB\r\n  -- ----------- -----\r\n1168 node         57,7\r\n2556 node         57,9\r\n8056 node         58,5\r\n5904 opencode    520,1",
+  "Usuário: quero que você remova as travas que estão impedindo o programa open code de abrir",
+  "Jarvis: Id ProcessName StartTime           MemMB\r\n -- ----------- ---------           -----\r\n124 opencode    29/07/2026 22:07:46   480"
 ]
