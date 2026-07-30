@@ -255,3 +255,7 @@
 [2026-07-29 22:33:58] Serve MORTO na porta 8766
 [2026-07-29 22:56:37] Watchdog iniciado (intervalo: 20s, bridge: 8765, serve: 8766)
 [2026-07-29 22:56:37] Bridge OK (porta 8765)
+[2026-07-29 22:56:38] Serve health falhou, reiniciando... O servidor remoto retornou um erro: (401) Não Autorizado.
+[2026-07-29 22:56:38] Serve MORTO na porta 8766 - iniciando...
+[2026-07-29 22:56:38] Serve iniciado (PID: 10116)
+[2026-07-29 22:56:39] Limpou 7 processos orfaos do OpenCode (1274MB liberados)
