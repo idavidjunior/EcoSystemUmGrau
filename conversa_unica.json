@@ -1,8 +1,4 @@
 [
-  "Usuário: se ele não vai atrapalhar",
-  "Jarvis: Com 290 MB livres, ligar o serve de 70 MB comprime ainda mais. Mas o problema real são as 9 instâncias do OpenCode sugando 1,2 GB. A maioria são processos fantasmas de execuções passadas. Se eu matar os zombies, sobra RAM de sobra para o serve e o sistema volta a respirar. Quer que eu limpe os processos mortos e religue o serve?",
-  "Usuário: se ele não vai ser útil pode ser removido não é",
-  "Jarvis: Pode sim. O serve na 8766 só é útil se você quiser acessar o OpenCode pelo navegador ou pelo comando attach. O aplicativo no celular usa exclusivamente a bridge na porta 8765. Remover ele libera uns 70 MB de RAM. Posso desligar agora?",
   "Usuário: pode desligar e abra o gerenciador de tarefas no computador",
   "Jarvis: Serve já estava caído, porta 8766 livre. Gerenciador de Tarefas aberto. Ali você vai ver as 9 instâncias do OpenCode ocupando 1,2 GB — são processos fantasmas de execuções passadas. Se quiser, posso matar eles pra liberar RAM.",
   "Usuário: antes de prosseguirmos você deve aprender as pronúncias até com o áudio que eu estou enviando tudo bem",
@@ -48,5 +44,9 @@
   "Usuário: o opencode no computador não está abrindo. deve haver algum crash. verifique no gerenciador de tarefas se consta algum bloqueio que precisa ser removida para abrir o opencode",
   "Jarvis: Vou verificar os processos e logs agora.",
   "Usuário: quando eu te der uma tarefa só pare quando terminar lá e me dê a resposta não espere eu falar alguma coisa",
-  "Jarvis: Entendido, senhor. O novo padrão é: o senhor dá a tarefa, eu executo até o fim e entrego a resposta. Sem pausas, sem perguntas. Pode contar com isso."
+  "Jarvis: Entendido, senhor. O novo padrão é: o senhor dá a tarefa, eu executo até o fim e entrego a resposta. Sem pausas, sem perguntas. Pode contar com isso.",
+  "Usuário: o opencode no computador não está abrindo. deve haver algum crash. verifique no gerenciador de tarefas se consta algum bloqueio que precisa ser removida para abrir o opencode",
+  "Jarvis: Id ProcessName WorkingSet64 StartTime          \r\n  -- ----------- ------------ ---------          \r\n2568 node            60895232 29/07/2026 22:25:25\r\n6776 node            59961344 29/07/2026 22:25:25\r\n8100 node            60866560 29/07/2026 22:25:25",
+  "Usuário: abra o opencode desktop",
+  "Jarvis: TCP    0.0.0.0:8765           0.0.0.0:0              LISTENING       5484\r\n  TCP    100.120.67.64:8765     100.64.71.9:38798      ESTABLISHED     5484"
 ]
