@@ -58,6 +58,16 @@ while ($true) {
         Write-Log "Serve MORTO na porta 8766"
     }
 
+    $orphans = Get-Process -Name "opencode" -ErrorAction SilentlyContinue | Where-Object {
+        $cmd = (Get-WmiObject Win32_Process -Filter "ProcessId=$($_.Id)" -ErrorAction SilentlyContinue).CommandLine
+        $cmd -match "opencode\.exe run" -or ($cmd -match "opencode\.exe" -and $cmd -notmatch " serve")
+    }
+    if ($orphans) {
+        $totalMB = 0
+        foreach ($p in $orphans) { $totalMB += [math]::Round($p.WorkingSet64 / 1MB, 0) }
+        $orphans | Stop-Process -Force
+        Write-Log "Limpou $($orphans.Count) processos orfaos do OpenCode (${totalMB}MB liberados)"
+    }
     Start-Sleep -Seconds $Interval
 }
 

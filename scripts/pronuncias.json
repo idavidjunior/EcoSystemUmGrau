@@ -148,6 +148,7 @@
   "loop": "lupi",
   "socket": "soketi",
   "process": "processo",
+  "processo": "processo",
   "daemon": "daimon",
   "queue": "kiu",
   "stack": "staki",
