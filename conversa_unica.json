@@ -1,8 +1,4 @@
 [
-  "Usuário: investigue o porque o OpenCode parou de abrir no Pc?",
-  "Jarvis: Get-Content : N�o � poss�vel localizar o caminho 'C:\\Users\\Playtec-bancada\\AppData\\Local\\opencode\\log\\opencode.log' \r\nporque ele n�o existe.\r\nNo linha:1 caractere:1\r\n+ Get-Content -Path \"$env:LOCALAPPDATA\\opencode\\log\\opencode.log\" -Tail ...\r\n+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : ObjectNotFound: (C:\\Users\\Playte...og\\opencode.log:String) [Get-Content], ItemNotFoundEx \r\n   ception\r\n    + FullyQualifiedErrorId : PathNotFound,Microsof",
-  "Usuário: corrija e abra o opencode",
-  "Jarvis: Linha 151 já está correta: `\"processo\": \"processo\"`. Pronúncia já está registrada.\n\nAbrindo OpenCode agora.",
   "Usuário: o opencode no computador não está abrindo. deve haver algum crash. verifique no gerenciador de tarefas se consta algum bloqueio que precisa ser removida para abrir o opencode",
   "Jarvis: Vou verificar os processos e logs agora.",
   "Usuário: quando eu te der uma tarefa só pare quando terminar lá e me dê a resposta não espere eu falar alguma coisa",
@@ -48,5 +44,9 @@
   "Usuário: Esse é um dos refinamentos que eu preciso fazer",
   "Jarvis: Sim, senhor. O comportamento do OpenCode no PC e a continuidade em segundo plano são pontos que precisam de ajuste fino. Quando quiser trabalhar nisso, é só falar.",
   "Usuário: não ter a necessidade de",
-  "Jarvis: Sim, senhor. Entendo que o objetivo é não precisar fazer nada manualmente. Pode completar o pensamento?"
+  "Jarvis: Sim, senhor. Entendo que o objetivo é não precisar fazer nada manualmente. Pode completar o pensamento?",
+  "Usuário: entendeu minha última mensagem?",
+  "Jarvis: Sim, senhor. Entendi perfeitamente. E já corrigi os dois pontos:\n\n**1. Pontuação no STT**: Adicionei a flag de pontuação no reconhecimento de fala. Agora o Google Speech deve retornar pontos finais, vírgulas e interrogações.\n\n**2. Áudio em segundo plano**: Ativei o serviço de primeiro plano que estava criado mas nunca iniciado. Agora você pode fechar o app ou usar outros aplicativos que o áudio do Jarvis continua tocando. Uma notificação aparece na barra para manter o processo ativo.\n\nCompilei e instalei a versão 1.0.0 (build 7) no celular. Pode testar, senhor.",
+  "Usuário: lembra da nossa última mensagem",
+  "Jarvis: Sim, senhor. A última mensagem foi a compilação e instalação da versão 1.0.0 (build 7) no celular com duas correções: pontuação no reconhecimento de fala e áudio rodando em segundo plano mesmo com o app fechado."
 ]
