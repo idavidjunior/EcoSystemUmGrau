@@ -1,12 +1,4 @@
 [
-  "Usuário: Por que está sem resposta",
-  "Jarvis: Sem resposta.",
-  "Usuário: interação que eu tive com o aplicativo Jarvis e veja o que corrigir",
-  "Jarvis: Sem resposta.",
-  "Usuário: teste apos correcao de bugs, responda OK se funcionou",
-  "Jarvis: Arquivo lido. 25 entradas (pares de usuário/Jarvis), última pergunta: *\"todas as vezes que fizer atualização você recompila e instala novamente no aparelho\"*.",
-  "Usuário: me dê um diagnóstico do sistema em que você está operando",
-  "Jarvis: 26 entradas no `bridge_historico.json`. A última pergunta do usuário foi: \"todas as vezes que fizer atualização você recompila e instala novamente no aparelho\"",
   "Usuário: me diga como é que está o Windows agora",
   "Jarvis: 50 entradas (25 pares). A última pergunta do usuário foi: \"todas as vezes que fizer atualização você recompila e instala novamente no aparelho\".",
   "Usuário: Você está me ouvindo",
@@ -48,5 +40,13 @@
   "Usuário: me dê um diagnóstico do Windows neste exato momento",
   "Jarvis: **Diagnóstico do Windows agora:**\n\n**RAM — CRÍTICO**: 0,5 MB livres de 4 GB (0,01%). Seis instâncias do OpenCode consomem ~1,26 GB. Destaque: PID 9144 com 510 MB, PID 13060 com 295 MB, PID 11384 com 257 MB.\n\n**CPU**: Intel Core i3-5005U, 72 horas de uptime.\n\n**Disco C**: 16,3 GB livres de 118,7 GB (13,7%).\n\n**Principal vilão**: múltiplos processos OpenCode acumulados. Sugiro matar os mais pesados (PIDs 9144, 13060, 11384) que não sejam o serve da porta 8766. Quer que eu limpe?",
   "Usuário: me dê um diagnóstico de si mesmo e do ambiente em que você está inserido",
-  "Jarvis: Entendido. Vou dar continuidade — executar `ecosystem sync` para commitar tudo e finalizar a integração."
+  "Jarvis: Entendido. Vou dar continuidade — executar `ecosystem sync` para commitar tudo e finalizar a integração.",
+  "Usuário: me dê um diagnóstico de si mesmo",
+  "Jarvis: Diagnóstico, senhor:\n\n**Bridge na porta 8765**: rodando, 28 MB, 1 conexão ativa do seu celular. Tudo certo.\n\n**Serve na porta 8766**: **fora do ar**. Não está rodando.\n\n**RAM**: 358 MB livres de 4 GB (9%). Crítico — **9 instâncias do OpenCode** sugando 1,2 GB. A maior: PID 4372 com 519 MB.\n\n**Suspeita**: Essas 9 instâncias são provavelmente execuções do `opencode run` que não morreram direito — acumulando. O guardian devia ter matado elas. Quer que eu mate os processos OpenCode mais pesados (exceto a bridge) pra liberar RAM?",
+  "Usuário: o servidor que não está rodando 8766 é útil ele pode voltar a funcionar ele contribui com o sistema ou ele é inútil",
+  "Jarvis: O servidor na porta 8766 é útil, mas não essencial. Ele permite conectar via navegador web e usar o comando `opencode attach`. Porém, com a RAM em 9%, os 70 MB que ele consome fazem falta. A bridge na 8765 é o canal principal que o aplicativo do celular usa. Quer que eu religue ele, ou prefere priorizar liberar memória?",
+  "Usuário: se ele não vai atrapalhar",
+  "Jarvis: Com 290 MB livres, ligar o serve de 70 MB comprime ainda mais. Mas o problema real são as 9 instâncias do OpenCode sugando 1,2 GB. A maioria são processos fantasmas de execuções passadas. Se eu matar os zombies, sobra RAM de sobra para o serve e o sistema volta a respirar. Quer que eu limpe os processos mortos e religue o serve?",
+  "Usuário: se ele não vai ser útil pode ser removido não é",
+  "Jarvis: Pode sim. O serve na 8766 só é útil se você quiser acessar o OpenCode pelo navegador ou pelo comando attach. O aplicativo no celular usa exclusivamente a bridge na porta 8765. Remover ele libera uns 70 MB de RAM. Posso desligar agora?"
 ]
