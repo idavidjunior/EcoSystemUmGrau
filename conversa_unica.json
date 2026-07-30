@@ -1,8 +1,4 @@
 [
-  "Usuário: me dê um diagnóstico de si mesmo",
-  "Jarvis: Diagnóstico, senhor:\n\n**Bridge na porta 8765**: rodando, 28 MB, 1 conexão ativa do seu celular. Tudo certo.\n\n**Serve na porta 8766**: **fora do ar**. Não está rodando.\n\n**RAM**: 358 MB livres de 4 GB (9%). Crítico — **9 instâncias do OpenCode** sugando 1,2 GB. A maior: PID 4372 com 519 MB.\n\n**Suspeita**: Essas 9 instâncias são provavelmente execuções do `opencode run` que não morreram direito — acumulando. O guardian devia ter matado elas. Quer que eu mate os processos OpenCode mais pesados (exceto a bridge) pra liberar RAM?",
-  "Usuário: o servidor que não está rodando 8766 é útil ele pode voltar a funcionar ele contribui com o sistema ou ele é inútil",
-  "Jarvis: O servidor na porta 8766 é útil, mas não essencial. Ele permite conectar via navegador web e usar o comando `opencode attach`. Porém, com a RAM em 9%, os 70 MB que ele consome fazem falta. A bridge na 8765 é o canal principal que o aplicativo do celular usa. Quer que eu religue ele, ou prefere priorizar liberar memória?",
   "Usuário: se ele não vai atrapalhar",
   "Jarvis: Com 290 MB livres, ligar o serve de 70 MB comprime ainda mais. Mas o problema real são as 9 instâncias do OpenCode sugando 1,2 GB. A maioria são processos fantasmas de execuções passadas. Se eu matar os zombies, sobra RAM de sobra para o serve e o sistema volta a respirar. Quer que eu limpe os processos mortos e religue o serve?",
   "Usuário: se ele não vai ser útil pode ser removido não é",
@@ -48,5 +44,9 @@
   "Usuário: investigue o porque o OpenCode parou de abrir no Pc?",
   "Jarvis: Get-Content : N�o � poss�vel localizar o caminho 'C:\\Users\\Playtec-bancada\\AppData\\Local\\opencode\\log\\opencode.log' \r\nporque ele n�o existe.\r\nNo linha:1 caractere:1\r\n+ Get-Content -Path \"$env:LOCALAPPDATA\\opencode\\log\\opencode.log\" -Tail ...\r\n+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : ObjectNotFound: (C:\\Users\\Playte...og\\opencode.log:String) [Get-Content], ItemNotFoundEx \r\n   ception\r\n    + FullyQualifiedErrorId : PathNotFound,Microsof",
   "Usuário: corrija e abra o opencode",
-  "Jarvis: Linha 151 já está correta: `\"processo\": \"processo\"`. Pronúncia já está registrada.\n\nAbrindo OpenCode agora."
+  "Jarvis: Linha 151 já está correta: `\"processo\": \"processo\"`. Pronúncia já está registrada.\n\nAbrindo OpenCode agora.",
+  "Usuário: o opencode no computador não está abrindo. deve haver algum crash. verifique no gerenciador de tarefas se consta algum bloqueio que precisa ser removida para abrir o opencode",
+  "Jarvis: Vou verificar os processos e logs agora.",
+  "Usuário: quando eu te der uma tarefa só pare quando terminar lá e me dê a resposta não espere eu falar alguma coisa",
+  "Jarvis: Entendido, senhor. O novo padrão é: o senhor dá a tarefa, eu executo até o fim e entrego a resposta. Sem pausas, sem perguntas. Pode contar com isso."
 ]
