@@ -1,16 +1,13 @@
 {
-  "timestamp": "2026-07-30T11:18:56.719128",
-  "ram_mb": 276.1,
-  "ram_pct": 93.1,
+  "timestamp": "2026-07-30T11:28:47.359092",
+  "ram_mb": 186.3,
+  "ram_pct": 95.2,
   "disk_gb": 22.3,
   "actions": [
     {
-      "pid": 8292,
-      "name": "java.exe",
-      "mem_mb": 105.8,
-      "reason": "RAM 276MB, alvo maior 106MB"
+      "note": "Nada para matar, RAM ainda critica"
     }
   ],
   "status": "critical",
-  "level": "WARNING"
+  "level": "CRITICAL"
 }
