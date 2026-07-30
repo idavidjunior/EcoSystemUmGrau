@@ -1,0 +1,12 @@
+[2026-07-29 21:57:39] Watchdog iniciado (intervalo: 20s, bridge: 8765)
+[2026-07-29 21:57:39] Bridge OK (porta 8765)
+[2026-07-29 21:57:39] Serve MORTO na porta 8766
+[2026-07-29 21:57:40] Limpou 1 processos orfaos do OpenCode (512MB liberados)
+[2026-07-29 21:58:00] Bridge OK (porta 8765)
+[2026-07-29 21:58:00] Serve MORTO na porta 8766
+[2026-07-29 21:58:20] Bridge OK (porta 8765)
+[2026-07-29 21:58:20] Serve MORTO na porta 8766
+[2026-07-29 21:58:40] Bridge OK (porta 8765)
+[2026-07-29 21:58:40] Serve MORTO na porta 8766
+[2026-07-29 21:59:00] Bridge OK (porta 8765)
+[2026-07-29 21:59:00] Serve MORTO na porta 8766
