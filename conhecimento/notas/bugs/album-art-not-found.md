@@ -1,7 +1,7 @@
 ---
 tags: [bug, mp3player-metadata-rescue]
 aliases: [Album art not found]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Bug: Album art not found

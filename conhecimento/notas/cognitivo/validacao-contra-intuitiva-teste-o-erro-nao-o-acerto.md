@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, testing]
 aliases: [Validacao contra-intuitiva: teste o erro, nao o acerto]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Validacao contra-intuitiva: teste o erro, nao o acerto

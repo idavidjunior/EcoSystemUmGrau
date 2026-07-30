@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, general]
 aliases: [﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # ﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub
@@ -121,6 +121,51 @@ date: 2026-07-29
 
 
 ﻿# 2026-07-29 - Scan proativo: SupermarketCalculator
+## Marcadores encontrados
+- MainActivity.java: 4 marcadores
+
+
+
+# 2026-07-29 — Integração de clima via OpenWeatherMap
+
+## Habilidade adicionada ao Jarvis
+- Nova skill: `skills/clima-api/skill.md`
+- Script: `scripts/clima_api.py`
+- Dicionário de pronúncia atualizado com termos climáticos (20 palavras)
+
+## Como funciona
+- Jarvis usa `python clima_api.py "<cidade>"` para obter clima em tempo real
+- Dados: descrição, temperatura, sensação térmica, umidade
+- Idioma: português brasileiro, unidades métricas
+- Chave da API deve estar em `scripts/.env` como `OPENWEAT
+
+﻿# 2026-07-30 - Scan proativo: Biblia
+## Marcadores encontrados
+- parse_apocrypha.py: 1 marcadores
+- parse_apocrypha2.py: 1 marcadores
+- parse_apocrypha3.py: 1 marcadores
+- ResourcesActivity.java: 3 marcadores
+
+
+
+﻿# 2026-07-30 - Scan proativo: CellCleaner
+## Marcadores encontrados
+- MainActivity.java: 1 marcadores
+
+
+
+﻿# 2026-07-30 - Scan proativo: Mp3Player
+## Marcadores encontrados
+- BiquadFilter.kt: 1 marcadores
+- EqualizerAudioProcessor.kt: 2 marcadores
+- AudioDecoder.kt: 1 marcadores
+- EqPresetManager.kt: 2 marcadores
+- MainActivity.kt: 2 marcadores
+- TagEditorActivity.kt: 1 marcadores
+
+
+
+﻿# 2026-07-30 - Scan proativo: SupermarketCalculator
 ## Marcadores encontrados
 - MainActivity.java: 4 marcadores
 

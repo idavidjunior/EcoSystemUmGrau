@@ -1,7 +1,7 @@
 ---
 tags: [decisao, treinamentonavegacao]
 aliases: [Usar OCR como fallback final, nao primario]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Usar OCR como fallback final, nao primario

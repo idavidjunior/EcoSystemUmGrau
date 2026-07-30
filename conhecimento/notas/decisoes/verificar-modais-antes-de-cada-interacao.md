@@ -1,7 +1,7 @@
 ---
 tags: [decisao, treinamentonavegacao]
 aliases: [Verificar modais antes de cada interacao]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Verificar modais antes de cada interacao

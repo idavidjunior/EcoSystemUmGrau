@@ -1,7 +1,7 @@
 ---
 tags: [padrao, android-pure-sdkandroid-pure-sdk]
 aliases: [Key Design Decisions]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Key Design Decisions

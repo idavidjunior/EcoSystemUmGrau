@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [Lazy-loaded content detection]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Lazy-loaded content detection

@@ -1,7 +1,7 @@
 ---
 tags: [padrao, mp3player]
 aliases: [iTunes search with scoring thresholds]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # iTunes search with scoring thresholds

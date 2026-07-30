@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, debugging]
 aliases: [Verifique o que voce acha que sabe]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Verifique o que voce acha que sabe

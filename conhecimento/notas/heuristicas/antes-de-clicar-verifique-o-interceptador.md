@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, cross-platform]
 aliases: [Antes de clicar, verifique o interceptador]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Antes de clicar, verifique o interceptador

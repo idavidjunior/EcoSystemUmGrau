@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [Android gesture patterns]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Android gesture patterns

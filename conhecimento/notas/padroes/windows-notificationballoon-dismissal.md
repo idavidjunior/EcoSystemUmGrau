@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [Windows notification/balloon dismissal]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Windows notification/balloon dismissal

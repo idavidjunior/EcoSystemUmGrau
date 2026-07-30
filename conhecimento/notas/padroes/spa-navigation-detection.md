@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [SPA navigation detection]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # SPA navigation detection

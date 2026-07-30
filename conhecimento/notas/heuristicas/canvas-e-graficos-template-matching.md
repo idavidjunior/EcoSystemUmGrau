@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, element-detection]
 aliases: [Canvas e graficos: template matching]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Canvas e graficos: template matching

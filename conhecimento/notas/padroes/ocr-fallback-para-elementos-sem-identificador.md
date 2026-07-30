@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [OCR fallback para elementos sem identificador]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # OCR fallback para elementos sem identificador

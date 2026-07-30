@@ -1,7 +1,7 @@
 ---
 tags: [framework]
 aliases: [Framework de Aprendizado Continuo (Auto-Learning)]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Framework de Aprendizado Continuo (Auto-Learning)

@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, debugging]
 aliases: [Heuristica de isolamento de falha]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Heuristica de isolamento de falha

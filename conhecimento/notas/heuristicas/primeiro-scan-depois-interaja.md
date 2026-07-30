@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, efficiency]
 aliases: [Primeiro scan, depois interaja]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Primeiro scan, depois interaja

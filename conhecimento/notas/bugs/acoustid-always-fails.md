@@ -1,7 +1,7 @@
 ---
 tags: [bug, mp3player-metadata-rescue]
 aliases: [AcoustID always fails]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Bug: AcoustID always fails

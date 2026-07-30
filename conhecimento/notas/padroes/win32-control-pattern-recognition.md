@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [Win32 control pattern recognition]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Win32 control pattern recognition

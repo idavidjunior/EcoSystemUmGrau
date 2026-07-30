@@ -1,7 +1,7 @@
 ---
 tags: [padrao, mp3player]
 aliases: [AudioProcessor.isActive() must be dynamic]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # AudioProcessor.isActive() must be dynamic

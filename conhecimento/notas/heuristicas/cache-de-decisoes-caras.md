@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, systemdesign]
 aliases: [Cache de decisoes caras]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Cache de decisoes caras

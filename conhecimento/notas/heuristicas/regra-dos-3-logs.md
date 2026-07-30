@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, debugging]
 aliases: [Regra dos 3 logs]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Regra dos 3 logs

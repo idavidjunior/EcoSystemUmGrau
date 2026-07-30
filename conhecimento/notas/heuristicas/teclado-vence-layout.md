@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, cross-platform]
 aliases: [Teclado vence layout]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Teclado vence layout

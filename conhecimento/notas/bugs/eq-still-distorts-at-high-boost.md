@@ -1,7 +1,7 @@
 ---
 tags: [bug, mp3player-metadata-rescue]
 aliases: [**EQ still distorts at high boost**]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Bug: **EQ still distorts at high boost**

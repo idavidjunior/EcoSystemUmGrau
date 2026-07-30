@@ -1,7 +1,7 @@
 ---
 tags: [bug, sessaolimpezaauth]
 aliases: [auth.json com entradas de chave NVIDIA disfarcadas de outros]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Bug: auth.json com entradas de chave NVIDIA disfarcadas de outros provedores

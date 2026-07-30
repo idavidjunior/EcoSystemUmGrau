@@ -1,7 +1,7 @@
 ---
 tags: [padrao, sessaoprovidermanager]
 aliases: [MCP server handshake obrigatorio]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # MCP server handshake obrigatorio

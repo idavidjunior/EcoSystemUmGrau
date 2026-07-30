@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, coding]
 aliases: [Interface sobre implementacao em parametros]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Interface sobre implementacao em parametros

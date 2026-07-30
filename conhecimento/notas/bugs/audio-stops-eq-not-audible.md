@@ -1,7 +1,7 @@
 ---
 tags: [bug, mp3player-metadata-rescue]
 aliases: [**Audio stops / EQ not audible**]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Bug: **Audio stops / EQ not audible**

@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [MIUI/HyperOS permission dialogs]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # MIUI/HyperOS permission dialogs

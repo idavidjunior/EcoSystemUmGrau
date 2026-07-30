@@ -1,7 +1,7 @@
 ---
 tags: [padrao, sessaoprovidermanager]
 aliases: [Server failover com auto-return]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Server failover com auto-return

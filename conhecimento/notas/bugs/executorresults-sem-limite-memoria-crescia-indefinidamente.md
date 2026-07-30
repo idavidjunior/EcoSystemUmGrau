@@ -1,7 +1,7 @@
 ---
 tags: [bug, lerauditoria]
 aliases: [Executor.results sem limite — memoria crescia indefinidament]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Bug: Executor.results sem limite — memoria crescia indefinidamente

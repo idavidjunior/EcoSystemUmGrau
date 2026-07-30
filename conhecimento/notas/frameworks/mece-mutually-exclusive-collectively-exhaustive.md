@@ -1,7 +1,7 @@
 ---
 tags: [framework]
 aliases: [MECE (Mutually Exclusive, Collectively Exhaustive)]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # MECE (Mutually Exclusive, Collectively Exhaustive)

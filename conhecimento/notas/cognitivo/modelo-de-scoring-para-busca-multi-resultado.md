@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, algorithm]
 aliases: [Modelo de scoring para busca multi-resultado]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Modelo de scoring para busca multi-resultado

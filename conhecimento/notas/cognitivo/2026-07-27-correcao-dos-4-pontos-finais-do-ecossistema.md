@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, general]
 aliases: [﻿# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # ﻿# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema

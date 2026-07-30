@@ -1,7 +1,7 @@
 ---
 tags: [padrao, android-pure-sdkandroid-pure-sdk]
 aliases: [Sub-tab Pattern (nested tabs)]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Sub-tab Pattern (nested tabs)

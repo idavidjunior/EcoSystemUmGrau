@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [Wait strategy adaptive]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Wait strategy adaptive

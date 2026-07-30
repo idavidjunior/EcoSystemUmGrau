@@ -1,7 +1,7 @@
 ---
 tags: [decisao, providermcpdebug]
 aliases: [Mudar config MCP de objeto para array no opencode.json]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Mudar config MCP de objeto para array no opencode.json

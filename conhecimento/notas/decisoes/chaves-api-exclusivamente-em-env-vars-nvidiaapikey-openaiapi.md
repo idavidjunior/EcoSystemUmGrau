@@ -1,7 +1,7 @@
 ---
 tags: [decisao, sessaoseguranca]
 aliases: [Chaves API exclusivamente em env vars (NVIDIA_API_KEY, OPENA]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Chaves API exclusivamente em env vars (NVIDIA_API_KEY, OPENAI_API_KEY, etc.)

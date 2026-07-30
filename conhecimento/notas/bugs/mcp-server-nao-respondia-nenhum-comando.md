@@ -1,7 +1,7 @@
 ---
 tags: [bug, sessaoprovidermanager]
 aliases: [MCP server nao respondia nenhum comando]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Bug: MCP server nao respondia nenhum comando

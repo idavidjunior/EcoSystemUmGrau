@@ -1,7 +1,7 @@
 ---
 tags: [decisao, mp3player]
 aliases: [Metadata busca em multi-fontes: AcoustID -> iTunes BR -> Mus]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Metadata busca em multi-fontes: AcoustID -> iTunes BR -> MusicBrainz -> iTunes US fallback.

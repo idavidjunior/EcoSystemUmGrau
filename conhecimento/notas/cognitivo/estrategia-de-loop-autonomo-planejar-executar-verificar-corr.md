@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, system_design]
 aliases: [Estrategia de loop autonomo: planejar-executar-verificar-corrigir]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Estrategia de loop autonomo: planejar-executar-verificar-corrigir

@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [Keyboard-only navigation fallback]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Keyboard-only navigation fallback

@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, system_design]
 aliases: [Estrategia de fallback em cadeia (Chain of Responsibility)]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Estrategia de fallback em cadeia (Chain of Responsibility)

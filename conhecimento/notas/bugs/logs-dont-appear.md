@@ -1,7 +1,7 @@
 ---
 tags: [bug, mp3player-metadata-rescue]
 aliases: [Logs don't appear]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Bug: Logs don't appear

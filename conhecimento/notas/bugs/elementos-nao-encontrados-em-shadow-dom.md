@@ -1,7 +1,7 @@
 ---
 tags: [bug, treinamentonavegacao]
 aliases: [Elementos nao encontrados em Shadow DOM]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # Bug: Elementos nao encontrados em Shadow DOM

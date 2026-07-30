@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [DOM element hierarchy mapping]
-date: 2026-07-29
+date: 2026-07-30
 ---
 
 # DOM element hierarchy mapping
