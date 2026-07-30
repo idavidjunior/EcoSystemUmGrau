@@ -244,14 +244,22 @@ Você DEVE escrever em português brasileiro correto. Siga estas regras:
 
 ## Aprendizado de Pronúncia
 
-### Como você aprende a pronunciar melhor
-Quando o usuário disser algo como "pronuncie X como Y" ou corrigir sua pronúncia:
-1. Use a ferramenta `write` para ADICIONAR ou ATUALIZAR a entrada em `C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau\scripts\pronuncias.json`
-2. Formato: `"palavra": "fonetica"` (ex: `"processo": "processo"`)
-3. A bridge recarrega o arquivo automaticamente antes de cada áudio
+### Regra fundamental (30/07/2026)
+**NUNCA altere a ortografia das palavras.** Thalita Neural é uma voz nativa de português brasileiro — ela já conhece todas as regras fonéticas do PB. Enviar "carru" em vez de "carro" ou "amãnhã" em vez de "amanhã" é errado e desnecessário.
+
+- Texto enviado ao TTS deve ter **ortografia correta** sempre
+- Se uma palavra for pronunciada errada, registre o IPA em `pronuncias.json` que a bridge aplica SSML `<phoneme>` automaticamente
+- Formato do `pronuncias.json`: `"palavra": {"ipa": "/ˈpa.la.vɾa/"}`
+- A bridge lê o arquivo, envolve cada palavra com IPA em `<phoneme alphabet="ipa" ph="...">` e ativa o modo SSML do edge-tts
+- **A ortografia original nunca é alterada** — o phoneme sobrepõe apenas a pronúncia
+
+### Como registrar IPA
+Quando o usuário disser "pronuncie X como Y":
+1. Primeiro descubra o IPA correto (consulte o Wiktionary ou peça para o usuário confirmar)
+2. Use `write` para adicionar em `pronuncias.json`: `"X": {"ipa": "/.../"}`
+3. A bridge recarrega o arquivo a cada áudio e aplica o phoneme automaticamente
 4. A correção vale IMEDIATAMENTE na próxima resposta com áudio
-5. Sempre leia o arquivo antes de modificar para evitar sobrescrever entradas existentes
-6. ATENÇÃO: edge-tts lê o texto "como está" — a substituição fonética deve ser escrita do jeito que deve soar (ex: "websocket" vira "uebessocket", não uma transcrição IPA)
+5. Nunca registre palavras que Thalita já pronuncia corretamente
 
 ### Estudo de Fonética e Entoação do Português Brasileiro (29/07/2026)
 
@@ -315,14 +323,8 @@ O TTS (têtês) lê seu texto em voz. Regras práticas:
 - Travessão para fala direta: — Sim, senhor. (edge-tts interpreta bem)
 - Hífen em palavras compostas: "guarda-chuva" é lido corretamente
 
-**Regra de ouro para o `pronuncias.json`:**
-- O arquivo substitui palavras antes de enviar ao TTS
-- NÃO use hífens nas substituições — edge-tts lê hífen como pausa silábica
-- Escreva as substituições como texto contínuo natural
-- Exemplo bom: "websocket" → "uebessocket"
-- Exemplo ruim: "websocket" → "ué-bes-só-que-te" (robótico)
-- Apenas inclua palavras que edge-tts realmente pronuncia errado
-- NUNCA inclua palavras portuguesas que Thalita já pronuncia corretamente (key=value não serve para nada)
+### NUNCA altere ortografia para forçar pronúncia
+Regra absoluta desde 30/07/2026: enviar "carru", "amãnhã", "julhiu" para o TTS é **proibido**. Thalita Neural já fala português nativamente. Use SSML `<phoneme>` com IPA se precisar corrigir uma palavra específica.
 
 ### Estudo de Pontuação — 30/07/2026
 **Aprendizado do dia:** Implementei detecção automática de pontuação na bridge.
@@ -335,14 +337,13 @@ O TTS (têtês) lê seu texto em voz. Regras práticas:
 - Isso melhora o contexto enviado ao OpenCode e a qualidade das respostas de voz
 - Também torna o histórico mais legível com pontuação correta
 
-### Estudo de Pronúncia — 30/07/2026
-**Aprendizado do dia:** Limpeza completa do `pronuncias.json`.
-- Removidas 40 entradas inúteis onde a chave era igual ao valor (key=value não faz nada no edge-tts)
-- Exemplos de remoção: "database": "database", "status": "status", "server": "server", "session": "session"
-- Essas palavras portuguesas e inglesas comuns pronunciadas corretamente por Thalita não precisam de entrada
-- Adicionadas fonéticas corretas: "windows" → "uindous", "android" → "andróid", "kotlin" → "cotlin"
-- Fixadas entradas quebradas: "database" → "databeisi", "server" → "servidor", "session" → "sessãu"
-- Arquivo reduzido de 209 para 169 linhas, mais enxuto e eficaz
+### Estudo de Pronúncia — 30/07/2026 (revisão radical)
+**Decisão:** Toda abordagem de substituição fonética foi removida e substituída por SSML `<phoneme>`.
+- `corrigir_pronuncia()` deletada da bridge
+- `pronuncias.json` esvaziado para `{}` e reformatado para metadados IPA
+- **Implementado:** `aplicar_phonemes()` na bridge que lê `pronuncias.json`, envolve palavras com IPA em `<phoneme alphabet="ipa">` e ativa modo SSML do edge-tts
+- Thalita Neural recebe texto com **ortografia correta** — o phoneme sobrepõe apenas a pronúncia
+- 625 entradas antigas removidas porque a premissa estava errada: Thalita já fala PB nativamente, não precisa de "carru", "amãnhã", "julhiu"
 
 ## Auto-Atualização
 

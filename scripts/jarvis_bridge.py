@@ -24,7 +24,7 @@ SERVER_PASS = os.environ.get("OPENCODE_SERVER_PASSWORD", "")
 WORKDIR = r"C:\Users\Playtec-bancada\Desktop\Codigos"
 HIST_PATH = Path(WORKDIR) / "EcoSystemUmGrau" / "conversa_unica.json"
 SYS_PATH = r"C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau\scripts\JARVIS_SYSTEM.md"
-PRON_PATH = r"C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau\scripts\pronuncias.json"
+PRON_PATH = r"C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau\scripts\pronuncias.json"  # ipa metadata apenas
 
 MAX_HIST = 50
 
@@ -65,35 +65,7 @@ def carregar_sistema():
 
 SISTEMA = carregar_sistema()
 
-def carregar_pronuncias():
-    try:
-        with open(PRON_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except: return {}
 
-PRONUNCIAS = carregar_pronuncias()
-ULTIMA_CARGA = time.time()
-
-def recarregar_pronuncias():
-    global PRONUNCIAS, ULTIMA_CARGA
-    PRONUNCIAS = carregar_pronuncias()
-    ULTIMA_CARGA = time.time()
-    logger.info(f"pronuncias recarregadas: {len(PRONUNCIAS)} palavras")
-
-def salvar_pronuncia(palavra, fonetica):
-    try:
-        d = dict(PRONUNCIAS)
-        d[palavra.strip().lower()] = fonetica.strip()
-        tmp = PRON_PATH + ".tmp"
-        with open(tmp, "w", encoding="utf-8") as f:
-            json.dump(d, f, ensure_ascii=False, indent=2)
-        os.replace(tmp, PRON_PATH)
-        recarregar_pronuncias()
-        logger.info(f"pronuncia salva: {palavra} -> {fonetica}")
-        return True
-    except Exception as e:
-        logger.error(f"salvar pronuncia: {e}")
-        return False
 
 def gerar_estado_atual():
     linhas = []
@@ -170,25 +142,28 @@ def sanitizar(t):
     t = re.sub(r'^\s*[-*+]\s+', '', t, flags=re.MULTILINE)
     return re.sub(r'\s+', ' ', t).strip()[:2000]
 
-def corrigir_pronuncia(texto):
-    if not texto or not PRONUNCIAS: return texto
-    palavras = sorted(PRONUNCIAS.keys(), key=len, reverse=True)
-    for palavra in palavras:
-        alias = PRONUNCIAS[palavra]
-        texto = re.sub(re.escape(palavra), lambda m: alias, texto, flags=re.IGNORECASE)
-    return texto.strip()
 
+
+
+def aplicar_phonemes(texto):
+    try:
+        with open(PRON_PATH, "r", encoding="utf-8") as f:
+            d = json.load(f)
+    except: return texto, False
+    ipas = {k.lower(): v["ipa"] for k, v in d.items() if isinstance(v, dict) and "ipa" in v}
+    if not ipas: return texto, False
+    palavras = sorted(ipas.keys(), key=len, reverse=True)
+    pattern = "|".join(re.escape(p) for p in palavras)
+    def _tag(m):
+        w = m.group(0)
+        return f'<phoneme alphabet="ipa" ph="{xml.sax.saxutils.escape(ipas[w.lower()])}">{w}</phoneme>'
+    return f"<speak>{re.sub(pattern, _tag, texto, flags=re.IGNORECASE)}</speak>", True
 
 async def gerar_audio(texto):
     t = sanitizar(texto)
     if not t: return ""
-    try:
-        mtime = os.path.getmtime(PRON_PATH)
-        if mtime > ULTIMA_CARGA:
-            recarregar_pronuncias()
-    except: pass
-    t = corrigir_pronuncia(t)
-    c = edge_tts.Communicate(t, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
+    t, ssml = aplicar_phonemes(t) if PRON_PATH else (t, False)
+    c = edge_tts.Communicate(t, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH, ssml=ssml)
     audio = b""
     async for chunk in c.stream():
         if chunk["type"] == "audio": audio += chunk["data"]
@@ -464,7 +439,7 @@ async def servir():
     logger.info(f"  serve: {SERVE_URL}")
     logger.info(f"  sistema: {len(SISTEMA)} chars")
     logger.info(f"  estado: atualizado por request")
-    logger.info(f"  pronuncias: {len(PRONUNCIAS)} palavras")
+    logger.info(f"  pronuncias: desativado (Thalita nativa)")
     logger.info(f"  historico: {HIST_PATH.name}")
     logger.info("="*50)
     async with websockets.serve(lidar, "0.0.0.0", 8765):
