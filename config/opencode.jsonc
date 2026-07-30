@@ -15,8 +15,8 @@
     }
   },
   "mcp": {
-    "enabled": true,
     "servers": {
+      "enabled": true,
       "eco-knowledge": {
         "type": "local",
         "command": "python",
