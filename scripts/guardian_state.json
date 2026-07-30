@@ -1,11 +1,14 @@
 {
-  "timestamp": "2026-07-30T11:45:17.062790",
-  "ram_mb": 90.5,
-  "ram_pct": 97.7,
+  "timestamp": "2026-07-30T11:45:40.420876",
+  "ram_mb": 146.6,
+  "ram_pct": 96.3,
   "disk_gb": 22.7,
   "actions": [
     {
-      "note": "Nada para matar, RAM ainda critica"
+      "pid": 8956,
+      "name": "opencode.exe",
+      "mem_mb": 86.4,
+      "reason": "RAM 147MB, alvo maior 86MB"
     }
   ],
   "status": "critical",
