@@ -160,8 +160,8 @@ def aplicar_phonemes(texto):
             ipa = ipas[w.lower()]["ipa"].strip("/")
             return f'<phoneme alphabet="ipa" ph="/{ipa}/">{w}</phoneme>'
         return w
-    texto = re.sub(r'\b([A-Za-zÀ-ÿ]+)\b', sub, texto)
-    return texto, True
+    texto, n = re.subn(r'\b([^\W\d_]+)\b', sub, texto)
+    return texto, n > 0
 
 async def gerar_audio(texto):
     t = sanitizar(texto)
@@ -169,7 +169,7 @@ async def gerar_audio(texto):
     t, tem_phoneme = aplicar_phonemes(t) if PRON_PATH else (t, False)
     if tem_phoneme:
         t = f"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='pt-BR'>{t}</speak>"
-    c = edge_tts.Communicate(t, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
+    c = edge_tts.Communicate(t, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH, ssml=tem_phoneme)
     audio = b""
     async for chunk in c.stream():
         if chunk["type"] == "audio": audio += chunk["data"]
@@ -395,6 +395,14 @@ async def lidar(ws):
 
     try:
         async for m in ws:
+            try:
+                obj = json.loads(m)
+                if isinstance(obj, dict) and obj.get("tipo") == "ping":
+                    await ws.send(json.dumps({"tipo": "pong", "origem": "bridge", "eco": obj}))
+                    logger.info(f"ping-pong de {obj.get('origem','desconhecido')}")
+                    continue
+            except json.JSONDecodeError:
+                pass
             msg_fix = fix_punctuation(m)
             if msg_fix != m:
                 logger.info(f"pontuacao corrigida: {m[:80]} -> {msg_fix[:80]}")
