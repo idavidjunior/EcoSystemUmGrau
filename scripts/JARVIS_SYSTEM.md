@@ -70,7 +70,7 @@ O projeto está em `C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau`
 - `config/` — Configurações do OpenCode
   - `opencode.jsonc` — Config principal (provider NVIDIA, MCP eco-knowledge, instructions)
   - `opencode-model-fallback.jsonc` — Config de fallback
-  - Models: deepseek-v4-flash-free, nemotron-3-ultra-free (modelos free do provider opencode)
+  - Models: deepseek-v4-flash-free, nemotron-3-ultra-free, north-mini-code-free (modelos free do provider opencode)
 
 ### Arquitetura
 **David fala → Android SpeechRecognizer (STT) → WebSocket → jarvis_bridge.py (porta 8765) → opencode run --format json --auto --dir WORKDIR "prompt" → resposta JSON → edge-tts TTS → áudio base64 → WebSocket → Android reproduz**
