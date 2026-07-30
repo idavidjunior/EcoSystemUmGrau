@@ -1,12 +1,4 @@
 [
-  "Usuário: E aí",
-  "Jarvis: E aí, firmeza. Tudo pronto pra ação. O que você precisa?",
-  "Usuário: me dê um diagnóstico de si mesmo e do sistema em que você está inserido",
-  "Jarvis: **Diagnóstico:**\n\n**Eu (Jarvis):** Operacional. Bridge Python rodando na porta 8765, resposta com TTS, 43 MB de RAM. `bridge_historico.json` com 11,9 KB mas com caracteres corrompidos (acentos viram `ǭ`, `ǜ` — problema de encoding no histórico).\n\n**Windows 10 Pro:** 3 dias de uptime, RAM crítica — 205 MB livres de 3,9 GB (5,2%). Disco C: 17,2 GB livres (14,5%).\n\n**OpenCode:** 9 instâncias consumindo ~1,3 GB no total. Destaque: PID 6720 com 501 MB (provável `opencode run` travado), PID 9756 na porta 8766 com 147 MB.\n\nQuer que eu resolva algum desses pontos? Posso matar os processos OpenCode excedentes e/ou corrigir o encoding do histórico.",
-  "Usuário: você resolva todos os pontos",
-  "Jarvis: Vou identificar quais processos são essenciais e quais estão sobrando.",
-  "Usuário: você fica esperando eu falar mas fica apitando isso não é necessário",
-  "Jarvis: Corrigido. O bipe vinha do `SpeechRecognizer` que tocava um som de sistema toda vez que começava a escutar automaticamente depois do áudio do Jarvis. Fiz 3 alterações:\n\n1. **`VoxViewModel.kt`**: Parei de auto-escutar depois do áudio. Agora só mostra \"Pronto para falar\" sem disparar o microfone. Também parei de religar automaticamente quando dá erro de reconhecimento.\n\n2. **`VoxStt.kt`**: Adicionei `AudioFocusRequest` com `AUDIOFOCUS_GAIN_TRANSIENT` que suprime o bipe do sistema quando você pressiona o botão do microfone manualmente.\n\n3. **`build.ps1`**: Corrigi o path do `adb` para encontrar automaticamente no Android SDK.\n\nApp compilado e instalado com sucesso (versionCode 3). Agora o sistema espera em silêncio — você toca no microfone quando quiser falar, sem bipes indesejados.",
   "Usuário: teste de sessao unificada, diga apenas: primeira mensagem",
   "Jarvis: primeira mensagem",
   "Usuário: diga apenas: segunda mensagem, continuacao",
@@ -48,5 +40,13 @@
   "Usuário: vamos continuar com o gerenciador de tarefas",
   "Jarvis: Esse PID 8980 é outro `opencode run -c` que vazou. Vou matar ele e liberar a memória.",
   "Usuário: como nós podemos fazer para que esse processo de liberar memória inútil seja automático",
-  "Jarvis: Pronto. Agora vou reiniciar o watchdog pra nova regra valer."
+  "Jarvis: Pronto. Agora vou reiniciar o watchdog pra nova regra valer.",
+  "Usuário: não se esqueça de sempre me avisar depois de cada atualização Olha a atualização x foi feita a atualização outra também já foi feita isso eu quero saber",
+  "Jarvis: Combinado. Sempre que eu fizer qualquer atualização no sistema, vou avisar na hora: \"Atualização tal feita\", \"essa também já foi\". Pode contar comigo.",
+  "Usuário: Abra o open code para mim",
+  "Jarvis: Vou verificar o estado atual do OpenCode e da ponte.",
+  "Usuário: preciso que você abra o open code",
+  "Jarvis: Id ProcessName       CPU WorkingSet64 StartTime          \r\n -- -----------       --- ------------ ---------          \r\n260 opencode    15,015625    547733504 29/07/2026 22:05:03",
+  "Usuário: está vendo o meu computador preciso que você abra o programa open code ou permita que ele seja aberto",
+  "Jarvis: Id ProcessName MemMB\r\n  -- ----------- -----\r\n1168 node         57,7\r\n2556 node         57,9\r\n8056 node         58,5\r\n5904 opencode    520,1"
 ]
