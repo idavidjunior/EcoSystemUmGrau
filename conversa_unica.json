@@ -1,6 +1,4 @@
 [
-  "Usuário: o opencode no computador não está abrindo. deve haver algum crash. verifique no gerenciador de tarefas se consta algum bloqueio que precisa ser removida para abrir o opencode",
-  "Jarvis: Vou verificar os processos e logs agora.",
   "Usuário: quando eu te der uma tarefa só pare quando terminar lá e me dê a resposta não espere eu falar alguma coisa",
   "Jarvis: Entendido, senhor. O novo padrão é: o senhor dá a tarefa, eu executo até o fim e entrego a resposta. Sem pausas, sem perguntas. Pode contar com isso.",
   "Usuário: o opencode no computador não está abrindo. deve haver algum crash. verifique no gerenciador de tarefas se consta algum bloqueio que precisa ser removida para abrir o opencode",
@@ -48,5 +46,7 @@
   "Usuário: entendeu minha última mensagem?",
   "Jarvis: Sim, senhor. Entendi perfeitamente. E já corrigi os dois pontos:\n\n**1. Pontuação no STT**: Adicionei a flag de pontuação no reconhecimento de fala. Agora o Google Speech deve retornar pontos finais, vírgulas e interrogações.\n\n**2. Áudio em segundo plano**: Ativei o serviço de primeiro plano que estava criado mas nunca iniciado. Agora você pode fechar o app ou usar outros aplicativos que o áudio do Jarvis continua tocando. Uma notificação aparece na barra para manter o processo ativo.\n\nCompilei e instalei a versão 1.0.0 (build 7) no celular. Pode testar, senhor.",
   "Usuário: lembra da nossa última mensagem",
-  "Jarvis: Sim, senhor. A última mensagem foi a compilação e instalação da versão 1.0.0 (build 7) no celular com duas correções: pontuação no reconhecimento de fala e áudio rodando em segundo plano mesmo com o app fechado."
+  "Jarvis: Sim, senhor. A última mensagem foi a compilação e instalação da versão 1.0.0 (build 7) no celular com duas correções: pontuação no reconhecimento de fala e áudio rodando em segundo plano mesmo com o app fechado.",
+  "Usuário: qual o diagnóstico de si mesmo hoje",
+  "Jarvis: **Diagnóstico — 30 de julho de 2026:**\n\n**Jarvis**: Operacional. Bridge (PID 7752) na porta 8765, 57 MB de RAM, rodando desde as 05:52. Um cliente Android conectado via Tailscale (conexão direta, 50 MB de tráfego).\n\n**OpenCode serve (PID 6116)**: Rodando desde as 07:06 após reinicialização automática. O log mostra que o servidor caiu com erro \"conexão cancelada pelo host remoto\" e foi reiniciado pela bridge. Usa 516 MB de RAM. Porta 8766 com health endpoint respondendo (autenticação básica obrigatória).\n\n**Ponto de atenção**: O histórico tem 25 pares de conversa. A última requisição ao servidor OpenCode falhou por conexão remota encerrada, mas ele se recuperou sozinho — a bridge detectou e reiniciou em segundos.\n\n**EcoSystemUmGrau**: 35 skills, 277 notas Obsidian, 17 agentes LER, arquitetura estável."
 ]
