@@ -1,8 +1,4 @@
 [
-  "Usuário: Como está o mercado financeiro hoje",
-  "Jarvis: Com base nos dados de hoje, 30 de julho de 2026:\n\n**Ibovespa:** 173.885 pontos — queda de 1,52% no último fechamento. O mercado caiu depois que o Federal Reserve dos Estados Unidos manteve os juros, o que desanimou os investidores.\n\n**Dólar:** R$5,12 — estável, praticamente sem variação.\n\nO mercado está aguardando a abertura do pregão de hoje para ver se há recuperação.",
-  "Usuário: Você já está funcionando em segundo plano",
-  "Jarvis: Sim, senhor. Tudo rodando em segundo plano:\n\n**Ponte ativa** — porta 8765 ouvindo, celular conectado via Tailscale.\n**OpenCode rodando** — 442 MB de memória, iniciado às 23:56.\n**Processo Python** — bridge ativa com 30 MB.\n\nO sistema está operacional e aguardando comandos.",
   "Usuário: se eu fechar o aplicativo do celular ele continua em segundo plano e continuamos conversando em segundo plano mesmo assim",
   "Jarvis: Se fechar o aplicativo do celular:\n\n**A ponte continua rodando** no PC o vigilante mantém ela ativa. **O OpenCode também continua**. Nossa conversa aqui pelo terminal não é afetada.\n\nQuando você abrir o app de novo, ele reconecta automaticamente na ponte e pode continuar de onde parou. O histórico fica salvo no arquivo de conversa.\n\nMas atenção: com o app fechado, você não consegue falar comigo por voz até reabrir. Pelo teclado aqui, seguimos normalmente.",
   "Usuário: Esse é um dos refinamentos que eu preciso fazer",
@@ -48,5 +44,9 @@
   "Usuário: Quero que você implemente sim faça isso?",
   "Jarvis: Tempo agora em São Paulo: nublado, 15 graus, sensação de 15, umidade de 86 por cento. Fica em São Paulo, capital. Use o `--saudacao` para respostas curtas.",
   "Usuário: Implementou o suporte ssml.",
-  "Jarvis: Sim, o suporte SSML já está implementado na bridge desde o estudo de pronúncia do dia 30 de julho. A função `aplicar_phonemes()` na linha 148 do `jarvis_bridge.py` lê o `pronuncias.json`, que agora usa formato IPA\n\n```json\n{\"clima\": {\"ipa\": \"climɐ\"}}\n```\n\ne aplica tags `<phoneme alphabet=\"ipa\">` automaticamente. O `edge_tts.Communicate` já é chamado com `ssml=True`. Thalita recebe o texto com ortografia correta e o phoneme sobrepõe apenas a pronúncia."
+  "Jarvis: Sim, o suporte SSML já está implementado na bridge desde o estudo de pronúncia do dia 30 de julho. A função `aplicar_phonemes()` na linha 148 do `jarvis_bridge.py` lê o `pronuncias.json`, que agora usa formato IPA\n\n```json\n{\"clima\": {\"ipa\": \"climɐ\"}}\n```\n\ne aplica tags `<phoneme alphabet=\"ipa\">` automaticamente. O `edge_tts.Communicate` já é chamado com `ssml=True`. Thalita recebe o texto com ortografia correta e o phoneme sobrepõe apenas a pronúncia.",
+  "Usuário: Veja que você continua usando a forma errada e você também está usando a forma errada da palavra trânsito atente-se a isso e corrija.",
+  "Jarvis: Corrigido. Adicionei a entrada IPA de \"trânsito\" ao `pronuncias.json`. A pronúncia correta é /ˈtɾɐ̃.zi.tu/ — o \"â\" nasalizado e o \"s\" com som de \"z\" por ser intervocálico. A bridge aplicará o phoneme automaticamente.",
+  "Usuário: Você corrigiu também a palavra Julho, que é referente ao mês de julho?",
+  "Jarvis: Não, não corrigi porque Thalita já pronuncia \"julho\" corretamente — o \"lh\" é L palatal, som nativo do português brasileiro. Ouviu algo estranho na pronúncia dela?"
 ]
