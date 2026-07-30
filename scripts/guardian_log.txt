@@ -619,3 +619,10 @@
 2026-07-30 14:35:07,771 [WARNING] RAM critica: 292 MB livre - agindo...
 2026-07-30 14:35:08,640 [WARNING] Morto PID 6672 (opencode.exe) - RAM 292MB, alvo maior 81MB - liberou ~81 MB
 2026-07-30 14:35:08,663 [WARNING] Morto PID 5744 (opencode.exe) - RAM 292MB, alvo maior 52MB - liberou ~52 MB
+2026-07-30 17:09:59,617 [INFO] System Guardian iniciado
+2026-07-30 17:09:59,620 [INFO] RAM critica: <200 MB, alerta: <500 MB, intervalo: 20s
+2026-07-30 17:24:08,244 [WARNING] RAM critica: 266 MB livre - agindo...
+2026-07-30 17:24:10,458 [WARNING] Morto PID 3324 (pythonw3.12.exe) - RAM 266MB, alvo maior 20MB - liberou ~20 MB
+2026-07-30 17:24:10,525 [WARNING] Morto PID 4700 (python3.12.exe) - RAM 266MB, alvo maior 20MB - liberou ~20 MB
+2026-07-30 17:24:10,541 [ERROR] Erro ao matar PID 8500 (pythonw.exe): process PID not found (pid=8500)
+2026-07-30 17:24:30,554 [WARNING] RAM critica: 476 MB livre - agindo...

@@ -1,8 +1,22 @@
 {
-  "timestamp": "2026-07-30T17:19:40.060972",
-  "ram_mb": 1061.3,
-  "ram_pct": 73.6,
+  "timestamp": "2026-07-30T17:24:07.978435",
+  "ram_mb": 265.9,
+  "ram_pct": 93.4,
   "disk_gb": 23.1,
-  "actions": [],
-  "status": "ok"
+  "actions": [
+    {
+      "pid": 3324,
+      "name": "pythonw3.12.exe",
+      "mem_mb": 20.4,
+      "reason": "RAM 266MB, alvo maior 20MB"
+    },
+    {
+      "pid": 4700,
+      "name": "python3.12.exe",
+      "mem_mb": 20.2,
+      "reason": "RAM 266MB, alvo maior 20MB"
+    }
+  ],
+  "status": "critical",
+  "level": "WARNING"
 }
