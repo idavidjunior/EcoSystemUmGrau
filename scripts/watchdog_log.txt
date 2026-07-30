@@ -259,3 +259,70 @@
 [2026-07-29 22:56:38] Serve MORTO na porta 8766 - iniciando...
 [2026-07-29 22:56:38] Serve iniciado (PID: 10116)
 [2026-07-29 22:56:39] Limpou 7 processos orfaos do OpenCode (1274MB liberados)
+[2026-07-29 22:56:59] Bridge OK (porta 8765)
+[2026-07-29 22:56:59] Serve health falhou, reiniciando... O servidor remoto retornou um erro: (401) Não Autorizado.
+[2026-07-29 22:57:00] Serve MORTO na porta 8766 - iniciando...
+[2026-07-29 22:57:00] Serve iniciado (PID: 8412)
+[2026-07-29 22:57:01] Limpou 6 processos orfaos do OpenCode (827MB liberados)
+[2026-07-29 22:57:21] Bridge OK (porta 8765)
+[2026-07-29 22:57:21] Serve health falhou, reiniciando... O servidor remoto retornou um erro: (401) Não Autorizado.
+[2026-07-29 22:57:21] Serve MORTO na porta 8766 - iniciando...
+[2026-07-29 22:57:21] Serve iniciado (PID: 6304)
+[2026-07-29 22:57:42] Bridge OK (porta 8765)
+[2026-07-29 22:57:42] Serve health falhou, reiniciando... O servidor remoto retornou um erro: (401) Não Autorizado.
+[2026-07-29 22:57:42] Serve MORTO na porta 8766 - iniciando...
+[2026-07-29 22:57:42] Serve iniciado (PID: 9988)
+[2026-07-29 22:57:43] Limpou 6 processos orfaos do OpenCode (911MB liberados)
+[2026-07-29 22:58:03] Bridge OK (porta 8765)
+[2026-07-29 22:58:03] Serve health falhou, reiniciando... O servidor remoto retornou um erro: (401) Não Autorizado.
+[2026-07-29 22:58:03] Serve MORTO na porta 8766 - iniciando...
+[2026-07-29 22:58:03] Serve iniciado (PID: 8512)
+[2026-07-29 22:58:04] Limpou 6 processos orfaos do OpenCode (953MB liberados)
+[2026-07-29 22:58:24] Bridge OK (porta 8765)
+[2026-07-29 22:58:24] Serve health falhou, reiniciando... O servidor remoto retornou um erro: (401) Não Autorizado.
+[2026-07-29 22:58:24] Serve MORTO na porta 8766 - iniciando...
+[2026-07-29 22:58:24] Serve iniciado (PID: 5064)
+[2026-07-29 22:58:44] Bridge OK (porta 8765)
+[2026-07-29 22:58:45] Serve health falhou, reiniciando... O servidor remoto retornou um erro: (401) Não Autorizado.
+[2026-07-29 22:58:45] Serve MORTO na porta 8766 - iniciando...
+[2026-07-29 22:58:45] Serve iniciado (PID: 7012)
+[2026-07-29 22:59:05] Bridge OK (porta 8765)
+[2026-07-29 22:59:05] Serve health falhou, reiniciando... O servidor remoto retornou um erro: (401) Não Autorizado.
+[2026-07-29 22:59:05] Serve MORTO na porta 8766 - iniciando...
+[2026-07-29 22:59:05] Serve iniciado (PID: 5388)
+[2026-07-29 22:59:25] Bridge OK (porta 8765)
+[2026-07-29 22:59:26] Serve health falhou, reiniciando... O servidor remoto retornou um erro: (401) Não Autorizado.
+[2026-07-29 22:59:26] Serve MORTO na porta 8766 - iniciando...
+[2026-07-29 22:59:26] Serve iniciado (PID: 10052)
+[2026-07-29 22:59:46] Bridge OK (porta 8765)
+[2026-07-29 22:59:46] Serve health falhou, reiniciando... O servidor remoto retornou um erro: (401) Não Autorizado.
+[2026-07-29 22:59:46] Serve MORTO na porta 8766 - iniciando...
+[2026-07-29 22:59:46] Serve iniciado (PID: 1356)
+[2026-07-29 23:00:06] Bridge OK (porta 8765)
+[2026-07-29 23:00:07] Serve health falhou, reiniciando... O servidor remoto retornou um erro: (401) Não Autorizado.
+[2026-07-29 23:00:07] Serve MORTO na porta 8766 - iniciando...
+[2026-07-29 23:00:07] Serve iniciado (PID: 9076)
+[2026-07-29 23:00:27] Bridge OK (porta 8765)
+[2026-07-29 23:00:27] Serve health falhou, reiniciando... O servidor remoto retornou um erro: (401) Não Autorizado.
+[2026-07-29 23:00:27] Serve MORTO na porta 8766 - iniciando...
+[2026-07-29 23:00:27] Serve iniciado (PID: 8256)
+[2026-07-29 23:00:47] Bridge OK (porta 8765)
+[2026-07-29 23:00:47] Serve health falhou, reiniciando... O servidor remoto retornou um erro: (401) Não Autorizado.
+[2026-07-29 23:00:47] Serve MORTO na porta 8766 - iniciando...
+[2026-07-29 23:00:47] Serve iniciado (PID: 2512)
+[2026-07-29 23:01:07] Bridge OK (porta 8765)
+[2026-07-29 23:01:08] Serve health falhou, reiniciando... O servidor remoto retornou um erro: (401) Não Autorizado.
+[2026-07-29 23:01:08] Serve MORTO na porta 8766 - iniciando...
+[2026-07-29 23:01:08] Serve iniciado (PID: 4332)
+[2026-07-29 23:01:28] Bridge OK (porta 8765)
+[2026-07-29 23:01:28] Serve health falhou, reiniciando... O servidor remoto retornou um erro: (401) Não Autorizado.
+[2026-07-29 23:01:28] Serve MORTO na porta 8766 - iniciando...
+[2026-07-29 23:01:28] Serve iniciado (PID: 352)
+[2026-07-29 23:01:48] Bridge OK (porta 8765)
+[2026-07-29 23:01:48] Serve health falhou, reiniciando... O servidor remoto retornou um erro: (401) Não Autorizado.
+[2026-07-29 23:01:48] Serve MORTO na porta 8766 - iniciando...
+[2026-07-29 23:01:49] Serve iniciado (PID: 9488)
+[2026-07-29 23:02:09] Bridge OK (porta 8765)
+[2026-07-29 23:02:09] Serve health falhou, reiniciando... O servidor remoto retornou um erro: (401) Não Autorizado.
+[2026-07-29 23:02:09] Serve MORTO na porta 8766 - iniciando...
+[2026-07-29 23:02:09] Serve iniciado (PID: 9024)
