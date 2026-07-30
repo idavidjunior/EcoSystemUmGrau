@@ -15,45 +15,32 @@
     }
   },
   "mcp": {
-    "servers": {
+    "eco-knowledge": {
+      "type": "local",
+      "command": ["python", "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/scripts/mcp-knowledge-server.py"],
+      "enabled": true
+    },
+    "filesystem": {
+      "type": "local",
+      "command": ["node", "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/mcp-servers/mcp-servers/filesystem/index.js"],
+      "enabled": true
+    },
+    "search": {
+      "type": "local",
+      "command": ["node", "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/mcp-servers/mcp-servers/search/index.js"],
+      "enabled": true
+    },
+    "terminal": {
+      "type": "local",
+      "command": ["node", "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/mcp-servers/mcp-servers/terminal/index.js"],
+      "enabled": true
+    },
+    "github": {
+      "type": "local",
+      "command": ["node", "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/mcp-servers/mcp-servers/github/index.js"],
       "enabled": true,
-      "eco-knowledge": {
-        "type": "local",
-        "command": "python",
-        "args": [
-          "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/scripts/mcp-knowledge-server.py"
-        ]
-      },
-      "filesystem": {
-        "type": "local",
-        "command": "node",
-        "args": [
-          "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/mcp-servers/mcp-servers/filesystem/index.js"
-        ]
-      },
-      "search": {
-        "type": "local",
-        "command": "node",
-        "args": [
-          "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/mcp-servers/mcp-servers/search/index.js"
-        ]
-      },
-      "terminal": {
-        "type": "local",
-        "command": "node",
-        "args": [
-          "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/mcp-servers/mcp-servers/terminal/index.js"
-        ]
-      },
-      "github": {
-        "type": "local",
-        "command": "node",
-        "args": [
-          "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/mcp-servers/mcp-servers/github/index.js"
-        ],
-        "env": {
-          "GITHUB_TOKEN": "{env:GH_TOKEN}"
-        }
+      "environment": {
+        "GITHUB_TOKEN": "{env:GH_TOKEN}"
       }
     }
   },
