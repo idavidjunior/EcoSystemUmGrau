@@ -606,3 +606,5 @@
 2026-07-30 14:07:19,202 [WARNING] Morto PID 10612 (opencode.exe) - RAM 438MB, alvo maior 125MB - liberou ~125 MB
 2026-07-30 14:07:19,208 [INFO] RAM ja suficiente (626 MB), parando de matar
 2026-07-30 14:07:39,223 [WARNING] RAM critica: 468 MB livre - agindo...
+2026-07-30 14:10:43,928 [INFO] System Guardian iniciado
+2026-07-30 14:10:43,953 [INFO] RAM critica: <200 MB, alerta: <500 MB, intervalo: 20s
