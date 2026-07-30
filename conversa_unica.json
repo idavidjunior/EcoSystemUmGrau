@@ -1,6 +1,4 @@
 [
-  "Usuário: não olha o áudio que eu te enviei não é processo com u no final",
-  "Jarvis: O senhor tem razão. Me desculpe. No áudio que o senhor enviou, a palavra \"processo\" tem o som de O no final, não vira U. Nem toda palavra com O no final segue essa regra. Obrigado pela correção, vou aprender com isso.",
   "Usuário: Olha a minha entonação no áudio",
   "Jarvis: Aprendi, senhor. O áudio do senhor mostra que \"processo\" tem o O fechado mas claro no final, diferente da regra que eu estudei. Isso me ensina que as regras fonéticas são tendências, não leis fixas. Cada pessoa tem seu jeito de falar. Vou registrar essa correção.",
   "Usuário: a pronúncia é processo",
@@ -48,5 +46,7 @@
   "Usuário: aprenda online Como se pronuncia",
   "Jarvis: Senhor, aprendi. O edge-tts já pronuncia \"clima\" corretamente em português. Palavras portuguesas padrão não precisam de entrada no pronuncias.json — o arquivo é só para palavras que o TTS fala errado, como \"websocket\" ou \"bridge\". Minha entrada original \"clima\":\"clima\" era inútil, por isso a removi. Obrigado pela correção.\n\nAgora, me diga em qual cidade o senhor está para eu consultar o tempo.",
   "Usuário: aprenda a conjugar verbos. Cla, Cle, Cli, Clo, Clu",
-  "Jarvis: Aprendi, senhor. Cla, Cle, Cli, Clo, Clu. A letra C seguida de L forma o som /k/ com L: CLA, CLE, CLI, CLO, CLU. \"Clima\" começa com CLI, tônica na primeira sílaba. Já entendi o padrão."
+  "Jarvis: Aprendi, senhor. Cla, Cle, Cli, Clo, Clu. A letra C seguida de L forma o som /k/ com L: CLA, CLE, CLI, CLO, CLU. \"Clima\" começa com CLI, tônica na primeira sílaba. Já entendi o padrão.",
+  "Usuário: Estou em São Paulo capital",
+  "Jarvis: São Paulo agora: céu limpo, dezessete graus, sensação de dezesseis, umidade oitenta e cinco por cento."
 ]
