@@ -13,7 +13,7 @@ file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s:%(name)s:
 logging.getLogger().addHandler(file_handler)
 logger = logging.getLogger("vox")
 
-TTS_VOICE = "pt-BR-ThalitaMultilingualNeural"
+TTS_VOICE = "pt-BR-AntonioNeural"
 TTS_PITCH = "-30Hz"
 TTS_RATE = "+0%"
 
@@ -146,24 +146,13 @@ def sanitizar(t):
 
 
 def aplicar_phonemes(texto):
-    try:
-        with open(PRON_PATH, "r", encoding="utf-8") as f:
-            d = json.load(f)
-    except: return texto, False
-    ipas = {k.lower(): v["ipa"] for k, v in d.items() if isinstance(v, dict) and "ipa" in v}
-    if not ipas: return texto, False
-    palavras = sorted(ipas.keys(), key=len, reverse=True)
-    pattern = "|".join(re.escape(p) for p in palavras)
-    def _tag(m):
-        w = m.group(0)
-        return f'<phoneme alphabet="ipa" ph="{xml.sax.saxutils.escape(ipas[w.lower()])}">{w}</phoneme>'
-    return f"<speak>{re.sub(pattern, _tag, texto, flags=re.IGNORECASE)}</speak>", True
+    return texto, False
 
 async def gerar_audio(texto):
     t = sanitizar(texto)
     if not t: return ""
-    t, ssml = aplicar_phonemes(t) if PRON_PATH else (t, False)
-    c = edge_tts.Communicate(t, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH, ssml=ssml)
+    t, _ = aplicar_phonemes(t) if PRON_PATH else (t, False)
+    c = edge_tts.Communicate(t, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
     audio = b""
     async for chunk in c.stream():
         if chunk["type"] == "audio": audio += chunk["data"]
@@ -439,7 +428,7 @@ async def servir():
     logger.info(f"  serve: {SERVE_URL}")
     logger.info(f"  sistema: {len(SISTEMA)} chars")
     logger.info(f"  estado: atualizado por request")
-    logger.info(f"  pronuncias: desativado (Thalita nativa)")
+    logger.info(f"  voz: {TTS_VOICE}")
     logger.info(f"  historico: {HIST_PATH.name}")
     logger.info("="*50)
     async with websockets.serve(lidar, "0.0.0.0", 8765):
