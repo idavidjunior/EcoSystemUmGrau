@@ -44,6 +44,7 @@
       }
     }
   },
+  "permission": "allow",
   "instructions": [
     "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/skills/*/SKILL.md",
     "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/skills/**/SKILL.md",

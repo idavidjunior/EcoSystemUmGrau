@@ -1,4 +1,4 @@
-import asyncio, websockets, edge_tts, base64, json, logging, os, subprocess, re, time, xml.sax.saxutils, socket
+import asyncio, websockets, edge_tts, base64, json, logging, os, re, time, xml.sax.saxutils, socket, urllib.request, urllib.error
 from pathlib import Path
 try:
     from dotenv import load_dotenv
@@ -17,14 +17,15 @@ TTS_PITCH = "-30Hz"
 TTS_RATE = "+0%"
 
 BIN = str(Path(os.environ["APPDATA"]) / r"npm\node_modules\opencode-ai\bin\opencode.exe")
+SERVE_URL = "http://127.0.0.1:8766"
+SERVER_USER = "opencode"
+SERVER_PASS = os.environ.get("OPENCODE_SERVER_PASSWORD", "")
 WORKDIR = r"C:\Users\Playtec-bancada\Desktop\Codigos"
 HIST_PATH = Path(WORKDIR) / "EcoSystemUmGrau" / "conversa_unica.json"
 SYS_PATH = r"C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau\scripts\JARVIS_SYSTEM.md"
 PRON_PATH = r"C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau\scripts\pronuncias.json"
 
 MAX_HIST = 50
-MAX_TOOL = 500
-MAX_STDOUT = 5_000_000
 
 ECOSSISTEMA_DIR = Path(WORKDIR) / "EcoSystemUmGrau"
 LER_DIR = ECOSSISTEMA_DIR / "ler-runtime"
@@ -56,7 +57,6 @@ def carregar_pronuncias():
 PRONUNCIAS = carregar_pronuncias()
 
 def gerar_estado_atual():
-    """Gera um resumo dinâmico do estado atual do ecossistema."""
     linhas = []
     linhas.append("## Estado Atual do Ecossistema")
     try:
@@ -132,7 +132,6 @@ def sanitizar(t):
     return re.sub(r'\s+', ' ', t).strip()[:2000]
 
 def corrigir_pronuncia(texto):
-    """Substitui palavras por suas versoes foneticas para melhor TTS."""
     if not texto or not PRONUNCIAS: return texto
     palavras = sorted(PRONUNCIAS.keys(), key=len, reverse=True)
     for palavra in palavras:
@@ -152,88 +151,35 @@ async def gerar_audio(texto):
     return base64.b64encode(audio).decode()
 
 
-def extrair_resposta(stdout: str) -> tuple[str | None, list]:
-    texts = []
-    tools = []
-    tipos = {}
-    for line in stdout.splitlines():
-        line = line.strip()
-        if not line: continue
-        try:
-            obj = json.loads(line)
-            t = obj.get("type", "")
-            tipos[t] = tipos.get(t, 0) + 1
-            if t == "text":
-                part = obj.get("part")
-                txt = part.get("text", "") if isinstance(part, dict) else (part if isinstance(part, str) else "")
-                if isinstance(txt, str) and txt.strip():
-                    texts.append(txt.strip())
-            elif t in ("tool_use",):
-                part = obj.get("part")
-                if isinstance(part, dict):
-                    st = part.get("state")
-                    if isinstance(st, dict) and st.get("status") == "completed":
-                        out = st.get("output")
-                        if isinstance(out, str) and out.strip():
-                            tools.append(out.strip())
-        except json.JSONDecodeError:
-            pass
-    logger.info(f"eventos={tipos} texts={len(texts)} tools={len(tools)}")
-    if texts:
-        ultimo = texts[-1]
-        if ultimo.startswith("<path>") or ultimo.startswith("<type>") or ultimo.startswith("{"):
-            logger.warning(f"texto parece raw tool output, ignorando")
-            return None, tools
-        return ultimo, tools
-    if tools: return tools[-1][:MAX_TOOL], tools
-    return None, tools
+# --- HTTP client para opencode serve ---
 
-
-MAX_RETRY = 2
-MAX_PROMPT = 28000
-
-async def executar(prompt: str, timeout=300, retry=True, continue_session=False) -> str | None:
-    args = [BIN, "run", "--format", "json", "--auto", "--dir", WORKDIR]
-    if continue_session:
-        args.append("-c")
-    args.append(prompt)
-    logger.info(f"run: {len(prompt)}b prompt...")
-    t0 = time.time()
+def _http(method, path, data=None):
+    url = f"{SERVE_URL}{path}"
+    creds = base64.b64encode(f"{SERVER_USER}:{SERVER_PASS}".encode()).decode()
+    body = json.dumps(data).encode() if data else None
+    req = urllib.request.Request(url, data=body, method=method,
+        headers={"Content-Type": "application/json", "Authorization": f"Basic {creds}"})
     try:
-        proc = await asyncio.create_subprocess_exec(
-            *args, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
-        )
-        so, se = await asyncio.wait_for(proc.communicate(), timeout=timeout)
-    except asyncio.TimeoutError:
-        try: proc.kill()
-        except: pass
-        logger.error("timeout")
+        with urllib.request.urlopen(req, timeout=120) as resp:
+            return json.loads(resp.read().decode())
+    except urllib.error.HTTPError as e:
+        logger.error(f"HTTP {e.code} {method} {path}: {e.read().decode()[:300]}")
         return None
     except Exception as e:
-        logger.error(f"exec: {e}", exc_info=True)
+        logger.error(f"HTTP {method} {path}: {e}")
         return None
-    so_text = so.decode(errors="replace")[:MAX_STDOUT]
-    se_text = se.decode(errors="replace")
-    logger.info(f"RC={proc.returncode} out={len(so_text)}b t={time.time()-t0:.0f}s")
-    for line in se_text.splitlines():
-        if line.strip(): logger.info(f"[oc:err] {line.strip()}")
-    resp, tools = extrair_resposta(so_text)
-    if resp: return resp
-    if continue_session and retry:
-        logger.warning("-c nao retornou resposta, tentando sem continuacao")
-        return await executar(prompt, timeout=timeout, retry=False, continue_session=False)
-    logger.warning(f"vazio, tools={len(tools)}")
-    if tools and retry:
-        ctx = "\n".join(f"Resultado: {t[:300]}" for t in tools[-3:])
-        prompt2 = f"{ctx}\nResponda em portugues: o que foi encontrado?"
-        logger.info("retry com tools...")
-        return await executar(prompt2, timeout=120, retry=False)
-    return None
 
+async def _http_async(method, path, data=None):
+    loop = asyncio.get_event_loop()
+    return await loop.run_in_executor(None, _http, method, path, data)
+
+
+MAX_PROMPT = 28000
 
 class Cliente:
     def __init__(self):
         self._hist = self._carregar()
+        self._session_id = None
         self._init_estado()
 
     def _carregar(self):
@@ -271,22 +217,65 @@ class Cliente:
         p += sufixo
         return p
 
+    async def _ensure_serve(self):
+        h = await _http_async("GET", "/global/health")
+        if h and h.get("healthy"):
+            return True
+        logger.info("serve not running, starting...")
+        proc = await asyncio.create_subprocess_exec(
+            BIN, "serve", "--port", "8766", "--hostname", "127.0.0.1",
+            stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.DEVNULL)
+        for _ in range(15):
+            await asyncio.sleep(1)
+            h = await _http_async("GET", "/global/health")
+            if h and h.get("healthy"):
+                logger.info("serve started")
+                return True
+        logger.error("failed to start serve")
+        return False
+
+    async def _get_session(self):
+        if self._session_id:
+            return self._session_id
+        sessions = await _http_async("GET", "/session")
+        if sessions and len(sessions) > 0:
+            sid = sessions[-1].get("id")
+            if sid:
+                self._session_id = sid
+                logger.info(f"reusing session {sid}")
+                return sid
+        result = await _http_async("POST", "/session", {"title": "Jarvis"})
+        if result:
+            self._session_id = result.get("id")
+            logger.info(f"created session {self._session_id}")
+        return self._session_id
+
     async def perguntar(self, msg):
         prompt = self._montar(msg)
         logger.info(f"hist={len(self._hist)//2} prompt={len(prompt)}b: {msg[:80]}")
-        if len(prompt) > 30000:
-            logger.error(f"prompt enorme ({len(prompt)}b), forcando limpeza")
-            hist = self._hist[:2]
-            self._hist = hist
-            prompt = self._montar(msg)
-        use_continue = len(self._hist) >= 2 and not any(
-            isinstance(h, str) and "LIMPEZA_DE_SESSAO" in h for h in self._hist[-2:]
-        )
-        if use_continue:
-            logger.info("continuando sessao anterior no opencode")
-        resp = await executar(prompt, continue_session=use_continue)
+
+        if not await self._ensure_serve():
+            return "Erro: servidor OpenCode não está disponível."
+
+        session_id = await self._get_session()
+        if not session_id:
+            return "Erro: não foi possível criar sessão no servidor."
+
+        result = await _http_async("POST", f"/session/{session_id}/message", {
+            "parts": [{"type": "text", "text": prompt}]
+        })
+
+        if not result:
+            return "Sem resposta do servidor."
+
+        parts = result.get("parts", [])
+        texts = [p.get("text", "") for p in parts if p.get("type") == "text" and p.get("text", "").strip()]
+        resp = texts[-1] if texts else None
+
         if not resp:
-            resp = "Sem resposta. (opencode nao retornou resultado)"
+            logger.warning(f"serve resp sem texto: parts={len(parts)}")
+            resp = "Sem resposta."
+
         self._hist.append(f"Usuário: {msg}")
         self._hist.append(f"Jarvis: {resp}")
         self._salvar()
@@ -294,7 +283,6 @@ class Cliente:
 
 
 def gerar_status_natural():
-    """Gera uma frase em linguagem natural com o estado do sistema."""
     ok = []
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -310,7 +298,12 @@ def gerar_status_natural():
         r = s.connect_ex(("127.0.0.1", 8766))
         s.close()
         if r == 0:
-            ok.append("servidor web na porta 8766")
+            ok.append("servidor OpenCode na porta 8766")
+    except: pass
+    try:
+        h = _http("GET", "/global/health")
+        if h and h.get("healthy"):
+            ok.append("serve respondendo")
     except: pass
     try:
         if Path(BIN).exists():
@@ -369,9 +362,10 @@ async def lidar(ws):
 
 async def servir():
     logger.info("="*50)
-    logger.info("  Vox UmGrau Bridge v5 (sessao unica)")
+    logger.info("  Vox UmGrau Bridge v6 (serve HTTP API)")
     logger.info(f"  modelo: deepseek-v4-flash-free")
     logger.info(f"  ws://0.0.0.0:8765")
+    logger.info(f"  serve: {SERVE_URL}")
     logger.info(f"  sistema: {len(SISTEMA)} chars")
     logger.info(f"  estado: atualizado por request")
     logger.info(f"  pronuncias: {len(PRONUNCIAS)} palavras")
