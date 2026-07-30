@@ -1,9 +1,13 @@
 {
-  "timestamp": "2026-07-30T12:10:00.334468",
-  "ram_mb": 246.1,
-  "ram_pct": 93.9,
+  "timestamp": "2026-07-30T12:18:39.023990",
+  "ram_mb": 181.4,
+  "ram_pct": 95.5,
   "disk_gb": 22.7,
-  "actions": [],
+  "actions": [
+    {
+      "note": "Nada para matar, RAM ainda critica"
+    }
+  ],
   "status": "critical",
-  "level": "WARNING"
+  "level": "CRITICAL"
 }
