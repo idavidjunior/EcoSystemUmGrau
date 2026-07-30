@@ -49,7 +49,9 @@ def handle(req):
 
     if method == 'initialize':
         return {'jsonrpc': '2.0', 'id': rid, 'result': {
-            'protocolVersion': '2026-07-01', 'capabilities': {'tools': {}}}}
+            'protocolVersion': '2026-07-01',
+            'serverInfo': {'name': 'eco-knowledge', 'version': '1.0.0'},
+            'capabilities': {'tools': {}}}}
 
     if method in ('notifications/initialized',):
         return {'jsonrpc': '2.0', 'id': rid, 'result': {}} if rid else None
