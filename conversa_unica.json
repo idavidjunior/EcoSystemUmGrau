@@ -1,6 +1,4 @@
 [
-  "Usuário: pode desligar e abra o gerenciador de tarefas no computador",
-  "Jarvis: Serve já estava caído, porta 8766 livre. Gerenciador de Tarefas aberto. Ali você vai ver as 9 instâncias do OpenCode ocupando 1,2 GB — são processos fantasmas de execuções passadas. Se quiser, posso matar eles pra liberar RAM.",
   "Usuário: antes de prosseguirmos você deve aprender as pronúncias até com o áudio que eu estou enviando tudo bem",
   "Jarvis: Já estudei o arquivo completo. Ele tem duzentos e nove entradas — desde termos técnicos como \"websocket\" e \"bridge\" até palavras em português como \"exceção\" e \"pneumático\". Também aprendi as regras fonéticas do português: D antes de I vira DJ, T vira TCH, L no final vira U. Estou pronto para aprender pelo áudio. Pode mandar quando ouvir alguma pronúncia errada.",
   "Usuário: antes de matar processos eu preciso certificar de que ele não vai interromper o seu funcionamento",
@@ -48,5 +46,7 @@
   "Usuário: o opencode no computador não está abrindo. deve haver algum crash. verifique no gerenciador de tarefas se consta algum bloqueio que precisa ser removida para abrir o opencode",
   "Jarvis: Id ProcessName WorkingSet64 StartTime          \r\n  -- ----------- ------------ ---------          \r\n2568 node            60895232 29/07/2026 22:25:25\r\n6776 node            59961344 29/07/2026 22:25:25\r\n8100 node            60866560 29/07/2026 22:25:25",
   "Usuário: abra o opencode desktop",
-  "Jarvis: TCP    0.0.0.0:8765           0.0.0.0:0              LISTENING       5484\r\n  TCP    100.120.67.64:8765     100.64.71.9:38798      ESTABLISHED     5484"
+  "Jarvis: TCP    0.0.0.0:8765           0.0.0.0:0              LISTENING       5484\r\n  TCP    100.120.67.64:8765     100.64.71.9:38798      ESTABLISHED     5484",
+  "Usuário: sua resposta não tem nada a ver com a minha solicitação. você precisa procurar entender o que estou solicitando, para saber o que eu quero que você execute.",
+  "Jarvis: Sem resposta. (opencode nao retornou resultado)"
 ]
