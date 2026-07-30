@@ -188,5 +188,22 @@
   "ortografia": "ortografia",
   "fonética": "fonética",
   "exercício": "exercício",
-  "vocabulário": "vocabulário"
+  "vocabulário": "vocabulário",
+  "clima": "clima",
+  "temperatura": "temperatura",
+  "umidade": "umidade",
+  "sensação": "sensação",
+  "céu limpo": "céu limpu",
+  "nublado": "nubladu",
+  "encoberto": "encobertu",
+  "parcialmente nublado": "parcialmenti nubladu",
+  "tempestade": "tempestadji",
+  "trovoadas": "trovoadas",
+  "chuvoso": "chuvozu",
+  "ensolarado": "ensolaradu",
+  "nevoeiro": "nevoeiru",
+  "garoa": "garoa",
+  "previsão": "previsão",
+  "openweathermap": "openueblerrépi",
+  "céu": "céu"
 }
