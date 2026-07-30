@@ -14,10 +14,10 @@ function Write-Status { param($Msg) Write-Host "[Guardian] $Msg" }
 switch ($Action) {
     "start" {
         if (Test-Path $PidFile) {
-            $pid = Get-Content $PidFile
-            $proc = Get-Process -Id $pid -ErrorAction SilentlyContinue
+            $gpid = Get-Content $PidFile
+            $proc = Get-Process -Id $gpid -ErrorAction SilentlyContinue
             if ($proc) {
-                Write-Status "Ja rodando (PID $pid)"
+                Write-Status "Ja rodando (PID $gpid)"
                 exit 0
             }
             Remove-Item $PidFile -Force
@@ -41,11 +41,11 @@ switch ($Action) {
     }
     "stop" {
         if (Test-Path $PidFile) {
-            $pid = Get-Content $PidFile
-            $proc = Get-Process -Id $pid -ErrorAction SilentlyContinue
+            $gpid = Get-Content $PidFile
+            $proc = Get-Process -Id $gpid -ErrorAction SilentlyContinue
             if ($proc) {
-                Stop-Process -Id $pid -Force
-                Write-Status "Parado (PID $pid)"
+                Stop-Process -Id $gpid -Force
+                Write-Status "Parado (PID $gpid)"
             }
             Remove-Item $PidFile -Force
         } else {
@@ -67,12 +67,12 @@ switch ($Action) {
     "status" {
         $running = $false
         if (Test-Path $PidFile) {
-            $pid = Get-Content $PidFile
-            $proc = Get-Process -Id $pid -ErrorAction SilentlyContinue
+            $gpid = Get-Content $PidFile
+            $proc = Get-Process -Id $gpid -ErrorAction SilentlyContinue
             if ($proc) {
                 $running = $true
                 $memMB = [math]::Round($proc.WorkingSet64 / 1MB, 1)
-                Write-Status "Rodando (PID $pid, ${memMB} MB)"
+                Write-Status "Rodando (PID $gpid, ${memMB} MB)"
             }
         }
         if (-not $running) {

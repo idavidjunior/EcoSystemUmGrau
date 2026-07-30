@@ -1,22 +1,8 @@
 {
-  "timestamp": "2026-07-29T20:40:04.208152",
-  "ram_mb": 367.4,
-  "ram_pct": 90.8,
-  "disk_gb": 17.6,
-  "actions": [
-    {
-      "pid": 4460,
-      "name": "opencode.exe",
-      "mem_mb": 168.6,
-      "reason": "RAM 367MB, alvo maior 169MB"
-    },
-    {
-      "pid": 8172,
-      "name": "opencode.exe",
-      "mem_mb": 137.4,
-      "reason": "RAM 367MB, alvo maior 137MB"
-    }
-  ],
-  "status": "critical",
-  "level": "WARNING"
+  "timestamp": "2026-07-30T10:02:30.209375",
+  "ram_mb": 711.1,
+  "ram_pct": 82.3,
+  "disk_gb": 22.3,
+  "actions": [],
+  "status": "ok"
 }
