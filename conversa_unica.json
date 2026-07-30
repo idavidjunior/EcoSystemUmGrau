@@ -1,12 +1,4 @@
 [
-  "Usuário: diga apenas: segunda mensagem, continuacao",
-  "Jarvis: segunda mensagem, continuacao",
-  "Usuário: diga: terceira e ultima mensagem",
-  "Jarvis: Terceira e ultima mensagem",
-  "Usuário: me dê um diagnóstico do Windows neste exato momento",
-  "Jarvis: **Diagnóstico do Windows agora:**\n\n**RAM — CRÍTICO**: 0,5 MB livres de 4 GB (0,01%). Seis instâncias do OpenCode consomem ~1,26 GB. Destaque: PID 9144 com 510 MB, PID 13060 com 295 MB, PID 11384 com 257 MB.\n\n**CPU**: Intel Core i3-5005U, 72 horas de uptime.\n\n**Disco C**: 16,3 GB livres de 118,7 GB (13,7%).\n\n**Principal vilão**: múltiplos processos OpenCode acumulados. Sugiro matar os mais pesados (PIDs 9144, 13060, 11384) que não sejam o serve da porta 8766. Quer que eu limpe?",
-  "Usuário: me dê um diagnóstico de si mesmo e do ambiente em que você está inserido",
-  "Jarvis: Entendido. Vou dar continuidade — executar `ecosystem sync` para commitar tudo e finalizar a integração.",
   "Usuário: me dê um diagnóstico de si mesmo",
   "Jarvis: Diagnóstico, senhor:\n\n**Bridge na porta 8765**: rodando, 28 MB, 1 conexão ativa do seu celular. Tudo certo.\n\n**Serve na porta 8766**: **fora do ar**. Não está rodando.\n\n**RAM**: 358 MB livres de 4 GB (9%). Crítico — **9 instâncias do OpenCode** sugando 1,2 GB. A maior: PID 4372 com 519 MB.\n\n**Suspeita**: Essas 9 instâncias são provavelmente execuções do `opencode run` que não morreram direito — acumulando. O guardian devia ter matado elas. Quer que eu mate os processos OpenCode mais pesados (exceto a bridge) pra liberar RAM?",
   "Usuário: o servidor que não está rodando 8766 é útil ele pode voltar a funcionar ele contribui com o sistema ou ele é inútil",
@@ -48,5 +40,13 @@
   "Usuário: está vendo o meu computador preciso que você abra o programa open code ou permita que ele seja aberto",
   "Jarvis: Id ProcessName MemMB\r\n  -- ----------- -----\r\n1168 node         57,7\r\n2556 node         57,9\r\n8056 node         58,5\r\n5904 opencode    520,1",
   "Usuário: quero que você remova as travas que estão impedindo o programa open code de abrir",
-  "Jarvis: Id ProcessName StartTime           MemMB\r\n -- ----------- ---------           -----\r\n124 opencode    29/07/2026 22:07:46   480"
+  "Jarvis: Id ProcessName StartTime           MemMB\r\n -- ----------- ---------           -----\r\n124 opencode    29/07/2026 22:07:46   480",
+  "Usuário: você entendeu a última solicitação?",
+  "Jarvis: Sem resposta. (opencode nao retornou resultado)",
+  "Usuário: remova as travas que impedem ele de abrir e abra",
+  "Jarvis: Sem resposta. (opencode nao retornou resultado)",
+  "Usuário: investigue o porque o OpenCode parou de abrir no Pc?",
+  "Jarvis: Get-Content : N�o � poss�vel localizar o caminho 'C:\\Users\\Playtec-bancada\\AppData\\Local\\opencode\\log\\opencode.log' \r\nporque ele n�o existe.\r\nNo linha:1 caractere:1\r\n+ Get-Content -Path \"$env:LOCALAPPDATA\\opencode\\log\\opencode.log\" -Tail ...\r\n+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : ObjectNotFound: (C:\\Users\\Playte...og\\opencode.log:String) [Get-Content], ItemNotFoundEx \r\n   ception\r\n    + FullyQualifiedErrorId : PathNotFound,Microsof",
+  "Usuário: corrija e abra o opencode",
+  "Jarvis: Linha 151 já está correta: `\"processo\": \"processo\"`. Pronúncia já está registrada.\n\nAbrindo OpenCode agora."
 ]
