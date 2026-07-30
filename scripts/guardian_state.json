@@ -1,14 +1,20 @@
 {
-  "timestamp": "2026-07-30T11:45:40.420876",
-  "ram_mb": 146.6,
-  "ram_pct": 96.3,
+  "timestamp": "2026-07-30T11:50:37.747667",
+  "ram_mb": 191.8,
+  "ram_pct": 95.2,
   "disk_gb": 22.7,
   "actions": [
     {
-      "pid": 8956,
-      "name": "opencode.exe",
-      "mem_mb": 86.4,
-      "reason": "RAM 147MB, alvo maior 86MB"
+      "pid": 8208,
+      "name": "powershell.exe",
+      "mem_mb": 63.2,
+      "reason": "RAM 192MB, alvo maior 63MB"
+    },
+    {
+      "pid": 9124,
+      "name": "powershell.exe",
+      "mem_mb": 6.3,
+      "reason": "RAM 192MB, alvo maior 6MB"
     }
   ],
   "status": "critical",
