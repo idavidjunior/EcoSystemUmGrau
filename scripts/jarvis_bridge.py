@@ -3,7 +3,7 @@ from pathlib import Path
 from clima_api import get_weather
 try:
     from dotenv import load_dotenv
-    load_dotenv(Path(__file__).parent / ".env")
+    load_dotenv(Path(__file__).parent / ".env", override=True)
 except ImportError:
     pass
 
