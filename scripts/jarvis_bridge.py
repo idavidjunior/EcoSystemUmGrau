@@ -13,7 +13,7 @@ file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s:%(name)s:
 logging.getLogger().addHandler(file_handler)
 logger = logging.getLogger("vox")
 
-TTS_VOICE = "pt-BR-ThalitaMultilingualNeural"
+TTS_VOICE = "pt-BR-AntonioNeural"
 TTS_PITCH = "+0Hz"
 TTS_RATE = "+0%"
 
