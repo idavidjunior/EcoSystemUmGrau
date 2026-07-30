@@ -3,7 +3,7 @@ from pathlib import Path
 from clima_api import get_weather
 try:
     from dotenv import load_dotenv
-    load_dotenv()
+    load_dotenv(Path(__file__).parent / ".env")
 except ImportError:
     pass
 
@@ -262,19 +262,31 @@ class Cliente:
         return p
 
     async def _ensure_serve(self):
-        h = await _http_async("GET", "/api/health")
-        if h and h.get("healthy"):
-            return True
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(1)
+        try:
+            r = s.connect_ex(("127.0.0.1", 8766))
+            s.close()
+            if r == 0:
+                return True
+        except:
+            s.close()
         logger.info("serve not running, starting...")
         proc = await asyncio.create_subprocess_exec(
-            BIN, "serve", "--port", "8766", "--hostname", "127.0.0.1",
+            BIN, "serve", "--port", "8766",
             stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.DEVNULL)
         for _ in range(15):
             await asyncio.sleep(1)
-            h = await _http_async("GET", "/api/health")
-            if h and h.get("healthy"):
-                logger.info("serve started")
-                return True
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.settimeout(1)
+            try:
+                r = s.connect_ex(("127.0.0.1", 8766))
+                s.close()
+                if r == 0:
+                    logger.info("serve started")
+                    return True
+            except:
+                s.close()
         logger.error("failed to start serve")
         return False
 
@@ -350,11 +362,6 @@ def gerar_status_natural():
         s.close()
         if r == 0:
             ok.append("servidor OpenCode na porta 8766")
-    except: pass
-    try:
-        h = _http("GET", "/api/health")
-        if h and h.get("healthy"):
-            ok.append("serve respondendo")
     except: pass
     try:
         if Path(BIN).exists():
