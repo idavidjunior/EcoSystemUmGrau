@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-07-30T09:19:20.955274",
+  "last_updated": "2026-07-30T09:27:45.079375",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -568,6 +568,30 @@
       "description": "# 2026-07-27-5: Teste final do vigilante em processo real\n\n**Categoria:** config\n**Contexto:** Verificar detecção em processo Windows real (não background job)\n**Agentes envolvidos:** Vigilante\n\n## Teste\n\nCriado enquanto vigilante roda como processo Windows oculto.\n",
       "domain": "config",
       "extracted_at": "2026-07-27T21:56:18.437092"
+    },
+    {
+      "source": "ler_aprendizado",
+      "title": "Encoding UTF-8 explicito em Python no Windows",
+      "action": "sempre_encoding_utf8",
+      "description": "Sempre usar encoding=utf-8 em open() no Windows para evitar falsos diagnosticos de corrupcao em arquivos JSON",
+      "domain": "debugging",
+      "extracted_at": "2026-07-30T09:24:13.515727"
+    },
+    {
+      "source": "ler_aprendizado",
+      "title": "Registro de Habilidades de Jarvis",
+      "action": "criar_habilidades",
+      "description": "Criado registro permanente de 80+ habilidades de Jarvis no JARVIS_SYSTEM.md, categorizadas em 8 grupos funcionais",
+      "domain": "documentacao",
+      "extracted_at": "2026-07-30T09:24:13.515727"
+    },
+    {
+      "source": "ler_aprendizado",
+      "title": "Taxonomia correta de habilidades Jarvis",
+      "action": "classificar_habilidades",
+      "description": "Habilidade = capacidade verificavel com implementacao em codigo. Distinguir de ferramenta, conhecimento, skill. 3 niveis: fundamental, composta, dominio.",
+      "domain": "documentacao",
+      "extracted_at": "2026-07-30T09:27:44.841163"
     }
   ],
   "decisions": [
@@ -832,6 +856,18 @@
       "decision": "2026-07-28: Cláusula Pétrea — Toda alteração no ecossistema deve ser testada antes de aplicar",
       "rationale": "# 2026-07-28: Cláusula Pétrea — Toda alteração no ecossistema deve ser testada antes de aplicar\n\n**Categoria:** decisao\n**Contexto:** Adição de servidores MCP via npx quebraram a inicialização do OpenCode. Ao reiniciar, os modelos não carregavam → sistema inutilizável. O usuário precisou apagar arquivos manualmente para recuperar.\n**Gravidade:** CRÍTICA — impeditiva, sem diagnóstico visível\n\n## Decisão\n\nEstabelecemos a **Cláusula Pétrea de Resiliência**: nenhuma alteração em config, MCP, plugins ou agents pode ser aplicada sem passar por validação prévia.\n\n## Mecanismos criados\n\n1. **Triângulo da Resiliência** (testar sempre antes de aplicar):\n   - Teste de INIT: MCP server responde `initialize` sem travar?\n   - Teste de TOOLS: servidores expõem tools válidas?\n   - Teste de JSON: config gerado é JSON válido?\n   - Teste de ESTRUTURA: todos os campos obrigatórios existem?\n\n2. **Pre-flight check automático** (`scripts/preflight_check.py`):\n   - Valida JSON do config template antes de deploy\n   - Testa cada MCP server com initialize + tools/list\n   - Verifica se providers, plugins e instructions estão íntegros\n   - Só aplica se TODOS os testes passarem\n\n3. **Vigilante com guard rail**:\n   - Antes de deployar config, executa preflight\n   - Se falhar: loga erro, NÃO aplica, notifica\n   - Rollback automático para última config válida\n\n4. **Agentes com cláusula pétrea**:\n   - `00-system-rules.md`: constituição — \"testar antes de aplicar\" é regra imutável\n   - `00-maestro.md`: passo obrigatório — validar antes de implementar\n   - `08-revisor.md`: gate de qualidade que verifica preflight\n\n## Trigger\n\nSempre que qualquer alteração for feita em:\n- `config/opencode.jsonc` (template)\n- `config/agents/*.md`\n- `scripts/mcp-*-server.py`\n- `plugins/*`\n- `config/opencode-model-fallback.jsonc`\n\n## Próximos passos\n\n1. Criar `scripts/preflight_check.py`\n2. Integrar no vigilante\n3. Atualizar system-rules e Maestro\n4. Testar ciclo: alterar config → preflight barra → rollback\n",
       "extracted_at": "2026-07-28T22:19:45.236934"
+    },
+    {
+      "source": "ler_aprendizado",
+      "decision": "Jarvis deve manter registro de suas proprias habilidades em JARVIS_SYSTEM.md",
+      "rationale": "O usuario explicitamente pediu um campo de habilidades catalogando todas as capacidades de Jarvis para referencia futura",
+      "extracted_at": "2026-07-30T09:24:13.515727"
+    },
+    {
+      "source": "ler_aprendizado",
+      "decision": "Habilidades de Jarvis seguem taxonomia de 3 niveis",
+      "rationale": "A primeira versao misturava ferramentas, conhecimentos e capacidades. A versao correta alinha com a taxonomia do ecossistema.",
+      "extracted_at": "2026-07-30T09:27:44.841163"
     }
   ],
   "bug_fixes": [
@@ -1391,6 +1427,20 @@
       "domain": "general",
       "body": "﻿# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema\n\n## Problemas resolvidos\n1. **Paths fixos**: vigilante.ps1, ecosystem.ps1, SKILL.md agora usam env:USERPROFILE\n2. **LER vs OpenCode**: documentado que LER tem engine MODULES (Python), OpenCode tem AGENTES (LLM). Sao complementares, nao duplicados.\n3. **ecosystem learn**: varredura proativa que escaneia projetos Android + registra no knowledge graph\n4. **Vigilante aprende sozinho**: timer diario executa ecosystem learn automaticamente\n5.",
       "extracted_at": "2026-07-27T23:24:22.960838"
+    },
+    {
+      "source": "ler_aprendizado",
+      "title": "Encoding-aware diagnostics",
+      "domain": "debugging",
+      "body": "Ao diagnosticar arquivos JSON no Windows, sempre especificar encoding=utf-8. O default cp1252 pode mascarar arquivos perfeitamente validos como corrompidos.",
+      "extracted_at": "2026-07-30T09:24:13.515727"
+    },
+    {
+      "source": "ler_aprendizado",
+      "title": "Entender antes de criar: ontologia de habilidades",
+      "domain": "metacognicao",
+      "body": "Antes de catalogar habilidades, estude a taxonomia existente. O que parece habilidade pode ser ferramenta, conhecimento ou skill.",
+      "extracted_at": "2026-07-30T09:27:44.841163"
     }
   ],
   "heuristics": [
@@ -1604,6 +1654,13 @@
       "extracted_at": "2026-07-25T14:27:27.740901",
       "merged_count": 2,
       "merged_at": "2026-07-25T14:27:27.993968"
+    },
+    {
+      "source": "ler_aprendizado",
+      "title": "open() sempre com encoding no Windows",
+      "description": "Todo open() de arquivo texto deve especificar encoding. No Windows, o default muda conforme o locale do sistema.",
+      "domain": "debugging",
+      "extracted_at": "2026-07-30T09:24:13.515727"
     }
   ],
   "frameworks": [
@@ -2392,6 +2449,35 @@
         "opencode"
       ],
       "files_modified": []
+    },
+    {
+      "timestamp": "2026-07-30T09:24:13.515727",
+      "status": "session_learning",
+      "goal_objective": "Correcao de diagnostico do knowledge graph e criacao do registro de Habilidades de Jarvis. O knowledge_graph.json estava saudavel, o erro foi no diagnostico (encoding cp1252 vs utf-8). Adicionada secao de Habilidades em JARVIS_SYSTEM.md com 80+ habilidades em 8 categorias.",
+      "tags": [
+        "ecossistema",
+        "diagnostico",
+        "habilidades",
+        "jarvis"
+      ],
+      "files_modified": [
+        "scripts/JARVIS_SYSTEM.md"
+      ]
+    },
+    {
+      "timestamp": "2026-07-30T09:27:44.841163",
+      "status": "session_learning",
+      "goal_objective": "Revisao radical do registro de Habilidades de Jarvis. Aprendi a diferenca entre habilidade (capacidade verificavel com codigo), ferramenta (meio), conhecimento (informacao), e skill (documento de instrucao). Reestruturei em 17 fundamentais + 6 compostas + 8 dominios, todas mapeadas para arquivos reais.",
+      "tags": [
+        "ecossistema",
+        "habilidades",
+        "taxonomia",
+        "jarvis",
+        "aprendizado"
+      ],
+      "files_modified": [
+        "scripts/JARVIS_SYSTEM.md"
+      ]
     }
   ],
   "bugs": []
