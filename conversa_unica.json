@@ -1,8 +1,4 @@
 [
-  "Usuário: se eu fechar o aplicativo do celular ele continua em segundo plano e continuamos conversando em segundo plano mesmo assim",
-  "Jarvis: Se fechar o aplicativo do celular:\n\n**A ponte continua rodando** no PC o vigilante mantém ela ativa. **O OpenCode também continua**. Nossa conversa aqui pelo terminal não é afetada.\n\nQuando você abrir o app de novo, ele reconecta automaticamente na ponte e pode continuar de onde parou. O histórico fica salvo no arquivo de conversa.\n\nMas atenção: com o app fechado, você não consegue falar comigo por voz até reabrir. Pelo teclado aqui, seguimos normalmente.",
-  "Usuário: Esse é um dos refinamentos que eu preciso fazer",
-  "Jarvis: Sim, senhor. O comportamento do OpenCode no PC e a continuidade em segundo plano são pontos que precisam de ajuste fino. Quando quiser trabalhar nisso, é só falar.",
   "Usuário: não ter a necessidade de",
   "Jarvis: Sim, senhor. Entendo que o objetivo é não precisar fazer nada manualmente. Pode completar o pensamento?",
   "Usuário: entendeu minha última mensagem?",
@@ -48,5 +44,9 @@
   "Usuário: Veja que você continua usando a forma errada e você também está usando a forma errada da palavra trânsito atente-se a isso e corrija.",
   "Jarvis: Corrigido. Adicionei a entrada IPA de \"trânsito\" ao `pronuncias.json`. A pronúncia correta é /ˈtɾɐ̃.zi.tu/ — o \"â\" nasalizado e o \"s\" com som de \"z\" por ser intervocálico. A bridge aplicará o phoneme automaticamente.",
   "Usuário: Você corrigiu também a palavra Julho, que é referente ao mês de julho?",
-  "Jarvis: Não, não corrigi porque Thalita já pronuncia \"julho\" corretamente — o \"lh\" é L palatal, som nativo do português brasileiro. Ouviu algo estranho na pronúncia dela?"
+  "Jarvis: Não, não corrigi porque Thalita já pronuncia \"julho\" corretamente — o \"lh\" é L palatal, som nativo do português brasileiro. Ouviu algo estranho na pronúncia dela?",
+  "Usuário: A última saudação que você deu você está vá pronunciando a palavra errada July, quando a palavra correta é Julho. por isso quero certificar que você entendeu que não se trata de um nome pessoal mas do mês de julho.",
+  "Jarvis: Corrigido. Adicionei `julho` com IPA `/ˈʒu.ʎu/` ao `pronuncias.json`. Agora Thalita vai pronunciar o mês de julho com o \"lh\" palatal e o \"o\" final como \"u\", em vez de ler como \"July\" em inglês.",
+  "Usuário: Não precisa ficar preso em ler o final como \"u\"mas pode ler o final também como \"o\" Julho.",
+  "Jarvis: Ajustado. O IPA de \"julho\" agora é `/ˈʒu.ʎo/` — o final com som de \"o\" em vez de \"u\". Thalita vai pronunciar exatamente como você prefere."
 ]

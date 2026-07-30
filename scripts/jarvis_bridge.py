@@ -13,8 +13,8 @@ file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s:%(name)s:
 logging.getLogger().addHandler(file_handler)
 logger = logging.getLogger("vox")
 
-TTS_VOICE = "pt-BR-AntonioNeural"
-TTS_PITCH = "-30Hz"
+TTS_VOICE = "pt-BR-ThalitaMultilingualNeural"
+TTS_PITCH = "+0Hz"
 TTS_RATE = "+0%"
 
 BIN = str(Path(os.environ["APPDATA"]) / r"npm\node_modules\opencode-ai\bin\opencode.exe")
@@ -146,12 +146,27 @@ def sanitizar(t):
 
 
 def aplicar_phonemes(texto):
-    return texto, False
+    try:
+        with open(PRON_PATH, "r", encoding="utf-8") as f:
+            ipas = json.load(f)
+    except: return texto, False
+    if not ipas: return texto, False
+    palavras = sorted(ipas.keys(), key=len, reverse=True)
+    def sub(m):
+        w = m.group(0)
+        if w.lower() in ipas:
+            ipa = ipas[w.lower()]["ipa"].strip("/")
+            return f'<phoneme alphabet="ipa" ph="/{ipa}/">{w}</phoneme>'
+        return w
+    texto = re.sub(r'\b([A-Za-zÀ-ÿ]+)\b', sub, texto)
+    return texto, True
 
 async def gerar_audio(texto):
     t = sanitizar(texto)
     if not t: return ""
-    t, _ = aplicar_phonemes(t) if PRON_PATH else (t, False)
+    t, tem_phoneme = aplicar_phonemes(t) if PRON_PATH else (t, False)
+    if tem_phoneme:
+        t = f"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='pt-BR'>{t}</speak>"
     c = edge_tts.Communicate(t, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
     audio = b""
     async for chunk in c.stream():
