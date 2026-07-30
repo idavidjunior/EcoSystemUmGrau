@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-07-30T12:51:25.204765",
-  "ram_mb": 318.9,
-  "ram_pct": 92.1,
+  "timestamp": "2026-07-30T12:58:09.655496",
+  "ram_mb": 350.9,
+  "ram_pct": 91.3,
   "disk_gb": 22.8,
   "actions": [],
   "status": "critical",
