@@ -175,7 +175,13 @@ def run():
     else: result["rede"]["tipo"] = "nao verificado"
 
     result["audio"] = verificar_audio()
-    result["audio"]["player"] = "ativo" if "IMediaPlayer" in str(result["logs"]) else "nao verificado"
+    logs_str = str(result["logs"])
+    if "IMediaPlayer" in logs_str or "MediaPlayer" in logs_str:
+        result["audio"]["player"] = "ativo (referencias no log)"
+    elif "SoundPool" in result["audio"]["config"]:
+        result["audio"]["player"] = "SoundPool detectado"
+    else:
+        result["audio"]["player"] = "nao verificado"
 
     ws = testar_websocket()
     result["rede"]["websocket_porta_8765"] = ws
