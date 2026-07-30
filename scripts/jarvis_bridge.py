@@ -38,12 +38,12 @@ def briefing_espontaneo():
     mes = MESES[agora.month - 1]
     data = f"{agora.day} de {mes}"
     clima = get_weather()
-    linhas = [f"Hoje e {dia_semana}, {data}. "]
+    linhas = [f"Hoje é {dia_semana}, {data}. "]
     linhas.append(f"{clima}. ")
     if agora.weekday() < 5 and 7 <= agora.hour <= 9:
-        linhas.append("Hor\u00e1rio de pico matinal, tr\u00e2nsito intenso nas principais vias. ")
+        linhas.append("Horário de pico matinal, trânsito intenso nas principais vias. ")
     elif agora.weekday() < 5 and 17 <= agora.hour <= 19:
-        linhas.append("Hor\u00e1rio de pico noturno, tr\u00e2nsito intenso para quem vai voltar pra casa. ")
+        linhas.append("Horário de pico noturno, trânsito intenso para quem vai voltar pra casa. ")
     return "".join(linhas)
 
 ECOSSISTEMA_DIR = Path(WORKDIR) / "EcoSystemUmGrau"
@@ -385,7 +385,7 @@ async def lidar(ws):
     except Exception as e:
         logger.warning(f"briefing: {e}")
         extra = ""
-    saudacao = f"Ola. {extra}{status}Como posso ajudar?"
+    saudacao = f"Olá. {extra}{status}Como posso ajudar?"
     try:
         a = await gerar_audio(saudacao)
     except Exception as e:
