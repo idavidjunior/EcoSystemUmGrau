@@ -29,19 +29,21 @@ PRON_PATH = r"C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau\scripts\p
 MAX_HIST = 50
 
 DIAS = ["segunda-feira","terca-feira","quarta-feira","quinta-feira","sexta-feira","sabado","domingo"]
+MESES = ["janeiro","fevereiro","marco","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]
 INTERRUPCAO = re.compile(r'^(ok|ta bom|esta bom|chega|para|cala a boca|já chega|valeu|obrigado|entendi|deixa pra lá|depois eu pergunto)', re.IGNORECASE)
 
 def briefing_espontaneo():
     agora = datetime.datetime.now()
     dia_semana = DIAS[agora.weekday()]
-    data = agora.strftime("%d de %B")
+    mes = MESES[agora.month - 1]
+    data = f"{agora.day} de {mes}"
     clima = get_weather()
     linhas = [f"Hoje e {dia_semana}, {data}. "]
     linhas.append(f"{clima}. ")
     if agora.weekday() < 5 and 7 <= agora.hour <= 9:
-        linhas.append("Horario de pico matinal, transito intenso nas principais vias. ")
+        linhas.append("Hor\u00e1rio de pico matinal, tr\u00e2nsito intenso nas principais vias. ")
     elif agora.weekday() < 5 and 17 <= agora.hour <= 19:
-        linhas.append("Horario de pico noturno, transito intenso para quem vai voltar pra casa. ")
+        linhas.append("Hor\u00e1rio de pico noturno, tr\u00e2nsito intenso para quem vai voltar pra casa. ")
     return "".join(linhas)
 
 ECOSSISTEMA_DIR = Path(WORKDIR) / "EcoSystemUmGrau"
@@ -378,20 +380,12 @@ async def lidar(ws):
         except Exception as e2:
             logger.error(f"estado retry: {e2}")
     status = gerar_status_natural()
-    hora = int(time.strftime("%H"))
     try:
         extra = briefing_espontaneo()
     except Exception as e:
         logger.warning(f"briefing: {e}")
         extra = ""
-    saudacoes = [
-        f"{'Bom dia' if hora < 12 else 'Boa tarde'}. {extra}{status}Em que posso ser util nesta sessao?",
-        f"{'Bom dia' if hora < 12 else 'Boa tarde'}. {extra}{status}Pronto para processar suas demandas.",
-        f"Ola. {extra}{status}Como posso ajudar?",
-        f"{'Bom dia' if hora < 12 else 'Boa tarde'}. {extra}{status}Foco total. Qual o nosso objetivo?",
-        f"Conexao estabelecida. {extra}{status}O que vamos fazer hoje?",
-    ]
-    saudacao = random.choice(saudacoes)
+    saudacao = f"Ola. {extra}{status}Como posso ajudar?"
     try:
         a = await gerar_audio(saudacao)
     except Exception as e:
