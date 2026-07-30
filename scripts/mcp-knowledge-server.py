@@ -49,7 +49,7 @@ def handle(req):
 
     if method == 'initialize':
         return {'jsonrpc': '2.0', 'id': rid, 'result': {
-            'protocolVersion': '2026-07-01',
+            'protocolVersion': '2024-11-05',
             'serverInfo': {'name': 'eco-knowledge', 'version': '1.0.0'},
             'capabilities': {'tools': {}}}}
 
