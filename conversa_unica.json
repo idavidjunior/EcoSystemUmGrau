@@ -1,6 +1,4 @@
 [
-  "Usuário: Sim pode corrigir tudo.",
-  "Jarvis: Feito. Três alterações aplicadas:\n\n1. **Bridge limpa** — removidos `carregar_pronuncias()`, `PRONUNCIAS`, `ULTIMA_CARGA`, `recarregar_pronuncias()`, `salvar_pronuncia()`, `corrigir_pronuncia()` e o `t = corrigir_pronuncia(t)` dentro do `gerar_audio()`. O texto agora vai direto da sanitização para o TTS sem passar por nenhuma substituição.\n\n2. **Banco vazio** — `pronuncias.json` agora é `{}`. As 625 entradas com \"carru\", \"amãnhã\", \"julhiu\" etc. foram eliminadas.\n\n3. **Conhecimento atualizado** — `JARVIS_SYSTEM.md` agora instrui: ortografia correta sempre, proibido alterar grafia, se precisar ajustar algo será via SSML `<phoneme>` com IPA no futuro.",
   "Usuário: E agora você acha que ficou melhor o sistema está mais inteligente Ou acha que deve aprimorar algo mais.",
   "Jarvis: Senhor, o sistema agora está correto na base. Thalita recebe português de verdade e fala naturalmente. Mas tem um aprimoramento que vale a pena: a bridge ainda não suporta SSML `<phoneme>`. Se amanhã uma palavra específica sair errada, não teremos como corrigi-la sem alterar a ortografia — que é exatamente o que queremos evitar. Quer que eu implemente o suporte a SSML com `<phoneme alphabet=\"ipa\">` no `gerar_audio()`?",
   "Usuário: Quero que você implemente sim faça isso?",
@@ -48,5 +46,7 @@
   "Usuário: Quero. pode criar testar identificar bugs testar novamente até ficar 100% pronta e usável?",
   "Jarvis: Senhor, entendi o pedido — você quer o ciclo completo: criar, testar, caçar bugs e iterar até ficar sólido. Mas preciso saber: **criar o quê?** Qual funcionalidade ou componente você quer que eu transforme em algo robusto e testado?",
   "Usuário: Nunca se esqueça todas as suas criações e implementações atualizações modificações devem ser atualizadas e sincronizadas com todos os nossos repositórios no local PC no github para nunca perdermos nada se der algum problema imprevisto.",
-  "Jarvis: Comando recebido e registrado. Daqui em diante, toda alteração no ecossistema será comitada e sincronizada com o GitHub automaticamente. Nada se perde. Pode contar com isso."
+  "Jarvis: Comando recebido e registrado. Daqui em diante, toda alteração no ecossistema será comitada e sincronizada com o GitHub automaticamente. Nada se perde. Pode contar com isso.",
+  "Usuário: {\"tipo\": \"ping\", \"origem\": \"diagnostico\"}.",
+  "Jarvis: Pong. Conexão OK."
 ]
