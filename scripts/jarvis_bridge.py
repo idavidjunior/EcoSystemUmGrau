@@ -55,6 +55,28 @@ def carregar_pronuncias():
     except: return {}
 
 PRONUNCIAS = carregar_pronuncias()
+ULTIMA_CARGA = time.time()
+
+def recarregar_pronuncias():
+    global PRONUNCIAS, ULTIMA_CARGA
+    PRONUNCIAS = carregar_pronuncias()
+    ULTIMA_CARGA = time.time()
+    logger.info(f"pronuncias recarregadas: {len(PRONUNCIAS)} palavras")
+
+def salvar_pronuncia(palavra, fonetica):
+    try:
+        d = dict(PRONUNCIAS)
+        d[palavra.strip().lower()] = fonetica.strip()
+        tmp = PRON_PATH + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(d, f, ensure_ascii=False, indent=2)
+        os.replace(tmp, PRON_PATH)
+        recarregar_pronuncias()
+        logger.info(f"pronuncia salva: {palavra} -> {fonetica}")
+        return True
+    except Exception as e:
+        logger.error(f"salvar pronuncia: {e}")
+        return False
 
 def gerar_estado_atual():
     linhas = []
@@ -143,6 +165,11 @@ def corrigir_pronuncia(texto):
 async def gerar_audio(texto):
     t = sanitizar(texto)
     if not t: return ""
+    try:
+        mtime = os.path.getmtime(PRON_PATH)
+        if mtime > ULTIMA_CARGA:
+            recarregar_pronuncias()
+    except: pass
     t = corrigir_pronuncia(t)
     c = edge_tts.Communicate(t, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
     audio = b""
