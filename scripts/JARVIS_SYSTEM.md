@@ -297,6 +297,23 @@ Implementei detecção automática de pontuação na bridge.
 - Capitaliza a primeira letra da frase
 - Melhora o contexto enviado ao OpenCode e a qualidade das respostas de voz
 
+### Estudo de Entonação — Pergunta vs Afirmação (31/07/2026)
+Fontes: Frota & Moraes (Fonologia Entoacional do PB), Castelo & Frota (2016), Miranda et al. (Speech Prosody 2020), Moraes (2008).
+
+**A entonação distingue os dois tipos frásicos e é codificada no contorno nuclear + fronteira:**
+
+1. **Afirmação (declarativa):** contorno `H+L* L%` — tom alto na sílaba anterior à tônica e **descida** na sílaba tônica final. Melodia **descendente**. Contorno comum a todas as variedades do PB.
+2. **Pergunta sim/não (total):** núcleo `L*+H` (baixo na tônica + subida) — melodia **ascendente** na sílaba tônica final. Padrão estável em todo o PB.
+3. **Pergunta com palavra-QU ("onde", "quando"...):** pico inicial **alto** e queda acentuada (≈5 semitons) sobre a tônica. Distinção acontece na região pré-nuclear (pico mais alto que na exclamação).
+4. Perguntas tendem a ser **mais rápidas** que afirmações; a tônica final de perguntas tem mais intensidade e pico de f0 mais tarde.
+
+**Regra prática para o TTS (edge-tts):**
+- `?` final → curva ascendente (pergunta sim/não e eco)
+- `.` final → curva descendente (afirmação)
+- Para perguntas-QU, a subida da curva não é obrigatória — o contraste vem do pico inicial alto
+- **Portanto: a entonação correta depende da pontuação final certa.** Toda pergunta DEVE terminar em `?`, toda afirmação em `.`. É isso que `fix_punctuation()` e `melhorar_fala()` garantem.
+- Como Jarvis: quando eu pergunto, terminar em `?` (a voz sobe). Quando afirmo, terminar em `.` (a voz desce). Nunca deixar frase sem pontuação final.
+
 ### Estudo de Pronúncia — 30/07/2026 (revisão radical)
 **Decisão:** Toda abordagem de substituição fonética foi removida e substituída por SSML `<phoneme>`.
 - `corrigir_pronuncia()` deletada da bridge

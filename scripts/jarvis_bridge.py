@@ -148,24 +148,65 @@ def sanitizar(t):
 
 CONECTORES_INICIAIS = ["então", "portanto", "agora", "bom", "olha", "assim", "enfim", "porém", "contudo", "finalmente", "primeiro", "depois", "aliás", "provavelmente", "atualmente", "resumindo", "vamos"]
 CONECTORES_MEIO = ["mas", "porque", "pois", "então", "depois", "porém", "contudo", "quando", "enquanto", "por isso", "portanto", "além disso"]
+RESPIRACAO = CONECTORES_MEIO + ["e", "ou"]
+
+
+def _inserir_respiracao(ora):
+    """Quebra orações longas em cláusulas menores com vírgula (pausa de respiração)."""
+    if len(ora.split()) <= 16:
+        return ora
+    alvo = re.compile(
+        r'(?<![,.;:!?])\s+(?:' + '|'.join(re.escape(c) for c in RESPIRACAO) + r')\s+',
+        re.IGNORECASE)
+    matches = list(alvo.finditer(ora))
+    if not matches:
+        return ora
+    centro = len(ora) // 2
+    melhor = min(matches, key=lambda m: abs(m.start() - centro))
+    return ora[:melhor.start()].rstrip() + ', ' + ora[melhor.start():].strip()
 
 
 def melhorar_fala(texto):
+    """Prepara o texto para leitura por voz: pontuação limpa e respirações naturais.
+
+    Regras (30/07/2026):
+    - NUNCA altera a ortografia das palavras (voz nativa pt-BR).
+    - Vírgula e ponto são as respirações do TTS; `;`/`:` viram vírgula.
+    - Travessões viram vírgula (pausa curta) para a voz.
+    - Orações longas (>16 palavras) ganham vírgula antes do conectivo mais próximo do meio.
+    - Toda frase começa com maiúscula; toda frase termina com ponto final.
+    - Espaço sempre depois de vírgula/ponto; nunca antes de pontuação.
+    """
     t = texto.strip()
     if not t:
         return t
-    t = t[0].upper() + t[1:] if t[0].islower() else t
     t = re.sub(r'\s+', ' ', t)
+    t = re.sub(r'\s*[—–]\s*', ', ', t)
+    t = re.sub(r'\s+-\s+', ', ', t)
+    t = re.sub(r'^[,;\s]+', '', t)
     t = t.replace(';', ',').replace(':', ',')
+    t = re.sub(r'\.{3,}', '...', t)
     for c in CONECTORES_MEIO:
         t = re.sub(rf'(?<![.!?,])\s+{re.escape(c)}\s+', f', {c} ', t, flags=re.IGNORECASE)
+    oracoes = re.split(r'(?<=[.!?])\s+', t)
+    t = ' '.join(_inserir_respiracao(o.strip()) for o in oracoes if o.strip())
     for c in CONECTORES_INICIAIS:
         t = re.sub(rf'^(?i:{re.escape(c)})\s+', f'{c.capitalize()}, ', t)
     t = re.sub(r'\s+([,.;:?!])', r'\1', t)
-    t = re.sub(r'([,.])\1+', r'\1', t)
+    t = re.sub(r'(?<!\d)([,;:?!.])(?![\d.])', r'\1 ', t)
+    t = re.sub(r',{2,}', ',', t)
+    t = re.sub(r'\b(e|ou)\s*,\s*(?=depois|então|porém|contudo|portanto|finalmente|enfim)\b', r'\1 ', t, flags=re.IGNORECASE)
+    partes = []
+    for oracao in re.split(r'(?<=[.!?])\s+', t):
+        oracao = oracao.strip()
+        if not oracao:
+            continue
+        oracao = oracao[0].upper() + oracao[1:] if oracao[0].islower() else oracao
+        if not oracao.endswith(('.', '?', '!', '...')):
+            oracao += '.'
+        partes.append(oracao)
+    t = ' '.join(partes)
     t = re.sub(r'\s+', ' ', t).strip()
-    if not t.endswith(('.', '?', '!', '...')):
-        t += '.'
     return t[:2000]
 
 
@@ -376,7 +417,7 @@ def fix_punctuation(text):
     if not text:
         return text
     text = text[0].upper() + text[1:] if text[0].islower() else text
-    palavras_q = r"^(qual|quem|onde|quando|como|por que|porque|pq|q|oq|o que|quanto|quantos|quantas|qto|qtos|qtas|pra que|para que|sera que|vai|tem|existe|dá para|da pra|posso|pode|poderia|queria saber|me diga|me fale|explique|conte|preciso saber|sabe me dizer|como que|que que|quem que|onde que)"
+    palavras_q = r"^(qual|quem|onde|quando|como|por que|porque|pq|q|oq|o que|quanto|quantos|quantas|qto|qtos|qtas|pra que|para que|sera que|sera|vai|tem|tem como|existe|dá para|da pra|posso|pode|poderia|podemos|queria saber|queria|gostaria|me diga|me fale|explique|conte|preciso saber|sabe me dizer|sabe|sabe se|consegue|você|voce|vocês|voces|quer que|quer saber|é possível|e possivel|é verdade|e verdade|está certo|esta certo|quanto custa|vale a pena|como que|que que|quem que|onde que)"
     e_questao = bool(re.match(palavras_q, text.lower().lstrip()))
     if e_questao and not text.rstrip().endswith(("?", ".")):
         return text.rstrip() + "?"
