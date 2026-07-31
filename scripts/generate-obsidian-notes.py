@@ -1,11 +1,11 @@
 """Gera notas .md para o Obsidian a partir do knowledge_graph.json"""
 import json, os, re, sys
 from datetime import datetime
+from pathlib import Path
 
-LER_DIR = os.path.join(os.environ.get('USERPROFILE', 'C:\\Users\\Playtec-bancada'),
-                       'Desktop', 'Codigos', 'EcoSystemUmGrau', 'ler-runtime')
-OUTPUT_DIR = os.path.join(os.environ.get('USERPROFILE', 'C:\\Users\\Playtec-bancada'),
-                          'Desktop', 'Codigos', 'EcoSystemUmGrau', 'conhecimento', 'notas')
+REPO_DIR = Path(__file__).resolve().parent.parent
+LER_DIR = str(REPO_DIR / 'ler-runtime')
+OUTPUT_DIR = str(REPO_DIR / 'conhecimento' / 'notas')
 
 GRAPH_FILE = os.path.join(LER_DIR, 'knowledge', 'knowledge_graph.json')
 

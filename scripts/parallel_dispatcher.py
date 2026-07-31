@@ -2,9 +2,9 @@
 import json, os, sys, subprocess, threading, time, copy
 from datetime import datetime
 from collections import defaultdict
+from pathlib import Path
 
-BASE = os.path.join(os.environ.get('USERPROFILE', 'C:\\Users\\Playtec-bancada'),
-                    'Desktop', 'Codigos', 'EcoSystemUmGrau')
+BASE = str(Path(__file__).resolve().parent.parent)
 LOCKS_DIR = os.path.join(BASE, 'conhecimento', 'locks')
 MAX_WORKERS = 4
 

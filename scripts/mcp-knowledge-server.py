@@ -1,8 +1,8 @@
 """MCP server for knowledge search. Robust, self-contained, no external deps."""
 import json, sys, os, subprocess
+from pathlib import Path
 
-BASE = os.path.join(os.environ.get('USERPROFILE', 'C:\\Users\\Playtec-bancada'),
-                    'Desktop', 'Codigos', 'EcoSystemUmGrau')
+BASE = str(Path(__file__).resolve().parent.parent)
 
 TOOLS = [
     {

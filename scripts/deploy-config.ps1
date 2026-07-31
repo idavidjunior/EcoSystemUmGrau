@@ -4,8 +4,8 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$opencode = "C:\Users\Playtec-bancada\AppData\Roaming\npm\opencode.cmd"
-$configDir = "C:\Users\Playtec-bancada\.config\opencode"
+$opencode = "$env:APPDATA\npm\opencode.cmd"
+$configDir = "$env:USERPROFILE\.config\opencode"
 $mainConfig = "$configDir\opencode.jsonc"
 $backupConfig = "$configDir\opencode.jsonc.backup"
 

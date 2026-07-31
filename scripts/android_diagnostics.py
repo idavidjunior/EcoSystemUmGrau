@@ -1,10 +1,10 @@
 import subprocess, json, sys, re, asyncio
 from pathlib import Path
 
-ADB = r"C:\Users\Playtec-bancada\AppData\Local\Android\Sdk\platform-tools\adb.exe"
+ADB = r"C:\Users\David Jr\AppData\Local\Android\Sdk\platform-tools\adb.exe"
 PKG = "com.voxumgrau.app"
-DEVICE = "100.64.71.9:5555"
-BRIDGE_HOST = "100.120.67.64"
+DEVICE = "192.168.15.4:5555"
+BRIDGE_HOST = "100.91.141.101"
 BRIDGE_PORT = 8765
 
 def adb(*args):

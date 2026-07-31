@@ -3,8 +3,7 @@ import json, os, re, sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
-BASE = os.path.join(os.environ.get('USERPROFILE', 'C:\\Users\\Playtec-bancada'),
-                    'Desktop', 'Codigos', 'EcoSystemUmGrau')
+BASE = str(Path(__file__).resolve().parent.parent)
 MEM_DIR = os.path.join(BASE, 'conhecimento', 'memoria')
 SESSIONS_DIR = os.path.join(MEM_DIR, 'sessions')
 MEMORIES_FILE = os.path.join(MEM_DIR, 'memories.json')

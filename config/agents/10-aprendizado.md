@@ -53,7 +53,7 @@ Para cada tarefa, identifique e registre:
 # FORMATO DE SAÍDA
 
 Para cada aprendizado, crie um arquivo em:
-`C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/conhecimento/aprendizados/YYYY-MM-DD-N.md`
+`C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/conhecimento/aprendizados/YYYY-MM-DD-N.md`
 
 Use este template:
 ```markdown

@@ -8,10 +8,10 @@ $ErrorActionPreference = "Continue"
 $scriptLabel = "[Vigilante]"
 $pidFile = "$env:USERPROFILE\.vigilante.pid"
 $logFile = "$env:USERPROFILE\.vigilante.log"
-$ecoDir = "$env:USERPROFILE\Desktop\Codigos\EcoSystemUmGrau"
+$ecoDir = Split-Path $PSScriptRoot -Parent
 $lerDir = "$ecoDir\ler-runtime"
 $learnDir = "$ecoDir\conhecimento\aprendizados"
-$projectsDir = "$env:USERPROFILE\Desktop\Codigos\Android"
+$projectsDir = "C:\Users\David Jr\Documents\Default Project"
 $gitInterval = 300  # 5 min entre git sync (eco/ler)
 $projectGitInterval = 60  # 1 min entre git sync para projetos (menor = mais responsivo)
 

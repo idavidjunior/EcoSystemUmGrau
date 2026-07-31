@@ -301,7 +301,7 @@ O Maestro DEVE delegar para o LER quando a tarefa envolver:
 ler "Seu objetivo claro aqui"
 
 # Ou diretamente pelo Python
-cd C:\Users\Playtec-bancada\.ler
+cd $env:USERPROFILE\.ler
 python run.py "Seu objetivo claro aqui"
 
 # A missão SÓ TERMINA quando TODOS os critérios forem atingidos
@@ -349,7 +349,7 @@ Maestro (identifica tarefa complexa)
 # OpenCodeBridge (já existe em integrations/opencode/opencode_bridge.py)
 from integrations.opencode.opencode_bridge import OpenCodeBridge
 
-bridge = OpenCodeBridge(base_dir="C:/Users/Playtec-bancada/.ler")
+bridge = OpenCodeBridge(base_dir=os.path.expanduser("~/.ler"))
 resultado = bridge.delegate_goal("Seu objetivo")
 status = bridge.get_status()
 relatorio = bridge.generate_report()
@@ -368,9 +368,9 @@ O OpenCode **NÃO** carrega se o `~/.config/opencode/opencode.jsonc` contiver a 
     "model": "opencode/deepseek-v4-flash-free",
     "shell": "powershell",
     "instructions": [
-        "C:\\Users\\Playtec-bancada\\.claude\\skills\\android-pure-sdk\\SKILL.md",
-        "C:\\Users\\Playtec-bancada\\.claude\\skills\\mp3player-metadata-rescue\\SKILL.md",
-        "C:\\Users\\Playtec-bancada\\.claude\\skills\\ler\\SKILL.md"
+        "C:\\Users\\David Jr\\Documents\\Default Project\\EcoSystemUmGrau\\skills\\android-diagnostics\\skill.md",
+        "C:\\Users\\David Jr\\Documents\\Default Project\\EcoSystemUmGrau\\skills\\mp3player-metadata-rescue\\SKILL.md",
+        "C:\\Users\\David Jr\\Documents\\Default Project\\EcoSystemUmGrau\\skills\\ler\\SKILL.md"
     ],
     "disabled_providers": [],
     "provider": {

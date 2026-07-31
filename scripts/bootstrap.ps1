@@ -1,8 +1,8 @@
 # bootstrap.ps1 — Configura o ecossistema do zero
 Write-Host "=== Bootstrap do Ecossistema ===" -ForegroundColor Cyan
 
-$ecoDir = "C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau"
-$lerDir = "C:\Users\Playtec-bancada\.ler"
+$ecoDir = Split-Path $PSScriptRoot -Parent
+$lerDir = "$env:USERPROFILE\.ler"
 $profilePath = "$env:USERPROFILE\Documents\WindowsPowerShell\profile.ps1"
 
 # 1. Profile

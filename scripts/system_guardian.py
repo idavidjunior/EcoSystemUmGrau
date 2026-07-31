@@ -2,7 +2,7 @@ import psutil, time, logging, json, os, sys, signal
 from pathlib import Path
 from datetime import datetime
 
-BASE = Path(r"C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau")
+BASE = Path(__file__).parent.parent
 LOG = BASE / "scripts" / "guardian_log.txt"
 PID_FILE = BASE / "scripts" / "guardian.pid"
 STATE_FILE = BASE / "scripts" / "guardian_state.json"

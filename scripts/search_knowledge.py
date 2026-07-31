@@ -3,8 +3,7 @@ import json, os, re, sys, math
 from collections import Counter
 from pathlib import Path
 
-BASE = os.path.join(os.environ.get('USERPROFILE', 'C:\\Users\\Playtec-bancada'),
-                    'Desktop', 'Codigos', 'EcoSystemUmGrau')
+BASE = str(Path(__file__).resolve().parent.parent)
 LER_DIR = os.path.join(BASE, 'ler-runtime')
 NOTAS_DIR = os.path.join(BASE, 'conhecimento', 'notas')
 MEM_DIR = os.path.join(BASE, 'conhecimento', 'memoria')

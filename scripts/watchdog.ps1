@@ -2,7 +2,7 @@ param(
     [int]$Interval = 20,
     [string]$BridgePort = "8765",
     [string]$ServePort = "8766",
-    [string]$LogPath = "$env:USERPROFILE\Desktop\Codigos\EcoSystemUmGrau\scripts\watchdog_log.txt"
+    [string]$LogPath = "$PSScriptRoot\watchdog_log.txt"
 )
 
 $ErrorActionPreference = "SilentlyContinue"
@@ -21,7 +21,7 @@ while ($true) {
         Write-Log "Bridge OK (porta $BridgePort)"
     } else {
         Write-Log "Bridge MORTO na porta $BridgePort - reiniciando..."
-        $bridgeScript = "$env:USERPROFILE\Desktop\Codigos\EcoSystemUmGrau\scripts\jarvis_bridge.py"
+        $bridgeScript = "$PSScriptRoot\jarvis_bridge.py"
         if (Test-Path $bridgeScript) {
             $psi = New-Object System.Diagnostics.ProcessStartInfo
             $psi.FileName = "python"
@@ -68,7 +68,7 @@ while ($true) {
             $psi = New-Object System.Diagnostics.ProcessStartInfo
             $psi.FileName = $opencodeBin
             $psi.Arguments = "serve --port $ServePort --hostname 127.0.0.1"
-            $psi.WorkingDirectory = "$env:USERPROFILE\Desktop\Codigos"
+            $psi.WorkingDirectory = "C:\Users\David Jr\Documents\Default Project"
             $psi.UseShellExecute = $false
             $psi.RedirectStandardOutput = $true
             $psi.RedirectStandardError = $true

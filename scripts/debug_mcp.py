@@ -1,10 +1,11 @@
 """Debug MCP test"""
 import subprocess, json
+from pathlib import Path
 
 proc = subprocess.Popen(
     ["python", "scripts/mcp-knowledge-server.py"],
     stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-    text=True, cwd=r"C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau")
+    text=True, cwd=str(Path(__file__).parent.parent))
 init = '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}\n'
 tools = '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}\n'
 stdout, stderr = proc.communicate(input=init + tools, timeout=5)

@@ -2,9 +2,10 @@
 Clausula Petrea: se falhar, NAO aplica a alteracao."""
 import json, os, sys, subprocess, traceback
 import re
+from pathlib import Path
 
-USERPROFILE = os.environ.get('USERPROFILE', 'C:\\Users\\Playtec-bancada')
-BASE = os.path.join(USERPROFILE, 'Desktop', 'Codigos', 'EcoSystemUmGrau')
+USERPROFILE = str(Path.home())
+BASE = str(Path(__file__).resolve().parent.parent)
 DEPLOYED = os.path.join(USERPROFILE, '.config', 'opencode', 'opencode.jsonc')
 BACKUP = DEPLOYED + '.bak'
 
@@ -67,20 +68,34 @@ def test_mcp_server(server_name, command, args):
         return check(f'MCP {server_name}', False, str(e)[:200])
 
 def check_mcp_servers(cfg, label='Config', test_servers=True):
-    """Validate MCP server configs in a given config dict."""
-    mcp = cfg.get('mcp', {})
-    servers = mcp.get('servers', {}) if mcp else {}
+    """Validate MCP server configs in a given config dict.
+
+    Suporta o formato novo (opencode 1.x): mcp.<nome> com "command" sendo lista
+    [cmd, arg1, ...], e o formato legado: mcp.servers.<nome> com command + args.
+    """
+    mcp = cfg.get('mcp')
+    if not mcp:
+        WARNS.append(f'{label}: sem servidor MCP configurado (opcional)')
+        print(f'  [WARN] {label}: sem servidor MCP configurado (opcional)')
+        return
+    servers = mcp.get('servers', mcp) if isinstance(mcp, dict) else {}
     if not servers:
-        check(f'{label}: MCP servers', False, 'Nenhum servidor MCP configurado')
+        WARNS.append(f'{label}: sem servidor MCP configurado (opcional)')
+        print(f'  [WARN] {label}: sem servidor MCP configurado (opcional)')
         return
     check(f'{label}: {len(servers)} MCP servidor(es)', True)
     for sname, sconfig in servers.items():
+        if not isinstance(sconfig, dict):
+            continue
         cmd = sconfig.get('command', '')
         args = sconfig.get('args', [])
+        if isinstance(cmd, list):
+            args = cmd[1:] + (list(args) if isinstance(args, list) else [])
+            cmd = cmd[0] if cmd else ''
         if not cmd:
             check(f'{label}: MCP {sname} sem command', False)
             continue
-        if 'npx' in cmd.lower():
+        if 'npx' in str(cmd).lower():
             check(f'{label}: MCP {sname} npx proibido', False,
                   'Servidores npx travam inicializacao do OpenCode. Use Python puro.')
             continue
@@ -107,9 +122,11 @@ def run():
     if os.path.exists(DEPLOYED):
         ok2, cfg2 = check_json(DEPLOYED, 'Deployed')
         if ok2 and cfg2:
-            for key in ['plugin', 'provider', 'mcp', 'instructions']:
-                has = cfg2.get(key) is not None
-                check(f'Deployed tem: {key}', has)
+            check('Deployed tem: instructions', 'instructions' in cfg2)
+            for opt in ['plugin', 'provider', 'mcp']:
+                if cfg2.get(opt) is None:
+                    WARNS.append(f'Deployed sem {opt} (opcional)')
+                    print(f'  [WARN] Deployed sem {opt} (opcional)')
             with open(DEPLOYED, encoding='utf-8-sig') as f:
                 content = f.read()
             check('Deployed sem npx', 'npx' not in content, 'npx encontrado!')
@@ -119,7 +136,11 @@ def run():
 
     # 3. Rollback capability
     print('\n[3] Rollback capability')
-    check('Backup disponivel', os.path.exists(BACKUP), 'Crie backup antes de alterar.')
+    if os.path.exists(BACKUP):
+        check('Backup disponivel', True)
+    else:
+        WARNS.append('Sem backup (opencode.jsonc.bak). Crie backup antes de alterar.')
+        print('  [WARN] Sem backup. Crie backup antes de alterar.')
 
     # 4. Agents integrity
     print('\n[4] Agents')

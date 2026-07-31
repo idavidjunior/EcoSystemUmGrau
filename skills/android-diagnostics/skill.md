@@ -92,9 +92,9 @@ Sempre que o usuário mencionar sintomas abaixo, execute `android_diagnostics.py
 ### Parâmetros fixos
 ```
 Dispositivo: 100.64.71.9:5555
-ADB: C:\Users\Playtec-bancada\AppData\Local\Android\Sdk\platform-tools\adb.exe
+ADB: C:\Users\David Jr\AppData\Local\Android\platform-tools\platform-tools\adb.exe
 Pacote: com.voxumgrau.app
-Bridge: 100.120.67.64:8765
+Bridge: 100.91.141.101:8765
 ```
 
 ### Reconexão automática (se falhar)

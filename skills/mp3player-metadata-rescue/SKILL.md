@@ -9,7 +9,7 @@
 - **Build:** Gradle 8.x + Kotlin + CMake native libraries (fingerprint_jni)
 - **Device connection:** ADB over WiFi (`adb connect 100.64.71.9:5555`, also via `adb tcpip 5555`)
 - **App name:** "Reprodutor MP3" — Music player with tag editor and metadata online search
-- **Repository:** `C:\Users\Playtec-bancada\Desktop\Codigos\Android\Mp3Player`
+- **Repository:** `C:\Users\David Jr\Documents\Default Project\Mp3Player`
 
 ---
 
@@ -23,7 +23,7 @@ Nao esperar confirmacao do usuario para estas etapas.
 
 ### Full Debug Build
 ```powershell
-cd C:\Users\Playtec-bancada\Desktop\Codigos\Android\Mp3Player
+cd C:\Users\David Jr\Documents\Default Project\Mp3Player
 .\gradlew.bat assembleDebug
 ```
 Output APK: `app/build/outputs/apk/debug/app-debug.apk`
