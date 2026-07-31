@@ -146,6 +146,29 @@ def sanitizar(t):
     return re.sub(r'\s+', ' ', t).strip()[:2000]
 
 
+CONECTORES_INICIAIS = ["então", "portanto", "agora", "bom", "olha", "assim", "enfim", "porém", "contudo", "finalmente", "primeiro", "depois", "aliás", "provavelmente", "atualmente", "resumindo", "vamos"]
+CONECTORES_MEIO = ["mas", "porque", "pois", "então", "depois", "porém", "contudo", "quando", "enquanto", "por isso", "portanto", "além disso"]
+
+
+def melhorar_fala(texto):
+    t = texto.strip()
+    if not t:
+        return t
+    t = t[0].upper() + t[1:] if t[0].islower() else t
+    t = re.sub(r'\s+', ' ', t)
+    t = t.replace(';', ',').replace(':', ',')
+    for c in CONECTORES_MEIO:
+        t = re.sub(rf'(?<![.!?,])\s+{re.escape(c)}\s+', f', {c} ', t, flags=re.IGNORECASE)
+    for c in CONECTORES_INICIAIS:
+        t = re.sub(rf'^(?i:{re.escape(c)})\s+', f'{c.capitalize()}, ', t)
+    t = re.sub(r'\s+([,.;:?!])', r'\1', t)
+    t = re.sub(r'([,.])\1+', r'\1', t)
+    t = re.sub(r'\s+', ' ', t).strip()
+    if not t.endswith(('.', '?', '!', '...')):
+        t += '.'
+    return t[:2000]
+
+
 
 
 def aplicar_phonemes(texto):
@@ -167,6 +190,7 @@ def aplicar_phonemes(texto):
 async def gerar_audio(texto):
     t = sanitizar(texto)
     if not t: return ""
+    t = melhorar_fala(t)
     c = edge_tts.Communicate(t, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
     audio = b""
     async for chunk in c.stream():
