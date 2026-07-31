@@ -1,13 +1,13 @@
 import subprocess, os, sys
 from pathlib import Path
 
-log_path = r"C:\Users\Playtec-bancada\Desktop\Codigos\serve_log.txt"
+log_path = Path(__file__).parent / "serve_log.txt"
 log = open(log_path, "a", buffering=1, encoding="utf-8")
 log.write(f"\n=== opencode serve started at {__import__('datetime').datetime.now().isoformat()} ===\n")
 
 OPENCODE_BIN = str(Path(os.environ.get("APPDATA", "")) / r"npm\node_modules\opencode-ai\bin\opencode.exe")
-WORKDIR = r"C:\Users\Playtec-bancada\Desktop\Codigos"
-SERVE_CONFIG = r"C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau\scripts\opencode-serve.jsonc"
+WORKDIR = r"C:\Users\David Jr\Documents\Default Project"
+SERVE_CONFIG = str(Path(__file__).parent / "opencode-serve.jsonc")
 
 cmd = [
     OPENCODE_BIN, "serve",

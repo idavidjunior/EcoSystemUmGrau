@@ -8,7 +8,7 @@ except ImportError:
     pass
 
 logging.basicConfig(level=logging.INFO)
-file_handler = logging.FileHandler(r"C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau\scripts\bridge_log.txt", mode="a", encoding="utf-8")
+file_handler = logging.FileHandler(Path(__file__).parent / "bridge_log.txt", mode="a", encoding="utf-8")
 file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s:%(name)s:%(message)s"))
 logging.getLogger().addHandler(file_handler)
 logger = logging.getLogger("vox")
@@ -21,10 +21,10 @@ BIN = str(Path(os.environ["APPDATA"]) / r"npm\node_modules\opencode-ai\bin\openc
 SERVE_URL = "http://127.0.0.1:8766"
 SERVER_USER = "opencode"
 SERVER_PASS = os.environ.get("OPENCODE_SERVER_PASSWORD", "")
-WORKDIR = r"C:\Users\Playtec-bancada\Desktop\Codigos"
+WORKDIR = r"C:\Users\David Jr\Documents\Default Project"
 HIST_PATH = Path(WORKDIR) / "EcoSystemUmGrau" / "conversa_unica.json"
-SYS_PATH = r"C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau\scripts\JARVIS_SYSTEM.md"
-PRON_PATH = r"C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau\scripts\pronuncias.json"  # ipa metadata apenas
+SYS_PATH = str(Path(__file__).parent / "JARVIS_SYSTEM.md")
+PRON_PATH = str(Path(__file__).parent / "pronuncias.json")  # ipa metadata apenas
 
 MAX_HIST = 50
 
@@ -39,7 +39,8 @@ def briefing_espontaneo():
     data = f"{agora.day} de {mes}"
     clima = get_weather()
     linhas = [f"Hoje é {dia_semana}, {data}. "]
-    linhas.append(f"{clima}. ")
+    if not any(w in clima.lower() for w in ("chave", "api", "erro", "inválida", "inválido", "não configurada", "não configurado", "sem conexão", "não respondeu")):
+        linhas.append(f"{clima}. ")
     if agora.weekday() < 5 and 7 <= agora.hour <= 9:
         linhas.append("Horário de pico matinal, trânsito intenso nas principais vias. ")
     elif agora.weekday() < 5 and 17 <= agora.hour <= 19:
@@ -166,10 +167,7 @@ def aplicar_phonemes(texto):
 async def gerar_audio(texto):
     t = sanitizar(texto)
     if not t: return ""
-    t, tem_phoneme = aplicar_phonemes(t) if PRON_PATH else (t, False)
-    if tem_phoneme:
-        t = f"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='pt-BR'>{t}</speak>"
-    c = edge_tts.Communicate(t, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH, ssml=tem_phoneme)
+    c = edge_tts.Communicate(t, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
     audio = b""
     async for chunk in c.stream():
         if chunk["type"] == "audio": audio += chunk["data"]
@@ -255,6 +253,7 @@ class Cliente:
         logger.info("serve not running, starting...")
         proc = await asyncio.create_subprocess_exec(
             BIN, "serve", "--port", "8766",
+            cwd=WORKDIR,
             stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.DEVNULL)
         for _ in range(15):
             await asyncio.sleep(1)
@@ -327,14 +326,14 @@ class Cliente:
 
 
 def gerar_status_natural():
-    ok = []
+    servicos = []
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.settimeout(1)
         r = s.connect_ex(("127.0.0.1", 8765))
         s.close()
         if r == 0:
-            ok.append("bridge operante na porta 8765")
+            servicos.append("minha ponte de voz")
     except: pass
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -342,15 +341,11 @@ def gerar_status_natural():
         r = s.connect_ex(("127.0.0.1", 8766))
         s.close()
         if r == 0:
-            ok.append("servidor OpenCode na porta 8766")
+            servicos.append("o meu cérebro")
     except: pass
-    try:
-        if Path(BIN).exists():
-            ok.append("OpenCode pronto")
-    except: pass
-    if ok:
-        return "O sistema está funcionando: " + " e ".join(ok) + ". "
-    return "O sistema está inicializando. "
+    if servicos:
+        return "Estou online, com " + " e ".join(servicos) + " ativos. "
+    return "Estou inicializando. "
 
 def fix_punctuation(text):
     text = text.strip()
