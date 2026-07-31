@@ -232,6 +232,7 @@ async def gerar_audio(texto):
     t = sanitizar(texto)
     if not t: return ""
     t = melhorar_fala(t)
+    t, _ = aplicar_phonemes(t)
     c = edge_tts.Communicate(t, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
     audio = b""
     async for chunk in c.stream():
@@ -351,7 +352,7 @@ class Cliente:
             logger.info(f"created session {self._session_id}")
         return self._session_id
 
-    async def perguntar(self, msg, tentativa=1):
+    async def perguntar(self, msg, img_base64=None, img_mime="image/jpeg", tentativa=1):
         prompt = self._montar(msg)
         logger.info(f"hist={len(self._hist)//2} prompt={len(prompt)}b tentativa={tentativa}: {msg[:80]}")
 
@@ -362,15 +363,16 @@ class Cliente:
         if not session_id:
             return "Erro: não foi possível criar sessão no servidor."
 
-        result = await _http_async("POST", f"/session/{session_id}/message", {
-            "parts": [{"type": "text", "text": prompt}]
-        })
+        body = {"parts": [{"type": "text", "text": prompt}]}
+        if img_base64:
+            body["parts"].append({"type": "file", "mime": img_mime, "url": f"data:{img_mime};base64,{img_base64}"})
+        result = await _http_async("POST", f"/session/{session_id}/message", body)
 
         if not result:
             if tentativa < 2:
                 self._session_id = None
                 logger.info("result vazio, tentando nova sessao")
-                return await self.perguntar(msg, tentativa=2)
+                return await self.perguntar(msg, img_base64=img_base64, tentativa=2)
             return "Sem resposta do servidor."
 
         parts = result.get("parts", [])
@@ -381,7 +383,7 @@ class Cliente:
             if tentativa < 2:
                 self._session_id = None
                 logger.info(f"resp vazia parts={len(parts)}, criando nova sessao")
-                return await self.perguntar(msg, tentativa=2)
+                return await self.perguntar(msg, img_base64=img_base64, tentativa=2)
             resp = "Sem resposta."
 
         self._hist.append(f"Usuário: {msg}")
@@ -455,12 +457,20 @@ async def lidar(ws):
 
     try:
         async for m in ws:
+            img_atual = None
+            img_mime = "image/jpeg"
             try:
                 obj = json.loads(m)
-                if isinstance(obj, dict) and obj.get("tipo") == "ping":
-                    await ws.send(json.dumps({"tipo": "pong", "origem": "bridge", "eco": obj}))
-                    logger.info(f"ping-pong de {obj.get('origem','desconhecido')}")
-                    continue
+                if isinstance(obj, dict):
+                    if obj.get("tipo") == "ping":
+                        await ws.send(json.dumps({"tipo": "pong", "origem": "bridge", "eco": obj}))
+                        logger.info(f"ping-pong de {obj.get('origem','desconhecido')}")
+                        continue
+                    if obj.get("tipo") == "imagem":
+                        m = obj.get("texto") or "O que você vê nesta imagem?"
+                        img_atual = obj.get("imagem", "")
+                        img_mime = obj.get("mime", "image/jpeg")
+                        logger.info(f"imagem recebida: {len(img_atual)} chars base64")
             except json.JSONDecodeError:
                 pass
             msg_fix = fix_punctuation(m)
@@ -477,7 +487,7 @@ async def lidar(ws):
                     await ws.send(json.dumps({"text": r}))
                 continue
             try:
-                r = await c.perguntar(m)
+                r = await c.perguntar(m, img_base64=img_atual, img_mime=img_mime)
             except Exception as e:
                 r = f"Erro no processamento: {e}"
                 logger.error(f"erro: {e}", exc_info=True)
