@@ -25,3 +25,9 @@
 
 ## Estado
 - Pairing OK; TV controlada via SSH/CLI; ligar via WoL; SSAP 3000 bloqueado mas 3001 funciona.
+
+## 10. Lição de navegação em apps (01/08/2026)
+- **Apps com login/perfil (Prime, Netflix, etc.) exigem seleção de perfil** antes de play. O SSAP `nav` envia teclas cegamente — sem visão da tela, não dá pra saber posição do cursor, se teclado abriu, se resultado apareceu.
+- **Fluxo realista:** usuário navega no app (controle físico/app mobile) até o conteúdo desejado (busca, perfil, episódio), e o Jarvis assume só o **player** (play/pause/seek/volume) via SSAP.
+- **Navegação cega = chute.** Tentar buscar "Mestres do Universo" via teclas no teclado virtual da Prime sem ver a tela falhou. Não tentar — combinar com usuário: ele posiciona, eu controlo player.
+- **Se precisar buscar via automação real:** requer OCR/visão computacional na tela (HDMI capture + CV) ou API oficial do serviço — fora do escopo do SSAP.
