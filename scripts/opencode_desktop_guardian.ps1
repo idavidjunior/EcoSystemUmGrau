@@ -25,8 +25,19 @@ $SHORTCUTS = @(
 function Get-FreeRamMB { [math]::Round((Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory / 1024, 0) }
 
 function Test-DesktopRunning {
-    $p = Get-Process -Name OpenCode -ErrorAction SilentlyContinue | Where-Object { $_.MainWindowHandle -ne 0 }
-    return [bool]$p
+    # IMPORTANTE: Get-Process -Name OpenCode e CASE-INSENSITIVE e tambem pega o opencode.exe (CLI).
+    # Usar Win32_Process e comparar o nome EXATO (case-sensitive via -ceq) para distinguir.
+    $procs = Get-CimInstance Win32_Process | Where-Object { $_.Name -ceq "OpenCode.exe" }
+    if (-not $procs) { return $false }
+    # Considera "rodando" se algum processo OpenCode.exe tem MainWindowHandle != 0
+    foreach ($pp in $procs) {
+        try {
+            $gp = Get-Process -Id $pp.ProcessId -ErrorAction Stop
+            if ($gp.MainWindowHandle -ne [IntPtr]::Zero) { return $true }
+        } catch {}
+    }
+    # Se nenhum tem janela mas existem 3+ processos (main + filhos), considera em carga
+    return ($procs.Count -ge 3)
 }
 
 function Get-LatestLogDir {
@@ -44,13 +55,19 @@ function Test-RendererCrashed {
 }
 
 function Test-RendererStalled {
-    # renderer.log parou de crescer por RendererMaxStallSec
+    # Conservador: so considera travado se (renderer.log parado ha muito tempo) E (janela nao responde).
+    # So olha o renderer.log da SESSAO atual (mesmo diretorio da ultima sessao).
     $dir = Get-LatestLogDir
     if (-not $dir) { return $false }
     $r = Join-Path $dir.FullName "renderer.log"
     if (-not (Test-Path $r)) { return $false }
     $age = ((Get-Date) - (Get-Item $r).LastWriteTime).TotalSeconds
-    return ($age -gt $RendererMaxStallSec)
+    if ($age -le $RendererMaxStallSec) { return $false }
+    # renderer.log parado ha muito tempo -> checa se a janela esta realmente presa
+    $main = Get-CimInstance Win32_Process | Where-Object { $_.Name -ceq "OpenCode.exe" } | ForEach-Object {
+        try { Get-Process -Id $_.ProcessId -EA Stop } catch {} } | Where-Object { $_.MainWindowHandle -ne [IntPtr]::Zero } | Select-Object -First 1
+    if (-not $main) { return $true } # janela sumiu mas processo vivo = preso
+    return (-not $main.Responding)
 }
 
 function Ensure-ShortcutFlags {
@@ -76,15 +93,21 @@ function Start-DesktopWithFlags {
 }
 
 function Relieve-Memory {
-    # Fecha processos concorrentes nao essenciais e notifica
-    $orphanOc = Get-Process -Name opencode -ErrorAction SilentlyContinue | Where-Object {
-        $cmd = (Get-CimInstance Win32_Process -Filter "ProcessId=$($_.Id)").CommandLine
-        $cmd -match "opencode\.exe run" -or ($cmd -match "opencode\.exe" -and $cmd -notmatch " serve" -and $cmd -notmatch "bin\\opencode\.exe")
+    # Fecha processos concorrentes nao essenciais e notifica.
+    # CUIDADO: nao matar o opencode.exe CLI que eh host de agentes/loops.
+    # So mata opencode.exe que sejam orfaos "run" (nao serve, nao host interativo).
+    $orphans = Get-CimInstance Win32_Process -Filter "Name='opencode.exe'" -EA SilentlyContinue | Where-Object {
+        $cmd = $_.CommandLine
+        # orfao = CLI interativo em pasta aleatoria, nao "serve"
+        ($cmd -match "opencode\.exe run") -or
+        ($cmd -match "opencode\.exe`" `"." -and $cmd -notmatch " serve")
     }
-    if ($orphanOc) {
-        $mem = 0; $orphanOc | ForEach-Object { $mem += [math]::Round($_.WorkingSet64/1MB) }
-        $orphanOc | Stop-Process -Force
-        Write-Log "Memoria: limpou $($orphanOc.Count) opencode orfao (${mem}MB)"
+    if ($orphans) {
+        $mem = 0; foreach ($o in $orphans) { try { $mem += [math]::Round((Get-Process -Id $o.ProcessId -EA Stop).WorkingSet64/1MB) } catch {} }
+        foreach ($o in $orphans) { try { Stop-Process -Id $o.ProcessId -Force -EA Stop } catch {} }
+        Write-Log "Memoria: limpou $($orphans.Count) opencode orfao (${mem}MB)"
+    } else {
+        Write-Log "Memoria: nenhum orfao opencode para limpar"
     }
 }
 
@@ -117,13 +140,15 @@ while ($true) {
         # (C) Desktop vivo mas renderer crashou ou travou
         if (Test-RendererCrashed) {
             Write-Log "Renderer/GPU crashou em runtime - reiniciando desktop"
-            Get-Process -Name OpenCode -ErrorAction SilentlyContinue | Stop-Process -Force
+            $desktopProcs = Get-CimInstance Win32_Process | Where-Object { $_.Name -ceq "OpenCode.exe" }
+            foreach ($pr in $desktopProcs) { try { Stop-Process -Id $pr.ProcessId -Force -EA Stop } catch {} }
             Start-Sleep -Seconds 3
             Start-DesktopWithFlags
             Start-Sleep -Seconds 25
         } elseif (Test-RendererStalled) {
             Write-Log "Renderer parado ha >${RendererMaxStallSec}s - reiniciando desktop (prevencao)"
-            Get-Process -Name OpenCode -ErrorAction SilentlyContinue | Stop-Process -Force
+            $desktopProcs = Get-CimInstance Win32_Process | Where-Object { $_.Name -ceq "OpenCode.exe" }
+            foreach ($pr in $desktopProcs) { try { Stop-Process -Id $pr.ProcessId -Force -EA Stop } catch {} }
             Start-Sleep -Seconds 3
             Start-DesktopWithFlags
             Start-Sleep -Seconds 25

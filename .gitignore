@@ -11,6 +11,9 @@ __pycache__/
 *.log
 bridge_log.txt
 scripts/serve_log.txt
+scripts/serve_sync_err.txt
+scripts/serve_sync_out.txt
+scripts/opencode_desktop_guardian_log.txt
 
 # OS files
 Thumbs.db
