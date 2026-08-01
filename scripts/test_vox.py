@@ -1,4 +1,4 @@
-import asyncio, websockets, sys
+import asyncio, websockets, sys, re
 
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
@@ -80,6 +80,33 @@ def teste_normalizar_hora_display():
     print(f"normalizar_hora_display: {len(casos)}/{len(casos)} OK")
 
 
+def teste_caminho_rapido():
+    sys.path.insert(0, __import__('os').path.dirname(__file__))
+    from jarvis_bridge import caminho_rapido
+    casas = {
+        "que horas são": ("horas", r'\d{2}:\d{2}'),
+        "que horas": ("horas", r'\d{2}:\d{2}'),
+        "qual a data de hoje": ("data", r'\d{2}/\d{2}/\d{4}'),
+        "que dia é hoje": ("dia", r'\d{2}/\d{2}/\d{4}'),
+        "você está aí": ("status", r'online|atendendo'),
+        "status do sistema": ("status", r'online|inicializando'),
+        "lista os arquivos do projeto": (None, None),
+        "toca uma música": (None, None),
+    }
+    falhas = 0
+    for entrada, (esperado, padrao) in casas.items():
+        saida = caminho_rapido(entrada)
+        if esperado is None:
+            ok = saida is None
+            print(f"[{'OK' if ok else 'FALHOU'}] {entrada!r} -> {saida!r} (deve ser None)")
+        else:
+            ok = saida is not None and re.search(padrao, saida) is not None
+            print(f"[{'OK' if ok else 'FALHOU'}] {entrada!r} -> {saida!r}")
+        falhas += 0 if ok else 1
+    assert falhas == 0, f"{falhas} caso(s) de caminho rapido falharam"
+    print(f"caminho_rapido: {len(casas)}/{len(casas)} OK")
+
+
 async def teste():
     async with websockets.connect("ws://127.0.0.1:8765") as ws:
         perguntas = [
@@ -100,4 +127,5 @@ if __name__ == "__main__":
     teste_fix_punctuation()
     teste_horas_para_fala()
     teste_normalizar_hora_display()
+    teste_caminho_rapido()
     asyncio.run(teste())

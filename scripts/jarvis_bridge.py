@@ -277,6 +277,17 @@ def gerar_estado_atual():
 
 ESTADO_ATUAL = gerar_estado_atual()
 
+_estado_cache = {"t": 0.0, "txt": ESTADO_ATUAL}
+
+
+def _estado_cacheado():
+    """Estado atual com TTL: o rglob no vault Obsidian é caro, então só recomputa
+    a cada 300s. Caminho de resposta rápida: não recriar o que já existe."""
+    if time.time() - _estado_cache["t"] > 300:
+        _estado_cache["t"] = time.time()
+        _estado_cache["txt"] = gerar_estado_atual()
+    return _estado_cache["txt"]
+
 
 def sanitizar(t):
     if not t: return ""
@@ -478,7 +489,7 @@ class Cliente:
                 logger.warning(f"init estado: {e}")
 
     def _montar(self, msg):
-        estado = gerar_estado_atual()
+        estado = _estado_cacheado()
         sufixo = f"Usuário: {msg}\nJarvis:"
         livre = MAX_PROMPT - len(SISTEMA) - len(estado) - 4 - len(sufixo)
         p = SISTEMA + "\n\n" + estado + "\n\n"
@@ -729,6 +740,60 @@ def fix_punctuation(text):
     partes = [pontuar(p) for p in re.split(r'(?<=[.!?])\s+', t)]
     return ' '.join(p for p in partes if p)
 
+
+def caminho_rapido(msg):
+    """Atalho local SEM round-trip ao LLM (Política de Resposta Rápida).
+
+    Para perguntas comuns cujos dados a bridge já tem (hora, data, bateria do
+    celular, status e clima), responde na hora — 0 chamada ao servidor OpenCode.
+    Se não casar com nenhum padrão, retorna None e o fluxo normal (LLM) segue.
+    """
+    t = _sem_acentos(msg).lower().strip().rstrip('.,;:!? ')
+    if not t:
+        return None
+    agora = datetime.datetime.now()
+
+    if re.search(r'\b(que horas|que hora|hora atual|horas sao|agora sao|sao que horas)\b', t):
+        return f"Agora são {agora.strftime('%H:%M')}, {DIAS[agora.weekday()]}."
+
+    if re.search(r'\b(que dia|qual a data|data de hoje|dia de hoje|que data|em que dia|que dia e hoje)\b', t):
+        return f"Hoje é {agora.strftime('%d/%m/%Y')}, {DIAS[agora.weekday()]}."
+
+    if re.search(r'\b(bateria do celular|bateria do telefone|bateria do aparelho|quanto de bateria)\b', t):
+        cel = _cel_bateria()
+        if cel is not None:
+            return f"O celular está com {cel}% de bateria."
+
+    if re.search(r'\b(voce esta ai|voce ta ai|ta ai|status do sistema|esta online|esta funcionando|quem e voce)\b', t):
+        return gerar_status_natural() + "Tudo pronto para responder na hora."
+
+    if re.search(r'\b(amanha|previsao|vai chover)\b', t):
+        try:
+            previsao = get_forecast_data(days=2)
+            if "erro" not in previsao and len(previsao["previsoes"]) >= 2:
+                d = previsao["previsoes"][1]
+                txt = f"Amanhã: mínima de {d['tmin']:.0f} e máxima de {d['tmax']:.0f} graus"
+                if d.get("descricao"):
+                    txt += f", {d['descricao']}"
+                if d.get("precip") and d["precip"] > 0:
+                    txt += f", {d['precip']:.0f}% de chance de chuva"
+                return txt + "."
+        except Exception:
+            pass
+
+    if re.search(r'\b(clima|temperatura|que tempo|esta calor|esta frio|ta calor|ta frio)\b', t):
+        try:
+            clima = get_weather_data()
+            if "erro" not in clima:
+                txt = f"Clima agora: {clima['descricao']}, {clima['temp']:.0f} graus"
+                if clima.get("umidade") is not None:
+                    txt += f", umidade de {clima['umidade']:.0f}%"
+                return txt + "."
+        except Exception:
+            pass
+
+    return None
+
 async def lidar(ws):
     c = Cliente()
     client_ip = ws.remote_address[0] if ws.remote_address else "desconhecido"
@@ -807,10 +872,18 @@ async def lidar(ws):
                     await ws.send(json.dumps({"text": r}))
                 continue
             try:
-                r = await c.perguntar(m, img_base64=img_atual, img_mime=img_mime)
+                r = caminho_rapido(m)
             except Exception as e:
-                r = f"Erro no processamento: {e}"
-                logger.error(f"erro: {e}", exc_info=True)
+                logger.warning(f"caminho_rapido: {e}")
+                r = None
+            if r is None:
+                try:
+                    r = await c.perguntar(m, img_base64=img_atual, img_mime=img_mime)
+                except Exception as e:
+                    r = f"Erro no processamento: {e}"
+                    logger.error(f"erro: {e}", exc_info=True)
+            else:
+                logger.info(f"resposta rapida ({len(r)}c): {r[:80]}")
 
             r_tela = normalizar_hora_display(r)
             try:
