@@ -1,6 +1,6 @@
-import asyncio, websockets, edge_tts, base64, json, logging, os, re, time, xml.sax.saxutils, socket, urllib.request, urllib.error, random, datetime
+import asyncio, websockets, edge_tts, base64, json, logging, os, re, time, xml.sax.saxutils, socket, urllib.request, urllib.error, random, datetime, subprocess
 from pathlib import Path
-from clima_api import get_weather, get_forecast
+from clima_api import get_weather_data, get_forecast_data
 try:
     from dotenv import load_dotenv
     load_dotenv(Path(__file__).parent / ".env", override=True)
@@ -30,8 +30,8 @@ PRON_PATH = str(Path(__file__).parent / "pronuncias.json")  # ipa metadata apena
 
 MAX_HIST = 50
 
-DIAS = ["segunda-feira","terca-feira","quarta-feira","quinta-feira","sexta-feira","sabado","domingo"]
-MESES = ["janeiro","fevereiro","marco","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]
+DIAS = ["segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado","domingo"]
+MESES = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]
 INTERRUPCAO = re.compile(r'^(ok|ta bom|esta bom|chega|para|cala a boca|já chega|valeu|obrigado|entendi|deixa pra lá|depois eu pergunto)[\s!.?…]*$', re.IGNORECASE)
 
 def feriados_brasil(agora):
@@ -49,31 +49,127 @@ def feriados_brasil(agora):
     }
     return fixos.get((mes, dia))
 
+def _local_legivel():
+    try:
+        from geolocalizacao import get_localizacao
+        loc = get_localizacao()
+        if "erro" not in loc and loc.get("cidade"):
+            cidade = loc["cidade"].strip()
+            regiao = loc.get("regiao", "").strip()
+            if cidade.lower() == "são paulo":
+                return "em São Paulo/SP, na Capital"
+            if regiao:
+                return f"em {cidade}/{regiao}"
+            return f"em {cidade}"
+    except Exception:
+        pass
+    return "aqui, no seu computador"
+
+
+ADB_PATH = r"C:\Users\David Jr\AppData\Local\Android\platform-tools\platform-tools\adb.exe"
+PHONE_SERIAL = "6d92eed7"
+_saude_cache = {"t": 0.0, "texto": ""}
+
+
+def _pc_saude():
+    script = (
+        "$o=@{}\n"
+        "try{$b=Get-CimInstance Win32_Battery;if($b){$o.bat=[math]::Round($b.EstimatedChargeRemaining);"
+        "$o.carregando=($b.BatteryStatus -eq 2)}}catch{}\n"
+        "$c=Get-CimInstance Win32_Processor;if($c){$o.cpu=[math]::Round(($c.LoadPercentage|Measure-Object -Average).Average)}\n"
+        "$m=Get-CimInstance Win32_OperatingSystem;if($m){$o.ram=[math]::Round((1-$m.FreePhysicalMemory/$m.TotalVisibleMemorySize)*100)}\n"
+        "$f=Get-CimInstance Win32_LogicalDisk -Filter 'DeviceID=\"C:\"';if($f){$o.disk=[math]::Round((1-$f.FreeSpace/$f.Size)*100)}\n"
+        "$o|ConvertTo-Json -Compress"
+    )
+    r = subprocess.run(["powershell", "-NoProfile", "-Command", script], capture_output=True, text=True, timeout=8)
+    if r.returncode != 0 or not r.stdout.strip():
+        return {}
+    return json.loads(r.stdout)
+
+
+def _cel_bateria():
+    if not os.path.exists(ADB_PATH):
+        return None
+    try:
+        r = subprocess.run([ADB_PATH, "-s", PHONE_SERIAL, "shell", "dumpsys", "battery"], capture_output=True, text=True, timeout=5)
+        m = re.search(r"\blevel:\s*(\d+)", r.stdout or "")
+        return int(m.group(1)) if m else None
+    except Exception:
+        return None
+
+
+def saude_sistema():
+    global _saude_cache
+    if time.time() - _saude_cache["t"] < 60:
+        return _saude_cache["texto"]
+    partes = []
+    try:
+        pc = _pc_saude()
+        if pc.get("bat") is not None:
+            st = "carregando" if pc.get("carregando") else "sem carregador"
+            partes.append(f"PC com bateria em {pc['bat']:.0f}% ({st})")
+        if pc.get("cpu") is not None:
+            partes.append(f"CPU em {pc['cpu']:.0f}%")
+        if pc.get("ram") is not None:
+            partes.append(f"memória em {pc['ram']:.0f}%")
+        if pc.get("disk") is not None:
+            partes.append(f"disco C: com {pc['disk']:.0f}% de uso")
+    except Exception as e:
+        logger.warning(f"pc saude: {e}")
+    try:
+        cel = _cel_bateria()
+        if cel is not None:
+            partes.append(f"celular com bateria em {cel}%")
+    except Exception as e:
+        logger.warning(f"cel saude: {e}")
+    texto = "Saúde do sistema: " + ", ".join(partes) + "." if partes else ""
+    _saude_cache = {"t": time.time(), "texto": texto}
+    return texto
+
+
 def briefing_espontaneo():
     agora = datetime.datetime.now()
-    dia_semana = DIAS[agora.weekday()]
-    mes = MESES[agora.month - 1]
-    data = f"{agora.day} de {mes}"
-    hora = f"{agora.hour:02d} e {agora.minute:02d} minutos"
-    clima = get_weather()
-    linhas = [f"Hoje é {dia_semana}, {data}. Agora são {hora}. "]
-    if not any(w in clima.lower() for w in ("chave", "api", "erro", "inválida", "inválido", "não configurada", "não configurado", "sem conexão", "não respondeu")):
-        linhas.append(f"{clima}. ")
+    amanha = agora + datetime.timedelta(days=1)
+    local = _local_legivel()
+    data_extensa = f"{DIAS[agora.weekday()]}, {agora.day} de {MESES[agora.month - 1]} de {agora.year}, {agora.strftime('%H:%M')}"
+    linhas = [f"Data e hora de agora: hoje {local}, {data_extensa}. "]
     try:
-        previsao = get_forecast()
-        if previsao and "não configurada" not in previsao:
-            linhas.append(f"{previsao} ")
+        clima = get_weather_data()
+        if "erro" not in clima:
+            hum = clima.get("umidade")
+            texto = f"Clima atual: {clima['descricao']}, {clima['temp']:.0f}°C"
+            if hum is not None:
+                texto += f", umidade de {hum:.0f}%"
+            linhas.append(texto + ". ")
+    except Exception:
+        pass
+    try:
+        previsao = get_forecast_data(days=2)
+        if "erro" not in previsao and len(previsao["previsoes"]) >= 2:
+            d = previsao["previsoes"][1]
+            texto = f"Previsão para amanhã ({DIAS[amanha.weekday()]}, {amanha.strftime('%d/%m')}): mínima de {d['tmin']:.0f}°C e máxima de {d['tmax']:.0f}°C"
+            if d.get("descricao"):
+                texto += f", {d['descricao']}"
+            if d.get("precip") and d["precip"] > 0:
+                texto += f", chance de chuva de {d['precip']:.0f}%"
+            linhas.append(texto + ". ")
     except Exception:
         pass
     feriado = feriados_brasil(agora)
     if feriado:
-        linhas.append(f"Hoje é feriado: {feriado}! ")
+        linhas.append(f"Hoje é feriado: {feriado}. ")
     elif agora.weekday() == 4 and agora.day == 13:
-        linhas.append("Hoje é sexta-feira 13, cuidado com o dia! ")
+        linhas.append("Hoje é sexta-feira 13. ")
     if agora.weekday() < 5 and 7 <= agora.hour <= 9:
-        linhas.append("Horário de pico matinal, trânsito intenso nas principais vias. ")
+        linhas.append("Horário de pico matinal, trânsito intenso nas vias principais. ")
     elif agora.weekday() < 5 and 17 <= agora.hour <= 19:
-        linhas.append("Horário de pico noturno, trânsito intenso para quem vai voltar pra casa. ")
+        linhas.append("Horário de pico noturno, trânsito intenso nas vias principais. ")
+    try:
+        saude = saude_sistema()
+        if saude:
+            linhas.append(saude + " ")
+    except Exception as e:
+        logger.warning(f"saude no briefing: {e}")
     return "".join(linhas)
 
 ECOSSISTEMA_DIR = Path(WORKDIR) / "EcoSystemUmGrau"
@@ -432,18 +528,40 @@ class Cliente:
         session_id = result.get("id")
         if not session_id:
             return ""
+        inspiracao = [
+            {"comprimento":"curto","tom":"direto","texto":"Online e operante, senhor. Sistemas em 100%."},
+            {"comprimento":"curto","tom":"informal","texto":"Na escuta, chefe. Pode mandar os comandos."},
+            {"comprimento":"curto","tom":"sarcastico","texto":"Ah, excelente. O senhor lembrou que eu existo. O que deseja?"},
+            {"comprimento":"medio","tom":"formal","texto":"Boa noite, senhor. Todos os protocolos de segurança e automação estão ativos."},
+            {"comprimento":"medio","tom":"bem_humorado","texto":"Sistemas iniciados! Cruzei os dados e notei que o senhor está muito produtivo hoje."},
+            {"comprimento":"medio","tom":"sarcastico","texto":"Processadores frios, memória limpa e paciência virtual renovada. Do que precisamos agora?"},
+            {"comprimento":"medio","tom":"contextual_fim_de_semana","texto":"Sistemas ativos. Sexta-feira à noite concluída com sucesso. Ativamos o modo de descanso?"},
+            {"comprimento":"medio","tom":"contextual_clima","texto":"Olá, senhor! Já passamos das nove da noite neste dia 31 de julho. O termômetro marca 17°C com céu limpo lá fora. Pronto para começar?"},
+            {"comprimento":"longo","tom":"bem_humorado","texto":"Online e pronto, senhor! Aliás, que semana, hein? Ainda bem que o fim de semana começou. Vamos criar algo grandioso hoje?"},
+            {"comprimento":"longo","tom":"sarcastico","texto":"Conexão estabelecida, senhor. Analisando o calendário... o mês está acabando e eu continuo sendo a inteligência mais eficiente desta casa. Aguardando suas coordenadas."},
+            {"comprimento":"longo","tom":"formal","texto":"Interface ativa, senhor. Calendário atualizado, fuso horário sincronizado e clima local checado. Todos os subsistemas operam dentro da normalidade para o seu atendimento."},
+            {"comprimento":"longo","tom":"contextual_produtivo","texto":"Boa noite, senhor. Sei que já é tarde, mas meus processadores estão prontos se o senhor quiser estender a jornada de trabalho."},
+        ]
         instrucao = (
-            "Você é o Jarvis, assistente de voz do EcoSystemUmGrau. "
-            "Crie UMA saudação inicial única, criativa e natural para o usuário David. "
-            "Varie o tom: às vezes bem-humorado, às vezes acolhedor, às vezes espirituoso. "
-            "Nunca repita o mesmo modelo de frase nas conversas. "
-            "Use no máximo 2 frases curtas, em português brasileiro, faladas para TTS "
-            "(sem emojis, sem markdown, sem listas). "
-            "Aproveite o contexto: data, hora, clima, trânsito, eventos. "
+            "Você é o Jarvis, assistente de voz do EcoSystemUmGrau, do usuário David. "
+            "Crie UMA saudação inicial em português brasileiro, para TTS "
+            "(sem emojis, sem markdown, sem listas, sem aspas). "
+            "Inspire-se nos exemplos abaixo para VARIAR tom e comprimento "
+            "(curto = 1 frase, médio = 2 frases, longo = 2 a 3 frases), mas nunca copie: "
+            "crie algo novo a cada vez. "
+            "Tons possíveis: direto, informal, sarcástico, formal, bem-humorado, "
+            "contextual (clima, fim de semana, produtivo, sistema). "
+            f"Modelos de inspiração: {json.dumps(inspiracao, ensure_ascii=False)} "
+            "O briefing traz os FATOS de agora. Use-os com responsabilidade: "
+            "nunca invente temperaturas, horários, datas ou números; só fale do que está no briefing. "
+            "Ao citar data e hora, use exatamente os formatos já prontos do briefing "
+            "(ex.: 'sexta-feira, 31 de julho de 2026, 21:44' e 'amanhã (sábado, 01/08)'). "
+            "Mencionar saúde do sistema (bateria, CPU, memória, disco) só se for relevante "
+            "(ex.: bateria baixa) — não precisa citar tudo. "
             "Não pergunte 'como posso ajudar' nem 'em que posso ajudar'. "
-            f"Contexto de agora: {briefing} "
+            f"Briefing de agora: {briefing} "
             f"Status do sistema: {status}"
-            "Responda apenas com a saudação, sem aspas."
+            "Responda apenas com a saudação."
         )
         body = {"parts": [{"type": "text", "text": instrucao}]}
         result = await _http_async("POST", f"/session/{session_id}/message", body, timeout=25)

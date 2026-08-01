@@ -56,7 +56,8 @@ def _localizacao():
     return {"cidade": CIDADE_PADRAO, "lat": LAT_PADRAO, "lon": LON_PADRAO}
 
 
-def get_weather(city=None):
+def get_weather_data(city=None):
+    """Dados estruturados do clima atual."""
     loc = _localizacao()
     url = (
         "https://api.open-meteo.com/v1/forecast"
@@ -66,64 +67,88 @@ def get_weather(city=None):
     )
     try:
         resp = requests.get(url, timeout=10)
-        if resp.status_code == 200:
-            d = resp.json()
-            cur = d.get("current", {})
-            if not cur:
-                return f"{loc['cidade']}: previsão indisponível."
-            temp = cur.get("temperature_2m")
-            feel = cur.get("apparent_temperature")
-            hum = cur.get("relative_humidity_2m")
-            code = cur.get("weather_code")
-            desc = CODIGOS.get(code, "condição variável")
-            texto = f"{loc['cidade']}: {desc}, {temp:.0f}°C"
-            if feel is not None:
-                texto += f" (sensação {feel:.0f}°C)"
-            if hum is not None:
-                texto += f", umidade {hum:.0f}%"
-            return texto
-        return f"Erro na API de clima: {resp.status_code}"
+        if resp.status_code != 200:
+            return {"erro": f"status {resp.status_code}"}
+        cur = resp.json().get("current", {})
+        if not cur:
+            return {"erro": "sem dados atuais"}
+        code = cur.get("weather_code")
+        return {
+            "cidade": loc["cidade"],
+            "temp": cur.get("temperature_2m"),
+            "sensacao": cur.get("apparent_temperature"),
+            "umidade": cur.get("relative_humidity_2m"),
+            "codigo": code,
+            "descricao": CODIGOS.get(code, "condição variável"),
+        }
     except requests.exceptions.Timeout:
-        return "API do clima não respondeu a tempo."
+        return {"erro": "tempo esgotado"}
     except requests.exceptions.ConnectionError:
-        return "Sem conexão com a API do clima."
+        return {"erro": "sem conexão"}
     except Exception as e:
-        return f"Erro ao consultar clima: {e}"
+        return {"erro": str(e)}
 
 
-def get_forecast(city=None):
+def get_forecast_data(days=3, city=None):
+    """Previsão diária estruturada (lista por dia, hoje em diante)."""
     loc = _localizacao()
     url = (
         "https://api.open-meteo.com/v1/forecast"
         f"?latitude={loc['lat']}&longitude={loc['lon']}"
         "&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code"
-        "&timezone=America/Sao_Paulo&forecast_days=1"
+        f"&timezone=America/Sao_Paulo&forecast_days={days}"
     )
     try:
         resp = requests.get(url, timeout=10)
-        if resp.status_code == 200:
-            d = resp.json()
-            dia = d.get("daily", {})
-            if not dia:
-                return ""
-            tmax = dia.get("temperature_2m_max", [None])[0]
-            tmin = dia.get("temperature_2m_min", [None])[0]
-            pchuv = dia.get("precipitation_probability_max", [None])[0]
-            code = dia.get("weather_code", [None])[0]
-            desc = CODIGOS.get(code, "")
-            partes = []
-            if tmax is not None and tmin is not None:
-                partes.append(f"máxima de {tmax:.0f} e mínima de {tmin:.0f} graus")
-            if desc:
-                partes.append(desc)
-            if pchuv is not None and pchuv > 0:
-                partes.append(f"chance de chuva de {pchuv:.0f} por cento")
-            if not partes:
-                return ""
-            return "Previsão para hoje: " + ", ".join(partes) + "."
-        return ""
+        if resp.status_code != 200:
+            return {"erro": f"status {resp.status_code}"}
+        dia = resp.json().get("daily", {})
+        if not dia:
+            return {"erro": "sem previsão"}
+        tempos = dia.get("time", [])
+        previsoes = []
+        for i, data in enumerate(tempos):
+            code = dia.get("weather_code", [None])[i] if i < len(dia.get("weather_code", [])) else None
+            previsoes.append({
+                "data": data,
+                "tmax": dia.get("temperature_2m_max", [None])[i] if i < len(dia.get("temperature_2m_max", [])) else None,
+                "tmin": dia.get("temperature_2m_min", [None])[i] if i < len(dia.get("temperature_2m_min", [])) else None,
+                "precip": dia.get("precipitation_probability_max", [None])[i] if i < len(dia.get("precipitation_probability_max", [])) else None,
+                "codigo": code,
+                "descricao": CODIGOS.get(code, ""),
+            })
+        return {"cidade": loc["cidade"], "previsoes": previsoes}
     except Exception:
+        return {"erro": "falha na previsão"}
+
+
+def get_weather(city=None):
+    d = get_weather_data(city)
+    if "erro" in d:
+        return f"Erro ao consultar clima: {d['erro']}"
+    texto = f"{d['cidade']}: {d['descricao']}, {d['temp']:.0f}°C"
+    if d.get("sensacao") is not None:
+        texto += f" (sensação {d['sensacao']:.0f}°C)"
+    if d.get("umidade") is not None:
+        texto += f", umidade {d['umidade']:.0f}%"
+    return texto
+
+
+def get_forecast(city=None):
+    dados = get_forecast_data(days=2, city=city)
+    if "erro" in dados or len(dados["previsoes"]) < 2:
         return ""
+    d = dados["previsoes"][1]
+    partes = []
+    if d.get("tmax") is not None and d.get("tmin") is not None:
+        partes.append(f"mínima de {d['tmin']:.0f} e máxima de {d['tmax']:.0f} graus")
+    if d.get("descricao"):
+        partes.append(d["descricao"])
+    if d.get("precip") and d["precip"] > 0:
+        partes.append(f"chance de chuva de {d['precip']:.0f} por cento")
+    if not partes:
+        return ""
+    return "Previsão para amanhã: " + ", ".join(partes) + "."
 
 
 if __name__ == "__main__":
