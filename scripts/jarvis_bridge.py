@@ -406,9 +406,14 @@ def aplicar_phonemes(texto):
     palavras = sorted(ipas.keys(), key=len, reverse=True)
     def sub(m):
         w = m.group(0)
-        if w.lower() in ipas:
-            ipa = ipas[w.lower()]["ipa"].strip("/")
-            return f'<phoneme alphabet="ipa" ph="/{ipa}/">{w}</phoneme>'
+        key = w.lower()
+        if key in ipas:
+            meta = ipas[key]
+            if "fala" in meta:
+                return meta["fala"]
+            ipa = meta.get("ipa", "").strip("/")
+            if ipa:
+                return f'<phoneme alphabet="ipa" ph="/{ipa}/">{w}</phoneme>'
         return w
     texto, n = re.subn(r'\b([^\W\d_]+)\b', sub, texto)
     return texto, n > 0
