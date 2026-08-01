@@ -14,7 +14,11 @@
         "fallback_models": [
           "opencode/nemotron-3-ultra-free",
           "opencode/deepseek-v4-flash-free",
-          "opencode/north-mini-code-free"
+          "opencode/laguna-s-2.1-free",
+          "opencode/ling-3.0-flash-free",
+          "opencode/mimo-v2.5-free",
+          "opencode/north-mini-code-free",
+          "opencode/big-pickle"
         ]
       }
     }
