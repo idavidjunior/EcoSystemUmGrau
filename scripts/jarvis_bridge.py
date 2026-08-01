@@ -21,6 +21,8 @@ BIN = str(Path(os.environ["APPDATA"]) / r"npm\node_modules\opencode-ai\bin\openc
 SERVE_URL = "http://127.0.0.1:8766"
 SERVER_USER = "opencode"
 SERVER_PASS = os.environ.get("OPENCODE_SERVER_PASSWORD", "")
+MODELO_VISION_PROVIDER = "nvidia"
+MODELO_VISION_MODEL = "qwen/qwen-image"
 WORKDIR = r"C:\Users\David Jr\Documents\Default Project"
 HIST_PATH = Path(WORKDIR) / "EcoSystemUmGrau" / "conversa_unica.json"
 SYS_PATH = str(Path(__file__).parent / "JARVIS_SYSTEM.md")
@@ -30,7 +32,7 @@ MAX_HIST = 50
 
 DIAS = ["segunda-feira","terca-feira","quarta-feira","quinta-feira","sexta-feira","sabado","domingo"]
 MESES = ["janeiro","fevereiro","marco","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]
-INTERRUPCAO = re.compile(r'^(ok|ta bom|esta bom|chega|para|cala a boca|já chega|valeu|obrigado|entendi|deixa pra lá|depois eu pergunto)', re.IGNORECASE)
+INTERRUPCAO = re.compile(r'^(ok|ta bom|esta bom|chega|para|cala a boca|já chega|valeu|obrigado|entendi|deixa pra lá|depois eu pergunto)[\s!.?…]*$', re.IGNORECASE)
 
 def briefing_espontaneo():
     agora = datetime.datetime.now()
@@ -366,6 +368,8 @@ class Cliente:
         body = {"parts": [{"type": "text", "text": prompt}]}
         if img_base64:
             body["parts"].append({"type": "file", "mime": img_mime, "url": f"data:{img_mime};base64,{img_base64}"})
+            body["model"] = {"providerID": MODELO_VISION_PROVIDER, "modelID": MODELO_VISION_MODEL}
+            logger.info(f"usando modelo vision {MODELO_VISION_PROVIDER}/{MODELO_VISION_MODEL}")
         result = await _http_async("POST", f"/session/{session_id}/message", body)
 
         if not result:
@@ -477,8 +481,11 @@ async def lidar(ws):
             if msg_fix != m:
                 logger.info(f"pontuacao corrigida: {m[:80]} -> {msg_fix[:80]}")
                 m = msg_fix
+            if not m.strip():
+                logger.info("mensagem vazia ignorada")
+                continue
             logger.info(f"msg({len(m)}): {m[:120]}")
-            if INTERRUPCAO.match(m.strip()):
+            if len(m.strip()) <= 24 and INTERRUPCAO.match(m.strip()):
                 r = "Interrompido. Pode falar quando quiser."
                 try:
                     a = await gerar_audio(r)
