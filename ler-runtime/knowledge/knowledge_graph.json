@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-01T11:02:12.776046",
+  "last_updated": "2026-08-01T11:14:48.773311",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -1448,6 +1448,13 @@
       "domain": "general",
       "body": "# Gramática do Português Brasileiro — Guia prático do dia a dia\n\n- **Data:** 01/08/2026\n- **Sessão:** Aprendizado permanente — gramática PT-BR para uso contínuo em comunicações\n\n## Propósito\nEste guia é o referencial de gramática do Português Brasileiro que todo agente deve\nusar no dia a dia: TTS, transcrições, textos, documentação e conversas. Focado no\nuso prático, sem jargão acadêmico desnecessário.\n\n## Ortografia e acentuação\n- Acentuação segue o novo acordo ortográfico (em vigor no Brasil d",
       "extracted_at": "2026-08-01T11:02:12.451440"
+    },
+    {
+      "source": "opencode",
+      "title": "Habilidade: Navegação Perita — Internet, PC e Celular",
+      "domain": "general",
+      "body": "# Habilidade: Navegação Perita — Internet, PC e Celular\n\n- **Data:** 01/08/2026\n- **Sessão:** Criação da habilidade de navegação perita com pesquisa de ferramentas no GitHub\n\n## Resumo\nCriada a habilidade `navegacao-perita` no catálogo do ecossistema (Habilidades/tecnicas/navegacao-perita/skill.md),\nregistrada no `manifesto_geral.json`, cobrindo as três frentes: navegador (internet), programas do PC (Windows)\ne aplicativos de celular (Android). Baseada em pesquisa do estado da arte de ferramenta",
+      "extracted_at": "2026-08-01T11:14:48.506341"
     }
   ],
   "heuristics": [
@@ -2490,6 +2497,16 @@
       "timestamp": "2026-08-01T11:02:12.451440",
       "status": "session_learning",
       "goal_objective": "Gramática do Português Brasileiro — Guia prático do dia a dia — ",
+      "tags": [
+        "geral",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-01T11:14:48.506341",
+      "status": "session_learning",
+      "goal_objective": "Habilidade: Navegação Perita — Internet, PC e Celular — ",
       "tags": [
         "geral",
         "opencode"

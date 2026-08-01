@@ -391,6 +391,32 @@
         "/sarcasmo"
       ],
       "dependencias": []
+    },
+    {
+      "id": "navegacao-perita",
+      "categoria": "tecnica",
+      "descricao": "Pericia em navegar, clicar, reconhecer elementos e ver a tela em internet (Playwright/Browser-Use), programas do PC (FlaUI/pywinauto/UIA) e apps Android (ADB/Appium/Maestro)",
+      "entrypoint": "skill.md",
+      "parametros": [
+        "alvo",
+        "plataforma"
+      ],
+      "triggers": [
+        "navegar",
+        "clicar",
+        "automatizar",
+        "reconhecer elemento",
+        "ver a tela",
+        "executar no navegador",
+        "executar no pc",
+        "executar no celular",
+        "screenshot"
+      ],
+      "dependencias": [
+        "playwright-mcp",
+        "adb",
+        "uia"
+      ]
     }
   ]
 }

@@ -1,14 +1,14 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-01T11:02:12.792796
+**Exportado em:** 2026-08-01T11:14:48.788303
 **Projetos:** 4
 **Padroes Tecnicos:** 73
 **Decisoes:** 42
 **Bug Fixes:** 46
-**Padroes Cognitivos:** 25
+**Padroes Cognitivos:** 26
 **Heuristicas:** 32
 **Frameworks:** 10
-**Missoes Aprendidas:** 68
+**Missoes Aprendidas:** 69
 
 ---
 
@@ -676,6 +676,20 @@ uso prático, sem jargão acadêmico desnecessário.
 ## Ortografia e acentuação
 - Acentuação segue o novo acordo ortográfico (em vigor no Brasil d
 
+### Habilidade: Navegação Perita — Internet, PC e Celular
+**Dominio:** general
+**Fonte:** opencode
+
+# Habilidade: Navegação Perita — Internet, PC e Celular
+
+- **Data:** 01/08/2026
+- **Sessão:** Criação da habilidade de navegação perita com pesquisa de ferramentas no GitHub
+
+## Resumo
+Criada a habilidade `navegacao-perita` no catálogo do ecossistema (Habilidades/tecnicas/navegacao-perita/skill.md),
+registrada no `manifesto_geral.json`, cobrindo as três frentes: navegador (internet), programas do PC (Windows)
+e aplicativos de celular (Android). Baseada em pesquisa do estado da arte de ferramenta
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -770,7 +784,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-01T11:02:12.776046
+**Ultima atualizacao:** 2026-08-01T11:14:48.773311
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*
