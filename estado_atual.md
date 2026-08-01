@@ -299,7 +299,7 @@ Habilidades/         # ★ Catálogo único de habilidades (decisão 2026-07-31-
 ├── pontes/
 │   ├── busca-web/            # antigo skills/agentic-search
 │   └── busca-conhecimento/   # antigo scripts/search_knowledge.py
-├── comportamentais/ponytail/ # pendente de conteúdo real
+├── comportamentais/ponytail/ # especificação (origem a localizar)
 ├── multimidia/
 └── manifesto_geral.json      # índice oficial (38 habilidades)
 ai-agents/           # Claude Code extra agents
