@@ -1,14 +1,14 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-01T11:14:48.788303
+**Exportado em:** 2026-08-01T11:29:06.256723
 **Projetos:** 4
 **Padroes Tecnicos:** 73
 **Decisoes:** 42
 **Bug Fixes:** 46
-**Padroes Cognitivos:** 26
+**Padroes Cognitivos:** 27
 **Heuristicas:** 32
 **Frameworks:** 10
-**Missoes Aprendidas:** 69
+**Missoes Aprendidas:** 71
 
 ---
 
@@ -690,6 +690,24 @@ Criada a habilidade `navegacao-perita` no catálogo do ecossistema (Habilidades/
 registrada no `manifesto_geral.json`, cobrindo as três frentes: navegador (internet), programas do PC (Windows)
 e aplicativos de celular (Android). Baseada em pesquisa do estado da arte de ferramenta
 
+### Pronúncia "Járvis" (escrita sem acento, fala com acento)
+**Dominio:** general
+**Fonte:** opencode
+
+# Pronúncia "Járvis" (escrita sem acento, fala com acento)
+
+- **Data:** 01/08/2026
+- **Sessão:** Pedido direto do usuário sobre pronúncia do nome do assistente
+
+## Regra permanente
+- **Escrita:** sempre "Jarvis", **sem acento**.
+- **Pronúncia (fala/TTS):** "Járvis" — acento tônico no primeiro A (JA-rvis, fonético: /ˈʒaʁ.vis/).
+- Nunca pronunciar "Jár-vis" com o segundo A fechado nem com acento na última sílaba ("Jarvís").
+
+## Implementação
+- Registrado em `scripts/pronuncias.json`:
+  `"jarvis": 
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -784,7 +802,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-01T11:14:48.773311
+**Ultima atualizacao:** 2026-08-01T11:29:06.239734
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

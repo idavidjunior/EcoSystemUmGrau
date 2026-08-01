@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-01T11:14:48.773311",
+  "last_updated": "2026-08-01T11:29:06.239734",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -1453,8 +1453,17 @@
       "source": "opencode",
       "title": "Habilidade: Navegação Perita — Internet, PC e Celular",
       "domain": "general",
-      "body": "# Habilidade: Navegação Perita — Internet, PC e Celular\n\n- **Data:** 01/08/2026\n- **Sessão:** Criação da habilidade de navegação perita com pesquisa de ferramentas no GitHub\n\n## Resumo\nCriada a habilidade `navegacao-perita` no catálogo do ecossistema (Habilidades/tecnicas/navegacao-perita/skill.md),\nregistrada no `manifesto_geral.json`, cobrindo as três frentes: navegador (internet), programas do PC (Windows)\ne aplicativos de celular (Android). Baseada em pesquisa do estado da arte de ferramenta",
-      "extracted_at": "2026-08-01T11:14:48.506341"
+      "body": "# Habilidade: Navegação Perita — Internet, PC e Celular\n\n- **Data:** 01/08/2026\n- **Sessão:** Criação da habilidade de navegação perita com pesquisa de ferramentas no GitHub\n\n## Resumo\nCriada a habilidade `navegacao-perita` no catálogo do ecossistema (Habilidades/tecnicas/navegacao-perita/skill.md),\nregistrada no `manifesto_geral.json`, cobrindo as três frentes: navegador (internet), programas do PC (Windows)\ne aplicativos de celular (Android). Baseada em pesquisa do estado da arte de ferramenta\n\n# Jarvis do celular e do PC: um só cérebro (arquitetura sincronizada)\n\n- **Data:** 01/08/2026\n- **Sessão:** Verificação da sincronização entre o app Android e o opencode no PC\n\n## Conclusão\n**Não existem dois Járvis diferentes.** O app do celular (VoxUmGrau) não tem\ninteligência própria — é um cliente de voz que conversa com o MESMO `opencode serve`\nque roda no PC. Quando o usuário fala com o celular, quem responde é o mesmo\nassistente que opera no computador.\n\n## Como a sincronização acontece (",
+      "extracted_at": "2026-08-01T11:29:05.945441",
+      "merged_count": 2,
+      "merged_at": "2026-08-01T11:29:06.180037"
+    },
+    {
+      "source": "opencode",
+      "title": "Pronúncia \"Járvis\" (escrita sem acento, fala com acento)",
+      "domain": "general",
+      "body": "# Pronúncia \"Járvis\" (escrita sem acento, fala com acento)\n\n- **Data:** 01/08/2026\n- **Sessão:** Pedido direto do usuário sobre pronúncia do nome do assistente\n\n## Regra permanente\n- **Escrita:** sempre \"Jarvis\", **sem acento**.\n- **Pronúncia (fala/TTS):** \"Járvis\" — acento tônico no primeiro A (JA-rvis, fonético: /ˈʒaʁ.vis/).\n- Nunca pronunciar \"Jár-vis\" com o segundo A fechado nem com acento na última sílaba (\"Jarvís\").\n\n## Implementação\n- Registrado em `scripts/pronuncias.json`:\n  `\"jarvis\": ",
+      "extracted_at": "2026-08-01T11:26:14.821490"
     }
   ],
   "heuristics": [
@@ -2507,6 +2516,26 @@
       "timestamp": "2026-08-01T11:14:48.506341",
       "status": "session_learning",
       "goal_objective": "Habilidade: Navegação Perita — Internet, PC e Celular — ",
+      "tags": [
+        "geral",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-01T11:26:14.821490",
+      "status": "session_learning",
+      "goal_objective": "Pronúncia \"Járvis\" (escrita sem acento, fala com acento) — ",
+      "tags": [
+        "geral",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-01T11:29:05.945441",
+      "status": "session_learning",
+      "goal_objective": "Jarvis do celular e do PC: um só cérebro (arquitetura sincronizada) — ",
       "tags": [
         "geral",
         "opencode"

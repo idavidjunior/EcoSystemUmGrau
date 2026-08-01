@@ -34,9 +34,12 @@ RECORD_SECONDS = float(os.environ.get("VOX_RECORD_SECONDS", "7"))
 ENERGY_THRESHOLD = 300
 
 
-def _tocar_mci(mp3):
+def _tocar_mci(mp3, parar_evento=None):
     """Toca MP3 via API MCI do Windows (confiavel em scripts; MediaPlayer falha
-    em subprocessos). Bloqueia ate o final do audio."""
+    em subprocessos). Bloqueia ate o final do audio.
+
+    Se `parar_evento` (threading.Event) for fornecido, o audio para no momento
+    em que o evento for setado (barge-in: usuario falou ou apertou tecla)."""
     import ctypes
     import time
     mci = ctypes.windll.winmm.mciSendStringW
@@ -52,15 +55,40 @@ def _tocar_mci(mp3):
         duracao_ms = int(buf.value)
     except ValueError:
         duracao_ms = 0
-    if duracao_ms > 0:
+    if parar_evento is not None:
+        # toca em steps pequenos, cortando na hora que o evento disparar
+        fim = duracao_ms / 1000 + 0.3 if duracao_ms > 0 else 15.0
+        decorrido = 0.0
+        while decorrido < fim:
+            if parar_evento.is_set():
+                mci(f'stop {alias}', None, 0, 0)
+                break
+            time.sleep(0.05)
+            decorrido += 0.05
+        # se acabou sem interrupcao, close normal; se interrompeu, ja parado
+    elif duracao_ms > 0:
         time.sleep(duracao_ms / 1000 + 0.3)
     else:
         time.sleep(1.0)
-    mci(f'close {alias}', None, 0, 0)
+    try:
+        mci(f'close {alias}', None, 0, 0)
+    except Exception:
+        pass
 
 
-def _falar(texto):
-    """Gera MP3 com edge-tts e toca via MCI (suporta MP3)."""
+def _parar_mci_tudo():
+    """Para toda reprodução MCI em andamento (barge-in de emergencia)."""
+    import ctypes
+    try:
+        ctypes.windll.winmm.mciSendStringW("stop all", None, 0, 0)
+        ctypes.windll.winmm.mciSendStringW("close all", None, 0, 0)
+    except Exception:
+        pass
+
+
+def _falar(texto, parar_evento=None):
+    """Gera MP3 com edge-tts e toca via MCI (suporta MP3). Se `parar_evento`
+    for fornecido, a fala pode ser interrompida a qualquer momento."""
     if not texto or not texto.strip():
         return
     mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
@@ -74,7 +102,7 @@ def _falar(texto):
     if not mp3.exists():
         return
     try:
-        _tocar_mci(str(mp3))
+        _tocar_mci(str(mp3), parar_evento=parar_evento)
     except Exception as e:
         print(f"[erro play] {e}")
 
@@ -153,9 +181,11 @@ def cmd_ouvir_google():
     return texto
 
 
-def cmd_falar(texto):
-    _falar(texto)
-    print(f"[Falado {len(texto)} chars]")
+def cmd_falar(texto, interruptivel=False):
+    import threading
+    evento = threading.Event()
+    _falar(texto, parar_evento=evento)
+    print(f"[Falado {len(texto)} chars]" + (" (interruptivel)" if interruptivel else ""))
 
 
 def cmd_testar_mic():
@@ -177,6 +207,6 @@ if __name__ == "__main__":
     elif args.modo == "ouvir-google":
         cmd_ouvir_google()
     elif args.modo == "falar":
-        cmd_falar(" ".join(args.texto) if args.texto else "Nada para falar")
+        cmd_falar(" ".join(args.texto) if args.texto else "Nada para falar", interruptivel=True)
     elif args.modo == "testar-mic":
         cmd_testar_mic()

@@ -26,6 +26,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 from pathlib import Path
 
@@ -35,7 +36,7 @@ import sounddevice as sd
 SCRIPTS = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPTS))
 
-from vox_audio import SAMPLE_RATE, _stt_whisper, _stt_google, _tocar_mci  # noqa: E402
+from vox_audio import SAMPLE_RATE, _stt_whisper, _stt_google, _tocar_mci, _parar_mci_tudo  # noqa: E402
 from jarvis_bridge import (  # noqa: E402
     Cliente,
     briefing_espontaneo,
@@ -302,18 +303,83 @@ def transcrever(audio):
     return texto
 
 
-def tocar_base64(b64):
+def tocar_base64(b64, parar_evento=None):
     if not b64:
         return
     mp3 = Path(tempfile.gettempdir()) / "vox_dialogo.mp3"
     mp3.write_bytes(base64.b64decode(b64))
     try:
-        _tocar_mci(str(mp3))
+        _tocar_mci(str(mp3), parar_evento=parar_evento)
     except Exception as e:
         print(f"[erro play] {e}")
 
 
-async def responder(cliente, texto):
+# --- Barge-in: interromper a fala do Jarvis ---
+
+def _tecla_pressionada(vk):
+    """True se a tecla virtual `vk` esta pressionada agora."""
+    try:
+        return bool(ctypes.windll.user32.GetAsyncKeyState(vk) & 0x8000)
+    except Exception:
+        return False
+
+
+def _monitorar_teclado(parar_evento):
+    """Fica em thread: se o usuario apertar ESC ou Enter, dispara a parada da fala."""
+    while not parar_evento.is_set():
+        if _tecla_pressionada(0x1B) or _tecla_pressionada(0x0D):  # ESC ou Enter
+            print(f"{VOZ_COLOR}[interrompido pelo teclado]{RESET}", flush=True)
+            parar_evento.set()
+            return
+        time.sleep(0.05)
+
+
+def _monitorar_microfone(parar_evento, limiar_rms=None):
+    """Fica em thread: se detectar fala do usuario (RMS acima do limiar) durante
+    a fala do Jarvis, dispara a parada (barge-in por voz)."""
+    if limiar_rms is None:
+        limiar_rms = float(os.environ.get("VOX_BARGEIN_RMS", "0.03"))
+    sd.default.device = (1, None)  # Microfone (Realtek High Definit)
+    BLOCK = int(SAMPLE_RATE * 0.1)
+    consec = 0
+    while not parar_evento.is_set():
+        try:
+            rec = sd.rec(BLOCK, samplerate=SAMPLE_RATE, channels=1, dtype="float32")
+            sd.wait()
+            rms = _rms(rec.flatten())
+            if rms > limiar_rms:
+                consec += 1
+                if consec >= 2:  # ~200ms de fala continua = barge-in
+                    print(f"{VOZ_COLOR}[interrompido pela voz]{RESET}", flush=True)
+                    parar_evento.set()
+                    return
+            else:
+                consec = 0
+        except Exception:
+            return
+
+
+def falar_com_bargein(b64):
+    """Toca o audio enquanto escuta teclado (ESC/Enter) e microfone. Se houver
+    interrupcao, corta o audio imediatamente e devolve True (usuario quer falar)."""
+    if not b64:
+        return False
+    parar_evento = threading.Event()
+    threads = [
+        threading.Thread(target=_monitorar_teclado, args=(parar_evento,), daemon=True),
+        threading.Thread(target=_monitorar_microfone, args=(parar_evento,), daemon=True),
+    ]
+    for t in threads:
+        t.start()
+    tocar_base64(b64, parar_evento=parar_evento)
+    # se a fala terminou naturalmente, rearma o evento (nao matou por interrupcao)
+    interrompido = parar_evento.is_set()
+    if interrompido:
+        time.sleep(0.2)  # deixa o microfone estabilizar apos cortar
+    return interrompido
+
+
+async def responder(cliente, texto, interrompivel=True):
     r = None
     try:
         r = caminho_rapido(texto)
@@ -333,7 +399,10 @@ async def responder(cliente, texto):
     except Exception as e:
         print(f"[tts: {e}]")
         audio = ""
-    tocar_base64(audio)
+    if interrompivel:
+        falar_com_bargein(audio)
+    else:
+        tocar_base64(audio)
 
 
 def _separar_jarvis(texto):
@@ -380,12 +449,12 @@ async def loop_ativacao(cliente):
                 else:
                     acordado = True
                     print(f"{FALAR_COLOR}[jarvis]{RESET} Sim, senhor?", flush=True)
-                    tocar_base64(await gerar_audio("Sim, senhor?"))
+                    falar_com_bargein(await gerar_audio("Sim, senhor?"))
             continue
         if SLEEP_FRASES.match(t):
             acordado = False
             print(f"{FALAR_COLOR}[jarvis]{RESET} Até logo.", flush=True)
-            tocar_base64(await gerar_audio("Até logo."))
+            falar_com_bargein(await gerar_audio("Até logo."))
             continue
         await responder(cliente, texto)
 
@@ -419,7 +488,7 @@ async def saudar_inicio(cliente):
     except Exception as e:
         print(f"[tts saudacao: {e}]")
         audio = ""
-    tocar_base64(audio)
+    falar_com_bargein(audio)
 
 
 async def main():
