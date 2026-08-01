@@ -25,6 +25,26 @@ def teste_fix_punctuation():
     print(f"fix_punctuation: {len(casos)}/{len(casos)} OK")
 
 
+def teste_horas_para_fala():
+    sys.path.insert(0, __import__('os').path.dirname(__file__))
+    from jarvis_bridge import melhorar_fala
+    casos = {
+        "São 21:44.": "São 21 horas e 44.",
+        "São exatamente 21:44.": "São exatamente 21 horas e 44.",
+        "Agora são 22:00.": "Agora, são 22 horas em ponto.",
+        "às 21:44 da noite": "Às 21 horas e 44 da noite.",
+        "Sem hora nenhuma aqui.": "Sem hora nenhuma aqui.",
+    }
+    falhas = 0
+    for entrada, esperado in casos.items():
+        saida = melhorar_fala(entrada)
+        ok = saida == esperado
+        falhas += 0 if ok else 1
+        print(f"[{'OK' if ok else 'FALHOU'}] {entrada!r} -> {saida!r}")
+    assert falhas == 0, f"{falhas} caso(s) de hora falharam"
+    print(f"horas_para_fala: {len(casos)}/{len(casos)} OK")
+
+
 async def teste():
     async with websockets.connect("ws://127.0.0.1:8765") as ws:
         perguntas = [
@@ -43,4 +63,5 @@ async def teste():
 
 if __name__ == "__main__":
     teste_fix_punctuation()
+    teste_horas_para_fala()
     asyncio.run(teste())

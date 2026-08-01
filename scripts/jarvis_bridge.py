@@ -312,7 +312,9 @@ def melhorar_fala(texto):
 
     Regras (30/07/2026):
     - NUNCA altera a ortografia das palavras (voz nativa pt-BR).
-    - Vírgula e ponto são as respirações do TTS; `;`/`:` viram vírgula.
+    - Horas digitais viram leitura natural ANTES de qualquer troca de `:`:
+      "21:44" -> "21 horas e 44"; "22:00" -> "22 horas em ponto".
+    - Vírgula e ponto são as respirações do TTS; `;`/`:` restantes viram vírgula.
     - Travessões viram vírgula (pausa curta) para a voz.
     - Orações longas (>16 palavras) ganham vírgula antes do conectivo mais próximo do meio.
     - Toda frase começa com maiúscula; toda frase termina com ponto final.
@@ -322,6 +324,8 @@ def melhorar_fala(texto):
     if not t:
         return t
     t = re.sub(r'\s+', ' ', t)
+    t = re.sub(r'\b(\d{1,2}):00\b', r'\1 horas em ponto', t)
+    t = re.sub(r'\b(\d{1,2}):(\d{2})\b', r'\1 horas e \2', t)
     t = re.sub(r'\s*[—–]\s*', ', ', t)
     t = re.sub(r'\s+-\s+', ', ', t)
     t = re.sub(r'^[,;\s]+', '', t)
