@@ -28,6 +28,6 @@ jobs:
       - name: Check integrity
         run: |
           echo "Files: $(find . -name '*.py' -not -path './.git/*' | wc -l) .py"
-          echo "Skills: $(ls -d skills/*/SKILL.md 2>/dev/null | wc -l)"
+          echo "Habilidades: $(find Habilidades -name 'skill.md' -o -name 'SKILL.md' 2>/dev/null | wc -l)"
           echo "Agents: $(ls config/agents/*.md 2>/dev/null | wc -l)"
           echo "Memories: $(ls conhecimento/memoria/*.json 2>/dev/null | wc -l)"

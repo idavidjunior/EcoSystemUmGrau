@@ -10,6 +10,7 @@ __pycache__/
 # Runtime logs
 *.log
 bridge_log.txt
+scripts/serve_log.txt
 
 # OS files
 Thumbs.db
@@ -22,3 +23,12 @@ Thumbs.db
 # Runtime state files
 scripts/bridge_estado.json
 scripts/bridge_historico.json
+scripts/bridge_err.txt
+scripts/bridge_out.txt
+scripts/openapi_spec.json
+scripts/guardian.pid
+scripts/guardian_state.json
+scripts/guardian_log.txt
+scripts/watchdog_log.txt
+scripts/test_greeting.json
+*.pid

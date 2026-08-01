@@ -19,5 +19,5 @@ FROM "conhecimento/notas/bugs"
 SORT file.name ASC
 ```
 
-## Skills Disponíveis (34)
-Veja [[skills/]]
+## Habilidades Disponíveis (38)
+Veja [[Habilidades/]]

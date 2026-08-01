@@ -54,9 +54,12 @@ O projeto está em `C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau`
   - `test_vox.py` — Testes da bridge Vox
   - `opencode-serve.jsonc` — Config para opencode serve
 
-- `plugins/ponytail/` — Plugin Ponytail (modo lazy senior dev, 6 comandos, skills, hooks, agent portability)
-
-- `skills/` — 34 skills técnicas (cada uma com SKILL.md ou skill.md)
+- `Habilidades/` — **Catálogo único de habilidades** (decisão `2026-07-31-habilidades-catalogo-unico-jarvis`)
+  - `tecnicas/` — 35 habilidades técnicas (cada uma com SKILL.md ou skill.md)
+  - `pontes/` — busca-web (agentic-search) e busca-conhecimento (`search_knowledge.py`)
+  - `comportamentais/ponytail/` — plugin Ponytail (lazy senior dev) — pendente de conteúdo real
+  - `multimidia/` — reservado para áudio/imagem/vídeo
+  - `manifesto_geral.json` — índice oficial: toda habilidade que o Jarvis pode acionar
 
 - `Android/VoxUmGrau/` — **App Android** (Kotlin, Jetpack Compose)
   - WebSocket client conecta via Tailscale a `100.120.67.64:8765`
@@ -335,17 +338,17 @@ Você se mantém atualizado automaticamente através de:
 9. **Build versionado**: use `.\build.ps1 -Install` no diretório `Android/VoxUmGrau/`
 
 ### O que verificar quando algo mudar
-- Arquivos novos em `scripts/`, `skills/`, `ler-runtime/`
+- Arquivos novos em `scripts/`, `Habilidades/`, `ler-runtime/`
 - Mudanças em `opencode.jsonc` (config global e do projeto)
 - Novos modelos do OpenCode: `npx opencode models`
 - Versão do OpenCode: `npx opencode --version`
 
 ## Geolocalização
 
-Você tem acesso a geolocalização por IP através do script `scripts/geolocalizacao.py`:
-- `python scripts/geolocalizacao.py` — Retorna JSON com cidade, região, país, latitude, longitude, timezone
-- `python scripts/geolocalizacao.py --clima` — Retorna texto com local + clima
-- `python scripts/geolocalizacao.py --saudacao` — Retorna texto curto "em Cidade, Estado"
+Você tem acesso a geolocalização por IP através do script `Habilidades/tecnicas/clima-api/geolocalizacao.py`:
+- `python Habilidades/tecnicas/clima-api/geolocalizacao.py` — Retorna JSON com cidade, região, país, latitude, longitude, timezone
+- `python Habilidades/tecnicas/clima-api/geolocalizacao.py --clima` — Retorna texto com local + clima
+- `python Habilidades/tecnicas/clima-api/geolocalizacao.py --saudacao` — Retorna texto curto "em Cidade, Estado"
 
 Use nas saudações para personalizar: "Bom dia! Aqui em {cidade} está {clima}..."
 

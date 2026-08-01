@@ -1,5 +1,11 @@
-import asyncio, websockets, edge_tts, base64, json, logging, os, re, time, xml.sax.saxutils, socket, urllib.request, urllib.error, random, datetime, subprocess
+import asyncio, websockets, edge_tts, base64, json, logging, os, re, time, xml.sax.saxutils, socket, urllib.request, urllib.error, random, datetime, subprocess, sys
 from pathlib import Path
+
+HAB_ROOT = Path(__file__).resolve().parent.parent / "Habilidades"
+for _hp in [HAB_ROOT / "tecnicas" / "clima-api"]:
+    if _hp.is_dir() and str(_hp) not in sys.path:
+        sys.path.insert(0, str(_hp))
+
 from clima_api import get_weather_data, get_forecast_data
 try:
     from dotenv import load_dotenv
@@ -247,14 +253,19 @@ def gerar_estado_atual():
             linhas.append(f"Total vault: {total_md} notas")
     except: pass
     try:
-        skills = list((ECOSSISTEMA_DIR / "skills").iterdir())
-        if skills:
-            linhas.append(f"\n### Skills: {len(skills)} diretorios")
+        tecnicas = list((ECOSSISTEMA_DIR / "Habilidades" / "tecnicas").iterdir())
+        if tecnicas:
+            linhas.append(f"\n### Habilidades tecnicas: {len(tecnicas)}")
     except: pass
     try:
-        plugins = list((ECOSSISTEMA_DIR / "plugins").iterdir())
-        if plugins:
-            linhas.append(f"### Plugins: {len(plugins)}")
+        pontes = list((ECOSSISTEMA_DIR / "Habilidades" / "pontes").iterdir())
+        if pontes:
+            linhas.append(f"### Habilidades pontes: {len(pontes)}")
+    except: pass
+    try:
+        comportamentais = list((ECOSSISTEMA_DIR / "Habilidades" / "comportamentais").iterdir())
+        if comportamentais:
+            linhas.append(f"### Habilidades comportamentais: {len(comportamentais)}")
     except: pass
     try:
         ler_agent = LER_DIR / "agent"

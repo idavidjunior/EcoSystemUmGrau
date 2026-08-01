@@ -85,21 +85,25 @@ EcoSystemUmGrau/
 ├── .obsidian/           # Vault Obsidian (config, plugins, workspace)
 ├── ai-agents/           # Claude Code extra agents
 ├── Android/             # Projetos Android monitorados pelo vigilante
-├── config/              # Templates de config (opencode.jsonc, agents, plugins)
+├── config/              # Templates de config (opencode.jsonc, agents)
 ├── conhecimento/        # Aprendizados, memória, notas, templates
 ├── docs/                # Documentação
 ├── ferramentas/         # Ferramentas (Flutter, etc.)
-├── ler/                 # Documentação do LER
-├── ler-runtime/         # Runtime do LER (junction em ~/.ler/)
+├── Habilidades/         # ★ Catálogo único de habilidades (tecnicas/, pontes/, comportamentais/, multimidia/)
+├── ler-runtime/         # Runtime do LER — cérebro único (agent/, runtime/, knowledge/, governance/)
 ├── mcp-servers/         # Servidores MCP
-├── plugins/             # Plugins (ponytail)
-├── scripts/             # Vigilante, ecosystem, memory_engine, jarvis_bridge...
-├── skills/              # 34 skills unificadas (SKILL.md)
+├── scripts/             # Infraestrutura: vigilante, ecosystem, memory_engine, jarvis_bridge...
 ├── estado_atual.md      # Snapshot completo do ecossistema
 ├── INDEX.md             # Mapa vivo do conhecimento (Obsidian)
 ├── MOC - *.md           # 8 Mapas de Conteúdo
 └── setup.bat            # Setup plug & play
 ```
+
+### Habilidades vs Agentes (decisão `2026-07-31-habilidades-catalogo-unico-jarvis`)
+
+- **Habilidades** (`Habilidades/`) = capacidades executáveis (ações). Registradas no `manifesto_geral.json`.
+- **Agentes** (`config/agents/` + `ler-runtime/agent/`) = tomadores de decisão (personalidades). Nunca são habilidades.
+- Fluxo: Usuário → Bridge (voz) → opencode → Runtime Cérebro → Debate de Agentes → Executor → Habilidade (catálogo) → Resposta
 
 ## Vigilante
 

@@ -74,7 +74,7 @@ def load_corpus():
 if __name__ == '__main__':
     query = ' '.join(sys.argv[1:]) if len(sys.argv) > 1 else ''
     if not query:
-        print('Uso: python scripts/search_knowledge.py <termo>')
+        print('Uso: python Habilidades/pontes/busca-conhecimento/search_knowledge.py <termo>')
         sys.exit(1)
 
     docs = load_corpus()

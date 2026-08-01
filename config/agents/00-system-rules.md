@@ -534,7 +534,7 @@ Qualquer modificação em:
 - `config/opencode.jsonc` (template ou deployed)
 - `scripts/mcp-*-server.py` ou novos servidores MCP
 - `config/agents/*.md`
-- `plugins/*`
+- `Habilidades/*` (catálogo único de habilidades)
 - `config/opencode-model-fallback.jsonc`
 
 DEVE obrigatoriamente:

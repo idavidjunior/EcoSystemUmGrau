@@ -1,7 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
-    "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/plugins/ponytail/.opencode/plugins/ponytail.mjs",
     "@razroo/opencode-model-fallback"
   ],
   "provider": {
@@ -17,27 +16,27 @@
   "mcp": {
     "eco-knowledge": {
       "type": "local",
-      "command": ["python", "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/scripts/mcp-knowledge-server.py"],
+      "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/mcp-knowledge-server.py"],
       "enabled": true
     },
     "filesystem": {
       "type": "local",
-      "command": ["node", "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/mcp-servers/mcp-servers/filesystem/index.js"],
+      "command": ["node", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp-servers/mcp-servers/filesystem/index.js"],
       "enabled": true
     },
     "search": {
       "type": "local",
-      "command": ["node", "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/mcp-servers/mcp-servers/search/index.js"],
+      "command": ["node", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp-servers/mcp-servers/search/index.js"],
       "enabled": true
     },
     "terminal": {
       "type": "local",
-      "command": ["node", "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/mcp-servers/mcp-servers/terminal/index.js"],
+      "command": ["node", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp-servers/mcp-servers/terminal/index.js"],
       "enabled": true
     },
     "github": {
       "type": "local",
-      "command": ["node", "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/mcp-servers/mcp-servers/github/index.js"],
+      "command": ["node", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp-servers/mcp-servers/github/index.js"],
       "enabled": false,
       "environment": {
         "GITHUB_TOKEN": "{env:GH_TOKEN}"
@@ -46,11 +45,9 @@
   },
   "permission": "allow",
   "instructions": [
-    "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/skills/*/SKILL.md",
-    "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/skills/**/SKILL.md",
-    "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/skills/*/skill.md",
-    "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/skills/**/skill.md",
-    "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/skills/clima-api/skill.md",
-    "{{USERPROFILE}}/Desktop/Codigos/EcoSystemUmGrau/ler-runtime/CONHECIMENTO.md"
+    "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/Habilidades/**/SKILL.md",
+    "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/Habilidades/**/skill.md",
+    "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/Habilidades/tecnicas/clima-api/skill.md",
+    "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/ler-runtime/CONHECIMENTO.md"
   ]
 }

@@ -96,8 +96,8 @@ if (Test-Path $configFile) {
     $config = Get-Content $configFile -Raw
     if ($config -match "ler-runtime") { Test-Pass "opencode.jsonc aponta para ler-runtime" }
     else { Test-Fail "opencode.jsonc" "Nao referencia ler-runtime" }
-    if ($config -match "EcoSystemUmGrau/skills") { Test-Pass "Skills referenciadas" }
-    else { Test-Fail "opencode.jsonc" "Skills nao referenciadas" }
+    if ($config -match "EcoSystemUmGrau/Habilidades") { Test-Pass "Habilidades referenciadas" }
+    else { Test-Fail "opencode.jsonc" "Habilidades nao referenciadas" }
 } else { Test-Fail "opencode.jsonc" "Nao encontrado" }
 
 # ─── 9. Vigilante ──────────────────────────────────────────

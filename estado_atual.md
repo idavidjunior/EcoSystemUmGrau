@@ -5,7 +5,7 @@
 > SDLC gates (5 gates formais), CI/CD (GitHub Actions), e métricas de performance.
 >
 > ## FONTE ÚNICA: O REPOSITÓRIO
-> Toda config, agente e skill vive no repo `EcoSystemUmGrau/config/` e `skills/`.
+> Toda config, agente e skill vive no repo `EcoSystemUmGrau/config/` e `Habilidades/`.
 > Nada duplicado. setup.bat gera os arquivos no destino a partir dos templates.
 >
 > ## REGRA DE OURO: ABASTECER, NÃO CRIAR ESTRUTURA NOVA
@@ -257,54 +257,59 @@ Maestro (passo 11 obrigatório)
 > viaja no EcoSystemUmGrau via conhecimento/aprendizados/ + CONHECIMENTO.md.
 > setup.bat inicializa o LER em qualquer maquina.
 
-### `Desktop/Codigos/EcoSystemUmGrau/` (ecossistema — fonte unica)
+### `Documents/Default Project/EcoSystemUmGrau/` (ecossistema — fonte unica)
 ```
 .obsidian/           # Vault Obsidian (VAULT_PATH atualizado)
-ler-runtime/         # LER runtime (antigo ~/.ler/) — versionado aqui
-skills/              # 34 skills unificadas
-├── graphify/
-├── ler/
-├── agentic-search/
-├── api-design/
-├── authz-authn-matrix/
-├── autonomous-loops/
-├── backend-patterns/
-├── cache-strategy-selector/
-├── concurrent-computation-patterns/
-├── cost-aware-llm-pipeline/
-├── data-privacy-by-design/
-├── database-migrations/
-├── deployment-patterns/
-├── developer-experience-dx/
-├── docker-patterns/
-├── e2e-testing/
-├── edge-compute-patterns/
-├── error-message-design/
-├── frontend-patterns/
-├── golang-patterns/
-├── local-first-architecture/
-├── migration-playbooks/
-├── mobile-specific-patterns/
-├── mp3player-metadata-rescue/
-├── multi-modal-ai/
-├── observability-stack/
-├── python-patterns/
-├── resilience-engineering/
-├── search-first/
-├── security-review/
-├── semantic-release-automation/
-├── state-machine-patterns/
-└── tdd-workflow/
-ler/                 # Documentação LER
-├── EcossistemaAgentes.md
+ler-runtime/         # LER runtime (antigo ~/.ler/) — cérebro único — versionado aqui
+Habilidades/         # ★ Catálogo único de habilidades (decisão 2026-07-31-habilidades-catalogo-unico-jarvis)
+├── tecnicas/        # 35 habilidades técnicas (skills antigas)
+│   ├── graphify/
+│   ├── ler/
+│   ├── clima-api/   # + clima_api.py e geolocalizacao.py (Open-Meteo, sem chave)
+│   ├── api-design/
+│   ├── authz-authn-matrix/
+│   ├── autonomous-loops/
+│   ├── backend-patterns/
+│   ├── cache-strategy-selector/
+│   ├── concurrent-computation-patterns/
+│   ├── cost-aware-llm-pipeline/
+│   ├── data-privacy-by-design/
+│   ├── database-migrations/
+│   ├── deployment-patterns/
+│   ├── developer-experience-dx/
+│   ├── docker-patterns/
+│   ├── e2e-testing/
+│   ├── edge-compute-patterns/
+│   ├── error-message-design/
+│   ├── frontend-patterns/
+│   ├── golang-patterns/
+│   ├── local-first-architecture/
+│   ├── migration-playbooks/
+│   ├── mobile-specific-patterns/
+│   ├── mp3player-metadata-rescue/
+│   ├── multi-modal-ai/
+│   ├── observability-stack/
+│   ├── python-patterns/
+│   ├── resilience-engineering/
+│   ├── search-first/
+│   ├── security-review/
+│   ├── semantic-release-automation/
+│   ├── state-machine-patterns/
+│   └── tdd-workflow/
+├── pontes/
+│   ├── busca-web/            # antigo skills/agentic-search
+│   └── busca-conhecimento/   # antigo scripts/search_knowledge.py
+├── comportamentais/ponytail/ # pendente de conteúdo real
+├── multimidia/
+└── manifesto_geral.json      # índice oficial (38 habilidades)
 ai-agents/           # Claude Code extra agents
 ├── claude-code-extra-agents/
-scripts/             # Scripts do ecossistema (vazio)
+scripts/             # Apenas infraestrutura (bridge, vigilante, memory_engine, mcp-server, preflight)
 ferramentas/         # Ferramentas
 ├── FLUTTER/
 documentos/          # Documentos diversos
-agents/              # Referência dos agents OpenCode
-plugins/             # Referência dos plugins
+config/agents/       # Definições dos 17 agentes (tomadores de decisão)
+docs/                # Documentação (EcossistemaAgentes.md migrado de ler/)
 estado_atual.md      # Este arquivo
 ```
 
@@ -331,10 +336,6 @@ estado_atual.md      # Este arquivo
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": [
-    "file:///C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/plugins/ponytail/.opencode/plugins/ponytail.mjs",
-    "@razroo/opencode-model-fallback"
-  ],
   "provider": {
     "nvidia": {
       "npm": "@ai-sdk/openai-compatible",
@@ -346,9 +347,10 @@ estado_atual.md      # Este arquivo
     }
   },
   "instructions": [
-    "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/skills/*/SKILL.md",
-    "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/skills/**/SKILL.md",
-    "C:/Users/Playtec-bancada/Desktop/Codigos/EcoSystemUmGrau/conhecimento/INDEX.md"
+    "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/Habilidades/**/SKILL.md",
+    "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/Habilidades/**/skill.md",
+    "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/Habilidades/tecnicas/clima-api/skill.md",
+    "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/ler-runtime/CONHECIMENTO.md"
   ]
 }
 ```
@@ -435,9 +437,9 @@ Carregados de `~/.config/opencode/agents/`:
 ## 7. Testes Realizados
 
 - [x] `opencode --version` → `1.18.7`
-- [x] `opencode debug info` → ambos plugins listados (ponytail + fallback)
+- [x] `opencode debug info` → plugins funcionais (fallback)
 - [x] Agents detectados: 13
-- [x] Skills no novo caminho: 34 skills via glob `skills/**/SKILL.md`
+- [x] Habilidades no novo caminho: 38 via glob `Habilidades/**/{SKILL,skill}.md` (decisão 2026-07-31)
 - [x] VAULT_PATH atualizado para `EcoSystemUmGrau`
 - [x] Estrutura de pastas organizada (projetos vs ecossistema)
 - [x] Bun 1.3.14 instalado e funcional

@@ -1,0 +1,375 @@
+{
+  "versao": "1.0",
+  "habilidades": [
+    {
+      "id": "android-diagnostics",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "android-pure-sdk",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "api-design",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "authz-authn-matrix",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "autonomous-loops",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "backend-patterns",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "cache-strategy-selector",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "concurrent-computation-patterns",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "cost-aware-llm-pipeline",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "data-privacy-by-design",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "database-migrations",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "deployment-patterns",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "developer-experience-dx",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "docker-patterns",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "e2e-testing",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "edge-compute-patterns",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "error-message-design",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "frontend-patterns",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "golang-patterns",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "graphify",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "ler",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "local-first-architecture",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "migration-playbooks",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "mobile-specific-patterns",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "mp3player-metadata-rescue",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "multi-modal-ai",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "observability-stack",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "python-patterns",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "resilience-engineering",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "search-first",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "security-review",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "semantic-release-automation",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "state-machine-patterns",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "tdd-workflow",
+      "categoria": "tecnica",
+      "descricao": "",
+      "entrypoint": "skill.md",
+      "parametros": [],
+      "triggers": [],
+      "dependencias": []
+    },
+    {
+      "id": "clima-api",
+      "categoria": "tecnica",
+      "descricao": "Consulta clima atual (temp/sensação/umidade/descrição) e previsão diária via Open-Meteo",
+      "entrypoint": "clima_api.py",
+      "parametros": [
+        "cidade(opcional)"
+      ],
+      "triggers": [
+        "clima",
+        "previsão",
+        "temperatura",
+        "tempo em"
+      ],
+      "dependencias": [
+        "requests",
+        "geolocalizacao"
+      ]
+    },
+    {
+      "id": "busca-web",
+      "categoria": "ponte",
+      "descricao": "Busca agentica na web",
+      "entrypoint": "skill.md",
+      "parametros": [
+        "consulta"
+      ],
+      "triggers": [
+        "buscar na internet",
+        "pesquisar",
+        "pesquisa na web"
+      ],
+      "dependencias": []
+    },
+    {
+      "id": "busca-conhecimento",
+      "categoria": "ponte",
+      "descricao": "Busca semantica (BM25 + grafos) no knowledge graph, notas e memoria",
+      "entrypoint": "search_knowledge.py",
+      "parametros": [
+        "consulta"
+      ],
+      "triggers": [
+        "buscar no conhecimento",
+        "pesquisar conhecimento",
+        "o que sabemos sobre"
+      ],
+      "dependencias": [
+        "stdlib only"
+      ]
+    },
+    {
+      "id": "ponytail",
+      "categoria": "comportamental",
+      "descricao": "Personalidade lazy senior dev — pendente de conteudo real",
+      "entrypoint": "manifesto.json",
+      "parametros": [],
+      "triggers": [
+        "/preguica",
+        "/review",
+        "/sarcasmo"
+      ],
+      "dependencias": []
+    }
+  ]
+}
