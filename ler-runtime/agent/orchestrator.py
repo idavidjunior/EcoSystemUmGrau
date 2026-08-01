@@ -7,7 +7,7 @@ from datetime import datetime
 from core.state import AgentState
 from core.checkpoint import save_checkpoint, load_checkpoint, get_latest_checkpoint
 from agent.planner import Planner
-from agent.executor import Executor
+from agent.executor import StepRunner
 from agent.validator import Validator
 from agent.recovery import Recovery
 from agent.goal_analyzer import GoalAnalyzer
@@ -28,7 +28,7 @@ class Orchestrator:
         self.config = config
         self.state = AgentState()
         self.planner = Planner(session, config)
-        self.executor = Executor(session, config)
+        self.step_runner = StepRunner(session, config)
         self.validator = Validator(session, config)
         self.recovery = Recovery(session, config)
         self.goal_analyzer = GoalAnalyzer(session, config)
@@ -57,7 +57,7 @@ class Orchestrator:
         self._recovery_loop_count = 0
 
         self.supervisor.register_module("planner", self.planner)
-        self.supervisor.register_module("executor", self.executor)
+        self.supervisor.register_module("step_runner", self.step_runner)
         self.supervisor.register_module("validator", self.validator)
         self.supervisor.register_module("recovery", self.recovery)
         self.supervisor.register_module("goal_analyzer", self.goal_analyzer)
@@ -267,7 +267,7 @@ class Orchestrator:
                        self.session.load_context(), f"before_step_{next_step['id']}")
         context = self.session.load_context()
         t_start = time.time()
-        result = self.executor.execute(next_step, context)
+        result = self.step_runner.execute(next_step, context)
         t_elapsed = time.time() - t_start
         self.tool_selector.record_result(tool_selection["tool"], result["status"] == "completed", t_elapsed)
         self.session.save_context({**context, f"step_{next_step['id']}_result": result})
@@ -291,7 +291,7 @@ class Orchestrator:
         if step is None:
             self.state.transition(AgentState.SUCCESS_EVALUATING)
             return
-        result = getattr(self, 'current_result', None) or self.executor.results.get(step["id"], {})
+        result = getattr(self, 'current_result', None) or self.step_runner.results.get(step["id"], {})
         validation = self.validator.validate(step, result)
         if validation["status"] in ("passed", "warning"):
             pass_type = "PASSED" if validation["status"] == "passed" else "PASSED (warning)"
@@ -335,7 +335,7 @@ class Orchestrator:
         if step is None:
             self.state.transition(AgentState.PLANNING)
             return
-        result = self.executor.results.get(step["id"], {})
+        result = self.step_runner.results.get(step["id"], {})
         validation = self.validator.validate(step, result)
         diagnosis = self.recovery.diagnose(step, result, validation)
         rules = self.learning_engine.get_relevant_rules(str(diagnosis.get("errors", "")))

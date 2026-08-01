@@ -7,7 +7,7 @@ import re
 MAX_RESULTS = 50
 
 
-class Executor:
+class StepRunner:
     def __init__(self, session, config):
         self.session = session
         self.config = config

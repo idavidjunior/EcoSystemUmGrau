@@ -88,6 +88,20 @@
    → BM25 scoring → top 20 resultados
 ```
 
+### Divisão de responsabilidades: OpenCode (LLM) vs LER (Python nativo)
+
+| Camada | OpenCode (Agentes LLM) | LER (Engine Modules Python) |
+|---|---|---|
+| **Estratégia** | 01-Estrategista (direção macro, build/buy/reuse) | GoalAnalyzer (requisitos), StrategyEngine (táticas), Planner (steps) |
+| **Execução** | 09-Executor (escreve código) | **StepRunner** (roda comandos/steps) |
+| **Validação** | 08-Revisor (qualitativo: padrões, legibilidade) | Validator (binário: teste passou, git limpo) |
+| **Aprendizado** | 10-Aprendizado (extrai, persiste, chama Consolidator) | LearningEngine (consolidação interna), KnowledgeConsolidator (grafo) |
+| **Orquestração** | Maestro (roteia A/B/C, gates SDLC) | Orchestrator (loop autônomo 13 estados) |
+| **Decisão cognitiva** | 02-Cetico, 03-Realista, 04-Etica, 05-Futuro, 07-Criativo | — (não existem no LER) |
+| **Infraestrutura** | — | RiskManager, Recovery, SuccessEvaluator, FinalAuditor, EvidenceCollector, Supervisor, ToolSelector, SelfImprovement |
+
+**Regra de ouro:** OpenCode = raciocínio profundo (LLM, custo tokens). LER = execução autônoma rápida (Python nativo, sem LLM). Não se sobrepõem — se complementam.
+
 ### Fluxo de tarefa (com quality gates)
 
 ```
@@ -101,49 +115,70 @@ Usuário → Maestro
   → git push (via vigilante)
 ```
 
-### Diagrama do ecossistema completo
+### Diagrama do ecossistema completo (separação clara OpenCode vs LER)
 
 ```
-┌─────────────────────────────────────────────────┐
-│                  OPENCODE                       │
-│  15 agents → Maestro roteia + 5 gates SDLC      │
-│  MCP: 3 servidores (knowledge+filesystem+github)│
-└──────────────┬──────────────────────────────────┘
-               │
-    ┌──────────┴──────────┐
-    ▼                     ▼
-┌──────────┐     ┌──────────────┐
-│ LER      │     │ VIGILANTE    │
-│ Python   │     │ FSWatcher    │
-│ loop     │     │ 5 repos      │
-│ autonomo │     │ tempo real   │
-└──────────┘     └──────┬───────┘
-                        │
-               ┌────────┴────────┐
-               ▼                 ▼
-        ┌──────────┐     ┌──────────────┐
-        │ CRANIO 1 │     │ CRANIO 2     │
-        │ KNOWLEDGE│     │ MEMORY       │
-        │ GRAPH    │     │ ENGINE       │
-        │ 248 ents │     │ Ebbinghaus   │
-        └──────────┘     └──────────────┘
-               │                 │
-               └────────┬────────┘
-                        ▼
-                ┌──────────────┐
-                │ OBSIDIAN     │
-                │ 228 notas    │
-                │ Dataview MOCs│
-                │ Graph View   │
-                └──────────────┘
-                        │
-                        ▼
-                ┌──────────────┐
-                │ GITHUB       │
-                │ EcoSystemUmGrau│
-                │ + 4 projetos │
-                │ + CI/CD      │
-                └──────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                        USUÁRIO                                  │
+└──────────────────────────┬──────────────────────────────────────┘
+                           ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      MAESTRO (OpenCode)                         │
+│  • Carrega memória (memory_engine.py context)                   │
+│  • Classifica Rota A (OpenCode) / B (LER) / C (Híbrido)        │
+│  • Aplica 5 Gates SDLC (G1-G5)                                  │
+│  • Agentes cognitivos: 02-Cetico, 03-Realista, 04-Etica,       │
+│    05-Futuro, 07-Criativo (debate LLM, sem execução)           │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │
+              ┌────────────┴────────────┐
+              ▼                         ▼
+┌───────────────────────┐   ┌─────────────────────────────────────┐
+│   ROTA A: OPENCODE    │   │      ROTA B: LER (Python nativo)    │
+│   (Interativo, LLM)   │   │      (Autônomo, loop, sem LLM)      │
+├───────────────────────┤   ├─────────────────────────────────────┤
+│ 01-Estrategista       │   │ GoalAnalyzer → StrategyEngine       │
+│   (direção MACRO)     │   │   → Planner → StepRunner            │
+│                       │   │   → Validator → Recovery            │
+│ 09-Executor           │   │   → SuccessEvaluator (95%)          │
+│   (ESCREVE código)    │   │   → FinalAuditor → EvidenceCollector│
+│                       │   │   → LearningEngine → KnowledgeConsol│
+│ 08-Revisor            │   │   → RiskManager → ToolSelector      │
+│   (qualitativo)       │   │   → SelfImprovement → Supervisor    │
+│                       │   │   → Orchestrator (13 estados)       │
+│ 10-Aprendizado        │   │                                      │
+│   (chama Consolidator)│   │ StepRunner RODA comandos            │
+└───────────────────────┘   │ 09-Executor ESCREVE código          │
+                            └─────────────────────────────────────┘
+                                           │
+              ┌────────────────────────────┼────────────────────────────┐
+              ▼                            ▼                            ▼
+     ┌─────────────────┐          ┌─────────────────┐          ┌─────────────────┐
+     │ KNOWLEDGE GRAPH │          │  MEMORY ENGINE  │          │ SEMANTIC SEARCH │
+     │  (248 entradas) │          │  (Ebbinghaus)   │          │   (BM25 fusion) │
+     │ knowledge_graph │          │  memories.json  │          │  4 fontes unif. │
+     │    .json + MD   │          │  sessions JSONL │          │                 │
+     └────────┬────────┘          └────────┬────────┘          └────────┬────────┘
+              │                            │                            │
+              └────────────────────────────┼────────────────────────────┘
+                                           ▼
+                              ┌─────────────────────────┐
+                              │      VIGILANTE          │
+                              │  FileSystemWatcher      │
+                              │  5 repos tempo real     │
+                              │  Git sync bidirecional  │
+                              └───────────┬─────────────┘
+                                          │
+                    ┌─────────────────────┼─────────────────────┐
+                    ▼                     ▼                     ▼
+           ┌───────────────┐      ┌───────────────┐      ┌───────────────┐
+           │   OBSIDIAN    │      │    GITHUB     │      │  PROJETOS     │
+           │   (Vault)     │      │  EcoSystem +  │      │  ANDROID (4)  │
+           │ 228 notas, 8  │      │   4 projetos  │      │  Mp3Player,   │
+           │ MOCs, Dataview│      │ + CI/CD       │      │  CellCleaner, │
+           └───────────────┘      └───────────────┘      │  Biblia,      │
+                                                        │  Supermarket  │
+                                                        └───────────────┘
 ```
 
 ### Arquitetura final do conhecimento automático
@@ -366,26 +401,27 @@ estado_atual.md      # Este arquivo
 
 ---
 
-## 4. Agents (13)
+## 4. Agents (14)
 
 Carregados de `~/.config/opencode/agents/`:
 
 | Arquivo | Modo | Função |
 |---|---|---|
-| `00-maestro.md` | `primary` | Coordenador principal |
+| `00-maestro.md` | `primary` | Coordenador principal (roteamento A/B/C + gates SDLC) |
 | `00-system-rules.md` | — | Constituição (prioridade máxima) |
 | `00-agent-template.md` | — | Template p/ criar agentes |
-| `01-estrategista.md` | `subagent` | Direção, objetivos |
+| `01-estrategista.md` | `subagent` | **Direção estratégica macro** (build/buy/reuse, riscos de negócio) — **NÃO planeja steps** |
 | `02-cetico.md` | `subagent` | Desafiar hipóteses |
 | `03-realista.md` | — | Viabilidade prática |
 | `04-etica.md` | — | Conformidade |
 | `05-futuro.md` | — | Tendências |
-| `06-recursos.md` | — | Mapear recursos |
+| `06-recursos.md` | — | Mapear código/bibliotecas existentes |
 | `07-criativo.md` | — | Soluções inovadoras |
-| `08-revisor.md` | `subagent` | Revisão |
-| `09-executor.md` | `subagent` | Implementar |
-| `10-aprendizado.md` | `subagent` | Extrair e persistir conhecimento (passo final obrigatório) |
-| `11-ler-executor.md` | `subagent` | Delegar tarefas complexas ao LER (loop autônomo até resultado) |
+| `08-revisor.md` | `subagent` | Revisão qualitativa (padrões, legibilidade, segurança) |
+| `09-executor.md` | `subagent` | **Implementa código** (LLM) — escreve, não roda |
+| `10-aprendizado.md` | `subagent` | Extrai e persiste conhecimento (chama KnowledgeConsolidator) |
+| `11-ler-executor.md` | `subagent` | **Ponte OpenCode → LER** (delega plano tático, coleta relatório) |
+| `12-parallel-planner.md` | `subagent` | Divide tarefas grandes em subtarefas paralelas (4+ arquivos independentes) |
 | `99-gerador-de-agentes.md` | — | Criar agentes |
 
 ---
@@ -393,17 +429,40 @@ Carregados de `~/.config/opencode/agents/`:
 ## 5. LER (Loop Engineering Runtime v2.0)
 
 | Item | Valor |
-|---|---|---|
+|---|---|
 | **Diretório** | `EcoSystemUmGrau/ler-runtime/` (junction em `~/.ler/` p/ compatibilidade) |
 | **Launcher** | `C:\Users\Playtec-bancada\.local\bin\ler.bat` (aponta p/ novo path) |
-| **Camadas** | 13 (Governança → Supervisor) |
-| **Agentes LER** | 16 (internos, nao duplicam os 15 do OpenCode) |
+| **Estados do loop** | 13 (INIT → ANALYZING_GOAL → CREATING_STRATEGY → PLANNING → EXECUTING → VALIDATING → VALIDATION_FAILED → RECOVERING → LEARNING → SUCCESS_EVALUATING → FINAL_AUDITING → SUCCESS_VERIFIED → COMPLETED/FAILED) |
+| **Engine Modules** | 16 (Python nativo, sem LLM, custo zero tokens) |
 | **Providers** | NVIDIA + OpenAI |
 | **Knowledge consolidator** | `ler-runtime/agent/knowledge_consolidator.py` (merge Jaccard, export, registro) |
 | **Learning engine** | `ler-runtime/agent/learning_engine.py` |
 | **CONHECIMENTO.md** | Exportado pelo consolidator, carregado no contexto de todo agente |
 | **Versionamento** | Direto no repo EcoSystemUmGrau (sem remote proprio) |
 | **Vigilante** | `scripts/vigilante.ps1` — FileSystemWatcher + git sync bidirecional |
+
+### Engine Modules do LER (16)
+
+| Módulo | Arquivo | Função |
+|---|---|---|
+| **GoalAnalyzer** | `goal_analyzer.py` | Extrai requisitos, critérios, DoD, riscos do objetivo bruto |
+| **StrategyEngine** | `strategy_engine.py` | Gera 3+ estratégias, scoreia, seleciona melhor |
+| **Planner** | `planner.py` | Cria plano tático (steps, actions, commands, validações) |
+| **StepRunner** | `executor.py` | **Executa steps** (roda comandos shell, delega ferramentas externas) |
+| **Validator** | `validator.py` | Validação binária por step (teste passou? git limpo? env OK?) |
+| **Recovery** | `recovery.py` | Diagnostica falha, aplica fix aprendido, retry ou replan |
+| **RiskManager** | `risk_manager.py` | Avalia riscos técnicos por step/estratégia |
+| **LearningEngine** | `learning_engine.py` | Aprende com sucesso/erro, extrai regras, padrões arquiteturais |
+| **SuccessEvaluator** | `success_evaluator.py` | Score 0-100% (threshold 95%) com breakdown por categoria |
+| **FinalAuditor** | `final_auditor.py` | Auditoria final + relatório com evidências |
+| **EvidenceCollector** | `evidence_collector.py` | Coleta git diff, logs, hashes, test results como prova |
+| **ToolSelector** | `tool_selector.py` | Seleciona ferramenta por action, tracka performance |
+| **SelfImprovement** | `self_improvement.py` | Auto-avalia missão, propõe melhorias no próprio runtime |
+| **Supervisor** | `supervisor.py` | Health check dos módulos, auto-recovery |
+| **Orchestrator** | `orchestrator.py` | Coordena o loop de 13 estados, checkpoints, cycle detection |
+| **KnowledgeConsolidator** | `knowledge_consolidator.py` | Merge Jaccard, exporta CONHECIMENTO.md, register_learning |
+
+**Diferença chave:** OpenCode `09-Executor` **escreve código** (LLM). LER `StepRunner` **roda steps** (Python nativo, executa comandos). Não se sobrepõem.
 
 ---
 
