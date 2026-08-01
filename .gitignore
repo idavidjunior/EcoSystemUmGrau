@@ -32,3 +32,12 @@ scripts/guardian_log.txt
 scripts/watchdog_log.txt
 scripts/test_greeting.json
 *.pid
+
+# Debug/probe temporarios (nao sobem)
+scripts/_*.py
+scripts/_*.npy
+scripts/teste_voz.mp3
+scripts/*_probe*.py
+scripts/*_test*.py
+*.mp3
+*.npy
