@@ -355,6 +355,33 @@ def melhorar_fala(texto):
     return t[:2000]
 
 
+def normalizar_hora_display(texto):
+    """Garante o formato HH:MM no texto EXIBIDO, independente de como o LLM escreveu a hora.
+
+    O problema da pronúncia é só do áudio (resolvido em melhorar_fala). A TELA deve
+    continuar mostrando "21:44". O LLM às vezes reescreve como "23 horas e 29",
+    "23h29", "22 horas em ponto" etc. — aqui convertemos de volta para HH:MM:
+
+      "23 horas e 29" / "23h29" / "23 hs 29" -> "23:29"
+      "22 horas em ponto" / "22h" / "22 horas" -> "22:00"
+      "23 e 29" (só se for hora/minuto plausíveis) -> "23:29"
+    """
+    t = texto.strip()
+    if not t:
+        return t
+    t = re.sub(r'\b(\d{1,2})\s*(?:horas?|hs?)\s*e\s*(\d{1,2})\b', r'\1:\2', t, flags=re.IGNORECASE)
+    t = re.sub(r'\b(\d{1,2})\s*[hH]\s*(\d{2})\b', r'\1:\2', t)
+    t = re.sub(r'\b(\d{1,2})\s*(?:horas?|hs?)\s*em\s*ponto\b', r'\1:00', t, flags=re.IGNORECASE)
+    t = re.sub(r'\b(\d{1,2})\s*(?:horas?|hs?)\s+(\d{1,2})\b', r'\1:\2', t, flags=re.IGNORECASE)
+    t = re.sub(r'\b(\d{1,2})\s*(?:horas?|hs?)\b', r'\1:00', t, flags=re.IGNORECASE)
+
+    def _bare(m):
+        h, mn = int(m.group(1)), int(m.group(2))
+        return f'{h:02d}:{mn:02d}' if h <= 23 and mn <= 59 else m.group(0)
+    t = re.sub(r'\b(\d{1,2})\s+e\s+(\d{2})\b', _bare, t)
+    return t
+
+
 
 
 def aplicar_phonemes(texto):
@@ -377,11 +404,25 @@ async def gerar_audio(texto):
     t = sanitizar(texto)
     if not t: return ""
     t = melhorar_fala(t)
-    t, _ = aplicar_phonemes(t)
-    c = edge_tts.Communicate(t, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
-    audio = b""
-    async for chunk in c.stream():
-        if chunk["type"] == "audio": audio += chunk["data"]
+    t_ssml, tem_fonema = aplicar_phonemes(t)
+
+    async def _stream(entrada):
+        c = edge_tts.Communicate(entrada, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
+        a = b""
+        async for chunk in c.stream():
+            if chunk["type"] == "audio":
+                a += chunk["data"]
+        return a
+
+    try:
+        audio = await _stream(t_ssml if tem_fonema else t)
+    except Exception as e:
+        logger.warning(f"ssml com fonemas falhou ({e}); fallback para texto puro")
+        try:
+            audio = await _stream(t)
+        except Exception as e2:
+            logger.error(f"tts texto puro tambem falhou: {e2}")
+            return ""
     return base64.b64encode(audio).decode()
 
 
@@ -723,12 +764,13 @@ async def lidar(ws):
         ]
         saudacao = f"{random.choice(abridores)}! {extra}{status}{random.choice(fechos)}"
     logger.info(f"saudacao: {saudacao[:120]}")
+    saudacao_tela = normalizar_hora_display(saudacao)
     try:
-        a = await gerar_audio(saudacao)
+        a = await gerar_audio(saudacao_tela)
     except Exception as e:
         logger.warning(f"tts startup: {e}")
         a = ""
-    await ws.send(json.dumps({"audio": a, "text": saudacao}))
+    await ws.send(json.dumps({"audio": a, "text": saudacao_tela}))
 
     try:
         async for m in ws:
@@ -770,16 +812,17 @@ async def lidar(ws):
                 r = f"Erro no processamento: {e}"
                 logger.error(f"erro: {e}", exc_info=True)
 
+            r_tela = normalizar_hora_display(r)
             try:
-                a = await gerar_audio(r)
+                a = await gerar_audio(r_tela)
                 if a:
-                    await ws.send(json.dumps({"text": r, "audio": a}))
-                    logger.info(f"resp: {len(r)}c / audio {len(a)}c")
+                    await ws.send(json.dumps({"text": r_tela, "audio": a}))
+                    logger.info(f"resp: {len(r_tela)}c / audio {len(a)}c")
                 else:
-                    await ws.send(json.dumps({"text": r}))
-                    logger.info(f"resp texto: {len(r)}c")
+                    await ws.send(json.dumps({"text": r_tela}))
+                    logger.info(f"resp texto: {len(r_tela)}c")
             except Exception as e:
-                await ws.send(json.dumps({"text": r}))
+                await ws.send(json.dumps({"text": r_tela}))
                 logger.warning(f"audio: {e}")
     except websockets.exceptions.ConnectionClosed:
         logger.info("fim")
