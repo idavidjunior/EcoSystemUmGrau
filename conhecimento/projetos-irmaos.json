@@ -1,0 +1,77 @@
+{
+  "sibling_projects": [
+    {
+      "name": "SupermarketCalculator",
+      "type": "android",
+      "description": "Calculadora de supermercado — orçamento, lista de compras, controle de preços/quantidade. App nativo Android (Kotlin/Java).",
+      "path": "C:\\Users\\David Jr\\Documents\\Default Project\\SupermarketCalculator",
+      "status": "funcional",
+      "version": "v1.2",
+      "apk": "releases/SupermarketCalculator-v1.2.apk",
+      "build_script": "build.ps1",
+      "key_files": [
+        "AndroidManifest.xml",
+        "build.ps1",
+        "AGENTS.md",
+        "ARQUITETURA.md",
+        "METODOLOGIA.md",
+        "PLAYBOOK.md",
+        "opencode.json"
+      ],
+      "skills": [
+        ".opencode/skills/android-pure-sdk"
+      ],
+      "ecosystem_involvement": "criado com auxílio do EcoSystemUmGrau (agentes, build, arquitetura)",
+      "last_sync": "2026-08-01",
+      "tags": ["android", "kotlin", "calculator", "shopping", "budget"]
+    },
+    {
+      "name": "Mp3Player",
+      "type": "android",
+      "description": "Player de MP3 nativo Android — reprodução, playlists, equalizador, biblioteca local.",
+      "path": "C:\\Users\\David Jr\\Documents\\Default Project\\Mp3Player",
+      "status": "em_desenvolvimento",
+      "version": "—",
+      "apk": "—",
+      "build_script": "—",
+      "key_files": [
+        "AndroidManifest.xml",
+        "build.gradle.kts",
+        "settings.gradle.kts",
+        "gradle.properties",
+        "gradlew.bat"
+      ],
+      "skills": [],
+      "ecosystem_involvement": "criado com auxílio do EcoSystemUmGrau",
+      "last_sync": "2026-08-01",
+      "tags": ["android", "media", "audio", "music"]
+    },
+    {
+      "name": "BibliaEstudoCompleta",
+      "type": "android",
+      "description": "App de estudo bíblico — texto completo, busca, favoritos, notas, planos de leitura, audio.",
+      "path": "C:\\Users\\David Jr\\Documents\\Default Project\\BibliaEstudoCompleta",
+      "status": "funcional",
+      "version": "—",
+      "apk": "—",
+      "build_script": "build.ps1",
+      "key_files": [
+        "AndroidManifest.xml",
+        "build.ps1",
+        "build.gradle.kts",
+        "settings.gradle.kts",
+        "gradle.properties",
+        "AGENTS.md",
+        "project.properties",
+        "version.properties",
+        "biblia-sagrada-app-source.zip"
+      ],
+      "skills": [],
+      "ecosystem_involvement": "criado com auxílio do EcoSystemUmGrau (build, arquitetura, versionamento)",
+      "last_sync": "2026-08-01",
+      "tags": ["android", "bible", "study", "religious", "audio"]
+    }
+  ],
+  "registry_updated": "2026-08-01",
+  "note": "Projetos irmãos do EcoSystemUmGrau — todos Android, criados/auxiliados pelo ecossistema. O ecossistema conhece a existência, localização, status e envolvimento em cada um."
+}

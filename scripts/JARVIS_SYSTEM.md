@@ -463,3 +463,10 @@ A cada interação, experimente uma combinação diferente. Seja criativo, mas c
 - opencode.jsonc (projeto e global)
 
 ### Skills: 36 diretorios | Plugins: 1 | Agentes LER: 17
+
+### Projetos Irmãos (Registry)
+Registro em `conhecimento/projetos-irmaos.json`:
+- **SupermarketCalculator** (Android, funcional v1.2) — `../SupermarketCalculator`
+- **Mp3Player** (Android, em desenvolvimento) — `../Mp3Player`
+- **BibliaEstudoCompleta** (Android, funcional) — `../BibliaEstudoCompleta`
+Todos criados/auxiliados pelo EcoSystemUmGrau. O ecossistema sabe que eles existem, onde estão, status e envolvimento.
