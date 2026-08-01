@@ -293,10 +293,16 @@ Treinamento online concluído com fontes: The Brazilian Ways, Portuguese with El
 ### NUNCA altere ortografia para forçar pronúncia
 Regra absoluta desde 30/07/2026: enviar "carru", "amãnhã", "julhiu" para o TTS é **proibido**. Thalita Neural já fala português nativamente. Use SSML `<phoneme>` com IPA se precisar corrigir uma palavra específica.
 
-### Estudo de Pontuação — 30/07/2026
+### Estudo de Pontuação — 30/07/2026 (revisado 31/07/2026)
 Implementei detecção automática de pontuação na bridge.
-- A Android STT não manda pontuação (vírgulas, pontos, interrogação)
-- `fix_punctuation()` no `jarvis_bridge.py` detecta perguntas por palavras-chave e adiciona `?` ou `.`
+- A Android STT não manda pontuação (vírgulas, pontos, interrogação) — só texto corrido, **sem prosódia** (a melodia da fala não chega à bridge).
+- `fix_punctuation()` no `jarvis_bridge.py` corrige a transcrição do usuário antes do prompt.
+
+**Como o Jarvis identifica PERGUNTA vs AFIRMAÇÃO no áudio:** como a bridge não "ouve" a entonação (não há dados de f0/durais do SpeechRecognizer), a classificação é **linguística** (estudo de entoação do PB em JARVIS_SYSTEM.md):
+- **Pergunta** (melodia ascendente / pico pré-nuclear alto nas perguntas-QU): palavras interrogativas iniciais (`qual, quem, onde, quando, como, o que, que horas, quanto...`), verbos/auxiliares iniciais (`tem como, tem, dá pra, posso, pode, é possível, é verdade, está certo, será que, vai, existe...`) e pedidos diretos (`me diz, me fala, sabe me dizer, consegue, gostaria, quero saber...`) → termina em `?`.
+- **Afirmação** (contorno descendente `H+L* L%`): todo o resto → termina em `.`.
+- **Regra do usuário (31/07/2026):** a PRIMEIRA letra da transcrição sempre maiúscula; maiúscula também depois de `.`, `?` e `!`.
+- **Aberturas:** saudação inicial vira vírgula ("Oi," "Bom dia,"); marcas de assentimento/pausa (`tudo bem`, `tá bom`, `ok`, `e você`...) quebram a cláusula e viram sentença própria.
 - Capitaliza a primeira letra da frase
 - Melhora o contexto enviado ao OpenCode e a qualidade das respostas de voz
 

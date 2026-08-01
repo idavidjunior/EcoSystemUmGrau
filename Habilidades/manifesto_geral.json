@@ -308,6 +308,27 @@
       "dependencias": []
     },
     {
+      "id": "endereco-geo",
+      "categoria": "tecnica",
+      "descricao": "Endereco por geolocalizacao reversa (rua e numero quando disponivel) via Nominatim/OpenStreetMap, sem chave",
+      "entrypoint": "endereco.py",
+      "parametros": [
+        "--lat",
+        "--lon",
+        "--texto"
+      ],
+      "triggers": [
+        "endereço",
+        "onde eu estou",
+        "minha rua",
+        "geolocalização reversa"
+      ],
+      "dependencias": [
+        "requests",
+        "geolocalizacao"
+      ]
+    },
+    {
       "id": "clima-api",
       "categoria": "tecnica",
       "descricao": "Consulta clima atual (temp/sensação/umidade/descrição) e previsão diária via Open-Meteo",

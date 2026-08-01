@@ -1,4 +1,4 @@
-import asyncio, websockets, edge_tts, base64, json, logging, os, re, time, xml.sax.saxutils, socket, urllib.request, urllib.error, random, datetime, subprocess, sys
+import asyncio, websockets, edge_tts, base64, json, logging, os, re, time, xml.sax.saxutils, socket, urllib.request, urllib.error, random, datetime, subprocess, sys, unicodedata
 from pathlib import Path
 
 HAB_ROOT = Path(__file__).resolve().parent.parent / "Habilidades"
@@ -615,18 +615,74 @@ def gerar_status_natural():
         return "Estou online, com " + " e ".join(servicos) + " ativos. "
     return "Estou inicializando. "
 
+SAUDACOES_FIX = re.compile(
+    r"^(oi|olá|ola|opa|e aí|e ai|e ae|fala|salve|hey|hei|bom dia|boa tarde|boa noite|bom te ver)\b",
+    re.IGNORECASE,
+)
+QUEBRA_CLAUSULA = re.compile(
+    r"\b(tudo bem|tá bom|ta bom|tudo certo|ok|beleza|certo|entendi|entendeu|e você|e voce)\b[,\s]+",
+    re.IGNORECASE,
+)
+QU_PALAVRAS = re.compile(
+    r"^(?:qual|quais|quem|onde|quando|como|por que|porque|pra que|para que|pq|oq|o que|que horas|que dia|que hora|que nem|que que|quem que|onde que|quanto|quantos|quantas|qto|qtos|qtas|sera que|sera|ta bom|tudo bem|tudo certo|vai|vamos|tem como|tem|da pra|da para|existe|posso|pode|poderia|podemos|queria saber|queria|gostaria|quero saber|preciso saber|me diga|me diz|me fale|me fala|me conta|conte|explica|explique|sabe me dizer|sabe dizer|sabe se|sabe que|conhece|consegue|voce|voces|e voce|quer que|quer saber|e possivel|e verdade|e mesmo|esta certo|ta certo|esta tudo|quanto custa|vale a pena|funciona|precisa|devo|seria|por acaso|nao e)\b",
+    re.IGNORECASE,
+)
+
+def _sem_acentos(s):
+    return ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn')
+
+def _eh_pergunta(s):
+    s = _sem_acentos(s)
+    mm = re.match(
+        r"^(?:oi|ola|opa|e ai|e ae|fala|salve|hey|hei|bom dia|boa tarde|boa noite|bom te ver)[,.]\s+",
+        s, re.IGNORECASE,
+    )
+    if mm:
+        s = s[mm.end():]
+    return bool(QU_PALAVRAS.match(s))
+
 def fix_punctuation(text):
-    text = text.strip()
-    if not text:
-        return text
-    text = text[0].upper() + text[1:] if text[0].islower() else text
-    palavras_q = r"^(qual|quem|onde|quando|como|por que|porque|pq|q|oq|o que|quanto|quantos|quantas|qto|qtos|qtas|pra que|para que|sera que|sera|vai|tem|tem como|existe|dá para|da pra|posso|pode|poderia|podemos|queria saber|queria|gostaria|me diga|me fale|explique|conte|preciso saber|sabe me dizer|sabe|sabe se|consegue|você|voce|vocês|voces|quer que|quer saber|é possível|e possivel|é verdade|e verdade|está certo|esta certo|quanto custa|vale a pena|como que|que que|quem que|onde que)"
-    e_questao = bool(re.match(palavras_q, text.lower().lstrip()))
-    if e_questao and not text.rstrip().endswith(("?", ".")):
-        return text.rstrip() + "?"
-    elif not text.rstrip().endswith((".", "?", "!", ":")):
-        return text.rstrip() + "."
-    return text
+    """Corrige pontuação de transcrições de voz (Android STT).
+
+    O SpeechRecognizer do Android devolve APENAS texto corrido, sem pontuação e
+    sem prosódia (a melodia da fala não chega à bridge). Como o Jarvis não "ouve"
+    o contorno entoacional, pergunta vs afirmação é inferida por pistas LINGUÍSTICAS
+    (estudo de entoação do PB em JARVIS_SYSTEM.md):
+
+    - Pergunta (melodia ascendente / pico pré-nuclear): palavras interrogativas
+      iniciais (qual, onde, quando, como, o que...) e verbos/auxiliares iniciais
+      (tem como, posso, pode, é possível, está certo, será que...) -> "?" final.
+    - Afirmação (melodia descendente H+L* L%): todo o resto -> "." final.
+    - Saudação inicial vira abertura com vírgula: "Oi," "Bom dia," ...
+    - Marcas de assentimento/pausa (tudo bem, tá bom, ok, e você...) quebram a
+      cláusula e viram sentença própria.
+    - Regra do usuário: a PRIMEIRA letra da transcrição sempre maiúscula; também
+      maiúscula depois de ".", "?" e "!".
+    """
+    t = text.strip()
+    if not t:
+        return t
+    t = re.sub(r'\s+', ' ', t)
+    t = re.sub(r'\s+([,.;:?!])', r'\1', t)
+    t = re.sub(r'([,.;:?!])(?=\S)', r'\1 ', t)
+    m = SAUDACOES_FIX.match(t)
+    if m:
+        resto = t[m.end():].lstrip(' ,;')
+        if resto:
+            t = t[:m.end()].rstrip() + ', ' + resto
+    t = QUEBRA_CLAUSULA.sub(r'\1. ', t)
+    t = re.sub(r'(^|[.!?]\s+)(\w)', lambda mo: mo.group(1) + mo.group(2).upper(), t)
+
+    def pontuar(s):
+        s = s.strip(' ,;')
+        if not s:
+            return ''
+        if s.rstrip().endswith(('?', '!', '.')):
+            return s
+        return s + ('?' if _eh_pergunta(s) else '.')
+
+    partes = [pontuar(p) for p in re.split(r'(?<=[.!?])\s+', t)]
+    return ' '.join(p for p in partes if p)
 
 async def lidar(ws):
     c = Cliente()
