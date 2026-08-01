@@ -1,8 +1,4 @@
 [
-  "Usuário: Aprenda uma nova habilidade encontrar endereço por Geo localização endereço como nome de rua e se possível até o número.",
-  "Jarvis: Pronto, David. Nova habilidade aprendida e testada: **endereço por geolocalização reversa**.\n\n- **Script**: `Habilidades/tecnicas/endereco-geo/endereco.py` — pega coordenadas por IP e converte em rua e número via OpenStreetMap (sem chave).\n- **Teste real**: seu IP apontou para **Praça do Patriarca, 62, Glicério, São Paulo, CEP 01002-010**.\n- **Registrada** no `manifesto_geral.json` com gatilhos como \"onde eu estou\" e \"minha rua\".\n- **Limitação honesta**: por IP a precisão é de bairro — o número vem do ponto mapeado mais próximo. Para endereço exato, envio lat e lon do GPS do celular.",
-  "Usuário: Você errou ainda não é esse endereço ou seja você pode acessar o GPS do celular para melhorar a sua busca?",
-  "Jarvis: Funcionou, David! Acessei o GPS do celular e o endereço agora é bem mais preciso:\n\n**Rua José Pinto, 200, Cidade Tiradentes, São Paulo, CEP 08471-520**\n\nAs coordenadas do GPS tinham precisão de 17 metros (o IP só dava o bairro, por isso o erro). Se quiser, posso salvar esse endereço no ecossistema para futuras consultas.",
   "Usuário: Salvar o endereço até pode mas não vai fazer diferença ocorre que você pode fazer é.",
   "Jarvis: Parece que sua frase cortou, David. Deixa eu adivinhar: em vez de salvar o endereço fixo, eu automatizo a captura — ou seja, criar um script que puxa o GPS do celular via ADB sozinho e me dá o endereço em tempo real, toda vez que você perguntar \"onde eu estou\". É isso que você quer?",
   "Usuário: O que você pode fazer é certificar de que essa habilidade foi criada no ecossistema no local correto?",
@@ -48,5 +44,9 @@
   "Usuário: Perificial lixo na memória e no celular para recuperar.",
   "Jarvis: Limpeza feita. No computador, liberei cento e sessenta e seis megabytes de arquivos temporários. No celular, limpei o cache de aplicativos e recuperei cerca de um gigabyte. O armazenamento do aparelho continua em 92 por cento, com três vírgula oito gigabytes livres. Se quiser, posso procurar pastas grandes ou aplicativos pesados para liberar mais espaço.",
   "Usuário: Verifique no celular se a lixo para limpar.",
-  "Jarvis: Verifiquei e encontrei bastante lixo de testes antigos na raiz do armazenamento: trinta e dois arquivos de interface, capturas de tela e textos de diagnóstico. Removi todos. O restante está organizado, com dois vírgula um gigabytes em dados de aplicativos e trinta e cinco megabytes em downloads. O celular continua com três vírgula oito gigabytes livres. Se quiser, posso verificar aplicativos pesados para liberar mais espaço."
+  "Jarvis: Verifiquei e encontrei bastante lixo de testes antigos na raiz do armazenamento: trinta e dois arquivos de interface, capturas de tela e textos de diagnóstico. Removi todos. O restante está organizado, com dois vírgula um gigabytes em dados de aplicativos e trinta e cinco megabytes em downloads. O celular continua com três vírgula oito gigabytes livres. Se quiser, posso verificar aplicativos pesados para liberar mais espaço.",
+  "Usuário: O que ainda falta?",
+  "Jarvis: Falta executar a correção que identifiquei: limpar a entrada corrompida no `pronuncias.json`, remover a chamada de `aplicar_phonemes` da bridge, documentar no `JARVIS_SYSTEM.md` que o edge-tts não aceita SSML customizado e reiniciar a ponte. Quer que eu faça agora?",
+  "Usuário: O que você sente que ainda te falta?",
+  "Jarvis: Sinto que ainda me falta a iniciativa: eu respondo quando você chama, mas ainda não consigo chegar e falar primeiro quando algo merece atenção. Também não enxergo — sem um comando por voz, não sei o que está na sua tela, e a correção de pronúncia que tentamos hoje ainda não funciona no motor de voz. Mas o essencial, a ponte entre a sua voz e o cérebro, está firme."
 ]

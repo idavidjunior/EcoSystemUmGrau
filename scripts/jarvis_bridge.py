@@ -867,9 +867,9 @@ async def lidar(ws):
                 r = "Interrompido. Pode falar quando quiser."
                 try:
                     a = await gerar_audio(r)
-                    await ws.send(json.dumps({"text": r, "audio": a}) if a else {"text": r})
+                    await ws.send(json.dumps({"text": r, "audio": a, "corrigido": m}) if a else {"text": r, "corrigido": m})
                 except:
-                    await ws.send(json.dumps({"text": r}))
+                    await ws.send(json.dumps({"text": r, "corrigido": m}))
                 continue
             try:
                 r = caminho_rapido(m)
@@ -889,13 +889,13 @@ async def lidar(ws):
             try:
                 a = await gerar_audio(r_tela)
                 if a:
-                    await ws.send(json.dumps({"text": r_tela, "audio": a}))
+                    await ws.send(json.dumps({"text": r_tela, "audio": a, "corrigido": m}))
                     logger.info(f"resp: {len(r_tela)}c / audio {len(a)}c")
                 else:
-                    await ws.send(json.dumps({"text": r_tela}))
+                    await ws.send(json.dumps({"text": r_tela, "corrigido": m}))
                     logger.info(f"resp texto: {len(r_tela)}c")
             except Exception as e:
-                await ws.send(json.dumps({"text": r_tela}))
+                await ws.send(json.dumps({"text": r_tela, "corrigido": m}))
                 logger.warning(f"audio: {e}")
     except websockets.exceptions.ConnectionClosed:
         logger.info("fim")
