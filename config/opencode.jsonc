@@ -43,6 +43,16 @@
       }
     }
   },
+  "command": {
+    "ouvir": {
+      "description": "Ouvir: captura sua voz (STT) e usa como prompt",
+      "template": "O usuario falou via microfone. Segue a transcricao:\n\n!`python \"C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/scripts/vox_audio.py\" ouvir`\n\nAgora execute o que foi pedido na fala."
+    },
+    "falar": {
+      "description": "Falar: abre o modo de voz (TTS)",
+      "template": "Fale em voz alta o seguinte texto usando TTS. Execute o script vox_audio.py no modo falar com este texto como argumento:\n\n$ARGUMENTS\n\nResposta curta apos falar."
+    }
+  },
   "permission": "allow",
   "instructions": [
     "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/Habilidades/**/SKILL.md",

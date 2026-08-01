@@ -4,7 +4,8 @@
 > que aprende, lembra e evolui sozinho a cada sessão.
 
 ![Estágio](https://img.shields.io/badge/est%C3%A1gio-3%20%7C%20Orquestrado-%236c5ce7)
-![Agents](https://img.shields.io/badge/agents-15-%236c5ce7)
+![Agents](https://img.shields.io/badge/agents-14-%236c5ce7)
+![LER Modules](https://img.shields.io/badge/ler-modules-16-%236c5ce7)
 ![Skills](https://img.shields.io/badge/skills-34-%236c5ce7)
 ![Status](https://img.shields.io/badge/status-ativo-brightgreen)
 
@@ -33,6 +34,89 @@ Usuário → Maestro → classifica rota (A/B/C)
 2. **Memory Engine** — memória de sessão com **decay de Ebbinghaus**
    (`score = strength * 0.5^(days/half_life)`), reforço por acesso frequente.
 3. **Semantic Search** — busca **BM25 fusion** em 4 fontes (KG + memória + notas + skills).
+
+### Mapa mental — OpenCode (LLM) vs LER (Python nativo)
+
+**14 agents OpenCode** (raciocínio profundo, custo de tokens) e **16 modules LER**
+(execução autônoma rápida, custo zero) — complementares, sem sobreposição.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        USUÁRIO                                  │
+└──────────────────────────┬──────────────────────────────────────┘
+                           ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      MAESTRO (OpenCode)                         │
+│  • Carrega memória (memory_engine.py context)                   │
+│  • Classifica Rota A (OpenCode) / B (LER) / C (Híbrido)        │
+│  • Aplica 5 Gates SDLC (G1-G5)                                  │
+│  • Agentes cognitivos: 02-Cetico, 03-Realista, 04-Etica,       │
+│    05-Futuro, 07-Criativo (debate LLM, sem execução)           │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │
+              ┌────────────┴────────────┐
+              ▼                         ▼
+┌───────────────────────┐   ┌─────────────────────────────────────┐
+│   ROTA A: OPENCODE    │   │      ROTA B: LER (Python nativo)    │
+│   (Interativo, LLM)   │   │      (Autônomo, loop, sem LLM)      │
+├───────────────────────┤   ├─────────────────────────────────────┤
+│ 01-Estrategista       │   │ GoalAnalyzer → StrategyEngine       │
+│   (direção MACRO)     │   │   → Planner → StepRunner            │
+│                       │   │   → Validator → Recovery            │
+│ 09-Executor           │   │   → SuccessEvaluator (95%)          │
+│   (ESCREVE código)    │   │   → FinalAuditor → EvidenceCollector│
+│                       │   │   → LearningEngine → KnowledgeConsol│
+│ 08-Revisor            │   │   → RiskManager → ToolSelector      │
+│   (qualitativo)       │   │   → SelfImprovement → Supervisor    │
+│                       │   │   → Orchestrator (13 estados)       │
+│ 10-Aprendizado        │   │                                      │
+│   (chama Consolidator)│   │ StepRunner RODA comandos            │
+└───────────────────────┘   │ 09-Executor ESCREVE código          │
+                            └─────────────────────────────────────┘
+                                           │
+              ┌────────────────────────────┼────────────────────────────┐
+              ▼                            ▼                            ▼
+     ┌─────────────────┐          ┌─────────────────┐          ┌─────────────────┐
+     │ KNOWLEDGE GRAPH │          │  MEMORY ENGINE  │          │ SEMANTIC SEARCH │
+     │  (248 entradas) │          │  (Ebbinghaus)   │          │   (BM25 fusion) │
+     │ knowledge_graph │          │  memories.json  │          │  4 fontes unif. │
+     │    .json + MD   │          │  sessions JSONL │          │                 │
+     └────────┬────────┘          └────────┬────────┘          └────────┬────────┘
+              │                            │                            │
+              └────────────────────────────┼────────────────────────────┘
+                                           ▼
+                              ┌─────────────────────────┐
+                              │      VIGILANTE          │
+                              │  FileSystemWatcher      │
+                              │  5 repos tempo real     │
+                              │  Git sync bidirecional  │
+                              └───────────┬─────────────┘
+                                          │
+                    ┌─────────────────────┼─────────────────────┐
+                    ▼                     ▼                     ▼
+           ┌───────────────┐      ┌───────────────┐      ┌───────────────┐
+           │   OBSIDIAN    │      │    GITHUB     │      │  PROJETOS     │
+           │   (Vault)     │      │  EcoSystem +  │      │  ANDROID (4)  │
+           │ 228 notas, 8  │      │   4 projetos  │      │  Mp3Player,   │
+           │ MOCs, Dataview│      │ + CI/CD       │      │  CellCleaner, │
+           └───────────────┘      └───────────────┘      │  Biblia,      │
+                                                        │  Supermarket  │
+                                                        └───────────────┘
+```
+
+### Divisão de responsabilidades
+
+| Camada | OpenCode (Agentes LLM) | LER (Engine Modules Python) |
+|---|---|---|
+| **Estratégia** | 01-Estrategista (direção macro, build/buy/reuse) | GoalAnalyzer (requisitos), StrategyEngine (táticas), Planner (steps) |
+| **Execução** | 09-Executor (escreve código) | **StepRunner** (roda comandos/steps) |
+| **Validação** | 08-Revisor (qualitativo: padrões, legibilidade) | Validator (binário: teste passou, git limpo) |
+| **Aprendizado** | 10-Aprendizado (extrai, persiste, chama Consolidator) | LearningEngine (consolidação interna), KnowledgeConsolidator (grafo) |
+| **Orquestração** | Maestro (roteia A/B/C, gates SDLC) | Orchestrator (loop autônomo 13 estados) |
+| **Decisão cognitiva** | 02-Cetico, 03-Realista, 04-Etica, 05-Futuro, 07-Criativo | — (não existem no LER) |
+| **Infraestrutura** | — | RiskManager, Recovery, SuccessEvaluator, FinalAuditor, EvidenceCollector, Supervisor, ToolSelector, SelfImprovement |
+
+**Regra de ouro:** OpenCode = raciocínio profundo (LLM, custo tokens). LER = execução autônoma rápida (Python nativo, sem LLM). Não se sobrepõem — se complementam.
 
 ### Maestro — Matriz de Decisão
 
@@ -76,6 +160,15 @@ as configs a partir dos templates, configura o LER, pergunta as API keys.
 | `ecosystem status` | Status completo do ecossistema |
 | `ecosystem repair` | Reconstrói o knowledge graph dos aprendizados crus |
 | `ecosystem help` | Ajuda detalhada |
+
+### Comandos de voz (no OpenCode)
+
+| Comando | Função |
+|---|---|
+| `/ouvir` | Captura sua voz (STT Whisper local + fallback Google) e usa como prompt |
+| `/falar <texto>` | Fala o texto em voz alta (TTS edge-tts, voz pt-BR-AntonioNeural) |
+
+Voz requer `scripts/vox_audio.py` e as libs `faster-whisper`, `SpeechRecognition`, `sounddevice`, `edge-tts`.
 
 ## Estrutura do Repo
 
