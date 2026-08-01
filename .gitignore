@@ -2,6 +2,9 @@
 .env
 scripts/.env
 
+# Local secrets (TV pairing keys, etc. — NUNCA subir)
+scripts/keys/
+
 # Python cache
 __pycache__/
 *.pyc
