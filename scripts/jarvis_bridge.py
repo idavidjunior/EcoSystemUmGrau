@@ -687,6 +687,25 @@ QU_PALAVRAS = re.compile(
 def _sem_acentos(s):
     return ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn')
 
+
+STATUS_RAPIDO = [
+    re.compile(r'^quem e voce$', re.IGNORECASE),
+    re.compile(r'^status( do sistema)?$', re.IGNORECASE),
+    re.compile(r'^(voce|voces|jarvis)\s+(esta|ta|estas|tamos|estamos)\s+(ai|aqui|online|funcionando|operante|ativo|ativa|acordado|acordada|ligado|ligada|na escuta|presente|por ai)$', re.IGNORECASE),
+    re.compile(r'^(voce|voces|jarvis)\s+(ai|online|funcionando|ligado|ligada|ativo|ativa|acordado|acordada|operante|na escuta|presente)$', re.IGNORECASE),
+    re.compile(r'^(esta|ta|estamos|tamos)\s+(tudo\s+)?(ai|aqui|online|funcionando|operante|ativo|ativa|acordado|acordada|ligado|ligada|presente)$', re.IGNORECASE),
+    re.compile(r'^(esta|ta)\s+(ai|aqui|online|funcionando|operante|ligado|ligada|presente)\??$', re.IGNORECASE),
+]
+
+
+def _status_rapido(t):
+    """Só responde 'online' quando a mensagem é um cheque de presença de verdade
+    (full-match). Evita casar 'está funcionando' no meio de outra pergunta."""
+    for p in STATUS_RAPIDO:
+        if p.fullmatch(t):
+            return True
+    return False
+
 def _eh_pergunta(s):
     s = _sem_acentos(s)
     mm = re.match(
@@ -764,10 +783,12 @@ def caminho_rapido(msg):
         if cel is not None:
             return f"O celular está com {cel}% de bateria."
 
-    if re.search(r'\b(voce esta ai|voce ta ai|ta ai|status do sistema|esta online|esta funcionando|quem e voce)\b', t):
+    if _status_rapido(t):
         return gerar_status_natural() + "Tudo pronto para responder na hora."
 
-    if re.search(r'\b(amanha|previsao|vai chover)\b', t):
+    if re.search(r'\b(previsao|vai chover)\b', t) or \
+       re.search(r'\b(?:clima|tempo|temperatura|chover|chovera|grau|chuva|sol|nublado|vai estar)\b.*\bamanha\b', t) or \
+       re.search(r'\bamanha\b.*\b(?:clima|tempo|temperatura|chover|chovera|grau|chuva|sol|nublado|vai estar)\b', t):
         try:
             previsao = get_forecast_data(days=2)
             if "erro" not in previsao and len(previsao["previsoes"]) >= 2:

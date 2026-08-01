@@ -90,8 +90,14 @@ def teste_caminho_rapido():
         "que dia é hoje": ("dia", r'\d{2}/\d{2}/\d{4}'),
         "você está aí": ("status", r'online|atendendo'),
         "status do sistema": ("status", r'online|inicializando'),
+        "você está funcionando": ("status", r'online'),
+        "tá funcionando?": ("status", r'online'),
         "lista os arquivos do projeto": (None, None),
         "toca uma música": (None, None),
+        "você já fez o teste com a conexão da NVidia está funcionando": (None, None),
+        "o que está funcionando agora": (None, None),
+        "amanhã eu preciso ir ao mercado": (None, None),
+        "vai chover amanhã": ("previsao", r'Amanh'),
     }
     falhas = 0
     for entrada, (esperado, padrao) in casas.items():
