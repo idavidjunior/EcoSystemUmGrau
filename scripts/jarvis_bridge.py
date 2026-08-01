@@ -1,6 +1,6 @@
 import asyncio, websockets, edge_tts, base64, json, logging, os, re, time, xml.sax.saxutils, socket, urllib.request, urllib.error, random, datetime
 from pathlib import Path
-from clima_api import get_weather
+from clima_api import get_weather, get_forecast
 try:
     from dotenv import load_dotenv
     load_dotenv(Path(__file__).parent / ".env", override=True)
@@ -34,15 +34,42 @@ DIAS = ["segunda-feira","terca-feira","quarta-feira","quinta-feira","sexta-feira
 MESES = ["janeiro","fevereiro","marco","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]
 INTERRUPCAO = re.compile(r'^(ok|ta bom|esta bom|chega|para|cala a boca|já chega|valeu|obrigado|entendi|deixa pra lá|depois eu pergunto)[\s!.?…]*$', re.IGNORECASE)
 
+def feriados_brasil(agora):
+    mes = agora.month
+    dia = agora.day
+    fixos = {
+        (1, 1): "Ano Novo",
+        (4, 21): "Tiradentes",
+        (5, 1): "Dia do Trabalho",
+        (9, 7): "Independência do Brasil",
+        (10, 12): "Nossa Senhora Aparecida",
+        (11, 2): "Finados",
+        (11, 15): "Proclamação da República",
+        (12, 25): "Natal",
+    }
+    return fixos.get((mes, dia))
+
 def briefing_espontaneo():
     agora = datetime.datetime.now()
     dia_semana = DIAS[agora.weekday()]
     mes = MESES[agora.month - 1]
     data = f"{agora.day} de {mes}"
+    hora = f"{agora.hour:02d} e {agora.minute:02d} minutos"
     clima = get_weather()
-    linhas = [f"Hoje é {dia_semana}, {data}. "]
+    linhas = [f"Hoje é {dia_semana}, {data}. Agora são {hora}. "]
     if not any(w in clima.lower() for w in ("chave", "api", "erro", "inválida", "inválido", "não configurada", "não configurado", "sem conexão", "não respondeu")):
         linhas.append(f"{clima}. ")
+    try:
+        previsao = get_forecast()
+        if previsao and "não configurada" not in previsao:
+            linhas.append(f"{previsao} ")
+    except Exception:
+        pass
+    feriado = feriados_brasil(agora)
+    if feriado:
+        linhas.append(f"Hoje é feriado: {feriado}! ")
+    elif agora.weekday() == 4 and agora.day == 13:
+        linhas.append("Hoje é sexta-feira 13, cuidado com o dia! ")
     if agora.weekday() < 5 and 7 <= agora.hour <= 9:
         linhas.append("Horário de pico matinal, trânsito intenso nas principais vias. ")
     elif agora.weekday() < 5 and 17 <= agora.hour <= 19:
@@ -244,14 +271,14 @@ async def gerar_audio(texto):
 
 # --- HTTP client para opencode serve ---
 
-def _http(method, path, data=None):
+def _http(method, path, data=None, timeout=120):
     url = f"{SERVE_URL}{path}"
     creds = base64.b64encode(f"{SERVER_USER}:{SERVER_PASS}".encode()).decode()
     body = json.dumps(data).encode() if data else None
     req = urllib.request.Request(url, data=body, method=method,
         headers={"Content-Type": "application/json", "Authorization": f"Basic {creds}"})
     try:
-        with urllib.request.urlopen(req, timeout=120) as resp:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
             return json.loads(resp.read().decode())
     except urllib.error.HTTPError as e:
         logger.error(f"HTTP {e.code} {method} {path}: {e.read().decode()[:300]}")
@@ -260,9 +287,9 @@ def _http(method, path, data=None):
         logger.error(f"HTTP {method} {path}: {e}")
         return None
 
-async def _http_async(method, path, data=None):
+async def _http_async(method, path, data=None, timeout=120):
     loop = asyncio.get_event_loop()
-    return await loop.run_in_executor(None, _http, method, path, data)
+    return await loop.run_in_executor(None, _http, method, path, data, timeout)
 
 
 MAX_PROMPT = 28000
@@ -395,6 +422,40 @@ class Cliente:
         self._salvar()
         return resp
 
+    async def saudar(self, briefing, status):
+        """Gera saudação criativa via LLM em sessão dedicada, sem gravar no histórico."""
+        if not await self._ensure_serve():
+            return ""
+        result = await _http_async("POST", "/session", {"title": "saudacao"})
+        if not result:
+            return ""
+        session_id = result.get("id")
+        if not session_id:
+            return ""
+        instrucao = (
+            "Você é o Jarvis, assistente de voz do EcoSystemUmGrau. "
+            "Crie UMA saudação inicial única, criativa e natural para o usuário David. "
+            "Varie o tom: às vezes bem-humorado, às vezes acolhedor, às vezes espirituoso. "
+            "Nunca repita o mesmo modelo de frase nas conversas. "
+            "Use no máximo 2 frases curtas, em português brasileiro, faladas para TTS "
+            "(sem emojis, sem markdown, sem listas). "
+            "Aproveite o contexto: data, hora, clima, trânsito, eventos. "
+            "Não pergunte 'como posso ajudar' nem 'em que posso ajudar'. "
+            f"Contexto de agora: {briefing} "
+            f"Status do sistema: {status}"
+            "Responda apenas com a saudação, sem aspas."
+        )
+        body = {"parts": [{"type": "text", "text": instrucao}]}
+        result = await _http_async("POST", f"/session/{session_id}/message", body, timeout=25)
+        if not result:
+            return ""
+        parts = result.get("parts", [])
+        texts = [p.get("text", "") for p in parts if p.get("type") == "text" and p.get("text", "").strip()]
+        if not texts:
+            return ""
+        resp = texts[-1].strip().strip('"“”')
+        return resp[:300]
+
 
 def gerar_status_natural():
     servicos = []
@@ -451,7 +512,21 @@ async def lidar(ws):
     except Exception as e:
         logger.warning(f"briefing: {e}")
         extra = ""
-    saudacao = f"Olá. {extra}{status}Como posso ajudar?"
+    saudacao = ""
+    try:
+        saudacao = await c.saudar(extra, status)
+    except Exception as e:
+        logger.warning(f"saudar: {e}")
+    if not saudacao:
+        abridores = [
+            "Olá", "Opa", "E aí", "Fala", "Oi", "Bom te ver", "Salve", "Chegou, chegou"
+        ]
+        fechos = [
+            "Como posso ajudar?", "O que vamos fazer hoje?", "Estou por aqui. O que precisa?",
+            "Diga o que você precisa.", "O que posso fazer por você hoje?"
+        ]
+        saudacao = f"{random.choice(abridores)}! {extra}{status}{random.choice(fechos)}"
+    logger.info(f"saudacao: {saudacao[:120]}")
     try:
         a = await gerar_audio(saudacao)
     except Exception as e:
