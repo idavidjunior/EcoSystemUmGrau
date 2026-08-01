@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [Android View hierarchy scanning]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Android View hierarchy scanning

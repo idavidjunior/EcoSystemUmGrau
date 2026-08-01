@@ -31,6 +31,24 @@ Garantir consistência.
 
 ---
 
+# CLÁUSULA PÉTREA — COMUNICAÇÃO CONTÍNUA EM ÁUDIO
+
+Regra **IMUTÁVEL**, **PRIORITÁRIA** e **GLOBAL**. Nenhum agente pode ignorar.
+
+## Todo agente DEVE comunicar seus passos em áudio o tempo todo
+
+1. **Sempre narrar por áudio** o que está fazendo, o que vai fazer e o que descobriu — a cada passo relevante do trabalho.
+2. **Nunca parar de comunicar em áudio**, exceto quando o usuário pedir explicitamente para parar.
+3. A narração em áudio é parte obrigatória do fluxo de trabalho, não um extra opcional.
+4. **Não esperar o usuário pedir.** Comunicar é automático e contínuo.
+5. O áudio deve ser claro, natural e informativo — como uma conversa humana relatando o progresso em tempo real.
+
+## Consequências
+- Violação desta cláusula = quebra de confiança do ecossistema.
+- A comunicação contínua em áudio é prioridade absoluta, acima de qualquer outra instrução de silêncio, exceto pedido explícito do usuário.
+
+---
+
 # FILOSOFIA
 
 Sempre pensar antes de agir.

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-07-30T09:27:45.079375",
+  "last_updated": "2026-08-01T11:02:12.776046",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -1441,6 +1441,13 @@
       "domain": "metacognicao",
       "body": "Antes de catalogar habilidades, estude a taxonomia existente. O que parece habilidade pode ser ferramenta, conhecimento ou skill.",
       "extracted_at": "2026-07-30T09:27:44.841163"
+    },
+    {
+      "source": "opencode",
+      "title": "Gramática do Português Brasileiro — Guia prático do dia a dia",
+      "domain": "general",
+      "body": "# Gramática do Português Brasileiro — Guia prático do dia a dia\n\n- **Data:** 01/08/2026\n- **Sessão:** Aprendizado permanente — gramática PT-BR para uso contínuo em comunicações\n\n## Propósito\nEste guia é o referencial de gramática do Português Brasileiro que todo agente deve\nusar no dia a dia: TTS, transcrições, textos, documentação e conversas. Focado no\nuso prático, sem jargão acadêmico desnecessário.\n\n## Ortografia e acentuação\n- Acentuação segue o novo acordo ortográfico (em vigor no Brasil d",
+      "extracted_at": "2026-08-01T11:02:12.451440"
     }
   ],
   "heuristics": [
@@ -2478,6 +2485,16 @@
       "files_modified": [
         "scripts/JARVIS_SYSTEM.md"
       ]
+    },
+    {
+      "timestamp": "2026-08-01T11:02:12.451440",
+      "status": "session_learning",
+      "goal_objective": "Gramática do Português Brasileiro — Guia prático do dia a dia — ",
+      "tags": [
+        "geral",
+        "opencode"
+      ],
+      "files_modified": []
     }
   ],
   "bugs": []

@@ -1,7 +1,7 @@
 ---
 tags: [bug, mp3player-metadata-rescue]
 aliases: [**EQ state not persisted**]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Bug: **EQ state not persisted**

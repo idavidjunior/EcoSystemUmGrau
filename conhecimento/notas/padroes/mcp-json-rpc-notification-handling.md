@@ -1,7 +1,7 @@
 ---
 tags: [padrao, sessionsession]
 aliases: [MCP JSON-RPC notification handling]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # MCP JSON-RPC notification handling

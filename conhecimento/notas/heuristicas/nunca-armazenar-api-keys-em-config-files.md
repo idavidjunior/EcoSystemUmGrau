@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, security]
 aliases: [Nunca armazenar API keys em config files]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Nunca armazenar API keys em config files

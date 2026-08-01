@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, debugging]
 aliases: [Dados > Algoritmos para debugging]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Dados > Algoritmos para debugging

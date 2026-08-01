@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, general]
 aliases: [﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # ﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub

@@ -1,7 +1,7 @@
 param(
     [int]$Interval = 20,
     [string]$BridgePort = "8765",
-    [string]$ServePort = "8766",
+    [string]$ServePort = "8767",
     [string]$LogPath = "$PSScriptRoot\watchdog_log.txt"
 )
 

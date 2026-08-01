@@ -1,7 +1,7 @@
 ---
 tags: [decisao, sessaoservermanager]
 aliases: [Server health check via HTTP ping (localhost:porta) em vez d]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Server health check via HTTP ping (localhost:porta) em vez de stdin/stdout

@@ -10,7 +10,7 @@ WORKDIR = r"C:\Users\David Jr\Documents\Default Project"
 
 cmd = [
     OPENCODE_BIN, "serve",
-    "--port", "8766",
+    "--port", "8767",
 ]
 
 log.write(f"Command: {' '.join(cmd)}\n")

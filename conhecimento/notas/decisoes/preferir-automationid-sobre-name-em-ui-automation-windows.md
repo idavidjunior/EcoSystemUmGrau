@@ -1,7 +1,7 @@
 ---
 tags: [decisao, treinamentonavegacao]
 aliases: [Preferir AutomationId sobre Name em UI Automation Windows]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Preferir AutomationId sobre Name em UI Automation Windows

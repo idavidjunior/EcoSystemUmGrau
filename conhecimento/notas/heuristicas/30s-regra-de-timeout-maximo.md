@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, efficiency]
 aliases: [30s regra de timeout maximo]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # 30s regra de timeout maximo

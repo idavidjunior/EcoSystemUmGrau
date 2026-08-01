@@ -26,6 +26,7 @@ TTS_PITCH = "+0Hz"
 WHISPER_MODEL = os.environ.get("VOX_WHISPER_MODEL", "base")
 WHISPER_DEVICE = "cpu"
 WHISPER_COMPUTE = "int8"
+_WHISPER_MODEL = None
 
 GOOGLE_LANG = "pt-BR"
 SAMPLE_RATE = 16000
@@ -33,8 +34,33 @@ RECORD_SECONDS = float(os.environ.get("VOX_RECORD_SECONDS", "7"))
 ENERGY_THRESHOLD = 300
 
 
+def _tocar_mci(mp3):
+    """Toca MP3 via API MCI do Windows (confiavel em scripts; MediaPlayer falha
+    em subprocessos). Bloqueia ate o final do audio."""
+    import ctypes
+    import time
+    mci = ctypes.windll.winmm.mciSendStringW
+    alias = f"vox{int(time.time() * 1000)}"
+    r = mci(f'open "{mp3}" type mpegvideo alias {alias}', None, 0, 0)
+    if r != 0:
+        print(f"[erro mci open: {r}]")
+        return
+    mci(f'play {alias}', None, 0, 0)
+    buf = ctypes.create_unicode_buffer(128)
+    mci(f'status {alias} length', buf, 128, 0)
+    try:
+        duracao_ms = int(buf.value)
+    except ValueError:
+        duracao_ms = 0
+    if duracao_ms > 0:
+        time.sleep(duracao_ms / 1000 + 0.3)
+    else:
+        time.sleep(1.0)
+    mci(f'close {alias}', None, 0, 0)
+
+
 def _falar(texto):
-    """Gera MP3 com edge-tts e toca com WPF MediaPlayer (suporta MP3)."""
+    """Gera MP3 com edge-tts e toca via MCI (suporta MP3)."""
     if not texto or not texto.strip():
         return
     mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
@@ -47,19 +73,8 @@ def _falar(texto):
         return
     if not mp3.exists():
         return
-    ps = (
-        "Add-Type -AssemblyName PresentationCore; "
-        f"`$p = [System.Windows.Media.MediaPlayer]::new(); "
-        f"`$p.Open([Uri]::new('{mp3}')); `$p.Play(); "
-        "Start-Sleep -Seconds 2; while (`$p.NaturalDuration.HasTimeSpan -and "
-        "(`$p.Position -lt `$p.NaturalDuration.TimeSpan)) { Start-Sleep -Milliseconds 200 }; "
-        "`$p.Close()"
-    )
     try:
-        subprocess.run(
-            ["powershell", "-NoProfile", "-Command", ps],
-            capture_output=True, timeout=120,
-        )
+        _tocar_mci(str(mp3))
     except Exception as e:
         print(f"[erro play] {e}")
 
@@ -83,10 +98,19 @@ def _gravar_audio(seconds=RECORD_SECONDS):
 def _stt_whisper(audio):
     from faster_whisper import WhisperModel
     import numpy as np
+    global _WHISPER_MODEL
+    if _WHISPER_MODEL is None:
+        _WHISPER_MODEL = WhisperModel(WHISPER_MODEL, device=WHISPER_DEVICE, compute_type=WHISPER_COMPUTE)
     print(f"Transcrevendo com Whisper ({WHISPER_MODEL})...")
-    model = WhisperModel(WHISPER_MODEL, device=WHISPER_DEVICE, compute_type=WHISPER_COMPUTE)
     audio_16k = (audio * 32767).astype(np.int16)
-    segments, info = model.transcribe(audio_16k, language="pt", beam_size=5)
+    segments, info = _WHISPER_MODEL.transcribe(
+        audio_16k,
+        language="pt",
+        beam_size=5,
+        condition_on_previous_text=False,
+        no_speech_threshold=0.6,
+        log_prob_threshold=-1.0,
+    )
     texto = " ".join(s.text.strip() for s in segments).strip()
     return texto, f"whisper:{WHISPER_MODEL}"
 

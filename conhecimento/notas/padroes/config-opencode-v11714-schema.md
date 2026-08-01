@@ -1,7 +1,7 @@
 ---
 tags: [padrao, sessaomigracaoconfig]
 aliases: [Config opencode v1.17.14 schema]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Config opencode v1.17.14 schema

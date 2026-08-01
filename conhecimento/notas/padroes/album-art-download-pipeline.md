@@ -1,7 +1,7 @@
 ---
 tags: [padrao, mp3player-metadata-rescuemp3player-metadata-rescue]
 aliases: [Album Art Download Pipeline]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Album Art Download Pipeline

@@ -1,7 +1,7 @@
 ---
 tags: [bug, lerauditoria]
 aliases: [Logs sem rotacao — logs cresciam indefinidamente]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Bug: Logs sem rotacao — logs cresciam indefinidamente

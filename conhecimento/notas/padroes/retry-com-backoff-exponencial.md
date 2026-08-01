@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [Retry com backoff exponencial]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Retry com backoff exponencial

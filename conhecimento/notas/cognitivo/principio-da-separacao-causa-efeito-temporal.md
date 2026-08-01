@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, debugging]
 aliases: [Principio da separacao causa-efeito-temporal]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Principio da separacao causa-efeito-temporal

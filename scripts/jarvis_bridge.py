@@ -24,7 +24,9 @@ TTS_PITCH = "+0Hz"
 TTS_RATE = "+0%"
 
 BIN = str(Path(os.environ["APPDATA"]) / r"npm\node_modules\opencode-ai\bin\opencode.exe")
-SERVE_URL = "http://127.0.0.1:8766"
+PORTA_SERVE = int(os.environ.get("OPENCODE_SERVE_PORT", "8767"))
+PORTA_SERVE_RESERVA = int(os.environ.get("OPENCODE_SERVE_PORT_RESERVA", "8768"))
+SERVE_URL = f"http://127.0.0.1:{PORTA_SERVE}"
 SERVER_USER = "opencode"
 SERVER_PASS = os.environ.get("OPENCODE_SERVER_PASSWORD", "")
 MODELO_VISION_PROVIDER = "nvidia"
@@ -504,33 +506,103 @@ class Cliente:
         return p
 
     async def _ensure_serve(self):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(1)
-        try:
-            r = s.connect_ex(("127.0.0.1", 8766))
-            s.close()
-            if r == 0:
+        """Garante um `opencode serve` saudável na porta configurada, com failover
+        automático: se a porta estiver com socket órfão (zumbi), tenta limpar e
+        cai para a porta reserva. Resiliente a esse tipo de falha."""
+        for porta in (PORTA_SERVE, PORTA_SERVE_RESERVA):
+            if await self._serve_ok(porta):
                 return True
-        except:
-            s.close()
-        logger.info("serve not running, starting...")
-        proc = await asyncio.create_subprocess_exec(
-            BIN, "serve", "--port", "8766",
-            cwd=WORKDIR,
-            stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.DEVNULL)
-        for _ in range(15):
-            await asyncio.sleep(1)
+            # tenta limpar a porta (se zumbi) e inicia o servidor
+            limpou = await self._limpar_zumbi(porta)
+            if not limpou:
+                logger.warning(f"porta {porta} nao liberada, tentando reserva...")
+                continue
+            logger.info(f"serve not running, starting on {porta}...")
+            proc = await asyncio.create_subprocess_exec(
+                BIN, "serve", "--port", str(porta),
+                cwd=WORKDIR,
+                stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.DEVNULL)
+            for _ in range(15):
+                await asyncio.sleep(1)
+                if await self._serve_ok(porta):
+                    logger.info(f"serve started on {porta}")
+                    return True
+            logger.error(f"failed to start serve on {porta}")
+        return False
+
+    async def _serve_ok(self, porta):
+        """True se a porta responde (servidor de pé)."""
+        try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.settimeout(1)
+            r = s.connect_ex(("127.0.0.1", porta))
+            s.close()
+            return r == 0
+        except Exception:
             try:
-                r = s.connect_ex(("127.0.0.1", 8766))
                 s.close()
-                if r == 0:
-                    logger.info("serve started")
-                    return True
-            except:
+            except Exception:
+                pass
+            return False
+
+    async def _limpar_zumbi(self, porta):
+        """Detecta socket órfão (porta LISTENING sem processo dono vivo) e tenta
+        limpá-lo. Retorna True se conseguiu liberar (ou se nunca esteve zumbi)."""
+        dono = None
+        try:
+            import subprocess as _sp
+            out = _sp.check_output(
+                ["netstat", "-ano"], creationflags=getattr(_sp, "CREATE_NO_WINDOW", 0)
+            ).decode("latin-1", errors="replace")
+        except Exception as e:
+            logger.warning(f"limpar_zumbi netstat: {e}")
+            return False
+        linha = None
+        for ln in out.splitlines():
+            if f":{porta}" in ln and "LISTENING" in ln:
+                linha = ln
+                break
+        if not linha:
+            # porta livre -> nunca esteve zumbi
+            return True
+        pid = linha.split()[-1].strip()
+        if not pid.isdigit():
+            return False
+        # verifica se o processo dono está vivo
+        vivo = False
+        try:
+            r = _sp.run(["tasklist", "/FI", f"PID eq {pid}"], capture_output=True, text=True)
+            vivo = "INFO" not in r.stdout and pid in r.stdout
+        except Exception:
+            pass
+        if vivo:
+            # porta ocupada por processo real: não é zumbi, mas não respondeu
+            logger.warning(f"porta {porta} ocupada por processo vivo pid={pid} mas sem resposta")
+            return False
+        # processo dono morto: socket órfão. tenta derrubar o handle
+        logger.warning(f"porta {porta}: socket orfao (pid={pid} morto), limpando...")
+        try:
+            _sp.run(["taskkill", "/PID", pid, "/F"],
+                    capture_output=True, creationflags=getattr(_sp, "CREATE_NO_WINDOW", 0))
+        except Exception:
+            pass
+        import time as _t
+        for _ in range(5):
+            await asyncio.sleep(1)
+            try:
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                s.bind(("127.0.0.1", porta))
+                s.listen(1)
                 s.close()
-        logger.error("failed to start serve")
+                logger.info(f"porta {porta} liberada do socket orfao")
+                return True
+            except OSError:
+                try:
+                    s.close()
+                except Exception:
+                    pass
+        logger.warning(f"nao consegui liberar porta {porta} do socket orfao")
         return False
 
     async def _get_session(self):
@@ -622,10 +694,18 @@ class Cliente:
             "(curto = 1 frase, médio = 2 frases, longo = 2 a 3 frases), mas nunca copie: "
             "crie algo novo a cada vez. "
             "Tons possíveis: direto, informal, sarcástico, formal, bem-humorado, "
-            "contextual (clima, fim de semana, produtivo, sistema). "
+            "descontraído, seco, espirituoso, contextual "
+            "(clima, fim de semana, produtivo, sistema, data, hora). "
+            "Varie o humor com liberdade: brincadeira leve, ironia sutil, sobriedade, "
+            "entusiasmo contido — conforme o momento fizer sentido. "
+            "Faça a frase sofrer NATURALMENTE para ser dita em voz alta, "
+            "com ritmo de conversa humana: sem rebuscamento, sem exagero, "
+            "sem repetir o nome do usuário a cada frase, sem ser servil. "
             f"Modelos de inspiração: {json.dumps(inspiracao, ensure_ascii=False)} "
             "O briefing traz os FATOS de agora. Use-os com responsabilidade: "
-            "nunca invente temperaturas, horários, datas ou números; só fale do que está no briefing. "
+            "nunca invente temperaturas, horários, datas, números, eventos ou "
+            "conversas anteriores; só fale do que está no briefing. "
+            "Se o briefing não trouxer um dado, não o invente e não o diga. "
             "Ao citar data e hora, use exatamente os formatos já prontos do briefing "
             "(ex.: 'sexta-feira, 31 de julho de 2026, 21:44' e 'amanhã (sábado, 01/08)'). "
             "Mencionar saúde do sistema: o CELULAR é a prioridade (ele fala comigo no celular); "
@@ -662,7 +742,7 @@ def gerar_status_natural():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.settimeout(1)
-        r = s.connect_ex(("127.0.0.1", 8766))
+        r = s.connect_ex(("127.0.0.1", PORTA_SERVE))
         s.close()
         if r == 0:
             servicos.append("o meu cérebro")

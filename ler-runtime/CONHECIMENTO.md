@@ -1,14 +1,14 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-07-30T09:19:22.149321
+**Exportado em:** 2026-08-01T11:02:12.792796
 **Projetos:** 4
-**Padroes Tecnicos:** 70
-**Decisoes:** 40
+**Padroes Tecnicos:** 73
+**Decisoes:** 42
 **Bug Fixes:** 46
-**Padroes Cognitivos:** 22
-**Heuristicas:** 31
+**Padroes Cognitivos:** 25
+**Heuristicas:** 32
 **Frameworks:** 10
-**Missoes Aprendidas:** 65
+**Missoes Aprendidas:** 68
 
 ---
 
@@ -179,6 +179,14 @@ Instalamos Bun 1.3.14 e o plugin `@razroo/opencode-model-fallback` v0.3.2 para f
 
 Estabelecemos a **Cláusula Pétrea de Resiliência**: nenhuma alteração em config, MCP, plugins
 
+### Jarvis deve manter registro de suas proprias habilidades em JARVIS_SYSTEM.md
+**Fonte:** ler_aprendizado
+O usuario explicitamente pediu um campo de habilidades catalogando todas as capacidades de Jarvis para referencia futura
+
+### Habilidades de Jarvis seguem taxonomia de 3 niveis
+**Fonte:** ler_aprendizado
+A primeira versao misturava ferramentas, conhecimentos e capacidades. A versao correta alinha com a taxonomia do ecossistema.
+
 
 ## Padroes Tecnicos
 
@@ -254,6 +262,9 @@ Estabelecemos a **Cláusula Pétrea de Resiliência**: nenhuma alteração em co
 | 68 | opencode+opencode+opencode | Config: 2026-07-27: Teste do vigilante automático |
 | 69 | opencode+opencode | Config: 2026-07-27-4: Teste do ciclo de polling |
 | 70 | opencode | Config: 2026-07-27-5: Teste final do vigilante em processo real |
+| 71 | ler_aprendizado | Encoding UTF-8 explicito em Python no Windows |
+| 72 | ler_aprendizado | Registro de Habilidades de Jarvis |
+| 73 | ler_aprendizado | Taxonomia correta de habilidades Jarvis |
 
 ## Bug Fixes e Corrigidos
 
@@ -636,6 +647,35 @@ Tempos de carregamento variam por tipo: HTML inicial (rede), CSS (bloqueante ate
 4. **Vigilante aprende sozinho**: timer diario executa ecosystem learn automaticamente
 5.
 
+### Encoding-aware diagnostics
+**Dominio:** debugging
+**Fonte:** ler_aprendizado
+
+Ao diagnosticar arquivos JSON no Windows, sempre especificar encoding=utf-8. O default cp1252 pode mascarar arquivos perfeitamente validos como corrompidos.
+
+### Entender antes de criar: ontologia de habilidades
+**Dominio:** metacognicao
+**Fonte:** ler_aprendizado
+
+Antes de catalogar habilidades, estude a taxonomia existente. O que parece habilidade pode ser ferramenta, conhecimento ou skill.
+
+### Gramática do Português Brasileiro — Guia prático do dia a dia
+**Dominio:** general
+**Fonte:** opencode
+
+# Gramática do Português Brasileiro — Guia prático do dia a dia
+
+- **Data:** 01/08/2026
+- **Sessão:** Aprendizado permanente — gramática PT-BR para uso contínuo em comunicações
+
+## Propósito
+Este guia é o referencial de gramática do Português Brasileiro que todo agente deve
+usar no dia a dia: TTS, transcrições, textos, documentação e conversas. Focado no
+uso prático, sem jargão acadêmico desnecessário.
+
+## Ortografia e acentuação
+- Acentuação segue o novo acordo ortográfico (em vigor no Brasil d
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -671,6 +711,7 @@ Tempos de carregamento variam por tipo: HTML inicial (rede), CSS (bloqueante ate
 | 29 | protocol | JSON-RPC notifications | Sempre verificar se request tem id antes de responder. Se nao tem, e notification - nao responda. |
 | 30 | protocol | MCP tool naming | MCP tools/list pode expor nomes kebab-case, mas tools/call precisa de mapping explicito para metodos internos |
 | 31 | organization | Workspace root | Manter projetos em raiz unica sem espacos no caminho para compatibilidade com scripts |
+| 32 | debugging | open() sempre com encoding no Windows | Todo open() de arquivo texto deve especificar encoding. No Windows, o default muda conforme o locale do sistema. |
 
 ## Frameworks
 
@@ -729,7 +770,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-07-30T09:19:20.955274
+**Ultima atualizacao:** 2026-08-01T11:02:12.776046
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

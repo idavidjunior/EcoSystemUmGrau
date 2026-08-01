@@ -1,7 +1,7 @@
 ---
 tags: [bug, treinamentonavegacao]
 aliases: [Cliques em coordenadas erram alvo em resolutions diferentes]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Bug: Cliques em coordenadas erram alvo em resolutions diferentes

@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [Modal/dialog overlay detection]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Modal/dialog overlay detection

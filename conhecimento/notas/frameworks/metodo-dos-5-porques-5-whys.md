@@ -1,7 +1,7 @@
 ---
 tags: [framework]
 aliases: [Metodo dos 5 Porques (5 Whys)]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Metodo dos 5 Porques (5 Whys)

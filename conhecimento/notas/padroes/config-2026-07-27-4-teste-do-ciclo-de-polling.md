@@ -1,7 +1,7 @@
 ---
 tags: [padrao, opencodeopencode]
 aliases: [Config: 2026-07-27-4: Teste do ciclo de polling]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Config: 2026-07-27-4: Teste do ciclo de polling

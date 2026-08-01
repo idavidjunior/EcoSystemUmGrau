@@ -1,7 +1,7 @@
 ---
 tags: [bug, lerauditoria]
 aliases: [Nao havia feedback loop do usuario — LER terminava mesmo se ]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Bug: Nao havia feedback loop do usuario — LER terminava mesmo se objetivo nao fosse atingido

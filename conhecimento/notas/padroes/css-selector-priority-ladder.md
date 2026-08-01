@@ -1,7 +1,7 @@
 ---
 tags: [padrao, treinamentonavegacao]
 aliases: [CSS selector priority ladder]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # CSS selector priority ladder

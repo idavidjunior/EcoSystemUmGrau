@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, element-detection]
 aliases: [Hierarquia de confianca de seletores]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Hierarquia de confianca de seletores

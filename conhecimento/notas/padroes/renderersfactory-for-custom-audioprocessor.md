@@ -1,7 +1,7 @@
 ---
 tags: [padrao, mp3player]
 aliases: [RenderersFactory for custom AudioProcessor]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # RenderersFactory for custom AudioProcessor

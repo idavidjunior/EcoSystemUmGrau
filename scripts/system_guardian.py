@@ -65,7 +65,7 @@ def is_serve(pid):
     try:
         p = psutil.Process(pid)
         for conn in p.connections():
-            if conn.laddr.port == 8766:
+            if conn.laddr.port == 8767:
                 return True
         cmd = " ".join(p.cmdline()).lower()
         return "opencode serve" in cmd or "opencode-serve" in cmd

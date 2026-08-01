@@ -1,7 +1,7 @@
 ---
 tags: [decisao, mp3player]
 aliases: [Album art download com redirect loop manual (instanceFollowR]
-date: 2026-07-30
+date: 2026-08-01
 ---
 
 # Album art download com redirect loop manual (instanceFollowRedirects=false).
