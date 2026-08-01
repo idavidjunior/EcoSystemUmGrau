@@ -330,13 +330,16 @@ Fontes: Frota & Moraes (Fonologia Entoacional do PB), Castelo & Frota (2016), Mi
 - `aplicar_phonemes()` na bridge lê `pronuncias.json`, envolve palavras com IPA em `<phoneme alphabet="ipa">` e ativa modo SSML do edge-tts
 - Thalita Neural recebe texto com **ortografia correta** — o phoneme sobrepõe apenas a pronúncia
 
-### Horas no TTS — 31/07/2026
-O edge-tts lê `21:44` como se fosse uma razão/hora errada. Regra (estratégia de substituição de texto antes do TTS):
-- `melhorar_fala()` expande horas digitais ANTES da troca de `:` por vírgula:
+### Horas no TTS — 31/07/2026 (revisado: tela vs áudio)
+O edge-tts lê `21:44` como se fosse uma razão/hora errada. Regra (estratégia de substituição de texto):
+- `melhorar_fala()` expande horas digitais ANTES da troca de `:` por vírgula, apenas para o ÁUDIO:
   - `21:44` → `21 horas e 44`
   - `22:00` → `22 horas em ponto`
-- Aplica-se ao texto que vai para o ÁUDIO (tela continua mostrando `21:44`).
-- Testes em `test_vox.py` (`teste_horas_para_fala()`).
+- `normalizar_hora_display()` converte formas faladas do LLM de volta para `HH:MM` no texto EXIBIDO:
+  - `23 horas e 29` / `23h29` / `09 hs 30` / `23 e 29` → `23:29`
+  - `22 horas em ponto` / `22h` → `22:00`
+- TELA sempre em `HH:MM`; apenas o ÁUDIO fala por extenso (round-trip `text` → `gerar_audio`).
+- Testes em `test_vox.py` (`teste_horas_para_fala()` + `teste_normalizar_hora_display()`).
 
 ## Auto-Atualização
 

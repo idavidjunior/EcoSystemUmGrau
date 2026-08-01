@@ -45,6 +45,41 @@ def teste_horas_para_fala():
     print(f"horas_para_fala: {len(casos)}/{len(casos)} OK")
 
 
+def teste_normalizar_hora_display():
+    sys.path.insert(0, __import__('os').path.dirname(__file__))
+    from jarvis_bridge import normalizar_hora_display, melhorar_fala
+    casos = {
+        "São 23:29 em São Paulo.": "São 23:29 em São Paulo.",
+        "São 23 horas e 29 em São Paulo.": "São 23:29 em São Paulo.",
+        "Agora são 22 horas em ponto.": "Agora são 22:00.",
+        "Já são 22 horas e 30.": "Já são 22:30.",
+        "São 09h30 agora.": "São 09:30 agora.",
+        "São 09 hs 30.": "São 09:30.",
+        "São 23 e 29 da noite.": "São 23:29 da noite.",
+        "São 15 e 45.": "São 15:45.",
+        "Sem hora nenhuma aqui.": "Sem hora nenhuma aqui.",
+        "Faltam 2 e 3 coisas na lista.": "Faltam 2 e 3 coisas na lista.",
+    }
+    falhas = 0
+    for entrada, esperado in casos.items():
+        saida = normalizar_hora_display(entrada)
+        ok = saida == esperado
+        falhas += 0 if ok else 1
+        print(f"[{'OK' if ok else 'FALHOU'}] tela {entrada!r} -> {saida!r}")
+    roundtrip = [
+        ("São 23:29 em São Paulo.", "São 23 horas e 29 em São Paulo."),
+        ("Agora são 22:00.", "Agora, são 22 horas em ponto."),
+        ("São 23 horas e 29 em São Paulo.", "São 23 horas e 29 em São Paulo."),
+    ]
+    for tela, fala in roundtrip:
+        f = melhorar_fala(normalizar_hora_display(tela))
+        ok = f == fala
+        falhas += 0 if ok else 1
+        print(f"[{'OK' if ok else 'FALHOU'}] roundtrip tela={normalizar_hora_display(tela)!r} fala={f!r}")
+    assert falhas == 0, f"{falhas} caso(s) de hora na tela falharam"
+    print(f"normalizar_hora_display: {len(casos)}/{len(casos)} OK")
+
+
 async def teste():
     async with websockets.connect("ws://127.0.0.1:8765") as ws:
         perguntas = [
@@ -64,4 +99,5 @@ async def teste():
 if __name__ == "__main__":
     teste_fix_punctuation()
     teste_horas_para_fala()
+    teste_normalizar_hora_display()
     asyncio.run(teste())
