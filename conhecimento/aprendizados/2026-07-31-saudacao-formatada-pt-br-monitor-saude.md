@@ -27,3 +27,8 @@
 - Bridge reiniciada; saudação real validada no log: "Boa noite, senhor! São sexta-feira, 31 de julho de 2026, 22:01, com céu predominantemente limpo e 16 graus lá fora..." (já citando bateria).
 - Commit `cfd316a` pushed no EcoSystemUmGrau.
 - Pendência: os arquivos soltos `bridge_err.txt`, `bridge_out.txt`, `openapi_spec.json` ainda não estão no `.gitignore`.
+
+## Ajuste (mesmo dia, pedido do usuário)
+- Jarvis roda no CELULAR → **saúde prioriza o celular** (bateria sempre reportada; crítica ≤20% e aviso ≤35%).
+- **PC em segundo plano**: só entra no briefing se houver alerta (bateria ≤30%, CPU ≥80%, memória ≥85%, disco ≥85%).
+- Instrução do `saudar()` reforça a prioridade celular→PC. Validado: "Saúde do sistema: celular com bateria em 93%, PC com memória em 85%."

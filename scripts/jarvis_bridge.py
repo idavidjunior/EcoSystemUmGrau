@@ -104,24 +104,29 @@ def saude_sistema():
         return _saude_cache["texto"]
     partes = []
     try:
-        pc = _pc_saude()
-        if pc.get("bat") is not None:
-            st = "carregando" if pc.get("carregando") else "sem carregador"
-            partes.append(f"PC com bateria em {pc['bat']:.0f}% ({st})")
-        if pc.get("cpu") is not None:
-            partes.append(f"CPU em {pc['cpu']:.0f}%")
-        if pc.get("ram") is not None:
-            partes.append(f"memória em {pc['ram']:.0f}%")
-        if pc.get("disk") is not None:
-            partes.append(f"disco C: com {pc['disk']:.0f}% de uso")
-    except Exception as e:
-        logger.warning(f"pc saude: {e}")
-    try:
         cel = _cel_bateria()
         if cel is not None:
-            partes.append(f"celular com bateria em {cel}%")
+            if cel <= 20:
+                partes.append(f"celular com bateria crítica em {cel}%, vale conectar o carregador")
+            elif cel <= 35:
+                partes.append(f"celular com bateria em {cel}%, convém carregar em breve")
+            else:
+                partes.append(f"celular com bateria em {cel}%")
     except Exception as e:
         logger.warning(f"cel saude: {e}")
+    try:
+        pc = _pc_saude()
+        if pc.get("bat") is not None and pc["bat"] <= 30:
+            st = "carregando" if pc.get("carregando") else "sem carregador"
+            partes.append(f"PC com bateria em {pc['bat']:.0f}% ({st})")
+        if pc.get("cpu") is not None and pc["cpu"] >= 80:
+            partes.append(f"PC com CPU em {pc['cpu']:.0f}%")
+        if pc.get("ram") is not None and pc["ram"] >= 85:
+            partes.append(f"PC com memória em {pc['ram']:.0f}%")
+        if pc.get("disk") is not None and pc["disk"] >= 85:
+            partes.append(f"PC com disco C: em {pc['disk']:.0f}% de uso")
+    except Exception as e:
+        logger.warning(f"pc saude: {e}")
     texto = "Saúde do sistema: " + ", ".join(partes) + "." if partes else ""
     _saude_cache = {"t": time.time(), "texto": texto}
     return texto
@@ -556,8 +561,10 @@ class Cliente:
             "nunca invente temperaturas, horários, datas ou números; só fale do que está no briefing. "
             "Ao citar data e hora, use exatamente os formatos já prontos do briefing "
             "(ex.: 'sexta-feira, 31 de julho de 2026, 21:44' e 'amanhã (sábado, 01/08)'). "
-            "Mencionar saúde do sistema (bateria, CPU, memória, disco) só se for relevante "
-            "(ex.: bateria baixa) — não precisa citar tudo. "
+            "Mencionar saúde do sistema: o CELULAR é a prioridade (ele fala comigo no celular); "
+            "cite a bateria do celular quando fizer sentido. O PC fica em segundo plano: "
+            "só mencione condições do PC se houver alerta no briefing "
+            "(ex.: bateria baixa, CPU alta, memória cheia, disco cheio). "
             "Não pergunte 'como posso ajudar' nem 'em que posso ajudar'. "
             f"Briefing de agora: {briefing} "
             f"Status do sistema: {status}"
