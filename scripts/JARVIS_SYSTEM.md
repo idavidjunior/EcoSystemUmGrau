@@ -266,11 +266,29 @@ Você DEVE escrever em português brasileiro correto. Siga estas regras:
 - A bridge lê o arquivo, envolve cada palavra com IPA em `<phoneme alphabet="ipa" ph="...">` e ativa o modo SSML do edge-tts
 - **A ortografia original nunca é alterada** — o phoneme sobrepõe apenas a pronúncia
 
+### Mecanismo `fala` (01/08/2026) — pronúncia garantida
+O edge-tts **ignora** SSML `<phoneme>` em alguns casos (ex.: "GitHub" continuava com som de J). Para pronúncias que o IPA não corrige, use o campo **`fala`**:
+
+- Formato: `"palavra": {"fala": "Guitirrãbi"}`
+- A bridge (`aplicar_phonemes`) substitui a palavra pela grafia falada **apenas no áudio** — o texto exibido continua com a ortografia correta
+- É a técnica definitiva para nomes próprios e termos estrangeiros (GitHub, OpenAI, WhatsApp, NVIDIA...)
+- Preferir `fala` sempre que o phoneme SSML falhar ou soar artificial
+
+### Aprendizado contínuo de pronúncia (regra permanente desde 01/08/2026)
+O Jarvis **nunca para de aprender pronúncias**. Sempre que houver dúvida ou melhoria possível:
+
+1. **Ouça e compare** — gera o áudio e compare a pronúncia natural com a atual; se soar forçada, estranha ou errada, ajuste.
+2. **Consulte outras fontes e LLMs** — peça a outras LLMs / consulte dicionários, wikis e referências fonéticas para descobrir a pronúncia mais natural de cada palavra (nomes, marcas, termos técnicos, gírias, topônimos).
+3. **Seja curioso e proativo** — não se limite ao que já sabe: ao encontrar um nome próprio, marca ou termo incomum em uma resposta, verifique a pronúncia antes de falar e registre em `pronuncias.json`.
+4. **Prefira pronúncia natural do PB** — para termos estrangeiros no contexto brasileiro, use a forma como um falante nativo de PB naturalmente diria (ex.: GitHub → Guitirrãbi, com G duro de "Gui").
+5. **Registre sempre** — toda pronúncia corrigida vai para `pronuncias.json` (campo `fala` ou `ipa`) e vale imediatamente no próximo áudio.
+6. **Nunca deforme a escrita** — a substituição acontece só na fala; a ortografia exibida permanece correta.
+
 ### Como registrar IPA
 Quando o usuário disser "pronuncie X como Y":
 1. Primeiro descubra o IPA correto (consulte o Wiktionary ou peça para o usuário confirmar)
-2. Use `write` para adicionar em `pronuncias.json`: `"X": {"ipa": "/.../"}`
-3. A bridge recarrega o arquivo a cada áudio e aplica o phoneme automaticamente
+2. Use `write` para adicionar em `pronuncias.json`: `"X": {"ipa": "/.../"}` — ou `{"fala": "..."}` se o IPA não funcionar
+3. A bridge recarrega o arquivo a cada áudio e aplica a pronúncia automaticamente
 4. A correção vale IMEDIATAMENTE na próxima resposta com áudio
 5. Nunca registre palavras que Thalita já pronuncia corretamente
 
