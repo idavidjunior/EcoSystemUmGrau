@@ -1,6 +1,21 @@
 import asyncio, websockets, edge_tts, base64, json, logging, os, re, time, xml.sax.saxutils, socket, urllib.request, urllib.error, random, datetime, subprocess, sys, unicodedata
 from pathlib import Path
 
+# NVIDIA Quota Monitor
+SCRIPTS_DIR = Path(__file__).resolve().parent
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+try:
+    from nvidia_quota_monitor import get_monitor, nvidia_request_with_quota
+    NVIDIA_QUOTA_AVAILABLE = True
+except ImportError as e:
+    logging.warning(f"nvidia_quota_monitor não disponível: {e}")
+    NVIDIA_QUOTA_AVAILABLE = False
+    def get_monitor():
+        return None
+    def nvidia_request_with_quota(*args, **kwargs):
+        raise RuntimeError("nvidia_quota_monitor não instalado")
+
 HAB_ROOT = Path(__file__).resolve().parent.parent / "Habilidades"
 for _hp in [HAB_ROOT / "tecnicas" / "clima-api"]:
     if _hp.is_dir() and str(_hp) not in sys.path:
@@ -953,6 +968,15 @@ async def lidar(ws):
                     if obj.get("tipo") == "ping":
                         await ws.send(json.dumps({"tipo": "pong", "origem": "bridge", "eco": obj}))
                         logger.info(f"ping-pong de {obj.get('origem','desconhecido')}")
+                        continue
+                    if obj.get("tipo") == "quota":
+                        if NVIDIA_QUOTA_AVAILABLE:
+                            monitor = get_monitor()
+                            status = monitor.get_status()
+                            await ws.send(json.dumps({"tipo": "quota_status", "status": status}))
+                        else:
+                            await ws.send(json.dumps({"tipo": "quota_status", "error": "nvidia_quota_monitor não disponível"}))
+                        logger.info(f"quota status request")
                         continue
                     if obj.get("tipo") == "imagem":
                         m = obj.get("texto") or "O que você vê nesta imagem?"
