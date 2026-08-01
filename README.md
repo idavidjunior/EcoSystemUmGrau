@@ -167,8 +167,28 @@ as configs a partir dos templates, configura o LER, pergunta as API keys.
 |---|---|
 | `/ouvir` | Captura sua voz (STT Whisper local + fallback Google) e usa como prompt |
 | `/falar <texto>` | Fala o texto em voz alta (TTS edge-tts, voz pt-BR-AntonioNeural) |
+| `/dialogo <modo>` | Inicia o modo conversa por voz (veja abaixo) |
 
 Voz requer `scripts/vox_audio.py` e as libs `faster-whisper`, `SpeechRecognition`, `sounddevice`, `edge-tts`.
+
+### Modo diálogo (`scripts/dialogo.py`)
+
+Fale naturalmente — Jarvis ouve, responde e executa — sem digitar nada:
+
+| Modo | Como ativar |
+|---|---|
+| `vad` (padrão) | Mãos-livres: detecta voz pelo volume, processa quando você fica em silêncio |
+| `push` | Segure **Espaço** para falar, solte para enviar |
+| `ativacao` | Diga **"Jarvis"** para acordar, depois fale o comando; "valeu"/"tchau" para dormir |
+
+```powershell
+python scripts/dialogo.py            # mãos-livres
+python scripts/dialogo.py --modo push
+python scripts/dialogo.py --modo ativacao
+python scripts/dialogo.py --texto "pergunta sem microfone"
+```
+
+Ctrl+C encerra. Reusa o `Cliente` do `jarvis_bridge.py` (opencode serve porta 8766) — por isso **responde e executa** (hora, clima, bateria, git, arquivos, etc).
 
 ## Estrutura do Repo
 

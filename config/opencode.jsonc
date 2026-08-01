@@ -51,6 +51,10 @@
     "falar": {
       "description": "Falar: abre o modo de voz (TTS)",
       "template": "Fale em voz alta o seguinte texto usando TTS. Execute o script vox_audio.py no modo falar com este texto como argumento:\n\n$ARGUMENTS\n\nResposta curta apos falar."
+    },
+    "dialogo": {
+      "description": "Dialogo por voz: inicia o modo conversa (fala, ele ouve/responde/executa)",
+      "template": "O usuario quer iniciar o modo dialogo por voz no PC. Execute em background (nao bloqueie esta sessao):\n\n!`python \"C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/scripts/dialogo.py\" --modo $ARGUMENTS`\n\nModos validos: vad (maos-livres), push (segure espaco), ativacao (diga Jarvis). Se $ARGUMENTS estiver vazio, use vad. Explique como voltar (Ctrl+C)."
     }
   },
   "permission": "allow",
