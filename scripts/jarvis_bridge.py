@@ -433,6 +433,131 @@ def aplicar_phonemes(texto):
     texto, n = re.subn(r'\b([^\W\d_]+)\b', sub, texto)
     return texto, n > 0
 
+
+# ─── Dicionário de pronúncia autoevolutivo ──────────────────────────────
+# "pronuncie X como Y" / "fala X como Y" / "sempre que eu falar X, fale Y"
+# registra a pronúncia em pronuncias.json na hora (campo "fala"), sem LLM.
+PRON_PEDIDO_DIRETO = re.compile(
+    r'^(?:por favor\s+)?(?:a partir de agora\s+)?'
+    r'(?:pronuncie|pronuncia|fale|fala|diga|diz|passe a falar|comece a falar)'
+    r'\s+([a-záéíóúâêîôûãõçA-ZÁÉÍÓÚÂÊÎÔÛÃÕÇ][a-záéíóúâêîôûãõçA-ZÁÉÍÓÚÂÊÎÔÛÃÕÇ0-9 .\-–]*?)'
+    r'\s+(?:como|assim)\s+([a-záéíóúâêîôûãõçA-ZÁÉÍÓÚÂÊÎÔÛÃÕÇ][a-záéíóúâêîôûãõçA-ZÁÉÍÓÚÂÊÎÔÛÃÕÇ0-9 .\-–]*?)\s*[.!?]*$',
+    re.IGNORECASE,
+)
+PRON_PEDIDO_CONDICIONAL = re.compile(
+    r'^(?:a partir de agora\s+)?(?:sempre que|quando)\s+(?:eu\s+)?(?:falar|disser|dizer)\s+'
+    r'([a-záéíóúâêîôûãõçA-ZÁÉÍÓÚÂÊÎÔÛÃÕÇ][a-záéíóúâêîôûãõçA-ZÁÉÍÓÚÂÊÎÔÛÃÕÇ0-9 .\-–]*?)'
+    r'(?:\s*,|\s*[,:])\s*(?:fale|fala|diga|diz)\s+'
+    r'([a-záéíóúâêîôûãõçA-ZÁÉÍÓÚÂÊÎÔÛÃÕÇ][a-záéíóúâêîôûãõçA-ZÁÉÍÓÚÂÊÎÔÛÃÕÇ0-9 .\-–]*?)\s*[.!?]*$',
+    re.IGNORECASE,
+)
+
+
+def _normalizar_palavra(w):
+    return w.strip().strip('"“”\'\'').lower()
+
+
+def _processar_pedido_pronuncia(msg):
+    """Detecta pedido de correção de pronúncia. Retorna (palavra, fala) ou None.
+
+    Aceita:
+      - "pronuncie GitHub como Guitirrãbi"
+      - "fala openai como Ópenái"
+      - "sempre que eu falar nvidia, fale Envidiá"
+    A palavra-alvo precisa ter <= 4 palavras e a fala <= 6, para evitar falsos
+    positivos em frases normais do tipo "fala o que você vai fazer como amanhã".
+    """
+    if not msg or not msg.strip():
+        return None
+    m = PRON_PEDIDO_DIRETO.match(msg.strip()) or PRON_PEDIDO_CONDICIONAL.match(msg.strip())
+    if not m:
+        return None
+    palavra, fala = m.group(1), m.group(2)
+    palavra = _normalizar_palavra(palavra)
+    fala = _normalizar_palavra(fala)
+    if not palavra or not fala:
+        return None
+    if len(palavra.split()) > 4 or len(fala.split()) > 6:
+        return None
+    if palavra == fala:
+        return None
+    return palavra, fala
+
+
+def _registrar_pronuncia(palavra, fala):
+    """Adiciona {palavra: {"fala": ...}} a pronuncias.json (autoevolução).
+
+    Se a palavra já existe com "ipa", mantém o ipa e adiciona "fala" (a fala
+    tem prioridade em aplicar_phonemes). Escreve com lock de arquivo simples
+    (retry) para evitar corrupção se a bridge estiver gerando áudio em paralelo.
+    """
+    path = Path(PRON_PATH)
+    for _tentativa in range(3):
+        try:
+            if path.exists():
+                ipas = json.loads(path.read_text(encoding="utf-8"))
+            else:
+                ipas = {}
+            if not isinstance(ipas, dict):
+                ipas = {}
+            entry = ipas.get(palavra)
+            if not isinstance(entry, dict):
+                entry = {}
+            entry["fala"] = fala
+            ipas[palavra] = entry
+            path.write_text(json.dumps(ipas, ensure_ascii=False, indent=2), encoding="utf-8")
+            return True
+        except Exception as e:
+            logger.warning(f"registrar_pronuncia tenta {_tentativa + 1}: {e}")
+            time.sleep(0.2)
+    return False
+
+
+PROSODIA_PERGUNTA = '<prosody pitch="+12%" rate="+4%">'
+PROSODIA_EXCLAMACAO = '<prosody pitch="+8%" rate="+6%">'
+
+
+def _prosodia_frases(t):
+    """Aplica <prosody> dinâmico por tipo de frase sobre o SSML já construído.
+
+    Baseado no estudo de entoação do PB (JARVIS_SYSTEM.md):
+    - Pergunta (?)  -> curva ascendente: pitch +12%, rate +4% (perguntas tendem a
+      ser mais rápidas; tônica final com pico mais alto).
+    - Exclamação (!) -> ênfase: pitch +8%, rate +6% (entusiasmo controlado).
+    - Afirmação (.) -> sem prosody (a voz já desce naturalmente H+L* L%).
+
+    Roda por ÚLTIMO (após say-as/break/emphasis) para que as regex de say-as
+    (ex.: porcentagem) não casem os atributos do prosody ("+12%"). Preserva os
+    delimitadores originais (espaços e <break>) entre sentenças.
+    """
+    if not t:
+        return t, False
+    delim = re.compile(
+        r'((?<=[.!?])\s*(?:<break[^>]*/>\s*|\s+)(?=[A-ZÁÉÍÓÚÂÊÎÔÛÃÕÇ]))'
+    )
+    partes = delim.split(t)
+    mudou = False
+    out = []
+    for i in range(0, len(partes), 2):
+        p = partes[i].strip()
+        if not p:
+            out.append(partes[i])
+            if i + 1 < len(partes):
+                out.append(partes[i + 1])
+            continue
+        if p.endswith('?'):
+            out.append(PROSODIA_PERGUNTA + p + '</prosody>')
+            mudou = True
+        elif p.endswith('!'):
+            out.append(PROSODIA_EXCLAMACAO + p + '</prosody>')
+            mudou = True
+        else:
+            out.append(p)
+        if i + 1 < len(partes):
+            out.append(partes[i + 1])
+    return ''.join(out), mudou
+
+
 def _ssml_enriquecer(t):
     """Enriquence texto puro (ja passado por melhorar_fala e aplicar_phonemes)
     com SSML para maior naturalidade no audio, SEM alterar a ortografia exibida.
@@ -517,6 +642,11 @@ def _ssml_enriquecer(t):
         # --- enfase: alertas de recursos do PC/saude ---
         if re.search(r'CPU em \d+%|disco em \d+%|memória em \d+%|bateria crítica', t, re.IGNORECASE):
             t = re.sub(r'(\d+%)', r'<emphasis level="modified">\1</emphasis>', t)
+            tem_ssml = True
+
+        # --- prosody dinâmico por tipo de frase (pergunta ascendente / exclamação) ---
+        t, tem_prosody = _prosodia_frases(t)
+        if tem_prosody:
             tem_ssml = True
 
         if not tem_ssml:
@@ -1123,6 +1253,20 @@ async def lidar(ws):
             except Exception as e:
                 logger.warning(f"caminho_rapido: {e}")
                 r = None
+            if r is None:
+                # Dicionário de pronúncia autoevolutivo: "pronuncie X como Y"
+                try:
+                    pron = _processar_pedido_pronuncia(m)
+                except Exception as e:
+                    logger.warning(f"processar_pronuncia: {e}")
+                    pron = None
+                if pron:
+                    palavra, fala = pron
+                    if _registrar_pronuncia(palavra, fala):
+                        r = f"Entendido. A partir de agora eu falo {palavra} como {fala}."
+                        logger.info(f"pronuncia registrada: {palavra} -> {fala}")
+                    else:
+                        r = "Não consegui salvar essa pronúncia. Tente novamente."
             if r is None:
                 try:
                     r = await c.perguntar(m, img_base64=img_atual, img_mime=img_mime)

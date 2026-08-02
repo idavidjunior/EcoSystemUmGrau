@@ -298,7 +298,6 @@ O edge-tts **ignora** SSML `<phoneme>` em alguns casos (ex.: "GitHub" continuava
 
 ### Aprendizado contínuo de pronúncia (regra permanente desde 01/08/2026)
 O Jarvis **nunca para de aprender pronúncias**. Sempre que houver dúvida ou melhoria possível:
-
 1. **Ouça e compare** — gera o áudio e compare a pronúncia natural com a atual; se soar forçada, estranha ou errada, ajuste.
 2. **Consulte outras fontes e LLMs** — peça a outras LLMs / consulte dicionários, wikis e referências fonéticas para descobrir a pronúncia mais natural de cada palavra (nomes, marcas, termos técnicos, gírias, topônimos).
 3. **Seja curioso e proativo** — não se limite ao que já sabe: ao encontrar um nome próprio, marca ou termo incomum em uma resposta, verifique a pronúncia antes de falar e registre em `pronuncias.json`.
@@ -313,6 +312,32 @@ Quando o usuário disser "pronuncie X como Y":
 3. A bridge recarrega o arquivo a cada áudio e aplica a pronúncia automaticamente
 4. A correção vale IMEDIATAMENTE na próxima resposta com áudio
 5. Nunca registre palavras que Thalita já pronuncia corretamente
+
+### Autoevolução de pronúncia (02/08/2026) — registro automático pelo usuário
+O usuário pode ensinar uma pronúncia **falando** para o Jarvis — sem o Jarvis precisar editar o JSON. Padrões reconhecidos pela bridge (`_processar_pedido_pronuncia`):
+
+- "pronuncie GitHub como Guitirrãbi"
+- "fala openai como Ópenái"
+- "sempre que eu falar nvidia, fale Envidiá"
+- "por favor pronuncie WhatsApp como Uátsápe"
+
+Comportamento:
+- A bridge extrai (palavra, fala), grava `{"palavra": {"fala": "..."}}` em `pronuncias.json` e responde em áudio "Entendido. A partir de agora eu falo X como Y."
+- Vale imediatamente no próximo áudio (a bridge recarrega o JSON a cada fala).
+- Guarda para evitar falsos positivos: palavra-alvo até 4 palavras, fala até 6; `palavra == fala` é ignorado; frases como "fala o que você vai fazer como amanhã" NÃO casam.
+- Se já existe IPA para a palavra, o `fala` é adicionado ao lado e tem prioridade (mecanismo `fala` sobrepõe phoneme).
+
+### Prosody dinâmico por tipo de frase (02/08/2026)
+`_prosodia_frases()` aplica `<prosody>` por sentença **depois** de say-as/break/emphasis (para não corromper as regex de número):
+
+| Tipo | Terminador | Efeito SSML |
+|------|-----------|-------------|
+| Pergunta | `?` | `pitch="+12%" rate="+4%"` — curva ascendente (perguntas são mais rápidas no PB) |
+| Exclamação | `!` | `pitch="+8%" rate="+6%"` — ênfase/entusiasmo controlado |
+| Afirmação | `.` | sem prosody — a voz já desce naturalmente (`H+L* L%`) |
+
+- Complementa a entonação nativa do edge-tts (`?` já inclina a voz); o prosody dá controle fino.
+- Coexiste com `<say-as>`: "A CPU está em 85%?" → prosody + say-as percent no mesmo SSML.
 
 ### Estudo de Fonética e Entoação do Português Brasileiro (29/07/2026)
 Treinamento online concluído com fontes: The Brazilian Ways, Portuguese with Eli, FAPESP, UFMG, e Museu da Língua Portuguesa.

@@ -129,9 +129,73 @@ async def teste():
             print("-" * 50)
 
 
+def teste_ssml_prosodia():
+    sys.path.insert(0, __import__('os').path.dirname(__file__))
+    from jarvis_bridge import _ssml_enriquecer
+    casos = {
+        # pergunta → prosody ascendente (pitch +12%)
+        "O que você quer fazer?": '<prosody pitch="+12%"',
+        # exclamação → prosody enfático (pitch +8%)
+        "Que ótima notícia!": '<prosody pitch="+8%"',
+        # afirmação → sem prosody
+        "Estou sincronizando tudo.": None,
+        # pergunta com número/percentual → prosody + say-as coexistem
+        "A CPU está em 85%?" : '<prosody pitch="+12%"',
+        # frase mista: afirmação sem prosody + pergunta com prosody
+        "Vou verificar. Posso continuar?": '<prosody pitch="+12%"',
+    }
+    falhas = 0
+    for entrada, esperado in casos.items():
+        saida, usou = _ssml_enriquecer(entrada)
+        ok = (esperado in saida) if esperado else (esperado is None and not usou)
+        if not ok:
+            falhas += 1
+            print(f"[FALHOU] {entrada!r} -> {saida!r} (esperado prosody: {esperado!r}, usou={usou})")
+        else:
+            print(f"[OK] {entrada!r} -> {saida!r}")
+    # verifica coexistência say-as + prosody na pergunta com percentual
+    saida, usou = _ssml_enriquecer("A CPU está em 85%?")
+    if '<say-as' in saida and '<prosody' in saida:
+        print("[OK] say-as + prosody coexistem na pergunta com percentual")
+    else:
+        falhas += 1
+        print(f"[FALHOU] coexistencia say-as+prosody: {saida!r}")
+    assert falhas == 0, f"{falhas} caso(s) de prosody falharam"
+    print(f"ssml_prosodia: {len(casos) + 1}/{len(casos) + 1} OK")
+
+
+def teste_pronuncia_autoevolutiva():
+    sys.path.insert(0, __import__('os').path.dirname(__file__))
+    from jarvis_bridge import _processar_pedido_pronuncia
+    casos = {
+        "pronuncie GitHub como Guitirrãbi": ("github", "guitirrãbi"),
+        "fala openai como Ópenái": ("openai", "ópenái"),
+        "sempre que eu falar nvidia, fale Envidiá": ("nvidia", "envidiá"),
+        "por favor pronuncie WhatsApp como Uátsápe": ("whatsapp", "uátsápe"),
+        # falsos positivos NÃO devem casar
+        "fala o que você vai fazer como amanhã": None,
+        "diga como você está": None,
+        "o que você quer fazer": None,
+        "toca uma música": None,
+    }
+    falhas = 0
+    for entrada, esperado in casos.items():
+        saida = _processar_pedido_pronuncia(entrada)
+        ok = (saida == esperado) if esperado else (saida is None)
+        if not ok:
+            falhas += 1
+            print(f"[FALHOU] {entrada!r} -> {saida!r} (esperado {esperado!r})")
+        else:
+            print(f"[OK] {entrada!r} -> {saida!r}")
+    assert falhas == 0, f"{falhas} caso(s) de pronuncia autoevolutiva falharam"
+    print(f"pronuncia_autoevolutiva: {len(casos)}/{len(casos)} OK")
+
+
 if __name__ == "__main__":
     teste_fix_punctuation()
     teste_horas_para_fala()
     teste_normalizar_hora_display()
     teste_caminho_rapido()
+    teste_ssml_prosodia()
+    teste_pronuncia_autoevolutiva()
     asyncio.run(teste())

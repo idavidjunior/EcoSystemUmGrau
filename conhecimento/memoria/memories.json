@@ -284,5 +284,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T13:08:30.934360",
     "last_accessed": "2026-08-02T13:08:30.934360"
+  },
+  {
+    "id": 35,
+    "kind": "decisao",
+    "task": "TTS: prosody dinamico + pronuncia autoevolutiva",
+    "summary": "Implementado prosody por tipo de frase (pergunta +12% pitch ascendente, exclamacao +8%, afirmacao sem) apos say-as para nao corromper regex. Usuario ensina pronuncia falando 'pronuncie X como Y' - bridge grava em pronuncias.json e confirma em audio. Testes 6/6 + 8/8, preflight PASS, audio real OK.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T14:49:17.738863",
+    "last_accessed": "2026-08-02T14:49:17.738863"
   }
 ]
