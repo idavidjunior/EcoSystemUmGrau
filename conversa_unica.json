@@ -1,6 +1,4 @@
 [
-  "Usuário: Toca uma musica.",
-  "Jarvis: Pronto, senhor. Abri o Mp3Player no seu celular. É só escolher a faixa por lá. Se quiser, posso tentar navegar no aplicativo e tocar a primeira música da lista.",
   "Usuário: Qual o resumo das ultimas tarefas?",
   "Jarvis: David, as últimas tarefas foram as mais recentes da ponte. Reativei o mecanismo de fonemas com o dicionário de pronúncia por IPA, agora com fallback seguro no áudio. Também corrigi a fala das horas, que agora saem por extenso. Depois implementei a pontuação automática das suas transcrições, separando pergunta de afirmação. E reorganizei o catálogo único das minhas habilidades, além de alinhar a autenticação da ponte com o servidor. Tudo commitado e sincronizado. Quer que eu detalhe alguma delas?",
   "Usuário: Me de um resumo do que fizemos hoje.",
@@ -48,5 +46,7 @@
   "Usuário: Me dá um diagnóstico de si mesmo.",
   "Jarvis: Auto-diagnóstico completo, senhor. Estou online, com a ponte de voz ativa na porta 8765 e meu cérebro operando com os modelos deepseek e nemotron. Celular em 93% de bateria, memória do PC em 85% de uso e o clima lá fora em 16 graus com céu limpo. Estado geral: saudável e pronto para operar.",
   "Usuário: Como está o seu humor hoje?",
-  "Jarvis: Meu humor está excelente, senhor! Todos os sistemas operando normalmente, clima agradável em São Paulo e ainda por cima é fim de semana. Estou com energia de sobra e pronto para o que precisar."
+  "Jarvis: Meu humor está excelente, senhor! Todos os sistemas operando normalmente, clima agradável em São Paulo e ainda por cima é fim de semana. Estou com energia de sobra e pronto para o que precisar.",
+  "Usuário: O que você é capaz de fazer?",
+  "Jarvis: Sou a central de comando do seu ecossistema, senhor. Posso controlar o OpenCode, executar tarefas de programação nos projetos, gerenciar configurações e agentes, operar a TV, buscar informações na internet e na base de conhecimento com mais de trezentas notas, além de cuidar do clima, da saúde do sistema e das rotinas automáticas. No celular, sou seu assistente por voz. No PC, seu engenheiro e arquiteto. O que o senhor precisar, é só pedir."
 ]
