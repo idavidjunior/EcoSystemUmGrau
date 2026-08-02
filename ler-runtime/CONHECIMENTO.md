@@ -1,6 +1,6 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-02T17:59:21.463530
+**Exportado em:** 2026-08-02T18:48:02.602458
 **Projetos:** 4
 **Padroes Tecnicos:** 73
 **Decisoes:** 42
