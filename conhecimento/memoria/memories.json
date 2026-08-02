@@ -193,5 +193,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T11:28:16.060826",
     "last_accessed": "2026-08-02T11:28:16.060826"
+  },
+  {
+    "id": 28,
+    "kind": "padrao",
+    "task": "ecosystem sync 1 comando",
+    "summary": "ecosystem sync agora faz pull+consolida+commit+push do Eco, deploy config/agents (render {{USERPROFILE}}), valida debug config+preflight, e sincroniza 12 repos irmaos. Plugin opencode deve ser array de strings, nao objeto. memory_engine.add e POSICIONAL (task summary kind), nao usa --flags.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T11:44:22.776395",
+    "last_accessed": "2026-08-02T11:44:22.776395"
   }
 ]
