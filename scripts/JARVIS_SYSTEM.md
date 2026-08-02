@@ -93,7 +93,7 @@ O projeto está em `C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau`
   - `manifesto_geral.json` — índice oficial: toda habilidade que o Jarvis pode acionar
 
 - `Android/VoxUmGrau/` — **App Android** (Kotlin, Jetpack Compose)
-  - WebSocket client conecta via Tailscale a `100.120.67.64:8765`
+  - WebSocket client conecta via Tailscale a `100.91.141.101:8765`
   - SpeechRecognizer (STT) em português, edge-tts gera áudio base64
   - Toque no texto de qualquer mensagem copia para área de transferência
   - `build.ps1` — Script de build com versionamento automático
