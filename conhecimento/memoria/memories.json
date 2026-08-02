@@ -206,5 +206,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T11:44:22.776395",
     "last_accessed": "2026-08-02T11:44:22.776395"
+  },
+  {
+    "id": 29,
+    "kind": "padrao",
+    "task": "Regras ecossistema: AGENTS.md garante obediencia",
+    "summary": "Regras agora sao garantidas: AGENTS.md na raiz (auto-carregado toda sessao) + instructions no opencode.jsonc incluem AGENTS.md e 00-system-rules.md + frontmatter subagent. 00-system-rules antes era agente fantasma sem frontmatter e sem referencias.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T12:00:48.882391",
+    "last_accessed": "2026-08-02T12:00:48.882391"
   }
 ]
