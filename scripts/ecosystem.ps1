@@ -89,6 +89,15 @@ function Invoke-Sync {
     Write-Step "Sincronizando EcoSystemUmGrau"
     Push-Location $ecoDir
     git pull --ff-only 2>&1 | ForEach-Object { Write-Info $_ }
+
+    # Consolida conhecimento ANTES do commit, para que CONHECIMENTO.md/notas
+    # sejam versionados no mesmo commit (sem deixar pendencia)
+    Write-Step "Consolidando conhecimento"
+    $env:PYTHONPATH = "$lerDir;$env:PYTHONPATH"
+    python -c "import sys; sys.path.insert(0, r'$lerDir'); from agent.knowledge_consolidator import export_markdown; export_markdown()" 2>&1 | ForEach-Object { Write-Info $_ }
+    Write-OK "CONHECIMENTO.md atualizado"
+    python "$ecoDir\scripts\generate-obsidian-notes.py" 2>&1 | ForEach-Object { Write-Info "Obsidian: $_" }
+
     $status = git status --porcelain
     if ($status) {
         $status | ForEach-Object { Write-Info $_ }
@@ -101,21 +110,11 @@ function Invoke-Sync {
 
     Sync-DeployConfig
 
-    Write-Step "Sincronizando LER (local)"
-    Push-Location $lerDir
-    $status = git status --porcelain
-    if ($status) {
-        $status | ForEach-Object { Write-Info $_ }
-        git add -A
-        git commit -m "[ecosystem sync] LER - $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
-        Write-OK "Commit local realizado"
-    } else { Write-OK "Nada a commitar" }
-    Pop-Location
-
     # Sincroniza projetos Android
     $projects = Get-ChildItem $projectsDir -Directory -ErrorAction SilentlyContinue
     foreach ($proj in $projects) {
         if (-not (Test-Path "$($proj.FullName)\.git")) { continue }
+        if ($proj.FullName -eq $ecoDir) { continue }
         Write-Step "Sincronizando $($proj.Name)"
         Push-Location $proj.FullName
         git pull --ff-only 2>&1 | ForEach-Object { Write-Info $_ }
@@ -129,12 +128,6 @@ function Invoke-Sync {
         } else { Write-OK "Nada a commitar" }
         Pop-Location
     }
-
-    Write-Step "Consolidando conhecimento"
-    $env:PYTHONPATH = "$lerDir;$env:PYTHONPATH"
-    python -c "import sys; sys.path.insert(0, r'$lerDir'); from agent.knowledge_consolidator import export_markdown; export_markdown()" 2>&1
-    Write-OK "CONHECIMENTO.md atualizado"
-    python "$ecoDir\scripts\generate-obsidian-notes.py" 2>&1 | ForEach-Object { Write-Info "Obsidian: $_" }
 }
 
 # ══════════════════════════════════════════════════════════════════════
