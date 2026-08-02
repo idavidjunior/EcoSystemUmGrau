@@ -1,7 +1,7 @@
 # Mapa-Mestre de Habilidades — Jarvis / EcoSystemUmGrau
 
 > **Fonte única da verdade sobre o que o Jarvis sabe fazer.**
-> Atualizado em: 2026-07-31 · Catálogo em `Habilidades/manifesto_geral.json`
+> Atualizado em: 2026-08-02 · Catálogo em `Habilidades/manifesto_geral.json`
 
 Toda habilidade abaixo é acionável pelo Jarvis. A ortografia dos nomes dos arquivos é preservada (skill.md, SKILL.md, readme.md).
 
@@ -24,7 +24,7 @@ Toda habilidade abaixo é acionável pelo Jarvis. A ortografia dos nomes dos arq
 
 ---
 
-## 2. Habilidades Técnicas (36)
+## 2. Habilidades Técnicas (37)
 
 **Fonte:** `Habilidades/tecnicas/*/` (SKILL.md ou skill.md)
 
@@ -92,6 +92,11 @@ Toda habilidade abaixo é acionável pelo Jarvis. A ortografia dos nomes dos arq
 | `search-first` | skill.md — Busca em primeiro lugar |
 | `cache-strategy-selector` | skill.md — Seleção de estratégia de cache |
 
+### Navegação e Automação
+| Habilidade | Entrypoint |
+|---|---|
+| `navegacao-perita` | skill.md — Perícia em navegar/clicar/ver tela (Playwright, FlaUI/UIA, ADB) |
+
 ---
 
 ## 3. Habilidades Ponte (2)
@@ -123,7 +128,7 @@ Reservado para futuras habilidades de áudio, imagem e vídeo.
 
 ---
 
-## 6. Agentes OpenCode (17)
+## 6. Agentes OpenCode (16)
 
 **Fonte:** `config/agents/*.md`
 
@@ -131,6 +136,7 @@ Reservado para futuras habilidades de áudio, imagem e vídeo.
 |---|---|
 | `00-system-rules` | Regras do sistema |
 | `00-maestro` | Orquestração e roteamento |
+| `00-agent-template` | Template para criação de novos agentes |
 | `01-estrategista` | Estratégia |
 | `02-cetico` | Ceticismo e crítica |
 | `03-realista` | Realismo |
@@ -191,7 +197,7 @@ Reservado para futuras habilidades de áudio, imagem e vídeo.
 | Aprendizados | `conhecimento/aprendizados/` |
 | Memória de sessão | `conhecimento/memoria/` |
 | Templates | `conhecimento/templates/` (aprendizado, bug, decisão, padrão) |
-| Vault Obsidian | `docs/` (conhecimento, decisões, padrões, bugs, heurísticas) |
+| Vault Obsidian | raiz do ecossistema (`C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau`) |
 
 ---
 

@@ -167,4 +167,4 @@ python scripts/android_diagnostics.py --json | python -c "import sys,json; d=jso
 - Pacote: `com.voxumgrau.app`
 - Python 3.10+ com `psutil`, `websockets` (guardian + bridge)
 - Bridge rodando na porta 8765
-- OpenCode serve na porta 8766
+- OpenCode serve na porta 8767

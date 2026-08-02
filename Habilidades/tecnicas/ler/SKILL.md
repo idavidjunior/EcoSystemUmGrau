@@ -23,8 +23,8 @@ ler --fix                        # Escanear + aplicar correcoes auto-aplicaveis
 ler --learn                      # Consolidar conhecimento (skills + memorias + git log)
 ```
 
-**Localizacao:** `{USERPROFILE}\Desktop\Codigos\EcoSystemUmGrau\ler-runtime\` (junction em `~/.ler/`)
-**Launcher:** `{USERPROFILE}\.local\bin\ler.bat` (ja no PATH)
+**Localizacao:** `{USERPROFILE}\Documents\Default Project\EcoSystemUmGrau\ler-runtime\`
+**Launcher:** `{USERPROFILE}\Documents\Default Project\EcoSystemUmGrau\ler-runtime\run.py` (ou `python run.py "missao"`)
 
 ## Arquitetura: LER ≠ OpenCode (sao complementares)
 
@@ -301,7 +301,7 @@ O Maestro DEVE delegar para o LER quando a tarefa envolver:
 ler "Seu objetivo claro aqui"
 
 # Ou diretamente pelo Python
-cd $env:USERPROFILE\.ler
+cd $env:USERPROFILE\Documents\Default Project\EcoSystemUmGrau\ler-runtime
 python run.py "Seu objetivo claro aqui"
 
 # A missão SÓ TERMINA quando TODOS os critérios forem atingidos

@@ -125,7 +125,7 @@ OpenCode (v1.18.10) é um CLI de IA para engenharia de software. Usa modelos de 
 
 ### Comandos Principais
 - `opencode run [mensagem]` — Executa opencode com uma mensagem e retorna resultado
-- `opencode serve` — Inicia servidor headless (porta 8766, web UI em `/`, health check em `/api/health`)
+- `opencode serve` — Inicia servidor headless (porta 8767, web UI em `/`, health check em `/api/health`)
 - `opencode attach <url>` — Conecta a um servidor opencode remoto
 - `opencode acp` — Inicia servidor ACP (Agent Client Protocol)
 - `opencode mcp` — Gerencia servidores MCP

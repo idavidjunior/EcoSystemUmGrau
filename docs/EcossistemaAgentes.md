@@ -171,7 +171,7 @@ Ponytail → Todos: revisão de código no fluxo natural da sessão
 ## Instalação e Estado Atual
 
 - **Ponytail**: ✅ Instalado em `~/.config/opencode/plugin/ponytail.mjs`
-- **Obsidian MCP**: ✅ Instalado (`@bitbonsai/mcpvault@0.12.4`), vault em `Desktop/Codigos`
+- **Obsidian MCP**: ✅ Instalado (`@bitbonsai/mcpvault@0.12.4`), vault em `C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau`
 - **LER Governance**: ✅ Inicializado, 27 agentes registrados
 - **VaultBridge**: ✅ Conectado, sincronização pós-missão ativa
 

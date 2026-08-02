@@ -4,9 +4,9 @@
 > que aprende, lembra e evolui sozinho a cada sessão.
 
 ![Estágio](https://img.shields.io/badge/est%C3%A1gio-3%20%7C%20Orquestrado-%236c5ce7)
-![Agents](https://img.shields.io/badge/agents-14-%236c5ce7)
+![Agents](https://img.shields.io/badge/agents-16-%236c5ce7)
 ![LER Modules](https://img.shields.io/badge/ler-modules-16-%236c5ce7)
-![Skills](https://img.shields.io/badge/skills-34-%236c5ce7)
+![Skills](https://img.shields.io/badge/skills-40-%236c5ce7)
 ![Status](https://img.shields.io/badge/status-ativo-brightgreen)
 
 ## O que é
@@ -16,9 +16,9 @@ fluxo autônomo de trabalho, memória e conhecimento:
 
 | Ferramenta | Papel |
 |---|---|
-| **OpenCode** | Orquestrador principal — 15 agents com gates SDLC (G1–G5) |
+| **OpenCode** | Orquestrador principal — 16 agents com gates SDLC (G1–G5) |
 | **LER** (Loop Engineering Runtime) | Loops autônomos Python para tarefas complexas |
-| **Obsidian** | Vault inteligente — 228+ notas, 8 MOCs, templates, Dataview |
+| **Obsidian** | Vault inteligente — 263+ notas, 8 MOCs, templates, Dataview |
 | **Ponytail** | Plugin que mantém o estado/forma de trabalho entre sessões |
 
 ## Arquitetura (3 cérebros)
@@ -37,7 +37,7 @@ Usuário → Maestro → classifica rota (A/B/C)
 
 ### Mapa mental — OpenCode (LLM) vs LER (Python nativo)
 
-**14 agents OpenCode** (raciocínio profundo, custo de tokens) e **16 modules LER**
+**16 agents OpenCode** (raciocínio profundo, custo de tokens) e **16 modules LER**
 (execução autônoma rápida, custo zero) — complementares, sem sobreposição.
 
 ```
@@ -78,7 +78,7 @@ Usuário → Maestro → classifica rota (A/B/C)
               ▼                            ▼                            ▼
      ┌─────────────────┐          ┌─────────────────┐          ┌─────────────────┐
      │ KNOWLEDGE GRAPH │          │  MEMORY ENGINE  │          │ SEMANTIC SEARCH │
-     │  (248 entradas) │          │  (Ebbinghaus)   │          │   (BM25 fusion) │
+     │  (304 entradas) │          │  (Ebbinghaus)   │          │   (BM25 fusion) │
      │ knowledge_graph │          │  memories.json  │          │  4 fontes unif. │
      │    .json + MD   │          │  sessions JSONL │          │                 │
      └────────┬────────┘          └────────┬────────┘          └────────┬────────┘
@@ -96,11 +96,12 @@ Usuário → Maestro → classifica rota (A/B/C)
                     ▼                     ▼                     ▼
            ┌───────────────┐      ┌───────────────┐      ┌───────────────┐
            │   OBSIDIAN    │      │    GITHUB     │      │  PROJETOS     │
-           │   (Vault)     │      │  EcoSystem +  │      │  ANDROID (4)  │
-           │ 228 notas, 8  │      │   4 projetos  │      │  Mp3Player,   │
+           │   (Vault)     │      │  EcoSystem +  │      │  ANDROID (5)  │
+           │ 263 notas, 8  │      │  12 projetos  │      │  Mp3Player,   │
            │ MOCs, Dataview│      │ + CI/CD       │      │  CellCleaner, │
            └───────────────┘      └───────────────┘      │  Biblia,      │
                                                         │  Supermarket  │
+                                                        │  VoxUmGrau    │
                                                         └───────────────┘
 ```
 
@@ -188,7 +189,7 @@ python scripts/dialogo.py --modo ativacao
 python scripts/dialogo.py --texto "pergunta sem microfone"
 ```
 
-Ctrl+C encerra. Reusa o `Cliente` do `jarvis_bridge.py` (opencode serve porta 8766) — por isso **responde e executa** (hora, clima, bateria, git, arquivos, etc).
+Ctrl+C encerra. Reusa o `Cliente` do `jarvis_bridge.py` (opencode serve porta 8767) — por isso **responde e executa** (hora, clima, bateria, git, arquivos, etc).
 
 ## Estrutura do Repo
 
@@ -230,11 +231,15 @@ EcoSystemUmGrau/
 
 ## MCP Servers
 
-| Servidor | Função |
-|---|---|
-| **knowledge** | Acesso ao knowledge graph |
-| **filesystem** | Acesso ao filesystem |
-| **github** | Integração com GitHub |
+5 servidores MCP locais (Node/Python puros, sem npx) em `mcp-servers/`:
+
+| Servidor | Função | Status |
+|---|---|---|
+| **eco-knowledge** | Acesso ao knowledge graph (Python, `scripts/mcp-knowledge-server.py`) | ✅ ativo |
+| **filesystem** | Acesso ao filesystem (Node, `mcp-servers/filesystem/index.js`) | ✅ ativo |
+| **search** | Busca semântica BM25 no conhecimento (Node, `mcp-servers/search/index.js`) | ✅ ativo |
+| **terminal** | Execução de comandos PowerShell com bloqueio de destrutivos (Node, `mcp-servers/terminal/index.js`) | ✅ ativo |
+| **github** | Integração com GitHub via `gh` CLI (Node, `mcp-servers/github/index.js`) | ✅ ativo |
 
 ## CI/CD (GitHub Actions)
 
@@ -251,7 +256,7 @@ EcoSystemUmGrau/
 
 ## Runtime
 
-OpenCode 1.18.x · Node.js 25.x · Python 3.12 · Git 2.55 · Bun 1.3.x · Windows (PowerShell)
+OpenCode 0.0.0-beta · Node.js 24.x · Python 3.12 · Git 2.55 · Windows (PowerShell)
 
 ## Repositório de Segurança
 

@@ -36,28 +36,28 @@
   "mcp": {
     "eco-knowledge": {
       "type": "local",
-      "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/mcp-knowledge-server.py"],
+      "command": ["python", "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/scripts/mcp-knowledge-server.py"],
       "enabled": true
     },
     "filesystem": {
       "type": "local",
-      "command": ["node", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp-servers/mcp-servers/filesystem/index.js"],
+      "command": ["node", "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp-servers/filesystem/index.js"],
       "enabled": true
     },
     "search": {
       "type": "local",
-      "command": ["node", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp-servers/mcp-servers/search/index.js"],
+      "command": ["node", "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp-servers/search/index.js"],
       "enabled": true
     },
     "terminal": {
       "type": "local",
-      "command": ["node", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp-servers/mcp-servers/terminal/index.js"],
+      "command": ["node", "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp-servers/terminal/index.js"],
       "enabled": true
     },
     "github": {
       "type": "local",
-      "command": ["node", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp-servers/mcp-servers/github/index.js"],
-      "enabled": false,
+      "command": ["node", "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp-servers/github/index.js"],
+      "enabled": true,
       "environment": {
         "GITHUB_TOKEN": "{env:GH_TOKEN}"
       }

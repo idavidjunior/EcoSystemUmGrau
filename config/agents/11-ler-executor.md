@@ -64,7 +64,7 @@ ler "OBJETIVO CLARO E COMPLETO AQUI"
 
 Trabalha com:
 - Maestro (recebe objetivos + direção estratégica)
-- LER runtime (~/.ler)
+- LER runtime (`EcoSystemUmGrau/ler-runtime/`)
 - KnowledgeConsolidator (aprendizados pós-missão)
 - Vigilante (sincronização automática)
 - CONHECIMENTO.md (contexto carregado em todo agente)

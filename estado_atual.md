@@ -1,4 +1,4 @@
-# Snapshot do Ecossistema — 2026-07-28 (v12 - Estágio 3: Orquestrado)
+# Snapshot do Ecossistema — 2026-08-02 (v12 - Estágio 3: Orquestrado)
 
 > **Evolução:** Estágio 2 (Estruturado) → **Estágio 3 (Orquestrado)** ✅
 > Adicionado: memória entre sessões (Ebbinghaus), busca semântica (BM25), MCP (3 servidores),
@@ -74,7 +74,7 @@
 ### Arquitetura atual (3 cérebros)
 
 ```
-1. KNOWLEDGE GRAPH (248 entradas) — conhecimento explícito
+1. KNOWLEDGE GRAPH (304 entradas) — conhecimento explícito
    KnowledgeConsolidator.register_learning() → knowledge_graph.json → CONHECIMENTO.md
 
 2. MEMORY ENGINE (Ebbinghaus decay) — memória de sessão
@@ -155,7 +155,7 @@ Usuário → Maestro
               ▼                            ▼                            ▼
      ┌─────────────────┐          ┌─────────────────┐          ┌─────────────────┐
      │ KNOWLEDGE GRAPH │          │  MEMORY ENGINE  │          │ SEMANTIC SEARCH │
-     │  (248 entradas) │          │  (Ebbinghaus)   │          │   (BM25 fusion) │
+     │  (304 entradas) │          │  (Ebbinghaus)   │          │   (BM25 fusion) │
      │ knowledge_graph │          │  memories.json  │          │  4 fontes unif. │
      │    .json + MD   │          │  sessions JSONL │          │                 │
      └────────┬────────┘          └────────┬────────┘          └────────┬────────┘
@@ -172,13 +172,14 @@ Usuário → Maestro
                     ┌─────────────────────┼─────────────────────┐
                     ▼                     ▼                     ▼
            ┌───────────────┐      ┌───────────────┐      ┌───────────────┐
-           │   OBSIDIAN    │      │    GITHUB     │      │  PROJETOS     │
-           │   (Vault)     │      │  EcoSystem +  │      │  ANDROID (4)  │
-           │ 228 notas, 8  │      │   4 projetos  │      │  Mp3Player,   │
-           │ MOCs, Dataview│      │ + CI/CD       │      │  CellCleaner, │
-           └───────────────┘      └───────────────┘      │  Biblia,      │
-                                                        │  Supermarket  │
-                                                        └───────────────┘
+            │   OBSIDIAN    │      │    GITHUB     │      │  PROJETOS     │
+            │   (Vault)     │      │  EcoSystem +  │      │  ANDROID (5)  │
+            │ 263 notas, 8  │      │   4 projetos  │      │  Mp3Player,   │
+            │ MOCs, Dataview│      │ + CI/CD       │      │  CellCleaner, │
+            └───────────────┘      └───────────────┘      │  Biblia,      │
+                                                         │  Supermarket  │
+                                                         │  VoxUmGrau    │
+                                                         └───────────────┘
 ```
 
 ### Arquitetura final do conhecimento automático
@@ -244,14 +245,14 @@ Maestro (passo 11 obrigatório)
 | MOC | Cobre |
 |-----|-------|
 | `INDEX.md` | Entry point do vault |
-| `MOC - Projetos.md` | Mp3Player, CellCleaner, Biblia, SupermarketCalculator |
-| `MOC - Conhecimento.md` | Decisões, padrões, skills (34) |
-| `MOC - Decisoes.md` | 20+ decisões arquiteturais + infra |
-| `MOC - Bugs.md` | 30+ bugs com causa raiz e correção |
+| `MOC - Projetos.md` | Mp3Player, CellCleaner, Biblia, SupermarketCalculator, VoxUmGrau |
+| `MOC - Conhecimento.md` | Decisões, padrões, skills (40) |
+| `MOC - Decisoes.md` | 43 decisões arquiteturais + infra |
+| `MOC - Bugs.md` | 46 bugs com causa raiz e correção |
 | `MOC - Heuristicas.md` | 32 heurísticas de debugging/código |
 | `MOC - Frameworks.md` | 10 frameworks de raciocínio |
-| `MOC - Padroes Cognitivos.md` | 22 padrões cognitivos |
-| `MOC - Padroes.md` | 71 padrões técnicos tabelados |
+| `MOC - Padroes Cognitivos.md` | 27 padrões cognitivos |
+| `MOC - Padroes.md` | 70 padrões técnicos tabelados |
 
 **Integração:**
 - Obsidian Git commita localmente → vigilante detecta mudanças no `.obsidian/` → push automático
@@ -276,28 +277,29 @@ Maestro (passo 11 obrigatório)
 
 | Repo | Local | Tipo |
 |---|---|---|
-| `EcoSystemUmGrau` | `Desktop\Codigos\EcoSystemUmGrau\` | **Ecossistema** (config, agents, skills, setup.bat) |
-| `Mp3Player` | `Desktop\Codigos\Android\Mp3Player\` | Android/Kotlin |
-| `CellCleaner` | `Desktop\Codigos\Android\CellCleaner\` | Android/Java |
-| `SupermarketCalculator` | `Desktop\Codigos\Android\SupermarketCalculator\` | Android/Java |
-| `BibliaEstudoCompleta` | `Desktop\Codigos\Android\Biblia\` | Android/Java |
-| `WindowsMaintenanceSuite_v3` | (so remoto) | PowerShell |
-| `OrquestradorAPK-FLUTTER` | (so remoto) | Python |
-| `compiladorAPK` | `~/.apk_compiler\` | PowerShell |
-| `roboumgrau` | (so remoto) | HTML |
-| `Rob-Trader` | (so remoto) | JS |
-| `claude-code-extra-agents` | (so remoto) | Python |
+| `EcoSystemUmGrau` | `Documents\Default Project\EcoSystemUmGrau\` | **Ecossistema** (config, agents, skills, setup.bat) |
+| `Mp3Player` | `Documents\Default Project\Mp3Player\` | Android/Kotlin |
+| `CellCleaner` | `Documents\Default Project\CellCleaner\` | Android/Java |
+| `SupermarketCalculator` | `Documents\Default Project\SupermarketCalculator\` | Android/Java |
+| `BibliaEstudoCompleta` | `Documents\Default Project\BibliaEstudoCompleta\` | Android/Java |
+| `VoxUmGrau` | `Documents\Default Project\VoxUmGrau\` | Android/Kotlin + Compose |
+| `WindowsMaintenanceSuite_v3` | `Documents\Default Project\WindowsMaintenanceSuite_v3\` | PowerShell |
+| `OrquestradorAPK-FLUTTER` | `Documents\Default Project\OrquestradorAPK-FLUTTER\` | Python |
+| `compiladorAPK` | `Documents\Default Project\compiladorAPK\` | PowerShell |
+| `roboumgrau` | `Documents\Default Project\roboumgrau\` | HTML |
+| `Rob-Trader` | `Documents\Default Project\Rob-Trader\` | JS |
+| `claude-code-extra-agents` | `Documents\Default Project\claude-code-extra-agents\` | Python |
 
-> **LER runtime** (`~/.ler/`) nao tem remote proprio. O conhecimento
+> **LER runtime** (`EcoSystemUmGrau/ler-runtime/`) nao tem remote proprio. O conhecimento
 > viaja no EcoSystemUmGrau via conhecimento/aprendizados/ + CONHECIMENTO.md.
 > setup.bat inicializa o LER em qualquer maquina.
 
 ### `Documents/Default Project/EcoSystemUmGrau/` (ecossistema — fonte unica)
 ```
-.obsidian/           # Vault Obsidian (VAULT_PATH atualizado)
-ler-runtime/         # LER runtime (antigo ~/.ler/) — cérebro único — versionado aqui
+.obsidian/           # Vault Obsidian (vault = raiz do ecossistema)
+ler-runtime/         # LER runtime — cérebro único — versionado aqui
 Habilidades/         # ★ Catálogo único de habilidades (decisão 2026-07-31-habilidades-catalogo-unico-jarvis)
-├── tecnicas/        # 35 habilidades técnicas (skills antigas)
+├── tecnicas/        # 37 habilidades técnicas (skills antigas)
 │   ├── graphify/
 │   ├── ler/
 │   ├── clima-api/   # + clima_api.py e geolocalizacao.py (Open-Meteo, sem chave)
@@ -354,14 +356,14 @@ estado_atual.md      # Este arquivo
 
 | Componente | Versão | Localização |
 |---|---|---|
-| **OpenCode** | `1.18.7` | `npm i -g opencode-ai` |
-| **Node.js** | `v25.9.0` | `C:\Program Files\nodejs\` |
-| **npm** | `11.12.1` | — |
-| **Bun** | `1.3.14` | `~\.bun\bin\bun.exe` |
-| **Python** | `3.12.7` | `C:\Program Files\Python312\` |
-| **pip** | `24.2` | — |
-| **Git** | `2.55.0.windows.2` | `C:\Program Files\Git\cmd` |
-| **gh CLI** | `2.96.0` | `C:\Program Files\GitHub CLI\gh.exe` |
+| **OpenCode** | `0.0.0-beta-202608012226` | `npm i -g opencode-ai` |
+| **Node.js** | `v24.18.1` | `C:\Program Files\nodejs\` |
+| **npm** | `11.16.0` | — |
+| **Bun** | não instalado | — |
+| **Python** | `3.12.10` | `C:\Program Files\Python312\` |
+| **pip** | `26.2` | — |
+| **Git** | `2.55.0.windows.3` | `C:\Program Files\Git\cmd` |
+| **gh CLI** | `2.97.0` | `C:\Program Files\GitHub CLI\gh.exe` |
 | **OS** | Windows (PowerShell 5.1) | — |
 
 ---
@@ -401,9 +403,9 @@ estado_atual.md      # Este arquivo
 
 ---
 
-## 4. Agents (14)
+## 4. Agents (16)
 
-Carregados de `~/.config/opencode/agents/`:
+Carregados de `~/.config/opencode/agents/` (fonte única: `EcoSystemUmGrau/config/agents/`):
 
 | Arquivo | Modo | Função |
 |---|---|---|
@@ -430,8 +432,8 @@ Carregados de `~/.config/opencode/agents/`:
 
 | Item | Valor |
 |---|---|
-| **Diretório** | `EcoSystemUmGrau/ler-runtime/` (junction em `~/.ler/` p/ compatibilidade) |
-| **Launcher** | `C:\Users\Playtec-bancada\.local\bin\ler.bat` (aponta p/ novo path) |
+| **Diretório** | `EcoSystemUmGrau/ler-runtime/` (sem junction — versionado no repo) |
+| **Launcher** | `ler-runtime/run.py` (entrypoint único) · `ler-runtime/scripts/run.ps1` |
 | **Estados do loop** | 13 (INIT → ANALYZING_GOAL → CREATING_STRATEGY → PLANNING → EXECUTING → VALIDATING → VALIDATION_FAILED → RECOVERING → LEARNING → SUCCESS_EVALUATING → FINAL_AUDITING → SUCCESS_VERIFIED → COMPLETED/FAILED) |
 | **Engine Modules** | 16 (Python nativo, sem LLM, custo zero tokens) |
 | **Providers** | NVIDIA + OpenAI |
@@ -471,37 +473,37 @@ Carregados de `~/.config/opencode/agents/`:
 | Variável | Valor |
 |---|---|
 | `NVIDIA_API_KEY` | Configurada |
-| `OPENAI_API_KEY` | Configurada |
-| `VAULT_PATH` | `C:\Users\Playtec-bancada\Desktop\Codigos\EcoSystemUmGrau` |
-| BUN | `~\.bun\bin` no `Path` via `profile.ps1` |
+| `OPENAI_API_KEY` | Não configurada nesta sessão |
+| `VAULT_PATH` | Não exportada no ambiente atual (vault real: `C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau`) |
+| BUN | Não instalado no PATH |
 
 ### Conhecimento
 
 | Item | Caminho |
 |---|---|
 | Base local (entradas por tarefa) | `EcoSystemUmGrau/conhecimento/aprendizados/` |
-| Base exportada (contexto global) | `~/.ler/CONHECIMENTO.md` (carregado nas instructions do opencode.jsonc) |
-| Agente de aprendizado | `~/.config/opencode/agents/10-aprendizado.md` |
+| Base exportada (contexto global) | `EcoSystemUmGrau/ler-runtime/CONHECIMENTO.md` (carregado nas instructions do opencode.jsonc) |
+| Agente de aprendizado | `EcoSystemUmGrau/config/agents/10-aprendizado.md` |
 | Vigilante (watcher + git sync multi-projeto) | `EcoSystemUmGrau/scripts/vigilante.ps1` |
 | Registro no LER | `register_learning()` no `KnowledgeConsolidator` (automático via vigilante) |
-| Knowledge graph | `~/.ler/knowledge/knowledge_graph.json` (67 patterns, 39 decisões, 46 bugs) |
+| Knowledge graph | `EcoSystemUmGrau/ler-runtime/knowledge/knowledge_graph.json` (73 patterns, 42 decisões, 46 bugs) |
 | Git sync (EcoSystemUmGrau) | Automático: pull → commit → push (FileSystemWatcher + timer) |
 | Git sync (LER) | Automático: commit local (dentro do EcoSystemUmGrau) |
 | Scheduled task | `EcoSystemVigilante` — inicia no logon |
 | Profile helpers | `start-vigilante`, `stop-vigilante`, `status-vigilante` |
-| Aprendizados registrados | 2 (seed inicial) |
+| Aprendizados registrados | 48 |
 
 ---
 
 ## 7. Testes Realizados
 
-- [x] `opencode --version` → `1.18.7`
+- [x] `opencode --version` → `0.0.0-beta-202608012226`
 - [x] `opencode debug info` → plugins funcionais (fallback)
-- [x] Agents detectados: 13
-- [x] Habilidades no novo caminho: 38 via glob `Habilidades/**/{SKILL,skill}.md` (decisão 2026-07-31)
-- [x] VAULT_PATH atualizado para `EcoSystemUmGrau`
+- [x] Agents detectados: 16
+- [x] Habilidades no novo caminho: 40 via glob `Habilidades/**/{SKILL,skill}.md` (decisão 2026-07-31)
+- [x] VAULT_PATH = `C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau` (vault real do ecossistema)
 - [x] Estrutura de pastas organizada (projetos vs ecossistema)
-- [x] Bun 1.3.14 instalado e funcional
+- [x] Bun 1.3.14 instalado e funcional (não presente nesta máquina atual)
 - [x] @razroo/opencode-model-fallback v0.3.2 instalado e configurado
 - [x] Bun adicionado ao PATH permanentemente via profile.ps1
 - [x] Agente 10-aprendizado criado e reconhecido (`opencode debug agent 10-aprendizado`)
@@ -509,7 +511,7 @@ Carregados de `~/.config/opencode/agents/`:
 - [x] Base de conhecimento criada em `EcoSystemUmGrau/conhecimento/`
 - [x] `KnowledgeConsolidator` atualizado com `export_to_markdown()` e `register_learning_file()` — ~870 linhas
 - [x] `knowledge_bridge.py` removido — função absorvida pelo consolidator
-- [x] `conhecimento/INDEX.md` removido — instructions aponta para `~/.ler/CONHECIMENTO.md`
+- [x] `conhecimento/INDEX.md` removido — instructions aponta para `EcoSystemUmGrau/ler-runtime/CONHECIMENTO.md`
 - [x] `10-aprendizado.md` atualizado — chama `register_learning()` direto no consolidator
 - [x] `opencode.jsonc` atualizado — instructions aponta para CONHECIMENTO.md do LER
 - [x] 2 aprendizados seed registrados no consolidator, CONHECIMENTO.md exportado
@@ -522,12 +524,12 @@ Carregados de `~/.config/opencode/agents/`:
 - [x] **Skill LER** atualizada com protocolo de delegação para agentes OpenCode
 - [x] **Agente 11-ler-executor** criado e reconhecido — ponte OpenCode ↔ LER
 - [x] **Maestro** atualizado: critério de delegação LER + agende listado
-- [x] **Total agents**: 15 (00 a 11 + 99) — Maestro, System Rules, Template, Estrategista, Cetico, Realista, Etica, Futuro, Recursos, Criativo, Revisor, Executor, Aprendizado, LER-Executor, Gerador
-- [x] **LER movido p/ repo**: `~/.ler/` → `ler-runtime/` com junction funcional
-- [x] **ler.bat atualizado**: aponta p/ `EcoSystemUmGrau/ler-runtime/`
+- [x] **Total agents**: 16 (00 a 12 + 99) — Maestro, System Rules, Template, Estrategista, Cetico, Realista, Etica, Futuro, Recursos, Criativo, Revisor, Executor, Aprendizado, LER-Executor, Parallel-Planner, Gerador
+- [x] **LER movido p/ repo**: `ler-runtime/` versionado no EcoSystemUmGrau (sem junction)
+- [x] **ler.bat removido** — launcher via `ler-runtime/run.py` / `scripts/run.ps1`
 - [x] **Vigilante reescrito**: FileSystemWatcher (sem polling) + git pull antes do push
 - [x] **ecosystem.ps1 criado**: `ecosystem sync|scan|status`
-- [x] **setup.bat atualizado**: LER path correto, junction, ecosystem function no profile
+- [x] **setup.bat atualizado**: LER path correto, ecosystem function no profile
 - [x] **opencode.jsonc template**: `{{USERPROFILE}}/.../ler-runtime/CONHECIMENTO.md`
 - [x] **Profile**: ecosystem function adicionada
 - [x] **LER remoto deletado**: `github.com/idavidjunior/LER` nao existe mais
