@@ -151,6 +151,21 @@ def run():
     else:
         check('Agents dir', False)
 
+    # 5. Regras 3 camadas (AGENTS.md + opencode.jsonc instructions + constituicao deployed)
+    print('\n[5] Regras do ecossistema (3 camadas)')
+    try:
+        import subprocess as sp
+        r = sp.run([sys.executable, os.path.join(BASE, 'scripts', 'sync_rules.py'), 'check'],
+                   capture_output=True, text=True, timeout=30)
+        out = (r.stdout + r.stderr).strip()
+        for line in out.splitlines():
+            if line.startswith('[DIVERGENCIA]'):
+                check(f'Regras consistentes', False, line.replace('[DIVERGENCIA] ', ''))
+        if not any(l.startswith('[DIVERGENCIA]') for l in out.splitlines()):
+            check('Regras 3 camadas consistentes', True)
+    except Exception as e:
+        check('Regras 3 camadas', False, str(e)[:200])
+
     # Summary
     print('\n========================================')
     if not ERRORS:

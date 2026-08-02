@@ -43,6 +43,10 @@ function Sync-DeployConfig {
     if (-not (Test-Path $configDir)) { New-Item -ItemType Directory -Path $configDir -Force | Out-Null }
     if (-not (Test-Path "$configDir\agents")) { New-Item -ItemType Directory -Path "$configDir\agents" -Force | Out-Null }
 
+    # Sincroniza as 3 camadas de regras a partir da Constituicao (fonte unica)
+    Write-Info "Sync de regras (AGENTS.md <- Constituicao)..."
+    python "$ecoDir\scripts\sync_rules.py" update 2>&1 | ForEach-Object { Write-Info $_ }
+
     # Renderiza template com USERPROFILE (forward slashes)
     $up = $env:USERPROFILE.Replace('\', '/')
     $template = Get-Content "$ecoDir\config\opencode.jsonc" -Raw

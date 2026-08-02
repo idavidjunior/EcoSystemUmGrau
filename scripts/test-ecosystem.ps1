@@ -117,6 +117,17 @@ if (Test-Path $ecoScript) {
     if (Test-Path $ecoScript) { Test-Pass "ecosystem.ps1 pronto para uso" }
 } else { Test-Fail "ecosystem.ps1" "Nao encontrado" }
 
+# ─── 10. Regras 3 camadas ──────────────────────────────────
+Write-Host "[10] Regras do ecossistema (3 camadas)" -ForegroundColor White
+try {
+    $rulesOut = python "$ecoDir\scripts\sync_rules.py" check 2>&1 | Out-String
+    if ($LASTEXITCODE -eq 0) { Test-Pass "Regras 3 camadas consistentes" }
+    else {
+        Test-Warn "Regras" "Divergencia detectada:"
+        $rulesOut -split "`n" | Where-Object { $_ -match "DIVERGENCIA" } | ForEach-Object { Write-Host "    $_" -ForegroundColor Yellow }
+    }
+} catch { Test-Warn "Regras" "sync_rules check ignorado: $_" }
+
 # ─── 11. Profile PowerShell ─────────────────────────────────
 Write-Host "[11] Profile PowerShell" -ForegroundColor White
 $profileFile = "$env:USERPROFILE\Documents\WindowsPowerShell\profile.ps1"

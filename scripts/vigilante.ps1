@@ -325,5 +325,27 @@ $onLearn = {
 Register-ObjectEvent $learnTimer "Elapsed" -Action $onLearn > $null
 $learnTimer.Start()
 
+# ══════════════════════════════════════════════════════════════════════
+# RULES TIMER: verifica consistencia das 3 camadas de regras (1x/h)
+# ══════════════════════════════════════════════════════════════════════
+$rulesTimer = New-Object System.Timers.Timer
+$rulesTimer.Interval = 3600000  # 1h
+$rulesTimer.AutoReset = $true
+
+$onRulesCheck = {
+    try {
+        $rulesOut = python "$ecoDir\scripts\sync_rules.py" check 2>&1 | Out-String
+        if ($LASTEXITCODE -ne 0) {
+            Write-Log "REGRA IGNORADA/NAO SINCRONIZADA:"
+            $rulesOut -split "`n" | Where-Object { $_ -match "DIVERGENCIA" } | ForEach-Object { Write-Log "  $_" }
+            try {
+                python "$ecoDir\scripts\memory_engine.py" log "rules-divergencia: alguma regra nao sincronizada entre as 3 camadas" 2>$null
+            } catch {}
+        }
+    } catch { Write-Log "Rules check ignorado: $_" }
+}
+Register-ObjectEvent $rulesTimer "Elapsed" -Action $onRulesCheck > $null
+$rulesTimer.Start()
+
 # Mantem vivo
 while ($true) { Start-Sleep -Seconds 10 }
