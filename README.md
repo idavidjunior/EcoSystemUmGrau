@@ -220,13 +220,15 @@ O widget observa `knowledge_graph.json` + `conhecimento/`, re-gera `docs/grafo.h
 e recarrega a janela automaticamente — útil para visualizar o cérebro crescendo
 enquanto o LER aprende.
 
-O widget roda como uma **janela estilo "winglet" de desktop**:
-- **Colado na área de trabalho** — sem bordas e sempre atrás das outras janelas.
+O widget roda como uma **janela estilo widget de desktop** (sem bordas visuais):
+- **Sem bordas e sempre visível** — janela `frameless` flutuante sobre o desktop.
+- **Arraste livremente** — segure e arraste a moldura superior (discreta) para
+  alocar o widget onde quiser no desktop.
 - **Controles ocultos por padrão** — clique com o **botão direito** do mouse para
   revelar a barra (header/legenda) e a alça de redimensionamento.
 - **Redimensionável e persistente** — arraste a alça no canto inferior direito;
   a posição e o tamanho são salvos em `docs/grafo_widget_geometria.json` e
-  restaurados ao reabrir.
+  restaurados ao reabrir (inclusive após reiniciar o computador).
 
 ## Estrutura do Repo
 
