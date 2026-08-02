@@ -46,33 +46,82 @@
   nodes.get().forEach(n => {
     original[n.id] = { color: n.color, size: n.size };
   });
+  const arestaOriginal = {};
+  edges.get().forEach(e => {
+    arestaOriginal[e.id] = { color: e.color || '#999', width: e.width || 1 };
+  });
 
-  function destacar(filtro, valor) {
+  function clarear(hex, fator) {
+    hex = hex.replace('#', '');
+    const r = Math.min(255, Math.round(parseInt(hex.substring(0,2),16) * fator + 255 * (1 - fator)));
+    const g = Math.min(255, Math.round(parseInt(hex.substring(2,4),16) * fator + 255 * (1 - fator)));
+    const b = Math.min(255, Math.round(parseInt(hex.substring(4,6),16) * fator + 255 * (1 - fator)));
+    return '#' + [r,g,b].map(x => x.toString(16).padStart(2,'0')).join('');
+  }
+
+  function destacar(filtro, valor, corGrupo) {
     const btns = document.querySelectorAll('.lg');
     btns.forEach(b => b.classList.remove('active'));
     const alvo = document.querySelector(`.lg[data-filter="${filtro}"][data-value="${valor}"]`);
     if (alvo) alvo.classList.add('active');
 
+    // conjunto de nos do grupo
+    const grupo = new Set();
+    nodes.get().forEach(n => {
+      if (filtro === 'all') grupo.add(n.id);
+      else if (filtro === 'cat' && n.cat === valor) grupo.add(n.id);
+      else if (filtro === 'cl' && n.cl === valor) grupo.add(n.id);
+    });
+
+    const corViva = clarear(corGrupo, 0.35);
+
+    // nos: dentro do grupo ficam vivos; fora ficam apagados
     const atualizacoes = [];
     nodes.get().forEach(n => {
-      let ativo = false;
-      if (filtro === 'all') ativo = true;
-      else if (filtro === 'cat') ativo = (n.cat === valor);
-      else if (filtro === 'cl') ativo = (n.cl === valor);
-      if (ativo) {
-        atualizacoes.push({ id: n.id, color: original[n.id].color, size: original[n.id].size,
-                            borderWidth: 2, borderWidthSelected: 2 });
+      if (grupo.has(n.id)) {
+        atualizacoes.push({
+          id: n.id,
+          color: corViva,
+          borderColor: '#ffffff',
+          borderWidth: 3,
+          borderWidthSelected: 3,
+          shadow: true,
+          shadowColor: corViva,
+          shadowSize: 22,
+          size: original[n.id].size + 8
+        });
       } else {
-        atualizacoes.push({ id: n.id, color: '#2a2a3c', size: 3, opacity: 0.15,
-                            borderWidth: 0, borderWidthSelected: 0 });
+        atualizacoes.push({ id: n.id, color: '#14141f', size: 3, opacity: 0.08,
+                            borderWidth: 0, borderWidthSelected: 0, shadow: false });
       }
     });
     nodes.update(atualizacoes);
+
+    // arestas: entre nos do grupo = cor do grupo e grossas; do grupo p/ fora = finas; fora = apagadas
+    const arestasUp = [];
+    if (filtro === 'all') {
+      edges.get().forEach(e => {
+        arestasUp.push({ id: e.id, color: arestaOriginal[e.id].color, width: arestaOriginal[e.id].width, opacity: 1 });
+      });
+    } else {
+      edges.get().forEach(e => {
+        const dentroDentro = grupo.has(e.from) && grupo.has(e.to);
+        const dentroFora = grupo.has(e.from) !== grupo.has(e.to);
+        if (dentroDentro) {
+          arestasUp.push({ id: e.id, color: corViva, width: 3.5, opacity: 0.95 });
+        } else if (dentroFora) {
+          arestasUp.push({ id: e.id, color: '#888', width: 0.6, opacity: 0.35 });
+        } else {
+          arestasUp.push({ id: e.id, color: '#3a3a4a', width: 0.3, opacity: 0.10 });
+        }
+      });
+    }
+    edges.update(arestasUp);
     network.fit({ animation: true });
   }
 
   document.querySelectorAll('.lg').forEach(btn => {
-    btn.addEventListener('click', () => destacar(btn.dataset.filter, btn.dataset.value));
+    btn.addEventListener('click', () => destacar(btn.dataset.filter, btn.dataset.value, btn.dataset.color));
   });
 </script>
 </body>
