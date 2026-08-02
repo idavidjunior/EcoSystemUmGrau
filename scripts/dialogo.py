@@ -2,9 +2,9 @@
 
 Modos de ativacao:
   vad      -> maos-livres: detecta fala pelo volume, processa quando silencia
-  push     -> segure ESPACO para falar, solte para enviar
+  push     -> segure CTRL para falar, solte para enviar
   ativacao -> diga "Jarvis" para acordar, depois fale o comando
-             ("valeu"/"tchau"/"pode dormir" para dormir de novo)
+              ("valeu"/"tchau"/"pode dormir" para dormir de novo)
 
 Uso:
   python scripts/dialogo.py [--modo vad|push|ativacao] [--model base]
@@ -63,9 +63,9 @@ SLEEP_FRASES = re.compile(
 )
 
 
-def _espaco_pressionado():
+def _ctrl_pressionado():
     try:
-        return bool(ctypes.windll.user32.GetAsyncKeyState(0x20) & 0x8000)
+        return bool(ctypes.windll.user32.GetAsyncKeyState(0x11) & 0x8000)
     except Exception:
         return False
 
@@ -242,14 +242,14 @@ def _capturar_vad_fallback():
 
 
 def capturar_push():
-    """Segure ESPACO para falar; solte para enviar."""
-    print(f"{VOZ_COLOR}[push] segure ESPACO para falar (ESC/Ctrl+C para sair){RESET}", flush=True)
-    while not _espaco_pressionado():
+    """Segure CTRL para falar; solte para enviar."""
+    print(f"{VOZ_COLOR}[push] segure CTRL para falar (ESC/Ctrl+C para sair){RESET}", flush=True)
+    while not _ctrl_pressionado():
         import time
         time.sleep(0.05)
     _beep()
     frames = []
-    while _espaco_pressionado():
+    while _ctrl_pressionado():
         rec = sd.rec(BLOCK, samplerate=SAMPLE_RATE, channels=1, dtype="float32")
         sd.wait()
         frames.append(rec.flatten())

@@ -47,3 +47,7 @@ scripts/*_probe*.py
 scripts/*_test*.py
 *.mp3
 *.npy
+
+# Node.js deps
+node_modules/
+
