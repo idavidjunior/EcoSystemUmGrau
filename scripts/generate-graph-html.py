@@ -252,7 +252,19 @@ def gerar_html(nos, arestas, output_path):
   .lg.active {{ border-color:#89b4fa; background:#313244; box-shadow:0 0 6px #89b4fa66; }}
   .dot {{ width:10px; height:10px; border-radius:50%; display:inline-block; }}
   #stats {{ margin-top:6px; font-size:11px; color:#a6adc8; }}
-  #net {{ width:100vw; height:calc(100vh - 76px); }}
+  #wrap {{ display:flex; }}
+  #net {{ flex:1; height:calc(100vh - 100px); }}
+  #painel {{ display:none; width:320px; margin:10px 12px 10px 0; background:#181825; border:1px solid #313244;
+            border-radius:8px; padding:12px; overflow-y:auto; max-height:calc(100vh - 120px); }}
+  #painel.visivel {{ display:block; }}
+  #painel h2 {{ font-size:13px; margin:0 0 10px; display:flex; align-items:center; gap:6px; }}
+  #painel .count {{ font-size:10px; color:#a6adc8; font-weight:normal; }}
+  #painel ul {{ list-style:none; margin:0; padding:0; }}
+  #painel li {{ padding:7px 8px; border-bottom:1px solid #232335; font-size:11px; cursor:pointer; }}
+  #painel li:hover {{ background:#232335; }}
+  #painel .titulo {{ color:#cdd6f4; font-weight:600; }}
+  #painel .spec {{ color:#a6adc8; margin-top:2px; max-height:2.4em; overflow:hidden; display:-webkit-box;
+                  -webkit-line-clamp:2; -webkit-box-orient:vertical; }}
 </style>
 <script src="vendor/vis-network.min.js"></script>
 </head>
@@ -266,7 +278,10 @@ def gerar_html(nos, arestas, output_path):
   </div>
   <div id="stats">{len(nos)} nos | {len(arestas)} conexoes — clique em uma categoria ou cluster para destacar</div>
 </div>
-<div id="net"></div>
+<div id="wrap">
+  <div id="net"></div>
+  <div id="painel"></div>
+</div>
 <script>
   const nodes = new vis.DataSet([{ ','.join(nodes_js)}]);
   const edges = new vis.DataSet([{ ','.join(edges_js)}]);
@@ -297,17 +312,60 @@ def gerar_html(nos, arestas, output_path):
     return '#' + [r,g,b].map(x => x.toString(16).padStart(2,'0')).join('');
   }}
 
+  function limpar() {{
+    document.querySelectorAll('.lg').forEach(b => b.classList.remove('active'));
+    const atualizacoes = nodes.get().map(n => ({{
+      id: n.id, color: original[n.id].color, size: original[n.id].size,
+      borderWidth: 0, borderWidthSelected: 0, shadow: false
+    }}));
+    nodes.update(atualizacoes);
+    const arestasUp = edges.get().map(e => ({{
+      id: e.id, color: arestaOriginal[e.id].color, width: arestaOriginal[e.id].width, opacity: 1
+    }}));
+    edges.update(arestasUp);
+    document.getElementById('painel').classList.remove('visivel');
+    document.getElementById('painel').innerHTML = '';
+  }}
+
+  function mostrarLista(grupo, corGrupo, titulo) {{
+    const painel = document.getElementById('painel');
+    const itens = nodes.get()
+      .filter(n => grupo.has(n.id))
+      .sort((a, b) => (a.label || '').localeCompare(b.label || ''));
+
+    let html = `<h2><span class="dot" style="background:${{corGrupo}}"></span>${{titulo}}
+      <span class="count">(${{itens.length}})</span></h2><ul>`;
+    itens.forEach(n => {{
+      const spec = (n.title || '').split('\\n')[0];
+      html += `<li data-id="${{n.id}}"><div class="titulo">${{n.label}}</div>
+               <div class="spec">${{spec}}</div></li>`;
+    }});
+    html += '</ul>';
+    painel.innerHTML = html;
+    painel.classList.add('visivel');
+
+    // clique no item -> seleciona o no no grafo
+    painel.querySelectorAll('li').forEach(li => {{
+      li.addEventListener('click', () => {{
+        network.selectNodes([li.dataset.id], true);
+        network.focus(li.dataset.id, {{ scale: 1.5, animation: true }});
+      }});
+    }});
+  }}
+
   function destacar(filtro, valor, corGrupo) {{
-    const btns = document.querySelectorAll('.lg');
-    btns.forEach(b => b.classList.remove('active'));
+    if (filtro === 'all') {{
+      limpar();
+      return;
+    }}
+    document.querySelectorAll('.lg').forEach(b => b.classList.remove('active'));
     const alvo = document.querySelector(`.lg[data-filter="${{filtro}}"][data-value="${{valor}}"]`);
     if (alvo) alvo.classList.add('active');
 
     // conjunto de nos do grupo
     const grupo = new Set();
     nodes.get().forEach(n => {{
-      if (filtro === 'all') grupo.add(n.id);
-      else if (filtro === 'cat' && n.cat === valor) grupo.add(n.id);
+      if (filtro === 'cat' && n.cat === valor) grupo.add(n.id);
       else if (filtro === 'cl' && n.cl === valor) grupo.add(n.id);
     }});
 
@@ -337,25 +395,23 @@ def gerar_html(nos, arestas, output_path):
 
     // arestas: entre nos do grupo = cor do grupo e grossas; do grupo p/ fora = finas; fora = apagadas
     const arestasUp = [];
-    if (filtro === 'all') {{
-      edges.get().forEach(e => {{
-        arestasUp.push({{ id: e.id, color: arestaOriginal[e.id].color, width: arestaOriginal[e.id].width, opacity: 1 }});
-      }});
-    }} else {{
-      edges.get().forEach(e => {{
-        const dentroDentro = grupo.has(e.from) && grupo.has(e.to);
-        const dentroFora = grupo.has(e.from) !== grupo.has(e.to);
-        if (dentroDentro) {{
-          arestasUp.push({{ id: e.id, color: corViva, width: 3.5, opacity: 0.95 }});
-        }} else if (dentroFora) {{
-          arestasUp.push({{ id: e.id, color: '#888', width: 0.6, opacity: 0.35 }});
-        }} else {{
-          arestasUp.push({{ id: e.id, color: '#3a3a4a', width: 0.3, opacity: 0.10 }});
-        }}
-      }});
-    }}
+    edges.get().forEach(e => {{
+      const dentroDentro = grupo.has(e.from) && grupo.has(e.to);
+      const dentroFora = grupo.has(e.from) !== grupo.has(e.to);
+      if (dentroDentro) {{
+        arestasUp.push({{ id: e.id, color: corViva, width: 3.5, opacity: 0.95 }});
+      }} else if (dentroFora) {{
+        arestasUp.push({{ id: e.id, color: '#888', width: 0.6, opacity: 0.35 }});
+      }} else {{
+        arestasUp.push({{ id: e.id, color: '#3a3a4a', width: 0.3, opacity: 0.10 }});
+      }}
+    }});
     edges.update(arestasUp);
     network.fit({{ animation: true }});
+
+    // lista dos itens do grupo
+    const nome = alvo ? alvo.textContent.trim() : valor;
+    mostrarLista(grupo, corGrupo, nome, corGrupo);
   }}
 
   document.querySelectorAll('.lg').forEach(btn => {{
