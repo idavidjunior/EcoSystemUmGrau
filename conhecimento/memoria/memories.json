@@ -505,5 +505,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T17:55:02.289056",
     "last_accessed": "2026-08-02T17:55:02.289056"
+  },
+  {
+    "id": 52,
+    "kind": "erro",
+    "task": "Grafo visual do conhecimento (vis-network) funcionando",
+    "summary": "Gerado docs/grafo.html: 226 nos, 1460 conexoes, force-directed, cores por categoria. Bug: string JS com quebra de linha literal em label quebrava sintaxe do script -> canvas vazio. Fix: json.dumps para montar nodes/edges. Lib vis-network baixada local (docs/vendor) pois CDN nao carrega em file://. Validacao headless: node (sintaxe) + chrome --dump-dom (canvas). Script: scripts/generate-graph-html.py",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T17:59:12.111788",
+    "last_accessed": "2026-08-02T17:59:12.111788"
   }
 ]
