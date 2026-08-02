@@ -11,7 +11,7 @@ $logFile = "$env:USERPROFILE\.vigilante.log"
 $ecoDir = Split-Path $PSScriptRoot -Parent
 $lerDir = "$ecoDir\ler-runtime"
 $learnDir = "$ecoDir\conhecimento\aprendizados"
-$projectsDir = "C:\Users\David Jr\Documents\Default Project"
+$projectsDir = "$env:USERPROFILE\Documents\Default Project"
 $gitInterval = 300  # 5 min entre git sync (eco/ler)
 $projectGitInterval = 60  # 1 min entre git sync para projetos (menor = mais responsivo)
 
