@@ -39,6 +39,7 @@
     <button class="lg" data-filter="cat" data-value="padroes" data-color="#4e79a7"><span class="dot" style="background:#4e79a7"></span>Padroes</button><button class="lg" data-filter="cat" data-value="decisoes" data-color="#f28e2b"><span class="dot" style="background:#f28e2b"></span>Decisoes</button><button class="lg" data-filter="cat" data-value="bugs" data-color="#e15759"><span class="dot" style="background:#e15759"></span>Bugs</button><button class="lg" data-filter="cat" data-value="cognitivo" data-color="#59a14f"><span class="dot" style="background:#59a14f"></span>Cognitivo</button><button class="lg" data-filter="cat" data-value="heuristicas" data-color="#76b7b2"><span class="dot" style="background:#76b7b2"></span>Heuristicas</button><button class="lg" data-filter="cat" data-value="frameworks" data-color="#edc948"><span class="dot" style="background:#edc948"></span>Frameworks</button><button class="lg" data-filter="cat" data-value="missoes" data-color="#b07aa1"><span class="dot" style="background:#b07aa1"></span>Missoes</button>
     <button class="lg" data-filter="cl" data-value="android" data-color="#8dd3c7"><span class="dot" style="background:#8dd3c7"></span>Android</button><button class="lg" data-filter="cl" data-value="mp3player" data-color="#ffffb3"><span class="dot" style="background:#ffffb3"></span>Mp3player</button><button class="lg" data-filter="cl" data-value="ler" data-color="#bebada"><span class="dot" style="background:#bebada"></span>Ler</button><button class="lg" data-filter="cl" data-value="navegacao" data-color="#fb8072"><span class="dot" style="background:#fb8072"></span>Navegacao</button><button class="lg" data-filter="cl" data-value="ecossistema" data-color="#80b1d3"><span class="dot" style="background:#80b1d3"></span>Ecossistema</button><button class="lg" data-filter="cl" data-value="cognicao" data-color="#fdb462"><span class="dot" style="background:#fdb462"></span>Cognicao</button><button class="lg" data-filter="cl" data-value="geral" data-color="#b3b3b3"><span class="dot" style="background:#b3b3b3"></span>Geral</button>
     <span style="opacity:.6">|</span> <button class="lg" data-filter="st" data-value="resolvido" data-color="#80b1d3"><span class="dot" style="background:#80b1d3"></span>Bug: Resolvido</button><button class="lg" data-filter="st" data-value="pendente" data-color="#80b1d3"><span class="dot" style="background:#80b1d3"></span>Bug: Pendente</button><button class="lg" data-filter="st" data-value="conhecido" data-color="#80b1d3"><span class="dot" style="background:#80b1d3"></span>Bug: Limitacao conhecida</button>
+    <button class="lg home" data-filter="home" data-value="" data-color="#89b4fa">🏠 Home</button>
     <button class="lg" data-filter="all" data-value="" data-color="#888">✕ Limpar</button>
   </div>
   <div id="stats">226 nos | 1460 conexoes — clique em uma categoria ou cluster para destacar</div>
@@ -81,7 +82,8 @@
     document.querySelectorAll('.lg').forEach(b => b.classList.remove('active'));
     const atualizacoes = nodes.get().map(n => ({
       id: n.id, color: original[n.id].color, size: original[n.id].size,
-      borderWidth: 0, borderWidthSelected: 0, shadow: false
+      borderWidth: 0, borderWidthSelected: 0, shadow: false,
+      font: { size: 11, color: '#cdd6f4', face: 'Segoe UI', bold: false }
     }));
     nodes.update(atualizacoes);
     const arestasUp = edges.get().map(e => ({
@@ -90,6 +92,11 @@
     edges.update(arestasUp);
     document.getElementById('painel').classList.remove('visivel');
     document.getElementById('painel').innerHTML = '';
+  }
+
+  function telaInicial() {
+    limpar();
+    network.fit({ animation: true });
   }
 
   function focarVizinhanca(id, corGrupo) {
@@ -177,6 +184,10 @@
   }
 
   function destacar(filtro, valor, corGrupo) {
+    if (filtro === 'home') {
+      telaInicial();
+      return;
+    }
     if (filtro === 'all') {
       limpar();
       return;

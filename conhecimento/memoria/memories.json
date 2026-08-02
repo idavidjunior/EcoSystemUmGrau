@@ -544,5 +544,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T19:13:12.059023",
     "last_accessed": "2026-08-02T19:13:12.059023"
+  },
+  {
+    "id": 55,
+    "kind": "decisao",
+    "task": "Botao Home no grafo",
+    "summary": "Adicionado botao Home (casa) na legenda do grafo cerebro, que volta ao estado inicial: limpar() restaura cores/tamanhos/fontes (size 11 default, cor #cdd6f4, sem bold) e chama network.fit() com animacao para resetar posicao/zoom. Tratado no destacar() com case 'home' antes do 'all'. Botao fica ao lado do Limpar.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T19:17:08.401402",
+    "last_accessed": "2026-08-02T19:17:08.401402"
   }
 ]

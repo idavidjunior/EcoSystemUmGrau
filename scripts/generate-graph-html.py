@@ -343,6 +343,7 @@ def gerar_html(nos, arestas, output_path):
     {legend_cat}
     {legend_cl}
     {legend_st}
+    <button class="lg home" data-filter="home" data-value="" data-color="#89b4fa">🏠 Home</button>
     <button class="lg" data-filter="all" data-value="" data-color="#888">✕ Limpar</button>
   </div>
   <div id="stats">{len(nos)} nos | {len(arestas)} conexoes — clique em uma categoria ou cluster para destacar</div>
@@ -385,7 +386,8 @@ def gerar_html(nos, arestas, output_path):
     document.querySelectorAll('.lg').forEach(b => b.classList.remove('active'));
     const atualizacoes = nodes.get().map(n => ({{
       id: n.id, color: original[n.id].color, size: original[n.id].size,
-      borderWidth: 0, borderWidthSelected: 0, shadow: false
+      borderWidth: 0, borderWidthSelected: 0, shadow: false,
+      font: {{ size: 11, color: '#cdd6f4', face: 'Segoe UI', bold: false }}
     }}));
     nodes.update(atualizacoes);
     const arestasUp = edges.get().map(e => ({{
@@ -394,6 +396,11 @@ def gerar_html(nos, arestas, output_path):
     edges.update(arestasUp);
     document.getElementById('painel').classList.remove('visivel');
     document.getElementById('painel').innerHTML = '';
+  }}
+
+  function telaInicial() {{
+    limpar();
+    network.fit({{ animation: true }});
   }}
 
   function focarVizinhanca(id, corGrupo) {{
@@ -481,6 +488,10 @@ def gerar_html(nos, arestas, output_path):
   }}
 
   function destacar(filtro, valor, corGrupo) {{
+    if (filtro === 'home') {{
+      telaInicial();
+      return;
+    }}
     if (filtro === 'all') {{
       limpar();
       return;
