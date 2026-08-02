@@ -26,7 +26,7 @@ echo [OK] Git, Node.js, Python detectados
 echo.
 
 :: ─── Diretorios ─────────────────────────────────────────
-set ECO_DIR=%USERPROFILE%\Desktop\Codigos\EcoSystemUmGrau
+set ECO_DIR=%USERPROFILE%\Documents\Default Project\EcoSystemUmGrau
 set LER_DIR=%ECO_DIR%\ler-runtime
 set OCODE_DIR=%USERPROFILE%\.config\opencode
 set AGENTS_SRC=%ECO_DIR%\config\agents
@@ -82,10 +82,6 @@ echo.
 echo [4/7] Verificando LER runtime em %LER_DIR%...
 if exist "%LER_DIR%\run.py" (
     echo [OK] LER runtime: %LER_DIR%
-    if not exist "%USERPROFILE%\.ler" (
-        cmd /c "mklink /J `"%USERPROFILE%\.ler`" `"%LER_DIR%`"" >nul
-        echo [OK] Junction ~/.ler/ criada para compatibilidade
-    )
 ) else ( echo [AVISO] LER runtime nao encontrado em %LER_DIR%. Ja deve vir clonado. )
 echo.
 
@@ -157,6 +153,15 @@ if not "%GITHUB_TOKEN%"=="" (
     powershell -Command "[Environment]::SetEnvironmentVariable('GH_TOKEN', '%GITHUB_TOKEN%', 'User')"
     echo $env:GH_TOKEN = '%GITHUB_TOKEN%' >> "%PROFILE_PS1%"
     echo [OK] GH_TOKEN salva
+)
+
+:: ─── 8. Validar config ─────────────────────────────────
+echo [8/8] Validando config OpenCode...
+call opencode debug config >nul 2>&1
+if %errorlevel% equ 0 (
+    echo [OK] Config OpenCode valida
+) else (
+    echo [AVISO] opencode debug config reportou erro. Verifique manualmente.
 )
 
 echo.
