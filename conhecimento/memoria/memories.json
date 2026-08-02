@@ -336,5 +336,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T15:53:49.204183",
     "last_accessed": "2026-08-02T15:53:49.204183"
+  },
+  {
+    "id": 39,
+    "kind": "episodio",
+    "task": "Teste do Jarvis no celular (VoxUmGrau) - validaÃ§Ã£o completa do pipeline",
+    "summary": "Teste completo do Jarvis no celular Xiaomi (2201117TI, Android 13): ADB conectou via 192.168.15.4:5555, app VoxUmGrau rodando (PID 12669, ver code 12), bridge WebSocket na 8765 respondeu com Ã¡udio MP3 vÃ¡lido (0xFFF3 = MPEG Layer III). CÃ©rebro opencode serve na 8767 iniciou sozinho. Phone conecta via Tailscale 100.64.71.9. Caminho rÃ¡pido respondeu \"que horas sÃ£o?\" em 25ms sem LLM. Teste concluÃ­do com sucesso.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T16:04:47.433898",
+    "last_accessed": "2026-08-02T16:04:47.433898"
   }
 ]
