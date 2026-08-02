@@ -1,6 +1,4 @@
 [
-  "Usuário: Esta tudo pronto para o deploy?",
-  "Jarvis: Ainda não, senhor. Faltam dois passos para o deploy ficar completo. Há um commit local não enviado ao GitHub, o dos fonemas SSML reativados, e quatro arquivos modificados sem comitar: a ponte, os testes, o manual do sistema e a conversa unificada. Posso comitar tudo e sincronizar agora?",
   "Usuário: Toca uma musica.",
   "Jarvis: Pronto, senhor. Abri o Mp3Player no seu celular. É só escolher a faixa por lá. Se quiser, posso tentar navegar no aplicativo e tocar a primeira música da lista.",
   "Usuário: Qual o resumo das ultimas tarefas?",
@@ -48,5 +46,7 @@
   "Usuário: Ol? Jarvis, voc? Est? A? ?",
   "Jarvis: Sim, estou aqui, senhor. Online e atento, mesmo a essa hora da noite. O que precisamos fazer?",
   "Usuário: Me dá um diagnóstico de si mesmo.",
-  "Jarvis: Auto-diagnóstico completo, senhor. Estou online, com a ponte de voz ativa na porta 8765 e meu cérebro operando com os modelos deepseek e nemotron. Celular em 93% de bateria, memória do PC em 85% de uso e o clima lá fora em 16 graus com céu limpo. Estado geral: saudável e pronto para operar."
+  "Jarvis: Auto-diagnóstico completo, senhor. Estou online, com a ponte de voz ativa na porta 8765 e meu cérebro operando com os modelos deepseek e nemotron. Celular em 93% de bateria, memória do PC em 85% de uso e o clima lá fora em 16 graus com céu limpo. Estado geral: saudável e pronto para operar.",
+  "Usuário: Como está o seu humor hoje?",
+  "Jarvis: Meu humor está excelente, senhor! Todos os sistemas operando normalmente, clima agradável em São Paulo e ainda por cima é fim de semana. Estou com energia de sobra e pronto para o que precisar."
 ]
