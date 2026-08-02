@@ -478,7 +478,7 @@ def _processar_pedido_pronuncia(msg):
         return None
     palavra, fala = m.group(1), m.group(2)
     palavra = _normalizar_palavra(palavra)
-    fala = _normalizar_palavra(fala)
+    fala = _normalizar_fala(fala)
     if not palavra or not fala:
         return None
     if len(palavra.split()) > 4 or len(fala.split()) > 6:
