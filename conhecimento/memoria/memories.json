@@ -622,5 +622,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T20:27:26.315186",
     "last_accessed": "2026-08-02T20:27:26.315186"
+  },
+  {
+    "id": 61,
+    "kind": "decisão",
+    "task": "Widget do grafo: arasta livre + persistencia de posicao (solucao definitiva)",
+    "summary": "Usuario queria ARRASTAR o widget livremente pelo desktop e que a posicao persistisse apos reiniciar. Diagnostico do travamento anterior: a ancoragem Progman/WorkerW (SetParent para WorkerW) mandava a janela para ATRAS dos icones do desktop, tornando-a inutilizavel/fria - parecia 'travada'. Solucao definitiva: REMOVER toda ancoragem e tornala uma janela top-level normal (parent=0), flutuante. Arrasto via JS: barra #mk-drag de 16px no topo, mousedown+mousemove computa nova posicao (win.screenX + delta) e chama api.mover(x,y) -> win.move(). Redimensionar via alca #mk-resize -> win.resize(). Geometria persistida a cada mover/resize/close via JS que chama bridge.guardar_geo(screenX,screenY,innerW,innerH); arquivo docs/grafo_widget_geometria.json. IMPORTANTE: mover()/resize() nao disparam a recursao infinita (essa vinha de LER win.width/height/native por getter, nao de chamar move/resize). Resultado: janela top-level visivel, viva >24s, posicao 683,0 persistida. Removidas todas as funcoes de ancoragem (_anchor, _find_workerw, _keep_behind) e imports ctypes/wintypes/time/threading nao mais necessarios.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T20:34:11.973850",
+    "last_accessed": "2026-08-02T20:34:11.973850"
   }
 ]

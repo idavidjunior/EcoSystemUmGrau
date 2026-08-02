@@ -1,14 +1,13 @@
 """Widget desktop do Cerebro Vivo - grafo do conhecimento em tempo real.
 
-Janela estilo "widget de area de trabalho" (estilo Rainmeter), sem bordas,
-ancorada ATRAS das outras janelas, ficando "colada" no desktop como um
-wallpaper vivo. Os controles ficam ocultos por padrao; ao clicar com o botao
+Janela flutuante (pywebview) com o grafo interativo. Sem bordas visuais, mas
+MOVIDA livremente pelo desktop arrastando a barra superior (moldura discreta)
+e REDIMENSIONADA pela alca do canto inferior direito (aparece junto aos
+controles). Os controles ficam ocultos por padrao; ao clicar com o botao
 DIREITO do mouse a barra de controles (header/legenda) aparece/reaparece.
 
-A janela pode ser REDIMENSIONADA arrastando a alca no canto inferior direito
-(visivel quando os controles aparecem) e MOVIDA arrastando a barra superior.
-A geometria (posicao + tamanho) e persistida em JSON e restaurada no proximo
-start.
+A posicao e o tamanho sao persistidos em JSON (docs/grafo_widget_geometria.json)
+e restaurados a cada execucao, inclusive apos reiniciar o computador.
 
 Observa continuamente as fontes do conhecimento (knowledge_graph.json +
 conhecimento/*). Quando algo muda, re-gera docs/grafo.html e recarrega.
@@ -18,13 +17,9 @@ Dependencias: pip install pywebview
 Uso:
   python scripts/widget_grafo.py
 """
-import ctypes
 import json
 import subprocess
 import sys
-import threading
-import time
-from ctypes import wintypes
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
@@ -40,17 +35,6 @@ TITLE = 'Cerebro Vivo'
 BG = '#1e1e2e'
 DEFAULT_W, DEFAULT_H = 1280, 800
 
-# --- Win32 ------------------------------------------------------------------
-HWND_BOTTOM = 1
-SWP_NOSIZE = 0x0001
-SWP_NOMOVE = 0x0002
-SWP_NOACTIVATE = 0x0010
-SWP_SHOWWINDOW = 0x0040
-GWL_EXSTYLE = -20
-WS_EX_TOOLWINDOW = 0x00000080
-WS_EX_NOACTIVATE = 0x08000000
-_user32 = ctypes.WinDLL('user32', use_last_error=True)
-
 # CSS + JS de widget: oculta o header (controles); clique direito alterna a
 # classe 'desktop' no body que revela os controles; alca de resize no canto.
 WIDGET_CSS = """
@@ -59,6 +43,10 @@ WIDGET_CSS = """
   #net { height: 100vh !important; width: 100vw !important; }
   body { width:100vw; height:100vh; overflow:hidden; }
   body.desktop #header { opacity: 1; pointer-events: auto; }
+  /* moldura fina para arrastar a janela (sempre visivel, discreta) */
+  #mk-drag { position: fixed; left:0; top:0; width:100%; height:16px;
+             cursor: grab; z-index:9999; background: transparent; }
+  #mk-drag:active { cursor: grabbing; }
   #mk-resize { position: fixed; right:0; bottom:0; width:18px; height:18px;
                cursor: nwse-resize; display:none; }
   body.desktop #mk-resize { display:block; }
@@ -76,6 +64,36 @@ WIDGET_JS = """
 RESIZE_JS = """
 <script>
   (function(){
+    /* --- moldura de arrasto (move a janela pelo desktop) --- */
+    var bar = document.createElement('div');
+    bar.id = 'mk-drag';
+    bar.title = 'Arraste para mover';
+    document.body.appendChild(bar);
+    var rx=0, ry=0, sx=0, sy=0, drag=false;
+    bar.addEventListener('mousedown', function(e){
+      e.preventDefault(); e.stopPropagation();
+      sx=e.screenX; sy=e.screenY;
+      rx=(window.screenX||0); ry=(window.screenY||0);
+      drag=true;
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+    function onMove(e){
+      if(!drag) return;
+      var nx = rx + (e.screenX - sx);
+      var ny = ry + (e.screenY - sy);
+      if(window.pywebview && window.pywebview.api){
+        window.pywebview.api.mover(Math.round(nx), Math.round(ny));
+      }
+    }
+    function onUp(){
+      drag=false;
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      report();
+    }
+
+    /* --- alca de resize (canto inferior direito) --- */
     var grip = document.createElement('div');
     grip.id = 'mk-resize';
     grip.title = 'Arraste para redimensionar';
@@ -85,10 +103,10 @@ RESIZE_JS = """
       e.preventDefault(); e.stopPropagation();
       startX=e.screenX; startY=e.screenY; startW=innerWidth; startH=innerHeight;
       ar = true;
-      document.addEventListener('mousemove', onMove);
-      document.addEventListener('mouseup', onUp);
+      document.addEventListener('mousemove', onRm);
+      document.addEventListener('mouseup', onRu);
     });
-    function onMove(e){
+    function onRm(e){
       if(!ar) return;
       var w = startW + (e.screenX - startX);
       var h = startH + (e.screenY - startY);
@@ -96,8 +114,9 @@ RESIZE_JS = """
         window.pywebview.api.redimensionar(Math.round(w), Math.round(h));
       }
     }
-    function onUp(){ ar=false; document.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseup', onUp); }
+    function onRu(){ ar=false; document.removeEventListener('mousemove', onRm);
+      document.removeEventListener('mouseup', onRu); report(); }
+
     /* reporta a geometria via JS (nao acessa win.native -> evita recursao) */
     function report(){
       if(window.pywebview && window.pywebview.api){
@@ -110,7 +129,6 @@ RESIZE_JS = """
     }
     window.addEventListener('pywebviewready', report);
     window.addEventListener('resize', report);
-    window.addEventListener('mousemove', function(){ });
   })();
 </script>
 """
@@ -193,6 +211,16 @@ class Bridge:
         except Exception as e:
             print(f'[widget] resize: {e}')
 
+    def mover(self, x: int, y: int) -> None:
+        """Move a janela para (x, y) no desktop. win.move e seguro; a recursao
+        antiga vinha de LER win.width/height/native, nao de chamar move()."""
+        if not self.win:
+            return
+        try:
+            self.win.move(int(x), int(y))
+        except Exception as e:
+            print(f'[widget] mover: {e}')
+
     def guardar_geo(self, x: int, y: int, w: int, h: int) -> None:
         """Recebe a geometria reportada pelo JS e a persiste. NAO le win.native
         aqui para evitar a recursao infinita do pywebview em Windows Forms."""
@@ -268,85 +296,6 @@ def _build_view() -> Path | None:
     return VIEW_COPY
 
 
-def _find_hwnd_by_title(title: str, deadline: float = 12.0) -> int:
-    start = time.time()
-    while time.time() - start < deadline:
-        hwnd = _user32.FindWindowW(None, title)
-        if hwnd:
-            return int(hwnd)
-        found = []
-        EnumProc = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
-
-        def _cb(h, _lp):
-            ln = _user32.GetWindowTextLengthW(h)
-            if ln:
-                buf = ctypes.create_unicode_buffer(ln + 1)
-                _user32.GetWindowTextW(h, buf, ln + 1)
-                if title.lower() in buf.value.lower():
-                    found.append(int(h))
-            return True
-
-        _user32.EnumWindows(EnumProc(_cb), 0)
-        if found:
-            return found[0]
-        time.sleep(0.2)
-    return 0
-
-
-def _find_workerw() -> int:
-    """Encontra uma janela 'WorkerW' (area de trabalho) via EnumWindows."""
-    workers = []
-    EnumProc = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
-
-    def _cb(h, _lp):
-        cls = ctypes.create_unicode_buffer(64)
-        _user32.GetClassNameW(h, cls, 64)
-        if cls.value == 'WorkerW' and _user32.IsWindowVisible(h):
-            workers.append(int(h))
-        return True
-
-    _user32.EnumWindows(EnumProc(_cb), 0)
-    if workers:
-        return workers[-1]
-    w = _user32.FindWindowW('WorkerW', None)
-    return int(w) if w else 0
-
-
-def _anchor_to_desktop(hwnd: int) -> bool:
-    """Torna a janela filha da area de trabalho (Progman/Worker), ficando
-    atras dos icones, como um wallpaper. Retorna True se ancorado."""
-    try:
-        progman = _user32.FindWindowW('Progman', None)
-        if not progman:
-            return False
-        _user32.SendMessageW(progman, 0x052C, 0xD, 0)
-        worker = _find_workerw()
-        if not worker:
-            return False
-        cur = int(_user32.GetParent(wintypes.HWND(hwnd)))
-        if cur == worker:
-            return True
-        _user32.SetParent(wintypes.HWND(hwnd), wintypes.HWND(worker))
-        _user32.ShowWindow(wintypes.HWND(hwnd), 5)
-        return True
-    except Exception as e:
-        print(f'[widget] Ancoragem Progman/WorkerW falhou ({e}).')
-        return False
-
-
-def _anchor_once(hwnd: int) -> None:
-    """Tenta ancorar a janela ao desktop (WorkerW) UMA vez e para.
-    Um unico SetParent e suficiente e nao dispara a recursao infinita do
-    pywebview (que acontecia com o SetWindowPos no loop de 1s). Nao havera
-    manutencao continua do z-order."""
-    try:
-        h = wintypes.HWND(hwnd)
-        ex = _user32.GetWindowLongW(h, GWL_EXSTYLE)
-        _user32.SetWindowLongW(h, GWL_EXSTYLE, ex | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE)
-    except Exception:
-        pass
-    _anchor_to_desktop(hwnd)
-
 
 def main() -> int:
     import webview
@@ -361,13 +310,6 @@ def main() -> int:
     h = int(geo.get('height', DEFAULT_H))
     x = geo.get('x')
     y = geo.get('y')
-
-    def _pin():
-        hwnd = _find_hwnd_by_title(TITLE)
-        if hwnd:
-            _anchor_once(hwnd)
-
-    threading.Thread(target=_pin, daemon=True).start()
 
     bridge = Bridge()
     win = webview.create_window(
