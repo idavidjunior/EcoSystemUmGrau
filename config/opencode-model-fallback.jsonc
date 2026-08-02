@@ -2,11 +2,19 @@
   // Plugin config for @razroo/opencode-model-fallback
   "enabled": true,
   "retry_on_errors": [429, 500, 502, 503, 504],
-  "cooldown_seconds": 60,
-  "timeout_seconds": 30,
+  "retryable_error_patterns": ["rate limit", "quota exceeded", "insufficient quota", "too many requests", "capacity exceeded"],
+  "max_fallback_attempts": 5,
+  "cooldown_seconds": 2,
+  "timeout_seconds": 15,
   "notify_on_fallback": true,
   // Global chain: used when an agent has no per-agent fallback_models
   "fallback_models": [
-    "nvidia/deepseek-ai/deepseek-v3.1"
+    "opencode/nemotron-3-ultra-free",
+    "opencode/deepseek-v4-flash-free",
+    "opencode/laguna-s-2.1-free",
+    "opencode/ling-3.0-flash-free",
+    "opencode/mimo-v2.5-free",
+    "opencode/north-mini-code-free",
+    "opencode/big-pickle"
   ]
 }
