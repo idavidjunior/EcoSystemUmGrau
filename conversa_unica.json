@@ -1,10 +1,4 @@
 [
-  "Usuário: Está havendo troca entre o conhecimento com o obsidian? O conteúdo dele está sendo consumido pelo ecossistema também?",
-  "Jarvis: Sim, está havendo troca, mas atenção a um detalhe. O fluxo funciona assim:\n\n**Obsidian → Ecossistema (consumo):** o buscador `search_knowledge.py` indexa o `knowledge_graph.json`, as memórias e as notas de `conhecimento/notas` — e o MCP `eco-knowledge` está ativo na config global, servindo busca e leitura da base a qualquer sessão.\n\n**Ecossistema → Obsidian:** o `generate-obsidian-notes.py` regenera as notas a partir do grafo de conhecimento a cada sync (327 notas hoje).\n\n**Porém:** o `docs/` (o vault principal, 265+ notas) **não é indexado** pelo buscador — ele só faz contagem de status na bridge. Se quiser, posso incluir `docs/` no corpus do `search_knowledge.py` para o conteúdo dele também ser consumido. Quer que eu faça?",
-  "Usuário: Você está vendo o pen drive conectado no computador?",
-  "Jarvis: Sim, estou vendo. Além do disco C e do leitor de CD, há um dispositivo removível na letra E, com o rótulo \"Linux Mint\", de quase 2 terabytes, praticamente vazio — provavelmente um pen drive com a imagem ou o sistema Linux Mint. Quer que eu explore o conteúdo dele?",
-  "Usuário: Eu preciso deixar completamente bootável quero instalar um sistema Linux no meu computador e está aparecendo erros não sei se é erro no arquivo iso corrompido.",
-  "Jarvis: Entendido, senhor. Vamos resolver isso. Primeiro, preciso de duas informações: onde está o arquivo ISO e qual mensagem de erro aparece na tela. Se o arquivo estiver neste computador, eu mesmo verifico a soma de verificação para confirmar se ele está íntegro antes de gravar no pendrive. Na maioria dos casos, esse tipo de erro vem da gravação do pendrive ou do modo de inicialização, e não do arquivo em si. Pode me dizer o que aparece?",
   "Usuário: E aí?",
   "Jarvis: Opa, senhor! Tudo a postos por aqui. Processadores frios e ponte de voz ativa, esperando as suas ordens. O que vamos fazer hoje?",
   "Usuário: E aí!",
@@ -48,5 +42,19 @@
   "Usuário: E aí!",
   "Jarvis: Fala, senhor! Domingo à tarde, céu limpo e o Jarvis na escuta, tudo em ordem. O que vamos aprontar agora?",
   "Usuário: é que quando você vai falar o meu nome você fala uns caracteres especiais antes que não deveria ser falado",
-  "Jarvis: Corrigido. Troquei o nome \"David\" de IPA (`/ˈda.vi/`) para o mecanismo `fala` (`\"Davi\"`), que é mais confiável no edge-tts — não vai mais falar o símbolo de tonicidade nem as barras antes do seu nome. Vale imediatamente no próximo áudio."
+  "Jarvis: Corrigido. Troquei o nome \"David\" de IPA (`/ˈda.vi/`) para o mecanismo `fala` (`\"Davi\"`), que é mais confiável no edge-tts — não vai mais falar o símbolo de tonicidade nem as barras antes do seu nome. Vale imediatamente no próximo áudio.",
+  "Usuário: E aí!",
+  "Jarvis: Fala, mestre! Domingo tranquilo, sistemas em verde e eu de prontidão. Qual é a próxima missão?",
+  "Usuário: E aí!",
+  "Jarvis: Opa! De novo, senhor? Tudo em ordem por aqui, ponte ativa e eu na escuta. O que vamos fazer agora?",
+  "Usuário: estou online funcionando",
+  "Jarvis: Que bom te ver funcionando, senhor! Estou aqui, tudo em ordem e na escuta. O que vamos fazer agora?",
+  "Usuário: Qual o resumo das ultimas tarefas?",
+  "Jarvis: Entendido. Vou resumir as últimas tarefas do repositório. No geral, o foco recente foi voz, pronúncia e integrações: corrigimos o sistema de áudio, ajustando o envio de texto puro ao sintetizador e registrando pronúncias pelo campo fala; criamos a cláusula de ativação de voz, com os comandos Ativar Eco e Desativar Eco; adicionamos o servidor de notas Obsidian consumido pelo modelo; implementamos o controle total da TV LG por protocolo webOS; e reforçamos o aprendizado automático e a escrita atômica no motor de memória.",
+  "Usuário: Me de um resumo do que fizemos hoje.",
+  "Jarvis: Vou resumir o que fizemos hoje no repositório. O dia teve três frentes: na parte de voz, evoluímos e depois corrigimos o sintetizador de áudio, confirmando que ele não aceita marcações e passando a usar texto puro com pronúncias registradas; criamos a cláusula de ativação de voz com os comandos Ativar Eco e Desativar Eco; e adicionamos a regra de feedback contínuo em tarefas longas. Nas integrações, conectamos o servidor de notas Obsidian, o controle da TV LG por protocolo webOS, e o monitor de cota da Nvidia com cadeia de fallback de modelos. Na infraestrutura, unificamos a sincronização em um único comando, tornamos o instalador portátil e organizamos as regras em três camadas com sincronização automática.",
+  "Usuário: Esta tudo pronto para o deploy?",
+  "Jarvis: A base está sincronizada com o GitHub, sem commits locais pendentes de envio. Mas há um grupo de mudanças ainda não commitadas: a atualização do grafo para usar a biblioteca local em vez do serviço online, o arquivo da biblioteca, o grafo gerado e o histórico de conversa. Posso commitar e enviar tudo agora para fechar o ciclo de deploy. Quer que eu faça?",
+  "Usuário: Toca uma musica.",
+  "Jarvis: O YouTube abriu na TV. Vou confirmar que o volume está no padrão 10 e deixar o usuário escolher a música.\n\nAbrir o YouTube na TV, senhor. O aplicativo foi lançado com sucesso e o volume está em 10, como de costume. Quer que eu navegue até alguma música específica ou algum canal? É só me dizer o nome que eu procuro para o senhor."
 ]

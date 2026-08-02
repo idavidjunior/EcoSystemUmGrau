@@ -492,5 +492,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T17:53:12.485449",
     "last_accessed": "2026-08-02T17:53:12.485449"
+  },
+  {
+    "id": 51,
+    "kind": "erro",
+    "task": "Corrigir TTS falando caracteres IPA antes do nome do usuÃ¡rio",
+    "summary": "Causa raiz: edge-tts >= 7.x escapa todo o texto no __init__ (escape()), entÃ£o tags SSML como <phoneme> eram lidas literalmente pela voz. CorreÃ§Ã£o: aplicar_phonemes usa apenas o campo \"fala\" (substituiÃ§Ã£o de texto puro) e nunca gera tags <phoneme>/<break>/<say-as>. \"jarvis\" migrou de ipa para fala: \"JÃ¡rvis\". Testes test_vox.py passam (audio_sem_ssml 7/7).",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T17:55:02.289056",
+    "last_accessed": "2026-08-02T17:55:02.289056"
   }
 ]

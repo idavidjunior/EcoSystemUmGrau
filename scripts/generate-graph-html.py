@@ -208,13 +208,17 @@ def gerar_html(nos, arestas, output_path):
         size = 10 + int(14 * (n['grau'] / max_grau)) if max_grau else 10
         if n['categoria'] == 'hub':
             size = max(size, 30)
-        nodes_js.append(
-            "{id:'%s', label:'%s', color:'%s', size:%d, title:`%s`}" %
-            (n['id'], n['label'].replace("'", "\\'"), cor, size,
-             (titles[n['id']] or n['label']).replace('`', ' ').replace('\\', ' '))
-        )
+        node_obj = {
+            'id': n['id'],
+            'label': n['label'],
+            'color': cor,
+            'size': size,
+            'title': titles[n['id']] or n['label'],
+        }
+        nodes_js.append(json.dumps(node_obj, ensure_ascii=False))
 
-    edges_js = ["{from:'%s', to:'%s', color:'#999', width:1}" % (a, b) for a, b in sorted(arestas)]
+    edges_js = [json.dumps({'from': a, 'to': b, 'color': '#999', 'width': 1}, ensure_ascii=False)
+                for a, b in sorted(arestas)]
 
     html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -231,7 +235,7 @@ def gerar_html(nos, arestas, output_path):
   #stats {{ margin-left:auto; font-size:11px; color:#a6adc8; }}
   #net {{ width:100vw; height:calc(100vh - 56px); }}
 </style>
-<script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+<script src="vendor/vis-network.min.js"></script>
 </head>
 <body>
 <div id="header">
