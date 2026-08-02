@@ -187,6 +187,6 @@ if __name__ == "__main__":
     teste_horas_para_fala()
     teste_normalizar_hora_display()
     teste_caminho_rapido()
-    teste_ssml_prosodia()
+    teste_audio_sem_ssml()
     teste_pronuncia_autoevolutiva()
     asyncio.run(teste())

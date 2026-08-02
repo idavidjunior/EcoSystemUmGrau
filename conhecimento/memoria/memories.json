@@ -453,5 +453,44 @@
     "access_count": 0,
     "created_at": "2026-08-02T17:36:57.141137",
     "last_accessed": "2026-08-02T17:36:57.141137"
+  },
+  {
+    "id": 48,
+    "kind": "erro",
+    "task": "Vazamento de caracteres no TTS antes de falar o nome do usuÃ¡rio (saudaÃ§Ã£o)",
+    "summary": "edge-tts >= 7.x removeu suporte a SSML custom: o __init__ do Communicate() escapa todo o texto (escape() converte < > em &lt; &gt;), entÃ£o tags <break>, <phoneme>, <say-as>, <prosody> sÃ£o lidas LITERALMENTE pela voz. Sintoma: \"Boa tarde, break time 350ms phoneme alphabet ipa... David\". CorreÃ§Ã£o: enviar TEXTO PURO ao edge-tts; pronÃºncias devem usar campo \"fala\" (grafia falada = substituiÃ§Ã£o de texto) em pronuncias.json, nunca tags <phoneme>. Removidas _ssml_enriquecer/_prosodia_frases/_escapar da jarvis_bridge.py. Teste test_vox.py substituÃ­do por teste_audio_sem_ssml.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T17:52:58.253655",
+    "last_accessed": "2026-08-02T17:52:58.253655"
+  },
+  {
+    "id": 49,
+    "kind": "erro",
+    "task": "Vazamento de caracteres TTS - edge-tts escapa SSML",
+    "summary": "edge-tts>=7.x escapa tags SSML (<break>,<phoneme>,<say-as>) no Communicate e as lê literalmente. Corrigido: bridge envia texto puro; pronuncias.json usa campo 'fala' (grafia falada) em vez de tags. Removidas _ssml_enriquecer/_prosodia_frases/_escapar; test_vox.py ganhou teste_audio_sem_ssml.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T17:53:04.807919",
+    "last_accessed": "2026-08-02T17:53:04.807919"
+  },
+  {
+    "id": 50,
+    "kind": "erro",
+    "task": "Investigar por que a voz lia os caracteres do fonema antes do nome",
+    "summary": "Causa raiz: edge-tts >=7.x escapa TODO texto no __init__ (escape()), entÃ£o tags SSML <phoneme>/<break>/<say-as> sÃ£o lidas literalmente pela voz. A bridge rodando (PID antigo) tinha cÃ³digo antigo em memÃ³ria que gerava <phoneme>. Fix: aplicar_phonemes passou a usar sÃ³ o campo \"fala\" (substituiÃ§Ã£o de texto puro) e nÃ£o gera mais <phoneme>. Reiniciar bridge carregou o cÃ³digo corrigido. pronuncias.json agora usa sÃ³ \"fala\": davidâ†’Davi, jarvisâ†’JÃ¡rvis, githubâ†’GuitirrÃ£bi, nvidiaâ†’EnvidiÃ¡.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T17:53:12.485449",
+    "last_accessed": "2026-08-02T17:53:12.485449"
   }
 ]

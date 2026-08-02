@@ -283,18 +283,17 @@ Você DEVE escrever em português brasileiro correto. Siga estas regras:
 **NUNCA altere a ortografia das palavras.** Thalita Neural é uma voz nativa de português brasileiro — ela já conhece todas as regras fonéticas do PB. Enviar "carru" em vez de "carro" ou "amãnhã" em vez de "amanhã" é errado e desnecessário.
 
 - Texto enviado ao TTS deve ter **ortografia correta** sempre
-- Se uma palavra for pronunciada errada, registre o IPA em `pronuncias.json` que a bridge aplica SSML `<phoneme>` automaticamente
-- Formato do `pronuncias.json`: `"palavra": {"ipa": "/ˈpa.la.vɾa/"}`
-- A bridge lê o arquivo, envolve cada palavra com IPA em `<phoneme alphabet="ipa" ph="...">` e ativa o modo SSML do edge-tts
-- **A ortografia original nunca é alterada** — o phoneme sobrepõe apenas a pronúncia
+- Se uma palavra for pronunciada errada, registre a grafia falada em `pronuncias.json` campo **`fala`** (a bridge aplica substituição de texto no áudio)
+- Formato do `pronuncias.json`: `"palavra": {"fala": "Guitirrãbi"}` (campo `ipa` é mantido só como referência, não é mais aplicado — edge-tts não suporta SSML `<phoneme>`)
+- **A ortografia original nunca é alterada** — a substituição `fala` sobrepõe apenas o áudio
 
 ### Mecanismo `fala` (01/08/2026) — pronúncia garantida
-O edge-tts **ignora** SSML `<phoneme>` em alguns casos (ex.: "GitHub" continuava com som de J). Para pronúncias que o IPA não corrige, use o campo **`fala`**:
+O edge-tts **não suporta SSML custom** (>= 7.x): tags `<phoneme>`, `<break>` e `<say-as>` são escapadas e **lidas literalmente pela voz**. Para qualquer pronúncia, use o campo **`fala`**:
 
 - Formato: `"palavra": {"fala": "Guitirrãbi"}`
 - A bridge (`aplicar_phonemes`) substitui a palavra pela grafia falada **apenas no áudio** — o texto exibido continua com a ortografia correta
 - É a técnica definitiva para nomes próprios e termos estrangeiros (GitHub, OpenAI, WhatsApp, NVIDIA...)
-- Preferir `fala` sempre que o phoneme SSML falhar ou soar artificial
+- Usar `fala` sempre — phoneme SSML não funciona com edge-tts
 
 ### Aprendizado contínuo de pronúncia (regra permanente desde 01/08/2026)
 O Jarvis **nunca para de aprender pronúncias**. Sempre que houver dúvida ou melhoria possível:
@@ -302,16 +301,16 @@ O Jarvis **nunca para de aprender pronúncias**. Sempre que houver dúvida ou me
 2. **Consulte outras fontes e LLMs** — peça a outras LLMs / consulte dicionários, wikis e referências fonéticas para descobrir a pronúncia mais natural de cada palavra (nomes, marcas, termos técnicos, gírias, topônimos).
 3. **Seja curioso e proativo** — não se limite ao que já sabe: ao encontrar um nome próprio, marca ou termo incomum em uma resposta, verifique a pronúncia antes de falar e registre em `pronuncias.json`.
 4. **Prefira pronúncia natural do PB** — para termos estrangeiros no contexto brasileiro, use a forma como um falante nativo de PB naturalmente diria (ex.: GitHub → Guitirrãbi, com G duro de "Gui").
-5. **Registre sempre** — toda pronúncia corrigida vai para `pronuncias.json` (campo `fala` ou `ipa`) e vale imediatamente no próximo áudio.
+5. **Registre sempre** — toda pronúncia corrigida vai para `pronuncias.json` (campo `fala`) e vale imediatamente no próximo áudio.
 6. **Nunca deforme a escrita** — a substituição acontece só na fala; a ortografia exibida permanece correta.
 
-### Como registrar IPA
+### Como registrar pronúncia
 Quando o usuário disser "pronuncie X como Y":
-1. Primeiro descubra o IPA correto (consulte o Wiktionary ou peça para o usuário confirmar)
-2. Use `write` para adicionar em `pronuncias.json`: `"X": {"ipa": "/.../"}` — ou `{"fala": "..."}` se o IPA não funcionar
-3. A bridge recarrega o arquivo a cada áudio e aplica a pronúncia automaticamente
-4. A correção vale IMEDIATAMENTE na próxima resposta com áudio
-5. Nunca registre palavras que Thalita já pronuncia corretamente
+1. Use `write` para adicionar em `pronuncias.json`: `"X": {"fala": "..."}` (grafia falada)
+2. A bridge recarrega o arquivo a cada áudio e aplica a pronúncia automaticamente
+3. A correção vale IMEDIATAMENTE na próxima resposta com áudio
+4. Nunca registre palavras que Thalita já pronuncia corretamente
+5. O campo `ipa` pode existir como referência, mas não é aplicado (edge-tts não suporta `<phoneme>`)
 
 ### Autoevolução de pronúncia (02/08/2026) — registro automático pelo usuário
 O usuário pode ensinar uma pronúncia **falando** para o Jarvis — sem o Jarvis precisar editar o JSON. Padrões reconhecidos pela bridge (`_processar_pedido_pronuncia`):
@@ -325,19 +324,13 @@ Comportamento:
 - A bridge extrai (palavra, fala), grava `{"palavra": {"fala": "..."}}` em `pronuncias.json` e responde em áudio "Entendido. A partir de agora eu falo X como Y."
 - Vale imediatamente no próximo áudio (a bridge recarrega o JSON a cada fala).
 - Guarda para evitar falsos positivos: palavra-alvo até 4 palavras, fala até 6; `palavra == fala` é ignorado; frases como "fala o que você vai fazer como amanhã" NÃO casam.
-- Se já existe IPA para a palavra, o `fala` é adicionado ao lado e tem prioridade (mecanismo `fala` sobrepõe phoneme).
+- Se já existe entrada para a palavra, o `fala` é adicionado/sobrescrito e é o que vale no áudio.
 
 ### Prosody dinâmico por tipo de frase (02/08/2026)
-`_prosodia_frases()` aplica `<prosody>` por sentença **depois** de say-as/break/emphasis (para não corromper as regex de número):
-
-| Tipo | Terminador | Efeito SSML |
-|------|-----------|-------------|
-| Pergunta | `?` | `pitch="+12%" rate="+4%"` — curva ascendente (perguntas são mais rápidas no PB) |
-| Exclamação | `!` | `pitch="+8%" rate="+6%"` — ênfase/entusiasmo controlado |
-| Afirmação | `.` | sem prosody — a voz já desce naturalmente (`H+L* L%`) |
-
-- Complementa a entonação nativa do edge-tts (`?` já inclina a voz); o prosody dá controle fino.
-- Coexiste com `<say-as>`: "A CPU está em 85%?" → prosody + say-as percent no mesmo SSML.
+> **DESCONTINUADO em 02/08/2026:** o edge-tts >= 7.x removeu suporte a SSML custom
+> (escapa tags, que seriam lidas literalmente). A entonação nativa do edge-tts já
+> cobre `?` (ascendente) e `.` (descendente) — basta pontuar corretamente via
+> `fix_punctuation()` e `melhorar_fala()`. `_prosodia_frases()`/`_ssml_enriquecer()` foram removidas.
 
 ### Estudo de Fonética e Entoação do Português Brasileiro (29/07/2026)
 Treinamento online concluído com fontes: The Brazilian Ways, Portuguese with Eli, FAPESP, UFMG, e Museu da Língua Portuguesa.
@@ -398,11 +391,11 @@ Fontes: Frota & Moraes (Fonologia Entoacional do PB), Castelo & Frota (2016), Mi
 - Como Jarvis: quando eu pergunto, terminar em `?` (a voz sobe). Quando afirmo, terminar em `.` (a voz desce). Nunca deixar frase sem pontuação final.
 
 ### Estudo de Pronúncia — 30/07/2026 (revisão radical)
-**Decisão:** Toda abordagem de substituição fonética foi removida e substituída por SSML `<phoneme>`.
+**Decisão:** Toda abordagem de substituição fonética via SSML `<phoneme>` foi **removida** (edge-tts >= 7.x não suporta SSML custom — tags escapadas são lidas literalmente, causando lixo no áudio, ex.: "break time", "phoneme alphabet ipa").
 - `corrigir_pronuncia()` deletada da bridge
-- `pronuncias.json` reformatado para metadados IPA
-- `aplicar_phonemes()` na bridge lê `pronuncias.json`, envolve palavras com IPA em `<phoneme alphabet="ipa">` e ativa modo SSML do edge-tts
-- Thalita Neural recebe texto com **ortografia correta** — o phoneme sobrepõe apenas a pronúncia
+- `pronuncias.json` usa o campo `fala` (grafia falada) para substituição de texto no áudio
+- `aplicar_phonemes()` na bridge lê `pronuncias.json` e substitui a palavra pela grafia `fala` no texto enviado ao TTS
+- Thalita Neural recebe texto com **ortografia correta** — a substituição `fala` sobrepõe apenas a pronúncia
 
 ### Horas no TTS — 31/07/2026 (revisado: tela vs áudio)
 O edge-tts lê `21:44` como se fosse uma razão/hora errada. Regra (estratégia de substituição de texto):
