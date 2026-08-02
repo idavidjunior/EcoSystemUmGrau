@@ -365,13 +365,13 @@ def gerar_html(nos, arestas, output_path):
   }};
   const network = new vis.Network(container, {{ nodes, edges }}, options);
 
-  // Posicao/zoom/cam posicao inicial capturados apos a gravitacao estabilizar
+  // Posicao/zoom/cam posicao inicial capturados quando a fisica estabilizar
   let viewInical = null;
   let scaleInical = null;
   let posIniciais = {{}};
   const guardaInicial = () => {{
-    if (network.getScale && !viewInical) {{
-      viewInical = network.getViewPosition();
+    if (network.getScale && !viewInicial) {{
+      viewInicial = network.getViewPosition();
       scaleInical = network.getScale();
       posIniciais = {{}};
       nodes.get().forEach(n => {{
@@ -380,8 +380,8 @@ def gerar_html(nos, arestas, output_path):
       }});
     }}
   }};
-  network.on('stabilizationIterationsDone', () => setTimeout(guardaInicial, 300));
-  setTimeout(guardaInicial, 1500);
+  network.once('stabilized', () => setTimeout(guardaInicial, 400));
+  setTimeout(guardaInicial, 2500);
 
   const original = {{}};
   nodes.get().forEach(n => {{
