@@ -349,5 +349,70 @@
     "access_count": 0,
     "created_at": "2026-08-02T16:04:47.433898",
     "last_accessed": "2026-08-02T16:04:47.433898"
+  },
+  {
+    "id": 40,
+    "kind": "padrao",
+    "task": "Aprender controle nativo da TV LG webOS via SSAP",
+    "summary": "Criei scripts/tv_control.py â€” biblioteca SSAP completa de controle da TV LG 50UT8050PSA (wss://192.168.15.6:3001). Comandos validados na TV real: status (poder+volume), volume set/step, mute, power_off, screen on/off, launch_app (YouTube abriu), get_foreground_app, teclas remotas via pointer input socket (OK funcionou). A chave salva (f61bccaabd247d8ae1702672d3f9c4f5) permite tudo EXCETO listApps (401 insufficient permissions â€” chave registrada com manifesto sem READ_INSTALLED_APPS). Para listar apps Ã© preciso re-parear com o manifesto completo em MANIFEST do tv_control.py, mas a TV bloqueia com 403 too many pairing requests apÃ³s excesso de tentativas â€” aguardar e re-parear na tela com forÃ§a. Regra do ecossistema: inicializar volume em 10 (aplicado com sucesso).",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T16:17:25.990882",
+    "last_accessed": "2026-08-02T16:17:25.990882"
+  },
+  {
+    "id": 41,
+    "kind": "padrao",
+    "task": "Controle TV LG webOS via SSAP — tv_control.py validado",
+    "summary": "Script scripts/tv_control.py criado e testado na TV real: status, volume(10), screen on/off, launch YouTube, teclas OK. listApps bloqueado (401) — chave antiga sem READ_INSTALLED_APPS; re-pareamento com manifesto completo retorna 403 too many pairing requests, aguardar e tentar depois na TV.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T16:17:30.755518",
+    "last_accessed": "2026-08-02T16:17:30.755518"
+  },
+  {
+    "id": 42,
+    "kind": "padrao",
+    "task": "Aprendizado TV LG webOS via SSAP",
+    "summary": "Controle nativo funcional (power, volume, teclas, midia, HDMI, foreground). listApps bloqueado por 401 mesmo com manifesto completo; precisa Modo Desenvolvedor (porta 5000) para catálogo de apps.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T16:19:34.126552",
+    "last_accessed": "2026-08-02T16:19:34.126552"
+  },
+  {
+    "id": 43,
+    "kind": "decisao",
+    "task": "Feedback continuo em tarefas longas",
+    "summary": "Usuario pediu narracao de progresso em cada passo (plano, descobertas, bloqueios, status intermediario antes da resposta do LLM). Registrado em JARVIS_SYSTEM.md regras 16 + secao propria.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T16:20:27.944171",
+    "last_accessed": "2026-08-02T16:20:27.944171"
+  },
+  {
+    "id": 44,
+    "kind": "decisao",
+    "task": "ImplementaÃ§Ã£o do MCP Obsidian server e integraÃ§Ã£o no ecossistema",
+    "summary": "Criei e implementei o MCP server eco-obsidian (scripts/mcp-obsidian-server.py, Python puro) expondo o vault Obsidian (docs/, conhecimento/, documentos/) como 4 tools MCP: list-vault, read-note, search-vault, vault-summary. Testado com initialize + tools/list + tools/call (todos funcionando). Passou no preflight_check.py com deploy completo (template + deployed, 6 MCP servers). O LLM agora consome o conteÃºdo real do vault (antes sÃ³ via contagem de arquivos no estado da bridge).",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T16:37:25.141052",
+    "last_accessed": "2026-08-02T16:37:25.141052"
   }
 ]
