@@ -219,5 +219,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T12:00:48.882391",
     "last_accessed": "2026-08-02T12:00:48.882391"
+  },
+  {
+    "id": 30,
+    "kind": "padrao",
+    "task": "Regras 3 camadas sincronizadas + deteccao divergencia",
+    "summary": "sync_rules.py: fonte unica = Constituicao; check/update/audit. AGENTS.md regenerado via blocos RULES:START/END. Integrado a preflight (secao 5, bloqueia), ecosystem sync (update antes deploy) e vigilante (timer 1h avisa). Detecta divergencia entre camadas de forma confiavel; nao tenta heuristica fragil p/ audio/aprendizado.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T12:11:57.996519",
+    "last_accessed": "2026-08-02T12:11:57.996519"
   }
 ]

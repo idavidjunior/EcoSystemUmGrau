@@ -137,6 +137,10 @@ Usuário → Maestro → classifica rota (A/B/C)
 4. **REGISTRAR APRENDIZADO** — ao fim de toda tarefa, registra-se em `conhecimento/aprendizados/`.
 5. **SINCRONIZAR SEMPRE** — tudo é comitado e sincronizado (local + GitHub). O GitHub é a
    rede de segurança do ecossistema.
+6. **REGRAS EM 3 CAMADAS** — a Constituição (`config/agents/00-system-rules.md`) é a fonte
+   única. `python scripts/sync_rules.py update` regenera o `AGENTS.md` automaticamente
+   e valida as referências no `opencode.jsonc`. O `ecosystem sync` e o preflight executam
+   isso a cada ciclo; o Vigilante avisa (1x/h) se alguma camada divergir.
 
 ## Setup — Plug & Play
 
