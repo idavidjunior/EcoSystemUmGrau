@@ -23,10 +23,12 @@ param(
     [string]$Command = "help"
 )
 
-$ecoDir = "$env:USERPROFILE\Desktop\Codigos\EcoSystemUmGrau"
+$ecoDir = Split-Path $PSScriptRoot -Parent
 $lerDir = "$ecoDir\ler-runtime"
-$projectsDir = "$env:USERPROFILE\Desktop\Codigos\Android"
+$projectsDir = "$env:USERPROFILE\Documents\Default Project"
 $learnDir = "$ecoDir\conhecimento\aprendizados"
+$configDir = "$env:USERPROFILE\.config\opencode"
+$agentsSrc = "$ecoDir\config\agents"
 
 function Write-Step { param($Msg) Write-Host "`n>>> $Msg" -ForegroundColor Cyan }
 function Write-OK   { param($Msg) Write-Host "  [OK] $Msg" -ForegroundColor Green }
@@ -36,6 +38,51 @@ function Write-Err  { param($Msg) Write-Host "  [!!] $Msg" -ForegroundColor Red 
 # ══════════════════════════════════════════════════════════════════════
 # SYNC
 # ══════════════════════════════════════════════════════════════════════
+function Sync-DeployConfig {
+    Write-Step "Deployando config + agents no OpenCode"
+    if (-not (Test-Path $configDir)) { New-Item -ItemType Directory -Path $configDir -Force | Out-Null }
+    if (-not (Test-Path "$configDir\agents")) { New-Item -ItemType Directory -Path "$configDir\agents" -Force | Out-Null }
+
+    # Renderiza template com USERPROFILE (forward slashes)
+    $up = $env:USERPROFILE.Replace('\', '/')
+    $template = Get-Content "$ecoDir\config\opencode.jsonc" -Raw
+    $rendered = $template.Replace('{{USERPROFILE}}', $up)
+    Set-Content "$configDir\opencode.jsonc" -Value $rendered -Encoding UTF8 -Force
+    Write-OK "opencode.jsonc renderizado ({{USERPROFILE}} -> $up)"
+
+    # Config fallback
+    Copy-Item "$ecoDir\config\opencode-model-fallback.jsonc" "$configDir\" -Force -ErrorAction SilentlyContinue
+    Write-OK "opencode-model-fallback.jsonc copiado"
+
+    # Agents (fonte unica: repo)
+    Copy-Item "$agentsSrc\*.md" "$configDir\agents\" -Force -ErrorAction SilentlyContinue
+    Write-OK "Agents copiados ($(Get-ChildItem "$configDir\agents\*.md" | Measure-Object | Select-Object -ExpandProperty Count))"
+
+    # Plugin fallback
+    $fbDir = "$configDir\node_modules"
+    if (-not (Test-Path "$fbDir\@razroo\opencode-model-fallback")) {
+        Write-Info "Instalando plugin fallback em $fbDir..."
+        Push-Location $configDir
+        npm install @razroo/opencode-model-fallback 2>&1 | ForEach-Object { Write-Info $_ }
+        Pop-Location
+    }
+    Write-OK "Plugin fallback OK"
+
+    # Valida
+    $test = & opencode debug config --pure 2>&1 | Out-String
+    if ($test -match "Error|Invalid") {
+        Write-Err "CONFIG INVALIDA apos deploy: $($test | Select-String 'Error|Invalid' | ForEach-Object { $_.Line })"
+        return $false
+    }
+    Write-OK "opencode debug config: schema valido"
+
+    $preflight = python "$ecoDir\scripts\preflight_check.py" 2>&1 | Out-String
+    Write-Info ($preflight -split "`n" | Select-Object -Last 2)
+    if ($preflight -match "ALL TESTS PASSED") { Write-OK "Preflight: ALL TESTS PASSED" }
+    else { Write-Err "Preflight: testes falharam (ver acima)" }
+    return $true
+}
+
 function Invoke-Sync {
     Write-Step "Sincronizando EcoSystemUmGrau"
     Push-Location $ecoDir
@@ -49,6 +96,8 @@ function Invoke-Sync {
         Write-OK "Commit + push realizado"
     } else { Write-OK "Nada a commitar" }
     Pop-Location
+
+    Sync-DeployConfig
 
     Write-Step "Sincronizando LER (local)"
     Push-Location $lerDir
