@@ -8,6 +8,14 @@ USERPROFILE = str(Path.home())
 BASE = str(Path(__file__).resolve().parent.parent)
 DEPLOYED = os.path.join(USERPROFILE, '.config', 'opencode', 'opencode.jsonc')
 BACKUP = DEPLOYED + '.bak'
+AUTH_FILE = os.path.join(USERPROFILE, '.local', 'share', 'opencode', 'auth.json')
+
+# Prefixos de segredo bruto que NUNCA devem constar crus em config/auth (NVIDIA mascarada, OpenAI, GitHub PAT, etc.)
+SECRET_PREFIXES = ('nvapi-', 'sk-', 'sk-or-', 'ghp_', 'gho_', 'ghu_', 'gh_', 'gpt-', 'api_')
+# Chaves de login OAuth oficial do OpenCode (shape de estado, nao segredos de provider)
+OAUTH_LOGIN_KEYS = ('token', 'type', 'expires', 'refresh_token', 'scope')
+# Heuristica: valor com este prefixo em provider != "nvidia" = chave mascarada (o bug sessao_limpeza_auth)
+NVAPI_DONO_LEGITIMO = 'nvidia'
 
 ERRORS = []
 WARNS = []
@@ -102,6 +110,105 @@ def check_mcp_servers(cfg, label='Config', test_servers=True):
         if test_servers:
             test_mcp_server(sname, cmd, args)
 
+def obscure(v, attrs=(8, 4)):
+    """Mascara um segredo para logs/erros SEM expor o valor."""
+    s = str(v)
+    if not s:
+        return '(vazio)'
+    if len(s) <= int(attrs[0]) + int(attrs[1]):
+        return '*' * len(s)
+    return s[:int(attrs[0])] + '*' * 6 + s[-int(attrs[1]):]
+
+def eh_segredo_bruto(v):
+    """True se o valor comeca com prefixo de chave API/PAT cru."""
+    s = str(v)
+    return any(s.startswith(p) for p in SECRET_PREFIXES)
+
+def guard_auth_json():
+    """auth.json deve conter apenas login OAuth oficial do OpenCode, nunca chaves de provider.
+    Reflete o bug 'sessao_limpeza_auth': chaves nvapi camufladas como outros providers."""
+    if not os.path.exists(AUTH_FILE):
+        check('Secrets: auth.json neutro (inexistente)', True)
+        return
+    try:
+        with open(AUTH_FILE, encoding='utf-8-sig') as f:
+            data = json.load(f)
+    except Exception as e:
+        check('Secrets: auth.json JSON valido', False, str(e)[:120])
+        return
+    if not isinstance(data, dict):
+        check('Secrets: auth.json shape', False, 'esperado objeto')
+        return
+
+    segredos = 0
+    mascaradas = 0
+    for provider, val in (data or {}).items():
+        if not isinstance(val, dict):
+            continue
+        for k, v in val.items():
+            s = str(v)
+            if eh_segredo_bruto(s):
+                # chave nvapi em provider != nvidia = mascara (o bug historico)
+                if s.startswith(NVAPI_DONO_LEGITIMO + '-') and provider.lower() != NVAPI_DONO_LEGITIMO:
+                    mascaradas += 1
+                    check(f'Secrets: auth.json chave mascarada em "{provider}"', False,
+                          f'{k}={obscuro(s)} (bloqueado)')
+                else:
+                    segredos += 1
+                    check(f'Secrets: auth.json segredo cru em "{provider}"', False,
+                          f'{k} (bloqueio - chaves devem usar env vars)')
+    if mascaradas or segredos:
+        return
+    # sem segredos crus: OK (auth.json com shape OAuth/{} e seguro)
+    check('Secrets: auth.json sem chaves mascaradas', mascaradas == 0)
+    check('Secrets: auth.json sem segredos crus', segredos == 0)
+
+def guard_env_vars(cfg, label):
+    """Toda {env:VAR} referenciada na config deve estar definida no ambiente."""
+    # coleta todas as refs {env:...} do template + deployed
+    refs = set()
+    for path in (os.path.join(BASE, 'config', 'opencode.jsonc'), DEPLOYED):
+        if os.path.exists(path):
+            try:
+                with open(path, encoding='utf-8-sig') as f:
+                    t = f.read()
+                refs |= set(re.findall(r'\{env:([A-Z0-9_]+)\}', t))
+            except Exception:
+                pass
+    if not refs:
+        check(f'Secrets: env vars referenciadas ({label})', True, 'nenhuma')
+        return
+    for var in sorted(refs):
+        v = os.environ.get(var, '').strip()
+        legend = 'DEFINIDA' if v else 'AUSENTE'
+        check(f'Secrets: env {var} {legend}', bool(v), 'nao definida no ambiente')
+
+def guard_literal_keys(cfg, label):
+    """Nenhuma apiKey/token/secret literal na config; so {env:...} permitido."""
+    def scan(obj, path=''):
+        hits = []
+        if isinstance(obj, dict):
+            for k, v in obj.items():
+                np = f'{path}.{k}' if path else k
+                lk = k.lower()
+                if lk in ('apikey', 'api_key', 'token', 'secret', 'password'):
+                    if isinstance(v, str) and not v.startswith('{env:'):
+                        hits.append((np, v))
+                elif isinstance(v, (dict, list)):
+                    hits += scan(v, np)
+        elif isinstance(obj, list):
+            for i, v in enumerate(obj):
+                hits += scan(v, f'{path}[{i}]')
+        return hits
+    for path, val in scan(cfg):
+        v = str(val)
+        if eh_segredo_bruto(v) or not v.startswith('{env:'):
+            env_uso = '{env:VAR}'
+            check(f'Secrets: apiKey literal em {path}', False,
+                  f'{path} nao usa {env_uso}. Todo segredo deve vir de env var.')
+            return
+    check(f'Secrets: sem apiKey literal ({label})', True)
+
 def run():
     print('========================================')
     print('  PRE-FLIGHT CHECK - Clausula Petrea')
@@ -165,6 +272,27 @@ def run():
             check('Regras 3 camadas consistentes', True)
     except Exception as e:
         check('Regras 3 camadas', False, str(e)[:200])
+
+    # 6. Secrets Guard (anti-regressao do bug 'sessao_limpeza_auth')
+    print('\n[6] Secrets Guard (anti-regressao)')
+    guard_auth_json()
+    # env vars: usa o cfg2 se existir, senao tenta ler deployed cru
+    env_cfg = None
+    for p in (os.path.join(BASE, 'config', 'opencode.jsonc'), DEPLOYED):
+        if os.path.exists(p):
+            try:
+                env_cfg = json.load(open(p, encoding='utf-8-sig'))
+                break
+            except Exception:
+                continue
+    guard_env_vars(env_cfg or {}, 'template/deployed')
+    for p, label in ((os.path.join(BASE, 'config', 'opencode.jsonc'), 'Template'),
+                     (DEPLOYED, 'Deployed')):
+        if os.path.exists(p):
+            try:
+                guard_literal_keys(json.load(open(p, encoding='utf-8-sig')), label)
+            except Exception as e:
+                check(f'Secrets: scan {label}', False, str(e)[:120])
 
     # Summary
     print('\n========================================')
