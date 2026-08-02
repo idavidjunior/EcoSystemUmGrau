@@ -232,5 +232,31 @@
     "access_count": 0,
     "created_at": "2026-08-02T12:11:57.996519",
     "last_accessed": "2026-08-02T12:11:57.996519"
+  },
+  {
+    "id": 31,
+    "kind": "decisao",
+    "task": "Evolução TTS Jarvis — naturalidade via SSML no edge-tts",
+    "summary": "Aprimorei gerar_audio() da jarvis_bridge.py com camada SSML: say-as para porcentagens/ordenais/dates (85%->'por cento', 1º->'primeiro', 31/07/2026->data natural), breaks respiração após saudações e entre frases, prosody ascendente em perguntas, emphasis em alertas de recursos (CPU/disco). Ordem correta: phoneme primeiro (texto puro), depois SSML. Edge-tts suporta todo SSML testado. test_vox passa (3 falhas preexistentes de status sao ambientais). Preflight OK. Audio gerado e tocado via vox_audio.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T12:41:42.517801",
+    "last_accessed": "2026-08-02T12:41:42.517801"
+  },
+  {
+    "id": 32,
+    "kind": "erro",
+    "task": "Bug: re.sub \\\\b%\\\\b fail",
+    "summary": "Regex \\\\b(\\\\d+)%\\\\b na porcentagem nunca casava '85%' porque % e espaço nao sao word-chars -> \\\\b a direita nao existe. Fix: usar (\\\\d+)\\\\s*%|(\\\\d+)\\\\s*por cento sem \\\\b final. Datas precisam zero-pad no <say-as format=dmy>.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T12:41:45.381153",
+    "last_accessed": "2026-08-02T12:41:45.381153"
   }
 ]
