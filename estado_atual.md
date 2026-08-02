@@ -489,7 +489,7 @@ Carregados de `~/.config/opencode/agents/` (fonte única: `EcoSystemUmGrau/confi
 | Knowledge graph | `EcoSystemUmGrau/ler-runtime/knowledge/knowledge_graph.json` (73 patterns, 42 decisões, 46 bugs) |
 | Git sync (EcoSystemUmGrau) | Automático: pull → commit → push (FileSystemWatcher + timer) |
 | Git sync (LER) | Automático: commit local (dentro do EcoSystemUmGrau) |
-| Scheduled task | `EcoSystemVigilante` — inicia no logon |
+| Scheduled task | `EcoSystemUmGrau` — criada pelo `setup.bat` via `Register-ScheduledTask` (inicia no logon) |
 | Profile helpers | `start-vigilante`, `stop-vigilante`, `status-vigilante` |
 | Aprendizados registrados | 48 |
 

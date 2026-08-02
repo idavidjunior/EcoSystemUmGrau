@@ -99,7 +99,7 @@ if not exist "%FALLBACK_DIR%\@razroo\opencode-model-fallback" (
 echo.
 
 :: ─── 6. Profile PowerShell ─────────────────────────────
-echo [6/7] Configurando profile PowerShell...
+echo [6/9] Configurando profile PowerShell...
 if not exist "%PROFILE_DIR%" mkdir "%PROFILE_DIR%"
 
 findstr "start-vigilante" "%PROFILE_PS1%" >nul 2>&1
@@ -130,8 +130,24 @@ if %errorlevel% neq 0 (
 ) else ( echo [OK] Profile ja configurado )
 echo.
 
-:: ─── 7. API Keys ───────────────────────────────────────
-echo [7/7] Configurar chaves de API (ENTER para pular)
+:: ─── 7. Scheduled Task do Vigilante ────────────────────
+echo [7/9] Criando Scheduled Task EcoSystemVigilante (inicia no logon)...
+schtasks /Query /TN "EcoSystemVigilante" >nul 2>&1
+if %errorlevel% neq 0 (
+    powershell -NoProfile -Command ^
+        "$a = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument \"-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File '%ECO_DIR%\scripts\vigilante.ps1'\"; " ^
+        "$t = New-ScheduledTaskTrigger -AtLogOn -User $env:USERNAME; " ^
+        "$s = New-ScheduledTaskSettingsSet -StartWhenAvailable -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1) -ExecutionTimeLimit (New-TimeSpan -Days 3650); " ^
+        "Register-ScheduledTask -TaskName 'EcoSystemVigilante' -Action $a -Trigger $t -Settings $s -Force | Out-Null"
+    if %errorlevel% equ 0 ( echo [OK] Scheduled Task criada ) else (
+        echo [AVISO] Nao foi possivel criar a task.
+        echo         Crie manualmente: powershell -NoProfile -ExecutionPolicy Bypass -File "%ECO_DIR%\scripts\vigilante.ps1"
+    )
+) else ( echo [OK] Scheduled Task ja existe )
+echo.
+
+:: ─── 8. API Keys ───────────────────────────────────────
+echo [8/9] Configurar chaves de API (ENTER para pular)
 echo.
 
 set /p NVIDIA_KEY="  NVIDIA API Key: "
@@ -155,8 +171,8 @@ if not "%GITHUB_TOKEN%"=="" (
     echo [OK] GH_TOKEN salva
 )
 
-:: ─── 8. Validar config ─────────────────────────────────
-echo [8/8] Validando config OpenCode...
+:: ─── 9. Validar config ─────────────────────────────────
+echo [9/9] Validando config OpenCode...
 call opencode debug config >nul 2>&1
 if %errorlevel% equ 0 (
     echo [OK] Config OpenCode valida

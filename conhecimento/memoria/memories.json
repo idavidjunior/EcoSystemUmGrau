@@ -271,5 +271,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T13:02:07.863621",
     "last_accessed": "2026-08-02T13:02:07.863621"
+  },
+  {
+    "id": 34,
+    "kind": "decisao",
+    "task": "setup.bat agora cria a scheduled task EcoSystemVigilante",
+    "summary": "Antes nenhum mecanismo criava a task (causa da inatividade). Adicionado passo 7/9 ao setup.bat usando Register-ScheduledTask via powershell -Command. schtasks com escape de aspas falha com caminho que tem espaco (Acesso negado). Registra no contexto do usuario, sem exigir admin.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T13:08:30.934360",
+    "last_accessed": "2026-08-02T13:08:30.934360"
   }
 ]

@@ -231,7 +231,7 @@ EcoSystemUmGrau/
 - Detecta alterações em projetos Android → sync imediato
 - Timer de 30s: git sync de todos os repos (Eco + LER + projetos)
 - Auto-descoberta de projetos via pastas com `git remote`
-- Scheduled task `EcoSystemVigilante` inicia no logon
+- Scheduled task `EcoSystemVigilante` inicia no logon (criada automaticamente pelo `setup.bat`)
 
 ## MCP Servers
 
