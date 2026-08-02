@@ -327,6 +327,19 @@
     }
     function onUp(){ ar=false; document.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseup', onUp); }
+    /* reporta a geometria via JS (nao acessa win.native -> evita recursao) */
+    function report(){
+      if(window.pywebview && window.pywebview.api){
+        try {
+          window.pywebview.api.guardar_geo(
+            Math.round(window.screenX||0), Math.round(window.screenY||0),
+            Math.round(window.innerWidth||0), Math.round(window.innerHeight||0));
+        } catch(e){}
+      }
+    }
+    window.addEventListener('pywebviewready', report);
+    window.addEventListener('resize', report);
+    window.addEventListener('mousemove', function(){ });
   })();
 </script>
 

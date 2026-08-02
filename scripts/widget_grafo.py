@@ -98,6 +98,19 @@ RESIZE_JS = """
     }
     function onUp(){ ar=false; document.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseup', onUp); }
+    /* reporta a geometria via JS (nao acessa win.native -> evita recursao) */
+    function report(){
+      if(window.pywebview && window.pywebview.api){
+        try {
+          window.pywebview.api.guardar_geo(
+            Math.round(window.screenX||0), Math.round(window.screenY||0),
+            Math.round(window.innerWidth||0), Math.round(window.innerHeight||0));
+        } catch(e){}
+      }
+    }
+    window.addEventListener('pywebviewready', report);
+    window.addEventListener('resize', report);
+    window.addEventListener('mousemove', function(){ });
   })();
 </script>
 """
@@ -179,6 +192,33 @@ class Bridge:
             self.win.resize(int(w), int(h))
         except Exception as e:
             print(f'[widget] resize: {e}')
+
+    def guardar_geo(self, x: int, y: int, w: int, h: int) -> None:
+        """Recebe a geometria reportada pelo JS e a persiste. NAO le win.native
+        aqui para evitar a recursao infinita do pywebview em Windows Forms."""
+        try:
+            _salvar_geo({'x': int(x), 'y': int(y), 'width': int(w), 'height': int(h)})
+        except Exception:
+            pass
+
+
+def _persistir_saida(win) -> None:
+    """Salva a geometria no fechamento, sem ler win.native (evita recursao)."""
+    try:
+        # le via JS: dispara um console do bridge que grava no fechamento
+        if hasattr(win, 'evaluate_js'):
+            try:
+                win.evaluate_js("""
+                  if(window.pywebview && window.pywebview.api){
+                    window.pywebview.api.guardar_geo(
+                      Math.round(window.screenX||0), Math.round(window.screenY||0),
+                      Math.round(window.innerWidth||0), Math.round(window.innerHeight||0));
+                  }
+                """)
+            except Exception:
+                pass
+    except Exception:
+        pass
 
 
 def _regenerate() -> bool:
@@ -294,26 +334,18 @@ def _anchor_to_desktop(hwnd: int) -> bool:
         return False
 
 
-def _keep_behind(hwnd: int) -> None:
-    """Mantem a janela sempre no fundo e sem roubar foco/taskbar. Tenta
-    ancorar ao desktop periodicamente ate conseguir (o WorkerW pode demorar)."""
+def _anchor_once(hwnd: int) -> None:
+    """Tenta ancorar a janela ao desktop (WorkerW) UMA vez e para.
+    Um unico SetParent e suficiente e nao dispara a recursao infinita do
+    pywebview (que acontecia com o SetWindowPos no loop de 1s). Nao havera
+    manutencao continua do z-order."""
     try:
         h = wintypes.HWND(hwnd)
         ex = _user32.GetWindowLongW(h, GWL_EXSTYLE)
         _user32.SetWindowLongW(h, GWL_EXSTYLE, ex | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE)
     except Exception:
         pass
-    ancorado = False
-    while True:
-        try:
-            h = wintypes.HWND(hwnd)
-            if not ancorado:
-                ancorado = _anchor_to_desktop(hwnd)
-            _user32.SetWindowPos(h, HWND_BOTTOM, 0, 0, 0, 0,
-                                 SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW)
-        except Exception:
-            pass
-        time.sleep(1.0)
+    _anchor_to_desktop(hwnd)
 
 
 def main() -> int:
@@ -333,7 +365,7 @@ def main() -> int:
     def _pin():
         hwnd = _find_hwnd_by_title(TITLE)
         if hwnd:
-            _keep_behind(hwnd)
+            _anchor_once(hwnd)
 
     threading.Thread(target=_pin, daemon=True).start()
 
@@ -353,28 +385,10 @@ def main() -> int:
     )
     bridge.win = win
 
-    def _geo_watcher():
-        """Persiste posicao+tamanho periodicamente e no fechamento."""
-        last = None
-        while True:
-            try:
-                cur = {k: getattr(win, k) for k in ('x', 'y', 'width', 'height')}
-                if cur != last:
-                    _salvar_geo(cur)
-                    last = cur
-            except Exception:
-                pass
-            time.sleep(1.0)
-
-    threading.Thread(target=_geo_watcher, daemon=True).start()
-
     try:
         webview.start(debug=False)
     finally:
-        try:
-            _salvar_geo({k: getattr(win, k) for k in ('x', 'y', 'width', 'height')})
-        except Exception:
-            pass
+        _persistir_saida(win)
         print('[widget] Fechado.')
     return 0
 
