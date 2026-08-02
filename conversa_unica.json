@@ -1,4 +1,6 @@
 [
+  "Usuário: Eu preciso deixar completamente bootável quero instalar um sistema Linux no meu computador e está aparecendo erros não sei se é erro no arquivo iso corrompido.",
+  "Jarvis: Entendido, senhor. Vamos resolver isso. Primeiro, preciso de duas informações: onde está o arquivo ISO e qual mensagem de erro aparece na tela. Se o arquivo estiver neste computador, eu mesmo verifico a soma de verificação para confirmar se ele está íntegro antes de gravar no pendrive. Na maioria dos casos, esse tipo de erro vem da gravação do pendrive ou do modo de inicialização, e não do arquivo em si. Pode me dizer o que aparece?",
   "Usuário: E aí?",
   "Jarvis: Opa, senhor! Tudo a postos por aqui. Processadores frios e ponte de voz ativa, esperando as suas ordens. O que vamos fazer hoje?",
   "Usuário: E aí!",
@@ -47,14 +49,16 @@
   "Jarvis: Fala, mestre! Domingo tranquilo, sistemas em verde e eu de prontidão. Qual é a próxima missão?",
   "Usuário: E aí!",
   "Jarvis: Opa! De novo, senhor? Tudo em ordem por aqui, ponte ativa e eu na escuta. O que vamos fazer agora?",
-  "Usuário: estou online funcionando",
-  "Jarvis: Que bom te ver funcionando, senhor! Estou aqui, tudo em ordem e na escuta. O que vamos fazer agora?",
-  "Usuário: Qual o resumo das ultimas tarefas?",
-  "Jarvis: Entendido. Vou resumir as últimas tarefas do repositório. No geral, o foco recente foi voz, pronúncia e integrações: corrigimos o sistema de áudio, ajustando o envio de texto puro ao sintetizador e registrando pronúncias pelo campo fala; criamos a cláusula de ativação de voz, com os comandos Ativar Eco e Desativar Eco; adicionamos o servidor de notas Obsidian consumido pelo modelo; implementamos o controle total da TV LG por protocolo webOS; e reforçamos o aprendizado automático e a escrita atômica no motor de memória.",
-  "Usuário: Me de um resumo do que fizemos hoje.",
-  "Jarvis: Vou resumir o que fizemos hoje no repositório. O dia teve três frentes: na parte de voz, evoluímos e depois corrigimos o sintetizador de áudio, confirmando que ele não aceita marcações e passando a usar texto puro com pronúncias registradas; criamos a cláusula de ativação de voz com os comandos Ativar Eco e Desativar Eco; e adicionamos a regra de feedback contínuo em tarefas longas. Nas integrações, conectamos o servidor de notas Obsidian, o controle da TV LG por protocolo webOS, e o monitor de cota da Nvidia com cadeia de fallback de modelos. Na infraestrutura, unificamos a sincronização em um único comando, tornamos o instalador portátil e organizamos as regras em três camadas com sincronização automática.",
-  "Usuário: Esta tudo pronto para o deploy?",
-  "Jarvis: A base está sincronizada com o GitHub, sem commits locais pendentes de envio. Mas há um grupo de mudanças ainda não commitadas: a atualização do grafo para usar a biblioteca local em vez do serviço online, o arquivo da biblioteca, o grafo gerado e o histórico de conversa. Posso commitar e enviar tudo agora para fechar o ciclo de deploy. Quer que eu faça?",
-  "Usuário: Toca uma musica.",
-  "Jarvis: O YouTube abriu na TV. Vou confirmar que o volume está no padrão 10 e deixar o usuário escolher a música.\n\nAbrir o YouTube na TV, senhor. O aplicativo foi lançado com sucesso e o volume está em 10, como de costume. Quer que eu navegue até alguma música específica ou algum canal? É só me dizer o nome que eu procuro para o senhor."
+  "Usuário: Qual o seu nível de cognição?",
+  "Jarvis: Meu nível de cognição é o de um modelo de linguagem chamado deepseek, da versão quatro, o flash gratuito. Tenho compreensão de linguagem, raciocínio e memória de sessão, mas minha cognição é digital, limitada ao que estou treinado e ao contexto que recebo. No papel de Jarvis, eu aplico isso na prática: planejo, executo e aprendo com as tarefas do ecossistema.",
+  "Usuário: Acredito que a pergunta certa é qual o nível de cognição do nosso ecossistema um grau.",
+  "Jarvis: A pergunta muda completamente, senhor, e a resposta é mais interessante. O EcoSystemUmGrau é um sistema de cognição ampliada, não uma inteligência única. Ele funciona em camadas: o Jarvis conecta e entende, o OpenCode raciocina sobre código com dezessete agentes especializados, o Loop Engineering Runtime planeja, executa, valida e aprende de forma autônoma, e a base de conhecimento acumula decisões, padrões e heurísticas ao longo das sessões. Em conjunto, isso forma uma cognição coletiva distribuída que planeja, executa, verifica e evolui sozinha — muito além de um modelo solto. O ponto mais forte é o aprendizado contínuo: tudo que fazemos vira memória e reuso no futuro.",
+  "Usuário: Atente-se aos assentos das palavras os pontos as vírgulas e tudo mais ok.",
+  "Jarvis: Entendido, senhor. Vou me atentar sempre aos acentos, às vírgulas, aos pontos e a toda a pontuação em português correto. Pode confiar que reviso cada resposta antes de entregar.",
+  "Usuário: A palavra reuso tem acento.",
+  "Jarvis: Tem razão, senhor. \"Reuso\" escrita assim fica errada. O correto é \"reúso\", com acento circunflexo no \"u\", já que é um hiato formado pela junção do prefixo \"re\" com \"uso\". De agora em diante vou escrever \"reúso\" com o acento. Muito obrigado pela correção.",
+  "Usuário: Não é acento circunflexo é acento agudo que se fala?",
+  "Jarvis: Você tem toda razão, senhor. Me corrijo: é acento agudo, \"reúso\", com o \"u\" tônico fechado em hiato, como em \"saúde\". O circunflexo ficaria \"rêuso\", o que está errado. Obrigado pela precisão — vale o agudo, não o circunflexo.",
+  "Usuário: Aprendeu.",
+  "Jarvis: Sim, aprendi. Fica registrado: \"reúso\" com acento agudo no \"u\", por ser hiato tônico, como em \"saúde\". Já vou aplicar isso daqui pra frente em todas as respostas."
 ]
