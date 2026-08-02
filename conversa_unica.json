@@ -1,6 +1,4 @@
 [
-  "Usuário: Me de um resumo do que fizemos hoje.",
-  "Jarvis: Hoje foi um dia cheio, David. Completamos o mecanismo de fonemas na ponte, com o dicionário de pronúncia ativo via SSML. Implementamos a memória contínua de conversa, que agora lembra do que falamos entre sessões. Criei o mapa-mestre das habilidades no arquivo Habilidades, e a nova habilidade de endereço por GPS, que achou a sua rua exata na Cidade Tiradentes. Também migramos o clima para a Open-Meteo e testamos a integração com o GitHub, com tudo sincronizado. Por fim, checamos a saúde do ecossistema e do celular, ambos em ordem.",
   "Usuário: Qual o resumo das ultimas tarefas?",
   "Jarvis: Resumo das últimas tarefas de hoje, quinta-feira à noite. Implementei a saudação formatada em português, com clima e previsão, e um monitor de saúde que prioriza a bateria do celular. Depois criei o catálogo único de habilidades, separando o que é habilidade do que é agente. Alinhei a autenticação da ponte com o servidor. E terminei com a pontuação automática das suas transcrições de voz e a correção das horas faladas no áudio, que agora lê vinte e uma e quarenta e quatro em vez de vinte e um dois pontos quarenta e quatro. Tudo comitado e sincronizado.",
   "Usuário: Me de um resumo do que fizemos hoje.",
@@ -48,5 +46,7 @@
   "Usuário: Faça uma relação dos aplicativos do meu celular.",
   "Jarvis: Encontrei 75 aplicativos no seu celular. Deixa eu organizar por categoria.\n\nBancos e pagamentos: Nubank, Inter, Itaú, Banco do Brasil, Caixa, BTG Pactual, C6 Bank, PicPay, Mercado Pago e Binance.\n\nInteligência artificial e produtividade: ChatGPT, Claude, DeepSeek, Gemini, Qwen, Copilot, OpenCode Mobile e o nosso VoxUmGrau.\n\nMensageiros e redes sociais: WhatsApp, Instagram, TikTok e Pinterest.\n\nNavegadores: Opera, Brave e Firefox.\n\nDocumentos e escritório: Google Docs, Drive, Excel, WPS Office, OneNote, Google Keep e notas da Xiaomi.\n\nDeslocamento: Waze, Uber, 99, Localiza e Ticket.\n\nUtilidades: Tailscale, TeamViewer, uTorrent, LocalSend, Gravador, JetAudio, MP3 Tagger, arquivos e gerenciador de arquivos.\n\nE extras como Vivo, Loterias Caixa, Porto Seguro, Shopee, Mercado Livre, Bíblia de estudo, Weawow e Radar Droid.\n\nQuer que eu detalhe alguma categoria ou remova algum aplicativo?",
   "Usuário: Remova o WPS Office.",
-  "Jarvis: WPS Office removido com sucesso."
+  "Jarvis: WPS Office removido com sucesso.",
+  "Usuário: Posso continuar com a sincronizacao?",
+  "Jarvis: Sincronização concluída com sucesso, senhor. Enviei as mudanças pendentes — o ajuste de caixa na pronúncia do GitHub e o log de memória da sessão. Notei que os processos de automação e a ponte estavam disputando o repositório ao mesmo tempo, então resolvi com uma sequência única de rebase e envio. Tudo subiu para o GitHub sem conflitos."
 ]

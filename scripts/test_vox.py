@@ -168,10 +168,10 @@ def teste_pronuncia_autoevolutiva():
     sys.path.insert(0, __import__('os').path.dirname(__file__))
     from jarvis_bridge import _processar_pedido_pronuncia
     casos = {
-        "pronuncie GitHub como Guitirrãbi": ("github", "guitirrãbi"),
-        "fala openai como Ópenái": ("openai", "ópenái"),
-        "sempre que eu falar nvidia, fale Envidiá": ("nvidia", "envidiá"),
-        "por favor pronuncie WhatsApp como Uátsápe": ("whatsapp", "uátsápe"),
+        "pronuncie GitHub como Guitirrãbi": ("github", "Guitirrãbi"),
+        "fala openai como Ópenái": ("openai", "Ópenái"),
+        "sempre que eu falar nvidia, fale Envidiá": ("nvidia", "Envidiá"),
+        "por favor pronuncie WhatsApp como Uátsápe": ("whatsapp", "Uátsápe"),
         # falsos positivos NÃO devem casar
         "fala o que você vai fazer como amanhã": None,
         "diga como você está": None,

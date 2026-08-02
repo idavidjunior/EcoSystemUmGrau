@@ -297,5 +297,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T14:49:17.738863",
     "last_accessed": "2026-08-02T14:49:17.738863"
+  },
+  {
+    "id": 36,
+    "kind": "padrao",
+    "task": "SincronizaÃ§Ã£o do repositÃ³rio EcoSystemUmGrau durante sessÃ£o ativa",
+    "summary": "Durante sessÃ£o ativa, processos concorrentes (vigilante/auto-commit e a prÃ³pria bridge) escrevem no mesmo repositÃ³rio, causando rejeiÃ§Ã£o de push (\"cannot lock ref\") e commits paralelos. PadrÃ£o que resolveu: executar git stash, pull --rebase, stash pop, git add -A, commit e push numa Ãºnica sequÃªncia encadeada rÃ¡pida, minimizando a janela de disputa. Antes de sincronizar, verificar git status e separar mudanÃ§as relevantes (ex.: ajuste de caixa em pronuncias.json) das mudanÃ§as de runtime (logs de memÃ³ria de sessÃ£o).",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T15:20:36.608723",
+    "last_accessed": "2026-08-02T15:20:36.608723"
   }
 ]
