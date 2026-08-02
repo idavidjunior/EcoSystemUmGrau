@@ -570,5 +570,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T19:23:50.578956",
     "last_accessed": "2026-08-02T19:23:50.578956"
+  },
+  {
+    "id": 57,
+    "kind": "decisao",
+    "task": "Adicionar 11 pontes inter-cluster no grafo do conhecimento e regenerar.html",
+    "summary": "Expandi BRIDGES_CLUSTERS no generate-graph-html.py: cognitivo<->navegacao, navegacao<->android, android<->cognicao, ler<->cognicao, ecossistema<->cognicao. Total 23 pontes criadas, 226 nos, 1482 conexoes. Grafo docs/grafo.html regenerado com sucesso.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T19:24:58.111754",
+    "last_accessed": "2026-08-02T19:24:58.111754"
   }
 ]

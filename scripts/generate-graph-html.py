@@ -93,6 +93,21 @@ BRIDGES_CLUSTERS = [
      'deactivates on song change'),
     # Ecossistema <-> Ler: escrita atomica em bug real
     ('Escrita atomica sempre', 'json.dump corrompia arquivo'),
+    # Cognicao <-> Navegacao: espera adaptativa / fallback em cascata
+    ('Espera adaptativa por tipo de recurso', 'Velocidade = evitar esperas fixas'),
+    ('Estrategia de fallback em cadeia', 'Cascata de Interacao'),
+    ('Heuristica de isolamento de falha', 'Retry com backoff exponencial'),
+    ('Ciclo OODA aplicado a navegacao', 'OODA-Nav'),
+    # Navegacao <-> Android: automatizacao de UI no dispositivo
+    ('Android View hierarchy scanning', 'ListView + BaseAdapter Pattern'),
+    ('Package/activity launch pattern', 'ADB Workflow'),
+    ('Sempre fechar teclado virtual Android', 'Vibration Pattern'),
+    # Android <-> Cognicao: persistencia
+    ('JSON Persistence Pattern', 'Padrao de escrita atomica para persistencia'),
+    ('Checkpoints salvos antes de cada iteracao',
+     'Framework de Persistencia com Snapshot Imutavel'),
+    # Ecossistema <-> Cognicao: failover em cadeia
+    ('Server failover com auto-return', 'Arvore de Decisao para Fallback de Servico'),
 ]
 
 
@@ -463,6 +478,9 @@ def gerar_html(nos, arestas, output_path):
         const p = network.getPositions([n.id])[n.id];
         posIniciais[n.id] = {{ x: p.x, y: p.y }};
       }});
+      // Congela a fisica: o layout padrao fica fixo para sempre,
+      // entao Home restaura cores + camera sem os nos se moverem.
+      network.setOptions({{ physics: {{ enabled: false }} }});
     }}
   }};
   network.once('stabilized', () => setTimeout(guardaInicial, 400));
@@ -489,7 +507,7 @@ def gerar_html(nos, arestas, output_path):
     document.querySelectorAll('.lg').forEach(b => b.classList.remove('active'));
     const atualizacoes = nodes.get().map(n => ({{
       id: n.id, color: original[n.id].color, size: original[n.id].size,
-      borderWidth: 0, borderWidthSelected: 0, shadow: false,
+      opacity: 1, borderWidth: 0, borderWidthSelected: 0, shadow: false,
       font: {{ size: 11, color: '#cdd6f4', face: 'Segoe UI', bold: false }}
     }}));
     nodes.update(atualizacoes);
@@ -504,13 +522,11 @@ def gerar_html(nos, arestas, output_path):
   function telaInicial() {{
     limpar();
     if (viewInical && network.moveTo) {{
-      // restaura as posicoes originais dos nos
+      // restaura as posicoes originais dos nos e a visao inicial
       const atualizacoes = Object.keys(posIniciais).map(id => ({{
-        id, x: posIniciais[id].x, y: posIniciais[id].y, fixed: {{ x: false, y: false }}
+        id, x: posIniciais[id].x, y: posIniciais[id].y, fixed: false
       }}));
       nodes.update(atualizacoes);
-      // desliga a fisica para os nos ficarem exatamente onde estavam
-      network.setOptions({{ physics: {{ enabled: false }} }});
       network.moveTo({{
         position: viewInical,
         scale: scaleInical
