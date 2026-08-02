@@ -70,6 +70,56 @@ def slugify(text, maxlen=60):
     return text[:maxlen] if text else None
 
 
+# --- Status dos bugs ------------------------------------------------------
+# Bugs da base sao historicos: a maioria ja foi corrigido. O campo `fix`
+# registra a correcao. Permitimos distinguir visualmente no grafo.
+STATUS_LABEL = {
+    'resolvido': 'Resolvido',
+    'pendente': 'Pendente',
+    'conhecido': 'Limitacao conhecida',
+}
+STATUS_COR = {
+    'resolvido': '#2ecc71',
+    'pendente': '#e74c3c',
+    'conhecido': '#f1c40f',
+}
+_PLACEHOLDER_FIX = {'', '---', '-----', '-------', '-----------', '-'}
+
+
+def eh_lixo_issue(text):
+    """Issue sem conteudo real (so hifens)."""
+    t = (text or '').strip()
+    if not t:
+        return True
+    return all(c in ' -\n\t\r' for c in t)
+
+
+def bug_status(b):
+    """Deriva o status do bug a partir dos campos fix/root_cause."""
+    issue = (b.get('issue') or '').strip()
+    fix = (b.get('fix') or '').strip()
+    rc = (b.get('root_cause') or '').strip()
+    low = ' '.join((issue + ' ' + fix + ' ' + rc)).lower()
+
+    # Limitacao conhecida: sem correcao real e sintomas de limitacao aceita
+    if fix in _PLACEHOLDER_FIX:
+        if any(k in low for k in ('nao-critica', 'non-critic',
+                                  'accepted', 'always', 'sempre falha', 'workaround',
+                                  'known', 'key invalida', 'api key invalida')):
+            return 'conhecido'
+        # Track best score / explicit redirect sao registros de "como fazer melhor",
+        # sem ser um bug ativo: marcar como conhecido/pendente
+        if 'track the best' in low or 'redirect' in low:
+            return 'pendente'
+        return 'pendente'
+
+    # Ha uma correcao descrita.
+    if any(k in fix.lower() for k in ('nao-critica', 'non-critic',
+                                      'accepted', 'workaround')):
+        return 'conhecido'
+    return 'resolvido'
+
+
 def make_id(prefix, text):
     slug = slugify(text)
     if not slug:
@@ -119,13 +169,16 @@ def extrair_nos():
 
     for b in g.get('bug_fixes', []):
         t = (b.get('issue', '') or '').strip()
-        if not t or t.strip(' -\n\t\r') == '-----------':
+        if eh_lixo_issue(t):
             continue
         nid = make_id('b', t[:80])
         if not nid or any(n['id'] == nid for n in nos):
             continue
         src = b.get('source', '')
-        add_no(nid, t, 'bugs', ['bug', slugify(src) or 'geral'], f'{src}\n\n{b.get("root_cause","")}', src)
+        st = bug_status(b)
+        add_no(nid, t, 'bugs', ['bug', slugify(src) or 'geral'],
+               f'{src}\n\n{b.get("root_cause","")}\n\n[FIX] {b.get("fix","")}', src)
+        nos[-1]['status'] = st
         nos_por_categoria['bugs'].append(nid)
 
     for c in g.get('cognitive_patterns', []):
@@ -210,18 +263,26 @@ def gerar_html(nos, arestas, output_path):
         cor = CATEGORIA_COR.get(n['categoria'], '#888')
         if n['categoria'] == 'hub':
             cor = CLUSTER_COR.get(n['cl'], '#666')
+        if n['categoria'] == 'bugs':
+            cor = STATUS_COR.get(n.get('status'), cor)
         size = 10 + int(14 * (n['grau'] / max_grau)) if max_grau else 10
         if n['categoria'] == 'hub':
             size = max(size, 30)
+        label = n['label']
+        if n['categoria'] == 'bugs':
+            st = n.get('status', 'pendente')
+            label = f"{'✔' if st == 'resolvido' else ('†' if st == 'conhecido' else '✖')} {label}"
         node_obj = {
             'id': n['id'],
-            'label': n['label'],
+            'label': label,
             'color': cor,
             'size': size,
             'title': titles[n['id']] or n['label'],
             'cat': n['categoria'],
             'cl': n['cl'],
         }
+        if n['categoria'] == 'bugs':
+            node_obj['st'] = n.get('status', 'resolvido')
         nodes_js.append(json.dumps(node_obj, ensure_ascii=False))
 
     edges_js = [json.dumps({'from': a, 'to': b, 'color': '#999', 'width': 1}, ensure_ascii=False)
@@ -235,6 +296,11 @@ def gerar_html(nos, arestas, output_path):
         f'<button class="lg" data-filter="cl" data-value="{cl}" data-color="{cor}">'
         f'<span class="dot" style="background:{cor}"></span>{cl.capitalize()}</button>'
         for cl, cor in CLUSTER_COR.items())
+    legend_st = ''.join(
+        f'<button class="lg" data-filter="st" data-value="{st}" data-color="{cor}">'
+        f'<span class="dot" style="background:{cor}"></span>Bug: {label}</button>'
+        for st, label in STATUS_LABEL.items())
+    legend_st = '<span style="opacity:.6">|</span> ' + legend_st
 
     html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -276,6 +342,7 @@ def gerar_html(nos, arestas, output_path):
   <div id="legend">
     {legend_cat}
     {legend_cl}
+    {legend_st}
     <button class="lg" data-filter="all" data-value="" data-color="#888">✕ Limpar</button>
   </div>
   <div id="stats">{len(nos)} nos | {len(arestas)} conexoes — clique em uma categoria ou cluster para destacar</div>
@@ -427,6 +494,7 @@ def gerar_html(nos, arestas, output_path):
     nodes.get().forEach(n => {{
       if (filtro === 'cat' && n.cat === valor) grupo.add(n.id);
       else if (filtro === 'cl' && n.cl === valor) grupo.add(n.id);
+      else if (filtro === 'st' && n.st === valor) grupo.add(n.id);
     }});
 
     const corViva = clarear(corGrupo, 0.35);

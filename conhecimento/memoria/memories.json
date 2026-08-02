@@ -531,5 +531,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T18:48:52.782926",
     "last_accessed": "2026-08-02T18:48:52.782926"
+  },
+  {
+    "id": 54,
+    "kind": "decisao",
+    "task": "Status de bugs no grafo",
+    "summary": "Adicionado ao generate-graph-html.py o status de cada bug (resolvido/pendente/conhecido) derivado dos campos fix/root_cause/issue. Nos de bug agora: (1) icone na label (OK ok/★ definitivo/X pendente), (2) cor por status (verde/amarelo/vermelho), (3) legenda com filtro Bug: Resolvido/Pendente/Limitacao, (4) title com [FIX]. Filtro no JS por st. Resultado: 41 resolvidos, 2 pendentes (registros sem fix: track best score / explicit redirect), 1 conhecido (AcoustID accepted non-critical). MIUI foi falso-positivo antigo (fix contem 'aceitar' casava 'aceunta') e agora e resolvido. Limpeza de nos lixo (----). Grafo regerado: 226 nos | 1460 conexoes. Clique na legenda Bug: Resolvido destaca em verde.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T19:13:12.059023",
+    "last_accessed": "2026-08-02T19:13:12.059023"
   }
 ]
