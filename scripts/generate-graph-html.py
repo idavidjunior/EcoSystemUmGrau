@@ -365,6 +365,24 @@ def gerar_html(nos, arestas, output_path):
   }};
   const network = new vis.Network(container, {{ nodes, edges }}, options);
 
+  // Posicao/zoom/cam posicao inicial capturados apos a gravitacao estabilizar
+  let viewInical = null;
+  let scaleInical = null;
+  let posIniciais = {{}};
+  const guardaInicial = () => {{
+    if (network.getScale && !viewInical) {{
+      viewInical = network.getViewPosition();
+      scaleInical = network.getScale();
+      posIniciais = {{}};
+      nodes.get().forEach(n => {{
+        const p = network.getPositions([n.id])[n.id];
+        posIniciais[n.id] = {{ x: p.x, y: p.y }};
+      }});
+    }}
+  }};
+  network.on('stabilizationIterationsDone', () => setTimeout(guardaInicial, 300));
+  setTimeout(guardaInicial, 1500);
+
   const original = {{}};
   nodes.get().forEach(n => {{
     original[n.id] = {{ color: n.color, size: n.size }};
@@ -400,7 +418,21 @@ def gerar_html(nos, arestas, output_path):
 
   function telaInicial() {{
     limpar();
-    network.fit({{ animation: true }});
+    if (viewInical && network.moveTo) {{
+      // restaura as posicoes originais dos nos
+      const atualizacoes = Object.keys(posIniciais).map(id => ({{
+        id, x: posIniciais[id].x, y: posIniciais[id].y, fixed: {{ x: false, y: false }}
+      }}));
+      nodes.update(atualizacoes);
+      // desliga a fisica para os nos ficarem exatamente onde estavam
+      network.setOptions({{ physics: {{ enabled: false }} }});
+      network.moveTo({{
+        position: viewInical,
+        scale: scaleInical
+      }});
+    }} else {{
+      network.fit({{ animation: true }});
+    }}
   }}
 
   function focarVizinhanca(id, corGrupo) {{
