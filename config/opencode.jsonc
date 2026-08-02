@@ -59,6 +59,8 @@
   },
   "permission": "allow",
   "instructions": [
+    "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/AGENTS.md",
+    "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/config/agents/00-system-rules.md",
     "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/Habilidades/**/SKILL.md",
     "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/Habilidades/**/skill.md",
     "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/Habilidades/tecnicas/clima-api/skill.md",

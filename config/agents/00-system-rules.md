@@ -1,3 +1,8 @@
+---
+description: Constituição oficial do ecossistema — regras permanentes e obrigatórias que todo agente deve seguir
+mode: subagent
+---
+
 # SYSTEM RULES
 ## Constituição Oficial do Ecossistema de Agentes
 
