@@ -583,5 +583,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T19:24:58.111754",
     "last_accessed": "2026-08-02T19:24:58.111754"
+  },
+  {
+    "id": 58,
+    "kind": "padrão",
+    "task": "Widget desktop do grafo do conhecimento em tempo real",
+    "summary": "Criado scripts/widget_grafo.py: abre docs/grafo.html num janela pywebview e monitora knowledge_graph.json + conhecimento/. Arquitetura: injeta bloco JS no HTML que chama webview.api.versao() a cada 2s; se a versao composta dos mtimes das fontes muda, a pagina recarrega com cache-bypass. Versao = join de mtime_ns de knowledge_graph.json, max mtime de conhecimento/** e mtime do próprio grafo gerado. pywebview.start() roda o mainloop no thread principal e a bridge (window.pywebview.api) resolve JS<->Python sem conflito de threads. Gerar via subprocess [sys.executable, GEN_SCRIPT, OUTPUT]. Valdado: sintaxe OK, versao muda ao toque na fonte e fica estavel sem mudanca, janela abre e processo nao crasha ao tocar fonte.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T19:46:15.761983",
+    "last_accessed": "2026-08-02T19:46:15.761983"
   }
 ]

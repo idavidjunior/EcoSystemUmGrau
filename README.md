@@ -205,6 +205,21 @@ O conhecimento do ecossistema vira uma **teia visual interativa** no Obsidian:
 4. **Cores por tag** — no grafo, *Group by tag* ou plugins (Excalidraw, Juggl para 3D).
 5. **Regenerar** — após novos aprendizados, rode o script de novo (idempotente, nunca duplica seções).
 
+### Grafo interativo em tempo real (widget desktop)
+
+Além do vault, o conhecimento vira um **grafo force-directed** em `docs/grafo.html`
+(226 nós | 1482 conexões, cores por categoria, badges de status dos bugs, botão Home).
+Para vê-lo numa **janela desktop que acompanha a teia em tempo real**:
+
+```bash
+pip install pywebview            # dependência do widget
+python scripts/widget_grafo.py   # abre o grafo e recarrega quando as fontes mudam
+```
+
+O widget observa `knowledge_graph.json` + `conhecimento/`, re-gera `docs/grafo.html`
+e recarrega a janela automaticamente — útil para visualizar o cérebro crescendo
+enquanto o LER aprende.
+
 ## Estrutura do Repo
 
 ```
