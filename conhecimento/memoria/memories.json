@@ -596,5 +596,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T19:46:15.761983",
     "last_accessed": "2026-08-02T19:46:15.761983"
+  },
+  {
+    "id": 59,
+    "kind": "decisão",
+    "task": "Widget desktop do grafo: redimensionavel e persistente",
+    "summary": "Aprimorado scripts/widget_grafo.py para widget estilo Rainmeter no Windows. Janela frameless (frameless=True), ancorada ATRAS das outras janelas via SetWindowPos HWND_BOTTOM persistente num loop (1s). Controles (header/legenda) ocultos por padrao (CSS opacity:0 + pointer-events:none); clique DIRETO do mouse (contextmenu) alterna classe .desktop no body que revela header + alca. Alca de redimensionamento no canto (div #mk-resize) chama pywebview.api.redimensionar(w,h) -> win.resize(). Geometria (x,y,width,height) persistida em docs/grafo_widget_geometria.json, restaurada no create_window e re-salva por watcher de 1s + no fechamento. \n\nLICAO IMPORTANTE: ancoragem Progman/WorkerW (SetParent p/ WorkerW) NAO funciona de forma confiavel com pywebview 6 (EdgeChromium/WebView2): o WebView2 cria janelas-filha proprias que resistem ao reparent p/ WorkerW, parent fica None. A abordagem robusta e manter HWND_BOTTOM + re-baixamento continuo pelo estilo WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE. FindWindowW(None,title) pode retornar 0 para janelas ancoradas; usar EnumWindows por classe/processo. ctypes.wintypes precisa import (from ctypes import wintypes) nao ctypes.wintypes.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T20:08:05.395122",
+    "last_accessed": "2026-08-02T20:08:05.395122"
   }
 ]
