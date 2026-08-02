@@ -77,10 +77,12 @@ function Sync-DeployConfig {
     Write-OK "opencode debug config: schema valido"
 
     $preflight = python "$ecoDir\scripts\preflight_check.py" 2>&1 | Out-String
-    Write-Info ($preflight -split "`n" | Select-Object -Last 2)
-    if ($preflight -match "ALL TESTS PASSED") { Write-OK "Preflight: ALL TESTS PASSED" }
-    else { Write-Err "Preflight: testes falharam (ver acima)" }
-    return $true
+    if ($LASTEXITCODE -eq 0 -and $preflight -match "TODOS TESTES PASSARAM") {
+        Write-OK "Preflight: TODOS TESTES PASSARAM"
+        return $true
+    }
+    Write-Err "Preflight: testes falharam (exit $LASTEXITCODE)"
+    return $false
 }
 
 function Invoke-Sync {
@@ -92,7 +94,7 @@ function Invoke-Sync {
         $status | ForEach-Object { Write-Info $_ }
         git add -A
         git commit -m "[ecosystem sync] $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
-        git push
+        git push 2>&1 | ForEach-Object { Write-Info ($_ -replace '.*To https', 'To https') }
         Write-OK "Commit + push realizado"
     } else { Write-OK "Nada a commitar" }
     Pop-Location
@@ -122,7 +124,7 @@ function Invoke-Sync {
             $status | ForEach-Object { Write-Info $_ }
             git add -A
             git commit -m "[auto] $($proj.Name) - $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
-            git push
+            git push 2>&1 | ForEach-Object { Write-Info ($_ -replace '.*To https', 'To https') }
             Write-OK "Commit + push realizado"
         } else { Write-OK "Nada a commitar" }
         Pop-Location
