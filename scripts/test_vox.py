@@ -129,39 +129,30 @@ async def teste():
             print("-" * 50)
 
 
-def teste_ssml_prosodia():
+def teste_audio_sem_ssml():
     sys.path.insert(0, __import__('os').path.dirname(__file__))
-    from jarvis_bridge import _ssml_enriquecer
+    from jarvis_bridge import gerar_audio, sanitizar, melhorar_fala, aplicar_phonemes
     casos = {
-        # pergunta → prosody ascendente (pitch +12%)
-        "O que você quer fazer?": '<prosody pitch="+12%"',
-        # exclamação → prosody enfático (pitch +8%)
-        "Que ótima notícia!": '<prosody pitch="+8%"',
-        # afirmação → sem prosody
+        "O que você quer fazer?": None,
+        "Que ótima notícia!": None,
         "Estou sincronizando tudo.": None,
-        # pergunta com número/percentual → prosody + say-as coexistem
-        "A CPU está em 85%?" : '<prosody pitch="+12%"',
-        # frase mista: afirmação sem prosody + pergunta com prosody
-        "Vou verificar. Posso continuar?": '<prosody pitch="+12%"',
+        "A CPU está em 85%?": None,
+        "Boa tarde, David. Domingo de céu parcialmente nublado e 27 graus lá fora.": None,
+        "São 21:44 e a memória do PC bate 91%.": None,
+        "1º colocado e 10% de desconto na data 31/07/2026.": None,
     }
     falhas = 0
-    for entrada, esperado in casos.items():
-        saida, usou = _ssml_enriquecer(entrada)
-        ok = (esperado in saida) if esperado else (esperado is None and not usou)
-        if not ok:
+    for entrada, _ in casos.items():
+        t = sanitizar(entrada)
+        t = melhorar_fala(t)
+        saida, _ = aplicar_phonemes(t)
+        if '<' in saida or '>' in saida or '&lt;' in saida or '&gt;' in saida:
             falhas += 1
-            print(f"[FALHOU] {entrada!r} -> {saida!r} (esperado prosody: {esperado!r}, usou={usou})")
+            print(f"[FALHOU] {entrada!r} -> {saida!r} (contém tag SSML)")
         else:
             print(f"[OK] {entrada!r} -> {saida!r}")
-    # verifica coexistência say-as + prosody na pergunta com percentual
-    saida, usou = _ssml_enriquecer("A CPU está em 85%?")
-    if '<say-as' in saida and '<prosody' in saida:
-        print("[OK] say-as + prosody coexistem na pergunta com percentual")
-    else:
-        falhas += 1
-        print(f"[FALHOU] coexistencia say-as+prosody: {saida!r}")
-    assert falhas == 0, f"{falhas} caso(s) de prosody falharam"
-    print(f"ssml_prosodia: {len(casos) + 1}/{len(casos) + 1} OK")
+    assert falhas == 0, f"{falhas} caso(s) emitiram SSML no texto de áudio"
+    print(f"audio_sem_ssml: {len(casos)}/{len(casos)} OK")
 
 
 def teste_pronuncia_autoevolutiva():
