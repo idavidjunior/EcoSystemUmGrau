@@ -54,6 +54,47 @@ CLUSTER_COR = {
     'navegacao': '#fb8072', 'ecossistema': '#80b1d3', 'cognicao': '#fdb462', 'geral': '#b3b3b3',
 }
 
+# ---------------------------------------------------------------------------
+# Pontes inter-cluster (Cerebro Vivo) ---------------------------------------
+# O grafo, por construcao, so cria arestas por tag/fonte/hub — o que deixa os
+# clusters isolados (0 arestas entre clusters). Estas arestas curadas conectam
+# nos de clusters DIFERENTES que compartilham semantica real, transformando o
+# grafo em um cerebro integrado. Cada ponte e (fragA, fragB): substrings que
+# devem casar exatamente UM no cada — se ambiguas ou ausentes, a ponte e
+# ignorada com aviso (nunca impede a geracao). O prefixo '-encoding UTF-8' e
+# escrito com aspas para evitar falsa quebra de linha.
+# ---------------------------------------------------------------------------
+
+BRIDGES_CLUSTERS = [
+    # Android <-> cognicao: snapshot imutavel
+    ('Framework de Persistencia com Snapshot Imutavel',
+     'Salvar cria novo arquivo timestampado'),
+    # Ler <-> general: escrita atomica (persistencia JSON)
+    ('Escrita atomica sempre', 'Estado persiste em JSON'),
+    ('Escrita atomica sempre', 'Crash no meio do json'),
+    # Cognicao <-> Mp3player: scoring / fallback multi-fonte
+    ('Modelo de scoring para busca multi-resultado',
+     'iTunes search with scoring thresholds'),
+    ('Estrategia de fallback em cadeia',
+     'Metadata busca em multi-fontes: AcoustID'),
+    # Cognicao <-> Ecossistema: aprendizado continuo / failover
+    ('Framework de Aprendizado Continuo', 'captura de conhecimento do ecossistema'),
+    ('Estrategia de fallback em cadeia', 'failover inteligente'),
+    # Ecossistema <-> Navegacao: seguranca de chaves / protocolo MCP
+    ('Chaves API exclusivamente em env vars',
+     'Nunca armazenar API keys em config files'),
+    ('MCP tool naming', 'MCP server handshake obrigatorio'),
+    ('MCP JSON-RPC notification handling', 'MCP server handshake obrigatorio'),
+    # Ler <-> Android: encoding UTF-8 no Windows
+    ('Encoding UTF-8 explicito em Python no Windows',
+     'in javac'),
+    # Ecossistema <-> Ler: separacao causa-efeito-temporal
+    ('Principio da separacao causa-efeito-temporal',
+     'deactivates on song change'),
+    # Ecossistema <-> Ler: escrita atomica em bug real
+    ('Escrita atomica sempre', 'json.dump corrompia arquivo'),
+]
+
 
 def cluster_of(source):
     src = (source or '').split('+')[0].strip()
@@ -239,7 +280,51 @@ def extrair_nos():
         for m in membros:
             arestas.add(tuple(sorted((hub, m))))
 
+    resolver_pontes(nos, arestas)
     return nos, arestas
+
+
+def resolver_pontes(nos, arestas):
+    """Cria arestas curadas entre clusters (pontes inter-cluster).
+
+    Cada ponte e (fragA, fragB). Cada fragmento deve casar EXATAMENTE um no;
+    se casar 0 ou 2+, a ponte e ignorada com aviso — nunca aborta a geracao.
+    """
+    import warnings
+    labels = {}
+    for n in nos:
+        labels.setdefault(n['label'].lower(), []).append(n['id'])
+
+    def resolve(frag):
+        low = frag.lower()
+        hits = [ID for label, ids in labels.items()
+                for ID in ids if low in label]
+        return hits
+
+    ligadas = 0
+    descartadas = 0
+    for frag_a, frag_b in BRIDGES_CLUSTERS:
+        ids_a = resolve(frag_a)
+        ids_b = resolve(frag_b)
+        # mantem so a combina nao intra-cluster de fato (forca dois ids)
+        if len(ids_a) == 1 and len(ids_b) == 1:
+            arestas.add(tuple(sorted((ids_a[0], ids_b[0]))))
+            ligadas += 1
+        else:
+            descartadas += 1
+            warnings.warn(
+                f'Ponte ignorada (precisa casar exatamente 1 no por lado): '
+                f'"{frag_a}"->{ids_a} | "{frag_b}"->{ids_b}')
+    if ligadas:
+        print(f'  {ligadas} pontes inter-cluster criadas ({descartadas} descartadas)')
+
+    # Amacacao: hub de cognicao liga ao hub de todos os demais clusters.
+    hubs = {n['cl']: n['id'] for n in nos if n['categoria'] == 'hub'}
+    if 'cognicao' in hubs:
+        for cl, hub in hubs.items():
+            if cl == 'cognicao':
+                continue
+            arestas.add(tuple(sorted((hubs['cognicao'], hub))))
 
 
 def grau_calcular(nos, arestas):
@@ -370,8 +455,8 @@ def gerar_html(nos, arestas, output_path):
   let scaleInical = null;
   let posIniciais = {{}};
   const guardaInicial = () => {{
-    if (network.getScale && !viewInicial) {{
-      viewInicial = network.getViewPosition();
+    if (network.getScale && !viewInical) {{
+      viewInical = network.getViewPosition();
       scaleInical = network.getScale();
       posIniciais = {{}};
       nodes.get().forEach(n => {{

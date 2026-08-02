@@ -557,5 +557,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T19:17:08.401402",
     "last_accessed": "2026-08-02T19:17:08.401402"
+  },
+  {
+    "id": 56,
+    "kind": "decisoes",
+    "task": "Pontes inter-cluster no Cerebro Vivo",
+    "summary": "Adicionei BRIDGES_CLUSTERS curadas ao gerador do grafo: 13 pontes semantica entre clusters (cognicao->android/ler/mp3/ecossistema, ler->android UTF-8, etc) + hub de cognicao ligando a todos os hubs. Resultado: 12 arestas inter-cluster (antes 0), pares de clusters conectados 0->7, componentes 67->55. Resolucao segura: fragmento de rotulo deve casar exatamente 1 no, senao a ponte e ignorada. Regenerado docs/grafo.html.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T19:23:50.578956",
+    "last_accessed": "2026-08-02T19:23:50.578956"
   }
 ]
