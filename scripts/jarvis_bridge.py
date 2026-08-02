@@ -433,11 +433,128 @@ def aplicar_phonemes(texto):
     texto, n = re.subn(r'\b([^\W\d_]+)\b', sub, texto)
     return texto, n > 0
 
+def _ssml_enriquecer(t):
+    """Enriquence texto puro (ja passado por melhorar_fala e aplicar_phonemes)
+    com SSML para maior naturalidade no audio, SEM alterar a ortografia exibida.
+
+    Evolucoes:
+    1. <say-as> para porcentagens, numeros ordinais e datas — leitura correta
+       (ex.: '85 %' -> 'oitenta e cinco por cento', '1' -> 'primeiro',
+       '31/07/2026' -> data naturalmente).
+    2. <break> pausas estrategicas: apos saudacoes/iniciais (respiracao) e
+       entre frases (ritmo mais humano).
+    3. <prosody>/<emphasis> sutil: frases perguntam com tom ascendente e
+       alertas de recursos (CPU/disco cheio) ganham enfase.
+
+    Regra: se nada for enriquecido, devolve texto puro. Qualquer falha ->
+    fallback texto puro (edge-tts sempre funciona com texto corrido).
+    """
+    if not t:
+        return "", False
+
+    orig = t
+    tem_ssml = False
+    try:
+        # --- datas DD/MM/AAAA -> say-as dmy (formato brasileiro) ---
+        def _data(m):
+            nonlocal tem_ssml
+            d, mes, a = m.group(1), m.group(2), m.group(3)
+            try:
+                dd, mm = int(d), int(mes)
+            except ValueError:
+                return m.group(0)
+            if not (1 <= dd <= 31 and 1 <= mm <= 12):
+                return m.group(0)
+            tem_ssml = True
+            return "<say-as interpret-as='date' format='dmy'>%02d/%02d/%s</say-as>" % (dd, mm, a)
+        t = re.sub(r'\b(\d{1,2})/(\d{1,2})/(\d{4})\b', _data, t)
+
+        # --- porcentagens: 10 % -> say-as percent (apenas inteiro, sem virgula) ---
+        def _pct(m):
+            nonlocal tem_ssml
+            base = m.group(1) or m.group(2)
+            if not base:
+                return m.group(0)
+            if '.' in base or ',' in base:
+                return m.group(0)
+            tem_ssml = True
+            return "<say-as interpret-as='number' format='percent'>%s</say-as>" % base
+        t = re.sub(r'(\d{1,3})\s*%|\b(\d{1,3})\s*por cento', _pct, t)
+
+        # --- numeros ordinais: 1º/2º -> say-as ordinal (ate 100) ---
+        def _ord(m):
+            nonlocal tem_ssml
+            num = int(m.group(1))
+            if num > 100:
+                return m.group(0)
+            tem_ssml = True
+            return "<say-as interpret-as='ordinal'>%d</say-as>" % num
+        t, n_ord = re.subn(r'\b(\d+)º\b', _ord, t)
+        if n_ord:
+            tem_ssml = True
+
+        # --- <break> apos saudacao abertura (respiracao natural) ---
+        aberturas = re.compile(
+            r'^(Entao|Oi|Ola|Bom dia|Boa tarde|Boa noite|E aí|Ei|Olha|Bem|vamos|agora)',
+            re.IGNORECASE,
+        )
+        t, n_ab = aberturas.subn(lambda m: m.group(0) + ", <break time=\"350ms\"/>", t, count=1)
+        if n_ab:
+            tem_ssml = True
+
+        # --- pausa entre frases: <break> leve apos ponto/fechamento ---
+        t, n_brk = re.subn(
+            r'(?<=[.!?])\s+(?![\"\'])([A-ZÁÉÍÓÚÂÊÎÔÛÃÕÇ])',
+            r'. <break time="150ms"/> \1', t,
+        )
+        if n_brk:
+            tem_ssml = True
+
+        # --- pergunta: prosso ascendente suave (reforça ? que o edge ja faz) ---
+        if t.rstrip().endswith('?'):
+            tem_ssml = True
+
+        # --- enfase: alertas de recursos do PC/saude ---
+        if re.search(r'CPU em \d+%|disco em \d+%|memória em \d+%|bateria crítica', t, re.IGNORECASE):
+            t = re.sub(r'(\d+%)', r'<emphasis level="modified">\1</emphasis>', t)
+            tem_ssml = True
+
+        if not tem_ssml:
+            return orig, False
+        return _escapar(t), True
+    except Exception as e:
+        logger.warning("ssml_enriquecer: %s; fallback texto puro" % e)
+        return orig, False
+
+
+def _escapar(ssml):
+    """Escapa textos dentro do SSML (atributos já usam aspas simples).
+    Não escapa as tags <say-as>/<break>/<prosody> já formadas."""
+    if '<' not in ssml and '>' not in ssml:
+        return ssml
+    # protege tags existentes
+    protegidas = re.split(r'(<[^>]+>)', ssml)
+    out = []
+    for i, p in enumerate(protegidas):
+        if p.startswith('<') and p.endswith('>'):
+            out.append(p)
+        else:
+            p = p.replace('&', '&amp;')
+            p = p.replace('<', '&lt;').replace('>', '&gt;')
+            p = p.replace('"', '&quot;')
+            out.append(p)
+    return ''.join(out)
+
+
 async def gerar_audio(texto):
     t = sanitizar(texto)
     if not t: return ""
     t = melhorar_fala(t)
-    t_ssml, tem_fonema = aplicar_phonemes(t)
+    # 1) camada de pronuncia (phoneme) sobre texto puro — evita regex dentro de tags
+    t_phon, tem_fonema = aplicar_phonemes(t)
+    # 2) camada SSML enriquece a naturalidade sobre texto ja com phoneme
+    t_ssml, usou_ssml = _ssml_enriquecer(t_phon)
+
 
     async def _stream(entrada):
         c = edge_tts.Communicate(entrada, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
@@ -448,11 +565,11 @@ async def gerar_audio(texto):
         return a
 
     try:
-        audio = await _stream(t_ssml if tem_fonema else t)
+        audio = await _stream(t_phon if tem_fonema else (t_ssml if usou_ssml else t))
     except Exception as e:
-        logger.warning(f"ssml com fonemas falhou ({e}); fallback para texto puro")
+        logger.warning(f"ssml com fonemas falhou ({e}); fallback texto puro")
         try:
-            audio = await _stream(t)
+            audio = await _stream(melhorar_fala(sanitizar(texto)))
         except Exception as e2:
             logger.error(f"tts texto puro tambem falhou: {e2}")
             return ""
