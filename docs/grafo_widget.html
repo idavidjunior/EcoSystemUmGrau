@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <title>Cerebro Vivo — Grafo do Conhecimento</title>
 <style>
+  #header { transition: opacity .25s ease; opacity: 0; pointer-events: none; }
+  #wrap { position: fixed; inset: 0; }
+  #net { height: 100vh !important; width: 100vw !important; }
+  body { width:100vw; height:100vh; overflow:hidden; }
+  body.desktop #header { opacity: 1; pointer-events: auto; }
+  #mk-resize { position: fixed; right:0; bottom:0; width:18px; height:18px;
+               cursor: nwse-resize; display:none; }
+  body.desktop #mk-resize { display:block; }
+
   body { margin:0; font-family:'Segoe UI', sans-serif; background:#1e1e2e; color:#eee; }
   #header { padding:10px 16px; background:#181825; border-bottom:1px solid #313244; }
   #header h1 { font-size:16px; margin:0 0 8px; }
@@ -31,6 +40,13 @@
                   -webkit-line-clamp:2; -webkit-box-orient:vertical; }
 </style>
 <script src="vendor/vis-network.min.js"></script>
+
+<script>
+  document.addEventListener('contextmenu', function(e){
+    e.preventDefault();
+    document.body.classList.toggle('desktop');
+  }, false);
+</script>
 </head>
 <body>
 <div id="header">
@@ -288,6 +304,34 @@
 </script>
 
 <script>
+  (function(){
+    var grip = document.createElement('div');
+    grip.id = 'mk-resize';
+    grip.title = 'Arraste para redimensionar';
+    document.body.appendChild(grip);
+    var startX=0, startY=0, startW=innerWidth, startH=innerHeight, ar=null;
+    grip.addEventListener('mousedown', function(e){
+      e.preventDefault(); e.stopPropagation();
+      startX=e.screenX; startY=e.screenY; startW=innerWidth; startH=innerHeight;
+      ar = true;
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+    function onMove(e){
+      if(!ar) return;
+      var w = startW + (e.screenX - startX);
+      var h = startH + (e.screenY - startY);
+      if(window.pywebview && window.pywebview.api){
+        window.pywebview.api.redimensionar(Math.round(w), Math.round(h));
+      }
+    }
+    function onUp(){ ar=false; document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp); }
+  })();
+</script>
+
+</html>
+<script>
 (function(){
   var lastVer = null;
   var rodou = false;
@@ -299,14 +343,13 @@
           lastVer = v;
           var u = new URL(window.location.href);
           u.searchParams.set('v', v);
+          u.searchParams.set('rc', String(Date.now()));
           window.location.href = u.toString();
         }
       });
-    } catch(e){ /* bridge ainda nao pronta */ }
+    } catch(e){ /* pywebview ainda nao pronto */ }
   }
   if(window.pywebview && window.pywebview.api){ checar(); }
   window.addEventListener('pywebviewready', checar);
   setInterval(checar, 2000);
 </script>
-
-</html>
