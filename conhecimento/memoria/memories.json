@@ -414,5 +414,31 @@
     "access_count": 0,
     "created_at": "2026-08-02T16:37:25.141052",
     "last_accessed": "2026-08-02T16:37:25.141052"
+  },
+  {
+    "id": 45,
+    "kind": "decisao",
+    "task": "Consolidar mÃºltiplos branches do repositÃ³rio em um sÃ³",
+    "summary": "Consolidado branches do EcoSystemUmGrau em 1 sÃ³: opencode/mighty-meadow (default). Merge fast-forward de reorg/habilidades (que continha 51 commits, incluindo o MCP obsidian) para opencode/mighty-meadow, push, e delete do branch reorg/habilidades local + remoto. Verificado: origin Ã© ancestral de HEAD (merge-base = tip do origin), push foi fast-forward seguro. Resta apenas 1 branch local e remoto.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T16:43:14.511240",
+    "last_accessed": "2026-08-02T16:43:14.511240"
+  },
+  {
+    "id": 46,
+    "kind": "decisao",
+    "task": "Clausula Petrea ativacao de voz Ativar Eco Desativar Eco",
+    "summary": "Adicionada CLAUSULA PETREA ATIVACAO DE VOZ ECO SYSTEM a Constituicao e AGENTS.md. Ativar Eco ativa resposta em audio via jarvis_bridge 8765 + dialogo.py --modo vad; Desativar Eco volta a texto. 3 camadas consistentes, preflight ALL PASS, commit b1b6832.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T16:51:57.676092",
+    "last_accessed": "2026-08-02T16:51:57.676092"
   }
 ]

@@ -31,8 +31,10 @@ def _load_memories():
 
 def _save_memories(memories):
     _ensure_dirs()
-    with open(MEMORIES_FILE, 'w', encoding='utf-8') as f:
+    tmp = MEMORIES_FILE + '.tmp'
+    with open(tmp, 'w', encoding='utf-8') as f:
         json.dump(memories, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, MEMORIES_FILE)
     # Build index
     index = {}
     for m in memories:
@@ -41,8 +43,10 @@ def _save_memories(memories):
         proj = m.get('project', '')
         if proj:
             index.setdefault(f'proj:{proj}', []).append(m['id'])
-    with open(INDEX_FILE, 'w', encoding='utf-8') as f:
+    tmp_idx = INDEX_FILE + '.tmp'
+    with open(tmp_idx, 'w', encoding='utf-8') as f:
         json.dump(index, f, ensure_ascii=False, indent=2)
+    os.replace(tmp_idx, INDEX_FILE)
 
 def _decay_score(memory, now=None):
     """Ebbinghaus decay: score = strength * (0.5 ^ (days / half_life))"""
