@@ -262,6 +262,8 @@ def gerar_html(nos, arestas, output_path):
   #painel ul {{ list-style:none; margin:0; padding:0; }}
   #painel li {{ padding:7px 8px; border-bottom:1px solid #232335; font-size:11px; cursor:pointer; }}
   #painel li:hover {{ background:#232335; }}
+  #painel li.sel {{ background:#313244; border-left:3px solid #89b4fa; }}
+  .titulo-sel {{ color:#ffffff; }}
   #painel .titulo {{ color:#cdd6f4; font-weight:600; }}
   #painel .spec {{ color:#a6adc8; margin-top:2px; max-height:2.4em; overflow:hidden; display:-webkit-box;
                   -webkit-line-clamp:2; -webkit-box-orient:vertical; }}
@@ -327,6 +329,63 @@ def gerar_html(nos, arestas, output_path):
     document.getElementById('painel').innerHTML = '';
   }}
 
+  function focarVizinhanca(id, corGrupo) {{
+    // vizinhanca direta: nos de 1 pulo
+    const viz = new Set([id]);
+    edges.get().forEach(e => {{
+      if (e.from === id) viz.add(e.to);
+      if (e.to === id) viz.add(e.from);
+    }});
+
+    const corNo = clarear(corGrupo, 0.42);
+    const corViz = clarear(corGrupo, 0.25);
+
+    // no central: maior, brilhante, glow forte
+    // vizinhos: cor viva, borda, glow
+    // resto: apagado
+    const atualizacoes = [];
+    nodes.get().forEach(n => {{
+      if (n.id === id) {{
+        atualizacoes.push({{
+          id: n.id, color: corNo, borderColor: '#ffffff', borderWidth: 4, borderWidthSelected: 4,
+          shadow: true, shadowColor: '#ffffff', shadowSize: 28,
+          size: original[n.id].size + 16, font: {{ size: 16, color: '#ffffff', face: 'Segoe UI', bold: true }}
+        }});
+      }} else if (viz.has(n.id)) {{
+        atualizacoes.push({{
+          id: n.id, color: corViz, borderColor: corNo, borderWidth: 2, borderWidthSelected: 2,
+          shadow: true, shadowColor: corViz, shadowSize: 16,
+          size: original[n.id].size + 6
+        }});
+      }} else {{
+        atualizacoes.push({{ id: n.id, color: '#10101a', size: 3, opacity: 0.05,
+                            borderWidth: 0, borderWidthSelected: 0, shadow: false, font: {{ size: 6, color: '#293241' }} }});
+      }}
+    }});
+    nodes.update(atualizacoes);
+
+    // arestas da vizinhanca brilhantes; resto apagado
+    const arestasUp = [];
+    edges.get().forEach(e => {{
+      const interno = viz.has(e.from) || viz.has(e.to);
+      const central = (e.from === id) || (e.to === id);
+      if (central) {{
+        arestasUp.push({{ id: e.id, color: corNo, width: 4.5, opacity: 1 }});
+      }} else if (interno) {{
+        arestasUp.push({{ id: e.id, color: corViz, width: 2, opacity: 0.8 }});
+      }} else {{
+        arestasUp.push({{ id: e.id, color: '#2a2a3a', width: 0.3, opacity: 0.06 }});
+      }}
+    }});
+    edges.update(arestasUp);
+
+    // zoom preciso na vizinhanca
+    network.fit({{
+      nodes: Array.from(viz),
+      animation: {{ duration: 600, easingFunction: 'easeInOutQuad' }}
+    }});
+  }}
+
   function mostrarLista(grupo, corGrupo, titulo) {{
     const painel = document.getElementById('painel');
     const itens = nodes.get()
@@ -344,11 +403,12 @@ def gerar_html(nos, arestas, output_path):
     painel.innerHTML = html;
     painel.classList.add('visivel');
 
-    // clique no item -> seleciona o no no grafo
+    // clique no item -> destaca o no + vizinhos e da zoom preciso
     painel.querySelectorAll('li').forEach(li => {{
       li.addEventListener('click', () => {{
-        network.selectNodes([li.dataset.id], true);
-        network.focus(li.dataset.id, {{ scale: 1.5, animation: true }});
+        painel.querySelectorAll('li').forEach(x => x.classList.remove('sel'));
+        li.classList.add('sel');
+        focarVizinhanca(li.dataset.id, corGrupo);
       }});
     }});
   }}
