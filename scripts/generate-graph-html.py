@@ -86,9 +86,13 @@ def extrair_nos():
     nos_por_categoria = defaultdict(list)
     nos_por_tag = defaultdict(list)
 
-    def add_no(nid, label, categoria, tags, title):
+    def add_no(nid, label, categoria, tags, title, source=''):
+        if source in CLUSTERS:
+            cl = source
+        else:
+            cl = cluster_of(source) if source else 'geral'
         nos.append({'id': nid, 'label': label, 'categoria': categoria,
-                    'tags': tags, 'title': title, 'grau': 0})
+                    'tags': tags, 'title': title, 'cl': cl, 'grau': 0})
 
     # itens de conhecimento
     for p in g.get('patterns', []):
@@ -99,7 +103,7 @@ def extrair_nos():
         if not nid or any(n['id'] == nid for n in nos):
             continue
         src = p.get('source', '')
-        add_no(nid, t, 'padroes', ['padrao', slugify(src) or 'geral'], f'{src}\n\n{p.get("description","")}')
+        add_no(nid, t, 'padroes', ['padrao', slugify(src) or 'geral'], f'{src}\n\n{p.get("description","")}', src)
         nos_por_categoria['padroes'].append(nid)
 
     for d in g.get('decisions', []):
@@ -110,7 +114,7 @@ def extrair_nos():
         if not nid or any(n['id'] == nid for n in nos):
             continue
         src = d.get('source', '')
-        add_no(nid, t, 'decisoes', ['decisao', slugify(src) or 'geral'], f'{src}\n\n{d.get("rationale","")}')
+        add_no(nid, t, 'decisoes', ['decisao', slugify(src) or 'geral'], f'{src}\n\n{d.get("rationale","")}', src)
         nos_por_categoria['decisoes'].append(nid)
 
     for b in g.get('bug_fixes', []):
@@ -121,7 +125,7 @@ def extrair_nos():
         if not nid or any(n['id'] == nid for n in nos):
             continue
         src = b.get('source', '')
-        add_no(nid, t, 'bugs', ['bug', slugify(src) or 'geral'], f'{src}\n\n{b.get("root_cause","")}')
+        add_no(nid, t, 'bugs', ['bug', slugify(src) or 'geral'], f'{src}\n\n{b.get("root_cause","")}', src)
         nos_por_categoria['bugs'].append(nid)
 
     for c in g.get('cognitive_patterns', []):
@@ -147,7 +151,8 @@ def extrair_nos():
         nid = make_id('fw', t)
         if not nid or any(n['id'] == nid for n in nos):
             continue
-        add_no(nid, t, 'frameworks', ['framework'], fw.get('description', ''))
+        src = fw.get('source', '')
+        add_no(nid, t, 'frameworks', ['framework'], fw.get('description', ''), src)
         nos_por_categoria['frameworks'].append(nid)
 
     # indice para arestas
@@ -177,7 +182,7 @@ def extrair_nos():
         hub = f'hub-{cl}'
         if not any(n['id'] == hub for n in nos):
             add_no(hub, f'★ {cl.capitalize()}', 'hub', [f'cluster:{cl}'],
-                   f'Hub do cluster {cl} — {len(membros)} itens')
+                   f'Hub do cluster {cl} — {len(membros)} itens', cl)
         for m in membros:
             arestas.add(tuple(sorted((hub, m))))
 
@@ -204,7 +209,7 @@ def gerar_html(nos, arestas, output_path):
     for n in nos:
         cor = CATEGORIA_COR.get(n['categoria'], '#888')
         if n['categoria'] == 'hub':
-            cor = CLUSTER_COR.get(n['id'].replace('hub-', ''), '#666')
+            cor = CLUSTER_COR.get(n['cl'], '#666')
         size = 10 + int(14 * (n['grau'] / max_grau)) if max_grau else 10
         if n['categoria'] == 'hub':
             size = max(size, 30)
@@ -214,11 +219,22 @@ def gerar_html(nos, arestas, output_path):
             'color': cor,
             'size': size,
             'title': titles[n['id']] or n['label'],
+            'cat': n['categoria'],
+            'cl': n['cl'],
         }
         nodes_js.append(json.dumps(node_obj, ensure_ascii=False))
 
     edges_js = [json.dumps({'from': a, 'to': b, 'color': '#999', 'width': 1}, ensure_ascii=False)
                 for a, b in sorted(arestas)]
+
+    legend_cat = ''.join(
+        f'<button class="lg" data-filter="cat" data-value="{c}" data-color="{CATEGORIA_COR.get(c,"#888")}">'
+        f'<span class="dot" style="background:{CATEGORIA_COR.get(c,"#888")}"></span>{CATEGORIA_LABEL.get(c,c)}</button>'
+        for c in CATEGORIA_COR)
+    legend_cl = ''.join(
+        f'<button class="lg" data-filter="cl" data-value="{cl}" data-color="{cor}">'
+        f'<span class="dot" style="background:{cor}"></span>{cl.capitalize()}</button>'
+        for cl, cor in CLUSTER_COR.items())
 
     html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -227,13 +243,16 @@ def gerar_html(nos, arestas, output_path):
 <title>Cerebro Vivo — Grafo do Conhecimento</title>
 <style>
   body {{ margin:0; font-family:'Segoe UI', sans-serif; background:#1e1e2e; color:#eee; }}
-  #header {{ padding:10px 16px; background:#181825; border-bottom:1px solid #313244; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }}
-  #header h1 {{ font-size:16px; margin:0; }}
-  #legend {{ display:flex; gap:10px; flex-wrap:wrap; font-size:11px; }}
-  .lg {{ display:flex; align-items:center; gap:4px; }}
+  #header {{ padding:10px 16px; background:#181825; border-bottom:1px solid #313244; }}
+  #header h1 {{ font-size:16px; margin:0 0 8px; }}
+  #legend {{ display:flex; gap:6px; flex-wrap:wrap; font-size:11px; }}
+  .lg {{ display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:12px;
+        border:1px solid #313244; background:#1e1e2e; color:#eee; cursor:pointer; font-size:11px; }}
+  .lg:hover {{ border-color:#cdd6f4; background:#313244; }}
+  .lg.active {{ border-color:#89b4fa; background:#313244; box-shadow:0 0 6px #89b4fa66; }}
   .dot {{ width:10px; height:10px; border-radius:50%; display:inline-block; }}
-  #stats {{ margin-left:auto; font-size:11px; color:#a6adc8; }}
-  #net {{ width:100vw; height:calc(100vh - 56px); }}
+  #stats {{ margin-top:6px; font-size:11px; color:#a6adc8; }}
+  #net {{ width:100vw; height:calc(100vh - 76px); }}
 </style>
 <script src="vendor/vis-network.min.js"></script>
 </head>
@@ -241,10 +260,11 @@ def gerar_html(nos, arestas, output_path):
 <div id="header">
   <h1>Cerebro Vivo — Grafo do Conhecimento</h1>
   <div id="legend">
-    {''.join(f'<span class="lg"><span class="dot" style="background:{CATEGORIA_COR.get(c,"#888")}"></span>{CATEGORIA_LABEL.get(c,c)}</span>' for c in CATEGORIA_COR)}
-    {''.join(f'<span class="lg"><span class="dot" style="background:{cor}"></span>{cl.capitalize()}</span>' for cl, cor in CLUSTER_COR.items())}
+    {legend_cat}
+    {legend_cl}
+    <button class="lg" data-filter="all" data-value="" data-color="#888">✕ Limpar</button>
   </div>
-  <div id="stats">{len(nos)} nos | {len(arestas)} conexoes</div>
+  <div id="stats">{len(nos)} nos | {len(arestas)} conexoes — clique em uma categoria ou cluster para destacar</div>
 </div>
 <div id="net"></div>
 <script>
@@ -258,7 +278,40 @@ def gerar_html(nos, arestas, output_path):
                stabilization: {{ iterations:300 }} }},
     interaction: {{ hover:true, tooltipDelay:120, navigationButtons:true }}
   }};
-  new vis.Network(container, {{ nodes, edges }}, options);
+  const network = new vis.Network(container, {{ nodes, edges }}, options);
+
+  const original = {{}};
+  nodes.get().forEach(n => {{
+    original[n.id] = {{ color: n.color, size: n.size }};
+  }});
+
+  function destacar(filtro, valor) {{
+    const btns = document.querySelectorAll('.lg');
+    btns.forEach(b => b.classList.remove('active'));
+    const alvo = document.querySelector(`.lg[data-filter="${{filtro}}"][data-value="${{valor}}"]`);
+    if (alvo) alvo.classList.add('active');
+
+    const atualizacoes = [];
+    nodes.get().forEach(n => {{
+      let ativo = false;
+      if (filtro === 'all') ativo = true;
+      else if (filtro === 'cat') ativo = (n.cat === valor);
+      else if (filtro === 'cl') ativo = (n.cl === valor);
+      if (ativo) {{
+        atualizacoes.push({{ id: n.id, color: original[n.id].color, size: original[n.id].size,
+                            borderWidth: 2, borderWidthSelected: 2 }});
+      }} else {{
+        atualizacoes.push({{ id: n.id, color: '#2a2a3c', size: 3, opacity: 0.15,
+                            borderWidth: 0, borderWidthSelected: 0 }});
+      }}
+    }});
+    nodes.update(atualizacoes);
+    network.fit({{ animation: true }});
+  }}
+
+  document.querySelectorAll('.lg').forEach(btn => {{
+    btn.addEventListener('click', () => destacar(btn.dataset.filter, btn.dataset.value));
+  }});
 </script>
 </body>
 </html>"""
