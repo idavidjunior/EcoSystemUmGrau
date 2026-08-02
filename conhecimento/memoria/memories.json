@@ -609,5 +609,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T20:08:05.395122",
     "last_accessed": "2026-08-02T20:08:05.395122"
+  },
+  {
+    "id": 60,
+    "kind": "erro",
+    "task": "Corrigido travamento do widget pywebview (recursao AccessibilityObject.Bounds)",
+    "summary": "Bug reportado pelo usuario: widget do grafo travava com stderr '[pywebview] Error while processing win.native.AccessibilityObject.Bounds...Empty...: maximum recursion depth exceeded'. Diagnostico: eram DOIS vetores distintos. (1) O _geo_watcher lia win.x/win.y/win.width/win.height a cada 1s de outra thread - o pywebview 6 winforms resolve essas props via win.native.AccessibilityObject.Bounds e isso dispara RECURSAO INFINITA (travava de verdade). Fix: parar de ler win.* por thread; obter geometria via JS (window.screenX/outerWidth/outerHeight) chamando bridge.guardarGeo(), e persistir no fechamento via win.evaluate_js(). (2) Log UNICO benigno (~6KB) 'AccessibilityObject.Bounds.Empty.Empty...' ainda aparece 1x no stderr ao abrir janela frameless - e um warning aviso do pywebview, NAO trava (o widget continua vivo). Isolou-se que frameless sozinho tambem gera esse 1 log, mas sem impacto. SOLUCAO DE EQUILIBRIO: ancoragem Progman/WorkerW deixou de ser mantida por loop de SetWindowPos 1s (que reagia); agora e one-shot (unico SetParent), sem manutencao continua. Resultado: widget vive >16s, geometria 667x345 em x=683/y=0 persistida e restaurada.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T20:27:26.315186",
+    "last_accessed": "2026-08-02T20:27:26.315186"
   }
 ]
