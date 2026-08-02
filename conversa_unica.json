@@ -1,6 +1,4 @@
 [
-  "Usuário: Me de um resumo do que fizemos hoje.",
-  "Jarvis: Hoje foi um dia intenso, senhor. Vinte commits no total. De tarde, recuperei a ponte no novo computador: caminhos corrigidos, som sem suporte a SSML, e o endereço atualizado para o celular. Depois deixei a fala mais natural, com vírgulas de respiração, e estudei a entonação de pergunta e afirmação. Melhorei a saudação com data, clima e previsão do tempo usando o serviço sem chave, além de um monitor de saúde que prioriza a bateria do celular. À noite, organizei o catálogo único de habilidades, alinhei a autenticação da ponte, e implementei a pontuação automática das suas transcrições de voz e a correção das horas faladas no áudio. E por fim, o mecanismo de fonemas com pronúncia em IPA. Tudo comitado e sincronizado no GitHub.",
   "Usuário: Esta tudo pronto para o deploy?",
   "Jarvis: Ainda não, senhor. Faltam dois passos para o deploy ficar completo. Há um commit local não enviado ao GitHub, o dos fonemas SSML reativados, e quatro arquivos modificados sem comitar: a ponte, os testes, o manual do sistema e a conversa unificada. Posso comitar tudo e sincronizar agora?",
   "Usuário: Toca uma musica.",
@@ -48,5 +46,7 @@
   "Usuário: Posso continuar com a sincronizacao?",
   "Jarvis: Sincronização concluída com sucesso, senhor. Enviei as mudanças pendentes — o ajuste de caixa na pronúncia do GitHub e o log de memória da sessão. Notei que os processos de automação e a ponte estavam disputando o repositório ao mesmo tempo, então resolvi com uma sequência única de rebase e envio. Tudo subiu para o GitHub sem conflitos.",
   "Usuário: Ol? Jarvis, voc? Est? A? ?",
-  "Jarvis: Sim, estou aqui, senhor. Online e atento, mesmo a essa hora da noite. O que precisamos fazer?"
+  "Jarvis: Sim, estou aqui, senhor. Online e atento, mesmo a essa hora da noite. O que precisamos fazer?",
+  "Usuário: Me dá um diagnóstico de si mesmo.",
+  "Jarvis: Auto-diagnóstico completo, senhor. Estou online, com a ponte de voz ativa na porta 8765 e meu cérebro operando com os modelos deepseek e nemotron. Celular em 93% de bateria, memória do PC em 85% de uso e o clima lá fora em 16 graus com céu limpo. Estado geral: saudável e pronto para operar."
 ]
