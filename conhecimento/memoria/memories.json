@@ -310,5 +310,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T15:20:36.608723",
     "last_accessed": "2026-08-02T15:20:36.608723"
+  },
+  {
+    "id": 37,
+    "kind": "episodio",
+    "task": "Testado TTS ao vivo via WebSocket local",
+    "summary": "Bridge reiniciada com a correcao (fala preserva capitalizacao do usuario, chave em minusculo). WebSocket na porta 8765 respondeu 'pronuncie GitHub como Guitirrãbi' -> 'Entendido. A partir de agora eu falo github como Guitirrãbi' com audio OK. pronuncias.json atualizado: github Guitirrãbi, nvidia Envidiá.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T15:21:58.183116",
+    "last_accessed": "2026-08-02T15:21:58.183116"
   }
 ]
