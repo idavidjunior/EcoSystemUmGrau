@@ -1,5 +1,5 @@
 ---
-tags: [missao, config, opencode]
+tags: [config, missao, opencode]
 aliases: [2026-07-27: Teste do vigilante automático — Teste do sistema]
 date: 2026-07-27
 ---
@@ -9,4 +9,10 @@ date: 2026-07-27
 **Status:** session_learning
 
 **Objetivo:** 2026-07-27: Teste do vigilante automático — Teste do sistema de vigilância autom
+## Conexoes
 
+- [[2026-07-27-4-teste-do-ciclo-de-polling-verificar-se-o-vigila]]
+- [[2026-07-27-5-teste-final-do-vigilante-em-processo-real-verif]]
+- [[2026-07-27-sistema-automático-de-captura-de-conhecimento-do-]]
+- [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
+- [[missao-hub-missoes]]

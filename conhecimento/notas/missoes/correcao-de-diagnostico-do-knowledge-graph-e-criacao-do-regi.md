@@ -1,5 +1,5 @@
 ---
-tags: [missao, ecossistema, diagnostico, habilidades]
+tags: [diagnostico, ecossistema, habilidades, missao]
 aliases: [Correcao de diagnostico do knowledge graph e criacao do regi]
 date: 2026-07-30
 ---
@@ -11,3 +11,7 @@ date: 2026-07-30
 **Objetivo:** Correcao de diagnostico do knowledge graph e criacao do registro de Habilidades 
 
 **Arquivos:** scripts/JARVIS_SYSTEM.md
+## Conexoes
+
+- [[missao-hub-missoes]]
+- [[revisao-radical-do-registro-de-habilidades-de-jarvis-aprendi]]

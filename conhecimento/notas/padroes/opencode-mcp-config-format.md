@@ -9,3 +9,10 @@ date: 2026-08-01
 **Fonte:** session+session
 
 OpenCode MCP config mcp field must be an array of objects, not a single object
+## Conexoes
+
+- [[cluster-hub-navegacao]]
+- [[mcp-json-rpc-notification-handling]]
+- [[mcp-toolscall-method-dispatch]]
+- [[padrao-hub-padroes]]
+- [[workspace-organization]]

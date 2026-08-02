@@ -9,3 +9,11 @@ date: 2026-08-01
 **Fonte:** treinamento_navegacao
 
 data-testid e o unico atributo projetado exclusivamente para automacao; classes CSS mudam com refactors de estilo, IDs sao frequentemente dinamicos
+## Conexoes
+
+- [[cluster-hub-navegacao]]
+- [[css-selector-priority-ladder]]
+- [[decisao-hub-decisoes]]
+- [[dom-element-hierarchy-mapping]]
+- [[iframecontenteditable-text-entry]]
+- [[spa-navigation-detection]]

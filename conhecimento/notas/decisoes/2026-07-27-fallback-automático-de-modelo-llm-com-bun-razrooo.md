@@ -40,3 +40,6 @@ O OpenCode 1.18.7 não suporta fallback nativo (PR #26292 ainda em andamento). A
 - `~/.config/opencode/opencode-model-fallback.jsonc`
 - `~/.config/opencode/node_modules/@razroo/opencode-model-fallback/`
 
+## Conexoes
+
+- [[decisao-hub-decisoes]]

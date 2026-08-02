@@ -4,7 +4,7 @@ aliases: [Score < threshold mas sem failed_steps ia direto para SUCCES]
 date: 2026-08-01
 ---
 
-# Bug: Score < threshold mas sem failed_steps ia direto para SUCCESS_VERIFIED
+# Score < threshold mas sem failed_steps ia direto para SUCCESS_VERIFIED
 
 **Projeto:** ler_auditoria
 
@@ -13,3 +13,11 @@ _phase_success_eval verificava apenas failed_steps, nao o score real. Se todos s
 
 ## Correcao
 Score < threshold sempre vai para REPLANNING. Idem para _phase_final_audit.
+## Conexoes
+
+- [[bug-hub-bugs]]
+- [[cluster-hub-ler]]
+- [[executor-nao-validava-resultado-real-da-implementacao]]
+- [[maxiterations-hard-stop-forca-parada-prematura-mesmo-sem-obj]]
+- [[nao-havia-feedback-loop-do-usuario-ler-terminava-mesmo-se-ob]]
+- [[persistencia-sem-atomicidade-crash-no-meio-do-jsondump-corro]]

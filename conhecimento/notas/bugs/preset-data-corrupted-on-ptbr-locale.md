@@ -4,7 +4,7 @@ aliases: [**Preset data corrupted on pt_BR locale**]
 date: 2026-08-01
 ---
 
-# Bug: **Preset data corrupted on pt_BR locale**
+# **Preset data corrupted on pt_BR locale**
 
 **Projeto:** mp3player-metadata-rescue
 
@@ -13,3 +13,11 @@ date: 2026-08-01
 
 ## Correcao
 Changed separator to `
+## Conexoes
+
+- [[bug-hub-bugs]]
+- [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
+- [[cluster-hub-mp3player]]
+- [[if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-]]
+- [[step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo]]
+- [[user-taps-buscar-na-internet]]

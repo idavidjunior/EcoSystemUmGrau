@@ -9,3 +9,11 @@ date: 2026-08-01
 **Fonte:** treinamento_navegacao
 
 Elementos dinamicos (menus, dropdowns) frequentemente mudam de posicao; mapear pelo container pai estavel em vez do filho instavel
+## Conexoes
+
+- [[cluster-hub-navegacao]]
+- [[css-selector-priority-ladder]]
+- [[iframecontenteditable-text-entry]]
+- [[padrao-hub-padroes]]
+- [[shadow-dom-penetration]]
+- [[spa-navigation-detection]]

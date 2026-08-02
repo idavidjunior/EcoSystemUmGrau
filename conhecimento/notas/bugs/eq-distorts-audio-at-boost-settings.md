@@ -4,7 +4,7 @@ aliases: [**EQ distorts audio at boost settings**]
 date: 2026-08-01
 ---
 
-# Bug: **EQ distorts audio at boost settings**
+# **EQ distorts audio at boost settings**
 
 **Projeto:** mp3player-metadata-rescue
 
@@ -13,3 +13,11 @@ date: 2026-08-01
 
 ## Correcao
 Replaced `coerceIn(-1f, 1f)` with `Math.tanh(sample)` — soft-clipping (tube-like saturation). Also made `isActive()` always return `true` to prevent ExoPlayer from caching the inactive state.
+## Conexoes
+
+- [[bug-hub-bugs]]
+- [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
+- [[cluster-hub-mp3player]]
+- [[if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-]]
+- [[step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo]]
+- [[user-taps-buscar-na-internet]]

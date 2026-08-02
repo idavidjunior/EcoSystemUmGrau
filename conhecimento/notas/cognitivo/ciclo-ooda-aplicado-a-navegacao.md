@@ -9,3 +9,7 @@ date: 2026-08-01
 **Dominio:** decision-making
 
 Observe (scan estado atual) -> Orient (identifique padroes e framework) -> Decide (escolha metodo de interacao) -> Act (execute). Ciclo completo leva <1s para interfaces familiares, <3s para desconhecidas. Repetir apos cada interacao
+## Conexoes
+
+- [[cluster-hub-navegacao]]
+- [[cognitivo-hub-cognitivo]]

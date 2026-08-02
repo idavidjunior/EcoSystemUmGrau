@@ -1,6 +1,6 @@
 ---
 tags: [cognitivo, general]
-aliases: [Gramática do Português Brasileiro — Guia prático do dia a dia]
+aliases: [Gramática do Português Brasileiro — Guia prático do dia a di]
 date: 2026-08-01
 ---
 
@@ -20,3 +20,7 @@ uso prático, sem jargão acadêmico desnecessário.
 
 ## Ortografia e acentuação
 - Acentuação segue o novo acordo ortográfico (em vigor no Brasil d
+## Conexoes
+
+- [[cluster-hub-ecossistema]]
+- [[cognitivo-hub-cognitivo]]

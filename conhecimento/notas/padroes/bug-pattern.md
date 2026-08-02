@@ -1,5 +1,5 @@
 ---
-tags: [padrao, android-pure-sdkandroid-pure-sdkandroid-pure-sdkandroid-pure]
+tags: [android-pure-sdkandroid-pure-sdkandroid-pure-sdkandroid-pure, padrao]
 aliases: [Bug pattern]
 date: 2026-08-01
 ---
@@ -9,3 +9,7 @@ date: 2026-08-01
 **Fonte:** android-pure-sdk+android-pure-sdk+android-pure-sdk+android-pure-sdk
 
 
+## Conexoes
+
+- [[cluster-hub-android]]
+- [[padrao-hub-padroes]]

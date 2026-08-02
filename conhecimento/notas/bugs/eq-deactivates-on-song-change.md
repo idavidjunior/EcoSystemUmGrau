@@ -4,7 +4,7 @@ aliases: [**EQ deactivates on song change**]
 date: 2026-08-01
 ---
 
-# Bug: **EQ deactivates on song change**
+# **EQ deactivates on song change**
 
 **Projeto:** mp3player-metadata-rescue
 
@@ -13,3 +13,11 @@ date: 2026-08-01
 
 ## Correcao
 Added `updateActiveState()` call in `configure()` and `reset()`. Removed `isActiveState = false` from `reset()` — state is now always recalculated from actual gains/enabled.
+## Conexoes
+
+- [[bug-hub-bugs]]
+- [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
+- [[cluster-hub-mp3player]]
+- [[if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-]]
+- [[step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo]]
+- [[user-taps-buscar-na-internet]]

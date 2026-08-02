@@ -4,7 +4,7 @@ aliases: [**Preamp volume irreversible and cumulative**]
 date: 2026-08-01
 ---
 
-# Bug: **Preamp volume irreversible and cumulative**
+# **Preamp volume irreversible and cumulative**
 
 **Projeto:** mp3player-metadata-rescue
 
@@ -13,3 +13,11 @@ date: 2026-08-01
 
 ## Correcao
 Fixed by the same refactoring: preamp is now separate. `showVolumeDialog()` only updates `currentPreamp` and re-applies HW EQ bands without touching `currentGains[]`.
+## Conexoes
+
+- [[bug-hub-bugs]]
+- [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
+- [[cluster-hub-mp3player]]
+- [[if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-]]
+- [[step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo]]
+- [[user-taps-buscar-na-internet]]

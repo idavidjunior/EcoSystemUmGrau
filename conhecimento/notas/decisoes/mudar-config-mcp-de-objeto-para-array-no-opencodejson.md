@@ -9,3 +9,7 @@ date: 2026-08-01
 **Fonte:** provider_mcp_debug
 
 Schema v1.17.14 exige array
+## Conexoes
+
+- [[cluster-hub-ecossistema]]
+- [[decisao-hub-decisoes]]

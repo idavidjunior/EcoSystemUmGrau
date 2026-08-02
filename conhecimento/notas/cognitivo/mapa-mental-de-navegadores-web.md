@@ -1,5 +1,5 @@
 ---
-tags: [cognitivo, browser-architecture]
+tags: [browser-architecture, cognitivo]
 aliases: [Mapa mental de navegadores web]
 date: 2026-08-01
 ---
@@ -9,3 +9,7 @@ date: 2026-08-01
 **Dominio:** browser-architecture
 
 Navegadores modernos sao multi-processo: processo browser (UI), processo renderer (DOM/JS), processo GPU (composicao). Cada processo e isolado. Crash no renderer nao derruba o browser. Cada aba tem seu proprio processo renderer. DevTools roda no processo browser
+## Conexoes
+
+- [[cluster-hub-navegacao]]
+- [[cognitivo-hub-cognitivo]]

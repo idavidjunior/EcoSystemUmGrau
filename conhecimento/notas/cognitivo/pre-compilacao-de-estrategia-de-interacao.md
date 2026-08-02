@@ -9,3 +9,7 @@ date: 2026-08-01
 **Dominio:** planning
 
 Antes de agir, mentalmente compilar toda a sequencia de passos: (1) onde estou, (2) onde quero chegar, (3) quais elementos preciso atravessar, (4) quais barreiras possiveis (modais, permissoes). Agir sem plano causa 3x mais erros
+## Conexoes
+
+- [[cluster-hub-navegacao]]
+- [[cognitivo-hub-cognitivo]]

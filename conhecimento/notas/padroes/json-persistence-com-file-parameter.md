@@ -1,5 +1,5 @@
 ---
-tags: [padrao, androidpuresdk]
+tags: [androidpuresdk, padrao]
 aliases: [JSON persistence com File parameter]
 date: 2026-08-01
 ---
@@ -9,3 +9,11 @@ date: 2026-08-01
 **Fonte:** android_pure_sdk
 
 loadFromFile() aceita File parameter (nao so default). saveToFile() cria timestamped file no Salvar. Limpar = screen only, nunca toca em arquivo salvo.
+## Conexoes
+
+- [[aapt-javac-d8-apksigner]]
+- [[cluster-hub-android]]
+- [[edittext-inline-editing-toggle]]
+- [[numpad-with-stringbuilder-buffer]]
+- [[padrao-hub-padroes]]
+- [[single-activity-com-framelayout-visibilidade-setvisibility-s]]

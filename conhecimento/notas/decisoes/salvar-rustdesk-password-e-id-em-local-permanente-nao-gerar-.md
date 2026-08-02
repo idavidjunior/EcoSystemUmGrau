@@ -9,3 +9,7 @@ date: 2026-08-01
 **Fonte:** sessao_rustdesk
 
 Acesso remoto previsivel requer credenciais fixas, nao one-time tokens que mudam
+## Conexoes
+
+- [[cluster-hub-ecossistema]]
+- [[decisao-hub-decisoes]]

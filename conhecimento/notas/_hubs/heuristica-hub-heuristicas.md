@@ -1,0 +1,38 @@
+# Heuristicas
+
+**32 notas** conectadas a este hub.
+
+
+## Notas
+- [[30s-regra-de-timeout-maximo]]
+- [[antes-de-clicar-verifique-o-interceptador]]
+- [[cache-de-decisoes-caras]]
+- [[canvas-e-graficos-template-matching]]
+- [[dados-algoritmos-para-debugging]]
+- [[elemento-existe-3-fontes-de-verdade]]
+- [[escrita-atomica-sempre]]
+- [[heuristica-de-isolamento-de-falha]]
+- [[hierarquia-de-confianca-de-seletores]]
+- [[interface-sobre-implementacao-em-parametros]]
+- [[json-rpc-notifications]]
+- [[log-de-fallback-para-diagnostico-rapido]]
+- [[mcp-tool-naming]]
+- [[navegacao-em-spa-3-sinais-de-sucesso]]
+- [[nunca-armazenar-api-keys-em-config-files]]
+- [[open-sempre-com-encoding-no-windows]]
+- [[primeiro-scan-depois-interaja]]
+- [[principio-do-menor-escopo-de-variavel]]
+- [[projete-para-falha-nao-para-sucesso]]
+- [[regra-do-nao-magico]]
+- [[regra-dos-3-logs]]
+- [[scroll-forcado-revela-conteudo-oculto]]
+- [[seletor-mais-especifico-mais-fragil]]
+- [[sempre-esperar-o-inesperado-em-es]]
+- [[sempre-validar-schema-apos-migracao-de-config]]
+- [[stale-element-re-query-nao-re-tentar]]
+- [[state-deve-ser-explícito-nunca-implícito]]
+- [[teclado-vence-layout]]
+- [[testar-failover-ativamente]]
+- [[velocidade-evitar-esperas-fixas]]
+- [[verifique-o-que-voce-acha-que-sabe]]
+- [[workspace-root]]

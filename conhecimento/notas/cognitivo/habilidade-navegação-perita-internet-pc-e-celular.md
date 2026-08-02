@@ -30,3 +30,7 @@ que roda no PC. Quando o usuário fala com o celular, quem responde é o mesmo
 assistente que opera no computador.
 
 ## Como a sincronização acontece (
+## Conexoes
+
+- [[cluster-hub-ecossistema]]
+- [[cognitivo-hub-cognitivo]]

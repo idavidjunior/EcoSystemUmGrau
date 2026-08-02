@@ -1,5 +1,5 @@
 ---
-tags: [padrao, mp3player-metadata-rescuemp3player-metadata-rescue]
+tags: [mp3player-metadata-rescuemp3player-metadata-rescue, padrao]
 aliases: [Album Art Download Pipeline]
 date: 2026-08-01
 ---
@@ -9,3 +9,10 @@ date: 2026-08-01
 **Fonte:** mp3player-metadata-rescue+mp3player-metadata-rescue
 
 
+## Conexoes
+
+- [[approach-mediacodecaudiorenderer-with-audioprocessor-varargs]]
+- [[build-pipeline]]
+- [[cluster-hub-mp3player]]
+- [[metadata-search-pipeline]]
+- [[padrao-hub-padroes]]

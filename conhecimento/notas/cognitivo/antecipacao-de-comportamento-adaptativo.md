@@ -1,5 +1,5 @@
 ---
-tags: [cognitivo, adaptability]
+tags: [adaptability, cognitivo]
 aliases: [Antecipacao de comportamento adaptativo]
 date: 2026-08-01
 ---
@@ -9,3 +9,7 @@ date: 2026-08-01
 **Dominio:** adaptability
 
 Interfaces modernas sao adaptativas: mudam layout em resize, escondem elementos em mobile, alteram labels por A/B testing. Nunca assumir que um elemento estara no mesmo lugar da ultima vez. Sempre re-scannear o estado atual antes de interagir
+## Conexoes
+
+- [[cluster-hub-navegacao]]
+- [[cognitivo-hub-cognitivo]]

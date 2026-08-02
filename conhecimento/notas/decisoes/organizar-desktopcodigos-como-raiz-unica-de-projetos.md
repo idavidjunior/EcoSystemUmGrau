@@ -9,3 +9,9 @@ date: 2026-08-01
 **Fonte:** workspace_organization
 
 Evitar dispersao de projetos pelo Desktop e Documentos
+## Conexoes
+
+- [[cluster-hub-ecossistema]]
+- [[decisao-hub-decisoes]]
+- [[renomear-pastas-com-espacos-para-nomes-sem-espaco]]
+- [[sessao-focada-em-organizacao-de-workspace-unificacao-de-proj]]

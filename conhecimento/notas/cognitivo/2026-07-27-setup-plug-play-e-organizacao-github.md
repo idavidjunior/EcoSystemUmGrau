@@ -170,3 +170,7 @@ date: 2026-08-01
 - MainActivity.java: 4 marcadores
 
 
+## Conexoes
+
+- [[cluster-hub-ecossistema]]
+- [[cognitivo-hub-cognitivo]]

@@ -1,6 +1,6 @@
 ---
-tags: [padrao, opencode]
-aliases: [Config: 2026-07-27-5: Teste final do vigilante em processo real]
+tags: [opencode, padrao]
+aliases: [Config: 2026-07-27-5: Teste final do vigilante em processo r]
 date: 2026-08-01
 ---
 
@@ -18,3 +18,11 @@ date: 2026-08-01
 
 Criado enquanto vigilante roda como processo Windows oculto.
 
+## Conexoes
+
+- [[2026-07-27-fallback-automático-de-modelo-llm-com-bun-razrooo]]
+- [[2026-07-27-setup-plug-play-e-organizacao-github]]
+- [[2026-07-27-sistema-automático-de-captura-de-conhecimento-do-]]
+- [[2026-07-28-cláusula-pétrea-toda-alteração-no-ecossistema-dev]]
+- [[cluster-hub-ecossistema]]
+- [[padrao-hub-padroes]]

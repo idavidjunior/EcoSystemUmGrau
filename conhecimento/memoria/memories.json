@@ -440,5 +440,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T16:51:57.676092",
     "last_accessed": "2026-08-02T16:51:57.676092"
+  },
+  {
+    "id": 47,
+    "kind": "decisao",
+    "task": "Vault Obsidian cerebro vivo: gerador de notas com links bidirecionais + hubs",
+    "summary": "Evoluido generate-obsidian-notes.py para gerar grafo vivo no Obsidian: 294+ notas de conhecimento com links [[...]] (273 conectadas), 15 hubs (7 categorias + 7 clusters de projeto + home), injecao de secao '## Conexoes' nos aprendizados (11). Clusters: android, mp3player, ler, navegacao, ecossistema, cognicao. Idempotente. Fix: regex de remocao tolerante a linha em branco. Abrir conhecimento/ como vault no Obsidian.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T17:36:57.141137",
+    "last_accessed": "2026-08-02T17:36:57.141137"
   }
 ]

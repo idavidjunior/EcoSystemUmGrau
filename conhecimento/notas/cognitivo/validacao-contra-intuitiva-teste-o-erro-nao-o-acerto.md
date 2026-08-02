@@ -9,3 +9,8 @@ date: 2026-08-01
 **Dominio:** testing
 
 Para cada funcao, o teste mais valioso nao e o 'caminho feliz' mas sim: (1) entrada vazia/nula, (2) entrada no limite, (3) entrada fora do dominio, (4) estado inconsistente, (5) concorrencia. Se sua funcao lida com arquivos: arquivo inexistente, permissao negada, disco cheio, arquivo corrompido. 80% dos bugs estao nos 20% de casos de erro.
+## Conexoes
+
+- [[cluster-hub-cognicao]]
+- [[cognitivo-hub-cognitivo]]
+- [[testar-failover-ativamente]]

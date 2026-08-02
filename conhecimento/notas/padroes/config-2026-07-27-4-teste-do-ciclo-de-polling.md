@@ -1,5 +1,5 @@
 ---
-tags: [padrao, opencodeopencode]
+tags: [opencodeopencode, padrao]
 aliases: [Config: 2026-07-27-4: Teste do ciclo de polling]
 date: 2026-08-01
 ---
@@ -18,3 +18,7 @@ date: 2026-08-01
 
 Criado manualmente enquanto o vigilante está rodando para verificar se o polling de 30s detecta.
 
+## Conexoes
+
+- [[cluster-hub-ecossistema]]
+- [[padrao-hub-padroes]]

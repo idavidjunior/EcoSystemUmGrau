@@ -9,3 +9,11 @@ date: 2026-08-01
 **Fonte:** mp3player
 
 AcoustID falha sempre (API key invalida), mas e aceito — fallback natural para iTunes/MusicBrainz.
+## Conexoes
+
+- [[audioprocessorisactive-must-be-dynamic]]
+- [[cluster-hub-mp3player]]
+- [[decisao-hub-decisoes]]
+- [[filename-artist-extraction-two-strategies]]
+- [[itunes-search-with-scoring-thresholds]]
+- [[renderersfactory-for-custom-audioprocessor]]

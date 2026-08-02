@@ -9,3 +9,7 @@ date: 2026-08-01
 **Fonte:** sessao_migracao_config
 
 Schema breaking changes: mcpServers -> mcp, command string -> array, provider.env para chaves API
+## Conexoes
+
+- [[cluster-hub-ecossistema]]
+- [[padrao-hub-padroes]]

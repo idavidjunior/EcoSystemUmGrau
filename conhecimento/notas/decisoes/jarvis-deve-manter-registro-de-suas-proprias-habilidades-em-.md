@@ -9,3 +9,11 @@ date: 2026-08-01
 **Fonte:** ler_aprendizado
 
 O usuario explicitamente pediu um campo de habilidades catalogando todas as capacidades de Jarvis para referencia futura
+## Conexoes
+
+- [[cluster-hub-ler]]
+- [[decisao-hub-decisoes]]
+- [[encoding-utf-8-explicito-em-python-no-windows]]
+- [[habilidades-de-jarvis-seguem-taxonomia-de-3-niveis]]
+- [[registro-de-habilidades-de-jarvis]]
+- [[taxonomia-correta-de-habilidades-jarvis]]

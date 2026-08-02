@@ -4,7 +4,7 @@ aliases: [**Preamp not audible**]
 date: 2026-08-01
 ---
 
-# Bug: **Preamp not audible**
+# **Preamp not audible**
 
 **Projeto:** mp3player-metadata-rescue
 
@@ -13,3 +13,11 @@ date: 2026-08-01
 
 ## Correcao
 `syncSoftwareEq()` now calls `mp.setEqPreampGain(currentPreamp)` instead of `0f`. Software EQ receives preamp as a master multiplier.
+## Conexoes
+
+- [[bug-hub-bugs]]
+- [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
+- [[cluster-hub-mp3player]]
+- [[if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-]]
+- [[step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo]]
+- [[user-taps-buscar-na-internet]]

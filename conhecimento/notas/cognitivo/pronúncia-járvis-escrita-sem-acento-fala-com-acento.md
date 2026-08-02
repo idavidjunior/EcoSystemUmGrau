@@ -21,3 +21,7 @@ date: 2026-08-01
 ## Implementação
 - Registrado em `scripts/pronuncias.json`:
   `"jarvis": 
+## Conexoes
+
+- [[cluster-hub-ecossistema]]
+- [[cognitivo-hub-cognitivo]]

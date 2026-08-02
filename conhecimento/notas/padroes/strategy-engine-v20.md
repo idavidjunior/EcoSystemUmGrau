@@ -1,5 +1,5 @@
 ---
-tags: [padrao, lerler]
+tags: [lerler, padrao]
 aliases: [Strategy Engine v2.0]
 date: 2026-08-01
 ---
@@ -9,3 +9,7 @@ date: 2026-08-01
 **Fonte:** ler+ler
 
 
+## Conexoes
+
+- [[cluster-hub-ler]]
+- [[padrao-hub-padroes]]

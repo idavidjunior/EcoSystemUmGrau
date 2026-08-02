@@ -1,5 +1,5 @@
 ---
-tags: [padrao, opencodeopencodeopencode]
+tags: [opencodeopencodeopencode, padrao]
 aliases: [Config: 2026-07-27: Teste do vigilante automático]
 date: 2026-08-01
 ---
@@ -17,3 +17,7 @@ date: 2026-08-01
 ## Teste
 
 Verificar se o vigilante detecta automaticamente novos arquivos em conhecimento/aprendizados/, registra no K
+## Conexoes
+
+- [[cluster-hub-ecossistema]]
+- [[padrao-hub-padroes]]

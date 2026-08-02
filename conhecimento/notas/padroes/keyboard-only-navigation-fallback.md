@@ -9,3 +9,11 @@ date: 2026-08-01
 **Fonte:** treinamento_navegacao
 
 Aplicacoes podem reposicionar botoes; atalhos de teclado e navegacao por Tab sao independentes de layout
+## Conexoes
+
+- [[cluster-hub-navegacao]]
+- [[css-selector-priority-ladder]]
+- [[dom-element-hierarchy-mapping]]
+- [[iframecontenteditable-text-entry]]
+- [[padrao-hub-padroes]]
+- [[spa-navigation-detection]]

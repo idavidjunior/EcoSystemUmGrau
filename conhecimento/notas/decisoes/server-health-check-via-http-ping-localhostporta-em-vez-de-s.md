@@ -9,3 +9,7 @@ date: 2026-08-01
 **Fonte:** sessao_servermanager
 
 HTTP permite verificar se processo esta vivo mesmo com threads ocupadas; mais confiavel
+## Conexoes
+
+- [[cluster-hub-ecossistema]]
+- [[decisao-hub-decisoes]]

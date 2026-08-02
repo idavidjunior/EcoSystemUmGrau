@@ -9,3 +9,11 @@ date: 2026-08-01
 **Fonte:** treinamento_navegacao
 
 Dispositivos Android tem resolucoes variadas; coordenadas relativas adaptam-se automaticamente sem recalculo manual
+## Conexoes
+
+- [[cluster-hub-navegacao]]
+- [[css-selector-priority-ladder]]
+- [[decisao-hub-decisoes]]
+- [[dom-element-hierarchy-mapping]]
+- [[iframecontenteditable-text-entry]]
+- [[spa-navigation-detection]]

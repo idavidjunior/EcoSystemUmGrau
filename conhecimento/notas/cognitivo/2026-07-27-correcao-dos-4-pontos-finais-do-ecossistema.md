@@ -16,3 +16,7 @@ date: 2026-08-01
 3. **ecosystem learn**: varredura proativa que escaneia projetos Android + registra no knowledge graph
 4. **Vigilante aprende sozinho**: timer diario executa ecosystem learn automaticamente
 5.
+## Conexoes
+
+- [[cluster-hub-ecossistema]]
+- [[cognitivo-hub-cognitivo]]

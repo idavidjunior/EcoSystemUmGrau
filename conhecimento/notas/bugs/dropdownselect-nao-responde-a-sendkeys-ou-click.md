@@ -4,7 +4,7 @@ aliases: [Dropdown<select> nao responde a send_keys ou click]
 date: 2026-08-01
 ---
 
-# Bug: Dropdown<select> nao responde a send_keys ou click
+# Dropdown<select> nao responde a send_keys ou click
 
 **Projeto:** treinamento_navegacao
 
@@ -13,3 +13,11 @@ Selects estilizados (custom dropdowns) substituem o elemento <select> nativo por
 
 ## Correcao
 Clicar no select para abrir, depois clicar na opcao pelo texto visivel; se nao funcionar, usar JS para setar valor e disparar evento change
+## Conexoes
+
+- [[bug-hub-bugs]]
+- [[cluster-hub-navegacao]]
+- [[css-selector-priority-ladder]]
+- [[dom-element-hierarchy-mapping]]
+- [[iframecontenteditable-text-entry]]
+- [[spa-navigation-detection]]

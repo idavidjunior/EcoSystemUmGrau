@@ -4,7 +4,7 @@ aliases: [**EQ state not persisted**]
 date: 2026-08-01
 ---
 
-# Bug: **EQ state not persisted**
+# **EQ state not persisted**
 
 **Projeto:** mp3player-metadata-rescue
 
@@ -13,3 +13,11 @@ EQ enabled/disabled state not saved to SharedPreferences — switch reset to ON 
 
 ## Correcao
 Added `KEY_ENABLED` to `saveActivePreset()`/`loadActivePreset()`. Uses `restoringEqState` flag to prevent listener firing during restoration.
+## Conexoes
+
+- [[bug-hub-bugs]]
+- [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
+- [[cluster-hub-mp3player]]
+- [[if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-]]
+- [[step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo]]
+- [[user-taps-buscar-na-internet]]

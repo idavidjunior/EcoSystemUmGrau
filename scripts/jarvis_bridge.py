@@ -51,7 +51,7 @@ HIST_PATH = Path(WORKDIR) / "EcoSystemUmGrau" / "conversa_unica.json"
 SYS_PATH = str(Path(__file__).parent / "JARVIS_SYSTEM.md")
 PRON_PATH = str(Path(__file__).parent / "pronuncias.json")  # ipa metadata apenas
 
-MAX_HIST = 50
+MAX_HIST = 1000
 
 DIAS = ["segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado","domingo"]
 MESES = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]

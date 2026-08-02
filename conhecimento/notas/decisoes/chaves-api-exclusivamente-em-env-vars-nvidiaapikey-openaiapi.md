@@ -9,3 +9,7 @@ date: 2026-08-01
 **Fonte:** sessao_seguranca
 
 Config files podem ser commitados ou expostos; env vars sao seguras e isoladas por sessao
+## Conexoes
+
+- [[cluster-hub-ecossistema]]
+- [[decisao-hub-decisoes]]

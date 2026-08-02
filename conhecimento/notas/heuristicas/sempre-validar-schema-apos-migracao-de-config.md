@@ -1,5 +1,5 @@
 ---
-tags: [heuristica, configuration]
+tags: [configuration, heuristica]
 aliases: [Sempre validar schema apos migracao de config]
 date: 2026-08-01
 ---
@@ -9,3 +9,7 @@ date: 2026-08-01
 **Dominio:** configuration | **Fonte:** session
 
 Ferramentas que geram config podem produzir schema invalido; sempre ler spec e validar manualmente apos edicao
+## Conexoes
+
+- [[cluster-hub-navegacao]]
+- [[heuristica-hub-heuristicas]]

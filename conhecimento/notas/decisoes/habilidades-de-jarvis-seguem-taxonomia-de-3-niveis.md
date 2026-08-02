@@ -9,3 +9,11 @@ date: 2026-08-01
 **Fonte:** ler_aprendizado
 
 A primeira versao misturava ferramentas, conhecimentos e capacidades. A versao correta alinha com a taxonomia do ecossistema.
+## Conexoes
+
+- [[cluster-hub-ler]]
+- [[decisao-hub-decisoes]]
+- [[encoding-utf-8-explicito-em-python-no-windows]]
+- [[jarvis-deve-manter-registro-de-suas-proprias-habilidades-em-]]
+- [[registro-de-habilidades-de-jarvis]]
+- [[taxonomia-correta-de-habilidades-jarvis]]

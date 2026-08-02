@@ -1,5 +1,5 @@
 ---
-tags: [padrao, mp3player]
+tags: [mp3player, padrao]
 aliases: [Filename artist extraction (two strategies)]
 date: 2026-08-01
 ---
@@ -9,3 +9,11 @@ date: 2026-08-01
 **Fonte:** mp3player
 
 Artist 'Desconhecido'/'<unknown>': Strategy 1 = dash-separated (first segment is artist, last is channel), Strategy 2 = double-space separated (second segment is artist). Segment validated: 2-50 chars, at least one uppercase.
+## Conexoes
+
+- [[audioprocessorisactive-must-be-dynamic]]
+- [[cluster-hub-mp3player]]
+- [[itunes-search-with-scoring-thresholds]]
+- [[metadata-busca-em-multi-fontes-acoustid-itunes-br-musicbrain]]
+- [[padrao-hub-padroes]]
+- [[renderersfactory-for-custom-audioprocessor]]

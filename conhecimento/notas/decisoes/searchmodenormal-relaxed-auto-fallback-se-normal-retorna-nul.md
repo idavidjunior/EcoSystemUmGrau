@@ -9,3 +9,11 @@ date: 2026-08-01
 **Fonte:** mp3player
 
 RELAXED usa thresholds mais baixos e queries mais amplas (title-only, artist-only).
+## Conexoes
+
+- [[audioprocessorisactive-must-be-dynamic]]
+- [[cluster-hub-mp3player]]
+- [[decisao-hub-decisoes]]
+- [[filename-artist-extraction-two-strategies]]
+- [[itunes-search-with-scoring-thresholds]]
+- [[renderersfactory-for-custom-audioprocessor]]

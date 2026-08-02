@@ -114,7 +114,7 @@ O projeto está em `C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau`
 - **TTS**: `edge-tts pt-BR-ThalitaMultilingualNeural`
 - **Rede**: Tailscale (PC: `100.91.141.101`, Phone: `100.64.71.9`)
 - **Watchdog**: `watchdog.ps1` monitora bridge a cada 20s, reinicia se cair
-- **Histórico**: `conversa_unica.json` (na raiz do ecossistema, max 50 pares), compartilhado com o CLI. Todos os diálogos (app + CLI) ficam no mesmo arquivo para contexto unificado
+- **Histórico**: `conversa_unica.json` (na raiz do ecossistema, max 500 pares), compartilhado com o CLI. Todos os diálogos (app + CLI) ficam no mesmo arquivo para contexto unificado
 - **Auth serve**: Basic Auth (username: `opencode`, password da env var `OPENCODE_SERVER_PASSWORD` do .env)
 - **Variáveis de ambiente**: configuradas em `scripts/.env` — carregadas pela bridge com python-dotenv
 

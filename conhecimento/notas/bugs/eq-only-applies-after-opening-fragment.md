@@ -4,7 +4,7 @@ aliases: [**EQ only applies after opening fragment**]
 date: 2026-08-01
 ---
 
-# Bug: **EQ only applies after opening fragment**
+# **EQ only applies after opening fragment**
 
 **Projeto:** mp3player-metadata-rescue
 
@@ -13,3 +13,11 @@ Saved gains/preamp never loaded into processor until `EqualizerFragment.loadActi
 
 ## Correcao
 Added `EqStateLoader.restoreTo()` — loads same SharedPreferences used by fragment and applies to processor. Called in `playSongFromList()` before playing.
+## Conexoes
+
+- [[bug-hub-bugs]]
+- [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
+- [[cluster-hub-mp3player]]
+- [[if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-]]
+- [[step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo]]
+- [[user-taps-buscar-na-internet]]

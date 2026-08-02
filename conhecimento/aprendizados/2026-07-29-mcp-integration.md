@@ -1,12 +1,12 @@
-# 2026-07-29 — MCP Integration
+﻿# 2026-07-29 â€” MCP Integration
 
 ## Learning
 Integrated 5 MCP servers from `opencode-agents-mcp` repo into EcoSystemUmGrau:
-- **eco-knowledge** (Python) — knowledge server for semantic search
-- **filesystem** (Node.js) — file operations
-- **search** (Node.js) — web search
-- **terminal** (Node.js) — command execution
-- **github** (Node.js, disabled) — GitHub API; needs GH_TOKEN env var
+- **eco-knowledge** (Python) â€” knowledge server for semantic search
+- **filesystem** (Node.js) â€” file operations
+- **search** (Node.js) â€” web search
+- **terminal** (Node.js) â€” command execution
+- **github** (Node.js, disabled) â€” GitHub API; needs GH_TOKEN env var
 
 ## Config Schema (opencode v1.18.9)
 - `mcp` is a plain object: keys = server names, values = server configs (no `servers` wrapper)
@@ -19,8 +19,8 @@ Integrated 5 MCP servers from `opencode-agents-mcp` repo into EcoSystemUmGrau:
 - Config validated successfully (`opencode debug config` returns no errors)
 - filesystem MCP server starts on stdio and accepts JSON-RPC
 - GitHub disabled until GH_TOKEN set
-- better-sqlite3 native addon does not compile on this machine (no VS Build Tools) — database server unavailable
-- Memory critical (~440MB free of 4GB) — guardian may kill processes
+- better-sqlite3 native addon does not compile on this machine (no VS Build Tools) â€” database server unavailable
+- Memory critical (~440MB free of 4GB) â€” guardian may kill processes
 
 ## Repos
 - `mcp-servers/` cloned from `AliZafar780/opencode-agents-mcp` (depth 1)

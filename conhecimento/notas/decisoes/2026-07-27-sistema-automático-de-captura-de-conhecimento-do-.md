@@ -43,3 +43,6 @@ Antes desta implementação, cada interação com o ecossistema gerava conhecime
 - `EcoSystemUmGrau/conhecimento/INDEX.md`
 - `~/.ler/integrations/opencode/knowledge_bridge.py`
 
+## Conexoes
+
+- [[decisao-hub-decisoes]]

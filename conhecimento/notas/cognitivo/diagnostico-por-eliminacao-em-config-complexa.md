@@ -9,3 +9,11 @@ date: 2026-08-01
 **Dominio:** debugging
 
 Quando config tem multiplos componentes (provedores, servidores, MCP), isolar cada camada: testar provider isolado -> testar servidor -> testar MCP handshake -> testar chain completo
+## Conexoes
+
+- [[cluster-hub-navegacao]]
+- [[cognitivo-hub-cognitivo]]
+- [[debugging-em-cascata-reversa]]
+- [[encoding-aware-diagnostics]]
+- [[hipotese-falsificacao-terminal]]
+- [[principio-da-separacao-causa-efeito-temporal]]

@@ -9,3 +9,7 @@ date: 2026-08-01
 **Dominio:** security | **Fonte:** session
 
 Auth tokens e chaves API devem ficar em env vars ou auth.json criptografado, nunca em opencode.json
+## Conexoes
+
+- [[cluster-hub-navegacao]]
+- [[heuristica-hub-heuristicas]]

@@ -9,3 +9,11 @@ date: 2026-08-01
 **Fonte:** treinamento_navegacao
 
 OCR e 10-100x mais lento que seletores diretos e sujeito a falsos positivos; usar apenas quando arvore de acessibilidade nao existe
+## Conexoes
+
+- [[cluster-hub-navegacao]]
+- [[css-selector-priority-ladder]]
+- [[decisao-hub-decisoes]]
+- [[dom-element-hierarchy-mapping]]
+- [[iframecontenteditable-text-entry]]
+- [[spa-navigation-detection]]

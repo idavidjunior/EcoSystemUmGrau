@@ -18,7 +18,7 @@ fluxo autônomo de trabalho, memória e conhecimento:
 |---|---|
 | **OpenCode** | Orquestrador principal — 16 agents com gates SDLC (G1–G5) |
 | **LER** (Loop Engineering Runtime) | Loops autônomos Python para tarefas complexas |
-| **Obsidian** | Vault inteligente — 263+ notas, 8 MOCs, templates, Dataview |
+| **Obsidian** | Vault inteligente — 294+ notas, hubs, grafo vivo, templates, Dataview |
 | **Ponytail** | Plugin que mantém o estado/forma de trabalho entre sessões |
 
 ## Arquitetura (3 cérebros)
@@ -195,6 +195,16 @@ python scripts/dialogo.py --texto "pergunta sem microfone"
 
 Ctrl+C encerra. Reusa o `Cliente` do `jarvis_bridge.py` (opencode serve porta 8767) — por isso **responde e executa** (hora, clima, bateria, git, arquivos, etc).
 
+## Vault Obsidian (cérebro vivo)
+
+O conhecimento do ecossistema vira uma **teia visual interativa** no Obsidian:
+
+1. **Fontes únicas** — `ler-runtime/knowledge/knowledge_graph.json` (73 padrões, 42 decisões, 46 bugs, 27 cognitivos, 32 heurísticas, 10 frameworks) + `conhecimento/aprendizados/*.md`.
+2. **Geração** — `python scripts/generate-obsidian-notes.py` transforma o graph em **294+ notas** com **links bidirecionais** `[[...]]`, 15 notas-hub (por categoria e por cluster: android, mp3player, ler, navegação, ecossistema, cognição) e injeta a seção `## Conexões` nos aprendizados.
+3. **Abrir o vault** — Obsidian → *Open folder as vault* → `EcoSystemUmGrau/conhecimento/`. O grafo (force-directed) mostra a teia completa; nós muito citados viram hubs centrais.
+4. **Cores por tag** — no grafo, *Group by tag* ou plugins (Excalidraw, Juggl para 3D).
+5. **Regenerar** — após novos aprendizados, rode o script de novo (idempotente, nunca duplica seções).
+
 ## Estrutura do Repo
 
 ```
@@ -205,6 +215,9 @@ EcoSystemUmGrau/
 ├── Android/             # Projetos Android monitorados pelo vigilante
 ├── config/              # Templates de config (opencode.jsonc, agents)
 ├── conhecimento/        # Aprendizados, memória, notas, templates
+│   ├── aprendizados/    # ★ Conhecimento em .md com frontmatter (tipo, tags) — conectados por [[links]]
+│   ├── notas/           # Vault Obsidian gerado: padroes/, decisoes/, bugs/, cognitivo/, heuristicas/, frameworks/, missoes/, _hubs/
+│   └── memoria/         # Memória de sessão com decay de Ebbinghaus
 ├── docs/                # Documentação
 ├── ferramentas/         # Ferramentas (Flutter, etc.)
 ├── Habilidades/         # ★ Catálogo único de habilidades (tecnicas/, pontes/, comportamentais/, multimidia/)

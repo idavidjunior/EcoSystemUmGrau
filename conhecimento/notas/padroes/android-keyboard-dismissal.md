@@ -9,3 +9,11 @@ date: 2026-08-01
 **Fonte:** treinamento_navegacao
 
 Teclado virtual sobrepoe metade da tela e esconde elementos; fechar antes de interagir com elementos abaixo
+## Conexoes
+
+- [[cluster-hub-navegacao]]
+- [[css-selector-priority-ladder]]
+- [[dom-element-hierarchy-mapping]]
+- [[iframecontenteditable-text-entry]]
+- [[padrao-hub-padroes]]
+- [[spa-navigation-detection]]
