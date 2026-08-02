@@ -471,6 +471,36 @@ Não inventar APIs, bibliotecas ou funcionalidades inexistentes.
 
 ---
 
+# CLÁUSULA PÉTREA — ATIVAÇÃO DE VOZ — ECO SYSTEM
+
+**Regra permanente para TODOS os agentes e TODAS as sessões.**
+
+Quando o usuário digitar/falar **"Ativar Eco"** (case-insensitive, em qualquer momento da conversa):
+
+1. O agente DEVE confirmar ativação: "Eco ativado. Sistema de voz online."
+2. Iniciar/modificar comportamento para **responder com áudio** via bridge Jarvis:
+   - Usar `jarvis_bridge.py` (porta 8765) para gerar TTS (base64 MP3)
+   - Se no PC: disparar `python scripts/dialogo.py --modo vad` em background para modo hands-free
+   - Se no celular: bridge já atende via WebSocket (app VoxUmGrau conectado)
+3. Manter modo voz ativo até "Desativar Eco"
+
+Quando o usuário digitar/falar **"Desativar Eco"**:
+
+1. O agente DEVE confirmar: "Eco desativado. Modo texto restaurado."
+2. Parar modo voz, voltar a responder apenas em texto
+3. Se `dialogo.py` estiver rodando em background, finalizá-lo (Ctrl+C)
+
+**Implementação técnica:**
+- Bridge já roda em `ws://0.0.0.0:8765` (porta 8765)
+- TTS: `edge-tts` voz `pt-BR-AntonioNeural` via `jarvis_bridge.py:gerar_audio()`
+- STT (PC): `vox_audio.py ouvir` → Whisper local
+- STT (Celular): `SpeechRecognizer` Android → WebSocket → bridge
+- Comando para iniciar modo diálogo PC: `python scripts/dialogo.py --modo vad` (bg)
+
+**Persistência:** Esta regra vale para QUALQUER sessão nova ou existente. Não depende de estado anterior.
+
+---
+
 # TOMADA DE DECISÃO
 
 Antes de qualquer implementação responder internamente:
