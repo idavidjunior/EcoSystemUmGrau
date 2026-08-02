@@ -532,7 +532,8 @@ Instrução **IMUTÁVEL**. Todo agente DEVE aprender ao final de cada tarefa SEM
 
 ## Obrigações ao concluir uma tarefa
 
-1. **Registrar memória:** `python scripts/memory_engine.py add --task "<titulo>" --summary "<resumo>" --kind <tipo>`
+1. **Registrar memória:** `python scripts/memory_engine.py add "<titulo>" "<resumo>" <tipo>`
+   - Argumentos POSICIONAIS (o script não usa flags `--task/--summary/--kind`)
    - Tipos: `decisao` (escolhas arquiteturais), `erro` (bugs encontrados), `padrao` (padrões identificados), `episodio` (eventos relevantes)
 2. **Criar arquivo:** `conhecimento/aprendizados/YYYY-MM-DD-titulo.md` com frontmatter (tipo, tags, data, contexto, decisão, impacto)
 3. **Sincronizar:** git add + commit + push após registrar aprendizados
