@@ -36,3 +36,8 @@ valida (debug config + preflight) → pull/commit/push de todos os 12 repos irm�
 - Em MCP `command` e em `plugin`, o opencode NÃO resolve `{{USERPROFILE}}` nem aceita
   objeto — usar paths absolutos no deploy e array de strings no plugin.
 - O deploy real da config é responsabilidade do `ecosystem sync`; o repo é a fonte única.
+- **Portabilidade do setup.bat**: o template `config/opencode.jsonc` NÃO pode ter paths
+  hardcoded de um usuário específico (ex.: `C:/Users/David Jr/...`). Todo path deve usar
+  `{{USERPROFILE}}` para o setup.bat/substituição funcionar em qualquer PC. Também removida
+  a junction `~/.ler` obsoleta (LER usa `run.py`/`run.ps1` no repo) e adicionado passo 8
+  de validação (`opencode debug config`) no setup.bat.
