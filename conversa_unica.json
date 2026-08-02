@@ -1,6 +1,4 @@
 [
-  "Usuário: Você precisa dar mais feedback do que você está fazendo para que eu não fique esperando inutilmente sem informações suficientes para saber o que você está progredindo ou não?",
-  "Jarvis: Feito, senhor. Registrei a regra de forma permanente no meu arquivo de sistema, que é carregado em toda sessão.\n\nA partir de agora: antes de agir eu aviso o plano, durante a execução eu relato descobertas e bloqueios em voz, e em esperas longas — como quando o modelo demora — você recebe um status intermediário em vez de silêncio. Ao terminar, resumo o resultado.\n\nPronto, tudo sincronizado no GitHub.",
   "Usuário: Está vendo troca entre o conhecimento com o obsidian ele está sendo consumido?",
   "Jarvis: Aqui está o resumo do que fizemos até agora nesta sessão:\n\n## Concluído\n- **Fonemas SSML reativados** — `gerar_audio()` em `scripts/jarvis_bridge.py` agora usa fonemas com fallback seguro (commit `8c08450`).\n- **Aprendizado TV LG webOS** — controle nativo funcional (power, volume, teclas, mídia, HDMI, foreground). `listApps` bloqueado por 401 (requer Modo Desenvolvedor, porta 5000). Nota salva em `conhecimento/aprendizados/2026-08-02-aprendizado-tv-lg-webos.md`.\n- **Feedback contínuo** — regra 16 registrada em `scripts/JARVIS_SYSTEM.md` + nota de aprendizado + commit/push `d584d38`. Objetivo: nunca deixar você esperando em silêncio durante tarefas longas (LLM 20-30s).\n- **Memórias #42 (TV) e #43 (feedback contínuo)** adicionadas via `memory_engine.py`.\n\n## Em andamento\n- Verificação de que as notas do Obsidian estão sendo **consumidas** pelo ecossistema (servidor MCP `mcp-knowledge-server.py`, `search_knowledge.py`, `generate-obsidian-notes.py`).\n\n## Estado do ecossistema\n- Vault: 327 notas (`conhecimento/` 324 + `docs/` 3), MCP eco-knowledge configurado no `opencode.jsonc`.\n\nQuer que eu continue a verificação do consumo do conhecimento Obsidian ou prefere outra direção?",
   "Usuário: Está havendo troca entre o conhecimento com o obsidian? O conteúdo dele está sendo consumido pelo ecossistema também?",
@@ -48,5 +46,7 @@
   "Usuário: reiniciar manualmente para o novo limite valer já o que prefere",
   "Jarvis: Prefiro reiniciar manualmente agora. O `MAX_HIST` só é lido na inicialização da bridge, então só reiniciando o novo limite vale na hora — do contrário, espera o próximo ciclo do vigilante. Quer que eu reinicie a bridge agora?",
   "Usuário: hoje em São Paulo SP na capital domingo 2 de agosto de 2026 17:41",
-  "Jarvis: Boa tarde, senhor! Domingo, 2 de agosto, 17 e 41. Céu predominantemente limpo aqui na capital, 26 graus com sensação de 25 e o ar bem seco. Aproveitando o fim de domingo?"
+  "Jarvis: Boa tarde, senhor! Domingo, 2 de agosto, 17 e 41. Céu predominantemente limpo aqui na capital, 26 graus com sensação de 25 e o ar bem seco. Aproveitando o fim de domingo?",
+  "Usuário: E aí!",
+  "Jarvis: Fala, senhor! Domingo à tarde, céu limpo e o Jarvis na escuta, tudo em ordem. O que vamos aprontar agora?"
 ]
