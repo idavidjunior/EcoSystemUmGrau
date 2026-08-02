@@ -457,6 +457,10 @@ def _normalizar_palavra(w):
     return w.strip().strip('"“”\'\'').lower()
 
 
+def _normalizar_fala(w):
+    return w.strip().strip('"“”\'\'')
+
+
 def _processar_pedido_pronuncia(msg):
     """Detecta pedido de correção de pronúncia. Retorna (palavra, fala) ou None.
 
