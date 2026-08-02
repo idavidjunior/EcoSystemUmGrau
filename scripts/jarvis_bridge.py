@@ -413,6 +413,14 @@ def normalizar_hora_display(texto):
 
 
 def aplicar_phonemes(texto):
+    """Aplica substituições de pronúncia por TEXTO (campo "fala") do pronuncias.json.
+
+    IMPORTANTE (02/08/2026): o edge-tts >= 7.x removeu suporte a SSML custom —
+    ele ESCAPA todo o texto no __init__ (escape()), então tags como <phoneme>,
+    <break> e <say-as> são lidas LITERALMENTE pela voz. Por isso:
+    - "fala" (grafia falada, ex.: "Guitirrãbi") é substituição de TEXTO puro e funciona.
+    - "ipa" (tag <phoneme>) é INUTILIZÁVEL com edge-tts e não é mais gerada.
+    """
     try:
         with open(PRON_PATH, "r", encoding="utf-8") as f:
             ipas = json.load(f)
@@ -422,13 +430,8 @@ def aplicar_phonemes(texto):
     def sub(m):
         w = m.group(0)
         key = w.lower()
-        if key in ipas:
-            meta = ipas[key]
-            if "fala" in meta:
-                return meta["fala"]
-            ipa = meta.get("ipa", "").strip("/")
-            if ipa:
-                return f'<phoneme alphabet="ipa" ph="/{ipa}/">{w}</phoneme>'
+        if key in ipas and "fala" in ipas[key]:
+            return ipas[key]["fala"]
         return w
     texto, n = re.subn(r'\b([^\W\d_]+)\b', sub, texto)
     return texto, n > 0
@@ -517,178 +520,13 @@ def _registrar_pronuncia(palavra, fala):
     return False
 
 
-PROSODIA_PERGUNTA = '<prosody pitch="+12%" rate="+4%">'
-PROSODIA_EXCLAMACAO = '<prosody pitch="+8%" rate="+6%">'
-
-
-def _prosodia_frases(t):
-    """Aplica <prosody> dinâmico por tipo de frase sobre o SSML já construído.
-
-    Baseado no estudo de entoação do PB (JARVIS_SYSTEM.md):
-    - Pergunta (?)  -> curva ascendente: pitch +12%, rate +4% (perguntas tendem a
-      ser mais rápidas; tônica final com pico mais alto).
-    - Exclamação (!) -> ênfase: pitch +8%, rate +6% (entusiasmo controlado).
-    - Afirmação (.) -> sem prosody (a voz já desce naturalmente H+L* L%).
-
-    Roda por ÚLTIMO (após say-as/break/emphasis) para que as regex de say-as
-    (ex.: porcentagem) não casem os atributos do prosody ("+12%"). Preserva os
-    delimitadores originais (espaços e <break>) entre sentenças.
-    """
-    if not t:
-        return t, False
-    delim = re.compile(
-        r'((?<=[.!?])\s*(?:<break[^>]*/>\s*|\s+)(?=[A-ZÁÉÍÓÚÂÊÎÔÛÃÕÇ]))'
-    )
-    partes = delim.split(t)
-    mudou = False
-    out = []
-    for i in range(0, len(partes), 2):
-        p = partes[i].strip()
-        if not p:
-            out.append(partes[i])
-            if i + 1 < len(partes):
-                out.append(partes[i + 1])
-            continue
-        if p.endswith('?'):
-            out.append(PROSODIA_PERGUNTA + p + '</prosody>')
-            mudou = True
-        elif p.endswith('!'):
-            out.append(PROSODIA_EXCLAMACAO + p + '</prosody>')
-            mudou = True
-        else:
-            out.append(p)
-        if i + 1 < len(partes):
-            out.append(partes[i + 1])
-    return ''.join(out), mudou
-
-
-def _ssml_enriquecer(t):
-    """Enriquence texto puro (ja passado por melhorar_fala e aplicar_phonemes)
-    com SSML para maior naturalidade no audio, SEM alterar a ortografia exibida.
-
-    Evolucoes:
-    1. <say-as> para porcentagens, numeros ordinais e datas — leitura correta
-       (ex.: '85 %' -> 'oitenta e cinco por cento', '1' -> 'primeiro',
-       '31/07/2026' -> data naturalmente).
-    2. <break> pausas estrategicas: apos saudacoes/iniciais (respiracao) e
-       entre frases (ritmo mais humano).
-    3. <prosody>/<emphasis> sutil: frases perguntam com tom ascendente e
-       alertas de recursos (CPU/disco cheio) ganham enfase.
-
-    Regra: se nada for enriquecido, devolve texto puro. Qualquer falha ->
-    fallback texto puro (edge-tts sempre funciona com texto corrido).
-    """
-    if not t:
-        return "", False
-
-    orig = t
-    tem_ssml = False
-    try:
-        # --- datas DD/MM/AAAA -> say-as dmy (formato brasileiro) ---
-        def _data(m):
-            nonlocal tem_ssml
-            d, mes, a = m.group(1), m.group(2), m.group(3)
-            try:
-                dd, mm = int(d), int(mes)
-            except ValueError:
-                return m.group(0)
-            if not (1 <= dd <= 31 and 1 <= mm <= 12):
-                return m.group(0)
-            tem_ssml = True
-            return "<say-as interpret-as='date' format='dmy'>%02d/%02d/%s</say-as>" % (dd, mm, a)
-        t = re.sub(r'\b(\d{1,2})/(\d{1,2})/(\d{4})\b', _data, t)
-
-        # --- porcentagens: 10 % -> say-as percent (apenas inteiro, sem virgula) ---
-        def _pct(m):
-            nonlocal tem_ssml
-            base = m.group(1) or m.group(2)
-            if not base:
-                return m.group(0)
-            if '.' in base or ',' in base:
-                return m.group(0)
-            tem_ssml = True
-            return "<say-as interpret-as='number' format='percent'>%s</say-as>" % base
-        t = re.sub(r'(\d{1,3})\s*%|\b(\d{1,3})\s*por cento', _pct, t)
-
-        # --- numeros ordinais: 1º/2º -> say-as ordinal (ate 100) ---
-        def _ord(m):
-            nonlocal tem_ssml
-            num = int(m.group(1))
-            if num > 100:
-                return m.group(0)
-            tem_ssml = True
-            return "<say-as interpret-as='ordinal'>%d</say-as>" % num
-        t, n_ord = re.subn(r'\b(\d+)º\b', _ord, t)
-        if n_ord:
-            tem_ssml = True
-
-        # --- <break> apos saudacao abertura (respiracao natural) ---
-        aberturas = re.compile(
-            r'^(Entao|Oi|Ola|Bom dia|Boa tarde|Boa noite|E aí|Ei|Olha|Bem|vamos|agora)',
-            re.IGNORECASE,
-        )
-        t, n_ab = aberturas.subn(lambda m: m.group(0) + ", <break time=\"350ms\"/>", t, count=1)
-        if n_ab:
-            tem_ssml = True
-
-        # --- pausa entre frases: <break> leve apos ponto/fechamento ---
-        t, n_brk = re.subn(
-            r'(?<=[.!?])\s+(?![\"\'])([A-ZÁÉÍÓÚÂÊÎÔÛÃÕÇ])',
-            r'. <break time="150ms"/> \1', t,
-        )
-        if n_brk:
-            tem_ssml = True
-
-        # --- pergunta: prosso ascendente suave (reforça ? que o edge ja faz) ---
-        if t.rstrip().endswith('?'):
-            tem_ssml = True
-
-        # --- enfase: alertas de recursos do PC/saude ---
-        if re.search(r'CPU em \d+%|disco em \d+%|memória em \d+%|bateria crítica', t, re.IGNORECASE):
-            t = re.sub(r'(\d+%)', r'<emphasis level="modified">\1</emphasis>', t)
-            tem_ssml = True
-
-        # --- prosody dinâmico por tipo de frase (pergunta ascendente / exclamação) ---
-        t, tem_prosody = _prosodia_frases(t)
-        if tem_prosody:
-            tem_ssml = True
-
-        if not tem_ssml:
-            return orig, False
-        return _escapar(t), True
-    except Exception as e:
-        logger.warning("ssml_enriquecer: %s; fallback texto puro" % e)
-        return orig, False
-
-
-def _escapar(ssml):
-    """Escapa textos dentro do SSML (atributos já usam aspas simples).
-    Não escapa as tags <say-as>/<break>/<prosody> já formadas."""
-    if '<' not in ssml and '>' not in ssml:
-        return ssml
-    # protege tags existentes
-    protegidas = re.split(r'(<[^>]+>)', ssml)
-    out = []
-    for i, p in enumerate(protegidas):
-        if p.startswith('<') and p.endswith('>'):
-            out.append(p)
-        else:
-            p = p.replace('&', '&amp;')
-            p = p.replace('<', '&lt;').replace('>', '&gt;')
-            p = p.replace('"', '&quot;')
-            out.append(p)
-    return ''.join(out)
-
-
 async def gerar_audio(texto):
     t = sanitizar(texto)
     if not t: return ""
     t = melhorar_fala(t)
-    # 1) camada de pronuncia (phoneme) sobre texto puro — evita regex dentro de tags
-    t_phon, tem_fonema = aplicar_phonemes(t)
-    # 2) camada SSML enriquece a naturalidade sobre texto ja com phoneme
-    t_ssml, usou_ssml = _ssml_enriquecer(t_phon)
-
+    # edge-tts >= 7.x escapa todo texto e não suporta SSML custom: enviamos
+    # TEXTO PURO. Pronúncias por grafia falada ("fala") são texto e funcionam;
+    # tags <phoneme>/<break>/<say-as> seriam lidas literalmente, então não existem.
 
     async def _stream(entrada):
         c = edge_tts.Communicate(entrada, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
@@ -699,9 +537,9 @@ async def gerar_audio(texto):
         return a
 
     try:
-        audio = await _stream(t_phon if tem_fonema else (t_ssml if usou_ssml else t))
+        audio = await _stream(aplicar_phonemes(t)[0])
     except Exception as e:
-        logger.warning(f"ssml com fonemas falhou ({e}); fallback texto puro")
+        logger.warning(f"tts falhou ({e}); fallback texto puro")
         try:
             audio = await _stream(melhorar_fala(sanitizar(texto)))
         except Exception as e2:
