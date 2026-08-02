@@ -518,5 +518,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T17:59:12.111788",
     "last_accessed": "2026-08-02T17:59:12.111788"
+  },
+  {
+    "id": 53,
+    "kind": "padrao",
+    "task": "Secrets Guard no preflight_check",
+    "summary": "Adicionada secao [6] Secrets Guard ao preflight_check.py: guard_auth_json bloqueia chaves mascaradas (nvapi como outro provider, bug sessao_limpeza_auth), guard_env_vars exige que todo {env:VAR} citado na config esteja definido, guard_literal_keys rejeita apiKey/token literal e exige {env:VAR}. Leitura de auth.json com utf-8-sig. Testado: auth vazio passa, nvapi mascarado como deepseek eh BLOQUEADO.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T18:48:52.782926",
+    "last_accessed": "2026-08-02T18:48:52.782926"
   }
 ]
