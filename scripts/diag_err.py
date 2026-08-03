@@ -27,8 +27,7 @@ erros = []
 def on_console(msg):
     erros.append(str(msg))
 
-win.events.loaded += check
-win.events.closed += onclose
+def check():
     time.sleep(1.0)
     # inject error catcher first
     win.evaluate_js("""
@@ -53,8 +52,6 @@ def onclose():
 win.events.loaded += check
 win.events.closed += onclose
 print("[debug] start", flush=True)
-webview.start()
-'''
 
 tmp = os.path.join(ROOT, "scripts", "dbg_widget7.py")
 with open(tmp, "w", encoding="utf-8") as f:
