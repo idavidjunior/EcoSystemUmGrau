@@ -7,7 +7,7 @@ env = dict(os.environ)
 env["PYWEBVIEW_LOG"] = "DEBUG"
 
 code = r'''
-import sys, os
+import sys, os, time
 BASE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, BASE)
 import webview
