@@ -147,7 +147,11 @@ API_INJECT = """
           var u = new URL(window.location.href);
           u.searchParams.set('v', v);
           u.searchParams.set('rc', String(Date.now()));
-          window.location.href = u.toString();
+          // regenera grafo.html + grafo_widget.html ANTES de recarregar,
+          // garantindo que o widget espelhe o vault atualizado
+          window.pywebview.api.regenerar().then(function(){
+            window.location.href = u.toString();
+          });
         }
       });
     } catch(e){ /* pywebview ainda nao pronto */ }
@@ -202,6 +206,16 @@ class Bridge:
 
     def versao(self) -> str:
         return _versao()
+
+    def regenerar(self) -> str:
+        """Regenera docs/grafo.html (a partir do vault) e reaplica o CSS/JS do
+        widget em docs/grafo_widget.html. Chamado pelo JS quando versao muda —
+        garante que o widget sempre espelhe o vault Obsidian vivo."""
+        ok = _regenerate()
+        if ok:
+            view = _build_view()
+            return str(view) if view else ''
+        return ''
 
     def redimensionar(self, w: int, h: int) -> None:
         if not self.win:

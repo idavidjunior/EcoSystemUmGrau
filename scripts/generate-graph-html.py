@@ -171,6 +171,7 @@ def extrair_nos():
              'source': source}
         nos.append(n)
         nos_por_id[nid] = n
+        return n
 
     # ---- ler TODAS as notas do vault (incl. _hubs) ----
     md_files = sorted(Path(VAULT_DIR).rglob('*.md'))
@@ -224,7 +225,7 @@ def extrair_nos():
 
         n = add_no(slug, label, categoria, tags, title, source, cluster)
         if status:
-            n['status'] = status
+            nos_por_id[slug]['status'] = status
 
         # armazenar wikilinks desta nota (antes de possivelmente ser usado)
         links = _extract_wikilinks(body)
