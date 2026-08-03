@@ -140,6 +140,7 @@ API_INJECT = """
   var rodou = false;
   function checar(){
     try {
+      window.pywebview.api.ping('checar').then(function(){ console.log('ping ok'); });
       window.pywebview.api.versao().then(function(v){
         if(!rodou){ rodou = true; lastVer = v; return; }
         if(v !== lastVer){
@@ -159,6 +160,7 @@ API_INJECT = """
   if(window.pywebview && window.pywebview.api){ checar(); }
   window.addEventListener('pywebviewready', checar);
   setInterval(checar, %POLL_MS%);
+})();
 </script>
 """
 
@@ -187,6 +189,16 @@ def _mtime_ns(path: Path) -> int:
         return 0
 
 
+def _log_api(nome):
+    try:
+        log = BASE / 'docs' / 'widget_api_log.txt'
+        with open(log, 'a', encoding='utf-8') as f:
+            from datetime import datetime
+            f.write(f"{datetime.now().strftime('%H:%M:%S.%f')} {nome}\n")
+    except Exception:
+        pass
+
+
 def _versao() -> str:
     v = [_mtime_ns(KNOWLEDGE_GRAPH)]
     late = 0
@@ -205,9 +217,24 @@ class Bridge:
         self.win = None
 
     def versao(self) -> str:
+        try:
+            _log_api('versao')
+        except Exception:
+            pass
         return _versao()
 
+    def ping(self, msg: str = '') -> str:
+        try:
+            _log_api(f'ping:{msg}')
+        except Exception:
+            pass
+        return 'pong'
+
     def regenerar(self) -> str:
+        try:
+            _log_api('regenerar')
+        except Exception:
+            pass
         """Regenera docs/grafo.html (a partir do vault) e reaplica o CSS/JS do
         widget em docs/grafo_widget.html. Chamado pelo JS quando versao muda —
         garante que o widget sempre espelhe o vault Obsidian vivo."""
@@ -295,16 +322,11 @@ def _build_view() -> Path | None:
     else:
         src += WIDGET_JS
 
-    if '</body>' in src:
-        src = src.replace('</body>', RESIZE_JS, 1)
-    else:
-        src += RESIZE_JS
-
     js = API_INJECT.replace('%POLL_MS%', str(POLL_MS))
     if '</body>' in src:
-        src = src.replace('</body>', js, 1)
+        src = src.replace('</body>', RESIZE_JS + js + '</body>', 1)
     else:
-        src += js
+        src += RESIZE_JS + js
 
     VIEW_COPY.write_text(src, encoding='utf-8')
     return VIEW_COPY
@@ -314,7 +336,9 @@ def _build_view() -> Path | None:
 def main() -> int:
     import webview
 
+    print('[widget] Iniciando _build_view...', flush=True)
     view = _build_view()
+    print(f'[widget] _build_view ok: {view}', flush=True)
     if not view:
         print('[widget] Nao foi possivel obter o grafo.')
         return 1
@@ -326,6 +350,7 @@ def main() -> int:
     y = geo.get('y')
 
     bridge = Bridge()
+    print('[widget] Criando janela...', flush=True)
     win = webview.create_window(
         TITLE,
         url=str(view.resolve()),
@@ -340,9 +365,22 @@ def main() -> int:
         background_color=BG,
     )
     bridge.win = win
+    print(f'[widget] Janela criada: {win}', flush=True)
+
+    def _on_loaded():
+        print('[widget] EVENTO loaded disparado', flush=True)
+        try:
+            r = win.evaluate_js("typeof window.pywebview + '|' + (window.pywebview ? typeof window.pywebview.api : 'noapi') + '|' + (window.pywebview && window.pywebview.api ? typeof window.pywebview.api.versao : 'nomethod')")
+            print(f'[widget] JS probe -> {r}', flush=True)
+        except Exception as e:
+            print(f'[widget] JS probe erro: {e!r}', flush=True)
+
+    win.events.loaded += _on_loaded
 
     try:
+        print('[widget] Iniciando webview.start...', flush=True)
         webview.start(debug=False)
+        print('[widget] webview.start retornou', flush=True)
     finally:
         _persistir_saida(win)
         print('[widget] Fechado.')
