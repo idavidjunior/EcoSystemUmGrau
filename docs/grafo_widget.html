@@ -4,18 +4,25 @@
 <meta charset="UTF-8">
 <title>Cerebro Vivo — Grafo do Conhecimento</title>
 <style>
-  #header { transition: opacity .25s ease; opacity: 0; pointer-events: none; }
-  #wrap { position: fixed; inset: 0; }
-  #net { height: 100vh !important; width: 100vw !important; }
-  body { width:100vw; height:100vh; overflow:hidden; }
-  body.desktop #header { opacity: 1; pointer-events: auto; }
-  /* moldura fina para arrastar a janela (sempre visivel, discreta) */
-  #mk-drag { position: fixed; left:0; top:0; width:100%; height:16px;
-             cursor: grab; z-index:9999; background: transparent; }
+  /* Esconde header por padrão; clique direito (body.desktop) revela */
+  #header { transition: opacity .25s ease; opacity: 0; pointer-events: none; height: 0; overflow: hidden; }
+  body.desktop #header { opacity: 1; pointer-events: auto; height: auto; overflow: visible; }
+
+  /* Wrapper flex original mantém-se; só escondemos o painel lateral */
+  #painel { display: none !important; }
+  #wrap { display: flex; height: 100vh; }
+  #net { flex: 1; height: 100vh !important; width: 100% !important; }
+  body { margin: 0; width: 100vw; height: 100vh; overflow: hidden; background: #1e1e2e; }
+
+  /* Moldura fina para arrastar a janela (sempre visível, discreta) */
+  #mk-drag { position: fixed; left: 0; top: 0; width: 100%; height: 16px;
+             cursor: grab; z-index: 9999; background: transparent; }
   #mk-drag:active { cursor: grabbing; }
-  #mk-resize { position: fixed; right:0; bottom:0; width:18px; height:18px;
-               cursor: nwse-resize; display:none; }
-  body.desktop #mk-resize { display:block; }
+
+  /* Alça de resize no canto inferior direito */
+  #mk-resize { position: fixed; right: 0; bottom: 0; width: 18px; height: 18px;
+               cursor: nwse-resize; display: none; z-index: 9999; }
+  body.desktop #mk-resize { display: block; }
 
   body { margin:0; font-family:'Segoe UI', sans-serif; background:#1e1e2e; color:#eee; }
   #header { padding:10px 16px; background:#181825; border-bottom:1px solid #313244; }
