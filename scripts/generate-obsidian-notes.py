@@ -27,6 +27,11 @@ LER_DIR = os.path.join(BASE, 'ler-runtime')
 GRAPH_FILE = os.path.join(LER_DIR, 'knowledge', 'knowledge_graph.json')
 OUTPUT_DIR = os.path.join(BASE, 'conhecimento', 'notas')
 APRENDIZADOS_DIR = os.path.join(BASE, 'conhecimento', 'aprendizados')
+sys.path.insert(0, os.path.join(BASE, 'scripts'))
+try:
+    from semantic_tags import extrair_tags
+except ImportError:
+    extrair_tags = None
 
 CATEGORIAS = ['padroes', 'decisoes', 'bugs', 'cognitivo', 'heuristicas', 'frameworks', 'missoes']
 
@@ -156,6 +161,17 @@ def extract_items(g):
     return items
 
 
+def _enriquecer_tags(tags_base, texto):
+    """Adiciona tags semanticas (RAKE leve) extraidas do corpo da nota."""
+    if not texto or not extrair_tags:
+        return tags_base
+    novas = []
+    for t in extrair_tags(texto, max_tags=4):
+        if t and t not in tags_base:
+            novas.append(t)
+    return tags_base + novas
+
+
 def frontmatter(tags, aliases=None, date=None):
     fm = ['---']
     if tags:
@@ -229,8 +245,10 @@ def generate(dry_run=False, inject_links=True):
             if vizinhos >= 4:
                 break
         if not dry_run:
+            # enriquece tags com conceitos do corpo (sinapses via tags semanticas)
+            tags_finais = _enriquecer_tags(list(tags), f'{title} {body}')
             write_note(cat, f'{slug}.md',
-                       f'{frontmatter(tags, [title[:60]], updated)}\n\n# {title}\n\n{body}{seccao_conexoes(links)}')
+                       f'{frontmatter(tags_finais, [title[:60]], updated)}\n\n# {title}\n\n{body}{seccao_conexoes(links)}')
         written += 1
 
     # ---------- hubs de categoria ----------

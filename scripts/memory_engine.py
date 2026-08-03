@@ -9,6 +9,12 @@ SESSIONS_DIR = os.path.join(MEM_DIR, 'sessions')
 MEMORIES_FILE = os.path.join(MEM_DIR, 'memories.json')
 INDEX_FILE = os.path.join(MEM_DIR, 'index.json')
 
+sys.path.insert(0, os.path.join(BASE, 'scripts'))
+try:
+    from semantic_tags import extrair_tags
+except ImportError:
+    extrair_tags = None
+
 HALF_LIFE = {
     'decisao': 30,     # decisions last 30 days
     'padrao': 60,      # patterns last 60 days
