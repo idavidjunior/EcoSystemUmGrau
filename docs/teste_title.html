@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Carregando...</title>
+<style>body{margin:0;background:#1e1e2e}#net{width:100vw;height:100vh}</style>
+<script src="vendor/vis-network.min.js"></script>
+</head>
+<body>
+<div id="net"></div>
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+    var msgs=[];
+    try {
+      var nodes = new vis.DataSet([
+        {id:1,label:'A',color:'#4e79a7',size:15},
+        {id:2,label:'B',color:'#f28e2b',size:20},
+        {id:3,label:'C',color:'#e15759',size:10},
+        {id:4,label:'D',color:'#59a14f',size:18},
+        {id:5,label:'E',color:'#76b7b2',size:14}
+      ]);
+      var edges = new vis.DataSet([{from:1,to:2},{from:2,to:3},{from:3,to:4},{from:4,to:5}]);
+      var container = document.getElementById('net');
+      msgs.push('container='+!!container);
+      var net = new vis.Network(container, {nodes:nodes, edges:edges},
+        {physics:{enabled:false,stabilization:false},layout:{improvedLayout:false},
+         interaction:{hover:true}});
+      msgs.push('NETWORK_OK canvas='+document.querySelectorAll('#net canvas').length);
+      document.title='NETOK:'+msgs.join(';');
+    } catch(e) {
+      document.title='NETERR:'+(e&&e.message||e)+'|'+msgs.join(';');
+    }
+  });
+</script>
+</body>
+</html>

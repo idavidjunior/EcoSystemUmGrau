@@ -7,7 +7,7 @@ env = dict(os.environ)
 env["PYWEBVIEW_LOG"] = "DEBUG"
 
 code = r'''
-import sys, os, time
+import sys, os, time, threading
 BASE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, BASE)
 import webview
@@ -23,39 +23,31 @@ win = webview.create_window(
 )
 bridge._win = win
 
-erros = []
-def on_console(msg):
-    erros.append(str(msg))
+def no_load():
+    # injeta catcher de erro global e forca re-execucao do script do grafo
+    time.sleep(0.5)
+    try:
+        win.evaluate_js("""
+          window.__erros__ = [];
+          window.addEventListener('error', function(e){ window.__erros__.push(String(e.message||e.error||e)); });
+        """)
+    except Exception as e:
+        print("[debug] injeta catcher erro:", repr(e), flush=True)
+    threading.Timer(6.0, medir).start()
 
-def check():
-    time.sleep(1.0)
-    # inject error catcher first
-    win.evaluate_js("""
-      window.__erros__ = [];
-      window.addEventListener('error', function(e){ window.__erros__.push(String(e.message||e.error||e)); });
-      try { window.__erros__.push('NETC=' + document.querySelectorAll('#net canvas').length); } catch(e){}
-    """)
-    time.sleep(6)
-    res = win.evaluate_js("""
-      JSON.stringify({
-        canvas: document.querySelectorAll('#net canvas').length,
-        ns: typeof nodes,
-        errs: (window.__erros__||[]),
-        childs: document.getElementById('net') ? document.getElementById('net').childNodes.length : -1
-      })
-    """)
-    print("[debug] STATE:", res, flush=True)
+def medir():
+    try:
+        res = win.evaluate_js("JSON.stringify({errs:(window.__erros__||[]), canvas:document.querySelectorAll('#net canvas').length})")
+        print("[debug] ERROS+CANVAS:", res, flush=True)
+    except Exception as e:
+        print("[debug] medir erro:", repr(e), flush=True)
 
-def onclose():
-    print("[debug] fechando", flush=True)
-
-win.events.loaded += check
-win.events.closed += onclose
+win.events.loaded += no_load
 print("[debug] start", flush=True)
 webview.start()
 '''
 
-tmp = os.path.join(ROOT, "scripts", "dbg_widget7.py")
+tmp = os.path.join(ROOT, "scripts", "dbg_widget11.py")
 with open(tmp, "w", encoding="utf-8") as f:
     f.write(code)
 
@@ -64,7 +56,7 @@ w = subprocess.Popen(
     stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env,
 )
 print("PID", w.pid, flush=True)
-time.sleep(26)
+time.sleep(20)
 print("alive", w.poll() is None, flush=True)
 w.terminate()
 try:
@@ -72,6 +64,6 @@ try:
     print("--- stdout ---")
     print(out.decode("utf-8", errors="ignore") if out else "(vazio)")
     print("--- stderr ---")
-    print(err.decode("utf-8", errors="ignore")[-3000:] if err else "(vazio)")
+    print(err.decode("utf-8", errors="ignore")[-1500:] if err else "(vazio)")
 except Exception as e:
     print("comm err:", e)

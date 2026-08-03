@@ -19,10 +19,6 @@ erros = []
 def on_console(msg):
     erros.append(str(msg))
 
-win.events.loaded += on_console  # tentativa generica
-
-# injeta catcher de erro JS logo no before_load via url? nao. Usamos evaluate apos load.
-
 def check():
     time.sleep(1.0)
     # inject error catcher first
