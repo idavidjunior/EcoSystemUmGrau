@@ -307,6 +307,13 @@ def _build_view() -> Path | None:
             return None
     src = OUTPUT_HTML.read_text(encoding='utf-8')
 
+    # Substitui o script local vis-network por CDN confiável
+    # Elimina problemas de servir vendor/ via pywebview
+    src = src.replace(
+        '<script src="vendor/vis-network.min.js"></script>',
+        '<script src="https://unpkg.com/vis-network@9.1.2/standalone/umd/vis-network.min.js"></script>'
+    )
+
     if '<style>' in src:
         src = src.replace('<style>', '<style>' + WIDGET_CSS, 1)
     else:
