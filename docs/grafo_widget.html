@@ -350,6 +350,26 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
 
 <script>
   (function(){
+    function log(m){ try { if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){ window.pywebview.api.debug_log(m); } } catch(e){} }
+    setTimeout(function(){
+      log('BLK: network existe? ' + (typeof network !== 'undefined'));
+      if(typeof network !== 'undefined'){
+        try {
+          var c = network.getBoundingBox ? null : null;
+          log('BLK: canvas count: ' + document.querySelectorAll('#net canvas').length);
+          log('BLK: nodes in network: ' + network.body.data.nodes.length);
+          var scale = network.getScale();
+          log('BLK: scale: ' + scale);
+          var pos = network.getViewPosition();
+          log('BLK: view pos: ' + pos.x.toFixed(0) + ',' + pos.y.toFixed(0));
+        } catch(e){ log('BLK: erro: ' + e.message); }
+      }
+    }, 1500);
+  })();
+</script>
+
+<script>
+  (function(){
     /* --- moldura de arrasto (move a janela pelo desktop) --- */
     var bar = document.createElement('div');
     bar.id = 'mk-drag';

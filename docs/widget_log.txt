@@ -3,3 +3,28 @@
 1785762866 | DIAG: net size: 1120x360
 1785762866 | DIAG: net display: block
 1785762866 | DIAG: net visibility: visible
+1785762869 | DIAG: canvas NAO encontrado dentro de #net
+1785762869 | DIAG: #net innerHTML: 
+1785762869 | DIAG: netEl.network nao exposto
+1785762877 | DIAG: vis carregado? true
+1785762877 | DIAG: container net existe: true
+1785762877 | DIAG: net size: 1104x321
+1785762877 | DIAG: net display: block
+1785762877 | DIAG: net visibility: visible
+1785762878 | ERRO: Uncaught ReferenceError: network is not defined @ http://127.0.0.1:57506/grafo_widget.html:355
+1785762878 | vis carregado? true
+1785762878 | net size: 1104x321
+1785762880 | DIAG: canvas NAO encontrado dentro de #net
+1785762880 | DIAG: #net innerHTML: 
+1785762880 | DIAG: netEl.network nao exposto
+1785762881 | DIAG: vis carregado? true
+1785762881 | DIAG: container net existe: true
+1785762881 | DIAG: net size: 1104x321
+1785762881 | DIAG: net display: block
+1785762881 | DIAG: net visibility: visible
+1785762882 | ERRO: Uncaught ReferenceError: network is not defined @ http://127.0.0.1:57506/grafo_widget.html?v=1785731418705173500-1785762877460125300-1785762868290947900&rc=1785762878897:355
+1785762882 | vis carregado? true
+1785762882 | net size: 1104x321
+1785762883 | DIAG: canvas NAO encontrado dentro de #net
+1785762883 | DIAG: #net innerHTML: 
+1785762883 | DIAG: netEl.network nao exposto
