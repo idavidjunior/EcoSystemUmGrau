@@ -34,6 +34,7 @@ POLL_MS = 2000
 TITLE = 'Cerebro Vivo'
 BG = '#1e1e2e'
 DEFAULT_W, DEFAULT_H = 1280, 800
+MIN_W, MIN_H = 400, 300
 
 # CSS + JS de widget: oculta o header (controles); clique direito alterna a
 # classe 'desktop' no body que revela os controles; alca de resize no canto.
@@ -167,7 +168,15 @@ API_INJECT = """
 def _carregar_geo() -> dict:
     try:
         if GEO_FILE.exists():
-            return json.loads(GEO_FILE.read_text(encoding='utf-8'))
+            g = json.loads(GEO_FILE.read_text(encoding='utf-8'))
+            # Rejeita geometrias degeneradas (ex.: janela de 384x100 salva por
+            # report() prematuro/errado) para a janela nunca abrir invisivel.
+            w = int(g.get('width', 0))
+            h = int(g.get('height', 0))
+            if w >= MIN_W and h >= MIN_H:
+                return g
+            return {'x': g.get('x'), 'y': g.get('y'),
+                    'width': DEFAULT_W, 'height': DEFAULT_H}
     except Exception:
         pass
     return {}
@@ -241,7 +250,10 @@ class Bridge:
         """Recebe a geometria reportada pelo JS e a persiste. NAO le win.native
         aqui para evitar a recursao infinita do pywebview em Windows Forms."""
         try:
-            _salvar_geo({'x': int(x), 'y': int(y), 'width': int(w), 'height': int(h)})
+            w = int(w); h = int(h)
+            if w < MIN_W or h < MIN_H:
+                return  # ignora geometria degenerada (nao corrompe o arquivo)
+            _salvar_geo({'x': int(x), 'y': int(y), 'width': w, 'height': h})
         except Exception:
             pass
 
@@ -325,10 +337,10 @@ def main() -> int:
     bridge = Bridge()
     win = webview.create_window(
         TITLE,
-        # URL file:// explicita: com resolve() o pywebview usa HTTP server, e o
-        # evento loaded NAO dispara no edgechromium (regressao observada).
-        # Com file:/// explicito o carregamento e injecao do bridge funcionam.
-        url='file:///' + str(view.resolve()).replace('\\', '/'),
+        # URL via resolve(): usa HTTP server do pywebview (carrega recursos relativos
+        # como vendor/vis-network.min.js). Com _win privado, o bridge funciona e
+        # o evento loaded dispara (antes quebrava pela recursao de win.publico).
+        url=str(view.resolve()),
         width=w, height=h,
         x=x, y=y,
         resizable=True,
