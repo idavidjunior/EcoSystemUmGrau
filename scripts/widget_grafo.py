@@ -20,6 +20,7 @@ Uso:
 import json
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
@@ -145,6 +146,58 @@ RESIZE_JS = """
 API_INJECT = """
 <script>
 (function(){
+  // Diagnostico: captura erros JS e grava via bridge (arquivo widget_log.txt)
+  function log(msg){
+    try {
+      if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
+        window.pywebview.api.debug_log(msg);
+      }
+    } catch(e){}
+  }
+
+  window.addEventListener('error', function(ev){
+    log('ERRO: ' + String(ev.message||'') + ' @ ' + (ev.filename||'') + ':' + (ev.lineno||''));
+    log('vis carregado? ' + (typeof vis !== 'undefined'));
+    var netEl = document.getElementById('net');
+    if(netEl){ log('net size: ' + netEl.clientWidth + 'x' + netEl.clientHeight); }
+  });
+
+  // Diagnostico imediato apos carregamento
+  setTimeout(function(){
+    log('DIAG: vis carregado? ' + (typeof vis !== 'undefined'));
+    var netEl = document.getElementById('net');
+    if(netEl){
+      log('DIAG: container net existe: true');
+      log('DIAG: net size: ' + netEl.clientWidth + 'x' + netEl.clientHeight);
+      log('DIAG: net display: ' + getComputedStyle(netEl).display);
+      log('DIAG: net visibility: ' + getComputedStyle(netEl).visibility);
+    } else {
+      log('DIAG: container net nao encontrado');
+    }
+  }, 500);
+
+  // Diagnostico do network apos inicializacao - verifica canvas
+  setTimeout(function(){
+    var netEl = document.getElementById('net');
+    if(netEl){
+      var canvas = netEl.querySelector('canvas');
+      if(canvas){
+        log('DIAG: canvas existe: true, size: ' + canvas.width + 'x' + canvas.height);
+        log('DIAG: canvas style: ' + canvas.style.cssText);
+      } else {
+        log('DIAG: canvas NAO encontrado dentro de #net');
+        log('DIAG: #net innerHTML: ' + netEl.innerHTML.substring(0, 200));
+      }
+      // Tenta acessar network via vis instance (se exposto globalmente ou via dados)
+      // vis-network guarda referencia no container dataset ou no elemento
+      if(netEl.network){
+        log('DIAG: netEl.network existe');
+      } else {
+        log('DIAG: netEl.network nao exposto');
+      }
+    }
+  }, 3000);
+
   var lastVer = null;
   var rodou = false;
   function checar(){
@@ -156,14 +209,12 @@ API_INJECT = """
           var u = new URL(window.location.href);
           u.searchParams.set('v', v);
           u.searchParams.set('rc', String(Date.now()));
-          // regenera grafo.html + grafo_widget.html ANTES de recarregar,
-          // garantindo que o widget espelhe o vault atualizado
           window.pywebview.api.regenerar().then(function(){
             window.location.href = u.toString();
           });
         }
       });
-    } catch(e){ /* pywebview ainda nao pronto */ }
+    } catch(e){}
   }
   if(window.pywebview && window.pywebview.api){ checar(); }
   window.addEventListener('pywebviewready', checar);
@@ -227,6 +278,13 @@ class Bridge:
 
     def versao(self) -> str:
         return _versao()
+
+    def debug_log(self, msg: str) -> None:
+        try:
+            with open(BASE / 'docs' / 'widget_log.txt', 'a', encoding='utf-8') as f:
+                f.write(f'{time.time():.0f} | {msg}\n')
+        except Exception:
+            pass
 
     def regenerar(self) -> str:
         """Regenera docs/grafo.html (a partir do vault) e reaplica o CSS/JS do
@@ -307,11 +365,49 @@ def _build_view() -> Path | None:
             return None
     src = OUTPUT_HTML.read_text(encoding='utf-8')
 
-    # Substitui o script local vis-network por CDN confiável
-    # Elimina problemas de servir vendor/ via pywebview
+    # Embute o vis-network inline (elimina dependencia de CDN/servidor local)
+    VENDOR = BASE / 'docs' / 'vendor' / 'vis-network.min.js'
+    if VENDOR.exists():
+        vendor_js = VENDOR.read_text(encoding='utf-8')
+        src = src.replace(
+            '<script src="vendor/vis-network.min.js"></script>',
+            '<script>' + vendor_js + '</script>'
+        )
+    else:
+        # Fallback: CDN se o arquivo local nao existir
+        src = src.replace(
+            '<script src="vendor/vis-network.min.js"></script>',
+            '<script src="https://unpkg.com/vis-network@9.1.2/standalone/umd/vis-network.min.js"></script>'
+        )
+
+    # Injeta diagnostico DENTRO do bloco principal, apos a criacao do network
+    # (o window.onerror do API_INJECT roda depois deste bloco, entao erros
+    # sincronos aqui precisam de captura local)
+    diag_js = """
+<script>
+  (function(){
+    function log(m){ try { if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){ window.pywebview.api.debug_log(m); } } catch(e){} }
+    setTimeout(function(){
+      log('BLK: network existe? ' + (typeof network !== 'undefined'));
+      if(typeof network !== 'undefined'){
+        try {
+          var c = network.getBoundingBox ? null : null;
+          log('BLK: canvas count: ' + document.querySelectorAll('#net canvas').length);
+          log('BLK: nodes in network: ' + network.body.data.nodes.length);
+          var scale = network.getScale();
+          log('BLK: scale: ' + scale);
+          var pos = network.getViewPosition();
+          log('BLK: view pos: ' + pos.x.toFixed(0) + ',' + pos.y.toFixed(0));
+        } catch(e){ log('BLK: erro: ' + e.message); }
+      }
+    }, 1500);
+  })();
+</script>
+"""
     src = src.replace(
-        '<script src="vendor/vis-network.min.js"></script>',
-        '<script src="https://unpkg.com/vis-network@9.1.2/standalone/umd/vis-network.min.js"></script>'
+        '</body>',
+        diag_js + '</body>',
+        1
     )
 
     if '<style>' in src:
