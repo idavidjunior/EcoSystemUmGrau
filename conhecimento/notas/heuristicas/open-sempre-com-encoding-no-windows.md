@@ -1,7 +1,7 @@
 ---
-tags: [debugging, deve, especificar, heuristica, locale, sistema]
+tags: [debugging, deve, especificar, heuristica, sistema, texto]
 aliases: [open() sempre com encoding no Windows]
-date: 2026-08-02
+date: 2026-08-03
 ---
 
 # open() sempre com encoding no Windows

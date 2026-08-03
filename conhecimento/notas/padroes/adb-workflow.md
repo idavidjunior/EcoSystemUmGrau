@@ -1,7 +1,7 @@
 ---
 tags: [android-pure-sdkmp3player-metadata-rescueandroid-pure-sdkmp3, metadata, mp3player, padrao, rescue, sdk]
 aliases: [ADB Workflow]
-date: 2026-08-02
+date: 2026-08-03
 ---
 
 # ADB Workflow

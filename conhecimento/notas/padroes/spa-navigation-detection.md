@@ -1,7 +1,7 @@
 ---
-tags: [dom, event, load, padrao, pagina, treinamentonavegacao]
+tags: [dom, event, load, nao, padrao, treinamentonavegacao]
 aliases: [SPA navigation detection]
-date: 2026-08-02
+date: 2026-08-03
 ---
 
 # SPA navigation detection

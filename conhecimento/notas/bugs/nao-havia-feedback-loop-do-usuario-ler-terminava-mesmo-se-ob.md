@@ -1,7 +1,7 @@
 ---
 tags: [atingido, bug, lerauditoria, objetivo, projeto, terminava]
 aliases: [Nao havia feedback loop do usuario — LER terminava mesmo se ]
-date: 2026-08-02
+date: 2026-08-03
 ---
 
 # Nao havia feedback loop do usuario — LER terminava mesmo se objetivo nao fosse atingido

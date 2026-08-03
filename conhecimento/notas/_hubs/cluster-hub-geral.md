@@ -1,6 +1,6 @@
 # Cluster: Geral
 
-**36 notas** do cluster geral.
+**45 notas** do cluster geral.
 
 
 ## Notas
@@ -30,6 +30,15 @@
 - [[2026-07-30-scan-proativo-cellcleaner]]
 - [[2026-07-30-scan-proativo-mp3player]]
 - [[2026-07-30-scan-proativo-supermarketcalculator]]
+- [[2026-08-03-scan-proativo-bibliaestudocompleta]]
+- [[2026-08-03-scan-proativo-cellcleaner]]
+- [[2026-08-03-scan-proativo-claude-code-extra-agents]]
+- [[2026-08-03-scan-proativo-compiladorapk]]
+- [[2026-08-03-scan-proativo-ecosystemumgrau]]
+- [[2026-08-03-scan-proativo-mp3player]]
+- [[2026-08-03-scan-proativo-orquestradorapk-flutter]]
+- [[2026-08-03-scan-proativo-supermarketcalculator]]
+- [[2026-08-03-scan-proativo-windowsmaintenancesuitev3]]
 - [[correcao-de-diagnostico-do-knowledge-graph-e-criacao-do-regi]]
 - [[gramática-do-português-brasileiro-guia-prático-do-dia-a-dia]]
 - [[habilidade-navegação-perita-internet-pc-e-celular]]

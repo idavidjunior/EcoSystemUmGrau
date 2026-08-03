@@ -1,7 +1,7 @@
 ---
 tags: [30s, detecta, está, opencodeopencode, padrao, rodando]
 aliases: [Config: 2026-07-27-4: Teste do ciclo de polling]
-date: 2026-08-02
+date: 2026-08-03
 ---
 
 # Config: 2026-07-27-4: Teste do ciclo de polling

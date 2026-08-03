@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-02T23:09:41.323556",
+  "last_updated": "2026-08-03T01:30:18.689547",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -1428,10 +1428,10 @@
       "source": "opencode",
       "title": "﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub",
       "domain": "general",
-      "body": "﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub\n\n## O que foi feito\n- Repositorios do GitHub mapeados: 11 existentes, nenhum LER separado\n- setup.bat criado: script unico para qualquer PC novo (clona, instala, configura, pede API keys)\n- config/opencode.jsonc: template com {{USERPROFILE}} placeholder para geracao dinamica\n- config/agents/: fonte unica dos 15 agentes OpenCode (repo eh source of truth)\n- config/opencode-model-fallback.jsonc: config do plugin fallback\n- Vigilante atualizado:\n\n﻿# 2026-07-27 - Unificacao completa do ecossistema\n\n## Problemas resolvidos\n1. **LER fora do repo**: movido ~/.ler/ → ler-runtime/ com junction. Tudo versionado.\n2. **Polling ineficiente**: vigilante agora usa FileSystemWatcher + debounce 300ms.\n3. **Sync so push**: agora faz pull antes de push (bidirecional).\n4. **Sem comando central**: ecosystem.ps1 criado (sync, scan, status).\n5. **LER remoto separado**: deletado github.com/idavidjunior/LER, conhecimento unificado.\n\n## Decisoes\n- LER runtime \n\n﻿# 2026-07-27 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-27 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-27 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-27 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 2 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 4 marcadores\n\n\n\n﻿# 2026-07-29 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-29 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-29 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-29 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 4 marcadores\n\n\n\n# 2026-07-29 — Integração de clima via OpenWeatherMap\n\n## Habilidade adicionada ao Jarvis\n- Nova skill: `skills/clima-api/skill.md`\n- Script: `scripts/clima_api.py`\n- Dicionário de pronúncia atualizado com termos climáticos (20 palavras)\n\n## Como funciona\n- Jarvis usa `python clima_api.py \"<cidade>\"` para obter clima em tempo real\n- Dados: descrição, temperatura, sensação térmica, umidade\n- Idioma: português brasileiro, unidades métricas\n- Chave da API deve estar em `scripts/.env` como `OPENWEAT\n\n﻿# 2026-07-30 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-30 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-30 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-30 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 4 marcadores\n\n",
-      "extracted_at": "2026-07-30T09:19:20.530897",
-      "merged_count": 39,
-      "merged_at": "2026-07-30T09:19:20.887209"
+      "body": "﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub\n\n## O que foi feito\n- Repositorios do GitHub mapeados: 11 existentes, nenhum LER separado\n- setup.bat criado: script unico para qualquer PC novo (clona, instala, configura, pede API keys)\n- config/opencode.jsonc: template com {{USERPROFILE}} placeholder para geracao dinamica\n- config/agents/: fonte unica dos 15 agentes OpenCode (repo eh source of truth)\n- config/opencode-model-fallback.jsonc: config do plugin fallback\n- Vigilante atualizado:\n\n﻿# 2026-07-27 - Unificacao completa do ecossistema\n\n## Problemas resolvidos\n1. **LER fora do repo**: movido ~/.ler/ → ler-runtime/ com junction. Tudo versionado.\n2. **Polling ineficiente**: vigilante agora usa FileSystemWatcher + debounce 300ms.\n3. **Sync so push**: agora faz pull antes de push (bidirecional).\n4. **Sem comando central**: ecosystem.ps1 criado (sync, scan, status).\n5. **LER remoto separado**: deletado github.com/idavidjunior/LER, conhecimento unificado.\n\n## Decisoes\n- LER runtime \n\n﻿# 2026-07-27 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-27 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-27 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-27 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 2 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 4 marcadores\n\n\n\n﻿# 2026-07-29 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-29 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-29 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-29 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 4 marcadores\n\n\n\n# 2026-07-29 — Integração de clima via OpenWeatherMap\n\n## Habilidade adicionada ao Jarvis\n- Nova skill: `skills/clima-api/skill.md`\n- Script: `scripts/clima_api.py`\n- Dicionário de pronúncia atualizado com termos climáticos (20 palavras)\n\n## Como funciona\n- Jarvis usa `python clima_api.py \"<cidade>\"` para obter clima em tempo real\n- Dados: descrição, temperatura, sensação térmica, umidade\n- Idioma: português brasileiro, unidades métricas\n- Chave da API deve estar em `scripts/.env` como `OPENWEAT\n\n﻿# 2026-07-30 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-30 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-30 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-30 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 4 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: BibliaEstudoCompleta\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: compiladorAPK\n## Marcadores encontrados\n- apk-compiler-ui.ps1: 11 marcadores\n- test-modules.ps1: 1 marcadores\n- check_android_resources.py: 1 marcadores\n- self_healing_compiler.py: 1 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: EcoSystemUmGrau\n## Marcadores encontrados\n- adapt_agent_prompts.py: 1 marcadores\n- generate_sample_results.py: 3 marcadores\n- install.ps1: 1 marcadores\n- app.py: 4 marcadores\n- checklist.py: 2 marcadores\n- knowledge_base.py: 2 marcadores\n- __init__.py: 1 marcadores\n- fix_encoding_and_build.py: 6 marcadores\n- patch_flutter_orchestrator_final.py: 1 marcadores\n- test_imports.py: 1 marcadores\n- test_smoke.py: 1 marcadores\n- consolidate_build_pipeline.py: 3 marcadores\n-\n\n﻿# 2026-08-03 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: OrquestradorAPK-FLUTTER\n## Marcadores encontrados\n- app.py: 4 marcadores\n- checklist.py: 2 marcadores\n- knowledge_base.py: 2 marcadores\n- __init__.py: 1 marcadores\n- fix_encoding_and_build.py: 6 marcadores\n- patch_flutter_orchestrator_final.py: 1 marcadores\n- test_imports.py: 1 marcadores\n- test_new_modules.py: 1 marcadores\n- test_smoke.py: 1 marcadores\n- consolidate_build_pipeline.py: 3 marcadores\n- flutter_orchestrator.py: 6 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 4 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: WindowsMaintenanceSuite_v3\n## Marcadores encontrados\n- MainMenu.ps1: 1 marcadores\n- DiskSpaceAnalyzer.ps1: 1 marcadores\n- DriverManager.ps1: 3 marcadores\n- EssentialMaintenance.ps1: 1 marcadores\n- Hardening.ps1: 1 marcadores\n- PackageManager.ps1: 2 marcadores\n- QuickTools.ps1: 2 marcadores\n- RegistryBackupRestore.ps1: 1 marcadores\n- SystemLightweight.ps1: 1 marcadores\n- SystemTweaks.ps1: 11 marcadores\n- UltimateMaintenance.ps1: 1 marcadores\n\n",
+      "extracted_at": "2026-08-03T01:30:18.470800",
+      "merged_count": 47,
+      "merged_at": "2026-08-03T01:30:18.642651"
     },
     {
       "source": "opencode",
@@ -1490,6 +1490,13 @@
       "domain": "general",
       "body": "---\ntipo: erro\ntags: [teste, pipeline]\ndata: 2026-08-02\ncontexto: Teste funcional do pipeline de tags semanticas ponta a ponta\n---\n\n# Teste de integração do pipeline de tags semânticas\n\nEste é um arquivo de teste temporário para validar que as tags semânticas\nfluem da origem até o grafo do widget.\n\n## Decisão\n\nIntegrar extração RAKE leve no knowledge_consolidator, generate-obsidian-notes\ne memory_engine para enriquecer as sinapses do grafo Obsidian.\n\n## Impacto\n\nO grafo do widget deve mostrar ma",
       "extracted_at": "2026-08-02T23:07:00.650724"
+    },
+    {
+      "source": "opencode",
+      "title": "﻿# 2026-08-03 - Scan proativo: claude-code-extra-agents",
+      "domain": "general",
+      "body": "﻿# 2026-08-03 - Scan proativo: claude-code-extra-agents\n## Marcadores encontrados\n- adapt_agent_prompts.py: 1 marcadores\n- generate_sample_results.py: 3 marcadores\n- install.ps1: 1 marcadores\n\n",
+      "extracted_at": "2026-08-03T01:30:08.245926"
     }
   ],
   "heuristics": [
@@ -2581,6 +2588,150 @@
         "vira",
         "widget",
         "viva"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-03T01:30:06.490295",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-08-03 - Scan proativo: BibliaEstudoCompleta — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "proativo",
+        "scan",
+        "2026",
+        "apocrypha3",
+        "apocrypha2",
+        "apocrypha"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-03T01:30:07.475164",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-08-03 - Scan proativo: CellCleaner — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "proativo",
+        "scan",
+        "2026",
+        "encontrados",
+        "cellcleaner 2026 scan",
+        "marcadores encontrados"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-03T01:30:08.245926",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-08-03 - Scan proativo: claude-code-extra-agents — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "proativo",
+        "agents",
+        "scan",
+        "extra",
+        "2026",
+        "code"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-03T01:30:09.169422",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-08-03 - Scan proativo: compiladorAPK — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "proativo",
+        "scan",
+        "resources",
+        "android",
+        "compiler",
+        "healing"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-03T01:30:13.237779",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-08-03 - Scan proativo: EcoSystemUmGrau — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "proativo",
+        "results",
+        "scan",
+        "prompts",
+        "agent",
+        "2026"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-03T01:30:14.431475",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-08-03 - Scan proativo: Mp3Player — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "proativo",
+        "scan",
+        "2026",
+        "encontrados",
+        "mp3player 2026 scan",
+        "marcadores encontrados"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-03T01:30:15.330363",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-08-03 - Scan proativo: OrquestradorAPK-FLUTTER — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "final",
+        "proativo",
+        "orchestrator",
+        "scan",
+        "2026",
+        "build"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-03T01:30:15.912909",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-08-03 - Scan proativo: SupermarketCalculator — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "proativo",
+        "scan",
+        "2026",
+        "encontrados",
+        "supermarketcalculator 2026 scan",
+        "marcadores encontrados"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-03T01:30:18.470800",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-08-03 - Scan proativo: WindowsMaintenanceSuite_v3 — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "proativo",
+        "scan",
+        "2026",
+        "encontrados",
+        "windowsmaintenancesuite 2026 scan",
+        "marcadores encontrados"
       ],
       "files_modified": []
     }

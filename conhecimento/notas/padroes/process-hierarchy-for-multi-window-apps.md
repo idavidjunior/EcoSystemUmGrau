@@ -1,7 +1,7 @@
 ---
 tags: [chrome, janelas, multiplas, notepad, padrao, treinamentonavegacao]
 aliases: [Process hierarchy for multi-window apps]
-date: 2026-08-02
+date: 2026-08-03
 ---
 
 # Process hierarchy for multi-window apps

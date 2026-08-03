@@ -1,14 +1,14 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-02T23:09:41.340878
+**Exportado em:** 2026-08-03T01:30:18.890403
 **Projetos:** 4
 **Padroes Tecnicos:** 73
 **Decisoes:** 44
 **Bug Fixes:** 46
-**Padroes Cognitivos:** 29
+**Padroes Cognitivos:** 30
 **Heuristicas:** 32
 **Frameworks:** 10
-**Missoes Aprendidas:** 72
+**Missoes Aprendidas:** 81
 
 ---
 
@@ -763,6 +763,18 @@ e memory_engine para enriquecer as sinapses do grafo Obsidian.
 
 O grafo do widget deve mostrar ma
 
+### ﻿# 2026-08-03 - Scan proativo: claude-code-extra-agents
+**Dominio:** general
+**Fonte:** opencode
+
+﻿# 2026-08-03 - Scan proativo: claude-code-extra-agents
+## Marcadores encontrados
+- adapt_agent_prompts.py: 1 marcadores
+- generate_sample_results.py: 3 marcadores
+- install.ps1: 1 marcadores
+
+
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -857,7 +869,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-02T23:09:41.323556
+**Ultima atualizacao:** 2026-08-03T01:30:18.689547
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

@@ -1,7 +1,7 @@
 ---
 tags: [debugging, heuristica, nao, qual, resolveu, sabe]
 aliases: [Heuristica de isolamento de falha]
-date: 2026-08-02
+date: 2026-08-03
 ---
 
 # Heuristica de isolamento de falha
