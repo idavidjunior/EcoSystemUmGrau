@@ -383,7 +383,6 @@
   var rodou = false;
   function checar(){
     try {
-      window.pywebview.api.ping('checar').then(function(){ console.log('ping ok'); });
       window.pywebview.api.versao().then(function(v){
         if(!rodou){ rodou = true; lastVer = v; return; }
         if(v !== lastVer){

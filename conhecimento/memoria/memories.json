@@ -688,5 +688,25 @@
     "access_count": 0,
     "created_at": "2026-08-02T23:08:30.134878",
     "last_accessed": "2026-08-02T23:08:30.134878"
+  },
+  {
+    "id": 65,
+    "kind": "erro",
+    "task": "Widget pywebview: bridge JS quebrado por atributo publico e HTTP server",
+    "summary": "js_api nao pode ter atributo publico nao-callable (self.win) - pywebview serializa recursivamente e quebra a injecao. URL resolve() usa HTTP server e nao dispara loaded; usar file:// explicito. Fix: _win privado + file:///",
+    "project": "",
+    "tags": [
+      "self",
+      "callable",
+      "ter",
+      "publico",
+      "pode",
+      "atributo"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-03T00:39:02.330733",
+    "last_accessed": "2026-08-03T00:39:02.330733"
   }
 ]
