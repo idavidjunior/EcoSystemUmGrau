@@ -1,14 +1,14 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-02T18:48:02.602458
+**Exportado em:** 2026-08-02T23:03:34.734490
 **Projetos:** 4
 **Padroes Tecnicos:** 73
 **Decisoes:** 42
 **Bug Fixes:** 46
-**Padroes Cognitivos:** 27
+**Padroes Cognitivos:** 28
 **Heuristicas:** 32
 **Frameworks:** 10
-**Missoes Aprendidas:** 71
+**Missoes Aprendidas:** 72
 
 ---
 
@@ -708,6 +708,18 @@ e aplicativos de celular (Android). Baseada em pesquisa do estado da arte de fer
 - Registrado em `scripts/pronuncias.json`:
   `"jarvis": 
 
+### ---
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: decisao
+tags: [obsidian, widget, grafo, arquitetura]
+data: 2026-08-02
+contexto: Reestruturacao do pipeline de geracao do grafo — Obsidian vira cerebro vivo, widget espelho
+decisao: generate-graph-html.py agora le o vault Obsidian (conhecimento/notas/*.md) em vez de knowledge_graph.json. O widget_grafo.py chama Bridge.regenerar() quando a versao detecta mudança no vault. Smart Connections (plugin Obsidian) cria [[wikilinks]] semanticos que o widget reflete automaticamente.
+impacto: Cére
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -802,7 +814,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-01T11:29:06.239734
+**Ultima atualizacao:** 2026-08-02T23:03:34.713493
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

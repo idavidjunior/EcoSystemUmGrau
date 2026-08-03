@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-01T11:29:06.239734",
+  "last_updated": "2026-08-02T23:03:34.713493",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -1464,6 +1464,13 @@
       "domain": "general",
       "body": "# Pronúncia \"Járvis\" (escrita sem acento, fala com acento)\n\n- **Data:** 01/08/2026\n- **Sessão:** Pedido direto do usuário sobre pronúncia do nome do assistente\n\n## Regra permanente\n- **Escrita:** sempre \"Jarvis\", **sem acento**.\n- **Pronúncia (fala/TTS):** \"Járvis\" — acento tônico no primeiro A (JA-rvis, fonético: /ˈʒaʁ.vis/).\n- Nunca pronunciar \"Jár-vis\" com o segundo A fechado nem com acento na última sílaba (\"Jarvís\").\n\n## Implementação\n- Registrado em `scripts/pronuncias.json`:\n  `\"jarvis\": ",
       "extracted_at": "2026-08-01T11:26:14.821490"
+    },
+    {
+      "source": "opencode",
+      "title": "---",
+      "domain": "general",
+      "body": "---\ntipo: decisao\ntags: [obsidian, widget, grafo, arquitetura]\ndata: 2026-08-02\ncontexto: Reestruturacao do pipeline de geracao do grafo — Obsidian vira cerebro vivo, widget espelho\ndecisao: generate-graph-html.py agora le o vault Obsidian (conhecimento/notas/*.md) em vez de knowledge_graph.json. O widget_grafo.py chama Bridge.regenerar() quando a versao detecta mudança no vault. Smart Connections (plugin Obsidian) cria [[wikilinks]] semanticos que o widget reflete automaticamente.\nimpacto: Cére",
+      "extracted_at": "2026-08-02T23:03:34.051876"
     }
   ],
   "heuristics": [
@@ -2539,6 +2546,22 @@
       "tags": [
         "geral",
         "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-02T23:03:34.051876",
+      "status": "session_learning",
+      "goal_objective": "--- — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "espelho",
+        "vivo",
+        "cerebro",
+        "vira",
+        "widget espelho",
+        "geracao"
       ],
       "files_modified": []
     }
