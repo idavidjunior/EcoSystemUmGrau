@@ -1,4 +1,4 @@
----
+﻿---
 tags: [leraprendizado, padrao]
 aliases: [Encoding UTF-8 explicito em Python no Windows]
 date: 2026-08-01
@@ -17,3 +17,4 @@ Sempre usar encoding=utf-8 em open() no Windows para evitar falsos diagnosticos 
 - [[padrao-hub-padroes]]
 - [[registro-de-habilidades-de-jarvis]]
 - [[taxonomia-correta-de-habilidades-jarvis]]
+- [[json-persistence-pattern]] (teste sinonica)
