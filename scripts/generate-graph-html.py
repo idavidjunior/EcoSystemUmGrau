@@ -141,49 +141,6 @@ STATUS_COR = {
     'pendente': '#e74c3c',
     'conhecido': '#f1c40f',
 }
-_PLACEHOLDER_FIX = {'', '---', '-----', '-------', '-----------', '-'}
-
-
-def eh_lixo_issue(text):
-    """Issue sem conteudo real (so hifens)."""
-    t = (text or '').strip()
-    if not t:
-        return True
-    return all(c in ' -\n\t\r' for c in t)
-
-
-def bug_status(b):
-    """Deriva o status do bug a partir dos campos fix/root_cause."""
-    issue = (b.get('issue') or '').strip()
-    fix = (b.get('fix') or '').strip()
-    rc = (b.get('root_cause') or '').strip()
-    low = ' '.join((issue + ' ' + fix + ' ' + rc)).lower()
-
-    # Limitacao conhecida: sem correcao real e sintomas de limitacao aceita
-    if fix in _PLACEHOLDER_FIX:
-        if any(k in low for k in ('nao-critica', 'non-critic',
-                                  'accepted', 'always', 'sempre falha', 'workaround',
-                                  'known', 'key invalida', 'api key invalida')):
-            return 'conhecido'
-        # Track best score / explicit redirect sao registros de "como fazer melhor",
-        # sem ser um bug ativo: marcar como conhecido/pendente
-        if 'track the best' in low or 'redirect' in low:
-            return 'pendente'
-        return 'pendente'
-
-    # Ha uma correcao descrita.
-    if any(k in fix.lower() for k in ('nao-critica', 'non-critic',
-                                      'accepted', 'workaround')):
-        return 'conhecido'
-    return 'resolvido'
-
-
-def make_id(prefix, text):
-    slug = slugify(text)
-    if not slug:
-        return None
-    return f'{prefix}-{slug}'
-
 
 # ---------------------------------------------------------------------------
 # Leitura do vault Obsidian (fonte viva do conhecimento) -------------------
