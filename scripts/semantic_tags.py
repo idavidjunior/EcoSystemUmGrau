@@ -142,8 +142,8 @@ def extrair_tags(texto, max_tags=_MAX_TAGS, min_len=_MIN_LEN):
 
     ranked = sorted(frases, key=lambda f: -score_frase(f))
 
-    # deduplica e filtra por relevancia/qualidade; evita sobreposicao extrema
-    # (uma tag nao deve ser substring de outra ja escolhida)
+    # deduplica e filtra por relevancia/qualidade; prioriza palavras-chave
+    # com score alto e evita sobreposicao (tag nao deve repetir conceito ja coberto)
     resultado = []
     vistos = set()
     escolhidas = set()
@@ -156,10 +156,15 @@ def extrair_tags(texto, max_tags=_MAX_TAGS, min_len=_MIN_LEN):
         chave = ' '.join(sorted(partes))
         if chave in vistos:
             continue
-        # evita substring sobreposta: se frase ou alguma palavra ja coberta,
-        # so aceita se trouxer palavra nova relevante
+        # palavras novas em relacao as ja escolhidas
         palavras_novas = [p for p in partes if p not in escolhidas]
         if not palavras_novas:
+            continue
+        # evita fragmentos tipo "usar tmp" se "tmp" ja entrou como palavra
+        if len(partes) > 1 and any(
+            p in escolhidas and all(q in escolhidas for q in partes)
+            for p in partes
+        ):
             continue
         vistos.add(chave)
         escolhidas.update(partes)
