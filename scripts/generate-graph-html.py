@@ -15,11 +15,13 @@ Exit: 0 = sucesso.
 """
 import json
 import os
+import re
 import sys
 from collections import defaultdict
 from pathlib import Path
 
 BASE = str(Path(__file__).resolve().parent.parent)
+VAULT_DIR = os.path.join(BASE, 'conhecimento', 'notas')
 GRAPH_FILE = os.path.join(BASE, 'ler-runtime', 'knowledge', 'knowledge_graph.json')
 DEFAULT_OUTPUT = os.path.join(BASE, 'docs', 'grafo.html')
 
