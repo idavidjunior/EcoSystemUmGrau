@@ -52,3 +52,19 @@
 1785777167 | DIAG: canvas existe: true, size: 1216x632
 1785777167 | DIAG: canvas style: position: relative; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 100%; height: 100%;
 1785777167 | DIAG: netEl.network nao exposto
+1785777190 | DIAG: vis carregado? true
+1785777190 | DIAG: container net existe: true
+1785777190 | DIAG: net size: 1216x632
+1785777190 | DIAG: net display: block
+1785777190 | DIAG: net visibility: visible
+1785777193 | DIAG: canvas existe: true, size: 1216x632
+1785777193 | DIAG: canvas style: position: relative; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 100%; height: 100%;
+1785777193 | DIAG: netEl.network nao exposto
+1785777246 | DIAG: vis carregado? true
+1785777246 | DIAG: container net existe: true
+1785777246 | DIAG: net size: 1216x632
+1785777246 | DIAG: net display: block
+1785777246 | DIAG: net visibility: visible
+1785777249 | DIAG: canvas existe: true, size: 1216x632
+1785777249 | DIAG: canvas style: position: relative; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 100%; height: 100%;
+1785777249 | DIAG: netEl.network nao exposto
