@@ -868,9 +868,19 @@ class KnowledgeConsolidator:
         context = meta.get("contexto", "")
         source = meta.get("agentes envolvidos", "opencode")
 
+        # Tags semanticas: extrai conceitos do titulo + contexto + corpo
+        # (RAKE leve, local/deterministico) e combina com categoria.
+        tags_semanticas = []
+        try:
+            sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'scripts'))
+            from semantic_tags import extrair_tags
+            tags_semanticas = extrair_tags(f"{title} {context} {text[:300]}", max_tags=6)
+        except Exception:
+            tags_semanticas = []
+
         learning = {
             "session_summary": f"{title} — {context}",
-            "tags": [cat, "opencode"],
+            "tags": [cat, "opencode"] + tags_semanticas,
             "patterns": [],
             "decisions": [],
             "bug_fixes": [],
