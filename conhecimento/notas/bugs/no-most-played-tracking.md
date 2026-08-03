@@ -1,7 +1,7 @@
 ---
-tags: [bug, mp3player-metadata-rescue]
+tags: [bug, frequency, increment, mp3player-metadata-rescue, playsongfromlist, sortmode]
 aliases: [**No most-played tracking**]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # **No most-played tracking**

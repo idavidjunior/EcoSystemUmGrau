@@ -1,8 +1,8 @@
 ---
-tags: [android-pure-sdk, decisao]
+tags: [android-pure-sdk, calculation, decisao, fonte, mental, model]
 aliases: [Why
 - User expects a blank slate when entering a form tab, c]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Why

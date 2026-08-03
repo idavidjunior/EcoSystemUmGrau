@@ -1,7 +1,7 @@
 ---
-tags: [heuristica, protocol]
+tags: [dominio, heuristica, notification, protocol, responda, responder]
 aliases: [JSON-RPC notifications]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # JSON-RPC notifications

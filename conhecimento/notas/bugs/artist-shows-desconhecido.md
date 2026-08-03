@@ -1,7 +1,7 @@
 ---
-tags: [bug, mp3player-metadata-rescue]
+tags: [bug, double, mp3player-metadata-rescue, second, segment, space]
 aliases: [Artist shows "Desconhecido"]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Artist shows "Desconhecido"

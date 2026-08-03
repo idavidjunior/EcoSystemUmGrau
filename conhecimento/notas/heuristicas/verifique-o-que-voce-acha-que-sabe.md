@@ -1,7 +1,7 @@
 ---
-tags: [debugging, heuristica]
+tags: [causa, debugging, funciona, heuristica, pode, sei]
 aliases: [Verifique o que voce acha que sabe]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Verifique o que voce acha que sabe

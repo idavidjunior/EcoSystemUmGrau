@@ -1,7 +1,7 @@
 ---
-tags: [bug, treinamentonavegacao]
+tags: [bug, input, projeto, tem, treinamentonavegacao, visivel]
 aliases: [send_keys nao funciona em campos rich-text]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # send_keys nao funciona em campos rich-text

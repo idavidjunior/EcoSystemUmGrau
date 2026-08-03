@@ -1,5 +1,5 @@
 ---
-tags: [ecossistema, habilidades, missao, taxonomia]
+tags: [ecossistema, habilidades, jarvis, missao, radical, registro, taxonomia]
 aliases: [Revisao radical do registro de Habilidades de Jarvis. Aprend]
 date: 2026-07-30
 ---

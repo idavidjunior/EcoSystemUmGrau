@@ -1,7 +1,7 @@
 ---
-tags: [bug, mp3player-metadata-rescue]
+tags: [bug, expected, mp3player-metadata-rescue, parts, projeto, splits]
 aliases: [**Preset data corrupted on pt_BR locale**]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # **Preset data corrupted on pt_BR locale**

@@ -1,7 +1,7 @@
 ---
-tags: [decisao, opencode]
+tags: [aplicada, decisao, opencode, passar, prévia, validação]
 aliases: [2026-07-28: Cláusula Pétrea — Toda alteração no ecossistema ]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # 2026-07-28: Cláusula Pétrea — Toda alteração no ecossistema deve ser testada antes de aplicar

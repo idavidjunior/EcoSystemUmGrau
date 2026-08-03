@@ -1,5 +1,5 @@
 ---
-tags: [geral, missao, opencode]
+tags: [celular, geral, internet, missao, opencode, perita, status]
 aliases: [Habilidade: Navegação Perita — Internet, PC e Celular — ]
 date: 2026-08-01
 ---

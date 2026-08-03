@@ -1,7 +1,7 @@
 ---
-tags: [opencodeopencodeopencode, padrao]
+tags: [aprendizados, arquivos, conhecimento, opencodeopencodeopencode, padrao, registra]
 aliases: [Config: 2026-07-27: Teste do vigilante automático]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Config: 2026-07-27: Teste do vigilante automático

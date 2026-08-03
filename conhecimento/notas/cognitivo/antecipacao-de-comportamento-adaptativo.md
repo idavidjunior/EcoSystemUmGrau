@@ -1,7 +1,7 @@
 ---
-tags: [adaptability, cognitivo]
+tags: [adaptability, alteram, cognitivo, labels, mobile, testing]
 aliases: [Antecipacao de comportamento adaptativo]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Antecipacao de comportamento adaptativo

@@ -1,7 +1,7 @@
 ---
-tags: [bug, treinamentonavegacao]
+tags: [botao, bug, coordenadas, input, tap, treinamentonavegacao]
 aliases: [Permission dialogs do MIUI bloqueiam instalacao de APK]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Permission dialogs do MIUI bloqueiam instalacao de APK

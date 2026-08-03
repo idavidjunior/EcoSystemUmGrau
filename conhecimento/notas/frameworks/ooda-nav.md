@@ -1,7 +1,7 @@
 ---
-tags: [framework]
+tags: [automatizada, boyd, framework, modais, navegacao]
 aliases: [OODA-Nav]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # OODA-Nav

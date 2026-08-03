@@ -1,7 +1,7 @@
 ---
-tags: [bug, mp3player-metadata-rescue]
+tags: [adding, bug, early, fragments, mp3player-metadata-rescue, times]
 aliases: [**Duplicate mini-player on some screens**]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # **Duplicate mini-player on some screens**

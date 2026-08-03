@@ -1,7 +1,7 @@
 ---
-tags: [heuristica, systemdesign]
+tags: [consistentes, dados, explicitamente, heuristica, precisam, systemdesign]
 aliases: [Cache de decisoes caras]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Cache de decisoes caras

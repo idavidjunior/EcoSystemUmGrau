@@ -1,7 +1,7 @@
 ---
-tags: [android-pure-sdkandroid-pure-sdk, padrao]
+tags: [android, android-pure-sdkandroid-pure-sdk, fonte, padrao, pure, sdk]
 aliases: [Save/Load Pattern]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Save/Load Pattern

@@ -1,7 +1,7 @@
 ---
-tags: [framework]
+tags: [framework, modo, preferencia, relaxado, secundaria]
 aliases: [Arvore de Decisao para Fallback de Servico]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Arvore de Decisao para Fallback de Servico

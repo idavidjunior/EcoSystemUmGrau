@@ -1,7 +1,7 @@
 ---
-tags: [mp3player, padrao]
+tags: [audio, bytes, consumidos, mp3player, padrao, trava]
 aliases: [AudioProcessor.isActive() must be dynamic]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # AudioProcessor.isActive() must be dynamic

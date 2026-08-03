@@ -1,7 +1,7 @@
 ---
-tags: [heuristica, web-navigation]
+tags: [app, container, heuristica, principal, root, web-navigation]
 aliases: [Navegacao em SPA: 3 sinais de sucesso]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Navegacao em SPA: 3 sinais de sucesso

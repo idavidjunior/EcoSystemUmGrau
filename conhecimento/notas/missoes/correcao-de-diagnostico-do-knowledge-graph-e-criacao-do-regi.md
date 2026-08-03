@@ -1,5 +1,5 @@
 ---
-tags: [diagnostico, ecossistema, habilidades, missao]
+tags: [criacao, diagnostico, ecossistema, habilidades, missao, registro, status]
 aliases: [Correcao de diagnostico do knowledge graph e criacao do regi]
 date: 2026-07-30
 ---

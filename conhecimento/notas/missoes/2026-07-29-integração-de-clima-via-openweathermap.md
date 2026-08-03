@@ -1,5 +1,5 @@
 ---
-tags: [geral, missao, opencode]
+tags: [clima, geral, integração, missao, opencode, openweathermap, status]
 aliases: [2026-07-29 — Integração de clima via OpenWeatherMap — ]
 date: 2026-07-29
 ---

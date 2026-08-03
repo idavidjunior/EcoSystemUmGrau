@@ -1,5 +1,5 @@
 ---
-tags: [geral, missao, opencode]
+tags: [completa, ecossistema, geral, missao, opencode, status, unificacao]
 aliases: [﻿# 2026-07-27 - Unificacao completa do ecossistema — ]
 date: 2026-07-27
 ---

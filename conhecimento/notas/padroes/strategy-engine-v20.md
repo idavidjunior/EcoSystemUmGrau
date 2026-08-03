@@ -1,7 +1,7 @@
 ---
-tags: [lerler, padrao]
+tags: [engine, fonte, ler, lerler, padrao, strategy engine]
 aliases: [Strategy Engine v2.0]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Strategy Engine v2.0

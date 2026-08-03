@@ -1,7 +1,7 @@
 ---
-tags: [coding, heuristica]
+tags: [coding, especifico, generico, heuristica, path, possivel]
 aliases: [Interface sobre implementacao em parametros]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Interface sobre implementacao em parametros

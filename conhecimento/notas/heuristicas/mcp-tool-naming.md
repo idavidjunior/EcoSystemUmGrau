@@ -1,7 +1,7 @@
 ---
-tags: [heuristica, protocol]
+tags: [explicito, heuristica, internos, mapping, metodos, protocol]
 aliases: [MCP tool naming]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # MCP tool naming

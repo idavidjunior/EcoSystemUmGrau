@@ -1,7 +1,7 @@
 ---
-tags: [architecture, cognitivo]
+tags: [architecture, cognitivo, contratos, explicitos, externos, recuperaveis]
 aliases: [Lei de Postel aplicada a engenharia]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Lei de Postel aplicada a engenharia

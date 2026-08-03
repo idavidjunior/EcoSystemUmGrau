@@ -1,7 +1,7 @@
 ---
-tags: [decisao, mp3player-metadata-rescue]
+tags: [artist, decisao, fonte, mp3player-metadata-rescue, queries, title]
 aliases: [Calls `searchOnline(SearchMode.RELAXED)` — uses relaxed thre]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Calls `searchOnline(SearchMode.RELAXED)` — uses relaxed thresholds and also tries title-only / artist-only queries

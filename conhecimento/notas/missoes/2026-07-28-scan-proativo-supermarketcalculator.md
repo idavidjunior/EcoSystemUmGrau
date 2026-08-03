@@ -1,5 +1,5 @@
 ---
-tags: [geral, missao, opencode]
+tags: [2026 scan proativo, geral, missao, opencode, proativo, scan, status]
 aliases: [﻿# 2026-07-28 - Scan proativo: SupermarketCalculator — ]
 date: 2026-07-28
 ---

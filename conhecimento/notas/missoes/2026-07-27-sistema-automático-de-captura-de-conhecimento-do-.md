@@ -1,5 +1,5 @@
 ---
-tags: [decisao, missao, opencode]
+tags: [conhecimento, decisao, ecossistema, imple, missao, opencode, status]
 aliases: [2026-07-27: Sistema automático de captura de conhecimento do]
 date: 2026-07-27
 ---

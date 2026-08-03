@@ -1,7 +1,7 @@
 ---
-tags: [padrao, treinamentonavegacao]
+tags: [automation, localizacao, mudar, padrao, pode, treinamentonavegacao]
 aliases: [Windows UI element tree traversal]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Windows UI element tree traversal

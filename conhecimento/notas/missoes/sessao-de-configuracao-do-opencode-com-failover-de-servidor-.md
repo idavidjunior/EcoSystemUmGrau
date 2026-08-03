@@ -1,5 +1,5 @@
 ---
-tags: [failover, missao, opencode, rustdesk]
+tags: [failover, migracao, missao, opencode, rustdesk, servidor, status]
 aliases: [Sessao de configuracao do OpenCode com failover de servidor,]
 date: 2026-07-25
 ---

@@ -1,5 +1,5 @@
 ---
-tags: [geral, missao, opencode]
+tags: [geral, github, missao, opencode, organizacao, play, status]
 aliases: [﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub — ]
 date: 2026-07-27
 ---

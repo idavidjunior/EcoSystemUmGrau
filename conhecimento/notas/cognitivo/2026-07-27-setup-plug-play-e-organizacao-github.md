@@ -1,7 +1,7 @@
 ---
-tags: [cognitivo, general]
+tags: [cognitivo, configura, general, instala, keys, pede]
 aliases: [﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # ﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub

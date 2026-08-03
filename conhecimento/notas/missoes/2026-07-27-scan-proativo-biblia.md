@@ -1,5 +1,5 @@
 ---
-tags: [geral, missao, opencode]
+tags: [2026 scan proativo, geral, missao, opencode, proativo, scan, status]
 aliases: [﻿# 2026-07-27 - Scan proativo: Biblia — ]
 date: 2026-07-27
 ---

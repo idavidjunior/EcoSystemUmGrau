@@ -1,7 +1,7 @@
 ---
-tags: [cognitivo, general]
+tags: [agente, cognitivo, deve, dominio, general, todo]
 aliases: [Gramática do Português Brasileiro — Guia prático do dia a di]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Gramática do Português Brasileiro — Guia prático do dia a dia

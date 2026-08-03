@@ -1,7 +1,7 @@
 ---
-tags: [bug, mp3player-metadata-rescue]
+tags: [active, btn, bug, mp3player-metadata-rescue, preset, styles]
 aliases: [**EQ toggle button not visible**]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # **EQ toggle button not visible**

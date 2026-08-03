@@ -1,7 +1,7 @@
 ---
-tags: [bug, lerauditoria]
+tags: [bug, lerauditoria, nao, projeto, real, verified]
 aliases: [Score < threshold mas sem failed_steps ia direto para SUCCES]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Score < threshold mas sem failed_steps ia direto para SUCCESS_VERIFIED

@@ -1,5 +1,5 @@
 ---
-tags: [desktop, missao, navegacao, web]
+tags: [desktop, especializado, missao, multi, navegacao, plataforma, web]
 aliases: [Treinamento especializado em navegacao multi-plataforma: rec]
 date: 2026-07-25
 ---

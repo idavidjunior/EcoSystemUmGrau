@@ -1,5 +1,5 @@
 ---
-tags: [geral, missao, opencode]
+tags: [dia, geral, guia, missao, opencode, prático, status]
 aliases: [Gramática do Português Brasileiro — Guia prático do dia a di]
 date: 2026-08-01
 ---

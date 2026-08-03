@@ -1,7 +1,7 @@
 ---
-tags: [bug, mp3player-metadata-rescue]
+tags: [bug, met, minimum, mp3player-metadata-rescue, return, threshold]
 aliases: [** Track the best score across all results and only return i]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # ** Track the best score across all results and only return if minimum threshold is met. Perfect matc

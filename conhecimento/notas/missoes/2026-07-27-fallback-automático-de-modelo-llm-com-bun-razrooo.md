@@ -1,5 +1,5 @@
 ---
-tags: [decisao, missao, opencode]
+tags: [decisao, missao, model, opencode, razroo, status]
 aliases: [2026-07-27: Fallback automático de modelo LLM com Bun + @raz]
 date: 2026-07-27
 ---

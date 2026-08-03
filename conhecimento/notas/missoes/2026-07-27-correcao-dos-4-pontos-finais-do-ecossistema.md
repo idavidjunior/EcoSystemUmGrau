@@ -1,5 +1,5 @@
 ---
-tags: [geral, missao, opencode]
+tags: [ecossistema, finais, geral, missao, opencode, pontos, status]
 aliases: [﻿# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema ]
 date: 2026-07-27
 ---

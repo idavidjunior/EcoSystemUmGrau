@@ -1,7 +1,7 @@
 ---
-tags: [bug, mp3player-metadata-rescue]
+tags: [bug, exceeding, frequencies, mp3player-metadata-rescue, saturation, threshold]
 aliases: [**EQ still distorts at high boost**]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # **EQ still distorts at high boost**

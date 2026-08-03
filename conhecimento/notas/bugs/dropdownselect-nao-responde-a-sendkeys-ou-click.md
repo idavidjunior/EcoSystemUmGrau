@@ -1,7 +1,7 @@
 ---
-tags: [bug, treinamentonavegacao]
+tags: [bug, div, nativo, ocultas, opcoes, treinamentonavegacao]
 aliases: [Dropdown<select> nao responde a send_keys ou click]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Dropdown<select> nao responde a send_keys ou click

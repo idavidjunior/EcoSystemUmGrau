@@ -1,5 +1,5 @@
 ---
-tags: [geral, missao, opencode]
+tags: [acento, escrita, fala, geral, missao, opencode, status]
 aliases: [Pronúncia "Járvis" (escrita sem acento, fala com acento) — ]
 date: 2026-08-01
 ---

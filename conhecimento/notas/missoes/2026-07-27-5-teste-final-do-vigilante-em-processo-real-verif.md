@@ -1,5 +1,5 @@
 ---
-tags: [config, missao, opencode]
+tags: [config, detecção, missao, opencode, real, status, verificar]
 aliases: [2026-07-27-5: Teste final do vigilante em processo real — Ve]
 date: 2026-07-27
 ---

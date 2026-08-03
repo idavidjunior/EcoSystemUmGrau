@@ -1,5 +1,5 @@
 ---
-tags: [decisao, missao, opencode]
+tags: [ant, decisao, deve, missao, opencode, status, testada]
 aliases: [2026-07-28: Cláusula Pétrea — Toda alteração no ecossistema ]
 date: 2026-07-28
 ---

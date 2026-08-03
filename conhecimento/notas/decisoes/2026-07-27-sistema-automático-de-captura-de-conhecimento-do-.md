@@ -1,7 +1,7 @@
 ---
-tags: [decisao, ecosistema-opencode]
+tags: [conversa, decisao, ecosistema-opencode, estruturado, extrair, reutilizado]
 aliases: [2026-07-27: Sistema automático de captura de conhecimento do]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # 2026-07-27: Sistema automático de captura de conhecimento do ecossistema

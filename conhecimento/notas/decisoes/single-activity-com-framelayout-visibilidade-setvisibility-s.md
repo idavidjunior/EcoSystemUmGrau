@@ -1,7 +1,7 @@
 ---
-tags: [androidpuresdk, decisao]
+tags: [androidpuresdk, decisao, fragments, setvisibility, suporte, visibilidade]
 aliases: [Single Activity com FrameLayout + visibilidade (setVisibilit]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Single Activity com FrameLayout + visibilidade (setVisibility) — sem Fragments.

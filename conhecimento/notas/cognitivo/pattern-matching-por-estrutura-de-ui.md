@@ -1,7 +1,7 @@
 ---
-tags: [cognitivo, ui-recognition]
+tags: [cognitivo, formularios, inputs, labels, repetidos, ui-recognition]
 aliases: [Pattern matching por estrutura de UI]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Pattern matching por estrutura de UI

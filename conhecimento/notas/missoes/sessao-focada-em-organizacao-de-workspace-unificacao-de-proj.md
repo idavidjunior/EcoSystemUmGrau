@@ -1,5 +1,5 @@
 ---
-tags: [jsonrpc, mcpprotocol, missao, workspaceorganization]
+tags: [cod, desktop, jsonrpc, mcpprotocol, missao, projetos, status, workspaceorganization]
 aliases: [Sessao focada em organizacao de workspace (unificacao de pro]
 date: 2026-07-25
 ---

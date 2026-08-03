@@ -1,7 +1,7 @@
 ---
-tags: [bug, lerauditoria]
+tags: [bug, identica, json, lerauditoria, logica, read]
 aliases: [Code duplication entre checkpoint.py e persistence.py (~200 ]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Code duplication entre checkpoint.py e persistence.py (~200 linhas duplicadas)

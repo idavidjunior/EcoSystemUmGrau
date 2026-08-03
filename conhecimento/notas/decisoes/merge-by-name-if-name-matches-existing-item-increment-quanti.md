@@ -1,7 +1,7 @@
 ---
-tags: [android-pure-sdk, decisao]
+tags: [android-pure-sdk, decisao, duplicating, increment, instead, quantity]
 aliases: [**Merge by name** — If name matches existing item, increment]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # **Merge by name** — If name matches existing item, increment quantity instead of duplicating; NEVER merge unnamed items

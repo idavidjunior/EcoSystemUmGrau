@@ -1,7 +1,7 @@
 ---
-tags: [cognitivo, efficiency]
+tags: [accordion, cognitivo, efficiency, grupo, modal, tab]
 aliases: [Heuristica de densidade de informacao]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Heuristica de densidade de informacao

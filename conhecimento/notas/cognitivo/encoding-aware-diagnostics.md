@@ -1,7 +1,7 @@
 ---
-tags: [cognitivo, debugging]
+tags: [cognitivo, corrompidos, debugging, perfeitamente, utf, validos]
 aliases: [Encoding-aware diagnostics]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Encoding-aware diagnostics

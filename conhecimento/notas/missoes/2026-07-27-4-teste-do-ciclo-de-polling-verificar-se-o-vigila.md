@@ -1,5 +1,5 @@
 ---
-tags: [config, missao, opencode]
+tags: [arqui, config, detecta, missao, opencode, status, vigilante]
 aliases: [2026-07-27-4: Teste do ciclo de polling — Verificar se o vig]
 date: 2026-07-27
 ---

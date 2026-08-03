@@ -1,7 +1,7 @@
 ---
-tags: [padrao, sessionsession]
+tags: [documentos, ferramentas, midia, padrao, scripts, sessionsession]
 aliases: [Workspace organization]
-date: 2026-08-01
+date: 2026-08-02
 ---
 
 # Workspace organization

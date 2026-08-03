@@ -1,5 +1,5 @@
 ---
-tags: [config, missao, opencode]
+tags: [autom, config, missao, opencode, sistema, status, vigilância]
 aliases: [2026-07-27: Teste do vigilante automático — Teste do sistema]
 date: 2026-07-27
 ---

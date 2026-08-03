@@ -1,5 +1,5 @@
 ---
-tags: [geral, missao, opencode]
+tags: [arquitetura, cérebro, geral, missao, opencode, sincronizada, status]
 aliases: [Jarvis do celular e do PC: um só cérebro (arquitetura sincro]
 date: 2026-08-01
 ---
