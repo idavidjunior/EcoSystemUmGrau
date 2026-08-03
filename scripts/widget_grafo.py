@@ -140,7 +140,6 @@ API_INJECT = """
   var rodou = false;
   function checar(){
     try {
-      window.pywebview.api.ping('checar').then(function(){ console.log('ping ok'); });
       window.pywebview.api.versao().then(function(v){
         if(!rodou){ rodou = true; lastVer = v; return; }
         if(v !== lastVer){
@@ -189,16 +188,6 @@ def _mtime_ns(path: Path) -> int:
         return 0
 
 
-def _log_api(nome):
-    try:
-        log = BASE / 'docs' / 'widget_api_log.txt'
-        with open(log, 'a', encoding='utf-8') as f:
-            from datetime import datetime
-            f.write(f"{datetime.now().strftime('%H:%M:%S.%f')} {nome}\n")
-    except Exception:
-        pass
-
-
 def _versao() -> str:
     v = [_mtime_ns(KNOWLEDGE_GRAPH)]
     late = 0
@@ -214,27 +203,15 @@ def _versao() -> str:
 class Bridge:
     """Ponte JS (window.pywebview.api) -> Python."""
     def __init__(self):
-        self.win = None
+        # _win e privado: pywebview itera dir(js_api) expoe atributos publicos e
+        # tenta serializar objetos nao-callable -> o Window nativo causa recursao
+        # infinita em win.native (erro COM UI thread) e quebra a injecao do bridge.
+        self._win = None
 
     def versao(self) -> str:
-        try:
-            _log_api('versao')
-        except Exception:
-            pass
         return _versao()
 
-    def ping(self, msg: str = '') -> str:
-        try:
-            _log_api(f'ping:{msg}')
-        except Exception:
-            pass
-        return 'pong'
-
     def regenerar(self) -> str:
-        try:
-            _log_api('regenerar')
-        except Exception:
-            pass
         """Regenera docs/grafo.html (a partir do vault) e reaplica o CSS/JS do
         widget em docs/grafo_widget.html. Chamado pelo JS quando versao muda —
         garante que o widget sempre espelhe o vault Obsidian vivo."""
@@ -245,20 +222,18 @@ class Bridge:
         return ''
 
     def redimensionar(self, w: int, h: int) -> None:
-        if not self.win:
+        if not self._win:
             return
         try:
-            self.win.resize(int(w), int(h))
+            self._win.resize(int(w), int(h))
         except Exception as e:
             print(f'[widget] resize: {e}')
 
     def mover(self, x: int, y: int) -> None:
-        """Move a janela para (x, y) no desktop. win.move e seguro; a recursao
-        antiga vinha de LER win.width/height/native, nao de chamar move()."""
-        if not self.win:
+        if not self._win:
             return
         try:
-            self.win.move(int(x), int(y))
+            self._win.move(int(x), int(y))
         except Exception as e:
             print(f'[widget] mover: {e}')
 
@@ -336,9 +311,7 @@ def _build_view() -> Path | None:
 def main() -> int:
     import webview
 
-    print('[widget] Iniciando _build_view...', flush=True)
     view = _build_view()
-    print(f'[widget] _build_view ok: {view}', flush=True)
     if not view:
         print('[widget] Nao foi possivel obter o grafo.')
         return 1
@@ -350,10 +323,12 @@ def main() -> int:
     y = geo.get('y')
 
     bridge = Bridge()
-    print('[widget] Criando janela...', flush=True)
     win = webview.create_window(
         TITLE,
-        url=str(view.resolve()),
+        # URL file:// explicita: com resolve() o pywebview usa HTTP server, e o
+        # evento loaded NAO dispara no edgechromium (regressao observada).
+        # Com file:/// explicito o carregamento e injecao do bridge funcionam.
+        url='file:///' + str(view.resolve()).replace('\\', '/'),
         width=w, height=h,
         x=x, y=y,
         resizable=True,
@@ -364,26 +339,12 @@ def main() -> int:
         js_api=bridge,
         background_color=BG,
     )
-    bridge.win = win
-    print(f'[widget] Janela criada: {win}', flush=True)
-
-    def _on_loaded():
-        print('[widget] EVENTO loaded disparado', flush=True)
-        try:
-            r = win.evaluate_js("typeof window.pywebview + '|' + (window.pywebview ? typeof window.pywebview.api : 'noapi') + '|' + (window.pywebview && window.pywebview.api ? typeof window.pywebview.api.versao : 'nomethod')")
-            print(f'[widget] JS probe -> {r}', flush=True)
-        except Exception as e:
-            print(f'[widget] JS probe erro: {e!r}', flush=True)
-
-    win.events.loaded += _on_loaded
+    bridge._win = win
 
     try:
-        print('[widget] Iniciando webview.start...', flush=True)
         webview.start(debug=False)
-        print('[widget] webview.start retornou', flush=True)
     finally:
         _persistir_saida(win)
-        print('[widget] Fechado.')
     return 0
 
 
