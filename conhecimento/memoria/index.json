@@ -16,5 +16,23 @@
   ],
   "rake": [
     63
+  ],
+  "formato": [
+    64
+  ],
+  "tipo": [
+    64
+  ],
+  "contexto": [
+    64
+  ],
+  "frontmatter": [
+    64
+  ],
+  "suporta": [
+    64
+  ],
+  "yaml": [
+    64
   ]
 }

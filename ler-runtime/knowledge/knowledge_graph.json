@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-02T23:08:03.187466",
+  "last_updated": "2026-08-02T23:09:41.323556",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -868,6 +868,18 @@
       "decision": "Habilidades de Jarvis seguem taxonomia de 3 niveis",
       "rationale": "A primeira versao misturava ferramentas, conhecimentos e capacidades. A versao correta alinha com a taxonomia do ecossistema.",
       "extracted_at": "2026-07-30T09:27:44.841163"
+    },
+    {
+      "source": "opencode",
+      "decision": "---",
+      "rationale": "---\ntipo: decisao\ntags: [obsidian, widget, grafo, arquitetura, tags-semanticas, rake]\ndata: 2026-08-02\ncontexto: Reestruturacao do pipeline de geracao do grafo — Obsidian vira cerebro vivo, widget espelho\ndecisao: generate-graph-html.py agora le o vault Obsidian (conhecimento/notas/*.md) em vez de knowledge_graph.json. O widget_grafo.py chama Bridge.regenerar() quando a versao detecta mudança no vault. Smart Connections (plugin Obsidian) cria [[wikilinks]] semanticos que o widget reflete automaticamente.\nimpacto: Cérebro único: Obsidian organiza + conecta; widget mostra a organização viva. Zero duplicação de grafos.\n\n## Tags semanticas na origem (RAKE leve, stdlib puro)\n\nPara conectar pontos isolados, o enriquecimento acontece na ORIGEM, em 3 camadas:\n\n1. **`knowledge_consolidator.register_learning_file`**: `learning[\"tags\"]` agora recebe\n   `[cat, \"opencode\"] + extrair_tags(titulo + contexto + texto[:300])` via\n   `scripts/semantic_tags.py` (sys.path com `..\\..\\scripts`). Essas tags propagam para\n   `knowledge_graph.json` → `mission_learnings[].tags`.\n2. **`generate-obsidian-notes.py`**: cada nota do vault ganha `_enriquecer_tags()` que\n   soma até 4 tags RAKE do `title + body` ao frontmatter `tags:` — são essas tags que o\n   Smart Connections usa para embeddings semânticos.\n3. **`memory_engine.add_memory`**: `memories.json` agora auto-extrai até 6 tags RAKE de\n   `task + summary`.\n\nFluxo completo: `conhecimento/aprendizados/*.md` → `knowledge_graph.json` (tags\nsemânticas) → `generate-obsidian-notes.py` → vault `conhecimento/notas/*.md` (frontmatter\nenriquecido) → `generate-graph-html.py` lê vault → `grafo.html` + widget.\n\n`semantic_tags.py` é **stdlib puro** (RAKE leve, PT/EN stopwords) — sem keybert/sklearn/\nsentence-transformers, que não estão instalados (apenas torch). Determinístico e offline.\n",
+      "extracted_at": "2026-08-02T23:08:57.274675"
+    },
+    {
+      "source": "opencode",
+      "decision": "vault obsidian fonte viva",
+      "rationale": "---\ntipo: decisao\ntags: [obsidian, widget, grafo, arquitetura, tags-semanticas, rake]\ndata: 2026-08-02\ncontexto: Reestruturacao do pipeline de geracao do grafo — Obsidian vira cerebro vivo, widget espelho\ndecisao: generate-graph-html.py agora le o vault Obsidian (conhecimento/notas/*.md) em vez de knowledge_graph.json. O widget_grafo.py chama Bridge.regenerar() quando a versao detecta mudança no vault. Smart Connections (plugin Obsidian) cria [[wikilinks]] semanticos que o widget reflete automaticamente.\nimpacto: Cérebro único: Obsidian organiza + conecta; widget mostra a organização viva. Zero duplicação de grafos.\n\n## Tags semanticas na origem (RAKE leve, stdlib puro)\n\nPara conectar pontos isolados, o enriquecimento acontece na ORIGEM, em 3 camadas:\n\n1. **`knowledge_consolidator.register_learning_file`**: `learning[\"tags\"]` agora recebe\n   `[cat, \"opencode\"] + extrair_tags(titulo + contexto + texto[:300])` via\n   `scripts/semantic_tags.py` (sys.path com `..\\..\\scripts`). Essas tags propagam para\n   `knowledge_graph.json` → `mission_learnings[].tags`.\n2. **`generate-obsidian-notes.py`**: cada nota do vault ganha `_enriquecer_tags()` que\n   soma até 4 tags RAKE do `title + body` ao frontmatter `tags:` — são essas tags que o\n   Smart Connections usa para embeddings semânticos.\n3. **`memory_engine.add_memory`**: `memories.json` agora auto-extrai até 6 tags RAKE de\n   `task + summary`.\n\nFluxo completo: `conhecimento/aprendizados/*.md` → `knowledge_graph.json` (tags\nsemânticas) → `generate-obsidian-notes.py` → vault `conhecimento/notas/*.md` (frontmatter\nenriquecido) → `generate-graph-html.py` lê vault → `grafo.html` + widget.\n\n`semantic_tags.py` é **stdlib puro** (RAKE leve, PT/EN stopwords) — sem keybert/sklearn/\nsentence-transformers, que não estão instalados (apenas torch). Determinístico e offline.\n",
+      "extracted_at": "2026-08-02T23:09:40.970309"
     }
   ],
   "bug_fixes": [
@@ -1478,13 +1490,6 @@
       "domain": "general",
       "body": "---\ntipo: erro\ntags: [teste, pipeline]\ndata: 2026-08-02\ncontexto: Teste funcional do pipeline de tags semanticas ponta a ponta\n---\n\n# Teste de integração do pipeline de tags semânticas\n\nEste é um arquivo de teste temporário para validar que as tags semânticas\nfluem da origem até o grafo do widget.\n\n## Decisão\n\nIntegrar extração RAKE leve no knowledge_consolidator, generate-obsidian-notes\ne memory_engine para enriquecer as sinapses do grafo Obsidian.\n\n## Impacto\n\nO grafo do widget deve mostrar ma",
       "extracted_at": "2026-08-02T23:07:00.650724"
-    },
-    {
-      "source": "opencode",
-      "title": "Teste de integração do pipeline de tags semânticas",
-      "domain": "general",
-      "body": "---\ntipo: erro\ntags: [teste, pipeline]\ndata: 2026-08-02\ncontexto: Teste funcional do pipeline de tags semanticas ponta a ponta\n---\n\n# Teste de integração do pipeline de tags semânticas\n\nEste é um arquivo de teste temporário para validar que as tags semânticas\nfluem da origem até o grafo do widget.\n\n## Decisão\n\nIntegrar extração RAKE leve no knowledge_consolidator, generate-obsidian-notes\ne memory_engine para enriquecer as sinapses do grafo Obsidian.\n\n## Impacto\n\nO grafo do widget deve mostrar ma",
-      "extracted_at": "2026-08-02T23:08:02.810706"
     }
   ],
   "heuristics": [
@@ -2564,50 +2569,18 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-02T23:03:34.051876",
+      "timestamp": "2026-08-02T23:09:40.970309",
       "status": "session_learning",
-      "goal_objective": "--- — ",
+      "goal_objective": "vault obsidian fonte viva — Reestruturacao do pipeline de geracao do grafo — Obsidian vira cerebro vivo, widget espelho",
       "tags": [
-        "geral",
+        "decisao",
         "opencode",
         "espelho",
         "vivo",
         "cerebro",
         "vira",
-        "widget espelho",
-        "geracao"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-02T23:07:00.650724",
-      "status": "session_learning",
-      "goal_objective": "--- — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "ponta",
-        "semanticas",
-        "semânticas",
         "widget",
-        "validar",
-        "funcional"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-02T23:08:02.810706",
-      "status": "session_learning",
-      "goal_objective": "Teste de integração do pipeline de tags semânticas — Teste funcional do pipeline de tags semanticas ponta a ponta",
-      "tags": [
-        "erro",
-        "opencode",
-        "ponta",
-        "semanticas",
-        "funcional",
-        "semânticas",
-        "tags semanticas",
-        "pipeline"
+        "viva"
       ],
       "files_modified": []
     }

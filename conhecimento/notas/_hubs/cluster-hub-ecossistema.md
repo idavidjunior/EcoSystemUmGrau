@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**18 notas** do cluster ecossistema.
+**19 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -22,3 +22,4 @@
 - [[salvar-rustdesk-password-e-id-em-local-permanente-nao-gerar-]]
 - [[server-failover-com-auto-return]]
 - [[server-health-check-via-http-ping-localhostporta-em-vez-de-s]]
+- [[vault-obsidian-fonte-viva]]

@@ -61,8 +61,8 @@ Sempre que qualquer alteração for feita em:
 ## Conexoes
 
 - [[2026-07-27-fallback-automático-de-modelo-llm-com-bun-razrooo]]
-- [[2026-07-27-setup-plug-play-e-organizacao-github]]
 - [[2026-07-27-sistema-automático-de-captura-de-conhecimento-do-]]
 - [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
 - [[decisao-hub-decisoes]]
+- [[vault-obsidian-fonte-viva]]

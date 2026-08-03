@@ -1,6 +1,6 @@
 # Decisoes
 
-**39 notas** conectadas a este hub.
+**40 notas** conectadas a este hub.
 
 
 ## Notas
@@ -40,6 +40,7 @@
 - [[usar-keyboard-shortcuts-como-fallback-universal]]
 - [[usar-ocr-como-fallback-final-nao-primario]]
 - [[user-taps-buscar-na-internet]]
+- [[vault-obsidian-fonte-viva]]
 - [[verificar-modais-antes-de-cada-interacao]]
 - [[why-d8-doesnt-accept-directory-trees-of-class-files-it-needs]]
 - [[why-user-expects-a-blank-slate-when-entering-a-form-tab-cons]]

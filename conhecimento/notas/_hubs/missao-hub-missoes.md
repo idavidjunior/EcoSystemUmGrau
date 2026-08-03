@@ -1,6 +1,6 @@
 # Missoes
 
-**35 notas** conectadas a este hub.
+**36 notas** conectadas a este hub.
 
 
 ## Notas
@@ -39,3 +39,4 @@
 - [[sessao-de-configuracao-do-opencode-com-failover-de-servidor-]]
 - [[sessao-focada-em-organizacao-de-workspace-unificacao-de-proj]]
 - [[treinamento-especializado-em-navegacao-multi-plataforma-reco]]
+- [[vault-obsidian-fonte-viva-reestruturacao-do-pipeline-de-gera]]

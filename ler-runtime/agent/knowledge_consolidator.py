@@ -881,6 +881,11 @@ class KnowledgeConsolidator:
             if line.startswith("# ") and not line.startswith("##"):
                 title = line.lstrip("# ").strip()
                 break
+        # fallback: nome do arquivo (sem data-prefixo) ou campo decisoes/contexto
+        if not title or title.strip() == "---":
+            base = os.path.basename(path)
+            base = _re.sub(r'^\d{4}-\d{2}-\d{2}-', '', base)
+            title = os.path.splitext(base)[0].replace('-', ' ').strip() or title
 
         # mapeia campos YAML para os esperados
         if "categoria" not in meta and "tipo" in meta:

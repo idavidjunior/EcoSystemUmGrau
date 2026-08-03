@@ -1,6 +1,6 @@
 # Cluster: Geral
 
-**35 notas** do cluster geral.
+**36 notas** do cluster geral.
 
 
 ## Notas
@@ -39,3 +39,4 @@
 - [[sessao-de-configuracao-do-opencode-com-failover-de-servidor-]]
 - [[sessao-focada-em-organizacao-de-workspace-unificacao-de-proj]]
 - [[treinamento-especializado-em-navegacao-multi-plataforma-reco]]
+- [[vault-obsidian-fonte-viva-reestruturacao-do-pipeline-de-gera]]

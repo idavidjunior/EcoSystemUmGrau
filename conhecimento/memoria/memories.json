@@ -668,5 +668,25 @@
     "access_count": 0,
     "created_at": "2026-08-02T23:06:11.694953",
     "last_accessed": "2026-08-02T23:06:11.694953"
+  },
+  {
+    "id": 64,
+    "kind": "erro",
+    "task": "Parser YAML no register_learning_file",
+    "summary": "register_learning_file agora suporta frontmatter YAML (tipo, contexto) alem do formato **tipo:** markdown. Antes todos os aprendizados viravam categoria 'geral' em cognitive_patterns; agora decisoes/bugs/padroes sao classificados corretamente. Titulo extraido do H1.",
+    "project": "",
+    "tags": [
+      "formato",
+      "tipo",
+      "contexto",
+      "frontmatter",
+      "suporta",
+      "yaml"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T23:08:30.134878",
+    "last_accessed": "2026-08-02T23:08:30.134878"
   }
 ]

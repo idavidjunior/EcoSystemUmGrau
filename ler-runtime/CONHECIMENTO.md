@@ -1,14 +1,14 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-02T23:08:03.223977
+**Exportado em:** 2026-08-02T23:09:41.340878
 **Projetos:** 4
 **Padroes Tecnicos:** 73
-**Decisoes:** 42
+**Decisoes:** 44
 **Bug Fixes:** 46
-**Padroes Cognitivos:** 30
+**Padroes Cognitivos:** 29
 **Heuristicas:** 32
 **Frameworks:** 10
-**Missoes Aprendidas:** 74
+**Missoes Aprendidas:** 72
 
 ---
 
@@ -186,6 +186,24 @@ O usuario explicitamente pediu um campo de habilidades catalogando todas as capa
 ### Habilidades de Jarvis seguem taxonomia de 3 niveis
 **Fonte:** ler_aprendizado
 A primeira versao misturava ferramentas, conhecimentos e capacidades. A versao correta alinha com a taxonomia do ecossistema.
+
+### ---
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [obsidian, widget, grafo, arquitetura, tags-semanticas, rake]
+data: 2026-08-02
+contexto: Reestruturacao do pipeline de geracao do grafo — Obsidian vira cerebro vivo, widget espelho
+decisao: generate-graph-html.py agora le o vault Obsidian (conhecimento/notas/*.md) em vez de knowledge_graph.json. O widget_grafo.py chama Bridge.regenerar() quando a versao detecta mudança no vault. Smart Connections (plugin Obsidian) cria [[wikilinks]] semanticos que o widget reflete automat
+
+### vault obsidian fonte viva
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [obsidian, widget, grafo, arquitetura, tags-semanticas, rake]
+data: 2026-08-02
+contexto: Reestruturacao do pipeline de geracao do grafo — Obsidian vira cerebro vivo, widget espelho
+decisao: generate-graph-html.py agora le o vault Obsidian (conhecimento/notas/*.md) em vez de knowledge_graph.json. O widget_grafo.py chama Bridge.regenerar() quando a versao detecta mudança no vault. Smart Connections (plugin Obsidian) cria [[wikilinks]] semanticos que o widget reflete automat
 
 
 ## Padroes Tecnicos
@@ -745,31 +763,6 @@ e memory_engine para enriquecer as sinapses do grafo Obsidian.
 
 O grafo do widget deve mostrar ma
 
-### Teste de integração do pipeline de tags semânticas
-**Dominio:** general
-**Fonte:** opencode
-
----
-tipo: erro
-tags: [teste, pipeline]
-data: 2026-08-02
-contexto: Teste funcional do pipeline de tags semanticas ponta a ponta
----
-
-# Teste de integração do pipeline de tags semânticas
-
-Este é um arquivo de teste temporário para validar que as tags semânticas
-fluem da origem até o grafo do widget.
-
-## Decisão
-
-Integrar extração RAKE leve no knowledge_consolidator, generate-obsidian-notes
-e memory_engine para enriquecer as sinapses do grafo Obsidian.
-
-## Impacto
-
-O grafo do widget deve mostrar ma
-
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -864,7 +857,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-02T23:08:03.187466
+**Ultima atualizacao:** 2026-08-02T23:09:41.323556
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*
