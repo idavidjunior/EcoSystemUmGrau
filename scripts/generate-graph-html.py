@@ -1,10 +1,13 @@
 """Gera um grafo interativo HTML (vis-network) do conhecimento do ecossistema.
 
-Le o ler-runtime/knowledge/knowledge_graph.json e produz um arquivo HTML standalone
-(vis-network via CDN) que abre em qualquer navegador — sem depender do Obsidian.
+Le o vault Obsidian (conhecimento/notas/*.md) e produz um arquivo HTML
+standalone (vis-network via CDN) que abre em qualquer navegador. O vault e a
+fonte viva: notas + links [[wikilinks]] (incluindo os criados pelo Smart
+Connections no Obsidian). Assim o grafico reflete exatamente o que esta no
+Obsidian — sinapses semanticas incluidas.
 
-Nos:   cada item de conhecimento (padrao, decisao, bug, cognitivo, heuristica, framework)
-Arestas: itens que compartilham tag/fonte/dominio + hubs de cluster
+Nos:   cada nota .md (conhecimento + hubs)
+Arestas: links bidirecionais [[wikilinks]] presentes em cada nota
 Cores:  por categoria (paleta fixa)
 Tamanho: hubs e nos muito conectados ficam maiores
 
@@ -55,62 +58,6 @@ CLUSTER_COR = {
     'android': '#8dd3c7', 'mp3player': '#ffffb3', 'ler': '#bebada',
     'navegacao': '#fb8072', 'ecossistema': '#80b1d3', 'cognicao': '#fdb462', 'geral': '#b3b3b3',
 }
-
-# ---------------------------------------------------------------------------
-# Pontes inter-cluster (Cerebro Vivo) ---------------------------------------
-# O grafo, por construcao, so cria arestas por tag/fonte/hub — o que deixa os
-# clusters isolados (0 arestas entre clusters). Estas arestas curadas conectam
-# nos de clusters DIFERENTES que compartilham semantica real, transformando o
-# grafo em um cerebro integrado. Cada ponte e (fragA, fragB): substrings que
-# devem casar exatamente UM no cada — se ambiguas ou ausentes, a ponte e
-# ignorada com aviso (nunca impede a geracao). O prefixo '-encoding UTF-8' e
-# escrito com aspas para evitar falsa quebra de linha.
-# ---------------------------------------------------------------------------
-
-BRIDGES_CLUSTERS = [
-    # Android <-> cognicao: snapshot imutavel
-    ('Framework de Persistencia com Snapshot Imutavel',
-     'Salvar cria novo arquivo timestampado'),
-    # Ler <-> general: escrita atomica (persistencia JSON)
-    ('Escrita atomica sempre', 'Estado persiste em JSON'),
-    ('Escrita atomica sempre', 'Crash no meio do json'),
-    # Cognicao <-> Mp3player: scoring / fallback multi-fonte
-    ('Modelo de scoring para busca multi-resultado',
-     'iTunes search with scoring thresholds'),
-    ('Estrategia de fallback em cadeia',
-     'Metadata busca em multi-fontes: AcoustID'),
-    # Cognicao <-> Ecossistema: aprendizado continuo / failover
-    ('Framework de Aprendizado Continuo', 'captura de conhecimento do ecossistema'),
-    ('Estrategia de fallback em cadeia', 'failover inteligente'),
-    # Ecossistema <-> Navegacao: seguranca de chaves / protocolo MCP
-    ('Chaves API exclusivamente em env vars',
-     'Nunca armazenar API keys em config files'),
-    ('MCP tool naming', 'MCP server handshake obrigatorio'),
-    ('MCP JSON-RPC notification handling', 'MCP server handshake obrigatorio'),
-    # Ler <-> Android: encoding UTF-8 no Windows
-    ('Encoding UTF-8 explicito em Python no Windows',
-     'in javac'),
-    # Ecossistema <-> Ler: separacao causa-efeito-temporal
-    ('Principio da separacao causa-efeito-temporal',
-     'deactivates on song change'),
-    # Ecossistema <-> Ler: escrita atomica em bug real
-    ('Escrita atomica sempre', 'json.dump corrompia arquivo'),
-    # Cognicao <-> Navegacao: espera adaptativa / fallback em cascata
-    ('Espera adaptativa por tipo de recurso', 'Velocidade = evitar esperas fixas'),
-    ('Estrategia de fallback em cadeia', 'Cascata de Interacao'),
-    ('Heuristica de isolamento de falha', 'Retry com backoff exponencial'),
-    ('Ciclo OODA aplicado a navegacao', 'OODA-Nav'),
-    # Navegacao <-> Android: automatizacao de UI no dispositivo
-    ('Android View hierarchy scanning', 'ListView + BaseAdapter Pattern'),
-    ('Package/activity launch pattern', 'ADB Workflow'),
-    ('Sempre fechar teclado virtual Android', 'Vibration Pattern'),
-    # Android <-> Cognicao: persistencia
-    ('JSON Persistence Pattern', 'Padrao de escrita atomica para persistencia'),
-    ('Checkpoints salvos antes de cada iteracao',
-     'Framework de Persistencia com Snapshot Imutavel'),
-    # Ecossistema <-> Cognicao: failover em cadeia
-    ('Server failover com auto-return', 'Arvore de Decisao para Fallback de Servico'),
-]
 
 
 def cluster_of(source):
