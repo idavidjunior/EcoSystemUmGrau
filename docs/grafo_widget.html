@@ -87,10 +87,13 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
 </script>
 
 <script>
-  document.addEventListener('contextmenu', function(e){
-    e.preventDefault();
-    document.body.classList.toggle('desktop');
-  }, false);
+  window.addEventListener('error', function(ev){
+    try {
+      if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
+        window.pywebview.api.debug_log('ERRO-TARDE: ' + (ev.message||'') + ' @ ' + (ev.lineno||''));
+      }
+    } catch(e){}
+  }, true);
 </script>
 </head>
 <body>
@@ -346,174 +349,6 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
   document.querySelectorAll('.lg').forEach(btn => {
     btn.addEventListener('click', () => destacar(btn.dataset.filter, btn.dataset.value, btn.dataset.color));
   });
-</script>
-
-<script>
-  (function(){
-    function log(m){ try { if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){ window.pywebview.api.debug_log(m); } } catch(e){} }
-    setTimeout(function(){
-      log('BLK: network existe? ' + (typeof network !== 'undefined'));
-      if(typeof network !== 'undefined'){
-        try {
-          var c = network.getBoundingBox ? null : null;
-          log('BLK: canvas count: ' + document.querySelectorAll('#net canvas').length);
-          log('BLK: nodes in network: ' + network.body.data.nodes.length);
-          var scale = network.getScale();
-          log('BLK: scale: ' + scale);
-          var pos = network.getViewPosition();
-          log('BLK: view pos: ' + pos.x.toFixed(0) + ',' + pos.y.toFixed(0));
-        } catch(e){ log('BLK: erro: ' + e.message); }
-      }
-    }, 1500);
-  })();
-</script>
-
-<script>
-  (function(){
-    /* --- moldura de arrasto (move a janela pelo desktop) --- */
-    var bar = document.createElement('div');
-    bar.id = 'mk-drag';
-    bar.title = 'Arraste para mover';
-    document.body.appendChild(bar);
-    var rx=0, ry=0, sx=0, sy=0, drag=false;
-    bar.addEventListener('mousedown', function(e){
-      e.preventDefault(); e.stopPropagation();
-      sx=e.screenX; sy=e.screenY;
-      rx=(window.screenX||0); ry=(window.screenY||0);
-      drag=true;
-      document.addEventListener('mousemove', onMove);
-      document.addEventListener('mouseup', onUp);
-    });
-    function onMove(e){
-      if(!drag) return;
-      var nx = rx + (e.screenX - sx);
-      var ny = ry + (e.screenY - sy);
-      if(window.pywebview && window.pywebview.api){
-        window.pywebview.api.mover(Math.round(nx), Math.round(ny));
-      }
-    }
-    function onUp(){
-      drag=false;
-      document.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseup', onUp);
-      report();
-    }
-
-    /* --- alca de resize (canto inferior direito) --- */
-    var grip = document.createElement('div');
-    grip.id = 'mk-resize';
-    grip.title = 'Arraste para redimensionar';
-    document.body.appendChild(grip);
-    var startX=0, startY=0, startW=innerWidth, startH=innerHeight, ar=null;
-    grip.addEventListener('mousedown', function(e){
-      e.preventDefault(); e.stopPropagation();
-      startX=e.screenX; startY=e.screenY; startW=innerWidth; startH=innerHeight;
-      ar = true;
-      document.addEventListener('mousemove', onRm);
-      document.addEventListener('mouseup', onRu);
-    });
-    function onRm(e){
-      if(!ar) return;
-      var w = startW + (e.screenX - startX);
-      var h = startH + (e.screenY - startY);
-      if(window.pywebview && window.pywebview.api){
-        window.pywebview.api.redimensionar(Math.round(w), Math.round(h));
-      }
-    }
-    function onRu(){ ar=false; document.removeEventListener('mousemove', onRm);
-      document.removeEventListener('mouseup', onRu); report(); }
-
-    /* reporta a geometria via JS (nao acessa win.native -> evita recursao) */
-    function report(){
-      if(window.pywebview && window.pywebview.api){
-        try {
-          window.pywebview.api.guardar_geo(
-            Math.round(window.screenX||0), Math.round(window.screenY||0),
-            Math.round(window.innerWidth||0), Math.round(window.innerHeight||0));
-        } catch(e){}
-      }
-    }
-    window.addEventListener('pywebviewready', report);
-    window.addEventListener('resize', report);
-  })();
-</script>
-
-<script>
-(function(){
-  // Diagnostico: captura erros JS e grava via bridge (arquivo widget_log.txt)
-  function log(msg){
-    try {
-      if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
-        window.pywebview.api.debug_log(msg);
-      }
-    } catch(e){}
-  }
-
-  window.addEventListener('error', function(ev){
-    log('ERRO: ' + String(ev.message||'') + ' @ ' + (ev.filename||'') + ':' + (ev.lineno||''));
-    log('vis carregado? ' + (typeof vis !== 'undefined'));
-    var netEl = document.getElementById('net');
-    if(netEl){ log('net size: ' + netEl.clientWidth + 'x' + netEl.clientHeight); }
-  });
-
-  // Diagnostico imediato apos carregamento
-  setTimeout(function(){
-    log('DIAG: vis carregado? ' + (typeof vis !== 'undefined'));
-    var netEl = document.getElementById('net');
-    if(netEl){
-      log('DIAG: container net existe: true');
-      log('DIAG: net size: ' + netEl.clientWidth + 'x' + netEl.clientHeight);
-      log('DIAG: net display: ' + getComputedStyle(netEl).display);
-      log('DIAG: net visibility: ' + getComputedStyle(netEl).visibility);
-    } else {
-      log('DIAG: container net nao encontrado');
-    }
-  }, 500);
-
-  // Diagnostico do network apos inicializacao - verifica canvas
-  setTimeout(function(){
-    var netEl = document.getElementById('net');
-    if(netEl){
-      var canvas = netEl.querySelector('canvas');
-      if(canvas){
-        log('DIAG: canvas existe: true, size: ' + canvas.width + 'x' + canvas.height);
-        log('DIAG: canvas style: ' + canvas.style.cssText);
-      } else {
-        log('DIAG: canvas NAO encontrado dentro de #net');
-        log('DIAG: #net innerHTML: ' + netEl.innerHTML.substring(0, 200));
-      }
-      // Tenta acessar network via vis instance (se exposto globalmente ou via dados)
-      // vis-network guarda referencia no container dataset ou no elemento
-      if(netEl.network){
-        log('DIAG: netEl.network existe');
-      } else {
-        log('DIAG: netEl.network nao exposto');
-      }
-    }
-  }, 3000);
-
-  var lastVer = null;
-  var rodou = false;
-  function checar(){
-    try {
-      window.pywebview.api.versao().then(function(v){
-        if(!rodou){ rodou = true; lastVer = v; return; }
-        if(v !== lastVer){
-          lastVer = v;
-          var u = new URL(window.location.href);
-          u.searchParams.set('v', v);
-          u.searchParams.set('rc', String(Date.now()));
-          window.pywebview.api.regenerar().then(function(){
-            window.location.href = u.toString();
-          });
-        }
-      });
-    } catch(e){}
-  }
-  if(window.pywebview && window.pywebview.api){ checar(); }
-  window.addEventListener('pywebviewready', checar);
-  setInterval(checar, 2000);
-})();
 </script>
 </body>
 </html>

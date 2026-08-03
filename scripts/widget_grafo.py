@@ -380,51 +380,46 @@ def _build_view() -> Path | None:
             '<script src="https://unpkg.com/vis-network@9.1.2/standalone/umd/vis-network.min.js"></script>'
         )
 
-    # Injeta diagnostico DENTRO do bloco principal, apos a criacao do network
-    # (o window.onerror do API_INJECT roda depois deste bloco, entao erros
-    # sincronos aqui precisam de captura local)
-    diag_js = """
+    # Injeta diagnostico imediatamente apos a criacao do network, DENTRO do
+    # mesmo <script> que declara `const network` (para acessar a variavel no
+    # escopo do bloco). Erros sincronos do bloco principal nao sao capturados
+    # por window.onerror tardio do API_INJECT.
+    # Captura erros do bloco principal ANTES que ele rode: registra um
+    # window.onerror no <head> (roda antes dos scripts do body), assim qualquer
+    # erro sincrono/assincrono do bloco principal cai aqui.
+    # Também injeta um marcador global que o bloco principal pode chamar.
+    early_error = """
 <script>
-  (function(){
-    function log(m){ try { if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){ window.pywebview.api.debug_log(m); } } catch(e){} }
-    setTimeout(function(){
-      log('BLK: network existe? ' + (typeof network !== 'undefined'));
-      if(typeof network !== 'undefined'){
-        try {
-          var c = network.getBoundingBox ? null : null;
-          log('BLK: canvas count: ' + document.querySelectorAll('#net canvas').length);
-          log('BLK: nodes in network: ' + network.body.data.nodes.length);
-          var scale = network.getScale();
-          log('BLK: scale: ' + scale);
-          var pos = network.getViewPosition();
-          log('BLK: view pos: ' + pos.x.toFixed(0) + ',' + pos.y.toFixed(0));
-        } catch(e){ log('BLK: erro: ' + e.message); }
+  window.addEventListener('error', function(ev){
+    try {
+      if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
+        window.pywebview.api.debug_log('ERRO-TARDE: ' + (ev.message||'') + ' @ ' + (ev.lineno||''));
       }
-    }, 1500);
-  })();
+    } catch(e){}
+  }, true);
 </script>
 """
-    src = src.replace(
-        '</body>',
-        diag_js + '</body>',
-        1
-    )
+    if '</head>' in src:
+        src = src.replace('</head>', early_error + '</head>', 1)
+    else:
+        src = early_error + src
 
     if '<style>' in src:
         src = src.replace('<style>', '<style>' + WIDGET_CSS, 1)
     else:
         src = '<style>' + WIDGET_CSS + '</style>' + src
 
-    if '</head>' in src:
-        src = src.replace('</head>', WIDGET_JS + '</head>', 1)
-    else:
-        src += WIDGET_JS
+    # Removido temporariamente para diagnóstico: sem WIDGET_JS, sem RESIZE_JS, sem API_INJECT
+    # if '</head>' in src:
+    #     src = src.replace('</head>', WIDGET_JS + '</head>', 1)
+    # else:
+    #     src += WIDGET_JS
 
-    js = API_INJECT.replace('%POLL_MS%', str(POLL_MS))
-    if '</body>' in src:
-        src = src.replace('</body>', RESIZE_JS + js + '</body>', 1)
-    else:
-        src += RESIZE_JS + js
+    # js = API_INJECT.replace('%POLL_MS%', str(POLL_MS))
+    # if '</body>' in src:
+    #     src = src.replace('</body>', RESIZE_JS + js + '</body>', 1)
+    # else:
+    #     src += RESIZE_JS + js
 
     VIEW_COPY.write_text(src, encoding='utf-8')
     return VIEW_COPY
@@ -455,7 +450,7 @@ def main() -> int:
         width=w, height=h,
         x=x, y=y,
         resizable=True,
-        frameless=True,
+        frameless=False,
         easy_drag=False,
         shadow=False,
         focus=False,
