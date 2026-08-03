@@ -185,163 +185,177 @@ def make_id(prefix, text):
     return f'{prefix}-{slug}'
 
 
+# ---------------------------------------------------------------------------
+# Leitura do vault Obsidian (fonte viva do conhecimento) -------------------
+# O gerador agora le o vault conhecimento/notas/*.md em vez do JSON.
+# Assim tudo que existe no Obsidian (notas + links criados pelo Smart
+# Connections ou manualmente) aparece no grafo do widget automaticamente.
+# O JSON continua sendo a entrada/semente via generate-obsidian-notes.py.
+# ---------------------------------------------------------------------------
+
+WIKI_LINK_RE = re.compile(r'\[\[([^\]]+)\]\]')
+
+# Mapeia tags de fonte (ex: 'mp3player-metadata-rescue') -> cluster
+_SOURCE_CLUSTER = {}
+for _cl, _fontes in CLUSTERS.items():
+    for _f in _fontes:
+        _SOURCE_CLUSTER[_f] = _cl
+
+# Tags genericas que nao sao fontes/semanticas
+_GENERIC_TAGS = frozenset({
+    'padrao', 'decisao', 'bug', 'cognitivo', 'heuristica', 'framework',
+    'missao', 'hub', 'geral', 'general', 'leraprendizado', 'episodio',
+})
+
+
+def _parse_frontmatter(content):
+    """Parse YAML frontmatter simples. Retorna (dict_fm, body_str)."""
+    if not content.startswith('---'):
+        return {}, content
+    parts = content.split('---', 2)
+    if len(parts) < 3:
+        return {}, content
+    fm_text = parts[1]
+    body = parts[2]
+    fm = {}
+    for line in fm_text.strip().split('\n'):
+        line = line.rstrip()
+        if not line.strip() or line.strip().startswith('#'):
+            continue
+        # linha sem indentacao = nova key
+        if not line.startswith(' ') and ':' in line:
+            key, _, val = line.partition(':')
+            key = key.strip()
+            val = val.strip()
+            if val.startswith('[') and val.endswith(']'):
+                fm[key] = [v.strip() for v in val[1:-1].split(',') if v.strip()]
+            else:
+                fm[key] = val
+    return fm, body
+
+
+def _extract_wikilinks(text):
+    """Extrai todos os alvos [[wikilink]] do texto (body da nota)."""
+    return set(m.group(1).strip() for m in WIKI_LINK_RE.finditer(text))
+
+
+def _source_from_tags(tags):
+    """Resolve qual fonte/cluster a nota pertence a partir das tags."""
+    for t in tags:
+        if t not in _GENERIC_TAGS:
+            return t
+    return ''
+
+
 def extrair_nos():
-    with open(GRAPH_FILE, encoding='utf-8') as f:
-        g = json.load(f)
+    """Constrói nós e arestas a partir do vault Obsidian vivo.
 
-    nos = []  # dict id -> meta
+    Cada .md vira um nó; cada [[wikilink]] vira uma aresta.
+    Isso capta automaticamente conexões criadas pelo Smart Connections.
+    """
+    nos = []
     arestas = set()
-    nos_por_categoria = defaultdict(list)
-    nos_por_tag = defaultdict(list)
+    nos_por_id = {}
 
-    def add_no(nid, label, categoria, tags, title, source=''):
-        if source in CLUSTERS:
-            cl = source
-        else:
+    def add_no(nid, label, categoria, tags, title, source='', cluster=''):
+        cl = cluster or (_SOURCE_CLUSTER.get(source, 'geral') if source else 'geral')
+        # Se source nao esta no CLUSTERS, tenta cluster_of(source)
+        if not cl or cl == 'geral':
             cl = cluster_of(source) if source else 'geral'
-        nos.append({'id': nid, 'label': label, 'categoria': categoria,
-                    'tags': tags, 'title': title, 'cl': cl, 'grau': 0})
+        n = {'id': nid, 'label': label, 'categoria': categoria,
+             'tags': tags or [], 'title': title, 'cl': cl, 'grau': 0,
+             'source': source}
+        nos.append(n)
+        nos_por_id[nid] = n
 
-    # itens de conhecimento
-    for p in g.get('patterns', []):
-        t = (p.get('title', '') or '').strip()
-        if not t:
-            continue
-        nid = make_id('p', t)
-        if not nid or any(n['id'] == nid for n in nos):
-            continue
-        src = p.get('source', '')
-        add_no(nid, t, 'padroes', ['padrao', slugify(src) or 'geral'], f'{src}\n\n{p.get("description","")}', src)
-        nos_por_categoria['padroes'].append(nid)
+    # ---- ler TODAS as notas do vault (incl. _hubs) ----
+    md_files = sorted(Path(VAULT_DIR).rglob('*.md'))
+    no_cache = {}  # slug -> set of wikilinks (guardado antes de add_no perder body)
 
-    for d in g.get('decisions', []):
-        t = (d.get('decision', '') or '').strip()
-        if not t:
-            continue
-        nid = make_id('d', t[:80])
-        if not nid or any(n['id'] == nid for n in nos):
-            continue
-        src = d.get('source', '')
-        add_no(nid, t, 'decisoes', ['decisao', slugify(src) or 'geral'], f'{src}\n\n{d.get("rationale","")}', src)
-        nos_por_categoria['decisoes'].append(nid)
+    for f in md_files:
+        rel = f.relative_to(VAULT_DIR)
+        is_hub = rel.parts[0] == '_hubs'
+        cat_from_folder = 'hub' if is_hub else rel.parts[0]
+        slug = f.stem
+        content = f.read_text(encoding='utf-8')
+        fm, body = _parse_frontmatter(content)
+        tags = fm.get('tags', [])
+        if isinstance(tags, str):
+            tags = [tags]
+        aliases = fm.get('aliases', [])
+        if isinstance(aliases, str):
+            aliases = [aliases]
 
-    for b in g.get('bug_fixes', []):
-        t = (b.get('issue', '') or '').strip()
-        if eh_lixo_issue(t):
-            continue
-        nid = make_id('b', t[:80])
-        if not nid or any(n['id'] == nid for n in nos):
-            continue
-        src = b.get('source', '')
-        st = bug_status(b)
-        add_no(nid, t, 'bugs', ['bug', slugify(src) or 'geral'],
-               f'{src}\n\n{b.get("root_cause","")}\n\n[FIX] {b.get("fix","")}', src)
-        nos[-1]['status'] = st
-        nos_por_categoria['bugs'].append(nid)
+        # categoria interna
+        categoria_map = {
+            'padroes': 'padroes', 'decisoes': 'decisoes',
+            'bugs': 'bugs', 'cognitivo': 'cognitivo',
+            'heuristicas': 'heuristicas', 'frameworks': 'frameworks',
+            'missoes': 'missoes', 'hub': 'hub',
+        }
+        categoria = categoria_map.get(cat_from_folder, cat_from_folder)
 
-    for c in g.get('cognitive_patterns', []):
-        t = c.get('title', '')
-        nid = make_id('cog', t)
-        if not nid or any(n['id'] == nid for n in nos):
-            continue
-        dom = slugify(c.get('domain', 'general')) or 'general'
-        add_no(nid, t, 'cognitivo', ['cognitivo', dom], f'Dominio: {c.get("domain","")}\n\n{c.get("body","")}')
-        nos_por_categoria['cognitivo'].append(nid)
+        source = _source_from_tags(tags)
+        cluster = _SOURCE_CLUSTER.get(source, '') or ''
 
-    for h in g.get('heuristics', []):
-        t = h.get('title', '')
-        nid = make_id('h', t)
-        if not nid or any(n['id'] == nid for n in nos):
-            continue
-        dom = slugify(h.get('domain', '')) or 'geral'
-        add_no(nid, t, 'heuristicas', ['heuristica', dom], h.get('description', ''))
-        nos_por_categoria['heuristicas'].append(nid)
+        # label = aliases[0] ou heading
+        label = aliases[0] if aliases else slug
+        h_match = re.search(r'^# (.+)$', body, re.MULTILINE)
+        if h_match:
+            label = h_match.group(1).strip()
 
-    for fw in g.get('frameworks', []):
-        t = fw.get('name', '')
-        nid = make_id('fw', t)
-        if not nid or any(n['id'] == nid for n in nos):
-            continue
-        src = fw.get('source', '')
-        add_no(nid, t, 'frameworks', ['framework'], fw.get('description', ''), src)
-        nos_por_categoria['frameworks'].append(nid)
+        # Para hubs: tenta resolver cluster pelo nome (cluster-hub-X)
+        if is_hub and 'cluster-hub-' in slug:
+            cluster = slug.replace('cluster-hub-', '').strip()
 
-    # indice para arestas
-    por_tag = defaultdict(list)
-    for n in nos:
-        for tag in n['tags']:
-            por_tag[tag].append(n['id'])
+        # title (tooltip) = body curto
+        body_clean = re.sub(r'##\s+\S+', '', body)  # remove secoes
+        body_excerpt = ' '.join(body_clean.split())[:250]
+        title = body_excerpt if body_excerpt else label
 
-    # arestas: mesma tag/dominio/fonte
-    for n in nos:
-        for tag in n['tags']:
-            if tag in ('geral', 'general', 'padrao', 'decisao', 'bug', 'cognitivo', 'heuristica', 'framework'):
-                continue
-            for outro in por_tag.get(tag, []):
-                if outro != n['id']:
-                    arestas.add(tuple(sorted((n['id'], outro))))
+        # status de bug
+        status = None
+        if categoria == 'bugs':
+            status = _inferir_status_bug(body)
 
-    # hubs de cluster
-    for cl in CLUSTERS:
-        membros = [n['id'] for n in nos if cluster_of(next((t for t in n['tags'] if t != 'padrao' and t != 'decisao' and t != 'bug'), '')) == cl or
-                   any(cluster_of(t) == cl for t in n['tags'])]
-        # resolve cluster pelo slug da fonte real: use a primeira tag que mapeia
-        membros = [n['id'] for n in nos
-                   if any(cluster_of(t) == cl and t not in ('geral', 'general') for t in n['tags'])]
-        if not membros:
-            continue
-        hub = f'hub-{cl}'
-        if not any(n['id'] == hub for n in nos):
-            add_no(hub, f'★ {cl.capitalize()}', 'hub', [f'cluster:{cl}'],
-                   f'Hub do cluster {cl} — {len(membros)} itens', cl)
-        for m in membros:
-            arestas.add(tuple(sorted((hub, m))))
+        n = add_no(slug, label, categoria, tags, title, source, cluster)
+        if status:
+            n['status'] = status
 
-    resolver_pontes(nos, arestas)
+        # armazenar wikilinks desta nota (antes de possivelmente ser usado)
+        links = _extract_wikilinks(body)
+        no_cache[slug] = links
+
+    # ---- construir arestas a partir dos wikilinks reais ----
+    id_set = set(nos_por_id)
+    for slug, links in no_cache.items():
+        for link in links:
+            # link pode ser 'nota-slug' ou 'nota-slug|alias' — pega so o slug
+            link_slug = link.split('|')[0].strip()
+            if link_slug in id_set and slug in id_set:
+                arestas.add(tuple(sorted((slug, link_slug))))
+
+    print(f'  Lidos {len(md_files)} notas do vault -> {len(nos)} nos, '
+          f'{len(arestas)} arestas')
     return nos, arestas
 
 
-def resolver_pontes(nos, arestas):
-    """Cria arestas curadas entre clusters (pontes inter-cluster).
-
-    Cada ponte e (fragA, fragB). Cada fragmento deve casar EXATAMENTE um no;
-    se casar 0 ou 2+, a ponte e ignorada com aviso — nunca aborta a geracao.
-    """
-    import warnings
-    labels = {}
-    for n in nos:
-        labels.setdefault(n['label'].lower(), []).append(n['id'])
-
-    def resolve(frag):
-        low = frag.lower()
-        hits = [ID for label, ids in labels.items()
-                for ID in ids if low in label]
-        return hits
-
-    ligadas = 0
-    descartadas = 0
-    for frag_a, frag_b in BRIDGES_CLUSTERS:
-        ids_a = resolve(frag_a)
-        ids_b = resolve(frag_b)
-        # mantem so a combina nao intra-cluster de fato (forca dois ids)
-        if len(ids_a) == 1 and len(ids_b) == 1:
-            arestas.add(tuple(sorted((ids_a[0], ids_b[0]))))
-            ligadas += 1
-        else:
-            descartadas += 1
-            warnings.warn(
-                f'Ponte ignorada (precisa casar exatamente 1 no por lado): '
-                f'"{frag_a}"->{ids_a} | "{frag_b}"->{ids_b}')
-    if ligadas:
-        print(f'  {ligadas} pontes inter-cluster criadas ({descartadas} descartadas)')
-
-    # Amacacao: hub de cognicao liga ao hub de todos os demais clusters.
-    hubs = {n['cl']: n['id'] for n in nos if n['categoria'] == 'hub'}
-    if 'cognicao' in hubs:
-        for cl, hub in hubs.items():
-            if cl == 'cognicao':
-                continue
-            arestas.add(tuple(sorted((hubs['cognicao'], hub))))
+def _inferir_status_bug(body):
+    """Deriva status de bug a partir do conteudo da nota no vault."""
+    low = body.lower()
+    # secao Correcao
+    has_correcao = '## correcao' in low or 'correcao' in low and '##' in body
+    if not has_correcao:
+        return 'pendente'
+    correcao_match = re.search(r'## Correcao\s*\n(.*)', body, re.DOTALL | re.IGNORECASE)
+    correcao_texto = correcao_match.group(1).strip() if correcao_match else ''
+    if not correcao_texto or all(c in ' \t-\n\r' for c in correcao_texto):
+        return 'pendente'
+    if any(k in correcao_texto.lower() for k in (
+        'aceito', 'accepted', 'limitacao', 'known', 'nao-critica',
+        'non-critic', 'workaround')):
+        return 'conhecido'
+    return 'resolvido'
 
 
 def grau_calcular(nos, arestas):
