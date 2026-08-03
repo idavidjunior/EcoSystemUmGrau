@@ -635,5 +635,18 @@
     "access_count": 0,
     "created_at": "2026-08-02T20:34:11.973850",
     "last_accessed": "2026-08-02T20:34:11.973850"
+  },
+  {
+    "id": 62,
+    "kind": "decisao",
+    "task": "Vault Obsidian como fonte viva do grafo",
+    "summary": "generate-graph-html.py agora lê conhecimento/notas/*.md (vault) em vez de knowledge_graph.json. widget_grafo.py chama regenerar() via bridge quando versao muda. Obsidian vira o cérebro: Smart Connections cria [[wikilinks]] que o widget reflete automaticamente.",
+    "project": "",
+    "tags": [],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T22:47:11.283583",
+    "last_accessed": "2026-08-02T22:47:11.283583"
   }
 ]
