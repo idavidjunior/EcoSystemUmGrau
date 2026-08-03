@@ -241,6 +241,178 @@ def _carregar_geo() -> dict:
     return {}
 
 
+class Bridge:
+    """Ponte JS (window.pywebview.api) -> Python."""
+    def __init__(self):
+        self._win = None
+
+    def versao(self) -> str:
+        return _versao()
+
+    def debug_log(self, msg: str) -> None:
+        try:
+            with open(BASE / 'docs' / 'widget_log.txt', 'a', encoding='utf-8') as f:
+                f.write(f'{time.time():.0f} | {msg}\n')
+        except Exception:
+            pass
+
+    def regenerar(self) -> str:
+        """Regenera docs/grafo.html (a partir do vault) e reaplica o CSS/JS do
+        widget em docs/grafo_widget.html. Chamado pelo JS quando versao muda —
+        garante que o widget sempre espelhe o vault Obsidian vivo."""
+        ok = _regenerate()
+        if ok:
+            view = _build_view()
+            return str(view) if view else ''
+        return ''
+
+    def redimensionar(self, w: int, h: int) -> None:
+        if not self._win:
+            return
+        try:
+            self._win.resize(int(w), int(h))
+        except Exception as e:
+            print(f'[widget] resize: {e}')
+
+    def mover(self, x: int, y: int) -> None:
+        if not self._win:
+            return
+        try:
+            self._win.move(int(x), int(y))
+        except Exception as e:
+            print(f'[widget] mover: {e}')
+
+    def guardar_geo(self, x: int, y: int, w: int, h: int) -> None:
+        """Recebe a geometria reportada pelo JS e a persiste. NAO le win.native
+        aqui para evitar a recursao infinita do pywebview em Windows."""
+        try:
+            w = int(w); h = int(h)
+            if w < MIN_W or h < MIN_H:
+                return  # ignora geometria degenerada (nao corrompe o arquivo)
+            _salvar_geo({'x': int(x), 'y': int(y), 'width': w, 'height': h})
+        except Exception:
+            pass
+
+    def toggle_labels(self) -> None:
+        """Alterna visibilidade das labels (semelhante ao current-mode da legend)"""
+        if not self._win:
+            return
+        try:
+            # JS para alternar visibilidade da propriedade font.size para 0 ou 11
+            self._win.evaluate_js("""
+                const atual = nodes.get();
+                const atualizacoes = atual.map(n => ({
+                    id: n.id,
+                    font: { ...n.font, size: (n.font.size === 0 ? 11 : 0) }
+                }));
+                nodes.update(atualizacoes);
+                localStorage.setItem('labelsOcultos', (atual[0].font.size === 0 ? 'true' : 'false'));
+            """)
+        except Exception as e:
+            print(f'[widget] toggle_labels: {e}')
+
+    def limpar_labels(self) -> None:
+        """Zera para visibilidade (tamanho da fonte 11)"""
+        if not self._win:
+            return
+        try:
+            self._win.evaluate_js("""
+                const atual = nodes.get();
+                const atualizacoes = atual.map(n => ({
+                    id: n.id,
+                    font: { ...n.font, size: 11 }
+                }));
+                nodes.update(atualizacoes);
+                localStorage.setItem('labelsOcultos', 'false');
+            """)
+        except Exception as e:
+            print(f'[widget] limpar_labels: {e}')
+
+    def restore_initial_state(self) -> None:
+        """Restaura o estado inicial do grafo após uma atualização"""
+        if not self._win:
+            return
+        try:
+            self._win.evaluate_js("""
+                // Após a estabilização, restaura as posições e zoom originais
+                if (typeof guardaInicial === 'function') {
+                    guardaInicial();
+                }
+                // Garante que as labels estão ocultas por padrão
+                const atual = nodes.get();
+                const atualizacoes = atual.map(n => ({
+                    id: n.id,
+                    font: { ...n.font, size: 0 }
+                }));
+                nodes.update(atualizacoes);
+                localStorage.setItem('labelsOcultos', 'true');
+            """)
+        except Exception as e:
+            print(f'[widget] restore_initial_state: {e}')
+
+    def update_labels_on_reload(self) -> None:
+        """Atualiza as labels após um reload do grafo"""
+        if not self._win:
+            return
+        try:
+            self._win.evaluate_js("""
+                // Durante uma atualização, mantém o estado de visibilidade das labels
+                const labelsOcultos = localStorage.getItem('labelsOcultos') === 'true';
+                const atual = nodes.get();
+                const atualizacoes = atual.map(n => ({
+                    id: n.id,
+                    font: { ...n.font, size: labelsOcultos ? 0 : 11 }
+                }));
+                nodes.update(atualizacoes);
+            """)
+        except Exception as e:
+            print(f'[widget] update_labels_on_reload: {e}')
+
+
+WIDGET_JS_EXTRA = """
+<script>
+  (function(){
+    // Adiciona controle de toggle para ocultar/mostrar labels
+    var ctrl = document.createElement('div');
+    ctrl.id = 'mk-labels';
+    ctrl.title = 'Alternar visibilidade das etiquetas';
+    ctrl.style.position = 'fixed';
+    ctrl.style.left = '10px';
+    ctrl.style.top = '40px';
+    ctrl.style.width = '28px';
+    ctrl.style.height = '28px';
+    ctrl.style.background = '#1e1e2e';
+    ctrl.style.border = '1px solid #313244';
+    ctrl.style.borderRadius = '4px';
+    ctrl.style.cursor = 'pointer';
+    ctrl.style.zIndex = '9999';
+    ctrl.style.display = 'flex';
+    ctrl.style.alignItems = 'center';
+    ctrl.style.justifyContent = 'center';
+    ctrl.style.fontSize = '16px';
+    ctrl.innerHTML = 'T';
+    ctrl.onmousedown = function(e) {
+      e.preventDefault(); e.stopPropagation();
+      if (window.pywebview && window.pywebview.api) {
+        window.pywebview.api.toggle_labels();
+      }
+    };
+    document.body.appendChild(ctrl);
+
+    // Estado inicial: carrega da localStorage, se nao houver, assume visivel
+    window.addEventListener('pywebviewready', function() {
+      var labelsOcultos = localStorage.getItem('labelsOcultos');
+      if (labelsOcultos === 'true') {
+        if (window.pywebview && window.pywebview.api) {
+          window.pywebview.api.limpar_labels();
+        }
+      }
+    });
+  })();
+</script>
+"""
+
+
 def _salvar_geo(data: dict) -> None:
     try:
         GEO_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2),
@@ -407,21 +579,16 @@ def _build_view() -> Path | None:
     else:
         src = early_error + src
 
-    if '<style>' in src:
-        src = src.replace('<style>', '<style>' + WIDGET_CSS, 1)
-    else:
-        src = '<style>' + WIDGET_CSS + '</style>' + src
-
     if '</head>' in src:
         src = src.replace('</head>', WIDGET_JS + '</head>', 1)
     else:
         src += WIDGET_JS
 
-    js = API_INJECT.replace('%POLL_MS%', str(POLL_MS))
+    # Injetar o controle extra para ocultar labels e detectar flash momentaneo
     if '</body>' in src:
-        src = src.replace('</body>', RESIZE_JS + js + '</body>', 1)
+        src = src.replace('</body>', WIDGET_JS_EXTRA + '</body>', 1)
     else:
-        src += RESIZE_JS + js
+        src += WIDGET_JS_EXTRA
 
     VIEW_COPY.write_text(src, encoding='utf-8')
     return VIEW_COPY
