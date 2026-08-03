@@ -10,6 +10,7 @@ date: 2026-08-02
 
 [[estado-persiste-em-json-nao-sqlite-legivel-editavel-fora-do-]]
 [[open-sempre-com-encoding-no-windows]]
+[[escrita-atomica-sempre]]
 
 Sempre usar encoding=utf-8 em open() no Windows para evitar falsos diagnosticos de corrupcao em arquivos JSON
 ## Conexoes
@@ -20,3 +21,4 @@ Sempre usar encoding=utf-8 em open() no Windows para evitar falsos diagnosticos 
 - [[padrao-hub-padroes]]
 - [[registro-de-habilidades-de-jarvis]]
 - [[taxonomia-correta-de-habilidades-jarvis]]
+[[escrita-atomica-sempre]]
