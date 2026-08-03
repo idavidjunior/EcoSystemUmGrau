@@ -417,26 +417,25 @@ def gerar_html(nos, arestas, output_path):
   // Heartbeat: respiracao suave dos nos + pulsos de sinapse aleatorios.
   let _tickPausado = false;
   let _ultimoSpike = 0;
-  const _nodeIds = () => nodes.get({}).map(n => n.id);
   network.on('tick', () => {{
     if (_tickPausado) return;
     const agora = Date.now();
     // respiracao de opacidade dos nos (ciclo lento ~4s)
     const base = 0.88 + 0.12 * Math.sin(agora * 0.0013);
     const upd = [];
-    nodes.get({}).forEach(n => {{
+    nodes.get().forEach(n => {{
       upd.push({{ id: n.id, opacity: base, borderWidth: 0, shadow: true }});
     }});
     nodes.update(upd);
     // pulso cognitivo: a cada ~4s, intensifica aleatoriamente uma aresta
     // (simula uma sinapse disparando), mantendo o resto sutil.
     let arestasUpd = [];
-    edges.get({}).forEach(e => {{
+    edges.get().forEach(e => {{
       arestasUpd.push({{ id: e.id, color: e.color || '#999', width: arestaOriginal[e.id] ? arestaOriginal[e.id].width : 1, opacity: 0.25 }});
     }});
     if (agora - _ultimoSpike > 4000) {{
       _ultimoSpike = agora;
-      const todas = edges.get({});
+      const todas = edges.get();
       if (todas.length) {{
         const escolhida = todas[Math.floor(Math.random() * todas.length)];
         arestasUpd = arestasUpd.map(a =>

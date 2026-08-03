@@ -55,8 +55,8 @@
   const options = {
     nodes: { shape:'dot', font:{ size:11, color:'#cdd6f4' } },
     edges: { smooth:{ type:'continuous' } },
-    physics: { barnesHut: { gravitationalConstant:-3000, springLength:120, springConstant:0.04, damping:0.09 },
-               stabilization: { iterations:300 } },
+    physics: { enabled: true, barnesHut: { gravitationalConstant:-520, springLength:120, springConstant:0.04, damping:0.95 },
+               stabilization: { iterations:60 } },
     interaction: { hover:true, tooltipDelay:120, navigationButtons:true }
   };
   const network = new vis.Network(container, { nodes, edges }, options);
@@ -74,13 +74,54 @@
         const p = network.getPositions([n.id])[n.id];
         posIniciais[n.id] = { x: p.x, y: p.y };
       });
-      // Congela a fisica: o layout padrao fica fixo para sempre,
-      // entao Home restaura cores + camera sem os nos se moverem.
-      network.setOptions({ physics: { enabled: false } });
+      // NAO congelea a fisica: o "cerebro vivo" respira continuamente.
+      // Apenas reduz a energia para um balanco organicamente lento.
+      network.setOptions({ physics: { barnesHut: { gravitationalConstant:-520, springLength:120, springConstant:0.02, damping:0.96 } } });
     }
   };
   network.once('stabilized', () => setTimeout(guardaInicial, 400));
   setTimeout(guardaInicial, 2500);
+
+  // --- Movimento organico: "cerebro vivo" cognitivo ---
+  // Heartbeat: respiracao suave dos nos + pulsos de sinapse aleatorios.
+  let _tickPausado = false;
+  let _ultimoSpike = 0;
+  network.on('tick', () => {
+    if (_tickPausado) return;
+    const agora = Date.now();
+    // respiracao de opacidade dos nos (ciclo lento ~4s)
+    const base = 0.88 + 0.12 * Math.sin(agora * 0.0013);
+    const upd = [];
+    nodes.get().forEach(n => {
+      upd.push({ id: n.id, opacity: base, borderWidth: 0, shadow: true });
+    });
+    nodes.update(upd);
+    // pulso cognitivo: a cada ~4s, intensifica aleatoriamente uma aresta
+    // (simula uma sinapse disparando), mantendo o resto sutil.
+    let arestasUpd = [];
+    edges.get().forEach(e => {
+      arestasUpd.push({ id: e.id, color: e.color || '#999', width: arestaOriginal[e.id] ? arestaOriginal[e.id].width : 1, opacity: 0.25 });
+    });
+    if (agora - _ultimoSpike > 4000) {
+      _ultimoSpike = agora;
+      const todas = edges.get();
+      if (todas.length) {
+        const escolhida = todas[Math.floor(Math.random() * todas.length)];
+        arestasUpd = arestasUpd.map(a =>
+          a.id === escolhida.id
+            ? { ...a, color: '#ffffff', width: 4.5, opacity: 0.9 }
+            : a);
+        // destaque leve do no destino
+        const _dstOrig = original[escolhida.to] || {color:'#4e79a7', size:15};
+        nodes.update([{ id: escolhida.to, color: '#89b4fa', size: 22, shadow: true, shadowSize: 20 }]);
+        setTimeout(() => nodes.update([{ id: escolhida.to, color: _dstOrig.color, size: _dstOrig.size }]), 700);
+      }
+    }
+    edges.update(arestasUpd);
+  });
+  // pausa o balanco organico ao pairar sobre um no
+  network.on('hoverNode', () => { _tickPausado = true; });
+  network.on('blurNode', () => { _tickPausado = false; });
 
   const original = {};
   nodes.get().forEach(n => {
