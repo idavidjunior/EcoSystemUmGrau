@@ -96,13 +96,19 @@ def add_memory(task, summary, kind='episodio', project='', tags=None,
     """Add a consolidated memory with decay metadata."""
     memories = _load_memories()
     now = datetime.now()
+    tags = tags or []
+    if extrair_tags:
+        semanticas = extrair_tags(f'{task} {summary}', max_tags=6)
+        for t in semanticas:
+            if t and t not in tags:
+                tags.append(t)
     memory = {
         'id': _next_id(memories),
         'kind': kind,
         'task': task,
         'summary': summary,
         'project': project,
-        'tags': tags or [],
+        'tags': tags,
         'metadata': metadata or {},
         'strength': strength,
         'access_count': 0,
