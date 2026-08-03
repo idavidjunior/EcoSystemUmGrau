@@ -36,7 +36,7 @@ most other some such no nor not only own same than too very can will just
 don should now is are was were be been being have has had having do does
 did doing would could should might must shall may can't cannot won't you
 your yours he him his she her hers it its they them their theirs we us our
-ours you your yours
+ours you your yours via sob ate ate sobre
 """.split())
 
 # Prefixos/terminacoes que desqualificam uma palavra como tag
@@ -132,13 +132,10 @@ def extrair_tags(texto, max_tags=_MAX_TAGS, min_len=_MIN_LEN):
     # normaliza frases e aplica score (soma dos scores das palavras)
     def score_frase(frase):
         partes = frase.split()
-        base = sum(scores.get(p, 0) for p in partes)
-        # prefere frases curtas: palavras extras diluem o score por palavra
-        base = base / (len(partes) ** 0.6)
-        # penaliza frases muito longas
-        if len(frase) > 40:
-            base *= 0.5
-        return base
+        # score medio das palavras * densidade (prefere frases coerentes curtas)
+        medio = sum(scores.get(p, 0) for p in partes) / len(partes)
+        # comprimento da frase tem peso menor que a forca das palavras
+        return medio * (1.0 / (len(partes) ** 0.35))
 
     ranked = sorted(frases, key=lambda f: -score_frase(f))
 
@@ -160,11 +157,8 @@ def extrair_tags(texto, max_tags=_MAX_TAGS, min_len=_MIN_LEN):
         palavras_novas = [p for p in partes if p not in escolhidas]
         if not palavras_novas:
             continue
-        # evita fragmentos tipo "usar tmp" se "tmp" ja entrou como palavra
-        if len(partes) > 1 and any(
-            p in escolhidas and all(q in escolhidas for q in partes)
-            for p in partes
-        ):
+        # evita repeticoes: tag de 2+ palavras que repete conceito de tag 1 palavra
+        if len(partes) > 1 and all(q in escolhidas for q in partes):
             continue
         vistos.add(chave)
         escolhidas.update(partes)
