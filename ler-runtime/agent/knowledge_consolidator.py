@@ -860,10 +860,33 @@ class KnowledgeConsolidator:
 
         title = lines[0].lstrip("# ").strip()
         meta = {}
+        # suporta frontmatter YAML (---\ntipo: decisao\n...) e formato markdown
+        # (**tipo:** valor) — aprendizados modernos usam YAML.
+        in_yaml = False
         for line in lines:
+            if line.strip() == "---":
+                in_yaml = not in_yaml
+                continue
             m = _re.match(r"^\*\*(\w+):\*\*\s*(.+)", line)
             if m:
                 meta[m.group(1).lower()] = m.group(2).strip()
+                continue
+            if in_yaml:
+                ym = _re.match(r"^([\w\s]+):\s*(.*)", line)
+                if ym:
+                    key = ym.group(1).strip().lower().replace(" ", "-")
+                    meta[key] = ym.group(2).strip()
+        # titulo real: primeiro H1 (# ...) fora do frontmatter YAML
+        for line in lines:
+            if line.startswith("# ") and not line.startswith("##"):
+                title = line.lstrip("# ").strip()
+                break
+
+        # mapeia campos YAML para os esperados
+        if "categoria" not in meta and "tipo" in meta:
+            meta["categoria"] = meta["tipo"]
+        if "contexto" not in meta:
+            meta["contexto"] = meta.get("decisao", meta.get("impacto", ""))
 
         cat = meta.get("categoria", "geral")
         context = meta.get("contexto", "")

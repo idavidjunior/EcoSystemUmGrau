@@ -1,20 +1,20 @@
 {
-  "connections": [
+  "pontos": [
     63
   ],
-  "smart": [
+  "integrado": [
     63
   ],
-  "sinapses": [
+  "puro": [
     63
   ],
-  "mostra": [
+  "stdlib": [
     63
   ],
-  "obsidian": [
+  "leve": [
     63
   ],
-  "grafo": [
+  "rake": [
     63
   ]
 }

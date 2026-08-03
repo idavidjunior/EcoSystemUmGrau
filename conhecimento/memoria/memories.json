@@ -648,5 +648,25 @@
     "access_count": 0,
     "created_at": "2026-08-02T22:47:11.283583",
     "last_accessed": "2026-08-02T22:47:11.283583"
+  },
+  {
+    "id": 63,
+    "kind": "decisao",
+    "task": "Extracao semantica de tags integrada na origem",
+    "summary": "Extrair_tags_consolidado (RAKE leve, stdlib puro) integrado em 3 pontos: knowledge_consolidator.register_learning_file (learning['tags'] + mission_learnings), generate-obsidian-notes.py (tags enriquecidas no frontmatter do vault via _enriquecer_tags) e memory_engine.add_memory (memories.json). Fluxo completo: aprendizados/*.md -> JSON com tags semanticas -> notas vault -> grafo/widget + Smart Connections.",
+    "project": "",
+    "tags": [
+      "pontos",
+      "integrado",
+      "puro",
+      "stdlib",
+      "leve",
+      "rake"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-02T23:06:11.694953",
+    "last_accessed": "2026-08-02T23:06:11.694953"
   }
 ]
