@@ -748,5 +748,45 @@
     "access_count": 0,
     "created_at": "2026-08-03T10:33:30.311238",
     "last_accessed": "2026-08-03T10:33:30.311238"
+  },
+  {
+    "id": 68,
+    "kind": "padrao",
+    "task": "Widget Cerebro Vivo - canvas criado mas nós invisiveis no WebView2",
+    "summary": "Canvas vis-network existe no widget (1200x555, debug_log confirma) e nao ha erros JS, mas os nos nao aparecem. Causas provaveis: (1) animacao/physics barnesHut com 291 nos trava o draw loop no WebView2; (2) rAF pausado quando janela focus=False/frameless; (3) inline injection do vis-network 687KB no _build_view pode truncar. Arquivo grafo_widget.html ja tem os 291 nos+1199 arestas embutidas. Fonte viva: conhecimento/notas/*.md via generate-graph-html.py. Proximo passo: verificar se canvas pinta com physics:false ou focus=True.",
+    "project": "",
+    "tags": [
+      "aparecem",
+      "nao",
+      "erros",
+      "confirma",
+      "log",
+      "debug"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-03T11:28:10.945363",
+    "last_accessed": "2026-08-03T11:28:10.945363"
+  },
+  {
+    "id": 69,
+    "kind": "decisao",
+    "task": "Widget Cerebro Vivo - correcao de IDs duplicados unificava 291 notas em 282 nos vis unicos",
+    "summary": "O widget ja funciona: generate-graph-html.py agora faz add_no reusar notas com id duplicado (slug repetido em pastas diferentes) evitando o Cannot add item: id already exists do vis.DataSet que abortava o script antes de criar o canvas. Resultado: 282 nos unicos, canvas existe (1200x555) e renderiza. Fonte viva (conhecimento/notas/*.md) alimenta tudo. Regra: erros no script principal do bloco HTML abortam silenciosamente — capturar via listener no head ou evaluate_js, nunca handler no body.",
+    "project": "",
+    "tags": [
+      "funciona",
+      "body",
+      "handler",
+      "evaluate",
+      "item",
+      "head"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-03T11:32:03.563195",
+    "last_accessed": "2026-08-03T11:32:03.563195"
   }
 ]
