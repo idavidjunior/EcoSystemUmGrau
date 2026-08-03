@@ -132,17 +132,21 @@ def extrair_tags(texto, max_tags=_MAX_TAGS, min_len=_MIN_LEN):
     # normaliza frases e aplica score (soma dos scores das palavras)
     def score_frase(frase):
         partes = frase.split()
-        base = sum(scores.get(p, 0) for p in partes) * len(partes)
-        # penaliza frases com stopword interna duplicada ou muito longa
+        base = sum(scores.get(p, 0) for p in partes)
+        # prefere frases curtas: palavras extras diluem o score por palavra
+        base = base / (len(partes) ** 0.6)
+        # penaliza frases muito longas
         if len(frase) > 40:
             base *= 0.5
         return base
 
     ranked = sorted(frases, key=lambda f: -score_frase(f))
 
-    # deduplica e filtra por relevancia/qualidade
+    # deduplica e filtra por relevancia/qualidade; evita sobreposicao extrema
+    # (uma tag nao deve ser substring de outra ja escolhida)
     resultado = []
     vistos = set()
+    escolhidas = set()
     for frase in ranked:
         partes = frase.split()
         if len(partes) > _MAX_PHRASE_WORDS:
@@ -152,7 +156,13 @@ def extrair_tags(texto, max_tags=_MAX_TAGS, min_len=_MIN_LEN):
         chave = ' '.join(sorted(partes))
         if chave in vistos:
             continue
+        # evita substring sobreposta: se frase ou alguma palavra ja coberta,
+        # so aceita se trouxer palavra nova relevante
+        palavras_novas = [p for p in partes if p not in escolhidas]
+        if not palavras_novas:
+            continue
         vistos.add(chave)
+        escolhidas.update(partes)
         resultado.append(frase)
         if len(resultado) >= max_tags:
             break
