@@ -162,6 +162,12 @@ def extrair_nos():
     nos_por_id = {}
 
     def add_no(nid, label, categoria, tags, title, source='', cluster=''):
+        # Notas duplicadas podem existir em pastas de categoria diferentes
+        # (ex: cognitivo/X.md e missoes/X.md). Reuse a mesma nota para evitar
+        # id duplicado no vis.DataSet, que lanca 'Cannot add item: id already
+        # exists' e aborta a criacao da rede -> grafo em branco.
+        if nid in nos_por_id:
+            return nos_por_id[nid]
         cl = cluster or (_SOURCE_CLUSTER.get(source, 'geral') if source else 'geral')
         # Se source nao esta no CLUSTERS, tenta cluster_of(source)
         if not cl or cl == 'geral':

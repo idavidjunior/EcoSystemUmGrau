@@ -390,10 +390,13 @@ def _build_view() -> Path | None:
     # Também injeta um marcador global que o bloco principal pode chamar.
     early_error = """
 <script>
+  window.__widgerrs = [];
   window.addEventListener('error', function(ev){
+    var txt = (ev.message||'') + ' @ ' + (ev.lineno||'') + ':' + (ev.colno||'');
+    window.__widgerrs.push(txt);
     try {
       if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
-        window.pywebview.api.debug_log('ERRO-TARDE: ' + (ev.message||'') + ' @ ' + (ev.lineno||''));
+        window.pywebview.api.debug_log('ERRO-TARDE: ' + txt);
       }
     } catch(e){}
   }, true);
@@ -409,17 +412,16 @@ def _build_view() -> Path | None:
     else:
         src = '<style>' + WIDGET_CSS + '</style>' + src
 
-    # Removido temporariamente para diagnóstico: sem WIDGET_JS, sem RESIZE_JS, sem API_INJECT
-    # if '</head>' in src:
-    #     src = src.replace('</head>', WIDGET_JS + '</head>', 1)
-    # else:
-    #     src += WIDGET_JS
+    if '</head>' in src:
+        src = src.replace('</head>', WIDGET_JS + '</head>', 1)
+    else:
+        src += WIDGET_JS
 
-    # js = API_INJECT.replace('%POLL_MS%', str(POLL_MS))
-    # if '</body>' in src:
-    #     src = src.replace('</body>', RESIZE_JS + js + '</body>', 1)
-    # else:
-    #     src += RESIZE_JS + js
+    js = API_INJECT.replace('%POLL_MS%', str(POLL_MS))
+    if '</body>' in src:
+        src = src.replace('</body>', RESIZE_JS + js + '</body>', 1)
+    else:
+        src += RESIZE_JS + js
 
     VIEW_COPY.write_text(src, encoding='utf-8')
     return VIEW_COPY
@@ -450,7 +452,7 @@ def main() -> int:
         width=w, height=h,
         x=x, y=y,
         resizable=True,
-        frameless=False,
+        frameless=True,
         easy_drag=False,
         shadow=False,
         focus=False,

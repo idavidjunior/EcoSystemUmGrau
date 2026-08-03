@@ -728,5 +728,25 @@
     "access_count": 0,
     "created_at": "2026-08-03T06:45:20.337984",
     "last_accessed": "2026-08-03T06:45:20.337984"
+  },
+  {
+    "id": 67,
+    "kind": "erro",
+    "task": "Bug grafo em branco - ids duplicados no vis.DataSet",
+    "summary": "O grafo do widget nao renderizava porque 9 notas existem em pastas duplicadas (ex: cognitivo/X.md e missoes/X.md), gerando id de no duplicado. vis.DataSet lanca 'Cannot add item: id already exists' e aborta todo o script antes de criar o network -> canvas vazio. Correcao em generate-graph-html.py: add_no reutiliza a nota existente quando o id ja existe. Grafo passou de 291 nos (9 dups) para 282 unicos. Diagnostico feito via pywebview evaluate_js (dbg_probe2.py) que capturou o erro em window.__widgerrs.",
+    "project": "",
+    "tags": [
+      "vazio",
+      "duplicadas",
+      "pastas",
+      "canvas",
+      "network",
+      "existem"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-03T10:33:30.311238",
+    "last_accessed": "2026-08-03T10:33:30.311238"
   }
 ]
