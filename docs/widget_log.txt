@@ -84,3 +84,11 @@
 1785777666 | DIAG: canvas existe: true, size: 1216x632
 1785777666 | DIAG: canvas style: position: relative; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 100%; height: 100%;
 1785777666 | DIAG: netEl.network nao exposto
+1785778598 | DIAG: vis carregado? true
+1785778598 | DIAG: container net existe: true
+1785778598 | DIAG: net size: 1216x632
+1785778598 | DIAG: net display: block
+1785778598 | DIAG: net visibility: visible
+1785778601 | DIAG: canvas existe: true, size: 1216x632
+1785778601 | DIAG: canvas style: position: relative; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 100%; height: 100%;
+1785778601 | DIAG: netEl.network nao exposto
