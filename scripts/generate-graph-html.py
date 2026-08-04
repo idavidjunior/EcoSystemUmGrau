@@ -449,96 +449,105 @@ def gerar_html(nos, arestas, output_path):
   }}, 3000);
 
   // =========================================================================
-  // ZOOM-MICROSCOPIO + EXPANDIR (clustering progressivo por zoom)
-  // Ao dar zoom-out o grafo "recua" e agrupa zonas densas em clusters (como
-  // um microscopio perdendo foco amplo); ao dar zoom-in ele "expande" e abre
-  // os clusters revelando os nos internos (focando a estrutura). Isso da ao
-  // zoom um papel narrativo: recuar para ver o todo, avancar para ver o detalhe.
+  // ZOOM-MICROSCOPIO + EXPANDIR
+  // O zoom ganha papel narrativo: recuar para ver o todo ("microscopio de
+  // visao ampla") e avancar para ver o detalhe ("microscopio focalizado").
   // =========================================================================
-  var _lastClusterScale = 1e9;
-  var _clusterFactor = 0.6;
+  var _lastClusterScale = 1;
+  var _clusterFactor = 0.55;
+  var _clusterAtivo = false;
 
-  function _expandirTudo() {{
-    var lst = network.getClusteredEdges() || [];
-    var idx = 0;
-    // abre recursivamente (um por vez para permitir re-cluster aninhado)
-    function _abrir() {{
-      if (idx >= lst.length) {{ return; }}
-      var alvos = network.getNodesInCluster(lst[idx]);
-      var pai = null;
-      // encontra o cluster mais externo que contem este
-      if (alvos && alvos.length) {{
-        var candidates = network.getNodesInCluster(lst[idx]) || [];
-        var paiId = candidates[0];
-        pai = lst[idx];
-      }}
-      try {{
-        network.openCluster(pai);
-      }} catch(e) {{ }}
-      idx++;
-      setTimeout(_abrir, 40);
-    }}
-    _abrir();
+  // --- MICROSCOPIO ---
+  // Mantem as etiquetas legiveis ao ampliar: o canvas do vis-network sobe a
+  // escala do node, mas a fonte cresce junto (torna ilegivel). Compensamos
+  // com font.size = base / scale (fonte volta ao tamanho "real" na tela).
+  // Quando as etiquetas estiverem ocultas pelo usuario, mantemos 0.
+  function _ajustarFontes() {{
+    var oculto = (typeof localStorage !== 'undefined' &&
+                  localStorage.getItem('labelsOcultos') === 'true');
+    if (oculto) return; // usuario escondeu: nao forca visibilidade via zoom
+    var scale = network.getScale ? network.getScale() : 1;
+    if (scale < 0.4) scale = 0.4; // nunca fique muito pequena
+    var tam = Math.round(13 / scale);
+    if (tam > 22) tam = 22;
+    nodes.update(nodes.get().map(function(n) {{
+      if (n.isHidden) return null;
+      return {{ id: n.id, font: Object.assign({{}}, n.font, {{ size: tam }}) }};
+    }}).filter(Boolean));
   }}
 
-  function _clusterarPorZoom(scale) {{
-    // so cluster em redes grandes de verdade (evita custo em grafos pequenos)
-    if (nodes.get().length <= 60) return;
-    var hierarquia = [
-      {{ limiar: 0.05, alvo: 55 }},
-      {{ limiar: 0.12, alvo: 45 }},
-      {{ limiar: 0.25, alvo: 32 }},
-      {{ limiar: 0.45, alvo: 18 }}
-    ];
-    var alvo = null;
-    for (var i = 0; i < hierarquia.length; i++) {{
-      if (scale < hierarquia[i].limiar) {{ alvo = hierarquia[i].alvo; break; }}
-    }}
-    if (alvo === null) return; // ja muito para dentro: nao cluster mais
-    // cluster por proximidade (join do numero necessario de nos por cluster)
-    var nos = nodes.get();
-    var conns = edges.get().filter(e => !e.id || edges.get().length);
-    // agrupa por componentes/grau — simplificado: cluster nos folha e hubs menores
+  // --- EXPANDIR (clustering por proximidade de folhas) ---
+  // Em zoom-out, agrupa nos-folha (grau baixo) cercando-os. Em zoom-in,
+  // abre os clusters revelando os nos internos (efeito "expandir").
+  function _fazerClusteres() {{
+    if (nodes.get().length <= 80) return; // so para grafos com volume
     var grau = {{}};
-    edges.get().forEach(e => {{ if(typeof e.id==='number'||typeof e.id==='string'){{ grau[e.from]=(grau[e.from]||0)+1; grau[e.to]=(grau[e.to]||0)+1; }} }});
-    var candidatos = nos.filter(n => (grau[n.id]||0) <= 2 && (grau[n.id]||0) > 0);
-    if (candidatos.length > 120) candidatos = candidatos.slice(0, 120);
-    var alvos = candidatos.slice(0, Math.max(er ordenado 0, Math.min(candidatos.length, 120))).map(n => n.id);
-    // cluster de nos folha em grupos de ~10
-    for (var g = 0; g < alvos.length; g += 10) {{
-      var grupo = alvos.slice(g, g + 10);
+    edges.get().forEach(function(e) {{
+      grau[e.from] = (grau[e.from] || 0) + 1;
+      grau[e.to] = (grau[e.to] || 0) + 1;
+    }});
+    // candidatos: nos-folha (grau 1)
+    var folhas = nodes.get().filter(function(n) {{
+      return !n.isHidden && (grau[n.id] || 0) <= 1;
+    }));
+    // agrupa folhas adjacentes a um mesmo no em clusters de ~8
+    var agrupados = {{}};
+    var usados = new Set();
+    for (var i = 0; i < folhas.length; i++) {{
+      var f = folhas[i];
+      if (usados.has(f.id)) continue;
+      // pega uma folha, agrupa ela + ate 7 adjacentes
+      var grupo = [f.id]; usados.add(f.id);
+      var adjacentes = edges.get()
+        .filter(function(e) {{ return e.from === f.id || e.to === f.id; }})
+        .slice(0, 7);
+      adjacentes.forEach(function(e) {{
+        var o = e.from === f.id ? e.to : e.from;
+        if (!usados.has(o) && grupo.length < 8) {{ grupo.push(o); usados.add(o); }}
+      }});
       try {{
-        network.cluster({{ joinCondition: function(n) {{ return grupo.indexOf(n.id) !== -1; }} }});
+        network.cluster({{
+          joinCondition: function(n) {{ return grupo.indexOf(n.id) !== -1; }},
+          edgesBetween: true,
+          clusterNode: {{ shape: 'box', label: grupo.length.toString(),
+            font: {{ size: 10, color: '#89b4fa' }}, color: {{ background: 'rgba(137,180,250,0.18)' } },
+            borderWidth: 1, size: Math.max(8, Math.min(24, grupo.length))
+          }}
+        }});
       }} catch(e) {{ }}
     }}
+  }}
+
+  function _expandirTudo() {{
+    var lst = network.getClusters ? network.getClusters() : [];
+    try {{ lst = Object.keys(network.body.nodes).filter(function(id) {{
+      return network.body.nodes[id].isCluster; }}); }} catch(e) {{ lst = []; }}
+    if (!lst.length) return;
+    lst.forEach(function(id) {{
+      try {{ network.openCluster(id); }} catch(e) {{ }}
+    }});
   }}
 
   network.on('zoom', function(params) {{
-    var scale = params.scale;
-    // --- MICROSCOPIO: mantem as etiquetas legiveis ao ampliar (creditado a
-    // vis-network: font.size = base/scale compensa a ampliacao do canvas) ---
-    var oculto = (typeof localStorage !== 'undefined' && localStorage.getItem('labelsOcultos') === 'true');
-    var tam = oculto ? 0 : Math.round(11 / scale * 1.4);
-    nodes.update(nodes.get().filter(n => !n._cluster).map(n => ({{
-      id: n.id, font: Object.assign({{}}, n.font, {{ size: tam }})
-    }})));
-
-    // --- EXPANDIR: cluster/abre conforme a direcao do zoom ---
+    _ajustarFontes();
+    var scale = params.scale != null ? params.scale : network.getScale();
     if (params.direction === '-') {{
-      // zoom-out: cluster progressivo
-      var antes = _lastClusterScale;
-      if (scale < antes * _clusterFactor) {{
-        _lastClusterScale = scale;
-        _clusterarPorZoom(scale);
+      // zoom-out: clustera para "ver o todo"
+      if (!_clusterAtivo && scale < _lastClusterScale * _clusterFactor) {{
+        _lastClusterScale = scale; _clusterAtivo = true; _fazerClusteres();
       }}
     }} else if (params.direction === '+') {{
-      // zoom-in: expande clusters revelando os nos internos
-      if (scale > _lastClusterScale * _clusterFactor) {{
-        _lastClusterScale = scale;
-        _expandirTudo();
+      // zoom-in: expande para "ver o detalhe"
+      if (_clusterAtivo && scale > _lastClusterScale * (1/_clusterFactor)) {{
+        _lastClusterScale = scale; _clusterAtivo = false; _expandirTudo();
       }}
     }}
+    if (!_clusterAtivo) _lastClusterScale = scale;
   }});
+
+  // ajusta fontes na primeira interacao e a cada movimento de zoom
+  setTimeout(_ajustarFontes, 1500);
+  network.on('dragEnd', _ajustarFontes);
 
   // --- Movimento organico: "cerebro vivo" cognitivo ---
   // Heartbeat: respiracao suave dos nos + pulsos de sinapse aleatorios.
