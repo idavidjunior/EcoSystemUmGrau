@@ -556,18 +556,29 @@ def gerar_html(nos, arestas, output_path):
   network.on('tick', () => {{
     if (_tickPausado) return;
     const agora = Date.now();
-    // respiracao de opacidade dos nos (ciclo lento ~5s, amarrado a respiracao)
-    const base = 0.9 + 0.10 * Math.sin(agora * 0.001 * (1 + _respirando));
+    // respiracao de opacidade + tamanho dos nos (ciclo lento ~4s).
+    // Cada no pulsa individualmente (fase unica) para parecer vida.
+    const base = 0.86 + 0.14 * Math.sin(agora * 0.0015);
     const upd = [];
     nodes.get().forEach(n => {{
-      upd.push({{ id: n.id, opacity: base, borderWidth: 0, shadow: true }});
+      const fase = typeof n.id === 'string'
+        ? Array.from(n.id).reduce((a,b)=>(((a<<5)-a)+b.charCodeAt(0))|0, 0)
+        : (n.id * 2654435761);
+      const pulso = Math.sin(agora * 0.0012 + (fase % 97)) * 0.06;
+      upd.push({{
+        id: n.id,
+        opacity: base + pulso,
+        size: Math.max(6, (original[n.id] ? original[n.id].size : 12) * (1 + pulso * 0.4)),
+        borderWidth: 0,
+        shadow: true, shadowSize: Math.round(16 + 4 * pulso)
+      }});
     }});
     nodes.update(upd);
     // pulso cognitivo: a cada ~3.5-5s, acende ALEATORIAMENTE 1-3 arestas
     // (sinapses disparando em cascata), mantendo o resto sutil.
     let arestasUpd = [];
     edges.get().forEach(e => {{
-      arestasUpd.push({{ id: e.id, color: e.color || '#999', width: arestaOriginal[e.id] ? arestaOriginal[e.id].width : 1, opacity: 0.25 }});
+      arestasUpd.push({{ id: e.id, color: arestaOriginal[e.id] ? arestaOriginal[e.id].color : '#999', width: arestaOriginal[e.id] ? arestaOriginal[e.id].width : 1, opacity: 0.25 }});
     }});
     if (agora - _ultimoSpike > _proxSpike()) {{
       _ultimoSpike = agora;
