@@ -848,5 +848,25 @@
     "access_count": 0,
     "created_at": "2026-08-04T05:22:46.817205",
     "last_accessed": "2026-08-04T05:22:46.817205"
+  },
+  {
+    "id": 73,
+    "kind": "erro",
+    "task": "Wireless Debugging Android: porta de PAR EAMENTO difere da porta de CONEXAO; novo codigo gera nova porta de pareamento",
+    "summary": "Ao parear Wireless Debugging (adb pair), a porta exibida na tela junto do codigo e a porta de PAREAMENTO (ex: 38591), NAO a de conexao (40755). Parear na porta de conexao da erro 'protocol fault'. Descobrir a porta de conexao via 'adb mdns services': _adb-tls-pairing._tcp = porta de pareamento, _adb-tls-connect._tcp = porta de conexao. Gerar novo codigo de pareamento troca a porta de pareamento, mas a de conexao tende a permanecer. Script adb-redmi.ps1 atualizado para detectar a porta de conexao via mdns automaticamente.",
+    "project": "",
+    "tags": [
+      "junto",
+      "tela",
+      "exibida",
+      "pair",
+      "codigo",
+      "nova"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-04T05:29:03.956483",
+    "last_accessed": "2026-08-04T05:29:03.956483"
   }
 ]

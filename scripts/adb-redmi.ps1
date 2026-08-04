@@ -68,18 +68,34 @@ if (-not (Test-Path $adb)) {
     exit 1
 }
 
-# 3) Tenta cada candidato ate conseguir conectar
+# 3) Descobre a porta de conexao do Wireless Debugging via mDNS
+$port = 5555  # porta padrao do adb tcpip
+try {
+    $mdns = & $adb mdns services 2>&1 | Out-String
+    $m = $mdns | Select-String "_adb-tls-connect._tcp.*:(\d+)" | Select-Object -First 1
+    if ($m -and $m.Matches) {
+        $port = [int]$m.Matches[0].Groups[1].Value
+        if ($debug) { Write-Host "[dbg] porta wireless debugging (mdns): $port" -ForegroundColor DarkYellow }
+    }
+} catch {
+    if ($debug) { Write-Host "[dbg] mdns falhou: $_" -ForegroundColor DarkYellow }
+}
+
+# 4) Tenta cada candidato ate conseguir conectar
 $connected = $false
 foreach ($ip in $candidates) {
-    if ($ip -match ":") { $conn = "[${ip}]:5555" } else { $conn = "${ip}:5555" }
-    Write-Host "[INFO] Tentando: adb connect $conn" -ForegroundColor Cyan
-    $out = & $adb connect $conn 2>&1
-    $out | ForEach-Object { Write-Host "  $_" }
-    if ($out -match "connected to") {
-        $connected = $true
-        Write-Host "[OK] Conectado via $conn" -ForegroundColor Green
-        break
+    foreach ($p in @($port, 5555)) {
+        if ($ip -match ":") { $conn = "[${ip}]:${p}" } else { $conn = "${ip}:${p}" }
+        Write-Host "[INFO] Tentando: adb connect $conn" -ForegroundColor Cyan
+        $out = & $adb connect $conn 2>&1
+        $out | ForEach-Object { Write-Host "  $_" }
+        if ($out -match "connected to") {
+            $connected = $true
+            Write-Host "[OK] Conectado via $conn" -ForegroundColor Green
+            break
+        }
     }
+    if ($connected) { break }
 }
 
 Write-Host ""
