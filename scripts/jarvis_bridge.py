@@ -270,19 +270,15 @@ def gerar_estado_atual():
             linhas.append(f"Total vault: {total_md} notas")
     except: pass
     try:
-        tecnicas = list((ECOSSISTEMA_DIR / "Habilidades" / "tecnicas").iterdir())
-        if tecnicas:
-            linhas.append(f"\n### Habilidades tecnicas: {len(tecnicas)}")
-    except: pass
-    try:
-        pontes = list((ECOSSISTEMA_DIR / "Habilidades" / "pontes").iterdir())
-        if pontes:
-            linhas.append(f"### Habilidades pontes: {len(pontes)}")
-    except: pass
-    try:
-        comportamentais = list((ECOSSISTEMA_DIR / "Habilidades" / "comportamentais").iterdir())
-        if comportamentais:
-            linhas.append(f"### Habilidades comportamentais: {len(comportamentais)}")
+        mcp_root = ECOSSISTEMA_DIR / "mcp"
+        n_skills = 0
+        if mcp_root.exists():
+            for dom in mcp_root.iterdir():
+                hab = dom / "habilidades"
+                if hab.is_dir():
+                    n_skills += len([f for f in hab.iterdir() if f.is_dir()])
+        if n_skills:
+            linhas.append(f"\n### Habilidades (mcp/): {n_skills} organizadas por dominio")
     except: pass
     try:
         ler_agent = LER_DIR / "agent"

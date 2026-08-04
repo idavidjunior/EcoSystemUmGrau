@@ -298,47 +298,48 @@ Maestro (passo 11 obrigatório)
 ```
 .obsidian/           # Vault Obsidian (vault = raiz do ecossistema)
 ler-runtime/         # LER runtime — cérebro único — versionado aqui
-Habilidades/         # ★ Catálogo único de habilidades (decisão 2026-07-31-habilidades-catalogo-unico-jarvis)
-├── tecnicas/        # 37 habilidades técnicas (skills antigas)
-│   ├── graphify/
-│   ├── ler/
-│   ├── clima-api/   # + clima_api.py e geolocalizacao.py (Open-Meteo, sem chave)
-│   ├── api-design/
-│   ├── authz-authn-matrix/
-│   ├── autonomous-loops/
-│   ├── backend-patterns/
-│   ├── cache-strategy-selector/
-│   ├── concurrent-computation-patterns/
-│   ├── cost-aware-llm-pipeline/
-│   ├── data-privacy-by-design/
-│   ├── database-migrations/
-│   ├── deployment-patterns/
-│   ├── developer-experience-dx/
-│   ├── docker-patterns/
-│   ├── e2e-testing/
-│   ├── edge-compute-patterns/
-│   ├── error-message-design/
-│   ├── frontend-patterns/
-│   ├── golang-patterns/
-│   ├── local-first-architecture/
-│   ├── migration-playbooks/
-│   ├── mobile-specific-patterns/
-│   ├── mp3player-metadata-rescue/
-│   ├── multi-modal-ai/
-│   ├── observability-stack/
-│   ├── python-patterns/
-│   ├── resilience-engineering/
-│   ├── search-first/
-│   ├── security-review/
-│   ├── semantic-release-automation/
-│   ├── state-machine-patterns/
-│   └── tdd-workflow/
-├── pontes/
-│   ├── busca-web/            # antigo skills/agentic-search
-│   └── busca-conhecimento/   # antigo scripts/search_knowledge.py
-├── comportamentais/ponytail/ # especificação (origem a localizar)
-├── multimidia/
-└── manifesto_geral.json      # índice oficial (38 habilidades)
+mcp/                  # ★ Habilidades organizadas por domínio MCP (decisão 2026-08-04-reorg-mcp-habilidades)
+├── desenvolvimento/  # servidor MCP + 30 habilidades técnicas
+│   ├── habilidades/
+│   │   ├── api-design/
+│   │   ├── authz-authn-matrix/
+│   │   ├── autonomous-loops/
+│   │   ├── backend-patterns/
+│   │   ├── cache-strategy-selector/
+│   │   ├── concurrent-computation-patterns/
+│   │   ├── cost-aware-llm-pipeline/
+│   │   ├── data-privacy-by-design/
+│   │   ├── database-migrations/
+│   │   ├── deployment-patterns/
+│   │   ├── developer-experience-dx/
+│   │   ├── docker-patterns/
+│   │   ├── e2e-testing/
+│   │   ├── edge-compute-patterns/
+│   │   ├── error-message-design/
+│   │   ├── frontend-patterns/
+│   │   ├── golang-patterns/
+│   │   ├── graphify/
+│   │   ├── ler/
+│   │   ├── local-first-architecture/
+│   │   ├── migration-playbooks/
+│   │   ├── multi-modal-ai/
+│   │   ├── observability-stack/
+│   │   ├── python-patterns/
+│   │   ├── resilience-engineering/
+│   │   ├── search-first/
+│   │   ├── security-review/
+│   │   ├── semantic-release-automation/
+│   │   ├── state-machine-patterns/
+│   │   └── tdd-workflow/
+├── android/          # servidor MCP + 4 habilidades Android
+│   └── habilidades/  # android-diagnostics, android-pure-sdk, mobile-specific-patterns, mp3player-metadata-rescue
+├── internet/         # servidor MCP + 4 habilidades
+│   └── habilidades/  # busca-web, clima-api (+clima_api.py, geolocalizacao.py), endereco-geo, navegacao-perita
+├── memoria/          # servidor MCP + busca-conhecimento
+│   └── habilidades/
+│       └── busca-conhecimento/   # search_knowledge.py
+└── manifesto_mcp.json            # índice oficial (40 habilidades, v2.0)
+Habilidades/         # Legado: comportamentais/ponytail + multimidia/
 ai-agents/           # Claude Code extra agents
 ├── claude-code-extra-agents/
 scripts/             # Apenas infraestrutura (bridge, vigilante, memory_engine, mcp-server, preflight)
@@ -384,9 +385,9 @@ estado_atual.md      # Este arquivo
     }
   },
   "instructions": [
-    "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/Habilidades/**/SKILL.md",
-    "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/Habilidades/**/skill.md",
-    "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/Habilidades/tecnicas/clima-api/skill.md",
+    "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp/**/habilidades/**/SKILL.md",
+    "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp/**/habilidades/**/skill.md",
+    "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp/internet/habilidades/clima-api/skill.md",
     "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/ler-runtime/CONHECIMENTO.md"
   ]
 }

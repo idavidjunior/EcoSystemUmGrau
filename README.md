@@ -245,7 +245,13 @@ EcoSystemUmGrau/
 │   └── memoria/         # Memória de sessão com decay de Ebbinghaus
 ├── docs/                # Documentação
 ├── ferramentas/         # Ferramentas (Flutter, etc.)
-├── Habilidades/         # ★ Catálogo único de habilidades (tecnicas/, pontes/, comportamentais/, multimidia/)
+├── mcp/                  # ★ Habilidades organizadas por domínio MCP (mcp/<dominio>/habilidades/)
+│   ├── desenvolvimento/  #   30 skills (back, front, arquitetura, testes, devops, IA)
+│   ├── android/          #   4 skills Android/Mobile
+│   ├── internet/         #   busca-web, clima-api, endereco-geo, navegacao-perita
+│   ├── memoria/          #   busca-conhecimento (search_knowledge.py)
+│   └── manifesto_mcp.json #   Catálogo único de habilidades (v2.0)
+├── Habilidades/         # Legado: comportamentais/, multimidia/
 ├── ler-runtime/         # Runtime do LER — cérebro único (agent/, runtime/, knowledge/, governance/)
 ├── mcp-servers/         # Servidores MCP
 ├── scripts/             # Infraestrutura: vigilante, ecosystem, memory_engine, jarvis_bridge...
@@ -255,9 +261,9 @@ EcoSystemUmGrau/
 └── setup.bat            # Setup plug & play
 ```
 
-### Habilidades vs Agentes (decisão `2026-07-31-habilidades-catalogo-unico-jarvis`)
+### Habilidades vs Agentes (decisão `2026-08-04-reorg-mcp-habilidades`)
 
-- **Habilidades** (`Habilidades/`) = capacidades executáveis (ações). Registradas no `manifesto_geral.json`.
+- **Habilidades** (`mcp/<dominio>/habilidades/`) = capacidades executáveis (ações). Registradas no `mcp/manifesto_mcp.json`.
 - **Agentes** (`config/agents/` + `ler-runtime/agent/`) = tomadores de decisão (personalidades). Nunca são habilidades.
 - Fluxo: Usuário → Bridge (voz) → opencode → Runtime Cérebro → Debate de Agentes → Executor → Habilidade (catálogo) → Resposta
 

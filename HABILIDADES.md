@@ -1,9 +1,23 @@
 # Mapa-Mestre de Habilidades — Jarvis / EcoSystemUmGrau
 
 > **Fonte única da verdade sobre o que o Jarvis sabe fazer.**
-> Atualizado em: 2026-08-02 · Catálogo em `Habilidades/manifesto_geral.json`
+> Atualizado em: 2026-08-04 · Catálogo em `mcp/manifesto_mcp.json`
+> Estrutura: habilidades organizadas por domínio MCP em `mcp/<dominio>/habilidades/`
 
 Toda habilidade abaixo é acionável pelo Jarvis. A ortografia dos nomes dos arquivos é preservada (skill.md, SKILL.md, readme.md).
+
+---
+
+## 0. Domínios MCP
+
+As habilidades técnicas e pontes vivem dentro dos domínios MCP (`mcp/<dominio>/habilidades/`). Cada domínio tem um servidor MCP (`server.py`) que expõe suas habilidades como ferramentas.
+
+| Domínio | Servidor | Habilidades |
+|---|---|---|
+| `desenvolvimento` | `mcp/desenvolvimento/server.py` | 30 skills (back, front, arquitetura, testes, devops, IA) |
+| `android` | `mcp/android/server.py` | 4 skills Android/Mobile |
+| `internet` | `mcp/internet/server.py` | busca-web, clima-api, endereco-geo, navegacao-perita |
+| `memoria` | `mcp/memoria/server.py` | busca-conhecimento (`search_knowledge.py`) |
 
 ---
 
@@ -26,7 +40,7 @@ Toda habilidade abaixo é acionável pelo Jarvis. A ortografia dos nomes dos arq
 
 ## 2. Habilidades Técnicas (37)
 
-**Fonte:** `Habilidades/tecnicas/*/` (SKILL.md ou skill.md)
+**Fonte:** `mcp/**/habilidades/*/` (SKILL.md ou skill.md)
 
 ### Android e Mobile
 | Habilidade | Entrypoint |
@@ -101,7 +115,7 @@ Toda habilidade abaixo é acionável pelo Jarvis. A ortografia dos nomes dos arq
 
 ## 3. Habilidades Ponte (2)
 
-**Fonte:** `Habilidades/pontes/*/`
+**Fonte:** `mcp/internet/habilidades/busca-web/` e `mcp/memoria/habilidades/busca-conhecimento/`
 
 | Habilidade | Entrypoint | Descrição |
 |---|---|---|

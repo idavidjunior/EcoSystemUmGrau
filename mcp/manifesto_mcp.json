@@ -1,0 +1,502 @@
+{
+ "versao": "2.0",
+ "habilidades": [
+  {
+   "id": "android-diagnostics",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "android",
+   "path": "mcp/android/habilidades/android-diagnostics/"
+  },
+  {
+   "id": "android-pure-sdk",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "android",
+   "path": "mcp/android/habilidades/android-pure-sdk/"
+  },
+  {
+   "id": "api-design",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/api-design/"
+  },
+  {
+   "id": "authz-authn-matrix",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/authz-authn-matrix/"
+  },
+  {
+   "id": "autonomous-loops",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/autonomous-loops/"
+  },
+  {
+   "id": "backend-patterns",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/backend-patterns/"
+  },
+  {
+   "id": "cache-strategy-selector",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/cache-strategy-selector/"
+  },
+  {
+   "id": "concurrent-computation-patterns",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/concurrent-computation-patterns/"
+  },
+  {
+   "id": "cost-aware-llm-pipeline",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/cost-aware-llm-pipeline/"
+  },
+  {
+   "id": "data-privacy-by-design",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/data-privacy-by-design/"
+  },
+  {
+   "id": "database-migrations",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/database-migrations/"
+  },
+  {
+   "id": "deployment-patterns",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/deployment-patterns/"
+  },
+  {
+   "id": "developer-experience-dx",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/developer-experience-dx/"
+  },
+  {
+   "id": "docker-patterns",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/docker-patterns/"
+  },
+  {
+   "id": "e2e-testing",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/e2e-testing/"
+  },
+  {
+   "id": "edge-compute-patterns",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/edge-compute-patterns/"
+  },
+  {
+   "id": "error-message-design",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/error-message-design/"
+  },
+  {
+   "id": "frontend-patterns",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/frontend-patterns/"
+  },
+  {
+   "id": "golang-patterns",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/golang-patterns/"
+  },
+  {
+   "id": "graphify",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/graphify/"
+  },
+  {
+   "id": "ler",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/ler/"
+  },
+  {
+   "id": "local-first-architecture",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/local-first-architecture/"
+  },
+  {
+   "id": "migration-playbooks",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/migration-playbooks/"
+  },
+  {
+   "id": "mobile-specific-patterns",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "android",
+   "path": "mcp/android/habilidades/mobile-specific-patterns/"
+  },
+  {
+   "id": "mp3player-metadata-rescue",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "android",
+   "path": "mcp/android/habilidades/mp3player-metadata-rescue/"
+  },
+  {
+   "id": "multi-modal-ai",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/multi-modal-ai/"
+  },
+  {
+   "id": "observability-stack",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/observability-stack/"
+  },
+  {
+   "id": "python-patterns",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/python-patterns/"
+  },
+  {
+   "id": "resilience-engineering",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/resilience-engineering/"
+  },
+  {
+   "id": "search-first",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/search-first/"
+  },
+  {
+   "id": "security-review",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/security-review/"
+  },
+  {
+   "id": "semantic-release-automation",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/semantic-release-automation/"
+  },
+  {
+   "id": "state-machine-patterns",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/state-machine-patterns/"
+  },
+  {
+   "id": "tdd-workflow",
+   "categoria": "tecnica",
+   "descricao": "",
+   "entrypoint": "skill.md",
+   "parametros": [],
+   "triggers": [],
+   "dependencias": [],
+   "dominio": "desenvolvimento",
+   "path": "mcp/desenvolvimento/habilidades/tdd-workflow/"
+  },
+  {
+   "id": "endereco-geo",
+   "categoria": "tecnica",
+   "descricao": "Endereco por geolocalizacao reversa (rua e numero quando disponivel) via Nominatim/OpenStreetMap, sem chave",
+   "entrypoint": "endereco.py",
+   "parametros": [
+    "--lat",
+    "--lon",
+    "--texto"
+   ],
+   "triggers": [
+    "endereço",
+    "onde eu estou",
+    "minha rua",
+    "geolocalização reversa"
+   ],
+   "dependencias": [
+    "requests",
+    "geolocalizacao"
+   ],
+   "dominio": "internet",
+   "path": "mcp/internet/habilidades/endereco-geo/"
+  },
+  {
+   "id": "clima-api",
+   "categoria": "tecnica",
+   "descricao": "Consulta clima atual (temp/sensação/umidade/descrição) e previsão diária via Open-Meteo",
+   "entrypoint": "clima_api.py",
+   "parametros": [
+    "cidade(opcional)"
+   ],
+   "triggers": [
+    "clima",
+    "previsão",
+    "temperatura",
+    "tempo em"
+   ],
+   "dependencias": [
+    "requests",
+    "geolocalizacao"
+   ],
+   "dominio": "internet",
+   "path": "mcp/internet/habilidades/clima-api/"
+  },
+  {
+   "id": "busca-web",
+   "categoria": "ponte",
+   "descricao": "Busca agentica na web",
+   "entrypoint": "skill.md",
+   "parametros": [
+    "consulta"
+   ],
+   "triggers": [
+    "buscar na internet",
+    "pesquisar",
+    "pesquisa na web"
+   ],
+   "dependencias": [],
+   "dominio": "internet",
+   "path": "mcp/internet/habilidades/busca-web/"
+  },
+  {
+   "id": "busca-conhecimento",
+   "categoria": "ponte",
+   "descricao": "Busca semantica (BM25 + grafos) no knowledge graph, notas e memoria",
+   "entrypoint": "search_knowledge.py",
+   "parametros": [
+    "consulta"
+   ],
+   "triggers": [
+    "buscar no conhecimento",
+    "pesquisar conhecimento",
+    "o que sabemos sobre"
+   ],
+   "dependencias": [
+    "stdlib only"
+   ],
+   "dominio": "memoria",
+   "path": "mcp/memoria/habilidades/busca-conhecimento/"
+  },
+  {
+   "id": "ponytail",
+   "categoria": "comportamental",
+   "descricao": "Personalidade lazy senior dev — pendente de conteudo real",
+   "entrypoint": "manifesto.json",
+   "parametros": [],
+   "triggers": [
+    "/preguica",
+    "/review",
+    "/sarcasmo"
+   ],
+   "dependencias": [],
+   "path": "Habilidades/comportamentais/ponytail/"
+  },
+  {
+   "id": "navegacao-perita",
+   "categoria": "tecnica",
+   "descricao": "Pericia em navegar, clicar, reconhecer elementos e ver a tela em internet (Playwright/Browser-Use), programas do PC (FlaUI/pywinauto/UIA) e apps Android (ADB/Appium/Maestro)",
+   "entrypoint": "skill.md",
+   "parametros": [
+    "alvo",
+    "plataforma"
+   ],
+   "triggers": [
+    "navegar",
+    "clicar",
+    "automatizar",
+    "reconhecer elemento",
+    "ver a tela",
+    "executar no navegador",
+    "executar no pc",
+    "executar no celular",
+    "screenshot"
+   ],
+   "dependencias": [
+    "playwright-mcp",
+    "adb",
+    "uia"
+   ],
+   "dominio": "internet",
+   "path": "mcp/internet/habilidades/navegacao-perita/"
+  }
+ ],
+ "estrutura": "mcp/<dominio>/habilidades/<skill>"
+}
