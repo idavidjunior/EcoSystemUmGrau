@@ -338,14 +338,15 @@ class Bridge:
                 if (typeof guardaInicial === 'function') {
                     guardaInicial();
                 }
-                // Garante que as labels estão ocultas por padrão
+                // Garante que as labels seguem a escolha persistida do usuário
+                const labelsOcultos = localStorage.getItem('labelsOcultos') === 'true';
+                const tam = labelsOcultos ? 0 : 11;
                 const atual = nodes.get();
                 const atualizacoes = atual.map(n => ({
                     id: n.id,
-                    font: { ...n.font, size: 0 }
+                    font: { ...n.font, size: tam }
                 }));
                 nodes.update(atualizacoes);
-                localStorage.setItem('labelsOcultos', 'true');
             """)
         except Exception as e:
             print(f'[widget] restore_initial_state: {e}')
@@ -372,7 +373,9 @@ class Bridge:
 WIDGET_JS_EXTRA = """
 <script>
   (function(){
-    // Adiciona controle de toggle para ocultar/mostrar labels
+    // Controle de toggle para ocultar/mostrar as palavras do cerebro.
+    // Persistencia: a escolha do usuario fica no localStorage e e restaurada
+    // a cada reload/regeneracao — nao depende do bridge Python.
     var ctrl = document.createElement('div');
     ctrl.id = 'mk-labels';
     ctrl.title = 'Alternar visibilidade das etiquetas';
@@ -390,24 +393,32 @@ WIDGET_JS_EXTRA = """
     ctrl.style.alignItems = 'center';
     ctrl.style.justifyContent = 'center';
     ctrl.style.fontSize = '16px';
+    ctrl.style.userSelect = 'none';
     ctrl.innerHTML = 'T';
+
+    function aplicarLabels() {
+      if (typeof nodes === 'undefined') return;
+      var oculto = localStorage.getItem('labelsOcultos') === 'true';
+      var tam = oculto ? 0 : 11;
+      var upd = nodes.get().map(function(n){ return { id: n.id, font: Object.assign({}, n.font, { size: tam }) }; });
+      nodes.update(upd);
+    }
+
     ctrl.onmousedown = function(e) {
       e.preventDefault(); e.stopPropagation();
-      if (window.pywebview && window.pywebview.api) {
-        window.pywebview.api.toggle_labels();
-      }
+      var oculto = localStorage.getItem('labelsOcultos') === 'true';
+      localStorage.setItem('labelsOcultos', oculto ? 'false' : 'true');
+      aplicarLabels();
     };
     document.body.appendChild(ctrl);
 
-    // Estado inicial: carrega da localStorage, se nao houver, assume visivel
-    window.addEventListener('pywebviewready', function() {
-      var labelsOcultos = localStorage.getItem('labelsOcultos');
-      if (labelsOcultos === 'true') {
-        if (window.pywebview && window.pywebview.api) {
-          window.pywebview.api.limpar_labels();
-        }
-      }
-    });
+    // Restaura a escolha persistida quando a pagina carrega/recarrega
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      aplicarLabels();
+    } else {
+      document.addEventListener('DOMContentLoaded', aplicarLabels);
+    }
+    window.addEventListener('pywebviewready', aplicarLabels);
   })();
 </script>
 """
@@ -438,62 +449,6 @@ def _versao() -> str:
     v.append(late)
     v.append(_mtime_ns(OUTPUT_HTML))
     return '-'.join(str(x) for x in v)
-
-
-class Bridge:
-    """Ponte JS (window.pywebview.api) -> Python."""
-    def __init__(self):
-        # _win e privado: pywebview itera dir(js_api) expoe atributos publicos e
-        # tenta serializar objetos nao-callable -> o Window nativo causa recursao
-        # infinita em win.native (erro COM UI thread) e quebra a injecao do bridge.
-        self._win = None
-
-    def versao(self) -> str:
-        return _versao()
-
-    def debug_log(self, msg: str) -> None:
-        try:
-            with open(BASE / 'docs' / 'widget_log.txt', 'a', encoding='utf-8') as f:
-                f.write(f'{time.time():.0f} | {msg}\n')
-        except Exception:
-            pass
-
-    def regenerar(self) -> str:
-        """Regenera docs/grafo.html (a partir do vault) e reaplica o CSS/JS do
-        widget em docs/grafo_widget.html. Chamado pelo JS quando versao muda —
-        garante que o widget sempre espelhe o vault Obsidian vivo."""
-        ok = _regenerate()
-        if ok:
-            view = _build_view()
-            return str(view) if view else ''
-        return ''
-
-    def redimensionar(self, w: int, h: int) -> None:
-        if not self._win:
-            return
-        try:
-            self._win.resize(int(w), int(h))
-        except Exception as e:
-            print(f'[widget] resize: {e}')
-
-    def mover(self, x: int, y: int) -> None:
-        if not self._win:
-            return
-        try:
-            self._win.move(int(x), int(y))
-        except Exception as e:
-            print(f'[widget] mover: {e}')
-
-    def guardar_geo(self, x: int, y: int, w: int, h: int) -> None:
-        """Recebe a geometria reportada pelo JS e a persiste. NAO le win.native
-        aqui para evitar a recursao infinita do pywebview em Windows Forms."""
-        try:
-            w = int(w); h = int(h)
-            if w < MIN_W or h < MIN_H:
-                return  # ignora geometria degenerada (nao corrompe o arquivo)
-            _salvar_geo({'x': int(x), 'y': int(y), 'width': w, 'height': h})
-        except Exception:
-            pass
 
 
 def _persistir_saida(win) -> None:

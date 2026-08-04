@@ -406,7 +406,7 @@ def gerar_html(nos, arestas, output_path):
       adaptiveTimestep: false,
       stabilization: false
     }},
-    interaction: {{ hover:true, tooltipDelay:120, navigationButtons:true }}
+    interaction: {{ hover:true, tooltipDelay:120, navigationButtons:true, zoomSpeed:0.6 }}
   }};
   const network = new vis.Network(container, {{ nodes, edges }}, options);
 
@@ -447,6 +447,98 @@ def gerar_html(nos, arestas, output_path):
       springConstant: 0.018 * (1.6 - _respirando)
     }} }} }});
   }}, 3000);
+
+  // =========================================================================
+  // ZOOM-MICROSCOPIO + EXPANDIR (clustering progressivo por zoom)
+  // Ao dar zoom-out o grafo "recua" e agrupa zonas densas em clusters (como
+  // um microscopio perdendo foco amplo); ao dar zoom-in ele "expande" e abre
+  // os clusters revelando os nos internos (focando a estrutura). Isso da ao
+  // zoom um papel narrativo: recuar para ver o todo, avancar para ver o detalhe.
+  // =========================================================================
+  var _lastClusterScale = 1e9;
+  var _clusterFactor = 0.6;
+
+  function _expandirTudo() {{
+    var lst = network.getClusteredEdges() || [];
+    var idx = 0;
+    // abre recursivamente (um por vez para permitir re-cluster aninhado)
+    function _abrir() {{
+      if (idx >= lst.length) {{ return; }}
+      var alvos = network.getNodesInCluster(lst[idx]);
+      var pai = null;
+      // encontra o cluster mais externo que contem este
+      if (alvos && alvos.length) {{
+        var candidates = network.getNodesInCluster(lst[idx]) || [];
+        var paiId = candidates[0];
+        pai = lst[idx];
+      }}
+      try {{
+        network.openCluster(pai);
+      }} catch(e) {{ }}
+      idx++;
+      setTimeout(_abrir, 40);
+    }}
+    _abrir();
+  }}
+
+  function _clusterarPorZoom(scale) {{
+    // so cluster em redes grandes de verdade (evita custo em grafos pequenos)
+    if (nodes.get().length <= 60) return;
+    var hierarquia = [
+      {{ limiar: 0.05, alvo: 55 }},
+      {{ limiar: 0.12, alvo: 45 }},
+      {{ limiar: 0.25, alvo: 32 }},
+      {{ limiar: 0.45, alvo: 18 }}
+    ];
+    var alvo = null;
+    for (var i = 0; i < hierarquia.length; i++) {{
+      if (scale < hierarquia[i].limiar) {{ alvo = hierarquia[i].alvo; break; }}
+    }}
+    if (alvo === null) return; // ja muito para dentro: nao cluster mais
+    // cluster por proximidade (join do numero necessario de nos por cluster)
+    var nos = nodes.get();
+    var conns = edges.get().filter(e => !e.id || edges.get().length);
+    // agrupa por componentes/grau — simplificado: cluster nos folha e hubs menores
+    var grau = {{}};
+    edges.get().forEach(e => {{ if(typeof e.id==='number'||typeof e.id==='string'){{ grau[e.from]=(grau[e.from]||0)+1; grau[e.to]=(grau[e.to]||0)+1; }} }});
+    var candidatos = nos.filter(n => (grau[n.id]||0) <= 2 && (grau[n.id]||0) > 0);
+    if (candidatos.length > 120) candidatos = candidatos.slice(0, 120);
+    var alvos = candidatos.slice(0, Math.max(er ordenado 0, Math.min(candidatos.length, 120))).map(n => n.id);
+    // cluster de nos folha em grupos de ~10
+    for (var g = 0; g < alvos.length; g += 10) {{
+      var grupo = alvos.slice(g, g + 10);
+      try {{
+        network.cluster({{ joinCondition: function(n) {{ return grupo.indexOf(n.id) !== -1; }} }});
+      }} catch(e) {{ }}
+    }}
+  }}
+
+  network.on('zoom', function(params) {{
+    var scale = params.scale;
+    // --- MICROSCOPIO: mantem as etiquetas legiveis ao ampliar (creditado a
+    // vis-network: font.size = base/scale compensa a ampliacao do canvas) ---
+    var oculto = (typeof localStorage !== 'undefined' && localStorage.getItem('labelsOcultos') === 'true');
+    var tam = oculto ? 0 : Math.round(11 / scale * 1.4);
+    nodes.update(nodes.get().filter(n => !n._cluster).map(n => ({{
+      id: n.id, font: Object.assign({{}}, n.font, {{ size: tam }})
+    }})));
+
+    // --- EXPANDIR: cluster/abre conforme a direcao do zoom ---
+    if (params.direction === '-') {{
+      // zoom-out: cluster progressivo
+      var antes = _lastClusterScale;
+      if (scale < antes * _clusterFactor) {{
+        _lastClusterScale = scale;
+        _clusterarPorZoom(scale);
+      }}
+    }} else if (params.direction === '+') {{
+      // zoom-in: expande clusters revelando os nos internos
+      if (scale > _lastClusterScale * _clusterFactor) {{
+        _lastClusterScale = scale;
+        _expandirTudo();
+      }}
+    }}
+  }});
 
   // --- Movimento organico: "cerebro vivo" cognitivo ---
   // Heartbeat: respiracao suave dos nos + pulsos de sinapse aleatorios.
