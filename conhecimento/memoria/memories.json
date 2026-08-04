@@ -968,5 +968,25 @@
     "access_count": 0,
     "created_at": "2026-08-04T19:28:43.852082",
     "last_accessed": "2026-08-04T19:28:43.852082"
+  },
+  {
+    "id": 79,
+    "kind": "padrao",
+    "task": "Refinamento do grafo (zoom microsocpio, expandir, mais vivo)",
+    "summary": "Gerado em scripts/generate-graph-html.py: (1) movimento organico perpetuo physics.stabilization:false + timestep0.2 + maxVelocity6 + barnesHut avoidOverlap0.55; (2) respiracao do layout via setInterval oscilando forcas (~22s); (3) fix do bug de labels: classe Bridge duplicada removida, toggle client-side em localStorage persiste a escolha do usuario; (4) zoom microsocpio = font.size=13/scale mantem labels legiveis ao ampliar; (5) expandir via clustering por proximidade de folhas (cluster) e openCluster no zoom-in; (6) cascata de sinapses quando URL tem rc (vault atualizou). JS validado via node --check. Preflight 100% PASS.",
+    "project": "",
+    "tags": [
+      "html",
+      "usuario",
+      "escolha",
+      "graph",
+      "generate",
+      "persiste"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-04T19:52:21.868666",
+    "last_accessed": "2026-08-04T19:52:21.868666"
   }
 ]
