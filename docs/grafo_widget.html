@@ -129,7 +129,7 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
       adaptiveTimestep: false,
       stabilization: false
     },
-    interaction: { hover:true, tooltipDelay:120, navigationButtons:true }
+    interaction: { hover:true, tooltipDelay:120, navigationButtons:true, zoomSpeed:0.6 }
   };
   const network = new vis.Network(container, { nodes, edges }, options);
 
@@ -171,6 +171,108 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
     } } });
   }, 3000);
 
+  // =========================================================================
+  // ZOOM-MICROSCOPIO + EXPANDIR
+  // O zoom ganha papel narrativo: recuar para ver o todo ("microscopio de
+  // visao ampla") e avancar para ver o detalhe ("microscopio focalizado").
+  // =========================================================================
+  var _lastClusterScale = 1;
+  var _clusterFactor = 0.55;
+  var _clusterAtivo = false;
+
+  // --- MICROSCOPIO ---
+  // Mantem as etiquetas legiveis ao ampliar: o canvas do vis-network sobe a
+  // escala do node, mas a fonte cresce junto (torna ilegivel). Compensamos
+  // com font.size = base / scale (fonte volta ao tamanho "real" na tela).
+  // Quando as etiquetas estiverem ocultas pelo usuario, mantemos 0.
+  function _ajustarFontes() {
+    var oculto = (typeof localStorage !== 'undefined' &&
+                  localStorage.getItem('labelsOcultos') === 'true');
+    if (oculto) return; // usuario escondeu: nao forca visibilidade via zoom
+    var scale = network.getScale ? network.getScale() : 1;
+    if (scale < 0.4) scale = 0.4; // nunca fique muito pequena
+    var tam = Math.round(13 / scale);
+    if (tam > 22) tam = 22;
+    nodes.update(nodes.get().map(function(n) {
+      if (n.isHidden) return null;
+      return { id: n.id, font: Object.assign({}, n.font, { size: tam }) };
+    }).filter(Boolean));
+  }
+
+  // --- EXPANDIR (clustering por proximidade de folhas) ---
+  // Em zoom-out, agrupa nos-folha (grau baixo) cercando-os. Em zoom-in,
+  // abre os clusters revelando os nos internos (efeito "expandir").
+  function _fazerClusteres() {
+    if (nodes.get().length <= 80) return; // so para grafos com volume
+    var grau = {};
+    edges.get().forEach(function(e) {
+      grau[e.from] = (grau[e.from] || 0) + 1;
+      grau[e.to] = (grau[e.to] || 0) + 1;
+    });
+    // candidatos: nos-folha (grau 1)
+    var folhas = nodes.get().filter(function(n) {
+      return !n.isHidden && (grau[n.id] || 0) <= 1;
+    });
+    // agrupa folhas adjacentes a um mesmo no em clusters de ~8
+    var agrupados = {};
+    var usados = new Set();
+    for (var i = 0; i < folhas.length; i++) {
+      var f = folhas[i];
+      if (usados.has(f.id)) continue;
+      // pega uma folha, agrupa ela + ate 7 adjacentes
+      var grupo = [f.id]; usados.add(f.id);
+      var adjacentes = edges.get()
+        .filter(function(e) { return e.from === f.id || e.to === f.id; })
+        .slice(0, 7);
+      adjacentes.forEach(function(e) {
+        var o = e.from === f.id ? e.to : e.from;
+        if (!usados.has(o) && grupo.length < 8) { grupo.push(o); usados.add(o); }
+      });
+      try {
+        network.cluster({
+          joinCondition: function(n) { return grupo.indexOf(n.id) !== -1; },
+          edgesBetween: true,
+          clusterNode: { shape: 'box', label: grupo.length.toString(),
+            font: { size: 10, color: '#89b4fa' },
+            color: { background: 'rgba(137,180,250,0.18)' },
+            borderWidth: 1, size: Math.max(8, Math.min(24, grupo.length))
+          }
+        });
+      } catch(e) { }
+    }
+  }
+
+  function _expandirTudo() {
+    var lst = network.getClusters ? network.getClusters() : [];
+    try { lst = Object.keys(network.body.nodes).filter(function(id) {
+      return network.body.nodes[id].isCluster; }); } catch(e) { lst = []; }
+    if (!lst.length) return;
+    lst.forEach(function(id) {
+      try { network.openCluster(id); } catch(e) { }
+    });
+  }
+
+  network.on('zoom', function(params) {
+    _ajustarFontes();
+    var scale = params.scale != null ? params.scale : network.getScale();
+    if (params.direction === '-') {
+      // zoom-out: clustera para "ver o todo"
+      if (!_clusterAtivo && scale < _lastClusterScale * _clusterFactor) {
+        _lastClusterScale = scale; _clusterAtivo = true; _fazerClusteres();
+      }
+    } else if (params.direction === '+') {
+      // zoom-in: expande para "ver o detalhe"
+      if (_clusterAtivo && scale > _lastClusterScale * (1/_clusterFactor)) {
+        _lastClusterScale = scale; _clusterAtivo = false; _expandirTudo();
+      }
+    }
+    if (!_clusterAtivo) _lastClusterScale = scale;
+  });
+
+  // ajusta fontes na primeira interacao e a cada movimento de zoom
+  setTimeout(_ajustarFontes, 1500);
+  network.on('dragEnd', _ajustarFontes);
+
   // --- Movimento organico: "cerebro vivo" cognitivo ---
   // Heartbeat: respiracao suave dos nos + pulsos de sinapse aleatorios.
   let _tickPausado = false;
@@ -178,18 +280,33 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
   network.on('tick', () => {
     if (_tickPausado) return;
     const agora = Date.now();
-    // respiracao de opacidade dos nos (ciclo lento ~5s, amarrado a respiracao)
-    const base = 0.9 + 0.10 * Math.sin(agora * 0.001 * (1 + _respirando));
-    const upd = [];
-    nodes.get().forEach(n => {
-      upd.push({ id: n.id, opacity: base, borderWidth: 0, shadow: true });
-    });
-    nodes.update(upd);
+    const base = 0.86 + 0.14 * Math.sin(agora * 0.0015);
+    // --- opacidade: leve, a cada tick (barata) ---
+    const opUpd = [];
+    nodes.get().forEach(n => { opUpd.push({ id: n.id, opacity: base, shadow: true }); });
+    nodes.update(opUpd);
+    // --- tamanho/glow: pulsa so vezes em pouco (caro), ~3x/s, com fase unica
+    if (!window.__pulseT || (agora - window.__pulseT) > 300) {
+      window.__pulseT = agora;
+      const szUpd = [];
+      nodes.get().forEach(n => {
+        const fase = typeof n.id === 'string'
+          ? Array.from(n.id).reduce((a,b)=>(((a<<5)-a)+b.charCodeAt(0))|0, 0)
+          : (n.id * 2654435761);
+        const pulso = Math.sin(agora * 0.0012 + (fase % 97)) * 0.06;
+        szUpd.push({
+          id: n.id,
+          size: Math.max(6, (original[n.id] ? original[n.id].size : 12) * (1 + pulso * 0.4)),
+          shadowSize: Math.round(16 + 4 * pulso)
+        });
+      });
+      nodes.update(szUpd);
+    }
     // pulso cognitivo: a cada ~3.5-5s, acende ALEATORIAMENTE 1-3 arestas
     // (sinapses disparando em cascata), mantendo o resto sutil.
     let arestasUpd = [];
     edges.get().forEach(e => {
-      arestasUpd.push({ id: e.id, color: e.color || '#999', width: arestaOriginal[e.id] ? arestaOriginal[e.id].width : 1, opacity: 0.25 });
+      arestasUpd.push({ id: e.id, color: arestaOriginal[e.id] ? arestaOriginal[e.id].color : '#999', width: arestaOriginal[e.id] ? arestaOriginal[e.id].width : 1, opacity: 0.25 });
     });
     if (agora - _ultimoSpike > _proxSpike()) {
       _ultimoSpike = agora;
@@ -464,7 +581,9 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
 
 <script>
   (function(){
-    // Adiciona controle de toggle para ocultar/mostrar labels
+    // Controle de toggle para ocultar/mostrar as palavras do cerebro.
+    // Persistencia: a escolha do usuario fica no localStorage e e restaurada
+    // a cada reload/regeneracao — nao depende do bridge Python.
     var ctrl = document.createElement('div');
     ctrl.id = 'mk-labels';
     ctrl.title = 'Alternar visibilidade das etiquetas';
@@ -482,24 +601,32 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
     ctrl.style.alignItems = 'center';
     ctrl.style.justifyContent = 'center';
     ctrl.style.fontSize = '16px';
+    ctrl.style.userSelect = 'none';
     ctrl.innerHTML = 'T';
+
+    function aplicarLabels() {
+      if (typeof nodes === 'undefined') return;
+      var oculto = localStorage.getItem('labelsOcultos') === 'true';
+      var tam = oculto ? 0 : 11;
+      var upd = nodes.get().map(function(n){ return { id: n.id, font: Object.assign({}, n.font, { size: tam }) }; });
+      nodes.update(upd);
+    }
+
     ctrl.onmousedown = function(e) {
       e.preventDefault(); e.stopPropagation();
-      if (window.pywebview && window.pywebview.api) {
-        window.pywebview.api.toggle_labels();
-      }
+      var oculto = localStorage.getItem('labelsOcultos') === 'true';
+      localStorage.setItem('labelsOcultos', oculto ? 'false' : 'true');
+      aplicarLabels();
     };
     document.body.appendChild(ctrl);
 
-    // Estado inicial: carrega da localStorage, se nao houver, assume visivel
-    window.addEventListener('pywebviewready', function() {
-      var labelsOcultos = localStorage.getItem('labelsOcultos');
-      if (labelsOcultos === 'true') {
-        if (window.pywebview && window.pywebview.api) {
-          window.pywebview.api.limpar_labels();
-        }
-      }
-    });
+    // Restaura a escolha persistida quando a pagina carrega/recarrega
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      aplicarLabels();
+    } else {
+      document.addEventListener('DOMContentLoaded', aplicarLabels);
+    }
+    window.addEventListener('pywebviewready', aplicarLabels);
   })();
 </script>
 </body>

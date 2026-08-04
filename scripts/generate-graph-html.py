@@ -510,7 +510,8 @@ def gerar_html(nos, arestas, output_path):
           joinCondition: function(n) {{ return grupo.indexOf(n.id) !== -1; }},
           edgesBetween: true,
           clusterNode: {{ shape: 'box', label: grupo.length.toString(),
-            font: {{ size: 10, color: '#89b4fa' }}, color: {{ background: 'rgba(137,180,250,0.18)' }} },
+            font: {{ size: 10, color: '#89b4fa' }},
+            color: {{ background: 'rgba(137,180,250,0.18)' }},
             borderWidth: 1, size: Math.max(8, Math.min(24, grupo.length))
           }}
         }});
