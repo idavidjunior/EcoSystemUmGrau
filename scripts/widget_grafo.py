@@ -249,6 +249,23 @@ class Bridge:
     def versao(self) -> str:
         return _versao()
 
+    def comando_grafo(self, ultimo_ts: int = 0) -> dict:
+        """Le o comando de foco gravado pelo bridge Jarvis (docs/comando_grafo.json)
+        e retorna-o somente se for mais recente que o ja processado pelo widget.
+        Voz -> grafo: 'mostre bugs/abra android' orienta a malha viva."""
+        try:
+            f = BASE / 'docs' / 'comando_grafo.json'
+            if not f.exists():
+                return {}
+            data = json.loads(f.read_text(encoding='utf-8'))
+            ts = int(data.get('ts', 0))
+            if ts <= int(ultimo_ts) or not data.get('filtro'):
+                return {}
+            return data
+        except Exception as e:
+            print(f'[widget] comando_grafo: {e}')
+            return {}
+
     def debug_log(self, msg: str) -> None:
         try:
             with open(BASE / 'docs' / 'widget_log.txt', 'a', encoding='utf-8') as f:
@@ -419,6 +436,26 @@ WIDGET_JS_EXTRA = """
       document.addEventListener('DOMContentLoaded', aplicarLabels);
     }
     window.addEventListener('pywebviewready', aplicarLabels);
+
+    // ---- Foco vocal via Jarvis: orienta a malha viva com a voz ----
+    // O bridge (porta 8765) grava docs/comando_grafo.json quando o usuario
+    // fala "mostre bugs/abra android/centro no ecossistema". Este polling lê o
+    // comando mais recente e dispara destacar() no grafo, unindo voz ao visual.
+    var lastCmdTs = 0;
+    function buscarComandoVoz() {
+      if (!window.pywebview || !window.pywebview.api || !window.pywebview.api.comando_grafo) return;
+      window.pywebview.api.comando_grafo(lastCmdTs).then(function(cmd) {
+        if (cmd && cmd.filtro) {
+          lastCmdTs = parseInt(cmd.ts || 0, 10);
+          if (typeof destacar === 'function') {
+            destacar(cmd.filtro, cmd.valor, cmd.cor);
+          }
+        }
+      }).catch(function(){});
+    }
+    setInterval(buscarComandoVoz, 2500);
+    if (document.readyState !== 'loading') { buscarComandoVoz(); }
+    else { document.addEventListener('DOMContentLoaded', buscarComandoVoz); }
   })();
 </script>
 """

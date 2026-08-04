@@ -945,6 +945,53 @@ def fix_punctuation(text):
     return ' '.join(p for p in partes if p)
 
 
+def _comando_grafo(t):
+    """Reconhece comandos de voz para orientar o grafo do conhecimento (cerebro
+    vivo). Padroes: 'mostre/foca/abra/abra em/centro em' + alvo (categoria,
+    cluster ou 'geral'). Grava docs/comando_grafo.json para o widget e devolve
+    uma confirmacao falada. Retorna None se nao casou (fluxo LLM segue)."""
+    # (filtro -> estados possiveis) casados por palavra-chave sem acento
+    mapa = {
+        'padroes': ('cat', 'padroes', '#4e79a7', 'Padroes'),
+        'decisoes': ('cat', 'decisoes', '#f28e2b', 'Decisoes'),
+        'bugs': ('cat', 'bugs', '#e15759', 'Bugs'),
+        'cognitivo': ('cat', 'cognitivo', '#59a14f', 'Cognitivo'),
+        'heuristica': ('cat', 'heuristicas', '#76b7b2', 'Heuristicas'),
+        'heuristicas': ('cat', 'heuristicas', '#76b7b2', 'Heuristicas'),
+        'frameworks': ('cat', 'frameworks', '#edc948', 'Frameworks'),
+        'missoes': ('cat', 'missoes', '#b07aa1', 'Missoes'),
+        'android': ('cl', 'android', '#8dd3c7', 'Android'),
+        'mp3player': ('cl', 'mp3player', '#ffffb3', 'MP3 player'),
+        'ler': ('cl', 'ler', '#bebada', 'LER'),
+        'navegacao': ('cl', 'navegacao', '#fb8072', 'Navegacao'),
+        'ecossistema': ('cl', 'ecossistema', '#80b1d3', 'Ecossistema'),
+        'cognicao': ('cl', 'cognicao', '#fdb462', 'Cognicao'),
+    }
+    alvo = None
+    for kw, info in mapa.items():
+        if re.search(r'\b' + re.escape(kw) + r'\b', t):
+            alvo = info
+            break
+    if alvo is None:
+        return None
+    filtro, valor, cor, nome = alvo
+    # so dispara quando ha intencao de navegar/focar, nao numa pergunta casual
+    if not re.search(r'\b(mostre|mostra|foca|foque|abra|abrir|centro|ver|exibir|exiba|mostrar|va para|vai para)\b', t):
+        return None
+    cmd = {'filtro': filtro, 'valor': valor, 'cor': cor, 'nome': nome,
+           'ts': int(time.time() * 1000)}
+    try:
+        alvo_path = Path(os.environ.get('WORKDIR', ''))
+        if not alvo_path.name == 'Default Project':
+            alvo_path = Path(r'C:\\Users\\David Jr\\Documents\\Default Project')
+        grafo_cmd = alvo_path / 'EcoSystemUmGrau' / 'docs' / 'comando_grafo.json'
+        grafo_cmd.write_text(json.dumps(cmd, ensure_ascii=False), encoding='utf-8')
+        logger.info(f"comando_grafo: {nome} -> {grafo_cmd}")
+    except Exception as e:
+        logger.warning(f"comando_grafo write: {e}")
+    return f"Ok, mostrando {nome} no grafo do conhecimento."
+
+
 def caminho_rapido(msg):
     """Atalho local SEM round-trip ao LLM (Política de Resposta Rápida).
 
@@ -956,6 +1003,17 @@ def caminho_rapido(msg):
     if not t:
         return None
     agora = datetime.datetime.now()
+
+    # ---- Foco vocal no grafo do conhecimento (cerebro vivo) ----
+    # Comandos como "mostre bugs", "abra android", "foca em heurísticas",
+    # "centro no ecossistema" orientam a malha viva via widget. Responde na
+    # hora (sem LLM) e grava docs/comando_grafo.json que o widget monitora.
+    try:
+        r_grafo = _comando_grafo(t)
+        if r_grafo is not None:
+            return r_grafo
+    except Exception as e:
+        logger.warning(f"comando_grafo: {e}")
 
     if re.search(r'\b(que horas|que hora|hora atual|horas sao|agora sao|sao que horas)\b', t):
         return f"Agora são {agora.strftime('%H:%M')}, {DIAS[agora.weekday()]}."

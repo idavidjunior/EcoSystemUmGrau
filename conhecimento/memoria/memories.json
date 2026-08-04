@@ -1048,5 +1048,25 @@
     "access_count": 0,
     "created_at": "2026-08-04T20:19:50.219095",
     "last_accessed": "2026-08-04T20:19:50.219095"
+  },
+  {
+    "id": 83,
+    "kind": "padrao",
+    "task": "Foco vocal via Jarvis: voz orienta o grafo (mostre/abra/centro + alvo)",
+    "summary": "Em scripts/jarvis_bridge.py: novo _comando_grafo(t) dentro de caminho_rapido reconhece comandos de voz de navegacao do grafo (mostre bugs, abra android, centro no ecossistema, foca em heuristicas) e grava docs/comando_grafo.json com {filtro,valor,cor,nome,ts}. Em scripts/widget_grafo.py: Bridge.comando_grafo(ultimo_ts) le o arquivo e so retorna se ts for mais recente (dedup); WIDGET_JS_EXTRA ganhou polling buscarComandoVoz (2.5s) que chama pywebview.api.comando_grafo e dispara destacar(filtro,valor,cor) na malha viva. Fluxo: voz -> bridge 8765 -> arquivo json -> widget poll -> destaque no grafo. Preflight 100% PASS.",
+    "project": "",
+    "tags": [
+      "docs",
+      "grava",
+      "heuristicas",
+      "foca",
+      "ecossistema",
+      "android"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-04T20:35:30.615327",
+    "last_accessed": "2026-08-04T20:35:30.615327"
   }
 ]

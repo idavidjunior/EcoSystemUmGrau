@@ -736,6 +736,26 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
       document.addEventListener('DOMContentLoaded', aplicarLabels);
     }
     window.addEventListener('pywebviewready', aplicarLabels);
+
+    // ---- Foco vocal via Jarvis: orienta a malha viva com a voz ----
+    // O bridge (porta 8765) grava docs/comando_grafo.json quando o usuario
+    // fala "mostre bugs/abra android/centro no ecossistema". Este polling lê o
+    // comando mais recente e dispara destacar() no grafo, unindo voz ao visual.
+    var lastCmdTs = 0;
+    function buscarComandoVoz() {
+      if (!window.pywebview || !window.pywebview.api || !window.pywebview.api.comando_grafo) return;
+      window.pywebview.api.comando_grafo(lastCmdTs).then(function(cmd) {
+        if (cmd && cmd.filtro) {
+          lastCmdTs = parseInt(cmd.ts || 0, 10);
+          if (typeof destacar === 'function') {
+            destacar(cmd.filtro, cmd.valor, cmd.cor);
+          }
+        }
+      }).catch(function(){});
+    }
+    setInterval(buscarComandoVoz, 2500);
+    if (document.readyState !== 'loading') { buscarComandoVoz(); }
+    else { document.addEventListener('DOMContentLoaded', buscarComandoVoz); }
   })();
 </script>
 </body>
