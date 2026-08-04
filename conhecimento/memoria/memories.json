@@ -808,5 +808,25 @@
     "access_count": 0,
     "created_at": "2026-08-03T23:14:58.613384",
     "last_accessed": "2026-08-03T23:14:58.613384"
+  },
+  {
+    "id": 71,
+    "kind": "erro",
+    "task": "Build Android lento travava por falta de RAM: 4GB total / 256MB livre com Gradle Xmx2048m",
+    "summary": "O build do VoxUmGrau travava no desugarDebugFileDependencies e morria no timeout (600s). Causa raiz: máquina com apenas 4GB RAM e 256MB livres, mas Gradle configurado com -Xmx2048m causando thrashing; além de 5 daemons órfãos de builds anteriores interrompidos. Solução: parar daemons (gradlew --stop) e reduzir heap para -Xmx1024m com org.gradle.workers.max=2 e org.gradle.parallel=false — build passou de >10min travado para 48s SUCCESS. APK versionCode 14 instalado via ADB Tailscale (100.64.71.9:5555) com sucesso.",
+    "project": "",
+    "tags": [
+      "600s",
+      "timeout",
+      "morria",
+      "desugardebugfiledependencies",
+      "voxumgrau",
+      "thrashing"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-03T23:38:39.128618",
+    "last_accessed": "2026-08-03T23:38:39.128618"
   }
 ]
