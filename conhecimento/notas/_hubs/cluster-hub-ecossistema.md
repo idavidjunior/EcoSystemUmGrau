@@ -1,10 +1,11 @@
 # Cluster: Ecossistema OpenCode
 
-**29 notas** do cluster ecossistema.
+**30 notas** do cluster ecossistema.
 
 
 ## Notas
 - [[2026-08-01-clãusula-pãtrea-â-comunicaãão-contãnua-em-ãudio]]
+- [[2026-08-04-persistencia-da-conexao-do-jarvis]]
 - [[authjson-com-entradas-de-chave-nvidia-disfarcadas-de-outros-]]
 - [[cadeia-de-provedores-com-failover-inteligente]]
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]

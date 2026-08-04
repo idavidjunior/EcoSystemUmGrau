@@ -42,3 +42,7 @@ funcionava as vezes e dava timeout (10060) em outras. Investigacao mostrou:
 - `scripts/adb-redmi.ps1` criado e testado (conectou via IPv4 100.64.71.9:5555).
 - scrcpy 4.1 instalado (win64, caminho no WinGet Links) e janela de espelhamento aberta.
 - Wireless Debugging do Android ainda pendente de pareamento manual (adb pair).
+
+## Conexoes
+
+- [[cluster-hub-ler]]

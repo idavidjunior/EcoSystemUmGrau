@@ -1,14 +1,14 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-04T03:45:44.813730
+**Exportado em:** 2026-08-04T20:28:45.492468
 **Projetos:** 4
-**Padroes Tecnicos:** 78
+**Padroes Tecnicos:** 79
 **Decisoes:** 52
 **Bug Fixes:** 46
 **Padroes Cognitivos:** 46
 **Heuristicas:** 32
 **Frameworks:** 10
-**Missoes Aprendidas:** 147
+**Missoes Aprendidas:** 149
 
 ---
 
@@ -402,6 +402,7 @@ decisao: Janela pywebview frameless ancorada atras das outras janelas via SetWin
 | 76 | opencode | Config: ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 |
 | 77 | opencode | Secrets Guard no preflight_check |
 | 78 | opencode | widget desktop grafo tempo real |
+| 79 | opencode | 2026-08-04: Persistencia da conexao do Jarvis |
 
 ## Bug Fixes e Corrigidos
 
@@ -1209,7 +1210,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-04T03:45:44.791564
+**Ultima atualizacao:** 2026-08-04T20:28:45.457019
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

@@ -19,3 +19,7 @@ NÃ£o esperar o usuÃ¡rio pedir. Aprender Ã© parte do fluxo de trabalho, nÃ
 
 ## Impacto
 Ecossistema evolui sozinho. Cada sessÃ£o adiciona ao conhecimento coletivo automaticamente.
+
+## Conexoes
+
+- [[2026-08-01-opencode-desktop-crash-do-renderer-por-gpu-fecham]]

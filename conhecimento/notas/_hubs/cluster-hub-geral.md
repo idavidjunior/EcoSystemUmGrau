@@ -1,6 +1,6 @@
 # Cluster: Geral
 
-**89 notas** do cluster geral.
+**91 notas** do cluster geral.
 
 
 ## Notas
@@ -55,6 +55,7 @@
 - [[2026-08-03-scan-proativo-orquestradorapk-flutter]]
 - [[2026-08-03-scan-proativo-supermarketcalculator]]
 - [[2026-08-03-scan-proativo-windowsmaintenancesuitev3]]
+- [[2026-08-04-persistencia-da-conexao-do-jarvis-usuario-pediu-p]]
 - [[aprendizado-â-2026-07-31-â-horas-faladas-corretamente-no-tts]]
 - [[aprendizado-â-2026-07-31-â-pontuaãão-automãtica-de-transcriã]]
 - [[aprendizado-â-2026-07-31-â-reorg-catãlogo-ãnico-habilidades-]]
@@ -67,6 +68,7 @@
 - [[decisão-aprendizado-automãtico-permanente]]
 - [[decisão-arquitetura-jarvis-app]]
 - [[evoluãão-do-tts-jarvis-â-naturalidade-via-ssml]]
+- [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]
 - [[grafo-vis-network-bug-string-js-json-dumps-geramos-docsgrafo]]
 - [[gramática-do-português-brasileiro-guia-prático-do-dia-a-dia]]
 - [[gramãtica-do-portuguãs-brasileiro-â-guia-prãtico-do-dia-a-di]]

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-04T03:45:44.791564",
+  "last_updated": "2026-08-04T20:28:45.457019",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -632,6 +632,14 @@
       "description": "---\ntipo: padrao\ntags: [grafo, cerebro-vivo, widget, pywebview, tempo-real, javascript-bridge]\ndata: 2026-08-02\ncontexto: Usuario pediu um widget desktop para ver o grafo do conhecimento em tempo real, acompanhando o cerebro crescer enquanto o LER aprende.\ndecisao: Criado scripts/widget_grafo.py que",
       "domain": "general",
       "extracted_at": "2026-08-04T03:45:43.440848"
+    },
+    {
+      "source": "opencode",
+      "title": "2026-08-04: Persistencia da conexao do Jarvis",
+      "action": "Usuario pediu para verificar a conexao com o Jarvis. Constatado que a bridge havia morrido e o watchdog estava travado desde 07:29 (7h sem reescrever o log). A dificuldade real identificada pelo usuario e a PERSISTENCIA da conexao.",
+      "description": "---\ntipo: padrao\ntags: [jarvis, bridge, persistencia, conexao, watchdog, tailscale, voxumgrau, verificacao]\ndata: 2026-08-04\ncontexto: Usuario pediu para verificar a conexao com o Jarvis. Constatado que a bridge havia morrido e o watchdog estava travado desde 07:29 (7h sem reescrever o log). A dific",
+      "domain": "general",
+      "extracted_at": "2026-08-04T20:28:42.759036"
     }
   ],
   "decisions": [
@@ -1700,8 +1708,10 @@
       "source": "opencode",
       "title": "grafo vis network bug string js json dumps",
       "domain": "general",
-      "body": "---\ntipo: erro\ntags:\n  - obsidian\n  - grafo\n  - html\n  - js\n  - vis-network\n  - debugging\n  - gerador\ndata: 2026-08-02\ncontexto: Geramos docs/grafo.html com vis-network para visualizar o conhecimento como grafo. A pagina renderizava header/legenda mas o canvas ficava vazio.\ndecisao: Diagnosticado via headless Chrome + Node. Causa raiz: um no (label \"Why - User expects a blank slate...\") continha quebra de linha literal dentro de string JS delimitada por aspas simples -> sintaxe invalida em TODO ",
-      "extracted_at": "2026-08-04T03:45:41.791731"
+      "body": "---\ntipo: erro\ntags:\n  - obsidian\n  - grafo\n  - html\n  - js\n  - vis-network\n  - debugging\n  - gerador\ndata: 2026-08-02\ncontexto: Geramos docs/grafo.html com vis-network para visualizar o conhecimento como grafo. A pagina renderizava header/legenda mas o canvas ficava vazio.\ndecisao: Diagnosticado via headless Chrome + Node. Causa raiz: um no (label \"Why - User expects a blank slate...\") continha quebra de linha literal dentro de string JS delimitada por aspas simples -> sintaxe invalida em TODO \n\n---\ntipo: aprendizado\ntags: [grafo, vis-network, fisica, barnesHut, movimento-organico, cerebro-vivo, sinapses, widget]\ndata: 2026-08-04\ncontexto: Usuario pediu refinamento do widget do grafo do conhecimento: movimento organico perpetuo (stabilization:false + barnesHut com timestep lento), respiracao do layout e \"pulse\" de sinapses (arestas brilham quando o vault atualiza).\ndecisao: Implementado em scripts/generate-graph-html.py (bloco JS do grafo gerado): physics.stabilization=false + minVeloci",
+      "extracted_at": "2026-08-04T20:28:44.665384",
+      "merged_count": 2,
+      "merged_at": "2026-08-04T20:28:45.305382"
     },
     {
       "source": "opencode",
@@ -4000,6 +4010,38 @@
         "error",
         "grafo",
         "frameless"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-04T20:28:42.759036",
+      "status": "session_learning",
+      "goal_objective": "2026-08-04: Persistencia da conexao do Jarvis — Usuario pediu para verificar a conexao com o Jarvis. Constatado que a bridge havia morrido e o watchdog estava travado desde 07:29 (7h sem reescrever o log). A dificuldade real identificada pelo usuario e a PERSISTENCIA da conexao.",
+      "tags": [
+        "padrao",
+        "opencode",
+        "desde",
+        "verificacao",
+        "voxumgrau",
+        "travado",
+        "tailscale",
+        "estava"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-04T20:28:44.665384",
+      "status": "session_learning",
+      "goal_objective": "grafo movimento organico vis network — Usuario pediu refinamento do widget do grafo do conhecimento: movimento organico perpetuo (stabilization:false + barnesHut com timestep lento), respiracao do layout e \"pulse\" de sinapses (arestas brilham quando o vault atualiza).",
+      "tags": [
+        "aprendizado",
+        "opencode",
+        "atualiza",
+        "vault",
+        "brilham",
+        "arestas",
+        "sinapses",
+        "vivo"
       ],
       "files_modified": []
     }
