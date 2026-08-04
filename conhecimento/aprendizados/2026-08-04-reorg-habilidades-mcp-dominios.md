@@ -34,3 +34,7 @@ Todos testes PASS (10 MCPs testados, 3 camadas consistentes, secrets guard OK).
 ## Impacto
 
 Arquitetura MCP com habilidades dentro de domínios — clone recursivo funcional, OpenCode carrega skills via instructions globs. Ecossistema limpo, sem Habilidades/tecnicas/ e pontes/ vazias removidas.
+
+## Conexoes
+
+- [[correcao-de-diagnostico-do-knowledge-graph-e-criacao-do-regi]]

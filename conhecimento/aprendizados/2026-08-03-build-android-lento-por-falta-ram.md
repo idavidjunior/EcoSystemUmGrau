@@ -37,3 +37,7 @@ Antes do rebuild: `gradlew.bat --stop` para limpar daemons.
 
 ## Lição
 Em máquinas com pouca RAM (<8GB) e builds Android, o heap do Gradle precisa ser ajustado para a realidade física. `gradlew --stop` entre builds interrompidos evita daemons órfãos. Builds que "param" no `desugarDebugFileDependencies` com saída vazia frequentemente indicam thrash ou daemon corrompido — não necessariamente um problema do código.
+
+## Conexoes
+
+- [[cluster-hub-android]]

@@ -1,7 +1,7 @@
 ---
 tags: [fonte, metadata, mp3player-metadata-rescuemp3player-metadata-rescue, padrao, pipeline, rescue]
 aliases: [Album Art Download Pipeline]
-date: 2026-08-03
+date: 2026-08-04
 ---
 
 # Album Art Download Pipeline

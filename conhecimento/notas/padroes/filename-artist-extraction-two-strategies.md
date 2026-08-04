@@ -1,7 +1,7 @@
 ---
 tags: [channel, double, mp3player, padrao, second, space]
 aliases: [Filename artist extraction (two strategies)]
-date: 2026-08-03
+date: 2026-08-04
 ---
 
 # Filename artist extraction (two strategies)

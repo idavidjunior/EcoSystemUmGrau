@@ -56,3 +56,7 @@ final: `(\\d{1,3})\\s*%|(\\d{1,3})\\s*por cento`.
   jÃ¡ inclina a entonaÃ§Ã£o no `?`, mas `prosody` dÃ¡ controle fino.
 - DicionÃ¡rio de pronÃºncia autoevolutivo: toda interaÃ§Ã£o "pronuncie X" registra IPA
   automaticamente (loop jÃ¡ documentado em `JARVIS_SYSTEM.md`).
+
+## Conexoes
+
+- [[aprendizado-â-2026-07-31-â-pontuaãão-automãtica-de-transcriã]]

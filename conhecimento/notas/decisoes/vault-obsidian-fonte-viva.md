@@ -1,7 +1,7 @@
 ---
 tags: [automaticamente, decisao, espelho, opencode, reflete, vivo]
 aliases: [vault obsidian fonte viva]
-date: 2026-08-03
+date: 2026-08-04
 ---
 
 # vault obsidian fonte viva
@@ -39,9 +39,9 @@ sentence-transformers, que não estão instalados (apenas torch). Determinístic
 
 ## Conexoes
 
-- [[2026-07-27-fallback-automático-de-modelo-llm-com-bun-razrooo]]
-- [[2026-07-27-sistema-automático-de-captura-de-conhecimento-do-]]
-- [[2026-07-28-cláusula-pétrea-toda-alteração-no-ecossistema-dev]]
+- [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
 - [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
+- [[config-2026-07-28-formato-correto-do-mcp-no-opencode-1187]]
+- [[controle-da-tv-lg-webos-via-ssap]]
 - [[decisao-hub-decisoes]]

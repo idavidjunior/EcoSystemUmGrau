@@ -18,3 +18,7 @@ Arquitetura em duas camadas:
 
 ## Impacto
 App leve e eficiente, reaproveitando todo o ecossistema jÃ¡ construÃ­do. MÃ­nimo cÃ³digo novo necessÃ¡rio.
+
+## Conexoes
+
+- [[aprendizado-â-2026-07-31-â-pontuaãão-automãtica-de-transcriã]]

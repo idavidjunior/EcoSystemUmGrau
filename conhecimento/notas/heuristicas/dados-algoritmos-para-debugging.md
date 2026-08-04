@@ -1,7 +1,7 @@
 ---
 tags: [debugging, deveria, encoding, heuristica, range, valores]
 aliases: [Dados > Algoritmos para debugging]
-date: 2026-08-03
+date: 2026-08-04
 ---
 
 # Dados > Algoritmos para debugging

@@ -1,7 +1,7 @@
 ---
 tags: [decisao, editavel, legivel, lerarquitetura, migrations, sqlite]
 aliases: [Estado persiste em JSON (nao SQLite) — legivel, editavel for]
-date: 2026-08-03
+date: 2026-08-04
 ---
 
 # Estado persiste em JSON (nao SQLite) — legivel, editavel fora do LER, sem migrations.

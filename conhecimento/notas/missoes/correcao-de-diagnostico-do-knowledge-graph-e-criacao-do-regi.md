@@ -13,5 +13,6 @@ date: 2026-07-30
 **Arquivos:** scripts/JARVIS_SYSTEM.md
 ## Conexoes
 
+- [[2026-07-27-unificacao-completa-do-ecossistema]]
 - [[missao-hub-missoes]]
 - [[revisao-radical-do-registro-de-habilidades-de-jarvis-aprendi]]

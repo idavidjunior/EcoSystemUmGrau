@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**68 notas** conectadas a este hub.
+**71 notas** conectadas a este hub.
 
 
 ## Notas
@@ -20,7 +20,9 @@
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
 - [[config-2026-07-27-teste-do-vigilante-automático]]
+- [[config-2026-07-28-formato-correto-do-mcp-no-opencode-1187]]
 - [[config-opencode-v11714-schema]]
+- [[controle-da-tv-lg-webos-via-ssap]]
 - [[css-selector-priority-ladder]]
 - [[custom-numpad-pattern]]
 - [[dependency-inclusion-pattern]]
@@ -68,6 +70,7 @@
 - [[theme-system-pattern]]
 - [[vibration-pattern]]
 - [[wait-strategy-adaptive]]
+- [[widget-desktop-grafo-tempo-real]]
 - [[win32-control-pattern-recognition]]
 - [[windows-notificationballoon-dismissal]]
 - [[windows-ui-element-tree-traversal]]

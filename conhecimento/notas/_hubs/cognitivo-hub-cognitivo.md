@@ -1,11 +1,12 @@
 # Padroes Cognitivos
 
-**22 notas** conectadas a este hub.
+**25 notas** conectadas a este hub.
 
 
 ## Notas
 - [[antecipacao-de-comportamento-adaptativo]]
 - [[ciclo-ooda-aplicado-a-navegacao]]
+- [[corrigido-travamento-widget-pywebview]]
 - [[debugging-em-cascata-reversa]]
 - [[diagnostico-por-eliminacao-em-config-complexa]]
 - [[encoding-aware-diagnostics]]
@@ -13,6 +14,7 @@
 - [[espera-adaptativa-por-tipo-de-recurso]]
 - [[estrategia-de-fallback-em-cadeia-chain-of-responsibility]]
 - [[estrategia-de-loop-autonomo-planejar-executar-verificar-corr]]
+- [[grafo-vis-network-bug-string-js-json-dumps]]
 - [[heuristica-de-densidade-de-informacao]]
 - [[hipotese-falsificacao-terminal]]
 - [[lei-de-postel-aplicada-a-engenharia]]
@@ -26,3 +28,4 @@
 - [[reconhecimento-de-estado-por-elementos-chave]]
 - [[reconhecimento-instantaneo-de-framework]]
 - [[validacao-contra-intuitiva-teste-o-erro-nao-o-acerto]]
+- [[vazamento-caracteres-tts-edge-tts-escapa-ssml]]

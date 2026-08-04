@@ -1,7 +1,7 @@
 ---
-tags: [conversa, decisao, ecosistema-opencode, estruturado, extrair, reutilizado]
+tags: [conversa, decisao, ecosistema-opencode, estruturado, extrair, tarefa]
 aliases: [2026-07-27: Sistema automático de captura de conhecimento do]
-date: 2026-08-03
+date: 2026-08-04
 ---
 
 # 2026-07-27: Sistema automático de captura de conhecimento do ecossistema
@@ -40,6 +40,40 @@ Antes desta implementação, cada interação com o ecossistema gerava conhecime
 
 - `~/.config/opencode/agents/10-aprendizado.md`
 - `~/.config/opencode/agents/00-maestro.md` (fluxo obrigatório atualizado)
+- `EcoSystemUmGrau/conhecimento/INDEX.md`
+- `~/.ler/integrations/opencode/knowledge_bridge.py`
+ // ﻿# 2026-07-27: Sistema automÃ¡tico de captura de conhecimento do ecossistema
+
+**Categoria:** decisao
+**Contexto:** ImplementaÃ§Ã£o das trÃªs camadas de aprendizado contÃ­nuo para o ecossistema OpenCode + LER
+**Agentes envolvidos:** Maestro, Aprendizado
+
+## DecisÃ£o
+
+Criamos um sistema de trÃªs camadas para garantir que todo aprendizado do ecossistema seja automaticamente capturado, persistido e reutilizado:
+
+1. **Base de conhecimento local** (`EcoSystemUmGrau/conhecimento/`) â€” entradas markdown com metadados, categorizadas em aprendizados, decisÃµes e padrÃµes
+2. **Agente 10-Aprendizado** â€” subagente OpenCode invocado pelo Maestro ao final de toda tarefa para extrair conhecimento estruturado da conversa
+3. **Ponte LER** (`knowledge_bridge.py`) â€” sincroniza automaticamente os aprendizados com o `CONHECIMENTO.md` e `knowledge_graph.json` do LER
+
+## Por quÃª
+
+Antes desta implementaÃ§Ã£o, cada interaÃ§Ã£o com o ecossistema gerava conhecimento que era perdido apÃ³s o tÃ©rmino da sessÃ£o. NÃ£o havia:
+- PersistÃªncia estruturada de decisÃµes e padrÃµes
+- Contexto compartilhado entre sessÃµes
+- AlimentaÃ§Ã£o automÃ¡tica do LER com aprendizados do OpenCode
+
+## Impacto
+
+- Toda interaÃ§Ã£o agora deixa um registro permanente
+- O LER Ã© alimentado automaticamente sem intervenÃ§Ã£o manual
+- Novas sessÃµes carregam todo o histÃ³rico de aprendizado via `instructions` do `opencode.jsonc`
+- O ecossistema se torna auto-documentante
+
+## ReferÃªncias
+
+- `~/.config/opencode/agents/10-aprendizado.md`
+- `~/.config/opencode/agents/00-maestro.md` (fluxo obrigatÃ³rio atualizado)
 - `EcoSystemUmGrau/conhecimento/INDEX.md`
 - `~/.ler/integrations/opencode/knowledge_bridge.py`
 

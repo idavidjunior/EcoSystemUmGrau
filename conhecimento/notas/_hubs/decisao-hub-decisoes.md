@@ -1,9 +1,10 @@
 # Decisoes
 
-**40 notas** conectadas a este hub.
+**44 notas** conectadas a este hub.
 
 
 ## Notas
+- [[2026-08-01-clãusula-pãtrea-â-comunicaãão-contãnua-em-ãudio]]
 - [[album-art-download-com-redirect-loop-manual-instancefollowre]]
 - [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]
@@ -21,6 +22,7 @@
 - [[metadata-busca-em-multi-fontes-acoustid-itunes-br-musicbrain]]
 - [[mudar-config-mcp-de-objeto-para-array-no-opencodejson]]
 - [[organizar-desktopcodigos-como-raiz-unica-de-projetos]]
+- [[pontes-inter-cluster-cerebro-vivo-grafo]]
 - [[pontuacao-ponderada-com-6-categorias-req-30-func-30-testes-1]]
 - [[preferir-automationid-sobre-name-em-ui-automation-windows]]
 - [[priorizar-data-testid-sobre-classes-css-em-automacao-web]]
@@ -40,7 +42,9 @@
 - [[usar-keyboard-shortcuts-como-fallback-universal]]
 - [[usar-ocr-como-fallback-final-nao-primario]]
 - [[user-taps-buscar-na-internet]]
+- [[vault-obsidian-cerebro-vivo-grafo]]
 - [[vault-obsidian-fonte-viva]]
 - [[verificar-modais-antes-de-cada-interacao]]
 - [[why-d8-doesnt-accept-directory-trees-of-class-files-it-needs]]
 - [[why-user-expects-a-blank-slate-when-entering-a-form-tab-cons]]
+- [[widget-desktop-frameless-persistente]]

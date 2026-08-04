@@ -1,14 +1,14 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-03T01:30:18.890403
+**Exportado em:** 2026-08-04T03:45:44.813730
 **Projetos:** 4
-**Padroes Tecnicos:** 73
-**Decisoes:** 44
+**Padroes Tecnicos:** 78
+**Decisoes:** 52
 **Bug Fixes:** 46
-**Padroes Cognitivos:** 30
+**Padroes Cognitivos:** 46
 **Heuristicas:** 32
 **Frameworks:** 10
-**Missoes Aprendidas:** 81
+**Missoes Aprendidas:** 147
 
 ---
 
@@ -205,6 +205,120 @@ data: 2026-08-02
 contexto: Reestruturacao do pipeline de geracao do grafo — Obsidian vira cerebro vivo, widget espelho
 decisao: generate-graph-html.py agora le o vault Obsidian (conhecimento/notas/*.md) em vez de knowledge_graph.json. O widget_grafo.py chama Bridge.regenerar() quando a versao detecta mudança no vault. Smart Connections (plugin Obsidian) cria [[wikilinks]] semanticos que o widget reflete automat
 
+### ﻿# 2026-08-02 - Feedback contÃ­nuo em tarefas longas
+**Fonte:** opencode
+﻿# 2026-08-02 - Feedback contÃ­nuo em tarefas longas
+
+**Categoria:** decisao
+**Fonte:** sessao_jarvis_vox
+**Gravidade:** baixa
+
+## Contexto
+
+O usuÃ¡rio pediu mais transparÃªncia durante tarefas demoradas: nÃ£o queria ficar
+esperando em silÃªncio sem saber o que o Jarvis estÃ¡ fazendo ou se hÃ¡ progresso.
+
+## DecisÃ£o
+
+Adicionada regra permanente de **feedback contÃ­nuo** em `JARVIS_SYSTEM.md`:
+- Regra 16 em "Regras de Resposta".
+- Nova seÃ§Ã£o "Regra de Feedback ContÃ­nuo (02/08/2026)".
+
+O que m
+
+### ﻿# 2026-07-31 - Mecanismo de fonemas SSML reativado com fallback seguro
+**Fonte:** opencode
+﻿# 2026-07-31 - Mecanismo de fonemas SSML reativado com fallback seguro
+
+**Categoria:** decisao
+**Fonte:** sessao_jarvis_vox
+**Gravidade:** media
+
+## Contexto
+
+O usuÃ¡rio pediu para ligar o mecanismo de fonemas (`aplicar_phonemes` + SSML `<phoneme>` do edge-tts) na bridge do Jarvis.
+
+## VerificaÃ§Ãµes
+
+1. edge-tts 7.2.8 aceita SSML `<phoneme alphabet="ipa">` sem erro (testado com Ã¡udio real).
+2. `aplicar_phonemes()` jÃ¡ estava conectado em `gerar_audio()`, mas **sem fallback**: se o SSML falhas
+
+### ﻿# 2026-08-01: ClÃ¡usula PÃ©trea â€” ComunicaÃ§Ã£o contÃ­nua em Ã¡udio
+**Fonte:** opencode
+﻿# 2026-08-01: ClÃ¡usula PÃ©trea â€” ComunicaÃ§Ã£o contÃ­nua em Ã¡udio
+
+**Categoria:** decisao
+**Contexto:** UsuÃ¡rio apontou que o Jarvis executou tarefas (verificaÃ§Ã£o de sync, commits, pronÃºncia) sem narrar em Ã¡udio o que estava fazendo, desrespeitando a regra de comunicaÃ§Ã£o por voz. A regra existia no contexto da sessÃ£o, mas nÃ£o estava registrada em lugar nenhum â€” por isso foi esquecida.
+
+## DecisÃ£o
+**Todo passo que o Jarvis executa DEVE ser narrado em Ã¡udio**, sempre, sem exceÃ§Ã
+
+### ﻿# DecisÃ£o: Aprendizado automÃ¡tico permanente
+**Fonte:** opencode
+﻿# DecisÃ£o: Aprendizado automÃ¡tico permanente
+
+**Data:** 2026-07-28
+**Tipo:** decisao
+**Tags:** aprendizado, automacao, regra, petrea
+
+## Contexto
+UsuÃ¡rio instruiu que o aprendizado deve ser feito automaticamente ao final de cada tarefa, sem necessidade de solicitaÃ§Ã£o explÃ­cita. Isso Ã© instruÃ§Ã£o permanente e pÃ©trea.
+
+## DecisÃ£o
+Todo agente do ecossistema deve, ao final de cada tarefa concluÃ­da:
+
+1. **Registrar memÃ³ria** via `memory_engine.py add` com tipo apropriado (decisao, erro, 
+
+### ﻿# DecisÃ£o: Arquitetura Jarvis App
+**Fonte:** opencode
+﻿# DecisÃ£o: Arquitetura Jarvis App
+
+**Data:** 2026-07-28
+**Tipo:** decisao
+**Tags:** jarvis, android, arquitetura, mcp, mobile
+
+## Contexto
+Necessidade de um app Android que funcione como assistente de voz (Jarvis) para o ecossistema, operando em segundo plano com tela desligada, falando resultados e ouvindo comandos.
+
+## DecisÃ£o
+Arquitetura em duas camadas:
+- **PC (backend):** `notifier_bridge.py` (WebSocket) + `mcp-knowledge-server.py` (MCP, jÃ¡ existe)
+- **Android (frontend):** Foreground S
+
+### vault obsidian cerebro vivo grafo
+**Fonte:** opencode
+---
+tipo: decisao
+tags:
+  - obsidian
+  - knowledge-graph
+  - grafo
+  - links-bidirecionais
+  - vault
+  - visualizacao
+  - clausula-petrea
+data: 2026-08-02
+contexto: Usuario perguntou se o ecossistema funciona como o Obsidian (cerebro vivo com grafo interativo). Diagnostico: tinhamos a camada de dados (knowledge_graph.json, 117KB, memorias) mas ZERO camada visual — notas geradas eram ilhas sem nenhum link [[...]].
+decisao: Evoluimos scripts/generate-obsidian-notes.py (estrutura existente, nao cri
+
+### pontes inter cluster cerebro vivo grafo
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [grafo, cerebro-vivo, vis-network, conhecimento, clusters, conexoes]
+data: 2026-08-02
+contexto: Grafo do conhecimento (docs/grafo.html) tinha 226 nos, 1460 arestas, mas 0 arestas entre clusters — 67 componentes conexos, clusters isolados (cognicao inteira solta).
+decisao: Adicionei ao gerador (scripts/generate-graph-html.py) um passo de pontes curadas BRIDGES_CLUSTERS + ancora do hub de cognicao ligado a todos os demais hubs. Cada ponte e (fragA, fragB) onde cada fragment
+
+### widget desktop frameless persistente
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [widget, grafo, pywebview, windows, frameless, persisten, workerw, desktop]
+data: 2026-08-02
+contexto: Usuario pediu o grafo do conhecimento como widget de desktop estilo Rainmeter: colado na area de trabalho, controles ocultos que surgem ao clicar com botao direito, e redimensionamento persistente.
+decisao: Janela pywebview frameless ancorada atras das outras janelas via SetWindowPos HWND_BOTTOM persistente. Controles ocultos por CSS default; contextmenu no body alterna 
+
 
 ## Padroes Tecnicos
 
@@ -283,6 +397,11 @@ decisao: generate-graph-html.py agora le o vault Obsidian (conhecimento/notas/*.
 | 71 | ler_aprendizado | Encoding UTF-8 explicito em Python no Windows |
 | 72 | ler_aprendizado | Registro de Habilidades de Jarvis |
 | 73 | ler_aprendizado | Taxonomia correta de habilidades Jarvis |
+| 74 | opencode | Controle da TV LG webOS via SSAP |
+| 75 | opencode | ﻿# 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS) |
+| 76 | opencode | Config: ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 |
+| 77 | opencode | Secrets Guard no preflight_check |
+| 78 | opencode | widget desktop grafo tempo real |
 
 ## Bug Fixes e Corrigidos
 
@@ -775,6 +894,227 @@ O grafo do widget deve mostrar ma
 
 
 
+### MCP Obsidian server â€” vault consumido pelo LLM
+**Dominio:** general
+**Fonte:** opencode
+
+﻿---
+tipo: decisao
+tags: [obsidian, mcp, infraestrutura, config, clausula-petrea, vault]
+data: 2026-08-02
+contexto: O vault Obsidian (docs/, conhecimento/, documentos/) estava sendo alimentado (330 notas .md) mas o LLM sÃ³ via a CONTAGEM de notas no estado da bridge (gerar_estado_atual em jarvis_bridge.py), nunca o conteÃºdo. Busca semÃ¢ntica via eco-knowledge cobria CONHECIMENTO.md e memory graph, mas nÃ£o os 327 .md de conhecimento/. Sem MCP server dedicado, sem file watcher.
+decisao: Criar sc
+
+### ﻿# Hora na tela vs hora no Ã¡udio (Jarvis)
+**Dominio:** general
+**Fonte:** opencode
+
+﻿# Hora na tela vs hora no Ã¡udio (Jarvis)
+
+- **Data:** 31/07/2026
+- **SessÃ£o:** ImplementaÃ§Ã£o de `normalizar_hora_display()` na bridge
+
+## Problema
+O LLM reescrevia a hora do briefing/saudaÃ§Ã£o em forma falada ("23 horas e 29",
+"22 horas em ponto", "meia-noite") no prÃ³prio TEXTO exibido no app. O usuÃ¡rio
+deixou claro: **o formato exibido deve continuar `21:44`; sÃ³ a PRONÃšNCIA do
+Jarvis precisava ser corrigida.**
+
+## SoluÃ§Ã£o (divisÃ£o de responsabilidades)
+- `melhorar_fala(texto)` â†’ 
+
+### ﻿# Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis)
+**Dominio:** general
+**Fonte:** opencode
+
+﻿# Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis)
+
+## Contexto
+- O Android STT (SpeechRecognizer) devolve texto corrido, sem pontuaÃ§Ã£o e **sem prosÃ³dia** (a melodia da fala nÃ£o chega Ã  bridge). O usuÃ¡rio pediu: `?` em perguntas, pontuaÃ§Ã£o correta e **primeira letra maiÃºscula** sempre.
+- JÃ¡ existia `fix_punctuation()` bÃ¡sico; a reivisÃ£o ampliou regras e corrigiu um bug de acentuaÃ§Ã£o.
+
+## O que foi feito (`scripts/jarvis_bridge.py`)
+1. **Clas
+
+### ﻿# Guia: Controle Total de TV LG webOS (reaproveitÃ¡vel)
+**Dominio:** general
+**Fonte:** opencode
+
+﻿# Guia: Controle Total de TV LG webOS (reaproveitÃ¡vel)
+**Criado:** 01/08/2026 | Aplica-se a qualquer TV LG webOS (UT80 e similares, 2024+)
+
+> **Know-how de ouro:** este passo-a-passo reaplica-se a qualquer TV LG webOS. SÃ³ muda o IP e o MAC.
+
+## 1. Descoberta e identificaÃ§Ã£o
+- **mDNS (224.0.0.251:5353):** pergunte por `_googlecast._tcp.local`, `_airplay._tcp.local`, `_webos._tcp.local`, `_services._dns-sd._udp.local`. A TV responde com hostname + TXT records (model, serialNumber, manufacture
+
+### ﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria
+**Dominio:** general
+**Fonte:** opencode
+
+﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria
+
+**Categoria:** aprendizado
+**Contexto:** OpenCode Desktop v1.18.10 (Electron 42.3.3) em notebook com Intel HD Graphics 5500 (driver 10.18.15.4248, 2015) e 3,9 GB RAM. A interface abria e fechava logo em seguida, sem mensagem de erro.
+**Projeto:** EcoSystemUmGrau (infraestrutura OpenCode Desktop)
+**Agentes envolvidos:** opencode CLI (build), 10-aprendizado
+
+## O que foi feito
+
+InvestigaÃ§Ã£o exaustiva do ciclo 
+
+### ﻿# 2026-08-02 - ecosystem sync: 1 comando para sincronizar tudo
+**Dominio:** general
+**Fonte:** opencode
+
+﻿# 2026-08-02 - ecosystem sync: 1 comando para sincronizar tudo
+
+## Contexto
+O usuÃ¡rio queria sincronizar o ecossistema inteiro com um Ãºnico comando, para ficar
+sempre atualizado e nada se perder ao trocar de PC.
+
+## O que foi feito
+- Corrigido `scripts/ecosystem.ps1`:
+  - `$ecoDir` agora Ã© auto-detectado via `Split-Path $PSScriptRoot -Parent` (antes
+    hardcoded `Desktop\Codigos\EcoSystemUmGrau`, que nÃ£o existe mais â€” o repo vive em
+    `Documents\Default Project\EcoSystemUmGrau`).
+  - `
+
+### Servidores MCP Node criados e validados
+**Dominio:** general
+**Fonte:** opencode
+
+﻿---
+tipo: padrao
+tags: [mcp, infraestrutura, config, clausula-petrea]
+data: 2026-08-02
+contexto: DivergÃªncia detectada â€” config/opencode.jsonc referenciava 4 servidores MCP Node em `mcp-servers/mcp-servers/...` que nÃ£o existiam, e `{{USERPROFILE}}` nÃ£o Ã© resolvido em comandos MCP (apenas em instructions). `opencode mcp list` mostrava eco-knowledge/filesystem/search/terminal como "failed".
+decisao: Criar os 4 servidores Node (filesystem, search, terminal, github) em `mcp-servers/<nome>/ind
+
+### ﻿---
+**Dominio:** general
+**Fonte:** opencode
+
+﻿---
+tipo: decisao
+tags:
+  - setup
+  - scheduled-task
+  - portabilidade
+data: 2026-08-02
+contexto: Vigilante estava inativo porque nenhum mecanismo criava a scheduled task. Corrigido manualmente; faltava fechar o ciclo no setup.bat para PCs novos.
+decisao: Adicionado passo 7/9 ao setup.bat que cria a task EcoSystemVigilante via Register-ScheduledTask (AtLogOn, StartWhenAvailable, restart 3x, sem -Principal para nao exigir admin). Verificacao previa com schtasks /Query; se ja existir, pula.
+impac
+
+### ﻿---
+**Dominio:** general
+**Fonte:** opencode
+
+﻿---
+tipo: decisao
+tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
+data: 2026-08-02
+contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
+decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente
+
+### ﻿---
+**Dominio:** general
+**Fonte:** opencode
+
+﻿---
+tipo: erro
+tags:
+  - vigilante
+  - scheduled-task
+  - bootstrap
+  - windows
+data: 2026-08-02
+contexto: Status do ecossistema reportava "Vigilante: INATIVO" sem PID e sem log.
+decisao: Diagnosticado que nenhum mecanismo criava a scheduled task. Criada task via Register-ScheduledTask (AtLogOn, sem -Principal para nao exigir admin), profile.ps1 recriado com as funcoes (start/stop/status-vigilante + ecosystem), path hardcoded corrigido para $env:USERPROFILE.
+impacto: Vigilante agora inicia no l
+
+### ClÃ¡usula PÃ©trea â€” AtivaÃ§Ã£o de Voz (Eco System)
+**Dominio:** general
+**Fonte:** opencode
+
+﻿---
+tipo: decisao
+tags: [voz, eco, clausula-petrea, bridge, config, regras]
+data: 2026-08-02
+contexto: O usuÃ¡rio pediu que o sistema de voz seja ativÃ¡vel em qualquer sessÃ£o do OpenCode (nova ou em andamento) com os comandos "Ativar Eco" e "Desativar Eco", seguindo as regras do EcoSystemUmGrau.
+decisao: Adicionada a CLÃUSULA PÃ‰TREA â€” ATIVAÃ‡ÃƒO DE VOZ â€” ECO SYSTEM Ã  ConstituiÃ§Ã£o (config/agents/00-system-rules.md) e sincronizada nas 3 camadas (AGENTS.md regenerado via sync_rules.py, d
+
+### ﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView
+**Dominio:** general
+**Fonte:** opencode
+
+﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView
+
+## Contexto
+App Mp3Player Android. 5 botÃµes de filtro no topo da aba "MÃºsicas": Todas, Favoritas, A-Z, Lista, Sel. O texto nÃ£o aparecia â€” os botÃµes ficavam verdes uniformes sem nenhum texto visÃ­vel.
+
+## O que deu errado
+
+### 1. MudanÃ§a de tema AppCompat â†’ MaterialComponents quebrou os botÃµes
+- `TagEditorActivity` usava `TextInputLayout` do Material Components, que REQUER tema `MaterialComponents`
+- Ao 
+
+### ﻿# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android
+**Dominio:** general
+**Fonte:** opencode
+
+﻿# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android
+
+## O que foi criado
+- `scripts/android_diagnostics.py` â€” Script Python que conecta via ADB ao dispositivo `100.64.71.9:5555` e coleta diagnÃ³stico completo do VoxUmGrau
+- `skills/android-diagnostics/skill.md` â€” Skill documentando o uso do script
+
+## Capacidades do diagnÃ³stico
+- Modelo do dispositivo, versÃ£o Android, SDK, fuso horÃ¡rio
+- Bateria (nÃ­vel, temperatura, status de carga)
+- Aplicativo (versÃ£oCode, versionName, PID, memÃ³ria 
+
+### vazamento caracteres tts edge tts escapa ssml
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [tts, edge-tts, ssml, ponte-de-voz, jarvis-bridge]
+data: 2026-08-02
+contexto: Usuário reportou que, no início das conversas, antes de falar "David", o Jarvis pronunciava caracteres que não deveriam. Investigação da saudação revelou causa na camada de TTS.
+decisao: edge-tts >= 7.x removeu suporte a SSML custom. O __init__ do Communicate() aplica escape() em todo o texto, convertendo < e > em &lt; e &gt;. Assim, tags <break>, <phoneme>, <say-as> e <prosody> nunca são interpret
+
+### grafo vis network bug string js json dumps
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags:
+  - obsidian
+  - grafo
+  - html
+  - js
+  - vis-network
+  - debugging
+  - gerador
+data: 2026-08-02
+contexto: Geramos docs/grafo.html com vis-network para visualizar o conhecimento como grafo. A pagina renderizava header/legenda mas o canvas ficava vazio.
+decisao: Diagnosticado via headless Chrome + Node. Causa raiz: um no (label "Why - User expects a blank slate...") continha quebra de linha literal dentro de string JS delimitada por aspas simples -> sintaxe invalida em TODO 
+
+### corrigido travamento widget pywebview
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [widget, pywebview, windows, travamento, recursao, debug, frameless]
+data: 2026-08-02
+contexto: O widget desktop do grafo (scripts/widget_grafo.py) travava; o terminal python mostrava recorrente `[pywebview] Error while processing win.native.AccessibilityObject.Bounds.Empty...: maximum recursion depth exceeded`.
+decisao: Duas causas distintas atacadas:
+1. GEOMETRIA: ler `win.x/win.y/win.width/win.height` a partir de thread nao-principal (loop de 1s) dispara recursao infinita
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -869,7 +1209,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-03T01:30:18.689547
+**Ultima atualizacao:** 2026-08-04T03:45:44.791564
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

@@ -1,7 +1,7 @@
 ---
 tags: [background, job, não, oculto, opencode, padrao]
 aliases: [Config: 2026-07-27-5: Teste final do vigilante em processo r]
-date: 2026-08-03
+date: 2026-08-04
 ---
 
 # Config: 2026-07-27-5: Teste final do vigilante em processo real
@@ -20,9 +20,9 @@ Criado enquanto vigilante roda como processo Windows oculto.
 
 ## Conexoes
 
-- [[2026-07-27-fallback-automático-de-modelo-llm-com-bun-razrooo]]
-- [[2026-07-27-sistema-automático-de-captura-de-conhecimento-do-]]
-- [[2026-07-28-cláusula-pétrea-toda-alteração-no-ecossistema-dev]]
+- [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
 - [[cluster-hub-ecossistema]]
+- [[config-2026-07-28-formato-correto-do-mcp-no-opencode-1187]]
+- [[controle-da-tv-lg-webos-via-ssap]]
 - [[padrao-hub-padroes]]
-- [[vault-obsidian-fonte-viva]]
+- [[secrets-guard-no-preflightcheck]]
