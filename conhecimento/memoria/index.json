@@ -151,7 +151,8 @@
     71
   ],
   "morria": [
-    71
+    71,
+    77
   ],
   "desugardebugfiledependencies": [
     71
@@ -248,5 +249,20 @@
   ],
   "msmpeng": [
     76
+  ],
+  "startup": [
+    77
+  ],
+  "atalho": [
+    77
+  ],
+  "iniciado": [
+    77
+  ],
+  "8767": [
+    77
+  ],
+  "serve": [
+    77
   ]
 }

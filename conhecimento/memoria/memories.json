@@ -928,5 +928,25 @@
     "access_count": 0,
     "created_at": "2026-08-04T06:01:56.054001",
     "last_accessed": "2026-08-04T06:01:56.054001"
+  },
+  {
+    "id": 77,
+    "kind": "padrao",
+    "task": "Persistencia da conexao do Jarvis (bridge + watchdog)",
+    "summary": "Watchdog travava e a bridge morria; para garantir disponibilidade: watchdog.ps1 roda a cada 20s monitorando bridge 8765 e serve 8767, iniciado via atalho no Startup; celular conecta por WebSocket via Tailscale 100.64.71.9 sem depender de ADB; app desconecta em background e reconecta ao voltar ao primeiro plano. Verificacao: Get-NetTCPConnection 8765 + bridge_estado.json.",
+    "project": "",
+    "tags": [
+      "startup",
+      "atalho",
+      "iniciado",
+      "8767",
+      "morria",
+      "serve"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-04T19:18:33.015878",
+    "last_accessed": "2026-08-04T19:18:33.015878"
   }
 ]
