@@ -417,7 +417,9 @@ WIDGET_JS_EXTRA = """
 
     function aplicarLabels() {
       if (typeof nodes === 'undefined') return;
-      var oculto = localStorage.getItem('labelsOcultos') === 'true';
+      // Padrao: etiquetas DESATIVADAS. Oculto = localStorage nao e 'false'
+      // (ausente/'true' = oculto; apenas 'false' explicito mostra).
+      var oculto = localStorage.getItem('labelsOcultos') !== 'false';
       var tam = oculto ? 0 : 11;
       var upd = nodes.get().map(function(n){ return { id: n.id, font: Object.assign({}, n.font, { size: tam }) }; });
       nodes.update(upd);
@@ -425,7 +427,7 @@ WIDGET_JS_EXTRA = """
 
     ctrl.onmousedown = function(e) {
       e.preventDefault(); e.stopPropagation();
-      var oculto = localStorage.getItem('labelsOcultos') === 'true';
+      var oculto = localStorage.getItem('labelsOcultos') !== 'false';
       localStorage.setItem('labelsOcultos', oculto ? 'false' : 'true');
       aplicarLabels();
     };
