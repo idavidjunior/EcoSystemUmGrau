@@ -828,5 +828,25 @@
     "access_count": 0,
     "created_at": "2026-08-03T23:38:39.128618",
     "last_accessed": "2026-08-03T23:38:39.128618"
+  },
+  {
+    "id": 72,
+    "kind": "padrao",
+    "task": "ADB via Tailscale: rota IPv4 falha quando celular esta em rede local, CurAddr muda dinamicamente - usar script automatico",
+    "summary": "O ADB do celular (Redmi Note 11) nao conecta sempre pelo IPv4 do Tailscale (100.64.71.9): quando o celular muda de rede (WiFi para celular/dados), a rota muda para IPv6 direto ou para IP local. O endereco de conexao direta (CurAddr) muda dinamicamente. Criado scripts/adb-redmi.ps1 que le o tailscale status, extrai IPv6 (CurAddr entre colchetes) e IPv4, e tenta cada um com adb connect ate achar a rota que funciona. Tambem instalado scrcpy 4.1 (winget) para espelhamento de tela via ADB. Bug PowerShell importante: interpolacao de string '' e interpretada como variavel de escopo (vazia) - usar ':5555'.",
+    "project": "",
+    "tags": [
+      "100",
+      "pelo",
+      "conecta",
+      "nao",
+      "note",
+      "automatico"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-04T05:22:46.817205",
+    "last_accessed": "2026-08-04T05:22:46.817205"
   }
 ]
