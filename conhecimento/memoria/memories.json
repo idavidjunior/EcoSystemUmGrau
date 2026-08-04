@@ -1088,5 +1088,25 @@
     "access_count": 0,
     "created_at": "2026-08-04T20:50:43.730161",
     "last_accessed": "2026-08-04T20:50:43.730161"
+  },
+  {
+    "id": 85,
+    "kind": "mostra",
+    "task": "Labels ocultas por padrao + botao de ocultar menus persistente no widget",
+    "summary": "Semantica invertida: labels (etiquetas) agora DESATIVADAS por padrao. Oculto = localStorage.getItem('labelsOcultos') !== 'false' (ausente/'true'=oculto; so 'false' explicito mostra). Aplicado em todas as leituras: aplicarLabels, ctrl.onmousedown (botao T), _ajustarFontes, restore_initial_state, update_labels_on_reload. Botao 'T' ativa (",
+    "project": "",
+    "tags": [
+      "invertida",
+      "semantica",
+      "reload",
+      "widget",
+      "persistente",
+      "update"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-04T20:57:33.171589",
+    "last_accessed": "2026-08-04T20:57:33.171589"
   }
 ]
