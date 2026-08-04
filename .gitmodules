@@ -1,0 +1,44 @@
+[submodule "Projetos/BibliaEstudoCompleta"]
+	path = Projetos/BibliaEstudoCompleta
+	url = https://github.com/idavidjunior/BibliaEstudoCompleta.git
+	branch = master
+[submodule "Projetos/CellCleaner"]
+	path = Projetos/CellCleaner
+	url = https://github.com/idavidjunior/CellCleaner.git
+	branch = master
+[submodule "Projetos/Mp3Player"]
+	path = Projetos/Mp3Player
+	url = https://github.com/idavidjunior/Mp3Player.git
+	branch = master
+[submodule "Projetos/OrquestradorAPK-FLUTTER"]
+	path = Projetos/OrquestradorAPK-FLUTTER
+	url = https://github.com/idavidjunior/OrquestradorAPK-FLUTTER.git
+	branch = main
+[submodule "Projetos/Rob-Trader"]
+	path = Projetos/Rob-Trader
+	url = https://github.com/idavidjunior/Rob-Trader.git
+	branch = main
+[submodule "Projetos/SupermarketCalculator"]
+	path = Projetos/SupermarketCalculator
+	url = https://github.com/idavidjunior/SupermarketCalculator.git
+	branch = master
+[submodule "Projetos/VoxUmGrau"]
+	path = Projetos/VoxUmGrau
+	url = https://github.com/idavidjunior/VoxUmGrau.git
+	branch = master
+[submodule "Projetos/WindowsMaintenanceSuite_v3"]
+	path = Projetos/WindowsMaintenanceSuite_v3
+	url = https://github.com/idavidjunior/WindowsMaintenanceSuite_v3.git
+	branch = main
+[submodule "Projetos/claude-code-extra-agents"]
+	path = Projetos/claude-code-extra-agents
+	url = https://github.com/idavidjunior/claude-code-extra-agents.git
+	branch = main
+[submodule "Projetos/compiladorAPK"]
+	path = Projetos/compiladorAPK
+	url = https://github.com/idavidjunior/compiladorAPK.git
+	branch = main
+[submodule "Projetos/roboumgrau"]
+	path = Projetos/roboumgrau
+	url = https://github.com/idavidjunior/roboumgrau.git
+	branch = main

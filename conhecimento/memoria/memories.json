@@ -788,5 +788,25 @@
     "access_count": 0,
     "created_at": "2026-08-03T11:32:03.563195",
     "last_accessed": "2026-08-03T11:32:03.563195"
+  },
+  {
+    "id": 70,
+    "kind": "padrao",
+    "task": "Conexao NVIDIA confirmada",
+    "summary": "Teste real na API integrate.api.nvidia.com com deepseek-v4-flash respondeu 'ok'. Chave nvapi valida e ativa no provider nvidia do opencode.jsonc.",
+    "project": "",
+    "tags": [
+      "opencode",
+      "provider",
+      "integrate",
+      "real",
+      "ativa",
+      "teste"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-03T23:14:58.613384",
+    "last_accessed": "2026-08-03T23:14:58.613384"
   }
 ]

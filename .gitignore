@@ -51,3 +51,6 @@ scripts/*_test*.py
 # Node.js deps
 node_modules/
 
+
+# Backups - nao versionar
+backups/
