@@ -386,13 +386,34 @@ def gerar_html(nos, arestas, output_path):
   const options = {{
     nodes: {{ shape:'dot', font:{{ size:11, color:'#cdd6f4' }} }},
     edges: {{ smooth:{{ type:'continuous' }} }},
-    physics: {{ enabled: true, barnesHut: {{ gravitationalConstant:-520, springLength:120, springConstant:0.04, damping:0.95 }},
-               stabilization: {{ iterations:60 }} }},
+    // Movimento organico: SEM estabilizacao, timestep lento, velocidade
+    // limitada -> a rede nunca "congela", respira em movimento perpetuo.
+    physics: {{
+      enabled: true,
+      solver: 'barnesHut',
+      barnesHut: {{
+        theta: 0.5,
+        gravitationalConstant: -620,
+        centralGravity: 0.28,
+        springLength: 120,
+        springConstant: 0.03,
+        damping: 0.88,
+        avoidOverlap: 0.55
+      }},
+      minVelocity: 0,
+      maxVelocity: 6,
+      timestep: 0.2,
+      adaptiveTimestep: false,
+      stabilization: false
+    }},
     interaction: {{ hover:true, tooltipDelay:120, navigationButtons:true }}
   }};
   const network = new vis.Network(container, {{ nodes, edges }}, options);
 
-  // Posicao/zoom/cam posicao inicial capturados quando a fisica estabilizar
+  // Enquadra o grafo e liberta a fisica para o balanco organico perpetuo.
+  setTimeout(() => network.fit({{ animation: true }}), 1200);
+
+  // Posicao/zoom iniciais capturados; a fisica NAO congela (cerebro vivo).
   let viewInical = null;
   let scaleInical = null;
   let posIniciais = {{}};
@@ -405,13 +426,27 @@ def gerar_html(nos, arestas, output_path):
         const p = network.getPositions([n.id])[n.id];
         posIniciais[n.id] = {{ x: p.x, y: p.y }};
       }});
-      // NAO congelea a fisica: o "cerebro vivo" respira continuamente.
-      // Apenas reduz a energia para um balanco organicamente lento.
-      network.setOptions({{ physics: {{ barnesHut: {{ gravitationalConstant:-520, springLength:120, springConstant:0.02, damping:0.96 }} }} }});
+      // Mantem o cerebro vivo: balanco lento e respirando.
+      network.setOptions({{ physics: {{ barnesHut: {{
+        gravitationalConstant: -620, springLength: 120, springConstant: 0.018,
+        damping: 0.92, centralGravity: 0.30, avoidOverlap: 0.55
+      }} }} }});
     }}
   }};
-  network.once('stabilized', () => setTimeout(guardaInicial, 400));
   setTimeout(guardaInicial, 2500);
+
+  // --- Respiracao do layout ------------------------------------------------
+  // Ciclo lento (~22s) que alterna a energia da fisica: "inspira" (mais
+  // repulsao, espaca) e "expira" (mais coesao, aproxima) sem nunca parar.
+  let _respirando = 1;
+  setInterval(() => {{
+    _respirando = 0.78 + 0.22 * Math.sin(Date.now() * 0.00028);
+    network.setOptions({{ physics: {{ barnesHut: {{
+      gravitationalConstant: -620 * _respirando,
+      centralGravity: 0.30 * (1.35 - _respirando),
+      springConstant: 0.018 * (1.6 - _respirando)
+    }} }} }});
+  }}, 3000);
 
   // --- Movimento organico: "cerebro vivo" cognitivo ---
   // Heartbeat: respiracao suave dos nos + pulsos de sinapse aleatorios.
@@ -420,32 +455,40 @@ def gerar_html(nos, arestas, output_path):
   network.on('tick', () => {{
     if (_tickPausado) return;
     const agora = Date.now();
-    // respiracao de opacidade dos nos (ciclo lento ~4s)
-    const base = 0.88 + 0.12 * Math.sin(agora * 0.0013);
+    // respiracao de opacidade dos nos (ciclo lento ~5s, amarrado a respiracao)
+    const base = 0.9 + 0.10 * Math.sin(agora * 0.001 * (1 + _respirando));
     const upd = [];
     nodes.get().forEach(n => {{
       upd.push({{ id: n.id, opacity: base, borderWidth: 0, shadow: true }});
     }});
     nodes.update(upd);
-    // pulso cognitivo: a cada ~4s, intensifica aleatoriamente uma aresta
-    // (simula uma sinapse disparando), mantendo o resto sutil.
+    // pulso cognitivo: a cada ~3.5-5s, acende ALEATORIAMENTE 1-3 arestas
+    // (sinapses disparando em cascata), mantendo o resto sutil.
     let arestasUpd = [];
     edges.get().forEach(e => {{
       arestasUpd.push({{ id: e.id, color: e.color || '#999', width: arestaOriginal[e.id] ? arestaOriginal[e.id].width : 1, opacity: 0.25 }});
     }});
-    if (agora - _ultimoSpike > 4000) {{
+    if (agora - _ultimoSpike > _proxSpike()) {{
       _ultimoSpike = agora;
       const todas = edges.get();
       if (todas.length) {{
-        const escolhida = todas[Math.floor(Math.random() * todas.length)];
+        const alvos = [];
+        const qtd = 1 + Math.floor(Math.random() * 3);
+        for (let i = 0; i < qtd && todas.length; i++) {{
+          alvos.push(todas[Math.floor(Math.random() * todas.length)].id);
+        }}
         arestasUpd = arestasUpd.map(a =>
-          a.id === escolhida.id
+          alvos.includes(a.id)
             ? {{ ...a, color: '#ffffff', width: 4.5, opacity: 0.9 }}
             : a);
-        // destaque leve do no destino
-        const _dstOrig = original[escolhida.to] || {{color:'#4e79a7', size:15}};
-        nodes.update([{{ id: escolhida.to, color: '#89b4fa', size: 22, shadow: true, shadowSize: 20 }}]);
-        setTimeout(() => nodes.update([{{ id: escolhida.to, color: _dstOrig.color, size: _dstOrig.size }}]), 700);
+        // leve glow no no destino de cada sinapse
+        alvos.forEach(edgeId => {{
+          const _ed = todas.find(x => x.id === edgeId);
+          if (!_ed) return;
+          const _dstOrig = original[_ed.to] || {{color:'#4e79a7', size:15}};
+          nodes.update([{{ id: _ed.to, color: '#89b4fa', size: 22, shadow: true, shadowSize: 22 }}]);
+          setTimeout(() => nodes.update([{{ id: _ed.to, color: _dstOrig.color, size: _dstOrig.size }}]), 700);
+        }});
       }}
     }}
     edges.update(arestasUpd);
@@ -453,6 +496,43 @@ def gerar_html(nos, arestas, output_path):
   // pausa o balanco organico ao pairar sobre um no
   network.on('hoverNode', () => {{ _tickPausado = true; }});
   network.on('blurNode', () => {{ _tickPausado = false; }});
+
+  // Intervalo aleatorio entre pulsos de sinapse (3.2s a 5.5s)
+  function _proxSpike() {{ return 3200 + Math.random() * 2300; }}
+
+  // --- Cascata de sinapses quando o vault atualiza ---
+  // O widget adiciona 'rc=<timestamp>' na URL ao detectar mudanca de versao.
+  // Apos o reload, a presenca de 'rc' dispara uma onda de sinapses em cascata
+  // para dar a sensacao de "cognicao viva no momento do aprendizado".
+  (function() {{
+    var rcParam = new URLSearchParams(window.location.search).get('rc');
+    if (!rcParam) return;
+    setTimeout(() => {{
+      const todas = edges.get();
+      if (!todas.length) return;
+      // onda: acende ~10% das arestas em sequencia, uma a uma
+      const qtd = Math.max(3, Math.floor(todas.length * 0.10));
+      const seq = todas.slice().sort(() => Math.random() - 0.5).slice(0, qtd);
+      seq.forEach((ed, i) => {{
+        setTimeout(() => {{
+          const up = edges.get().map(a => {{
+            if (a.id === ed.id) return {{ id: a.id, color: '#ffffff', width: 5, opacity: 1 }};
+            return a;
+          }});
+          edges.update(up);
+          if (original[ed.to]) nodes.update([{{ id: ed.to, color: '#89b4fa', size: 26, shadow: true, shadowSize: 26 }}]);
+          setTimeout(() => {{
+            const rup = edges.get().map(a => {{
+              if (a.id === ed.id) return {{ id: a.id, color: arestaOriginal[a.id].color, width: arestaOriginal[a.id].width, opacity: 0.25 }};
+              return a;
+            }});
+            edges.update(rup);
+            if (original[ed.to]) nodes.update([{{ id: ed.to, color: original[ed.to].color, size: original[ed.to].size }}]);
+          }}, 550);
+        }}, i * 90);
+      }});
+    }}, 600);
+  }})();
 
   const original = {{}};
   nodes.get().forEach(n => {{

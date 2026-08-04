@@ -948,5 +948,25 @@
     "access_count": 0,
     "created_at": "2026-08-04T19:18:33.015878",
     "last_accessed": "2026-08-04T19:18:33.015878"
+  },
+  {
+    "id": 78,
+    "kind": "padrao",
+    "task": "Movimento organico do grafo do conhecimento (vis-network)",
+    "summary": "Grafo cerebro-vivo agora nunca congela: physics.stabilization=false + minVelocity0 + maxVelocity6 + timestep0.2; respiracao do layout oscilando forcas (ciclo ~22s); pulse de sinapses aleatorias + cascata quando URL tem 'rc' (vault atualizou). improvedLayout so funciona antes de criar a rede. Preflight ALL PASS.",
+    "project": "",
+    "tags": [
+      "congela",
+      "vivo",
+      "cerebro",
+      "network",
+      "atualizou",
+      "vault"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-04T19:28:43.852082",
+    "last_accessed": "2026-08-04T19:28:43.852082"
   }
 ]
