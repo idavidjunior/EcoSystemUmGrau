@@ -76,7 +76,7 @@ def handle_tool(tool, args, rid):
         if not q:
             return {'jsonrpc': '2.0', 'id': rid, 'result': {'content': [{'type': 'text', 'text': 'No query'}]}}
         r = subprocess.run(
-            [sys.executable, os.path.join(BASE, 'Habilidades', 'pontes', 'busca-conhecimento', 'search_knowledge.py'), q],
+            [sys.executable, os.path.join(BASE, 'mcp', 'memoria', 'habilidades', 'busca-conhecimento', 'search_knowledge.py'), q],
             capture_output=True, text=True, cwd=BASE, timeout=30)
         text = (r.stdout or r.stderr or f'No results for: {q}')[:10000]
         return {'jsonrpc': '2.0', 'id': rid, 'result': {'content': [{'type': 'text', 'text': text}]}}

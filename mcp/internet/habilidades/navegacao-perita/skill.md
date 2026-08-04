@@ -139,7 +139,7 @@ Ser perito em navegar, clicar, reconhecer elementos, ver o que está na tela e e
 
 ## Scripts Úteis do Ecossistema
 - `scripts/android_diagnostics.py --json` → diagnóstico completo do dispositivo via ADB.
-- `Habilidades/tecnicas/android-diagnostics/skill.md` → manutenção remota do app Android.
+- `mcp/android/habilidades/android-diagnostics/skill.md` → manutenção remota do app Android.
 - ADB path: `C:\Users\David Jr\AppData\Local\Android\platform-tools\platform-tools\adb.exe`.
 - Dispositivo: `adb connect 100.64.71.9:5555`, pacote `com.voxumgrau.app`.
 

@@ -85,10 +85,12 @@ O projeto está em `C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau`
   - `test_vox.py` — Testes da bridge Vox
   - `opencode-serve.jsonc` — Config para opencode serve
 
-- `Habilidades/` — **Catálogo único de habilidades** (decisão `2026-07-31-habilidades-catalogo-unico-jarvis`)
-  - `tecnicas/` — 35 habilidades técnicas (cada uma com SKILL.md ou skill.md)
-  - `pontes/` — busca-web (agentic-search) e busca-conhecimento (`search_knowledge.py`)
-  - `comportamentais/ponytail/` — habilidade comportamental (lazy senior dev) — especificação em `README.md`, origem do plugin a localizar
+- `mcp/` — **Habilidades organizadas por domínio MCP** (decisão `2026-08-04-reorg-mcp-habilidades`)
+  - `desenvolvimento/habilidades/` — 30 habilidades técnicas (cada uma com SKILL.md ou skill.md)
+  - `android/habilidades/` — 4 habilidades Android
+  - `internet/habilidades/` — busca-web, clima-api, endereco-geo, navegacao-perita
+  - `memoria/habilidades/` — busca-conhecimento (`search_knowledge.py`)
+  - `comportamentais/ponytail/` — habilidade comportamental (lazy senior dev) — especificação em `README.md`
   - `multimidia/` — reservado para áudio/imagem/vídeo
   - `manifesto_geral.json` — índice oficial: toda habilidade que o Jarvis pode acionar
 
@@ -422,17 +424,17 @@ Você se mantém atualizado automaticamente através de:
 9. **Build versionado**: use `.\build.ps1 -Install` no diretório `Android/VoxUmGrau/`
 
 ### O que verificar quando algo mudar
-- Arquivos novos em `scripts/`, `Habilidades/`, `ler-runtime/`
+- Arquivos novos em `scripts/`, `mcp/`, `ler-runtime/`
 - Mudanças em `opencode.jsonc` (config global e do projeto)
 - Novos modelos do OpenCode: `npx opencode models`
 - Versão do OpenCode: `npx opencode --version`
 
 ## Geolocalização
 
-Você tem acesso a geolocalização por IP através do script `Habilidades/tecnicas/clima-api/geolocalizacao.py`:
-- `python Habilidades/tecnicas/clima-api/geolocalizacao.py` — Retorna JSON com cidade, região, país, latitude, longitude, timezone
-- `python Habilidades/tecnicas/clima-api/geolocalizacao.py --clima` — Retorna texto com local + clima
-- `python Habilidades/tecnicas/clima-api/geolocalizacao.py --saudacao` — Retorna texto curto "em Cidade, Estado"
+Você tem acesso a geolocalização por IP através do script `mcp/internet/habilidades/clima-api/geolocalizacao.py`:
+- `python mcp/internet/habilidades/clima-api/geolocalizacao.py` — Retorna JSON com cidade, região, país, latitude, longitude, timezone
+- `python mcp/internet/habilidades/clima-api/geolocalizacao.py --clima` — Retorna texto com local + clima
+- `python mcp/internet/habilidades/clima-api/geolocalizacao.py --saudacao` — Retorna texto curto "em Cidade, Estado"
 
 Use nas saudações para personalizar: "Bom dia! Aqui em {cidade} está {clima}..."
 

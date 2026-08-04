@@ -46,6 +46,26 @@
       "type": "local",
       "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/mcp-obsidian-server.py"],
       "enabled": true
+    },
+    "mcp-desenvolvimento": {
+      "type": "local",
+      "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/desenvolvimento/server.py"],
+      "enabled": true
+    },
+    "mcp-android": {
+      "type": "local",
+      "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/android/server.py"],
+      "enabled": true
+    },
+    "mcp-internet": {
+      "type": "local",
+      "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/internet/server.py"],
+      "enabled": true
+    },
+    "mcp-memoria": {
+      "type": "local",
+      "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/memoria/server.py"],
+      "enabled": true
     }
   },
   "command": {
@@ -66,9 +86,9 @@
   "instructions": [
     "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/AGENTS.md",
     "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/config/agents/00-system-rules.md",
-    "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/Habilidades/**/SKILL.md",
-    "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/Habilidades/**/skill.md",
-    "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/Habilidades/tecnicas/clima-api/skill.md",
+    "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/**/habilidades/**/SKILL.md",
+    "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/**/habilidades/**/skill.md",
+    "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/internet/habilidades/clima-api/skill.md",
     "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/ler-runtime/CONHECIMENTO.md"
   ]
 }

@@ -16,8 +16,8 @@ except ImportError as e:
     def nvidia_request_with_quota(*args, **kwargs):
         raise RuntimeError("nvidia_quota_monitor não instalado")
 
-HAB_ROOT = Path(__file__).resolve().parent.parent / "Habilidades"
-for _hp in [HAB_ROOT / "tecnicas" / "clima-api"]:
+HAB_ROOT = Path(__file__).resolve().parent.parent / "mcp"
+for _hp in [HAB_ROOT / "internet" / "habilidades" / "clima-api"]:
     if _hp.is_dir() and str(_hp) not in sys.path:
         sys.path.insert(0, str(_hp))
 

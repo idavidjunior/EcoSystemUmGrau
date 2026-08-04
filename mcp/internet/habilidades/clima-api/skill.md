@@ -4,7 +4,7 @@
 Clima atual e previsão diária via Open-Meteo (gratuito, sem API key).
 
 ```bash
-python Habilidades/tecnicas/clima-api/clima_api.py "cidade"
+python mcp/internet/habilidades/clima-api/clima_api.py "cidade"
 # → "São Paulo: predominantemente limpo, 16°C (sensação 16°C), umidade 91%"
 # → "Previsão para amanhã: mínima de 13 e máxima de 28 graus, nublado."
 ```

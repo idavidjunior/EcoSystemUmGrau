@@ -84,7 +84,7 @@ Se QUALQUER gate falhar → retorna ao passo anterior.
 # BUSCA SEMÂNTICA
 
 Antes de assumir que não sabe algo, consulte:
-- `python Habilidades/pontes/busca-conhecimento/search_knowledge.py "termo"`
+- `python mcp/memoria/habilidades/busca-conhecimento/search_knowledge.py "termo"`
 - `ler-runtime/CONHECIMENTO.md` (base exportada completa)
 - `conhecimento/notas/` (notas individuais do Obsidian)
 

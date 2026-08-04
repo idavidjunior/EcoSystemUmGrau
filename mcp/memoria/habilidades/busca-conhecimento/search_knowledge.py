@@ -4,6 +4,11 @@ from collections import Counter
 from pathlib import Path
 
 BASE = str(Path(__file__).resolve().parent.parent)
+# Sobe ate a raiz do ecossistema (dir que contem ler-runtime/ e conhecimento/)
+_p = Path(BASE)
+while not (_p / "ler-runtime").is_dir():
+    _p = _p.parent
+BASE = str(_p)
 LER_DIR = os.path.join(BASE, 'ler-runtime')
 NOTAS_DIR = os.path.join(BASE, 'conhecimento', 'notas')
 MEM_DIR = os.path.join(BASE, 'conhecimento', 'memoria')
@@ -74,7 +79,7 @@ def load_corpus():
 if __name__ == '__main__':
     query = ' '.join(sys.argv[1:]) if len(sys.argv) > 1 else ''
     if not query:
-        print('Uso: python Habilidades/pontes/busca-conhecimento/search_knowledge.py <termo>')
+        print('Uso: python mcp/memoria/habilidades/busca-conhecimento/search_knowledge.py <termo>')
         sys.exit(1)
 
     docs = load_corpus()

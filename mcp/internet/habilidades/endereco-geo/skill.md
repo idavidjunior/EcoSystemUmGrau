@@ -4,13 +4,13 @@
 Descobre o endereço (rua e, quando disponível, número) a partir das coordenadas obtidas por IP, com geolocalização reversa do OpenStreetMap (gratuito, sem API key).
 
 ```bash
-python Habilidades/tecnicas/endereco-geo/endereco.py
+python mcp/internet/habilidades/endereco-geo/endereco.py
 # → JSON completo com latitude, longitude, endereço detalhado e texto formatado
 
-python Habilidades/tecnicas/endereco-geo/endereco.py --texto
+python mcp/internet/habilidades/endereco-geo/endereco.py --texto
 # → "Avenida Paulista, 1000, Bela Vista, São Paulo, SP, CEP 01310-100"
 
-python Habilidades/tecnicas/endereco-geo/endereco.py --lat -23.5475 --lon -46.6361
+python mcp/internet/habilidades/endereco-geo/endereco.py --lat -23.5475 --lon -46.6361
 # → Reverse geocode de coordenadas explícitas
 ```
 
