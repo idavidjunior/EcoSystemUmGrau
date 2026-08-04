@@ -888,5 +888,25 @@
     "access_count": 0,
     "created_at": "2026-08-04T05:39:02.747190",
     "last_accessed": "2026-08-04T05:39:02.747190"
+  },
+  {
+    "id": 75,
+    "kind": "como",
+    "task": "Watchdog persistente via Start-Process com aspas embutidas",
+    "summary": "Start-Process com ArgumentList quebra caminho com espacos (cada espaco vira argumento). Solucao: passar '-File \" caminho com espaco\\'",
+    "project": "",
+    "tags": [
+      "argumento",
+      "vira",
+      "espacos",
+      "quebra",
+      "argumentlist",
+      "process"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-04T05:45:10.460179",
+    "last_accessed": "2026-08-04T05:45:10.460179"
   }
 ]
