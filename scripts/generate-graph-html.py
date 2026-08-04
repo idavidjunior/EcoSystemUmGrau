@@ -245,6 +245,20 @@ def extrair_nos():
         if status:
             nos_por_id[slug]['status'] = status
 
+        # Atividade real: mapa mtime -> 0..1 (decai exponencialmente e por janela
+        # de dias). Notas editadas hoje = ~1; mais de ~90 dias sem toque = ~0.
+        try:
+            mt = mtime_por_id.get(slug, 0)
+            if mt:
+                dias = max(0, (agora_ts - mt) / 86400.0)
+                atv = max(0.0, min(1.0, 1.0 - (dias / 90.0)))
+                atv = max(atv, 0.12)  # nunca some totalmente
+            else:
+                atv = 0.5
+            nos_por_id[slug]['atv'] = atv
+        except Exception:
+            nos_por_id[slug]['atv'] = 0.5
+
         # armazenar wikilinks desta nota (antes de possivelmente ser usado)
         links = _extract_wikilinks(body)
         no_cache[slug] = links
@@ -305,6 +319,12 @@ def gerar_html(nos, arestas, output_path):
         if n['categoria'] == 'bugs':
             cor = STATUS_COR.get(n.get('status'), cor)
         size = 10 + int(14 * (n['grau'] / max_grau)) if max_grau else 10
+        # Tamanho por USO REAL: o no e "termometro" do vault. Tamanho base vem
+        # do grau; a ATIVIDADE (mtime recente) adiciona ate +10 e evita o no
+        # diminuir demais quando e central mas este sem edicao recente.
+        atv = n.get('atv', 0.5)
+        use_size = int(size * (0.75 + 0.5 * atv))
+        size = max(size, use_size)
         if n['categoria'] == 'hub':
             size = max(size, 30)
         label = n['label']
@@ -319,6 +339,7 @@ def gerar_html(nos, arestas, output_path):
             'title': titles[n['id']] or n['label'],
             'cat': n['categoria'],
             'cl': n['cl'],
+            'atv': round(n.get('atv', 0.5), 3),
         }
         if n['categoria'] == 'bugs':
             node_obj['st'] = n.get('status', 'resolvido')
@@ -678,9 +699,12 @@ def gerar_html(nos, arestas, output_path):
       let sombra = Math.round(12 + 14 * z);
       if (agoraPulso) {{
         const fase = _zFase[n.id] != null ? _zFase[n.id] : ((_hashId(n.id) || 0) % 97);
-        const pulso = Math.sin(agora * 0.0012 + fase) * 0.06;
+        // Nos QUENTES (atividade real alta, mtime recente) latejam com mais
+        // energia e brilham mais forte: o pulso escala com atv.
+        const atv = (n.atv != null) ? n.atv : 0.5;
+        const pulso = Math.sin(agora * 0.0012 + fase) * (0.05 + 0.09 * atv);
         sz = Math.max(6, sz * (1 + pulso * 0.4) * esc);
-        sombra = Math.round(sombra + 4 * pulso);
+        sombra = Math.round(sombra + (4 + 10 * atv) * pulso);
       }} else {{
         sz = Math.max(6, sz * esc);
       }}
