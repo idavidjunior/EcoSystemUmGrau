@@ -1008,5 +1008,25 @@
     "access_count": 0,
     "created_at": "2026-08-04T20:01:53.602406",
     "last_accessed": "2026-08-04T20:01:53.602406"
+  },
+  {
+    "id": 81,
+    "kind": "padrao",
+    "task": "Giro autonomo 3D no grafo (spin aleatorio via transform CSS)",
+    "summary": "Em scripts/generate-graph-html.py: o canvas do vis-network e rotacionado sozinho com transform CSS - rotateZ (spin) com direcao/velocidade aleatorias mudando a cada 4-8s e leve inclinacao senoidal rotateX/Y (perspective 1200px + preserve-3d no pai). Junto com o eixo Z de profundidade (_zVivo) cada no vira para a camera = globo girando. Pausa o giro no dragStart e retoma no dragEnd. JS validado via node --check.",
+    "project": "",
+    "tags": [
+      "pai",
+      "preserve",
+      "1200px",
+      "perspective",
+      "rotatex",
+      "senoidal"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-04T20:09:15.862032",
+    "last_accessed": "2026-08-04T20:09:15.862032"
   }
 ]

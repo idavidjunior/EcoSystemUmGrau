@@ -316,5 +316,23 @@
   ],
   "arestas": [
     80
+  ],
+  "pai": [
+    81
+  ],
+  "preserve": [
+    81
+  ],
+  "1200px": [
+    81
+  ],
+  "perspective": [
+    81
+  ],
+  "rotatex": [
+    81
+  ],
+  "senoidal": [
+    81
   ]
 }

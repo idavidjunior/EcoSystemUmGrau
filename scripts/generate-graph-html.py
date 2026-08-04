@@ -453,6 +453,53 @@ def gerar_html(nos, arestas, output_path):
     return Math.max(0.04, Math.min(1, z));
   }}
 
+  // =====================================================================
+  // GIRO AUTONOMO 3D — o cerebro gira sozinho (sem WebGL)
+  // Rotacionamos o proprio canvas com transform CSS: giro em Z (spin) com
+  // direcao/velocidade aleatorias, mudando a cada ~4-8s, mais uma leve
+  // inclinacao senoidal em X/Y (efeito de perspective/trementina 3D). Junto
+  // com o eixo Z de profundidade (_zVivo), cada no "vira para a camera"
+  // conforme gira -> sensacao de globo girando no espaco. Pausa quando o
+  // usuario interage (drag), retoma sozinho em seguida.
+  // =====================================================================
+  var _cnv3d = document.querySelector('#net canvas');
+  var _giro = {{ ang: 0, vel: 0.0018, tiltAmp: 0.05, tiltFreq: 1, rafa: null }};
+  var _giroVelGuardado = 0;
+  if (_cnv3d) {{
+    _cnv3d.style.transformOrigin = 'center center';
+    var _cnvPai = _cnv3d.parentNode;
+    if (_cnvPai) _cnvPai.style.perspective = '1200px';
+    _cnvPai.style.transformStyle = 'preserve-3d';
+  }}
+  function _novoGiro() {{
+    // direcao aleatoria (reverte as vezes) e velocidade lenta/variavel
+    var sinal = Math.random() < 0.22 ? -1 : 1;
+    _giro.vel = sinal * (0.0008 + Math.random() * 0.0022);
+    // inclinacao tambem aleatoria, para o efeito "girar no espaco"
+    _giro.tiltAmp = 0.04 + Math.random() * 0.11;
+    _giro.tiltFreq = 0.4 + Math.random() * 0.9;
+    setTimeout(_novoGiro, 4000 + Math.random() * 4000);
+  }}
+  setTimeout(_novoGiro, 3000 + Math.random() * 3000);
+  function _loopGiro() {{
+    if (!_cnv3d) return;
+    _giro.ang += _giro.vel;
+    var tilt = (_giro.tiltAmp || 0.05) * Math.sin(performance.now() * 0.0009 * (_giro.tiltFreq || 1));
+    _cnv3d.style.transform =
+      'rotateZ(' + _giro.ang + 'rad)' +
+      ' rotateX(' + tilt * 0.4 + 'rad)' +
+      ' rotateY(' + tilt + 'rad)';
+    _giro.rafa = requestAnimationFrame(_loopGiro);
+  }}
+  _giro.rafa = requestAnimationFrame(_loopGiro);
+  // pausa o giro automatico enquanto o usuario arrasta; retoma ao soltar
+  network.on('dragStart', function() {{
+    _giroVelGuardado = _giro.vel; _giro.vel = 0;
+  }});
+  network.on('dragEnd', function() {{
+    _giro.vel = _giroVelGuardado || 0.0018;
+  }});
+
   // Posicao/zoom iniciais capturados; a fisica NAO congela (cerebro vivo).
   let viewInical = null;
   let scaleInical = null;
