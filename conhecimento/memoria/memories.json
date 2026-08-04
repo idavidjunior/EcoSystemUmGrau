@@ -908,5 +908,25 @@
     "access_count": 0,
     "created_at": "2026-08-04T05:45:10.460179",
     "last_accessed": "2026-08-04T05:45:10.460179"
+  },
+  {
+    "id": 76,
+    "kind": "erro",
+    "task": "DiagnÃ³stico OpenCode Desktop fechando sem erro no Windows",
+    "summary": "OpenCode Desktop (Electron v1.18.10) abre e fecha silenciosamente quando o limite de commit (memÃ³ria virtual) do Windows atinge 100%. No PC com 3,9 GB RAM + pagefile fixo 8 GB, o commit total ~11,9 GB fica saturado pela soma opencode (993 MB private) + MsMpEng (379 MB) + msedgewebview2 (237 MB) + TeamViewer/Chrome. O Windows nega o commit pedido pelo Electron e mata o processo sem exception visÃ­vel. Sintoma clÃ¡ssico: abre e fecha sem erro. CorreÃ§Ã£o: remover limites fixos do pagefile (Set-CimInstance Win32_PageFileSetting InitialSize/MaximumSize=$null) + ativar AutomaticManagedPagefile=$true + reiniciar. DiagnÃ³stico via Win32_OperatingSystem.TotalVirtualMemorySize vs FreeSpaceInVirtualPages (ambos em 1KB units, dividir por 1MB p/ GB).",
+    "project": "",
+    "tags": [
+      "chrome",
+      "teamviewer",
+      "237",
+      "msedgewebview2",
+      "379",
+      "msmpeng"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-04T06:01:56.054001",
+    "last_accessed": "2026-08-04T06:01:56.054001"
   }
 ]
