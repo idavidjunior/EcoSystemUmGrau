@@ -988,5 +988,25 @@
     "access_count": 0,
     "created_at": "2026-08-04T19:52:21.868666",
     "last_accessed": "2026-08-04T19:52:21.868666"
+  },
+  {
+    "id": 80,
+    "kind": "padrao",
+    "task": "Pseudo-3D vivo: profundidade sem WebGL no grafo (esfera de conhecimento)",
+    "summary": "Implementado em scripts/generate-graph-html.py: cada no recebe eixo Z simulado (_zInicial por centralidade: hubs na frente, folhas ao fundo + jitter hash estavel) e flutua no tempo via _zVivo (duas senoides por no, ritmo autonomo). Tamanho/opacidade/glow variam com z (perto=grande/opaco/brilhante, longe=pequeno/translucido) e arestas modulam opacity pela profundidade media das pontas (zM). Nao usa WebGL, nao toca em fisica/clusters/labels/microscopio. Alem da 4D temporal (pulsos/cascata) existente, agora ha a 4a dimensao espacial simulada. JS validado via node --check.",
+    "project": "",
+    "tags": [
+      "pontas",
+      "media",
+      "pela",
+      "opacity",
+      "modulam",
+      "arestas"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-04T20:01:53.602406",
+    "last_accessed": "2026-08-04T20:01:53.602406"
   }
 ]

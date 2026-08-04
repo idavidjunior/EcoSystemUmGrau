@@ -413,6 +413,46 @@ def gerar_html(nos, arestas, output_path):
   // Enquadra o grafo e liberta a fisica para o balanco organico perpetuo.
   setTimeout(() => network.fit({{ animation: true }}), 1200);
 
+  // =====================================================================
+  // PSEUDO-3D — PROFUNDIDADE VIVA (sem WebGL)
+  // Simulamos um eixo Z dentro do motor 2D do vis-network. Cada no recebe
+  // uma profundidade inicial (hubs na FRENTE, folhas ao fundo) com um
+  // jitter estavel, e DEPOIS "flutua" em z ao longo do tempo (onda lenta
+  // por no, autonoma). O tamanho, a opacidade e o brilho do glow refletem
+  // z: perto = grande/opaco/brilhante; longe = pequeno/translucido/apagado.
+  // Resultado: uma "esfera de conhecimento" com relevo que respira na
+  // profundidade. Nao usa dependencia WebGL e nao toca na fisica/clusters.
+  // =====================================================================
+  function _hashId(id) {{
+    if (typeof id === 'number') return Math.abs(id * 2654435761) % 2147483647;
+    var s = String(id), h = 0;
+    for (var i = 0; i < s.length; i++) h = ((h << 5) - h) + s.charCodeAt(i);
+    return Math.abs(h);
+  }}
+  function _zInicial(n) {{
+    // base pela "centralidade" (size e proporcional ao grau): frente -> perto
+    var base = 0.25 + 0.6 * Math.min(1, (n.size || 10) / 40);
+    if (n.cat === 'hub') base = 0.92;          // hubs sempre na frente
+    base += ((_hashId(n.id) % 100) / 100) * 0.22 - 0.11; // jitter estavel
+    return Math.max(0.04, Math.min(1, base));
+  }}
+  var _zBase = {{}};
+  var _zFase = {{}};
+  nodes.get().forEach(function(n) {{
+    _zBase[n.id] = _zInicial(n);
+    _zFase[n.id] = (_hashId(n.id) % 628) / 100; // fase unica da onda
+  }});
+  // Profundidade efetiva num instante t: base + deriva viva (fica em 0..1).
+  // Duas senoides em velocidades diferentes criam um movimento de flutuar
+  // organico, cada no no seu proprio ritmo (autonomo, nunca estatico).
+  function _zVivo(id, t) {{
+    var z0 = _zBase[id] != null ? _zBase[id] : 0.5;
+    var f = _zFase[id] != null ? _zFase[id] : 0;
+    var onda = Math.sin(t * 0.0007 + f) + Math.sin(t * 0.00042 + f * 2.3);
+    var z = z0 + 0.16 * onda * 0.5;
+    return Math.max(0.04, Math.min(1, z));
+  }}
+
   // Posicao/zoom iniciais capturados; a fisica NAO congela (cerebro vivo).
   let viewInical = null;
   let scaleInical = null;
@@ -552,38 +592,52 @@ def gerar_html(nos, arestas, output_path):
 
   // --- Movimento organico: "cerebro vivo" cognitivo ---
   // Heartbeat: respiracao suave dos nos + pulsos de sinapse aleatorios.
+  // A profundidade VIVA (pseudo-3D) modula tamanho/opacidade/glow de cada no,
+  // dando a ilusao de relevo e profundidade sem precisar de WebGL.
   let _tickPausado = false;
   let _ultimoSpike = 0;
   network.on('tick', () => {{
     if (_tickPausado) return;
     const agora = Date.now();
     const base = 0.86 + 0.14 * Math.sin(agora * 0.0015);
-    // --- opacidade: leve, a cada tick (barata) ---
-    const opUpd = [];
-    nodes.get().forEach(n => {{ opUpd.push({{ id: n.id, opacity: base, shadow: true }}); }});
-    nodes.update(opUpd);
-    // --- tamanho/glow: pulsa so vezes em pouco (caro), ~3x/s, com fase unica
-    if (!window.__pulseT || (agora - window.__pulseT) > 300) {{
-      window.__pulseT = agora;
-      const szUpd = [];
-      nodes.get().forEach(n => {{
-        const fase = typeof n.id === 'string'
-          ? Array.from(n.id).reduce((a,b)=>(((a<<5)-a)+b.charCodeAt(0))|0, 0)
-          : (n.id * 2654435761);
-        const pulso = Math.sin(agora * 0.0012 + (fase % 97)) * 0.06;
-        szUpd.push({{
-          id: n.id,
-          size: Math.max(6, (original[n.id] ? original[n.id].size : 12) * (1 + pulso * 0.4)),
-          shadowSize: Math.round(16 + 4 * pulso)
-        }});
+    // --- pseudo-3D: calcula tamanho/opacidade/glow por profundidade viva ---
+    // Perto (z->1): mais opaco, maior e mais brilhante. Longe (z->0):
+    // translucido, menor e apagado -> efeito de relevo/esfera de conhecimento.
+    const noUpd = [];
+    const agoraPulso = (!window.__pulseT || (agora - window.__pulseT) > 300);
+    if (agoraPulso) window.__pulseT = agora;
+    nodes.get().forEach(n => {{
+      const z = _zVivo(n.id, agora); // flutua autonomo no tempo
+      const esc = 0.74 + 0.5 * z;   // fator de escala por profundidade
+      const op = Math.min(1, base * (0.55 + 0.45 * z));
+      let sz = (original[n.id] ? original[n.id].size : 12);
+      let sombra = Math.round(12 + 14 * z);
+      if (agoraPulso) {{
+        const fase = _zFase[n.id] != null ? _zFase[n.id] : ((_hashId(n.id) || 0) % 97);
+        const pulso = Math.sin(agora * 0.0012 + fase) * 0.06;
+        sz = Math.max(6, sz * (1 + pulso * 0.4) * esc);
+        sombra = Math.round(sombra + 4 * pulso);
+      }} else {{
+        sz = Math.max(6, sz * esc);
+      }}
+      noUpd.push({{
+        id: n.id,
+        opacity: op,
+        shadow: z > 0.3,
+        shadowSize: sombra,
+        size: sz
       }});
-      nodes.update(szUpd);
-    }}
-    // pulso cognitivo: a cada ~3.5-5s, acende ALEATORIAMENTE 1-3 arestas
-    // (sinapses disparando em cascata), mantendo o resto sutil.
-    let arestasUpd = [];
-    edges.get().forEach(e => {{
-      arestasUpd.push({{ id: e.id, color: arestaOriginal[e.id] ? arestaOriginal[e.id].color : '#999', width: arestaOriginal[e.id] ? arestaOriginal[e.id].width : 1, opacity: 0.25 }});
+    }});
+    nodes.update(noUpd);
+    // --- arestas: opacidade pela profundidade media das pontas ---
+    // Conexoes entre nos "perto" ficam mais visiveis; entre "longe" somem.
+    let arestasUp = edges.get().map(e => {{
+      const zA = _zVivo(e.from, agora);
+      const zB = _zVivo(e.to, agora);
+      const zM = (zA + zB) / 2;
+      return {{ id: e.id, color: arestaOriginal[e.id] ? arestaOriginal[e.id].color : '#999',
+                 width: arestaOriginal[e.id] ? arestaOriginal[e.id].width : 1,
+                 opacity: 0.25 * (0.55 + 0.9 * zM) }};
     }});
     if (agora - _ultimoSpike > _proxSpike()) {{
       _ultimoSpike = agora;
@@ -594,7 +648,7 @@ def gerar_html(nos, arestas, output_path):
         for (let i = 0; i < qtd && todas.length; i++) {{
           alvos.push(todas[Math.floor(Math.random() * todas.length)].id);
         }}
-        arestasUpd = arestasUpd.map(a =>
+        arestasUp = arestasUp.map(a =>
           alvos.includes(a.id)
             ? {{ ...a, color: '#ffffff', width: 4.5, opacity: 0.9 }}
             : a);
@@ -608,7 +662,7 @@ def gerar_html(nos, arestas, output_path):
         }});
       }}
     }}
-    edges.update(arestasUpd);
+    edges.update(arestasUp);
   }});
   // pausa o balanco organico ao pairar sobre um no
   network.on('hoverNode', () => {{ _tickPausado = true; }});
