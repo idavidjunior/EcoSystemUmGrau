@@ -1,3 +1,4 @@
 1785780364 | ERRO-TARDE: Uncaught TypeError: window.pywebview.api.toggle_labels is not a function @ 409:30
 1785780896 | ERRO-TARDE: Uncaught TypeError: window.pywebview.api.toggle_labels is not a function @ 409:30
 1785781177 | ERRO-TARDE: Uncaught TypeError: window.pywebview.api.toggle_labels is not a function @ 409:30
+1785882649 | ERRO-TARDE: Uncaught TypeError: window.pywebview.api.toggle_labels is not a function @ 489:30
