@@ -5,7 +5,7 @@
 > SDLC gates (5 gates formais), CI/CD (GitHub Actions), e métricas de performance.
 >
 > ## FONTE ÚNICA: O REPOSITÓRIO
-> Toda config, agente e skill vive no repo `EcoSystemUmGrau/config/` e `Habilidades/`.
+> Toda config, agente e skill vive no repo `EcoSystemUmGrau/config/` e `mcp/`.
 > Nada duplicado. setup.bat gera os arquivos no destino a partir dos templates.
 >
 > ## REGRA DE OURO: ABASTECER, NÃO CRIAR ESTRUTURA NOVA
@@ -501,7 +501,7 @@ Carregados de `~/.config/opencode/agents/` (fonte única: `EcoSystemUmGrau/confi
 - [x] `opencode --version` → `0.0.0-beta-202608012226`
 - [x] `opencode debug info` → plugins funcionais (fallback)
 - [x] Agents detectados: 16
-- [x] Habilidades no novo caminho: 40 via glob `Habilidades/**/{SKILL,skill}.md` (decisão 2026-07-31)
+- [x] Habilidades no novo caminho: 40 via glob `mcp/**/habilidades/**/{SKILL,skill}.md` (decisão 2026-08-04)
 - [x] VAULT_PATH = `C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau` (vault real do ecossistema)
 - [x] Estrutura de pastas organizada (projetos vs ecossistema)
 - [x] Bun 1.3.14 instalado e funcional (não presente nesta máquina atual)

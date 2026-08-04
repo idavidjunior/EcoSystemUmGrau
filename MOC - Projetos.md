@@ -19,5 +19,5 @@ FROM "conhecimento/notas/bugs"
 SORT file.name ASC
 ```
 
-## Habilidades Disponíveis (38)
-Veja [[Habilidades/]]
+## Habilidades Disponíveis (40)
+Veja [[mcp/manifesto_mcp.json]]
