@@ -111,63 +111,64 @@
     _zBase[n.id] = _zInicial(n);
     _zFase[n.id] = (_hashId(n.id) % 628) / 100; // fase unica da onda
   });
-  // Profundidade efetiva num instante t: base + deriva viva (fica em 0..1).
-  // Duas senoides em velocidades diferentes criam um movimento de flutuar
-  // organico, cada no no seu proprio ritmo (autonomo, nunca estatico).
+  // Profundidade efetiva num instante t: base + deriva viva + ONDA VIAJANTE.
+  // A deriva (duas senoides por no) mantem cada no respirando no seu ritmo.
+  // A ONDA VIAJANTE usa o angulo do no em torno do centro para criar um "giro
+  // de profundidade": num lado os nos emergem (virao a frente), no outro
+  // submergem (virao a tras) -> a malha gira como um globo, mais natural que
+  // girar o quadro 2D. Mantem-se 0..1.
   function _zVivo(id, t) {
     var z0 = _zBase[id] != null ? _zBase[id] : 0.5;
     var f = _zFase[id] != null ? _zFase[id] : 0;
+    // respiracao organica propria de cada no
     var onda = Math.sin(t * 0.0007 + f) + Math.sin(t * 0.00042 + f * 2.3);
-    var z = z0 + 0.16 * onda * 0.5;
-    return Math.max(0.04, Math.min(1, z));
+    // angulo/raio do no em torno do centro (via cache de posicoes) -> giro 3D
+    var ang = f, raio = 0.5, c = _cacheCentro || { x: 0, y: 0 };
+    var p = _cachePos ? _cachePos[id] : null;
+    if (p) {
+      ang = Math.atan2(p.y - c.y, p.x - c.x);
+      raio = Math.min(1, Math.sqrt((p.x - c.x) * (p.x - c.x) + (p.y - c.y) * (p.y - c.y)) / 380);
+    }
+    // onda gira em torno do centro: lado 0 sempre na "frente" por fase
+    var viajante = Math.sin(t * 0.00030 * _waveVel + ang + raio * 3.0) * 0.16 * _waveDir;
+    var z = z0 + 0.13 * onda * 0.5 + viajante;
+    return Math.max(0.06, Math.min(1, z));
   }
 
   // =====================================================================
-  // GIRO AUTONOMO 3D — o cerebro gira sozinho (sem WebGL)
-  // Rotacionamos o proprio canvas com transform CSS: giro em Z (spin) com
-  // direcao/velocidade aleatorias, mudando a cada ~4-8s, mais uma leve
-  // inclinacao senoidal em X/Y (efeito de perspective/trementina 3D). Junto
-  // com o eixo Z de profundidade (_zVivo), cada no "vira para a camera"
-  // conforme gira -> sensacao de globo girando no espaco. Pausa quando o
-  // usuario interage (drag), retoma sozinho em seguida.
+  // ROTACAO VIVA (sem WebGL) — a malha gira como um globo de conhecimento
+  // Em vez de girar o canvas (artificial: o quadro inteiro vira como folha),
+  // movemos a PROFUNDIDADE como uma ONDA VIAJANTE que rodeia o centro.
+  // Cada no orbita em sua propria "camada"; com o tempo a profundidade sobe
+  // num lado e desce no outro -> os nos da frente e de tras trocam de lugar
+  // suavemente, lendo como uma esfera girando no espaco, nao um spin rigido.
+  // O sentido e a velocidade da onda mudam aleatoriamente para nunca repetir.
+  // As posicoes sao cacheadas a cada ~600ms (barato) para orientar a onda.
   // =====================================================================
-  var _cnv3d = document.querySelector('#net canvas');
-  var _giro = { ang: 0, vel: 0.0018, tiltAmp: 0.05, tiltFreq: 1, rafa: null };
-  var _giroVelGuardado = 0;
-  if (_cnv3d) {
-    _cnv3d.style.transformOrigin = 'center center';
-    var _cnvPai = _cnv3d.parentNode;
-    if (_cnvPai) _cnvPai.style.perspective = '1200px';
-    _cnvPai.style.transformStyle = 'preserve-3d';
-  }
-  function _novoGiro() {
-    // direcao aleatoria (reverte as vezes) e velocidade lenta/variavel
-    var sinal = Math.random() < 0.22 ? -1 : 1;
-    _giro.vel = sinal * (0.0008 + Math.random() * 0.0022);
-    // inclinacao tambem aleatoria, para o efeito "girar no espaco"
-    _giro.tiltAmp = 0.04 + Math.random() * 0.11;
-    _giro.tiltFreq = 0.4 + Math.random() * 0.9;
-    setTimeout(_novoGiro, 4000 + Math.random() * 4000);
-  }
-  setTimeout(_novoGiro, 3000 + Math.random() * 3000);
-  function _loopGiro() {
-    if (!_cnv3d) return;
-    _giro.ang += _giro.vel;
-    var tilt = (_giro.tiltAmp || 0.05) * Math.sin(performance.now() * 0.0009 * (_giro.tiltFreq || 1));
-    _cnv3d.style.transform =
-      'rotateZ(' + _giro.ang + 'rad)' +
-      ' rotateX(' + tilt * 0.4 + 'rad)' +
-      ' rotateY(' + tilt + 'rad)';
-    _giro.rafa = requestAnimationFrame(_loopGiro);
-  }
-  _giro.rafa = requestAnimationFrame(_loopGiro);
-  // pausa o giro automatico enquanto o usuario arrasta; retoma ao soltar
-  network.on('dragStart', function() {
-    _giroVelGuardado = _giro.vel; _giro.vel = 0;
-  });
-  network.on('dragEnd', function() {
-    _giro.vel = _giroVelGuardado || 0.0018;
-  });
+  var _waveDir = 1;
+  var _waveVel = 1;
+  var _cachePos = {};
+  var _cacheCentro = { x: 0, y: 0 };
+  (function() {
+    _waveDir = Math.random() < 0.5 ? 1 : -1;
+    _waveVel = 0.6 + Math.random() * 0.9;
+    var recomeca = function() {
+      _waveDir = Math.random() < 0.5 ? 1 : -1;
+      _waveVel = 0.6 + Math.random() * 1.1;
+      setTimeout(recomeca, 5000 + Math.random() * 5000);
+    };
+    setTimeout(recomeca, 4000 + Math.random() * 4000);
+    var atualizaCentro = function() {
+      try {
+        _cachePos = network.getPositions();
+        var k = 0, sx = 0, sy = 0;
+        for (var id in _cachePos) { sx += _cachePos[id].x; sy += _cachePos[id].y; k++; }
+        if (k) { _cacheCentro = { x: sx / k, y: sy / k }; }
+      } catch (e) {}
+    };
+    atualizaCentro();
+    setInterval(atualizaCentro, 600);
+  })();
 
   // Posicao/zoom iniciais capturados; a fisica NAO congela (cerebro vivo).
   let viewInical = null;
@@ -311,9 +312,13 @@
   // A profundidade VIVA (pseudo-3D) modula tamanho/opacidade/glow de cada no,
   // dando a ilusao de relevo e profundidade sem precisar de WebGL.
   let _tickPausado = false;
+  let _destacado = false;
   let _ultimoSpike = 0;
   network.on('tick', () => {
     if (_tickPausado) return;
+    // Quando ha um destaque/foco ativo (clicado em no, categoria, cluster),
+    // congelamos a decoracao viva para NAO apagar o efeito visual escolhido.
+    if (_destacado) return;
     const agora = Date.now();
     const base = 0.86 + 0.14 * Math.sin(agora * 0.0015);
     // --- pseudo-3D: calcula tamanho/opacidade/glow por profundidade viva ---
@@ -439,6 +444,7 @@
   }
 
   function limpar() {
+    _destacado = false; // libera de volta a decoracao viva (cerebro vivo)
     document.querySelectorAll('.lg').forEach(b => b.classList.remove('active'));
     const atualizacoes = nodes.get().map(n => ({
       id: n.id, color: original[n.id].color, size: original[n.id].size,
@@ -472,6 +478,7 @@
   }
 
   function focarVizinhanca(id, corGrupo) {
+    _destacado = true; // congela decoracao viva: preserva o efeito do clique
     // vizinhanca direta: nos de 1 pulo
     const viz = new Set([id]);
     edges.get().forEach(e => {
@@ -564,6 +571,7 @@
       limpar();
       return;
     }
+    _destacado = true; // congela decoracao viva: preserva o destaque do grupo
     document.querySelectorAll('.lg').forEach(b => b.classList.remove('active'));
     const alvo = document.querySelector(`.lg[data-filter="${filtro}"][data-value="${valor}"]`);
     if (alvo) alvo.classList.add('active');

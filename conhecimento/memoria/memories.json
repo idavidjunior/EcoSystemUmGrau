@@ -1028,5 +1028,25 @@
     "access_count": 0,
     "created_at": "2026-08-04T20:09:15.862032",
     "last_accessed": "2026-08-04T20:09:15.862032"
+  },
+  {
+    "id": 82,
+    "kind": "erro",
+    "task": "Grafo vivo v3: onda viajante de profundidade em vez de giro CSS + fix efeitos de clique",
+    "summary": "Em scripts/generate-graph-html.py: (1) REMOVIDO o giro rigido via transform CSS do canvas (rotateZ/rotateX girava o quadro 2D como folha, artificial). SUBSTITUIDO por ONDA VIAJANTE de profundidade: posicoes cacheadas a cada 600ms (barato), _zVivo agora soma sin(t*vel*_waveVel + angulo + raio*3) * 0.16 * sentido -> nos emergem num lado e submergem no outro = esfera girando, natural. Sentido (_waveDir) e vel (_waveVel) aleatorios mudando a cada ~5-9s. (2) FIX bug: o tick contínuo sobrescrevia opacity/size/shadow de TODOS os nos a cada frame, apagando o destaque ao clicar. Adicionada flag _destacado: focarVizinhanca/destacar setam true e o tick retorna cedo (congela decoracao viva preservando o efeito); limpar() reseta para false. JS validado node --check.",
+    "project": "",
+    "tags": [
+      "html",
+      "efeito",
+      "artificial",
+      "preservando",
+      "graph",
+      "folha"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-04T20:19:50.219095",
+    "last_accessed": "2026-08-04T20:19:50.219095"
   }
 ]
