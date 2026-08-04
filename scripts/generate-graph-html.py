@@ -489,7 +489,7 @@ def gerar_html(nos, arestas, output_path):
     // candidatos: nos-folha (grau 1)
     var folhas = nodes.get().filter(function(n) {{
       return !n.isHidden && (grau[n.id] || 0) <= 1;
-    }));
+    }});
     // agrupa folhas adjacentes a um mesmo no em clusters de ~8
     var agrupados = {{}};
     var usados = new Set();
