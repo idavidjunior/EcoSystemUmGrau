@@ -20,6 +20,7 @@ import json
 import os
 import re
 import sys
+import time
 from collections import defaultdict
 from pathlib import Path
 
@@ -182,6 +183,17 @@ def extrair_nos():
     # ---- ler TODAS as notas do vault (incl. _hubs) ----
     md_files = sorted(Path(VAULT_DIR).rglob('*.md'))
     no_cache = {}  # slug -> set of wikilinks (guardado antes de add_no perder body)
+
+    # Atividade real por nota: mtime do arquivo (ultima edicao). Notas tocadas
+    # recentemente = "quentes"; antigas e nunca editadas = "frias". Isso torna
+    # o tamanho do no um termometro do uso real do vault, nao so do grau.
+    agora_ts = time.time()
+    mtime_por_id = {}
+    for f in md_files:
+        try:
+            mtime_por_id[f.stem] = os.path.getmtime(f)
+        except OSError:
+            mtime_por_id[f.stem] = 0
 
     for f in md_files:
         rel = f.relative_to(VAULT_DIR)
