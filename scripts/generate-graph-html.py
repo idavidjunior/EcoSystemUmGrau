@@ -556,24 +556,28 @@ def gerar_html(nos, arestas, output_path):
   network.on('tick', () => {{
     if (_tickPausado) return;
     const agora = Date.now();
-    // respiracao de opacidade + tamanho dos nos (ciclo lento ~4s).
-    // Cada no pulsa individualmente (fase unica) para parecer vida.
     const base = 0.86 + 0.14 * Math.sin(agora * 0.0015);
-    const upd = [];
-    nodes.get().forEach(n => {{
-      const fase = typeof n.id === 'string'
-        ? Array.from(n.id).reduce((a,b)=>(((a<<5)-a)+b.charCodeAt(0))|0, 0)
-        : (n.id * 2654435761);
-      const pulso = Math.sin(agora * 0.0012 + (fase % 97)) * 0.06;
-      upd.push({{
-        id: n.id,
-        opacity: base + pulso,
-        size: Math.max(6, (original[n.id] ? original[n.id].size : 12) * (1 + pulso * 0.4)),
-        borderWidth: 0,
-        shadow: true, shadowSize: Math.round(16 + 4 * pulso)
+    // --- opacidade: leve, a cada tick (barata) ---
+    const opUpd = [];
+    nodes.get().forEach(n => {{ opUpd.push({{ id: n.id, opacity: base, shadow: true }}); }});
+    nodes.update(opUpd);
+    // --- tamanho/glow: pulsa so vezes em pouco (caro), ~3x/s, com fase unica
+    if (!window.__pulseT || (agora - window.__pulseT) > 300) {{
+      window.__pulseT = agora;
+      const szUpd = [];
+      nodes.get().forEach(n => {{
+        const fase = typeof n.id === 'string'
+          ? Array.from(n.id).reduce((a,b)=>(((a<<5)-a)+b.charCodeAt(0))|0, 0)
+          : (n.id * 2654435761);
+        const pulso = Math.sin(agora * 0.0012 + (fase % 97)) * 0.06;
+        szUpd.push({{
+          id: n.id,
+          size: Math.max(6, (original[n.id] ? original[n.id].size : 12) * (1 + pulso * 0.4)),
+          shadowSize: Math.round(16 + 4 * pulso)
+        }});
       }});
-    }});
-    nodes.update(upd);
+      nodes.update(szUpd);
+    }}
     // pulso cognitivo: a cada ~3.5-5s, acende ALEATORIAMENTE 1-3 arestas
     // (sinapses disparando em cascata), mantendo o resto sutil.
     let arestasUpd = [];
