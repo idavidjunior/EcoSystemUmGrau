@@ -868,5 +868,25 @@
     "access_count": 0,
     "created_at": "2026-08-04T05:29:03.956483",
     "last_accessed": "2026-08-04T05:29:03.956483"
+  },
+  {
+    "id": 74,
+    "kind": "episodio",
+    "task": "Jarvis celular conectado ao bridge via Tailscale - independe de ADB/USB",
+    "summary": "Validado hoje: o app VoxUmGrau do celular mantem conexao WebSocket ativa com o bridge Jarvis (PID 2676) na porta 8765 via rede Tailscale (100.64.71.9:47112). A conexao sobrevive independente do estado do ADB/cabo USB: o TCP estabelecido foi confirmado com Get-NetTCPConnection e o bridge_estado.json registra ultima_conexao 2026-08-04 05:28:34 IP 100.64.71.9. Como usa o Tailscale (IP fixo 100.64.71.9), funciona tanto em WiFi quanto em dados moveis - a prioridade do ecossistema (celular fala com Jarvis) nao depende de ADB.",
+    "project": "",
+    "tags": [
+      "rede",
+      "8765",
+      "porta",
+      "2676",
+      "pid",
+      "depende"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-04T05:39:02.747190",
+    "last_accessed": "2026-08-04T05:39:02.747190"
   }
 ]
