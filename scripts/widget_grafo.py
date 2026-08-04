@@ -356,7 +356,8 @@ class Bridge:
                     guardaInicial();
                 }
                 // Garante que as labels seguem a escolha persistida do usuário
-                const labelsOcultos = localStorage.getItem('labelsOcultos') === 'true';
+                // (padrao: DESATIVADAS; apenas 'false' explicito mostra)
+                const labelsOcultos = localStorage.getItem('labelsOcultos') !== 'false';
                 const tam = labelsOcultos ? 0 : 11;
                 const atual = nodes.get();
                 const atualizacoes = atual.map(n => ({
@@ -375,7 +376,8 @@ class Bridge:
         try:
             self._win.evaluate_js("""
                 // Durante uma atualização, mantém o estado de visibilidade das labels
-                const labelsOcultos = localStorage.getItem('labelsOcultos') === 'true';
+                // (padrao DESATIVADAS; so 'false' explicito mostra)
+                const labelsOcultos = localStorage.getItem('labelsOcultos') !== 'false';
                 const atual = nodes.get();
                 const atualizacoes = atual.map(n => ({
                     id: n.id,
@@ -456,6 +458,50 @@ WIDGET_JS_EXTRA = """
     setInterval(buscarComandoVoz, 2500);
     if (document.readyState !== 'loading') { buscarComandoVoz(); }
     else { document.addEventListener('DOMContentLoaded', buscarComandoVoz); }
+
+    // ---- Ocultar/mostrar menus (header + painel) com um clique ----
+    // Um botao flutuante alterna a visibilidade da barra de legendas (#header)
+    // e do painel lateral (#painel). A escolha persiste no localStorage para
+    // sobreviver ao reload/regeneracao.
+    var menuBtn = document.createElement('div');
+    menuBtn.id = 'mk-menu-btn';
+    menuBtn.title = 'Mostrar/ocultar menus';
+    menuBtn.style.cssText =
+      'position:fixed;right:10px;top:10px;width:28px;height:28px;' +
+      'background:#1e1e2e;border:1px solid #313244;border-radius:4px;' +
+      'cursor:pointer;z-index:9999;display:flex;align-items:center;' +
+      'justify-content:center;font-size:14px;color:#cdd6f4;user-select:none;';
+    menuBtn.innerHTML = '\u2630';
+    document.body.appendChild(menuBtn);
+
+    function aplicarMenus() {
+      var oculto = localStorage.getItem('menuOculto') === 'true';
+      var hdr = document.getElementById('header');
+      var painel = document.getElementById('painel');
+      var net = document.getElementById('net');
+      // oculta o header; se escondido, tambem garante painel fora
+      if (hdr) hdr.style.display = oculto ? 'none' : '';
+      if (painel && oculto) painel.classList.remove('visivel');
+      // expande o grafo para preencher o espaco liberado pelo header
+      if (net) net.style.height = oculto ? '100vh' : '';
+      menuBtn.innerHTML = oculto ? '\u2630' : '\u2026';
+      menuBtn.style.opacity = oculto ? '0.55' : '1';
+      // informa a rede para recalcular a area visivel
+      if (typeof network !== 'undefined' && network.redraw) { network.redraw(); }
+    }
+    menuBtn.onmousedown = function(e) {
+      e.preventDefault(); e.stopPropagation();
+      var nao = localStorage.getItem('menuOculto') !== 'true'; // inverte
+      localStorage.setItem('menuOculto', nao ? 'true' : 'false');
+      aplicarMenus();
+    };
+    // aplica ao carregar/recarregar
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      aplicarMenus();
+    } else {
+      document.addEventListener('DOMContentLoaded', aplicarMenus);
+    }
+    window.addEventListener('pywebviewready', aplicarMenus);
   })();
 </script>
 """

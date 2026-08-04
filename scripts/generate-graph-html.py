@@ -584,8 +584,10 @@ def gerar_html(nos, arestas, output_path):
   // com font.size = base / scale (fonte volta ao tamanho "real" na tela).
   // Quando as etiquetas estiverem ocultas pelo usuario, mantemos 0.
   function _ajustarFontes() {{
+    // Padrao: etiquetas DESATIVADAS. Oculto = localStorage nao e 'false'
+    // (ausente/'true' = oculto; apenas 'false' explicito = mostrar).
     var oculto = (typeof localStorage !== 'undefined' &&
-                  localStorage.getItem('labelsOcultos') === 'true');
+                  localStorage.getItem('labelsOcultos') !== 'false');
     if (oculto) return; // usuario escondeu: nao forca visibilidade via zoom
     var scale = network.getScale ? network.getScale() : 1;
     if (scale < 0.4) scale = 0.4; // nunca fique muito pequena
