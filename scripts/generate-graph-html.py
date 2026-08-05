@@ -43,6 +43,17 @@ CATEGORIA_LABEL = {
     'cognitivo': 'Cognitivo', 'heuristicas': 'Heuristicas',
     'frameworks': 'Frameworks', 'missoes': 'Missoes', 'hub': 'Hub',
 }
+# Descricoes curtas para os tooltips dos botoes de categoria
+CATEGORIA_DESC = {
+    'padroes': 'Padroes e convencoes reutilizaveis do ecossistema',
+    'decisoes': 'Decisoes arquiteturais e de projeto ja tomadas (ADRs)',
+    'bugs': 'Bugs e limitacoes conhecidas, com status de resolucao',
+    'cognitivo': 'Meta-cognicao, estrategias de raciocinio e debugging',
+    'heuristicas': 'Heuristicas praticas e atalhos mentais validados',
+    'frameworks': 'Frameworks, bibliotecas e ferramentas adotadas',
+    'missoes': 'Missoes e objetivos em andamento do ecossistema',
+    'hub': 'No central que agrupa e conecta um conjunto de notas',
+}
 
 CLUSTERS = {
     'android': ['android-pure-sdk', 'android_pure_sdk'],
@@ -58,6 +69,16 @@ CLUSTERS = {
 CLUSTER_COR = {
     'android': '#8dd3c7', 'mp3player': '#ffffb3', 'ler': '#bebada',
     'navegacao': '#fb8072', 'ecossistema': '#80b1d3', 'cognicao': '#fdb462', 'geral': '#b3b3b3',
+}
+# Descricoes curtas para os tooltips dos botoes de cluster
+CLUSTER_DESC = {
+    'android': 'Notas do projeto Android (SDK puro) e seu build',
+    'mp3player': 'Notas do projeto MP3 Player e resgate de metadados',
+    'ler': 'Notas do LER (runtime e agentes de execucao)',
+    'navegacao': 'Notas de treinamento de navegacao e sessoes',
+    'ecossistema': 'Notas do proprio EcoSystemUmGrau (config, MCP, agentes)',
+    'cognicao': 'Notas de meta-cognicao e raciocinio',
+    'geral': 'Notas sem cluster especifico ou de escopo geral',
 }
 
 
@@ -83,6 +104,11 @@ STATUS_LABEL = {
     'resolvido': 'Resolvido',
     'pendente': 'Pendente',
     'conhecido': 'Limitacao conhecida',
+}
+STATUS_DESC = {
+    'resolvido': 'Bug ja corrigido e validado',
+    'pendente': 'Bug ainda aberto, aguardando correcao',
+    'conhecido': 'Limitacao aceita e documentada, sem correcao prevista',
 }
 STATUS_COR = {
     'resolvido': '#2ecc71',
