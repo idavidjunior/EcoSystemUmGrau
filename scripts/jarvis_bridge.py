@@ -44,6 +44,18 @@ PORTA_SERVE_RESERVA = int(os.environ.get("OPENCODE_SERVE_PORT_RESERVA", "8768"))
 SERVE_URL = f"http://127.0.0.1:{PORTA_SERVE}"
 SERVER_USER = "opencode"
 SERVER_PASS = os.environ.get("OPENCODE_SERVER_PASSWORD", "")
+# Fallback: le SENHA direto do scripts/.env se env nao estiver herdada (pythonw via Start-Process)
+if not SERVER_PASS:
+    try:
+        from pathlib import Path as _P
+        _env = Path(__file__).resolve().parent / ".env"
+        if _env.exists():
+            for _ln in _env.read_text(encoding="utf-8").splitlines():
+                if _ln.startswith("OPENCODE_SERVER_PASSWORD="):
+                    SERVER_PASS = _ln.split("=", 1)[1].strip().strip('"').strip("'")
+                    break
+    except Exception:
+        pass
 MODELO_VISION_PROVIDER = "nvidia"
 MODELO_VISION_MODEL = "qwen/qwen-image"
 WORKDIR = r"C:\Users\David Jr\Documents\Default Project"
