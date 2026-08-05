@@ -41,9 +41,11 @@ MIN_W, MIN_H = 400, 300
 # classe 'desktop' no body que revela os controles; alca de resize no canto.
 # Funciona com o layout original (flexbox: header + wrap[net + painel])
 WIDGET_CSS = """
-  /* Esconde header por padrão; clique direito (body.desktop) revela */
-  #header { transition: opacity .25s ease; opacity: 0; pointer-events: none; height: 0; overflow: hidden; }
-  body.desktop #header { opacity: 1; pointer-events: auto; height: auto; overflow: visible; }
+  /* Header/legenda SEMPRE visivel; clique direito (body.desktop) exibe a
+     alca de resize. O painel de controles e posicionado abaixo do header
+     via JS (reposicionarPainel), entao nunca sobrepoe os botoes. */
+  #header { transition: opacity .25s ease; }
+  body.desktop #header { opacity: 1; }
 
   /* Wrapper flex original mantém-se; só escondemos o painel lateral */
   #painel { display: none !important; }
