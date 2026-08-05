@@ -523,6 +523,7 @@ def gerar_html(nos, arestas, output_path):
   // =====================================================================
   var _waveDir = 1;
   var _waveVel = 1;
+  var _velGlobal = 1; // multiplicador de velocidade ajustado pelo usuario
   var _cachePos = {{}};
   var _cacheCentro = {{ x: 0, y: 0 }};
   (function() {{
@@ -1127,6 +1128,13 @@ def gerar_html(nos, arestas, output_path):
       if (filtro === 'cat' && n.cat === valor) grupo.add(n.id);
       else if (filtro === 'cl' && n.cl === valor) grupo.add(n.id);
       else if (filtro === 'st' && n.st === valor) grupo.add(n.id);
+      else if (filtro === 'dom') {{
+        const ehMCP = (n.tags || []).some(t => String(t).toLowerCase().indexOf('mcp') !== -1);
+        const ehHub = n.cat === 'hub' || n.cat === 'geral';
+        // 'mcp' -> notas com tag mcp; 'conhecimento' -> notas sem tag mcp
+        // (hubs/categorias genericas nao entram no filtro de dominio)
+        if (!ehHub && (valor === 'mcp' ? ehMCP : !ehMCP)) grupo.add(n.id);
+      }}
     }});
 
     const corViva = clarear(corGrupo, 0.35);
