@@ -1168,5 +1168,25 @@
     "access_count": 0,
     "created_at": "2026-08-04T23:23:08.627428",
     "last_accessed": "2026-08-04T23:23:08.627428"
+  },
+  {
+    "id": 89,
+    "kind": "padrao",
+    "task": "53 dominios tecnicos do plano -> 48 skill.md geradas (96 total)",
+    "summary": "Criei skill.md declarativas para os dominios tecnicos do plano (IA/MLOps, DevOps, Seguranca, Arquitetura, Mobile iOS/flutter/RN/expo, Frontend, Backend, Dados, Qualidade, Documentacao) em mcp/desenvolvimento/habilidades e mcp/android/habilidades via gerador (context/lista_skills.py + gerar_skills.py). 48 novas skills, manifesto regenerado: 96 habilidades, 0 duplicados, entrypoints ok. Server desenvolvimento expoe 74 tools, android 8. Dica: lista_skills usa tuplas de 4 (id, dominio, titulo, desc_com_triggers); split_triggers separa 'Trigger keywords' da descricao.",
+    "project": "",
+    "tags": [
+      "context",
+      "gerador",
+      "mcp",
+      "documentacao",
+      "qualidade",
+      "dados"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-05T05:19:14.688729",
+    "last_accessed": "2026-08-05T05:19:14.688729"
   }
 ]

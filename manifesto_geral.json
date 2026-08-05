@@ -229,6 +229,42 @@
       "triggers": []
     },
     {
+      "id": "accessibility",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "accessibility",
+      "descricao": "Acessibilidade (a11y): ARIA, semantica, teclado, contraste, foco, screen readers e WCAG. Trigger keywords: acessibilidade, accessibility, a11y, ARIA, WCAG, screen reader, teclado, contraste, foco.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/accessibility/skill.md",
+      "script": null,
+      "triggers": [
+        "Acessibilidade (a11y): ARIA, semantica, teclado, contraste, foco, screen readers e WCAG. Trigger keywords: acessibilidade, accessibility, a11y, ARIA, WCAG, screen reader, teclado, contraste, foco."
+      ]
+    },
+    {
+      "id": "adr",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "adr",
+      "descricao": "Registros de decisoes de arquitetura: contexto, decisao, consequencias, formato e manutencao do registro. Trigger keywords: ADR, architecture decision record, registro de decisao, contexto, consequencia, Nygard.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/adr/skill.md",
+      "script": null,
+      "triggers": [
+        "Registros de decisoes de arquitetura: contexto, decisao, consequencias, formato e manutencao do registro. Trigger keywords: ADR, architecture decision record, registro de decisao, contexto, consequencia, Nygard."
+      ]
+    },
+    {
+      "id": "agent-orchestration",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "agent-orchestration",
+      "descricao": "Orquestracao de agentes de IA: planejamento, execucao paralela, memoria entre passos, ferramentas, loops autonomos e composicao. Trigger keywords: orquestrar agentes, multi-agente, planner, loop autonomo, coordenador de agentes.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/agent-orchestration/skill.md",
+      "script": null,
+      "triggers": [
+        "Orquestracao de agentes de IA: planejamento, execucao paralela, memoria entre passos, ferramentas, loops autonomos e composicao. Trigger keywords: orquestrar agentes, multi-agente, planner, loop autonomo, coordenador de agentes."
+      ]
+    },
+    {
       "id": "android-diagnostics",
       "categoria": "tecnica",
       "dominio": "android",
@@ -267,6 +303,18 @@
       "script": null,
       "triggers": [
         "|"
+      ]
+    },
+    {
+      "id": "api-documentation",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "api-documentation",
+      "descricao": "Documentacao de APIs: OpenAPI/Swagger, exemplos, schemas, versionamento e experienca do consumidor. Trigger keywords: API docs, documentacao de API, OpenAPI, Swagger, schema, endpoints, versionar API.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/api-documentation/skill.md",
+      "script": null,
+      "triggers": [
+        "Documentacao de APIs: OpenAPI/Swagger, exemplos, schemas, versionamento e experienca do consumidor. Trigger keywords: API docs, documentacao de API, OpenAPI, Swagger, schema, endpoints, versionar API."
       ]
     },
     {
@@ -318,6 +366,42 @@
       ]
     },
     {
+      "id": "ci-cd-pipeline",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "ci-cd-pipeline",
+      "descricao": "Pipelines de integracao e entrega continua: build, teste, artefato, deploy, estrategias de release e gatilhos. Trigger keywords: CI/CD, pipeline, integracao continua, entrega continua, build, release, github actions, jenkins.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/ci-cd-pipeline/skill.md",
+      "script": null,
+      "triggers": [
+        "Pipelines de integracao e entrega continua: build, teste, artefato, deploy, estrategias de release e gatilhos. Trigger keywords: CI/CD, pipeline, integracao continua, entrega continua, build, release, github actions, jenkins."
+      ]
+    },
+    {
+      "id": "code-review",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "code-review",
+      "descricao": "Revisao de codigo: checklist, critica construtiva, aprovacao, bloqueadores e eficiencia do processo. Trigger keywords: code review, revisar codigo, checklist de revisao, aprovacao, bloqueador, pull request.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/code-review/skill.md",
+      "script": null,
+      "triggers": [
+        "Revisao de codigo: checklist, critica construtiva, aprovacao, bloqueadores e eficiencia do processo. Trigger keywords: code review, revisar codigo, checklist de revisao, aprovacao, bloqueador, pull request."
+      ]
+    },
+    {
+      "id": "compliance-audit",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "compliance-audit",
+      "descricao": "Conformidade e auditoria: LGPD/GDPR, trilhas de auditoria, retencao, provas de conformidade e revisoes. Trigger keywords: compliance, LGPD, GDPR, auditoria, trilha de auditoria, retencao, conformidade.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/compliance-audit/skill.md",
+      "script": null,
+      "triggers": [
+        "Conformidade e auditoria: LGPD/GDPR, trilhas de auditoria, retencao, provas de conformidade e revisoes. Trigger keywords: compliance, LGPD, GDPR, auditoria, trilha de auditoria, retencao, conformidade."
+      ]
+    },
+    {
       "id": "concurrent-computation-patterns",
       "categoria": "tecnica",
       "dominio": "desenvolvimento",
@@ -327,6 +411,18 @@
       "script": null,
       "triggers": [
         "|"
+      ]
+    },
+    {
+      "id": "contract-testing",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "contract-testing",
+      "descricao": "Teste de contratos: pacto entre consumidor/produtor, schemas, compatibilidade e regressao de APIs. Trigger keywords: contract testing, teste de contrato, pact, consumer-driven, schema, compatibilidade, API contract.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/contract-testing/skill.md",
+      "script": null,
+      "triggers": [
+        "Teste de contratos: pacto entre consumidor/produtor, schemas, compatibilidade e regressao de APIs. Trigger keywords: contract testing, teste de contrato, pact, consumer-driven, schema, compatibilidade, API contract."
       ]
     },
     {
@@ -342,6 +438,42 @@
       ]
     },
     {
+      "id": "cqrs",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "cqrs",
+      "descricao": "Command Query Responsibility Segregation: separacao de leitura/escrita, otimizacao de leituras, consistencia e escalabilidade. Trigger keywords: CQRS, command, query, segregacao leitura escrita, modelos de leitura, modelos de escrita.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/cqrs/skill.md",
+      "script": null,
+      "triggers": [
+        "Command Query Responsibility Segregation: separacao de leitura/escrita, otimizacao de leituras, consistencia e escalabilidade. Trigger keywords: CQRS, command, query, segregacao leitura escrita, modelos de leitura, modelos de escrita."
+      ]
+    },
+    {
+      "id": "css-architecture",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "css-architecture",
+      "descricao": "Arquitetura de CSS: BEM, CSS-in-JS, design tokens, nomes, especificidade, layout e manutencao. Trigger keywords: CSS architecture, BEM, design tokens, css-in-js, tailwind, especificidade, layout, estilos escalaveis.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/css-architecture/skill.md",
+      "script": null,
+      "triggers": [
+        "Arquitetura de CSS: BEM, CSS-in-JS, design tokens, nomes, especificidade, layout e manutencao. Trigger keywords: CSS architecture, BEM, design tokens, css-in-js, tailwind, especificidade, layout, estilos escalaveis."
+      ]
+    },
+    {
+      "id": "data-pipeline",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "data-pipeline",
+      "descricao": "Pipelines de dados: extracao, transformacao, carga (ETL/ELT), agendamento, qualidade e monitoramento. Trigger keywords: data pipeline, ETL, ELT, extracao, transformacao, carga, airflow, dbt, qualidade de dados.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/data-pipeline/skill.md",
+      "script": null,
+      "triggers": [
+        "Pipelines de dados: extracao, transformacao, carga (ETL/ELT), agendamento, qualidade e monitoramento. Trigger keywords: data pipeline, ETL, ELT, extracao, transformacao, carga, airflow, dbt, qualidade de dados."
+      ]
+    },
+    {
       "id": "data-privacy-by-design",
       "categoria": "tecnica",
       "dominio": "desenvolvimento",
@@ -351,6 +483,18 @@
       "script": null,
       "triggers": [
         "|"
+      ]
+    },
+    {
+      "id": "database-design",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "database-design",
+      "descricao": "Modelagem de banco de dados: normalizacao, esquema, indices, relacoes, migracoes e desempenho. Trigger keywords: database design, modelagem, normalizacao, esquema, indice, relacao, migracao, DDL.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/database-design/skill.md",
+      "script": null,
+      "triggers": [
+        "Modelagem de banco de dados: normalizacao, esquema, indices, relacoes, migracoes e desempenho. Trigger keywords: database design, modelagem, normalizacao, esquema, indice, relacao, migracao, DDL."
       ]
     },
     {
@@ -402,6 +546,18 @@
       ]
     },
     {
+      "id": "domain-driven-design",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "domain-driven-design",
+      "descricao": "Modelagem orientada a dominio: bounded contexts, entities, value objects, aggregates, ubiquitous language e eventos de dominio. Trigger keywords: DDD, domain-driven, bounded context, agregado, value object, ubiquitous language.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/domain-driven-design/skill.md",
+      "script": null,
+      "triggers": [
+        "Modelagem orientada a dominio: bounded contexts, entities, value objects, aggregates, ubiquitous language e eventos de dominio. Trigger keywords: DDD, domain-driven, bounded context, agregado, value object, ubiquitous language."
+      ]
+    },
+    {
       "id": "e2e-testing",
       "categoria": "tecnica",
       "dominio": "desenvolvimento",
@@ -435,6 +591,90 @@
       "script": null,
       "triggers": [
         "|"
+      ]
+    },
+    {
+      "id": "eval-testing",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "eval-testing",
+      "descricao": "Avaliacao de modelos e pipelines de IA: metrivas, benchmarks, testes de regressao de qualidade, golden sets. Trigger keywords: eval, avaliar modelo, benchmark, golden set, metrica de qualidade, regressao de IA.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/eval-testing/skill.md",
+      "script": null,
+      "triggers": [
+        "Avaliacao de modelos e pipelines de IA: metrivas, benchmarks, testes de regressao de qualidade, golden sets. Trigger keywords: eval, avaliar modelo, benchmark, golden set, metrica de qualidade, regressao de IA."
+      ]
+    },
+    {
+      "id": "event-driven-architecture",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "event-driven-architecture",
+      "descricao": "Arquitetura dirigida a eventos: eventos de dominio, streams, consumidores, saga, idempotencia e consistencia. Trigger keywords: event-driven, arquitetura de eventos, streams, consumidor, saga, idempotencia, pub-sub.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/event-driven-architecture/skill.md",
+      "script": null,
+      "triggers": [
+        "Arquitetura dirigida a eventos: eventos de dominio, streams, consumidores, saga, idempotencia e consistencia. Trigger keywords: event-driven, arquitetura de eventos, streams, consumidor, saga, idempotencia, pub-sub."
+      ]
+    },
+    {
+      "id": "event-sourcing",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "event-sourcing",
+      "descricao": "Armazenamento de estado como sequencia de eventos: append-only, replay, projecoes e consistencia eventual. Trigger keywords: event sourcing, eventos de dominio, replay, projecoes, append-only, event store.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/event-sourcing/skill.md",
+      "script": null,
+      "triggers": [
+        "Armazenamento de estado como sequencia de eventos: append-only, replay, projecoes e consistencia eventual. Trigger keywords: event sourcing, eventos de dominio, replay, projecoes, append-only, event store."
+      ]
+    },
+    {
+      "id": "expo",
+      "categoria": "tecnica",
+      "dominio": "android",
+      "nome": "expo",
+      "descricao": "Desenvolvimento com Expo: managed workflow, EAS Build, over-the-air updates, dev client e servicos Expo. Trigger keywords: expo, EAS, over-the-air, OTA, dev client, managed workflow, expo go.",
+      "entrypoint": "mcp/android/habilidades/expo/skill.md",
+      "script": null,
+      "triggers": [
+        "Desenvolvimento com Expo: managed workflow, EAS Build, over-the-air updates, dev client e servicos Expo. Trigger keywords: expo, EAS, over-the-air, OTA, dev client, managed workflow, expo go."
+      ]
+    },
+    {
+      "id": "feature-engineering",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "feature-engineering",
+      "descricao": "Engenharia de atributos: criacao, transformacao, normalizacao, selecao e tratamento de dados para modelos. Trigger keywords: feature engineering, engenharia de atributos, normalizacao, selecao de features, transformacao.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/feature-engineering/skill.md",
+      "script": null,
+      "triggers": [
+        "Engenharia de atributos: criacao, transformacao, normalizacao, selecao e tratamento de dados para modelos. Trigger keywords: feature engineering, engenharia de atributos, normalizacao, selecao de features, transformacao."
+      ]
+    },
+    {
+      "id": "fine-tuning",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "fine-tuning",
+      "descricao": "Ajuste fino de modelos de linguagem: preparacao de dataset, hyperparametros, LoRA/QLoRA, avaliacao de perda de capacidade. Trigger keywords: fine-tune, fine-tuning, LoRA, QLoRA, ajustar modelo, dataset de treino.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/fine-tuning/skill.md",
+      "script": null,
+      "triggers": [
+        "Ajuste fino de modelos de linguagem: preparacao de dataset, hyperparametros, LoRA/QLoRA, avaliacao de perda de capacidade. Trigger keywords: fine-tune, fine-tuning, LoRA, QLoRA, ajustar modelo, dataset de treino."
+      ]
+    },
+    {
+      "id": "flutter",
+      "categoria": "tecnica",
+      "dominio": "android",
+      "nome": "flutter",
+      "descricao": "Desenvolvimento multiplataforma com Flutter: Dart, widgets, estado, build para Android/iOS/web e perfomance. Trigger keywords: flutter, Dart, widgets, cross-platform, multiplataforma, riverpod, bloc.",
+      "entrypoint": "mcp/android/habilidades/flutter/skill.md",
+      "script": null,
+      "triggers": [
+        "Desenvolvimento multiplataforma com Flutter: Dart, widgets, estado, build para Android/iOS/web e perfomance. Trigger keywords: flutter, Dart, widgets, cross-platform, multiplataforma, riverpod, bloc."
       ]
     },
     {
@@ -474,6 +714,78 @@
       ]
     },
     {
+      "id": "graphql",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "graphql",
+      "descricao": "APIs GraphQL: schema, resolvers, queries/mutations/subscriptions, federation, caching e boas praticas. Trigger keywords: graphql, schema, resolver, query, mutation, subscription, federation, apollo.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/graphql/skill.md",
+      "script": null,
+      "triggers": [
+        "APIs GraphQL: schema, resolvers, queries/mutations/subscriptions, federation, caching e boas praticas. Trigger keywords: graphql, schema, resolver, query, mutation, subscription, federation, apollo."
+      ]
+    },
+    {
+      "id": "grpc",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "grpc",
+      "descricao": "Comunicacao RPC com gRPC: protobuf, streams, interceptors, deadline, load balancing e performance. Trigger keywords: gRPC, protobuf, RPC, stream, interceptor, deadline, bidirecional.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/grpc/skill.md",
+      "script": null,
+      "triggers": [
+        "Comunicacao RPC com gRPC: protobuf, streams, interceptors, deadline, load balancing e performance. Trigger keywords: gRPC, protobuf, RPC, stream, interceptor, deadline, bidirecional."
+      ]
+    },
+    {
+      "id": "infrastructure-as-code",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "infrastructure-as-code",
+      "descricao": "Infraestrutura como codigo: declarativa vs imperativa, configuracoes versionadas, reproducibilidade e pratica de gerenciamento. Trigger keywords: IaC, infra como codigo, reproducibilidade, config versionada, declarativo.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/infrastructure-as-code/skill.md",
+      "script": null,
+      "triggers": [
+        "Infraestrutura como codigo: declarativa vs imperativa, configuracoes versionadas, reproducibilidade e pratica de gerenciamento. Trigger keywords: IaC, infra como codigo, reproducibilidade, config versionada, declarativo."
+      ]
+    },
+    {
+      "id": "ios",
+      "categoria": "tecnica",
+      "dominio": "android",
+      "nome": "ios",
+      "descricao": "Desenvolvimento iOS nativo: Swift, SwiftUI, UIKit, ciclo de vida, Xcode, App Store e integracoes. Trigger keywords: iOS, Swift, SwiftUI, UIKit, Xcode, app store, iphone, ipad.",
+      "entrypoint": "mcp/android/habilidades/ios/skill.md",
+      "script": null,
+      "triggers": [
+        "Desenvolvimento iOS nativo: Swift, SwiftUI, UIKit, ciclo de vida, Xcode, App Store e integracoes. Trigger keywords: iOS, Swift, SwiftUI, UIKit, Xcode, app store, iphone, ipad."
+      ]
+    },
+    {
+      "id": "kubernetes",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "kubernetes",
+      "descricao": "Orquestracao de containers: pods, deployments, services, ingress, configmaps, secrets, health probes, scaling e operacao. Trigger keywords: kubernetes, k8s, pod, deployment, service, ingress, helm, kubectl.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/kubernetes/skill.md",
+      "script": null,
+      "triggers": [
+        "Orquestracao de containers: pods, deployments, services, ingress, configmaps, secrets, health probes, scaling e operacao. Trigger keywords: kubernetes, k8s, pod, deployment, service, ingress, helm, kubectl."
+      ]
+    },
+    {
+      "id": "legacy-modernization",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "legacy-modernization",
+      "descricao": "Modernizacao de sistemas legados: estrtatira, modulo a modulo, estrangulamento, lift-and-shift e migracao segura. Trigger keywords: legacy, legado, modernizacao, estrangulamento, strangler fig, migracao, lift-and-shift.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/legacy-modernization/skill.md",
+      "script": null,
+      "triggers": [
+        "Modernizacao de sistemas legados: estrtatira, modulo a modulo, estrangulamento, lift-and-shift e migracao segura. Trigger keywords: legacy, legado, modernizacao, estrangulamento, strangler fig, migracao, lift-and-shift."
+      ]
+    },
+    {
       "id": "ler",
       "categoria": "tecnica",
       "dominio": "desenvolvimento",
@@ -505,6 +817,30 @@
       ]
     },
     {
+      "id": "message-queues",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "message-queues",
+      "descricao": "Filas de mensagens: broker, producer/consumer, dead letter, delivery garanties, padroes e monitoramento. Trigger keywords: fila, queue, message broker, rabbitmq, kafka, pub-sub, dead letter, consumer.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/message-queues/skill.md",
+      "script": null,
+      "triggers": [
+        "Filas de mensagens: broker, producer/consumer, dead letter, delivery garanties, padroes e monitoramento. Trigger keywords: fila, queue, message broker, rabbitmq, kafka, pub-sub, dead letter, consumer."
+      ]
+    },
+    {
+      "id": "microservices-patterns",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "microservices-patterns",
+      "descricao": "Padroes de microservicos: API gateway, service discovery, circuit breaker, saga, outbox, decomposicao e comunicacao. Trigger keywords: microservicos, microservices, API gateway, circuit breaker, saga, outbox, service discovery.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/microservices-patterns/skill.md",
+      "script": null,
+      "triggers": [
+        "Padroes de microservicos: API gateway, service discovery, circuit breaker, saga, outbox, decomposicao e comunicacao. Trigger keywords: microservicos, microservices, API gateway, circuit breaker, saga, outbox, service discovery."
+      ]
+    },
+    {
       "id": "migration-playbooks",
       "categoria": "tecnica",
       "dominio": "desenvolvimento",
@@ -517,6 +853,18 @@
       ]
     },
     {
+      "id": "mlops",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "mlops",
+      "descricao": "Operacoes de machine learning: pipelines de treino, versionamento de modelos, registro, deploy, monitoramento e reproducibilidade. Trigger keywords: MLOps, pipeline de ML, versionar modelo, deploy de modelo, reproducibilidade, registro de modelo.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/mlops/skill.md",
+      "script": null,
+      "triggers": [
+        "Operacoes de machine learning: pipelines de treino, versionamento de modelos, registro, deploy, monitoramento e reproducibilidade. Trigger keywords: MLOps, pipeline de ML, versionar modelo, deploy de modelo, reproducibilidade, registro de modelo."
+      ]
+    },
+    {
       "id": "mobile-specific-patterns",
       "categoria": "tecnica",
       "dominio": "android",
@@ -526,6 +874,30 @@
       "script": null,
       "triggers": [
         "|"
+      ]
+    },
+    {
+      "id": "model-training",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "model-training",
+      "descricao": "Treinamento de modelos de ML: divisao de dados, hiperparametros, overfitting, validacao cruzada e reproducibilidade. Trigger keywords: treinar modelo, model training, hiperparametros, overfitting, validacao cruzada, split de dados.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/model-training/skill.md",
+      "script": null,
+      "triggers": [
+        "Treinamento de modelos de ML: divisao de dados, hiperparametros, overfitting, validacao cruzada e reproducibilidade. Trigger keywords: treinar modelo, model training, hiperparametros, overfitting, validacao cruzada, split de dados."
+      ]
+    },
+    {
+      "id": "monitoring-alerting",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "monitoring-alerting",
+      "descricao": "Monitoramento e alertas: metricas, logs, traces, dashboards, SLO/SLI, alertas com acao e on-call. Trigger keywords: monitoramento, alertas, metricas, SLO, dashboards, on-call, prometheus, grafana, logs.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/monitoring-alerting/skill.md",
+      "script": null,
+      "triggers": [
+        "Monitoramento e alertas: metricas, logs, traces, dashboards, SLO/SLI, alertas com acao e on-call. Trigger keywords: monitoramento, alertas, metricas, SLO, dashboards, on-call, prometheus, grafana, logs."
       ]
     },
     {
@@ -551,6 +923,18 @@
       ]
     },
     {
+      "id": "nosql-patterns",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "nosql-patterns",
+      "descricao": "Padroes NoSQL: document, key-value, columnar, graph; modelagem por consulta, eventual consistency e trade-offs. Trigger keywords: nosql, document, mongodb, redis, dynamodb, columnar, cassandra, graph database, eventual consistency.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/nosql-patterns/skill.md",
+      "script": null,
+      "triggers": [
+        "Padroes NoSQL: document, key-value, columnar, graph; modelagem por consulta, eventual consistency e trade-offs. Trigger keywords: nosql, document, mongodb, redis, dynamodb, columnar, cassandra, graph database, eventual consistency."
+      ]
+    },
+    {
       "id": "observability-stack",
       "categoria": "tecnica",
       "dominio": "desenvolvimento",
@@ -560,6 +944,30 @@
       "script": null,
       "triggers": [
         "|"
+      ]
+    },
+    {
+      "id": "performance-testing",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "performance-testing",
+      "descricao": "Teste de performance: load, stress, endurance, pico, metricas e otimizacao. Trigger keywords: performance testing, load test, stress test, teste de carga, endurance, pico, latencia, throughput.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/performance-testing/skill.md",
+      "script": null,
+      "triggers": [
+        "Teste de performance: load, stress, endurance, pico, metricas e otimizacao. Trigger keywords: performance testing, load test, stress test, teste de carga, endurance, pico, latencia, throughput."
+      ]
+    },
+    {
+      "id": "prompt-engineering",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "prompt-engineering",
+      "descricao": "Engenharia de prompts para LLMs: design de instrucoes, few-shot, chain-of-thought, contexto, formatos de saida e otimizacao de resultados. Trigger keywords: prompt, instrucao, few-shot, chain-of-thought, system prompt, engenharia de prompt.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/prompt-engineering/skill.md",
+      "script": null,
+      "triggers": [
+        "Engenharia de prompts para LLMs: design de instrucoes, few-shot, chain-of-thought, contexto, formatos de saida e otimizacao de resultados. Trigger keywords: prompt, instrucao, few-shot, chain-of-thought, system prompt, engenharia de prompt."
       ]
     },
     {
@@ -575,6 +983,54 @@
       ]
     },
     {
+      "id": "rag-implementation",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "rag-implementation",
+      "descricao": "Implementacao de Retrieval-Augmented Generation: indexacao, chunks, recuperacao, rerank, injecao de contexto e citacao de fontes. Trigger keywords: RAG, retrieval-augmented, injetar contexto, recuperacao, chunks, rerank.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/rag-implementation/skill.md",
+      "script": null,
+      "triggers": [
+        "Implementacao de Retrieval-Augmented Generation: indexacao, chunks, recuperacao, rerank, injecao de contexto e citacao de fontes. Trigger keywords: RAG, retrieval-augmented, injetar contexto, recuperacao, chunks, rerank."
+      ]
+    },
+    {
+      "id": "react-native",
+      "categoria": "tecnica",
+      "dominio": "android",
+      "nome": "react-native",
+      "descricao": "Desenvolvimento multiplataforma com React Native: componentes nativos, bridge, estado, performance e native modules. Trigger keywords: react native, RN, bridge, componente nativo, multiplataforma, native module.",
+      "entrypoint": "mcp/android/habilidades/react-native/skill.md",
+      "script": null,
+      "triggers": [
+        "Desenvolvimento multiplataforma com React Native: componentes nativos, bridge, estado, performance e native modules. Trigger keywords: react native, RN, bridge, componente nativo, multiplataforma, native module."
+      ]
+    },
+    {
+      "id": "react-vue-svelte-patterns",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "react-vue-svelte-patterns",
+      "descricao": "Padroes de frameworks frontend: componentes, hooks, composables, stores, renderizacao, otimizacao e arquitetura de UI. Trigger keywords: react, vue, svelte, hooks, composables, components, stores, VDOM, frontend patterns.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/react-vue-svelte-patterns/skill.md",
+      "script": null,
+      "triggers": [
+        "Padroes de frameworks frontend: componentes, hooks, composables, stores, renderizacao, otimizacao e arquitetura de UI. Trigger keywords: react, vue, svelte, hooks, composables, components, stores, VDOM, frontend patterns."
+      ]
+    },
+    {
+      "id": "refactoring-patterns",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "refactoring-patterns",
+      "descricao": "Refatoracao: tecnica de melhoria de codigo sem mudar comportamento, com testes de seguranca e passos pequenos. Trigger keywords: refatorar, refactoring, tecnica, extrair metodo, renomear, testes de seguranca, code smell.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/refactoring-patterns/skill.md",
+      "script": null,
+      "triggers": [
+        "Refatoracao: tecnica de melhoria de codigo sem mudar comportamento, com testes de seguranca e passos pequenos. Trigger keywords: refatorar, refactoring, tecnica, extrair metodo, renomear, testes de seguranca, code smell."
+      ]
+    },
+    {
       "id": "resilience-engineering",
       "categoria": "tecnica",
       "dominio": "desenvolvimento",
@@ -587,6 +1043,18 @@
       ]
     },
     {
+      "id": "runbooks",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "runbooks",
+      "descricao": "Runbooks operacionais: procedimentos de incidente, checklist, recuperacao, escalacao e padronizacao. Trigger keywords: runbook, procedimento, incidente, recuperacao, checklist, escalacao, playbook, O&M.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/runbooks/skill.md",
+      "script": null,
+      "triggers": [
+        "Runbooks operacionais: procedimentos de incidente, checklist, recuperacao, escalacao e padronizacao. Trigger keywords: runbook, procedimento, incidente, recuperacao, checklist, escalacao, playbook, O&M."
+      ]
+    },
+    {
       "id": "search-first",
       "categoria": "tecnica",
       "dominio": "desenvolvimento",
@@ -596,6 +1064,18 @@
       "script": null,
       "triggers": [
         "|"
+      ]
+    },
+    {
+      "id": "secure-coding",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "secure-coding",
+      "descricao": "Codigo seguro: prevencao de injecao, XSS, CSRF, SSRF, vazamento de segredos e boas praticas por linguagem. Trigger keywords: codigo seguro, secure coding, injecao, XSS, CSRF, SSRF, vazamento de segredo, OWASP.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/secure-coding/skill.md",
+      "script": null,
+      "triggers": [
+        "Codigo seguro: prevencao de injecao, XSS, CSRF, SSRF, vazamento de segredos e boas praticas por linguagem. Trigger keywords: codigo seguro, secure coding, injecao, XSS, CSRF, SSRF, vazamento de segredo, OWASP."
       ]
     },
     {
@@ -623,6 +1103,18 @@
       ]
     },
     {
+      "id": "service-mesh",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "service-mesh",
+      "descricao": "Service mesh: proxy sidecar, mTLS, observabilidade de rede, retries/timeouts e controle de trafego entre servicos. Trigger keywords: service mesh, sidecar, mTLS, istio, linkerd, trafego, malha de servicos.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/service-mesh/skill.md",
+      "script": null,
+      "triggers": [
+        "Service mesh: proxy sidecar, mTLS, observabilidade de rede, retries/timeouts e controle de trafego entre servicos. Trigger keywords: service mesh, sidecar, mTLS, istio, linkerd, trafego, malha de servicos."
+      ]
+    },
+    {
       "id": "state-machine-patterns",
       "categoria": "tecnica",
       "dominio": "desenvolvimento",
@@ -635,6 +1127,18 @@
       ]
     },
     {
+      "id": "state-management",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "state-management",
+      "descricao": "Gerenciamento de estado frontend: global vs local, stores, derivacao, memoizacao, cache e escalabilidade. Trigger keywords: state management, gerenciamento de estado, store, redux, zustand, pinia, signal, memoizacao.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/state-management/skill.md",
+      "script": null,
+      "triggers": [
+        "Gerenciamento de estado frontend: global vs local, stores, derivacao, memoizacao, cache e escalabilidade. Trigger keywords: state management, gerenciamento de estado, store, redux, zustand, pinia, signal, memoizacao."
+      ]
+    },
+    {
       "id": "tdd-workflow",
       "categoria": "tecnica",
       "dominio": "desenvolvimento",
@@ -644,6 +1148,78 @@
       "script": null,
       "triggers": [
         "|"
+      ]
+    },
+    {
+      "id": "technical-debt",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "technical-debt",
+      "descricao": "Divida tecnica: identificacao, triagem, custo, plano de pagamento e governanca. Trigger keywords: divida tecnica, technical debt, triagem, custo, pagamento, refatorar, quadro.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/technical-debt/skill.md",
+      "script": null,
+      "triggers": [
+        "Divida tecnica: identificacao, triagem, custo, plano de pagamento e governanca. Trigger keywords: divida tecnica, technical debt, triagem, custo, pagamento, refatorar, quadro."
+      ]
+    },
+    {
+      "id": "technical-writing",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "technical-writing",
+      "descricao": "Escrita tecnica: documentacao de codigo, estrutura, clareza, exemplos e manutencao. Trigger keywords: documentacao, technical writing, escrita tecnica, guia, manual, README, clarity, exemplos.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/technical-writing/skill.md",
+      "script": null,
+      "triggers": [
+        "Escrita tecnica: documentacao de codigo, estrutura, clareza, exemplos e manutencao. Trigger keywords: documentacao, technical writing, escrita tecnica, guia, manual, README, clarity, exemplos."
+      ]
+    },
+    {
+      "id": "terraform",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "terraform",
+      "descricao": "Infraestrutura como codigo com Terraform: HCL, providers, state, modules, plan/apply, drift e boas praticas. Trigger keywords: terraform, HCL, infra-as-code, state, provider, module, apply, plan.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/terraform/skill.md",
+      "script": null,
+      "triggers": [
+        "Infraestrutura como codigo com Terraform: HCL, providers, state, modules, plan/apply, drift e boas praticas. Trigger keywords: terraform, HCL, infra-as-code, state, provider, module, apply, plan."
+      ]
+    },
+    {
+      "id": "threat-modeling",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "threat-modeling",
+      "descricao": "Modelagem de ameacas: identificar ativos, adversarios, superficies de ataque e mitigacoes (STRIDE). Trigger keywords: threat modeling, modelagem de ameaca, STRIDE, adversario, superficie de ataque, DREAD.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/threat-modeling/skill.md",
+      "script": null,
+      "triggers": [
+        "Modelagem de ameacas: identificar ativos, adversarios, superficies de ataque e mitigacoes (STRIDE). Trigger keywords: threat modeling, modelagem de ameaca, STRIDE, adversario, superficie de ataque, DREAD."
+      ]
+    },
+    {
+      "id": "vector-databases",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "vector-databases",
+      "descricao": "Bancos vetoriais para busca semantica: embeddings, indice ANN, distancia, filtros, escalabilidade e hibridos. Trigger keywords: vector database, banco vetorial, embeddings, indice ANN, busca por similaridade, faiss, milvus, qdrant, pgvector.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/vector-databases/skill.md",
+      "script": null,
+      "triggers": [
+        "Bancos vetoriais para busca semantica: embeddings, indice ANN, distancia, filtros, escalabilidade e hibridos. Trigger keywords: vector database, banco vetorial, embeddings, indice ANN, busca por similaridade, faiss, milvus, qdrant, pgvector."
+      ]
+    },
+    {
+      "id": "vulnerability-scanning",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "vulnerability-scanning",
+      "descricao": "Escaneamento de vulnerabilidades: dependencias, codigo, container, surface scan e priorizacao de remediacao. Trigger keywords: vulnerabilidade, scan, CVE, dependencia, SAST, DAST, priorizar fix, SBOM.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/vulnerability-scanning/skill.md",
+      "script": null,
+      "triggers": [
+        "Escaneamento de vulnerabilidades: dependencias, codigo, container, surface scan e priorizacao de remediacao. Trigger keywords: vulnerabilidade, scan, CVE, dependencia, SAST, DAST, priorizar fix, SBOM."
       ]
     }
   ]
