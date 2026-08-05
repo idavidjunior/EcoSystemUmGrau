@@ -340,6 +340,7 @@ def gerar_html(nos, arestas, output_path):
             'cat': n['categoria'],
             'cl': n['cl'],
             'atv': round(n.get('atv', 0.5), 3),
+            'tags': n.get('tags', []),
         }
         if n['categoria'] == 'bugs':
             node_obj['st'] = n.get('status', 'resolvido')
@@ -864,8 +865,8 @@ def gerar_html(nos, arestas, output_path):
     // ocasionalmente, cruza o limiar e inicia pequenas avalanches, e raramente
     // uma grande. Soma astrocial lenta (calcio) e pequena flutuacao.
     return _solo * (0.6 + 0.8 * Math.random())
-         + 0.02 * Math.sin(agora * 0.0013 + _zFase[id])  // onda glial
-         + 0.015 * Math.sin(agora * 0.0004 + _zFase[id] * 1.7);
+         + 0.03 * Math.sin(agora * 0.0020 + _zFase[id])  // onda glial
+         + 0.020 * Math.sin(agora * 0.0007 + _zFase[id] * 1.7);
   }}
   function _integracaoNeural(agora, noUpd) {{
     const todas = edges.get();
