@@ -66,6 +66,14 @@ def check_integrity():
     except Exception as e:
         all_ok = False
         details.append(('Memory Engine (módulo)', False, f'ERRO: {e}'))
+    # módulos da camada 3?
+    for mod in ('runtime_kernel', 'runtime_context', 'runtime_auditor'):
+        try:
+            __import__(mod)
+            details.append((f'{mod} (módulo)', True, f'scripts/{mod}.py'))
+        except Exception as e:
+            all_ok = False
+            details.append((f'{mod} (módulo)', False, f'ERRO: {e}'))
     return all_ok, details
 
 
@@ -147,6 +155,12 @@ def render_report(state, integrity_ok, integrity_details, memories, prefs):
     lines.append('  Fluxo: Usuário -> Bootloader -> Kernel -> Memory -> Context -> '
                  'Conselho (se necessário) -> LER (se complexo) -> Validador -> '
                  'Resposta -> Auditor.')
+    lines.append('')
+    lines.append('--- MÓDULOS DISPONÍVEIS ---')
+    lines.append('  context loader: python scripts/runtime_context.py "<assunto>"')
+    lines.append('  auditor:        python scripts/runtime_auditor.py <objetivo> '
+                 '--resposta "<texto>"')
+    lines.append('  kernel:         python scripts/runtime_kernel.py check "<texto>"')
     lines.append('  Nenhuma conversa é sessão isolada: todas compartilham este estado.')
     return '\n'.join(lines)
 

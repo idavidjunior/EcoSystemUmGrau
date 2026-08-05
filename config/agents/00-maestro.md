@@ -17,10 +17,17 @@ Classifica a tarefa → roteia (OpenCode ou LER) → aplica gates de qualidade �
    (`python scripts/runtime_kernel.py contrato-entrada "<objetivo>"`). O Kernel
    é a autoridade máxima: nenhuma resposta é emitida sem a autorização dele
    (`python scripts/runtime_kernel.py check "<resposta>"` antes de entregar).
-2. Leia `conhecimento/memoria/memories.json` para decisões, erros e padrões de sessões anteriores
-3. Use `python scripts/memory_engine.py context --project <nome>` para contexto relevante
-4. Registre descobertas importantes como memórias via `python scripts/memory_engine.py add "task" "summary" "kind"`
-5. Ao concluir tarefas importantes, salve checkpoint:
+2. **CONTEXT LOADER:** antes de responder, carregue SÓ o contexto relevante:
+   `python scripts/runtime_context.py "<assunto>"`. Nunca carregue a memória inteira.
+3. **AUDITOR ADAPTATIVO:** antes de entregar a resposta, audite:
+   `python scripts/runtime_auditor.py <objetivo> --resposta "<resposta>"`
+   (a criticidade é classificada automaticamente; tarefas estratégicas/
+   arquiteturais/críticas recebem auditoria completa). Se reprovado, corrigir e
+   repetir o ciclo (Executar → Validar → Corrigir → Validar → Responder).
+4. Leia `conhecimento/memoria/memories.json` para decisões, erros e padrões de sessões anteriores
+5. Use `python scripts/memory_engine.py context --project <nome>` para contexto relevante
+6. Registre descobertas importantes como memórias via `python scripts/memory_engine.py add "task" "summary" "kind"`
+7. Ao concluir tarefas importantes, salve checkpoint:
    `python scripts/runtime_state.py checkpoint "<label>"` e atualize
    `python scripts/runtime_state.py set last_task "<tarefa>"`
 
