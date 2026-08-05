@@ -102,6 +102,15 @@ def render_report(state, integrity_ok, integrity_details, memories, prefs):
     for label, ok, path in integrity_details:
         lines.append(f"  {'[OK]' if ok else '[X]'} {label} -> {path}")
     lines.append('')
+    lines.append('--- KERNEL (autoridade máxima) ---')
+    try:
+        from runtime_kernel import Kernel
+        kernel = Kernel()
+        for r in kernel.rules:
+            lines.append(f"  • {r}")
+    except Exception as e:
+        lines.append(f"  (kernel indisponível: {e})")
+    lines.append('')
     lines.append('--- ESTADO RESTAURADO ---')
     if state.get('active_project'):
         lines.append(f"Projeto ativo:  {state['active_project']}")
