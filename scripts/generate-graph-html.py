@@ -771,7 +771,7 @@ def gerar_html(nos, arestas, output_path):
         // Nos QUENTES (atividade real alta, mtime recente) latejam com mais
         // energia e brilham mais forte: o pulso escala com atv.
         const atv = (n.atv != null) ? n.atv : 0.5;
-        const pulso = Math.sin(agora * 0.0020 + fase) * (0.07 + 0.13 * atv);
+        const pulso = Math.sin(agora * 0.0020 * _velGlobal + fase) * (0.07 + 0.13 * atv);
         sz = Math.max(6, sz * (1 + pulso * 0.55) * esc);
         sombra = Math.round(sombra + (6 + 14 * atv) * pulso);
       }} else {{
