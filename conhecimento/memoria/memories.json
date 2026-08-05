@@ -1468,5 +1468,25 @@
     "access_count": 0,
     "created_at": "2026-08-05T16:06:44.441130",
     "last_accessed": "2026-08-05T16:06:44.441130"
+  },
+  {
+    "id": 104,
+    "kind": "erro",
+    "task": "Fix: timeout conexao app apos saudacao",
+    "summary": "Root causes reais: (1) opencode serve zumbi (uptime >18h) travando. (2) serve frio demora 35s para primeira resposta. (3) senha OPENCODE_SERVER_PASSWORD do .env era antiga (521cf1f4) mas serve atual espera edbe7432 - atualizado .env. (4) memoria semantica cold 9s, warm 8ms - adicionado _CACHE estatico. Fix: releitura .env no jarvis_bridge.py + cache de modulo (globals). Antes de abrir o app, fazer warmup manual do serve. App: aumentar keepalive do VoxWebSocket para 180s.",
+    "project": "",
+    "tags": [
+      "atualizado",
+      "edbe7432",
+      "espera",
+      "reais",
+      "estatico",
+      "causes"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-05T19:38:09.733790",
+    "last_accessed": "2026-08-05T19:38:09.733790"
   }
 ]
