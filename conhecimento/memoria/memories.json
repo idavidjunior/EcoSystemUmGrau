@@ -1128,5 +1128,25 @@
     "access_count": 0,
     "created_at": "2026-08-04T21:47:42.572569",
     "last_accessed": "2026-08-04T21:47:42.572569"
+  },
+  {
+    "id": 87,
+    "kind": "padrao",
+    "task": "Ilhas no grafo = notas grau 0 sem wikilinks; diagnosticadas e integradas",
+    "summary": "Existem ilhas (componentes desconexos) no grafo quando notas tem grau 0 (nenhum wikilink). Diagnostico por BFS: 6 ilhas = 6 notas isoladas. 2 eram templates vazios (deletados: bugs/-.md 'Bug:------', padroes/pattern.md). 4 tinha conteudo util e foram conectados via wikilinks. LICAO CRITICA: nos wikilinks o alvo deve ser o SLUG (nome do arquivo sem extensao), NAO o caminho com pasta (padroes/foo.md). Gerador procura link_slug em id_set (slugs). Resultado: de 339 nos - 2 = 337, 0 ilhas, 0 grau 0, arestas 1519->1527.",
+    "project": "",
+    "tags": [
+      "wikilink",
+      "foo",
+      "nenhum",
+      "pasta",
+      "tem",
+      "caminho"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-04T22:14:50.060993",
+    "last_accessed": "2026-08-04T22:14:50.060993"
   }
 ]
