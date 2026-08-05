@@ -426,16 +426,16 @@ def gerar_html(nos, arestas, output_path):
       solver: 'barnesHut',
       barnesHut: {{
         theta: 0.5,
-        gravitationalConstant: -620,
-        centralGravity: 0.28,
+        gravitationalConstant: -720,
+        centralGravity: 0.30,
         springLength: 120,
-        springConstant: 0.03,
-        damping: 0.88,
+        springConstant: 0.045,
+        damping: 0.82,
         avoidOverlap: 0.55
       }},
       minVelocity: 0,
-      maxVelocity: 6,
-      timestep: 0.2,
+      maxVelocity: 13,
+      timestep: 0.32,
       adaptiveTimestep: false,
       stabilization: false
     }},
@@ -485,7 +485,7 @@ def gerar_html(nos, arestas, output_path):
     var z0 = _zBase[id] != null ? _zBase[id] : 0.5;
     var f = _zFase[id] != null ? _zFase[id] : 0;
     // respiracao organica propria de cada no
-    var onda = Math.sin(t * 0.0007 + f) + Math.sin(t * 0.00042 + f * 2.3);
+    var onda = Math.sin(t * 0.0011 + f) + Math.sin(t * 0.00066 + f * 2.3);
     // angulo/raio do no em torno do centro (via cache de posicoes) -> giro 3D
     var ang = f, raio = 0.5, c = _cacheCentro || {{ x: 0, y: 0 }};
     var p = _cachePos ? _cachePos[id] : null;
@@ -494,9 +494,9 @@ def gerar_html(nos, arestas, output_path):
       raio = Math.min(1, Math.sqrt((p.x - c.x) * (p.x - c.x) + (p.y - c.y) * (p.y - c.y)) / 380);
     }}
     // onda gira em torno do centro: lado 0 sempre na "frente" por fase
-    var viajante = Math.sin(t * 0.00030 * _waveVel + ang + raio * 3.0) * 0.16 * _waveDir;
-    var z = z0 + 0.13 * onda * 0.5 + viajante;
-    return Math.max(0.06, Math.min(1, z));
+    var viajante = Math.sin(t * 0.00050 * _waveVel + ang + raio * 3.0) * 0.26 * _waveDir;
+    var z = z0 + 0.20 * onda * 0.5 + viajante;
+    return Math.max(0.04, Math.min(1, z));
   }}
 
   // =====================================================================
@@ -525,9 +525,16 @@ def gerar_html(nos, arestas, output_path):
     var atualizaCentro = function() {{
       try {{
         _cachePos = network.getPositions();
-        var k = 0, sx = 0, sy = 0;
-        for (var id in _cachePos) {{ sx += _cachePos[id].x; sy += _cachePos[id].y; k++; }}
-        if (k) {{ _cacheCentro = {{ x: sx / k, y: sy / k }}; }}
+        // Referencia de movimento = CENTRO DO QUADRO visivel (viewport), nao o
+        // centroide dos nos. Assim a onda/giro 3D orbita o meio do canvas
+        // mesmo que o usuario de pan/zoom.
+        if (network.getViewPosition) {{
+          _cacheCentro = network.getViewPosition();
+        }} else {{
+          var k = 0, sx = 0, sy = 0;
+          for (var id in _cachePos) {{ sx += _cachePos[id].x; sy += _cachePos[id].y; k++; }}
+          if (k) {{ _cacheCentro = {{ x: sx / k, y: sy / k }}; }}
+        }}
       }} catch (e) {{}}
     }};
     atualizaCentro();
@@ -549,25 +556,26 @@ def gerar_html(nos, arestas, output_path):
       }});
       // Mantem o cerebro vivo: balanco lento e respirando.
       network.setOptions({{ physics: {{ barnesHut: {{
-        gravitationalConstant: -620, springLength: 120, springConstant: 0.018,
-        damping: 0.92, centralGravity: 0.30, avoidOverlap: 0.55
+        gravitationalConstant: -720, springLength: 120, springConstant: 0.030,
+        damping: 0.86, centralGravity: 0.34, avoidOverlap: 0.55
       }} }} }});
     }}
   }};
   setTimeout(guardaInicial, 2500);
 
   // --- Respiracao do layout ------------------------------------------------
-  // Ciclo lento (~22s) que alterna a energia da fisica: "inspira" (mais
-  // repulsao, espaca) e "expira" (mais coesao, aproxima) sem nunca parar.
+  // Ciclo organico que alterna a energia da fisica: "inspira" (mais repulsao,
+  // espaca) e "expira" (mais coesao, aproxima) sem nunca parar. As variacoes
+  // sao mais fortes que antes para o movimento ficar perceptivel.
   let _respirando = 1;
   setInterval(() => {{
-    _respirando = 0.78 + 0.22 * Math.sin(Date.now() * 0.00028);
+    _respirando = 0.72 + 0.28 * Math.sin(Date.now() * 0.00045);
     network.setOptions({{ physics: {{ barnesHut: {{
-      gravitationalConstant: -620 * _respirando,
-      centralGravity: 0.30 * (1.35 - _respirando),
-      springConstant: 0.018 * (1.6 - _respirando)
+      gravitationalConstant: -720 * _respirando,
+      centralGravity: 0.34 * (1.5 - _respirando),
+      springConstant: 0.030 * (1.8 - _respirando)
     }} }} }});
-  }}, 3000);
+  }}, 2500);
 
   // =========================================================================
   // ZOOM-MICROSCOPIO + EXPANDIR
@@ -587,18 +595,18 @@ def gerar_html(nos, arestas, output_path):
   let _memb = {{}};
   let _refrat = {{}};
   let _sigma = 0.96 + Math.random() * 0.05;   // critico: 0.9x..1.0x
-  let _solo = 0.006;                            // "chao" de excitacao espontanea
+  let _solo = 0.010;                            // "chao" de excitacao espontanea
   let _avalanche = {{ ativo: false, fila: [], maior: 0, size: 0 }};
   const _LIMIAR = 1.0;
-  const _REF = 260;                             // fase refrataria (ms)
+  const _REF = 240;                             // fase refrataria (ms)
 
   // homeostase do ponto critico: sigma e o solo espontaneo variam lentamente
   function _reacerca() {{
-    _sigma = 0.9 + Math.random() * 0.1;
-    _solo = 0.0045 + Math.random() * 0.004;
-    setTimeout(_reacerca, 6000 + Math.random() * 7000);
+    _sigma = 0.88 + Math.random() * 0.12;
+    _solo = 0.007 + Math.random() * 0.006;
+    setTimeout(_reacerca, 5000 + Math.random() * 6000);
   }}
-  setTimeout(_reacerca, 6000);
+  setTimeout(_reacerca, 5000);
 
   // inicializa os potenciais de membrana criados
   nodes.get().forEach(function(n) {{
@@ -717,27 +725,27 @@ def gerar_html(nos, arestas, output_path):
     // congelamos a decoracao viva para NAO apagar o efeito visual escolhido.
     if (_destacado) return;
     const agora = Date.now();
-    const base = 0.86 + 0.14 * Math.sin(agora * 0.0015);
+    const base = 0.80 + 0.20 * Math.sin(agora * 0.0022);
     // --- pseudo-3D: calcula tamanho/opacidade/glow por profundidade viva ---
     // Perto (z->1): mais opaco, maior e mais brilhante. Longe (z->0):
     // translucido, menor e apagado -> efeito de relevo/esfera de conhecimento.
     const noUpd = [];
-    const agoraPulso = (!window.__pulseT || (agora - window.__pulseT) > 300);
+    const agoraPulso = (!window.__pulseT || (agora - window.__pulseT) > 220);
     if (agoraPulso) window.__pulseT = agora;
     nodes.get().forEach(n => {{
       const z = _zVivo(n.id, agora); // flutua autonomo no tempo
-      const esc = 0.74 + 0.5 * z;   // fator de escala por profundidade
-      const op = Math.min(1, base * (0.55 + 0.45 * z));
+      const esc = 0.68 + 0.62 * z;   // fator de escala por profundidade
+      const op = Math.min(1, base * (0.50 + 0.50 * z));
       let sz = (original[n.id] ? original[n.id].size : 12);
-      let sombra = Math.round(12 + 14 * z);
+      let sombra = Math.round(14 + 18 * z);
       if (agoraPulso) {{
         const fase = _zFase[n.id] != null ? _zFase[n.id] : ((_hashId(n.id) || 0) % 97);
         // Nos QUENTES (atividade real alta, mtime recente) latejam com mais
         // energia e brilham mais forte: o pulso escala com atv.
         const atv = (n.atv != null) ? n.atv : 0.5;
-        const pulso = Math.sin(agora * 0.0012 + fase) * (0.05 + 0.09 * atv);
-        sz = Math.max(6, sz * (1 + pulso * 0.4) * esc);
-        sombra = Math.round(sombra + (4 + 10 * atv) * pulso);
+        const pulso = Math.sin(agora * 0.0020 + fase) * (0.07 + 0.13 * atv);
+        sz = Math.max(6, sz * (1 + pulso * 0.55) * esc);
+        sombra = Math.round(sombra + (6 + 14 * atv) * pulso);
       }} else {{
         sz = Math.max(6, sz * esc);
       }}
@@ -765,20 +773,20 @@ def gerar_html(nos, arestas, output_path):
       const todas = edges.get();
       if (todas.length) {{
         const alvos = [];
-        const qtd = 1 + Math.floor(Math.random() * 3);
+        const qtd = 2 + Math.floor(Math.random() * 4);
         for (let i = 0; i < qtd && todas.length; i++) {{
           alvos.push(todas[Math.floor(Math.random() * todas.length)].id);
         }}
         arestasUp = arestasUp.map(a =>
           alvos.includes(a.id)
-            ? {{ ...a, color: '#ffffff', width: 4.5, opacity: 0.9 }}
+            ? {{ ...a, color: '#ffffff', width: 5.5, opacity: 1 }}
             : a);
         // leve glow no no destino de cada sinapse
         alvos.forEach(edgeId => {{
           const _ed = todas.find(x => x.id === edgeId);
           if (!_ed) return;
           const _dstOrig = original[_ed.to] || {{color:'#4e79a7', size:15}};
-          nodes.update([{{ id: _ed.to, color: '#89b4fa', size: 22, shadow: true, shadowSize: 22 }}]);
+          nodes.update([{{ id: _ed.to, color: '#89b4fa', size: 26, shadow: true, shadowSize: 28 }}]);
           setTimeout(() => nodes.update([{{ id: _ed.to, color: _dstOrig.color, size: _dstOrig.size }}]), 700);
         }});
       }}
@@ -791,8 +799,8 @@ def gerar_html(nos, arestas, output_path):
   network.on('hoverNode', () => {{ _tickPausado = true; }});
   network.on('blurNode', () => {{ _tickPausado = false; }});
 
-  // Intervalo aleatorio entre pulsos de sinapse (3.2s a 5.5s)
-  function _proxSpike() {{ return 3200 + Math.random() * 2300; }}
+  // Intervalo aleatorio entre pulsos de sinapse (1.6s a 3.2s)
+  function _proxSpike() {{ return 1600 + Math.random() * 1600; }}
 
   // --- DISPARO NEURAL + AVALANCHE (criticalidade auto-organizada) ---
   // Atualiza os potenciais de membrana de todos os nos (corrente de base) e,
