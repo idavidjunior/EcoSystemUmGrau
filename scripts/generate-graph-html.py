@@ -446,10 +446,12 @@ def gerar_html(nos, arestas, output_path):
     {legend_cl}
     {legend_st}
     {legend_dom}
-    <button class="lg home" data-filter="home" data-value="" data-color="#89b4fa">ðŸ  Home</button>
-    <button class="lg" data-filter="all" data-value="" data-color="#888">âœ• Limpar</button>
+    <button class="lg home" data-filter="home" data-value="" data-color="#89b4fa"
+      title="Home: restaura a visao inicial do grafo (posicao e zoom originais).">ðŸ  Home</button>
+    <button class="lg" data-filter="all" data-value="" data-color="#888"
+      title="Limpar: remove o destaque atual e restaura as cores e tamanhos originais dos nos.">âœ• Limpar</button>
   </div>
-  <div id="stats">{len(nos)} nos | {len(arestas)} conexoes â€” clique em uma categoria ou cluster para destacar</div>
+  <div id="stats" title="Resumo do grafo. Passe o mouse sobre os botoes acima para ver a explicacao de cada um.">{len(nos)} nos | {len(arestas)} conexoes â€” clique em uma categoria ou cluster para destacar</div>
 </div>
 <div id="wrap">
   <div id="net"></div>
