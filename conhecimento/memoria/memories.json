@@ -1428,5 +1428,25 @@
     "access_count": 0,
     "created_at": "2026-08-05T14:44:33.128469",
     "last_accessed": "2026-08-05T14:44:33.128469"
+  },
+  {
+    "id": 102,
+    "kind": "decisao",
+    "task": "Bridge Jarvis: memoria semantica + pipeline curado",
+    "summary": "jarvis_bridge.py: _montar agora enriquece prompt com top-3 memorias TF-IDF relevantes a msg. Cliente.perguntar envolvido por _fb_registrar (sucesso/latencia) e _fallback_cadeia_curada (7 modelos) quando opencode-serve falha. Sincroniza o app Android com os 3 criticos do ecossistema sem mudar o protocolo WebSocket.",
+    "project": "",
+    "tags": [
+      "falha",
+      "serve",
+      "opencode",
+      "modelos",
+      "curada",
+      "cadeia"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-05T16:05:34.629570",
+    "last_accessed": "2026-08-05T16:05:34.629570"
   }
 ]
