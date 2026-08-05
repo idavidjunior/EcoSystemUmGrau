@@ -591,8 +591,6 @@ def gerar_html(nos, arestas, output_path):
   let _avalanche = {{ ativo: false, fila: [], maior: 0, size: 0 }};
   const _LIMIAR = 1.0;
   const _REF = 260;                             // fase refrataria (ms)
-  let _ultimaTinta = 0;
-  let _custotintasT = 0;
 
   // homeostase do ponto critico: sigma e o solo espontaneo variam lentamente
   function _reacerca() {{
@@ -786,31 +784,6 @@ def gerar_html(nos, arestas, output_path):
       }}
     }}
     edges.update(arestasUp);
-    // --- SALVAGUARDA: restaura cor baseline das arestas p/ nao colar tinta ---
-    // O motor de avalanches acende arestas (verde) durante os disparos. Aqui
-    // recompomos a cor original das arestas cujo efeito durou >600ms, para que
-    // o grafo retorne a paleta viva e nao fique todo verde como um sarcoma.
-    const _MAXX = 8;
-    if (agora > _custotintasT && _MAXX-- > 0) {{
-      // arestas que ja nao estao em avalanche voltam a cor original
-      edges.get().forEach(function(e) {{
-        const base = arestaOriginal[e.id];
-        if (base && e.color != null && e.color !== base.color) {{
-          // checa se a aresta participa ativamente de uma avalanche visivel
-          if (!(Math.random() < 0.02)) return;
-          edges.update([{{
-            id: e.id,
-            color: base.color,
-            width: base.width != null ? base.width : 1,
-            opacity: 0.25
-          }}]);
-        }}
-      }});
-    }}
-    if (agora - _ultimaTinta > 900) {{
-      _ultimaTinta = agora;
-      _custotintasT = agora;
-    }}
     // --- INTEGRACAO NEURAL (criticalidade + avalanche espontanea) ---
     _integracaoNeural(agora, noUpd);
   }});
