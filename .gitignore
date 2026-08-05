@@ -57,3 +57,6 @@ backups/
 
 # Estado efemero do widget (comando de voz -> grafo)
 docs/comando_grafo.json
+
+# Estado efemero do context-engine (tarefas paralelas)
+context/tarefas_paralelas.json
