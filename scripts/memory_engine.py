@@ -225,6 +225,25 @@ if __name__ == '__main__':
         task = sys.argv[2] if len(sys.argv) > 2 else ''
         sid = log_session(task=task)
         print(f'[OK] Session logged: {sid}')
+    elif cmd == 'semantic':
+        # Busca semantica (TF-IDF + cosine) via memory_semantic.search()
+        try:
+            from memory_semantic import search as sem_search
+        except ImportError:
+            print('[ERR] memory_semantic.py nao encontrado')
+            sys.exit(1)
+        if len(sys.argv) < 3:
+            print('uso: memory_engine.py semantic <query>')
+            sys.exit(1)
+        query = ' '.join(sys.argv[2:])
+        results = sem_search(query, k=5)
+        if not results:
+            print('sem resultados (indice vazio ou nao construido)')
+            print('  rode: python scripts/memory_semantic.py build')
+        else:
+            print(f'Busca semantica: "{query}" -> {len(results)} resultados')
+            for r in results:
+                print(f'  [{r["score"]:.4f}] #{r["id"]} ({r["kind"]}) {r["title"][:90]}')
     elif cmd == 'decay':
         dry = '--dry-run' in sys.argv
         r = decay_pass(dry_run=dry)
