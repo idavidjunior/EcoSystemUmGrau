@@ -88,7 +88,9 @@
     98,
     99,
     100,
-    101
+    101,
+    102,
+    103
   ],
   "kinds": [
     "erro",
@@ -179,7 +181,9 @@
     "decisao",
     "padrao",
     "padrao",
-    "decisao"
+    "decisao",
+    "decisao",
+    "padrao"
   ],
   "texts": [
     "substituir coercein por tanh soft-clipping + peak limiter erro",
@@ -270,8 +274,10 @@
     "bridge.perguntar/query processa cadeia de 7 modelos do opencode-model-fallback.jsonc com timeout 15s cada e fallback automatico. ponto de entrada: window.pywebview.api.perguntar(). log em docs/widget_log.txt. model opencode modelos fallback cadeia processa decisao",
     "scripts/memory_semantic.py: tf-idf + cosine sobre 86 memorias (vocab=6193). subcomando 'memory_engine.py semantic <query>'. resolve dependencia de tags exatas para recuperacao por significado. scripts significado recuperacao implementada exatas 6193 padrao",
     "bridge jarvis operacional porta 8765 (pid 3600). tts edge-tts (antonioneural) gerou 26kb mp3. stt faster-whisper tiny transcreveu 'eco ativado' corretamente. 'ativar eco' pronto para uso. 3600 pid 8765 porta operacional validados padrao",
-    "scripts/llm_feedback.py: registrar(modelo, ok, ms) + cadeia_ordenada() reordena por score (taxa sucesso*0.8 + velocidade*0.2 - penal falhas consecutivas). integrado em bridge.processar_query_llm. score persistido em docs/llm_feedback.json. sucesso taxa reordena feedback ordenada scripts decisao"
+    "scripts/llm_feedback.py: registrar(modelo, ok, ms) + cadeia_ordenada() reordena por score (taxa sucesso*0.8 + velocidade*0.2 - penal falhas consecutivas). integrado em bridge.processar_query_llm. score persistido em docs/llm_feedback.json. sucesso taxa reordena feedback ordenada scripts decisao",
+    "jarvis_bridge.py: _montar agora enriquece prompt com top-3 memorias tf-idf relevantes a msg. cliente.perguntar envolvido por _fb_registrar (sucesso/latencia) e _fallback_cadeia_curada (7 modelos) quando opencode-serve falha. sincroniza o app android com os 3 criticos do ecossistema sem mudar o protocolo websocket. falha serve opencode modelos curada cadeia decisao",
+    "toggle 'eco' (🔊/🔇) no topappbar. ecoativo persistido em sharedpreferences(vox_prefs, eco_ativo). voz continua: apos resposta, onmessage/onsttresult re-disparam comecarouvir() se ecoativo (delay 1.2-1.5s). tentarouvir() so auto-ouve com ecoativo. build v15 instalado via adb over tailscale. delay ativo comecarouvir topappbar disparam toggle padrao"
   ],
-  "vocab_size": 6319,
-  "count": 89
+  "vocab_size": 6421,
+  "count": 91
 }
