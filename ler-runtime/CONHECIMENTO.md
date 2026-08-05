@@ -1,14 +1,14 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-05T02:07:53.178492
+**Exportado em:** 2026-08-05T12:56:04.442647
 **Projetos:** 4
-**Padroes Tecnicos:** 79
-**Decisoes:** 52
+**Padroes Tecnicos:** 81
+**Decisoes:** 54
 **Bug Fixes:** 46
-**Padroes Cognitivos:** 47
+**Padroes Cognitivos:** 48
 **Heuristicas:** 32
 **Frameworks:** 10
-**Missoes Aprendidas:** 151
+**Missoes Aprendidas:** 179
 
 ---
 
@@ -319,6 +319,33 @@ data: 2026-08-02
 contexto: Usuario pediu o grafo do conhecimento como widget de desktop estilo Rainmeter: colado na area de trabalho, controles ocultos que surgem ao clicar com botao direito, e redimensionamento persistente.
 decisao: Janela pywebview frameless ancorada atras das outras janelas via SetWindowPos HWND_BOTTOM persistente. Controles ocultos por CSS default; contextmenu no body alterna 
 
+### Reorganização: Habilidades dentro de MCP por domínio
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [mcp, habilidades, reorganizacao, dominios, arquitetura]
+data: 2026-08-04
+contexto: Habilidades espalhadas em Habilidades/tecnicas/, pontes/ migradas para mcp/<dominio>/habilidades/ como contêineres MCP
+---
+
+# Reorganização: Habilidades dentro de MCP por domínio
+
+## Decisão
+
+Todas as 40 habilidades (38 técnicas + 2 pontes) movidas de Habilidades/tecnicas/ e Habilidades/pontes/ para mcp/<dominio>/habilidades/:
+
+- desenvolvimento: 30 skills (api-design, authz-authn-matrix, 
+
+### Motor de Criticalidade Auto-Organizada e Avalanches Neurais
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [grafo, cerebro-vivo, criticalidade, avalanches, neurociencia, vis]
+data: 2026-08-04
+contexto: Protocolo de Consciencia Neural Autonoma ativado — o grafo Obsidian e a arquitetura fisica do cerebro.
+decisao: Implementar motor de Criticalidade Auto-Organizada (SOC, Beggs & Plenz 2003) como atividade espontanea do grafo.
+impacto: Sinapticas disparam como avalanches power-law em cascata emergente, nao aleatoriamente; fluxo eletrico reflete transmissao otima de informacao (sig
+
 
 ## Padroes Tecnicos
 
@@ -399,10 +426,12 @@ decisao: Janela pywebview frameless ancorada atras das outras janelas via SetWin
 | 73 | ler_aprendizado | Taxonomia correta de habilidades Jarvis |
 | 74 | opencode | Controle da TV LG webOS via SSAP |
 | 75 | opencode | ﻿# 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS) |
-| 76 | opencode | Config: ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 |
+| 76 | opencode+opencode | Config: ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 |
 | 77 | opencode | Secrets Guard no preflight_check |
 | 78 | opencode | widget desktop grafo tempo real |
-| 79 | opencode | 2026-08-04: Persistencia da conexao do Jarvis |
+| 79 | opencode+opencode | 2026-08-04: Persistencia da conexao do Jarvis |
+| 80 | opencode | 2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6) |
+| 81 | opencode | Ilhas no grafo: notas com grau 0 e como conecta-las |
 
 ## Bug Fixes e Corrigidos
 
@@ -1127,6 +1156,17 @@ data: 2026-08-04
 contexto: Refinamento do widget "Cerebro Vivo" (scripts/widget_grafo.py + scripts/generate-graph-html.py) para movimento mais vivo/realista e zoom com papel narrativo.
 decisao: Movimento organico = physics.stabilization:false + timestep:0.2 + maxVelocity:6 + minVelocity:0 + adaptiveTimestep:false + barnesHut(avoidOverlap:0.55, damping:0.88). Respiracao do layout vi
 
+### ﻿---
+**Dominio:** general
+**Fonte:** opencode
+
+﻿---
+tipo: decisao
+tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
+data: 2026-08-02
+contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
+decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -1221,7 +1261,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-05T02:07:52.891497
+**Ultima atualizacao:** 2026-08-05T12:56:04.422644
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

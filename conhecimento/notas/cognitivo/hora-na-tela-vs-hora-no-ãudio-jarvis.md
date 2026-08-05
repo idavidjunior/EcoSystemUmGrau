@@ -1,5 +1,5 @@
 ---
-tags: [cognitivo, ecossistema, evoluir, general, precisa, trocar]
+tags: [adb, cognitivo, general, independente, trocar, usb]
 aliases: [﻿# Hora na tela vs hora no Ã¡udio (Jarvis)]
 date: 2026-08-05
 ---
@@ -38,6 +38,14 @@ data: 2026-08-02
 contexto: ClÃ¡usula pÃ©trea exige comunicaÃ§Ã£o contÃ­nua em Ã¡udio. O edge-tts jÃ¡ suporta SSML completo e o ecossistema precisa evoluir pronÃºncia e naturalidade sem trocar de TTS.
 decisao: "Adicionei _ssml_enriquecer() em scripts/jarvis_bridge.py e mudei a ordem em gerar_audio(): phoneme primeiro sobre texto puro, depois SSML enriquece naturalidade."
 impacto: "NÃºmeros, percentuai
+
+---
+tipo: episodio
+tags: [jarvis, bridge, celular, tailscale, websocket, voxumgrau, conectividade, validado]
+data: 2026-08-04
+fonte: tarefa
+contexto: Usuario enfatizou que o importante e manter o Jarvis do celular conectado ao bridge. Verificacao de estado da ponte (PID 2676, porta 8765) e da conexao do celular.
+decisao: Confirmado e documentado que o Jarvis do celular conecta ao bridge via rede Tailscale por WebSocket, de forma independente de ADB/USB. A conexao usa o IP fixo 100.64.71.9 e func
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]

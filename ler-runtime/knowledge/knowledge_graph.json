@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-05T02:07:52.891497",
+  "last_updated": "2026-08-05T12:56:04.422644",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -610,12 +610,14 @@
       "extracted_at": "2026-08-04T03:45:11.875107"
     },
     {
-      "source": "opencode",
+      "source": "opencode+opencode",
       "title": "Config: ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7",
       "action": "Ao adicionar servidor MCP no `opencode.jsonc`, o OpenCode 1.18.7 rejeitava a config com erro `Expected { readonly \"type\": \"local\", ... } | { readonly \"type\": \"remote\", ... }` e `Missing key mcp.servers.enabled`.",
       "description": "﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7\n\n**Categoria:** config\n**Contexto:** Ao adicionar servidor MCP no `opencode.jsonc`, o OpenCode 1.18.7 rejeitava a config com erro `Expected { readonly \"type\": \"local\", ... } | { readonly \"type\": \"remote\", ... }` e `Missing key mcp.servers.enab",
       "domain": "config",
-      "extracted_at": "2026-08-04T03:45:26.901276"
+      "extracted_at": "2026-08-05T12:55:49.730983",
+      "merged_count": 2,
+      "merged_at": "2026-08-05T12:55:49.921974"
     },
     {
       "source": "opencode",
@@ -634,12 +636,30 @@
       "extracted_at": "2026-08-04T03:45:43.440848"
     },
     {
-      "source": "opencode",
+      "source": "opencode+opencode",
       "title": "2026-08-04: Persistencia da conexao do Jarvis",
       "action": "Usuario pediu para verificar a conexao com o Jarvis. Constatado que a bridge havia morrido e o watchdog estava travado desde 07:29 (7h sem reescrever o log). A dificuldade real identificada pelo usuario e a PERSISTENCIA da conexao.",
       "description": "---\ntipo: padrao\ntags: [jarvis, bridge, persistencia, conexao, watchdog, tailscale, voxumgrau, verificacao]\ndata: 2026-08-04\ncontexto: Usuario pediu para verificar a conexao com o Jarvis. Constatado que a bridge havia morrido e o watchdog estava travado desde 07:29 (7h sem reescrever o log). A dific",
       "domain": "general",
-      "extracted_at": "2026-08-04T20:28:42.759036"
+      "extracted_at": "2026-08-05T12:56:00.051432",
+      "merged_count": 2,
+      "merged_at": "2026-08-05T12:56:00.241453"
+    },
+    {
+      "source": "opencode",
+      "title": "2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6)",
+      "action": "Conexao ADB remota ao Redmi Note 11 via Tailscale falhava intermitentemente. O IPv4 100.64.71.9:5555 dava timeout as vezes, mas o IPv6 direto funcionava em outros momentos.",
+      "description": "---\ntipo: padrao\ntags: [adb, tailscale, ipv6, ipv4, celular, android, script, powershell, scrcpy]\ndata: 2026-08-03\nfonte: tarefa\ncontexto: Conexao ADB remota ao Redmi Note 11 via Tailscale falhava intermitentemente. O IPv4 100.64.71.9:5555 dava timeout as vezes, mas o IPv6 direto funcionava em outro",
+      "domain": "general",
+      "extracted_at": "2026-08-05T12:55:57.254834"
+    },
+    {
+      "source": "opencode",
+      "title": "Ilhas no grafo: notas com grau 0 e como conecta-las",
+      "action": "Usuario viu 6 ilhas (componentes desconexos) no grafo do cerebro e perguntou como verificar e se sao uteis.",
+      "description": "---\ntipo: padrao\ntags: [grafo, obsidian, wikilinks, conectividade, grau0, debug]\ndata: 2026-08-04\ncontexto: Usuario viu 6 ilhas (componentes desconexos) no grafo do cerebro e perguntou como verificar e se sao uteis.\ndecisao: Diagnosticar ilhas como notas com grau 0 e integrar/deletar conforme o valo",
+      "domain": "general",
+      "extracted_at": "2026-08-05T12:56:04.083376"
     }
   ],
   "decisions": [
@@ -952,14 +972,18 @@
     {
       "source": "opencode",
       "decision": "﻿# DecisÃ£o: Aprendizado automÃ¡tico permanente",
-      "rationale": "﻿# DecisÃ£o: Aprendizado automÃ¡tico permanente\n\n**Data:** 2026-07-28\n**Tipo:** decisao\n**Tags:** aprendizado, automacao, regra, petrea\n\n## Contexto\nUsuÃ¡rio instruiu que o aprendizado deve ser feito automaticamente ao final de cada tarefa, sem necessidade de solicitaÃ§Ã£o explÃ­cita. Isso Ã© instruÃ§Ã£o permanente e pÃ©trea.\n\n## DecisÃ£o\nTodo agente do ecossistema deve, ao final de cada tarefa concluÃ­da:\n\n1. **Registrar memÃ³ria** via `memory_engine.py add` com tipo apropriado (decisao, erro, padrao, episodio)\n2. **Criar arquivo** em `conhecimento/aprendizados/` com formato `YYYY-MM-DD-titulo.md`\n3. **Atualizar knowledge graph** via `KnowledgeConsolidator` se aplicÃ¡vel\n4. **Sincronizar com GitHub** para persistÃªncia entre sessÃµes\n\nNÃ£o esperar o usuÃ¡rio pedir. Aprender Ã© parte do fluxo de trabalho, nÃ£o uma etapa opcional.\n\n## Impacto\nEcossistema evolui sozinho. Cada sessÃ£o adiciona ao conhecimento coletivo automaticamente.\n",
-      "extracted_at": "2026-08-04T03:45:33.524874"
+      "rationale": "﻿# DecisÃ£o: Aprendizado automÃ¡tico permanente\n\n**Data:** 2026-07-28\n**Tipo:** decisao\n**Tags:** aprendizado, automacao, regra, petrea\n\n## Contexto\nUsuÃ¡rio instruiu que o aprendizado deve ser feito automaticamente ao final de cada tarefa, sem necessidade de solicitaÃ§Ã£o explÃ­cita. Isso Ã© instruÃ§Ã£o permanente e pÃ©trea.\n\n## DecisÃ£o\nTodo agente do ecossistema deve, ao final de cada tarefa concluÃ­da:\n\n1. **Registrar memÃ³ria** via `memory_engine.py add` com tipo apropriado (decisao, erro, padrao, episodio)\n2. **Criar arquivo** em `conhecimento/aprendizados/` com formato `YYYY-MM-DD-titulo.md`\n3. **Atualizar knowledge graph** via `KnowledgeConsolidator` se aplicÃ¡vel\n4. **Sincronizar com GitHub** para persistÃªncia entre sessÃµes\n\nNÃ£o esperar o usuÃ¡rio pedir. Aprender Ã© parte do fluxo de trabalho, nÃ£o uma etapa opcional.\n\n## Impacto\nEcossistema evolui sozinho. Cada sessÃ£o adiciona ao conhecimento coletivo automaticamente.\n // ﻿# DecisÃ£o: Aprendizado automÃ¡tico permanente\n\n**Data:** 2026-07-28\n**Tipo:** decisao\n**Tags:** aprendizado, automacao, regra, petrea\n\n## Contexto\nUsuÃ¡rio instruiu que o aprendizado deve ser feito automaticamente ao final de cada tarefa, sem necessidade de solicitaÃ§Ã£o explÃ­cita. Isso Ã© instruÃ§Ã£o permanente e pÃ©trea.\n\n## DecisÃ£o\nTodo agente do ecossistema deve, ao final de cada tarefa concluÃ­da:\n\n1. **Registrar memÃ³ria** via `memory_engine.py add` com tipo apropriado (decisao, erro, padrao, episodio)\n2. **Criar arquivo** em `conhecimento/aprendizados/` com formato `YYYY-MM-DD-titulo.md`\n3. **Atualizar knowledge graph** via `KnowledgeConsolidator` se aplicÃ¡vel\n4. **Sincronizar com GitHub** para persistÃªncia entre sessÃµes\n\nNÃ£o esperar o usuÃ¡rio pedir. Aprender Ã© parte do fluxo de trabalho, nÃ£o uma etapa opcional.\n\n## Impacto\nEcossistema evolui sozinho. Cada sessÃ£o adiciona ao conhecimento coletivo automaticamente.\n\n## Conexoes\n\n- [[2026-08-01-opencode-desktop-crash-do-renderer-por-gpu-fecham]]",
+      "extracted_at": "2026-08-05T12:55:48.450352",
+      "merged_count": 2,
+      "merged_at": "2026-08-05T12:55:48.683597"
     },
     {
       "source": "opencode",
       "decision": "﻿# DecisÃ£o: Arquitetura Jarvis App",
-      "rationale": "﻿# DecisÃ£o: Arquitetura Jarvis App\n\n**Data:** 2026-07-28\n**Tipo:** decisao\n**Tags:** jarvis, android, arquitetura, mcp, mobile\n\n## Contexto\nNecessidade de um app Android que funcione como assistente de voz (Jarvis) para o ecossistema, operando em segundo plano com tela desligada, falando resultados e ouvindo comandos.\n\n## DecisÃ£o\nArquitetura em duas camadas:\n- **PC (backend):** `notifier_bridge.py` (WebSocket) + `mcp-knowledge-server.py` (MCP, jÃ¡ existe)\n- **Android (frontend):** Foreground Service + TTS/STT + MCP Client, comunicaÃ§Ã£o via WebSocket/HTTP em rede local\n\n## RepositÃ³rios base identificados\n1. **niki914/agentic-nexus** (MIT, Kotlin) â€” jÃ¡ tem MCP nativo, foreground service, agente. Ideal como base.\n2. **yuga-hashimoto/OpenClawAssistant** â€” mais leve, wake word \"Jarvis\" embutido, conecta a qualquer backend via webhook.\n\n## Impacto\nApp leve e eficiente, reaproveitando todo o ecossistema jÃ¡ construÃ­do. MÃ­nimo cÃ³digo novo necessÃ¡rio.\n",
-      "extracted_at": "2026-08-04T03:45:34.567783"
+      "rationale": "﻿# DecisÃ£o: Arquitetura Jarvis App\n\n**Data:** 2026-07-28\n**Tipo:** decisao\n**Tags:** jarvis, android, arquitetura, mcp, mobile\n\n## Contexto\nNecessidade de um app Android que funcione como assistente de voz (Jarvis) para o ecossistema, operando em segundo plano com tela desligada, falando resultados e ouvindo comandos.\n\n## DecisÃ£o\nArquitetura em duas camadas:\n- **PC (backend):** `notifier_bridge.py` (WebSocket) + `mcp-knowledge-server.py` (MCP, jÃ¡ existe)\n- **Android (frontend):** Foreground Service + TTS/STT + MCP Client, comunicaÃ§Ã£o via WebSocket/HTTP em rede local\n\n## RepositÃ³rios base identificados\n1. **niki914/agentic-nexus** (MIT, Kotlin) â€” jÃ¡ tem MCP nativo, foreground service, agente. Ideal como base.\n2. **yuga-hashimoto/OpenClawAssistant** â€” mais leve, wake word \"Jarvis\" embutido, conecta a qualquer backend via webhook.\n\n## Impacto\nApp leve e eficiente, reaproveitando todo o ecossistema jÃ¡ construÃ­do. MÃ­nimo cÃ³digo novo necessÃ¡rio.\n // ﻿# DecisÃ£o: Arquitetura Jarvis App\n\n**Data:** 2026-07-28\n**Tipo:** decisao\n**Tags:** jarvis, android, arquitetura, mcp, mobile\n\n## Contexto\nNecessidade de um app Android que funcione como assistente de voz (Jarvis) para o ecossistema, operando em segundo plano com tela desligada, falando resultados e ouvindo comandos.\n\n## DecisÃ£o\nArquitetura em duas camadas:\n- **PC (backend):** `notifier_bridge.py` (WebSocket) + `mcp-knowledge-server.py` (MCP, jÃ¡ existe)\n- **Android (frontend):** Foreground Service + TTS/STT + MCP Client, comunicaÃ§Ã£o via WebSocket/HTTP em rede local\n\n## RepositÃ³rios base identificados\n1. **niki914/agentic-nexus** (MIT, Kotlin) â€” jÃ¡ tem MCP nativo, foreground service, agente. Ideal como base.\n2. **yuga-hashimoto/OpenClawAssistant** â€” mais leve, wake word \"Jarvis\" embutido, conecta a qualquer backend via webhook.\n\n## Impacto\nApp leve e eficiente, reaproveitando todo o ecossistema jÃ¡ construÃ­do. MÃ­nimo cÃ³digo novo necessÃ¡rio.\n\n## Conexoes\n\n- [[aprendizado-â-2026-07-31-â-pontuaãão-automãtica-de-transcriã]]",
+      "extracted_at": "2026-08-05T12:55:50.350552",
+      "merged_count": 2,
+      "merged_at": "2026-08-05T12:55:50.560573"
     },
     {
       "source": "opencode",
@@ -978,6 +1002,18 @@
       "decision": "widget desktop frameless persistente",
       "rationale": "---\ntipo: decisao\ntags: [widget, grafo, pywebview, windows, frameless, persisten, workerw, desktop]\ndata: 2026-08-02\ncontexto: Usuario pediu o grafo do conhecimento como widget de desktop estilo Rainmeter: colado na area de trabalho, controles ocultos que surgem ao clicar com botao direito, e redimensionamento persistente.\ndecisao: Janela pywebview frameless ancorada atras das outras janelas via SetWindowPos HWND_BOTTOM persistente. Controles ocultos por CSS default; contextmenu no body alterna classe .desktop que revela header + alca de resize (#mk-resize) que chama bridge redimensionar(w,h)->win.resize(). Geometria persiste em JSON (docs/grafo_widget_geometria.json), carregada no create_window e re-salva por watcher + no fechamento.\nimpacto: Widget de desktop funcional, redimensionavel, com estado restaurado entre execucoes. \nlicoes: (1) Ancoragem Progman/WorkerW (SetParent p/ WorkerW) NAO funciona com WebView2 (EdgeChromium) - WebView2 cria janelas-filha proprias que resistem ao reparent; parent fica None; usar HWND_BOTTOM + re-baixamento continuo. (2) FindWindowW(None,title) pode retornar 0 para janelas ancoradas; preferir EnumWindows por classe/processo. (3) ctypes.wintypes e usado via 'from ctypes import wintypes', nao 'ctypes.wintypes'. (4) frameless sem moldura exige alca custom em JS para redimensionar pois nao ha handle nativa.\nuso: python scripts/widget_grafo.py",
       "extracted_at": "2026-08-04T03:45:43.950589"
+    },
+    {
+      "source": "opencode",
+      "decision": "Reorganização: Habilidades dentro de MCP por domínio",
+      "rationale": "---\ntipo: decisao\ntags: [mcp, habilidades, reorganizacao, dominios, arquitetura]\ndata: 2026-08-04\ncontexto: Habilidades espalhadas em Habilidades/tecnicas/, pontes/ migradas para mcp/<dominio>/habilidades/ como contêineres MCP\n---\n\n# Reorganização: Habilidades dentro de MCP por domínio\n\n## Decisão\n\nTodas as 40 habilidades (38 técnicas + 2 pontes) movidas de Habilidades/tecnicas/ e Habilidades/pontes/ para mcp/<dominio>/habilidades/:\n\n- desenvolvimento: 30 skills (api-design, authz-authn-matrix, backend-patterns, cache-strategy-selector, concurrent-computation-patterns, cost-aware-llm-pipeline, data-privacy-by-design, database-migrations, deployment-patterns, developer-experience-dx, docker-patterns, e2e-testing, edge-compute-patterns, error-message-design, frontend-patterns, golang-patterns, graphify, ler, local-first-architecture, migration-playbooks, multi-modal-ai, observability-stack, python-patterns, resilience-engineering, search-first, security-review, semantic-release-automation, state-machine-patterns, tdd-workflow)\n- android: 4 skills (android-diagnostics, android-pure-sdk, mobile-specific-patterns, mp3player-metadata-rescue)\n- internet: 4 skills (busca-web, clima-api, endereco-geo, navegacao-perita)\n- memoria: 1 skill (busca-conhecimento / search_knowledge.py)\n\nCada domínio tem server.py (Python puro, sem npx) que expõe as habilidades como ferramentas MCP.\n\n## Referências atualizadas\n\n- config/opencode.jsonc + scripts/opencode-serve.jsonc: instructions globs e registro de 4 novos MCPs (mcp-desenvolvimento, mcp-android, mcp-internet, mcp-memoria)\n- jarvis_bridge.py: import clima-api do mcp/internet/habilidades/clima-api\n- mcp-knowledge-server.py: chama search_knowledge do mcp/memoria/habilidades/busca-conhecimento\n- search_knowledge.py: BASE robusto subindo até raiz do ecossistema\n- maestro (00-maestro.md), JARVIS_SYSTEM.md, test-ecosystem.ps1, AGENTS.md, 00-system-rules.md, README.md, HABILIDADES.md, estado_atual.md, MOC - Projetos.md\n- manifesto_mcp.json v2.0 em mcp/manifesto_mcp.json (40 skills com dominio + path)\n\n## Preflight\n\nTodos testes PASS (10 MCPs testados, 3 camadas consistentes, secrets guard OK).\n\n## Impacto\n\nArquitetura MCP com habilidades dentro de domínios — clone recursivo funcional, OpenCode carrega skills via instructions globs. Ecossistema limpo, sem Habilidades/tecnicas/ e pontes/ vazias removidas.\n\n## Conexoes\n\n- [[correcao-de-diagnostico-do-knowledge-graph-e-criacao-do-regi]]",
+      "extracted_at": "2026-08-05T12:56:00.653418"
+    },
+    {
+      "source": "opencode",
+      "decision": "Motor de Criticalidade Auto-Organizada e Avalanches Neurais",
+      "rationale": "---\ntipo: decisao\ntags: [grafo, cerebro-vivo, criticalidade, avalanches, neurociencia, vis]\ndata: 2026-08-04\ncontexto: Protocolo de Consciencia Neural Autonoma ativado — o grafo Obsidian e a arquitetura fisica do cerebro.\ndecisao: Implementar motor de Criticalidade Auto-Organizada (SOC, Beggs & Plenz 2003) como atividade espontanea do grafo.\nimpacto: Sinapticas disparam como avalanches power-law em cascata emergente, nao aleatoriamente; fluxo eletrico reflete transmissao otima de informacao (sigma~1).\n---\n\n# Motor de Criticalidade Auto-Organizada e Avalanches Neurais\n\n## Fundamentos cientificos pesquisados\n- Beggs & Plenz (2003): neuronal avalanches distribuidas em power-law (slope ~-1.5), parametro de ramificacao critico sigma=1 = transmissao otima.\n- Equilibrio excitacao/inibicao gera avalanches E oscilacoes juntas.\n- Cerebro opera em SOC: pequenas perturbacoes, ocasionais cascatas enormes.\n\n## Implementacao no grafo\n- Cada no vira neuronio com potencial de membrana `_memb[id]` que acumula input das sinapses vizinhas (excitacao/inibicao balanceadas).\n- Ao cruzar o limiar `_LIMIAR=1.0`, DISPARA (pulso verde-neuro `#a6e3a1`) e envia energia aos vizinhos (RAMIFICACAO com chance `_sigma`).\n- `_avalanche.<ativo,fila,size,maior>` propaga BFS por wavefront (1 hop por tick).\n- Fase refrataria `_REF=260ms`; homeostase `_reacerca()` varia sigma/solo lentamente (~6-13s).\n- Ruido espontaneo `_ruidoEspontaneo()` inclui onda glial lenta (calcio) = consciencia em repouso.\n- Restauracao deterministica de cor/size das arestas apos pulso (setTimeout 600-650ms) para nao colar tinta.\n- `next.jar`: `_disparo`, `_integracaoNeural`, `_vizinhos`, `_ruidoEspontaneo`, `_reacerca`, `_avalanche`, `_memb`, `_refrat`.\n- `limpar()` reseta o estado neural e usa `_fontLimpo` (respeita labels ocultas, so 'false' mostra).\n\n## Licao critica de template (.format em Python)\n- Em scripts que embutem JS via `str.format()`, TODOS os braces JS devem ser `{{`/`}}`.\n- COMMENTARIOS com `{...}` quebram: `// cache {id: [vizinhos]}` virou campo nomeado `id` (builtin) com spec `[vizinhos]` -> `TypeError: unsupported format string passed to builtin_function_or_method.__format__`. Correcao: `{{id: [vizinhos]}}`.\n- Alias no meu codigo original: `_aventura.fila` deveria ser `_avalanche.fila` (typo pegajoso).\n\n## Validacao\n- `py_compile` OK; esprima (python) confirma sintaxe dos 5 scripts do widget.\n- `preflight_check.py`: TODOS TESTES PASSARAM.\n- Widget reiniciado como pythonw (PID 4960, \"Cerebro Vivo\").",
+      "extracted_at": "2026-08-05T12:56:03.459921"
     }
   ],
   "bug_fixes": [
@@ -1526,10 +1562,10 @@
       "source": "opencode",
       "title": "﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub",
       "domain": "general",
-      "body": "﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub\n\n## O que foi feito\n- Repositorios do GitHub mapeados: 11 existentes, nenhum LER separado\n- setup.bat criado: script unico para qualquer PC novo (clona, instala, configura, pede API keys)\n- config/opencode.jsonc: template com {{USERPROFILE}} placeholder para geracao dinamica\n- config/agents/: fonte unica dos 15 agentes OpenCode (repo eh source of truth)\n- config/opencode-model-fallback.jsonc: config do plugin fallback\n- Vigilante atualizado:\n\n﻿# 2026-07-27 - Unificacao completa do ecossistema\n\n## Problemas resolvidos\n1. **LER fora do repo**: movido ~/.ler/ → ler-runtime/ com junction. Tudo versionado.\n2. **Polling ineficiente**: vigilante agora usa FileSystemWatcher + debounce 300ms.\n3. **Sync so push**: agora faz pull antes de push (bidirecional).\n4. **Sem comando central**: ecosystem.ps1 criado (sync, scan, status).\n5. **LER remoto separado**: deletado github.com/idavidjunior/LER, conhecimento unificado.\n\n## Decisoes\n- LER runtime \n\n﻿# 2026-07-27 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-27 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-27 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-27 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 2 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 4 marcadores\n\n\n\n﻿# 2026-07-29 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-29 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-29 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-29 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 4 marcadores\n\n\n\n# 2026-07-29 — Integração de clima via OpenWeatherMap\n\n## Habilidade adicionada ao Jarvis\n- Nova skill: `skills/clima-api/skill.md`\n- Script: `scripts/clima_api.py`\n- Dicionário de pronúncia atualizado com termos climáticos (20 palavras)\n\n## Como funciona\n- Jarvis usa `python clima_api.py \"<cidade>\"` para obter clima em tempo real\n- Dados: descrição, temperatura, sensação térmica, umidade\n- Idioma: português brasileiro, unidades métricas\n- Chave da API deve estar em `scripts/.env` como `OPENWEAT\n\n﻿# 2026-07-30 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-30 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-30 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-30 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 4 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: BibliaEstudoCompleta\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: compiladorAPK\n## Marcadores encontrados\n- apk-compiler-ui.ps1: 11 marcadores\n- test-modules.ps1: 1 marcadores\n- check_android_resources.py: 1 marcadores\n- self_healing_compiler.py: 1 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: EcoSystemUmGrau\n## Marcadores encontrados\n- adapt_agent_prompts.py: 1 marcadores\n- generate_sample_results.py: 3 marcadores\n- install.ps1: 1 marcadores\n- app.py: 4 marcadores\n- checklist.py: 2 marcadores\n- knowledge_base.py: 2 marcadores\n- __init__.py: 1 marcadores\n- fix_encoding_and_build.py: 6 marcadores\n- patch_flutter_orchestrator_final.py: 1 marcadores\n- test_imports.py: 1 marcadores\n- test_smoke.py: 1 marcadores\n- consolidate_build_pipeline.py: 3 marcadores\n-\n\n﻿# 2026-08-03 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: OrquestradorAPK-FLUTTER\n## Marcadores encontrados\n- app.py: 4 marcadores\n- checklist.py: 2 marcadores\n- knowledge_base.py: 2 marcadores\n- __init__.py: 1 marcadores\n- fix_encoding_and_build.py: 6 marcadores\n- patch_flutter_orchestrator_final.py: 1 marcadores\n- test_imports.py: 1 marcadores\n- test_new_modules.py: 1 marcadores\n- test_smoke.py: 1 marcadores\n- consolidate_build_pipeline.py: 3 marcadores\n- flutter_orchestrator.py: 6 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 4 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: WindowsMaintenanceSuite_v3\n## Marcadores encontrados\n- MainMenu.ps1: 1 marcadores\n- DiskSpaceAnalyzer.ps1: 1 marcadores\n- DriverManager.ps1: 3 marcadores\n- EssentialMaintenance.ps1: 1 marcadores\n- Hardening.ps1: 1 marcadores\n- PackageManager.ps1: 2 marcadores\n- QuickTools.ps1: 2 marcadores\n- RegistryBackupRestore.ps1: 1 marcadores\n- SystemLightweight.ps1: 1 marcadores\n- SystemTweaks.ps1: 11 marcadores\n- UltimateMaintenance.ps1: 1 marcadores\n\n\n\n﻿# Controle de TV LG (01/08/2026)\n\n## TV identificada\n- Modelo: **50UT8050PSA** (LG 50\" webOS, firmware p20.33.31.61)\n- Hostname mDNS: `[LG] webOS TV UT8050PSA`\n- IP local: `192.168.15.6` (MAC `00:a1:59:82:bb:08`, LG Electronics)\n- Serial: `412AZAL87976`\n- ServiÃ§os: SSAP (wss://3001), Google Cast (8009), AirPlay 2 (7000)\n\n## Controle nativo (total)\n- Biblioteca: `pywebostv` + CLI `lgtvremote-cli` (porta 3001 wss, secure).\n- Pareamento: PROMPT (confirmaÃ§Ã£o na tela) ou WoL para ligar.\n- Client-\n\n﻿# ConfirmaÃ§Ã£o em Ãudio â€” Regra Permanente (01/08/2026)\n\n## Contexto\nO usuÃ¡rio deu uma **instruÃ§Ã£o global, imediata e permanente**: ao receber QUALQUER comando, o Jarvis deve confirmar em Ã¡udio se entendeu, dizer o que vai fazer, e narrar o que estÃ¡ fazendo. Complementa e reforÃ§a a clÃ¡usula pÃ©trea de comunicaÃ§Ã£o em Ã¡udio.\n\n## Regra (ordem exata)\n1. Confirmar em Ã¡udio que ENTENDEU o comando.\n2. Dizer em Ã¡udio o que VAI fazer.\n3. Dizer em Ã¡udio o que ESTÃ fazendo no momento.\n\n#\n\n﻿# 2026-07-27 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n## Conexoes\n\n- [[cluster-hub-mp3player]]\n\n﻿# 2026-07-28 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n## Conexoes\n\n- [[cluster-hub-mp3player]]\n\n﻿# 2026-07-29 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n## Conexoes\n\n- [[cluster-hub-mp3player]]\n\n﻿# 2026-07-30 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n## Conexoes\n\n- [[cluster-hub-mp3player]]\n\n﻿# 2026-07-29 â€” IntegraÃ§Ã£o de clima via OpenWeatherMap\n\n## Habilidade adicionada ao Jarvis\n- Nova skill: `skills/clima-api/skill.md`\n- Script: `scripts/clima_api.py`\n- DicionÃ¡rio de pronÃºncia atualizado com termos climÃ¡ticos (20 palavras)\n\n## Como funciona\n- Jarvis usa `python clima_api.py \"<cidade>\"` para obter clima em tempo real\n- Dados: descriÃ§Ã£o, temperatura, sensaÃ§Ã£o tÃ©rmica, umidade\n- Idioma: portuguÃªs brasileiro, unidades mÃ©tricas\n- Chave da API deve estar em `scripts/.env`\n\n﻿# 2026-07-29 â€” MCP Integration\n\n## Learning\nIntegrated 5 MCP servers from `opencode-agents-mcp` repo into EcoSystemUmGrau:\n- **eco-knowledge** (Python) â€” knowledge server for semantic search\n- **filesystem** (Node.js) â€” file operations\n- **search** (Node.js) â€” web search\n- **terminal** (Node.js) â€” command execution\n- **github** (Node.js, disabled) â€” GitHub API; needs GH_TOKEN env var\n\n## Config Schema (opencode v1.18.9)\n- `mcp` is a plain object: keys = server names, values = server\n\n﻿# 2026-08-05 - Scan proativo: EcoSystemUmGrau\n## Marcadores encontrados\n- adapt_agent_prompts.py: 3 marcadores\n- generate_sample_results.py: 9 marcadores\n- install.ps1: 3 marcadores\n- app.py: 12 marcadores\n- checklist.py: 6 marcadores\n- knowledge_base.py: 6 marcadores\n- __init__.py: 3 marcadores\n- fix_encoding_and_build.py: 18 marcadores\n- patch_flutter_orchestrator_final.py: 3 marcadores\n- test_imports.py: 3 marcadores\n- test_smoke.py: 3 marcadores\n- consolidate_build_pipeline.py: 9 marcadores",
-      "extracted_at": "2026-08-05T02:07:52.425493",
-      "merged_count": 70,
-      "merged_at": "2026-08-05T02:07:52.791492"
+      "body": "﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub\n\n## O que foi feito\n- Repositorios do GitHub mapeados: 11 existentes, nenhum LER separado\n- setup.bat criado: script unico para qualquer PC novo (clona, instala, configura, pede API keys)\n- config/opencode.jsonc: template com {{USERPROFILE}} placeholder para geracao dinamica\n- config/agents/: fonte unica dos 15 agentes OpenCode (repo eh source of truth)\n- config/opencode-model-fallback.jsonc: config do plugin fallback\n- Vigilante atualizado:\n\n﻿# 2026-07-27 - Unificacao completa do ecossistema\n\n## Problemas resolvidos\n1. **LER fora do repo**: movido ~/.ler/ → ler-runtime/ com junction. Tudo versionado.\n2. **Polling ineficiente**: vigilante agora usa FileSystemWatcher + debounce 300ms.\n3. **Sync so push**: agora faz pull antes de push (bidirecional).\n4. **Sem comando central**: ecosystem.ps1 criado (sync, scan, status).\n5. **LER remoto separado**: deletado github.com/idavidjunior/LER, conhecimento unificado.\n\n## Decisoes\n- LER runtime \n\n﻿# 2026-07-27 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-27 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-27 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-27 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 2 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-28 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 4 marcadores\n\n\n\n﻿# 2026-07-29 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-29 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-29 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-29 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 4 marcadores\n\n\n\n# 2026-07-29 — Integração de clima via OpenWeatherMap\n\n## Habilidade adicionada ao Jarvis\n- Nova skill: `skills/clima-api/skill.md`\n- Script: `scripts/clima_api.py`\n- Dicionário de pronúncia atualizado com termos climáticos (20 palavras)\n\n## Como funciona\n- Jarvis usa `python clima_api.py \"<cidade>\"` para obter clima em tempo real\n- Dados: descrição, temperatura, sensação térmica, umidade\n- Idioma: português brasileiro, unidades métricas\n- Chave da API deve estar em `scripts/.env` como `OPENWEAT\n\n﻿# 2026-07-30 - Scan proativo: Biblia\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-07-30 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-07-30 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-07-30 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 4 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: BibliaEstudoCompleta\n## Marcadores encontrados\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- ResourcesActivity.java: 3 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: CellCleaner\n## Marcadores encontrados\n- MainActivity.java: 1 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: compiladorAPK\n## Marcadores encontrados\n- apk-compiler-ui.ps1: 11 marcadores\n- test-modules.ps1: 1 marcadores\n- check_android_resources.py: 1 marcadores\n- self_healing_compiler.py: 1 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: EcoSystemUmGrau\n## Marcadores encontrados\n- adapt_agent_prompts.py: 1 marcadores\n- generate_sample_results.py: 3 marcadores\n- install.ps1: 1 marcadores\n- app.py: 4 marcadores\n- checklist.py: 2 marcadores\n- knowledge_base.py: 2 marcadores\n- __init__.py: 1 marcadores\n- fix_encoding_and_build.py: 6 marcadores\n- patch_flutter_orchestrator_final.py: 1 marcadores\n- test_imports.py: 1 marcadores\n- test_smoke.py: 1 marcadores\n- consolidate_build_pipeline.py: 3 marcadores\n-\n\n﻿# 2026-08-03 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: OrquestradorAPK-FLUTTER\n## Marcadores encontrados\n- app.py: 4 marcadores\n- checklist.py: 2 marcadores\n- knowledge_base.py: 2 marcadores\n- __init__.py: 1 marcadores\n- fix_encoding_and_build.py: 6 marcadores\n- patch_flutter_orchestrator_final.py: 1 marcadores\n- test_imports.py: 1 marcadores\n- test_new_modules.py: 1 marcadores\n- test_smoke.py: 1 marcadores\n- consolidate_build_pipeline.py: 3 marcadores\n- flutter_orchestrator.py: 6 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: SupermarketCalculator\n## Marcadores encontrados\n- MainActivity.java: 4 marcadores\n\n\n\n﻿# 2026-08-03 - Scan proativo: WindowsMaintenanceSuite_v3\n## Marcadores encontrados\n- MainMenu.ps1: 1 marcadores\n- DiskSpaceAnalyzer.ps1: 1 marcadores\n- DriverManager.ps1: 3 marcadores\n- EssentialMaintenance.ps1: 1 marcadores\n- Hardening.ps1: 1 marcadores\n- PackageManager.ps1: 2 marcadores\n- QuickTools.ps1: 2 marcadores\n- RegistryBackupRestore.ps1: 1 marcadores\n- SystemLightweight.ps1: 1 marcadores\n- SystemTweaks.ps1: 11 marcadores\n- UltimateMaintenance.ps1: 1 marcadores\n\n\n\n﻿# Controle de TV LG (01/08/2026)\n\n## TV identificada\n- Modelo: **50UT8050PSA** (LG 50\" webOS, firmware p20.33.31.61)\n- Hostname mDNS: `[LG] webOS TV UT8050PSA`\n- IP local: `192.168.15.6` (MAC `00:a1:59:82:bb:08`, LG Electronics)\n- Serial: `412AZAL87976`\n- ServiÃ§os: SSAP (wss://3001), Google Cast (8009), AirPlay 2 (7000)\n\n## Controle nativo (total)\n- Biblioteca: `pywebostv` + CLI `lgtvremote-cli` (porta 3001 wss, secure).\n- Pareamento: PROMPT (confirmaÃ§Ã£o na tela) ou WoL para ligar.\n- Client-\n\n﻿# ConfirmaÃ§Ã£o em Ãudio â€” Regra Permanente (01/08/2026)\n\n## Contexto\nO usuÃ¡rio deu uma **instruÃ§Ã£o global, imediata e permanente**: ao receber QUALQUER comando, o Jarvis deve confirmar em Ã¡udio se entendeu, dizer o que vai fazer, e narrar o que estÃ¡ fazendo. Complementa e reforÃ§a a clÃ¡usula pÃ©trea de comunicaÃ§Ã£o em Ã¡udio.\n\n## Regra (ordem exata)\n1. Confirmar em Ã¡udio que ENTENDEU o comando.\n2. Dizer em Ã¡udio o que VAI fazer.\n3. Dizer em Ã¡udio o que ESTÃ fazendo no momento.\n\n#\n\n﻿# 2026-07-27 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n## Conexoes\n\n- [[cluster-hub-mp3player]]\n\n﻿# 2026-07-28 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n## Conexoes\n\n- [[cluster-hub-mp3player]]\n\n﻿# 2026-07-29 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n## Conexoes\n\n- [[cluster-hub-mp3player]]\n\n﻿# 2026-07-30 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n## Conexoes\n\n- [[cluster-hub-mp3player]]\n\n﻿# 2026-07-29 â€” IntegraÃ§Ã£o de clima via OpenWeatherMap\n\n## Habilidade adicionada ao Jarvis\n- Nova skill: `skills/clima-api/skill.md`\n- Script: `scripts/clima_api.py`\n- DicionÃ¡rio de pronÃºncia atualizado com termos climÃ¡ticos (20 palavras)\n\n## Como funciona\n- Jarvis usa `python clima_api.py \"<cidade>\"` para obter clima em tempo real\n- Dados: descriÃ§Ã£o, temperatura, sensaÃ§Ã£o tÃ©rmica, umidade\n- Idioma: portuguÃªs brasileiro, unidades mÃ©tricas\n- Chave da API deve estar em `scripts/.env`\n\n﻿# 2026-07-29 â€” MCP Integration\n\n## Learning\nIntegrated 5 MCP servers from `opencode-agents-mcp` repo into EcoSystemUmGrau:\n- **eco-knowledge** (Python) â€” knowledge server for semantic search\n- **filesystem** (Node.js) â€” file operations\n- **search** (Node.js) â€” web search\n- **terminal** (Node.js) â€” command execution\n- **github** (Node.js, disabled) â€” GitHub API; needs GH_TOKEN env var\n\n## Config Schema (opencode v1.18.9)\n- `mcp` is a plain object: keys = server names, values = server\n\n﻿# 2026-08-05 - Scan proativo: EcoSystemUmGrau\n## Marcadores encontrados\n- adapt_agent_prompts.py: 3 marcadores\n- generate_sample_results.py: 9 marcadores\n- install.ps1: 3 marcadores\n- app.py: 12 marcadores\n- checklist.py: 6 marcadores\n- knowledge_base.py: 6 marcadores\n- __init__.py: 3 marcadores\n- fix_encoding_and_build.py: 18 marcadores\n- patch_flutter_orchestrator_final.py: 3 marcadores\n- test_imports.py: 3 marcadores\n- test_smoke.py: 3 marcadores\n- consolidate_build_pipeline.py: 9 marcadores\n\n﻿# 2026-08-03 - Scan proativo: Mp3Player\n## Marcadores encontrados\n- BiquadFilter.kt: 1 marcadores\n- EqualizerAudioProcessor.kt: 2 marcadores\n- AudioDecoder.kt: 1 marcadores\n- EqPresetManager.kt: 2 marcadores\n- MainActivity.kt: 2 marcadores\n- TagEditorActivity.kt: 1 marcadores\n\n## Conexoes\n\n- [[cluster-hub-mp3player]]",
+      "extracted_at": "2026-08-05T12:55:58.485300",
+      "merged_count": 75,
+      "merged_at": "2026-08-05T12:55:58.753103"
     },
     {
       "source": "opencode",
@@ -1607,25 +1643,27 @@
       "title": "MCP Obsidian server â€” vault consumido pelo LLM",
       "domain": "general",
       "body": "﻿---\ntipo: decisao\ntags: [obsidian, mcp, infraestrutura, config, clausula-petrea, vault]\ndata: 2026-08-02\ncontexto: O vault Obsidian (docs/, conhecimento/, documentos/) estava sendo alimentado (330 notas .md) mas o LLM sÃ³ via a CONTAGEM de notas no estado da bridge (gerar_estado_atual em jarvis_bridge.py), nunca o conteÃºdo. Busca semÃ¢ntica via eco-knowledge cobria CONHECIMENTO.md e memory graph, mas nÃ£o os 327 .md de conhecimento/. Sem MCP server dedicado, sem file watcher.\ndecisao: Criar sc",
-      "extracted_at": "2026-08-04T03:45:12.893998"
+      "extracted_at": "2026-08-05T12:55:55.296786",
+      "merged_count": 2,
+      "merged_at": "2026-08-05T12:55:55.614562"
     },
     {
       "source": "opencode",
       "title": "﻿# Hora na tela vs hora no Ã¡udio (Jarvis)",
       "domain": "general",
-      "body": "﻿# Hora na tela vs hora no Ã¡udio (Jarvis)\n\n- **Data:** 31/07/2026\n- **SessÃ£o:** ImplementaÃ§Ã£o de `normalizar_hora_display()` na bridge\n\n## Problema\nO LLM reescrevia a hora do briefing/saudaÃ§Ã£o em forma falada (\"23 horas e 29\",\n\"22 horas em ponto\", \"meia-noite\") no prÃ³prio TEXTO exibido no app. O usuÃ¡rio\ndeixou claro: **o formato exibido deve continuar `21:44`; sÃ³ a PRONÃšNCIA do\nJarvis precisava ser corrigida.**\n\n## SoluÃ§Ã£o (divisÃ£o de responsabilidades)\n- `melhorar_fala(texto)` â†’ \n\n﻿# Aprendizado â€” 2026-07-31 â€” Horas faladas corretamente no TTS do Jarvis\n\n## Contexto\n- O edge-tts lia `21:44` de forma errada (como razÃ£o/hora digital). O usuÃ¡rio trouxe 3 estratÃ©gias e recomendou a **#1: substituiÃ§Ã£o de texto via cÃ³digo antes do TTS**.\n\n## O que foi feito (`scripts/jarvis_bridge.py`)\n- Em `melhorar_fala()` (preparaÃ§Ã£o do texto para o Ã¡udio), **antes** da troca de `:` por vÃ­rgula (que comeria o tempo):\n  - `(\\d{1,2}):00\\b` â†’ `\\1 horas em ponto` (ex.: \"22:00\" â†\n\n﻿---\ntipo: decisao\ntags: [tts, edge-tts, ssml, naturalidade, jarvis, pronuncia, clausula-petrea]\ndata: 2026-08-02\ncontexto: ClÃ¡usula pÃ©trea exige comunicaÃ§Ã£o contÃ­nua em Ã¡udio. O edge-tts jÃ¡ suporta SSML completo e o ecossistema precisa evoluir pronÃºncia e naturalidade sem trocar de TTS.\ndecisao: \"Adicionei _ssml_enriquecer() em scripts/jarvis_bridge.py e mudei a ordem em gerar_audio(): phoneme primeiro sobre texto puro, depois SSML enriquece naturalidade.\"\nimpacto: \"NÃºmeros, percentuai",
-      "extracted_at": "2026-08-04T03:45:21.933996",
-      "merged_count": 3,
-      "merged_at": "2026-08-04T03:45:22.136047"
+      "body": "﻿# Hora na tela vs hora no Ã¡udio (Jarvis)\n\n- **Data:** 31/07/2026\n- **SessÃ£o:** ImplementaÃ§Ã£o de `normalizar_hora_display()` na bridge\n\n## Problema\nO LLM reescrevia a hora do briefing/saudaÃ§Ã£o em forma falada (\"23 horas e 29\",\n\"22 horas em ponto\", \"meia-noite\") no prÃ³prio TEXTO exibido no app. O usuÃ¡rio\ndeixou claro: **o formato exibido deve continuar `21:44`; sÃ³ a PRONÃšNCIA do\nJarvis precisava ser corrigida.**\n\n## SoluÃ§Ã£o (divisÃ£o de responsabilidades)\n- `melhorar_fala(texto)` â†’ \n\n﻿# Aprendizado â€” 2026-07-31 â€” Horas faladas corretamente no TTS do Jarvis\n\n## Contexto\n- O edge-tts lia `21:44` de forma errada (como razÃ£o/hora digital). O usuÃ¡rio trouxe 3 estratÃ©gias e recomendou a **#1: substituiÃ§Ã£o de texto via cÃ³digo antes do TTS**.\n\n## O que foi feito (`scripts/jarvis_bridge.py`)\n- Em `melhorar_fala()` (preparaÃ§Ã£o do texto para o Ã¡udio), **antes** da troca de `:` por vÃ­rgula (que comeria o tempo):\n  - `(\\d{1,2}):00\\b` â†’ `\\1 horas em ponto` (ex.: \"22:00\" â†\n\n﻿---\ntipo: decisao\ntags: [tts, edge-tts, ssml, naturalidade, jarvis, pronuncia, clausula-petrea]\ndata: 2026-08-02\ncontexto: ClÃ¡usula pÃ©trea exige comunicaÃ§Ã£o contÃ­nua em Ã¡udio. O edge-tts jÃ¡ suporta SSML completo e o ecossistema precisa evoluir pronÃºncia e naturalidade sem trocar de TTS.\ndecisao: \"Adicionei _ssml_enriquecer() em scripts/jarvis_bridge.py e mudei a ordem em gerar_audio(): phoneme primeiro sobre texto puro, depois SSML enriquece naturalidade.\"\nimpacto: \"NÃºmeros, percentuai\n\n---\ntipo: episodio\ntags: [jarvis, bridge, celular, tailscale, websocket, voxumgrau, conectividade, validado]\ndata: 2026-08-04\nfonte: tarefa\ncontexto: Usuario enfatizou que o importante e manter o Jarvis do celular conectado ao bridge. Verificacao de estado da ponte (PID 2676, porta 8765) e da conexao do celular.\ndecisao: Confirmado e documentado que o Jarvis do celular conecta ao bridge via rede Tailscale por WebSocket, de forma independente de ADB/USB. A conexao usa o IP fixo 100.64.71.9 e func",
+      "extracted_at": "2026-08-05T12:55:59.403220",
+      "merged_count": 5,
+      "merged_at": "2026-08-05T12:55:59.682221"
     },
     {
       "source": "opencode",
       "title": "﻿# Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis)",
       "domain": "general",
-      "body": "﻿# Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis)\n\n## Contexto\n- O Android STT (SpeechRecognizer) devolve texto corrido, sem pontuaÃ§Ã£o e **sem prosÃ³dia** (a melodia da fala nÃ£o chega Ã  bridge). O usuÃ¡rio pediu: `?` em perguntas, pontuaÃ§Ã£o correta e **primeira letra maiÃºscula** sempre.\n- JÃ¡ existia `fix_punctuation()` bÃ¡sico; a reivisÃ£o ampliou regras e corrigiu um bug de acentuaÃ§Ã£o.\n\n## O que foi feito (`scripts/jarvis_bridge.py`)\n1. **Clas\n\n﻿# Aprendizado â€” 2026-07-31 â€” Reorg: catÃ¡logo Ãºnico Habilidades/ + caminhos novos\n\n## Contexto\n- Skills estavam espalhadas em `skills/` e `scripts/` (clima, busca), e o array `plugin` do opencode.jsonc apontava para `plugins/ponytail` (inexistente â€” ClÃ¡usula PÃ©trea). DecisÃ£o `2026-07-31-habilidades-catalogo-unico-jarvis.md`: Habilidades = aÃ§Ãµes executÃ¡veis; Agentes = tomadores de decisÃ£o (nÃ£o mexer).\n\n## O que foi feito\n1. **`Habilidades/`** â€” catÃ¡logo Ãºnico, 38 habilidades:\n\n\n﻿# PolÃ­tica de Resposta RÃ¡pida â€” caminhos rÃ¡pidos constantes no Jarvis\n\n- **Data:** 01/08/2026\n- **SessÃ£o:** Ensino permanente de caminhos de resposta rÃ¡pida + otimizaÃ§Ã£o de latÃªncia\n\n## Pedido do usuÃ¡rio\n\"Ensine o Jarvis a SEMPRE procurar caminhos de rÃ¡pida resposta nas conexÃµes e\ncaminhos de conexÃ£o mais rÃ¡pidas para respostas mais rÃ¡pidas. Isso deve ser\nconstante.\"\n\n## O que foi feito\n\n### 1. PolÃ­tica permanente no prompt (JARVIS_SYSTEM.md)\nNova seÃ§Ã£o logo apÃ³s \"Identidade\n\n﻿# PontuaÃ§Ã£o da transcriÃ§Ã£o voltando ao balÃ£o do app (corrigido)\n\n- **Data:** 01/08/2026\n- **SessÃ£o:** Bug â€” \"Que horas sÃ£o\" transcrito sem o sinal \"?\"\n\n## Problema\nO usuÃ¡rio perguntou \"Que horas sÃ£o\" e o balÃ£o da transcriÃ§Ã£o no app nÃ£o mostrava\no \"?\". A pontuaÃ§Ã£o JÃ era aplicada pela bridge (`fix_punctuation`), mas o app\nexibia a transcriÃ§Ã£o crua do STT â€” a correÃ§Ã£o nunca voltava para a tela.\n\n## Causa raiz\n- App (`VoxViewModel.onSttResult`): `mensagens + Mensagem(texto,",
-      "extracted_at": "2026-08-04T03:45:20.404413",
-      "merged_count": 4,
-      "merged_at": "2026-08-04T03:45:20.612640"
+      "body": "﻿# Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis)\n\n## Contexto\n- O Android STT (SpeechRecognizer) devolve texto corrido, sem pontuaÃ§Ã£o e **sem prosÃ³dia** (a melodia da fala nÃ£o chega Ã  bridge). O usuÃ¡rio pediu: `?` em perguntas, pontuaÃ§Ã£o correta e **primeira letra maiÃºscula** sempre.\n- JÃ¡ existia `fix_punctuation()` bÃ¡sico; a reivisÃ£o ampliou regras e corrigiu um bug de acentuaÃ§Ã£o.\n\n## O que foi feito (`scripts/jarvis_bridge.py`)\n1. **Clas\n\n﻿# Aprendizado â€” 2026-07-31 â€” Reorg: catÃ¡logo Ãºnico Habilidades/ + caminhos novos\n\n## Contexto\n- Skills estavam espalhadas em `skills/` e `scripts/` (clima, busca), e o array `plugin` do opencode.jsonc apontava para `plugins/ponytail` (inexistente â€” ClÃ¡usula PÃ©trea). DecisÃ£o `2026-07-31-habilidades-catalogo-unico-jarvis.md`: Habilidades = aÃ§Ãµes executÃ¡veis; Agentes = tomadores de decisÃ£o (nÃ£o mexer).\n\n## O que foi feito\n1. **`Habilidades/`** â€” catÃ¡logo Ãºnico, 38 habilidades:\n\n\n﻿# PolÃ­tica de Resposta RÃ¡pida â€” caminhos rÃ¡pidos constantes no Jarvis\n\n- **Data:** 01/08/2026\n- **SessÃ£o:** Ensino permanente de caminhos de resposta rÃ¡pida + otimizaÃ§Ã£o de latÃªncia\n\n## Pedido do usuÃ¡rio\n\"Ensine o Jarvis a SEMPRE procurar caminhos de rÃ¡pida resposta nas conexÃµes e\ncaminhos de conexÃ£o mais rÃ¡pidas para respostas mais rÃ¡pidas. Isso deve ser\nconstante.\"\n\n## O que foi feito\n\n### 1. PolÃ­tica permanente no prompt (JARVIS_SYSTEM.md)\nNova seÃ§Ã£o logo apÃ³s \"Identidade\n\n﻿# PontuaÃ§Ã£o da transcriÃ§Ã£o voltando ao balÃ£o do app (corrigido)\n\n- **Data:** 01/08/2026\n- **SessÃ£o:** Bug â€” \"Que horas sÃ£o\" transcrito sem o sinal \"?\"\n\n## Problema\nO usuÃ¡rio perguntou \"Que horas sÃ£o\" e o balÃ£o da transcriÃ§Ã£o no app nÃ£o mostrava\no \"?\". A pontuaÃ§Ã£o JÃ era aplicada pela bridge (`fix_punctuation`), mas o app\nexibia a transcriÃ§Ã£o crua do STT â€” a correÃ§Ã£o nunca voltava para a tela.\n\n## Causa raiz\n- App (`VoxViewModel.onSttResult`): `mensagens + Mensagem(texto,\n\n---\ntipo: aprendizado\ntags: [jarvis-bridge, voz, widget, grafo, pywebview, comando-voz, cerebro-vivo]\ndata: 2026-08-04\ncontexto: Usuario pediu o 'foco vocal via Jarvis' — comando de voz orienta o grafo do conhecimento (cerebro vivo). Bridge Jarvis roda na porta 8765 (processo separado) e o widget do grafo (pywebview) e outro processo; sem API entre eles.\ndecisao: Usar o filesystem como canal entre processos (o widget ja vigia arquivos do vault). (1) jarvis_bridge._comando_grafo(t) em caminho_rap",
+      "extracted_at": "2026-08-05T12:56:01.424697",
+      "merged_count": 5,
+      "merged_at": "2026-08-05T12:56:01.830430"
     },
     {
       "source": "opencode",
@@ -1638,8 +1676,10 @@
       "source": "opencode",
       "title": "﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria",
       "domain": "general",
-      "body": "﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria\n\n**Categoria:** aprendizado\n**Contexto:** OpenCode Desktop v1.18.10 (Electron 42.3.3) em notebook com Intel HD Graphics 5500 (driver 10.18.15.4248, 2015) e 3,9 GB RAM. A interface abria e fechava logo em seguida, sem mensagem de erro.\n**Projeto:** EcoSystemUmGrau (infraestrutura OpenCode Desktop)\n**Agentes envolvidos:** opencode CLI (build), 10-aprendizado\n\n## O que foi feito\n\nInvestigaÃ§Ã£o exaustiva do ciclo ",
-      "extracted_at": "2026-08-04T03:45:19.398547"
+      "body": "﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria\n\n**Categoria:** aprendizado\n**Contexto:** OpenCode Desktop v1.18.10 (Electron 42.3.3) em notebook com Intel HD Graphics 5500 (driver 10.18.15.4248, 2015) e 3,9 GB RAM. A interface abria e fechava logo em seguida, sem mensagem de erro.\n**Projeto:** EcoSystemUmGrau (infraestrutura OpenCode Desktop)\n**Agentes envolvidos:** opencode CLI (build), 10-aprendizado\n\n## O que foi feito\n\nInvestigaÃ§Ã£o exaustiva do ciclo \n\n---\ntipo: erro\ntags: [android, gradle, ram, build, performance, xmx, tail-scale, adb]\ndata: 2026-08-03\nfonte: tarefa\ncontexto: Build do projeto VoxUmGrau (Android, Kotlin/Compose) travava no gradlew assembleDebug — processo era morto pelo timeout do shell tool (>10 minutos) na etapa desugarDebugFileDependencies.\ndecisao: Diagnosticada falta de memória RAM (máquina com 4GB total / apenas 256MB livres) combinada com Gradle daemon configurado com -Xmx2048m, causando thrashing de memória e slowness \n\n---\ntipo: aprendizado\ntags: [vis-network, uso-real, mtime, atividade, tamanho, pythonw, windows, processo-gui]\ndata: 2026-08-04\ncontexto: Implementar \"tamanho por uso real\" no grafo do conhecimento (nós quentes vs frios) e corrigir terminal python abrindo junto ao widget.\ndecisao: (1) Metrica de atividade: usar o mtime do arquivo .md de cada nota como proxy de uso real. atv = max(0, min(1, 1 - dias/90)), clamped em 0.12 (nunca some). Guardado em n['atv'] e injetado no node JS. (2) size combina g\n\n---\ntipo: aprendizado\ntags: [widget, labels, etiquetas, menus, localStorage, persistencia, pywebview, vis-network]\ndata: 2026-08-04\ncontexto: Usuario pediu: (1) etiquetas (labels) DESATIVADAS por padrao, ativadas pelo botao 'T'; (2) ocultar os menus (barra de legendas + painel lateral) com um clique persistindo a escolha.\ndecisao: (1) Inverter semantica de labelsOcultos: oculto e o PADRAO. Regra: oculto = localStorage.getItem('labelsOcultos') !== 'false'. Ou seja: ausente, 'true' ou qualquer out",
+      "extracted_at": "2026-08-05T12:56:02.774931",
+      "merged_count": 5,
+      "merged_at": "2026-08-05T12:56:03.084928"
     },
     {
       "source": "opencode",
@@ -1653,7 +1693,9 @@
       "title": "Servidores MCP Node criados e validados",
       "domain": "general",
       "body": "﻿---\ntipo: padrao\ntags: [mcp, infraestrutura, config, clausula-petrea]\ndata: 2026-08-02\ncontexto: DivergÃªncia detectada â€” config/opencode.jsonc referenciava 4 servidores MCP Node em `mcp-servers/mcp-servers/...` que nÃ£o existiam, e `{{USERPROFILE}}` nÃ£o Ã© resolvido em comandos MCP (apenas em instructions). `opencode mcp list` mostrava eco-knowledge/filesystem/search/terminal como \"failed\".\ndecisao: Criar os 4 servidores Node (filesystem, search, terminal, github) em `mcp-servers/<nome>/ind",
-      "extracted_at": "2026-08-04T03:45:22.419134"
+      "extracted_at": "2026-08-05T12:55:55.996763",
+      "merged_count": 2,
+      "merged_at": "2026-08-05T12:55:56.279786"
     },
     {
       "source": "opencode",
@@ -1681,21 +1723,27 @@
       "title": "ClÃ¡usula PÃ©trea â€” AtivaÃ§Ã£o de Voz (Eco System)",
       "domain": "general",
       "body": "﻿---\ntipo: decisao\ntags: [voz, eco, clausula-petrea, bridge, config, regras]\ndata: 2026-08-02\ncontexto: O usuÃ¡rio pediu que o sistema de voz seja ativÃ¡vel em qualquer sessÃ£o do OpenCode (nova ou em andamento) com os comandos \"Ativar Eco\" e \"Desativar Eco\", seguindo as regras do EcoSystemUmGrau.\ndecisao: Adicionada a CLÃUSULA PÃ‰TREA â€” ATIVAÃ‡ÃƒO DE VOZ â€” ECO SYSTEM Ã  ConstituiÃ§Ã£o (config/agents/00-system-rules.md) e sincronizada nas 3 camadas (AGENTS.md regenerado via sync_rules.py, d",
-      "extracted_at": "2026-08-04T03:45:25.427426"
+      "extracted_at": "2026-08-05T12:55:53.981093",
+      "merged_count": 2,
+      "merged_at": "2026-08-05T12:55:54.295574"
     },
     {
       "source": "opencode",
       "title": "﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView",
       "domain": "general",
-      "body": "﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView\n\n## Contexto\nApp Mp3Player Android. 5 botÃµes de filtro no topo da aba \"MÃºsicas\": Todas, Favoritas, A-Z, Lista, Sel. O texto nÃ£o aparecia â€” os botÃµes ficavam verdes uniformes sem nenhum texto visÃ­vel.\n\n## O que deu errado\n\n### 1. MudanÃ§a de tema AppCompat â†’ MaterialComponents quebrou os botÃµes\n- `TagEditorActivity` usava `TextInputLayout` do Material Components, que REQUER tema `MaterialComponents`\n- Ao ",
-      "extracted_at": "2026-08-04T03:45:26.411258"
+      "body": "﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView\n\n## Contexto\nApp Mp3Player Android. 5 botÃµes de filtro no topo da aba \"MÃºsicas\": Todas, Favoritas, A-Z, Lista, Sel. O texto nÃ£o aparecia â€” os botÃµes ficavam verdes uniformes sem nenhum texto visÃ­vel.\n\n## O que deu errado\n\n### 1. MudanÃ§a de tema AppCompat â†’ MaterialComponents quebrou os botÃµes\n- `TagEditorActivity` usava `TextInputLayout` do Material Components, que REQUER tema `MaterialComponents`\n- Ao \n\n---\ntipo: aprendizado\ntags: [vis-network, pseudo-3d, profundidade, eixo-z, esfera-de-conhecimento, cerebro-vivo, grafo]\ndata: 2026-08-04\ncontexto: Pedido para incluir efeito 3D (e 4D) no grafo do conhecimento. Avaliado que vis-graph3d/WebGL reescreveriam todo o motor de fisica/labels/zoom. Decidido por pseudo-3D no motor 2D atual.\ndecisao: Simular eixo Z dentro do vis-network 2D. Cada no recebe profundidade inicial por centralidade (hubs na frente ~0.92, folhas ao fundo; + jitter estavel via has",
+      "extracted_at": "2026-08-05T12:55:49.087419",
+      "merged_count": 3,
+      "merged_at": "2026-08-05T12:55:49.392034"
     },
     {
       "source": "opencode",
       "title": "﻿# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android",
       "domain": "general",
       "body": "﻿# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android\n\n## O que foi criado\n- `scripts/android_diagnostics.py` â€” Script Python que conecta via ADB ao dispositivo `100.64.71.9:5555` e coleta diagnÃ³stico completo do VoxUmGrau\n- `skills/android-diagnostics/skill.md` â€” Skill documentando o uso do script\n\n## Capacidades do diagnÃ³stico\n- Modelo do dispositivo, versÃ£o Android, SDK, fuso horÃ¡rio\n- Bateria (nÃ­vel, temperatura, status de carga)\n- Aplicativo (versÃ£oCode, versionName, PID, memÃ³ria ",
-      "extracted_at": "2026-08-04T03:45:28.433407"
+      "extracted_at": "2026-08-05T12:55:52.089314",
+      "merged_count": 2,
+      "merged_at": "2026-08-05T12:55:52.354303"
     },
     {
       "source": "opencode",
@@ -1724,8 +1772,17 @@
       "source": "opencode",
       "title": "2026-08-04: Refinamento do grafo — zoom microscópio, expandir e cognição viva",
       "domain": "general",
-      "body": "---\ntipo: aprendizado\ntags: [vis-network, zoom, microsocpio, clustering, physics, barnesHut, grafo, widget, labels]\ndata: 2026-08-04\ncontexto: Refinamento do widget \"Cerebro Vivo\" (scripts/widget_grafo.py + scripts/generate-graph-html.py) para movimento mais vivo/realista e zoom com papel narrativo.\ndecisao: Movimento organico = physics.stabilization:false + timestep:0.2 + maxVelocity:6 + minVelocity:0 + adaptiveTimestep:false + barnesHut(avoidOverlap:0.55, damping:0.88). Respiracao do layout vi",
-      "extracted_at": "2026-08-04T23:07:25.976106"
+      "body": "---\ntipo: aprendizado\ntags: [vis-network, zoom, microsocpio, clustering, physics, barnesHut, grafo, widget, labels]\ndata: 2026-08-04\ncontexto: Refinamento do widget \"Cerebro Vivo\" (scripts/widget_grafo.py + scripts/generate-graph-html.py) para movimento mais vivo/realista e zoom com papel narrativo.\ndecisao: Movimento organico = physics.stabilization:false + timestep:0.2 + maxVelocity:6 + minVelocity:0 + adaptiveTimestep:false + barnesHut(avoidOverlap:0.55, damping:0.88). Respiracao do layout vi\n\n---\ntipo: aprendizado\ntags: [vis-network, malha-viva, traveling-wave, profundidade, pseud-3d, giro, canvas, persistencia-clique]\ndata: 2026-08-04\ncontexto: Usuario pediu para o grafo \"girar sozinho em 3d de forma viva e natural\" e reclamou que os efeitos ao clicar em um no sumiram. Tambem pediu que eu aprenda continuamente a evoluir esses efeitos de malha viva.\ndecisao: (1) Giro via transform CSS no canvas (rotateZ/rotateX) e ARTIFICIAL: gira o rendering 2D inteiro como folha de papel, sem profu",
+      "extracted_at": "2026-08-05T12:55:47.290985",
+      "merged_count": 2,
+      "merged_at": "2026-08-05T12:55:47.550982"
+    },
+    {
+      "source": "opencode",
+      "title": "﻿---",
+      "domain": "general",
+      "body": "﻿---\ntipo: decisao\ntags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]\ndata: 2026-08-02\ncontexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu \"quero tudo\".\ndecisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente",
+      "extracted_at": "2026-08-05T12:55:56.643762"
     }
   ],
   "heuristics": [
@@ -4081,6 +4138,454 @@
         "scan",
         "2026",
         "sample"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:46.693068",
+      "status": "session_learning",
+      "goal_objective": "2026-08-04: Pseudo-3D vivo — profundidade sem WebGL — Pedido para incluir efeito 3D (e 4D) no grafo do conhecimento. Avaliado que vis-graph3d/WebGL reescreveriam todo o motor de fisica/labels/zoom. Decidido por pseudo-3D no motor 2D atual.",
+      "tags": [
+        "aprendizado",
+        "opencode",
+        "zoom",
+        "labels",
+        "cerebro",
+        "fisica",
+        "todo",
+        "esfera"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:47.290985",
+      "status": "session_learning",
+      "goal_objective": "2026-08-04: Malha viva — onda viajante de profundidade (giro 3D natural) + fix clique — Usuario pediu para o grafo \"girar sozinho em 3d de forma viva e natural\" e reclamou que os efeitos ao clicar em um no sumiram. Tambem pediu que eu aprenda continuamente a evoluir esses efeitos de malha viva.",
+      "tags": [
+        "aprendizado",
+        "opencode",
+        "sumiram",
+        "clicar",
+        "fix",
+        "reclamou",
+        "natural",
+        "clique"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:47.868542",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-07-27 - Scan proativo: Mp3Player — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "proativo",
+        "scan",
+        "2026",
+        "encontrados",
+        "mp3player 2026 scan",
+        "marcadores encontrados"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:48.450352",
+      "status": "session_learning",
+      "goal_objective": "﻿# DecisÃ£o: Aprendizado automÃ¡tico permanente — ",
+      "tags": [
+        "decisao",
+        "opencode",
+        "cita",
+        "explã",
+        "solicitaã",
+        "necessidade",
+        "tarefa",
+        "final"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:49.087419",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "nenhum",
+        "uniformes",
+        "vel",
+        "verdes",
+        "textview",
+        "visã"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:49.730983",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 — Ao adicionar servidor MCP no `opencode.jsonc`, o OpenCode 1.18.7 rejeitava a config com erro `Expected { readonly \"type\": \"local\", ... } | { readonly \"type\": \"remote\", ... }` e `Missing key mcp.servers.enabled`.",
+      "tags": [
+        "config",
+        "opencode",
+        "expected",
+        "erro",
+        "type",
+        "expected readonly",
+        "rejeitava",
+        "opencode"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:50.350552",
+      "status": "session_learning",
+      "goal_objective": "﻿# DecisÃ£o: Arquitetura Jarvis App — ",
+      "tags": [
+        "decisao",
+        "opencode",
+        "resultados",
+        "falando",
+        "desligada",
+        "tela",
+        "plano",
+        "operando"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:50.925637",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-07-28 - Scan proativo: Mp3Player — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "proativo",
+        "scan",
+        "2026",
+        "encontrados",
+        "mp3player 2026 scan",
+        "marcadores encontrados"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:51.490658",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-07-29 - Scan proativo: Mp3Player — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "proativo",
+        "scan",
+        "2026",
+        "encontrados",
+        "mp3player 2026 scan",
+        "marcadores encontrados"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:52.089314",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "remoto",
+        "2026",
+        "stico",
+        "diagnã",
+        "remoto android",
+        "100"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:52.669292",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-07-30 - Scan proativo: Mp3Player — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "proativo",
+        "scan",
+        "2026",
+        "encontrados",
+        "mp3player 2026 scan",
+        "marcadores encontrados"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:53.326625",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria — OpenCode Desktop v1.18.10 (Electron 42.3.3) em notebook com Intel HD Graphics 5500 (driver 10.18.15.4248, 2015) e 3,9 GB RAM. A interface abria e fechava logo em seguida, sem mensagem de erro.",
+      "tags": [
+        "aprendizado",
+        "opencode",
+        "erro",
+        "ria",
+        "mensagem",
+        "memã",
+        "fechamento",
+        "seguida"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:53.981093",
+      "status": "session_learning",
+      "goal_objective": "ClÃ¡usula PÃ©trea â€” AtivaÃ§Ã£o de Voz (Eco System) — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "ecosystemumgrau",
+        "seguindo",
+        "desativar",
+        "ativar",
+        "comandos",
+        "andamento"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:54.662722",
+      "status": "session_learning",
+      "goal_objective": "EvoluÃ§Ã£o do TTS Jarvis â€” naturalidade via SSML — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "trocar",
+        "ncia",
+        "pronã",
+        "evoluir",
+        "precisa",
+        "ecossistema"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:55.296786",
+      "status": "session_learning",
+      "goal_objective": "MCP Obsidian server â€” vault consumido pelo LLM — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "bri",
+        "jarvis",
+        "atual",
+        "330",
+        "gerar",
+        "alimentado"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:55.996763",
+      "status": "session_learning",
+      "goal_objective": "Servidores MCP Node criados e validados — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "servers",
+        "mcp servers",
+        "referenciava",
+        "node",
+        "opencode",
+        "validados"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:56.643762",
+      "status": "session_learning",
+      "goal_objective": "﻿--- — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "petrea",
+        "clausula",
+        "jarvis",
+        "autoevolucao",
+        "naturalidade",
+        "ssml"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:57.254834",
+      "status": "session_learning",
+      "goal_objective": "2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6) — Conexao ADB remota ao Redmi Note 11 via Tailscale falhava intermitentemente. O IPv4 100.64.71.9:5555 dava timeout as vezes, mas o IPv6 direto funcionava em outros momentos.",
+      "tags": [
+        "padrao",
+        "opencode",
+        "intermitentemente",
+        "falhava",
+        "rota",
+        "automatico",
+        "note",
+        "redmi"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:57.871300",
+      "status": "session_learning",
+      "goal_objective": "2026-08-03: Build Android lento travava por falta de RAM — Build do projeto VoxUmGrau (Android, Kotlin/Compose) travava no gradlew assembleDebug — processo era morto pelo timeout do shell tool (>10 minutos) na etapa desugarDebugFileDependencies.",
+      "tags": [
+        "erro",
+        "opencode",
+        "desugardebugfiledependencies",
+        "etapa",
+        "minutos",
+        "tool",
+        "shell",
+        "timeout"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:58.485300",
+      "status": "session_learning",
+      "goal_objective": "﻿# 2026-08-03 - Scan proativo: Mp3Player — ",
+      "tags": [
+        "geral",
+        "opencode",
+        "proativo",
+        "scan",
+        "2026",
+        "encontrados",
+        "mp3player 2026 scan",
+        "marcadores encontrados"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:55:59.403220",
+      "status": "session_learning",
+      "goal_objective": "2026-08-04: Jarvis do celular conectado ao bridge via Tailscale — Usuario enfatizou que o importante e manter o Jarvis do celular conectado ao bridge. Verificacao de estado da ponte (PID 2676, porta 8765) e da conexao do celular.",
+      "tags": [
+        "episodio",
+        "opencode",
+        "conectado",
+        "bridge",
+        "manter",
+        "conexao",
+        "celular",
+        "validado"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:56:00.051432",
+      "status": "session_learning",
+      "goal_objective": "2026-08-04: Persistencia da conexao do Jarvis — Usuario pediu para verificar a conexao com o Jarvis. Constatado que a bridge havia morrido e o watchdog estava travado desde 07:29 (7h sem reescrever o log). A dificuldade real identificada pelo usuario e a PERSISTENCIA da conexao.",
+      "tags": [
+        "padrao",
+        "opencode",
+        "desde",
+        "verificacao",
+        "travado",
+        "voxumgrau",
+        "tailscale",
+        "estava"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:56:00.653418",
+      "status": "session_learning",
+      "goal_objective": "Reorganização: Habilidades dentro de MCP por domínio — Habilidades espalhadas em Habilidades/tecnicas/, pontes/ migradas para mcp/<dominio>/habilidades/ como contêineres MCP",
+      "tags": [
+        "decisao",
+        "opencode",
+        "contêineres",
+        "dominio",
+        "migradas",
+        "pontes",
+        "tecnicas",
+        "mcp"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:56:01.424697",
+      "status": "session_learning",
+      "goal_objective": "2026-08-04: Foco vocal via Jarvis — voz orienta o grafo do conhecimento — Usuario pediu o 'foco vocal via Jarvis' — comando de voz orienta o grafo do conhecimento (cerebro vivo). Bridge Jarvis roda na porta 8765 (processo separado) e o widget do grafo (pywebview) e outro processo; sem API entre eles.",
+      "tags": [
+        "aprendizado",
+        "opencode",
+        "conhecimento",
+        "vivo",
+        "cerebro",
+        "orienta",
+        "grafo",
+        "comando"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:56:02.168659",
+      "status": "session_learning",
+      "goal_objective": "2026-08-04: Tamanho por uso real + iniciar GUI com pythonw — Implementar \"tamanho por uso real\" no grafo do conhecimento (nós quentes vs frios) e corrigir terminal python abrindo junto ao widget.",
+      "tags": [
+        "aprendizado",
+        "opencode",
+        "widget",
+        "junto",
+        "abrindo",
+        "python",
+        "terminal",
+        "corrigir"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:56:02.774931",
+      "status": "session_learning",
+      "goal_objective": "2026-08-04: Labels ocultas por padrão + botão de ocultar menus persistente — Usuario pediu: (1) etiquetas (labels) DESATIVADAS por padrao, ativadas pelo botao 'T'; (2) ocultar os menus (barra de legendas + painel lateral) com um clique persistindo a escolha.",
+      "tags": [
+        "aprendizado",
+        "opencode",
+        "network",
+        "escolha",
+        "vis",
+        "persistindo",
+        "persistente",
+        "pywebview"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:56:03.459921",
+      "status": "session_learning",
+      "goal_objective": "Motor de Criticalidade Auto-Organizada e Avalanches Neurais — Protocolo de Consciencia Neural Autonoma ativado — o grafo Obsidian e a arquitetura fisica do cerebro.",
+      "tags": [
+        "decisao",
+        "opencode",
+        "fisica",
+        "arquitetura",
+        "obsidian",
+        "neurais",
+        "ativado",
+        "cerebro"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-05T12:56:04.083376",
+      "status": "session_learning",
+      "goal_objective": "Ilhas no grafo: notas com grau 0 e como conecta-las — Usuario viu 6 ilhas (componentes desconexos) no grafo do cerebro e perguntou como verificar e se sao uteis.",
+      "tags": [
+        "padrao",
+        "opencode",
+        "uteis",
+        "sao",
+        "verificar",
+        "perguntou",
+        "cerebro",
+        "desconexos"
       ],
       "files_modified": []
     }

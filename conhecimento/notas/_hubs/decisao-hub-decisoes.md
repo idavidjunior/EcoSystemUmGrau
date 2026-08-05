@@ -1,6 +1,6 @@
 # Decisoes
 
-**44 notas** conectadas a este hub.
+**46 notas** conectadas a este hub.
 
 
 ## Notas
@@ -20,6 +20,7 @@
 - [[ler-usa-python-puro-stdlib-only-zero-dependencias-externas-i]]
 - [[merge-by-name-if-name-matches-existing-item-increment-quanti]]
 - [[metadata-busca-em-multi-fontes-acoustid-itunes-br-musicbrain]]
+- [[motor-de-criticalidade-auto-organizada-e-avalanches-neurais]]
 - [[mudar-config-mcp-de-objeto-para-array-no-opencodejson]]
 - [[organizar-desktopcodigos-como-raiz-unica-de-projetos]]
 - [[pontes-inter-cluster-cerebro-vivo-grafo]]
@@ -27,6 +28,7 @@
 - [[preferir-automationid-sobre-name-em-ui-automation-windows]]
 - [[priorizar-data-testid-sobre-classes-css-em-automacao-web]]
 - [[renomear-pastas-com-espacos-para-nomes-sem-espaco]]
+- [[reorganização-habilidades-dentro-de-mcp-por-domínio]]
 - [[salvar-cria-novo-arquivo-timestampado-nunca-sobrescreve-exis]]
 - [[salvar-new-file-explicit-save-creates-timestamped-snapshot-n]]
 - [[salvar-rustdesk-password-e-id-em-local-permanente-nao-gerar-]]

@@ -53,6 +53,13 @@ exibia a transcriÃ§Ã£o crua do STT â€” a correÃ§Ã£o nunca voltava p
 
 ## Causa raiz
 - App (`VoxViewModel.onSttResult`): `mensagens + Mensagem(texto,
+
+---
+tipo: aprendizado
+tags: [jarvis-bridge, voz, widget, grafo, pywebview, comando-voz, cerebro-vivo]
+data: 2026-08-04
+contexto: Usuario pediu o 'foco vocal via Jarvis' — comando de voz orienta o grafo do conhecimento (cerebro vivo). Bridge Jarvis roda na porta 8765 (processo separado) e o widget do grafo (pywebview) e outro processo; sem API entre eles.
+decisao: Usar o filesystem como canal entre processos (o widget ja vigia arquivos do vault). (1) jarvis_bridge._comando_grafo(t) em caminho_rap
 ## Conexoes
 
 - [[cluster-hub-cognicao]]

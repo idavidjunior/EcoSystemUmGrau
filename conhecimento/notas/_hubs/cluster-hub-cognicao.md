@@ -1,6 +1,6 @@
 # Cluster: Cognicao
 
-**32 notas** do cluster cognicao.
+**31 notas** do cluster cognicao.
 
 
 ## Notas
@@ -15,7 +15,6 @@
 - [[escrita-atomica-sempre]]
 - [[estrategia-de-fallback-em-cadeia-chain-of-responsibility]]
 - [[estrategia-de-loop-autonomo-planejar-executar-verificar-corr]]
-- [[grafo-vis-network-bug-string-js-json-dumps]]
 - [[heuristica-de-isolamento-de-falha]]
 - [[hipotese-falsificacao-terminal]]
 - [[interface-sobre-implementacao-em-parametros]]

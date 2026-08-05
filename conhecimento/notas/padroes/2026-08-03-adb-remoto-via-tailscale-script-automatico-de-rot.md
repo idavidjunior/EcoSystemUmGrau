@@ -1,0 +1,24 @@
+---
+tags: [falhava, intermitentemente, opencode, padrao, powershell, scrcpy]
+aliases: [2026-08-03: ADB remoto via Tailscale - script automatico de ]
+date: 2026-08-05
+---
+
+# 2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6)
+
+**Fonte:** opencode
+
+---
+tipo: padrao
+tags: [adb, tailscale, ipv6, ipv4, celular, android, script, powershell, scrcpy]
+data: 2026-08-03
+fonte: tarefa
+contexto: Conexao ADB remota ao Redmi Note 11 via Tailscale falhava intermitentemente. O IPv4 100.64.71.9:5555 dava timeout as vezes, mas o IPv6 direto funcionava em outro
+## Conexoes
+
+- [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
+- [[cluster-hub-ecossistema]]
+- [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
+- [[controle-da-tv-lg-webos-via-ssap]]
+- [[padrao-hub-padroes]]
+- [[secrets-guard-no-preflightcheck]]

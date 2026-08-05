@@ -1,5 +1,5 @@
 ---
-tags: [curtas, decisao, nico, opencode, relatã, til]
+tags: [decisao, inã, nico, opencode, relatã, til]
 aliases: [﻿# 2026-08-02 - Feedback contÃ­nuo em tarefas longas]
 date: 2026-08-05
 ---
@@ -41,6 +41,6 @@ final longo. TransparÃªncia durante a execuÃ§Ã£o reduz a sensaÃ§Ã£o de
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
 - [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
-- [[config-2026-07-28-formato-correto-do-mcp-no-opencode-1187]]
 - [[controle-da-tv-lg-webos-via-ssap]]
 - [[decisao-hub-decisoes]]
+- [[secrets-guard-no-preflightcheck]]

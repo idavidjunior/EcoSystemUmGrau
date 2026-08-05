@@ -1,12 +1,12 @@
 ---
-tags: [erro, expected, expected readonly, opencode, padrao, type]
+tags: [erro, expected, expected readonly, opencodeopencode, padrao, type]
 aliases: [Config: ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.]
 date: 2026-08-05
 ---
 
 # Config: ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7
 
-**Fonte:** opencode
+**Fonte:** opencode+opencode
 
 ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7
 
@@ -14,9 +14,7 @@ date: 2026-08-05
 **Contexto:** Ao adicionar servidor MCP no `opencode.jsonc`, o OpenCode 1.18.7 rejeitava a config com erro `Expected { readonly "type": "local", ... } | { readonly "type": "remote", ... }` e `Missing key mcp.servers.enab
 ## Conexoes
 
-- [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
+- [[2026-08-04-persistencia-da-conexao-do-jarvis]]
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
-- [[controle-da-tv-lg-webos-via-ssap]]
+- [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
 - [[padrao-hub-padroes]]
-- [[secrets-guard-no-preflightcheck]]

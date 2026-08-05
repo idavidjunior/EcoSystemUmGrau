@@ -20,5 +20,7 @@ Criado manualmente enquanto o vigilante está rodando para verificar se o pollin
 
 ## Conexoes
 
+- [[2026-08-04-persistencia-da-conexao-do-jarvis]]
 - [[cluster-hub-ecossistema]]
+- [[config-2026-07-28-formato-correto-do-mcp-no-opencode-1187]]
 - [[padrao-hub-padroes]]

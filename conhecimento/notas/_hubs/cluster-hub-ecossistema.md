@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**120 notas** do cluster ecossistema.
+**135 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -47,6 +47,8 @@
 - [[2026-08-02-feedback-contãnuo-em-tarefas-longas]]
 - [[2026-08-02-regras-do-ecossistema-garantia-de-obediãncia-pelo]]
 - [[2026-08-02-regras-em-3-camadas-com-sincronizaãão-e-detecãão-]]
+- [[2026-08-03-adb-remoto-via-tailscale-script-automatico-de-rot]]
+- [[2026-08-03-build-android-lento-travava-por-falta-de-ram-buil]]
 - [[2026-08-03-scan-proativo-bibliaestudocompleta]]
 - [[2026-08-03-scan-proativo-cellcleaner]]
 - [[2026-08-03-scan-proativo-claude-code-extra-agents]]
@@ -56,9 +58,15 @@
 - [[2026-08-03-scan-proativo-orquestradorapk-flutter]]
 - [[2026-08-03-scan-proativo-supermarketcalculator]]
 - [[2026-08-03-scan-proativo-windowsmaintenancesuitev3]]
+- [[2026-08-04-foco-vocal-via-jarvis-voz-orienta-o-grafo-do-conh]]
+- [[2026-08-04-jarvis-do-celular-conectado-ao-bridge-via-tailsca]]
+- [[2026-08-04-labels-ocultas-por-padrão-botão-de-ocultar-menus-]]
+- [[2026-08-04-malha-viva-onda-viajante-de-profundidade-giro-3d-]]
 - [[2026-08-04-persistencia-da-conexao-do-jarvis]]
 - [[2026-08-04-persistencia-da-conexao-do-jarvis-usuario-pediu-p]]
+- [[2026-08-04-pseudo-3d-vivo-profundidade-sem-webgl-pedido-para]]
 - [[2026-08-04-refinamento-do-grafo-zoom-microscópio-expandir-e-]]
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]
 - [[2026-08-05-scan-proativo-ecosystemumgrau]]
 - [[aprendizado-â-2026-07-31-â-horas-faladas-corretamente-no-tts]]
 - [[aprendizado-â-2026-07-31-â-pontuaãão-automãtica-de-transcriã]]
@@ -82,6 +90,7 @@
 - [[decisão-arquitetura-jarvis-app]]
 - [[evoluãão-do-tts-jarvis-â-naturalidade-via-ssml]]
 - [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]
+- [[grafo-vis-network-bug-string-js-json-dumps]]
 - [[grafo-vis-network-bug-string-js-json-dumps-geramos-docsgrafo]]
 - [[gramática-do-português-brasileiro-guia-prático-do-dia-a-dia]]
 - [[gramãtica-do-portuguãs-brasileiro-â-guia-prãtico-do-dia-a-di]]
@@ -89,6 +98,8 @@
 - [[habilidade-navegaãão-perita-â-internet-pc-e-celular]]
 - [[habilidade-navegação-perita-internet-pc-e-celular]]
 - [[hora-na-tela-vs-hora-no-ãudio-jarvis]]
+- [[ilhas-no-grafo-notas-com-grau-0-e-como-conecta-las]]
+- [[ilhas-no-grafo-notas-com-grau-0-e-como-conecta-las-usuario-v]]
 - [[jarvis-do-celular-e-do-pc-um-sã-cãrebro-arquitetura-sincroni]]
 - [[jarvis-do-celular-e-do-pc-um-só-cérebro-arquitetura-sincroni]]
 - [[mcp-obsidian-server-â-vault-consumido-pelo-llm]]
@@ -96,6 +107,8 @@
 - [[mcp-server-handshake-obrigatorio]]
 - [[mcp-server-nao-respondia-a-toolscall]]
 - [[mcp-server-nao-respondia-nenhum-comando]]
+- [[motor-de-criticalidade-auto-organizada-e-avalanches-neurais]]
+- [[motor-de-criticalidade-auto-organizada-e-avalanches-neurais-]]
 - [[mudar-config-mcp-de-objeto-para-array-no-opencodejson]]
 - [[opencode-go-provider-crash-ao-processar-mensagem]]
 - [[organizar-desktopcodigos-como-raiz-unica-de-projetos]]
@@ -106,6 +119,8 @@
 - [[pronãncia-jãrvis-escrita-sem-acento-fala-com-acento]]
 - [[pronúncia-járvis-escrita-sem-acento-fala-com-acento]]
 - [[renomear-pastas-com-espacos-para-nomes-sem-espaco]]
+- [[reorganização-habilidades-dentro-de-mcp-por-domínio]]
+- [[reorganização-habilidades-dentro-de-mcp-por-domínio-habilida]]
 - [[revisao-radical-do-registro-de-habilidades-de-jarvis-aprendi]]
 - [[salvar-rustdesk-password-e-id-em-local-permanente-nao-gerar-]]
 - [[secrets-guard-no-preflightcheck]]

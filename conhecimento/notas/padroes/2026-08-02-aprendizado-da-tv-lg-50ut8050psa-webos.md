@@ -24,7 +24,7 @@ para habilitaÃ§Ã£o do Jarvis como controle remoto de voz.
 
 - [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
-- [[config-2026-07-28-formato-correto-do-mcp-no-opencode-1187]]
 - [[controle-da-tv-lg-webos-via-ssap]]
 - [[padrao-hub-padroes]]
 - [[secrets-guard-no-preflightcheck]]
+- [[widget-desktop-grafo-tempo-real]]
