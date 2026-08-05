@@ -1,14 +1,14 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-05T12:56:04.442647
+**Exportado em:** 2026-08-05T19:15:26.028201
 **Projetos:** 4
 **Padroes Tecnicos:** 81
-**Decisoes:** 54
+**Decisoes:** 55
 **Bug Fixes:** 46
-**Padroes Cognitivos:** 48
+**Padroes Cognitivos:** 49
 **Heuristicas:** 32
 **Frameworks:** 10
-**Missoes Aprendidas:** 179
+**Missoes Aprendidas:** 201
 
 ---
 
@@ -346,6 +346,16 @@ contexto: Protocolo de Consciencia Neural Autonoma ativado — o grafo Obsidian 
 decisao: Implementar motor de Criticalidade Auto-Organizada (SOC, Beggs & Plenz 2003) como atividade espontanea do grafo.
 impacto: Sinapticas disparam como avalanches power-law em cascata emergente, nao aleatoriamente; fluxo eletrico reflete transmissao otima de informacao (sig
 
+### context-engine + manifesto + domínios multimídia/comportamentais
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [context-engine, manifesto, mcp, habilidades, multimidia, comportamentais, coordenador]
+data: 2026-08-04
+contexto: Plano de lacunas do EcoSystemUmGrau. Auditoria mostrou que a reorg Habilidades/ ja foi feita (agora mcp/<dominio>/habilidades). Usuario optou por implementar apenas gaps reais.
+decisao: Implementar context-engine (prioridade maxima), manifesto_geral.json e preencher dominios multimidia/comportamentais.
+impacto: Agente coordenador tem motor de contexto unifica
+
 
 ## Padroes Tecnicos
 
@@ -426,11 +436,11 @@ impacto: Sinapticas disparam como avalanches power-law em cascata emergente, nao
 | 73 | ler_aprendizado | Taxonomia correta de habilidades Jarvis |
 | 74 | opencode | Controle da TV LG webOS via SSAP |
 | 75 | opencode | ﻿# 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS) |
-| 76 | opencode+opencode | Config: ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 |
+| 76 | opencode+opencode+opencode | Config: ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 |
 | 77 | opencode | Secrets Guard no preflight_check |
 | 78 | opencode | widget desktop grafo tempo real |
-| 79 | opencode+opencode | 2026-08-04: Persistencia da conexao do Jarvis |
-| 80 | opencode | 2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6) |
+| 79 | opencode+opencode+opencode | 2026-08-04: Persistencia da conexao do Jarvis |
+| 80 | opencode+opencode | 2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6) |
 | 81 | opencode | Ilhas no grafo: notas com grau 0 e como conecta-las |
 
 ## Bug Fixes e Corrigidos
@@ -1167,6 +1177,17 @@ data: 2026-08-02
 contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
 decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente
 
+### ﻿---
+**Dominio:** general
+**Fonte:** opencode
+
+﻿---
+tipo: decisao
+tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
+data: 2026-08-02
+contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
+decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -1261,7 +1282,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-05T12:56:04.422644
+**Ultima atualizacao:** 2026-08-05T19:15:25.976196
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

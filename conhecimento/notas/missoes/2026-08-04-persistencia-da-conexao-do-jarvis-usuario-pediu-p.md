@@ -1,5 +1,5 @@
 ---
-tags: [desde, missao, opencode, padrao, pediu, status, usuario, verificar]
+tags: [missao, opencode, padrao, pediu, status, usuario, verificacao, verificar]
 aliases: [2026-08-04: Persistencia da conexao do Jarvis — Usuario pedi]
 date: 2026-08-05
 ---

@@ -1,6 +1,6 @@
 # Missoes
 
-**104 notas** conectadas a este hub.
+**105 notas** conectadas a este hub.
 
 
 ## Notas
@@ -71,6 +71,7 @@
 - [[aprendizado-â-2026-07-31-â-reorg-catãlogo-ãnico-habilidades-]]
 - [[clãusula-pãtrea-â-ativaãão-de-voz-eco-system]]
 - [[confirmaãão-em-ãudio-â-regra-permanente-01082026]]
+- [[context-engine-manifesto-domínios-multimídiacomportamentais-]]
 - [[controle-da-tv-lg-webos-via-ssap-aprendizado-do-controle-nat]]
 - [[controle-de-tv-lg-01082026]]
 - [[correcao-de-diagnostico-do-knowledge-graph-e-criacao-do-regi]]

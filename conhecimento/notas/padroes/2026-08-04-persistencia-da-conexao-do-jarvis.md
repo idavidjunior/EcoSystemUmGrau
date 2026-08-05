@@ -1,12 +1,12 @@
 ---
-tags: [desde, opencodeopencode, padrao, travado, verificacao, voxumgrau]
+tags: [desde, opencodeopencodeopencode, padrao, travado, verificacao, voxumgrau]
 aliases: [2026-08-04: Persistencia da conexao do Jarvis]
 date: 2026-08-05
 ---
 
 # 2026-08-04: Persistencia da conexao do Jarvis
 
-**Fonte:** opencode+opencode
+**Fonte:** opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -16,6 +16,6 @@ contexto: Usuario pediu para verificar a conexao com o Jarvis. Constatado que a 
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
+- [[config-2026-07-27-teste-do-vigilante-automático]]
 - [[config-2026-07-28-formato-correto-do-mcp-no-opencode-1187]]
 - [[padrao-hub-padroes]]

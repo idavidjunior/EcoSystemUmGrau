@@ -1,14 +1,14 @@
 ---
-tags: [contêineres, decisao, domínio, espalhadas, mcp, missao, opencode, status]
-aliases: [Reorganização: Habilidades dentro de MCP por domínio — Habil]
+tags: [comportamentais, coordenador, decisao, lacu, missao, opencode, plano, status]
+aliases: [context-engine + manifesto + domínios multimídia/comportamen]
 date: 2026-08-05
 ---
 
-# Reorganização: Habilidades dentro de MCP por domínio — Habilidades espalhadas em
+# context-engine + manifesto + domínios multimídia/comportamentais — Plano de lacu
 
 **Status:** session_learning
 
-**Objetivo:** Reorganização: Habilidades dentro de MCP por domínio — Habilidades espalhadas em
+**Objetivo:** context-engine + manifesto + domínios multimídia/comportamentais — Plano de lacu
 ## Conexoes
 
 - [[checkpoints-salvos-antes-de-cada-iteracao-sobrevive-a-crash-]]

@@ -1,6 +1,6 @@
 # Decisoes
 
-**46 notas** conectadas a este hub.
+**47 notas** conectadas a este hub.
 
 
 ## Notas
@@ -9,6 +9,7 @@
 - [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]
 - [[checkpoints-salvos-antes-de-cada-iteracao-sobrevive-a-crash-]]
+- [[context-engine-manifesto-domínios-multimídiacomportamentais]]
 - [[encoding-utf-8-in-javac-required-on-windows-to-prevent-corru]]
 - [[estado-persiste-em-json-nao-sqlite-legivel-editavel-fora-do-]]
 - [[estrategia-selecionada-por-ranking-cost-risk-time-complexity]]
