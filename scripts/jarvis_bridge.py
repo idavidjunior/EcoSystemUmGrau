@@ -600,7 +600,7 @@ class Cliente:
         # ---- Memoria semantica: top-3 memorias mais relevantes a msg ----
         ctx_mem = ""
         try:
-            _rs = _sem_search_cached(msg, k=3, min_score=0.08)
+            _rs = _sem_search_cached(msg, k=3, min_score=0.05)
             if _rs:
                 _lines = [f"- #{r['id']} ({r['kind']}): {r['title']}" for r in _rs]
                 ctx_mem = "Contexto relevante da memoria:\n" + "\n".join(_lines) + "\n\n"
