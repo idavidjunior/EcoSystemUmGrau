@@ -8,7 +8,7 @@ g = util.module_from_spec(spec)
 spec.loader.exec_module(g)
 
 # analisa as notas existentes
-notas_dir = g.NOTES_DIR
+notas_dir = g.OUTPUT_DIR
 print('NOTES_DIR:', notas_dir, 'existe:', os.path.isdir(notas_dir))
 
 if not os.path.isdir(notas_dir):
