@@ -1188,5 +1188,25 @@
     "access_count": 0,
     "created_at": "2026-08-05T05:19:14.688729",
     "last_accessed": "2026-08-05T05:19:14.688729"
+  },
+  {
+    "id": 90,
+    "kind": "padrao",
+    "task": "Widget do grafo: movimento mais rapido, controle de velocidade, presets de tamanho, tooltips e botoes MCPs/Conhecimento",
+    "summary": "Melhorei docs/grafo_widget.html via scripts/generate-graph-html.py (template) e scripts/widget_grafo.py (WIDGET_JS_EXTRA): (1) fisica mais energetica (maxVelocity 13, timestep 0.32, damping 0.82, gravidade -720) e efeitos mais visiveis (onda viajante 0.26, pulso 0.55, spikes 1.6-3.2s, solo 0.010); (2) controle de velocidade _aplicarVelocidade(v) com slider 0.25x-3x persistido em velGrafo; (3) presets de tamanho de quadro (720x480 a 1920x1200) chamando bridge redimensionar; (4) botoes de layout (etiquetas T + menus M) agrupados com cor destaque #cba6f7; (5) botao novo filtro dom (MCPs vs Conhecimento) por tag mcp; (6) tooltips title em todos os botoes da legenda (CATEGORIA_DESC, CLUSTER_DESC, STATUS_DESC) e nos (cabecalho estruturado Categoria/Cluster/Status/Tags + resumo), CSS .vis-tooltip responsivo + media query 720px; (7) centro de referencia do movimento = centro do quadro (getViewPosition) nao media dos nos. Validado: py_compile OK, esprima OK em todos os blocos JS, grafo 339 nos/1537 arestas, widget reiniciado PID 8368.",
+    "project": "",
+    "tags": [
+      "css",
+      "resumo",
+      "tags",
+      "status",
+      "estruturado",
+      "cabecalho"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-05T06:04:16.356714",
+    "last_accessed": "2026-08-05T06:04:16.356714"
   }
 ]

@@ -502,11 +502,17 @@ WIDGET_JS_EXTRA = """
     layoutGroup.appendChild(ctrl);
     layoutGroup.appendChild(menuBtn);
 
-    // ---- Monta o painel fixo no canto superior esquerdo ----
+    // ---- Monta o painel fixo no canto superior direito ----
+    // O header/legenda fica no TOPO (sempre visivel neste widget). Para nunca
+    // sobrepor os botoes de controle, o painel e posicionado logo ABAIXO do
+    // header, com o topo calculado dinamicamente (e reposicionado quando o
+    // header muda). Os botoes de navegacao (zoom) do vis-network ocupam o
+    // CANTO INFERIOR (vis-zoomIn left:95px / vis-zoomOut right:15px, bottom:10px).
     var painel = mkEl('div');
     painel.id = 'mk-controles';
+    painel.title = 'Controles do cerebro: velocidade, tamanho do quadro, etiquetas e menus';
     painel.style.cssText =
-      'position:fixed;left:10px;top:22px;z-index:9999;display:flex;' +
+      'position:fixed;right:10px;z-index:9999;display:flex;' +
       'flex-direction:column;gap:8px;padding:8px 10px;border-radius:8px;' +
       'background:rgba(30,30,46,0.88);border:1px solid ' + cores.borda + ';' +
       'box-shadow:0 2px 10px rgba(0,0,0,0.5);';
@@ -514,6 +520,31 @@ WIDGET_JS_EXTRA = """
     painel.appendChild(tamGroup);
     painel.appendChild(layoutGroup);
     document.body.appendChild(painel);
+
+    // Posiciona o painel abaixo do header (topo dinamico) para nao sobrepor
+    // os botoes de controle da legenda. Recalcula se o header aparecer/ocultar
+    // ou a janela for redimensionada.
+    function reposicionarPainel() {
+      var hdr = document.getElementById('header');
+      var topo = 22;
+      try {
+        if (hdr && hdr.offsetParent !== null) {
+          var r = hdr.getBoundingClientRect();
+          if (r && r.bottom > 0) topo = Math.round(r.bottom) + 10;
+        }
+      } catch(e){}
+      painel.style.top = topo + 'px';
+    }
+    window.addEventListener('resize', reposicionarPainel);
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      setTimeout(reposicionarPainel, 400);
+    } else {
+      document.addEventListener('DOMContentLoaded', function(){ setTimeout(reposicionarPainel, 400); });
+    }
+    window.addEventListener('pywebviewready', function(){ setTimeout(reposicionarPainel, 400); });
+    // reposiciona tambem quando o body alterna para 'desktop' (clique direito
+    // revela/oculta o header) — o clique acontece no documento inteiro
+    document.addEventListener('contextmenu', function(){ setTimeout(reposicionarPainel, 80); });
 
     function aplicarLabels() {
       if (typeof nodes === 'undefined') return;
@@ -578,6 +609,10 @@ WIDGET_JS_EXTRA = """
       menuBtn.style.opacity = oculto ? '0.55' : '1';
       // informa a rede para recalcular a area visivel
       if (typeof network !== 'undefined' && network.redraw) { network.redraw(); }
+      // reposiciona o painel de controles abaixo do header (ou no topo, se oculto)
+      if (typeof reposicionarPainel === 'function') {
+        setTimeout(reposicionarPainel, 60);
+      }
     }
     menuBtn.onmousedown = function(e) {
       e.preventDefault(); e.stopPropagation();
@@ -727,6 +762,14 @@ def _build_view() -> Path | None:
         src = src.replace('</head>', WIDGET_JS + '</head>', 1)
     else:
         src += WIDGET_JS
+
+    # Injeta o CSS do widget (oculta header por padrao, clique direito revela;
+    # barra de arrasto, alca de resize, painel de controles e responsividade).
+    # O CSS vai dentro de um <style> no <head>, depois do script ja injetado.
+    if '</head>' in src:
+        src = src.replace('</head>', '<style>' + WIDGET_CSS + '</style></head>', 1)
+    else:
+        src += '<style>' + WIDGET_CSS + '</style>'
 
     # Injetar o controle extra para ocultar labels e detectar flash momentaneo
     if '</body>' in src:
