@@ -839,24 +839,44 @@ def gerar_html(nos, arestas, output_path):
   }}
   function _disparo(no) {{
     // Disparou: pulso de glow no no e nas sinapses que chegam a ele.
-    const gup = [];
-    if (original[no.id]) {{
-      // pulso visual do soma
+    // Restauramos a cor/size originais logo apos o pulso (deterministico).
+    const noOrig = original[no.id];
+    if (noOrig) {{
       nodes.update([{{
         id: no.id,
         color: '#a6e3a1', // verde-neuro: excitacao
         shadow: true,
         shadowSize: 30,
-        size: (original[no.id] ? original[no.id].size : 12) + 6
+        size: (noOrig ? noOrig.size : 12) + 6
       }}]);
+      (function(id, cor, tam) {{
+        setTimeout(function() {{
+          try {{ nodes.update([{{ id: id, color: cor, shadow: false, shadowSize: 0, size: tam }}]); }} catch(e) {{}}
+        }}, 650);
+      }})(no.id, noOrig.color, noOrig.size);
     }}
-    // acende as sinapses aderentes
-    edges.get().forEach(function(e) {{
-      if (e.from === no.id || e.to === no.id) {{
-        gup.push({{ id: e.id, color: '#a6e3a1', width: 4, opacity: 0.95 }});
-      }}
+    // acende as sinapses aderentes a este no e as apaga depois
+    const ligadas = edges.get().filter(function(e) {{
+      return e.from === no.id || e.to === no.id;
     }});
-    if (gup.length) edges.update(gup);
+    if (ligadas.length) {{
+      edges.update(ligadas.map(function(e) {{
+        return {{ id: e.id, color: '#a6e3a1', width: 4, opacity: 0.95 }};
+      }}));
+      ligadas.forEach(function(e) {{
+        const base = arestaOriginal[e.id];
+        setTimeout(function() {{
+          try {{
+            edges.update([{{
+              id: e.id,
+              color: base ? base.color : '#999',
+              width: base ? base.width : 1,
+              opacity: 0.25
+            }}]);
+          }} catch(err) {{}}
+        }}, 600);
+      }});
+    }}
   }}
   function _ruidoEspontaneo(id, agora) {{
     // "consciencia de fundo": mesmo em repouso ha corrente espontanea que,
