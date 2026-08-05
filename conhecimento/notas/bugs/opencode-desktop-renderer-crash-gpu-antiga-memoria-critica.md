@@ -42,3 +42,8 @@
 - Não reinstalar o app sem antes aplicar as flags de GPU (o crash é do Chromium, não do app).
 - Não confundir crash de `adb.exe` (Android platform-tools) com o problema do OpenCode — são independentes.
 - Não concluir "fechou limpo = bug do app" sem checar `FreePhysicalMemory`; pode ser o Windows matando por OOM.
+
+## Ver também
+
+- [[padroes/electron-app-gpu-disable-flags]] — padrão canônico de flags para desabilitar GPU em Electron/Chromium
+- [[cognitivo/2026-08-01-opencode-desktop-crash-do-renderer-por-gpu-fecham]] — nota cognitiva do mesmo diagnóstico
