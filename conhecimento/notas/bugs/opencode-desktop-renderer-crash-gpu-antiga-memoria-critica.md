@@ -45,5 +45,5 @@
 
 ## Ver também
 
-- [[padroes/electron-app-gpu-disable-flags]] — padrão canônico de flags para desabilitar GPU em Electron/Chromium
-- [[cognitivo/2026-08-01-opencode-desktop-crash-do-renderer-por-gpu-fecham]] — nota cognitiva do mesmo diagnóstico
+- [[electron-app-gpu-disable-flags]] — padrão canônico de flags para desabilitar GPU em Electron/Chromium
+- [[2026-08-01-opencode-desktop-crash-do-renderer-por-gpu-fecham]] — nota cognitiva do mesmo diagnóstico

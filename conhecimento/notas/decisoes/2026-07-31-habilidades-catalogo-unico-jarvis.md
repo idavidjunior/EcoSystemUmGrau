@@ -100,3 +100,8 @@ Cada habilidade registra: `id`, `categoria` (tecnica/comportamental/ponte/multim
 4. Definir tratamento de `ai-agents/` e do submodule (guardrails 4 e 9).
 5. Executar migração (se Opção B) em `reorg/habilidades` com backup, atualizando opencode.jsonc e bridge.
 6. Atualizar `README.md` e `estado_atual.md` ao concluir.
+
+## Ver também
+
+- [[taxonomia-correta-de-habilidades-jarvis]] — taxonomia de 3 níveis das habilidades
+- [[registro-de-habilidades-de-jarvis]] — padrão de registro de habilidades no manifesto

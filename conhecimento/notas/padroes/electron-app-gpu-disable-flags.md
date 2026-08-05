@@ -40,3 +40,8 @@
 - App fecha **sem** logs de crash → não é GPU; é pressão de memória (Windows OOM). Veja `prepend-tool/memory-pagefile` antes das flags.
 - Atualizações do app podem **recriar** atalhos sem as flags — revalidar após update.
 - `--no-sandbox` só em máquina local confiável; nunca em conteúdo não confiável / navegação web.
+
+## Ver também
+
+- [[opencode-desktop-renderer-crash-gpu-antiga-memoria-critica]] — caso real de crash GPU/renderer no OpenCode Desktop
+- [[2026-08-01-opencode-desktop-crash-do-renderer-por-gpu-fecham]] — nota cognitiva do mesmo diagnóstico
