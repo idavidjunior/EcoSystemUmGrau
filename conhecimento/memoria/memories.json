@@ -1268,5 +1268,25 @@
     "access_count": 0,
     "created_at": "2026-08-05T08:52:49.098608",
     "last_accessed": "2026-08-05T08:52:49.098608"
+  },
+  {
+    "id": 94,
+    "kind": "padrao",
+    "task": "Runtime persistente camada 1: estado + bootloader",
+    "summary": "scripts/runtime_state.py mantem estado em runtime/state.json (projeto, objetivo, pendencias, checkpoints, historico). scripts/runtime_boot.py = bootloader que verifica integridade, restaura estado e carrega memoria. Boot obrigatorio integrado em AGENTS.md e Maestro. Preflight OK.",
+    "project": "",
+    "tags": [
+      "memoria",
+      "carrega",
+      "historico",
+      "checkpoints",
+      "restaura",
+      "pendencias"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-05T09:26:15.730361",
+    "last_accessed": "2026-08-05T09:26:15.730361"
   }
 ]

@@ -139,6 +139,35 @@ Documentação.
 
 <!-- RULES:END -->
 
+# RUNTIME PERSISTENTE — BOOT OBRIGATÓRIO
+
+Regra **IMUTÁVEL**. O Ecossistema é um Runtime persistente: a LLM é apenas o
+motor de inferência; o conhecimento, a memória, as regras e a continuidade
+pertencem ao ecossistema. Nenhuma conversa é sessão isolada.
+
+## Todo agente DEVE executar o boot ao iniciar qualquer tarefa
+
+1. **Executar o Bootloader:** `python scripts/runtime_boot.py`
+   - Verifica integridade do ecossistema (Constituição, AGENTS.md, memória, runtime)
+   - Restaura o estado persistente (`runtime/state.json`)
+   - Carrega memória relevante e preferências para a sessão
+   - Ativa o modo operacional e emite o relatório de boot
+2. **Ler o relatório de boot** e usar o estado restaurado (projeto ativo,
+   objetivo, última tarefa, pendências, contexto operacional) antes de qualquer
+   processamento.
+3. **Nunca responder sem restaurar o contexto** do Runtime.
+4. **Salvar checkpoint** em tarefas importantes:
+   `python scripts/runtime_state.py checkpoint "<label>"`
+5. **Atualizar o estado** ao concluir/receber tarefa:
+   `python scripts/runtime_state.py set last_task "<tarefa>"` e
+   `python scripts/runtime_state.py note "<resumo>"`.
+
+## Consequências
+- Violação = quebra da continuidade operacional do ecossistema.
+- A restauração automática de estado é prioridade, não um extra.
+
+---
+
 ## REGRAS DE OURO (resumo executável)
 
 1. **FONTE ÚNICA** — config, agentes e skills vivem neste repo. Nada duplicado fora.

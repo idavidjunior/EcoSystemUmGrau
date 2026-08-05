@@ -1,0 +1,36 @@
+{
+  "id": "20260805_092500",
+  "label": "camada1-done",
+  "created": "2026-08-05T09:25:00",
+  "state": {
+    "schema_version": 1,
+    "updated_at": "2026-08-05T09:24:59",
+    "active_project": "EcoSystemUmGrau",
+    "objective": "Transformar o Ecossistema Jarvis em Runtime de IA persistente (camada 1: estado+boot)",
+    "last_task": "Implementar Runtime State + Bootloader",
+    "operational_context": "Runtime v1: estado persistente em runtime/state.json, boot via scripts/runtime_boot.py. LLM = motor de inferencia; governanca/memoria/continuidade = ecossistema.",
+    "active_agents": [],
+    "loaded_memory": [],
+    "pending": [
+      {
+        "id": 1,
+        "text": "Camada 2: Kernel permanente (autoridade maxima, controla regras/prioridades/formatos/validacao)",
+        "done": false,
+        "created": "2026-08-05T09:24:58"
+      },
+      {
+        "id": 2,
+        "text": "Camada 2: Constituicao imutavel com clausulas absolutas (nunca ignorar kernel/runtime/auditoria)",
+        "done": false,
+        "created": "2026-08-05T09:24:59"
+      }
+    ],
+    "history": [
+      {
+        "timestamp": "2026-08-05T09:24:59",
+        "text": "Runtime v1 operacional: estado persistente + bootloader + restauracao automatica"
+      }
+    ],
+    "last_checkpoint": "20260805_092409"
+  }
+}

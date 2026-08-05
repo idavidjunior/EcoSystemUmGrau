@@ -449,7 +449,8 @@
     88
   ],
   "memoria": [
-    88
+    88,
+    94
   ],
   "context": [
     89
@@ -536,5 +537,20 @@
   ],
   "label": [
     93
+  ],
+  "carrega": [
+    94
+  ],
+  "historico": [
+    94
+  ],
+  "checkpoints": [
+    94
+  ],
+  "restaura": [
+    94
+  ],
+  "pendencias": [
+    94
   ]
 }
