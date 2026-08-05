@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-05T13:30:33",
+  "updated_at": "2026-08-05T14:45:48",
   "active_project": "EcoSystemUmGrau",
   "objective": "Transformar o Ecossistema Jarvis em Runtime de IA persistente (camada 1: estado+boot)",
-  "last_task": "Widget: orbGrafo persistente + pipeline multi-LLM",
+  "last_task": "Fase 1: memoria semantica + audio + LLM curado (concluido)",
   "operational_context": "Runtime v1: estado persistente em runtime/state.json, boot via scripts/runtime_boot.py. LLM = motor de inferencia; governanca/memoria/continuidade = ecossistema.",
   "active_agents": [],
   "loaded_memory": [],
@@ -49,6 +49,10 @@
     {
       "timestamp": "2026-08-05T13:30:33",
       "text": "orbGrafo salva em arquivo (docs/grafo_widget_orbGrafo.json) via Bridge.guardar_orbGrafo. Pipeline multi-LLM: Bridge.perguntar com 7 modelos fallback. Widget reiniciado PID 7732."
+    },
+    {
+      "timestamp": "2026-08-05T14:45:48",
+      "text": "3 criticos fase 1 RESOLVIDOS: (1) memoria semantica TF-IDF 86 mems; (2) bridge Jarvis 8765 + STT/TTS; (3) pipeline LLM curado llm_feedback. Memorias 99-101 registradas."
     }
   ],
   "last_checkpoint": "20260805_094918"

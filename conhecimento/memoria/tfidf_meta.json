@@ -85,7 +85,10 @@
     95,
     96,
     97,
-    98
+    98,
+    99,
+    100,
+    101
   ],
   "kinds": [
     "erro",
@@ -173,6 +176,9 @@
     "padrao",
     "padrao",
     "decisao",
+    "decisao",
+    "padrao",
+    "padrao",
     "decisao"
   ],
   "texts": [
@@ -261,8 +267,11 @@
     "scripts/runtime_kernel.py = kernel permanente: 7 regras absolutas da clausula de soberania (constituicao v1.1), pipeline 9 etapas, contratos entrada/saida, validate_output/authorize_response. integrado ao boot e ao maestro. sync 3 camadas ok + preflight ok. response authorize output validate saida entrada padrao",
     "scripts/runtime_context.py = context loader bm25 (so relevante, nunca tudo). scripts/runtime_auditor.py = auditor adaptativo (classifica criticidade baixa/media/alta, auditoria completa so em media/alta, reprova=repete ciclo). integrados ao boot e maestro. preflight ok. ciclo repete reprova completa alta media padrao",
     "slider de orbita agora salva em localstorage e em docs/grafo_widget_orbgrafo.json via bridge.guardar_orbgrafo(). valida pos-restart sem depender so de browser. grafo docs localstorage salva orbita slider decisao",
-    "bridge.perguntar/query processa cadeia de 7 modelos do opencode-model-fallback.jsonc com timeout 15s cada e fallback automatico. ponto de entrada: window.pywebview.api.perguntar(). log em docs/widget_log.txt. model opencode modelos fallback cadeia processa decisao"
+    "bridge.perguntar/query processa cadeia de 7 modelos do opencode-model-fallback.jsonc com timeout 15s cada e fallback automatico. ponto de entrada: window.pywebview.api.perguntar(). log em docs/widget_log.txt. model opencode modelos fallback cadeia processa decisao",
+    "scripts/memory_semantic.py: tf-idf + cosine sobre 86 memorias (vocab=6193). subcomando 'memory_engine.py semantic <query>'. resolve dependencia de tags exatas para recuperacao por significado. scripts significado recuperacao implementada exatas 6193 padrao",
+    "bridge jarvis operacional porta 8765 (pid 3600). tts edge-tts (antonioneural) gerou 26kb mp3. stt faster-whisper tiny transcreveu 'eco ativado' corretamente. 'ativar eco' pronto para uso. 3600 pid 8765 porta operacional validados padrao",
+    "scripts/llm_feedback.py: registrar(modelo, ok, ms) + cadeia_ordenada() reordena por score (taxa sucesso*0.8 + velocidade*0.2 - penal falhas consecutivas). integrado em bridge.processar_query_llm. score persistido em docs/llm_feedback.json. sucesso taxa reordena feedback ordenada scripts decisao"
   ],
-  "vocab_size": 6193,
-  "count": 86
+  "vocab_size": 6319,
+  "count": 89
 }
