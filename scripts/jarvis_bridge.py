@@ -597,9 +597,23 @@ class Cliente:
 
     def _montar(self, msg):
         estado = _estado_cacheado()
-        sufixo = f"Usuário: {msg}\nJarvis:"
-        livre = MAX_PROMPT - len(SISTEMA) - len(estado) - 4 - len(sufixo)
-        p = SISTEMA + "\n\n" + estado + "\n\n"
+        # ---- Memoria semantica: top-3 memorias mais relevantes a msg ----
+        ctx_mem = ""
+        try:
+            import importlib.util as _ilu
+            _p = Path(__file__).resolve().parent / "memory_semantic.py"
+            _spec = _ilu.spec_from_file_location("memory_semantic", _p)
+            _mod = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_mod)
+            _rs = _mod.search(msg, k=3, min_score=0.08)
+            if _rs:
+                _lines = [f"- #{r['id']} ({r['kind']}): {r['title']}" for r in _rs]
+                ctx_mem = "Contexto relevante da memoria:\n" + "\n".join(_lines) + "\n\n"
+                logger.info(f"memoria semantica: {len(_rs)} hits para '{msg[:40]}'")
+        except Exception as _e:
+            logger.debug(f"memoria semantica indisponivel: {_e}")
+        sufixo = f"Usuario: {msg}\nJarvis:"
+        livre = MAX_PROMPT - len(SISTEMA) - len(estado) - len(ctx_mem) - 4 - len(sufixo)
+        p = SISTEMA + "\n\n" + estado + "\n\n" + ctx_mem
         hist = self._hist[-(MAX_HIST*2):]
         for i in range(0, len(hist), 2):
             if i+1 >= len(hist): break
@@ -1058,6 +1072,68 @@ def caminho_rapido(msg):
 
     return None
 
+
+def _fb_registrar(modelo: str, ok: bool, latencia_ms: int) -> None:
+    """Encapsula llm_feedback.registrar(()) para o bridge Jarvis.
+    Usa importacao tardia e tolera ausencia do modulo."""
+    try:
+        import importlib.util as _ilu
+        _p = Path(__file__).resolve().parent / "llm_feedback.py"
+        if not _p.exists():
+            return
+        _spec = _ilu.spec_from_file_location("llm_feedback", _p)
+        _mod = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_mod)
+        _mod.registrar(modelo, ok, latencia_ms)
+    except Exception as _e:
+        logger.debug(f"fb_registrar indisponivel: {_e}")
+
+
+async def _fallback_cadeia_curada(msg: str, img_base64=None, img_mime="image/jpeg") -> str | None:
+    """Fallback: tenta a cadeia de 7 modelos (cadeia_ordenada) disponivel em
+    scripts/llm_feedback.py via API HTTP direta do opencode. Retorna a primeira
+    resposta valida ou None se todos falharem. Nao envia imagem (apenas texto)."""
+    if img_base64:
+        # modelos de texto da cadeia nao aceitam imagem; deixa o caller reportar erro
+        return None
+    try:
+        import importlib.util as _ilu, urllib.request, urllib.error
+        _p = Path(__file__).resolve().parent / "llm_feedback.py"
+        if not _p.exists():
+            return None
+        _spec = _ilu.spec_from_file_location("llm_feedback", _p)
+        _mod = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_mod)
+        cadeia = _mod.cadeia_ordenada()
+        import time as _t
+        for modelo in cadeia:
+            _t0 = _t.time()
+            try:
+                req = urllib.request.Request(
+                    "https://opencode.ai/api/v1/chat/completions",
+                    data=json.dumps({
+                        "model": modelo,
+                        "messages": [{"role": "user", "content": msg}],
+                        "max_tokens": 256,
+                    }).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                with urllib.request.urlopen(req, timeout=15) as r:
+                    data = json.loads(r.read().decode("utf-8"))
+                    saida = (data.get("choices") or [{}])[0].get("message", {}).get("content", "")
+                _ms = int((_t.time() - _t0) * 1000)
+                _mod.registrar(modelo, True, _ms)
+                logger.info(f"cadeia curada HIT {modelo} ({_ms}ms)")
+                return saida
+            except Exception as _e:
+                _ms = int((_t.time() - _t0) * 1000)
+                _mod.registrar(modelo, False, _ms)
+                logger.warning(f"cadeia curada MISS {modelo} ({_ms}ms): {_e}")
+        return None
+    except Exception as _e:
+        logger.error(f"cadeia curada indisponivel: {_e}", exc_info=True)
+        return None
+
+
 async def lidar(ws):
     c = Cliente()
     client_ip = ws.remote_address[0] if ws.remote_address else "desconhecido"
@@ -1170,11 +1246,20 @@ async def lidar(ws):
                     else:
                         r = "Não consegui salvar essa pronúncia. Tente novamente."
             if r is None:
+                # ---- Pipeline multi-LLM curado: opencode serve + fallback cadeia ----
+                import time as _t
+                _t0 = _t.time()
                 try:
                     r = await c.perguntar(m, img_base64=img_atual, img_mime=img_mime)
+                    _ms = int((_t.time() - _t0) * 1000)
+                    _fb_registrar("opencode-serve", ok=True, latencia_ms=_ms)
                 except Exception as e:
-                    r = f"Erro no processamento: {e}"
-                    logger.error(f"erro: {e}", exc_info=True)
+                    _ms = int((_t.time() - _t0) * 1000)
+                    _fb_registrar("opencode-serve", ok=False, latencia_ms=_ms)
+                    logger.warning(f"opencode-serve falhou ({_ms}ms), tentando cadeia curada: {e}")
+                    r = await _fallback_cadeia_curada(m, img_base64=img_atual, img_mime=img_mime)
+                    if r is None:
+                        r = f"Erro no processamento: {e}"
             else:
                 logger.info(f"resposta rapida ({len(r)}c): {r[:80]}")
 
