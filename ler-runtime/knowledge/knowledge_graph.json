@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-04T20:28:45.457019",
+  "last_updated": "2026-08-04T23:07:27.505437",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -1719,6 +1719,13 @@
       "domain": "general",
       "body": "---\ntipo: erro\ntags: [widget, pywebview, windows, travamento, recursao, debug, frameless]\ndata: 2026-08-02\ncontexto: O widget desktop do grafo (scripts/widget_grafo.py) travava; o terminal python mostrava recorrente `[pywebview] Error while processing win.native.AccessibilityObject.Bounds.Empty...: maximum recursion depth exceeded`.\ndecisao: Duas causas distintas atacadas:\n1. GEOMETRIA: ler `win.x/win.y/win.width/win.height` a partir de thread nao-principal (loop de 1s) dispara recursao infinita",
       "extracted_at": "2026-08-04T03:45:44.490677"
+    },
+    {
+      "source": "opencode",
+      "title": "2026-08-04: Refinamento do grafo — zoom microscópio, expandir e cognição viva",
+      "domain": "general",
+      "body": "---\ntipo: aprendizado\ntags: [vis-network, zoom, microsocpio, clustering, physics, barnesHut, grafo, widget, labels]\ndata: 2026-08-04\ncontexto: Refinamento do widget \"Cerebro Vivo\" (scripts/widget_grafo.py + scripts/generate-graph-html.py) para movimento mais vivo/realista e zoom com papel narrativo.\ndecisao: Movimento organico = physics.stabilization:false + timestep:0.2 + maxVelocity:6 + minVelocity:0 + adaptiveTimestep:false + barnesHut(avoidOverlap:0.55, damping:0.88). Respiracao do layout vi",
+      "extracted_at": "2026-08-04T23:07:25.976106"
     }
   ],
   "heuristics": [
@@ -4042,6 +4049,22 @@
         "arestas",
         "sinapses",
         "vivo"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-04T23:07:25.976106",
+      "status": "session_learning",
+      "goal_objective": "2026-08-04: Refinamento do grafo — zoom microscópio, expandir e cognição viva — Refinamento do widget \"Cerebro Vivo\" (scripts/widget_grafo.py + scripts/generate-graph-html.py) para movimento mais vivo/realista e zoom com papel narrativo.",
+      "tags": [
+        "aprendizado",
+        "opencode",
+        "viva",
+        "labels",
+        "cognição",
+        "grafo",
+        "expandir",
+        "widget"
       ],
       "files_modified": []
     }

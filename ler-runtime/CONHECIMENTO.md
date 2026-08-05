@@ -1,14 +1,14 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-04T20:28:45.492468
+**Exportado em:** 2026-08-04T23:07:27.608278
 **Projetos:** 4
 **Padroes Tecnicos:** 79
 **Decisoes:** 52
 **Bug Fixes:** 46
-**Padroes Cognitivos:** 46
+**Padroes Cognitivos:** 47
 **Heuristicas:** 32
 **Frameworks:** 10
-**Missoes Aprendidas:** 149
+**Missoes Aprendidas:** 150
 
 ---
 
@@ -1116,6 +1116,17 @@ contexto: O widget desktop do grafo (scripts/widget_grafo.py) travava; o termina
 decisao: Duas causas distintas atacadas:
 1. GEOMETRIA: ler `win.x/win.y/win.width/win.height` a partir de thread nao-principal (loop de 1s) dispara recursao infinita
 
+### 2026-08-04: Refinamento do grafo — zoom microscópio, expandir e cognição viva
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: aprendizado
+tags: [vis-network, zoom, microsocpio, clustering, physics, barnesHut, grafo, widget, labels]
+data: 2026-08-04
+contexto: Refinamento do widget "Cerebro Vivo" (scripts/widget_grafo.py + scripts/generate-graph-html.py) para movimento mais vivo/realista e zoom com papel narrativo.
+decisao: Movimento organico = physics.stabilization:false + timestep:0.2 + maxVelocity:6 + minVelocity:0 + adaptiveTimestep:false + barnesHut(avoidOverlap:0.55, damping:0.88). Respiracao do layout vi
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -1210,7 +1221,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-04T20:28:45.457019
+**Ultima atualizacao:** 2026-08-04T23:07:27.505437
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

@@ -1,5 +1,5 @@
 ---
-tags: [app, geral, hora, jarvis, missao, opencode, status, udio]
+tags: [app, geral, jarvis, missao, opencode, status, tela, udio]
 aliases: [﻿# Hora na tela vs hora no Ã¡udio (Jarvis) — ]
 date: 2026-08-04
 ---
