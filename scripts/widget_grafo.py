@@ -266,6 +266,73 @@ class Bridge:
         except Exception as e:
             self.debug_log(f'[widget] Error saving orbGrafo: {e}')
 
+    def verificar_llm(self, modelo: str, query: str) -> dict:
+        """Verifica um unico LLM. Retorna {ok, saida, erro, modelo}."""
+        t0 = time.time()
+        try:
+            import urllib.request, urllib.error
+            req = urllib.request.Request(
+                'https://opencode.ai/api/v1/chat/completions',
+                data=json.dumps({
+                    'model': modelo,
+                    'messages': [{'role': 'user', 'content': query}],
+                    'max_tokens': 256,
+                }).encode('utf-8'),
+                headers={'Content-Type': 'application/json'},
+                method='POST',
+            )
+            with urllib.request.urlopen(req, timeout=15) as r:
+                data = json.loads(r.read().decode('utf-8'))
+                saida = (data.get('choices') or [{}])[0].get('message', {}).get('content', '')
+                return {'ok': True, 'modelo': modelo, 'saida': saida,
+                        'ms': int((time.time() - t0) * 1000), 'erro': None}
+        except Exception as e:
+            return {'ok': False, 'modelo': modelo, 'saida': '',
+                    'ms': int((time.time() - t0) * 1000), 'erro': str(e)}
+
+    def processar_query_llm(self, query: str) -> dict:
+        """Pipeline multi-LLM: tenta o primario e cai para fallbacks em caso de erro.
+
+        Cadeia definida em config/opencode-model-fallback.jsonc. Retorna o
+        primeiro modelo que responde com sucesso (ou {ok:False} se todos falham).
+        """
+        cadeia = [
+            'opencode/nemotron-3-ultra-free',
+            'opencode/deepseek-v4-flash-free',
+            'opencode/laguna-s-2.1-free',
+            'opencode/ling-3.0-flash-free',
+            'opencode/mimo-v2.5-free',
+            'opencode/north-mini-code-free',
+            'opencode/big-pickle',
+        ]
+        tentativas = []
+        for modelo in cadeia:
+            r = self.verificar_llm(modelo, query)
+            tentativas.append(r)
+            self.debug_log(f"[llm] {modelo}: ok={r['ok']} ms={r['ms']} erro={r['erro']}")
+            if r['ok']:
+                return {'ok': True, 'modelo': modelo, 'saida': r['saida'],
+                        'tentativas': tentativas}
+        self.debug_log(f"[llm] todos os {len(cadeia)} modelos falharam para: {query[:80]}")
+        return {'ok': False, 'modelo': None, 'saida': '',
+                'tentativas': tentativas}
+
+    def perguntar(self, query: str) -> str:
+        """Ponto de entrada do widget para o pipeline multi-LLM.
+
+        Chamado pelo frontend via window.pywebview.api.perguntar(texto).
+        Retorna a resposta do primeiro LLM que responder com sucesso.
+        """
+        if not query or not query.strip():
+            return json.dumps({'ok': False, 'erro': 'query vazia'})
+        try:
+            resultado = self.processar_query_llm(query.strip())
+            self.debug_log(f"[llm] pergunta: {query[:80]} | ok={resultado['ok']} | modelo={resultado['modelo']}")
+            return json.dumps(resultado, ensure_ascii=False)
+        except Exception as e:
+            self.debug_log(f"[llm] erro fatal: {e}")
+            return json.dumps({'ok': False, 'erro': str(e)})
+
     def comando_grafo(self, ultimo_ts: int = 0) -> dict:
         try:
             f = BASE / 'docs' / 'comando_grafo.json'
