@@ -376,15 +376,18 @@ def gerar_html(nos, arestas, output_path):
                 for a, b in sorted(arestas)]
 
     legend_cat = ''.join(
-        f'<button class="lg" data-filter="cat" data-value="{c}" data-color="{CATEGORIA_COR.get(c,"#888")}">'
+        f'<button class="lg" data-filter="cat" data-value="{c}" data-color="{CATEGORIA_COR.get(c,"#888")}" '
+        f'title="Categoria: {CATEGORIA_DESC.get(c, c)}. Clique para destacar as notas desta categoria.">'
         f'<span class="dot" style="background:{CATEGORIA_COR.get(c,"#888")}"></span>{CATEGORIA_LABEL.get(c,c)}</button>'
         for c in CATEGORIA_COR)
     legend_cl = ''.join(
-        f'<button class="lg" data-filter="cl" data-value="{cl}" data-color="{cor}">'
+        f'<button class="lg" data-filter="cl" data-value="{cl}" data-color="{cor}" '
+        f'title="Cluster: {CLUSTER_DESC.get(cl, cl)}. Clique para destacar as notas deste cluster.">'
         f'<span class="dot" style="background:{cor}"></span>{cl.capitalize()}</button>'
         for cl, cor in CLUSTER_COR.items())
     legend_st = ''.join(
-        f'<button class="lg" data-filter="st" data-value="{st}" data-color="{cor}">'
+        f'<button class="lg" data-filter="st" data-value="{st}" data-color="{cor}" '
+        f'title="Status: {STATUS_DESC.get(st, st)}. Clique para destacar bugs com este status.">'
         f'<span class="dot" style="background:{cor}"></span>Bug: {label}</button>'
         for st, label in STATUS_LABEL.items())
     legend_st = '<span style="opacity:.6">|</span> ' + legend_st
@@ -393,9 +396,11 @@ def gerar_html(nos, arestas, output_path):
     # Filtro por tag: qualquer tag que contenha 'mcp' classifica a nota.
     legend_dom = (
         '<span style="opacity:.6">|</span> '
-        '<button class="lg" data-filter="dom" data-value="mcp" data-color="#cba6f7">'
+        '<button class="lg" data-filter="dom" data-value="mcp" data-color="#cba6f7" '
+        'title="Dominio: destaca as notas cujas tags citam MCP (servidores, config, skills).">'
         '<span class="dot" style="background:#cba6f7"></span>MCPs</button>'
-        '<button class="lg" data-filter="dom" data-value="conhecimento" data-color="#a6e3a1">'
+        '<button class="lg" data-filter="dom" data-value="conhecimento" data-color="#a6e3a1" '
+        'title="Dominio: destaca as notas que NAO sao de MCP (conhecimento geral do ecossistema).">'
         '<span class="dot" style="background:#a6e3a1"></span>Conhecimento</button>'
     )
 
