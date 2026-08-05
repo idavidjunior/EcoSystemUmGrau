@@ -122,5 +122,7 @@
   "Usuário: Sim.",
   "Jarvis: Pronto. Aplicado no CLI também.\n\nO `dialogo.py` agora usa a mesma variação por período do dia que a bridge (`dialogo.py:474`): Bom dia pela manhã, Boa tarde à tarde, Boa noite à noite, e toque de madrugada. Os fechos ficaram mais naturais, sem o \"Como posso ajudar?\" robótico. Sintaxe validada com sucesso.\n\nOs dois caminhos (celular via bridge e CLI) agora estão consistentes e contextuais. Pronto, tudo sincronizado.",
   "Usuário: Como está a organização estrutural dos nossos MCP?",
-  "Jarvis: Sem resposta."
+  "Jarvis: Sem resposta.",
+  "Usuário: Oi.",
+  "Jarvis: Respondendo de forma concisa:\n\n**O que estou fazendo:** sincronizando o ecossistema com você, exatamente como pediu:\n- **Voz** — testei o TTS real (`vox_audio.py falar`) e confirmou (`[Falado]`). Agora todo passo meu tem áudio verificado — se não voltar `[Falado]`, eu trato como falha e aviso.\n- **Cérebro do celular (serve)** — subi o `opencode serve` na porta 8767 (PID 11340), a mesma que o `jarvis_bridge` espera. O vox app volta a ter respostas.\n- **Desktop** — estável com as flags GPU, sem crashes.\n- **Bridge** — de pé na 8765, escutando.\n\nNada que já estava funcionando foi quebrado. Só estou observando e integrando. O que quer que eu faça a seguir?"
 ]

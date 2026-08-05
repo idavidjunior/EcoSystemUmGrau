@@ -8,4 +8,10 @@ date: 2026-08-01
 
 **Fonte:** android-pure-sdk
 
+## Ver também
+
+- [[heuristicas/open-sempre-com-encoding-no-windows]] — heurística obrigatória: `open(..., encoding='utf-8')` no Windows
+- [[padroes/encoding-utf-8-explicito-em-python-no-windows]] — padrão explícito de encoding em Python no Windows
+- [[decisoes/encoding-utf-8-in-javac-required-on-windows-to-prevent-corru]] — decisão duplicada/relacionada (mesmo tema)
+
 
