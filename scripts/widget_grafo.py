@@ -291,31 +291,31 @@ class Bridge:
                     'ms': int((time.time() - t0) * 1000), 'erro': str(e)}
 
     def processar_query_llm(self, query: str) -> dict:
-        """Pipeline multi-LLM: tenta o primario e cai para fallbacks em caso de erro.
+        """Pipeline multi-LLM curado: tenta a cadeia ordenada por score real.
 
-        Cadeia definida em config/opencode-model-fallback.jsonc. Retorna o
-        primeiro modelo que responde com sucesso (ou {ok:False} se todos falham).
+        Usa scripts/llm_feedback.py para registrar sucesso/falha e latencia
+        de cada modelo, reordenando dinamicamente a cadeia. Modelos com falhas
+        consecutivas sao penalizados no score.
         """
-        cadeia = [
-            'opencode/nemotron-3-ultra-free',
-            'opencode/deepseek-v4-flash-free',
-            'opencode/laguna-s-2.1-free',
-            'opencode/ling-3.0-flash-free',
-            'opencode/mimo-v2.5-free',
-            'opencode/north-mini-code-free',
-            'opencode/big-pickle',
-        ]
+        import importlib.util
+        fb_path = BASE / 'scripts' / 'llm_feedback.py'
+        spec = importlib.util.spec_from_file_location('llm_feedback', fb_path)
+        fb = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(fb)
+
+        cadeia = fb.cadeia_ordenada()
         tentativas = []
         for modelo in cadeia:
             r = self.verificar_llm(modelo, query)
             tentativas.append(r)
+            fb.registrar(modelo, r['ok'], r['ms'])
             self.debug_log(f"[llm] {modelo}: ok={r['ok']} ms={r['ms']} erro={r['erro']}")
             if r['ok']:
                 return {'ok': True, 'modelo': modelo, 'saida': r['saida'],
-                        'tentativas': tentativas}
+                        'tentativas': tentativas, 'cadeia': cadeia}
         self.debug_log(f"[llm] todos os {len(cadeia)} modelos falharam para: {query[:80]}")
         return {'ok': False, 'modelo': None, 'saida': '',
-                'tentativas': tentativas}
+                'tentativas': tentativas, 'cadeia': cadeia}
 
     def perguntar(self, query: str) -> str:
         """Ponto de entrada do widget para o pipeline multi-LLM.
