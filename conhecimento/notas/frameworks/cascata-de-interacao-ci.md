@@ -1,7 +1,7 @@
 ---
 tags: [framework, matching, ocr, relativas, template]
 aliases: [Cascata de Interacao (CI)]
-date: 2026-08-04
+date: 2026-08-05
 ---
 
 # Cascata de Interacao (CI)

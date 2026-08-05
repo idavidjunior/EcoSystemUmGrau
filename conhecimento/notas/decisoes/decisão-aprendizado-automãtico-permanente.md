@@ -1,7 +1,7 @@
 ---
 tags: [cita, decisao, explã, necessidade, opencode, solicitaã]
 aliases: [﻿# DecisÃ£o: Aprendizado automÃ¡tico permanente]
-date: 2026-08-04
+date: 2026-08-05
 ---
 
 # ﻿# DecisÃ£o: Aprendizado automÃ¡tico permanente

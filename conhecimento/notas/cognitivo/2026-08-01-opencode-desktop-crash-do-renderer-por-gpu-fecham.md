@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, dominio, erro, general, mensagem, ria]
 aliases: [﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU ]
-date: 2026-08-04
+date: 2026-08-05
 ---
 
 # ﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria

@@ -1,7 +1,7 @@
 ---
 tags: [aceitam, diretamente, keys, padrao, send, treinamentonavegacao]
 aliases: [Iframe/contenteditable text entry]
-date: 2026-08-04
+date: 2026-08-05
 ---
 
 # Iframe/contenteditable text entry

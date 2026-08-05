@@ -1,7 +1,7 @@
 ---
 tags: [erro, expected, expected readonly, opencode, padrao, type]
 aliases: [Config: ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.]
-date: 2026-08-04
+date: 2026-08-05
 ---
 
 # Config: ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7

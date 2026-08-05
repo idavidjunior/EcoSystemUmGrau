@@ -1,7 +1,7 @@
 ---
 tags: [comandos, decisao, falando, opencode, ouvindo, resultados]
 aliases: [﻿# DecisÃ£o: Arquitetura Jarvis App]
-date: 2026-08-04
+date: 2026-08-05
 ---
 
 # ﻿# DecisÃ£o: Arquitetura Jarvis App

@@ -46,3 +46,7 @@ impacto: Agente coordenador tem motor de contexto unificado; catalogo de habilid
 - context-engine: buscar/gravar/episodio/drift/impacto testados; paralelo faz dispatch+agregacao.
 - .gitignore: adicionado context/tarefas_paralelas.json (efemero).
 - Memory #88.
+
+## Conexoes
+
+- [[correcao-de-diagnostico-do-knowledge-graph-e-criacao-do-regi]]

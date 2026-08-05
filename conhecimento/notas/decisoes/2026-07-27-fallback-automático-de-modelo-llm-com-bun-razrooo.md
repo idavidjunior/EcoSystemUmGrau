@@ -1,7 +1,7 @@
 ---
-tags: [decisao, ecosistema-opencode, errors, quota, timeouts, ttft]
+tags: [decisao, ecosistema-opencode, errors, timeouts, ttft, uso]
 aliases: [2026-07-27: Fallback automático de modelo LLM com Bun + @raz]
-date: 2026-08-04
+date: 2026-08-05
 ---
 
 # 2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback

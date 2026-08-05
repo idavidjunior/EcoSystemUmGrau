@@ -1,6 +1,6 @@
 # Cluster: Geral
 
-**92 notas** do cluster geral.
+**93 notas** do cluster geral.
 
 
 ## Notas
@@ -57,6 +57,7 @@
 - [[2026-08-03-scan-proativo-windowsmaintenancesuitev3]]
 - [[2026-08-04-persistencia-da-conexao-do-jarvis-usuario-pediu-p]]
 - [[2026-08-04-refinamento-do-grafo-zoom-microscópio-expandir-e-]]
+- [[2026-08-05-scan-proativo-ecosystemumgrau]]
 - [[aprendizado-â-2026-07-31-â-horas-faladas-corretamente-no-tts]]
 - [[aprendizado-â-2026-07-31-â-pontuaãão-automãtica-de-transcriã]]
 - [[aprendizado-â-2026-07-31-â-reorg-catãlogo-ãnico-habilidades-]]

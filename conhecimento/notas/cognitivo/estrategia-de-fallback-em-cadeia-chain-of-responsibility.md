@@ -1,7 +1,7 @@
 ---
 tags: [automatico, cognitivo, precisa, preferencia, proxima, systemdesign]
 aliases: [Estrategia de fallback em cadeia (Chain of Responsibility)]
-date: 2026-08-04
+date: 2026-08-05
 ---
 
 # Estrategia de fallback em cadeia (Chain of Responsibility)

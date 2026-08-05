@@ -1,7 +1,7 @@
 ---
 tags: [anthropic, gemini, openai, openrouter, padrao, sessaoprovidermanager]
 aliases: [Cadeia de provedores com failover inteligente]
-date: 2026-08-04
+date: 2026-08-05
 ---
 
 # Cadeia de provedores com failover inteligente

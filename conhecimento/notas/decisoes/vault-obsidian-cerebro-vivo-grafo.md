@@ -1,7 +1,7 @@
 ---
 tags: [aprendizados, conectados, cores, decisao, frontmatter, opencode]
 aliases: [vault obsidian cerebro vivo grafo]
-date: 2026-08-04
+date: 2026-08-05
 ---
 
 # vault obsidian cerebro vivo grafo

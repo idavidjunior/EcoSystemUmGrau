@@ -1,7 +1,7 @@
 ---
 tags: [bug, diferentes, janelas, projeto, redimensionadas, treinamentonavegacao]
 aliases: [Cliques em coordenadas erram alvo em resolutions diferentes]
-date: 2026-08-04
+date: 2026-08-05
 ---
 
 # Cliques em coordenadas erram alvo em resolutions diferentes

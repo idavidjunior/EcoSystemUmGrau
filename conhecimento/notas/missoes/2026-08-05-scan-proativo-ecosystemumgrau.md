@@ -1,14 +1,14 @@
 ---
-tags: [app, geral, hora, jarvis, missao, opencode, status, udio]
-aliases: [﻿# Hora na tela vs hora no Ã¡udio (Jarvis) — ]
-date: 2026-08-04
+tags: [2026 scan proativo, geral, learning, missao, opencode, proativo, scan]
+aliases: [﻿# 2026-08-05 - Scan proativo: EcoSystemUmGrau — ]
+date: 2026-08-05
 ---
 
-# ﻿# Hora na tela vs hora no Ã¡udio (Jarvis) — 
+# ﻿# 2026-08-05 - Scan proativo: EcoSystemUmGrau — 
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# Hora na tela vs hora no Ã¡udio (Jarvis) — 
+**Objetivo:** ﻿# 2026-08-05 - Scan proativo: EcoSystemUmGrau — 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

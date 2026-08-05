@@ -1,7 +1,7 @@
 ---
 tags: [arvore, dom, element-detection, heuristica, tem, utilizavel]
 aliases: [Canvas e graficos: template matching]
-date: 2026-08-04
+date: 2026-08-05
 ---
 
 # Canvas e graficos: template matching

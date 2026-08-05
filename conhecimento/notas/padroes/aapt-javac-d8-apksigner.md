@@ -1,7 +1,7 @@
 ---
 tags: [add, androidpuresdk, apk, dex, padrao, zipalign]
 aliases: [aapt + javac + d8 + apksigner]
-date: 2026-08-04
+date: 2026-08-05
 ---
 
 # aapt + javac + d8 + apksigner

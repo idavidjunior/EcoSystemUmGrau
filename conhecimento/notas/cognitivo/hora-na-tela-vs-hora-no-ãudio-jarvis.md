@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, ecossistema, evoluir, general, precisa, trocar]
 aliases: [﻿# Hora na tela vs hora no Ã¡udio (Jarvis)]
-date: 2026-08-04
+date: 2026-08-05
 ---
 
 # ﻿# Hora na tela vs hora no Ã¡udio (Jarvis)

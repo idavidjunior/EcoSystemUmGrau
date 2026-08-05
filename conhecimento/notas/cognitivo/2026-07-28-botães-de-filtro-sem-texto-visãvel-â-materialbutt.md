@@ -1,7 +1,7 @@
 ---
-tags: [cognitivo, dominio, general, nenhum, uniformes, verdes]
+tags: [cognitivo, dominio, general, nenhum, uniformes, vel]
 aliases: [﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” Mate]
-date: 2026-08-04
+date: 2026-08-05
 ---
 
 # ﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView

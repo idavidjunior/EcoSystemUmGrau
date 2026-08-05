@@ -1,7 +1,7 @@
 ---
 tags: [artist, bug, mp3player-metadata-rescue, projeto, results, wrong]
 aliases: [Search returns wrong artist]
-date: 2026-08-04
+date: 2026-08-05
 ---
 
 # Search returns wrong artist
