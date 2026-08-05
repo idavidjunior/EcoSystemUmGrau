@@ -363,6 +363,16 @@ def gerar_html(nos, arestas, output_path):
         for st, label in STATUS_LABEL.items())
     legend_st = '<span style="opacity:.6">|</span> ' + legend_st
 
+    # Botoes de dominio: MCPs (notas com tag mcp) vs Conhecimento (restante).
+    # Filtro por tag: qualquer tag que contenha 'mcp' classifica a nota.
+    legend_dom = (
+        '<span style="opacity:.6">|</span> '
+        '<button class="lg" data-filter="dom" data-value="mcp" data-color="#cba6f7">'
+        '<span class="dot" style="background:#cba6f7"></span>MCPs</button>'
+        '<button class="lg" data-filter="dom" data-value="conhecimento" data-color="#a6e3a1">'
+        '<span class="dot" style="background:#a6e3a1"></span>Conhecimento</button>'
+    )
+
     html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -404,6 +414,7 @@ def gerar_html(nos, arestas, output_path):
     {legend_cat}
     {legend_cl}
     {legend_st}
+    {legend_dom}
     <button class="lg home" data-filter="home" data-value="" data-color="#89b4fa">ðŸ  Home</button>
     <button class="lg" data-filter="all" data-value="" data-color="#888">âœ• Limpar</button>
   </div>
