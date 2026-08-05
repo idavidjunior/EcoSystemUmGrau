@@ -1228,5 +1228,25 @@
     "access_count": 0,
     "created_at": "2026-08-05T07:45:35.727033",
     "last_accessed": "2026-08-05T07:45:35.727033"
+  },
+  {
+    "id": 92,
+    "kind": "padrao",
+    "task": "Grafo: deriva orbital + zoom suave + cascata no arrastar",
+    "summary": "Fisica do grafo turbinada: nos flutuam em orbitas elipticas proprias (elipse 4-9px por id), zoom suave (zoomSpeed 0.35 + smoothWheel), arrastar no dispara empurrao nos vizinhos + aceleracao breve da fisica (450ms). Licao: JS em f-string Python exige chaves dobradas {}.",
+    "project": "",
+    "tags": [
+      "zoomspeed",
+      "450ms",
+      "turbinada",
+      "fisica",
+      "breve",
+      "9px"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-05T08:03:45.122737",
+    "last_accessed": "2026-08-05T08:03:45.122737"
   }
 ]

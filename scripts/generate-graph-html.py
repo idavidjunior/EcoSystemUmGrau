@@ -622,7 +622,7 @@ def gerar_html(nos, arestas, output_path):
       adaptiveTimestep: false,
       stabilization: false
     }},
-    interaction: {{ hover:true, tooltipDelay:120, navigationButtons:true, zoomSpeed:0.6 }}
+    interaction: {{ hover:true, tooltipDelay:120, navigationButtons:true, zoomSpeed:0.35, smoothWheel:true }}
   }};
   const network = new vis.Network(container, {{ nodes, edges }}, options);
 
@@ -911,6 +911,45 @@ def gerar_html(nos, arestas, output_path):
   setTimeout(_ajustarFontes, 1500);
   network.on('dragEnd', _ajustarFontes);
 
+  // --- REORGANIZACAO SUAVE AO ARRASTAR --------------------------------------
+  // Ao soltar um no, os vizinhos recebem um leve "empurrao" (perturbacao na
+  // fisica) e a rede se reorganiza em cascata suave — a sensacao de que as
+  // forcas fluem do ponto arrastado. O pulso e breve e nao desmancha o layout.
+  network.on('dragStart', function() {{ _tickPausado = true; }});
+  network.on('dragEnd', function(params) {{
+    _tickPausado = false;
+    _ajustarFontes();
+    if (!params || !params.nodes || !params.nodes.length) return;
+    const movido = params.nodes[0];
+    // disturbo na fisica local: graus de liberdade extras nos vizinhos
+    try {{
+      const viz = network.getConnectedNodes(movido);
+      const agora = Date.now();
+      viz.forEach((vid, i) => {{
+        const pulso = Math.sin(agora * 0.02 + i * 0.7) * 0.25 + 0.75;
+        network.physics ? network.physics.physicsBody : null;
+        nodes.update([{{
+          id: vid,
+          x: (nodes.get(vid).x || 0) + Math.sin(i) * pulso * 3,
+          y: (nodes.get(vid).y || 0) + Math.cos(i) * pulso * 3
+        }}]);
+      }});
+    }} catch (e) {{}}
+    // breve aceleracao da fisica para a cascata se dissipar organicamente
+    try {{
+      network.setOptions({{ physics: {{ barnesHut: {{
+        gravitationalConstant: -760, springConstant: 0.050, damping: 0.78
+      }} }} }});
+      setTimeout(() => {{
+        network.setOptions({{ physics: {{ barnesHut: {{
+          gravitationalConstant: -720 * _respirando,
+          springConstant: 0.030 * (1.8 - _respirando),
+          damping: 0.82
+        }} }} }});
+      }}, 450);
+    }} catch (e) {{}}
+  }});
+
   // --- Movimento organico: "cerebro vivo" cognitivo ---
   // Heartbeat: respiracao suave dos nos + pulsos de sinapse aleatorios.
   // A profundidade VIVA (pseudo-3D) modula tamanho/opacidade/glow de cada no,
@@ -918,6 +957,36 @@ def gerar_html(nos, arestas, output_path):
   let _tickPausado = false;
   let _destacado = false;
   let _ultimoSpike = 0;
+  // --- ROTACAO ORBITAL REAL (flutuar com forcas fisicas) --------------------
+  // Alem da profundidade (pseudo-3D), os nos ganham uma DERIVA ORBITAL suave:
+  // cada no orbita o centro do quadro numa elipse lenta, com raio, excentricidade
+  // e velocidade proprios (estaveis por id). A superposicao de orbitas quase
+  // periodicas produz o "agito" organico de um grafo force-directed vivo — as
+  // posicoes parecem flutuar, e arrastar um no puxa a orbita ao redor.
+  // As forcas do vis-network (barnesHut) continuam dominando; a deriva e uma
+  // pertubacao pequena (amplitude ~4-9px) para nao desmanchar a estrutura.
+  const _orb = {{}};
+  nodes.get().forEach(n => {{
+    const h = _hashId(n.id);
+    _orb[n.id] = {{
+      ax: 4 + (h % 37) / 37 * 5,          // semi-eixo X  (4..9)
+      ay: 3 + ((h >> 3) % 29) / 29 * 5,   // semi-eixo Y  (3..8)
+      sp: 0.12 + ((h >> 5) % 53) / 53 * 0.22,  // velocidade angular
+      ph: (h % 628) / 100,                // fase inicial
+      ex: 0.25 + ((h >> 2) % 11) / 11 * 0.5,   // excentricidade 0.25..0.75
+      inc: ((h >> 7) % 360) * Math.PI / 180,   // inclinacao da elipse
+    }};
+  }});
+  function _derivaOrbital(id, t) {{
+    const o = _orb[id];
+    if (!o) return {{ dx: 0, dy: 0 }};
+    const ang = t * 0.001 * o.sp * _velGlobal + o.ph;
+    // elipse: x = a*cos, y = b*sin (com excentricidade no eixo x)
+    const cx = Math.cos(o.inc), sy = Math.sin(o.inc);
+    let ex = o.ax * Math.cos(ang), ey = o.ay * Math.sin(ang) * o.ex;
+    // rotaciona a elipse pela inclinacao propria do no
+    return {{ dx: ex * cx - ey * sy, dy: ex * sy + ey * cx }};
+  }}
   network.on('tick', () => {{
     if (_tickPausado) return;
     // Quando ha um destaque/foco ativo (clicado em no, categoria, cluster),
@@ -937,6 +1006,8 @@ def gerar_html(nos, arestas, output_path):
       const op = Math.min(1, base * (0.50 + 0.50 * z));
       let sz = (original[n.id] ? original[n.id].size : 12);
       let sombra = Math.round(14 + 18 * z);
+      // deriva orbital: desloca o no suavemente em volta da posicao fisica
+      const orb = _derivaOrbital(n.id, agora);
       if (agoraPulso) {{
         const fase = _zFase[n.id] != null ? _zFase[n.id] : ((_hashId(n.id) || 0) % 97);
         // Nos QUENTES (atividade real alta, mtime recente) latejam com mais
@@ -953,7 +1024,9 @@ def gerar_html(nos, arestas, output_path):
         opacity: op,
         shadow: z > 0.3,
         shadowSize: sombra,
-        size: sz
+        size: sz,
+        x: n.x + orb.dx,
+        y: n.y + orb.dy
       }});
     }});
     nodes.update(noUpd);
