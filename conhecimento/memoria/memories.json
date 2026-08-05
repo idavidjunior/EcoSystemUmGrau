@@ -1448,5 +1448,25 @@
     "access_count": 0,
     "created_at": "2026-08-05T16:05:34.629570",
     "last_accessed": "2026-08-05T16:05:34.629570"
+  },
+  {
+    "id": 103,
+    "kind": "padrao",
+    "task": "App VoxUmGrau v1.1.0: modo Eco + voz continua",
+    "summary": "Toggle 'Eco' (🔊/🔇) no TopAppBar. ecoAtivo persistido em SharedPreferences(vox_prefs, eco_ativo). Voz continua: apos resposta, onMessage/onSttResult re-disparam comecarOuvir() se ecoAtivo (delay 1.2-1.5s). tentarOuvir() so auto-ouve com ecoAtivo. Build v15 instalado via adb over Tailscale.",
+    "project": "",
+    "tags": [
+      "delay",
+      "ativo",
+      "comecarouvir",
+      "topappbar",
+      "disparam",
+      "toggle"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-05T16:06:44.441130",
+    "last_accessed": "2026-08-05T16:06:44.441130"
   }
 ]
