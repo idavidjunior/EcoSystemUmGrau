@@ -439,6 +439,59 @@ WIDGET_JS_EXTRA = """
     velGroup.appendChild(velSlider);
     velGroup.appendChild(velLbl);
 
+    // ---- Slider de amplitude da deriva orbital (0 .. 3x) ----
+    // Controla a intensidade da flutuacao orbital dos nos (persistido).
+    var orbSlider = mkEl('input');
+    orbSlider.type = 'range';
+    orbSlider.min = '0'; orbSlider.max = '3'; orbSlider.step = '0.1';
+    orbSlider.value = localStorage.getItem('orbGrafo') || '1';
+    orbSlider.style.cssText =
+      'width:110px;accent-color:#cba6f7;cursor:pointer;';
+    orbSlider.title = 'Amplitude da flutuacao orbital';
+    orbSlider.addEventListener('input', function(){
+      var o = parseFloat(orbSlider.value);
+      localStorage.setItem('orbGrafo', String(o));
+      try { if (typeof _aplicarOrbita === 'function') _aplicarOrbita(o); }
+      catch(e){}
+      orbLbl.textContent = 'x' + o.toFixed(1);
+    });
+
+    var orbLbl = mkEl('span');
+    orbLbl.style.cssText =
+      'font-size:10px;color:' + cores.texto2 + ';min-width:34px;text-align:right;';
+    orbLbl.textContent = 'x' + parseFloat(orbSlider.value).toFixed(1);
+
+    var orbGroup = mkEl('div');
+    orbGroup.style.cssText = 'display:flex;align-items:center;gap:6px;';
+    orbGroup.appendChild(mkEl('span', 'font-size:10px;color:' + cores.texto2 + ';'));
+    orbGroup.firstChild.textContent = 'Orbita';
+    orbGroup.appendChild(orbSlider);
+    orbGroup.appendChild(orbLbl);
+
+    // ---- Busca por palavra no grafo ----
+    // Campo de texto que destaca os nos cujo label/title/tags contenham o termo.
+    var buscaInput = mkEl('input');
+    buscaInput.type = 'text';
+    buscaInput.placeholder = 'Buscar no grafo...';
+    buscaInput.style.cssText =
+      'width:100%;background:' + cores.fundo + ';color:' + cores.texto + ';' +
+      'border:1px solid ' + cores.borda + ';border-radius:4px;font-size:11px;' +
+      'padding:4px 6px;box-sizing:border-box;';
+    buscaInput.addEventListener('input', function(){
+      var termo = buscaInput.value.trim();
+      try {
+        if (typeof destacar === 'function') {
+          if (termo) destacar('txt', termo, cores.destaque);
+          else if (typeof limpar === 'function') limpar();
+        }
+      } catch(e){}
+    });
+    var buscaGroup = mkEl('div');
+    buscaGroup.style.cssText = 'display:flex;align-items:center;gap:6px;';
+    buscaGroup.appendChild(mkEl('span', 'font-size:10px;color:' + cores.texto2 + ';'));
+    buscaGroup.firstChild.textContent = 'Busca';
+    buscaGroup.appendChild(buscaInput);
+
     // ---- Presets de tamanho do quadro (resize da janela) ----
     // Tamanhos pre-definidos para o usuario escolher; chama o resize real
     // da janela via bridge pywebview quando disponivel.
@@ -519,6 +572,8 @@ WIDGET_JS_EXTRA = """
       'background:rgba(30,30,46,0.88);border:1px solid ' + cores.borda + ';' +
       'box-shadow:0 2px 10px rgba(0,0,0,0.5);';
     painel.appendChild(velGroup);
+    painel.appendChild(orbGroup);
+    painel.appendChild(buscaGroup);
     painel.appendChild(tamGroup);
     painel.appendChild(layoutGroup);
     document.body.appendChild(painel);
@@ -637,6 +692,11 @@ WIDGET_JS_EXTRA = """
           var v = parseFloat(localStorage.getItem('velGrafo') || '1');
           _aplicarVelocidade(v);
         }
+        if (typeof _aplicarOrbita === 'function') {
+          var o = parseFloat(localStorage.getItem('orbGrafo') || '1');
+          _aplicarOrbita(o);
+        }
+        if (typeof _atualizarStats === 'function') _atualizarStats();
       } catch(e){}
     }
     if (document.readyState === 'complete' || document.readyState === 'interactive') {

@@ -965,6 +965,7 @@ def gerar_html(nos, arestas, output_path):
   // posicoes parecem flutuar, e arrastar um no puxa a orbita ao redor.
   // As forcas do vis-network (barnesHut) continuam dominando; a deriva e uma
   // pertubacao pequena (amplitude ~4-9px) para nao desmanchar a estrutura.
+  var _orbAmplGlobal = 1; // multiplicador de amplitude da deriva (persistido)
   const _orb = {{}};
   nodes.get().forEach(n => {{
     const h = _hashId(n.id);
@@ -985,8 +986,45 @@ def gerar_html(nos, arestas, output_path):
     const cx = Math.cos(o.inc), sy = Math.sin(o.inc);
     let ex = o.ax * Math.cos(ang), ey = o.ay * Math.sin(ang) * o.ex;
     // rotaciona a elipse pela inclinacao propria do no
-    return {{ dx: ex * cx - ey * sy, dy: ex * sy + ey * cx }};
+    return {{ dx: (ex * cx - ey * sy) * _orbAmplGlobal,
+             dy: (ex * sy + ey * cx) * _orbAmplGlobal }};
   }}
+  // Expoe controle de amplitude orbital para o painel do widget persistir
+  function _aplicarOrbita(fator) {{
+    fator = Number(fator) || 1;
+    _orbAmplGlobal = Math.max(0, Math.min(3, fator));
+  }}
+
+  // --- STATS VIVOS ----------------------------------------------------------
+  // Atualiza o rodape (#stats) com contagens por cluster e por categoria em
+  // tempo real (reflete filtros/ocultacao atual sem recarregar a pagina).
+  var _clusterCorPorCl = {{}};
+  nodes.get().forEach(n => {{ if (n.cl && !_clusterCorPorCl[n.cl]) {{
+    _clusterCorPorCl[n.cl] = original[n.id] ? original[n.id].color : '#888';
+  }} }});
+  function _atualizarStats() {{
+    try {{
+      const el = document.getElementById('stats');
+      if (!el) return;
+      const todos = nodes.get();
+      const total = todos.length;
+      const porCl = {{}};
+      const porCat = {{}};
+      todos.forEach(n => {{
+        const cl = n.cl || 'geral';
+        porCl[cl] = (porCl[cl] || 0) + 1;
+        porCat[n.cat || '?'] = (porCat[n.cat || '?'] || 0) + 1;
+      }});
+      let txt = total + ' nos | ' + edges.get().length + ' conexoes';
+      const cls = Object.keys(porCl).sort((a,b) => porCl[b]-porCl[a]);
+      if (cls.length) {{
+        txt += ' \u2022 ' + cls.map(c => c + ':' + porCl[c]).join('  ');
+      }}
+      el.textContent = txt;
+    }} catch(e) {{}}
+  }}
+  setInterval(_atualizarStats, 3000);
+  setTimeout(_atualizarStats, 1200);
   network.on('tick', () => {{
     if (_tickPausado) return;
     // Quando ha um destaque/foco ativo (clicado em no, categoria, cluster),
@@ -1387,6 +1425,15 @@ def gerar_html(nos, arestas, output_path):
       if (filtro === 'cat' && n.cat === valor) grupo.add(n.id);
       else if (filtro === 'cl' && n.cl === valor) grupo.add(n.id);
       else if (filtro === 'st' && n.st === valor) grupo.add(n.id);
+      else if (filtro === 'txt') {{
+        // busca por palavra no label, title (resumo) e tags — case-insensitive
+        const termo = String(valor || '').toLowerCase();
+        if (!termo) return;
+        const alvoTexto =
+          String(n.label || '') + ' ' + String(n.title || '') + ' ' +
+          String(n.slug || n.id || '') + ' ' + (n.tags || []).join(' ');
+        if (alvoTexto.toLowerCase().indexOf(termo) !== -1) grupo.add(n.id);
+      }}
       else if (filtro === 'dom') {{
         const ehMCP = (n.tags || []).some(t => String(t).toLowerCase().indexOf('mcp') !== -1);
         const ehHub = n.cat === 'hub' || n.cat === 'geral';

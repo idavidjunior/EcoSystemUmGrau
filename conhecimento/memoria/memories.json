@@ -1248,5 +1248,25 @@
     "access_count": 0,
     "created_at": "2026-08-05T08:03:45.122737",
     "last_accessed": "2026-08-05T08:03:45.122737"
+  },
+  {
+    "id": 93,
+    "kind": "padrao",
+    "task": "Widget grafo: busca por palavra, stats vivos e slider de orbita",
+    "summary": "Tres melhorias no widget: (1) filtro 'txt' em destacar() busca label/title/slug/tags; (2) _atualizarStats() reescreve #stats com contagem por cluster a cada 3s; (3) slider de orbita (0-3x) persistido via _aplicarOrbita(). Painel: campo Buscar no grafo. JS validado, widget rodando PID 5284.",
+    "project": "",
+    "tags": [
+      "melhorias",
+      "tags",
+      "tres",
+      "slug",
+      "title",
+      "label"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-05T08:52:49.098608",
+    "last_accessed": "2026-08-05T08:52:49.098608"
   }
 ]
