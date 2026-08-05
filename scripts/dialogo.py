@@ -472,14 +472,21 @@ async def saudar_inicio(cliente):
     except Exception as e:
         print(f"[saudar: {e}]")
     if not saudacao:
-        abridores = [
-            "Olá", "Opa", "E aí", "Fala", "Oi", "Bom te ver", "Salve", "Chegou, chegou"
-        ]
-        fechos = [
-            "Como posso ajudar?", "O que vamos fazer hoje?", "Estou por aqui. O que precisa?",
-            "Diga o que você precisa.", "O que posso fazer por você hoje?"
-        ]
         import random
+        import datetime
+        hora = datetime.datetime.now().hour
+        if 5 <= hora < 12:
+            abridores = ["Bom dia", "Bom dia, senhor", "Bons dias"]
+        elif 12 <= hora < 18:
+            abridores = ["Boa tarde", "Boa tarde, senhor", "Boa tarde por aqui"]
+        elif 18 <= hora < 24:
+            abridores = ["Boa noite", "Boa noite, senhor", "Noite agradável, não é?"]
+        else:
+            abridores = ["Que dia é hoje a esta hora", "Madrugada firme por aqui", "Boa madrugada"]
+        fechos = [
+            "O que vamos fazer?", "O que precisa?", "Diga o que você precisa.",
+            "Pronto para começar?", "Estou aqui. Só chamar."
+        ]
         saudacao = f"{random.choice(abridores)}! {extra}{status}{random.choice(fechos)}"
     saudacao_tela = normalizar_hora_display(saudacao)
     print(f"{FALAR_COLOR}[jarvis]{RESET} {saudacao_tela}", flush=True)

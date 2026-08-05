@@ -417,7 +417,7 @@ def gerar_html(nos, arestas, output_path):
   const edges = new vis.DataSet([{ ','.join(edges_js)}]);
   const container = document.getElementById('net');
   const options = {{
-    nodes: {{ shape:'dot', font:{{ size:11, color:'#cdd6f4' }} }},
+    nodes: {{ shape:'dot', font:{{ size:0, color:'#cdd6f4' }} }},
     edges: {{ smooth:{{ type:'continuous' }} }},
     // Movimento organico: SEM estabilizacao, timestep lento, velocidade
     // limitada -> a rede nunca "congela", respira em movimento perpetuo.
