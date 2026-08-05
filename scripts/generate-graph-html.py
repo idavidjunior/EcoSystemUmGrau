@@ -497,7 +497,7 @@ def gerar_html(nos, arestas, output_path):
     var z0 = _zBase[id] != null ? _zBase[id] : 0.5;
     var f = _zFase[id] != null ? _zFase[id] : 0;
     // respiracao organica propria de cada no
-    var onda = Math.sin(t * 0.0011 + f) + Math.sin(t * 0.00066 + f * 2.3);
+    var onda = Math.sin(t * 0.0011 * _velGlobal + f) + Math.sin(t * 0.00066 * _velGlobal + f * 2.3);
     // angulo/raio do no em torno do centro (via cache de posicoes) -> giro 3D
     var ang = f, raio = 0.5, c = _cacheCentro || {{ x: 0, y: 0 }};
     var p = _cachePos ? _cachePos[id] : null;
@@ -506,9 +506,24 @@ def gerar_html(nos, arestas, output_path):
       raio = Math.min(1, Math.sqrt((p.x - c.x) * (p.x - c.x) + (p.y - c.y) * (p.y - c.y)) / 380);
     }}
     // onda gira em torno do centro: lado 0 sempre na "frente" por fase
-    var viajante = Math.sin(t * 0.00050 * _waveVel + ang + raio * 3.0) * 0.26 * _waveDir;
+    var viajante = Math.sin(t * 0.00050 * _waveVel * _velGlobal + ang + raio * 3.0) * 0.26 * _waveDir;
     var z = z0 + 0.20 * onda * 0.5 + viajante;
     return Math.max(0.04, Math.min(1, z));
+  }}
+
+  // Ajusta a velocidade global do movimento (ondas, pulsos e fisica).
+  // Chamada pelo painel de controles do widget; v=1 eh o padrao.
+  function _aplicarVelocidade(v) {{
+    v = Number(v) || 1;
+    _velGlobal = v;
+    try {{
+      network.setOptions({{ physics: {{ barnesHut: {{
+        gravitationalConstant: -720 * Math.sqrt(v),
+        springConstant: 0.045 * Math.sqrt(v),
+        damping: Math.max(0.45, 0.82 / Math.sqrt(v)),
+        centralGravity: 0.30 * Math.sqrt(v)
+      }}, maxVelocity: 13 * v, timestep: 0.32 * Math.sqrt(v) }} }});
+    }} catch(e) {{}}
   }}
 
   // =====================================================================
