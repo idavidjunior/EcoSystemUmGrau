@@ -23,6 +23,9 @@ MATRIX_FILE = os.path.join(MEM_DIR, 'tfidf_matrix.npz')
 META_FILE = os.path.join(MEM_DIR, 'tfidf_meta.json')
 VECTORIZER_FILE = os.path.join(MEM_DIR, 'tfidf_vectorizer.pkl')
 
+# Cache estatico (carregado uma vez por processo; cold ~10s, quente <50ms).
+_CACHE = None
+
 
 def _corpus_text(memory: dict) -> str:
     """Concatena titulo + resumo + tags em um unico documento indexavel."""
@@ -89,28 +92,39 @@ def build_index(verbose: bool = False) -> dict:
 def search(query: str, k: int = 5, min_score: float = 0.05) -> list:
     """Retorna as top-k memorias mais similares a query (por cosseno).
 
+    Usa cache estatico (_CACHE) para carregar vectorizer/matrix/memories uma
+    unica vez por processo (essencial: o cold-load leva ~10s, quente <50ms).
+
     Returns:
         [{'id', 'kind', 'score', 'title'}, ...] decrescente por score.
     """
-    from sklearn.metrics.pairwise import cosine_similarity
-    import pickle
+    global _CACHE
+    if _CACHE is None:
+        from sklearn.metrics.pairwise import cosine_similarity
+        import pickle
+        if not os.path.exists(MATRIX_FILE) or not os.path.exists(META_FILE) \
+                or not os.path.exists(VECTORIZER_FILE):
+            build_index(verbose=False)
+        if not all(os.path.exists(p) for p in [MATRIX_FILE, META_FILE, VECTORIZER_FILE]):
+            return []
+        from scipy.sparse import load_npz
+        with open(META_FILE, encoding='utf-8') as f:
+            meta = json.load(f)
+        with open(VECTORIZER_FILE, 'rb') as f:
+            vectorizer = pickle.load(f)
+        with open(MEMORIES_FILE, encoding='utf-8') as f:
+            memories = json.load(f)
+        _CACHE = {
+            'matrix': load_npz(MATRIX_FILE),
+            'meta': meta,
+            'vectorizer': vectorizer,
+            'mem_by_id': {m['id']: m for m in memories},
+            'cosine': cosine_similarity,
+        }
 
-    if not os.path.exists(MATRIX_FILE) or not os.path.exists(META_FILE) \
-            or not os.path.exists(VECTORIZER_FILE):
-        build_index(verbose=False)
-
-    if not all(os.path.exists(p) for p in [MATRIX_FILE, META_FILE, VECTORIZER_FILE]):
-        return []
-
-    from scipy.sparse import load_npz
-    matrix = load_npz(MATRIX_FILE)
-    with open(META_FILE, encoding='utf-8') as f:
-        meta = json.load(f)
-    with open(VECTORIZER_FILE, 'rb') as f:
-        vectorizer = pickle.load(f)
-
-    q_vec = vectorizer.transform([query.lower()])
-    sims = cosine_similarity(q_vec, matrix).flatten()
+    c = _CACHE
+    q_vec = c['vectorizer'].transform([query.lower()])
+    sims = c['cosine'](q_vec, c['matrix']).flatten()
 
     idx_sorted = np.argsort(sims)[::-1]
     results = []
@@ -118,15 +132,13 @@ def search(query: str, k: int = 5, min_score: float = 0.05) -> list:
         score = float(sims[idx])
         if score < min_score:
             break
-        mem_id = meta['ids'][idx]
-        with open(MEMORIES_FILE, encoding='utf-8') as f:
-            memories = json.load(f)
-        mem = next((m for m in memories if m['id'] == mem_id), None)
+        mem_id = c['meta']['ids'][idx]
+        mem = c['mem_by_id'].get(mem_id)
         if mem:
             titulo = mem.get('title', '') or mem.get('summary', mem.get('resumo', ''))
             results.append({
                 'id': mem_id,
-                'kind': meta['kinds'][idx],
+                'kind': c['meta']['kinds'][idx],
                 'score': round(score, 4),
                 'title': titulo[:120],
                 'summary': mem.get('summary', mem.get('resumo', '')),
