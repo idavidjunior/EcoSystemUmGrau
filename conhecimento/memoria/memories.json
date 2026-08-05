@@ -1108,5 +1108,25 @@
     "access_count": 0,
     "created_at": "2026-08-04T20:57:33.171589",
     "last_accessed": "2026-08-04T20:57:33.171589"
+  },
+  {
+    "id": 86,
+    "kind": "decisao",
+    "task": "Motor de Criticalidade Auto-Organizada e Avalanches Neurais no grafo",
+    "summary": "Adicionei motor SOC (Beggs-Plenz): potenciais de membrana, excitacao/inibicao balanceadas, ramificacao critica sigma~1 (homeostase tao), fase refrataria, avalanches power-law emergentes substituindo pulsos aleatorios. Disparo verde-neuro com restauracao deterministica de cor/size das arestas. Fix crucial: em templates Python .format() escape TODOS os braces JS como /* e que comentarios {x} viram campo nomeado (builtin function TypeError). Escapar {id:[vizinhos]}->{{id:[vizinhos]}}",
+    "project": "",
+    "tags": [
+      "aleatorios",
+      "pulsos",
+      "substituindo",
+      "emergentes",
+      "law",
+      "power"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-04T21:47:42.572569",
+    "last_accessed": "2026-08-04T21:47:42.572569"
   }
 ]

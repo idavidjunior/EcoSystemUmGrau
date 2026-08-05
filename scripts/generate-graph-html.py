@@ -799,7 +799,7 @@ def gerar_html(nos, arestas, output_path):
   // quando um cruza o limiar, dispara uma avalanche: o pulso e visivel e a
   // energia e repassada aos vizinhos (ramificacao com parametro critico).
   // Evita excursion em nos em fase refrataria.
-  var _sinapsePorNo = null; // cache {id: [vizinhos]}
+  var _sinapsePorNo = null; // cache {{id: [vizinhos]}}
   function _vizinhos(id) {{
     if (!_sinapsePorNo) {{
       _sinapsePorNo = {{}};
@@ -870,44 +870,41 @@ def gerar_html(nos, arestas, output_path):
       _memb[id] = (_memb[id] || 0) + _ruidoEspontaneo(id, agoraMs);
     }});
     // 2) avalanche ativa: propaga energia dos disparos ja em curso
-    if (_avalanche.ativo) {
+    if (_avalanche.ativo) {{
       const passo = _avalanche.fila.splice(0, _avalanche.fila.length);
-      passo.forEach(function(seed) {
+      passo.forEach(function(seed) {{
         const viz = _vizinhos(seed.id);
-        for (let i = 0; i < viz.length; i++) {
+        for (let i = 0; i < viz.length; i++) {{
           const v = viz[i];
           if (_refrat[v] && agoraMs - _refrat[v] < _REF) continue;
           // excitacao decai com a distancia mas so passa se sigma critico
-          if (Math.random() < _sigma) {
+          if (Math.random() < _sigma) {{
             _memb[v] = (_memb[v] || 0) + seed.energia;
             _avalanche.size++;
             if (_avalanche.size > _avalanche.maior) _avalanche.maior = _avalanche.size;
-            if (_memb[v] >= _LIMIAR) {
+            if (_memb[v] >= _LIMIAR) {{
               _disparo({{ id: v }});
               _memb[v] = 0; _refrat[v] = agoraMs;
-              _avalanche.fila.push({{ id: v, energia: 1 - 0.1 * (1 + Math.floor(Math.random() * 3)) } });
-            }
-          }
-        }
-      });
+              _avalanche.fila.push({{ id: v, energia: 1 - 0.1 * (1 + Math.floor(Math.random() * 3)) }});
+            }}
+          }}
+        }}
+      }});
       // se a fila esvaziou, a avalanche acabou
       if (!_avalanche.fila.length) _avalanche.ativo = false;
-    }
+    }}
     // 3) varredura final: nos acima do limiar disparam e iniciam ramificacao
-    var detonou = false;
-    nodes.get().forEach(function(n) {
+    nodes.get().forEach(function(n) {{
       const id = n.id;
       if (_refrat[id] && agoraMs - _refrat[id] < _REF) return;
-      if (_memb[id] >= _LIMIAR) {
+      if (_memb[id] >= _LIMIAR) {{
         _disparo({{ id: id }});
         _memb[id] = 0; _refrat[id] = agoraMs;
         _avalanche.ativo = true;
-        _avalanche.fila.push({{ id: id, energia: 1 - 0.1 * (1 + Math.floor(Math.random() * 3)) } });
+        _avalanche.fila.push({{ id: id, energia: 1 - 0.1 * (1 + Math.floor(Math.random() * 3)) }});
         _avalanche.size++;
-        detonou = true;
-      }
-    });
-    // limpa o rastro de cor das sinapses/glow com atraso se nao centrado
+      }}
+    }});
   }}
 
   // --- Cascata de sinapses quando o vault atualiza ---
@@ -961,13 +958,23 @@ def gerar_html(nos, arestas, output_path):
     return '#' + [r,g,b].map(x => x.toString(16).padStart(2,'0')).join('');
   }}
 
+  const _fontLimpo = (function() {{
+    // respeita o padrao de labels ocultas (so 'false' mostra)
+    var oc = (typeof localStorage !== 'undefined' && localStorage.getItem('labelsOcultos') !== 'false');
+    return oc ? 0 : 11;
+  }})();
   function limpar() {{
     _destacado = false; // libera de volta a decoracao viva (cerebro vivo)
+    // reseta o estado do motor de avalanches: pausa correntes/residual
+    _avalanche = {{ ativo: false, fila: [], maior: 0, size: 0 }};
+    _memb = {{}}; _refrat = {{}};
+    nodes.get().forEach(function(n) {{ _memb[n.id] = Math.random() * _LIMIAR * 0.7; }});
+    _sinapsePorNo = null; // forca reconstrucao do cache de vizinhos
     document.querySelectorAll('.lg').forEach(b => b.classList.remove('active'));
     const atualizacoes = nodes.get().map(n => ({{
       id: n.id, color: original[n.id].color, size: original[n.id].size,
       opacity: 1, borderWidth: 0, borderWidthSelected: 0, shadow: false,
-      font: {{ size: 11, color: '#cdd6f4', face: 'Segoe UI', bold: false }}
+      font: {{ size: _fontLimpo, color: '#cdd6f4', face: 'Segoe UI', bold: false }}
     }}));
     nodes.update(atualizacoes);
     const arestasUp = edges.get().map(e => ({{
