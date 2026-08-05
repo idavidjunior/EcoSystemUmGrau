@@ -370,6 +370,22 @@ def gerar_html(nos, arestas, output_path):
         }
         if n['categoria'] == 'bugs':
             node_obj['st'] = n.get('status', 'resolvido')
+        # Tooltip organizado: cabecalho com contexto + resumo do corpo.
+        # O vis-network renderiza o tooltip em texto simples; usamos quebras
+        # de linha para um bloco legivel, nao HTML.
+        cab = []
+        cab.append(f'# {n["label"]}')
+        cat_label = CATEGORIA_LABEL.get(n['categoria'], n['categoria'])
+        cab.append(f'Categoria: {cat_label}')
+        cl_label = CLUSTER_DESC.get(n['cl'], n['cl'].capitalize())
+        cab.append(f'Cluster: {cl_label}')
+        if n.get('status'):
+            cab.append(f'Status: {STATUS_DESC.get(n["status"], n["status"])}')
+        if n.get('tags'):
+            cab.append('Tags: ' + ', '.join(str(t) for t in n['tags'][:8]))
+        resumo = ' '.join(str(titles[n['id']] or n['label']).split())
+        tooltip = '\n'.join(cab) + '\n---\n' + resumo[:400]
+        node_obj['title'] = tooltip
         nodes_js.append(json.dumps(node_obj, ensure_ascii=False))
 
     edges_js = [json.dumps({'from': a, 'to': b, 'color': '#999', 'width': 1}, ensure_ascii=False)
@@ -435,6 +451,38 @@ def gerar_html(nos, arestas, output_path):
   #painel .titulo {{ color:#cdd6f4; font-weight:600; }}
   #painel .spec {{ color:#a6adc8; margin-top:2px; max-height:2.4em; overflow:hidden; display:-webkit-box;
                   -webkit-line-clamp:2; -webkit-box-orient:vertical; }}
+
+  /* Tooltip do vis-network: organizado, legivel e responsivo */
+  .vis-tooltip {{
+    position: absolute;
+    max-width: min(420px, 85vw);
+    max-height: 70vh;
+    overflow-y: auto;
+    background: rgba(24,24,37,0.96);
+    border: 1px solid #45475a;
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: #cdd6f4;
+    font-size: 12px;
+    line-height: 1.45;
+    white-space: pre-line;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.6);
+    z-index: 10000;
+  }}
+  /* Tooltip dos botoes da legenda: estilo nativo (title) ja e suficiente;
+     este bloco apenas garante que a legenda nao estoure em telas pequenas. */
+  @media (max-width: 720px) {{
+    #header {{ padding:8px 10px; }}
+    #legend {{ gap:4px; font-size:10px; }}
+    .lg {{ padding:2px 6px; font-size:10px; }}
+    #net {{ height:calc(100vh - 80px); }}
+    #painel {{ width:260px; }}
+  }}
+  /* Tooltip nativo (title) dos botoes: garante quebre de linha adequada */
+  .lg[title]:hover {{
+    position: relative;
+    z-index: 9998;
+  }}
 </style>
 <script src="vendor/vis-network.min.js"></script>
 </head>
