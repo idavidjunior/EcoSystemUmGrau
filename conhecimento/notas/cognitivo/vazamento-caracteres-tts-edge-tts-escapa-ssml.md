@@ -16,5 +16,5 @@ contexto: Usuário reportou que, no início das conversas, antes de falar "David
 decisao: edge-tts >= 7.x removeu suporte a SSML custom. O __init__ do Communicate() aplica escape() em todo o texto, convertendo < e > em &lt; e &gt;. Assim, tags <break>, <phoneme>, <say-as> e <prosody> nunca são interpret
 ## Conexoes
 
-- [[cluster-hub-ecossistema]]
+- [[cluster-hub-cognicao]]
 - [[cognitivo-hub-cognitivo]]

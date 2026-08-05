@@ -55,5 +55,5 @@ assistente que opera no computador.
 ## Como a sincr
 ## Conexoes
 
-- [[cluster-hub-ecossistema]]
+- [[cluster-hub-cognicao]]
 - [[cognitivo-hub-cognitivo]]

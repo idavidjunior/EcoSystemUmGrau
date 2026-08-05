@@ -55,5 +55,5 @@ exibia a transcriÃ§Ã£o crua do STT â€” a correÃ§Ã£o nunca voltava p
 - App (`VoxViewModel.onSttResult`): `mensagens + Mensagem(texto,
 ## Conexoes
 
-- [[cluster-hub-ecossistema]]
+- [[cluster-hub-cognicao]]
 - [[cognitivo-hub-cognitivo]]

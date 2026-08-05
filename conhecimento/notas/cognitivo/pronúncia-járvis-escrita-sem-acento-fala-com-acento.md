@@ -1,5 +1,5 @@
 ---
-tags: [assistente, cognitivo, general, jarvã, jarvís, sílaba]
+tags: [cognitivo, general, jarvã, jarvís, sílaba, última]
 aliases: [Pronúncia "Járvis" (escrita sem acento, fala com acento)]
 date: 2026-08-05
 ---
@@ -48,5 +48,5 @@ Camadas:
    `<!-- SOURCES:START -->` sÃ£o regenerados automatica
 ## Conexoes
 
-- [[cluster-hub-ecossistema]]
+- [[cluster-hub-cognicao]]
 - [[cognitivo-hub-cognitivo]]

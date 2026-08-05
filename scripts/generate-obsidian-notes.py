@@ -32,6 +32,10 @@ try:
     from semantic_tags import extrair_tags
 except ImportError:
     extrair_tags = None
+try:
+    from cluster_mapper import ClusterMapper
+except ImportError:
+    ClusterMapper = None
 
 CATEGORIAS = ['padroes', 'decisoes', 'bugs', 'cognitivo', 'heuristicas', 'frameworks', 'missoes']
 
@@ -70,6 +74,14 @@ def cluster_of(source):
         if src in sources:
             return cluster
     return 'geral'
+
+
+def cluster_da_nota(tags, categoria='', slug='', mapper=None):
+    """Resolve o cluster de uma nota usando o ClusterMapper (aprendizado +
+    ousadia) quando disponível; senão usa o mapeamento estático."""
+    if mapper is not None:
+        return mapper.resolver(tags or [], '', categoria, slug)
+    return cluster_of(slug or '') if slug else cluster_of('')
 
 
 def read_graph():
@@ -211,13 +223,26 @@ def generate(dry_run=False, inject_links=True):
     for cat, slug, title, tags, body, sources, updated in items:
         index[slug] = {'categoria': cat, 'title': title, 'tags': tags, 'sources': sources}
 
+    # TREINO do ClusterMapper com as notas do graph (aprendizado + ousadia)
+    _mapper = None
+    if ClusterMapper is not None:
+        try:
+            _mapper = ClusterMapper()
+            _dados = [{'tags': m['tags'], 'fonte': m['sources'][0] if m['sources'] else '',
+                       'slug': slug, 'categoria': m['categoria'], 'cl_bruto': ''}
+                      for slug, m in index.items()]
+            _mapper.treinar(_dados)
+        except Exception as e:
+            print(f'  [aviso] ClusterMapper indisponivel: {e}')
+            _mapper = None
+
     # por categoria e por cluster -> lista de slugs
     por_categoria = defaultdict(list)
     por_cluster = defaultdict(list)
     por_tag = defaultdict(list)
     for slug, meta in index.items():
         por_categoria[meta['categoria']].append(slug)
-        cl = cluster_of(meta['sources'][0] if meta['sources'] else '')
+        cl = cluster_da_nota(meta['tags'], meta['categoria'], slug, _mapper)
         por_cluster[cl].append(slug)
         for t in meta['tags']:
             if t and t not in ('geral', 'general'):
@@ -226,7 +251,7 @@ def generate(dry_run=False, inject_links=True):
     written = 0
     # ---------- notas individuais ----------
     for cat, slug, title, tags, body, sources, updated in items:
-        cl = cluster_of(sources[0] if sources else '')
+        cl = cluster_da_nota(tags, cat, slug, _mapper)
         links = []
         links.append(f'{CATEGORIA_EMOJI[cat]}-hub-{cat}')
         if cl != 'geral':

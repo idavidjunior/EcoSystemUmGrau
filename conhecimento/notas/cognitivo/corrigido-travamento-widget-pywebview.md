@@ -17,5 +17,5 @@ decisao: Duas causas distintas atacadas:
 1. GEOMETRIA: ler `win.x/win.y/win.width/win.height` a partir de thread nao-principal (loop de 1s) dispara recursao infinita
 ## Conexoes
 
-- [[cluster-hub-ecossistema]]
+- [[cluster-hub-cognicao]]
 - [[cognitivo-hub-cognitivo]]

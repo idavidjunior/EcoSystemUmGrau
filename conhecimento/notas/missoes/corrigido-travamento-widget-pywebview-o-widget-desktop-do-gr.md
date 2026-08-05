@@ -12,6 +12,7 @@ date: 2026-08-04
 ## Conexoes
 
 - [[2026-08-01-opencode-desktop-crash-do-renderer-por-gpu-fecham]]
+- [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
 - [[grafo-vis-network-bug-string-js-json-dumps-geramos-docsgrafo]]
 - [[missao-hub-missoes]]

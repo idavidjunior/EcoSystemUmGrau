@@ -11,4 +11,5 @@ date: 2026-07-25
 **Objetivo:** Treinamento especializado em navegacao multi-plataforma: reconhecimento de eleme
 ## Conexoes
 
+- [[cluster-hub-navegacao]]
 - [[missao-hub-missoes]]

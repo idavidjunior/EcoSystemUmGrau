@@ -157,7 +157,7 @@ def _dedupe_fonte(norm):
     return norm
 
 
-def _resolver_cluster(tags, fonte='', mapper=None):
+def _resolver_cluster(tags, fonte='', mapper=None, categoria='', slug=''):
     """Resolve o cluster a partir das tags/fonte da nota, tolerando:
     - fontes com underscore que o slugify colapsou (ler_auditoria -> lerauditoria)
     - tags duplicadas concatenadas (android-pure-sdkandroid-pure-sdk)
@@ -166,7 +166,7 @@ def _resolver_cluster(tags, fonte='', mapper=None):
     senão, faz o match exato/substring com o mapeamento estático.
     Retorna o cluster ou 'geral'."""
     if mapper is not None:
-        return mapper.resolver(tags, fonte)
+        return mapper.resolver(tags, fonte, categoria, slug)
     for t in tags:
         if not t:
             continue
@@ -187,6 +187,8 @@ def _resolver_cluster(tags, fonte='', mapper=None):
                 nf = _norm_fonte(f)
                 if len(nf) >= 4 and nf in n:
                     return cl
+    if categoria in ('cognitivo', 'heuristicas'):
+        return 'cognicao'
     return 'geral'
 
 
@@ -262,11 +264,14 @@ def extrair_nos():
     # Coleta os metadados de todas as notas ANTES de montar o grafo e aprende
     # as associações tag->cluster. Isso permite "ousar": resolver variantes que
     # não casam com o mapeamento estático (slug colapsado, tags duplicadas).
+    # O aprendizado resultante é persistido como memória (JSON) para inspeção
+    # e reuso em outras etapas (ex: gerador de notas).
     try:
         from cluster_mapper import ClusterMapper
         _mapper = ClusterMapper()
     except ImportError:
         _mapper = None
+    _memoria_aprendizado = os.path.join(BASE, 'conhecimento', 'aprendizados', 'cluster_mapper.json')
     _dados_treino = []
     for f in md_files:
         rel = f.relative_to(VAULT_DIR)
@@ -277,14 +282,22 @@ def extrair_nos():
         _tags = _fm.get('tags', [])
         if isinstance(_tags, str):
             _tags = [_tags]
+        _cat = 'hub' if _is_hub else rel.parts[0]
         _dados_treino.append({
             'tags': _tags,
             'fonte': _source_from_tags(_tags) if not _is_hub else _slug,
             'slug': _slug,
+            'categoria': _cat,
             'cl_bruto': '',
         })
     if _mapper is not None:
         _mapper.treinar(_dados_treino)
+        try:
+            os.makedirs(os.path.dirname(_memoria_aprendizado), exist_ok=True)
+            with open(_memoria_aprendizado, 'w', encoding='utf-8') as _fmemo:
+                json.dump(_mapper.exportar_aprendizado(), _fmemo, ensure_ascii=False, indent=1)
+        except Exception:
+            pass
 
     # Atividade real por nota: mtime do arquivo (ultima edicao). Notas tocadas
     # recentemente = "quentes"; antigas e nunca editadas = "frias". Isso torna
@@ -326,7 +339,7 @@ def extrair_nos():
         if is_hub and 'cluster-hub-' in slug:
             cluster = slug.replace('cluster-hub-', '').strip()
         else:
-            cluster = _resolver_cluster(tags, source, _mapper)
+            cluster = _resolver_cluster(tags, source, _mapper, categoria, slug)
 
         # label = aliases[0] ou heading
         label = aliases[0] if aliases else slug

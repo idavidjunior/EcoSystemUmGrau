@@ -11,5 +11,5 @@ date: 2026-08-05
 Ferramentas que geram config podem produzir schema invalido; sempre ler spec e validar manualmente apos edicao
 ## Conexoes
 
-- [[cluster-hub-navegacao]]
+- [[cluster-hub-ecossistema]]
 - [[heuristica-hub-heuristicas]]

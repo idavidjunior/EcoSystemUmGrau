@@ -14,5 +14,6 @@ date: 2026-07-30
 ## Conexoes
 
 - [[2026-07-27-unificacao-completa-do-ecossistema]]
+- [[cluster-hub-ecossistema]]
 - [[missao-hub-missoes]]
 - [[revisao-radical-do-registro-de-habilidades-de-jarvis-aprendi]]

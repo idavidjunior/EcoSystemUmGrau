@@ -30,5 +30,5 @@ contexto: Usuario pediu refinamento do widget do grafo do conhecimento: moviment
 decisao: Implementado em scripts/generate-graph-html.py (bloco JS do grafo gerado): physics.stabilization=false + minVeloci
 ## Conexoes
 
-- [[cluster-hub-ecossistema]]
+- [[cluster-hub-cognicao]]
 - [[cognitivo-hub-cognitivo]]

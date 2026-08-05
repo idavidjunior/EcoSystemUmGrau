@@ -115,8 +115,16 @@ class ClusterMapper:
         self._sugestoes = {}
 
     # ------------------------------------------------------------------
-    def treinar(self, notas):
+    def treinar(self, notas, reset=True):
         """Aprende associações a partir das notas reais.
+
+        Por padrão (reset=True) o aprendizado é RECOMPUTADO a partir das notas
+        atuais (memória anterior carregada não é somada, evita inflar a cada
+        execução). Passe reset=False para acumular.
+
+        Notas resolvidas como 'geral' NÃO alimentam o aprendizado: aprender sob
+        o rótulo 'geral' só criaria ruído. Só aprendemos com notas que já têm
+        um cluster conhecido (match exato/substring ou pista de categoria).
 
         notas: iterable de dicts com chaves:
           - tags: list[str] (tags do frontmatter)
@@ -124,13 +132,23 @@ class ClusterMapper:
           - categoria: str (categoria da nota, ex 'bugs')
           - cl_bruto: str (cluster já resolvido por match exato, ou '')
         """
+        if reset:
+            self._aprendizado = defaultdict(Counter)
+            self._cooc = defaultdict(Counter)
+            self._fontes = Counter()
+            self._notas_treino = 0
+            self._sugestoes = {}
         for nota in notas:
             tags = [str(t) for t in (nota.get('tags') or [])]
             fonte = str(nota.get('fonte') or nota.get('source') or '')
+            categoria = str(nota.get('categoria') or '')
+            slug = str(nota.get('slug') or '')
             cl = str(nota.get('cl_bruto') or '')
             if not cl:
                 # resolve com o que já conhecemos (sem aprendizado ainda)
-                cl = self.resolver(tags, fonte, usar_aprendizado=False)
+                cl = self.resolver(tags, fonte, categoria, slug, usar_aprendizado=False)
+            if cl == 'geral' or not cl:
+                continue  # não polui o aprendizado com rótulo 'geral'
             tokens = set()
             for t in list(tags) + ([fonte] if fonte else []):
                 n = dedupe(norm(t))
@@ -167,11 +185,13 @@ class ClusterMapper:
                     'frequencia': top[1],
                 }
 
-    def resolver(self, tags, fonte='', usar_aprendizado=True):
+    def resolver(self, tags, fonte='', categoria='', slug='', usar_aprendizado=True):
         """Resolve o cluster de uma nota. Estratégia em cascata:
         1) match exato normalizado (índice); 2) substring de fonte conhecida
         dentro da tag; 3) associação aprendida (co-ocorrência ponderada);
-        4) 'geral'."""
+        4) análise do slug (título) quando tags/fonte não bastam;
+        5) pista por categoria (cognitivo/heuristicas -> 'cognicao');
+        6) 'geral'."""
         tokens = []
         for t in list(tags) + ([fonte] if fonte else []):
             n = dedupe(norm(t))
@@ -192,14 +212,16 @@ class ClusterMapper:
                 if len(k) >= 4 and k in n:
                     return cl
 
-        # 3) aprendizado: soma pesos das associações de todos os tokens
+        # 3) aprendizado: soma pesos das associações de todos os tokens.
+        #    'geral' nunca ganha (só é usado como último recurso).
         if usar_aprendizado:
             scores = Counter()
             for n in tokens:
                 if n in GENERIC or len(n) < 3:
                     continue
                 for cl, peso in self._aprendizado[n].items():
-                    scores[cl] += peso
+                    if cl != 'geral':
+                        scores[cl] += peso
             if scores:
                 cl_best, peso_best = scores.most_common(1)[0]
                 if peso_best >= 2:
@@ -207,6 +229,35 @@ class ClusterMapper:
                 # ousa: melhor candidato com peso 1 mas consistente
                 if len(scores) == 1 and peso_best >= 1:
                     return cl_best
+
+        # 4) ousadia extra: se ainda não resolveu, analisa o slug/título.
+        #    Quebra em palavras-chave e usa o índice exato + aprendizado.
+        #    (tags podem estar vazias; o nome da nota ainda fala.)
+        slug_tokens = []
+        if slug:
+            for t in re.split(r'[-_\s]+', slug):
+                n = dedupe(norm(t))
+                if n and len(n) >= 3 and n not in GENERIC:
+                    slug_tokens.append(n)
+        for n in slug_tokens:
+            if n in self._norm_idx:
+                return self._norm_idx[n]
+        if usar_aprendizado:
+            scores = Counter()
+            for n in slug_tokens:
+                for cl, peso in self._aprendizado[n].items():
+                    if cl != 'geral':
+                        scores[cl] += peso
+            if scores:
+                cl_best, peso_best = scores.most_common(1)[0]
+                if peso_best >= 2:
+                    return cl_best
+
+        # 5) pista por categoria: notas de cognição/heurísticas vão para
+        #    o cluster 'cognicao' (meta-cognição), salvo se uma fonte
+        #    específica já resolveu acima.
+        if categoria in ('cognitivo', 'heuristicas'):
+            return 'cognicao'
         return 'geral'
 
     def exportar_aprendizado(self):

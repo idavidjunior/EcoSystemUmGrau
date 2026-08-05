@@ -13,6 +13,7 @@ date: 2026-07-25
 **Arquivos:** provider_mcp_server.py, opencode.json
 ## Conexoes
 
+- [[cluster-hub-ecossistema]]
 - [[missao-hub-missoes]]
 - [[organizar-desktopcodigos-como-raiz-unica-de-projetos]]
 - [[renomear-pastas-com-espacos-para-nomes-sem-espaco]]

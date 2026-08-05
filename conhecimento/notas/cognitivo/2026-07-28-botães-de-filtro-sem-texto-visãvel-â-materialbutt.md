@@ -1,5 +1,5 @@
 ---
-tags: [cognitivo, dominio, general, nenhum, uniformes, verdes]
+tags: [cognitivo, dominio, general, nenhum, uniformes, vel]
 aliases: [﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” Mate]
 date: 2026-08-05
 ---
@@ -20,5 +20,5 @@ App Mp3Player Android. 5 botÃµes de filtro no topo da aba "MÃºsicas": Todas,
 - Ao 
 ## Conexoes
 
-- [[cluster-hub-ecossistema]]
+- [[cluster-hub-cognicao]]
 - [[cognitivo-hub-cognitivo]]

@@ -1,5 +1,5 @@
 ---
-tags: [assume, heuristica, primario, secundario, testing, verificar]
+tags: [assume, fallback, heuristica, secundario, testing, verificar]
 aliases: [Testar failover ativamente]
 date: 2026-08-05
 ---
@@ -11,6 +11,6 @@ date: 2026-08-05
 Nao confiar em logica de fallback sem testar: derrubar servico primario e verificar se secundario assume
 ## Conexoes
 
-- [[cluster-hub-navegacao]]
+- [[cluster-hub-cognicao]]
 - [[heuristica-hub-heuristicas]]
 - [[validacao-contra-intuitiva-teste-o-erro-nao-o-acerto]]

@@ -11,5 +11,5 @@ date: 2026-08-05
 Antes de catalogar habilidades, estude a taxonomia existente. O que parece habilidade pode ser ferramenta, conhecimento ou skill.
 ## Conexoes
 
-- [[cluster-hub-ler]]
+- [[cluster-hub-cognicao]]
 - [[cognitivo-hub-cognitivo]]

@@ -1208,5 +1208,25 @@
     "access_count": 0,
     "created_at": "2026-08-05T06:04:16.356714",
     "last_accessed": "2026-08-05T06:04:16.356714"
+  },
+  {
+    "id": 91,
+    "kind": "padrao",
+    "task": "ClusterMapper: mapeamento aprendido de clusters",
+    "summary": "Novo modulo scripts/cluster_mapper.py: algoritmo que normaliza/deduplica tags, aprende co-ocorrencias por cluster, resolve por cascata (exato, substring, aprendizado, slug, categoria) e sugere clusters novos. Geral caiu de 23% para 3.5% dos nos.",
+    "project": "",
+    "tags": [
+      "novos",
+      "sugere",
+      "categoria",
+      "slug",
+      "aprendizado",
+      "substring"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-05T07:45:35.727033",
+    "last_accessed": "2026-08-05T07:45:35.727033"
   }
 ]

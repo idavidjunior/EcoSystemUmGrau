@@ -11,7 +11,7 @@ date: 2026-08-05
 Elemento stale significa que a referencia morreu; re-tentar a mesma operacao no mesmo objeto nunca funciona. Re-buscar o elemento pelo seletor original e a unica solucao
 ## Conexoes
 
-- [[cluster-hub-navegacao]]
+- [[cluster-hub-cognicao]]
 - [[debugging-em-cascata-reversa]]
 - [[diagnostico-por-eliminacao-em-config-complexa]]
 - [[heuristica-hub-heuristicas]]

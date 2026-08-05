@@ -11,7 +11,7 @@ date: 2026-08-05
 Ao diagnosticar arquivos JSON no Windows, sempre especificar encoding=utf-8. O default cp1252 pode mascarar arquivos perfeitamente validos como corrompidos.
 ## Conexoes
 
-- [[cluster-hub-ler]]
+- [[cluster-hub-cognicao]]
 - [[cognitivo-hub-cognitivo]]
 - [[debugging-em-cascata-reversa]]
 - [[diagnostico-por-eliminacao-em-config-complexa]]

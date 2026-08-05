@@ -14,5 +14,6 @@ date: 2026-08-04
 - [[2026-07-27-4-teste-do-ciclo-de-polling-verificar-se-o-vigila]]
 - [[2026-07-27-5-teste-final-do-vigilante-em-processo-real-verif]]
 - [[2026-07-27-teste-do-vigilante-automático-teste-do-sistema-de]]
+- [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
 - [[missao-hub-missoes]]

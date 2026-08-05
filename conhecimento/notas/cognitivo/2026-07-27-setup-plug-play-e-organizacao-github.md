@@ -380,5 +380,5 @@ Integrated 5 MCP servers from `opencode-agents-mcp` repo into EcoSystemUmGrau:
 - consolidate_build_pipeline.py: 9 marcadores
 ## Conexoes
 
-- [[cluster-hub-ecossistema]]
+- [[cluster-hub-cognicao]]
 - [[cognitivo-hub-cognitivo]]

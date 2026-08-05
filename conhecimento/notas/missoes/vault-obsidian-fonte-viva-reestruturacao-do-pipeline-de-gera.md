@@ -12,6 +12,7 @@ date: 2026-08-02
 ## Conexoes
 
 - [[checkpoints-salvos-antes-de-cada-iteracao-sobrevive-a-crash-]]
+- [[cluster-hub-ecossistema]]
 - [[estado-persiste-em-json-nao-sqlite-legivel-editavel-fora-do-]]
 - [[ler-usa-python-puro-stdlib-only-zero-dependencias-externas-i]]
 - [[missao-hub-missoes]]

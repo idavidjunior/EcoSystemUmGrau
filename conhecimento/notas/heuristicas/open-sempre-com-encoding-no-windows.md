@@ -1,5 +1,5 @@
 ---
-tags: [debugging, deve, especificar, heuristica, sistema, texto]
+tags: [debugging, deve, especificar, heuristica, locale, sistema]
 aliases: [open() sempre com encoding no Windows]
 date: 2026-08-05
 ---
@@ -11,7 +11,7 @@ date: 2026-08-05
 Todo open() de arquivo texto deve especificar encoding. No Windows, o default muda conforme o locale do sistema.
 ## Conexoes
 
-- [[cluster-hub-ler]]
+- [[cluster-hub-cognicao]]
 - [[debugging-em-cascata-reversa]]
 - [[diagnostico-por-eliminacao-em-config-complexa]]
 - [[heuristica-hub-heuristicas]]

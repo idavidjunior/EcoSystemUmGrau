@@ -14,5 +14,6 @@ date: 2026-07-30
 ## Conexoes
 
 - [[2026-07-27-unificacao-completa-do-ecossistema]]
+- [[cluster-hub-ecossistema]]
 - [[correcao-de-diagnostico-do-knowledge-graph-e-criacao-do-regi]]
 - [[missao-hub-missoes]]

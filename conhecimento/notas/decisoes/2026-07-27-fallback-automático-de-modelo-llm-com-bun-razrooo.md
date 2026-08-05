@@ -73,4 +73,5 @@ O OpenCode 1.18.7 nÃ£o suporta fallback nativo (PR #26292 ainda em andamento).
 
 ## Conexoes
 
+- [[cluster-hub-ecossistema]]
 - [[decisao-hub-decisoes]]
