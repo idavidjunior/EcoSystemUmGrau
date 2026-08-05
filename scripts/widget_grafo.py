@@ -392,28 +392,128 @@ class Bridge:
 WIDGET_JS_EXTRA = """
 <script>
   (function(){
-    // Controle de toggle para ocultar/mostrar as palavras do cerebro.
-    // Persistencia: a escolha do usuario fica no localStorage e e restaurada
-    // a cada reload/regeneracao — nao depende do bridge Python.
-    var ctrl = document.createElement('div');
+    // =====================================================================
+    // PAINEL DE CONTROLES DO CEREBRO
+    // Agrupa: velocidade (slider), tamanho do quadro (presets), botao de
+    // etiquetas (T) e botao de menus (M). Os dois botoes de organizacao do
+    // layout ficam juntos e com cor distinta para destacar do resto.
+    // =====================================================================
+    var cores = {
+      fundo: '#1e1e2e', borda: '#45475a', destaque: '#cba6f7',
+      texto: '#cdd6f4', texto2: '#a6adc8'
+    };
+
+    function mkEl(tag, st) {
+      var el = document.createElement(tag);
+      if (st) el.style.cssText = st;
+      return el;
+    }
+
+    // ---- Slider de velocidade (0.25x .. 3x) ----
+    var velSlider = mkEl('input');
+    velSlider.type = 'range';
+    velSlider.min = '0.25'; velSlider.max = '3'; velSlider.step = '0.05';
+    velSlider.value = localStorage.getItem('velGrafo') || '1';
+    velSlider.style.cssText =
+      'width:110px;accent-color:#cba6f7;cursor:pointer;';
+    velSlider.title = 'Velocidade do movimento';
+    velSlider.addEventListener('input', function(){
+      var v = parseFloat(velSlider.value);
+      localStorage.setItem('velGrafo', String(v));
+      try { if (typeof _aplicarVelocidade === 'function') _aplicarVelocidade(v); }
+      catch(e){}
+      velLbl.textContent = 'x' + v.toFixed(2);
+    });
+
+    var velLbl = mkEl('span');
+    velLbl.style.cssText =
+      'font-size:10px;color:' + cores.texto2 + ';min-width:34px;text-align:right;';
+    velLbl.textContent = 'x' + parseFloat(velSlider.value).toFixed(2);
+
+    var velGroup = mkEl('div');
+    velGroup.style.cssText = 'display:flex;align-items:center;gap:6px;';
+    velGroup.appendChild(mkEl('span', 'font-size:10px;color:' + cores.texto2 + ';'));
+    velGroup.firstChild.textContent = 'Velocidade';
+    velGroup.appendChild(velSlider);
+    velGroup.appendChild(velLbl);
+
+    // ---- Presets de tamanho do quadro (resize da janela) ----
+    // Tamanhos pre-definidos para o usuario escolher; chama o resize real
+    // da janela via bridge pywebview quando disponivel.
+    var tamanhos = [
+      { nome: 'Compacto',  w: 720,  h: 480 },
+      { nome: 'Media',     w: 1024, h: 640 },
+      { nome: 'Padrao',    w: 1280, h: 800 },
+      { nome: 'Grande',    w: 1600, h: 1000 },
+      { nome: 'Maxima',    w: 1920, h: 1200 },
+    ];
+    var tamSel = mkEl('select');
+    tamSel.style.cssText =
+      'background:' + cores.fundo + ';color:' + cores.texto + ';border:1px solid ' +
+      cores.borda + ';border-radius:4px;font-size:11px;padding:2px 4px;cursor:pointer;';
+    tamanhos.forEach(function(t){
+      var op = mkEl('option');
+      op.value = t.w + 'x' + t.h;
+      op.textContent = t.nome + ' (' + t.w + 'x' + t.h + ')';
+      tamSel.appendChild(op);
+    });
+    tamSel.addEventListener('change', function(){
+      var wh = tamSel.value.split('x');
+      localStorage.setItem('tamGrafo', tamSel.value);
+      try {
+        if (window.pywebview && window.pywebview.api && window.pywebview.api.redimensionar) {
+          window.pywebview.api.redimensionar(parseInt(wh[0],10), parseInt(wh[1],10));
+        }
+      } catch(e){}
+    });
+    var tamLbl = mkEl('span');
+    tamLbl.style.cssText = 'font-size:10px;color:' + cores.texto2 + ';';
+    tamLbl.textContent = 'Quadro';
+    var tamGroup = mkEl('div');
+    tamGroup.style.cssText = 'display:flex;align-items:center;gap:6px;';
+    tamGroup.appendChild(tamLbl);
+    tamGroup.appendChild(tamSel);
+
+    // ---- Botoes de layout: etiquetas (T) + menus (M), cor distinta ----
+    var ctrl = mkEl('div');
     ctrl.id = 'mk-labels';
     ctrl.title = 'Alternar visibilidade das etiquetas';
-    ctrl.style.position = 'fixed';
-    ctrl.style.left = '10px';
-    ctrl.style.top = '40px';
-    ctrl.style.width = '28px';
-    ctrl.style.height = '28px';
-    ctrl.style.background = '#1e1e2e';
-    ctrl.style.border = '1px solid #313244';
-    ctrl.style.borderRadius = '4px';
-    ctrl.style.cursor = 'pointer';
-    ctrl.style.zIndex = '9999';
-    ctrl.style.display = 'flex';
-    ctrl.style.alignItems = 'center';
-    ctrl.style.justifyContent = 'center';
-    ctrl.style.fontSize = '16px';
-    ctrl.style.userSelect = 'none';
+    ctrl.style.cssText =
+      'width:30px;height:30px;border-radius:4px;cursor:pointer;' +
+      'display:flex;align-items:center;justify-content:center;' +
+      'font-size:14px;user-select:none;color:' + cores.destaque + ';' +
+      'background:#313244;border:1px solid ' + cores.destaque + ';';
     ctrl.innerHTML = 'T';
+
+    var menuBtn = mkEl('div');
+    menuBtn.id = 'mk-menu-btn';
+    menuBtn.title = 'Mostrar/ocultar menus';
+    menuBtn.style.cssText =
+      'width:30px;height:30px;border-radius:4px;cursor:pointer;' +
+      'display:flex;align-items:center;justify-content:center;' +
+      'font-size:14px;user-select:none;color:' + cores.destaque + ';' +
+      'background:#313244;border:1px solid ' + cores.destaque + ';';
+    menuBtn.innerHTML = '\\u2630';
+
+    var layoutGroup = mkEl('div');
+    layoutGroup.style.cssText =
+      'display:flex;gap:6px;border:1px solid ' + cores.destaque + ';' +
+      'border-radius:6px;padding:3px;background:#313244;';
+    layoutGroup.appendChild(ctrl);
+    layoutGroup.appendChild(menuBtn);
+
+    // ---- Monta o painel fixo no canto superior esquerdo ----
+    var painel = mkEl('div');
+    painel.id = 'mk-controles';
+    painel.style.cssText =
+      'position:fixed;left:10px;top:22px;z-index:9999;display:flex;' +
+      'flex-direction:column;gap:8px;padding:8px 10px;border-radius:8px;' +
+      'background:rgba(30,30,46,0.88);border:1px solid ' + cores.borda + ';' +
+      'box-shadow:0 2px 10px rgba(0,0,0,0.5);';
+    painel.appendChild(velGroup);
+    painel.appendChild(tamGroup);
+    painel.appendChild(layoutGroup);
+    document.body.appendChild(painel);
 
     function aplicarLabels() {
       if (typeof nodes === 'undefined') return;
@@ -431,7 +531,6 @@ WIDGET_JS_EXTRA = """
       localStorage.setItem('labelsOcultos', oculto ? 'false' : 'true');
       aplicarLabels();
     };
-    document.body.appendChild(ctrl);
 
     // Restaura a escolha persistida quando a pagina carrega/recarrega
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
@@ -462,31 +561,20 @@ WIDGET_JS_EXTRA = """
     else { document.addEventListener('DOMContentLoaded', buscarComandoVoz); }
 
     // ---- Ocultar/mostrar menus (header + painel) com um clique ----
-    // Um botao flutuante alterna a visibilidade da barra de legendas (#header)
-    // e do painel lateral (#painel). A escolha persiste no localStorage para
-    // sobreviver ao reload/regeneracao.
-    var menuBtn = document.createElement('div');
-    menuBtn.id = 'mk-menu-btn';
-    menuBtn.title = 'Mostrar/ocultar menus';
-    menuBtn.style.cssText =
-      'position:fixed;right:10px;top:10px;width:28px;height:28px;' +
-      'background:#1e1e2e;border:1px solid #313244;border-radius:4px;' +
-      'cursor:pointer;z-index:9999;display:flex;align-items:center;' +
-      'justify-content:center;font-size:14px;color:#cdd6f4;user-select:none;';
-    menuBtn.innerHTML = '\u2630';
-    document.body.appendChild(menuBtn);
-
+    // O botao do grupo de layout alterna a visibilidade da barra de legendas
+    // (#header) e do painel lateral (#painel). A escolha persiste no
+    // localStorage para sobreviver ao reload/regeneracao.
     function aplicarMenus() {
       var oculto = localStorage.getItem('menuOculto') === 'true';
       var hdr = document.getElementById('header');
-      var painel = document.getElementById('painel');
+      var painelLateral = document.getElementById('painel');
       var net = document.getElementById('net');
       // oculta o header; se escondido, tambem garante painel fora
       if (hdr) hdr.style.display = oculto ? 'none' : '';
-      if (painel && oculto) painel.classList.remove('visivel');
+      if (painelLateral && oculto) painelLateral.classList.remove('visivel');
       // expande o grafo para preencher o espaco liberado pelo header
       if (net) net.style.height = oculto ? '100vh' : '';
-      menuBtn.innerHTML = oculto ? '\u2630' : '\u2026';
+      menuBtn.innerHTML = oculto ? '\\u2630' : '\\u2026';
       menuBtn.style.opacity = oculto ? '0.55' : '1';
       // informa a rede para recalcular a area visivel
       if (typeof network !== 'undefined' && network.redraw) { network.redraw(); }
@@ -504,6 +592,22 @@ WIDGET_JS_EXTRA = """
       document.addEventListener('DOMContentLoaded', aplicarMenus);
     }
     window.addEventListener('pywebviewready', aplicarMenus);
+
+    // Aplica velocidade e tamanho persistidos apos a rede existir
+    function aplicarPersistidos() {
+      try {
+        if (typeof _aplicarVelocidade === 'function') {
+          var v = parseFloat(localStorage.getItem('velGrafo') || '1');
+          _aplicarVelocidade(v);
+        }
+      } catch(e){}
+    }
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      setTimeout(aplicarPersistidos, 1500);
+    } else {
+      document.addEventListener('DOMContentLoaded', function(){ setTimeout(aplicarPersistidos, 1500); });
+    }
+    window.addEventListener('pywebviewready', aplicarPersistidos);
   })();
 </script>
 """
