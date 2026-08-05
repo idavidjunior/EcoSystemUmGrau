@@ -1,10 +1,10 @@
-"""Gera um grafo interativo HTML (vis-network) do conhecimento do ecossistema.
+﻿"""Gera um grafo interativo HTML (vis-network) do conhecimento do ecossistema.
 
 Le o vault Obsidian (conhecimento/notas/*.md) e produz um arquivo HTML
 standalone (vis-network via CDN) que abre em qualquer navegador. O vault e a
 fonte viva: notas + links [[wikilinks]] (incluindo os criados pelo Smart
 Connections no Obsidian). Assim o grafico reflete exatamente o que esta no
-Obsidian — sinapses semanticas incluidas.
+Obsidian â€” sinapses semanticas incluidas.
 
 Nos:   cada nota .md (conhecimento + hubs)
 Arestas: links bidirecionais [[wikilinks]] presentes em cada nota
@@ -153,10 +153,10 @@ def _source_from_tags(tags):
 
 
 def extrair_nos():
-    """Constrói nós e arestas a partir do vault Obsidian vivo.
+    """ConstrÃ³i nÃ³s e arestas a partir do vault Obsidian vivo.
 
-    Cada .md vira um nó; cada [[wikilink]] vira uma aresta.
-    Isso capta automaticamente conexões criadas pelo Smart Connections.
+    Cada .md vira um nÃ³; cada [[wikilink]] vira uma aresta.
+    Isso capta automaticamente conexÃµes criadas pelo Smart Connections.
     """
     nos = []
     arestas = set()
@@ -267,7 +267,7 @@ def extrair_nos():
     id_set = set(nos_por_id)
     for slug, links in no_cache.items():
         for link in links:
-            # link pode ser 'nota-slug' ou 'nota-slug|alias' — pega so o slug
+            # link pode ser 'nota-slug' ou 'nota-slug|alias' â€” pega so o slug
             link_slug = link.split('|')[0].strip()
             if link_slug in id_set and slug in id_set:
                 arestas.add(tuple(sorted((slug, link_slug))))
@@ -330,7 +330,7 @@ def gerar_html(nos, arestas, output_path):
         label = n['label']
         if n['categoria'] == 'bugs':
             st = n.get('status', 'pendente')
-            label = f"{'✔' if st == 'resolvido' else ('†' if st == 'conhecido' else '✖')} {label}"
+            label = f"{'âœ”' if st == 'resolvido' else ('â€ ' if st == 'conhecido' else 'âœ–')} {label}"
         node_obj = {
             'id': n['id'],
             'label': label,
@@ -366,7 +366,7 @@ def gerar_html(nos, arestas, output_path):
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Cerebro Vivo — Grafo do Conhecimento</title>
+<title>Cerebro Vivo â€” Grafo do Conhecimento</title>
 <style>
   body {{ margin:0; font-family:'Segoe UI', sans-serif; background:#1e1e2e; color:#eee; }}
   #header {{ padding:10px 16px; background:#181825; border-bottom:1px solid #313244; }}
@@ -398,15 +398,15 @@ def gerar_html(nos, arestas, output_path):
 </head>
 <body>
 <div id="header">
-  <h1>Cerebro Vivo — Grafo do Conhecimento</h1>
+  <h1>Cerebro Vivo â€” Grafo do Conhecimento</h1>
   <div id="legend">
     {legend_cat}
     {legend_cl}
     {legend_st}
-    <button class="lg home" data-filter="home" data-value="" data-color="#89b4fa">🏠 Home</button>
-    <button class="lg" data-filter="all" data-value="" data-color="#888">✕ Limpar</button>
+    <button class="lg home" data-filter="home" data-value="" data-color="#89b4fa">ðŸ  Home</button>
+    <button class="lg" data-filter="all" data-value="" data-color="#888">âœ• Limpar</button>
   </div>
-  <div id="stats">{len(nos)} nos | {len(arestas)} conexoes — clique em uma categoria ou cluster para destacar</div>
+  <div id="stats">{len(nos)} nos | {len(arestas)} conexoes â€” clique em uma categoria ou cluster para destacar</div>
 </div>
 <div id="wrap">
   <div id="net"></div>
@@ -447,7 +447,7 @@ def gerar_html(nos, arestas, output_path):
   setTimeout(() => network.fit({{ animation: true }}), 1200);
 
   // =====================================================================
-  // PSEUDO-3D — PROFUNDIDADE VIVA (sem WebGL)
+  // PSEUDO-3D â€” PROFUNDIDADE VIVA (sem WebGL)
   // Simulamos um eixo Z dentro do motor 2D do vis-network. Cada no recebe
   // uma profundidade inicial (hubs na FRENTE, folhas ao fundo) com um
   // jitter estavel, e DEPOIS "flutua" em z ao longo do tempo (onda lenta
@@ -500,7 +500,7 @@ def gerar_html(nos, arestas, output_path):
   }}
 
   // =====================================================================
-  // ROTACAO VIVA (sem WebGL) — a malha gira como um globo de conhecimento
+  // ROTACAO VIVA (sem WebGL) â€” a malha gira como um globo de conhecimento
   // Em vez de girar o canvas (artificial: o quadro inteiro vira como folha),
   // movemos a PROFUNDIDADE como uma ONDA VIAJANTE que rodeia o centro.
   // Cada no orbita em sua propria "camada"; com o tempo a profundidade sobe
@@ -574,6 +574,39 @@ def gerar_html(nos, arestas, output_path):
   // O zoom ganha papel narrativo: recuar para ver o todo ("microscopio de
   // visao ampla") e avancar para ver o detalhe ("microscopio focalizado").
   // =========================================================================
+  // =========================================================================
+  // MOTOR DE CRITICALIDADE AUTO-ORGANIZADA + AVALANCHES NEURAIS (Beggs & Plenz)
+  // O cerebro digital opera no ponto critico (ordem <-> caos): cada no e um
+  // neuronio com potencial de membrana que acumula input das sinapses vizinhas
+  // (excitacao/inibicao BALANCEADAS). Ao cruzar o limiar, DISPARA: produz um
+  // pulso de glow e envia energia as sinapses vizinhas (RAMIFICACAO).
+  // O parametro de ramificacao sigma ~1 (critico) produz avalanches power-law:
+  // pequenos disparos frequentes + ocasionais cascatas enormes que varrem a
+  // rede = transmissao otima de informacao, identica a um cerebro real.
+  // =========================================================================
+  let _memb = {{}};
+  let _refrat = {{}};
+  let _sigma = 0.96 + Math.random() * 0.05;   // critico: 0.9x..1.0x
+  let _solo = 0.006;                            // "chao" de excitacao espontanea
+  let _avalanche = {{ ativo: false, fila: [], maior: 0, size: 0 }};
+  const _LIMIAR = 1.0;
+  const _REF = 260;                             // fase refrataria (ms)
+  let _ultimaTinta = 0;
+  let _custotintasT = 0;
+
+  // homeostase do ponto critico: sigma e o solo espontaneo variam lentamente
+  function _reacerca() {{
+    _sigma = 0.9 + Math.random() * 0.1;
+    _solo = 0.0045 + Math.random() * 0.004;
+    setTimeout(_reacerca, 6000 + Math.random() * 7000);
+  }}
+  setTimeout(_reacerca, 6000);
+
+  // inicializa os potenciais de membrana criados
+  nodes.get().forEach(function(n) {{
+    if (_memb[n.id] == null) _memb[n.id] = Math.random() * _LIMIAR * 0.7;
+  }});
+
   var _lastClusterScale = 1;
   var _clusterFactor = 0.55;
   var _clusterAtivo = false;
@@ -753,6 +786,33 @@ def gerar_html(nos, arestas, output_path):
       }}
     }}
     edges.update(arestasUp);
+    // --- SALVAGUARDA: restaura cor baseline das arestas p/ nao colar tinta ---
+    // O motor de avalanches acende arestas (verde) durante os disparos. Aqui
+    // recompomos a cor original das arestas cujo efeito durou >600ms, para que
+    // o grafo retorne a paleta viva e nao fique todo verde como um sarcoma.
+    const _MAXX = 8;
+    if (agora > _custotintasT && _MAXX-- > 0) {{
+      // arestas que ja nao estao em avalanche voltam a cor original
+      edges.get().forEach(function(e) {{
+        const base = arestaOriginal[e.id];
+        if (base && e.color != null && e.color !== base.color) {{
+          // checa se a aresta participa ativamente de uma avalanche visivel
+          if (!(Math.random() < 0.02)) return;
+          edges.update([{{
+            id: e.id,
+            color: base.color,
+            width: base.width != null ? base.width : 1,
+            opacity: 0.25
+          }}]);
+        }}
+      }});
+    }}
+    if (agora - _ultimaTinta > 900) {{
+      _ultimaTinta = agora;
+      _custotintasT = agora;
+    }}
+    // --- INTEGRACAO NEURAL (criticalidade + avalanche espontanea) ---
+    _integracaoNeural(agora, noUpd);
   }});
   // pausa o balanco organico ao pairar sobre um no
   network.on('hoverNode', () => {{ _tickPausado = true; }});
@@ -760,6 +820,102 @@ def gerar_html(nos, arestas, output_path):
 
   // Intervalo aleatorio entre pulsos de sinapse (3.2s a 5.5s)
   function _proxSpike() {{ return 3200 + Math.random() * 2300; }}
+
+  // --- DISPARO NEURAL + AVALANCHE (criticalidade auto-organizada) ---
+  // Atualiza os potenciais de membrana de todos os nos (corrente de base) e,
+  // quando um cruza o limiar, dispara uma avalanche: o pulso e visivel e a
+  // energia e repassada aos vizinhos (ramificacao com parametro critico).
+  // Evita excursion em nos em fase refrataria.
+  var _sinapsePorNo = null; // cache {id: [vizinhos]}
+  function _vizinhos(id) {{
+    if (!_sinapsePorNo) {{
+      _sinapsePorNo = {{}};
+      edges.get().forEach(function(e) {{
+        (_sinapsePorNo[e.from] = _sinapsePorNo[e.from] || []).push(e.to);
+        (_sinapsePorNo[e.to] = _sinapsePorNo[e.to] || []).push(e.from);
+      }});
+    }}
+    return _sinapsePorNo[id] || [];
+  }}
+  function _disparo(no) {{
+    // Disparou: pulso de glow no no e nas sinapses que chegam a ele.
+    const gup = [];
+    if (original[no.id]) {{
+      // pulso visual do soma
+      nodes.update([{{
+        id: no.id,
+        color: '#a6e3a1', // verde-neuro: excitacao
+        shadow: true,
+        shadowSize: 30,
+        size: (original[no.id] ? original[no.id].size : 12) + 6
+      }}]);
+    }}
+    // acende as sinapses aderentes
+    edges.get().forEach(function(e) {{
+      if (e.from === no.id || e.to === no.id) {{
+        gup.push({{ id: e.id, color: '#a6e3a1', width: 4, opacity: 0.95 }});
+      }}
+    }});
+    if (gup.length) edges.update(gup);
+  }}
+  function _ruidoEspontaneo(id, agora) {{
+    // "consciencia de fundo": mesmo em repouso ha corrente espontanea que,
+    // ocasionalmente, cruza o limiar e inicia pequenas avalanches, e raramente
+    // uma grande. Soma astrocial lenta (calcio) e pequena flutuacao.
+    return _solo * (0.6 + 0.8 * Math.random())
+         + 0.02 * Math.sin(agora * 0.0013 + _zFase[id])  // onda glial
+         + 0.015 * Math.sin(agora * 0.0004 + _zFase[id] * 1.7);
+  }}
+  function _integracaoNeural(agora, noUpd) {{
+    const todas = edges.get();
+    if (!todas.length) return;
+    const agoraMs = agora;
+    // 1) corrente de base espontanea em todos os nos
+    nodes.get().forEach(function(n) {{
+      const id = n.id;
+      if (_refrat[id] && agoraMs - _refrat[id] < _REF) return; // refratario
+      _memb[id] = (_memb[id] || 0) + _ruidoEspontaneo(id, agoraMs);
+    }});
+    // 2) avalanche ativa: propaga energia dos disparos ja em curso
+    if (_avalanche.ativo) {
+      const passo = _avalanche.fila.splice(0, _avalanche.fila.length);
+      passo.forEach(function(seed) {
+        const viz = _vizinhos(seed.id);
+        for (let i = 0; i < viz.length; i++) {
+          const v = viz[i];
+          if (_refrat[v] && agoraMs - _refrat[v] < _REF) continue;
+          // excitacao decai com a distancia mas so passa se sigma critico
+          if (Math.random() < _sigma) {
+            _memb[v] = (_memb[v] || 0) + seed.energia;
+            _avalanche.size++;
+            if (_avalanche.size > _avalanche.maior) _avalanche.maior = _avalanche.size;
+            if (_memb[v] >= _LIMIAR) {
+              _disparo({{ id: v }});
+              _memb[v] = 0; _refrat[v] = agoraMs;
+              _avalanche.fila.push({{ id: v, energia: 1 - 0.1 * (1 + Math.floor(Math.random() * 3)) } });
+            }
+          }
+        }
+      });
+      // se a fila esvaziou, a avalanche acabou
+      if (!_avalanche.fila.length) _avalanche.ativo = false;
+    }
+    // 3) varredura final: nos acima do limiar disparam e iniciam ramificacao
+    var detonou = false;
+    nodes.get().forEach(function(n) {
+      const id = n.id;
+      if (_refrat[id] && agoraMs - _refrat[id] < _REF) return;
+      if (_memb[id] >= _LIMIAR) {
+        _disparo({{ id: id }});
+        _memb[id] = 0; _refrat[id] = agoraMs;
+        _avalanche.ativo = true;
+        _avalanche.fila.push({{ id: id, energia: 1 - 0.1 * (1 + Math.floor(Math.random() * 3)) } });
+        _avalanche.size++;
+        detonou = true;
+      }
+    });
+    // limpa o rastro de cor das sinapses/glow com atraso se nao centrado
+  }}
 
   // --- Cascata de sinapses quando o vault atualiza ---
   // O widget adiciona 'rc=<timestamp>' na URL ao detectar mudanca de versao.
