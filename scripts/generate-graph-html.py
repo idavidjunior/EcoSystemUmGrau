@@ -24,6 +24,7 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
+sys.path.insert(0, os.path.join(str(Path(__file__).resolve().parent), 'scripts'))
 BASE = str(Path(__file__).resolve().parent.parent)
 VAULT_DIR = os.path.join(BASE, 'conhecimento', 'notas')
 GRAPH_FILE = os.path.join(BASE, 'ler-runtime', 'knowledge', 'knowledge_graph.json')
@@ -136,7 +137,57 @@ for _cl, _fontes in CLUSTERS.items():
 _GENERIC_TAGS = frozenset({
     'padrao', 'decisao', 'bug', 'cognitivo', 'heuristica', 'framework',
     'missao', 'hub', 'geral', 'general', 'leraprendizado', 'episodio',
+    'fonte', 'status', 'projeto', 'sdk', 'app', 'grafo', 'widget',
 })
+
+
+def _norm_fonte(s):
+    """Normaliza uma fonte/tag para comparacao: minusculas, sem pontuacao."""
+    return re.sub(r'[^a-z0-9]', '', (s or '').lower())
+
+
+def _dedupe_fonte(norm):
+    """Se a string normalizada e uma repeticacao de si mesma (ex: 'xx' = 'x'*2,
+    'androidpuresdkandroidpuresdk'), reduz para a forma simples. O RAKE e o
+    slugify as vezes concatenam a mesma tag duas vezes no frontmatter."""
+    n = len(norm)
+    for k in range(1, n // 2 + 1):
+        if n % k == 0 and norm == norm[:k] * (n // k):
+            return norm[:k]
+    return norm
+
+
+def _resolver_cluster(tags, fonte='', mapper=None):
+    """Resolve o cluster a partir das tags/fonte da nota, tolerando:
+    - fontes com underscore que o slugify colapsou (ler_auditoria -> lerauditoria)
+    - tags duplicadas concatenadas (android-pure-sdkandroid-pure-sdk)
+    - variantes sem separador (treinamentonavegacao, androidpuresdk)
+    Usa o ClusterMapper quando disponível (aprendizado + ousadia);
+    senão, faz o match exato/substring com o mapeamento estático.
+    Retorna o cluster ou 'geral'."""
+    if mapper is not None:
+        return mapper.resolver(tags, fonte)
+    for t in tags:
+        if not t:
+            continue
+        t_clean = t
+        if isinstance(t, str):
+            t_clean = t.strip()
+        if not t_clean or t_clean.lower() in _GENERIC_TAGS:
+            continue
+        n = _dedupe_fonte(_norm_fonte(t_clean))
+        if not n:
+            continue
+        for cl, fontes in CLUSTERS.items():
+            for f in fontes:
+                if _norm_fonte(f) == n:
+                    return cl
+        for cl, fontes in CLUSTERS.items():
+            for f in fontes:
+                nf = _norm_fonte(f)
+                if len(nf) >= 4 and nf in n:
+                    return cl
+    return 'geral'
 
 
 def _parse_frontmatter(content):
@@ -195,10 +246,7 @@ def extrair_nos():
         # exists' e aborta a criacao da rede -> grafo em branco.
         if nid in nos_por_id:
             return nos_por_id[nid]
-        cl = cluster or (_SOURCE_CLUSTER.get(source, 'geral') if source else 'geral')
-        # Se source nao esta no CLUSTERS, tenta cluster_of(source)
-        if not cl or cl == 'geral':
-            cl = cluster_of(source) if source else 'geral'
+        cl = cluster or 'geral'
         n = {'id': nid, 'label': label, 'categoria': categoria,
              'tags': tags or [], 'title': title, 'cl': cl, 'grau': 0,
              'source': source}
@@ -209,6 +257,34 @@ def extrair_nos():
     # ---- ler TODAS as notas do vault (incl. _hubs) ----
     md_files = sorted(Path(VAULT_DIR).rglob('*.md'))
     no_cache = {}  # slug -> set of wikilinks (guardado antes de add_no perder body)
+
+    # ---- TREINO do ClusterMapper ----
+    # Coleta os metadados de todas as notas ANTES de montar o grafo e aprende
+    # as associações tag->cluster. Isso permite "ousar": resolver variantes que
+    # não casam com o mapeamento estático (slug colapsado, tags duplicadas).
+    try:
+        from cluster_mapper import ClusterMapper
+        _mapper = ClusterMapper()
+    except ImportError:
+        _mapper = None
+    _dados_treino = []
+    for f in md_files:
+        rel = f.relative_to(VAULT_DIR)
+        _is_hub = rel.parts[0] == '_hubs'
+        _slug = f.stem
+        _content = f.read_text(encoding='utf-8')
+        _fm, _body = _parse_frontmatter(_content)
+        _tags = _fm.get('tags', [])
+        if isinstance(_tags, str):
+            _tags = [_tags]
+        _dados_treino.append({
+            'tags': _tags,
+            'fonte': _source_from_tags(_tags) if not _is_hub else _slug,
+            'slug': _slug,
+            'cl_bruto': '',
+        })
+    if _mapper is not None:
+        _mapper.treinar(_dados_treino)
 
     # Atividade real por nota: mtime do arquivo (ultima edicao). Notas tocadas
     # recentemente = "quentes"; antigas e nunca editadas = "frias". Isso torna
@@ -245,17 +321,18 @@ def extrair_nos():
         categoria = categoria_map.get(cat_from_folder, cat_from_folder)
 
         source = _source_from_tags(tags)
-        cluster = _SOURCE_CLUSTER.get(source, '') or ''
+        # Resolve o cluster com o ClusterMapper (aprendizado + ousadia).
+        # Hubs de cluster (cluster-hub-X) mapeiam direto pelo nome.
+        if is_hub and 'cluster-hub-' in slug:
+            cluster = slug.replace('cluster-hub-', '').strip()
+        else:
+            cluster = _resolver_cluster(tags, source, _mapper)
 
         # label = aliases[0] ou heading
         label = aliases[0] if aliases else slug
         h_match = re.search(r'^# (.+)$', body, re.MULTILINE)
         if h_match:
             label = h_match.group(1).strip()
-
-        # Para hubs: tenta resolver cluster pelo nome (cluster-hub-X)
-        if is_hub and 'cluster-hub-' in slug:
-            cluster = slug.replace('cluster-hub-', '').strip()
 
         # title (tooltip) = body curto
         body_clean = re.sub(r'##\s+\S+', '', body)  # remove secoes
