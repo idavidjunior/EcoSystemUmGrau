@@ -1328,5 +1328,45 @@
     "access_count": 0,
     "created_at": "2026-08-05T09:50:21.649884",
     "last_accessed": "2026-08-05T09:50:21.649884"
+  },
+  {
+    "id": 97,
+    "kind": "decisao",
+    "task": "Widget: orbGrafo persistente em arquivo",
+    "summary": "Slider de orbita agora salva em localStorage E em docs/grafo_widget_orbGrafo.json via Bridge.guardar_orbGrafo(). Valida pos-restart sem depender so de browser.",
+    "project": "",
+    "tags": [
+      "grafo",
+      "docs",
+      "localstorage",
+      "salva",
+      "orbita",
+      "slider"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-05T13:28:31.204805",
+    "last_accessed": "2026-08-05T13:28:31.204805"
+  },
+  {
+    "id": 98,
+    "kind": "decisao",
+    "task": "Widget: pipeline multi-LLM integrado",
+    "summary": "Bridge.perguntar/query processa cadeia de 7 modelos do opencode-model-fallback.jsonc com timeout 15s cada e fallback automatico. Ponto de entrada: window.pywebview.api.perguntar(). Log em docs/widget_log.txt.",
+    "project": "",
+    "tags": [
+      "model",
+      "opencode",
+      "modelos",
+      "fallback",
+      "cadeia",
+      "processa"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-05T13:29:31.650154",
+    "last_accessed": "2026-08-05T13:29:31.650154"
   }
 ]
