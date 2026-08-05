@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-05T09:25:21",
+  "updated_at": "2026-08-05T09:33:06",
   "active_project": "EcoSystemUmGrau",
   "objective": "Transformar o Ecossistema Jarvis em Runtime de IA persistente (camada 1: estado+boot)",
-  "last_task": "Implementar Runtime State + Bootloader",
+  "last_task": "Camada 2: Kernel permanente + Constituicao imutavel",
   "operational_context": "Runtime v1: estado persistente em runtime/state.json, boot via scripts/runtime_boot.py. LLM = motor de inferencia; governanca/memoria/continuidade = ecossistema.",
   "active_agents": [],
   "loaded_memory": [],
@@ -11,21 +11,37 @@
     {
       "id": 1,
       "text": "Camada 2: Kernel permanente (autoridade maxima, controla regras/prioridades/formatos/validacao)",
-      "done": false,
+      "done": true,
       "created": "2026-08-05T09:24:58"
     },
     {
       "id": 2,
       "text": "Camada 2: Constituicao imutavel com clausulas absolutas (nunca ignorar kernel/runtime/auditoria)",
-      "done": false,
+      "done": true,
       "created": "2026-08-05T09:24:59"
+    },
+    {
+      "id": 3,
+      "text": "Camada 3: Context Loader inteligente (seleciona docs/memorias relevantes por assunto)",
+      "done": false,
+      "created": "2026-08-05T09:33:05"
+    },
+    {
+      "id": 4,
+      "text": "Camada 3: Auditor adaptativo (somente tarefas de alta criticidade)",
+      "done": false,
+      "created": "2026-08-05T09:33:05"
     }
   ],
   "history": [
     {
       "timestamp": "2026-08-05T09:24:59",
       "text": "Runtime v1 operacional: estado persistente + bootloader + restauracao automatica"
+    },
+    {
+      "timestamp": "2026-08-05T09:33:04",
+      "text": "Kernel permanente operacional (7 regras absolutas, contratos entrada/saida, pipeline 9 etapas). Constituicao v1.1 com clausula de soberania."
     }
   ],
-  "last_checkpoint": "20260805_092500"
+  "last_checkpoint": "20260805_093306"
 }
