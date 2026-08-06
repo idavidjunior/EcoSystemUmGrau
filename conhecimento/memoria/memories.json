@@ -1528,5 +1528,25 @@
     "access_count": 0,
     "created_at": "2026-08-06T07:44:33.885060",
     "last_accessed": "2026-08-06T07:44:33.885060"
+  },
+  {
+    "id": 107,
+    "kind": "decisao",
+    "task": "Base de horario definida",
+    "summary": "Horario oficial do Jarvis baseado em Sao Paulo capital, Brasil (America/Sao_Paulo, UTC-3). Toda referencia de hora, data, saudacao e contexto temporal segue este fuso.",
+    "project": "",
+    "tags": [
+      "utc",
+      "america",
+      "paulo",
+      "brasil",
+      "sao",
+      "capital"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T14:30:34.535183",
+    "last_accessed": "2026-08-06T14:30:34.535183"
   }
 ]

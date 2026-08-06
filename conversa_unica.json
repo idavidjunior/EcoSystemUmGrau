@@ -190,5 +190,13 @@
   "Usuário: Quando o servidor voltar sempre volte com o contexto e o resumo da última conversa que nós estávamos tendo?",
   "Jarvis: Sim, David. É exatamente como funciona a **Cláusula Pétrea de Continuidade de Contexto** (04/08/2026):\n\n1. **Ao reconectar/iniciar sessão:** o Jarvis lê `conversa_unica.json` (raiz do ecossistema)\n2. **Recupera a última solicitação** sua e a última resposta dada\n3. **Em áudio:** diz que voltou (\"Voltei, senhor.\"), lê a última pergunta/solicitação, confirma que está retomando dali (\"Estávamos em X, vamos continuar.\")\n4. **Só então** aguarda ou continua a tarefa\n\nO arquivo guarda até **500 pares** de diálogo (usuário/Jarvis), unificando app Android + CLI. Nenhuma conversa é sessão isolada — o estado persiste no runtime (`runtime/state.json`) e no histórico unificado.\n\nQuer que eu demonstre lendo o último registro agora?",
   "Usuário: Não precisa me dizer só seguir as regras já está bom.",
-  "Jarvis: Entendido. Seguindo as regras."
+  "Jarvis: Entendido. Seguindo as regras.",
+  "Usuário: Já está acordado?",
+  "Jarvis: Ainda não, mas estou pronto. O que precisa?",
+  "Usuário: Como está o seu humor hoje?",
+  "Jarvis: Senhor, às cinco e quarenta e cinco da manhã com dezesseis graus lá fora, meu humor é o mesmo de sempre — estável, frio e operante. Bateria do celular no comando, processadores limpos e paciência virtual de sobra. Que tipo de problema vamos resolver hoje?",
+  "Usuário: Quando a conexão voltar você retoma de onde paramos simples assim?",
+  "Jarvis: Sim, senhor. Toda vez que a conexão cai e volta, eu confiro o histórico no conversa_unica.json, leio a última solicitação sua que ficou sem resposta e retomo exatamente de onde paramos.\n\nNada se perde, nada se esquece.",
+  "Usuário: Preciso que você salve uma coisa a base do horário que você vai utilizar é do Brasil São Paulo capital.",
+  "Jarvis: Pronto, senhor. Salvo na memória como decisão número cento e sete: meu horário base agora é São Paulo, capital, Brasil, fuso América São Paulo, UTC menos três. Toda referência de hora, data e saudação segue esse fuso daqui pra frente."
 ]
