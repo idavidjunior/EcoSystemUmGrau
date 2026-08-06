@@ -154,5 +154,21 @@
   "Usuário: Teste de integracao.",
   "Jarvis: Teste de integração recebido. Tudo funcionando — ponte de voz ativa, contexto restaurado do histórico, runtime persistente operacional. Pronto para o que vier.",
   "Usuário: Teste de integracao.",
-  "Jarvis: Entendido. Sistema operacional — integração confirmada. O que deseja testar?"
+  "Jarvis: Entendido. Sistema operacional — integração confirmada. O que deseja testar?",
+  "Usuário: Bom dia.",
+  "Jarvis: Bom dia! Aqui em São Paulo o dia já começou — como posso te ajudar hoje?",
+  "Usuário: Teste de integracao.",
+  "Jarvis: Integração confirmada, senhor. Ponte de voz online, contexto restaurado e tudo respondendo. Pronto pra próxima.",
+  "Usuário: Bom dia, tudo bem?",
+  "Jarvis: Bom dia! Tudo certo por aqui. O que posso fazer por você hoje?",
+  "Usuário: Bom dia.",
+  "Jarvis: Bom dia, senhor. Quarta-feira, cinco de agosto, dezenove horas e vinte e sete em São Paulo, céu limpo e vinte e três graus com umidade em quarenta e cinco por cento. Memória do PC em oitenta e sete por cento, vale dar uma aliviada nos processos antes que a máquina proteste. Ponte de voz e cérebro ativos, aguardando suas coordenadas.",
+  "Usuário: Bom Dia.",
+  "Jarvis: Bom dia, David. Quarta-feira, cinco de agosto de 2026, sete e quarenta e sete da manhã, céu limpo e vinte e três graus em São Paulo. Tudo no ar, na escuta.",
+  "Usuário: Me dê um diagnóstico de si mesmo.",
+  "Jarvis: Sem resposta.",
+  "Usuário: Teste de resposta.",
+  "Jarvis: Recebido, senhor. Sistema de voz online e responsivo.",
+  "Usuário: Me dê um diagnóstico de si mesmo.",
+  "Jarvis: **Diagnóstico do EcoSystemUmGrau — 06/08/2026 06:15**\n\n**Runtime & Persistência** ✅\n- Estado ativo: projeto *EcoSystemUmGrau*, objetivo \"Runtime de IA persistente\" (camada 1)\n- Última tarefa: sincronização bridge + app v15 concluída\n- 4 checkpoints registrados (memória semântica, bridge curado, pipeline LLM)\n- `runtime/state.json` íntegro, bootloader operacional\n\n**Bridge Jarvis (porta 8765)** ✅\n- **Rodando e escutando** em `0.0.0.0:8765`\n- Conexão **ESTABELECIDA** com Android via Tailscale (`100.64.71.9:44606`)\n- Última conexão registrada: hoje 06:14\n- Bridge modificado recentemente (`scripts/jarvis_bridge.py` em staged)\n\n**Pre-flight Check** ✅ — **TODOS OS 6 GRUPOS PASSARAM**\n- Config template + deployed válidos\n- 10 servidores MCP testados e respondendo (eco-knowledge, filesystem, search, terminal, github, eco-obsidian, desenvolvimento, android, internet, memoria)\n- Backup de rollback disponível\n- 16 agentes carregados\n- Secrets guard: sem vazamentos, chaves em env vars\n\n**OpenCode** ✅\n- Versão `0.0.0-beta-202608040708` (build de 04/08)\n- Configs projeto + global sincronizadas\n\n**Git / Sincronia** ⚠️\n- 5 commits auto nas últimas horas (vigilante ativo)\n- 4 arquivos modificados não commitados: `jarvis_bridge.py`, `conversa_unica.json`, `llm_feedback.json`, sessão de memória\n- Submódulo `Projetos/VoxUmGrau` com mudanças\n\n**Watchdog** ❓\n- Não detectei processo `watchdog.ps1` rodando separado — a bridge está up, mas o monitor de 20s pode não estar ativo\n\n**Resumo:** Ecossistema **saudável e operacional**. Bridge conectada ao app, runtime persistente funcional, todos MCP respondendo. Único ponto de atenção: watchdog pode não estar rodando (bridge está up, então não impactou ainda). Quer que eu inicie o watchdog ou faça commit das mudanças pendentes?"
 ]

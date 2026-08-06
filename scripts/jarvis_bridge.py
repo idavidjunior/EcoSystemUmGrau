@@ -579,6 +579,37 @@ async def _http_async(method, path, data=None, timeout=120):
     return await loop.run_in_executor(None, _http, method, path, data, timeout)
 
 
+async def _ensure_serve_global():
+    """Versão no nível do módulo de Cliente._ensure_serve: garante um
+    `opencode serve` saudável na porta configurada (com failover para a reserva)."""
+    for porta in (PORTA_SERVE, PORTA_SERVE_RESERVA):
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.settimeout(1)
+            r = s.connect_ex(("127.0.0.1", porta))
+            s.close()
+            if r == 0:
+                return True
+        except Exception:
+            pass
+        proc = await asyncio.create_subprocess_exec(
+            BIN, "serve", "--port", str(porta),
+            cwd=WORKDIR,
+            stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.DEVNULL)
+        for _ in range(15):
+            await asyncio.sleep(1)
+            try:
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.settimeout(1)
+                r = s.connect_ex(("127.0.0.1", porta))
+                s.close()
+                if r == 0:
+                    return True
+            except Exception:
+                pass
+    return False
+
+
 MAX_PROMPT = 28000
 
 class Cliente:
@@ -1310,23 +1341,28 @@ async def servir():
     logger.info(f"  historico: {HIST_PATH.name}")
     logger.info("="*50)
     async with websockets.serve(lidar, "0.0.0.0", 8765):
-        # Warm-up automatico do LLM em background
+        # Warm-up automatico do LLM em background (usa _http_async/urllib,
+        # mesmo cliente da cadeia principal — sem dependencia de aiohttp)
         async def warmup():
             try:
                 logger.info("warm-up: iniciando requisicao para aquecer modelo...")
-                async with aiohttp.ClientSession() as sess:
-                    payload = {
-                        "messages": [{"role": "user", "content": "Ola"}],
-                        "max_tokens": 2
-                    }
-                    auth = aiohttp.BasicAuth("opencode", SERVER_PASS)
-                    async with sess.post(f"{SERVE_URL}/api/chat/completions",
-                                         json=payload, auth=auth,
-                                         timeout=aiohttp.ClientTimeout(total=90)) as resp:
-                        if resp.status == 200:
-                            logger.info("warm-up: modelo aquecido com sucesso")
-                        else:
-                            logger.warning(f"warm-up: resposta inesperada {resp.status}")
+                if not await _ensure_serve_global():
+                    logger.warning("warm-up: serve indisponivel")
+                    return
+                sess = await _http_async("POST", "/session", {"title": "warmup"}, timeout=20)
+                if not sess:
+                    logger.warning("warm-up: falha ao criar sessao")
+                    return
+                sid = sess.get("id")
+                if not sid:
+                    logger.warning("warm-up: sessao sem id")
+                    return
+                body = {"parts": [{"type": "text", "text": "Ola, apenas confirme que esta online em uma linha."}]}
+                result = await _http_async("POST", f"/session/{sid}/message", body, timeout=90)
+                if result:
+                    logger.info("warm-up: modelo aquecido com sucesso")
+                else:
+                    logger.warning("warm-up: resposta inesperada do serve")
             except asyncio.CancelledError:
                 pass
             except Exception as e:
