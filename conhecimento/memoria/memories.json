@@ -1728,5 +1728,85 @@
     "access_count": 0,
     "created_at": "2026-08-06T16:10:14.522336",
     "last_accessed": "2026-08-06T16:10:14.522336"
+  },
+  {
+    "id": 117,
+    "kind": "padrao",
+    "task": "Jarvis perito em ADB",
+    "summary": "Jarvis dominou ADB 1.0.41: arquitetura cliente-servidor-adbd, todas categorias (networking, file transfer, shell, install, debug, scripting, security, USB), variaveis de ambiente, e heuristicas operacionais especificas para o Redmi Note 11. Aprendizado registrado em conhecimento/aprendizados/2026-08-06-jarvis-perito-adb.md. Aplicacao imediata em diagnostico, instalacao de apps VoxUmGrau/BibliaEstudoCompleta, bridge Tailscale, e controle autonomo de dispositivos Android.",
+    "project": "",
+    "tags": [
+      "note",
+      "redmi",
+      "especificas",
+      "operacionais",
+      "heuristicas",
+      "ambiente"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T16:10:47.663918",
+    "last_accessed": "2026-08-06T16:10:47.663918"
+  },
+  {
+    "id": 118,
+    "kind": "decisao",
+    "task": "Recuperacao de conexao implementada e ativa",
+    "summary": "Algoritmo de recuperacao rapida de conexao implementado com sucesso: keepalive nativo, backoff exponencial com jitter, fila ACK e fallback Tailscale. Em operacao.",
+    "project": "",
+    "tags": [
+      "sucesso",
+      "implementado",
+      "tailscale",
+      "rapida",
+      "fallback",
+      "ack"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T16:11:20.579830",
+    "last_accessed": "2026-08-06T16:11:20.579830"
+  },
+  {
+    "id": 119,
+    "kind": "episodio",
+    "task": "Estudo ADB para especialista",
+    "summary": "Usuario pediu que Jarvis se torne perito em ADB: ler doc oficial completa, capacidades, comandos e consolidar referencia no ecossistema.",
+    "project": "",
+    "tags": [
+      "ecossistema",
+      "perito",
+      "referencia",
+      "torne",
+      "consolidar",
+      "comandos"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T16:13:02.585036",
+    "last_accessed": "2026-08-06T16:13:02.585036"
+  },
+  {
+    "id": 120,
+    "kind": "padrao",
+    "task": "Jarvis operador ADB perito",
+    "summary": "Roberto Jarvis mapeou e consolidou conhecimento completo de ADB: dispositivos, props, dumpsys, pm (install/path/list), input (tap/swipe/text/keyevent), uiautomator dump+pull+tap, screencap, screenrecord, push/pull de arquivos, logcat, statusbar, am start, wireless debugging (pair/connect/mdns), build deploy do VoxUmGrau e apps irmaos, MIUI dialogs. Aprendizado salvo em conhecimento/aprendizados/2026-08-06-jarvis-perito-adb-mapeamento-completo.md",
+    "project": "",
+    "tags": [
+      "dialogs",
+      "miui",
+      "irmaos",
+      "apps",
+      "voxumgrau",
+      "deploy"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T16:15:37.831403",
+    "last_accessed": "2026-08-06T16:15:37.831403"
   }
 ]

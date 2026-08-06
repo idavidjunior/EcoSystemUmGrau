@@ -165,7 +165,8 @@
   ],
   "voxumgrau": [
     71,
-    106
+    106,
+    120
   ],
   "thrashing": [
     71
@@ -181,7 +182,8 @@
     72
   ],
   "note": [
-    72
+    72,
+    117
   ],
   "automatico": [
     72
@@ -373,13 +375,15 @@
     83
   ],
   "heuristicas": [
-    83
+    83,
+    117
   ],
   "foca": [
     83
   ],
   "ecossistema": [
-    83
+    83,
+    119
   ],
   "android": [
     83
@@ -626,7 +630,8 @@
   "fallback": [
     98,
     110,
-    115
+    115,
+    118
   ],
   "cadeia": [
     98,
@@ -662,7 +667,8 @@
   ],
   "sucesso": [
     101,
-    105
+    105,
+    118
   ],
   "taxa": [
     101
@@ -794,7 +800,8 @@
   "tailscale": [
     110,
     115,
-    116
+    116,
+    118
   ],
   "reenvio": [
     110,
@@ -853,7 +860,8 @@
     114
   ],
   "rapida": [
-    114
+    114,
+    118
   ],
   "mapeamento": [
     114
@@ -890,5 +898,53 @@
   ],
   "deteccao": [
     116
+  ],
+  "redmi": [
+    117
+  ],
+  "especificas": [
+    117
+  ],
+  "operacionais": [
+    117
+  ],
+  "ambiente": [
+    117
+  ],
+  "implementado": [
+    118
+  ],
+  "ack": [
+    118
+  ],
+  "perito": [
+    119
+  ],
+  "referencia": [
+    119
+  ],
+  "torne": [
+    119
+  ],
+  "consolidar": [
+    119
+  ],
+  "comandos": [
+    119
+  ],
+  "dialogs": [
+    120
+  ],
+  "miui": [
+    120
+  ],
+  "irmaos": [
+    120
+  ],
+  "apps": [
+    120
+  ],
+  "deploy": [
+    120
   ]
 }
