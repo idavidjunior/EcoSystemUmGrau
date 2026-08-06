@@ -699,9 +699,9 @@ def _regenerate() -> bool:
 
 
 def _build_view() -> Path | None:
-    if not OUTPUT_HTML.exists():
-        if not _regenerate():
-            return None
+    # Sempre regenera para garantir HTML atualizado
+    if not _regenerate():
+        return None
     src = OUTPUT_HTML.read_text(encoding='utf-8')
 
     VENDOR = BASE / 'docs' / 'vendor' / 'vis-network.min.js'
