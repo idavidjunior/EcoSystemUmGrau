@@ -503,6 +503,36 @@ WIDGET_JS_EXTRA = """
     layoutGroup.appendChild(ctrl);
     layoutGroup.appendChild(menuBtn);
 
+    // ---- Seletor de tema estetico (Neon / Glow / Calmo / Padrao) ----
+    var temaSel = mkEl('select');
+    temaSel.style.cssText =
+      'background:' + cores.fundo + ';color:' + cores.texto + ';border:1px solid ' +
+      cores.borda + ';border-radius:4px;font-size:11px;padding:2px 4px;cursor:pointer;';
+    [
+      {{ nome: 'Neon',    valor: 'neon',  icone: '\\u26A1' }},
+      {{ nome: 'Glow',    valor: 'glow',  icone: '\\u2600' }},
+      {{ nome: 'Calmo',   valor: 'calm',  icone: '\\uD83C\\uDF3F' }},
+      {{ nome: 'Padrao',  valor: 'padrao',icone: '\\u25C9' }}
+    ].forEach(function(t){{
+      var op = mkEl('option');
+      op.value = t.valor;
+      op.textContent = t.icone + ' ' + t.nome;
+      temaSel.appendChild(op);
+    }});
+    var temaSalvo = localStorage.getItem('temaGrafo') || 'glow';
+    temaSel.value = temaSalvo;
+    temaSel.addEventListener('change', function(){{
+      try {{ if (typeof aplicarTema === 'function') aplicarTema(temaSel.value); }}
+      catch(e){{}}
+    }});
+    var temaLbl = mkEl('span');
+    temaLbl.style.cssText = 'font-size:10px;color:' + cores.texto2 + ';';
+    temaLbl.textContent = 'Tema';
+    var temaGroup = mkEl('div');
+    temaGroup.style.cssText = 'display:flex;align-items:center;gap:6px;';
+    temaGroup.appendChild(temaLbl);
+    temaGroup.appendChild(temaSel);
+
     var painel = mkEl('div');
     painel.id = 'mk-controles';
     painel.title = 'Controles do cerebro';
@@ -511,6 +541,7 @@ WIDGET_JS_EXTRA = """
       'flex-direction:column;gap:8px;padding:8px 10px;border-radius:8px;' +
       'background:rgba(30,30,46,0.88);border:1px solid ' + cores.borda + ';' +
       'box-shadow:0 2px 10px rgba(0,0,0,0.5);';
+    painel.appendChild(temaGroup);
     painel.appendChild(velGroup);
     painel.appendChild(orbGroup);
     painel.appendChild(buscaGroup);
