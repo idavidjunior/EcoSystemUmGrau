@@ -1491,6 +1491,141 @@ def gerar_html(nos, arestas, output_path):
   document.querySelectorAll('.lg').forEach(btn => {{
     btn.addEventListener('click', () => destacar(btn.dataset.filter, btn.dataset.value, btn.dataset.color));
   }});
+
+  // =====================================================================
+  // SISTEMA DE TEMAS ESTETICOS (Graph Styler + Graph Background)
+  // Presets de um clique: Neon, Glow, Calmo, Padrao
+  // Cada tema redefine cores de fundo, glow, sombras, forcas e animacoes
+  // =====================================================================
+  const TEMAS = {{
+    padrao: {{
+      nome: 'Padrao',
+      icone: '◉',
+      fundo: '#1e1e2e',
+      headerBg: '#181825',
+      headerBorda: '#313244',
+      redeFundo: '#1e1e2e',
+      noCor: null,
+      arestaCor: '#666',
+      sombraCor: 'rgba(137,180,250,0.35)',
+      glowCor: '#89b4fa',
+      pulsoForca: 1.0,
+      pulsoSombra: 1.0,
+      destaque: '#cba6f7',
+      forca: {{ grav: -720, central: 0.30, mola: 0.045, amort: 0.82, velMax: 13, delta: 0.32 }}
+    }},
+    neon: {{
+      nome: 'Neon',
+      icone: '⚡',
+      fundo: '#0d0d1a',
+      headerBg: '#0a0a15',
+      headerBorda: '#cba6f7',
+      statsFundo: '#0d0d1a',
+      arestaCor: '#7c3aed',
+      sombraCor: 'rgba(203,166,247,0.55)',
+      glowCor: '#cba6f7',
+      pulsoForza: 2.6,
+      pulsoSombra: 2.0,
+      respira: '#cba6f7',
+      forca: {{ gravit: -10000, gravidade: 0.12, mola: 0.05, amort: 0.58, velMax: 22, delta: 0.24 }}
+    }},
+    glow: {{
+      nome: 'Glow',
+      icone: '☀',
+      fundo: '#12121f',
+      headerBg: '#101018',
+      headerBorda: '#89b4fa',
+      statsFundo: '#12121f',
+      arestaCor: '#6366f1',
+      sombraCor: 'rgba(137,180,250,0.65)',
+      glowCor: '#89b4fa',
+      pulsoForza: 3.2,
+      pulsoSombra: 2.5,
+      respira: '#89b4fa',
+      forca: {{ gravit: -560, gravidade: 0.12, mola: 0.043, amort: 0.75, velMax: 11, delta: 0.38 }}
+    }},
+    calm: {{
+      nome: 'Calmo',
+      icone: '🌿',
+      fundo: '#1a1f1f',
+      headerBg: '#141818',
+      headerBorda: '#5dade2aa',
+      statsFundo: '#1a1f1f',
+      arestaCor: '#5dade2',
+      sombraCor: 'rgba(93,173,226,0.18)',
+      glowCor: '#5dade2',
+      pulsoForza: 0.5,
+      pulsoSombra: 0.4,
+      respira: '#5dade2',
+      forca: {{ gravit: -400, gravidade: 0.08, mola: 0.03, amort: 0.88, velMax: 7, delta: 0.45 }}
+    }}
+  }};
+
+  // ---- Preset de forcas calibradas por tema ----
+  function _aplicarForcasTema(tema) {{
+    var f = tema.forca;
+    try {{
+      network.setOptions({{
+        physics: {{
+          barnesHut: {{
+            gravitationalConstant: f.gravit,
+            centralGravity: f.gravidade,
+            springConstant: f.mola,
+            damping: f.amort
+          }},
+          maxVelocity: f.velMax,
+          timestep: f.delta
+        }}
+      }});
+    }} catch(e) {{ }}
+    // Desestabiliza propositalmente por 600ms
+    network.stabilize(50);
+  }}
+
+  function aplicarTema(nome) {{
+    var t = TEMAS[nome] || TEMAS.padrao;  // fallback seguro
+    try {{
+      // Fundo do corpo
+      document.body.style.background = t.fundo;
+      // Header
+      var hdr = document.getElementById('header');
+      if (hdr) {{
+        hdr.style.background = t.headerBg || t.fundo;
+        hdr.style.borderBottomColor = t.headerBorda || '#313244';
+      }}
+
+      // Stats
+      var stats = document.getElementById('stats');
+      if (stats) stats.style.background = t.statsBg || t.fundo;
+
+      // Arestas — cor base
+      _corAresta = t.arestaCor;
+
+      // Sombra dos nos 
+      _sombraCor = t.sombraCor;
+      _glowCor = t.glowCor;
+
+      // Pulsos des crianças
+      _pulsoForca = t.pulsoForca;
+      _pulsoSombra = t.pulsoSombra;
+
+      // Cor do destaque nos controles internos
+      _corDestaque = t.respira || t.glowCor;
+
+      // Cor da barra superior
+      _headerCor = t.headerBorda || '#313244';
+
+      // Aplica forcado calibrado
+      _aplicarForcesTema(t);
+      localStorage.setItem('temaGrafo', nome);
+    }} catch(e) {{ }}
+  }}
+
+  // Restaurar tema salvo
+  (function() {{
+    var salvo = localStorage.getItem('temaGrafo') || 'glow';
+    aplicarTema(salvo);
+  }})();
 </script>
 </body>
 </html>"""

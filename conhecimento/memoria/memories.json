@@ -1948,5 +1948,25 @@
     "access_count": 0,
     "created_at": "2026-08-06T18:51:33.498974",
     "last_accessed": "2026-08-06T18:51:33.498974"
+  },
+  {
+    "id": 128,
+    "kind": "erro",
+    "task": "Widget grafo: botoes de filtro nao funcionavam - barra de arraste bloqueava cliques",
+    "summary": "Bug critico: a barra de arraste #mk-drag (16px no topo, z-index:9999) sobrepunha o header do grafo, bloqueando cliques em todos os botoes de filtro (.lg) como Bugs, Padroes, Decisoes etc. O CSS original nao definia z-index no #header, deixando-o no nivel 0 enquanto #mk-drag tinha 9999. Solucao: adicionar position:relative; z-index:10000 ao #header no WIDGET_CSS de widget_grafo.py. Tambem implementado container recolhivel: botao T agora alterna visibilidade do painel #mk-controles (speed, orbita, busca, quadro). Tags corrigidas nos vault: 4 arquivos .md tinham sessionsession (duplicado) em vez de session.",
+    "project": "",
+    "tags": [
+      "tinha",
+      "enquanto",
+      "nivel",
+      "critico",
+      "deixando",
+      "bug"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T19:20:37.518950",
+    "last_accessed": "2026-08-06T19:20:37.518950"
   }
 ]

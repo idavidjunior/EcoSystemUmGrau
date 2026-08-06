@@ -39,7 +39,7 @@ DEFAULT_W, DEFAULT_H = 1280, 800
 MIN_W, MIN_H = 400, 300
 
 WIDGET_CSS = """
-  #header { transition: opacity .25s ease; }
+  #header { transition: opacity .25s ease; position: relative; z-index: 10000; }
   body.desktop #header { opacity: 1; }
   #painel { display: none !important; }
   #wrap { display: flex; height: 100vh; }
@@ -548,9 +548,15 @@ WIDGET_JS_EXTRA = """
 
     ctrl.onmousedown = function(e) {
       e.preventDefault(); e.stopPropagation();
-      var oculto = localStorage.getItem('labelsOcultos') !== 'false';
-      localStorage.setItem('labelsOcultos', oculto ? 'false' : 'true');
-      aplicarLabels();
+      // Toggle painel de controles (recolhivel)
+      var atual = painel.style.display;
+      if (atual === 'none') {
+        painel.style.display = 'flex';
+        ctrl.style.opacity = '1';
+      } else {
+        painel.style.display = 'none';
+        ctrl.style.opacity = '0.55';
+      }
     };
 
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
