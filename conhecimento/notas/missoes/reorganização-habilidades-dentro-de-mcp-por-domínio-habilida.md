@@ -1,5 +1,5 @@
 ---
-tags: [contêineres, decisao, domínio, espalhadas, mcp, missao, opencode, status]
+tags: [contêineres, decisao, domínio, espalhadas, habilidades, missao, opencode, status]
 aliases: [Reorganização: Habilidades dentro de MCP por domínio — Habil]
 date: 2026-08-06
 ---
