@@ -1908,5 +1908,25 @@
     "access_count": 0,
     "created_at": "2026-08-06T16:40:41.417666",
     "last_accessed": "2026-08-06T16:40:41.417666"
+  },
+  {
+    "id": 126,
+    "kind": "padrao",
+    "task": "ADB Perito Skill - expansao cmd subsystem",
+    "summary": "Skill adb-perito SKILL.md expandida para ~1010 linhas apos estudo directo do cmd -l no Redmi Note 11. Adicionados 12+ servicos via cmd: statusbar, shortcut, uimode (dark mode), wallpaper, notification (DND/bubbles/post), appops (permissoes runtime granulares), usagestats, role (BROWSER/SMS/DIALER), location (mock GPS), audio, input_method (ime), account. Mapeamento servico->cmd->dumpsys, secao fastboot, dumpsys -l hidden gems (~300 servicos listados). Corrigidos erros de digitacao. Script diagnostico PowerShell adicionado. Skill agora cobre o ecossistema Android ADB inteiro.",
+    "project": "",
+    "tags": [
+      "account",
+      "ime",
+      "method",
+      "input",
+      "audio",
+      "gps"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T16:49:30.608278",
+    "last_accessed": "2026-08-06T16:49:30.608278"
   }
 ]

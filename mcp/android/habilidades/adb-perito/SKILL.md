@@ -739,13 +739,14 @@ Shell Android
 ├── logcat       -d|-s|-b|-v|-c|-L|filters
 ├── settings       get|put|delete|reset|list (system|secure|global)
 ├── content      insert|update|delete|query|call|read
-├── wm            size|density| scaling|dismiss-keyguard|user-rotation
-├── svc           power|usb|nfc```
-|--|system-server
+├── wm            size|density|scaling|dismiss-keyguard|user-rotation
+├── svc           power|usb|nfc|wifi|data|system-server
+│   └── system-server dump
 ├── uiautomator dump|runtest
 ├── monkey       stress|intents|script
 ├── screencap   -p|-d
-└── screenrecord --size|--bit-rate|--time-limit
+├── screenrecord --size|--bit-rate|--time-limit
+└── cmd         statusbar|shortcut|uimode|wallpaper|notification|appops|usagestats|role|location|audio|input_method|account
 ```
 
 ## Comando `cmd` — Bridge para Serviços do Sistema
@@ -1011,3 +1012,4 @@ if ($locked) { adb shell input keyevent 26; adb shell input keyevent 82 }   # Li
 ## Histórico de Atualizações
 
 - **2026-08-05:** Skill criado pelo Jarvis após estudo completo do `adb help` e sub-comandos (`pm`, `am`, `input`, `dumpsys`, `logcat`, `settings`, `content`, `wm`, `svc`, `uiautomator`, `monkey`, `screencap`, `screenrecord`). Objetivo: tornar o Jarvis um perito em ADB para operar o Redmi Note 11 e qualquer Android via Tailscale.
+- **2026-08-06:** Expansão completa após exploração do `cmd -l` num Redmi Note 11 real (MIUI/HyperOS). Adicionado: `cmd statusbar`, `cmd shortcut`, `cmd uimode` (incluindo dark mode programático), `cmd wallpaper`, `cmd notification` (DND, bubbles, post), `cmd appops` (permissões granulares runtime), `cmd usagestats`, `cmd role` (BROWSER/SMS/DIALER), `cmd location` (mock GPS de teste), `cmd audio`, `cmd input_method`/`ime`, `cmd account`, `cmd package` = `pm`, mapeamento serviço→cmd→dumpsys, fastboot, nova seção `dumpsys -l` hidden gems com ~300 serviços do Redmi Note 11, fontes do `input` (touchnavigation, stylus etc.) e `-d DISPLAY_ID`, `input motionevent`/`press`/`roll`/`keycombination -t`. Corrigidos erros de digitação (Xiaomi, "Saudáveis" → "Verbosidades", "sideshow" → `adb pull`, "点半" etc.). Adicionado script de diagnóstico de bolso e padrão de detecção de tela bloqueada para automação. Total atual: ~1010 linhas.
