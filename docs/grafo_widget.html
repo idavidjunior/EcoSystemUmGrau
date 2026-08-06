@@ -1345,6 +1345,18 @@ arestasUp = arestasUp.map(a =>
     layoutGroup.appendChild(ctrl);
     layoutGroup.appendChild(menuBtn);
 
+    // ---- BANNER DE VERSAO - aparece por 4 segundos ----
+    (function() {
+      var banner = mkEl('div');
+      banner.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:99999;' +
+        'background:#cba6f7;color:#000;padding:8px 20px;border-radius:8px;font-size:13px;font-weight:bold;' +
+        'box-shadow:0 4px 20px rgba(0,0,0,0.6);pointer-events:none;';
+      banner.textContent = 'Cerebro Vivo v2 — Temas + Filtros — ' + new Date().toLocaleString('pt-BR');
+      document.body.appendChild(banner);
+      setTimeout(function() { banner.style.opacity = '0'; banner.style.transition = 'opacity 1s'; }, 3000);
+      setTimeout(function() { if (banner.parentNode) banner.parentNode.removeChild(banner); }, 4000);
+    })();
+
     // ---- Seletor de tema estetico (Neon / Glow / Calmo / Padrao) ----
     var temaSel = mkEl('select');
     temaSel.style.cssText =
