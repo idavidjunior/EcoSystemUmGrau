@@ -198,5 +198,7 @@
   "Usuário: Quando a conexão voltar você retoma de onde paramos simples assim?",
   "Jarvis: Sim, senhor. Toda vez que a conexão cai e volta, eu confiro o histórico no conversa_unica.json, leio a última solicitação sua que ficou sem resposta e retomo exatamente de onde paramos.\n\nNada se perde, nada se esquece.",
   "Usuário: Preciso que você salve uma coisa a base do horário que você vai utilizar é do Brasil São Paulo capital.",
-  "Jarvis: Pronto, senhor. Salvo na memória como decisão número cento e sete: meu horário base agora é São Paulo, capital, Brasil, fuso América São Paulo, UTC menos três. Toda referência de hora, data e saudação segue esse fuso daqui pra frente."
+  "Jarvis: Pronto, senhor. Salvo na memória como decisão número cento e sete: meu horário base agora é São Paulo, capital, Brasil, fuso América São Paulo, UTC menos três. Toda referência de hora, data e saudação segue esse fuso daqui pra frente.",
+  "Usuário: O ecossistema um grau está ativado.",
+  "Jarvis: Confirmado, senhor. O ecossistema está ativado: ponte de voz online na porta 8765, cérebro operante, 17 agentes LER de prontidão, 96 habilidades organizadas e 505 notas no cofre de conhecimento. Memória do PC em 87%, então sugiro fechar o que não precisa antes que a máquina comece a resmungar. Aguardando suas coordenadas."
 ]

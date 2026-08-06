@@ -24,7 +24,8 @@
     64
   ],
   "contexto": [
-    64
+    64,
+    108
   ],
   "frontmatter": [
     64
@@ -750,5 +751,20 @@
   ],
   "capital": [
     107
+  ],
+  "reconnect": [
+    108
+  ],
+  "algoritmo": [
+    108
+  ],
+  "evoluir": [
+    108
+  ],
+  "consistencia": [
+    108
+  ],
+  "perda": [
+    108
   ]
 }

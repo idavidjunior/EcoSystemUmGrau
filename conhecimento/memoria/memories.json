@@ -1548,5 +1548,25 @@
     "access_count": 0,
     "created_at": "2026-08-06T14:30:34.535183",
     "last_accessed": "2026-08-06T14:30:34.535183"
+  },
+  {
+    "id": 108,
+    "kind": "decisao",
+    "task": "Quedas frequentes de conexao",
+    "summary": "Usuario relatou servidor caindo muito. Pedido: pesquisar online solucoes para recuperacao rapida sem perda de contexto/consistencia e evoluir algoritmo de reconnect.",
+    "project": "",
+    "tags": [
+      "reconnect",
+      "algoritmo",
+      "evoluir",
+      "consistencia",
+      "contexto",
+      "perda"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T14:39:23.937548",
+    "last_accessed": "2026-08-06T14:39:23.937548"
   }
 ]

@@ -64,6 +64,10 @@ SYS_PATH = str(Path(__file__).parent / "JARVIS_SYSTEM.md")
 PRON_PATH = str(Path(__file__).parent / "pronuncias.json")  # ipa metadata apenas
 
 MAX_HIST = 1000
+# Janela de conversa ativa: se a última fala no histórico foi há menos de
+# JANELA_CONVERSA_MIN minutos, NÃO repetir saudação inicial — a conversa
+# continua fluindo (evita o "recomeço" a cada reconexão dentro da mesma sessão).
+JANELA_CONVERSA_MIN = 30
 
 DIAS = ["segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado","domingo"]
 MESES = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]
@@ -1184,6 +1188,50 @@ async def _fallback_cadeia_curada(msg: str, img_base64=None, img_mime="image/jpe
     return None
 
 
+def _ultima_atividade_minutos():
+    """Retorna minutos desde a última gravação do conversa_unica.json.
+    Usa o mtime do arquivo como proxy do instante do último diálogo.
+    Retorna None se o arquivo não existir ou estiver vazio."""
+    try:
+        if not HIST_PATH.exists():
+            return None
+        mtime = HIST_PATH.stat().st_mtime
+        # Se arquivo vazio, não há atividade mensurável
+        if HIST_PATH.stat().st_size == 0:
+            return None
+        return (time.time() - mtime) / 60.0
+    except Exception as e:
+        logger.warning(f"_ultima_atividade_minutos: {e}")
+        return None
+
+
+def _ultima_fala_usuario():
+    """Recupera a última fala do usuário no histórico (para retomada).
+    Retorna (msg_usuario, resposta_jarvis) do último par, ou (None, None)."""
+    try:
+        if not HIST_PATH.exists():
+            return None, None
+        with open(HIST_PATH, "r", encoding="utf-8-sig") as f:
+            d = json.load(f)
+        if not isinstance(d, list) or len(d) < 2:
+            return None, None
+        # O último par é [Usuário: ..., Jarvis: ...]
+        ultimo_user = None
+        ultimo_jarvis = None
+        for i in range(len(d) - 1, -1, -1):
+            s = d[i]
+            if isinstance(s, str):
+                if s.startswith("Jarvis:") and ultimo_jarvis is None:
+                    ultimo_jarvis = s[len("Jarvis:"):].strip()
+                elif s.startswith("Usuário:") and ultimo_user is None:
+                    ultimo_user = s[len("Usuário:"):].strip()
+                    break
+        return ultimo_user, ultimo_jarvis
+    except Exception as e:
+        logger.warning(f"_ultima_fala_usuario: {e}")
+        return None, None
+
+
 async def lidar(ws):
     c = Cliente()
     client_ip = ws.remote_address[0] if ws.remote_address else "desconhecido"
@@ -1204,34 +1252,52 @@ async def lidar(ws):
     except Exception as e:
         logger.warning(f"briefing: {e}")
         extra = ""
-    saudacao = ""
-    try:
-        saudacao = await c.saudar(extra, status)
-    except Exception as e:
-        logger.warning(f"saudar: {e}")
-    if not saudacao:
-        hora = datetime.datetime.now().hour
-        if 5 <= hora < 12:
-            abridores = ["Bom dia", "Bom dia, senhor", "Bons dias"]
-        elif 12 <= hora < 18:
-            abridores = ["Boa tarde", "Boa tarde, senhor", "Boa tarde por aqui"]
-        elif 18 <= hora < 24:
-            abridores = ["Boa noite", "Boa noite, senhor", "Noite agradável, não é?"]
-        else:
-            abridores = ["Que dia é hoje a esta hora", "Madrugada firme por aqui", "Boa madrugada"]
-        fechos = [
-            "O que vamos fazer?", "O que precisa?", "Diga o que você precisa.",
-            "Pronto para começar?", "Estou aqui. Só chamar."
-        ]
-        saudacao = f"{random.choice(abridores)}! {extra}{status}{random.choice(fechos)}"
-    logger.info(f"saudacao: {saudacao[:120]}")
-    saudacao_tela = normalizar_hora_display(saudacao)
-    try:
-        a = await gerar_audio(saudacao_tela)
-    except Exception as e:
-        logger.warning(f"tts startup: {e}")
-        a = ""
-    await ws.send(json.dumps({"audio": a, "text": saudacao_tela}))
+    # Verifica se a conversa está ativa (última fala há menos de JANELA_CONVERSA_MIN).
+    # Se ativa, NÃO repete saudação inicial — apenas registra log e segue.
+    # Isso evita o "recomeço" a cada reconexão dentro da mesma sessão de conversa.
+    minutos_ultima = _ultima_atividade_minutos()
+    hist_tamanho = len(c._hist) // 2
+    conversa_ativa = (
+        minutos_ultima is not None
+        and minutos_ultima < JANELA_CONVERSA_MIN
+        and hist_tamanho > 0
+    )
+    if conversa_ativa:
+        logger.info(f"conversa ativa (última fala há {minutos_ultima:.1f}min, {hist_tamanho} pares) — saudação suprimida")
+        # Sem saudação: o usuário continua a conversa normalmente.
+        saudacao = ""
+    else:
+        saudacao = ""
+        try:
+            saudacao = await c.saudar(extra, status)
+        except Exception as e:
+            logger.warning(f"saudar: {e}")
+        if not saudacao:
+            hora = datetime.datetime.now().hour
+            if 5 <= hora < 12:
+                abridores = ["Bom dia", "Bom dia, senhor", "Bons dias"]
+            elif 12 <= hora < 18:
+                abridores = ["Boa tarde", "Boa tarde, senhor", "Boa tarde por aqui"]
+            elif 18 <= hora < 24:
+                abridores = ["Boa noite", "Boa noite, senhor", "Noite agradável, não é?"]
+            else:
+                abridores = ["Que dia é hoje a esta hora", "Madrugada firme por aqui", "Boa madrugada"]
+            fechos = [
+                "O que vamos fazer?", "O que precisa?", "Diga o que você precisa.",
+                "Pronto para começar?", "Estou aqui. Só chamar."
+            ]
+            saudacao = f"{random.choice(abridores)}! {extra}{status}{random.choice(fechos)}"
+    if saudacao:
+        logger.info(f"saudacao: {saudacao[:120]}")
+        saudacao_tela = normalizar_hora_display(saudacao)
+        try:
+            a = await gerar_audio(saudacao_tela)
+        except Exception as e:
+            logger.warning(f"tts startup: {e}")
+            a = ""
+        await ws.send(json.dumps({"audio": a, "text": saudacao_tela}))
+    else:
+        logger.info("sem saudacao (conversa ativa) — aguardando próxima fala do usuário")
 
     try:
         async for m in ws:
