@@ -220,6 +220,7 @@ ECOSSISTEMA_DIR = Path(WORKDIR) / "EcoSystemUmGrau"
 LER_DIR = ECOSSISTEMA_DIR / "ler-runtime"
 SCRIPTS_DIR = ECOSSISTEMA_DIR / "scripts"
 TMP_ESTADO = SCRIPTS_DIR / "bridge_estado.json"
+SAUDACAO_ESTADO = SCRIPTS_DIR / "saudacao_estado.json"
 OBSIDIAN_DIRS = [
     ECOSSISTEMA_DIR / "docs",
     ECOSSISTEMA_DIR / "conhecimento",
@@ -1230,6 +1231,50 @@ def _ultima_fala_usuario():
     except Exception as e:
         logger.warning(f"_ultima_fala_usuario: {e}")
         return None, None
+
+
+def _carregar_saudacao_estado():
+    """Carrega o estado persistente de saudações (reconexões, últimas saudações)."""
+    try:
+        if SAUDACAO_ESTADO.exists():
+            d = json.loads(SAUDACAO_ESTADO.read_text(encoding="utf-8"))
+            if isinstance(d, dict):
+                return d
+    except Exception as e:
+        logger.warning(f"saudacao_estado load: {e}")
+    return {"conexoes": 0, "hoje": "", "saudacoes_hoje": [], "ultima_saudacao": ""}
+
+
+def _salvar_saudacao_estado(d):
+    try:
+        SAUDACAO_ESTADO.write_text(json.dumps(d, ensure_ascii=False, indent=2), encoding="utf-8")
+    except Exception as e:
+        logger.warning(f"saudacao_estado save: {e}")
+
+
+def _classificar_conexao():
+    """Classifica a conexão como PRIMEIRA (sem atividade recente) ou RECONEXÃO
+    (atividade recente). Usa a própria ponte como fonte de verdade: se já houve
+    conversa no histórico e a última atividade é recente, é reconexão."""
+    minutos_ultima = _ultima_atividade_minutos()
+    hist_tamanho = 0
+    try:
+        if HIST_PATH.exists():
+            d = json.loads(HIST_PATH.read_text(encoding="utf-8-sig"))
+            if isinstance(d, list):
+                hist_tamanho = len(d) // 2
+    except Exception:
+        pass
+    eh_reconexao = (
+        minutos_ultima is not None
+        and minutos_ultima < JANELA_CONVERSA_MIN
+        and hist_tamanho > 0
+    )
+    return {
+        "eh_reconexao": eh_reconexao,
+        "minutos_desde_atividade": minutos_ultima,
+        "hist_tamanho": hist_tamanho,
+    }
 
 
 async def lidar(ws):
