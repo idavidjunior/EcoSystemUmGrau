@@ -162,7 +162,8 @@
     71
   ],
   "voxumgrau": [
-    71
+    71,
+    106
   ],
   "thrashing": [
     71
@@ -295,7 +296,8 @@
     84
   ],
   "usuario": [
-    79
+    79,
+    106
   ],
   "escolha": [
     79
@@ -718,5 +720,17 @@
   ],
   "supervisor": [
     105
+  ],
+  "solicitacao": [
+    106
+  ],
+  "pousshado": [
+    106
+  ],
+  "apos": [
+    106
+  ],
+  "commitado": [
+    106
   ]
 }
