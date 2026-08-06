@@ -1,14 +1,14 @@
 ---
 tags: [2026 scan proativo, geral, missao, opencode, proativo, scan, status]
-aliases: [﻿# 2026-07-28 - Scan proativo: Biblia — ]
-date: 2026-08-04
+aliases: [﻿# 2026-08-06 - Scan proativo: EcoSystemUmGrau — ]
+date: 2026-08-06
 ---
 
-# ﻿# 2026-07-28 - Scan proativo: Biblia — 
+# ﻿# 2026-08-06 - Scan proativo: EcoSystemUmGrau — 
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# 2026-07-28 - Scan proativo: Biblia — 
+**Objetivo:** ﻿# 2026-08-06 - Scan proativo: EcoSystemUmGrau — 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
