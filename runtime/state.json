@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-06T14:39:19",
+  "updated_at": "2026-08-06T15:21:16",
   "active_project": "EcoSystemUmGrau",
   "objective": "Transformar o Ecossistema Jarvis em Runtime de IA persistente (camada 1: estado+boot)",
-  "last_task": "Sincronizacao app + ecossistema: bridge curado + app v15 Eco",
+  "last_task": "Algoritmo recuperacao rapida conexao proposto (3 camadas)",
   "operational_context": "Runtime v1: estado persistente em runtime/state.json, boot via scripts/runtime_boot.py. LLM = motor de inferencia; governanca/memoria/continuidade = ecossistema.",
   "active_agents": [],
   "loaded_memory": [],
@@ -57,7 +57,15 @@
     {
       "timestamp": "2026-08-06T07:34:22",
       "text": "Teste de integracao LER executado e aprendizado registrado. Ecossistema validado: loop completo, supervisor, OpenCode, replanejamento autonomo."
+    },
+    {
+      "timestamp": "2026-08-06T15:18:56",
+      "text": "Mapeamento completo em aprendizado de hoje. Bridge: ativar ping_interval=20 ping_timeout=20 no websockets.serve(). App: backoff exponencial 1s->5s com jitter 50% + heartbeat 15s + fila ack. Fallback Tailscale->hostname->IP local."
+    },
+    {
+      "timestamp": "2026-08-06T15:19:09",
+      "text": "Pesquisa online concluida. 5 padroes consolidados mapeados. Aprendizado #111 + arquivo 2026-08-06-algoritmo-recuperacao-rapida-conexao.md. Aguarda aprovacao para implementar camada 1 (conn_recovery.py)."
     }
   ],
-  "last_checkpoint": "20260806_143919"
+  "last_checkpoint": "20260806_152116"
 }
