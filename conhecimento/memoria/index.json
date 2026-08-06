@@ -467,7 +467,8 @@
   ],
   "memoria": [
     88,
-    94
+    94,
+    113
   ],
   "context": [
     89
@@ -828,5 +829,20 @@
   ],
   "padrao": [
     112
+  ],
+  "carregada": [
+    113
+  ],
+  "restaurado": [
+    113
+  ],
+  "estado": [
+    113
+  ],
+  "runtime": [
+    113
+  ],
+  "iniciada": [
+    113
   ]
 }
