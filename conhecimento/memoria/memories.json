@@ -1608,5 +1608,45 @@
     "access_count": 0,
     "created_at": "2026-08-06T14:52:45.677159",
     "last_accessed": "2026-08-06T14:52:45.677159"
+  },
+  {
+    "id": 111,
+    "kind": "padrao",
+    "task": "Algoritmo recuperacao rapida conexao",
+    "summary": "Pesquisa online concluida: padroes comprovados sao backoff exponencial com jitter (base 500ms, max 30s, 10 tentativas), heartbeat ping/pong ativo (5s intervalo, 30s timeout) para detectar socket zumbi, fila de mensagens em transito (nao perde fala do usuario durante queda), checkpoint por evento append-only (estado derivado dos eventos, nunca guardado direto, checkpoint apos cada tool_call), e retomada de contexto ao reconectar lendo conversa_unica.json. Diagnostico da bridge atual: so logs 'fim' no ConnectionClosed, zero reconexao/checkpoint/aviso. Proposta em 3 camadas: conn_recovery.py (classe ReconnectingBridge), ReconnectingWebSocket no app Kotlin, integrar checkpoint no runtime_state.py existente. Evolucao continua = medir 3 metricas por queda: tempo ate deteccao, tempo ate reconexao, mensagens perdidas.",
+    "project": "",
+    "tags": [
+      "unica",
+      "conversa",
+      "lendo",
+      "reconectar",
+      "contexto",
+      "retomada"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T15:11:25.518419",
+    "last_accessed": "2026-08-06T15:11:25.518419"
+  },
+  {
+    "id": 112,
+    "kind": "decisao",
+    "task": "Recuperacao rapida conexao bridge",
+    "summary": "Mapeamento ja existe em aprendizado de hoje: bridge sem keepalive nativo (ping_interval=20 ping_timeout=20), sem backoff exponencial no app e sem fila de reenvio. Pesquisa online confirmou Socket.IO exponential backoff + jitter 50% (1s->2s->4s->5s teto), websockets ping/pong keepalive nativo, padrao consumer+producer com asyncio.wait FIRST_COMPLETED para gerenciar queda. Plano em 3 fases no doc 2026-08-06-recuperacao-rapida-conexao.md.",
+    "project": "",
+    "tags": [
+      "asyncio",
+      "producer",
+      "consumer",
+      "reenvio",
+      "padrao",
+      "fila"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T15:16:44.690514",
+    "last_accessed": "2026-08-06T15:16:44.690514"
   }
 ]
