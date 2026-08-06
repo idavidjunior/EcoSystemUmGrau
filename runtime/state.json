@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-06T16:18:49",
+  "updated_at": "2026-08-06T16:38:03",
   "active_project": "EcoSystemUmGrau",
   "objective": "Transformar o Ecossistema Jarvis em Runtime de IA persistente (camada 1: estado+boot)",
   "last_task": "Estudo ADB para perito - mapeamento consolidado e expandido",
@@ -81,6 +81,10 @@
     {
       "timestamp": "2026-08-06T16:14:23",
       "text": "Sincronização app + ecossistema concluída: bridge curado, app v15 Eco, runtime persistente operacional"
+    },
+    {
+      "timestamp": "2026-08-06T16:38:03",
+      "text": "Extensao perito ADB concluida: am instrument, pm grant/revoke/hide, cmd statusbar/notification/uimode, wm size/density override, settings put/get, input completo com keycodes exaustivo, dumpsys por servico (battery/window/notification/power/wifi/gfxinfo/cpuinfo/meminfo/alarms), backup/restore, logcat avancado, profiling, MIUI especifico, automacao de UI swipe/tap/texto/uiautomator. Aprendizado estendido em 2026-08-06-jarvis-perito-adb-mapeamento-completo.md."
     }
   ],
   "last_checkpoint": "20260806_161831"

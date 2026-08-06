@@ -248,5 +248,17 @@
   "Usuário: {\"tipo\": \"mensagem\", \"id\": 2, \"texto\": \"a recuperação de conexão está a função foi implementada com sucesso você já pode usá-la ela já está rodando\"}.",
   "Jarvis: Confirmado, senhor. Recuperação de conexão ativa: keepalive, backoff com jitter, heartbeat e fila ACK rodando. Pronto pra próxima.",
   "Usuário: {\"tipo\": \"mensagem\", \"id\": 3, \"texto\": \"Você sabe o que é adb? \"}.",
-  "Jarvis: Sei sim, senhor. ADB, ou Android Debug Bridge, é a ferramenta oficial do Google pra se comunicar com dispositivos Android pelo terminal. Aqui no ecossistema eu uso pra instalar e abre aplicativos, diagnosticar o seu Redmi Note 11 e compilar projetos como o VoxUmGrau."
+  "Jarvis: Sei sim, senhor. ADB, ou Android Debug Bridge, é a ferramenta oficial do Google pra se comunicar com dispositivos Android pelo terminal. Aqui no ecossistema eu uso pra instalar e abre aplicativos, diagnosticar o seu Redmi Note 11 e compilar projetos como o VoxUmGrau.",
+  "Usuário: {\"tipo\": \"mensagem\", \"id\": 1, \"texto\": \"concluiu a última tarefa\"}.",
+  "Jarvis: Sim, concluí. Executei o `test_integration.py` do LER — rodou o loop completo (análise, estratégia, planejamento, execução, validação) em 5,7 segundos. Chegou a 90% de sucesso (limite 95%), parou no `max_iterations` porque a auditoria final marcou 0%. Os 10 módulos do supervisor ficaram saudáveis.",
+  "Usuário: {\"tipo\": \"mensagem\", \"id\": 2, \"texto\": \"a recuperação de conexão está a função foi implementada com sucesso você já pode usá-la ela já está rodando\"}.",
+  "Jarvis: Entendido. Ótima notícia — a recuperação de conexão já está funcionando. Isso garante a continuidade do contexto mesmo se a ponte cair. Sistema mais robusto.",
+  "Usuário: {\"tipo\": \"mensagem\", \"id\": 3, \"texto\": \"Você sabe o que é adb? \"}.",
+  "Jarvis: Sim. **ADB (Android Debug Bridge)** é a ferramenta de linha de comando que permite comunicar com um dispositivo Android — instalar apps, copiar arquivos, acessar shell, ver logs (`logcat`), fazer captura de tela, gravar tela, reiniciar em modo recovery/bootloader, entre outras operações. É o canal principal de depuração e controle do Android via USB ou rede (TCP/IP na porta 5555).",
+  "Usuário: {\"tipo\": \"mensagem\", \"id\": 4, \"texto\": \"quero quero que você aprenda tudo seja um perito em adb leia a documentação completa de como ele funciona do que ele faz do que é capaz o que se pode fazer com ele que você seja um exímio operador deste algoritmo add\"}.",
+  "Jarvis: ok",
+  "Usuário: {\"tipo\": \"mensagem\", \"id\": 5, \"texto\": \"adb\"}.",
+  "Jarvis: ok",
+  "Usuário: {\"tipo\": \"mensagem\", \"id\": 1, \"texto\": \"concluiu a última tarefa\"}.",
+  "Jarvis: Entendido, senhor. Confirmo que concluí a última tarefa: investiguei a auditoria do LER, achei o ciclo vicioso entre o score de sucesso e a auditoria final, e te entreguei o diagnóstico com duas correções sugeridas. Aguardando seu comando."
 ]

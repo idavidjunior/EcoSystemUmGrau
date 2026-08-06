@@ -1848,5 +1848,45 @@
     "access_count": 0,
     "created_at": "2026-08-06T16:18:49.129671",
     "last_accessed": "2026-08-06T16:18:49.129671"
+  },
+  {
+    "id": 123,
+    "kind": "padrao",
+    "task": "ADB Perito Skill",
+    "summary": "Skill criado em mcp/android/habilidades/adb-perito/SKILL.md com documentacao completa do ADB: arquitetura cliente-servidor-daemon, comandos globais, conexao USB/TCP/mDNS, instalacao (-r/-t/-g/-d/--instant/-m/-multi-package), transferencia (push/pull/sync/--sync/-z), shell (ps/top/getprop), Activity Manager (start/broadcast/force-stop/instrument/compact), Package Manager (list/install/grant/revoke/clear/enable/disable), input (tap/swipe/text/keyevent/keycombination), screencap (-p/-d), screenrecord (--size/--bit-rate/--time-limit/--display-id), dumpsys (200+ servicos), logcat (-s/-b/-v/-c/-L/--pid/-f/-r/-n/--wrap), settings (system/secure/global), content (insert/update/delete/query/call), wm (size/density/scaling/rotation), svc (power/usb/nfc), uiautomator (dump/runtest), monkey (stress/intents/script), backup, forward/reverse, reboot/root/remount/sideload/bugreport, troubleshooting unauthorized/offline/multiple devices, padroes Tailscale 100.64.71.9:5555, MIUI especifico. Jarvis agora operador mestre de ADB.",
+    "project": "",
+    "tags": [
+      "100",
+      "tailscale",
+      "padroes",
+      "devices",
+      "multiple",
+      "offline"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T16:32:28.115383",
+    "last_accessed": "2026-08-06T16:32:28.115383"
+  },
+  {
+    "id": 124,
+    "kind": "padrao",
+    "task": "Perito ADB - validacao completa",
+    "summary": "Mapeamento ADB estendido e validado: arquivos 2026-08-06-jarvis-perito-adb-mapeamento-completo.md e 2026-08-06-jarvis-perito-adb.md continuam atuais. ADB 1.0.41 em C:\\Users\\David Jr\\AppData\\Local\\Android\\platform-tools. Capacidades cobertas: pm, am, input, uiautomator, dumpsys, logcat, screencap, screenrecord, forward/reverse, pair, install/uninstall, backup, sideload, root/unroot, bugreport, keygen, reboot, remount, env vars. Heuristicas operacionais MIUI e Tailscale Redmi Note 11 consolidadas.",
+    "project": "",
+    "tags": [
+      "vars",
+      "env",
+      "remount",
+      "reboot",
+      "keygen",
+      "bugreport"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T16:33:57.366656",
+    "last_accessed": "2026-08-06T16:33:57.366656"
   }
 ]
