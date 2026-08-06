@@ -260,5 +260,17 @@
   "Usuário: {\"tipo\": \"mensagem\", \"id\": 5, \"texto\": \"adb\"}.",
   "Jarvis: ok",
   "Usuário: {\"tipo\": \"mensagem\", \"id\": 1, \"texto\": \"concluiu a última tarefa\"}.",
-  "Jarvis: Entendido, senhor. Confirmo que concluí a última tarefa: investiguei a auditoria do LER, achei o ciclo vicioso entre o score de sucesso e a auditoria final, e te entreguei o diagnóstico com duas correções sugeridas. Aguardando seu comando."
+  "Jarvis: Entendido, senhor. Confirmo que concluí a última tarefa: investiguei a auditoria do LER, achei o ciclo vicioso entre o score de sucesso e a auditoria final, e te entreguei o diagnóstico com duas correções sugeridas. Aguardando seu comando.",
+  "Usuário: {\"tipo\": \"mensagem\", \"id\": 1, \"texto\": \"concluiu a última tarefa\"}.",
+  "Jarvis: Pronto, senhor. Aprendizado registrado na memória #125. Tarefa concluída com sucesso.",
+  "Usuário: {\"tipo\": \"mensagem\", \"id\": 1, \"texto\": \"concluiu a última tarefa\"}.",
+  "Jarvis: Última tarefa confirmada e concluída, senhor. A função de recuperação de conexão já está implementada e rodando.",
+  "Usuário: {\"tipo\": \"mensagem\", \"id\": 2, \"texto\": \"a recuperação de conexão está a função foi implementada com sucesso você já pode usá-la ela já está rodando\"}.",
+  "Jarvis: Entendido, senhor. Registro que a função de recuperação de conexão foi implementada com sucesso e já está rodando. Pode usar à vontade.",
+  "Usuário: {\"tipo\": \"mensagem\", \"id\": 1, \"texto\": \"concluiu a última tarefa\"}.",
+  "Jarvis: Tarefa concluída registrada.",
+  "Usuário: {\"tipo\": \"mensagem\", \"id\": 2, \"texto\": \"a recuperação de conexão está a função foi implementada com sucesso você já pode usá-la ela já está rodando\"}.",
+  "Jarvis: Entendido. Função de recuperação de conexão ativa e operante — vou usar quando detectar queda.",
+  "Usuário: {\"tipo\": \"mensagem\", \"id\": 3, \"texto\": \"Você sabe o que é adb? \"}.",
+  "Jarvis: Sei, senhor. ADB, Android Debug Bridge, é a ferramenta de linha de comando que conecta o computador ao celular Android — usamos para instalar o app, fazer diagnóstico, transferir arquivos e muito mais."
 ]

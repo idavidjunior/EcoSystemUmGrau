@@ -9,8 +9,9 @@ Capacitar o Jarvis a operar o ADB (Android Debug Bridge) com proficiência de es
 - Host: Windows 10 (PowerShell 5.1)
 - ADB: `1.0.41, Version 37.0.1-15733141` — instalação global em `C:\Users\David Jr\AppData\Local\Android\platform-tools\platform-tools\adb.exe`
 - Dispositivo primário: Xiaomi Redmi Note 11 (MIUI/HyperOS), acessível via Tailscale (`100.64.71.9:5555`) ou USB
-- Dispositivo secundário: emulador生殖/emulator
-- Conexão sem fio: `adb connect 100.64.71.9:5555` ( Wireless Debugging) ou `adb pair HOST:PORT PAIRING_CODE`
+- **Campos do `adb devices -l` do Redmi Note 11**: `product:spes_in model:2201117TI device:spes transport_id:5`
+- Dispositivo secundário: emulador (Android Virtual Device)
+- Conexão sem fio: `adb connect 100.64.71.9:5555` (Wireless Debugging) ou `adb pair HOST:PORT PAIRING_CODE`
 
 ## Arquitetura do ADB
 
@@ -187,8 +188,16 @@ adb shell am start -a ACTION -d DATA_URI -t mime/type \
     -c android.intent.category.LAUNCHER
 
 # Para mumLDeração arbitrária
-adb shell am start --user 10 -n com.example/.Activity      # Como usuário específico
+adb shell am start --user 10 -n com.example/.Activity              # Como usuário específico
 ```
+
+### Sources de Input (Android 13+)
+O `input` distingue fontes físicas por tipo de dispositivo:
+```
+touchnavigation, touchscreen, joystick, stylus, touchpad, gamepad, dpad, mouse, keyboard, trackball
+```
+Cada command mapeia a uma source padrão, mas pode ser prefixado: `adb shell input stylus tap 540 960`.
+`-d DISPLAY_ID` suportado em todos os comandos (default: -1=key event, 0=motion event).
 
 ## Package Manager (`pm`)
 
@@ -244,9 +253,13 @@ adb shell input keyevent 25                     # VOLUME_DOWN
 adb shell input keyevent 27                     # CAMERA
 adb shell input keyevent 66                     # ENTER
 adb shell input keyevent 84                     # SEARCH
-adb shell input keyevent 220                    # HOME点半
+adb shell input keyevent 220                    # HOME (gesto de acessibilidade)
 adb shell input keyevent --longpress 4          # Back longo
-adb shell input keycombination 17 66            # Ctrl+Enter (ordem importa)
+adb shell input keycombination 17 66            # Ctrl+Enter (ordem importa; -t DURAÇÃO ms)
+adb shell input motionevent DOWN 540 960        # Evento de movimento cru (precição total)
+adb shell input -d 1 tap 100 200                # Display ID específico (multi-tela)
+adb shell input press                            #_ioctl trackball press
+adb shell input roll 1 0                         # Rolagem trackball dX dY
 ```
 
 ### Keycodes comuns (ver `KeyEvent` em Android)
@@ -341,7 +354,7 @@ adb logcat -v raw                               # Só msg
 adb logcat -v epoch -v printable                # Epoch seconds + ASCII
 adb logcat -v color                             # Cores ANSI
 
-# Saudáveis extras
+# Verbosidades extras
 adb logcat -v uid                               # Inclui UID
 adb logcat -v usec                              # Microsegundos
 adb logcat -v UTC                               # Timestamps UTC
@@ -543,7 +556,8 @@ adb shell showmap PID
 adb shell ps -A | grep vox                       # Pega PID
 adb shell kill -3 PID                            # SIGQUIT p/ ANR thread dump
 adb shell dumpsys dropbox                        # Códigos de erro histórico
-adb sideshow /data/anr/traces.txt C:\temp\anr.txt
+adb pull /data/anr/traces.txt C:\temp\anr.txt    # Traz traces.txt do device
+adb bugreport bugreport.zip                     # Bugreport completo (substitui acima)
 ```
 
 ## Permissões
@@ -652,7 +666,7 @@ adb start-server
 adb devices
 ```
 
-## Xiomi/MIUI Específico (Redmi Note 11)
+## Xiaomi/MIUI Específico (Redmi Note 11)
 
 ```powershell
 # Permissões adicionais necessárias
@@ -732,6 +746,256 @@ Shell Android
 ├── monkey       stress|intents|script
 ├── screencap   -p|-d
 └── screenrecord --size|--bit-rate|--time-limit
+```
+
+## Comando `cmd` — Bridge para Serviços do Sistema
+
+O `cmd` é preferível ao `service call` (que usa códigos binder opacos) para interagir com serviços do sistema. Sintaxe: `adb shell cmd SERVICE [SUBCMD] [args]`.
+
+### `cmd statusbar` — Barra de Status e Painel
+```powershell
+adb shell cmd statusbar expand-notifications          # Abre painel de notificações
+adb shell cmd statusbar expand-settings               # Painel + quick settings
+adb shell cmd statusbar collapse                       # Fecha painel
+adb shell cmd statusbar add-tile COMPONENT            # Adiciona um TileService
+adb shell cmd statusbar remove-tile COMPONENT
+adb shell cmd statusbar click-tile COMPONENT           # Clica num tile
+adb shell cmd statusbar check-support                  # Suporta QS+ APIs?
+adb shell cmd statusbar get-status-icons               # Lista ícones ordenados
+adb shell cmd statusbar disable-for-setup true|false   # Modo setup wizard
+```
+
+### `cmd shortcut` — Shortcuts
+```powershell
+adb shell cmd shortcut reset-throttling [--user UID]         # Libera throttling
+adb shell cmd shortcut reset-all-throttling
+adb shell cmd shortcut override-config CONFIG                # Override p/ teste (até reboot)
+adb shell cmd shortcut reset-config
+adb shell cmd shortcut get-default-launcher [--user UID]      # Deprecated — use RoleManager
+adb shell cmd shortcut unload-user [--user UID]
+adb shell cmd shortcut clear-shortcuts [--user UID] PACKAGE   # Remove todos do app
+adb shell cmd shortcut get-shortcuts [--user UID] [--flags F] PACKAGE
+adb shell cmd shortcut has-shortcut-access [--user UID] PACKAGE
+```
+
+### `cmd uimode` — Modo Escuro / Carro / Horário
+```powershell
+adb shell cmd uimode night yes|no|auto|custom_schedule|custom_bedtime   # Ativa dark mode
+adb shell cmd uimode night                              # Lê estado atual
+adb shell cmd uimode car yes|no                          # Modo carro
+adb shell cmd uimode time start 2026-08-06T22:00:00       # Agenda início do night mode
+adb shell cmd uimode time end   2026-08-07T06:00:00
+```
+Atalho: `adb shell cmd uimode night yes` liga o dark mode instantaneamente (كن útil p/ testar `NightLens`/`forceDarkAllowed`).
+
+### `cmd wallpaper` — Papel de Parede
+```powershell
+adb shell cmd wallpaper get-dim-amount                   # Lê dim atual (0.0..1.0)
+adb shell cmd wallpaper set-dim-amount 0.5               # Define dimming
+adb shell cmd wallpaper dim-with-uid UID 0.7             # Simula dim de um app
+```
+
+### `cmd notification` — Notificações e DND
+```powershell
+adb shell cmd notification list                          # Lista todas
+adb shell cmd notification get <notification-key>        # Por chave
+adb shell cmd notification snooze --for 60000 <key>      # Adia 1 min
+adb shell cmd notification unsnooze <key>
+adb shell cmd notification allow_listener com.example/.Listener   # Concede acesso
+adb shell cmd notification disallow_listener com.example/.Listener
+adb shell cmd notification set_dnd on|none|priority|alarms|all|off  # Modo não perturbe
+adb shell cmd notification allow_dnd PACKAGE             # App pode quebrar DND
+adb shell cmd notification disallow_dnd PACKAGE
+adb shell cmd notification post TAG "Texto da notif"     # Posta notif de teste
+adb shell cmd notification set_bubbles PACKAGE 0|1|2     # 0=none 1=all 2=selected
+adb shell cmd notification set_bubbles_channel PACKAGE CHANNEL_ID true|false
+adb shell cmd notification reset_assistant_user_set
+adb shell cmd notification enhance_log true|false
+```
+
+### `cmd appops` — App Operations (Permissões Granulares Runtime)
+O `appops`控制a runtime permissions COM MAIS GRANULARIDADE que `pm grant/revoke`. Cada operação tem 4 modos: `allow | ignore | deny | default`.
+
+```powershell
+adb shell cmd appops start [--user UID] [--attribution TAG] <PKG|UID> OP    # Inicia op (track)
+adb shell cmd appops stop  [--user UID] [--attribution TAG] <PKG|UID> OP
+adb shell cmd appops set   [--user UID] <PKG|UID> OP <allow|ignore|deny|default>
+adb shell cmd appops get   [--user UID] [--attribution TAG] <PKG|UID> [OP]   # Modo atual
+adb shell cmd appops query-op [--user UID] OP [MODE]                         # Apps com OP em MODE
+adb shell cmd appops reset  [--user UID] [PACKAGE]                           # Restaura defaults
+adb shell cmd appops write-settings                                          # Persiste mudanças
+adb shell cmd appops read-settings
+# Exemplos:
+adb shell cmd appops set com.example OP_WRITE_EXTERNAL_STORAGE allow
+adb shell cmd appops set com.example android:mock_location allow            # P/ cmd location providers
+adb shell cmd appops get com.example OP_CAMERA                               # Ver modo atual
+```
+
+**Op comuns**: `OP_CAMERA`, `OP_RECORD_AUDIO`, `OP_FINE_LOCATION`, `OP_COARSE_LOCATION`, `OP_READ_CONTACTS`, `OP_WRITE_EXTERNAL_STORAGE`, `OP_RUN_IN_BACKGROUND`, `OP_RUN_ANY_IN_BACKGROUND`, `OP_MOCK_LOCATION`. Lista completa: `adb shell cmd appops get <PKG>` (mostra todas as ops do app com seus modos).
+
+### `cmd usagestats` — Estatísticas de Uso
+```powershell
+adb shell cmd usagestats clear-last-used-timestamps PACKAGE_NAME [-u|--user UID]
+adb shell dumpsys usagestats                          # Versão detalhada
+adb shell dumpsys usagestats com.example              # Stats específicas
+```
+
+### `cmd role` — Roles do Sistema (Browser/SMS/Dialer padrão)
+```powershell
+adb shell cmd role get-role-holders [--user UID] ROLE                 # Quem ocupa o role
+adb shell cmd role add-role-holder [--user UID] ROLE PACKAGE [FLAGS] # Adiciona
+adb shell cmd role remove-role-holder [--user UID] ROLE PACKAGE [FLAGS]
+adb shell cmd role clear-role-holders [--user UID] ROLE [FLAGS]
+adb shell cmd role set-bypassing-role-qualification true|false        # P/ testes
+adb shell cmd role get-active-user-for-role [--user UID] ROLE
+adb shell cmd role set-active-user-for-role [--user UID] ROLE ACTIVE_USER_ID [FLAGS]
+
+# Roles nomeados: android.app.role.BROWSER, android.app.role.DIALER,
+# android.app.role.SMS, android.app.role.HOME (launcher),
+# android.app.role.ASSISTANT, android.app.role.GALLERY, android.app.role.SYSTEM_CALL_PROTECTION...
+```
+
+### `cmd location` — GPS e Providers de Teste
+```powershell
+adb shell cmd location is-location-enabled [--user UID]      # Estado GPS
+adb shell cmd location set-location-enabled true|false [--user UID]
+
+# Providers de teste — locais simulados (requer `appops set PKG android:mock_location allow`)
+adb shell appops set com.example.android:mock_location allow    # Concede mock_location
+adb shell cmd location providers add-test-provider gps_test \
+    --requiresNetwork --supportsAltitude --supportsSpeed --supportsBearing
+adb shell cmd location providers set-test-provider-enabled gps_test true
+adb shell cmd location providers set-test-provider-location gps_test 37.7749 -122.4194
+adb shell cmd location providers remove-test-provider gps_test
+adb shell dumpsys location                                 # Estado completo
+```
+
+### `cmd audio` — Modos Surround
+```powershell
+adb shell cmd audio set-surround-format-enabled SURROUND_FORMAT IS_ENABLED
+adb shell cmd audio get-is-surround-format-enabled SURROUND_FORMAT
+adb shell cmd audio set-encoded-surround-mode SURROUND_SOUND_MODE
+adb shell cmd audio get-encoded-surround-mode
+```
+
+### `cmd input_method` — IMEs
+```powershell
+adb shell cmd input_method ime <command>          # Atalho para `ime`
+adb shell cmd input_method tracing start
+adb shell cmd input_method tracing stop
+adb shell cmd input_method dump                   # Igual a dumpsys input_method
+
+# `ime` — controla Input Methods diretamente:
+adb shell ime list -a                             # Todos IMEs instalados
+adb shell ime list -s                             # Só habilitados
+adb shell ime enable com.google.android.inputmethod.latin/.LatinIME
+adb shell ime disable com.google.android.inputmethod.latin/.LatinIME
+adb shell ime set com.google.android.inputmethod.latin/.LatinIME    # Define como padrão
+adb shell ime reset                               # Volta defaults
+```
+
+### `cmd account` — Conta
+```powershell
+adb shell cmd account set-bind-instant-service-allowed true|false [--user UID]
+adb shell cmd account get-bind-instant-service-allowed [--user UID]
+```
+
+### `cmd package` — Mesmo que `pm`
+`adb shell cmd package` é o nome completo de `pm`. Funcionalmente idêntico — prefira `pm` (shorter). Use `cmd package help` para ver todas as opções (`list packages` aceita `--apex-only`, `--uid UID`, `--user USER_ID`, `--show-versioncode` etc.).
+
+### Outros serviços útil via `cmd` (curioso, testado no Redmi Note 11)
+```
+cmd accessibility         – speak disable/enable, etc.
+cmd backup help           – BackupManager
+cmd device_config         – Flags experimentais (read/set/delete)
+cmd device_policy         – DevicePolicyManager
+cmd deviceidle step|whitelist|unwhitelist        # Modo doze manual
+cmd dream / cmd dreams    – Não existe como `cmd`, use `dumpsys dreams`
+cmd overlay               – Display cutout emulation: `cmd overlay enable com.android.internal.display.cutout.emulation.gesture`
+cmd power                – NÃO usar (substitua por `dumpsys power`)
+cmdReboot_screen_record   – Inválido (use `screenrecord`)
+cmd sensorservice         – Acesso aos sensores
+cmd tethering             – Tethering de rede
+cmd vibrator              – Padrões de vibração
+cmd wifi                  – Não existe (use `cmd wifi set-wifi-enabled` em alguns builds; preferir `svc wifi`)
+```
+
+## Fastboot (vizinho do ADB)
+Quando o dispositivo entra em bootloader (`adb reboot bootloader`), não há mais ADB — somente `fastboot`:
+```powershell
+fastboot devices                                     # Lista
+fastboot getvar product                              # Modelo
+fastboot getvar unlocked                             # yes/no (bootloader desbloqueado?)
+fastboot flashing unlock                             # Desbloqueia (apaga tudo!)
+fastboot flashing lock                               # Bloqueia
+fastboot flash boot boot.img                         # Flashear partição
+fastboot flash recovery twrp.img
+fastboot flash system system.img
+fastboot flash boot boot.img --slot a                # Dispositivos A/B
+fastboot --set-active=a                              # Ativa slot
+fastboot boot boot.img                               # Boot temporário (sem flash)
+fastboot erase userdata                              # Apaga userdata
+fastboot format:ext4 userdata
+fastboot reboot                                     # Reinicia
+fastboot reboot recovery
+fastboot reboot fastboot                            # Fastbootd (Android userspace fastboot)
+fastboot oem device-info                            # Estado do bootloader
+fastboot flashing get_unlock_ability                # Xiaomi: requer permisssão
+fastboot oem unlock-go                               # Xiaomi: desbloqueio alternativo
+```
+**Atenção:** Redmi/Xiaomi precisa de permissão Mi Unlock (7 dias de espera, requer login Mi Account). Sem isso o bootloader fica bloqueado permanentemente.
+
+## Mapeamento Completo: (serviços Android mais comuns) → (cmd/dumpsys equivalente)
+
+| Serviço          | `cmd` correspondente       | `dumpsys` equivalente            | Notas |
+|------------------|---------------------------|-----------------------------------|-------|
+| activity         | `cmd activity` (alias `am`) | `dumpsys activity`               | Igual a `am` |
+| package           | `cmd package` (alias `pm`)  | `dumpsys package`                | Igual a `pm` |
+| window            | `cmd window` (alias `wm`)  | `dumpsys window`                 | Igual a `wm` |
+| input             | `cmd input` (alias `input`)| `dumpsys input`                  | Igual a `input` |
+| input_method      | `cmd input_method`         | `dumpsys input_method`           | `ime` é subcomando |
+| shortcut          | `cmd shortcut`             | `dumpsys shortcut`               |  |
+| statusbar         | `cmd statusbar`            | `dumpsys StatusBar`              |  |
+| notification      | `cmd notification`         | `dumpsys notification`           | DND, bubbles, listeners |
+| wallpaper         | `cmd wallpaper`            | `dumpsys wallpaper`              | Dimming |
+| uimode            | `cmd uimode`               | `dumpsys uimode`                 | Night/car mode |
+| usagestats        | `cmd usagestats`           | `dumpsys usagestats`             |  |
+| appops            | `cmd appops`               | `dumpsys appops`                 | Granular perm |
+| role              | `cmd role`                 | `dumpsys role`                   | Browser/SMS padrão |
+| location          | `cmd location`             | `dumpsys location`               | GPS + mock |
+| audio             | `cmd audio`                | `dumpsys audio`                  | Limited subset |
+| account           | `cmd account`              | `dumpsys account`                |  |
+| power             | (sem cmd geral)            | `dumpsys power`                  | Use `dumpsys` |
+| battery           | (`dumpsys battery`)        | `dumpsys battery`                |  |
+| device_config     | `cmd device_config`        | `dumpsys device_config`          | Feature flags |
+| deviceidle        | `cmd deviceidle`          | `dumpsys deviceidle`             | Doze whitelist |
+| overlay           | `cmd overlay`              | `dumpsys overlay`                | Cutout emulation |
+| vibração          | (sem cmd geral)            | `dumpsys vibrator`               | `cmd vibrator` em alguns builds |
+
+## Script PowerShell — Diagnóstico de Bolso
+
+Salvo idealmente em `scripts/adb_diag.ps1`:
+```powershell
+param([string]$Device)
+if ($Device) { $adb = "adb -s $Device" } else { $adb = "adb" }
+Write-Host "=== Devices ==="; & $adb devices -l
+Write-Host "`n=== Battery ==="; & $adb shell dumpsys battery | Select-String "level|temperature|status|powered"
+Write-Host "`n=== Memorias ==="; & $adb shell dumpsys meminfo | Select-String "Total RAM|Free RAM|Used RAM" | Select-Object -First 3
+Write-Host "`n=== Storage ==="; & $adb shell df /data | Select-Object -Last 1
+Write-Host "`n=== Display ==="; & $adb shell wm size; & $adb shell wm density
+Write-Host "`n=== Propriedades ==="; & $adb shell getprop ro.product.model; & $adb shell getprop ro.build.version.release; & $adb shell getprop ro.build.version.sdk
+Write-Host "`n=== WiFi ==="; & $adb shell dumpsys wifi | Select-Object -First 5 | Select-String "mScreenOff|Wi-Fi is"
+Write-Host "`n=== Dark mode atual ==="; & $adb shell cmd uimode night
+Write-Host "`n=== ADB habilitado ==="; & $adb shell settings get global adb_enabled
+```
+
+##oods de Tela Locked/Unlocked
+```powershell
+adb shell dumpsys window | findstr mDreamingLockscreen mShowingLockscreen mAwake mScreenOn
+# Detectar tela bloqueada (MIL de automação):
+$state = adb shell dumpsys window
+$locked = $state | Select-String "mShowingLockscreen=true"
+if ($locked) { adb shell input keyevent 26; adb shell input keyevent 82 }   # Liga e menu
 ```
 
 ## Fontes e Referências
