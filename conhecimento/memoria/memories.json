@@ -1568,5 +1568,45 @@
     "access_count": 0,
     "created_at": "2026-08-06T14:39:23.937548",
     "last_accessed": "2026-08-06T14:39:23.937548"
+  },
+  {
+    "id": 109,
+    "kind": "decisao",
+    "task": "Janela de conversa ativa suprime saudacao",
+    "summary": "Bridge agora checa mtime do conversa_unica.json antes de saudar; se ultima fala foi ha menos de 30 min e ha historico, NAO repete saudacao inicial — evita o recomeco a cada reconexao na mesma sessao.",
+    "project": "",
+    "tags": [
+      "sessao",
+      "reconexao",
+      "recomeco",
+      "evita",
+      "unica",
+      "inicial"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T14:47:42.118374",
+    "last_accessed": "2026-08-06T14:47:42.118374"
+  },
+  {
+    "id": 110,
+    "kind": "padrao",
+    "task": "Padroes de recuperacao de conexao",
+    "summary": "Estudados: Socket.IO exponential backoff+jitter, websockets ping/pong nativo, heartbeat app-level, fila de reenvio, fallback Tailscale. 3 fazes propostas para evoluir a bridge.",
+    "project": "",
+    "tags": [
+      "tailscale",
+      "fallback",
+      "reenvio",
+      "fila",
+      "level",
+      "app"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T14:52:45.677159",
+    "last_accessed": "2026-08-06T14:52:45.677159"
   }
 ]
