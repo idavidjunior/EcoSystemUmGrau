@@ -457,7 +457,8 @@
     87
   ],
   "streaming": [
-    88
+    88,
+    122
   ],
   "episodios": [
     88
@@ -958,5 +959,20 @@
   ],
   "práticas": [
     121
+  ],
+  "package": [
+    122
+  ],
+  "multi": [
+    122
+  ],
+  "multiple": [
+    122
+  ],
+  "install": [
+    122
+  ],
+  "fastdeploy": [
+    122
   ]
 }
