@@ -1319,7 +1319,12 @@ async def lidar(ws):
                             await ws.send(json.dumps({"tipo": "quota_status", "error": "nvidia_quota_monitor não disponível"}))
                         logger.info(f"quota status request")
                         continue
-                    if obj.get("tipo") == "imagem":
+                    if obj.get("tipo") == "mensagem":
+                        # App novo envia {"tipo":"mensagem","id":N,"texto":"..."}.
+                        # Extrai o texto real e deixa o id para o ACK abaixo.
+                        m = obj.get("texto") or ""
+                        logger.info(f"mensagem com id={obj.get('id')} extraida ({len(m)} chars)")
+                    elif obj.get("tipo") == "imagem":
                         m = obj.get("texto") or "O que você vê nesta imagem?"
                         img_atual = obj.get("imagem", "")
                         img_mime = obj.get("mime", "image/jpeg")
