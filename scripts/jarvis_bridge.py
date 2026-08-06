@@ -1324,6 +1324,16 @@ async def lidar(ws):
                         img_atual = obj.get("imagem", "")
                         img_mime = obj.get("mime", "image/jpeg")
                         logger.info(f"imagem recebida: {len(img_atual)} chars base64")
+                    # Fase 3 - ACK-based: confirma recebimento para o app remover da fila.
+                    # O app enfileira mensagens com {"id": N} e so descarta apos receber {"ack": N}.
+                    # Se a conexao cair antes do ACK, o app reenvia ao reconectar.
+                    msg_id = obj.get("id") if isinstance(obj, dict) else None
+                    if msg_id is not None:
+                        try:
+                            await ws.send(json.dumps({"ack": int(msg_id)}))
+                            logger.info(f"ack enviado para msg {msg_id}")
+                        except Exception as e:
+                            logger.warning(f"ack falhou para msg {msg_id}: {e}")
             except json.JSONDecodeError:
                 pass
             msg_fix = fix_punctuation(m)
@@ -1406,7 +1416,20 @@ async def servir():
     logger.info(f"  voz: {TTS_VOICE}")
     logger.info(f"  historico: {HIST_PATH.name}")
     logger.info("="*50)
-    async with websockets.serve(lidar, "0.0.0.0", 8765):
+    # Keepalive nativo WebSocket (Fase 1 - recuperacao rapida de conexao, decisao 112):
+    # - ping_interval=20: envia ping a cada 20s
+    # - ping_timeout=20: se nao receber pong em 20s, fecha conexao (deteccao ~20s)
+    # - close_timeout=10: tempo para handshake de fechamento
+    # - max_queue=16: flow control para nao estourar memoria
+    # Deteccao de conexao morta cai de ~40s para ~20s, sem codigo manual.
+    async with websockets.serve(
+        lidar, "0.0.0.0", 8765,
+        ping_interval=20,
+        ping_timeout=20,
+        close_timeout=10,
+        max_size=2 * 1024 * 1024,
+        max_queue=16,
+    ):
         # Warm-up automatico do LLM em background (usa _http_async/urllib,
         # mesmo cliente da cadeia principal — sem dependencia de aiohttp)
         async def warmup():
