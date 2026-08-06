@@ -1,7 +1,7 @@
 ---
 tags: [debugging, heuristica, ocr, position, scroll, viewport]
 aliases: [Elemento existe? 3 fontes de verdade]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # Elemento existe? 3 fontes de verdade

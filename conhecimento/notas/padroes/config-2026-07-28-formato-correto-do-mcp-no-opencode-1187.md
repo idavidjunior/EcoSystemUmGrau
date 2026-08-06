@@ -1,12 +1,12 @@
 ---
-tags: [erro, expected, expected readonly, opencodeopencodeopencode, padrao, type]
+tags: [erro, expected, expected readonly, opencodeopencodeopencodeopencode, padrao, type]
 aliases: [Config: ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # Config: ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7
 
-**Fonte:** opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode
 
 ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7
 
@@ -16,5 +16,4 @@ date: 2026-08-05
 
 - [[2026-08-04-persistencia-da-conexao-do-jarvis]]
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-teste-do-vigilante-automático]]
 - [[padrao-hub-padroes]]

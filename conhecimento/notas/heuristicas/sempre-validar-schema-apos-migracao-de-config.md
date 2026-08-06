@@ -1,7 +1,7 @@
 ---
 tags: [configuration, dominio, edicao, heuristica, invalido, produzir]
 aliases: [Sempre validar schema apos migracao de config]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # Sempre validar schema apos migracao de config

@@ -1,7 +1,7 @@
 ---
-tags: [2026 scan proativo, geral, missao, opencode, proativo, scan, status]
+tags: [2026 scan proativo, geral, learning, missao, opencode, proativo, scan]
 aliases: [﻿# 2026-07-28 - Scan proativo: Mp3Player — ]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # ﻿# 2026-07-28 - Scan proativo: Mp3Player — 

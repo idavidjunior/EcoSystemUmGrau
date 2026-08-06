@@ -1,7 +1,7 @@
 ---
 tags: [aprendizado, erro, fechamento, gpu, mem, missao, opencode, status]
 aliases: [﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU ]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # ﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por mem

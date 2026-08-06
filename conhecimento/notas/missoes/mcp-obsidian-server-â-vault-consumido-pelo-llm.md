@@ -1,7 +1,7 @@
 ---
 tags: [bri, consumido, geral, llm, missao, opencode, pelo, status]
 aliases: [MCP Obsidian server â€” vault consumido pelo LLM — ]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # MCP Obsidian server â€” vault consumido pelo LLM — 

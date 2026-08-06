@@ -1,7 +1,7 @@
 ---
 tags: [adaptado, continua, framework, melhoria, software]
 aliases: [Ciclo PDCA (Plan-Do-Check-Act) para engenharia]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # Ciclo PDCA (Plan-Do-Check-Act) para engenharia

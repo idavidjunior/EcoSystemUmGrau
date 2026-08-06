@@ -1,7 +1,7 @@
 ---
 tags: [bug, every, mp3player-metadata-rescue, reset, restart, switch]
 aliases: [**EQ state not persisted**]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # **EQ state not persisted**

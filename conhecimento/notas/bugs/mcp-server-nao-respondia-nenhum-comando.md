@@ -1,7 +1,7 @@
 ---
-tags: [bug, comando, obrigatorio, projeto, protocolo, sessaoprovidermanager]
+tags: [bug, comando, nenhum, projeto, protocolo, sessaoprovidermanager]
 aliases: [MCP server nao respondia nenhum comando]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # MCP server nao respondia nenhum comando

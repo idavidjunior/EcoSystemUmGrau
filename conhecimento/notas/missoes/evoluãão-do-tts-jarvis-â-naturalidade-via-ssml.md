@@ -1,7 +1,7 @@
 ---
 tags: [geral, jarvis, missao, naturalidade, opencode, ssml, status, trocar]
 aliases: [EvoluÃ§Ã£o do TTS Jarvis â€” naturalidade via SSML — ]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # EvoluÃ§Ã£o do TTS Jarvis â€” naturalidade via SSML — 

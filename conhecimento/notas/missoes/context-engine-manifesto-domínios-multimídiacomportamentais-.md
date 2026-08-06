@@ -1,7 +1,7 @@
 ---
 tags: [comportamentais, coordenador, decisao, lacu, missao, opencode, plano, status]
 aliases: [context-engine + manifesto + domínios multimídia/comportamen]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # context-engine + manifesto + domínios multimídia/comportamentais — Plano de lacu

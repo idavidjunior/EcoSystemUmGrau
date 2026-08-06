@@ -1,7 +1,7 @@
 ---
 tags: [android-pure-sdkandroid-pure-sdk, fonte, grid, maintain, padrao, sdk]
 aliases: [Button Visibility Pattern (maintain grid)]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # Button Visibility Pattern (maintain grid)

@@ -1,7 +1,7 @@
 ---
 tags: [decisao, documentos, fonte, projetos, unica, workspaceorganization]
 aliases: [Organizar Desktop\Codigos\ como raiz unica de projetos]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # Organizar Desktop\Codigos\ como raiz unica de projetos

@@ -1,7 +1,7 @@
 ---
 tags: [android, clique, decisao, fonte, proximo, treinamentonavegacao]
 aliases: [Sempre fechar teclado virtual Android antes do proximo cliqu]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # Sempre fechar teclado virtual Android antes do proximo clique

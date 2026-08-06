@@ -1,7 +1,7 @@
 ---
 tags: [bug, projeto, protocolo, providermcpserverpy52-55, quebrando, requests]
 aliases: [MCP server Failed to get tools no OpenCode]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # MCP server Failed to get tools no OpenCode

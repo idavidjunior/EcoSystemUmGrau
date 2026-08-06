@@ -1,7 +1,7 @@
 ---
 tags: [opencode, padrao, perguntou, sao, uteis, verificar]
 aliases: [Ilhas no grafo: notas com grau 0 e como conecta-las]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # Ilhas no grafo: notas com grau 0 e como conecta-las

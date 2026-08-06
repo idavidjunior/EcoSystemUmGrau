@@ -1,7 +1,7 @@
 ---
 tags: [conectado, enfati, episodio, missao, opencode, status, tailscale, usuario]
 aliases: [2026-08-04: Jarvis do celular conectado ao bridge via Tailsc]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # 2026-08-04: Jarvis do celular conectado ao bridge via Tailscale — Usuario enfati

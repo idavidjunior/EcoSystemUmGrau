@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, dispara, general, infinita, processing, while]
 aliases: [corrigido travamento widget pywebview]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # corrigido travamento widget pywebview

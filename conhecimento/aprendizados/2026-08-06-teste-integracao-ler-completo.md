@@ -29,3 +29,7 @@ Rodou `python tests/test_integration.py` no `ler-runtime/`.
 - Erro final apenas encoding Unicode no print (caractere triangulo), nao afeta funcionalidade
 - Pipeline completo operacional: Context Loader (BM25) + Auditor adaptativo
 - Missao nao recomeca do zero - checkpoints salvos a cada iteracao
+
+## Conexoes
+
+- [[cluster-hub-ler]]

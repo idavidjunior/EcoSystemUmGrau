@@ -1,7 +1,7 @@
 ---
 tags: [400, 4m9q2k9p, decisao, fonte, invalid, mp3player-metadata-rescue]
 aliases: [**Step 0: AcoustID fingerprint** — `AcoustIDService.searchBy]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # **Step 0: AcoustID fingerprint** — `AcoustIDService.searchByFile()` — almost always fails because API key `4m9Q2k9p` is invalid (HTTP 400)

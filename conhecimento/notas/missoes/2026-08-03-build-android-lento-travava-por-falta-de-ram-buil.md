@@ -1,7 +1,7 @@
 ---
 tags: [desugardebugfiledependencies, erro, missao, opencode, projeto, ram, status, voxu]
 aliases: [2026-08-03: Build Android lento travava por falta de RAM — B]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # 2026-08-03: Build Android lento travava por falta de RAM — Build do projeto VoxU

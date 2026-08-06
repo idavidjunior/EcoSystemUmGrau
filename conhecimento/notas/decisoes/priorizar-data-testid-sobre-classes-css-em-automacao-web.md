@@ -1,7 +1,7 @@
 ---
 tags: [decisao, dinamicos, fonte, frequentemente, sao, treinamentonavegacao]
 aliases: [Priorizar data-testid sobre classes CSS em automacao web]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # Priorizar data-testid sobre classes CSS em automacao web

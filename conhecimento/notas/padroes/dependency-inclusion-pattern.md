@@ -1,7 +1,7 @@
 ---
 tags: [android, android-pure-sdkandroid-pure-sdk, fonte, padrao, pure, sdk]
 aliases: [Dependency Inclusion Pattern]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # Dependency Inclusion Pattern

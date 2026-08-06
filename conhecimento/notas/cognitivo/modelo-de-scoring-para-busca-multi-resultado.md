@@ -1,7 +1,7 @@
 ---
 tags: [algorithm, baixo, cognitivo, errada, informacao, retornar]
 aliases: [Modelo de scoring para busca multi-resultado]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # Modelo de scoring para busca multi-resultado

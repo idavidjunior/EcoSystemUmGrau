@@ -1,7 +1,7 @@
 ---
 tags: [automã, cita, decisao, missao, opencode, permanente, status, tico]
 aliases: [﻿# DecisÃ£o: Aprendizado automÃ¡tico permanente — ]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # ﻿# DecisÃ£o: Aprendizado automÃ¡tico permanente — 

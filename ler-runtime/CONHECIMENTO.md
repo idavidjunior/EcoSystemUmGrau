@@ -1,14 +1,14 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-05T19:15:26.028201
+**Exportado em:** 2026-08-06T09:08:54.447722
 **Projetos:** 4
 **Padroes Tecnicos:** 81
 **Decisoes:** 55
 **Bug Fixes:** 46
-**Padroes Cognitivos:** 49
+**Padroes Cognitivos:** 50
 **Heuristicas:** 32
 **Frameworks:** 10
-**Missoes Aprendidas:** 201
+**Missoes Aprendidas:** 224
 
 ---
 
@@ -436,11 +436,11 @@ impacto: Agente coordenador tem motor de contexto unifica
 | 73 | ler_aprendizado | Taxonomia correta de habilidades Jarvis |
 | 74 | opencode | Controle da TV LG webOS via SSAP |
 | 75 | opencode | ﻿# 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS) |
-| 76 | opencode+opencode+opencode | Config: ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 |
+| 76 | opencode+opencode+opencode+opencode | Config: ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 |
 | 77 | opencode | Secrets Guard no preflight_check |
 | 78 | opencode | widget desktop grafo tempo real |
-| 79 | opencode+opencode+opencode | 2026-08-04: Persistencia da conexao do Jarvis |
-| 80 | opencode+opencode | 2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6) |
+| 79 | opencode+opencode+opencode+opencode | 2026-08-04: Persistencia da conexao do Jarvis |
+| 80 | opencode+opencode+opencode | 2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6) |
 | 81 | opencode | Ilhas no grafo: notas com grau 0 e como conecta-las |
 
 ## Bug Fixes e Corrigidos
@@ -1188,6 +1188,17 @@ data: 2026-08-02
 contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
 decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente
 
+### ﻿---
+**Dominio:** general
+**Fonte:** opencode
+
+﻿---
+tipo: decisao
+tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
+data: 2026-08-02
+contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
+decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -1282,7 +1293,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-05T19:15:25.976196
+**Ultima atualizacao:** 2026-08-06T09:08:54.347533
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

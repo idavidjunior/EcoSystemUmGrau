@@ -1,7 +1,7 @@
 ---
 tags: [intermitentemente, ipv4, ipv6, missao, opencode, padrao, rota, status]
 aliases: [2026-08-03: ADB remoto via Tailscale - script automatico de ]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # 2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6) — C

@@ -1,7 +1,7 @@
 ---
 tags: [app, arquitetura, decisao, jarvis, missao, opencode, resultados, status]
 aliases: [﻿# DecisÃ£o: Arquitetura Jarvis App — ]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # ﻿# DecisÃ£o: Arquitetura Jarvis App — 

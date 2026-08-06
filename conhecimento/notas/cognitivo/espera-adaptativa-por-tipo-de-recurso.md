@@ -1,7 +1,7 @@
 ---
 tags: [calls, cognitivo, foit, fout, performance, variavel]
 aliases: [Espera adaptativa por tipo de recurso]
-date: 2026-08-05
+date: 2026-08-06
 ---
 
 # Espera adaptativa por tipo de recurso
