@@ -1310,6 +1310,29 @@ async def servir():
     logger.info(f"  historico: {HIST_PATH.name}")
     logger.info("="*50)
     async with websockets.serve(lidar, "0.0.0.0", 8765):
+        # Warm-up automatico do LLM em background
+        async def warmup():
+            try:
+                logger.info("warm-up: iniciando requisicao para aquecer modelo...")
+                async with aiohttp.ClientSession() as sess:
+                    payload = {
+                        "messages": [{"role": "user", "content": "Ola"}],
+                        "max_tokens": 2
+                    }
+                    auth = aiohttp.BasicAuth("opencode", SERVER_PASS)
+                    async with sess.post(f"{SERVE_URL}/api/chat/completions",
+                                         json=payload, auth=auth,
+                                         timeout=aiohttp.ClientTimeout(total=90)) as resp:
+                        if resp.status == 200:
+                            logger.info("warm-up: modelo aquecido com sucesso")
+                        else:
+                            logger.warning(f"warm-up: resposta inesperada {resp.status}")
+            except asyncio.CancelledError:
+                pass
+            except Exception as e:
+                logger.warning(f"warm-up: erro (modelo pode estar frio): {e}")
+
+        asyncio.create_task(warmup())
         await asyncio.Future()
 
 if __name__ == "__main__":
