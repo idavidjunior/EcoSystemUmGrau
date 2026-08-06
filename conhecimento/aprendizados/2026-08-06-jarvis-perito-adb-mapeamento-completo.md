@@ -33,8 +33,22 @@ impacto: Qualquer automacao Android (build, install, UI tap, screenshot, statusb
 - `adb shell pm path <package>` — caminho do APK instalado (ex: `/system_ext/priv-app/Settings/Settings.apk`)
 - `adb shell pm install [-r] [-d] [-t] <apk>` — instalar; `-r` reinstala mantendo dados, `-d` permite downgrade, `-t` test
 - `adb install [-r] [-d] [-t] <apk_local>` — instalar APK do PC no celular
+- `adb install -g <apk>` — concede todas as permissoes do manifest apos instalar
+- `adb install --instant <apk>` — instala como app efemero (instant app)
+- `adb install --fastdeploy <apk>` — deploy rapido (so patch, deltas)
+- `adb install --no-streaming <apk>` — push APK separado do invoke PM (mais lento, mais compativel)
+- `adb install-multiple a.apk b.apk` — varios APKs de um unico pacote (split APKs)
+- `adb install-multi-package a.apk b.apk` — varios pacotes atomicos (transacao all-or-nothing)
 - `adb uninstall <package>` — desinstalar
 - `adb shell cmd package list packages -3` — alternativa ao pm
+
+### Port forwarding (redirecionamento de portas)
+- `adb forward tcp:6123 tcp:7123` — PC:6123 → celular:7123 (TCP)
+- `adb forward --list` — lista todos os forwards ativos
+- `adb forward --remove tcp:6123` — remove forward especifico
+- `adb forward --remove-all` — remove todos
+- `adb forward tcp:LOCAL abstract-local:REMOTE` — socket Unix abstrato
+- Usado pra debug de apps que rodam servidor no celular (gdbserver, servidores custom)
 
 ### Automacao de UI (input / uiautomator) — capacidade-chave de perito
 - `adb shell input tap <x> <y>` — toque na coordenada (resolucao 1080x2400)
