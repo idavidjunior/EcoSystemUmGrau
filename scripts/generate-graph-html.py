@@ -1025,6 +1025,14 @@ def gerar_html(nos, arestas, output_path):
   }}
   setInterval(_atualizarStats, 3000);
   setTimeout(_atualizarStats, 1200);
+
+  // Variaveis globais de tema — definidas antes do tick loop
+  var _corAresta = '#666';
+  var _sombraCor = 'rgba(137,180,250,0.35)';
+  var _glowCor = '#89b4fa';
+  var _pulsoForca = 1.0;
+  var _pulsoSombra = 1.0;
+
   network.on('tick', () => {{
     if (_tickPausado) return;
     // Quando ha um destaque/foco ativo (clicado em no, categoria, cluster),
@@ -1051,9 +1059,9 @@ def gerar_html(nos, arestas, output_path):
         // Nos QUENTES (atividade real alta, mtime recente) latejam com mais
         // energia e brilham mais forte: o pulso escala com atv.
         const atv = (n.atv != null) ? n.atv : 0.5;
-        const pulso = Math.sin(agora * 0.0020 * _velGlobal + fase) * (0.07 + 0.13 * atv);
+        const pulso = Math.sin(agora * 0.0020 * _velGlobal + fase) * (0.07 + 0.13 * atv) * _pulsoForca;
         sz = Math.max(6, sz * (1 + pulso * 0.55) * esc);
-        sombra = Math.round(sombra + (6 + 14 * atv) * pulso);
+        sombra = Math.round(sombra + (6 + 14 * atv) * pulso * _pulsoSombra);
       }} else {{
         sz = Math.max(6, sz * esc);
       }}
@@ -1087,16 +1095,16 @@ def gerar_html(nos, arestas, output_path):
         for (let i = 0; i < qtd && todas.length; i++) {{
           alvos.push(todas[Math.floor(Math.random() * todas.length)].id);
         }}
-        arestasUp = arestasUp.map(a =>
-          alvos.includes(a.id)
-            ? {{ ...a, color: '#ffffff', width: 5.5, opacity: 1 }}
-            : a);
+arestasUp = arestasUp.map(a =>
+            alvos.includes(a.id)
+              ? {{ ...a, color: _glowCor, width: 5.5, opacity: 1 }}
+              : a);
         // leve glow no no destino de cada sinapse
         alvos.forEach(edgeId => {{
           const _ed = todas.find(x => x.id === edgeId);
           if (!_ed) return;
           const _dstOrig = original[_ed.to] || {{color:'#4e79a7', size:15}};
-          nodes.update([{{ id: _ed.to, color: '#89b4fa', size: 26, shadow: true, shadowSize: 28 }}]);
+          nodes.update([{{ id: _ed.to, color: _glowCor, size: 26, shadow: true, shadowSize: 28 }}]);
           setTimeout(() => nodes.update([{{ id: _ed.to, color: _dstOrig.color, size: _dstOrig.size }}]), 700);
         }});
       }}
