@@ -1,5 +1,5 @@
 ---
-tags: [array, object, objects, padrao, sessionsession, single]
+tags: [array, object, objects, padrao, session, single]
 aliases: [OpenCode MCP config format]
 date: 2026-08-05
 ---
