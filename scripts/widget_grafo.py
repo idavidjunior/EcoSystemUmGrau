@@ -1,4 +1,4 @@
-"""Enhanced Widget with test mode."
+"""Widget desktop do Cerebro Vivo - grafo do conhecimento em tempo real.
 
 Janela flutuante (pywebview) com o grafo interativo. Sem bordas visuais, mas
 MOVIDA livremente pelo desktop arrastando a barra superior (moldura discreta)
