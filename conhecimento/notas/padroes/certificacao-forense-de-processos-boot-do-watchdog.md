@@ -1,12 +1,12 @@
 ---
-tags: [130, filtro, ganhou, opencode, orfaos, padrao]
+tags: [130, filtro, ganhou, opencodeopencode, orfaos, padrao]
 aliases: [Certificacao forense de processos + boot do watchdog]
 date: 2026-08-07
 ---
 
 # Certificacao forense de processos + boot do watchdog
 
-**Fonte:** opencode
+**Fonte:** opencode+opencode
 
 ---
 tipo: padrao
@@ -15,9 +15,7 @@ data: 2026-08-06
 contexto: "Apos a clausula petrea (memoria #129) e o watchdog resiliente (memoria #130), o filtro de orfaos ganhou certificacao forense: so mata processo se for 'lixo' comprovado. O watch
 ## Conexoes
 
-- [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
-- [[controle-da-tv-lg-webos-via-ssap]]
+- [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
 - [[padrao-hub-padroes]]
-- [[secrets-guard-no-preflightcheck]]
+- [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]

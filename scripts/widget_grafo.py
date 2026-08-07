@@ -32,7 +32,7 @@ VIEW_COPY = BASE / 'docs' / 'grafo_widget.html'
 GEO_FILE = BASE / 'docs' / 'grafo_widget_geometria.json'
 ORB_FILE = BASE / 'docs' / 'grafo_widget_orbGrafo.json'
 
-POLL_MS = 2000
+POLL_MS = 10000
 TITLE = 'Cerebro Vivo'
 BG = '#1e1e2e'
 DEFAULT_W, DEFAULT_H = 1280, 800
@@ -46,13 +46,16 @@ WIDGET_CSS = """
   #net { flex: 1; height: 100vh !important; width: 100% !important; }
   body { margin: 0; width: 100vw; height: 100vh; overflow: hidden; background: #1e1e2e; }
   #mk-drag { position: fixed; left: 0; top: 0; width: 100%; height: 16px;
-             cursor: grab; z-index: 9999; background: transparent; }
-  #mk-drag:active { cursor: grabbing; }
+             cursor: grab; z-index: 10001; background: rgba(203,166,247,0.08);
+             pointer-events: auto; }
+  #mk-drag:active { cursor: grabbing; background: rgba(203,166,247,0.15); }
+  #mk-drag:hover { background: rgba(203,166,247,0.12); }
   #mk-resize { position: fixed; right: 0; bottom: 0; width: 18px; height: 18px;
-               cursor: nwse-resize; display: block; z-index: 9999;
+               cursor: nwse-resize; display: block; z-index: 10001;
                background: rgba(203,166,247,0.15);
                border-top: 2px solid rgba(203,166,247,0.4);
-               border-left: 2px solid rgba(203,166,247,0.4); }
+               border-left: 2px solid rgba(203,166,247,0.4);
+               pointer-events: auto; }
   #mk-resize:hover { background: rgba(203,166,247,0.35); }
   /* Painel de controles: sempre visivel por padrao, toggle via botao olho */
   #mk-controles { display: flex !important; }
@@ -211,7 +214,6 @@ def _versao() -> str:
             if p.is_file():
                 late = max(late, _mtime_ns(p))
     v.append(late)
-    v.append(_mtime_ns(OUTPUT_HTML))
     return '-'.join(str(x) for x in v)
 
 
@@ -570,26 +572,6 @@ WIDGET_JS_EXTRA = """
     flashGroup.appendChild(labelFlash);
     flashGroup.appendChild(btnFlash);
 
-    // ---- Botao hide panel (olho) ----
-    var painelToggle = mkEl('div');
-    painelToggle.id = 'mk-painel-toggle';
-    painelToggle.title = 'Ocultar/mostrar painel de controles';
-    painelToggle.style.cssText =
-      'position:fixed;top:10px;left:10px;z-index:99998;width:28px;height:28px;' +
-      'border-radius:4px;cursor:pointer;display:flex;align-items:center;' +
-      'justify-content:center;font-size:14px;user-select:none;' +
-      'background:rgba(30,30,46,0.7);border:1px solid ' + cores.borda + ';';
-    painelToggle.innerHTML = '\\u1F441'; // olho
-    painelToggle._visivel = true;
-    painelToggle.addEventListener('click', function() {
-      painelToggle._visivel = !painelToggle._visivel;
-      if (typeof painel !== 'undefined' && painel) {
-        painel.style.display = painelToggle._visivel ? 'flex' : 'none';
-      }
-      painelToggle.innerHTML = painelToggle._visivel ? '\\u1F441' : '\\u1F442';
-    });
-    document.body.appendChild(painelToggle);
-
     // ---- Botao reset (🔄) alinhado ao lado do painel ----
     var btnReset = mkEl('div');
     btnReset.id = 'mk-btn-reset';
@@ -668,6 +650,24 @@ WIDGET_JS_EXTRA = """
     layoutGroup.appendChild(btnReset);
     painel.appendChild(layoutGroup);
     document.body.appendChild(painel);
+
+    // ---- Botao hide panel (olho) ----
+    var painelToggle = mkEl('div');
+    painelToggle.id = 'mk-painel-toggle';
+    painelToggle.title = 'Ocultar/mostrar painel de controles';
+    painelToggle.style.cssText =
+      'position:fixed;top:22px;left:10px;z-index:99998;width:28px;height:28px;' +
+      'border-radius:4px;cursor:pointer;display:flex;align-items:center;' +
+      'justify-content:center;font-size:14px;user-select:none;' +
+      'background:rgba(30,30,46,0.7);border:1px solid ' + cores.borda + ';';
+    painelToggle.innerHTML = '\\u1F441'; // olho
+    painelToggle._visivel = true;
+    painelToggle.onclick = function() {
+      painelToggle._visivel = !painelToggle._visivel;
+      painel.style.display = painelToggle._visivel ? 'flex' : 'none';
+      painelToggle.innerHTML = painelToggle._visivel ? '\\u1F441' : '\\u1F442';
+    };
+    document.body.appendChild(painelToggle);
 
     function reposicionarPainel() {
       var hdr = document.getElementById('header');

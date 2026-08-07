@@ -1,12 +1,12 @@
 ---
-tags: [conexao, distinguir, estado, opencode, padrao, persistente]
+tags: [conexao, distinguir, estado, opencodeopencode, padrao, persistente]
 aliases: [Saudacoes inteligentes: reconexao vs primeira vez]
 date: 2026-08-07
 ---
 
 # Saudacoes inteligentes: reconexao vs primeira vez
 
-**Fonte:** opencode
+**Fonte:** opencode+opencode
 
 ---
 tipo: padrao
@@ -15,9 +15,7 @@ data: 2026-08-06
 contexto: "O bridge Jarvis (jarvis_bridge.py) cumprimentava toda conexao com o mesmo molde, sem distinguir a PRIMEIRA vez da RECONEXAO. O usuario queria que a retomada de conversa foss
 ## Conexoes
 
-- [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
+- [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
-- [[controle-da-tv-lg-webos-via-ssap]]
+- [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
 - [[padrao-hub-padroes]]
-- [[secrets-guard-no-preflightcheck]]

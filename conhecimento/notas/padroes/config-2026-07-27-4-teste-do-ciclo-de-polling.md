@@ -20,5 +20,7 @@ Criado manualmente enquanto o vigilante está rodando para verificar se o pollin
 
 ## Conexoes
 
+- [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]
+- [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]

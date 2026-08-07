@@ -1,18 +1,18 @@
 {
-  "conexoes": 63,
+  "conexoes": 78,
   "hoje": "2026-08-07",
   "saudacoes_hoje": [
-    "Te ouço de novo, David. Diga lá.",
-    "Ô, voltou. Tava com o trator ligado aqui esperando você pisar no acelerador.",
-    "Áudio de volta, David. Já estava sentindo falta desse barulho. Diga.",
-    "E a conexão voltou. Estou por aqui.",
-    "De volta, senhor. A linha continua aberta.",
-    "Ou você novamente, David. Bom te ter de volta na linha.",
-    "Linha reestabelecida. Continuávamos no meio de algo, senhor — digo onde paramos quando quiser.",
-    "Voltou, David. Já estava aqui esperando o sinal limpar.",
-    "De volta na linha, David. Pode continuar de onde a gente estava.",
-    "Áudio estável novamente, David. Estou aqui, pode prosseguir."
+    "Por aqui de novo, David. Seguindo.",
+    "De volta, David. Te escuto.",
+    "De novo na linha, David. Diga o comando.",
+    "Tô de volta na frequência, David. Continue de onde paramos.",
+    "Conexão estável de novo, David. Pode mandar.",
+    "Ótimo, David, você voltou. Pode continuar.",
+    "Voltamos, David. Dá o play aí.",
+    "De volta, David. De onde paramos?",
+    "Continuamos, David. Tava no meio de uma coisa aqui.",
+    "Tô aqui, David. Trecho de onde cortou."
   ],
-  "ultima_saudacao": "Áudio estável novamente, David. Estou aqui, pode prosseguir.",
-  "ultima_saudacao_ts": 1786134581.2701561
+  "ultima_saudacao": "Tô aqui, David. Trecho de onde cortou.",
+  "ultima_saudacao_ts": 1786140247.9121552
 }

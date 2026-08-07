@@ -1,12 +1,12 @@
 ---
-tags: [desde, opencodeopencodeopencodeopencode, padrao, travado, verificacao, voxumgrau]
+tags: [desde, opencodeopencodeopencodeopencodeopencode, padrao, travado, verificacao, voxumgrau]
 aliases: [2026-08-04: Persistencia da conexao do Jarvis]
 date: 2026-08-07
 ---
 
 # 2026-08-04: Persistencia da conexao do Jarvis
 
-**Fonte:** opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao

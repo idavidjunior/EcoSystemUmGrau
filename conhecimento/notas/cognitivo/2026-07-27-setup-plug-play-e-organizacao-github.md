@@ -421,6 +421,22 @@ Integrated 5 MCP servers from `opencode-agents-mcp` repo into EcoSystemUmGrau:
 - test_imports.py: 3 marcadores
 - test_smoke.py: 3 marcadores
 - consolidate_build_pipeline.py: 9 marcadores
+
+---
+tipo: episodio
+tags: [ler, integracao, teste, open-code, supervisor, replanejamento]
+data: 2026-08-06
+contexto: Teste de integracao do Loop Engineering Runtime (LER) via test_integration.py
+decisao: O LER v2.0 esta operacional e executa loop completo autonomamente
+impacto: Validou arquitetura completa: planejamento, execucao, validacao, aprendizado, replanejamento
+---
+
+# Teste de Integracao LER Completo - 2026-08-06
+
+## Executado
+Rodou `python tests/test_integration.py` no `ler-runtime/`.
+
+#
 ## Conexoes
 
 - [[cluster-hub-cognicao]]
