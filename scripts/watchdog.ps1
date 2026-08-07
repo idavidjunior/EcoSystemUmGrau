@@ -234,11 +234,14 @@ while ($true) {
         Write-Log "Bridge OK (PID $(Get-BridgePid $BridgePort))"
     } else {
         if (Test-BridgeUp $BridgePort) {
-            # Porta LISTENING mas processo dono morto: socket órfão.
+            # Porta LISTENING mas processo dono não confere: socket órfão.
+            # Só limpa com CERTIFICAÇÃO FORENSE completa.
             $orphanPid = Get-BridgePid $BridgePort
-            Write-Log "Bridge com socket orfao (PID $orphanPid) - limpando handle..."
-            taskkill /F /PID $orphanPid 2>$null | Out-Null
-            Start-Sleep -Seconds 3
+            if ($orphanPid) {
+                Write-Log "Bridge com socket orfao na porta $BridgePort - certificando processo $orphanPid..."
+                Invoke-KillCertificado -Pid $orphanPid -Alvo "bridge-orfao" -NomeEsperado "python" -IdadeMinimaSeg 10 -PortaListen $BridgePort -CaminhoProtegido @("opencode-aidesktop")
+                Start-Sleep -Seconds 3
+            }
         }
         Write-Log "Bridge MORTO na porta $BridgePort - reiniciando..."
         if (Test-Path $PYTHON) {
@@ -265,9 +268,11 @@ while ($true) {
             Write-Log "Serve OK (PID $servePid, ${memMB}MB)"
             if ($memMB -gt 800) { Write-Log "ALERTA: Serve com ${memMB}MB - alto consumo" }
         } else {
-            Write-Log "Serve na porta $ServePort nao responde ou PID morto - reiniciando..."
+            # Porta escuta mas sem resposta de health OU processo dono morto.
+            # Certifica antes de derrubar (nunca derruba processo em uso).
+            Write-Log "Serve na porta $ServePort nao responde health - certificando..."
             if ($servePid -match '^\d+$') {
-                taskkill /F /PID $servePid 2>$null | Out-Null
+                Invoke-KillCertificado -Pid ([int]$servePid) -Alvo "serve-mau" -NomeEsperado "opencode" -IdadeMinimaSeg 10 -PortaListen $ServePort -CaminhoProtegido @("opencode-aidesktop")
                 Start-Sleep -Seconds 2
             }
         }
@@ -299,21 +304,29 @@ while ($true) {
     # CLÁUSULA PÉTREA: O OpenCode DESKTOP NUNCA pode ser fechado automaticamente.
     # Só o usuário, manualmente. Aqui limpamos apenas órfãos do CLI (opencode run),
     # e NUNCA tocamos em processos do desktop (@opencode-aidesktop).
+    # Cada candidato passa pela CERTIFICAÇÃO FORENSE: só é morto se for lixo de
+    # verdade (sem janela, sem filhos, sem rede, sem pai supervisionando, idoso).
     $desktopPath = "opencode-aidesktop"
-    $orphans = Get-Process -Name "opencode" -ErrorAction SilentlyContinue | Where-Object {
+    $candidatos = Get-Process -Name "opencode" -ErrorAction SilentlyContinue | Where-Object {
         $p = Get-CimInstance Win32_Process -Filter "ProcessId=$($_.Id)" -ErrorAction SilentlyContinue
         $cmd = $p.CommandLine
         if (-not $cmd) { return $false }
         # Proteção absoluta: qualquer processo do desktop é intocável.
         if ($cmd -match [regex]::Escape($desktopPath)) { return $false }
-        # Só mata CLI órfão: "opencode run" (sessões soltas) — nunca o "serve".
+        # Só avalia CLI: "opencode run" (sessões soltas) — nunca o "serve".
         ($cmd -match "opencode\.exe run")
     }
-    if ($orphans) {
-        $totalMB = 0
-        foreach ($p in $orphans) { $totalMB += [math]::Round($p.WorkingSet64 / 1MB, 0) }
-        $orphans | Stop-Process -Force
-        Write-Log "Limpou $($orphans.Count) processos orfaos do CLI OpenCode (${totalMB}MB liberados). Desktop intocado."
+    $mortos = 0
+    $bloqueados = 0
+    foreach ($cand in $candidatos) {
+        if (Invoke-KillCertificado -Pid $cand.Id -Alvo "orphan-cli" -NomeEsperado "opencode" -IdadeMinimaSeg 60 -CaminhoProtegido @("opencode-aidesktop")) {
+            $mortos++
+        } else {
+            $bloqueados++
+        }
+    }
+    if ($candidatos -and ($mortos -gt 0 -or $bloqueados -gt 0)) {
+        Write-Log "Orfaos CLI: $mortos mortos, $bloqueados preservados. Desktop intocado."
     }
 
     Start-Sleep -Seconds $Interval
