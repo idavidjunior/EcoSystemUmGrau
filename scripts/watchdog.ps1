@@ -98,7 +98,7 @@ function Get-BridgePid {
 # =====================================================================
 function Test-ForensicoLixo {
     param(
-        [int]$Pid,
+        [int]$ProcessId,
         [string]$NomeEsperado,          # nome do processo (ex.: python, opencode)
         [int]$IdadeMinimaSeg = 30,      # nao mata processo recem-criado
         [int]$PortaListen = $null,      # se definida, o socket orfao desta porta e o alvo
@@ -108,7 +108,7 @@ function Test-ForensicoLixo {
     $libera = $true
 
     # 1) Processo existe? Se nao existe, nada a fazer (ja morreu).
-    $proc = Get-Process -Id $Pid -ErrorAction SilentlyContinue
+    $proc = Get-Process -Id $ProcessId -ErrorAction SilentlyContinue
     if (-not $proc) {
         $motivos.Add("processo inexistente (ja morto)")
         return @{ Liberar = $false; Motivos = $motivos.ToArray() }
@@ -119,7 +119,7 @@ function Test-ForensicoLixo {
         $libera = $false
     }
     # 3) Caminho protegido? Jamais tocar (ex.: desktop).
-    $cim = Get-CimInstance Win32_Process -Filter "ProcessId=$Pid" -ErrorAction SilentlyContinue
+    $cim = Get-CimInstance Win32_Process -Filter "ProcessId=$ProcessId" -ErrorAction SilentlyContinue
     if ($cim -and $cim.ExecutablePath) {
         foreach ($prot in $CaminhoProtegido) {
             if ($cim.ExecutablePath -match [regex]::Escape($prot)) {
@@ -148,7 +148,7 @@ function Test-ForensicoLixo {
         $libera = $false
     }
     # 6) Tem processos filhos vivos? Processo com filhos ativos e pai em uso.
-    $filhos = Get-CimInstance Win32_Process -Filter "ParentProcessId=$Pid" -ErrorAction SilentlyContinue
+    $filhos = Get-CimInstance Win32_Process -Filter "ParentProcessId=$ProcessId" -ErrorAction SilentlyContinue
     if ($filhos) {
         $filhosVivos = $filhos | Where-Object {
             (Get-Process -Id $_.ProcessId -ErrorAction SilentlyContinue) -ne $null
@@ -159,7 +159,7 @@ function Test-ForensicoLixo {
         }
     }
     # 7) Tem conexões de rede ativas (nao-listen)? Uso real de rede = nao e lixo.
-    $conns = Get-NetTCPConnection -OwningProcess $Pid -ErrorAction SilentlyContinue
+    $conns = Get-NetTCPConnection -OwningProcess $ProcessId -ErrorAction SilentlyContinue
     $conexoesAtivas = $conns | Where-Object { $_.State -in @("Established", "CloseWait", "TimeWait", "FinWait1", "FinWait2", "SynSent") }
     if ($conexoesAtivas) {
         $motivos.Add("tem $($conexoesAtivas.Count) conexoes de rede ativas (Ex.: $($conexoesAtivas[0].RemoteAddress):$($conexoesAtivas[0].RemotePort))")
@@ -205,22 +205,22 @@ function Test-ForensicoLixo {
 
 function Invoke-KillCertificado {
     param(
-        [int]$Pid,
+        [int]$ProcessId,
         [string]$Alvo,
         [string]$NomeEsperado,
         [int]$IdadeMinimaSeg = 30,
         [int]$PortaListen = $null,
         [string[]]$CaminhoProtegido = @()
     )
-    $veredito = Test-ForensicoLixo -Pid $Pid -NomeEsperado $NomeEsperado `
+    $veredito = Test-ForensicoLixo -ProcessId $ProcessId -NomeEsperado $NomeEsperado `
         -IdadeMinimaSeg $IdadeMinimaSeg -PortaListen $PortaListen `
         -CaminhoProtegido $CaminhoProtegido
     if ($veredito.Liberar) {
-        Write-Log "KILL CERTIFICADO [$Alvo PID $Pid]: " + ($veredito.Motivos -join "; ")
-        Stop-Process -Id $Pid -Force -ErrorAction SilentlyContinue
+        Write-Log "KILL CERTIFICADO [$Alvo PID $ProcessId]: $($veredito.Motivos -join '; ')"
+        Stop-Process -Id $ProcessId -Force -ErrorAction SilentlyContinue
         return $true
     } else {
-        Write-Log "KILL BLOQUEADO [$Alvo PID $Pid]: " + ($veredito.Motivos -join "; ")
+        Write-Log "KILL BLOQUEADO [$Alvo PID $ProcessId]: $($veredito.Motivos -join '; ')"
         return $false
     }
 }
@@ -239,7 +239,7 @@ while ($true) {
             $orphanPid = Get-BridgePid $BridgePort
             if ($orphanPid) {
                 Write-Log "Bridge com socket orfao na porta $BridgePort - certificando processo $orphanPid..."
-                Invoke-KillCertificado -Pid $orphanPid -Alvo "bridge-orfao" -NomeEsperado "python" -IdadeMinimaSeg 10 -PortaListen $BridgePort -CaminhoProtegido @("opencode-aidesktop")
+                Invoke-KillCertificado -ProcessId $orphanPid -Alvo "bridge-orfao" -NomeEsperado "python" -IdadeMinimaSeg 10 -PortaListen $BridgePort -CaminhoProtegido @("opencode-aidesktop")
                 Start-Sleep -Seconds 3
             }
         }
@@ -272,7 +272,7 @@ while ($true) {
             # Certifica antes de derrubar (nunca derruba processo em uso).
             Write-Log "Serve na porta $ServePort nao responde health - certificando..."
             if ($servePid -match '^\d+$') {
-                Invoke-KillCertificado -Pid ([int]$servePid) -Alvo "serve-mau" -NomeEsperado "opencode" -IdadeMinimaSeg 10 -PortaListen $ServePort -CaminhoProtegido @("opencode-aidesktop")
+                Invoke-KillCertificado -ProcessId ([int]$servePid) -Alvo "serve-mau" -NomeEsperado "opencode" -IdadeMinimaSeg 10 -PortaListen $ServePort -CaminhoProtegido @("opencode-aidesktop")
                 Start-Sleep -Seconds 2
             }
         }
@@ -319,7 +319,7 @@ while ($true) {
     $mortos = 0
     $bloqueados = 0
     foreach ($cand in $candidatos) {
-        if (Invoke-KillCertificado -Pid $cand.Id -Alvo "orphan-cli" -NomeEsperado "opencode" -IdadeMinimaSeg 60 -CaminhoProtegido @("opencode-aidesktop")) {
+        if (Invoke-KillCertificado -ProcessId $cand.Id -Alvo "orphan-cli" -NomeEsperado "opencode" -IdadeMinimaSeg 60 -CaminhoProtegido @("opencode-aidesktop")) {
             $mortos++
         } else {
             $bloqueados++

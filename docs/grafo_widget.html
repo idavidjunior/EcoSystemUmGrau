@@ -647,6 +647,10 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
     // Perto (z->1): mais opaco, maior e mais brilhante. Longe (z->0):
     // translucido, menor e apagado -> efeito de relevo/esfera de conhecimento.
     const noUpd = [];
+    // Posicao fisica VIVA (body), nao a do dataset: o dataset nao tem x/y
+    // (layout nao armazena posicao), entao n.x/n.y podem ser undefined e
+    // virariam NaN ao somar a deriva orbital -> quadtree recursao infinita.
+    const _posAtual = network.getPositions();
     const agoraPulso = (!window.__pulseT || (agora - window.__pulseT) > 220);
     if (agoraPulso) window.__pulseT = agora;
     nodes.get().forEach(n => {
@@ -668,14 +672,17 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
       } else {
         sz = Math.max(6, sz * esc);
       }
+      const _pb = _posAtual[n.id];
+      const px = (_pb && Number.isFinite(_pb.x)) ? _pb.x : (Number.isFinite(n.x) ? n.x : 0);
+      const py = (_pb && Number.isFinite(_pb.y)) ? _pb.y : (Number.isFinite(n.y) ? n.y : 0);
       noUpd.push({
         id: n.id,
         opacity: op,
         shadow: z > 0.3,
         shadowSize: sombra,
         size: sz,
-        x: n.x + orb.dx,
-        y: n.y + orb.dy
+        x: px + orb.dx,
+        y: py + orb.dy
       });
     });
     nodes.update(noUpd);
