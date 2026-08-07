@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-07T05:57:22",
+  "updated_at": "2026-08-07T07:50:24",
   "active_project": "EcoSystemUmGrau",
   "objective": "Transformar o Ecossistema Jarvis em Runtime de IA persistente (camada 1: estado+boot)",
-  "last_task": "Refinamento Widget Grafo - painel toggle, reset de prefs, modo 3D, flash nos nodes, labels responsivas",
+  "last_task": "Busca semantica densa integrada (memory_semantic.py) + sync constituicao deployada",
   "operational_context": "Runtime v1: estado persistente em runtime/state.json, boot via scripts/runtime_boot.py. LLM = motor de inferencia; governanca/memoria/continuidade = ecossistema.",
   "active_agents": [],
   "loaded_memory": [],

@@ -310,5 +310,9 @@
   "Usuário: O áudio não está saindo Aconteceu alguma coisa.",
   "Jarvis: Sem resposta.",
   "Usuário: Voltou?",
-  "Jarvis: Entendi, senhor. Confirmando: voltei e o áudio já está funcionando novamente. Testei a voz agora e ela saiu normalmente pela ponte.\n\nO que houve foi uma queda na geração de áudio, mas já está resolvido — o TTS respondeu no teste. Estávamos na tarefa de aprofundar a busca semântica. Quer que eu retome de onde paramos, que era expandir o índice para todas as notas do Obsidian e melhorar o ranking?"
+  "Jarvis: Entendi, senhor. Confirmando: voltei e o áudio já está funcionando novamente. Testei a voz agora e ela saiu normalmente pela ponte.\n\nO que houve foi uma queda na geração de áudio, mas já está resolvido — o TTS respondeu no teste. Estávamos na tarefa de aprofundar a busca semântica. Quer que eu retome de onde paramos, que era expandir o índice para todas as notas do Obsidian e melhorar o ranking?",
+  "Usuário: Preciso que você vá me informando passo a passo que você está executando.",
+  "Jarvis: Entendido, senhor. A partir de agora vou narrar em voz cada passo que eu executar: antes de agir eu digo o que vou fazer, durante eu acompanho o progresso e ao terminar eu resumo o resultado.\n\nCombinado. O que o senhor deseja que eu execute agora?",
+  "Usuário: Qual o resumo das ultimas tarefas?",
+  "Jarvis: Resumindo as últimas tarefas: aprofundar a memória semântica com TF-IDF e cosseno sobre 86 memórias, expandir o índice para incluir as 481 notas do Obsidian e melhorar o ranking com recência e relevância. Também corrigi a queda de áudio e agora a narração em voz está ativa a cada passo. A pendência é retomar a expansão do índice semântico e adicionar embeddings densos, além de testar e validar."
 ]

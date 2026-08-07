@@ -1,5 +1,5 @@
 {
-  "timestamp": "20260807_070016",
+  "timestamp": "20260807_074401",
   "all_healthy": false,
   "results": {
     "adb_usb": {
@@ -13,7 +13,7 @@
         ],
         "count": 1
       },
-      "timestamp": "2026-08-07T06:59:40.059211"
+      "timestamp": "2026-08-07T07:43:26.458340"
     },
     "adb_tcp": {
       "healthy": true,
@@ -26,7 +26,7 @@
         ],
         "count": 1
       },
-      "timestamp": "2026-08-07T06:59:40.184158"
+      "timestamp": "2026-08-07T07:43:26.557753"
     },
     "tailscale_exit": {
       "healthy": true,
@@ -42,7 +42,7 @@
         ],
         "count": 1
       },
-      "timestamp": "2026-08-07T06:59:40.270957"
+      "timestamp": "2026-08-07T07:43:26.704659"
     },
     "ssh_primary": {
       "healthy": false,
@@ -54,7 +54,7 @@
         "port": 22,
         "reachable": false
       },
-      "timestamp": "2026-08-07T06:59:50.285484"
+      "timestamp": "2026-08-07T07:43:36.720850"
     },
     "ssh_backup": {
       "healthy": false,
@@ -66,7 +66,7 @@
         "port": 22,
         "reachable": false
       },
-      "timestamp": "2026-08-07T06:59:56.005058"
+      "timestamp": "2026-08-07T07:43:41.410608"
     },
     "api_local": {
       "healthy": false,
@@ -78,7 +78,7 @@
         "expected": 200,
         "error": "HTTP Error 426: Upgrade Required"
       },
-      "timestamp": "2026-08-07T06:59:56.053279"
+      "timestamp": "2026-08-07T07:43:41.440235"
     },
     "api_remote": {
       "healthy": false,
@@ -89,7 +89,7 @@
         "error": "<urlopen error [Errno 11001] getaddrinfo failed>",
         "url": "https://api.davidjunior.dev/health"
       },
-      "timestamp": "2026-08-07T06:59:56.305522"
+      "timestamp": "2026-08-07T07:43:41.475222"
     },
     "mqtt_broker": {
       "healthy": false,
@@ -101,7 +101,7 @@
         "port": 1883,
         "reachable": false
       },
-      "timestamp": "2026-08-07T07:00:06.315038"
+      "timestamp": "2026-08-07T07:43:51.477168"
     },
     "mqtt_cloud": {
       "healthy": false,
@@ -113,7 +113,7 @@
         "port": 8883,
         "error": "[Errno 11001] getaddrinfo failed"
       },
-      "timestamp": "2026-08-07T07:00:06.464141"
+      "timestamp": "2026-08-07T07:43:51.499031"
     },
     "dns_primary": {
       "healthy": true,
@@ -128,7 +128,7 @@
         ],
         "total_resolvers": 3
       },
-      "timestamp": "2026-08-07T07:00:06.471198"
+      "timestamp": "2026-08-07T07:43:51.502024"
     },
     "ws_service": {
       "healthy": false,
@@ -140,7 +140,7 @@
         "port": 8765,
         "reachable": false
       },
-      "timestamp": "2026-08-07T07:00:16.480968"
+      "timestamp": "2026-08-07T07:44:01.507533"
     },
     "vpn_alternative": {
       "healthy": false,
@@ -151,7 +151,7 @@
         "type": "openvpn",
         "detected": false
       },
-      "timestamp": "2026-08-07T07:00:16.519510"
+      "timestamp": "2026-08-07T07:44:01.597527"
     }
   }
 }

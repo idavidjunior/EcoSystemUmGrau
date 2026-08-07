@@ -2348,5 +2348,25 @@
     "access_count": 0,
     "created_at": "2026-08-07T07:32:51.393636",
     "last_accessed": "2026-08-07T07:32:51.393636"
+  },
+  {
+    "id": 148,
+    "kind": "decisao",
+    "task": "Busca semantica densa integrada + sync constituicao",
+    "summary": "Integrei a camada densa (embeddings paraphrase-multilingual-MiniLM-L12-v2) na busca semantica do memory_semantic.py: fusao 50/50 com TF-IDF normalizado, modelo cacheado por processo, fallback TF-IDF se dense ausente. Tambem corrigi divergencia do preflight: copia deployada da Constituicao (~/.config/opencode/agents/00-system-rules.md) estava desatualizada; sincronizei do repo e preflight agora passa 100%.",
+    "project": "",
+    "tags": [
+      "semantic",
+      "memory",
+      "l12",
+      "minilm",
+      "multilingual",
+      "paraphrase"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T07:46:38.639293",
+    "last_accessed": "2026-08-07T07:46:38.639293"
   }
 ]

@@ -21,6 +21,15 @@ from pathlib import Path
 
 import numpy as np
 
+# Silencia logs verbosos do huggingface/sentence-transformers (httpx, download)
+# no processo da bridge — mantem o log limpo para diagnósticos reais.
+for _mod in ('httpx', 'huggingface_hub', 'sentence_transformers', 'urllib3'):
+    try:
+        import logging
+        logging.getLogger(_mod).setLevel(logging.ERROR)
+    except Exception:
+        pass
+
 BASE = str(Path(__file__).resolve().parent.parent)
 MEM_DIR = os.path.join(BASE, 'conhecimento', 'memoria')
 MEMORIES_FILE = os.path.join(MEM_DIR, 'memories.json')
@@ -257,6 +266,16 @@ def search(query: str, k: int = 5, min_score: float = 0.05) -> list:
             vectorizer = pickle.load(f)
         with open(MEMORIES_FILE, encoding='utf-8') as f:
             memories = json.load(f)
+        dense = None
+        dense_model = None
+        if os.path.exists(DENSE_MATRIX_FILE):
+            try:
+                dense = np.load(DENSE_MATRIX_FILE)
+                from sentence_transformers import SentenceTransformer
+                dense_model = SentenceTransformer(DENSE_MODEL)
+            except Exception:
+                dense = None
+                dense_model = None
         _CACHE = {
             'matrix': load_npz(MATRIX_FILE),
             'meta': meta,
@@ -264,11 +283,35 @@ def search(query: str, k: int = 5, min_score: float = 0.05) -> list:
             'mem_by_id': {m['id']: m for m in memories},
             'cosine': cosine_similarity,
             'acesso': _carregar_acesso(),
+            'dense': dense,
+            'dense_model': dense_model,
         }
 
     c = _CACHE
     q_vec = c['vectorizer'].transform([query.lower()])
     sims = c['cosine'](q_vec, c['matrix']).flatten()
+    # sims fica no intervalo [0,1] tipicamente; normaliza para comparação estável.
+    max_sim = float(sims.max()) if len(sims) else 0.0
+    if max_sim > 0:
+        sims = sims / max_sim
+
+    # Camada densa (embeddings) — fusão com TF-IDF se disponível.
+    denso = None
+    if c.get('dense') is not None and c.get('dense_model') is not None \
+            and len(c['dense']) == len(c['meta']['ids']):
+        try:
+            q_emb = c['dense_model'].encode([query], normalize_embeddings=True)
+            dsims = np.dot(q_emb, c['dense'].T).flatten()
+            # normaliza denso para [0,1]
+            dmax = float(dsims.max()) if len(dsims) else 0.0
+            if dmax > 0:
+                dsims = dsims / dmax
+            denso = dsims
+        except Exception:
+            denso = None
+
+    if denso is not None:
+        sims = 0.5 * sims + 0.5 * denso
 
     idx_sorted = np.argsort(sims)[::-1]
     results = []

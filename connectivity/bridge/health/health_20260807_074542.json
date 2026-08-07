@@ -1,28 +1,32 @@
 {
-  "timestamp": "20260807_070347",
+  "timestamp": "20260807_074542",
   "all_healthy": false,
   "results": {
     "adb_usb": {
-      "healthy": false,
+      "healthy": true,
       "type": "adb_usb",
       "name": "ADB USB",
       "primary": true,
       "details": {
-        "devices": [],
-        "count": 0
+        "devices": [
+          "100.64.71.9:5555"
+        ],
+        "count": 1
       },
-      "timestamp": "2026-08-07T07:02:37.305200"
+      "timestamp": "2026-08-07T07:45:07.489806"
     },
     "adb_tcp": {
-      "healthy": false,
+      "healthy": true,
       "type": "adb_tcp",
       "name": "ADB TCP/IP",
       "primary": false,
       "details": {
-        "connected": [],
-        "count": 0
+        "connected": [
+          "100.64.71.9:5555"
+        ],
+        "count": 1
       },
-      "timestamp": "2026-08-07T07:02:57.347858"
+      "timestamp": "2026-08-07T07:45:07.580269"
     },
     "tailscale_exit": {
       "healthy": true,
@@ -38,7 +42,7 @@
         ],
         "count": 1
       },
-      "timestamp": "2026-08-07T07:02:57.411804"
+      "timestamp": "2026-08-07T07:45:07.667821"
     },
     "ssh_primary": {
       "healthy": false,
@@ -50,7 +54,7 @@
         "port": 22,
         "reachable": false
       },
-      "timestamp": "2026-08-07T07:03:07.415682"
+      "timestamp": "2026-08-07T07:45:17.684384"
     },
     "ssh_backup": {
       "healthy": false,
@@ -62,7 +66,7 @@
         "port": 22,
         "reachable": false
       },
-      "timestamp": "2026-08-07T07:03:27.495964"
+      "timestamp": "2026-08-07T07:45:22.491077"
     },
     "api_local": {
       "healthy": false,
@@ -74,7 +78,7 @@
         "expected": 200,
         "error": "HTTP Error 426: Upgrade Required"
       },
-      "timestamp": "2026-08-07T07:03:27.543360"
+      "timestamp": "2026-08-07T07:45:22.522955"
     },
     "api_remote": {
       "healthy": false,
@@ -85,7 +89,7 @@
         "error": "<urlopen error [Errno 11001] getaddrinfo failed>",
         "url": "https://api.davidjunior.dev/health"
       },
-      "timestamp": "2026-08-07T07:03:27.578368"
+      "timestamp": "2026-08-07T07:45:22.560270"
     },
     "mqtt_broker": {
       "healthy": false,
@@ -97,7 +101,7 @@
         "port": 1883,
         "reachable": false
       },
-      "timestamp": "2026-08-07T07:03:37.580478"
+      "timestamp": "2026-08-07T07:45:32.572433"
     },
     "mqtt_cloud": {
       "healthy": false,
@@ -109,7 +113,7 @@
         "port": 8883,
         "error": "[Errno 11001] getaddrinfo failed"
       },
-      "timestamp": "2026-08-07T07:03:37.580478"
+      "timestamp": "2026-08-07T07:45:32.586348"
     },
     "dns_primary": {
       "healthy": true,
@@ -124,7 +128,7 @@
         ],
         "total_resolvers": 3
       },
-      "timestamp": "2026-08-07T07:03:37.580478"
+      "timestamp": "2026-08-07T07:45:32.589351"
     },
     "ws_service": {
       "healthy": false,
@@ -136,7 +140,7 @@
         "port": 8765,
         "reachable": false
       },
-      "timestamp": "2026-08-07T07:03:47.585956"
+      "timestamp": "2026-08-07T07:45:42.591374"
     },
     "vpn_alternative": {
       "healthy": false,
@@ -147,7 +151,7 @@
         "type": "openvpn",
         "detected": false
       },
-      "timestamp": "2026-08-07T07:03:47.617121"
+      "timestamp": "2026-08-07T07:45:42.651203"
     }
   }
 }

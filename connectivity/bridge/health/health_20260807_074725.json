@@ -1,28 +1,32 @@
 {
-  "timestamp": "20260807_070513",
+  "timestamp": "20260807_074725",
   "all_healthy": false,
   "results": {
     "adb_usb": {
-      "healthy": false,
+      "healthy": true,
       "type": "adb_usb",
       "name": "ADB USB",
       "primary": true,
       "details": {
-        "devices": [],
-        "count": 0
+        "devices": [
+          "100.64.71.9:5555"
+        ],
+        "count": 1
       },
-      "timestamp": "2026-08-07T07:04:02.679459"
+      "timestamp": "2026-08-07T07:46:48.179248"
     },
     "adb_tcp": {
-      "healthy": false,
+      "healthy": true,
       "type": "adb_tcp",
       "name": "ADB TCP/IP",
       "primary": false,
       "details": {
-        "connected": [],
-        "count": 0
+        "connected": [
+          "100.64.71.9:5555"
+        ],
+        "count": 1
       },
-      "timestamp": "2026-08-07T07:04:22.711786"
+      "timestamp": "2026-08-07T07:46:48.383814"
     },
     "tailscale_exit": {
       "healthy": true,
@@ -38,7 +42,7 @@
         ],
         "count": 1
       },
-      "timestamp": "2026-08-07T07:04:22.781068"
+      "timestamp": "2026-08-07T07:46:48.497361"
     },
     "ssh_primary": {
       "healthy": false,
@@ -50,7 +54,7 @@
         "port": 22,
         "reachable": false
       },
-      "timestamp": "2026-08-07T07:04:32.792904"
+      "timestamp": "2026-08-07T07:46:58.500652"
     },
     "ssh_backup": {
       "healthy": false,
@@ -62,7 +66,7 @@
         "port": 22,
         "reachable": false
       },
-      "timestamp": "2026-08-07T07:04:52.875886"
+      "timestamp": "2026-08-07T07:47:03.141011"
     },
     "api_local": {
       "healthy": false,
@@ -70,11 +74,10 @@
       "name": "API Local (Jarvis Bridge)",
       "primary": true,
       "details": {
-        "status": 426,
-        "expected": 200,
-        "error": "HTTP Error 426: Upgrade Required"
+        "error": "<urlopen error [WinError 10061] Nenhuma conex\u00e3o p\u00f4de ser feita porque a m\u00e1quina de destino as recusou ativamente>",
+        "url": "http://127.0.0.1:8765/"
       },
-      "timestamp": "2026-08-07T07:04:52.907076"
+      "timestamp": "2026-08-07T07:47:05.201785"
     },
     "api_remote": {
       "healthy": false,
@@ -85,7 +88,7 @@
         "error": "<urlopen error [Errno 11001] getaddrinfo failed>",
         "url": "https://api.davidjunior.dev/health"
       },
-      "timestamp": "2026-08-07T07:04:52.953925"
+      "timestamp": "2026-08-07T07:47:05.250770"
     },
     "mqtt_broker": {
       "healthy": false,
@@ -97,7 +100,7 @@
         "port": 1883,
         "reachable": false
       },
-      "timestamp": "2026-08-07T07:05:02.961228"
+      "timestamp": "2026-08-07T07:47:15.262216"
     },
     "mqtt_cloud": {
       "healthy": false,
@@ -109,7 +112,7 @@
         "port": 8883,
         "error": "[Errno 11001] getaddrinfo failed"
       },
-      "timestamp": "2026-08-07T07:05:02.961228"
+      "timestamp": "2026-08-07T07:47:15.275887"
     },
     "dns_primary": {
       "healthy": true,
@@ -124,7 +127,7 @@
         ],
         "total_resolvers": 3
       },
-      "timestamp": "2026-08-07T07:05:02.976825"
+      "timestamp": "2026-08-07T07:47:15.281999"
     },
     "ws_service": {
       "healthy": false,
@@ -136,7 +139,7 @@
         "port": 8765,
         "reachable": false
       },
-      "timestamp": "2026-08-07T07:05:12.985790"
+      "timestamp": "2026-08-07T07:47:25.292780"
     },
     "vpn_alternative": {
       "healthy": false,
@@ -147,7 +150,7 @@
         "type": "openvpn",
         "detected": false
       },
-      "timestamp": "2026-08-07T07:05:13.016960"
+      "timestamp": "2026-08-07T07:47:25.332354"
     }
   }
 }
