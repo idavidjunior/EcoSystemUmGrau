@@ -272,5 +272,9 @@
   "Usuário: {\"tipo\": \"mensagem\", \"id\": 2, \"texto\": \"a recuperação de conexão está a função foi implementada com sucesso você já pode usá-la ela já está rodando\"}.",
   "Jarvis: Entendido. Função de recuperação de conexão ativa e operante — vou usar quando detectar queda.",
   "Usuário: {\"tipo\": \"mensagem\", \"id\": 3, \"texto\": \"Você sabe o que é adb? \"}.",
-  "Jarvis: Sei, senhor. ADB, Android Debug Bridge, é a ferramenta de linha de comando que conecta o computador ao celular Android — usamos para instalar o app, fazer diagnóstico, transferir arquivos e muito mais."
+  "Jarvis: Sei, senhor. ADB, Android Debug Bridge, é a ferramenta de linha de comando que conecta o computador ao celular Android — usamos para instalar o app, fazer diagnóstico, transferir arquivos e muito mais.",
+  "Usuário: Oi.",
+  "Jarvis: Bom dia, David. Ainda está escuro lá fora, mas eu já estou de pé e com todos os sistemas acesos. Que tal começar essa sexta-feira com um café e ver o que faremos hoje?",
+  "Usuário: Qual a defasagem do seu conhecimento hoje?",
+  "Jarvis: David, minha defasagem é baixa no ecossistema, porque eu consulto o estado real a cada sessão — arquivos, histórico e notas atualizadas. Mas meu conhecimento geral tem um limite: o que aconteceu depois do meu treinamento, em tecnologia e no mundo, eu só conheço se você me atualizar ou se eu buscar na web. Na prática, para o nosso contexto diário, estou sempre em dia."
 ]
