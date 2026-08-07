@@ -2108,5 +2108,25 @@
     "access_count": 0,
     "created_at": "2026-08-06T22:25:27.735681",
     "last_accessed": "2026-08-06T22:25:27.735681"
+  },
+  {
+    "id": 136,
+    "kind": "decisao",
+    "task": "Widget Grafo Cerebro Vivo - análise completa do motor e engine",
+    "summary": "Análise profunda do widget desktop pywebview+vis-network: arquitetura de 3 camadas (generate-graph-html.py → docs/grafo.html → widget_grafo.py pywebview), engine de animação neural (pseudo-3D, ondas viajantes, avalanches críticos), motor de dados (vault Obsidian 344 notas → 282 nós → 1491 arestas), bug de NaN/stack-overflow no quadtree, TDZ, loop de regenerar, bridge JS-Python. Conhecimento consolidado em 13 arquivos de aprendizado.",
+    "project": "",
+    "tags": [
+      "python",
+      "bridge",
+      "regenerar",
+      "loop",
+      "tdz",
+      "quadtree"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T05:15:37.878982",
+    "last_accessed": "2026-08-07T05:15:37.878982"
   }
 ]
