@@ -2088,5 +2088,25 @@
     "access_count": 0,
     "created_at": "2026-08-06T22:15:31.170756",
     "last_accessed": "2026-08-06T22:15:31.170756"
+  },
+  {
+    "id": 135,
+    "kind": "erro",
+    "task": "Widget grafo: causa raiz do travamento (NaN->stack overflow) e loop de regenerar",
+    "summary": "2 bugs corrigidos no widget Cerebro Vivo. (1) Crash: tick handler usava n.x/n.y do dataset (sem posicoes) -> undefined+orb=NaN -> quadtree Barnes-Hut recursao infinita -> RangeError stack overflow (6x no log). Fix: ler posicao viva via network.getPositions() e guardar com Number.isFinite. (2) Loop infinito: gerador reescrevia conhecimento/aprendizados/cluster_mapper.json em toda execucao e o _versao() do widget monitora mtime de conhecimento/* -> regenerar disparava de novo. Fix: gerador so grava o json quando o conteudo muda.",
+    "project": "",
+    "tags": [
+      "log",
+      "vivo",
+      "cerebro",
+      "rangeerror",
+      "infinita",
+      "recursao"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T22:25:27.735681",
+    "last_accessed": "2026-08-06T22:25:27.735681"
   }
 ]

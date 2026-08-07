@@ -294,8 +294,18 @@ def extrair_nos():
         _mapper.treinar(_dados_treino)
         try:
             os.makedirs(os.path.dirname(_memoria_aprendizado), exist_ok=True)
-            with open(_memoria_aprendizado, 'w', encoding='utf-8') as _fmemo:
-                json.dump(_mapper.exportar_aprendizado(), _fmemo, ensure_ascii=False, indent=1)
+            # So grava quando o conteudo muda: o widget observa o mtime de
+            # conhecimento/* para detectar mudancas no vault. Reescrever este
+            # json em TODA geracao criava um loop regenerar->gera->versao->regenerar.
+            _novo = json.dumps(_mapper.exportar_aprendizado(), ensure_ascii=False, indent=1)
+            _atual = ''
+            try:
+                _atual = open(_memoria_aprendizado, encoding='utf-8').read()
+            except Exception:
+                pass
+            if _novo != _atual:
+                with open(_memoria_aprendizado, 'w', encoding='utf-8') as _fmemo:
+                    _fmemo.write(_novo)
         except Exception:
             pass
 
