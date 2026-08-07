@@ -1,15 +1,23 @@
 # Decisoes
 
-**47 notas** conectadas a este hub.
+**55 notas** conectadas a este hub.
 
 
 ## Notas
+- [[2026-07-27-fallback-automático-de-modelo-llm-com-bun-razrooo]]
+- [[2026-07-27-sistema-automático-de-captura-de-conhecimento-do-]]
+- [[2026-07-28-cláusula-pétrea-toda-alteração-no-ecossistema-dev]]
+- [[2026-07-31-mecanismo-de-fonemas-ssml-reativado-com-fallback-]]
 - [[2026-08-01-clãusula-pãtrea-â-comunicaãão-contãnua-em-ãudio]]
+- [[2026-08-02-feedback-contãnuo-em-tarefas-longas]]
 - [[album-art-download-com-redirect-loop-manual-instancefollowre]]
 - [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]
 - [[checkpoints-salvos-antes-de-cada-iteracao-sobrevive-a-crash-]]
+- [[clausula-petrea-protecao-do-opencode-desktop-resiliencia-da-]]
 - [[context-engine-manifesto-domínios-multimídiacomportamentais]]
+- [[decisão-aprendizado-automãtico-permanente]]
+- [[decisão-arquitetura-jarvis-app]]
 - [[encoding-utf-8-in-javac-required-on-windows-to-prevent-corru]]
 - [[estado-persiste-em-json-nao-sqlite-legivel-editavel-fora-do-]]
 - [[estrategia-selecionada-por-ranking-cost-risk-time-complexity]]

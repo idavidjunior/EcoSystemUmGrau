@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-06T16:49:35",
+  "updated_at": "2026-08-06T22:19:56",
   "active_project": "EcoSystemUmGrau",
   "objective": "Transformar o Ecossistema Jarvis em Runtime de IA persistente (camada 1: estado+boot)",
   "last_task": "ADB Perito Skill - expansao completa cmd subsystem",
@@ -85,7 +85,11 @@
     {
       "timestamp": "2026-08-06T16:38:03",
       "text": "Extensao perito ADB concluida: am instrument, pm grant/revoke/hide, cmd statusbar/notification/uimode, wm size/density override, settings put/get, input completo com keycodes exaustivo, dumpsys por servico (battery/window/notification/power/wifi/gfxinfo/cpuinfo/meminfo/alarms), backup/restore, logcat avancado, profiling, MIUI especifico, automacao de UI swipe/tap/texto/uiautomator. Aprendizado estendido em 2026-08-06-jarvis-perito-adb-mapeamento-completo.md."
+    },
+    {
+      "timestamp": "2026-08-06T22:19:56",
+      "text": "Treinamento completo da tarefa de resiliencia: clausula petrea (#129), watchdog resiliente (#130), saudacoes inteligentes (#131), bug \\5512 corrigido (#133), certificacao forense + boot via Startup (#134). Kinds de 6 memorias normalizados, indice TF-IDF reconstruido, watchdog.lock fora do git, 3 aprendizados organizados sem duplicacao. Watchdog ativo (PID 2172), bridge e serve saudaveis, desktop intocado."
     }
   ],
-  "last_checkpoint": "20260806_161831"
+  "last_checkpoint": "20260806_221946"
 }

@@ -1,9 +1,11 @@
 # Padroes Tecnicos
 
-**75 notas** conectadas a este hub.
+**78 notas** conectadas a este hub.
 
 
 ## Notas
+- [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
+- [[2026-08-03-adb-remoto-via-tailscale-script-automatico-de-rot]]
 - [[2026-08-04-persistencia-da-conexao-do-jarvis]]
 - [[aapt-javac-d8-apksigner]]
 - [[adb-workflow]]
@@ -60,6 +62,7 @@
 - [[retry-com-backoff-exponencial]]
 - [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]
 - [[saveload-pattern]]
+- [[secrets-guard-no-preflightcheck]]
 - [[server-failover-com-auto-return]]
 - [[shadow-dom-penetration]]
 - [[sharedpreferences-pattern-immediate-save]]

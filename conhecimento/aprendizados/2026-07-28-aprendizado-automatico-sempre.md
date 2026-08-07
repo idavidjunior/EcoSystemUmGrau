@@ -22,4 +22,4 @@ Ecossistema evolui sozinho. Cada sessÃ£o adiciona ao conhecimento coletivo aut
 
 ## Conexoes
 
-- [[2026-08-01-opencode-desktop-crash-do-renderer-por-gpu-fecham]]
+- [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]

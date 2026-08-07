@@ -908,7 +908,6 @@ class KnowledgeConsolidator:
             tags_semanticas = []
 
         learning = {
-            "session_summary": f"{title} — {context}",
             "tags": [cat, "opencode"] + tags_semanticas,
             "patterns": [],
             "decisions": [],

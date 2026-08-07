@@ -11,9 +11,9 @@ date: 2026-08-05
 **Objetivo:** 2026-08-04: Foco vocal via Jarvis — voz orienta o grafo do conhecimento — Usuari
 ## Conexoes
 
-- [[2026-08-01-opencode-desktop-crash-do-renderer-por-gpu-fecham]]
+- [[2026-08-04-malha-viva-onda-viajante-de-profundidade-giro-3d-]]
 - [[2026-08-04-pseudo-3d-vivo-profundidade-sem-webgl-pedido-para]]
-- [[2026-08-04-refinamento-do-grafo-zoom-microscópio-expandir-e-]]
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]
 - [[cluster-hub-ecossistema]]
 - [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]
 - [[missao-hub-missoes]]

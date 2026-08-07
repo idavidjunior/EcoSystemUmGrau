@@ -1,5 +1,5 @@
 ---
-tags: [conversa, decisao, ecosistema-opencode, estruturado, extrair, tarefa]
+tags: [conversa, decisao, ecosistema-opencode, estruturado, extrair, reutilizado]
 aliases: [2026-07-27: Sistema automático de captura de conhecimento do]
 date: 2026-08-06
 ---
@@ -79,5 +79,6 @@ Antes desta implementaÃ§Ã£o, cada interaÃ§Ã£o com o ecossistema gerava c
 
 ## Conexoes
 
+- [[2026-07-27-fallback-automático-de-modelo-llm-com-bun-razrooo]]
 - [[cluster-hub-ecossistema]]
 - [[decisao-hub-decisoes]]

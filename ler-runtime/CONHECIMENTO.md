@@ -1,14 +1,14 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-06T09:17:11.654301
+**Exportado em:** 2026-08-06T22:25:06.028827
 **Projetos:** 4
-**Padroes Tecnicos:** 81
-**Decisoes:** 55
+**Padroes Tecnicos:** 83
+**Decisoes:** 56
 **Bug Fixes:** 46
-**Padroes Cognitivos:** 50
+**Padroes Cognitivos:** 51
 **Heuristicas:** 32
 **Frameworks:** 10
-**Missoes Aprendidas:** 225
+**Missoes Aprendidas:** 229
 
 ---
 
@@ -356,6 +356,15 @@ contexto: Plano de lacunas do EcoSystemUmGrau. Auditoria mostrou que a reorg Hab
 decisao: Implementar context-engine (prioridade maxima), manifesto_geral.json e preencher dominios multimidia/comportamentais.
 impacto: Agente coordenador tem motor de contexto unifica
 
+### Clausula Petrea: protecao do OpenCode desktop + resiliencia da bridge
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [resiliencia, watchdog, opencode, desktop, bridge, clausula-petrea, android]
+data: 2026-08-06
+contexto: "Usuario exigiu que nenhum processo automatico possa fechar o OpenCode desktop — apenas o usuario manualmente. Testes de resiliencia do bridge (que morria sem log) revelaram que o watchdog podia derrubar o desktop por erro de filtro."
+decisao: "Corrigir watchdog.ps1 com protecao absoluta do desktop (clausula petrea) e robustez de instancia unica via lock de PID. Reestru
+
 
 ## Padroes Tecnicos
 
@@ -442,6 +451,8 @@ impacto: Agente coordenador tem motor de contexto unifica
 | 79 | opencode+opencode+opencode+opencode | 2026-08-04: Persistencia da conexao do Jarvis |
 | 80 | opencode+opencode+opencode | 2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6) |
 | 81 | opencode | Ilhas no grafo: notas com grau 0 e como conecta-las |
+| 82 | opencode | Certificacao forense de processos + boot do watchdog |
+| 83 | opencode | Saudacoes inteligentes: reconexao vs primeira vez |
 
 ## Bug Fixes e Corrigidos
 
@@ -1199,6 +1210,24 @@ data: 2026-08-02
 contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
 decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente
 
+### Bug: parametro Pid e variavel automatica do PowerShell
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [watchdog, powershell, bug, resiliencia]
+data: 2026-08-06
+contexto: Certificacao forense de processos no watchdog.ps1 (Test-ForensicoLixo / Invoke-KillCertificado)
+decisao: Renomear parametro [int]Pid para [int]ProcessId nas funcoes forenses
+impacto: Evita que o watchdog mate o proprio processo (variavel automatica PID read-only)
+---
+
+# Bug: parametro Pid e variavel automatica do PowerShell
+
+## Sintoma
+A funcao `Test-ForensicoLixo` e `Invoke-KillCertificado` declaravam `[int
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -1293,7 +1322,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-06T09:17:11.421500
+**Ultima atualizacao:** 2026-08-06T22:25:05.959457
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

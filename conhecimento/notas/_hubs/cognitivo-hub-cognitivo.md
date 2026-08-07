@@ -1,12 +1,22 @@
 # Padroes Cognitivos
 
-**26 notas** conectadas a este hub.
+**43 notas** conectadas a este hub.
 
 
 ## Notas
+- [[2026-07-27-correcao-dos-4-pontos-finais-do-ecossistema]]
+- [[2026-07-27-setup-plug-play-e-organizacao-github]]
+- [[2026-07-28-botães-de-filtro-sem-texto-visãvel-â-materialbutt]]
+- [[2026-07-30-skill-de-diagnãstico-remoto-android]]
+- [[2026-08-01-opencode-desktop-crash-do-renderer-por-gpu-fecham]]
+- [[2026-08-02-ecosystem-sync-1-comando-para-sincronizar-tudo]]
+- [[2026-08-03-scan-proativo-claude-code-extra-agents]]
+- [[2026-08-04-refinamento-do-grafo-zoom-microscópio-expandir-e-]]
 - [[antecipacao-de-comportamento-adaptativo]]
+- [[aprendizado-â-2026-07-31-â-pontuaãão-automãtica-de-transcriã]]
 - [[bug-parametro-pid-e-variavel-automatica-do-powershell]]
 - [[ciclo-ooda-aplicado-a-navegacao]]
+- [[clãusula-pãtrea-â-ativaãão-de-voz-eco-system]]
 - [[corrigido-travamento-widget-pywebview]]
 - [[debugging-em-cascata-reversa]]
 - [[diagnostico-por-eliminacao-em-config-complexa]]
@@ -16,17 +26,24 @@
 - [[estrategia-de-fallback-em-cadeia-chain-of-responsibility]]
 - [[estrategia-de-loop-autonomo-planejar-executar-verificar-corr]]
 - [[grafo-vis-network-bug-string-js-json-dumps]]
+- [[gramática-do-português-brasileiro-guia-prático-do-dia-a-dia]]
+- [[guia-controle-total-de-tv-lg-webos-reaproveitãvel]]
+- [[habilidade-navegação-perita-internet-pc-e-celular]]
 - [[heuristica-de-densidade-de-informacao]]
 - [[hipotese-falsificacao-terminal]]
+- [[hora-na-tela-vs-hora-no-ãudio-jarvis]]
 - [[lei-de-postel-aplicada-a-engenharia]]
 - [[mapa-mental-de-navegadores-web]]
+- [[mcp-obsidian-server-â-vault-consumido-pelo-llm]]
 - [[modelo-de-scoring-para-busca-multi-resultado]]
 - [[modelo-mental-de-dom-virtual]]
 - [[padrao-de-escrita-atomica-para-persistencia]]
 - [[pattern-matching-por-estrutura-de-ui]]
 - [[pre-compilacao-de-estrategia-de-interacao]]
 - [[principio-da-separacao-causa-efeito-temporal]]
+- [[pronúncia-járvis-escrita-sem-acento-fala-com-acento]]
 - [[reconhecimento-de-estado-por-elementos-chave]]
 - [[reconhecimento-instantaneo-de-framework]]
+- [[servidores-mcp-node-criados-e-validados]]
 - [[validacao-contra-intuitiva-teste-o-erro-nao-o-acerto]]
 - [[vazamento-caracteres-tts-edge-tts-escapa-ssml]]

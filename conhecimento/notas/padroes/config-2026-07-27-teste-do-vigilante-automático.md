@@ -19,5 +19,6 @@ date: 2026-08-06
 Verificar se o vigilante detecta automaticamente novos arquivos em conhecimento/aprendizados/, registra no K
 ## Conexoes
 
+- [[2026-08-03-adb-remoto-via-tailscale-script-automatico-de-rot]]
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]

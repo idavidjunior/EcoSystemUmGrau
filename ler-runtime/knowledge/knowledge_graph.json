@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-06T22:25:05.959457",
+  "last_updated": "2026-08-06T22:33:08.726777",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -2238,111 +2238,11 @@
       ]
     },
     {
-      "timestamp": "2026-07-27T21:27:12.186939",
-      "status": "session_learning",
-      "goal_objective": "2026-07-27: Sistema automático de captura de conhecimento do ecossistema — Implementação das três camadas de aprendizado contínuo para o ecossistema OpenCode + LER",
-      "tags": [
-        "decisao",
-        "ecosistema-opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-07-27T21:27:12.554943",
-      "status": "session_learning",
-      "goal_objective": "2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback — Necessidade de fallback automático quando o modelo primário do OpenCode bate limite de uso",
-      "tags": [
-        "decisao",
-        "ecosistema-opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-07-27T21:35:56.377910",
-      "status": "session_learning",
-      "goal_objective": "2026-07-27: Sistema automático de captura de conhecimento do ecossistema — Implementação das três camadas de aprendizado contínuo para o ecossistema OpenCode + LER",
-      "tags": [
-        "decisao",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-07-27T21:36:01.801138",
-      "status": "session_learning",
-      "goal_objective": "2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback — Necessidade de fallback automático quando o modelo primário do OpenCode bate limite de uso",
-      "tags": [
-        "decisao",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-07-27T21:43:05.152840",
-      "status": "session_learning",
-      "goal_objective": "2026-07-27: Sistema automático de captura de conhecimento do ecossistema — Implementação das três camadas de aprendizado contínuo para o ecossistema OpenCode + LER",
-      "tags": [
-        "decisao",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-07-27T21:43:05.925513",
-      "status": "session_learning",
-      "goal_objective": "2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback — Necessidade de fallback automático quando o modelo primário do OpenCode bate limite de uso",
-      "tags": [
-        "decisao",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-07-27T21:48:08.608449",
-      "status": "session_learning",
-      "goal_objective": "2026-07-27: Sistema automático de captura de conhecimento do ecossistema — Implementação das três camadas de aprendizado contínuo para o ecossistema OpenCode + LER",
-      "tags": [
-        "decisao",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-07-27T21:48:12.203425",
-      "status": "session_learning",
-      "goal_objective": "2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback — Necessidade de fallback automático quando o modelo primário do OpenCode bate limite de uso",
-      "tags": [
-        "decisao",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-07-27T21:48:16.286807",
       "status": "session_learning",
       "goal_objective": "2026-07-27: Teste do vigilante automático — Teste do sistema de vigilância automática do ecossistema",
       "tags": [
         "config",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-07-27T21:54:18.491177",
-      "status": "session_learning",
-      "goal_objective": "2026-07-27: Sistema automático de captura de conhecimento do ecossistema — Implementação das três camadas de aprendizado contínuo para o ecossistema OpenCode + LER",
-      "tags": [
-        "decisao",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-07-27T21:54:22.029829",
-      "status": "session_learning",
-      "goal_objective": "2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback — Necessidade de fallback automático quando o modelo primário do OpenCode bate limite de uso",
-      "tags": [
-        "decisao",
         "opencode"
       ],
       "files_modified": []
@@ -2363,26 +2263,6 @@
       "goal_objective": "2026-07-27-4: Teste do ciclo de polling — Verificar se o vigilante detecta arquivos novos em tempo real",
       "tags": [
         "config",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-07-27T21:56:03.886663",
-      "status": "session_learning",
-      "goal_objective": "2026-07-27: Sistema automático de captura de conhecimento do ecossistema — Implementação das três camadas de aprendizado contínuo para o ecossistema OpenCode + LER",
-      "tags": [
-        "decisao",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-07-27T21:56:07.659175",
-      "status": "session_learning",
-      "goal_objective": "2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback — Necessidade de fallback automático quando o modelo primário do OpenCode bate limite de uso",
-      "tags": [
-        "decisao",
         "opencode"
       ],
       "files_modified": []
@@ -2418,16 +2298,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-07-27T22:36:24.014326",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub — ",
-      "tags": [
-        "geral",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-07-27T22:58:47.148168",
       "status": "session_learning",
       "goal_objective": "﻿# 2026-07-27 - Unificacao completa do ecossistema — ",
@@ -2438,49 +2308,9 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-07-27T23:12:15.960177",
-      "status": "session_learning",
-      "goal_objective": "2026-07-27: Sistema automático de captura de conhecimento do ecossistema — Implementação das três camadas de aprendizado contínuo para o ecossistema OpenCode + LER",
-      "tags": [
-        "decisao",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-07-27T23:12:16.650516",
-      "status": "session_learning",
-      "goal_objective": "2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback — Necessidade de fallback automático quando o modelo primário do OpenCode bate limite de uso",
-      "tags": [
-        "decisao",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-07-27T23:12:17.350261",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub — ",
-      "tags": [
-        "geral",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-07-27T23:12:18.123786",
       "status": "session_learning",
       "goal_objective": "﻿# 2026-07-27 - Unificacao completa do ecossistema — ",
-      "tags": [
-        "geral",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-07-27T23:24:22.960838",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema — ",
       "tags": [
         "geral",
         "opencode"
@@ -2603,16 +2433,6 @@
       "goal_objective": "﻿# 2026-07-28 - Scan proativo: SupermarketCalculator — ",
       "tags": [
         "geral",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-07-28T22:19:45.236934",
-      "status": "session_learning",
-      "goal_objective": "2026-07-28: Cláusula Pétrea — Toda alteração no ecossistema deve ser testada antes de aplicar — Adição de servidores MCP via npx quebraram a inicialização do OpenCode. Ao reiniciar, os modelos não carregavam → sistema inutilizável. O usuário precisou apagar arquivos manualmente para recuperar.",
-      "tags": [
-        "decisao",
         "opencode"
       ],
       "files_modified": []
@@ -2848,87 +2668,12 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-07-30T09:24:13.515727",
-      "status": "session_learning",
-      "goal_objective": "Correcao de diagnostico do knowledge graph e criacao do registro de Habilidades de Jarvis. O knowledge_graph.json estava saudavel, o erro foi no diagnostico (encoding cp1252 vs utf-8). Adicionada secao de Habilidades em JARVIS_SYSTEM.md com 80+ habilidades em 8 categorias.",
-      "tags": [
-        "ecossistema",
-        "diagnostico",
-        "habilidades",
-        "jarvis"
-      ],
-      "files_modified": [
-        "scripts/JARVIS_SYSTEM.md"
-      ]
-    },
-    {
-      "timestamp": "2026-07-30T09:27:44.841163",
-      "status": "session_learning",
-      "goal_objective": "Revisao radical do registro de Habilidades de Jarvis. Aprendi a diferenca entre habilidade (capacidade verificavel com codigo), ferramenta (meio), conhecimento (informacao), e skill (documento de instrucao). Reestruturei em 17 fundamentais + 6 compostas + 8 dominios, todas mapeadas para arquivos reais.",
-      "tags": [
-        "ecossistema",
-        "habilidades",
-        "taxonomia",
-        "jarvis",
-        "aprendizado"
-      ],
-      "files_modified": [
-        "scripts/JARVIS_SYSTEM.md"
-      ]
-    },
-    {
-      "timestamp": "2026-08-01T11:02:12.451440",
-      "status": "session_learning",
-      "goal_objective": "Gramática do Português Brasileiro — Guia prático do dia a dia — ",
-      "tags": [
-        "geral",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-01T11:14:48.506341",
-      "status": "session_learning",
-      "goal_objective": "Habilidade: Navegação Perita — Internet, PC e Celular — ",
-      "tags": [
-        "geral",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-01T11:26:14.821490",
-      "status": "session_learning",
-      "goal_objective": "Pronúncia \"Járvis\" (escrita sem acento, fala com acento) — ",
-      "tags": [
-        "geral",
-        "opencode"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-01T11:29:05.945441",
       "status": "session_learning",
       "goal_objective": "Jarvis do celular e do PC: um só cérebro (arquitetura sincronizada) — ",
       "tags": [
         "geral",
         "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-02T23:09:40.970309",
-      "status": "session_learning",
-      "goal_objective": "vault obsidian fonte viva — Reestruturacao do pipeline de geracao do grafo — Obsidian vira cerebro vivo, widget espelho",
-      "tags": [
-        "decisao",
-        "opencode",
-        "espelho",
-        "vivo",
-        "cerebro",
-        "vira",
-        "widget",
-        "viva"
       ],
       "files_modified": []
     },
@@ -2961,22 +2706,6 @@
         "encontrados",
         "cellcleaner 2026 scan",
         "marcadores encontrados"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-03T01:30:08.245926",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-08-03 - Scan proativo: claude-code-extra-agents — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "proativo",
-        "agents",
-        "scan",
-        "extra",
-        "2026",
-        "code"
       ],
       "files_modified": []
     },
@@ -3077,102 +2806,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-04T03:45:11.380134",
-      "status": "session_learning",
-      "goal_objective": "Controle da TV LG webOS via SSAP — Aprendizado do controle nativo da TV LG 50UT8050PSA (webOS) via SSAP wss://192.168.15.6:3001",
-      "tags": [
-        "padrao",
-        "opencode",
-        "wss",
-        "50ut8050psa",
-        "nativo",
-        "ssap",
-        "webos",
-        "aprendizado"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:11.875107",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS) — ",
-      "tags": [
-        "padrao",
-        "opencode",
-        "webos",
-        "50ut8050psa",
-        "wss",
-        "2026",
-        "ssap",
-        "nativo"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:12.358220",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-08-02 - Feedback contÃ­nuo em tarefas longas — ",
-      "tags": [
-        "decisao",
-        "opencode",
-        "longas",
-        "nuo",
-        "tarefas",
-        "contã",
-        "feedback",
-        "2026"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:12.893998",
-      "status": "session_learning",
-      "goal_objective": "MCP Obsidian server â€” vault consumido pelo LLM — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "bri",
-        "jarvis",
-        "atual",
-        "330",
-        "gerar",
-        "alimentado"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:13.365501",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-07-31 - Mecanismo de fonemas SSML reativado com fallback seguro — ",
-      "tags": [
-        "decisao",
-        "opencode",
-        "bridge",
-        "tts",
-        "edge",
-        "seguro",
-        "phoneme",
-        "fallback"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:13.835655",
-      "status": "session_learning",
-      "goal_objective": "﻿# Hora na tela vs hora no Ã¡udio (Jarvis) — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "app",
-        "jarvis",
-        "exibido",
-        "udio",
-        "texto",
-        "prio"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-04T03:45:14.311778",
       "status": "session_learning",
       "goal_objective": "﻿# Aprendizado â€” 2026-07-31 â€” Horas faladas corretamente no TTS do Jarvis — ",
@@ -3189,22 +2822,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-04T03:45:14.790208",
-      "status": "session_learning",
-      "goal_objective": "﻿# Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis) — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "jarvis",
-        "voz",
-        "bridge",
-        "transcriã",
-        "tica",
-        "chega"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-04T03:45:15.272704",
       "status": "session_learning",
       "goal_objective": "﻿# Aprendizado â€” 2026-07-31 â€” Reorg: catÃ¡logo Ãºnico Habilidades/ + caminhos novos — ",
@@ -3217,22 +2834,6 @@
         "busca",
         "clima",
         "trea"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:15.746473",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-08-01: ClÃ¡usula PÃ©trea â€” ComunicaÃ§Ã£o contÃ­nua em Ã¡udio — UsuÃ¡rio apontou que o Jarvis executou tarefas (verificaÃ§Ã£o de sync, commits, pronÃºncia) sem narrar em Ã¡udio o que estava fazendo, desrespeitando a regra de comunicaÃ§Ã£o por voz. A regra existia no contexto da sessÃ£o, mas nÃ£o estava registrada em lugar nenhum â€” por isso foi esquecida.",
-      "tags": [
-        "decisao",
-        "opencode",
-        "voz",
-        "desrespeitando",
-        "fazendo",
-        "narrar",
-        "ncia",
-        "pronã"
       ],
       "files_modified": []
     },
@@ -3265,22 +2866,6 @@
         "brasileiro",
         "portuguã",
         "guia"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:17.426786",
-      "status": "session_learning",
-      "goal_objective": "﻿# Guia: Controle Total de TV LG webOS (reaproveitÃ¡vel) — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "2024",
-        "similares",
-        "ut80",
-        "vel",
-        "qualquer",
-        "webos"
       ],
       "files_modified": []
     },
@@ -3333,22 +2918,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-04T03:45:19.398547",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria — OpenCode Desktop v1.18.10 (Electron 42.3.3) em notebook com Intel HD Graphics 5500 (driver 10.18.15.4248, 2015) e 3,9 GB RAM. A interface abria e fechava logo em seguida, sem mensagem de erro.",
-      "tags": [
-        "aprendizado",
-        "opencode",
-        "erro",
-        "ria",
-        "mensagem",
-        "memã",
-        "seguida",
-        "fechamento"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-04T03:45:19.894248",
       "status": "session_learning",
       "goal_objective": "﻿# PolÃ­tica de Resposta RÃ¡pida â€” caminhos rÃ¡pidos constantes no Jarvis — ",
@@ -3397,22 +2966,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-04T03:45:21.443770",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-08-02 - ecosystem sync: 1 comando para sincronizar tudo — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "ficar",
-        "nico",
-        "inteiro",
-        "ecossistema",
-        "queria",
-        "rio"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-04T03:45:21.933996",
       "status": "session_learning",
       "goal_objective": "EvoluÃ§Ã£o do TTS Jarvis â€” naturalidade via SSML — ",
@@ -3425,22 +2978,6 @@
         "evoluir",
         "precisa",
         "ecossistema"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:22.419134",
-      "status": "session_learning",
-      "goal_objective": "Servidores MCP Node criados e validados — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "servers",
-        "servers mcp",
-        "node",
-        "referenciava",
-        "petrea",
-        "jsonc"
       ],
       "files_modified": []
     },
@@ -3525,22 +3062,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-04T03:45:25.427426",
-      "status": "session_learning",
-      "goal_objective": "ClÃ¡usula PÃ©trea â€” AtivaÃ§Ã£o de Voz (Eco System) — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "ecosystemumgrau",
-        "seguindo",
-        "desativar",
-        "ativar",
-        "comandos",
-        "andamento"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-04T03:45:25.913752",
       "status": "session_learning",
       "goal_objective": "﻿# 2026-07-27 - Scan proativo: Mp3Player — ",
@@ -3553,22 +3074,6 @@
         "encontrados",
         "mp3player 2026 scan",
         "marcadores encontrados"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:26.411258",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "nenhum",
-        "uniformes",
-        "verdes",
-        "vel",
-        "textview",
-        "visã"
       ],
       "files_modified": []
     },
@@ -3621,22 +3126,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-04T03:45:28.433407",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "remoto",
-        "stico",
-        "2026",
-        "diagnã",
-        "remoto android",
-        "voxumgrau"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-04T03:45:28.935549",
       "status": "session_learning",
       "goal_objective": "﻿# 2026-07-30 - Scan proativo: Mp3Player — ",
@@ -3681,22 +3170,6 @@
         "rio",
         "primã",
         "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:30.448347",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "llm",
-        "agentes",
-        "ecossistema",
-        "finais",
-        "python",
-        "pontos"
       ],
       "files_modified": []
     },
@@ -3749,22 +3222,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-04T03:45:32.453009",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "organizacao",
-        "play",
-        "keys",
-        "plug",
-        "pede",
-        "configura"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-04T03:45:32.991919",
       "status": "session_learning",
       "goal_objective": "﻿# 2026-07-27 - Unificacao completa do ecossistema — ",
@@ -3781,22 +3238,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-04T03:45:33.524874",
-      "status": "session_learning",
-      "goal_objective": "﻿# DecisÃ£o: Aprendizado automÃ¡tico permanente — ",
-      "tags": [
-        "decisao",
-        "opencode",
-        "cita",
-        "explã",
-        "solicitaã",
-        "necessidade",
-        "tarefa",
-        "final"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-04T03:45:34.045286",
       "status": "session_learning",
       "goal_objective": "﻿# 2026-07-28: ClÃ¡usula PÃ©trea â€” Toda alteraÃ§Ã£o no ecossistema deve ser testada antes de aplicar — AdiÃ§Ã£o de servidores MCP via npx quebraram a inicializaÃ§Ã£o do OpenCode. Ao reiniciar, os modelos nÃ£o carregavam â†’ sistema inutilizÃ¡vel. O usuÃ¡rio precisou apagar arquivos manualmente para recuperar.",
@@ -3809,22 +3250,6 @@
         "quebraram",
         "testada",
         "npx"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:34.567783",
-      "status": "session_learning",
-      "goal_objective": "﻿# DecisÃ£o: Arquitetura Jarvis App — ",
-      "tags": [
-        "decisao",
-        "opencode",
-        "resultados",
-        "falando",
-        "desligada",
-        "tela",
-        "plano",
-        "operando"
       ],
       "files_modified": []
     },
@@ -4005,150 +3430,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-04T03:45:40.751759",
-      "status": "session_learning",
-      "goal_objective": "vault obsidian cerebro vivo grafo — Usuario perguntou se o ecossistema funciona como o Obsidian (cerebro vivo com grafo interativo). Diagnostico: tinhamos a camada de dados (knowledge_graph.json, 117KB, memorias) mas ZERO camada visual — notas geradas eram ilhas sem nenhum link [[...]].",
-      "tags": [
-        "decisao",
-        "opencode",
-        "link",
-        "interativo",
-        "nenhum",
-        "ilhas",
-        "eram",
-        "vivo"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:41.258979",
-      "status": "session_learning",
-      "goal_objective": "vazamento caracteres tts edge tts escapa ssml — Usuário reportou que, no início das conversas, antes de falar \"David\", o Jarvis pronunciava caracteres que não deveriam. Investigação da saudação revelou causa na camada de TTS.",
-      "tags": [
-        "erro",
-        "opencode",
-        "deveriam",
-        "não",
-        "pronunciava",
-        "caracteres",
-        "escapa",
-        "david"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:41.791731",
-      "status": "session_learning",
-      "goal_objective": "grafo vis network bug string js json dumps — Geramos docs/grafo.html com vis-network para visualizar o conhecimento como grafo. A pagina renderizava header/legenda mas o canvas ficava vazio.",
-      "tags": [
-        "erro",
-        "opencode",
-        "dumps",
-        "json",
-        "string",
-        "vazio",
-        "bug",
-        "ficava"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:42.329173",
-      "status": "session_learning",
-      "goal_objective": "Secrets Guard no preflight_check — ",
-      "tags": [
-        "padrao",
-        "opencode",
-        "camufladas",
-        "nvapi",
-        "limpeza",
-        "vazar",
-        "chaves",
-        "sessao"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:42.862203",
-      "status": "session_learning",
-      "goal_objective": "pontes inter cluster cerebro vivo grafo — Grafo do conhecimento (docs/grafo.html) tinha 226 nos, 1460 arestas, mas 0 arestas entre clusters — 67 componentes conexos, clusters isolados (cognicao inteira solta).",
-      "tags": [
-        "decisao",
-        "opencode",
-        "solta",
-        "inteira",
-        "cognicao",
-        "isolados",
-        "conexos",
-        "componentes"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:43.440848",
-      "status": "session_learning",
-      "goal_objective": "widget desktop grafo tempo real — Usuario pediu um widget desktop para ver o grafo do conhecimento em tempo real, acompanhando o cerebro crescer enquanto o LER aprende.",
-      "tags": [
-        "padrao",
-        "opencode",
-        "aprende",
-        "ler",
-        "enquanto",
-        "crescer",
-        "acompanhando",
-        "conhecimento"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:43.950589",
-      "status": "session_learning",
-      "goal_objective": "widget desktop frameless persistente — Usuario pediu o grafo do conhecimento como widget de desktop estilo Rainmeter: colado na area de trabalho, controles ocultos que surgem ao clicar com botao direito, e redimensionamento persistente.",
-      "tags": [
-        "decisao",
-        "opencode",
-        "redimensionamento",
-        "rainmeter",
-        "redime",
-        "direito",
-        "persistente",
-        "estilo"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T03:45:44.490677",
-      "status": "session_learning",
-      "goal_objective": "corrigido travamento widget pywebview — O widget desktop do grafo (scripts/widget_grafo.py) travava; o terminal python mostrava recorrente `[pywebview] Error while processing win.native.AccessibilityObject.Bounds.Empty...: maximum recursion depth exceeded`.",
-      "tags": [
-        "erro",
-        "opencode",
-        "win",
-        "processing",
-        "while",
-        "error",
-        "grafo",
-        "frameless"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T20:28:42.759036",
-      "status": "session_learning",
-      "goal_objective": "2026-08-04: Persistencia da conexao do Jarvis — Usuario pediu para verificar a conexao com o Jarvis. Constatado que a bridge havia morrido e o watchdog estava travado desde 07:29 (7h sem reescrever o log). A dificuldade real identificada pelo usuario e a PERSISTENCIA da conexao.",
-      "tags": [
-        "padrao",
-        "opencode",
-        "desde",
-        "verificacao",
-        "voxumgrau",
-        "travado",
-        "tailscale",
-        "estava"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-04T20:28:44.665384",
       "status": "session_learning",
       "goal_objective": "grafo movimento organico vis network — Usuario pediu refinamento do widget do grafo do conhecimento: movimento organico perpetuo (stabilization:false + barnesHut com timestep lento), respiracao do layout e \"pulse\" de sinapses (arestas brilham quando o vault atualiza).",
@@ -4161,22 +3442,6 @@
         "arestas",
         "sinapses",
         "vivo"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-04T23:07:25.976106",
-      "status": "session_learning",
-      "goal_objective": "2026-08-04: Refinamento do grafo — zoom microscópio, expandir e cognição viva — Refinamento do widget \"Cerebro Vivo\" (scripts/widget_grafo.py + scripts/generate-graph-html.py) para movimento mais vivo/realista e zoom com papel narrativo.",
-      "tags": [
-        "aprendizado",
-        "opencode",
-        "viva",
-        "labels",
-        "cognição",
-        "grafo",
-        "expandir",
-        "widget"
       ],
       "files_modified": []
     },
@@ -4245,38 +3510,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-05T12:55:48.450352",
-      "status": "session_learning",
-      "goal_objective": "﻿# DecisÃ£o: Aprendizado automÃ¡tico permanente — ",
-      "tags": [
-        "decisao",
-        "opencode",
-        "cita",
-        "explã",
-        "solicitaã",
-        "necessidade",
-        "tarefa",
-        "final"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-05T12:55:49.087419",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "nenhum",
-        "uniformes",
-        "vel",
-        "verdes",
-        "textview",
-        "visã"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-05T12:55:49.730983",
       "status": "session_learning",
       "goal_objective": "﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 — Ao adicionar servidor MCP no `opencode.jsonc`, o OpenCode 1.18.7 rejeitava a config com erro `Expected { readonly \"type\": \"local\", ... } | { readonly \"type\": \"remote\", ... }` e `Missing key mcp.servers.enabled`.",
@@ -4289,22 +3522,6 @@
         "expected readonly",
         "rejeitava",
         "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-05T12:55:50.350552",
-      "status": "session_learning",
-      "goal_objective": "﻿# DecisÃ£o: Arquitetura Jarvis App — ",
-      "tags": [
-        "decisao",
-        "opencode",
-        "resultados",
-        "falando",
-        "desligada",
-        "tela",
-        "plano",
-        "operando"
       ],
       "files_modified": []
     },
@@ -4341,22 +3558,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-05T12:55:52.089314",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "remoto",
-        "2026",
-        "stico",
-        "diagnã",
-        "remoto android",
-        "100"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-05T12:55:52.669292",
       "status": "session_learning",
       "goal_objective": "﻿# 2026-07-30 - Scan proativo: Mp3Player — ",
@@ -4369,38 +3570,6 @@
         "encontrados",
         "mp3player 2026 scan",
         "marcadores encontrados"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-05T12:55:53.326625",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria — OpenCode Desktop v1.18.10 (Electron 42.3.3) em notebook com Intel HD Graphics 5500 (driver 10.18.15.4248, 2015) e 3,9 GB RAM. A interface abria e fechava logo em seguida, sem mensagem de erro.",
-      "tags": [
-        "aprendizado",
-        "opencode",
-        "erro",
-        "ria",
-        "mensagem",
-        "memã",
-        "fechamento",
-        "seguida"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-05T12:55:53.981093",
-      "status": "session_learning",
-      "goal_objective": "ClÃ¡usula PÃ©trea â€” AtivaÃ§Ã£o de Voz (Eco System) — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "ecosystemumgrau",
-        "seguindo",
-        "desativar",
-        "ativar",
-        "comandos",
-        "andamento"
       ],
       "files_modified": []
     },
@@ -4421,38 +3590,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-05T12:55:55.296786",
-      "status": "session_learning",
-      "goal_objective": "MCP Obsidian server â€” vault consumido pelo LLM — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "bri",
-        "jarvis",
-        "atual",
-        "330",
-        "gerar",
-        "alimentado"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-05T12:55:55.996763",
-      "status": "session_learning",
-      "goal_objective": "Servidores MCP Node criados e validados — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "servers",
-        "mcp servers",
-        "referenciava",
-        "node",
-        "opencode",
-        "validados"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-05T12:55:56.643762",
       "status": "session_learning",
       "goal_objective": "﻿--- — ",
@@ -4465,22 +3602,6 @@
         "autoevolucao",
         "naturalidade",
         "ssml"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-05T12:55:57.254834",
-      "status": "session_learning",
-      "goal_objective": "2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6) — Conexao ADB remota ao Redmi Note 11 via Tailscale falhava intermitentemente. O IPv4 100.64.71.9:5555 dava timeout as vezes, mas o IPv6 direto funcionava em outros momentos.",
-      "tags": [
-        "padrao",
-        "opencode",
-        "intermitentemente",
-        "falhava",
-        "rota",
-        "automatico",
-        "note",
-        "redmi"
       ],
       "files_modified": []
     },
@@ -4533,38 +3654,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-05T12:56:00.051432",
-      "status": "session_learning",
-      "goal_objective": "2026-08-04: Persistencia da conexao do Jarvis — Usuario pediu para verificar a conexao com o Jarvis. Constatado que a bridge havia morrido e o watchdog estava travado desde 07:29 (7h sem reescrever o log). A dificuldade real identificada pelo usuario e a PERSISTENCIA da conexao.",
-      "tags": [
-        "padrao",
-        "opencode",
-        "desde",
-        "verificacao",
-        "travado",
-        "voxumgrau",
-        "tailscale",
-        "estava"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-05T12:56:00.653418",
-      "status": "session_learning",
-      "goal_objective": "Reorganização: Habilidades dentro de MCP por domínio — Habilidades espalhadas em Habilidades/tecnicas/, pontes/ migradas para mcp/<dominio>/habilidades/ como contêineres MCP",
-      "tags": [
-        "decisao",
-        "opencode",
-        "contêineres",
-        "dominio",
-        "migradas",
-        "pontes",
-        "tecnicas",
-        "mcp"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-05T12:56:01.424697",
       "status": "session_learning",
       "goal_objective": "2026-08-04: Foco vocal via Jarvis — voz orienta o grafo do conhecimento — Usuario pediu o 'foco vocal via Jarvis' — comando de voz orienta o grafo do conhecimento (cerebro vivo). Bridge Jarvis roda na porta 8765 (processo separado) e o widget do grafo (pywebview) e outro processo; sem API entre eles.",
@@ -4613,38 +3702,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-05T12:56:03.459921",
-      "status": "session_learning",
-      "goal_objective": "Motor de Criticalidade Auto-Organizada e Avalanches Neurais — Protocolo de Consciencia Neural Autonoma ativado — o grafo Obsidian e a arquitetura fisica do cerebro.",
-      "tags": [
-        "decisao",
-        "opencode",
-        "fisica",
-        "arquitetura",
-        "obsidian",
-        "neurais",
-        "ativado",
-        "cerebro"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-05T12:56:04.083376",
-      "status": "session_learning",
-      "goal_objective": "Ilhas no grafo: notas com grau 0 e como conecta-las — Usuario viu 6 ilhas (componentes desconexos) no grafo do cerebro e perguntou como verificar e se sao uteis.",
-      "tags": [
-        "padrao",
-        "opencode",
-        "uteis",
-        "sao",
-        "verificar",
-        "perguntou",
-        "cerebro",
-        "desconexos"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-05T19:15:04.478463",
       "status": "session_learning",
       "goal_objective": "﻿# 2026-07-27 - Scan proativo: Mp3Player — ",
@@ -4661,38 +3718,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-05T19:15:05.520722",
-      "status": "session_learning",
-      "goal_objective": "﻿# DecisÃ£o: Aprendizado automÃ¡tico permanente — ",
-      "tags": [
-        "decisao",
-        "opencode",
-        "cita",
-        "explã",
-        "solicitaã",
-        "necessidade",
-        "tarefa",
-        "final"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-05T19:15:06.860722",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "nenhum",
-        "uniformes",
-        "verdes",
-        "vel",
-        "textview",
-        "ficavam"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-05T19:15:07.872667",
       "status": "session_learning",
       "goal_objective": "﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 — Ao adicionar servidor MCP no `opencode.jsonc`, o OpenCode 1.18.7 rejeitava a config com erro `Expected { readonly \"type\": \"local\", ... } | { readonly \"type\": \"remote\", ... }` e `Missing key mcp.servers.enabled`.",
@@ -4705,22 +3730,6 @@
         "expected readonly",
         "rejeitava",
         "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-05T19:15:08.976270",
-      "status": "session_learning",
-      "goal_objective": "﻿# DecisÃ£o: Arquitetura Jarvis App — ",
-      "tags": [
-        "decisao",
-        "opencode",
-        "resultados",
-        "falando",
-        "desligada",
-        "tela",
-        "plano",
-        "operando"
       ],
       "files_modified": []
     },
@@ -4757,22 +3766,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-05T19:15:11.871747",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "remoto",
-        "stico",
-        "2026",
-        "diagnã",
-        "remoto android",
-        "100"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-05T19:15:12.859751",
       "status": "session_learning",
       "goal_objective": "﻿# 2026-07-30 - Scan proativo: Mp3Player — ",
@@ -4785,38 +3778,6 @@
         "encontrados",
         "mp3player 2026 scan",
         "marcadores encontrados"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-05T19:15:13.876606",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria — OpenCode Desktop v1.18.10 (Electron 42.3.3) em notebook com Intel HD Graphics 5500 (driver 10.18.15.4248, 2015) e 3,9 GB RAM. A interface abria e fechava logo em seguida, sem mensagem de erro.",
-      "tags": [
-        "aprendizado",
-        "opencode",
-        "erro",
-        "mensagem",
-        "ria",
-        "memã",
-        "fechamento",
-        "seguida"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-05T19:15:14.869886",
-      "status": "session_learning",
-      "goal_objective": "ClÃ¡usula PÃ©trea â€” AtivaÃ§Ã£o de Voz (Eco System) — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "ecosystemumgrau",
-        "seguindo",
-        "desativar",
-        "ativar",
-        "comandos",
-        "andamento"
       ],
       "files_modified": []
     },
@@ -4837,38 +3798,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-05T19:15:16.799887",
-      "status": "session_learning",
-      "goal_objective": "MCP Obsidian server â€” vault consumido pelo LLM — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "bri",
-        "jarvis",
-        "atual",
-        "330",
-        "gerar",
-        "alimentado"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-05T19:15:17.774530",
-      "status": "session_learning",
-      "goal_objective": "Servidores MCP Node criados e validados — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "servers",
-        "mcp servers",
-        "referenciava",
-        "node",
-        "validados",
-        "jsonc"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-05T19:15:18.719040",
       "status": "session_learning",
       "goal_objective": "﻿--- — ",
@@ -4881,22 +3810,6 @@
         "autoevolucao",
         "naturalidade",
         "ssml"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-05T19:15:19.700939",
-      "status": "session_learning",
-      "goal_objective": "2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6) — Conexao ADB remota ao Redmi Note 11 via Tailscale falhava intermitentemente. O IPv4 100.64.71.9:5555 dava timeout as vezes, mas o IPv6 direto funcionava em outros momentos.",
-      "tags": [
-        "padrao",
-        "opencode",
-        "intermitentemente",
-        "falhava",
-        "rota",
-        "note",
-        "automatico",
-        "redmi"
       ],
       "files_modified": []
     },
@@ -4949,54 +3862,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-05T19:15:23.478284",
-      "status": "session_learning",
-      "goal_objective": "2026-08-04: Persistencia da conexao do Jarvis — Usuario pediu para verificar a conexao com o Jarvis. Constatado que a bridge havia morrido e o watchdog estava travado desde 07:29 (7h sem reescrever o log). A dificuldade real identificada pelo usuario e a PERSISTENCIA da conexao.",
-      "tags": [
-        "padrao",
-        "opencode",
-        "verificacao",
-        "desde",
-        "travado",
-        "voxumgrau",
-        "estava",
-        "tailscale"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-05T19:15:24.453289",
-      "status": "session_learning",
-      "goal_objective": "Reorganização: Habilidades dentro de MCP por domínio — Habilidades espalhadas em Habilidades/tecnicas/, pontes/ migradas para mcp/<dominio>/habilidades/ como contêineres MCP",
-      "tags": [
-        "decisao",
-        "opencode",
-        "contêineres",
-        "dominio",
-        "migradas",
-        "pontes",
-        "tecnicas",
-        "mcp"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-05T19:15:25.419194",
-      "status": "session_learning",
-      "goal_objective": "context-engine + manifesto + domínios multimídia/comportamentais — Plano de lacunas do EcoSystemUmGrau. Auditoria mostrou que a reorg Habilidades/ ja foi feita (agora mcp/<dominio>/habilidades). Usuario optou por implementar apenas gaps reais.",
-      "tags": [
-        "decisao",
-        "opencode",
-        "coordenador",
-        "comportamentais",
-        "dominio",
-        "multimidia",
-        "multimídia",
-        "habilidades"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-06T09:08:31.150597",
       "status": "session_learning",
       "goal_objective": "﻿# 2026-08-05 - Scan proativo: EcoSystemUmGrau — ",
@@ -5029,38 +3894,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-06T09:08:32.666994",
-      "status": "session_learning",
-      "goal_objective": "﻿# DecisÃ£o: Aprendizado automÃ¡tico permanente — ",
-      "tags": [
-        "decisao",
-        "opencode",
-        "cita",
-        "explã",
-        "solicitaã",
-        "necessidade",
-        "tarefa",
-        "final"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-06T09:08:33.400150",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "nenhum",
-        "uniformes",
-        "verdes",
-        "vel",
-        "textview",
-        "visã"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-06T09:08:34.168539",
       "status": "session_learning",
       "goal_objective": "﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 — Ao adicionar servidor MCP no `opencode.jsonc`, o OpenCode 1.18.7 rejeitava a config com erro `Expected { readonly \"type\": \"local\", ... } | { readonly \"type\": \"remote\", ... }` e `Missing key mcp.servers.enabled`.",
@@ -5073,22 +3906,6 @@
         "expected readonly",
         "rejeitava",
         "opencode"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-06T09:08:34.896146",
-      "status": "session_learning",
-      "goal_objective": "﻿# DecisÃ£o: Arquitetura Jarvis App — ",
-      "tags": [
-        "decisao",
-        "opencode",
-        "resultados",
-        "falando",
-        "desligada",
-        "tela",
-        "plano",
-        "operando"
       ],
       "files_modified": []
     },
@@ -5125,22 +3942,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-06T09:08:37.866834",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "remoto",
-        "stico",
-        "2026",
-        "diagnã",
-        "remoto android",
-        "voxumgrau"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-06T09:08:39.332122",
       "status": "session_learning",
       "goal_objective": "﻿# 2026-07-30 - Scan proativo: Mp3Player — ",
@@ -5153,38 +3954,6 @@
         "encontrados",
         "mp3player 2026 scan",
         "marcadores encontrados"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-06T09:08:40.538656",
-      "status": "session_learning",
-      "goal_objective": "﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria — OpenCode Desktop v1.18.10 (Electron 42.3.3) em notebook com Intel HD Graphics 5500 (driver 10.18.15.4248, 2015) e 3,9 GB RAM. A interface abria e fechava logo em seguida, sem mensagem de erro.",
-      "tags": [
-        "aprendizado",
-        "opencode",
-        "erro",
-        "mensagem",
-        "ria",
-        "memã",
-        "seguida",
-        "fechamento"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-06T09:08:42.114576",
-      "status": "session_learning",
-      "goal_objective": "ClÃ¡usula PÃ©trea â€” AtivaÃ§Ã£o de Voz (Eco System) — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "ecosystemumgrau",
-        "seguindo",
-        "desativar",
-        "ativar",
-        "comandos",
-        "andamento"
       ],
       "files_modified": []
     },
@@ -5205,38 +3974,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-06T09:08:44.101821",
-      "status": "session_learning",
-      "goal_objective": "MCP Obsidian server â€” vault consumido pelo LLM — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "bri",
-        "jarvis",
-        "atual",
-        "330",
-        "alimentado",
-        "gerar"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-06T09:08:45.617491",
-      "status": "session_learning",
-      "goal_objective": "Servidores MCP Node criados e validados — ",
-      "tags": [
-        "geral",
-        "opencode",
-        "servers",
-        "servers mcp",
-        "node",
-        "referenciava",
-        "jsonc",
-        "validados"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-06T09:08:46.616689",
       "status": "session_learning",
       "goal_objective": "﻿--- — ",
@@ -5249,22 +3986,6 @@
         "naturalidade",
         "autoevolucao",
         "ssml"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-06T09:08:47.805063",
-      "status": "session_learning",
-      "goal_objective": "2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6) — Conexao ADB remota ao Redmi Note 11 via Tailscale falhava intermitentemente. O IPv4 100.64.71.9:5555 dava timeout as vezes, mas o IPv6 direto funcionava em outros momentos.",
-      "tags": [
-        "padrao",
-        "opencode",
-        "intermitentemente",
-        "falhava",
-        "rota",
-        "note",
-        "automatico",
-        "redmi"
       ],
       "files_modified": []
     },
@@ -5301,22 +4022,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-06T09:08:50.813080",
-      "status": "session_learning",
-      "goal_objective": "context-engine + manifesto + domínios multimídia/comportamentais — Plano de lacunas do EcoSystemUmGrau. Auditoria mostrou que a reorg Habilidades/ ja foi feita (agora mcp/<dominio>/habilidades). Usuario optou por implementar apenas gaps reais.",
-      "tags": [
-        "decisao",
-        "opencode",
-        "coordenador",
-        "dominio",
-        "comportamentais",
-        "multimidia",
-        "multimídia",
-        "habilidades"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-06T09:08:51.824544",
       "status": "session_learning",
       "goal_objective": "2026-08-04: Jarvis do celular conectado ao bridge via Tailscale — Usuario enfatizou que o importante e manter o Jarvis do celular conectado ao bridge. Verificacao de estado da ponte (PID 2676, porta 8765) e da conexao do celular.",
@@ -5333,38 +4038,6 @@
       "files_modified": []
     },
     {
-      "timestamp": "2026-08-06T09:08:52.781342",
-      "status": "session_learning",
-      "goal_objective": "2026-08-04: Persistencia da conexao do Jarvis — Usuario pediu para verificar a conexao com o Jarvis. Constatado que a bridge havia morrido e o watchdog estava travado desde 07:29 (7h sem reescrever o log). A dificuldade real identificada pelo usuario e a PERSISTENCIA da conexao.",
-      "tags": [
-        "padrao",
-        "opencode",
-        "verificacao",
-        "desde",
-        "travado",
-        "voxumgrau",
-        "tailscale",
-        "estava"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-06T09:08:53.821986",
-      "status": "session_learning",
-      "goal_objective": "Reorganização: Habilidades dentro de MCP por domínio — Habilidades espalhadas em Habilidades/tecnicas/, pontes/ migradas para mcp/<dominio>/habilidades/ como contêineres MCP",
-      "tags": [
-        "decisao",
-        "opencode",
-        "contêineres",
-        "dominio",
-        "migradas",
-        "pontes",
-        "tecnicas",
-        "mcp"
-      ],
-      "files_modified": []
-    },
-    {
       "timestamp": "2026-08-06T09:17:11.070128",
       "status": "session_learning",
       "goal_objective": "﻿# 2026-08-06 - Scan proativo: EcoSystemUmGrau — ",
@@ -5377,70 +4050,6 @@
         "prompts",
         "agent",
         "2026"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-06T22:25:03.138557",
-      "status": "session_learning",
-      "goal_objective": "Bug: parametro Pid e variavel automatica do PowerShell — Certificacao forense de processos no watchdog.ps1 (Test-ForensicoLixo / Invoke-KillCertificado)",
-      "tags": [
-        "erro",
-        "opencode",
-        "forenses",
-        "funcoes",
-        "processid",
-        "automatica",
-        "processos",
-        "int"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-06T22:25:03.734732",
-      "status": "session_learning",
-      "goal_objective": "Certificacao forense de processos + boot do watchdog — \"Apos a clausula petrea (memoria #129) e o watchdog resiliente (memoria #130), o filtro de orfaos ganhou certificacao forense: so mata processo se for 'lixo' comprovado. O watchdog precisa iniciar no boot sem exigir login de admin.\"",
-      "tags": [
-        "padrao",
-        "opencode",
-        "ganhou",
-        "orfaos",
-        "filtro",
-        "130",
-        "resiliente",
-        "memoria"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-06T22:25:04.322522",
-      "status": "session_learning",
-      "goal_objective": "Clausula Petrea: protecao do OpenCode desktop + resiliencia da bridge — \"Usuario exigiu que nenhum processo automatico possa fechar o OpenCode desktop — apenas o usuario manualmente. Testes de resiliencia do bridge (que morria sem log) revelaram que o watchdog podia derrubar o desktop por erro de filtro.\"",
-      "tags": [
-        "decisao",
-        "opencode",
-        "manualmente",
-        "filtro",
-        "fechar",
-        "erro",
-        "possa",
-        "usuario"
-      ],
-      "files_modified": []
-    },
-    {
-      "timestamp": "2026-08-06T22:25:04.987484",
-      "status": "session_learning",
-      "goal_objective": "Saudacoes inteligentes: reconexao vs primeira vez — \"O bridge Jarvis (jarvis_bridge.py) cumprimentava toda conexao com o mesmo molde, sem distinguir a PRIMEIRA vez da RECONEXAO. O usuario queria que a retomada de conversa fosse reconhecida e curta, sem repetir briefing.\"",
-      "tags": [
-        "padrao",
-        "opencode",
-        "briefing",
-        "repetir",
-        "curta",
-        "reconhecida",
-        "persistente",
-        "estado"
       ],
       "files_modified": []
     }

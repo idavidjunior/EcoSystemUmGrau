@@ -1,11 +1,17 @@
 # Cluster: Cognicao
 
-**32 notas** do cluster cognicao.
+**42 notas** do cluster cognicao.
 
 
 ## Notas
+- [[2026-07-27-setup-plug-play-e-organizacao-github]]
+- [[2026-07-28-botães-de-filtro-sem-texto-visãvel-â-materialbutt]]
+- [[2026-08-03-scan-proativo-claude-code-extra-agents]]
+- [[2026-08-04-refinamento-do-grafo-zoom-microscópio-expandir-e-]]
+- [[aprendizado-â-2026-07-31-â-pontuaãão-automãtica-de-transcriã]]
 - [[bug-parametro-pid-e-variavel-automatica-do-powershell]]
 - [[cache-de-decisoes-caras]]
+- [[clãusula-pãtrea-â-ativaãão-de-voz-eco-system]]
 - [[corrigido-travamento-widget-pywebview]]
 - [[dados-algoritmos-para-debugging]]
 - [[debugging-em-cascata-reversa]]
@@ -16,6 +22,9 @@
 - [[escrita-atomica-sempre]]
 - [[estrategia-de-fallback-em-cadeia-chain-of-responsibility]]
 - [[estrategia-de-loop-autonomo-planejar-executar-verificar-corr]]
+- [[grafo-vis-network-bug-string-js-json-dumps]]
+- [[guia-controle-total-de-tv-lg-webos-reaproveitãvel]]
+- [[habilidade-navegação-perita-internet-pc-e-celular]]
 - [[heuristica-de-isolamento-de-falha]]
 - [[hipotese-falsificacao-terminal]]
 - [[interface-sobre-implementacao-em-parametros]]
@@ -27,6 +36,7 @@
 - [[principio-da-separacao-causa-efeito-temporal]]
 - [[principio-do-menor-escopo-de-variavel]]
 - [[projete-para-falha-nao-para-sucesso]]
+- [[pronúncia-járvis-escrita-sem-acento-fala-com-acento]]
 - [[regra-do-nao-magico]]
 - [[regra-dos-3-logs]]
 - [[sempre-esperar-o-inesperado-em-es]]
