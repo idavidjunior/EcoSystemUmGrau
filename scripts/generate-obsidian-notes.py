@@ -313,7 +313,7 @@ def generate(dry_run=False, inject_links=True):
         for slug in items_cat:
             body.append(f'- [[{slug}]]')
         if not dry_run:
-            write_note('_hubs', f'{emoji}-hub-{cat}.md', '\n'.join(body))
+            escritos.add(write_note('_hubs', f'{emoji}-hub-{cat}.md', '\n'.join(body)))
         written += 1
         hub_links[cat] = f'[[{emoji}-hub-{cat}]]'
 
@@ -331,7 +331,7 @@ def generate(dry_run=False, inject_links=True):
         for slug in items_cl:
             body.append(f'- [[{slug}]]')
         if not dry_run:
-            write_note('_hubs', f'cluster-hub-{cl}.md', '\n'.join(body))
+            escritos.add(write_note('_hubs', f'cluster-hub-{cl}.md', '\n'.join(body)))
         written += 1
 
     # ---------- Home ----------
@@ -347,8 +347,11 @@ def generate(dry_run=False, inject_links=True):
     home.append('\n## Aprendizados (vault: conhecimento/)\n')
     home.append('- Os aprendizados vivem em `conhecimento/aprendizados/*.md` (vault raiz `conhecimento/`)')
     if not dry_run:
-        write_note('_hubs', 'home.md', '\n'.join(home))
+        escritos.add(write_note('_hubs', 'home.md', '\n'.join(home)))
     written += 1
+
+    if not dry_run:
+        limpar_orfãos(escritos)
 
     print(f'{written} notas + hubs escritos em {OUTPUT_DIR}')
 
