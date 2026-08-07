@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-06T22:33:08.726777",
+  "last_updated": "2026-08-06T23:24:06",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -1453,6 +1453,46 @@
       "extracted_at": "2026-07-25T14:27:27.740901",
       "merged_count": 2,
       "merged_at": "2026-07-25T14:27:27.937000"
+    },
+    {
+      "source": "ecosistema-opencode",
+      "issue": "HTTP 401 Unauthorized on /session and /global/sessions/*",
+      "root_cause": "opencode serve was started with OPENCODE_SERVER_PASSWORD=521cf1f4-... (Windows user env var) but .env was updated to edbe7432-... and serve was never restarted",
+      "fix": "Updated Windows HKCU env var to match .env password, killed stale serve (PID 4724), started new serve (PID 4216) with correct password",
+      "category": "auth",
+      "extracted_at": "2026-08-06T23:24:06"
+    },
+    {
+      "source": "ecosistema-opencode",
+      "issue": "_ensure_serve() spawns opencode serve without passing env context",
+      "root_cause": "asyncio.create_subprocess_exec inherits parent env, but explicit env ensures correct OPENCODE_SERVER_PASSWORD is propagated to serve child process",
+      "fix": "Added env={**os.environ} to _ensure_serve() and _ensure_serve_global() in jarvis_bridge.py; run_serve.py now loads .env and passes env explicitly",
+      "category": "subprocess",
+      "extracted_at": "2026-08-06T23:24:06"
+    },
+    {
+      "source": "ecosistema-opencode",
+      "issue": "gerar_audio() blocks until full TTS generation, no streaming",
+      "root_cause": "gerar_audio accumulated all edge-tts chunks into single base64 before sending to client; no incremental audio delivery",
+      "fix": "Added gerar_audio_stream() async generator yielding base64 chunks incrementally; modified ws_responder to send audio_streaming/audio_chunk/audio_done messages for progressive playback",
+      "category": "streaming",
+      "extracted_at": "2026-08-06T23:24:06"
+    },
+    {
+      "source": "ecosistema-opencode",
+      "issue": "STT no partial/streaming results",
+      "root_cause": "_stt_whisper joined all Whisper segments at once; onPartialResults callback in VoxStt.kt was empty",
+      "fix": "Added partial_callback parameter to _stt_whisper for incremental segment reporting; implemented onPartialResults in VoxStt.kt to forward partial text to UI",
+      "category": "stt",
+      "extracted_at": "2026-08-06T23:24:06"
+    },
+    {
+      "source": "ecosistema-opencode",
+      "issue": "VoxAudioPlayer temp file leak on exception",
+      "root_cause": "tempFile variable was scoped inside try block; if exception before MediaPlayer setup, tempFile was orphaned; stop() before play() could leave old tempFile undeleted",
+      "fix": "Promoted tempFile to function scope with null-safe cleanup in catch block; VoxAudioPlayer.kt now uses var tempFile: File? = null and deletes in all error paths",
+      "category": "resource_leak",
+      "extracted_at": "2026-08-06T23:24:06"
     }
   ],
   "cognitive_patterns": [
@@ -4054,5 +4094,46 @@
       "files_modified": []
     }
   ],
-  "bugs": []
+  "bugs": [
+    {
+      "source": "ecosistema-opencode",
+      "issue": "HTTP 401 Unauthorized on /session and /global/sessions/*",
+      "root_cause": "opencode serve was started with OPENCODE_SERVER_PASSWORD=521cf1f4-... (Windows user env var) but .env was updated to edbe7432-... and serve was never restarted",
+      "fix": "Updated Windows HKCU env var to match .env password, killed stale serve (PID 4724), started new serve (PID 4216) with correct password",
+      "category": "auth",
+      "extracted_at": "2026-08-06T23:24:06"
+    },
+    {
+      "source": "ecosistema-opencode",
+      "issue": "_ensure_serve() spawns opencode serve without passing env context",
+      "root_cause": "asyncio.create_subprocess_exec inherits parent env, but explicit env ensures correct OPENCODE_SERVER_PASSWORD is propagated to serve child process",
+      "fix": "Added env={**os.environ} to _ensure_serve() and _ensure_serve_global() in jarvis_bridge.py; run_serve.py now loads .env and passes env explicitly",
+      "category": "subprocess",
+      "extracted_at": "2026-08-06T23:24:06"
+    },
+    {
+      "source": "ecosistema-opencode",
+      "issue": "gerar_audio() blocks until full TTS generation, no streaming",
+      "root_cause": "gerar_audio accumulated all edge-tts chunks into single base64 before sending to client; no incremental audio delivery",
+      "fix": "Added gerar_audio_stream() async generator yielding base64 chunks incrementally; modified ws_responder to send audio_streaming/audio_chunk/audio_done messages for progressive playback",
+      "category": "streaming",
+      "extracted_at": "2026-08-06T23:24:06"
+    },
+    {
+      "source": "ecosistema-opencode",
+      "issue": "STT no partial/streaming results",
+      "root_cause": "_stt_whisper joined all Whisper segments at once; onPartialResults callback in VoxStt.kt was empty",
+      "fix": "Added partial_callback parameter to _stt_whisper for incremental segment reporting; implemented onPartialResults in VoxStt.kt to forward partial text to UI",
+      "category": "stt",
+      "extracted_at": "2026-08-06T23:24:06"
+    },
+    {
+      "source": "ecosistema-opencode",
+      "issue": "VoxAudioPlayer temp file leak on exception",
+      "root_cause": "tempFile variable was scoped inside try block; if exception before MediaPlayer setup, tempFile was orphaned; stop() before play() could leave old tempFile undeleted",
+      "fix": "Promoted tempFile to function scope with null-safe cleanup in catch block; VoxAudioPlayer.kt now uses var tempFile: File? = null and deletes in all error paths",
+      "category": "resource_leak",
+      "extracted_at": "2026-08-06T23:24:06"
+    }
+  ]
 }

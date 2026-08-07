@@ -42,6 +42,7 @@ from jarvis_bridge import (  # noqa: E402
     briefing_espontaneo,
     caminho_rapido,
     gerar_audio,
+    gerar_audio_stream,
     gerar_status_natural,
     melhorar_fala,
     normalizar_hora_display,
