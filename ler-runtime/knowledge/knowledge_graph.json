@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-06T09:17:11.421500",
+  "last_updated": "2026-08-06T22:25:05.959457",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -662,6 +662,22 @@
       "description": "---\ntipo: padrao\ntags: [grafo, obsidian, wikilinks, conectividade, grau0, debug]\ndata: 2026-08-04\ncontexto: Usuario viu 6 ilhas (componentes desconexos) no grafo do cerebro e perguntou como verificar e se sao uteis.\ndecisao: Diagnosticar ilhas como notas com grau 0 e integrar/deletar conforme o valo",
       "domain": "general",
       "extracted_at": "2026-08-05T12:56:04.083376"
+    },
+    {
+      "source": "opencode",
+      "title": "Certificacao forense de processos + boot do watchdog",
+      "action": "\"Apos a clausula petrea (memoria #129) e o watchdog resiliente (memoria #130), o filtro de orfaos ganhou certificacao forense: so mata processo se for 'lixo' comprovado. O watchdog precisa iniciar no boot sem exigir login de admin.\"",
+      "description": "---\ntipo: padrao\ntags: [watchdog, powershell, certificacao-forense, resiliencia, boot, startup]\ndata: 2026-08-06\ncontexto: \"Apos a clausula petrea (memoria #129) e o watchdog resiliente (memoria #130), o filtro de orfaos ganhou certificacao forense: so mata processo se for 'lixo' comprovado. O watch",
+      "domain": "general",
+      "extracted_at": "2026-08-06T22:25:03.734732"
+    },
+    {
+      "source": "opencode",
+      "title": "Saudacoes inteligentes: reconexao vs primeira vez",
+      "action": "\"O bridge Jarvis (jarvis_bridge.py) cumprimentava toda conexao com o mesmo molde, sem distinguir a PRIMEIRA vez da RECONEXAO. O usuario queria que a retomada de conversa fosse reconhecida e curta, sem repetir briefing.\"",
+      "description": "---\ntipo: padrao\ntags: [bridge, saudacao, jarvis, reconexao, estado-persistente, primeira-conexao]\ndata: 2026-08-06\ncontexto: \"O bridge Jarvis (jarvis_bridge.py) cumprimentava toda conexao com o mesmo molde, sem distinguir a PRIMEIRA vez da RECONEXAO. O usuario queria que a retomada de conversa foss",
+      "domain": "general",
+      "extracted_at": "2026-08-06T22:25:04.987484"
     }
   ],
   "decisions": [
@@ -1026,6 +1042,12 @@
       "extracted_at": "2026-08-06T09:08:50.813080",
       "merged_count": 2,
       "merged_at": "2026-08-06T09:08:51.144311"
+    },
+    {
+      "source": "opencode",
+      "decision": "Clausula Petrea: protecao do OpenCode desktop + resiliencia da bridge",
+      "rationale": "---\ntipo: decisao\ntags: [resiliencia, watchdog, opencode, desktop, bridge, clausula-petrea, android]\ndata: 2026-08-06\ncontexto: \"Usuario exigiu que nenhum processo automatico possa fechar o OpenCode desktop — apenas o usuario manualmente. Testes de resiliencia do bridge (que morria sem log) revelaram que o watchdog podia derrubar o desktop por erro de filtro.\"\ndecisao: \"Corrigir watchdog.ps1 com protecao absoluta do desktop (clausula petrea) e robustez de instancia unica via lock de PID. Reestruturar saudacoes do bridge com estado persistente.\"\nimpacto: \"Bridge e serve se auto-recuperam em <60s apos queda. Desktop OpenCode jamais e fechado automaticamente. Saudações variam entre primeira vez e reconexao.\"\n---\n\n# Clausula Petrea: protecao do OpenCode desktop + resiliencia da bridge\n\n## Regra imutavel (clausula petrea)\n**Em hipotese alguma, o Windows ou qualquer outro processo automatico pode fechar o\nOpenCode desktop. Somente o usuario pode, manualmente.**\n\n- O desktop roda como `OpenCode.exe` em `@opencode-aidesktop`.\n- O CLI roda como `opencode.exe` (serve na porta 8767, run em sessoes).\n\n## Bug critico encontrado\nO filtro antigo de orfaos do watchdog matava qualquer `opencode.exe` cujo comando\nNAO contivesse \" serve\":\n```powershell\n$cmd -match \"opencode\\.exe run\" -or ($cmd -match \"opencode\\.exe\" -and $cmd -notmatch \" serve\")\n```\nO desktop (`OpenCode.exe`) casa no segundo criterio (nao tem \" serve\" no comando),\nentao o proprio watchdog poderia derrubar o desktop. **Corrigido** com protecao\nexplicita por caminho (`opencode-aidesktop`) e filtro restrito a `opencode run`.\n\n## Melhorias no watchdog.ps1\n1. **Instancia unica via lock de PID** (`watchdog.lock`): substitui o Mutex nomeado,\n   que no Windows fica \"abandoned\" quando o processo dono e morto e NAO e re-adquirido\n   — o que travava qualquer restart do watchdog.\n2. **Health-check do bridge** (`Test-BridgeAlive`): verifica porta LISTENING + processo\n   dono vivo. Detecta socket orfao (porta ocupada por processo morto) e limpa.\n3. **Serve com health HTTP** (`/global/health` + Basic Auth): so considera saudavel se\n   responde, nao apenas se a porta escuta.\n4. **Log com limite de 2MB**: ao estourar, descarta a metade mais antiga.\n5. **Filtro de orfaos seguro**: so mata `opencode.exe run` (CLI), nunca o desktop.\n\n## Reestruturacao das saudacoes (jarvis_bridge.py)\n> Detalhado em `2026-08-06-saudacoes-inteligentes-reconexao-vs-primeira-vez.md`\n> (memoria #131). Estado persistente `saudacao_estado.json`, `_classificar_conexao()`\n> com 3 fontes, prompt de retomada curto na reconexao, fallback variado, timeout 90s.\n\n## Testes realizados (100%)\n1. **Recuperacao do bridge**: derrubado -> watchdog restaurou em <60s (novo PID).\n2. **Recuperacao do serve**: derrubado -> watchdog restaurou em <60s (novo PID).\n3. **Desktop intocado**: 8 processos `OpenCode.exe` permaneceram apos as quedas.\n4. **Saudacoes**: 3 conexoes seguidas geraram 3 saudações distintas; a reconexao\n   retornou \"De volta, senhor. Continuando de onde paramos.\" e \"Voltou. Sistemas\n   seguem quentes, é só falar.\" — reconhecendo a retomada.\n5. **Watchdog duplicado**: lock de PID impede duas instancias concorrentes.\n\n## Monitoramento\n- Log do watchdog: `scripts/watchdog_log.txt` (limitado a 2MB).\n- Log do bridge: `scripts/bridge_log.txt`.\n- Estado de saudoes: `scripts/saudacao_estado.json`.\n- Estado do bridge: `scripts/bridge_estado.json`.\n",
+      "extracted_at": "2026-08-06T22:25:04.322522"
     }
   ],
   "bug_fixes": [
@@ -1809,6 +1831,13 @@
       "domain": "general",
       "body": "﻿---\ntipo: decisao\ntags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]\ndata: 2026-08-02\ncontexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu \"quero tudo\".\ndecisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente",
       "extracted_at": "2026-08-06T09:08:46.616689"
+    },
+    {
+      "source": "opencode",
+      "title": "Bug: parametro Pid e variavel automatica do PowerShell",
+      "domain": "general",
+      "body": "---\ntipo: erro\ntags: [watchdog, powershell, bug, resiliencia]\ndata: 2026-08-06\ncontexto: Certificacao forense de processos no watchdog.ps1 (Test-ForensicoLixo / Invoke-KillCertificado)\ndecisao: Renomear parametro [int]Pid para [int]ProcessId nas funcoes forenses\nimpacto: Evita que o watchdog mate o proprio processo (variavel automatica PID read-only)\n---\n\n# Bug: parametro Pid e variavel automatica do PowerShell\n\n## Sintoma\nA funcao `Test-ForensicoLixo` e `Invoke-KillCertificado` declaravam `[int",
+      "extracted_at": "2026-08-06T22:25:03.138557"
     }
   ],
   "heuristics": [
@@ -5348,6 +5377,70 @@
         "prompts",
         "agent",
         "2026"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-06T22:25:03.138557",
+      "status": "session_learning",
+      "goal_objective": "Bug: parametro Pid e variavel automatica do PowerShell — Certificacao forense de processos no watchdog.ps1 (Test-ForensicoLixo / Invoke-KillCertificado)",
+      "tags": [
+        "erro",
+        "opencode",
+        "forenses",
+        "funcoes",
+        "processid",
+        "automatica",
+        "processos",
+        "int"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-06T22:25:03.734732",
+      "status": "session_learning",
+      "goal_objective": "Certificacao forense de processos + boot do watchdog — \"Apos a clausula petrea (memoria #129) e o watchdog resiliente (memoria #130), o filtro de orfaos ganhou certificacao forense: so mata processo se for 'lixo' comprovado. O watchdog precisa iniciar no boot sem exigir login de admin.\"",
+      "tags": [
+        "padrao",
+        "opencode",
+        "ganhou",
+        "orfaos",
+        "filtro",
+        "130",
+        "resiliente",
+        "memoria"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-06T22:25:04.322522",
+      "status": "session_learning",
+      "goal_objective": "Clausula Petrea: protecao do OpenCode desktop + resiliencia da bridge — \"Usuario exigiu que nenhum processo automatico possa fechar o OpenCode desktop — apenas o usuario manualmente. Testes de resiliencia do bridge (que morria sem log) revelaram que o watchdog podia derrubar o desktop por erro de filtro.\"",
+      "tags": [
+        "decisao",
+        "opencode",
+        "manualmente",
+        "filtro",
+        "fechar",
+        "erro",
+        "possa",
+        "usuario"
+      ],
+      "files_modified": []
+    },
+    {
+      "timestamp": "2026-08-06T22:25:04.987484",
+      "status": "session_learning",
+      "goal_objective": "Saudacoes inteligentes: reconexao vs primeira vez — \"O bridge Jarvis (jarvis_bridge.py) cumprimentava toda conexao com o mesmo molde, sem distinguir a PRIMEIRA vez da RECONEXAO. O usuario queria que a retomada de conversa fosse reconhecida e curta, sem repetir briefing.\"",
+      "tags": [
+        "padrao",
+        "opencode",
+        "briefing",
+        "repetir",
+        "curta",
+        "reconhecida",
+        "persistente",
+        "estado"
       ],
       "files_modified": []
     }

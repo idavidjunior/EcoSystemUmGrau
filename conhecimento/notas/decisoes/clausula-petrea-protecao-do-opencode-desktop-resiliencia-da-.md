@@ -1,4 +1,14 @@
 ---
+tags: [90s, decisao, erro, opencode, podia, robustez]
+aliases: [Clausula Petrea: protecao do OpenCode desktop + resiliencia ]
+date: 2026-08-06
+---
+
+# Clausula Petrea: protecao do OpenCode desktop + resiliencia da bridge
+
+**Fonte:** opencode
+
+---
 tipo: decisao
 tags: [resiliencia, watchdog, opencode, desktop, bridge, clausula-petrea, android]
 data: 2026-08-06
@@ -59,4 +69,9 @@ explicita por caminho (`opencode-aidesktop`) e filtro restrito a `opencode run`.
 
 ## Conexoes
 
+- [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
+- [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
+- [[controle-da-tv-lg-webos-via-ssap]]
+- [[decisao-hub-decisoes]]
+- [[secrets-guard-no-preflightcheck]]

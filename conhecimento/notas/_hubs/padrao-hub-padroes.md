@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**73 notas** conectadas a este hub.
+**75 notas** conectadas a este hub.
 
 
 ## Notas
@@ -17,6 +17,7 @@
 - [[build-pipeline]]
 - [[button-visibility-pattern-maintain-grid]]
 - [[cadeia-de-provedores-com-failover-inteligente]]
+- [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[complete-build-pipeline-intelligence]]
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
@@ -57,6 +58,7 @@
 - [[registro-de-habilidades-de-jarvis]]
 - [[renderersfactory-for-custom-audioprocessor]]
 - [[retry-com-backoff-exponencial]]
+- [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]
 - [[saveload-pattern]]
 - [[server-failover-com-auto-return]]
 - [[shadow-dom-penetration]]

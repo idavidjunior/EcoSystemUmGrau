@@ -1,6 +1,6 @@
 # Missoes
 
-**106 notas** conectadas a este hub.
+**110 notas** conectadas a este hub.
 
 
 ## Notas
@@ -70,6 +70,9 @@
 - [[aprendizado-â-2026-07-31-â-horas-faladas-corretamente-no-tts]]
 - [[aprendizado-â-2026-07-31-â-pontuaãão-automãtica-de-transcriã]]
 - [[aprendizado-â-2026-07-31-â-reorg-catãlogo-ãnico-habilidades-]]
+- [[bug-parametro-pid-e-variavel-automatica-do-powershell-certif]]
+- [[certificacao-forense-de-processos-boot-do-watchdog-apos-a-cl]]
+- [[clausula-petrea-protecao-do-opencode-desktop-resiliencia-da-]]
 - [[clãusula-pãtrea-â-ativaãão-de-voz-eco-system]]
 - [[confirmaãão-em-ãudio-â-regra-permanente-01082026]]
 - [[context-engine-manifesto-domínios-multimídiacomportamentais-]]
@@ -100,6 +103,7 @@
 - [[pronúncia-járvis-escrita-sem-acento-fala-com-acento]]
 - [[reorganização-habilidades-dentro-de-mcp-por-domínio-habilida]]
 - [[revisao-radical-do-registro-de-habilidades-de-jarvis-aprendi]]
+- [[saudacoes-inteligentes-reconexao-vs-primeira-vez-o-bridge-ja]]
 - [[secrets-guard-no-preflightcheck]]
 - [[servidores-mcp-node-criados-e-validados]]
 - [[sessao-de-configuracao-do-opencode-com-failover-de-servidor-]]

@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**138 notas** do cluster ecossistema.
+**144 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -73,8 +73,12 @@
 - [[aprendizado-â-2026-07-31-â-pontuaãão-automãtica-de-transcriã]]
 - [[aprendizado-â-2026-07-31-â-reorg-catãlogo-ãnico-habilidades-]]
 - [[authjson-com-entradas-de-chave-nvidia-disfarcadas-de-outros-]]
+- [[bug-parametro-pid-e-variavel-automatica-do-powershell-certif]]
 - [[cadeia-de-provedores-com-failover-inteligente]]
+- [[certificacao-forense-de-processos-boot-do-watchdog]]
+- [[certificacao-forense-de-processos-boot-do-watchdog-apos-a-cl]]
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]
+- [[clausula-petrea-protecao-do-opencode-desktop-resiliencia-da-]]
 - [[clãusula-pãtrea-â-ativaãão-de-voz-eco-system]]
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
@@ -126,6 +130,8 @@
 - [[reorganização-habilidades-dentro-de-mcp-por-domínio-habilida]]
 - [[revisao-radical-do-registro-de-habilidades-de-jarvis-aprendi]]
 - [[salvar-rustdesk-password-e-id-em-local-permanente-nao-gerar-]]
+- [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]
+- [[saudacoes-inteligentes-reconexao-vs-primeira-vez-o-bridge-ja]]
 - [[secrets-guard-no-preflightcheck]]
 - [[sempre-validar-schema-apos-migracao-de-config]]
 - [[server-failover-com-auto-return]]

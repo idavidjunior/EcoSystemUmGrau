@@ -1,10 +1,11 @@
 # Padroes Cognitivos
 
-**25 notas** conectadas a este hub.
+**26 notas** conectadas a este hub.
 
 
 ## Notas
 - [[antecipacao-de-comportamento-adaptativo]]
+- [[bug-parametro-pid-e-variavel-automatica-do-powershell]]
 - [[ciclo-ooda-aplicado-a-navegacao]]
 - [[corrigido-travamento-widget-pywebview]]
 - [[debugging-em-cascata-reversa]]

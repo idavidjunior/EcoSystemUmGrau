@@ -1,9 +1,10 @@
 # Cluster: Cognicao
 
-**31 notas** do cluster cognicao.
+**32 notas** do cluster cognicao.
 
 
 ## Notas
+- [[bug-parametro-pid-e-variavel-automatica-do-powershell]]
 - [[cache-de-decisoes-caras]]
 - [[corrigido-travamento-widget-pywebview]]
 - [[dados-algoritmos-para-debugging]]

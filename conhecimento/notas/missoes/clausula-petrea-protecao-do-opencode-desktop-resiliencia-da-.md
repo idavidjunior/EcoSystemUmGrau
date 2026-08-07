@@ -1,14 +1,14 @@
 ---
-tags: [contêineres, decisao, domínio, espalhadas, mcp, missao, opencode, status]
-aliases: [Reorganização: Habilidades dentro de MCP por domínio — Habil]
+tags: [bridge, decisao, manualmente, missao, opencode, resiliencia, status, usuario]
+aliases: [Clausula Petrea: protecao do OpenCode desktop + resiliencia ]
 date: 2026-08-06
 ---
 
-# Reorganização: Habilidades dentro de MCP por domínio — Habilidades espalhadas em
+# Clausula Petrea: protecao do OpenCode desktop + resiliencia da bridge — "Usuario
 
 **Status:** session_learning
 
-**Objetivo:** Reorganização: Habilidades dentro de MCP por domínio — Habilidades espalhadas em
+**Objetivo:** Clausula Petrea: protecao do OpenCode desktop + resiliencia da bridge — "Usuario
 ## Conexoes
 
 - [[checkpoints-salvos-antes-de-cada-iteracao-sobrevive-a-crash-]]

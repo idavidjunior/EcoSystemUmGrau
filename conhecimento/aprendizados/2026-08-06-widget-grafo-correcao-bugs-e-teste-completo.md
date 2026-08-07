@@ -80,3 +80,7 @@ impacto: Painel de controles voltou a funcionar (tema, velocidade, orbita, busca
 - Botões com `title` prometem comportamento; testar a ação real (onmousedown/click).
 - Preflight falhou em "Constituição deployada divergente" — pré-existente, não
   relacionado a este trabalho (nenhum `config/agents/*.md` alterado).
+
+## Conexoes
+
+- [[maxiterations-hard-stop-forca-parada-prematura-mesmo-sem-obj]]
