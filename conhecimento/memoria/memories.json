@@ -2568,5 +2568,45 @@
     "access_count": 0,
     "created_at": "2026-08-07T09:03:05.917753",
     "last_accessed": "2026-08-07T09:03:05.917753"
+  },
+  {
+    "id": 159,
+    "kind": "decisao",
+    "task": "Preflight Etico: APROVADO",
+    "summary": "entrega aprovada no preflight etico | 0 bloqueio(s), 6 alerta(s)",
+    "project": "",
+    "tags": [
+      "alerta",
+      "bloqueio",
+      "aprovada",
+      "entrega",
+      "etico bloqueio",
+      "aprovado"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:04:17.593774",
+    "last_accessed": "2026-08-07T09:04:17.593774"
+  },
+  {
+    "id": 160,
+    "kind": "decisao",
+    "task": "Preflight Etico: APROVADO",
+    "summary": "entrega aprovada no preflight etico | 0 bloqueio(s), 6 alerta(s)",
+    "project": "",
+    "tags": [
+      "alerta",
+      "bloqueio",
+      "aprovada",
+      "entrega",
+      "etico bloqueio",
+      "aprovado"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:04:29.318859",
+    "last_accessed": "2026-08-07T09:04:29.318859"
   }
 ]
