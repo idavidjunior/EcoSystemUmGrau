@@ -1,7 +1,7 @@
 ---
 tags: [classes, cognitivo, col, framework-detection, material, mui]
 aliases: [Reconhecimento instantaneo de framework]
-date: 2026-08-06
+date: 2026-08-07
 ---
 
 # Reconhecimento instantaneo de framework

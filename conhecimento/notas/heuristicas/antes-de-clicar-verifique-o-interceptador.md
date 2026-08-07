@@ -1,7 +1,7 @@
 ---
 tags: [cross-platform, elemento, heuristica, loading, overlay, qualquer]
 aliases: [Antes de clicar, verifique o interceptador]
-date: 2026-08-06
+date: 2026-08-07
 ---
 
 # Antes de clicar, verifique o interceptador

@@ -1,7 +1,7 @@
 ---
 tags: [frameworks, modules, mudam, padrao, tailwind, treinamentonavegacao]
 aliases: [CSS selector priority ladder]
-date: 2026-08-06
+date: 2026-08-07
 ---
 
 # CSS selector priority ladder

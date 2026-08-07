@@ -1,7 +1,7 @@
 ---
 tags: [assistente, cognitivo, general, jarvís, sílaba, última]
 aliases: [Pronúncia "Járvis" (escrita sem acento, fala com acento)]
-date: 2026-08-06
+date: 2026-08-07
 ---
 
 # Pronúncia "Járvis" (escrita sem acento, fala com acento)

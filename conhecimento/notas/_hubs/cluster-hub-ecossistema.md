@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**114 notas** do cluster ecossistema.
+**119 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -81,12 +81,15 @@
 - [[controle-de-tv-lg-01082026]]
 - [[decisão-aprendizado-automãtico-permanente]]
 - [[decisão-arquitetura-jarvis-app]]
+- [[ensureserve-spawns-opencode-serve-without-passing-env-contex]]
 - [[evoluãão-do-tts-jarvis-â-naturalidade-via-ssml]]
+- [[geraraudio-blocks-until-full-tts-generation-no-streaming]]
 - [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]
 - [[gramática-do-português-brasileiro-guia-prático-do-dia-a-dia]]
 - [[gramãtica-do-portuguãs-brasileiro-â-guia-prãtico-do-dia-a-di]]
 - [[habilidade-navegaãão-perita-â-internet-pc-e-celular]]
 - [[hora-na-tela-vs-hora-no-ãudio-jarvis]]
+- [[http-401-unauthorized-on-session-and-globalsessions]]
 - [[ilhas-no-grafo-notas-com-grau-0-e-como-conecta-las]]
 - [[jarvis-do-celular-e-do-pc-um-sã-cãrebro-arquitetura-sincroni]]
 - [[jarvis-do-celular-e-do-pc-um-só-cérebro-arquitetura-sincroni]]
@@ -114,7 +117,9 @@
 - [[servidores-mcp-node-criados-e-validados]]
 - [[sessao-de-configuracao-do-opencode-com-failover-de-servidor-]]
 - [[sessao-focada-em-organizacao-de-workspace-unificacao-de-proj]]
+- [[stt-no-partialstreaming-results]]
 - [[vault-obsidian-cerebro-vivo-grafo]]
 - [[vault-obsidian-fonte-viva]]
+- [[voxaudioplayer-temp-file-leak-on-exception]]
 - [[widget-desktop-frameless-persistente]]
 - [[widget-desktop-grafo-tempo-real]]

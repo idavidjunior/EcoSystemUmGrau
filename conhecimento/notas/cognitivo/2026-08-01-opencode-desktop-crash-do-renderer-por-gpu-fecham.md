@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, desugardebugfiledependencies, etapa, general, minutos, slowness]
 aliases: [﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU ]
-date: 2026-08-06
+date: 2026-08-07
 ---
 
 # ﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria
@@ -40,6 +40,14 @@ tags: [widget, labels, etiquetas, menus, localStorage, persistencia, pywebview, 
 data: 2026-08-04
 contexto: Usuario pediu: (1) etiquetas (labels) DESATIVADAS por padrao, ativadas pelo botao 'T'; (2) ocultar os menus (barra de legendas + painel lateral) com um clique persistindo a escolha.
 decisao: (1) Inverter semantica de labelsOcultos: oculto e o PADRAO. Regra: oculto = localStorage.getItem('labelsOcultos') !== 'false'. Ou seja: ausente, 'true' ou qualquer out
+
+---
+tipo: erro
+tags: [grafo, widget, pywebview, bug, teste, harness, node, vis-network, tdz]
+data: 2026-08-06
+contexto: Varredura + correção um-a-um de todos os bugs do widget grafo desktop (Cerebro Vivo), seguida de teste completo via harness headless Node.
+decisao: Corrigir 8 bugs e validar com harness Node que executa os blocos JS reais do HTML gerado (stubs de DOM/vis/localStorage/bridge), mais subprocesso do widget real.
+impacto: Painel de controles voltou a funcionar (tema, velocidade, orb
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]

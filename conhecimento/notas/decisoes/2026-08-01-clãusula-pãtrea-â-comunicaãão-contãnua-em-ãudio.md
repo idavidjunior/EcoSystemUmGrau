@@ -1,7 +1,7 @@
 ---
 tags: [commits, decisao, desrespeitando, fazendo, narrar, opencode]
 aliases: [﻿# 2026-08-01: ClÃ¡usula PÃ©trea â€” ComunicaÃ§Ã£o contÃ­nua]
-date: 2026-08-06
+date: 2026-08-07
 ---
 
 # ﻿# 2026-08-01: ClÃ¡usula PÃ©trea â€” ComunicaÃ§Ã£o contÃ­nua em Ã¡udio

@@ -1,7 +1,7 @@
 ---
 tags: [nao, padrao, robusta, tem, texto, treinamentonavegacao]
 aliases: [Template matching para botoes graficos]
-date: 2026-08-06
+date: 2026-08-07
 ---
 
 # Template matching para botoes graficos

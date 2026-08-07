@@ -1,7 +1,7 @@
 ---
 tags: [android, android-pure-sdkandroid-pure-sdk, fonte, padrao, pure, sdk]
 aliases: [Theme System Pattern]
-date: 2026-08-06
+date: 2026-08-07
 ---
 
 # Theme System Pattern

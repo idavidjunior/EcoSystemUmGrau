@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, fazendo, general, narrar, pede, ticos]
 aliases: [﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub]
-date: 2026-08-06
+date: 2026-08-07
 ---
 
 # ﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub

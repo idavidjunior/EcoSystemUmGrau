@@ -1,14 +1,14 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-06T22:25:06.028827
+**Exportado em:** 2026-08-07T03:12:25.851327
 **Projetos:** 4
 **Padroes Tecnicos:** 83
 **Decisoes:** 56
-**Bug Fixes:** 46
+**Bug Fixes:** 51
 **Padroes Cognitivos:** 51
 **Heuristicas:** 32
 **Frameworks:** 10
-**Missoes Aprendidas:** 229
+**Missoes Aprendidas:** 134
 
 ---
 
@@ -682,6 +682,31 @@ decisao: "Corrigir watchdog.ps1 com protecao absoluta do desktop (clausula petre
 **Causa Raiz:** Method tools/call nao estava no dispatch de handle_request()
 **Correcao:** Adicionado elif method == tools/call e _handle_tools_call() com mapping de nomes
 
+### HTTP 401 Unauthorized on /session and /global/sessions/*
+**Fonte:** ecosistema-opencode
+**Causa Raiz:** opencode serve was started with OPENCODE_SERVER_PASSWORD=521cf1f4-... (Windows user env var) but .env was updated to edbe7432-... and serve was never restarted
+**Correcao:** Updated Windows HKCU env var to match .env password, killed stale serve (PID 4724), started new serve (PID 4216) with correct password
+
+### _ensure_serve() spawns opencode serve without passing env context
+**Fonte:** ecosistema-opencode
+**Causa Raiz:** asyncio.create_subprocess_exec inherits parent env, but explicit env ensures correct OPENCODE_SERVER_PASSWORD is propagated to serve child process
+**Correcao:** Added env={**os.environ} to _ensure_serve() and _ensure_serve_global() in jarvis_bridge.py; run_serve.py now loads .env and passes env explicitly
+
+### gerar_audio() blocks until full TTS generation, no streaming
+**Fonte:** ecosistema-opencode
+**Causa Raiz:** gerar_audio accumulated all edge-tts chunks into single base64 before sending to client; no incremental audio delivery
+**Correcao:** Added gerar_audio_stream() async generator yielding base64 chunks incrementally; modified ws_responder to send audio_streaming/audio_chunk/audio_done messages for progressive playback
+
+### STT no partial/streaming results
+**Fonte:** ecosistema-opencode
+**Causa Raiz:** _stt_whisper joined all Whisper segments at once; onPartialResults callback in VoxStt.kt was empty
+**Correcao:** Added partial_callback parameter to _stt_whisper for incremental segment reporting; implemented onPartialResults in VoxStt.kt to forward partial text to UI
+
+### VoxAudioPlayer temp file leak on exception
+**Fonte:** ecosistema-opencode
+**Causa Raiz:** tempFile variable was scoped inside try block; if exception before MediaPlayer setup, tempFile was orphaned; stop() before play() could leave old tempFile undeleted
+**Correcao:** Promoted tempFile to function scope with null-safe cleanup in catch block; VoxAudioPlayer.kt now uses var tempFile: File? = null and deletes in all error paths
+
 ## Padroes Cognitivos
 
 ### Debugging em cascata reversa
@@ -1322,7 +1347,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-06T22:25:05.959457
+**Ultima atualizacao:** 2026-08-07T03:12:25.791356
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

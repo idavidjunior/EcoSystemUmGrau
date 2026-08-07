@@ -1,6 +1,6 @@
 # Bugs e Correcoes
 
-**44 notas** conectadas a este hub.
+**49 notas** conectadas a este hub.
 
 
 ## Notas
@@ -15,6 +15,7 @@
 - [[dropdownselect-nao-responde-a-sendkeys-ou-click]]
 - [[duplicate-mini-player-on-some-screens]]
 - [[elementos-nao-encontrados-em-shadow-dom]]
+- [[ensureserve-spawns-opencode-serve-without-passing-env-contex]]
 - [[eq-deactivates-on-song-change]]
 - [[eq-distorts-audio-at-boost-settings]]
 - [[eq-only-applies-after-opening-fragment]]
@@ -25,6 +26,8 @@
 - [[executorresults-sem-limite-memoria-crescia-indefinidamente]]
 - [[filename-ambiguity]]
 - [[first-search-returns-nothing]]
+- [[geraraudio-blocks-until-full-tts-generation-no-streaming]]
+- [[http-401-unauthorized-on-session-and-globalsessions]]
 - [[logs-dont-appear]]
 - [[logs-sem-rotacao-logs-cresciam-indefinidamente]]
 - [[maxiterations-hard-stop-forca-parada-prematura-mesmo-sem-obj]]
@@ -45,6 +48,8 @@
 - [[score-threshold-mas-sem-failedsteps-ia-direto-para-successve]]
 - [[search-returns-wrong-artist]]
 - [[sendkeys-nao-funciona-em-campos-rich-text]]
+- [[stt-no-partialstreaming-results]]
 - [[track-the-best-score-across-all-results-and-only-return-if-m]]
 - [[use-explicit-redirect-following-in-download-function-manual-]]
 - [[user-sees-wrongshort-results]]
+- [[voxaudioplayer-temp-file-leak-on-exception]]

@@ -1,7 +1,7 @@
 ---
 tags: [casos, dom, invalidando, padrao, referencias, treinamentonavegacao]
 aliases: [Stale element reference recovery]
-date: 2026-08-06
+date: 2026-08-07
 ---
 
 # Stale element reference recovery

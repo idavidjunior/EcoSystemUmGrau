@@ -1,7 +1,7 @@
 ---
-tags: [cognitivo, general, habilidades, logo, skill, tecnicas]
+tags: [cognitivo, ecossistema, general, habilidades, skill, tecnicas]
 aliases: [Habilidade: Navegação Perita — Internet, PC e Celular]
-date: 2026-08-06
+date: 2026-08-07
 ---
 
 # Habilidade: Navegação Perita — Internet, PC e Celular

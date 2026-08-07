@@ -1,7 +1,7 @@
 ---
 tags: [bug, default, fragment, header, mp3player-metadata-rescue, widget]
 aliases: [**No EQ on/off button**]
-date: 2026-08-06
+date: 2026-08-07
 ---
 
 # **No EQ on/off button**
