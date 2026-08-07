@@ -7,8 +7,8 @@ param(
 
 $ErrorActionPreference = "SilentlyContinue"
 
-# Instância única via arquivo de lock com PID (mais robusto que Mutex nomeado:
-# um Mutex abandoned no Windows não é re-adquirido e trava o restart).
+# Instância unica via arquivo de lock com PID (mais robusto que Mutex nomeado:
+# um Mutex abandoned no Windows nao e re-adquirido e trava o restart).
 $LockPath = "$PSScriptRoot\watchdog.lock"
 $meuPid = $PID
 $jaExiste = $false
@@ -45,7 +45,7 @@ $WORKDIR = "C:\Users\David Jr\Documents\Default Project"
 $SCRIPTS = Join-Path $WORKDIR "EcoSystemUmGrau\scripts"
 $OPENCODE_BIN = Join-Path $env:APPDATA "npm\node_modules\opencode-ai\bin\opencode.exe"
 
-# Credenciais do serve (Basic Auth) — mesma origem que a bridge (scripts/.env)
+# Credenciais do serve (Basic Auth) - mesma origem que a bridge (scripts/.env)
 $SERVER_USER = "opencode"
 $SERVER_PASS = $env:OPENCODE_SERVER_PASSWORD
 if (-not $SERVER_PASS) {
@@ -69,7 +69,7 @@ function Test-ServeUp {
     }
 }
 # Health-check do bridge: porta LISTENING + processo dono vivo + escreve no log.
-# Se a porta estiver LISTENING com socket órfão (processo morto), reinicia.
+# Se a porta estiver LISTENING com socket orfao (processo morto), reinicia.
 function Test-BridgeAlive {
     param($Port)
     $linha = netstat -ano -p TCP 2>$null | Select-String "LISTENING" | Select-String ":$Port" | Select-Object -First 1
@@ -91,29 +91,29 @@ function Get-BridgePid {
 # =====================================================================
 # CERTIFICAÇÃO FORENSE DE LIXO / ÓRFÃO
 # ---------------------------------------------------------------------
-# Antes de matar QUALQUER processo, o watchdog certifica que ele é lixo
-# de verdade. Só libera o kill se TODOS os critérios forem atendidos.
-# Retorna @{ Liberar = bool; Motivos = [string[]] } — a razão de cada
-# critério falhar ou passar, para auditoria no log.
+# Antes de matar QUALQUER processo, o watchdog certifica que ele e lixo
+# de verdade. So libera o kill se TODOS os criterios forem atendidos.
+# Retorna @{ Liberar = bool; Motivos = [string[]] } - a razao de cada
+# criterio falhar ou passar, para auditoria no log.
 # =====================================================================
 function Test-ForensicoLixo {
     param(
         [int]$Pid,
         [string]$NomeEsperado,          # nome do processo (ex.: python, opencode)
-        [int]$IdadeMinimaSeg = 30,      # não mata processo recém-criado
-        [int]$PortaListen = $null,      # se definida, o socket órfão desta porta é o alvo
-        [string[]]$CaminhoProtegido = @()  # caminhos absolutos intocáveis
+        [int]$IdadeMinimaSeg = 30,      # nao mata processo recem-criado
+        [int]$PortaListen = $null,      # se definida, o socket orfao desta porta e o alvo
+        [string[]]$CaminhoProtegido = @()  # caminhos absolutos intocaveis
     )
     $motivos = New-Object System.Collections.Generic.List[string]
     $libera = $true
 
-    # 1) Processo existe? Se não existe, nada a fazer (já morreu).
+    # 1) Processo existe? Se nao existe, nada a fazer (ja morreu).
     $proc = Get-Process -Id $Pid -ErrorAction SilentlyContinue
     if (-not $proc) {
         $motivos.Add("processo inexistente (ja morto)")
         return @{ Liberar = $false; Motivos = $motivos.ToArray() }
     }
-    # 2) Nome confere com o esperado? Nome diferente = não é nosso alvo.
+    # 2) Nome confere com o esperado? Nome diferente = nao e nosso alvo.
     if ($NomeEsperado -and $proc.ProcessName -ne $NomeEsperado) {
         $motivos.Add("nome diverge (esperado '$NomeEsperado', tem '$($proc.ProcessName)')")
         $libera = $false
@@ -128,12 +128,12 @@ function Test-ForensicoLixo {
             }
         }
     }
-    # 4) Tem janela visível? Processo com UI ativa NUNCA é lixo.
+    # 4) Tem janela visivel? Processo com UI ativa NUNCA e lixo.
     if ($proc.MainWindowHandle -ne 0 -or $proc.MainWindowTitle) {
         $motivos.Add("tem janela ativa: '$($proc.MainWindowTitle)'")
         $libera = $false
     }
-    # 5) Idade mínima: processo recém-iniciado pode ser o que o próprio
+    # 5) Idade minima: processo recem-iniciado pode ser o que o proprio
     #    watchdog acabou de criar (evita matar o que acabamos de subir).
     $idadeSeg = 0
     try {
@@ -144,10 +144,10 @@ function Test-ForensicoLixo {
         }
     } catch { }
     if ($idadeSeg -lt $IdadeMinimaSeg) {
-        $motivos.Add("recém-criado ($([math]::Round($idadeSeg))s < ${IdadeMinimaSeg}s)")
+        $motivos.Add("recem-criado ($([math]::Round($idadeSeg))s < ${IdadeMinimaSeg}s)")
         $libera = $false
     }
-    # 6) Tem processos filhos vivos? Processo com filhos ativos é pai em uso.
+    # 6) Tem processos filhos vivos? Processo com filhos ativos e pai em uso.
     $filhos = Get-CimInstance Win32_Process -Filter "ParentProcessId=$Pid" -ErrorAction SilentlyContinue
     if ($filhos) {
         $filhosVivos = $filhos | Where-Object {
@@ -158,28 +158,28 @@ function Test-ForensicoLixo {
             $libera = $false
         }
     }
-    # 7) Tem conexões de rede ativas (não-listen)? Uso real de rede = não é lixo.
+    # 7) Tem conexões de rede ativas (nao-listen)? Uso real de rede = nao e lixo.
     $conns = Get-NetTCPConnection -OwningProcess $Pid -ErrorAction SilentlyContinue
     $conexoesAtivas = $conns | Where-Object { $_.State -in @("Established", "CloseWait", "TimeWait", "FinWait1", "FinWait2", "SynSent") }
     if ($conexoesAtivas) {
         $motivos.Add("tem $($conexoesAtivas.Count) conexoes de rede ativas (Ex.: $($conexoesAtivas[0].RemoteAddress):$($conexoesAtivas[0].RemotePort))")
         $libera = $false
     }
-    # 8) Está escutando uma porta de SERVIÇO (além da órfã)? Porta listen com
-    #    processo vivo que não é a porta órfã alvo = servidor em uso, não matar.
+    # 8) Esta escutando uma porta de SERVIÇO (alem da orfa)? Porta listen com
+    #    processo vivo que nao e a porta orfa alvo = servidor em uso, nao matar.
     $connsListen = $conns | Where-Object { $_.State -eq "Listen" }
     foreach ($cl in $connsListen) {
         if ($PortaListen -and $cl.LocalPort -eq $PortaListen) {
-            # Esta é exatamente a porta órfã que queremos limpar — permitido.
+            # Esta e exatamente a porta orfa que queremos limpar - permitido.
             $motivos.Add("socket alvo na porta $PortaListen identificado (processo dono vivo)")
         } else {
             $motivos.Add("escutando porta $($cl.LocalPort) (servico possivelmente em uso)")
             $libera = $false
         }
     }
-    # 9) Processo pai está vivo? Sem pai vivo + sem filhos + sem rede + sem janela
-    #    = candidato a órfão de verdade. Pai vivo não desqualifica sozinho, mas
-    #    é auditado.
+    # 9) Processo pai esta vivo? Sem pai vivo + sem filhos + sem rede + sem janela
+    #    = candidato a orfao de verdade. Pai vivo nao desqualifica sozinho, mas
+    #    e auditado.
     $pai = $null
     if ($cim) {
         $pai = Get-Process -Id $cim.ParentProcessId -ErrorAction SilentlyContinue
@@ -189,7 +189,7 @@ function Test-ForensicoLixo {
             $motivos.Add("processo pai morto - orfao de verdade")
         }
     }
-    # 10) Responde a health-check HTTP? Se servir uma porta e responder, está vivo.
+    # 10) Responde a health-check HTTP? Se servir uma porta e responder, esta vivo.
     if ($PortaListen) {
         $resp = Invoke-WebRequest -Uri "http://127.0.0.1:$PortaListen/global/health" -UseBasicParsing -TimeoutSec 3 -ErrorAction SilentlyContinue
         if ($resp -and $resp.StatusCode -ge 200 -and $resp.StatusCode -lt 300) {
@@ -198,7 +198,7 @@ function Test-ForensicoLixo {
         }
     }
     if (-not $motivos) {
-        $motivos.Add("nenhum indício de atividade — candidato classificado como lixo")
+        $motivos.Add("nenhum indicio de atividade - candidato classificado como lixo")
     }
     return @{ Liberar = $libera; Motivos = $motivos.ToArray() }
 }
@@ -234,8 +234,8 @@ while ($true) {
         Write-Log "Bridge OK (PID $(Get-BridgePid $BridgePort))"
     } else {
         if (Test-BridgeUp $BridgePort) {
-            # Porta LISTENING mas processo dono não confere: socket órfão.
-            # Só limpa com CERTIFICAÇÃO FORENSE completa.
+            # Porta LISTENING mas processo dono nao confere: socket orfao.
+            # So limpa com CERTIFICAÇÃO FORENSE completa.
             $orphanPid = Get-BridgePid $BridgePort
             if ($orphanPid) {
                 Write-Log "Bridge com socket orfao na porta $BridgePort - certificando processo $orphanPid..."
@@ -302,18 +302,18 @@ while ($true) {
 
     # ============ ORPHANS ============
     # CLÁUSULA PÉTREA: O OpenCode DESKTOP NUNCA pode ser fechado automaticamente.
-    # Só o usuário, manualmente. Aqui limpamos apenas órfãos do CLI (opencode run),
+    # So o usuario, manualmente. Aqui limpamos apenas orfaos do CLI (opencode run),
     # e NUNCA tocamos em processos do desktop (@opencode-aidesktop).
-    # Cada candidato passa pela CERTIFICAÇÃO FORENSE: só é morto se for lixo de
+    # Cada candidato passa pela CERTIFICAÇÃO FORENSE: so e morto se for lixo de
     # verdade (sem janela, sem filhos, sem rede, sem pai supervisionando, idoso).
     $desktopPath = "opencode-aidesktop"
     $candidatos = Get-Process -Name "opencode" -ErrorAction SilentlyContinue | Where-Object {
         $p = Get-CimInstance Win32_Process -Filter "ProcessId=$($_.Id)" -ErrorAction SilentlyContinue
         $cmd = $p.CommandLine
         if (-not $cmd) { return $false }
-        # Proteção absoluta: qualquer processo do desktop é intocável.
+        # Protecao absoluta: qualquer processo do desktop e intocavel.
         if ($cmd -match [regex]::Escape($desktopPath)) { return $false }
-        # Só avalia CLI: "opencode run" (sessões soltas) — nunca o "serve".
+        # So avalia CLI: "opencode run" (sessões soltas) - nunca o "serve".
         ($cmd -match "opencode\.exe run")
     }
     $mortos = 0
