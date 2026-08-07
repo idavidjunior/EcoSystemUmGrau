@@ -201,6 +201,31 @@ def write_note(subdir, filename, content):
     os.makedirs(d, exist_ok=True)
     with open(os.path.join(d, filename), 'w', encoding='utf-8') as f:
         f.write(content)
+    return os.path.join(d, filename)
+
+
+def limpar_orfãos(escritos):
+    """Remove notas .md em pastas gerenciadas que nao existem mais no grafo.
+    Preserva conhecimento/aprendizados (fontes) e arquivos nao-.md."""
+    pastas = CATEGORIAS + ['_hubs']
+    removidos = 0
+    for sub in pastas:
+        d = os.path.join(OUTPUT_DIR, sub)
+        if not os.path.isdir(d):
+            continue
+        for f in os.listdir(d):
+            if not f.endswith('.md'):
+                continue
+            full = os.path.join(d, f)
+            if full not in escritos:
+                try:
+                    os.remove(full)
+                    removidos += 1
+                except OSError:
+                    pass
+    if removidos:
+        print(f'{removidos} notas orfas removidas (nao estao mais no knowledge graph)')
+    return removidos
 
 
 def seccao_conexoes(links):
