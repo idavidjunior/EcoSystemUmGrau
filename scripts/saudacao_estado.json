@@ -1,8 +1,7 @@
 {
-  "conexoes": 60,
+  "conexoes": 61,
   "hoje": "2026-08-07",
   "saudacoes_hoje": [
-    "Voltou o áudio, David. Eu continuei, só faltava o alto-falante.",
     "Conexão restabelecida. Estava aqui esperando.",
     "De volta, David. Éramos nós dois de novo.",
     "Te ouço de novo, David. Diga lá.",
@@ -11,8 +10,9 @@
     "E a conexão voltou. Estou por aqui.",
     "De volta, senhor. A linha continua aberta.",
     "Ou você novamente, David. Bom te ter de volta na linha.",
-    "Linha reestabelecida. Continuávamos no meio de algo, senhor — digo onde paramos quando quiser."
+    "Linha reestabelecida. Continuávamos no meio de algo, senhor — digo onde paramos quando quiser.",
+    "Voltou, David. Já estava aqui esperando o sinal limpar."
   ],
-  "ultima_saudacao": "Linha reestabelecida. Continuávamos no meio de algo, senhor — digo onde paramos quando quiser.",
-  "ultima_saudacao_ts": 1786118198.4622364
+  "ultima_saudacao": "Voltou, David. Já estava aqui esperando o sinal limpar.",
+  "ultima_saudacao_ts": 1786124409.6453137
 }
