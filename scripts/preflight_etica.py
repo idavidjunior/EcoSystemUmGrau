@@ -81,7 +81,7 @@ CATEGORIAS_SENSIVEIS = {
     'biometrico': ['biometr', 'impress', 'face', 'iris'],
     'localizacao': ['gps', 'localiza', 'location', 'geoloc'],
     'saude': ['saúde', 'saude', 'medic', 'biomédico', 'biomedico'],
-    'criancas': ['crian', 'menor', 'infant'],
+    'criancas': ['crianc', 'menor de', 'infant'],
     'identificacao': ['cpf', 'rg', 'passaporte', 'cnh'],
     'credito': ['cartão', 'cartao', 'card number', 'cvv', 'pagamento'],
     'comunicacao': ['mensagem', 'chat', 'historico', 'log de', 'transcri'],
