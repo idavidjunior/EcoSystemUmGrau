@@ -207,6 +207,18 @@ def cmd_update():
         print(f'[OK] AGENTS.md atualizado ({len(sections)} regra(s) sincronizada(s))')
     else:
         print('[OK] AGENTS.md ja consistente, nada a atualizar')
+
+    # Sincroniza tambem a Constituicao deployada (camada 3)
+    try:
+        deployed_dir = os.path.dirname(DEPLOYED_AGENT)
+        os.makedirs(deployed_dir, exist_ok=True)
+        with open(CONSTITUICAO, encoding='utf-8') as f:
+            const_text = f.read()
+        with open(DEPLOYED_AGENT, 'w', encoding='utf-8') as f:
+            f.write(const_text)
+        print(f'[OK] Constituicao deployada sincronizada: {DEPLOYED_AGENT}')
+    except Exception as e:
+        print(f'[WARN] Nao foi possivel sincronizar deployada: {e}')
     return 0
 
 

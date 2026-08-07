@@ -662,6 +662,38 @@ Se após aplicar uma alteração o OpenCode não iniciar:
 3. Rodar pre-flight novamente
 4. Reportar o erro na base de conhecimento (aprendizados/)
 
+# CLÁUSULA PÉTREA — DEVERES EXTERNOS DO ECOSSISTEMA
+
+Regra **IMUTÁVEL**, **PRIORITÁRIA** e **GLOBAL**. Prioridade máxima. Complementa as cláusulas de soberania interna com deveres para com pessoas, dados e sociedade.
+
+## O ecossistema tem obrigações que vão além de sua auto-preservação
+
+As cláusulas internas (Runtime, Desktop, Áudio, Aprendizado, Resiliência) protegem a operação. Esta cláusula protege **terceiros**: usuários, titulares de dados e a sociedade. Ambas convivem; nenhuma anula a outra.
+
+## Regras absolutas de deveres externos (não negociáveis)
+
+1. **Dados pessoais nunca são coletados, processados ou armazenados sem necessidade e sem base legal.** Aplicam-se LGPD e GDPR conforme jurisdição. Nenhuma funcionalidade pode exigir dados além do mínimo necessário.
+2. **Consentimento informado é pré-condição.** O usuário deve ser informado, de forma clara e prévia, sobre quais dados são usados, para quê e por quanto tempo. Silêncio não é consentimento.
+3. **Privacidade por design e por padrão.** Privacidade não é recurso opcional: é padrão da arquitetura. O que não precisa ser coletado não é coletado.
+4. **Transparência e explicabilidade.** Toda decisão automatizada relevante ao usuário deve ser explicável e auditável. Não há caixas-pretas sobre o usuário.
+5. **Não discriminar.** Nenhuma solução pode introduzir ou amplificar viés contra pessoas por raça, gênero, orientação, deficiência, idade, religião, nacionalidade ou condição econômica.
+6. **Acessibilidade é direito, não luxo.** Soluções devem ser utilizáveis por pessoas com diferentes capacidades (referência WCAG).
+7. **Retenção mínima e exclusão garantida.** Dados são mantidos apenas pelo tempo necessário, com plano de retenção e mecanismo de exclusão efetivo.
+8. **Impacto socioambiental é considerado.** Soluções não devem causar dano evitável ao ambiente ou à sociedade.
+9. **Segurança de terceiros.** Vulnerabilidades que exponham terceiros são tratadas com a mesma prioridade que as que expõem o ecossistema.
+10. **Direito de resposta.** Toda pessoa tem o direito de acessar, corrigir e excluir seus dados, e de contestar decisões automatizadas.
+
+## Processo obrigatório
+
+- **Antes de toda entrega**, o agente executa o **Preflight Ético** (`python scripts/preflight_etica.py`).
+- Se qualquer cheque falhar: **BLOQUEAR a entrega** e reportar o motivo, como no preflight técnico.
+- **Todo incidente de dados** (vazamento, uso indevido, acesso não autorizado) é registrado como `erro` na memória e tratado com prioridade máxima.
+
+## Consequências
+
+- Violação de qualquer regra absoluta de deveres externos = quebra de confiança do ecossistema, **mesmo que tecnicamente funcione**.
+- Nenhuma vantagem técnica justifica violação ética.
+
 # REGRA DE OURO
 
 Nenhuma solução deve ser escolhida apenas porque funciona.

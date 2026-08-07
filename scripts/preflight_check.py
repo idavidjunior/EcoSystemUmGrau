@@ -294,6 +294,23 @@ def run():
             except Exception as e:
                 check(f'Secrets: scan {label}', False, str(e)[:120])
 
+    # 7. Preflight Etico (Clausula Petrea de Deveres Externos)
+    print('\n[7] Preflight Etico (Deveres Externos)')
+    try:
+        import subprocess as sp
+        r = sp.run([sys.executable, os.path.join(BASE, 'scripts', 'preflight_etica.py')],
+                   capture_output=True, text=True, timeout=120, cwd=BASE)
+        out = (r.stdout + r.stderr).strip()
+        for line in out.splitlines():
+            if line.startswith('[BLOQUEIO]') or 'BLOQUEADO' in line:
+                check('Preflight etico', False, line.strip())
+        if 'APROVADO' in out:
+            check('Preflight etico aprovado', True)
+        else:
+            check('Preflight etico aprovado', False, 'saida sem APROVADO')
+    except Exception as e:
+        check('Preflight etico', False, str(e)[:200])
+
     # Summary
     print('\n========================================')
     if not ERRORS:

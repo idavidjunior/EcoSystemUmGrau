@@ -2388,5 +2388,105 @@
     "access_count": 0,
     "created_at": "2026-08-07T07:55:01.544817",
     "last_accessed": "2026-08-07T07:55:01.544817"
+  },
+  {
+    "id": 150,
+    "kind": "decisao",
+    "task": "Preflight Etico: APROVADO",
+    "summary": "entrega aprovada no preflight etico | 0 bloqueio(s), 17 alerta(s)",
+    "project": "",
+    "tags": [
+      "alerta",
+      "bloqueio",
+      "aprovada",
+      "entrega",
+      "etico bloqueio",
+      "aprovado"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T08:59:38.938287",
+    "last_accessed": "2026-08-07T08:59:38.938287"
+  },
+  {
+    "id": 151,
+    "kind": "decisao",
+    "task": "Preflight Etico: APROVADO",
+    "summary": "entrega aprovada no preflight etico | 0 bloqueio(s), 6 alerta(s)",
+    "project": "",
+    "tags": [
+      "alerta",
+      "bloqueio",
+      "aprovada",
+      "entrega",
+      "etico bloqueio",
+      "aprovado"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:00:19.570457",
+    "last_accessed": "2026-08-07T09:00:19.570457"
+  },
+  {
+    "id": 152,
+    "kind": "decisao",
+    "task": "Preflight Etico: APROVADO",
+    "summary": "entrega aprovada no preflight etico | 0 bloqueio(s), 6 alerta(s)",
+    "project": "",
+    "tags": [
+      "alerta",
+      "bloqueio",
+      "aprovada",
+      "entrega",
+      "etico bloqueio",
+      "aprovado"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:01:36.521317",
+    "last_accessed": "2026-08-07T09:01:36.521317"
+  },
+  {
+    "id": 153,
+    "kind": "decisao",
+    "task": "Preflight Etico: APROVADO",
+    "summary": "entrega aprovada no preflight etico | 0 bloqueio(s), 6 alerta(s)",
+    "project": "",
+    "tags": [
+      "alerta",
+      "bloqueio",
+      "aprovada",
+      "entrega",
+      "etico bloqueio",
+      "aprovado"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:01:50.226758",
+    "last_accessed": "2026-08-07T09:01:50.226758"
+  },
+  {
+    "id": 154,
+    "kind": "erro",
+    "task": "Preflight Etico: BLOQUEADO",
+    "summary": "entrega bloqueada pelo preflight etico | 1 bloqueio(s), 6 alerta(s)",
+    "project": "",
+    "tags": [
+      "alerta",
+      "bloqueio",
+      "pelo",
+      "bloqueada",
+      "entrega",
+      "etico bloqueio"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:02:02.751637",
+    "last_accessed": "2026-08-07T09:02:02.751637"
   }
 ]
