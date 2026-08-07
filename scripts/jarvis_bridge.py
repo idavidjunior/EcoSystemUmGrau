@@ -561,6 +561,29 @@ async def gerar_audio(texto):
     return base64.b64encode(audio).decode()
 
 
+async def gerar_audio_stream(texto):
+    """Async generator que yield chunks base64 de audio conforme o edge-tts
+    gera. Clients podem tocar audio progressivamente sem esperar geracao completa.
+
+    Protocolo streaming:
+        1. Bridge envia {text, corrigido, audio_streaming: True}  (texto imediato)
+        2. Bridge envia {audio_chunk: <b64>} para cada chunk (play imediato)
+        3. Bridge envia {audio_done: True}  (finaliza playback)
+    """
+    t = sanitizar(texto)
+    if not t:
+        return
+    t = melhorar_fala(t)
+    try:
+        entrada = aplicar_phonemes(t)[0]
+    except Exception:
+        entrada = melhorar_fala(sanitizar(texto))
+    c = edge_tts.Communicate(entrada, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
+    async for chunk in c.stream():
+        if chunk["type"] == "audio":
+            yield base64.b64encode(chunk["data"]).decode()
+
+
 # --- HTTP client para opencode serve ---
 
 def _http(method, path, data=None, timeout=120):
@@ -600,6 +623,7 @@ async def _ensure_serve_global():
         proc = await asyncio.create_subprocess_exec(
             BIN, "serve", "--port", str(porta),
             cwd=WORKDIR,
+            env={**os.environ},
             stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.DEVNULL)
         for _ in range(15):
             await asyncio.sleep(1)
@@ -684,6 +708,7 @@ class Cliente:
             proc = await asyncio.create_subprocess_exec(
                 BIN, "serve", "--port", str(porta),
                 cwd=WORKDIR,
+                env={**os.environ},
                 stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.DEVNULL)
             for _ in range(15):
                 await asyncio.sleep(1)
@@ -1559,16 +1584,17 @@ async def lidar(ws):
 
             r_tela = normalizar_hora_display(r)
             try:
-                a = await gerar_audio(r_tela)
-                if a:
-                    await ws.send(json.dumps({"text": r_tela, "audio": a, "corrigido": m}))
-                    logger.info(f"resp: {len(r_tela)}c / audio {len(a)}c")
-                else:
-                    await ws.send(json.dumps({"text": r_tela, "corrigido": m}))
-                    logger.info(f"resp texto: {len(r_tela)}c")
+                await ws.send(json.dumps({"text": r_tela, "corrigido": m, "audio_streaming": True}))
+                logger.info(f"resp inicio: {len(r_tela)}c (streaming)")
+                bytes_enviados = 0
+                async for chunk_b64 in gerar_audio_stream(r_tela):
+                    await ws.send(json.dumps({"audio_chunk": chunk_b64}))
+                    bytes_enviados += len(chunk_b64)
+                await ws.send(json.dumps({"audio_done": True}))
+                logger.info(f"resp stream: {len(r_tela)}c / {bytes_enviados}c de audio")
             except Exception as e:
+                logger.warning(f"audio stream: {e}")
                 await ws.send(json.dumps({"text": r_tela, "corrigido": m}))
-                logger.warning(f"audio: {e}")
     except websockets.exceptions.ConnectionClosed:
         logger.info("fim")
 

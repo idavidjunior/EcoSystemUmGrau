@@ -123,7 +123,10 @@ def _gravar_audio(seconds=RECORD_SECONDS):
     return rec.flatten()
 
 
-def _stt_whisper(audio):
+def _stt_whisper(audio, partial_callback=None):
+    """Transcreve audio com Whisper. Se `partial_callback` for fornecido,
+    ela e chamada com cada segmento a medida que completar (streaming parcial),
+    permitindo feedback em tempo real ao inves de bloquear ate o final."""
     from faster_whisper import WhisperModel
     import numpy as np
     global _WHISPER_MODEL
@@ -139,8 +142,16 @@ def _stt_whisper(audio):
         no_speech_threshold=0.6,
         log_prob_threshold=-1.0,
     )
-    texto = " ".join(s.text.strip() for s in segments).strip()
-    return texto, f"whisper:{WHISPER_MODEL}"
+    texto = ""
+    for s in segments:
+        seg_text = s.text.strip()
+        if seg_text:
+            texto += seg_text + " "
+            if partial_callback:
+                partial_callback(texto.strip())
+            print(f"\r{VOZ_COLOR}[voce (streaming)]{RESET} {texto.strip()}", flush=True, end="", file=sys.stderr)
+    print()
+    return texto.strip(), f"whisper:{WHISPER_MODEL}"
 
 
 def _stt_google(audio):
@@ -158,13 +169,13 @@ def _stt_google(audio):
         return f"[erro google: {e}]", "google"
 
 
-def cmd_ouvir(force_google=False):
+def cmd_ouvir(force_google=False, partial_callback=None):
     audio = _gravar_audio()
     texto = ""
     fonte = ""
     if not force_google:
         try:
-            texto, fonte = _stt_whisper(audio)
+            texto, fonte = _stt_whisper(audio, partial_callback=partial_callback)
         except Exception as e:
             print(f"[whisper falhou, fallback google] {e}")
             texto = ""
@@ -199,11 +210,12 @@ def cmd_testar_mic():
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="Vox Audio (STT + TTS)")
     ap.add_argument("modo", choices=["ouvir", "ouvir-google", "falar", "testar-mic"])
+    ap.add_argument("--partial", action="store_true", help="mostra resultados parciais durante a transcricao")
     ap.add_argument("texto", nargs="*", default=None)
     args = ap.parse_args()
 
     if args.modo == "ouvir":
-        cmd_ouvir()
+        cmd_ouvir(partial_callback=(lambda t: print(f"\r{VOZ_COLOR}[streaming] {t}{RESET}", end="", flush=True)) if args.partial else None)
     elif args.modo == "ouvir-google":
         cmd_ouvir_google()
     elif args.modo == "falar":
