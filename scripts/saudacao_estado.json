@@ -1,18 +1,18 @@
 {
-  "conexoes": 26,
+  "conexoes": 33,
   "hoje": "2026-08-07",
   "saudacoes_hoje": [
-    "Áudio de volta. Tava no meio de quê mesmo, David?",
-    "Te ouço de novo, David. Pode mandar.",
-    "De volta, David. Pode continuar de onde a gente parou.",
-    "David, áudio voltou. Pode retomar o fio da meada.",
-    "Cê voltou, David. Tava no meio de uma parada aqui, pode continuar.",
-    "Áudio de volta, David. continuando de onde a gente tava.",
-    "Reconectado. Continue de onde estava.",
     "Tô aqui de novo, David. Pode falar.",
     "Voltei, David. Tava no meio do quê mesmo?",
-    "De volta, David. Te ouço."
+    "De volta, David. Te ouço.",
+    "De volta, David. Diga a palavra.",
+    "De volta ao ar, David. Continue de onde paramos.",
+    "Aqui de novo, David. Pode mandar.",
+    "David, teclado quente de novo. Mande o próximo.",
+    "Tá de volta, David. Estava justamente esperando você continuar.",
+    "Voltamos, David. Tava com o cursor parado esperando você.",
+    "David, sinal voltou. Pode continuar de onde travou."
   ],
-  "ultima_saudacao": "De volta, David. Te ouço.",
-  "ultima_saudacao_ts": 1786113216.1166053
+  "ultima_saudacao": "David, sinal voltou. Pode continuar de onde travou.",
+  "ultima_saudacao_ts": 1786113950.9452548
 }
