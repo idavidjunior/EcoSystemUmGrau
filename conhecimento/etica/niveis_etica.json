@@ -1,8 +1,14 @@
 {
-  "nivel_atual": "minimo",
+  "nivel_atual": "desativado",
   "niveis": {
+    "desativado": {
+      "descricao": "Etica desativada. Sem avisos e sem bloqueios. Padrao para administrador/desenvolvedor do ecossistema.",
+      "bloqueia": [],
+      "avisa": [],
+      "exige_avaliacao_etica": false
+    },
     "minimo": {
-      "descricao": "Permite o tecnicamente viavel com avisos minimos. Padrao do ecossistema.",
+      "descricao": "Permite o tecnicamente viavel com avisos minimos.",
       "bloqueia": [],
       "avisa": [
         "dados_pessoais",

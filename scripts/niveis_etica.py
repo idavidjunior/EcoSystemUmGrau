@@ -2,12 +2,13 @@
 """
 Níveis Éticos do EcoSystemUmGrau.
 
-Define os 3 padrões de rigor ético e o gerenciamento do nível atual.
+Define os padrões de rigor ético e o gerenciamento do nível atual.
 
 NÍVEIS:
-  minimo  (PADRÃO) - Permite o tecnicamente viável com avisos mínimos.
-  medio             - Exige avisos claros, consentimento e revisão.
-  maximo            - Rigidez total; bloqueia incerteza até revisão humana.
+  desativado (PADRÃO) - Ética desativada: sem avisos e sem bloqueios.
+  minimo               - Permite o tecnicamente viável com avisos mínimos.
+  medio                - Exige avisos claros, consentimento e revisão.
+  maximo               - Rigidez total; bloqueia incerteza até revisão humana.
 
 Uso:
   python scripts/niveis_etica.py status          # mostra nível atual
