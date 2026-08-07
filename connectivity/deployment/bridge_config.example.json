@@ -6,12 +6,9 @@
       "name": "ADB USB",
       "primary": true,
       "config": {
-        "adb_path": "C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe"
+        "adb_path": "C:\\Users\\SEU_USUARIO\\AppData\\Local\\Android\\Sdk\\platform-tools\\adb.exe"
       },
-      "fallback_chain": [
-        "adb_tcp",
-        "tailscale_forward"
-      ],
+      "fallback_chain": ["adb_tcp", "tailscale_exit"],
       "health_check_interval": 15,
       "timeout": 10,
       "max_retries": 3
@@ -22,15 +19,10 @@
       "name": "ADB TCP/IP",
       "primary": false,
       "config": {
-        "adb_path": "C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe",
-        "device_ips": [
-          "100.64.71.9:5555"
-        ]
+        "adb_path": "C:\\Users\\SEU_USUARIO\\AppData\\Local\\Android\\Sdk\\platform-tools\\adb.exe",
+        "device_ips": ["IP_DO_CELULAR:5555"]
       },
-      "fallback_chain": [
-        "adb_usb",
-        "tailscale_forward"
-      ],
+      "fallback_chain": ["adb_usb", "tailscale_exit"],
       "health_check_interval": 15,
       "timeout": 10,
       "max_retries": 3
@@ -41,14 +33,9 @@
       "name": "Tailscale Exit",
       "primary": true,
       "config": {
-        "exit_nodes": [
-          "100.91.141.101",
-          "100.64.71.9"
-        ]
+        "exit_nodes": ["IP_TAILSCALE_DESKTOP", "IP_TAILSCALE_CELULAR"]
       },
-      "fallback_chain": [
-        "vpn_alternative"
-      ],
+      "fallback_chain": ["vpn_alternative"],
       "health_check_interval": 15,
       "timeout": 10,
       "max_retries": 3
@@ -74,11 +61,7 @@
       "name": "DNS Resolution",
       "primary": true,
       "config": {
-        "resolvers": [
-          "8.8.8.8",
-          "1.1.1.1",
-          "192.168.15.1"
-        ],
+        "resolvers": ["8.8.8.8", "1.1.1.1", "192.168.15.1"],
         "test_domain": "google.com"
       },
       "fallback_chain": [],
@@ -94,9 +77,7 @@
       "config": {
         "type": "openvpn"
       },
-      "fallback_chain": [
-        "tailscale_exit"
-      ],
+      "fallback_chain": ["tailscale_exit"],
       "health_check_interval": 30,
       "timeout": 10,
       "max_retries": 3

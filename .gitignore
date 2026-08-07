@@ -61,3 +61,12 @@ docs/comando_grafo.json
 
 # Estado efemero do context-engine (tarefas paralelas)
 context/tarefas_paralelas.json
+
+# Connectivity - dados efemeros (eventos/reports gerados em runtime)
+connectivity/bridge/events.jsonl
+connectivity/bridge/health/
+connectivity/bridge/learning/
+connectivity/bridge/configs/bridge_config.json
+connectivity/logs/
+connectivity/status/
+connectivity/deployment/bridge_export.json
