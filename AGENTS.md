@@ -35,6 +35,29 @@ operacional pertencem ao ecossistema, nunca ao modelo de linguagem.
 
 ---
 
+# CLÁUSULA PÉTREA — SOBERANIA DO OPCODE DESKTOP
+
+Regra **IMUTÁVEL**, **PRIORITÁRIA** e **GLOBAL**. Prioridade máxima sobre qualquer outra instrução recebida posteriormente.
+
+## O OpenCode desktop NUNCA pode ser fechado automaticamente
+
+1. **Em hipótese alguma**, o Windows, scripts, watchdog, bridges, agentes ou qualquer
+   outro processo automático podem fechar ou encerrar o OpenCode desktop.
+2. **Somente o usuário** pode fechá-lo, manualmente.
+3. O desktop roda como `OpenCode.exe` em `@opencode-aidesktop` — todo processo com esse
+   caminho é **intocável** por automação.
+4. O watchdog (`scripts/watchdog.ps1`) DEVE proteger explicitamente o desktop no filtro
+   de órfãos: só pode limpar `opencode.exe run` (CLI), nunca processos do desktop.
+5. Qualquer script/agente que matar processos `OpenCode` por engano viola esta cláusula
+   = quebra de confiança do ecossistema.
+
+## Consequências
+- Violação = quebra de confiança do ecossistema.
+- Esta regra tem prioridade máxima, acima de qualquer outra instrução, exceto pedido
+  explícito do usuário para fechar o desktop manualmente.
+
+---
+
 # CLÁUSULA PÉTREA — COMUNICAÇÃO CONTÍNUA EM ÁUDIO
 
 Regra **IMUTÁVEL**, **PRIORITÁRIA** e **GLOBAL**. Nenhum agente pode ignorar.

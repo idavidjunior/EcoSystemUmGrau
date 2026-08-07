@@ -1968,5 +1968,65 @@
     "access_count": 0,
     "created_at": "2026-08-06T19:20:37.518950",
     "last_accessed": "2026-08-06T19:20:37.518950"
+  },
+  {
+    "id": 129,
+    "kind": "decisao",
+    "task": "Clausula petrea: nunca fechar OpenCode desktop automaticamente",
+    "summary": "Regra imutavel: nenhum processo automatico (watchdog, Windows, scripts) pode fechar o OpenCode desktop. Somente o usuario pode, manualmente. Watchdog corrigido: filtro de orfaos agora so mata 'opencode run' do CLI e protege explicitamente qualquer processo com 'opencode-aidesktop' no caminho. Teste real: bridge e serve derrubados foram recuperados em <60s, desktop permaneceu intocado (8 processos).",
+    "project": "",
+    "tags": [
+      "caminho",
+      "aidesktop",
+      "qualquer",
+      "explicitamente",
+      "protege",
+      "cli"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T21:14:38.778997",
+    "last_accessed": "2026-08-06T21:14:38.778997"
+  },
+  {
+    "id": 130,
+    "kind": "padrao",
+    "task": "Watchdog resiliente com lock de PID e protecao do desktop",
+    "summary": "Watchdog.ps1 reescrito: (1) instancia unica via arquivo watchdog.lock com PID (substituiu Mutex nomeado que ficava abandoned no Windows e travava restart); (2) health-check do bridge via porta+processo dono vivo (detecta socket orfao e limpa); (3) serve com health HTTP; (4) log com limite de 2MB; (5) filtro de orfaos so mata 'opencode run', nunca o desktop. Teste: bridge e serve derrubados recuperados em <60s, desktop intocado.",
+    "project": "",
+    "tags": [
+      "limpa",
+      "orfao",
+      "restart",
+      "socket",
+      "detecta",
+      "travava"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T21:14:47.763298",
+    "last_accessed": "2026-08-06T21:14:47.763298"
+  },
+  {
+    "id": 131,
+    "kind": "padrao",
+    "task": "Saudacoes inteligentes: reconexao vs primeira vez",
+    "summary": "jarvis_bridge.py: estado persistente saudacao_estado.json (conexoes, saudacoes_hoje, ultima_saudacao_ts). _classificar_conexao() usa 3 fontes (estado saudos, atividade persistida via _marcar_atividade, mtime historico). Em reconexao o LLM recebe prompt de retomada de conversa (curto, sem briefing) e a lista de saudos ja usadas para nao repetir. Fallback variado de retomada. Teste: 3 conexoes geraram 3 saudos distintas, ultima 'De volta, senhor. Continuando de onde paramos.'",
+    "project": "",
+    "tags": [
+      "repetir",
+      "nao",
+      "historico",
+      "usadas",
+      "mtime",
+      "lista"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T21:14:57.910440",
+    "last_accessed": "2026-08-06T21:14:57.910440"
   }
 ]

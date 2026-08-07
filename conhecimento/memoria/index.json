@@ -97,7 +97,8 @@
   ],
   "nao": [
     68,
-    72
+    72,
+    131
   ],
   "erros": [
     68
@@ -457,7 +458,8 @@
     87
   ],
   "caminho": [
-    87
+    87,
+    129
   ],
   "streaming": [
     88,
@@ -570,7 +572,8 @@
     94
   ],
   "historico": [
-    94
+    94,
+    131
   ],
   "checkpoints": [
     94
@@ -1064,5 +1067,50 @@
   ],
   "bug": [
     128
+  ],
+  "aidesktop": [
+    129
+  ],
+  "qualquer": [
+    129
+  ],
+  "explicitamente": [
+    129
+  ],
+  "protege": [
+    129
+  ],
+  "cli": [
+    129
+  ],
+  "limpa": [
+    130
+  ],
+  "orfao": [
+    130
+  ],
+  "restart": [
+    130
+  ],
+  "socket": [
+    130
+  ],
+  "detecta": [
+    130
+  ],
+  "travava": [
+    130
+  ],
+  "repetir": [
+    131
+  ],
+  "usadas": [
+    131
+  ],
+  "mtime": [
+    131
+  ],
+  "lista": [
+    131
   ]
 }

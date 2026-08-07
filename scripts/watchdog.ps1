@@ -159,15 +159,24 @@ while ($true) {
     }
 
     # ============ ORPHANS ============
+    # CLÁUSULA PÉTREA: O OpenCode DESKTOP NUNCA pode ser fechado automaticamente.
+    # Só o usuário, manualmente. Aqui limpamos apenas órfãos do CLI (opencode run),
+    # e NUNCA tocamos em processos do desktop (@opencode-aidesktop).
+    $desktopPath = "opencode-aidesktop"
     $orphans = Get-Process -Name "opencode" -ErrorAction SilentlyContinue | Where-Object {
-        $cmd = (Get-WmiObject Win32_Process -Filter "ProcessId=$($_.Id)" -ErrorAction SilentlyContinue).CommandLine
-        $cmd -match "opencode\.exe run" -or ($cmd -match "opencode\.exe" -and $cmd -notmatch " serve")
+        $p = Get-CimInstance Win32_Process -Filter "ProcessId=$($_.Id)" -ErrorAction SilentlyContinue
+        $cmd = $p.CommandLine
+        if (-not $cmd) { return $false }
+        # Proteção absoluta: qualquer processo do desktop é intocável.
+        if ($cmd -match [regex]::Escape($desktopPath)) { return $false }
+        # Só mata CLI órfão: "opencode run" (sessões soltas) — nunca o "serve".
+        ($cmd -match "opencode\.exe run")
     }
     if ($orphans) {
         $totalMB = 0
         foreach ($p in $orphans) { $totalMB += [math]::Round($p.WorkingSet64 / 1MB, 0) }
         $orphans | Stop-Process -Force
-        Write-Log "Limpou $($orphans.Count) processos orfaos do OpenCode (${totalMB}MB liberados)"
+        Write-Log "Limpou $($orphans.Count) processos orfaos do CLI OpenCode (${totalMB}MB liberados). Desktop intocado."
     }
 
     Start-Sleep -Seconds $Interval
