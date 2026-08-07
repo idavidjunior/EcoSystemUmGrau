@@ -1,0 +1,157 @@
+{
+  "timestamp": "20260807_061650",
+  "all_healthy": false,
+  "results": {
+    "adb_usb": {
+      "healthy": true,
+      "type": "adb_usb",
+      "name": "ADB USB",
+      "primary": true,
+      "details": {
+        "devices": [
+          "100.64.71.9:5555"
+        ],
+        "count": 1
+      },
+      "timestamp": "2026-08-07T06:16:15.319301"
+    },
+    "adb_tcp": {
+      "healthy": true,
+      "type": "adb_tcp",
+      "name": "ADB TCP/IP",
+      "primary": false,
+      "details": {
+        "connected": [
+          "100.64.71.9:5555"
+        ],
+        "count": 1
+      },
+      "timestamp": "2026-08-07T06:16:15.406167"
+    },
+    "tailscale_exit": {
+      "healthy": true,
+      "type": "tailscale_exit",
+      "name": "Tailscale Exit",
+      "primary": true,
+      "details": {
+        "active_nodes": [
+          {
+            "ip": "100.64.71.9",
+            "name": "redmi-note-11"
+          }
+        ],
+        "count": 1
+      },
+      "timestamp": "2026-08-07T06:16:15.471529"
+    },
+    "ssh_primary": {
+      "healthy": false,
+      "type": "ssh",
+      "name": "SSH Primary",
+      "primary": true,
+      "details": {
+        "host": "192.168.15.4",
+        "port": 22,
+        "reachable": false
+      },
+      "timestamp": "2026-08-07T06:16:25.478213"
+    },
+    "ssh_backup": {
+      "healthy": false,
+      "type": "ssh",
+      "name": "SSH Backup",
+      "primary": false,
+      "details": {
+        "host": "100.64.71.9",
+        "port": 22,
+        "reachable": false
+      },
+      "timestamp": "2026-08-07T06:16:30.289146"
+    },
+    "api_local": {
+      "healthy": false,
+      "type": "http",
+      "name": "API Local (Jarvis Bridge)",
+      "primary": true,
+      "details": {
+        "status": 426,
+        "expected": 200,
+        "error": "HTTP Error 426: Upgrade Required"
+      },
+      "timestamp": "2026-08-07T06:16:30.337235"
+    },
+    "api_remote": {
+      "healthy": false,
+      "type": "http",
+      "name": "API Remote",
+      "primary": false,
+      "details": {
+        "error": "<urlopen error [Errno 11001] getaddrinfo failed>",
+        "url": "https://api.davidjunior.dev/health"
+      },
+      "timestamp": "2026-08-07T06:16:30.372229"
+    },
+    "mqtt_broker": {
+      "healthy": false,
+      "type": "mqtt",
+      "name": "MQTT Broker",
+      "primary": true,
+      "details": {
+        "host": "192.168.15.4",
+        "port": 1883,
+        "reachable": false
+      },
+      "timestamp": "2026-08-07T06:16:40.381006"
+    },
+    "mqtt_cloud": {
+      "healthy": false,
+      "type": "mqtt",
+      "name": "MQTT Cloud",
+      "primary": false,
+      "details": {
+        "host": "mqtt.davidjunior.dev",
+        "port": 8883,
+        "error": "[Errno 11001] getaddrinfo failed"
+      },
+      "timestamp": "2026-08-07T06:16:40.390995"
+    },
+    "dns_primary": {
+      "healthy": true,
+      "type": "dns",
+      "name": "DNS Resolution",
+      "primary": true,
+      "details": {
+        "resolvers_working": [
+          "8.8.8.8",
+          "1.1.1.1",
+          "192.168.15.1"
+        ],
+        "total_resolvers": 3
+      },
+      "timestamp": "2026-08-07T06:16:40.393658"
+    },
+    "ws_service": {
+      "healthy": false,
+      "type": "websocket",
+      "name": "WebSocket Service",
+      "primary": true,
+      "details": {
+        "host": "192.168.15.4",
+        "port": 8765,
+        "reachable": false
+      },
+      "timestamp": "2026-08-07T06:16:50.408055"
+    },
+    "vpn_alternative": {
+      "healthy": false,
+      "type": "vpn",
+      "name": "Alternative VPN",
+      "primary": false,
+      "details": {
+        "type": "openvpn",
+        "detected": false
+      },
+      "timestamp": "2026-08-07T06:16:50.444078"
+    }
+  }
+}
