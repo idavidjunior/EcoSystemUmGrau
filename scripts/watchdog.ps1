@@ -184,9 +184,9 @@ function Test-ForensicoLixo {
     if ($cim) {
         $pai = Get-Process -Id $cim.ParentProcessId -ErrorAction SilentlyContinue
         if ($pai) {
-            $motivos.Add("pai vivo: $($pai.ProcessName) (PID $($pai.Id)) — supervisionado")
+            $motivos.Add("pai vivo: $($pai.ProcessName) (PID $($pai.Id)) - supervisionado")
         } else {
-            $motivos.Add("processo pai morto — orfao de verdade")
+            $motivos.Add("processo pai morto - orfao de verdade")
         }
     }
     # 10) Responde a health-check HTTP? Se servir uma porta e responder, está vivo.
