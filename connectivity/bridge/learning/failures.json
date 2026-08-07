@@ -1,95 +1,5 @@
 [
   {
-    "timestamp": "2026-08-07T05:58:14.944880",
-    "failure_type": "failover_adb_usb",
-    "details": "Recuperado via adb_tcp",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T05:58:34.243981",
-    "failure_type": "failover_ssh_primary",
-    "details": "Recuperado via tailscale_exit",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T05:58:37.177270",
-    "failure_type": "total_failure_api_local",
-    "details": "Todos os m\u00e9todos falharam",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T05:58:47.457719",
-    "failure_type": "total_failure_mqtt_broker",
-    "details": "Todos os m\u00e9todos falharam",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T05:58:57.533370",
-    "failure_type": "total_failure_ws_service",
-    "details": "Todos os m\u00e9todos falharam",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T05:59:26.259527",
-    "failure_type": "failover_ssh_primary",
-    "details": "Recuperado via tailscale_exit",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T05:59:29.015122",
-    "failure_type": "total_failure_api_local",
-    "details": "Todos os m\u00e9todos falharam",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T05:59:39.098419",
-    "failure_type": "total_failure_mqtt_broker",
-    "details": "Todos os m\u00e9todos falharam",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T05:59:49.169297",
-    "failure_type": "total_failure_ws_service",
-    "details": "Todos os m\u00e9todos falharam",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T06:00:19.945759",
-    "failure_type": "failover_ssh_primary",
-    "details": "Recuperado via tailscale_exit",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T06:00:23.329502",
-    "failure_type": "total_failure_api_local",
-    "details": "Todos os m\u00e9todos falharam",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T06:00:33.417731",
-    "failure_type": "total_failure_mqtt_broker",
-    "details": "Todos os m\u00e9todos falharam",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T06:00:43.456223",
-    "failure_type": "total_failure_ws_service",
-    "details": "Todos os m\u00e9todos falharam",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T06:01:11.258057",
-    "failure_type": "failover_ssh_primary",
-    "details": "Recuperado via tailscale_exit",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T06:01:13.548107",
-    "failure_type": "total_failure_api_local",
-    "details": "Todos os m\u00e9todos falharam",
-    "resolved": true
-  },
-  {
     "timestamp": "2026-08-07T06:01:23.617818",
     "failure_type": "total_failure_mqtt_broker",
     "details": "Todos os m\u00e9todos falharam",
@@ -589,6 +499,102 @@
   },
   {
     "timestamp": "2026-08-07T06:19:00.284318",
+    "failure_type": "total_failure_api_local",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:19:10.627235",
+    "failure_type": "total_failure_mqtt_broker",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:19:20.650230",
+    "failure_type": "total_failure_ws_service",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:19:48.144380",
+    "failure_type": "failover_ssh_primary",
+    "details": "Recuperado via tailscale_exit",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:19:50.517208",
+    "failure_type": "total_failure_api_local",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:20:00.559978",
+    "failure_type": "total_failure_mqtt_broker",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:20:10.575692",
+    "failure_type": "total_failure_ws_service",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:20:38.408168",
+    "failure_type": "failover_ssh_primary",
+    "details": "Recuperado via tailscale_exit",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:20:40.837088",
+    "failure_type": "total_failure_api_local",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:20:50.880072",
+    "failure_type": "total_failure_mqtt_broker",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:21:00.905658",
+    "failure_type": "total_failure_ws_service",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:21:28.672706",
+    "failure_type": "failover_ssh_primary",
+    "details": "Recuperado via tailscale_exit",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:21:31.001667",
+    "failure_type": "total_failure_api_local",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:21:41.044554",
+    "failure_type": "total_failure_mqtt_broker",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:21:51.060179",
+    "failure_type": "total_failure_ws_service",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:22:18.661612",
+    "failure_type": "failover_ssh_primary",
+    "details": "Recuperado via tailscale_exit",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:22:20.910518",
     "failure_type": "total_failure_api_local",
     "details": "Todos os m\u00e9todos falharam",
     "resolved": true
