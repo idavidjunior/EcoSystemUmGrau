@@ -1386,6 +1386,18 @@ def _classificar_conexao():
     }
 
 
+async def _enviar_progresso(ws, etapa: str):
+    """Envia o passo atual do processamento para o app (mensagem {progresso}).
+
+    O app exibe a etapa no lugar de "Jarvis está processando..." genérico,
+    dando visibilidade ao que está acontecendo em tempo real.
+    """
+    try:
+        await ws.send(json.dumps({"progresso": etapa}))
+    except Exception:
+        pass
+
+
 async def lidar(ws):
     c = Cliente()
     client_ip = ws.remote_address[0] if ws.remote_address else "desconhecido"
@@ -1569,6 +1581,7 @@ async def lidar(ws):
                 import time as _t
                 _t0 = _t.time()
                 try:
+                    await _enviar_progresso(ws, "Entendendo sua solicitação")
                     r = await c.perguntar(m, img_base64=img_atual, img_mime=img_mime)
                     _ms = int((_t.time() - _t0) * 1000)
                     _fb_registrar("opencode-serve", ok=True, latencia_ms=_ms)
@@ -1576,6 +1589,7 @@ async def lidar(ws):
                     _ms = int((_t.time() - _t0) * 1000)
                     _fb_registrar("opencode-serve", ok=False, latencia_ms=_ms)
                     logger.warning(f"opencode-serve falhou ({_ms}ms), tentando cadeia curada: {e}")
+                    await _enviar_progresso(ws, "Reconectando ao assistente")
                     r = await _fallback_cadeia_curada(m, img_base64=img_atual, img_mime=img_mime)
                     if r is None:
                         r = f"Erro no processamento: {e}"
@@ -1584,6 +1598,7 @@ async def lidar(ws):
 
             r_tela = normalizar_hora_display(r)
             try:
+                await _enviar_progresso(ws, "Criando sua resposta em áudio")
                 await ws.send(json.dumps({"text": r_tela, "corrigido": m, "audio_streaming": True}))
                 logger.info(f"resp inicio: {len(r_tela)}c (streaming)")
                 bytes_enviados = 0
