@@ -5,7 +5,7 @@
   "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-mp3player.md": 2,
   "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-supermarketcalculator.md": 2,
   "nota:conhecimento/aprendizados/2026-08-06-janela-conversa-ativa-suprime-saudacao.md": 3,
-  "nota:conhecimento/aprendizados/2026-08-06-saudacoes-inteligentes-reconexao-vs-primeira-vez.md": 1,
+  "nota:conhecimento/aprendizados/2026-08-06-saudacoes-inteligentes-reconexao-vs-primeira-vez.md": 2,
   "nota:conhecimento/notas/padroes/saudacoes-inteligentes-reconexao-vs-primeira-vez.md": 2,
   "nota:conhecimento/aprendizados/2026-08-06-recuperacao-rapida-conexao.md": 3,
   "nota:conhecimento/notas/padroes/cadeia-de-provedores-com-failover-inteligente.md": 1,
@@ -42,5 +42,9 @@
   "nota:conhecimento/aprendizados/2026-08-04-context-engine-manifesto-dominios-mcp.md": 1,
   "nota:conhecimento/aprendizados/2026-08-07-semantica-liderada-por-significado.md": 1,
   "nota:conhecimento/notas/cognitivo/entender-antes-de-criar-ontologia-de-habilidades.md": 1,
-  "nota:conhecimento/notas/frameworks/metodo-dos-5-porques-5-whys.md": 1
+  "nota:conhecimento/notas/frameworks/metodo-dos-5-porques-5-whys.md": 1,
+  "175": 1,
+  "nota:conhecimento/aprendizados/2026-08-03-sync-github-organizacao-repos.md": 1,
+  "nota:conhecimento/notas/heuristicas/stale-element-re-query-nao-re-tentar.md": 1,
+  "nota:conhecimento/notas/bugs/eq-only-applies-after-opening-fragment.md": 1
 }

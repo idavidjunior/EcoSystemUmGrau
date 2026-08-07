@@ -2888,5 +2888,65 @@
     "access_count": 0,
     "created_at": "2026-08-07T09:55:11.383833",
     "last_accessed": "2026-08-07T09:55:11.383833"
+  },
+  {
+    "id": 175,
+    "kind": "padrao",
+    "task": "TESTE autonomia reindexacao automatica",
+    "summary": "Memoria de teste para validar que a reindexacao dispara automaticamente apos o add",
+    "project": "",
+    "tags": [
+      "add",
+      "apos",
+      "automaticamente",
+      "dispara",
+      "validar",
+      "reindexacao"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T10:36:30.364117",
+    "last_accessed": "2026-08-07T10:36:30.364117"
+  },
+  {
+    "id": 176,
+    "kind": "erro",
+    "task": "Remover teste de reindexacao - memoria de teste apenas",
+    "summary": "A memoria 175 era apenas validacao do fluxo de reindexacao automatica. O ciclo foi comprovado. Mantem-se a regra de reindexacao automatica.",
+    "project": "",
+    "tags": [
+      "fluxo",
+      "validacao",
+      "era",
+      "175",
+      "memoria",
+      "automatica"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T10:40:41.041218",
+    "last_accessed": "2026-08-07T10:40:41.041218"
+  },
+  {
+    "id": 177,
+    "kind": "decisao",
+    "task": "Autonomia informada + reindexacao automatica",
+    "summary": "Clausula Petrea AUTONOMIA INFORMADA na Constituicao (regra 9): comunicar primeiro, implementar sem pedir permissao quando real, consistente e mais efetivo/eficiente/inteligente; registrar aprendizado; nunca quebrar o que funciona. memory_engine.add agora reindexa automaticamente (TF-IDF+dense, best-effort, flag --no-reindex). Ciclo comprovado: add->REINDEX->busca recupera novo no topo.",
+    "project": "",
+    "tags": [
+      "regra",
+      "constituicao",
+      "inteligente",
+      "eficiente",
+      "flag",
+      "efetivo"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T10:41:42.496657",
+    "last_accessed": "2026-08-07T10:41:42.496657"
   }
 ]

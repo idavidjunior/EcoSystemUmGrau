@@ -92,12 +92,12 @@ def log_session(session_id=None, task=None, project=None, outcome=None,
     return session_id
 
 def add_memory(task, summary, kind='episodio', project='', tags=None,
-               strength=1.0, metadata=None):
+               strength=1.0, metadata=None, reindex=True):
     """Add a consolidated memory with decay metadata.
 
     Dispara reindexação semântica automática (TF-IDF + denso) para que a nova
     memória fique imediatamente recuperável por significado. Nunca bloqueia o add
-    em caso de falha (best-effort).
+    em caso de falha (best-effort). Use reindex=False para adições em lote rápidas.
     """
     memories = _load_memories()
     now = datetime.now()
@@ -122,7 +122,8 @@ def add_memory(task, summary, kind='episodio', project='', tags=None,
     }
     memories.append(memory)
     _save_memories(memories)
-    reindexar_semantico(best_effort=True)
+    if reindex:
+        reindexar_semantico(best_effort=True)
     return memory['id']
 
 
