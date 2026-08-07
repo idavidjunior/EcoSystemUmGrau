@@ -269,7 +269,8 @@
     76
   ],
   "startup": [
-    77
+    77,
+    138
   ],
   "atalho": [
     77
@@ -1206,5 +1207,20 @@
   ],
   "painel": [
     137
+  ],
+  "configurado": [
+    138
+  ],
+  "failover": [
+    138
+  ],
+  "monitorados": [
+    138
+  ],
+  "protocolos": [
+    138
+  ],
+  "auto": [
+    138
   ]
 }

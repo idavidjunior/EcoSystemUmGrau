@@ -28,5 +28,29 @@
     "failure_type": "total_failure_ws_service",
     "details": "Todos os m\u00e9todos falharam",
     "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T05:59:26.259527",
+    "failure_type": "failover_ssh_primary",
+    "details": "Recuperado via tailscale_exit",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T05:59:29.015122",
+    "failure_type": "total_failure_api_local",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T05:59:39.098419",
+    "failure_type": "total_failure_mqtt_broker",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T05:59:49.169297",
+    "failure_type": "total_failure_ws_service",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
   }
 ]
