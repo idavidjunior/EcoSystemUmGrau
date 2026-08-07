@@ -2168,5 +2168,25 @@
     "access_count": 0,
     "created_at": "2026-08-07T05:59:37.343521",
     "last_accessed": "2026-08-07T05:59:37.343521"
+  },
+  {
+    "id": 139,
+    "kind": "padrao",
+    "task": "Memoria semantica aprofundada: indice TF-IDF agora inclui notas Obsidian",
+    "summary": "scripts/memory_semantic.py indexa 125 memorias + 475 notas Obsidian (conhecimento/notas e conhecimento/aprendizados) com source nota. search_knowledge.py corrigido para incluir aprendizados no corpus BM25 (883 docs). Busca por significado cobre conhecimento das notas.",
+    "project": "",
+    "tags": [
+      "nota",
+      "source",
+      "conhecimento",
+      "semantic",
+      "475",
+      "aprendizados"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T06:02:07.808866",
+    "last_accessed": "2026-08-07T06:02:07.808866"
   }
 ]
