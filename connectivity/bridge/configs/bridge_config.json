@@ -1,0 +1,105 @@
+{
+  "endpoints": [
+    {
+      "id": "adb_usb",
+      "type": "adb_usb",
+      "name": "ADB USB",
+      "primary": true,
+      "config": {
+        "adb_path": "C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe"
+      },
+      "fallback_chain": [
+        "adb_tcp",
+        "tailscale_forward"
+      ],
+      "health_check_interval": 15,
+      "timeout": 10,
+      "max_retries": 3
+    },
+    {
+      "id": "adb_tcp",
+      "type": "adb_tcp",
+      "name": "ADB TCP/IP",
+      "primary": false,
+      "config": {
+        "adb_path": "C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe",
+        "device_ips": [
+          "100.64.71.9:5555"
+        ]
+      },
+      "fallback_chain": [
+        "adb_usb",
+        "tailscale_forward"
+      ],
+      "health_check_interval": 15,
+      "timeout": 10,
+      "max_retries": 3
+    },
+    {
+      "id": "tailscale_exit",
+      "type": "tailscale_exit",
+      "name": "Tailscale Exit",
+      "primary": true,
+      "config": {
+        "exit_nodes": [
+          "100.91.141.101",
+          "100.64.71.9"
+        ]
+      },
+      "fallback_chain": [
+        "vpn_alternative"
+      ],
+      "health_check_interval": 15,
+      "timeout": 10,
+      "max_retries": 3
+    },
+    {
+      "id": "api_local",
+      "type": "http",
+      "name": "API Local (Jarvis Bridge)",
+      "primary": true,
+      "config": {
+        "url": "http://127.0.0.1:8765/",
+        "expected_status": 200,
+        "timeout": 5
+      },
+      "fallback_chain": [],
+      "health_check_interval": 20,
+      "timeout": 5,
+      "max_retries": 2
+    },
+    {
+      "id": "dns_primary",
+      "type": "dns",
+      "name": "DNS Resolution",
+      "primary": true,
+      "config": {
+        "resolvers": [
+          "8.8.8.8",
+          "1.1.1.1",
+          "192.168.15.1"
+        ],
+        "test_domain": "google.com"
+      },
+      "fallback_chain": [],
+      "health_check_interval": 30,
+      "timeout": 5,
+      "max_retries": 2
+    },
+    {
+      "id": "vpn_alternative",
+      "type": "vpn",
+      "name": "Alternative VPN",
+      "primary": false,
+      "config": {
+        "type": "openvpn"
+      },
+      "fallback_chain": [
+        "tailscale_exit"
+      ],
+      "health_check_interval": 30,
+      "timeout": 10,
+      "max_retries": 3
+    }
+  ]
+}

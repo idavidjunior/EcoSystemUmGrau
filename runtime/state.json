@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-07T05:27:08",
+  "updated_at": "2026-08-07T05:57:22",
   "active_project": "EcoSystemUmGrau",
   "objective": "Transformar o Ecossistema Jarvis em Runtime de IA persistente (camada 1: estado+boot)",
   "last_task": "Refinamento Widget Grafo - painel toggle, reset de prefs, modo 3D, flash nos nodes, labels responsivas",
@@ -93,7 +93,11 @@
     {
       "timestamp": "2026-08-07T05:15:39",
       "text": "Análise completa do widget grafo Cerebro Vivo - imersão total em layout, interface, efeitos visuais, motor de funcionamento e bugs históricos"
+    },
+    {
+      "timestamp": "2026-08-07T05:57:22",
+      "text": "Implementadas funcionalidades de visualizacao no widget grafo: toggle 3D (onda viajante), flash no clique, hide/show painel, reset de prefs, slider intensidade 3D. Validado py_compile + node --check."
     }
   ],
-  "last_checkpoint": "20260807_052708"
+  "last_checkpoint": "20260807_055610"
 }

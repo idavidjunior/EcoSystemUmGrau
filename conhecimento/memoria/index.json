@@ -632,7 +632,8 @@
     97
   ],
   "slider": [
-    97
+    97,
+    137
   ],
   "model": [
     98
@@ -1190,5 +1191,20 @@
   ],
   "quadtree": [
     136
+  ],
+  "onda": [
+    137
+  ],
+  "intensidade": [
+    137
+  ],
+  "preferencias": [
+    137
+  ],
+  "visualizacao": [
+    137
+  ],
+  "painel": [
+    137
   ]
 }

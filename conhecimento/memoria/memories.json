@@ -2128,5 +2128,25 @@
     "access_count": 0,
     "created_at": "2026-08-07T05:15:37.878982",
     "last_accessed": "2026-08-07T05:15:37.878982"
+  },
+  {
+    "id": 137,
+    "kind": "episodio",
+    "task": "Widget grafo: botoes 3D/flash/hide-panel/reset implementadas",
+    "summary": "Adicionadas funcionalidades de visualizacao: toggle 3D, flash no clique, hide/show painel, reset de preferencias, slider intensidade onda 3D. Validado py_compile e node--check. Justificativa: expansao da API JS, nao contrariou decisoes consolidadas.",
+    "project": "",
+    "tags": [
+      "onda",
+      "intensidade",
+      "slider",
+      "preferencias",
+      "visualizacao",
+      "painel"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T05:56:27.394016",
+    "last_accessed": "2026-08-07T05:56:27.394016"
   }
 ]

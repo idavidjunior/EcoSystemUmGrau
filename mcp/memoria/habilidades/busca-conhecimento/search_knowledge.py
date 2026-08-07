@@ -11,6 +11,7 @@ while not (_p / "ler-runtime").is_dir():
 BASE = str(_p)
 LER_DIR = os.path.join(BASE, 'ler-runtime')
 NOTAS_DIR = os.path.join(BASE, 'conhecimento', 'notas')
+APRENDIZADOS_DIR = os.path.join(BASE, 'conhecimento', 'aprendizados')
 MEM_DIR = os.path.join(BASE, 'conhecimento', 'memoria')
 
 def tokenize(text):
@@ -63,9 +64,11 @@ def load_corpus():
                 text = f"{m.get('task','')} {m.get('summary','')} {m.get('project','')} {' '.join(m.get('tags',[]))}"
                 docs.append((f'mem:{m["id"]}', text))
 
-    # Notas Obsidian
-    if os.path.exists(NOTAS_DIR):
-        for root, _, files in os.walk(NOTAS_DIR):
+    # Notas Obsidian (conhecimento/notas e conhecimento/aprendizados)
+    for notas_dir in [NOTAS_DIR, APRENDIZADOS_DIR]:
+        if not os.path.exists(notas_dir):
+            continue
+        for root, _, files in os.walk(notas_dir):
             for fname in files:
                 if fname.endswith('.md'):
                     path = os.path.join(root, fname)
