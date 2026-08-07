@@ -1,8 +1,7 @@
 {
-  "conexoes": 52,
+  "conexoes": 53,
   "hoje": "2026-08-07",
   "saudacoes_hoje": [
-    "Oi de novo, David. Te ouço.",
     "Te peguei de volta, David. Seguindo.",
     "Voltou. Sistemas seguem quentes, é só falar.",
     "Voltou. Sistemas seguem quentes, é só falar.",
@@ -11,8 +10,9 @@
     "Por aí de novo, David. Não saí daqui, só dava pra você não me ouvir.",
     "Te ouvi de novo, David. Pode mandar.",
     "Voltou o áudio, David. Eu continuei, só faltava o alto-falante.",
-    "Conexão restabelecida. Estava aqui esperando."
+    "Conexão restabelecida. Estava aqui esperando.",
+    "De volta, David. Éramos nós dois de novo."
   ],
-  "ultima_saudacao": "Conexão restabelecida. Estava aqui esperando.",
-  "ultima_saudacao_ts": 1786116224.5388224
+  "ultima_saudacao": "De volta, David. Éramos nós dois de novo.",
+  "ultima_saudacao_ts": 1786116318.9943225
 }
