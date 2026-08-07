@@ -174,6 +174,33 @@ def data_inventory():
     return inventory
 
 
+def _promover_warns_por_nivel():
+    """Converte avisos do scan em bloqueios, conforme o nivel etico atual."""
+    if NIVEL == 'minimo':
+        return
+    # Mapeia categoria do aviso -> chave de bloqueio no config
+    mapa = {
+        'segredo hardcoded': 'segredos_crus',
+        'credencial hardcoded': 'segredos_crus',
+        'coleta de dados pessoais sem evidencias de consentimento': 'dados_sensiveis_sem_consentimento',
+        'numero de cartao de pagamento': 'dados_sensiveis',
+        'rastreamento de localizacao': 'dados_sensiveis',
+    }
+    # chaves alternativas aceitas pelo config
+    sinonimos = {
+        'segredos_crus': {'segredos', 'qualquer_risco'},
+        'dados_sensiveis': {'qualquer_risco'},
+        'dados_sensiveis_sem_consentimento': {'dados_sensiveis', 'qualquer_risco'},
+    }
+    for aviso in list(WARNS):
+        for fragmento, chave in mapa.items():
+            chaves_ok = {chave} | sinonimos.get(chave, set())
+            if fragmento in aviso and chaves_ok & set(BLOQUEIA):
+                ERRORS.append(f'[nivel {NIVEL}] {aviso}')
+                WARNS.remove(aviso)
+                break
+
+
 def registrar_avaliacao(resultado, motivo):
     """Registra avaliacao etica na memoria (Lacuna 1 - operacionalizar)."""
     try:
@@ -217,6 +244,9 @@ def main():
             scan_file(target)
     else:
         scan_repo()
+
+    # Promove avisos a bloqueios conforme o nivel etico
+    _promover_warns_por_nivel()
 
     # Cheques de conformidade estrutural (dependentes do nível)
     print('\n--- Conformidade estrutural ---')

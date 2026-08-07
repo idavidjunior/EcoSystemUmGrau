@@ -1,8 +1,7 @@
 {
-  "conexoes": 11,
+  "conexoes": 12,
   "hoje": "2026-08-07",
   "saudacoes_hoje": [
-    "De volta à linha, David. Pode falar.",
     "Voltou, David. Tava no meio de uma coisa aqui, me diz que eu retomo.",
     "Tô aqui, David. Audio reconectado, pode seguir.",
     "Áudio de volta, David. Continua de onde paramos.",
@@ -11,8 +10,9 @@
     "Te ouço de novo, David. É só falar.",
     "Te pego na curva, David. Tô aqui.",
     "Por aqui de novo, David. Siga.",
-    "Continue de onde paramos, David."
+    "Continue de onde paramos, David.",
+    "De volta ao comando, David. Tô ouvindo."
   ],
-  "ultima_saudacao": "Continue de onde paramos, David.",
-  "ultima_saudacao_ts": 1786099841.7456021
+  "ultima_saudacao": "De volta ao comando, David. Tô ouvindo.",
+  "ultima_saudacao_ts": 1786104880.8534122
 }

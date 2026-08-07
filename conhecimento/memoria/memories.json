@@ -2628,5 +2628,105 @@
     "access_count": 0,
     "created_at": "2026-08-07T09:11:41.079435",
     "last_accessed": "2026-08-07T09:11:41.079435"
+  },
+  {
+    "id": 162,
+    "kind": "decisao",
+    "task": "Preflight Etico: APROVADO",
+    "summary": "entrega aprovada no nivel minimo | 0 bloqueio(s), 6 alerta(s)",
+    "project": "",
+    "tags": [
+      "alerta",
+      "bloqueio",
+      "minimo",
+      "nivel",
+      "aprovada",
+      "entrega"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:14:09.017822",
+    "last_accessed": "2026-08-07T09:14:09.017822"
+  },
+  {
+    "id": 163,
+    "kind": "decisao",
+    "task": "Preflight Etico: APROVADO",
+    "summary": "entrega aprovada no nivel medio | 0 bloqueio(s), 6 alerta(s)",
+    "project": "",
+    "tags": [
+      "alerta",
+      "bloqueio",
+      "medio",
+      "nivel",
+      "aprovada",
+      "entrega"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:14:18.455699",
+    "last_accessed": "2026-08-07T09:14:18.455699"
+  },
+  {
+    "id": 164,
+    "kind": "erro",
+    "task": "Preflight Etico: BLOQUEADO",
+    "summary": "entrega bloqueada no nivel medio | 1 bloqueio(s), 5 alerta(s)",
+    "project": "",
+    "tags": [
+      "alerta",
+      "bloqueio",
+      "medio",
+      "nivel",
+      "bloqueada",
+      "entrega"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:14:49.469291",
+    "last_accessed": "2026-08-07T09:14:49.469291"
+  },
+  {
+    "id": 165,
+    "kind": "decisao",
+    "task": "Preflight Etico: APROVADO",
+    "summary": "entrega aprovada no nivel maximo | 0 bloqueio(s), 6 alerta(s)",
+    "project": "",
+    "tags": [
+      "alerta",
+      "bloqueio",
+      "maximo",
+      "nivel",
+      "aprovada",
+      "entrega"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:14:58.388435",
+    "last_accessed": "2026-08-07T09:14:58.388435"
+  },
+  {
+    "id": 166,
+    "kind": "erro",
+    "task": "Preflight Etico: BLOQUEADO",
+    "summary": "entrega bloqueada no nivel maximo | 1 bloqueio(s), 5 alerta(s)",
+    "project": "",
+    "tags": [
+      "alerta",
+      "bloqueio",
+      "maximo",
+      "nivel",
+      "bloqueada",
+      "entrega"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:15:16.225415",
+    "last_accessed": "2026-08-07T09:15:16.225415"
   }
 ]
