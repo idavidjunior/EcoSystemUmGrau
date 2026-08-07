@@ -2328,5 +2328,25 @@
     "access_count": 0,
     "created_at": "2026-08-07T07:32:30.814540",
     "last_accessed": "2026-08-07T07:32:30.814540"
+  },
+  {
+    "id": 147,
+    "kind": "padrao",
+    "task": "Memoria semantica completa + bridge reiniciada",
+    "summary": "Indice TF-IDF cobrindo 612 docs (133 memorias + 479 notas Obsidian, vocab 41015). Busca por significado validada (controle TV LG: score 0.59). Bridge reiniciada para ativar novo indice em producao.",
+    "project": "",
+    "tags": [
+      "41015",
+      "vocab",
+      "obsidian",
+      "notas",
+      "479",
+      "memorias"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T07:32:51.393636",
+    "last_accessed": "2026-08-07T07:32:51.393636"
   }
 ]

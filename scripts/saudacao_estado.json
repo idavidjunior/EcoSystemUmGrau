@@ -1,13 +1,14 @@
 {
-  "conexoes": 5,
+  "conexoes": 6,
   "hoje": "2026-08-07",
   "saudacoes_hoje": [
     "Online e em alerta, senhor. São cinco e quarenta e oito da manhã desta sexta-feira, e o PC está reclamando: processador perto do limite e memória pesando. O céu está parcialmente nublado, vinte graus, e amanhã a chuva deve chegar com força.",
     "De volta à linha, David. Pode falar.",
     "Voltou, David. Tava no meio de uma coisa aqui, me diz que eu retomo.",
     "Tô aqui, David. Audio reconectado, pode seguir.",
-    "Áudio de volta, David. Continua de onde paramos."
+    "Áudio de volta, David. Continua de onde paramos.",
+    "Áudio de novo, David. Diga a palavra que eu volto ao ataque."
   ],
-  "ultima_saudacao": "Áudio de volta, David. Continua de onde paramos.",
-  "ultima_saudacao_ts": 1786097216.491166
+  "ultima_saudacao": "Áudio de novo, David. Diga a palavra que eu volto ao ataque.",
+  "ultima_saudacao_ts": 1786098793.6251166
 }
