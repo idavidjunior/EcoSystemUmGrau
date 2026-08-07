@@ -193,6 +193,11 @@ def _promover_warns_por_nivel():
         'dados_sensiveis_sem_consentimento': {'dados_sensiveis', 'qualquer_risco'},
     }
     for aviso in list(WARNS):
+        # nivel maximo: qualquer risco bloqueia
+        if 'qualquer_risco' in BLOQUEIA:
+            ERRORS.append(f'[nivel {NIVEL}] {aviso}')
+            WARNS.remove(aviso)
+            continue
         for fragmento, chave in mapa.items():
             chaves_ok = {chave} | sinonimos.get(chave, set())
             if fragmento in aviso and chaves_ok & set(BLOQUEIA):

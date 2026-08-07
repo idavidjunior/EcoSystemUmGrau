@@ -1,5 +1,5 @@
 {
-  "nivel_atual": "maximo",
+  "nivel_atual": "minimo",
   "niveis": {
     "minimo": {
       "descricao": "Permite o tecnicamente viavel com avisos minimos. Padrao do ecossistema.",
