@@ -2068,5 +2068,25 @@
     "access_count": 0,
     "created_at": "2026-08-06T22:03:09.965881",
     "last_accessed": "2026-08-06T22:03:09.965881"
+  },
+  {
+    "id": 134,
+    "kind": "padrao",
+    "task": "Certificacao forense de processos no watchdog + boot via Startup sem admin",
+    "summary": "Test-ForensicoLixo audita 10 criterios (existe, nome, caminho protegido, janela, idade minima, filhos, rede ativa, portas listen extras, pai vivo/morto, health HTTP) e so libera kill se nenhum violar. Invoke-KillCertificado registra KILL CERTIFICADO/BLOQUEADO com motivos. Usado em bridge-orfao, serve-mau e orphan-cli. Boot: Register-ScheduledTask exige admin (Acesso negado); solucao = atalho WScript.Shell na pasta Startup do usuario apontando watchdog_start.bat, lock de PID garante instancia unica. Referencias: memorias 129, 130, 131, 133.",
+    "project": "",
+    "tags": [
+      "violar",
+      "nenhum",
+      "libera",
+      "health",
+      "morto",
+      "vivo"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T22:15:31.170756",
+    "last_accessed": "2026-08-06T22:15:31.170756"
   }
 ]
