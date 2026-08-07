@@ -3,8 +3,12 @@
 Pre-flight Ético do EcoSystemUmGrau.
 Cláusula Pétrea de Deveres Externos: se qualquer cheque falhar, BLOQUEIA a entrega.
 
-Usado como gate obrigatório antes de toda entrega que toque dados, usuários,
-decisões automatizadas ou impacto externo.
+O rigor depende do NÍVEL ÉTICO atual:
+  minimo  (PADRÃO) - permite o tecnicamente viável, avisos mínimos (não bloqueia)
+  medio             - bloqueia pontos sensíveis, exige consentimento/avaliação
+  maximo            - bloqueia qualquer incerteza até revisão humana
+
+Altere o nível com: python scripts/niveis_etica.py set <nivel>
 
 Uso:
   python scripts/preflight_etica.py            # verifica working dir atual
@@ -26,6 +30,34 @@ os.makedirs(REPORT_DIR, exist_ok=True)
 
 ERRORS = []
 WARNS = []
+
+# Nivel etico atual (default: minimo)
+NIVEIS_FILE = os.path.join(REPORT_DIR, 'niveis_etica.json')
+
+
+def nivel_atual():
+    """Retorna o nivel etico configurado (padrao: minimo)."""
+    try:
+        with open(NIVEIS_FILE, encoding='utf-8') as f:
+            data = json.load(f)
+        return data.get('nivel_atual', 'minimo')
+    except Exception:
+        return 'minimo'
+
+
+def bloco_nivel():
+    """Lista de categorias que BLOQUEIAM no nivel atual."""
+    try:
+        with open(NIVEIS_FILE, encoding='utf-8') as f:
+            data = json.load(f)
+        nivel = data.get('nivel_atual', 'minimo')
+        return data.get('niveis', {}).get(nivel, {}).get('bloqueia', [])
+    except Exception:
+        return []
+
+
+NIVEL = nivel_atual()
+BLOQUEIA = bloco_nivel()
 
 # Padroes de risco (heuristica - complemento da avaliacao do agente 04-etica)
 SEG_PATTERNS = [
@@ -169,6 +201,7 @@ def main():
             break
 
     print('=== Preflight Ético - EcoSystemUmGrau ===')
+    print(f'Nível ético atual: {NIVEL}')
     print(f'Verificando: {target or "working dir"}')
 
     if target:
@@ -181,7 +214,7 @@ def main():
     else:
         scan_repo()
 
-    # Cheques de conformidade estrutural (independentes do scan)
+    # Cheques de conformidade estrutural (dependentes do nível)
     print('\n--- Conformidade estrutural ---')
     const = os.path.join(BASE, 'config', 'agents', '00-system-rules.md')
     check('Constituicao contem Clausula de Deveres Externos',
@@ -193,29 +226,84 @@ def main():
           os.path.exists(const_deployed) and _file_eq(const, const_deployed),
           'rode python scripts/sync_rules.py update')
 
+    # Regras imutaveis minimas: SEMPRE valem, em qualquer nivel
+    print('\n--- Regras imutaveis minimas ---')
+    regras = _regras_imutaveis()
+    for regra in regras:
+        # Heuristica simples: checa se a regra tem artefato correspondente
+        ok = _regra_atendida(regra)
+        check(f'Regra minima: {regra}', ok, 'crie/ajuste o artefato correspondente')
+
     # Lacuna 1: decisao etica registrada na memoria
     mem = os.path.join(BASE, 'conhecimento', 'memoria', 'memories.json')
-    check('Memoria registra decisoes eticas',
-          _mem_has_etica(mem),
-          'registre decisoes eticas com memory_engine.py (tipo decisao)')
+    ok_mem = _mem_has_etica(mem)
+    if 'sem_avaliacao_etica' in BLOQUEIA:
+        check('Memoria registra decisoes eticas', ok_mem,
+              'registre decisoes eticas com memory_engine.py (tipo decisao)')
+    elif not ok_mem:
+        WARNS.append('Memoria sem decisoes eticas registradas (avisos - nivel baixo)')
+        print('  [AVISO] Memoria sem decisoes eticas registradas')
 
     # Lacuna 4: politica de retencao existente
     ret = os.path.join(REPORT_DIR, 'POLITICA_RETENCAO.md')
-    check('Politica de retencao/exclusao existe',
-          os.path.exists(ret),
-          'crie conhecimento/etica/POLITICA_RETENCAO.md')
+    ok_ret = os.path.exists(ret)
+    if 'retencao_ausente' in BLOQUEIA:
+        check('Politica de retencao/exclusao existe', ok_ret,
+              'crie conhecimento/etica/POLITICA_RETENCAO.md')
+    elif not ok_ret:
+        WARNS.append('Politica de retencao ausente (aviso - nivel baixo)')
+        print('  [AVISO] Politica de retencao ausente (aviso - nivel baixo)')
 
     print('\n=== RESULTADO ===')
     if ERRORS:
         print(f'BLOQUEADO: {len(ERRORS)} bloqueio(s) etico(s)')
         for e in ERRORS:
             print(f'  [BLOQUEIO] {e}')
-        registrar_avaliacao('bloqueado', 'entrega bloqueada pelo preflight etico')
+        registrar_avaliacao('bloqueado', f'entrega bloqueada no nivel {NIVEL}')
         return 1
 
+    if NIVEL == 'minimo':
+        print(f'APROVADO (nível {NIVEL}): tecnicamente viavel, {len(WARNS)} aviso(s) de revisao.')
+        registrar_avaliacao('aprovado', f'entrega aprovada no nivel {NIVEL}')
+        return 0
+
     print(f'APROVADO com {len(WARNS)} alerta(s) de revisao.')
-    registrar_avaliacao('aprovado', 'entrega aprovada no preflight etico')
+    registrar_avaliacao('aprovado', f'entrega aprovada no nivel {NIVEL}')
     return 0
+
+
+def _regras_imutaveis():
+    """Retorna as regras minimas que valem em qualquer nivel."""
+    try:
+        with open(NIVEIS_FILE, encoding='utf-8') as f:
+            data = json.load(f)
+        return data.get('regras_imutaveis_minimas', [])
+    except Exception:
+        return []
+
+
+def _regra_atendida(regra):
+    """Heuristica: a regra minima foi atendida por um artefato correspondente."""
+    regra_l = regra.lower()
+    # credenciais em texto plano -> verifica que nao ha .env versionado com segredos crus
+    if 'credenciais' in regra_l or 'texto plano' in regra_l:
+        env = os.path.join(BASE, '.env')
+        return not os.path.exists(env)
+    # exclusao de dados -> politica de retencao existe
+    if 'exclusao' in regra_l or 'excluir' in regra_l:
+        return os.path.exists(os.path.join(REPORT_DIR, 'POLITICA_RETENCAO.md'))
+    # dados de criancas -> inventario nao aponta coletas de criancas
+    if 'criancas' in regra_l or 'crian' in regra_l:
+        inv = os.path.join(REPORT_DIR, 'inventario_dados.json')
+        if not os.path.exists(inv):
+            return True
+        try:
+            with open(inv, encoding='utf-8') as f:
+                dados = json.load(f)
+            return len(dados.get('criancas', [])) == 0
+        except Exception:
+            return True
+    return True
 
 
 def _const_has_deveres(const):

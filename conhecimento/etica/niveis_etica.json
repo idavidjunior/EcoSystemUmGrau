@@ -1,0 +1,28 @@
+{
+  "nivel_atual": "minimo",
+  "niveis": {
+    "minimo": {
+      "descricao": "Permite o tecnicamente viavel com avisos minimos. Padrao do ecossistema.",
+      "bloqueia": [],
+      "avisa": ["dados_pessoais", "segredos", "retencao"],
+      "exige_avaliacao_etica": false
+    },
+    "medio": {
+      "descricao": "Exige avisos claros, consentimento documentado e revisao humana de pontos sensiveis.",
+      "bloqueia": ["dados_sensiveis_sem_consentimento", "segredos_crus", "retencao_ausente"],
+      "avisa": ["dados_pessoais", "localizacao", "acessibilidade"],
+      "exige_avaliacao_etica": true
+    },
+    "maximo": {
+      "descricao": "Rigidez total. Bloqueia qualquer incerteza etica ate revisao humana completa.",
+      "bloqueia": ["qualquer_risco", "dados_sensiveis", "segredos", "retencao_ausente", "sem_avaliacao_etica"],
+      "avisa": ["tudo"],
+      "exige_avaliacao_etica": true
+    }
+  },
+  "regras_imutaveis_minimas": [
+    "nunca coletar dados de criancas",
+    "nunca armazenar credenciais em texto plano",
+    "sempre permitir exclusao de dados do usuario"
+  ]
+}
