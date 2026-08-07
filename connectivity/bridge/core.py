@@ -187,6 +187,15 @@ def check_ws_health(url: str, timeout: int) -> Tuple[bool, Dict]:
         return check_websocket(url, timeout)
     try:
         with connect(url, open_timeout=timeout, close_timeout=1) as ws:
+            # Identifica o health-check para a bridge nao gastar LLM gerando
+            # saudacao para um cliente que nao e humano.
+            ws.send(json.dumps({"tipo": "ping", "origem": "health-check"}))
+            try:
+                resp = json.loads(ws.recv(timeout=timeout))
+                if resp.get("tipo") == "pong":
+                    return True, {"url": url, "handshake": "ok", "pong": True}
+            except Exception:
+                pass
             return True, {"url": url, "handshake": "ok"}
     except WebSocketException as e:
         return True, {"url": url, "handshake": "ok", "error": str(e)[:80]}

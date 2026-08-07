@@ -2968,5 +2968,25 @@
     "access_count": 0,
     "created_at": "2026-08-07T11:18:29.745978",
     "last_accessed": "2026-08-07T11:18:29.745978"
+  },
+  {
+    "id": 179,
+    "kind": "padrao",
+    "task": "Progresso em etapas no app + health-check sem gastar LLM",
+    "summary": "Bridge jarvis agora envia progresso em etapas (Entendendo, Reconectando, Criando audio em audio) via campo progresso consumido no VoxViewModel.kt. Health-check do universal_bridge se identifica e e respondido sem gerar saudacao LLM. Corrigido ConnectionClosedOK na saudacao.",
+    "project": "",
+    "tags": [
+      "voxviewmodel",
+      "consumido",
+      "campo",
+      "audio",
+      "criando",
+      "reconectando"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T12:37:27.770933",
+    "last_accessed": "2026-08-07T12:37:27.770933"
   }
 ]

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-07T07:50:24",
+  "updated_at": "2026-08-07T12:40:26",
   "active_project": "EcoSystemUmGrau",
   "objective": "Transformar o Ecossistema Jarvis em Runtime de IA persistente (camada 1: estado+boot)",
   "last_task": "Busca semantica densa integrada (memory_semantic.py) + sync constituicao deployada",
@@ -97,6 +97,10 @@
     {
       "timestamp": "2026-08-07T05:57:22",
       "text": "Implementadas funcionalidades de visualizacao no widget grafo: toggle 3D (onda viajante), flash no clique, hide/show painel, reset de prefs, slider intensidade 3D. Validado py_compile + node --check."
+    },
+    {
+      "timestamp": "2026-08-07T12:40:26",
+      "text": "Progresso em etapas no app VoxUmGrau + health-check sem gastar LLM. Bridge e universal_bridge reiniciados. APK instalado. Memoria #179. Preflight passou."
     }
   ],
   "last_checkpoint": "20260807_055610"

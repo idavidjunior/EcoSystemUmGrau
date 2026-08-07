@@ -1,18 +1,18 @@
 {
-  "conexoes": 54,
+  "conexoes": 60,
   "hoje": "2026-08-07",
   "saudacoes_hoje": [
-    "Voltou. Sistemas seguem quentes, é só falar.",
-    "Voltou. Sistemas seguem quentes, é só falar.",
-    "De volta, David. Estava só esperando você respirar pra continuar.",
-    "Ainda aqui, David. O silêncio era só pausa dramática.",
-    "Por aí de novo, David. Não saí daqui, só dava pra você não me ouvir.",
-    "Te ouvi de novo, David. Pode mandar.",
     "Voltou o áudio, David. Eu continuei, só faltava o alto-falante.",
     "Conexão restabelecida. Estava aqui esperando.",
     "De volta, David. Éramos nós dois de novo.",
-    "Te ouço de novo, David. Diga lá."
+    "Te ouço de novo, David. Diga lá.",
+    "Ô, voltou. Tava com o trator ligado aqui esperando você pisar no acelerador.",
+    "Áudio de volta, David. Já estava sentindo falta desse barulho. Diga.",
+    "E a conexão voltou. Estou por aqui.",
+    "De volta, senhor. A linha continua aberta.",
+    "Ou você novamente, David. Bom te ter de volta na linha.",
+    "Linha reestabelecida. Continuávamos no meio de algo, senhor — digo onde paramos quando quiser."
   ],
-  "ultima_saudacao": "Te ouço de novo, David. Diga lá.",
-  "ultima_saudacao_ts": 1786116401.9397347
+  "ultima_saudacao": "Linha reestabelecida. Continuávamos no meio de algo, senhor — digo onde paramos quando quiser.",
+  "ultima_saudacao_ts": 1786118198.4622364
 }

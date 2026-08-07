@@ -1418,6 +1418,23 @@ async def lidar(ws):
     except Exception as e:
         logger.warning(f"briefing: {e}")
         extra = ""
+    # Health-check (universal_bridge) se identifica na primeira mensagem:
+    # responde o pong e encerra SEM gerar saudacao LLM nem poluir o historico.
+    try:
+        prim = await asyncio.wait_for(ws.recv(), timeout=3)
+        try:
+            obj0 = json.loads(prim)
+            if isinstance(obj0, dict) and obj0.get("tipo") == "ping" and obj0.get("origem") == "health-check":
+                await ws.send(json.dumps({"tipo": "pong", "origem": "bridge", "eco": obj0}))
+                logger.info("health-check atendido (sem saudacao LLM)")
+                return
+        except json.JSONDecodeError:
+            pass
+    except asyncio.TimeoutError:
+        pass
+    except websockets.exceptions.ConnectionClosed:
+        logger.info("cliente fechou antes da saudacao")
+        return
     # Classifica a conexão: primeira do dia vs reconexão de conversa ativa.
     cx = _classificar_conexao()
     estado_saud = _carregar_saudacao_estado()
