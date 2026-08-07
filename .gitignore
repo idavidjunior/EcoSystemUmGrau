@@ -36,6 +36,7 @@ scripts/guardian.pid
 scripts/guardian_state.json
 scripts/guardian_log.txt
 scripts/watchdog_log.txt
+scripts/watchdog.lock
 scripts/test_greeting.json
 *.pid
 
