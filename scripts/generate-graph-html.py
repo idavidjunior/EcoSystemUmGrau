@@ -626,6 +626,18 @@ def gerar_html(nos, arestas, output_path):
   }};
   const network = new vis.Network(container, {{ nodes, edges }}, options);
 
+  // Snapshot original dos nos/arestas (usado por destacar/limpar/animação).
+  // Inicializado AQUI, logo após o network, para evitar TDZ (a referência
+  // original[n.id] era usada antes da declaração const original).
+  const original = {{}};
+  nodes.get().forEach(n => {{
+    original[n.id] = {{ color: n.color, size: n.size }};
+  }});
+  const arestaOriginal = {{}};
+  edges.get().forEach(e => {{
+    arestaOriginal[e.id] = {{ color: e.color || '#999', width: e.width || 1 }};
+  }});
+
   // Enquadra o grafo e liberta a fisica para o balanco organico perpetuo.
   setTimeout(() => network.fit({{ animation: true }}), 1200);
 
@@ -1267,15 +1279,6 @@ arestasUp = arestasUp.map(a =>
     }}, 600);
   }})();
 
-  const original = {{}};
-  nodes.get().forEach(n => {{
-    original[n.id] = {{ color: n.color, size: n.size }};
-  }});
-  const arestaOriginal = {{}};
-  edges.get().forEach(e => {{
-    arestaOriginal[e.id] = {{ color: e.color || '#999', width: e.width || 1 }};
-  }});
-
   function clarear(hex, fator) {{
     hex = hex.replace('#', '');
     const r = Math.min(255, Math.round(parseInt(hex.substring(0,2),16) * fator + 255 * (1 - fator)));
@@ -1624,7 +1627,7 @@ arestasUp = arestasUp.map(a =>
       _headerCor = t.headerBorda || '#313244';
 
       // Aplica forcado calibrado
-      _aplicarForcesTema(t);
+      _aplicarForcasTema(t);
       localStorage.setItem('temaGrafo', nome);
     }} catch(e) {{ }}
   }}

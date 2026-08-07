@@ -217,6 +217,18 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
   };
   const network = new vis.Network(container, { nodes, edges }, options);
 
+  // Snapshot original dos nos/arestas (usado por destacar/limpar/animação).
+  // Inicializado AQUI, logo após o network, para evitar TDZ (a referência
+  // original[n.id] era usada antes da declaração const original).
+  const original = {};
+  nodes.get().forEach(n => {
+    original[n.id] = { color: n.color, size: n.size };
+  });
+  const arestaOriginal = {};
+  edges.get().forEach(e => {
+    arestaOriginal[e.id] = { color: e.color || '#999', width: e.width || 1 };
+  });
+
   // Enquadra o grafo e liberta a fisica para o balanco organico perpetuo.
   setTimeout(() => network.fit({ animation: true }), 1200);
 
@@ -858,15 +870,6 @@ arestasUp = arestasUp.map(a =>
     }, 600);
   })();
 
-  const original = {};
-  nodes.get().forEach(n => {
-    original[n.id] = { color: n.color, size: n.size };
-  });
-  const arestaOriginal = {};
-  edges.get().forEach(e => {
-    arestaOriginal[e.id] = { color: e.color || '#999', width: e.width || 1 };
-  });
-
   function clarear(hex, fator) {
     hex = hex.replace('#', '');
     const r = Math.min(255, Math.round(parseInt(hex.substring(0,2),16) * fator + 255 * (1 - fator)));
@@ -1215,7 +1218,7 @@ arestasUp = arestasUp.map(a =>
       _headerCor = t.headerBorda || '#313244';
 
       // Aplica forcado calibrado
-      _aplicarForcesTema(t);
+      _aplicarForcasTema(t);
       localStorage.setItem('temaGrafo', nome);
     } catch(e) { }
   }
@@ -1613,78 +1616,5 @@ arestasUp = arestasUp.map(a =>
     window.addEventListener('pywebviewready', aplicarPersistidos);
   })();
 </script>
-
-<script>
-(function(){
-    var resultados = [];
-    function report(nome, ok) {
-        resultados.push({nome: nome, ok: ok});
-        try { if (window.pywebview && window.pywebview.api) window.pywebview.api.debug_log('TEST:' + nome + '=' + (ok?'OK':'FAIL')); } catch(e){}
-    }
-
-    // Wait for everything to load
-    var tentativas = 0;
-    function verificar() {
-        tentativas++;
-        if (tentativas > 25) {
-            report('timeout', false);
-            salvar();
-            return;
-        }
-        if (typeof nodes === 'undefined' || typeof network === 'undefined' || typeof destacar === 'undefined') {
-            setTimeout(verificar, 200);
-            return;
-        }
-        
-        // Test 1: Filter buttons exist
-        var botoesLG = document.querySelectorAll('.lg');
-        report('botoes_lg_count', botoesLG.length >= 19);
-        
-        // Test 2: TEMAS object exists
-        report('TEMAS_object', typeof TEMAS !== 'undefined' && TEMAS.neon && TEMAS.glow);
-        
-        // Test 3: aplicarTema function exists
-        report('aplicarTema_fn', typeof aplicarTema === 'function');
-        
-        // Test pet plasticity {no: temaSel exists
-        report('temaSel_exists', document.querySelector('select') !== null && 
-               Array.from(document.querySelectorAll('option')).some(o => o.textContent.indexOf('Neon') > -1));
-        
-        // Test 5: Header functions
-        report('header_min_present', document.getElementById('header') !== null);
-        
-        // Test 6: Click Bug button
-        var btnBug = document.querySelector('.lg[data-filter="st"][data-value="resolvido"]') ||
-                     document.querySelector('.lg[data-value="bugs"]');
-        if (btnBug) {
-            btnBug.click();
-            setTimeout(function() {
-                report('btn_bugs_click', typeof _destacado !== 'undefined' ? _destacado === true : false);
-                salvar();
-            }, 200);
-        } else {
-            report('btn_bugs_found', false);
-            salvar();
-        }
-    }
-    
-    function salvar() {
-        // Try to save results
-        try {
-            var json = JSON.stringify(resultados);
-            if (window.pywebview && window.pywebview.api && window.pywebview.api.salvar_resultados) {
-                window.pywebview.api.salvar_resultados(json);
-            }
-        } catch(e) {}
-    }
-    
-    if (document.readyState === 'complete') {
-        setTimeout(verificar, 500);
-    } else {
-        window.addEventListener('load', function(){ setTimeout(verificar, 500); });
-    }
-})();
-</script>
-
 </body>
 </html>
