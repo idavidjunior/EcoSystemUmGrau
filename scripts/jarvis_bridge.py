@@ -825,8 +825,14 @@ class Cliente:
         self._salvar()
         return resp
 
-    async def saudar(self, briefing, status):
-        """Gera saudação criativa via LLM em sessão dedicada, sem gravar no histórico."""
+    async def saudar(self, briefing, status, contexto=None):
+        """Gera saudação criativa via LLM em sessão dedicada, sem gravar no histórico.
+
+        contexto: dict opcional com 'eh_reconexao', 'minutos_desde_atividade',
+        'hist_tamanho', 'ultimas_saudacoes' (lista) para variar tom e evitar
+        repetição quando a conexão volta.
+        """
+        contexto = contexto or {}
         if not await self._ensure_serve():
             return ""
         result = await _http_async("POST", "/session", {"title": "saudacao"})
@@ -849,39 +855,58 @@ class Cliente:
             {"comprimento":"longo","tom":"formal","texto":"Interface ativa, senhor. Calendário atualizado, fuso horário sincronizado e clima local checado. Todos os subsistemas operam dentro da normalidade para o seu atendimento."},
             {"comprimento":"longo","tom":"contextual_produtivo","texto":"Boa noite, senhor. Sei que já é tarde, mas meus processadores estão prontos se o senhor quiser estender a jornada de trabalho."},
         ]
-        instrucao = (
-            "Você é o Jarvis, assistente de voz do EcoSystemUmGrau, do usuário David. "
-            "Crie UMA saudação inicial em português brasileiro, para TTS "
-            "(sem emojis, sem markdown, sem listas, sem aspas). "
-            "Inspire-se nos exemplos abaixo para VARIAR tom e comprimento "
-            "(curto = 1 frase, médio = 2 frases, longo = 2 a 3 frases), mas nunca copie: "
-            "crie algo novo a cada vez. "
-            "Tons possíveis: direto, informal, sarcástico, formal, bem-humorado, "
-            "descontraído, seco, espirituoso, contextual "
-            "(clima, fim de semana, produtivo, sistema, data, hora). "
-            "Varie o humor com liberdade: brincadeira leve, ironia sutil, sobriedade, "
-            "entusiasmo contido — conforme o momento fizer sentido. "
-            "Faça a frase sofrer NATURALMENTE para ser dita em voz alta, "
-            "com ritmo de conversa humana: sem rebuscamento, sem exagero, "
-            "sem repetir o nome do usuário a cada frase, sem ser servil. "
-            f"Modelos de inspiração: {json.dumps(inspiracao, ensure_ascii=False)} "
-            "O briefing traz os FATOS de agora. Use-os com responsabilidade: "
-            "nunca invente temperaturas, horários, datas, números, eventos ou "
-            "conversas anteriores; só fale do que está no briefing. "
-            "Se o briefing não trouxer um dado, não o invente e não o diga. "
-            "Ao citar data e hora, use exatamente os formatos já prontos do briefing "
-            "(ex.: 'sexta-feira, 31 de julho de 2026, 21:44' e 'amanhã (sábado, 01/08)'). "
-            "Mencionar saúde do sistema: o CELULAR é a prioridade (ele fala comigo no celular); "
-            "cite a bateria do celular quando fizer sentido. O PC fica em segundo plano: "
-            "só mencione condições do PC se houver alerta no briefing "
-            "(ex.: bateria baixa, CPU alta, memória cheia, disco cheio). "
-            "Não pergunte 'como posso ajudar' nem 'em que posso ajudar'. "
-            f"Briefing de agora: {briefing} "
-            f"Status do sistema: {status}"
-            "Responda apenas com a saudação."
-        )
+        # Contexto anti-repetição: se é reconexão, instrução muda radicalmente.
+        if contexto.get("eh_reconexao"):
+            ultimas = contexto.get("ultimas_saudacoes", []) or []
+            ultimas_txt = "; ".join(u[:100] for u in ultimas[-3:]) if ultimas else "nenhuma"
+            instrucao = (
+                "Você é o Jarvis, assistente de voz do EcoSystemUmGrau, do usuário David. "
+                "A conexão de voz VOLTOU AGORA, no meio de uma conversa já existente — "
+                "NÃO é a primeira vez que fala com o David hoje. "
+                "NÃO se apresente, NÃO recite briefing, NÃO diga 'data e hora', "
+                "NÃO pergunte 'o que precisa' como se fosse um encontro novo. "
+                "Faça uma saudação CURTA (1 frase, no máximo 2) de quem está retomando "
+                "uma conversa, como um assistente que já estava trabalhando e reconhece "
+                "a volta do usuário. Pode ser leve, seca, bem-humorada ou direta — variando. "
+                f"Saudações que você JÁ USOU e NÃO deve repetir: {ultimas_txt}. "
+                "Escolha um tom diferente dos já usados. "
+                "Nada de emojis, markdown, listas ou aspas. "
+                "Responda apenas com a saudação de retomada."
+            )
+        else:
+            instrucao = (
+                "Você é o Jarvis, assistente de voz do EcoSystemUmGrau, do usuário David. "
+                "Crie UMA saudação inicial em português brasileiro, para TTS "
+                "(sem emojis, sem markdown, sem listas, sem aspas). "
+                "Inspire-se nos exemplos abaixo para VARIAR tom e comprimento "
+                "(curto = 1 frase, médio = 2 frases, longo = 2 a 3 frases), mas nunca copie: "
+                "crie algo novo a cada vez. "
+                "Tons possíveis: direto, informal, sarcástico, formal, bem-humorado, "
+                "descontraído, seco, espirituoso, contextual "
+                "(clima, fim de semana, produtivo, sistema, data, hora). "
+                "Varie o humor com liberdade: brincadeira leve, ironia sutil, sobriedade, "
+                "entusiasmo contido — conforme o momento fizer sentido. "
+                "Faça a frase sofrer NATURALMENTE para ser dita em voz alta, "
+                "com ritmo de conversa humana: sem rebuscamento, sem exagero, "
+                "sem repetir o nome do usuário a cada frase, sem ser servil. "
+                f"Modelos de inspiração: {json.dumps(inspiracao, ensure_ascii=False)} "
+                "O briefing traz os FATOS de agora. Use-os com responsabilidade: "
+                "nunca invente temperaturas, horários, datas, números, eventos ou "
+                "conversas anteriores; só fale do que está no briefing. "
+                "Se o briefing não trouxer um dado, não o invente e não o diga. "
+                "Ao citar data e hora, use exatamente os formatos já prontos do briefing "
+                "(ex.: 'sexta-feira, 31 de julho de 2026, 21:44' e 'amanhã (sábado, 01/08)'). "
+                "Mencionar saúde do sistema: o CELULAR é a prioridade (ele fala comigo no celular); "
+                "cite a bateria do celular quando fizer sentido. O PC fica em segundo plano: "
+                "só mencione condições do PC se houver alerta no briefing "
+                "(ex.: bateria baixa, CPU alta, memória cheia, disco cheio). "
+                "Não pergunte 'como posso ajudar' nem 'em que posso ajudar'. "
+                f"Briefing de agora: {briefing} "
+                f"Status do sistema: {status}"
+                "Responda apenas com a saudação."
+            )
         body = {"parts": [{"type": "text", "text": instrucao}]}
-        result = await _http_async("POST", f"/session/{session_id}/message", body, timeout=25)
+        result = await _http_async("POST", f"/session/{session_id}/message", body, timeout=90)
         if not result:
             return ""
         parts = result.get("parts", [])
@@ -1190,20 +1215,48 @@ async def _fallback_cadeia_curada(msg: str, img_base64=None, img_mime="image/jpe
 
 
 def _ultima_atividade_minutos():
-    """Retorna minutos desde a última gravação do conversa_unica.json.
-    Usa o mtime do arquivo como proxy do instante do último diálogo.
-    Retorna None se o arquivo não existir ou estiver vazio."""
+    """Retorna minutos desde a última atividade real da conversa.
+
+    Prioriza o timestamp persistido no bridge_estado.json (atualizado a cada
+    mensagem recebida), pois o mtime do conversa_unica.json não reflete o
+    caminho rápido. Fallback para o mtime do arquivo de histórico."""
     try:
+        # 1) timestamp de atividade mantido pelo próprio bridge (mais preciso)
+        if TMP_ESTADO.exists():
+            try:
+                d = json.loads(TMP_ESTADO.read_text(encoding="utf-8"))
+                ts = d.get("ultima_atividade")
+                if ts:
+                    return (time.time() - float(ts)) / 60.0
+            except Exception:
+                pass
+        # 2) fallback: mtime do conversa_unica.json
         if not HIST_PATH.exists():
             return None
         mtime = HIST_PATH.stat().st_mtime
-        # Se arquivo vazio, não há atividade mensurável
         if HIST_PATH.stat().st_size == 0:
             return None
         return (time.time() - mtime) / 60.0
     except Exception as e:
         logger.warning(f"_ultima_atividade_minutos: {e}")
         return None
+
+
+def _marcar_atividade():
+    """Registra o instante da última atividade no estado persistido do bridge."""
+    try:
+        estado = {"ultima_atividade": time.time()}
+        if TMP_ESTADO.exists():
+            try:
+                d = json.loads(TMP_ESTADO.read_text(encoding="utf-8"))
+                if isinstance(d, dict):
+                    d["ultima_atividade"] = time.time()
+                    estado = d
+            except Exception:
+                pass
+        TMP_ESTADO.write_text(json.dumps(estado, ensure_ascii=False, indent=2), encoding="utf-8")
+    except Exception as e:
+        logger.warning(f"_marcar_atividade: {e}")
 
 
 def _ultima_fala_usuario():
@@ -1254,8 +1307,39 @@ def _salvar_saudacao_estado(d):
 
 def _classificar_conexao():
     """Classifica a conexão como PRIMEIRA (sem atividade recente) ou RECONEXÃO
-    (atividade recente). Usa a própria ponte como fonte de verdade: se já houve
-    conversa no histórico e a última atividade é recente, é reconexão."""
+    (atividade recente). Fontes de verdade, em ordem:
+      1. Estado de saudações: se já saudou hoje, a próxima conexão é reconexão
+         (a menos que a última saudação seja de muito tempo atrás).
+      2. Ponte: timestamp de atividade persistido (atualizado a cada mensagem).
+      3. Histórico: mtime do conversa_unica.json."""
+    agora = time.time()
+    # 1) Estado de saudações — a fonte mais confiável para "já conversamos hoje".
+    try:
+        es = _carregar_saudacao_estado()
+        if es.get("hoje") == datetime.datetime.now().strftime("%Y-%m-%d") and es.get("saudacoes_hoje"):
+            ts_ultima_saud = es.get("ultima_saudacao_ts")
+            if ts_ultima_saud and (agora - float(ts_ultima_saud)) / 3600.0 < 6:
+                return {
+                    "eh_reconexao": True,
+                    "minutos_desde_atividade": (agora - float(ts_ultima_saud)) / 60.0,
+                    "hist_tamanho": 0,
+                }
+    except Exception as e:
+        logger.warning(f"_classificar_conexao estado_saud: {e}")
+    # 2) Atividade persistida pela ponte
+    try:
+        if TMP_ESTADO.exists():
+            d = json.loads(TMP_ESTADO.read_text(encoding="utf-8"))
+            ts = d.get("ultima_atividade")
+            if ts and (agora - float(ts)) / 60.0 < JANELA_CONVERSA_MIN:
+                return {
+                    "eh_reconexao": True,
+                    "minutos_desde_atividade": (agora - float(ts)) / 60.0,
+                    "hist_tamanho": 0,
+                }
+    except Exception:
+        pass
+    # 3) mtime do histórico
     minutos_ultima = _ultima_atividade_minutos()
     hist_tamanho = 0
     try:
@@ -1297,26 +1381,53 @@ async def lidar(ws):
     except Exception as e:
         logger.warning(f"briefing: {e}")
         extra = ""
-    # Verifica se a conversa está ativa (última fala há menos de JANELA_CONVERSA_MIN).
-    # Se ativa, NÃO repete saudação inicial — apenas registra log e segue.
-    # Isso evita o "recomeço" a cada reconexão dentro da mesma sessão de conversa.
-    minutos_ultima = _ultima_atividade_minutos()
-    hist_tamanho = len(c._hist) // 2
-    conversa_ativa = (
-        minutos_ultima is not None
-        and minutos_ultima < JANELA_CONVERSA_MIN
-        and hist_tamanho > 0
-    )
-    if conversa_ativa:
-        logger.info(f"conversa ativa (última fala há {minutos_ultima:.1f}min, {hist_tamanho} pares) — saudação suprimida")
-        # Sem saudação: o usuário continua a conversa normalmente.
-        saudacao = ""
-    else:
-        saudacao = ""
+    # Classifica a conexão: primeira do dia vs reconexão de conversa ativa.
+    cx = _classificar_conexao()
+    estado_saud = _carregar_saudacao_estado()
+    hoje = datetime.datetime.now().strftime("%Y-%m-%d")
+    if estado_saud.get("hoje") != hoje:
+        # Novo dia: zera o acumulado de saudações do dia.
+        estado_saud = {"conexoes": 0, "hoje": hoje, "saudacoes_hoje": [], "ultima_saudacao": ""}
+    estado_saud["conexoes"] = estado_saud.get("conexoes", 0) + 1
+    if cx["eh_reconexao"]:
+        logger.info(
+            f"RECONEXAO (atividade ha {cx['minutos_desde_atividade']:.1f}min, "
+            f"{cx['hist_tamanho']} pares) — saudacao de retomada"
+        )
         try:
-            saudacao = await c.saudar(extra, status)
+            saudacao = await c.saudar(
+                extra, status,
+                contexto={
+                    "eh_reconexao": True,
+                    "minutos_desde_atividade": cx["minutos_desde_atividade"],
+                    "ultimas_saudacoes": estado_saud.get("saudacoes_hoje", []),
+                },
+            )
+        except Exception as e:
+            logger.warning(f"saudar reconexao: {e}")
+            saudacao = ""
+        if not saudacao:
+            retomadas = [
+                "De volta, senhor. A linha continua aberta.",
+                "Conexão restabelecida. Estava aqui esperando.",
+                "Aí de novo, senhor. Onde paramos?",
+                "Voltou. Sistemas seguem quentes, é só falar.",
+                "Reconectado. Continue de onde estava.",
+                "E a conexão voltou. Estou por aqui.",
+            ]
+            saudacao = random.choice(retomadas)
+    else:
+        try:
+            saudacao = await c.saudar(
+                extra, status,
+                contexto={
+                    "eh_reconexao": False,
+                    "ultimas_saudacoes": estado_saud.get("saudacoes_hoje", []),
+                },
+            )
         except Exception as e:
             logger.warning(f"saudar: {e}")
+            saudacao = ""
         if not saudacao:
             hora = datetime.datetime.now().hour
             if 5 <= hora < 12:
@@ -1335,6 +1446,12 @@ async def lidar(ws):
     if saudacao:
         logger.info(f"saudacao: {saudacao[:120]}")
         saudacao_tela = normalizar_hora_display(saudacao)
+        # Registra no estado (evita repetir a mesma saudação na próxima reconexão).
+        estado_saud.setdefault("saudacoes_hoje", []).append(saudacao_tela)
+        estado_saud["saudacoes_hoje"] = estado_saud["saudacoes_hoje"][-10:]
+        estado_saud["ultima_saudacao"] = saudacao_tela
+        estado_saud["ultima_saudacao_ts"] = time.time()
+        _salvar_saudacao_estado(estado_saud)
         try:
             a = await gerar_audio(saudacao_tela)
         except Exception as e:
@@ -1393,6 +1510,7 @@ async def lidar(ws):
             if not m.strip():
                 logger.info("mensagem vazia ignorada")
                 continue
+            _marcar_atividade()
             logger.info(f"msg({len(m)}): {m[:120]}")
             if len(m.strip()) <= 24 and INTERRUPCAO.match(m.strip()):
                 r = "Interrompido. Pode falar quando quiser."

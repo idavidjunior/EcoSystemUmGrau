@@ -6,6 +6,34 @@ param(
 )
 
 $ErrorActionPreference = "SilentlyContinue"
+
+# Instância única via arquivo de lock com PID (mais robusto que Mutex nomeado:
+# um Mutex abandoned no Windows não é re-adquirido e trava o restart).
+$LockPath = "$PSScriptRoot\watchdog.lock"
+$meuPid = $PID
+$jaExiste = $false
+if (Test-Path $LockPath) {
+    try {
+        $outroPid = [int](Get-Content $LockPath -Raw).Trim()
+        $procOutro = Get-Process -Id $outroPid -ErrorAction SilentlyContinue
+        if ($procOutro -and $procOutro.ProcessName -match "powershell") {
+            $jaExiste = $true
+        }
+    } catch { }
+}
+if ($jaExiste) {
+    exit 0
+}
+try { Set-Content -Path $LockPath -Value $meuPid -Encoding ascii } catch { }
+
+# Log com limite de tamanho (~2MB): ao estourar, descarta a metade mais antiga.
+if (Test-Path $LogPath) {
+    $info = Get-Item $LogPath
+    if ($info.Length -gt 2MB) {
+        $linhas = Get-Content $LogPath
+        $linhas | Select-Object -Skip ([int]($linhas.Count / 2)) | Set-Content $LogPath
+    }
+}
 $log = [System.IO.StreamWriter]::new($LogPath, $true)
 $log.AutoFlush = $true
 
@@ -40,15 +68,41 @@ function Test-ServeUp {
         return $false
     }
 }
+# Health-check do bridge: porta LISTENING + processo dono vivo + escreve no log.
+# Se a porta estiver LISTENING com socket órfão (processo morto), reinicia.
+function Test-BridgeAlive {
+    param($Port)
+    $linha = netstat -ano -p TCP 2>$null | Select-String "LISTENING" | Select-String ":$Port" | Select-Object -First 1
+    if (-not $linha) { return $false }
+    $pidStr = ($linha.ToString() -split '\s+')[-1]
+    if ($pidStr -notmatch '^\d+$') { return $false }
+    $proc = Get-Process -Id ([int]$pidStr) -ErrorAction SilentlyContinue
+    return ($proc -ne $null)
+}
+function Get-BridgePid {
+    param($Port)
+    $linha = netstat -ano -p TCP 2>$null | Select-String "LISTENING" | Select-String ":$Port" | Select-Object -First 1
+    if (-not $linha) { return $null }
+    $pidStr = ($linha.ToString() -split '\s+')[-1]
+    if ($pidStr -notmatch '^\d+$') { return $null }
+    return [int]$pidStr
+}
 
 Write-Log "Watchdog iniciado (intervalo: ${Interval}s, bridge: $BridgePort, serve: $ServePort)"
 
 while ($true) {
 
     # ============ BRIDGE ============
-    if (Test-BridgeUp $BridgePort) {
-        Write-Log "Bridge OK (porta $BridgePort)"
+    if (Test-BridgeAlive $BridgePort) {
+        Write-Log "Bridge OK (PID $(Get-BridgePid $BridgePort))"
     } else {
+        if (Test-BridgeUp $BridgePort) {
+            # Porta LISTENING mas processo dono morto: socket órfão.
+            $orphanPid = Get-BridgePid $BridgePort
+            Write-Log "Bridge com socket orfao (PID $orphanPid) - limpando handle..."
+            taskkill /F /PID $orphanPid 2>$null | Out-Null
+            Start-Sleep -Seconds 3
+        }
         Write-Log "Bridge MORTO na porta $BridgePort - reiniciando..."
         if (Test-Path $PYTHON) {
             $psi = New-Object System.Diagnostics.ProcessStartInfo
@@ -65,30 +119,25 @@ while ($true) {
     }
 
     # ============ SERVE (opencode) ============
-    if (Test-BridgeUp $ServePort) {
-        if (Test-ServeUp $ServePort) {
-            $servePid = ((netstat -ano -p TCP 2>$null | Select-String "LISTENING" | Select-String ":$ServePort")[0] -split '\s+')[-1]
-            $proc = Get-Process -Id $servePid -ErrorAction SilentlyContinue
-            if ($proc) {
-                $memMB = [math]::Round($proc.WorkingSet64 / 1MB, 1)
-                Write-Log "Serve OK (PID $servePid, ${memMB}MB)"
-                if ($memMB -gt 800) { Write-Log "ALERTA: Serve com ${memMB}MB - alto consumo" }
-            } else {
-                Write-Log "Serve PID $servePid nao encontrado, reiniciando..."
+    $serveUp = Test-BridgeUp $ServePort
+    if ($serveUp) {
+        $servePid = ((netstat -ano -p TCP 2>$null | Select-String "LISTENING" | Select-String ":$ServePort")[0] -split '\s+')[-1]
+        $proc = Get-Process -Id $servePid -ErrorAction SilentlyContinue
+        if ($proc -and (Test-ServeUp $ServePort)) {
+            $memMB = [math]::Round($proc.WorkingSet64 / 1MB, 1)
+            Write-Log "Serve OK (PID $servePid, ${memMB}MB)"
+            if ($memMB -gt 800) { Write-Log "ALERTA: Serve com ${memMB}MB - alto consumo" }
+        } else {
+            Write-Log "Serve na porta $ServePort nao responde ou PID morto - reiniciando..."
+            if ($servePid -match '^\d+$') {
                 taskkill /F /PID $servePid 2>$null | Out-Null
                 Start-Sleep -Seconds 2
             }
-        } else {
-            Write-Log "Serve na porta $ServePort NAO responde health - reiniciando..."
-            $servePid = ((netstat -ano -p TCP 2>$null | Select-String "LISTENING" | Select-String ":$ServePort")[0] -split '\s+')[-1]
-            taskkill /F /PID $servePid 2>$null | Out-Null
-            Start-Sleep -Seconds 2
         }
     } else {
         Write-Log "Serve MORTO na porta $ServePort - iniciando..."
     }
-    $serveUp = Test-BridgeUp $ServePort
-    if (-not $serveUp) {
+    if (-not (Test-BridgeUp $ServePort)) {
         if (Test-Path $OPENCODE_BIN) {
             $psi = New-Object System.Diagnostics.ProcessStartInfo
             $psi.FileName = $OPENCODE_BIN
@@ -125,3 +174,4 @@ while ($true) {
 }
 
 $log.Close()
+try { Remove-Item -Path $LockPath -Force -ErrorAction SilentlyContinue } catch {}
