@@ -2368,5 +2368,25 @@
     "access_count": 0,
     "created_at": "2026-08-07T07:46:38.639293",
     "last_accessed": "2026-08-07T07:46:38.639293"
+  },
+  {
+    "id": 149,
+    "kind": "decisao",
+    "task": "Bridge Migration Package Complete",
+    "summary": "Pacote migravel completo: bridge_exporter.py (export/import), deploy scripts (systemd/LaunchAgent/Windows Startup), configs JSON versionadas, learning history, health reports, GUIA_MIGRACAO.md - tudo dentro de EcoSystemUmGrau/connectivity",
+    "project": "",
+    "tags": [
+      "migracao",
+      "guia",
+      "reports",
+      "health",
+      "history",
+      "learning"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T07:55:01.544817",
+    "last_accessed": "2026-08-07T07:55:01.544817"
   }
 ]
