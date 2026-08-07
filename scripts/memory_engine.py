@@ -93,7 +93,12 @@ def log_session(session_id=None, task=None, project=None, outcome=None,
 
 def add_memory(task, summary, kind='episodio', project='', tags=None,
                strength=1.0, metadata=None):
-    """Add a consolidated memory with decay metadata."""
+    """Add a consolidated memory with decay metadata.
+
+    Dispara reindexação semântica automática (TF-IDF + denso) para que a nova
+    memória fique imediatamente recuperável por significado. Nunca bloqueia o add
+    em caso de falha (best-effort).
+    """
     memories = _load_memories()
     now = datetime.now()
     tags = tags or []
@@ -117,7 +122,30 @@ def add_memory(task, summary, kind='episodio', project='', tags=None,
     }
     memories.append(memory)
     _save_memories(memories)
+    reindexar_semantico(best_effort=True)
     return memory['id']
+
+
+def reindexar_semantico(best_effort=True):
+    """Reconstrói o índice semântico (TF-IDF + matriz densa) de forma automática.
+
+    Chamado após cada add_memory para que a memória nova seja recuperável por
+    significado imediatamente. Em best_effort, falhas são reportadas mas nunca
+    quebram o fluxo do add.
+    """
+    try:
+        from memory_semantic import build_index, build_dense
+        r = build_index(verbose=False)
+        if r.get('ok'):
+            build_dense(verbose=False)
+            print(f'[REINDEX] índice semântico atualizado: {r["count"]} docs')
+        else:
+            print(f'[REINDEX] aviso: {r.get("erro", "falha no build")}')
+    except Exception as e:
+        if best_effort:
+            print(f'[REINDEX] aviso (best-effort): {e}')
+        else:
+            raise
 
 def reinforce(memory_id, delta=0.15):
     """Reinforce a memory when reused."""
@@ -206,7 +234,12 @@ if __name__ == '__main__':
         task = sys.argv[2] if len(sys.argv) > 2 else ''
         summary = sys.argv[3] if len(sys.argv) > 3 else ''
         kind = sys.argv[4] if len(sys.argv) > 4 else 'episodio'
-        mid = add_memory(task, summary, kind)
+        no_reindex = '--no-reindex' in sys.argv
+        if no_reindex:
+            _no_reindex_global = True
+            mid = add_memory(task, summary, kind, reindex=False)
+        else:
+            mid = add_memory(task, summary, kind)
         print(f'[OK] Memory #{mid}: {task[:60]}')
     elif cmd == 'query':
         text = sys.argv[2] if len(sys.argv) > 2 else None
