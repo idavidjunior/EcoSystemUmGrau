@@ -2028,5 +2028,25 @@
     "access_count": 0,
     "created_at": "2026-08-06T21:14:57.910440",
     "last_accessed": "2026-08-06T21:14:57.910440"
+  },
+  {
+    "id": 132,
+    "kind": "erro",
+    "task": "Widget grafo: correcao de 8 bugs + teste completo headless",
+    "summary": "Corrigidos {{ }} no tema (painel morto), RESIZE_JS/API_INJECT nao injetados, botao T errado, TDZ de 'original' no template, typo _aplicarForcesTema, --help, test_widget_live quebrado. Validado: esprima + harness Node 40/40 + widget real vivo.",
+    "project": "",
+    "tags": [
+      "quebrado",
+      "live",
+      "test",
+      "help",
+      "aplicarforcestema",
+      "typo"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T21:31:32.366140",
+    "last_accessed": "2026-08-06T21:31:32.366140"
   }
 ]
