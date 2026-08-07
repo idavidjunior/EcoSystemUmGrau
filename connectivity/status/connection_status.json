@@ -1,0 +1,36 @@
+{
+  "last_check": "2026-08-07T05:40:32.056440",
+  "adb": {
+    "status": "connected",
+    "devices": [
+      {
+        "id": "6d92eed7",
+        "status": "device"
+      }
+    ],
+    "active_count": 1,
+    "timestamp": "2026-08-07T05:40:32.122157"
+  },
+  "tailscale": {
+    "status": "online",
+    "devices": [
+      {
+        "ip": "100.91.141.101",
+        "name": "desktop-ip8nvql",
+        "status": "unknown"
+      },
+      {
+        "ip": "100.120.67.64",
+        "name": "desktop-6i6nsfs",
+        "status": "unknown"
+      },
+      {
+        "ip": "100.64.71.9",
+        "name": "redmi-note-11",
+        "status": "unknown"
+      }
+    ],
+    "online": true,
+    "timestamp": "2026-08-07T05:40:32.265172"
+  }
+}

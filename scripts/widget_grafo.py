@@ -508,6 +508,106 @@ WIDGET_JS_EXTRA = """
     layoutGroup.appendChild(ctrl);
     layoutGroup.appendChild(menuBtn);
 
+    // ---- Grupo 3D: toggle + slider de intensidade ----
+    var btn3D = mkEl('div');
+    btn3D.id = 'mk-btn-3d';
+    btn3D.title = 'Alternar modo 3D (onda viajante)';
+    btn3D.style.cssText =
+      'width:30px;height:30px;border-radius:4px;cursor:pointer;' +
+      'display:flex;align-items:center;justify-content:center;' +
+      'font-size:14px;user-select:none;color:' + cores.destaque + ';' +
+      'background:#313244;border:1px solid ' + cores.destaque + ';';
+    btn3D.innerHTML = '\\u1F34D'; // onda de serpente (3D / dinamico)
+    var modo3DAtivo = (typeof localStorage !== 'undefined' && localStorage.getItem('modo3D') === 'true');
+    btn3D._ativo = modo3DAtivo;
+    btn3D.addEventListener('click', function() {
+      btn3D._ativo = !btn3D._ativo;
+      var icone = btn3D._ativo ? '\\u1F34D' : '\\u1F34E'; // serpente vs abacate (3D desligado)
+      // Usa abacate quando desligado para contraste visual simples
+      btn3D.innerHTML = btn3D._ativo ? '\\u1F34D' : '\\u2605';
+      btn3D.style.background = btn3D._ativo ? cores.fundo : '#313244';
+      if (typeof _toggle3D === 'function') _toggle3D(btn3D._ativo);
+    });
+
+    var label3D = mkEl('span');
+    label3D.style.cssText = 'font-size:10px;color:' + cores.texto2 + ';min-width:40px;';
+    label3D.textContent = '3D';
+    var slider3D = mkEl('input');
+    slider3D.type = 'range';
+    slider3D.min = '0';
+    slider3D.max = '3';
+    slider3D.step = '0.1';
+    slider3D.value = String(parseFloat((typeof localStorage !== 'undefined' && localStorage.getItem('waveIntensidade')) || '1') || 1);
+    slider3D.style.cssText = 'width:100px;accent-color:' + cores.destaque + ';';
+    slider3D.addEventListener('input', function() {
+      var v = parseFloat(slider3D.value);
+      if (typeof _aplicarWaveIntensidade === 'function') _aplicarWaveIntensidade(v);
+    });
+    var grupo3D = mkEl('div');
+    grupo3D.style.cssText = 'display:flex;align-items:center;gap:6px;';
+    grupo3D.appendChild(label3D);
+    grupo3D.appendChild(slider3D);
+    grupo3D.appendChild(btn3D);
+
+    // ---- Grupo Flash: toggle ----
+    var btnFlash = mkEl('div');
+    btnFlash.id = 'mk-btn-flash';
+    btnFlash.title = 'Alternar flash nos cliques';
+    btnFlash.style.cssText = btn3D.style.cssText;
+    btnFlash.innerHTML = '\\u26A1';
+    btnFlash._ativo = (typeof localStorage !== 'undefined' && localStorage.getItem('flashEnabled') !== 'false');
+    btnFlash.addEventListener('click', function() {
+      btnFlash._ativo = !btnFlash._ativo;
+      btnFlash.style.opacity = btnFlash._ativo ? '1' : '0.4';
+      if (typeof _toggleFlash === 'function') _toggleFlash(btnFlash._ativo);
+    });
+
+    var labelFlash = mkEl('span');
+    labelFlash.style.cssText = 'font-size:10px;color:' + cores.texto2 + ';min-width:40px;';
+    labelFlash.textContent = 'Flash';
+    var flashGroup = mkEl('div');
+    flashGroup.style.cssText = 'display:flex;align-items:center;gap:6px;';
+    flashGroup.appendChild(labelFlash);
+    flashGroup.appendChild(btnFlash);
+
+    // ---- Botao hide panel (olho) ----
+    var painelToggle = mkEl('div');
+    painelToggle.id = 'mk-painel-toggle';
+    painelToggle.title = 'Ocultar/mostrar painel de controles';
+    painelToggle.style.cssText =
+      'position:fixed;top:10px;left:10px;z-index:99998;width:28px;height:28px;' +
+      'border-radius:4px;cursor:pointer;display:flex;align-items:center;' +
+      'justify-content:center;font-size:14px;user-select:none;' +
+      'background:rgba(30,30,46,0.7);border:1px solid ' + cores.borda + ';';
+    painelToggle.innerHTML = '\\u1F441'; // olho
+    painelToggle._visivel = true;
+    painelToggle.addEventListener('click', function() {
+      painelToggle._visivel = !painelToggle._visivel;
+      if (typeof painel !== 'undefined' && painel) {
+        painel.style.display = painelToggle._visivel ? 'flex' : 'none';
+      }
+      painelToggle.innerHTML = painelToggle._visivel ? '\\u1F441' : '\\u1F442';
+    });
+    document.body.appendChild(painelToggle);
+
+    // ---- Botao reset (🔄) alinhado ao lado do painel ----
+    var btnReset = mkEl('div');
+    btnReset.id = 'mk-btn-reset';
+    btnReset.title = 'Resetar preferencias do grafo (tema, velocidade, orbita) e recarregar';
+    btnReset.style.cssText =
+      'width:28px;height:28px;border-radius:4px;cursor:pointer;' +
+      'display:flex;align-items:center;justify-content:center;' +
+      'font-size:14px;user-select:none;color:' + cores.destaque + ';' +
+      'background:#313244;border:1px solid ' + cores.destaque + ';';
+    btnReset.innerHTML = '\\u21BB'; // seta ciclo (reset)
+    btnReset.addEventListener('click', function() {
+      if (confirm('\\u1EAFResetar todas as preferencias do cerebro para o padrao?')) {
+        var chaves = ['temaGrafo','modo3D','flashEnabled','waveIntensidade','labelsAnimated','orbAmplGlobal'];
+        chaves.forEach(function(k) { try { localStorage.removeItem(k); } catch(e){} });
+        location.reload();
+      }
+    });
+
     // ---- BANNER DE VERSAO - aparece por 4 segundos ----
     (function() {
       var banner = mkEl('div');
@@ -561,8 +661,11 @@ WIDGET_JS_EXTRA = """
     painel.appendChild(temaGroup);
     painel.appendChild(velGroup);
     painel.appendChild(orbGroup);
+    painel.appendChild(grupo3D);
+    painel.appendChild(flashGroup);
     painel.appendChild(buscaGroup);
     painel.appendChild(tamGroup);
+    layoutGroup.appendChild(btnReset);
     painel.appendChild(layoutGroup);
     document.body.appendChild(painel);
 
