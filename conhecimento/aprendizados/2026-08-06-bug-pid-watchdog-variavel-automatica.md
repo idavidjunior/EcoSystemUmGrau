@@ -36,3 +36,7 @@ resiliencia que deveria proteger.
 ## Licao
 Em PowerShell, NAO usar `$Pid`/`$PID` como nome de variavel propria: e reservada.
 Sempre auditar logs de auditoria em Write-Log com interpolacao, nao concatenacao "+".
+
+## Memorias relacionadas
+- #130 (padrao): Watchdog resiliente com lock de PID e protecao do desktop.
+- #134 (padrao): Certificacao forense de processos + boot via Startup (usa estas funcoes).
