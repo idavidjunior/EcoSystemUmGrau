@@ -97,3 +97,6 @@
 {"timestamp": "2026-08-07T05:59:49.149141", "epoch": 1786093189.149141, "endpoint_id": "ws_service", "level": "FAILOVER", "message": "Iniciando failover autom\u00e1tico", "data": {}, "uptime_pct": 100.0}
 {"timestamp": "2026-08-07T05:59:49.167322", "epoch": 1786093189.167322, "endpoint_id": "ws_service", "level": "CRITICAL", "message": "Todos os m\u00e9todos de fallback falharam", "data": {}, "uptime_pct": 100.0}
 {"timestamp": "2026-08-07T05:59:49.228479", "epoch": 1786093189.228479, "endpoint_id": "vpn_alternative", "level": "WARNING", "message": "Endpoint indispon\u00edvel: unknown", "data": {}, "uptime_pct": 100.0}
+{"timestamp": "2026-08-07T06:00:04.291428", "epoch": 1786093204.291428, "endpoint_id": "adb_usb", "level": "OK", "message": "Endpoint saud\u00e1vel", "data": {}, "uptime_pct": 100.0}
+{"timestamp": "2026-08-07T06:00:04.376078", "epoch": 1786093204.376078, "endpoint_id": "adb_tcp", "level": "OK", "message": "Endpoint saud\u00e1vel", "data": {}, "uptime_pct": 100.0}
+{"timestamp": "2026-08-07T06:00:04.590882", "epoch": 1786093204.590882, "endpoint_id": "tailscale_exit", "level": "OK", "message": "Endpoint saud\u00e1vel", "data": {}, "uptime_pct": 100.0}
