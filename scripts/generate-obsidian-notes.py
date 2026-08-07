@@ -242,6 +242,7 @@ def generate(dry_run=False, inject_links=True):
     g = read_graph()
     items = extract_items(g)
     print(f'{len(items)} notas de conhecimento extraidas')
+    escritos = set()
 
     # indice: slug -> (categoria, title, tags, sources)
     index = {}
@@ -297,8 +298,8 @@ def generate(dry_run=False, inject_links=True):
         if not dry_run:
             # enriquece tags com conceitos do corpo (sinapses via tags semanticas)
             tags_finais = _enriquecer_tags(list(tags), f'{title} {body}')
-            write_note(cat, f'{slug}.md',
-                       f'{frontmatter(tags_finais, [title[:60]], updated)}\n\n# {title}\n\n{body}{seccao_conexoes(links)}')
+            escritos.add(write_note(cat, f'{slug}.md',
+                       f'{frontmatter(tags_finais, [title[:60]], updated)}\n\n# {title}\n\n{body}{seccao_conexoes(links)}'))
         written += 1
 
     # ---------- hubs de categoria ----------
