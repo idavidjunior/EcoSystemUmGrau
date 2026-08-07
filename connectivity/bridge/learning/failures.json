@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": "2026-08-07T06:08:59.637299",
-    "failure_type": "total_failure_mqtt_broker",
-    "details": "Todos os m\u00e9todos falharam",
-    "resolved": true
-  },
-  {
     "timestamp": "2026-08-07T06:09:09.833208",
     "failure_type": "total_failure_ws_service",
     "details": "Todos os m\u00e9todos falharam",
@@ -596,6 +590,12 @@
   {
     "timestamp": "2026-08-07T06:29:51.772183",
     "failure_type": "total_failure_api_local",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:30:01.837508",
+    "failure_type": "total_failure_mqtt_broker",
     "details": "Todos os m\u00e9todos falharam",
     "resolved": true
   }
