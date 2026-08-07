@@ -999,7 +999,8 @@
     122
   ],
   "padroes": [
-    123
+    123,
+    146
   ],
   "devices": [
     123
@@ -1246,7 +1247,8 @@
     139
   ],
   "aprendizados": [
-    139
+    139,
+    146
   ],
   "tempo": [
     140
@@ -1304,5 +1306,35 @@
   ],
   "usb": [
     144
+  ],
+  "retome": [
+    145
+  ],
+  "quer": [
+    145
+  ],
+  "imediatamente": [
+    145
+  ],
+  "pendente": [
+    145
+  ],
+  "executando": [
+    145
+  ],
+  "continua": [
+    145
+  ],
+  "tfidf": [
+    146
+  ],
+  "acesso": [
+    146
+  ],
+  "frequencia": [
+    146
+  ],
+  "decisoes": [
+    146
   ]
 }

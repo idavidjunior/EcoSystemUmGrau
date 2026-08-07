@@ -125,6 +125,14 @@
     135,
     136,
     137,
+    138,
+    139,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -599,7 +607,11 @@
     "nota:conhecimento/aprendizados/2026-08-06-teste-integracao-ler-completo.md",
     "nota:conhecimento/aprendizados/2026-08-06-widget-grafo-causa-raiz-travamento-e-loop-regenerar.md",
     "nota:conhecimento/aprendizados/2026-08-06-widget-grafo-correcao-bugs-e-teste-completo.md",
-    "nota:conhecimento/aprendizados/2026-08-07-scan-EcoSystemUmGrau.md"
+    "nota:conhecimento/aprendizados/2026-08-07-memoria-semantica-notas-obsidian.md",
+    "nota:conhecimento/aprendizados/2026-08-07-scan-EcoSystemUmGrau.md",
+    "nota:docs/EcossistemaAgentes.md",
+    "nota:docs/auditoria_jarvis_2026-07-29.md",
+    "nota:docs/jarvis-arquitetura.md"
   ],
   "kinds": [
     "erro",
@@ -727,6 +739,18 @@
     "erro",
     "decisao",
     "episodio",
+    "decisao",
+    "padrao",
+    "decisao",
+    "decisao",
+    "padrao",
+    "decisao",
+    "padrao",
+    "decisao",
+    "nota",
+    "nota",
+    "nota",
+    "nota",
     "nota",
     "nota",
     "nota",
@@ -1329,6 +1353,14 @@
     "2 bugs corrigidos no widget cerebro vivo. (1) crash: tick handler usava n.x/n.y do dataset (sem posicoes) -> undefined+orb=nan -> quadtree barnes-hut recursao infinita -> rangeerror stack overflow (6x no log). fix: ler posicao viva via network.getpositions() e guardar com number.isfinite. (2) loop infinito: gerador reescrevia conhecimento/aprendizados/cluster_mapper.json em toda execucao e o _versao() do widget monitora mtime de conhecimento/* -> regenerar disparava de novo. fix: gerador so grava o json quando o conteudo muda. log vivo cerebro rangeerror infinita recursao erro",
     "análise profunda do widget desktop pywebview+vis-network: arquitetura de 3 camadas (generate-graph-html.py → docs/grafo.html → widget_grafo.py pywebview), engine de animação neural (pseudo-3d, ondas viajantes, avalanches críticos), motor de dados (vault obsidian 344 notas → 282 nós → 1491 arestas), bug de nan/stack-overflow no quadtree, tdz, loop de regenerar, bridge js-python. conhecimento consolidado em 13 arquivos de aprendizado. python bridge regenerar loop tdz quadtree decisao",
     "adicionadas funcionalidades de visualizacao: toggle 3d, flash no clique, hide/show painel, reset de preferencias, slider intensidade onda 3d. validado py_compile e node--check. justificativa: expansao da api js, nao contrariou decisoes consolidadas. onda intensidade slider preferencias visualizacao painel episodio",
+    "sistema de monitoramento multi-protocolo com auto-start via windows startup, 12 protocolos monitorados, auto-failover configurado configurado failover monitorados protocolos startup auto decisao",
+    "scripts/memory_semantic.py indexa 125 memorias + 475 notas obsidian (conhecimento/notas e conhecimento/aprendizados) com source nota. search_knowledge.py corrigido para incluir aprendizados no corpus bm25 (883 docs). busca por significado cobre conhecimento das notas. nota source conhecimento semantic 475 aprendizados padrao",
+    "sistema de monitoramento multi-protocolo (12 protocolos), auto-failover em cascata, auto-start via windows startup, health checks a cada 15-30s, logs em tempo real real tempo logs 30s checks health decisao",
+    "guia de migracao completo criado com: export/import de configs, pacote deploy (systemd, launchagent), auto-start windows, documentacao completa completa documentacao windows start auto launchagent decisao",
+    "sistema de failover cascata conecta 12 protocolos diferentes (adb, tailscale, ssh, http, dns, mqtt, websocket, serial, vpn) com health checks a cada 15-30s 30s checks health vpn serial websocket padrao",
+    "sistema completo de resiliencia migravel: export/import via bridge_exporter.py, deploy scripts (systemd, launchagent, windows startup), configs json, learning history, health reports - tudo versionado no repo repo versionado reports health history learning decisao",
+    "arquitetura unificada monitora adb/tailscale/ssh/http/dns/mqtt/websocket/serial/vpn/usb-hid com failover cascata e health checks. 95%%+ uptime em protocolos criticos checks health cascata failover hid usb padrao",
+    "ao reconectar ou iniciar sessao, o jarvis diz 'estou retomando' e continua executando a tarefa pendente imediatamente, sem perguntar 'quer que eu retome?' (proibido). vale para toda sessao e toda tarefa. retome quer imediatamente pendente executando continua decisao",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -1803,1437 +1835,2411 @@
     "teste de integracao ler completo - 2026-08-06 ler integracao teste open-code supervisor replanejamento \n\n  teste de integracao ler completo - 2026-08-06\n\n   executado\nrodou  python tests/test_integration.py  no  ler-runtime/ .\n\n   resultado\n-   status  :  max_iterations  (20 iteracoes, 5 passos planejados)\n-   tempo  : 12 segundos\n-   passos completados  : 2/5 (analyze_environment, initialize_project)\n-   supervisor  : 10/10 modulos saudaveis (planner, step_runner, validator, recovery, goal_analyzer, strategy_engine, risk_manager, learning_engine, success_evaluator, final_auditor)\n-   opencode  : 7 chamadas, 100% taxa de sucesso, tempo medio 0.996s\n-   validacoes  : todos os passos executados passaram\n-   score final  : 90% (threshold 95%) - falhou em  audit_quality: 0% \n-   replanejamento autonomo  : ativou estrategia alternativa \"abordagem alternativa (b)\" apos score abaixo do threshold\n-   auto-melhoria  : relatorio gerado em  tmp/reports/self_improvement_ .json \n-   aprendizado  : 7 sucessos, 0 falhas, taxa 100%\n\n   observacoes\n- o ler planeja, executa, valida, reaprende e replaneja autonomamente\n- erro final apenas encoding unicode no print (caractere triangulo), nao afeta funcionalidade\n- pipeline completo operacional: context loader (bm25) + auditor adaptativo\n- missao nao recomeca do zero - checkpoints salvos a cada iteracao\n\n   conexoes\n\n-   cluster-hub-ler",
     "2026-08-06-widget-grafo-causa-raiz-travamento-e-loop-regenerar  ---\ntipo: erro\ntags:  widget, vis-network, quadtree, stack-overflow, nan, regenerar, loop \ndata: 2026-08-06\ncontexto: >\n  o widget desktop \"cerebro vivo\" (pywebview + vis-network 9.1.9, gerado por\n  scripts/generate-graph-html.py e scripts/widget_grafo.py) travava em um\n  determinado momento. o log docs/widget_log.txt registrava 6x\n  \"uncaught rangeerror: maximum call stack size exceeded @ 97:250114\".\ndecisao: >\n  (1) crash do nan: o tick handler fazia  x: n.x + orb.dx  usando n.x do\n  dataset, que nao tem posicoes (improvedlayout falha; dataset sem x/y). no\n  primeiro frame n.x era undefined -> undefined + numero = nan ->\n  nodes.update(noupd) gravava nan no corpo fisico -> no passo seguinte o\n  quadtree barnes-hut (_placeintree/_placeinregion) recebia no com nan,\n  comparacoes sempre falsas -> recursao infinita -> stack overflow.\n  fix: ler a posicao viva via network.getpositions() e somar a deriva orbital\n  somente sobre valores finitos (number.isfinite), com fallback para 0.\n  (2) loop de regenerar: o gerador reescrevia\n  conhecimento/aprendizados/cluster_mapper.json em toda execucao; o _versao()\n  do widget observa o mtime mais recente de conhecimento/  -> cada regenerar\n  mudava a versao -> regenerar de novo -> reload da pagina a cada 2s.\n  fix: o gerador so grava o json quando o conteudo mudou.\nimpacto: >\n  widget volta a ficar vivo por periodo prolongado sem crash e sem reload\n  infinito. validado: harness node 47/47 pass; repro6 (200 ticks de fisica +\n  tick handler corrigido) sem nan e sem crash; widget rodando 135s+ alive,\n  0 erros regenerar, 0 novos stack overflows no log.",
     "widget grafo desktop — correção de bugs + teste completo (2026-08-06) grafo widget pywebview bug teste harness node vis-network tdz \n\n  widget grafo desktop — correção de bugs + teste completo (2026-08-06)\n\n   bugs corrigidos (um a um)\n\n1.   crítico — chaves duplas  {{ }}  no seletor de tema   ( scripts/widget_grafo.py )\n   - o bloco  widget_js_extra  (string plana) tinha  {{ nome: 'neon' }}  (resíduo de\n     template f-string copiado de  generate-graph-html.py ). como o bloco é injetado\n     verbatim via  _build_view() , o  {{  vazava literal para  docs/grafo_widget.html \n     → syntaxerror js (\"unexpected token {\") → iife inteiro do painel morria.\n   - correção:  {{  →  {  (6 ocorrências). introduzido no commit  cf07da08 .\n\n2.   crítico — widget rodando com html quebrado   — após corrigir a fonte, rebuildar\n   via  _build_view()  (regenera  docs/grafo_widget.html ) e reiniciar o processo.\n\n3.   médio —  resize_js  nunca injetado   —  _build_view()  só injetava  widget_js ,\n    widget_css  e  widget_js_extra .  resize_js  (cria   mk-drag /  mk-resize ) era\n   código morto → arrastar a janela não funcionava ( mover(  = 0 no html).\n   correção: injetar  resize_js  antes de  </body> .\n\n4.   médio —  api_inject  nunca injetado   — reload em tempo real (poll de versão →\n    regenerar() ) estava morto. correção: injetar com  %poll_ms%  substituído.\n\n5.   baixo —  test_widget_live.py  quebrado   —  btnbug / btnfechar  trocados,\n   sintaxe inválida ( typeof _destacado !== 'undefined' 0 ? ),  indexof('neon') !== 0 .\n   correção: variáveis corretas + sintaxe +  > -1 . também:  webview.start()  num\n   harness gui trava em thread; para automação headless usar vm node (ver abaixo).\n\n6.   baixo —  generate-graph-html.py --help  quebra   —  --help  era tratado como\n   caminho de output → filenotfounderror. correção: cláusula  -h/--help  → print doc.\n\n7.   médio — botão 't' alternava painel em vez de etiquetas   —  ctrl.onmousedown \n   era \"toggle painel\"; doc de 08-04 dizia \"toggle labels\". correção: alterna\n    labelsocultos  ( false  mostra) +  aplicarlabels() .  toggle_labels is not a\n   function  era histórico (api pyside removida), não existe mais no código.\n\n8.   alto — tdz no template principal ( original )   —  _clustercorporcl  usa\n    original n.id   (linha ~1003) antes do  const original = {}  (linha ~1270) →\n   \"cannot access 'original' before initialization\" → script principal crashava no\n   boot (também em navegador). correção: mover inicialização de  original /\n    arestaoriginal  para logo após  const network . introduzido em  92732ab3 .\n\n9.   alto — typo  _aplicarforcestema    —  ap",
-    "2026-08-07-scan-ecosystemumgrau  ﻿  2026-08-07 - scan proativo: ecosystemumgrau\n   marcadores encontrados\n- adapt_agent_prompts.py: 3 marcadores\n- generate_sample_results.py: 9 marcadores\n- install.ps1: 3 marcadores\n- app.py: 12 marcadores\n- checklist.py: 6 marcadores\n- knowledge_base.py: 6 marcadores\n- __init__.py: 3 marcadores\n- fix_encoding_and_build.py: 18 marcadores\n- patch_flutter_orchestrator_final.py: 3 marcadores\n- test_imports.py: 3 marcadores\n- test_smoke.py: 3 marcadores\n- consolidate_build_pipeline.py: 9 marcadores\n- flutter_orchestrator.py: 18 marcadores\n- update_repo_main.py: 2 marcadores\n- goal_analyzer.py: 2 marcadores\n- knowledge_consolidator.py: 2 marcadores\n- analyzer.py: 8 marcadores\n- seed_knowledge.py: 16 marcadores\n- ecosystem.ps1: 24 marcadores\n- generate-graph-html.py: 9 marcadores\n- jarvis_bridge.py: 11 marcadores\n- preflight_check.py: 4 marcadores\n- semantic_tags.py: 2 marcadores\n- sync_rules.py: 6 marcadores\n- test-ecosystem.ps1: 4 marcadores\n- lista_skills.py: 1 marcadores\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- resourcesactivity.java: 3 marcadores\n- mainactivity.java: 5 marcadores\n- apk-compiler-ui.ps1: 11 marcadores\n- test-modules.ps1: 1 marcadores\n- check_android_resources.py: 1 marcadores\n- self_healing_compiler.py: 1 marcadores\n- biquadfilter.kt: 1 marcadores\n- equalizeraudioprocessor.kt: 2 marcadores\n- audiodecoder.kt: 1 marcadores\n- eqpresetmanager.kt: 2 marcadores\n- mainactivity.kt: 2 marcadores\n- tageditoractivity.kt: 1 marcadores\n- test_new_modules.py: 1 marcadores\n- mainmenu.ps1: 1 marcadores\n- diskspaceanalyzer.ps1: 1 marcadores\n- drivermanager.ps1: 3 marcadores\n- essentialmaintenance.ps1: 1 marcadores\n- hardening.ps1: 1 marcadores\n- packagemanager.ps1: 2 marcadores\n- quicktools.ps1: 2 marcadores\n- registrybackuprestore.ps1: 1 marcadores\n- systemlightweight.ps1: 1 marcadores\n- systemtweaks.ps1: 11 marcadores\n- ultimatemaintenance.ps1: 1 marcadores\n- cluster_mapper.py: 1 marcadores\n- watchdog.ps1: 1 marcadores\n- widget_grafo.py: 1 marcadores"
+    "2026-08-07 - memoria semantica aprofundada com notas obsidian memoria semantica tf-idf obsidian busca conhecimento \n\n  2026-08-07 - memoria semantica aprofundada com notas obsidian\n\n   contexto\n\no usuario pediu para aprofundar a memoria semantica do ecossistema, cruzando as\nnotas obsidian com a recuperacao de conhecimento.\n\n   o que foi feito\n\n1.    scripts/memory_semantic.py    agora indexa, alem das 125 memorias, as 475\n   notas obsidian de  conhecimento/notas/  e  conhecimento/aprendizados/ \n   (source  nota ). o indice tf-idf passou de 124 para 600 documentos.\n2.    _nota_texto()    extrai titulo, tags do frontmatter e corpo (ate 2500 chars)\n   de cada nota para indexacao; bom removido para evitar erros de console.\n3.    search()    retorna resultados com campo  source  ( mem  ou  nota ) — notas\n   trazem o id  nota:<caminho>  e o titulo da nota.\n4.    mcp/memoria/habilidades/busca-conhecimento/search_knowledge.py    corrigido:\n   o corpus bm25 agora percorre  conhecimento/notas  e  conhecimento/aprendizados \n   (antes ignorava as 131 notas de aprendizados). corpus: 883 documentos\n   (475 notas + 283 knowledge graph + 125 memorias).\n\n   resultado\n\n- busca \"controle da tv lg webos\" retorna a nota correta com score 0.36.\n- busca \"ponte caiu reconexao app android\" retorna memorias e notas misturadas,\n  incluindo os aprendizados de recuperacao rapida de conexao.\n- a ponte carrega o modulo via importlib e usa o novo indice apos reinicio.\n\n   observacao\n\n- a bridge em execucao mantem o modulo  memory_semantic  em cache por processo —\n  reiniciar a bridge para ativar o novo indice com as notas.\n- preflight acusou divergencia de regras pre-existente (nao relacionada a esta\n  tarefa); a constituicao deployada precisa de  sync_rules.py update  em outra sessao.",
+    "2026-08-07-scan-ecosystemumgrau  ﻿  2026-08-07 - scan proativo: ecosystemumgrau\n   marcadores encontrados\n- adapt_agent_prompts.py: 3 marcadores\n- generate_sample_results.py: 9 marcadores\n- install.ps1: 3 marcadores\n- app.py: 12 marcadores\n- checklist.py: 6 marcadores\n- knowledge_base.py: 6 marcadores\n- __init__.py: 3 marcadores\n- fix_encoding_and_build.py: 18 marcadores\n- patch_flutter_orchestrator_final.py: 3 marcadores\n- test_imports.py: 3 marcadores\n- test_smoke.py: 3 marcadores\n- consolidate_build_pipeline.py: 9 marcadores\n- flutter_orchestrator.py: 18 marcadores\n- update_repo_main.py: 2 marcadores\n- goal_analyzer.py: 2 marcadores\n- knowledge_consolidator.py: 2 marcadores\n- analyzer.py: 8 marcadores\n- seed_knowledge.py: 16 marcadores\n- ecosystem.ps1: 24 marcadores\n- generate-graph-html.py: 9 marcadores\n- jarvis_bridge.py: 11 marcadores\n- preflight_check.py: 4 marcadores\n- semantic_tags.py: 2 marcadores\n- sync_rules.py: 6 marcadores\n- test-ecosystem.ps1: 4 marcadores\n- lista_skills.py: 1 marcadores\n- parse_apocrypha.py: 1 marcadores\n- parse_apocrypha2.py: 1 marcadores\n- parse_apocrypha3.py: 1 marcadores\n- resourcesactivity.java: 3 marcadores\n- mainactivity.java: 5 marcadores\n- apk-compiler-ui.ps1: 11 marcadores\n- test-modules.ps1: 1 marcadores\n- check_android_resources.py: 1 marcadores\n- self_healing_compiler.py: 1 marcadores\n- biquadfilter.kt: 1 marcadores\n- equalizeraudioprocessor.kt: 2 marcadores\n- audiodecoder.kt: 1 marcadores\n- eqpresetmanager.kt: 2 marcadores\n- mainactivity.kt: 2 marcadores\n- tageditoractivity.kt: 1 marcadores\n- test_new_modules.py: 1 marcadores\n- mainmenu.ps1: 1 marcadores\n- diskspaceanalyzer.ps1: 1 marcadores\n- drivermanager.ps1: 3 marcadores\n- essentialmaintenance.ps1: 1 marcadores\n- hardening.ps1: 1 marcadores\n- packagemanager.ps1: 2 marcadores\n- quicktools.ps1: 2 marcadores\n- registrybackuprestore.ps1: 1 marcadores\n- systemlightweight.ps1: 1 marcadores\n- systemtweaks.ps1: 11 marcadores\n- ultimatemaintenance.ps1: 1 marcadores\n- cluster_mapper.py: 1 marcadores\n- watchdog.ps1: 1 marcadores\n- widget_grafo.py: 1 marcadores",
+    "ecossistema inteligente de agentes    ecossistema inteligente de agentes\n\n> _arquitetura do ecossistema ler + opencode + ponytail + obsidian_\n> _criado: 2026-07-26_\n\n   bootstrap em máquina nova\n\npara instalar o ecossistema completo em uma máquina windows nova (com git, node.js e powershell):\n\n   powershell\npowershell -c \"iex (iwr -useb https://raw.githubusercontent.com/idavidjunior/ecosystemumgrau/opencode/mighty-meadow/bootstrap.ps1)\"\n   \n\neste comando instala opencode, configura vault_path, clona o repositório, skills, mcp, watcher e ler governance.\n\napós o bootstrap, configure as chaves de api:\n   powershell\n environment ::setenvironmentvariable('nvidia_api_key', 'nvapi-...', 'user')\n environment ::setenvironmentvariable('openai_api_key', 'sk-proj-...', 'user')\n   \n\n   visão geral\n\n   \n                    ┌─────────────────────────────────────┐\n                    │         ponytail (qualidade)         │\n                    │   age em toda sessão automaticamente │\n                    │   simplifica código, reduz tokens    │\n                    └──────────┬──────────────────────────┘\n                               │\n┌───────────────────────────────────────────────────────────┐\n│               ler orchestrator (13 agentes)               │\n│                                                          │\n│  goalanalyzer → strategyengine → riskmanager →          │\n│  planner → executor → validator → recovery →            │\n│  learningengine → successevaluator → finalauditor       │\n│                                                          │\n│  + evidencecollector + toolselector + selfimprovement   │\n│  + supervisor                                            │\n│                                                          │\n│  (loop contínuo até dod satisfeito)                      │\n└──────────┬──────────────────────────────────┬───────────┘\n           │                                  │\n           ▼                                  ▼\n┌─────────────────────┐           ┌──────────────────────┐\n│  opencode subagents  │           │   obsidian vault     │\n│  (on-demand)         │           │   (mcpvault)         │\n│                      │           │                      │\n│  01-estrategista     │           │  /ler/regras         │\n│  02-cetico           │◄─────────►│  /ler/padroes        │\n│  03-realista         │           │  /ler/decisoes       │\n│  04-etica            │           │  /ler/missoes        │\n│  05-futuro           │           │  /ler/melhorias      │\n│  06-recursos         │",
+    "auditoria arquitetural — jarvis (vox umgrau)    auditoria arquitetural — jarvis (vox umgrau)\n\n>   data:   2026-07-29\n>   escopo:   bridge ( jarvis_bridge.py ) + android app ( voxumgrau ) + ecossistema de suporte\n>   versão apk:   1.0.0 (versioncode=3)\n>   arquitetura de referência:   7 camadas funcionais\n\n\n\n   2. cognição — como o jarvis \"pensa\"\n\n    ✅ implementado\n-   llm integrado  :  opencode/deepseek-v4-flash-free  via cli ( jarvis_bridge.py:196 )\n-   fallback automático  :  @razroo/opencode-model-fallback  (429/5xx → próximo modelo)\n-   ferramentas completas  : edit, write, bash, grep, glob, read, webfetch, websearch\n-   17 agentes opencode  : maestro, estrategista, cético, realista, ética, futuro, recursos, criativo, revisor, executor, aprendizado, ler-executor, parallel-planner, etc.\n-   sdlc gates  : g1-g5 com critérios formais de evidência\n-   roteamento de agentes  : maestro decide rota a (opencode), b (ler), ou c (híbrido)\n-   ler runtime completo  : 17 agentes internos com 13 camadas de governança\n-   mcp server  : eco-knowledge para busca semântica e consulta de memória\n-   system prompt rico  :  jarvis_system.md  (359 linhas) com conhecimento completo do ecossistema\n-   conhecimento técnico atualizado  : opencode v1.18.9, agentes, plugins, providers, paths\n-   estado dinâmico  : bridge injeta resumo do ecossistema a cada requisição\n-   modo continuação  :  -c  flag para manter contexto entre mensagens ( jarvis_bridge.py:197-198 )\n\n    🔧 em desenvolvimento\n- rota c (híbrido opencode + ler) com delegação automática para tarefas complexas\n- planejamento multi-etapas com persistência entre execuções\n\n    ❌ não implementado\n-   raciocínio visual  : interpretar imagens, diagramas de arquitetura, screenshots de ui\n-   decomposição recursiva  : quebrar tarefas complexas em sub-tarefas automaticamente\n-   raciocínio temporal  : agendar ações para futuro, timers, lembretes baseados em tempo\n-   raciocínio probabilístico  : estimar confiança da resposta, múltiplas hipóteses\n-   contexto entre conversas  : atualmente limitado ao histórico no  conversa_unica.json \n\n    📊 cobertura:   55%  \n> llm + agentes + ferramentas robustos, sem raciocínio visual ou planejamento recursivo.\n\n\n\n   4. ação — como o jarvis \"age\"\n\n    ✅ implementado\n-   edição de arquivos  : write, edit no ecossistema ( jarvis_system.md:169-175 )\n-   execução de código  : bash + python + powershell via ferramentas opencode\n-   git operations  : commit, push, pull via ecosystem.ps1 e comandos bash\n-   compilação android  :  build.ps1 -",
+    "arquitetura jarvis — assistente de voz do ecossistema    arquitetura jarvis — assistente de voz do ecossistema\n\n   visão geral\n\n   \n┌─────────────────────────────────────────────────────┐\n│                    pc (windows)                      │\n│                                                     │\n│  ┌──────────┐   websocket   ┌────────────────────┐  │\n│  │ vigilante ├──────────────► notifier bridge      │  │\n│  │ (eventos) │              │ (notifier_bridge.py) │  │\n│  └──────────┘              └──────────┬────────────┘  │\n│                                       │               │\n│  ┌──────────────────┐                │               │\n│  │ mcp knowledge     │◄───────────────┘               │\n│  │ server (port????) │                                │\n│  └──────────────────┘                                │\n└──────────────────────────────────┬───────────────────┘\n                                   │ wi-fi / lan\n                                   ▼\n┌─────────────────────────────────────────────────────┐\n│                 smartphone android                    │\n│                                                      │\n│  ┌─────────────────────────────────────────────┐    │\n│  │          jarvis app (kotlin)                │    │\n│  │                                             │    │\n│  │  ┌─────────────┐   ┌──────────────────┐    │    │\n│  │  │ mcp client   │   │ tts engine       │    │    │\n│  │  │ (consulta    │   │ (voz jarvis)     │    │    │\n│  │  │  ecossistema)│   └──────────────────┘    │    │\n│  │  └──────┬──────┘                           │    │\n│  │         │                                   │    │\n│  │  ┌──────▼──────────────────────────────┐   │    │\n│  │  │  foreground service                 │   │    │\n│  │  │  ● notifica tarefa concluída        │   │    │\n│  │  │  ● resume resultado em voz          │   │    │\n│  │  │  ● funciona com tela desligada      │   │    │\n│  │  └─────────────────────────────────────┘   │    │\n│  └─────────────────────────────────────────────┘    │\n└─────────────────────────────────────────────────────┘\n   \n\n   componentes\n\n    pc (ecosystemumgrau)\n\n| componente | descrição |\n|---|---|\n|  scripts/notifier_bridge.py  | novo módulo. escuta eventos do vigilante via pipe, conecta websocket com app android |\n|  scripts/mcp-knowledge-server.py  | já existe. app consulta para obter status, últimas tasks, health check |\n|  scripts/vigilante.ps1  | já existe. dispara sinal para notifier_bridge quando learn/sync conclui |\n\n    smartphone (app android)\n\n| componente | descrição |\n|--"
   ],
   "notas": {
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md": {
-      "titulo": "AcoustID always fails"
+      "titulo": "AcoustID always fails",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/album-art-not-found.md": {
-      "titulo": "Album art not found"
+      "titulo": "Album art not found",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md": {
-      "titulo": "Artist shows \"Desconhecido\""
+      "titulo": "Artist shows \"Desconhecido\"",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/audio-stops-eq-not-audible.md": {
-      "titulo": "**Audio stops / EQ not audible**"
+      "titulo": "**Audio stops / EQ not audible**",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/authjson-com-entradas-de-chave-nvidia-disfarcadas-de-outros-.md": {
-      "titulo": "auth.json com entradas de chave NVIDIA disfarcadas de outros provedores"
+      "titulo": "auth.json com entradas de chave NVIDIA disfarcadas de outros provedores",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/cliques-em-coordenadas-erram-alvo-em-resolutions-diferentes.md": {
-      "titulo": "Cliques em coordenadas erram alvo em resolutions diferentes"
+      "titulo": "Cliques em coordenadas erram alvo em resolutions diferentes",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/cliques-falhando-em-spa-apos-navegacao.md": {
-      "titulo": "Cliques falhando em SPA apos navegacao"
+      "titulo": "Cliques falhando em SPA apos navegacao",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/code-duplication-entre-checkpointpy-e-persistencepy-200-linh.md": {
-      "titulo": "Code duplication entre checkpoint.py e persistence.py (~200 linhas duplicadas)"
+      "titulo": "Code duplication entre checkpoint.py e persistence.py (~200 linhas duplicadas)",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/dropdownselect-nao-responde-a-sendkeys-ou-click.md": {
-      "titulo": "Dropdown<select> nao responde a send_keys ou click"
+      "titulo": "Dropdown<select> nao responde a send_keys ou click",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/duplicate-mini-player-on-some-screens.md": {
-      "titulo": "**Duplicate mini-player on some screens**"
+      "titulo": "**Duplicate mini-player on some screens**",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/elementos-nao-encontrados-em-shadow-dom.md": {
-      "titulo": "Elementos nao encontrados em Shadow DOM"
+      "titulo": "Elementos nao encontrados em Shadow DOM",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/ensureserve-spawns-opencode-serve-without-passing-env-contex.md": {
-      "titulo": "_ensure_serve() spawns opencode serve without passing env context"
+      "titulo": "_ensure_serve() spawns opencode serve without passing env context",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/eq-deactivates-on-song-change.md": {
-      "titulo": "**EQ deactivates on song change**"
+      "titulo": "**EQ deactivates on song change**",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/eq-distorts-audio-at-boost-settings.md": {
-      "titulo": "**EQ distorts audio at boost settings**"
+      "titulo": "**EQ distorts audio at boost settings**",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/eq-only-applies-after-opening-fragment.md": {
-      "titulo": "**EQ only applies after opening fragment**"
+      "titulo": "**EQ only applies after opening fragment**",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/eq-state-not-persisted.md": {
-      "titulo": "**EQ state not persisted**"
+      "titulo": "**EQ state not persisted**",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/eq-still-distorts-at-high-boost.md": {
-      "titulo": "**EQ still distorts at high boost**"
+      "titulo": "**EQ still distorts at high boost**",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/eq-toggle-button-not-visible.md": {
-      "titulo": "**EQ toggle button not visible**"
+      "titulo": "**EQ toggle button not visible**",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/executor-nao-validava-resultado-real-da-implementacao.md": {
-      "titulo": "Executor nao validava resultado real da implementacao"
+      "titulo": "Executor nao validava resultado real da implementacao",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/executorresults-sem-limite-memoria-crescia-indefinidamente.md": {
-      "titulo": "Executor.results sem limite — memoria crescia indefinidamente"
+      "titulo": "Executor.results sem limite — memoria crescia indefinidamente",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/filename-ambiguity.md": {
-      "titulo": "Filename ambiguity"
+      "titulo": "Filename ambiguity",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/first-search-returns-nothing.md": {
-      "titulo": "First search returns nothing"
+      "titulo": "First search returns nothing",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/geraraudio-blocks-until-full-tts-generation-no-streaming.md": {
-      "titulo": "gerar_audio() blocks until full TTS generation, no streaming"
+      "titulo": "gerar_audio() blocks until full TTS generation, no streaming",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/http-401-unauthorized-on-session-and-globalsessions.md": {
-      "titulo": "HTTP 401 Unauthorized on /session and /global/sessions/*"
+      "titulo": "HTTP 401 Unauthorized on /session and /global/sessions/*",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/logs-dont-appear.md": {
-      "titulo": "Logs don't appear"
+      "titulo": "Logs don't appear",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/logs-sem-rotacao-logs-cresciam-indefinidamente.md": {
-      "titulo": "Logs sem rotacao — logs cresciam indefinidamente"
+      "titulo": "Logs sem rotacao — logs cresciam indefinidamente",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/maxiterations-hard-stop-forca-parada-prematura-mesmo-sem-obj.md": {
-      "titulo": "max_iterations hard stop forca parada prematura mesmo sem objetivo atingido"
+      "titulo": "max_iterations hard stop forca parada prematura mesmo sem objetivo atingido",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/mcp-server-failed-to-get-tools-no-opencode.md": {
-      "titulo": "MCP server Failed to get tools no OpenCode"
+      "titulo": "MCP server Failed to get tools no OpenCode",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/mcp-server-nao-respondia-a-toolscall.md": {
-      "titulo": "MCP server nao respondia a tools/call"
+      "titulo": "MCP server nao respondia a tools/call",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/mcp-server-nao-respondia-nenhum-comando.md": {
-      "titulo": "MCP server nao respondia nenhum comando"
+      "titulo": "MCP server nao respondia nenhum comando",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/nao-havia-feedback-loop-do-usuario-ler-terminava-mesmo-se-ob.md": {
-      "titulo": "Nao havia feedback loop do usuario — LER terminava mesmo se objetivo nao fosse atingido"
+      "titulo": "Nao havia feedback loop do usuario — LER terminava mesmo se objetivo nao fosse atingido",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/no-eq-onoff-button.md": {
-      "titulo": "**No EQ on/off button**"
+      "titulo": "**No EQ on/off button**",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/no-most-played-tracking.md": {
-      "titulo": "**No most-played tracking**"
+      "titulo": "**No most-played tracking**",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/no-visual-limiting-feedback.md": {
-      "titulo": "**No visual limiting feedback**"
+      "titulo": "**No visual limiting feedback**",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/opencode-go-provider-crash-ao-processar-mensagem.md": {
-      "titulo": "OpenCode Go provider crash ao processar mensagem"
+      "titulo": "OpenCode Go provider crash ao processar mensagem",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/permission-dialogs-do-miui-bloqueiam-instalacao-de-apk.md": {
-      "titulo": "Permission dialogs do MIUI bloqueiam instalacao de APK"
+      "titulo": "Permission dialogs do MIUI bloqueiam instalacao de APK",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/persistencia-sem-atomicidade-crash-no-meio-do-jsondump-corro.md": {
-      "titulo": "Persistencia sem atomicidade — crash no meio do json.dump corrompia arquivo"
+      "titulo": "Persistencia sem atomicidade — crash no meio do json.dump corrompia arquivo",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/preamp-not-audible.md": {
-      "titulo": "**Preamp not audible**"
+      "titulo": "**Preamp not audible**",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/preamp-volume-irreversible-and-cumulative.md": {
-      "titulo": "**Preamp volume irreversible and cumulative**"
+      "titulo": "**Preamp volume irreversible and cumulative**",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/preset-data-corrupted-on-ptbr-locale.md": {
-      "titulo": "**Preset data corrupted on pt_BR locale**"
+      "titulo": "**Preset data corrupted on pt_BR locale**",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/preset-not-persisting-across-sessions.md": {
-      "titulo": "**Preset not persisting across sessions**"
+      "titulo": "**Preset not persisting across sessions**",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/score-threshold-mas-sem-failedsteps-ia-direto-para-successve.md": {
-      "titulo": "Score < threshold mas sem failed_steps ia direto para SUCCESS_VERIFIED"
+      "titulo": "Score < threshold mas sem failed_steps ia direto para SUCCESS_VERIFIED",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/search-returns-wrong-artist.md": {
-      "titulo": "Search returns wrong artist"
+      "titulo": "Search returns wrong artist",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/sendkeys-nao-funciona-em-campos-rich-text.md": {
-      "titulo": "send_keys nao funciona em campos rich-text"
+      "titulo": "send_keys nao funciona em campos rich-text",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/stt-no-partialstreaming-results.md": {
-      "titulo": "STT no partial/streaming results"
+      "titulo": "STT no partial/streaming results",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/track-the-best-score-across-all-results-and-only-return-if-m.md": {
-      "titulo": "** Track the best score across all results and only return if minimum threshold is met. Perfect matc"
+      "titulo": "** Track the best score across all results and only return if minimum threshold is met. Perfect matc",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/use-explicit-redirect-following-in-download-function-manual-.md": {
-      "titulo": "** Use explicit redirect following in download function (manual loop for 3xx codes)"
+      "titulo": "** Use explicit redirect following in download function (manual loop for 3xx codes)",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/user-sees-wrongshort-results.md": {
-      "titulo": "User sees wrong/short results"
+      "titulo": "User sees wrong/short results",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/bugs/voxaudioplayer-temp-file-leak-on-exception.md": {
-      "titulo": "VoxAudioPlayer temp file leak on exception"
+      "titulo": "VoxAudioPlayer temp file leak on exception",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/2026-07-27-correcao-dos-4-pontos-finais-do-ecossistema.md": {
-      "titulo": "# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema"
+      "titulo": "# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema",
+      "data": "2026-07-27",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/2026-07-27-setup-plug-play-e-organizacao-github.md": {
-      "titulo": "# 2026-07-27 - Setup Plug & Play e organizacao GitHub"
+      "titulo": "# 2026-07-27 - Setup Plug & Play e organizacao GitHub",
+      "data": "2026-07-27",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/2026-07-28-botães-de-filtro-sem-texto-visãvel-â-materialbutt.md": {
-      "titulo": "# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView"
+      "titulo": "# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView",
+      "data": "2026-07-28",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/2026-07-30-skill-de-diagnãstico-remoto-android.md": {
-      "titulo": "# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android"
+      "titulo": "# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android",
+      "data": "2026-07-30",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/2026-08-01-opencode-desktop-crash-do-renderer-por-gpu-fecham.md": {
-      "titulo": "# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria"
+      "titulo": "# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria",
+      "data": "2026-08-01",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/2026-08-02-ecosystem-sync-1-comando-para-sincronizar-tudo.md": {
-      "titulo": "# 2026-08-02 - ecosystem sync: 1 comando para sincronizar tudo"
+      "titulo": "# 2026-08-02 - ecosystem sync: 1 comando para sincronizar tudo",
+      "data": "2026-08-02",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/2026-08-03-scan-proativo-claude-code-extra-agents.md": {
-      "titulo": "# 2026-08-03 - Scan proativo: claude-code-extra-agents"
+      "titulo": "# 2026-08-03 - Scan proativo: claude-code-extra-agents",
+      "data": "2026-08-03",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/2026-08-04-refinamento-do-grafo-zoom-microscópio-expandir-e-.md": {
-      "titulo": "2026-08-04: Refinamento do grafo — zoom microscópio, expandir e cognição viva"
+      "titulo": "2026-08-04: Refinamento do grafo — zoom microscópio, expandir e cognição viva",
+      "data": "2026-08-04",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/antecipacao-de-comportamento-adaptativo.md": {
-      "titulo": "Antecipacao de comportamento adaptativo"
+      "titulo": "Antecipacao de comportamento adaptativo",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/aprendizado-â-2026-07-31-â-pontuaãão-automãtica-de-transcriã.md": {
-      "titulo": "# Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis)"
+      "titulo": "# Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis)",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/bug-parametro-pid-e-variavel-automatica-do-powershell.md": {
-      "titulo": "Bug: parametro Pid e variavel automatica do PowerShell"
+      "titulo": "Bug: parametro Pid e variavel automatica do PowerShell",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/ciclo-ooda-aplicado-a-navegacao.md": {
-      "titulo": "Ciclo OODA aplicado a navegacao"
+      "titulo": "Ciclo OODA aplicado a navegacao",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/clãusula-pãtrea-â-ativaãão-de-voz-eco-system.md": {
-      "titulo": "ClÃ¡usula PÃ©trea â€” AtivaÃ§Ã£o de Voz (Eco System)"
+      "titulo": "ClÃ¡usula PÃ©trea â€” AtivaÃ§Ã£o de Voz (Eco System)",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/corrigido-travamento-widget-pywebview.md": {
-      "titulo": "corrigido travamento widget pywebview"
+      "titulo": "corrigido travamento widget pywebview",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/debugging-em-cascata-reversa.md": {
-      "titulo": "Debugging em cascata reversa"
+      "titulo": "Debugging em cascata reversa",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/diagnostico-por-eliminacao-em-config-complexa.md": {
-      "titulo": "Diagnostico por eliminacao em config complexa"
+      "titulo": "Diagnostico por eliminacao em config complexa",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/encoding-aware-diagnostics.md": {
-      "titulo": "Encoding-aware diagnostics"
+      "titulo": "Encoding-aware diagnostics",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/entender-antes-de-criar-ontologia-de-habilidades.md": {
-      "titulo": "Entender antes de criar: ontologia de habilidades"
+      "titulo": "Entender antes de criar: ontologia de habilidades",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/espera-adaptativa-por-tipo-de-recurso.md": {
-      "titulo": "Espera adaptativa por tipo de recurso"
+      "titulo": "Espera adaptativa por tipo de recurso",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/estrategia-de-fallback-em-cadeia-chain-of-responsibility.md": {
-      "titulo": "Estrategia de fallback em cadeia (Chain of Responsibility)"
+      "titulo": "Estrategia de fallback em cadeia (Chain of Responsibility)",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/estrategia-de-loop-autonomo-planejar-executar-verificar-corr.md": {
-      "titulo": "Estrategia de loop autonomo: planejar-executar-verificar-corrigir"
+      "titulo": "Estrategia de loop autonomo: planejar-executar-verificar-corrigir",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/grafo-vis-network-bug-string-js-json-dumps.md": {
-      "titulo": "grafo vis network bug string js json dumps"
+      "titulo": "grafo vis network bug string js json dumps",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/gramática-do-português-brasileiro-guia-prático-do-dia-a-dia.md": {
-      "titulo": "Gramática do Português Brasileiro — Guia prático do dia a dia"
+      "titulo": "Gramática do Português Brasileiro — Guia prático do dia a dia",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/guia-controle-total-de-tv-lg-webos-reaproveitãvel.md": {
-      "titulo": "# Guia: Controle Total de TV LG webOS (reaproveitÃ¡vel)"
+      "titulo": "# Guia: Controle Total de TV LG webOS (reaproveitÃ¡vel)",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/habilidade-navegação-perita-internet-pc-e-celular.md": {
-      "titulo": "Habilidade: Navegação Perita — Internet, PC e Celular"
+      "titulo": "Habilidade: Navegação Perita — Internet, PC e Celular",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/heuristica-de-densidade-de-informacao.md": {
-      "titulo": "Heuristica de densidade de informacao"
+      "titulo": "Heuristica de densidade de informacao",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/hipotese-falsificacao-terminal.md": {
-      "titulo": "Hipotese-falsificacao terminal"
+      "titulo": "Hipotese-falsificacao terminal",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/hora-na-tela-vs-hora-no-ãudio-jarvis.md": {
-      "titulo": "# Hora na tela vs hora no Ã¡udio (Jarvis)"
+      "titulo": "# Hora na tela vs hora no Ã¡udio (Jarvis)",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/lei-de-postel-aplicada-a-engenharia.md": {
-      "titulo": "Lei de Postel aplicada a engenharia"
+      "titulo": "Lei de Postel aplicada a engenharia",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/mapa-mental-de-navegadores-web.md": {
-      "titulo": "Mapa mental de navegadores web"
+      "titulo": "Mapa mental de navegadores web",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/mcp-obsidian-server-â-vault-consumido-pelo-llm.md": {
-      "titulo": "MCP Obsidian server â€” vault consumido pelo LLM"
+      "titulo": "MCP Obsidian server â€” vault consumido pelo LLM",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/modelo-de-scoring-para-busca-multi-resultado.md": {
-      "titulo": "Modelo de scoring para busca multi-resultado"
+      "titulo": "Modelo de scoring para busca multi-resultado",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/modelo-mental-de-dom-virtual.md": {
-      "titulo": "Modelo mental de DOM virtual"
+      "titulo": "Modelo mental de DOM virtual",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/padrao-de-escrita-atomica-para-persistencia.md": {
-      "titulo": "Padrao de escrita atomica para persistencia"
+      "titulo": "Padrao de escrita atomica para persistencia",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/pattern-matching-por-estrutura-de-ui.md": {
-      "titulo": "Pattern matching por estrutura de UI"
+      "titulo": "Pattern matching por estrutura de UI",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/pre-compilacao-de-estrategia-de-interacao.md": {
-      "titulo": "Pre-compilacao de estrategia de interacao"
+      "titulo": "Pre-compilacao de estrategia de interacao",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/principio-da-separacao-causa-efeito-temporal.md": {
-      "titulo": "Principio da separacao causa-efeito-temporal"
+      "titulo": "Principio da separacao causa-efeito-temporal",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/pronúncia-járvis-escrita-sem-acento-fala-com-acento.md": {
-      "titulo": "Pronúncia \"Járvis\" (escrita sem acento, fala com acento)"
+      "titulo": "Pronúncia \"Járvis\" (escrita sem acento, fala com acento)",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/reconhecimento-de-estado-por-elementos-chave.md": {
-      "titulo": "Reconhecimento de estado por elementos-chave"
+      "titulo": "Reconhecimento de estado por elementos-chave",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/reconhecimento-instantaneo-de-framework.md": {
-      "titulo": "Reconhecimento instantaneo de framework"
+      "titulo": "Reconhecimento instantaneo de framework",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/servidores-mcp-node-criados-e-validados.md": {
-      "titulo": "Servidores MCP Node criados e validados"
+      "titulo": "Servidores MCP Node criados e validados",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/validacao-contra-intuitiva-teste-o-erro-nao-o-acerto.md": {
-      "titulo": "Validacao contra-intuitiva: teste o erro, nao o acerto"
+      "titulo": "Validacao contra-intuitiva: teste o erro, nao o acerto",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/cognitivo/vazamento-caracteres-tts-edge-tts-escapa-ssml.md": {
-      "titulo": "vazamento caracteres tts edge tts escapa ssml"
+      "titulo": "vazamento caracteres tts edge tts escapa ssml",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/decisoes/2026-07-27-fallback-automático-de-modelo-llm-com-bun-razrooo.md": {
-      "titulo": "2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback"
+      "titulo": "2026-07-27: Fallback automático de modelo LLM com Bun + @razroo/opencode-model-fallback",
+      "data": "2026-07-27",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/2026-07-27-sistema-automático-de-captura-de-conhecimento-do-.md": {
-      "titulo": "2026-07-27: Sistema automático de captura de conhecimento do ecossistema"
+      "titulo": "2026-07-27: Sistema automático de captura de conhecimento do ecossistema",
+      "data": "2026-07-27",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/2026-07-28-cláusula-pétrea-toda-alteração-no-ecossistema-dev.md": {
-      "titulo": "2026-07-28: Cláusula Pétrea — Toda alteração no ecossistema deve ser testada antes de aplicar"
+      "titulo": "2026-07-28: Cláusula Pétrea — Toda alteração no ecossistema deve ser testada antes de aplicar",
+      "data": "2026-07-28",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/2026-07-31-mecanismo-de-fonemas-ssml-reativado-com-fallback-.md": {
-      "titulo": "# 2026-07-31 - Mecanismo de fonemas SSML reativado com fallback seguro"
+      "titulo": "# 2026-07-31 - Mecanismo de fonemas SSML reativado com fallback seguro",
+      "data": "2026-07-31",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/2026-08-01-clãusula-pãtrea-â-comunicaãão-contãnua-em-ãudio.md": {
-      "titulo": "# 2026-08-01: ClÃ¡usula PÃ©trea â€” ComunicaÃ§Ã£o contÃ­nua em Ã¡udio"
+      "titulo": "# 2026-08-01: ClÃ¡usula PÃ©trea â€” ComunicaÃ§Ã£o contÃ­nua em Ã¡udio",
+      "data": "2026-08-01",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/2026-08-02-feedback-contãnuo-em-tarefas-longas.md": {
-      "titulo": "# 2026-08-02 - Feedback contÃ­nuo em tarefas longas"
+      "titulo": "# 2026-08-02 - Feedback contÃ­nuo em tarefas longas",
+      "data": "2026-08-02",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/album-art-download-com-redirect-loop-manual-instancefollowre.md": {
-      "titulo": "Album art download com redirect loop manual (instanceFollowRedirects=false)."
+      "titulo": "Album art download com redirect loop manual (instanceFollowRedirects=false).",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-.md": {
-      "titulo": "Calls `searchOnline(SearchMode.RELAXED)` — uses relaxed thresholds and also tries title-only / artist-only queries"
+      "titulo": "Calls `searchOnline(SearchMode.RELAXED)` — uses relaxed thresholds and also tries title-only / artist-only queries",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi.md": {
-      "titulo": "Chaves API exclusivamente em env vars (NVIDIA_API_KEY, OPENAI_API_KEY, etc.)"
+      "titulo": "Chaves API exclusivamente em env vars (NVIDIA_API_KEY, OPENAI_API_KEY, etc.)",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/checkpoints-salvos-antes-de-cada-iteracao-sobrevive-a-crash-.md": {
-      "titulo": "Checkpoints salvos antes de cada iteracao — sobrevive a crash a qualquer momento."
+      "titulo": "Checkpoints salvos antes de cada iteracao — sobrevive a crash a qualquer momento.",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/clausula-petrea-protecao-do-opencode-desktop-resiliencia-da-.md": {
-      "titulo": "Clausula Petrea: protecao do OpenCode desktop + resiliencia da bridge"
+      "titulo": "Clausula Petrea: protecao do OpenCode desktop + resiliencia da bridge",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/context-engine-manifesto-domínios-multimídiacomportamentais.md": {
-      "titulo": "context-engine + manifesto + domínios multimídia/comportamentais"
+      "titulo": "context-engine + manifesto + domínios multimídia/comportamentais",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/decisão-aprendizado-automãtico-permanente.md": {
-      "titulo": "# DecisÃ£o: Aprendizado automÃ¡tico permanente"
+      "titulo": "# DecisÃ£o: Aprendizado automÃ¡tico permanente",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/decisão-arquitetura-jarvis-app.md": {
-      "titulo": "# DecisÃ£o: Arquitetura Jarvis App"
+      "titulo": "# DecisÃ£o: Arquitetura Jarvis App",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/encoding-utf-8-in-javac-required-on-windows-to-prevent-corru.md": {
-      "titulo": "**`-encoding UTF-8` in javac** — Required on Windows to prevent corrupted Portuguese characters (ç, ã, é, etc.)"
+      "titulo": "**`-encoding UTF-8` in javac** — Required on Windows to prevent corrupted Portuguese characters (ç, ã, é, etc.)",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/estado-persiste-em-json-nao-sqlite-legivel-editavel-fora-do-.md": {
-      "titulo": "Estado persiste em JSON (nao SQLite) — legivel, editavel fora do LER, sem migrations."
+      "titulo": "Estado persiste em JSON (nao SQLite) — legivel, editavel fora do LER, sem migrations.",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/estrategia-selecionada-por-ranking-cost-risk-time-complexity.md": {
-      "titulo": "Estrategia selecionada por ranking (cost + risk + time + complexity + success_probability)."
+      "titulo": "Estrategia selecionada por ranking (cost + risk + time + complexity + success_probability).",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/form-starts-empty-input-forms-never-auto-load-from-file-user.md": {
-      "titulo": "**Form Starts Empty** — Input forms never auto-load from file; user loads explicitly via file browser"
+      "titulo": "**Form Starts Empty** — Input forms never auto-load from file; user loads explicitly via file browser",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/form-starts-empty-input-forms-nunca-auto-carregam-arquivo-ao.md": {
-      "titulo": "Form Starts Empty — input forms nunca auto-carregam arquivo ao trocar de aba."
+      "titulo": "Form Starts Empty — input forms nunca auto-carregam arquivo ao trocar de aba.",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/habilidades-de-jarvis-seguem-taxonomia-de-3-niveis.md": {
-      "titulo": "Habilidades de Jarvis seguem taxonomia de 3 niveis"
+      "titulo": "Habilidades de Jarvis seguem taxonomia de 3 niveis",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-.md": {
-      "titulo": "If RELAXED also fails → user sees \"Tente editar manualmente os campos e buscar novamente\""
+      "titulo": "If RELAXED also fails → user sees \"Tente editar manualmente os campos e buscar novamente\"",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/jarvis-deve-manter-registro-de-suas-proprias-habilidades-em-.md": {
-      "titulo": "Jarvis deve manter registro de suas proprias habilidades em JARVIS_SYSTEM.md"
+      "titulo": "Jarvis deve manter registro de suas proprias habilidades em JARVIS_SYSTEM.md",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/ler-usa-python-puro-stdlib-only-zero-dependencias-externas-i.md": {
-      "titulo": "LER usa Python puro (stdlib only) — zero dependencias externas intencionalmente."
+      "titulo": "LER usa Python puro (stdlib only) — zero dependencias externas intencionalmente.",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/merge-by-name-if-name-matches-existing-item-increment-quanti.md": {
-      "titulo": "**Merge by name** — If name matches existing item, increment quantity instead of duplicating; NEVER merge unnamed items"
+      "titulo": "**Merge by name** — If name matches existing item, increment quantity instead of duplicating; NEVER merge unnamed items",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/metadata-busca-em-multi-fontes-acoustid-itunes-br-musicbrain.md": {
-      "titulo": "Metadata busca em multi-fontes: AcoustID -> iTunes BR -> MusicBrainz -> iTunes US fallback."
+      "titulo": "Metadata busca em multi-fontes: AcoustID -> iTunes BR -> MusicBrainz -> iTunes US fallback.",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/motor-de-criticalidade-auto-organizada-e-avalanches-neurais.md": {
-      "titulo": "Motor de Criticalidade Auto-Organizada e Avalanches Neurais"
+      "titulo": "Motor de Criticalidade Auto-Organizada e Avalanches Neurais",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/mudar-config-mcp-de-objeto-para-array-no-opencodejson.md": {
-      "titulo": "Mudar config MCP de objeto para array no opencode.json"
+      "titulo": "Mudar config MCP de objeto para array no opencode.json",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/organizar-desktopcodigos-como-raiz-unica-de-projetos.md": {
-      "titulo": "Organizar Desktop\\Codigos\\ como raiz unica de projetos"
+      "titulo": "Organizar Desktop\\Codigos\\ como raiz unica de projetos",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/pontes-inter-cluster-cerebro-vivo-grafo.md": {
-      "titulo": "pontes inter cluster cerebro vivo grafo"
+      "titulo": "pontes inter cluster cerebro vivo grafo",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/pontuacao-ponderada-com-6-categorias-req-30-func-30-testes-1.md": {
-      "titulo": "Pontuacao ponderada com 6 categorias (Req 30%, Func 30%, Testes 10%, DoD 10%, Evidencias 10%, Auditoria 10%)."
+      "titulo": "Pontuacao ponderada com 6 categorias (Req 30%, Func 30%, Testes 10%, DoD 10%, Evidencias 10%, Auditoria 10%).",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/preferir-automationid-sobre-name-em-ui-automation-windows.md": {
-      "titulo": "Preferir AutomationId sobre Name em UI Automation Windows"
+      "titulo": "Preferir AutomationId sobre Name em UI Automation Windows",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/priorizar-data-testid-sobre-classes-css-em-automacao-web.md": {
-      "titulo": "Priorizar data-testid sobre classes CSS em automacao web"
+      "titulo": "Priorizar data-testid sobre classes CSS em automacao web",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/renomear-pastas-com-espacos-para-nomes-sem-espaco.md": {
-      "titulo": "Renomear pastas com espacos para nomes sem espaco"
+      "titulo": "Renomear pastas com espacos para nomes sem espaco",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/reorganização-habilidades-dentro-de-mcp-por-domínio.md": {
-      "titulo": "Reorganização: Habilidades dentro de MCP por domínio"
+      "titulo": "Reorganização: Habilidades dentro de MCP por domínio",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/salvar-cria-novo-arquivo-timestampado-nunca-sobrescreve-exis.md": {
-      "titulo": "Salvar cria novo arquivo timestampado, nunca sobrescreve existente."
+      "titulo": "Salvar cria novo arquivo timestampado, nunca sobrescreve existente.",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/salvar-new-file-explicit-save-creates-timestamped-snapshot-n.md": {
-      "titulo": "**Salvar = new file** — Explicit save creates timestamped snapshot, never overwrites existing saved files"
+      "titulo": "**Salvar = new file** — Explicit save creates timestamped snapshot, never overwrites existing saved files",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/salvar-rustdesk-password-e-id-em-local-permanente-nao-gerar-.md": {
-      "titulo": "Salvar RustDesk password e ID em local permanente, nao gerar OTP"
+      "titulo": "Salvar RustDesk password e ID em local permanente, nao gerar OTP",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/searchmodenormal-relaxed-auto-fallback-se-normal-retorna-nul.md": {
-      "titulo": "SearchMode.NORMAL -> RELAXED auto-fallback se NORMAL retorna null."
+      "titulo": "SearchMode.NORMAL -> RELAXED auto-fallback se NORMAL retorna null.",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/sempre-fechar-teclado-virtual-android-antes-do-proximo-cliqu.md": {
-      "titulo": "Sempre fechar teclado virtual Android antes do proximo clique"
+      "titulo": "Sempre fechar teclado virtual Android antes do proximo clique",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/server-health-check-via-http-ping-localhostporta-em-vez-de-s.md": {
-      "titulo": "Server health check via HTTP ping (localhost:porta) em vez de stdin/stdout"
+      "titulo": "Server health check via HTTP ping (localhost:porta) em vez de stdin/stdout",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/single-activity-com-framelayout-visibilidade-setvisibility-s.md": {
-      "titulo": "Single Activity com FrameLayout + visibilidade (setVisibility) — sem Fragments."
+      "titulo": "Single Activity com FrameLayout + visibilidade (setVisibility) — sem Fragments.",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo.md": {
-      "titulo": "**Step 0: AcoustID fingerprint** — `AcoustIDService.searchByFile()` — almost always fails because API key `4m9Q2k9p` is invalid (HTTP 400)"
+      "titulo": "**Step 0: AcoustID fingerprint** — `AcoustIDService.searchByFile()` — almost always fails because API key `4m9Q2k9p` is invalid (HTTP 400)",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/stringbuilder-for-price-fine-grained-control-over-display-fo.md": {
-      "titulo": "**StringBuilder for price** — Fine-grained control over display format, avoids floating-point display issues"
+      "titulo": "**StringBuilder for price** — Fine-grained control over display format, avoids floating-point display issues",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/supervisor-monitora-todos-os-modulos-individualmente-nunca-r.md": {
-      "titulo": "Supervisor monitora todos os modulos individualmente — nunca reinicia missao inteira por falha de um modulo."
+      "titulo": "Supervisor monitora todos os modulos individualmente — nunca reinicia missao inteira por falha de um modulo.",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/the-issue-description-and-root-cause.md": {
-      "titulo": "The issue description and root cause"
+      "titulo": "The issue description and root cause",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/usar-coordenadas-relativas-porcentagem-em-vez-de-absolutas-p.md": {
-      "titulo": "Usar coordenadas relativas (porcentagem) em vez de absolutas para gestos mobile"
+      "titulo": "Usar coordenadas relativas (porcentagem) em vez de absolutas para gestos mobile",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/usar-keyboard-shortcuts-como-fallback-universal.md": {
-      "titulo": "Usar keyboard shortcuts como fallback universal"
+      "titulo": "Usar keyboard shortcuts como fallback universal",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/usar-ocr-como-fallback-final-nao-primario.md": {
-      "titulo": "Usar OCR como fallback final, nao primario"
+      "titulo": "Usar OCR como fallback final, nao primario",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/user-taps-buscar-na-internet.md": {
-      "titulo": "User taps \"Buscar na Internet\""
+      "titulo": "User taps \"Buscar na Internet\"",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/vault-obsidian-cerebro-vivo-grafo.md": {
-      "titulo": "vault obsidian cerebro vivo grafo"
+      "titulo": "vault obsidian cerebro vivo grafo",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/vault-obsidian-fonte-viva.md": {
-      "titulo": "vault obsidian fonte viva"
+      "titulo": "vault obsidian fonte viva",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/verificar-modais-antes-de-cada-interacao.md": {
-      "titulo": "Verificar modais antes de cada interacao"
+      "titulo": "Verificar modais antes de cada interacao",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/why-d8-doesnt-accept-directory-trees-of-class-files-it-needs.md": {
-      "titulo": "Why:** d8 doesn't accept directory trees of .class files; it needs a JAR. This is a historical Android toolchain requirement."
+      "titulo": "Why:** d8 doesn't accept directory trees of .class files; it needs a JAR. This is a historical Android toolchain requirement.",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/why-user-expects-a-blank-slate-when-entering-a-form-tab-cons.md": {
-      "titulo": "Why"
+      "titulo": "Why",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/decisoes/widget-desktop-frameless-persistente.md": {
-      "titulo": "widget desktop frameless persistente"
+      "titulo": "widget desktop frameless persistente",
+      "data": "2026-08-07",
+      "dominio": "decisoes"
     },
     "nota:conhecimento/notas/frameworks/3-scan-pre-action.md": {
-      "titulo": "3-Scan Pre-Action"
+      "titulo": "3-Scan Pre-Action",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/frameworks/arvore-de-decisao-para-fallback-de-servico.md": {
-      "titulo": "Arvore de Decisao para Fallback de Servico"
+      "titulo": "Arvore de Decisao para Fallback de Servico",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/frameworks/cascata-de-interacao-ci.md": {
-      "titulo": "Cascata de Interacao (CI)"
+      "titulo": "Cascata de Interacao (CI)",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/frameworks/ciclo-pdca-plan-do-check-act-para-engenharia.md": {
-      "titulo": "Ciclo PDCA (Plan-Do-Check-Act) para engenharia"
+      "titulo": "Ciclo PDCA (Plan-Do-Check-Act) para engenharia",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/frameworks/first-principles-para-testes.md": {
-      "titulo": "FIRST Principles para testes"
+      "titulo": "FIRST Principles para testes",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/frameworks/framework-de-aprendizado-continuo-auto-learning.md": {
-      "titulo": "Framework de Aprendizado Continuo (Auto-Learning)"
+      "titulo": "Framework de Aprendizado Continuo (Auto-Learning)",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/frameworks/framework-de-persistencia-com-snapshot-imutavel.md": {
-      "titulo": "Framework de Persistencia com Snapshot Imutavel"
+      "titulo": "Framework de Persistencia com Snapshot Imutavel",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/frameworks/mece-mutually-exclusive-collectively-exhaustive.md": {
-      "titulo": "MECE (Mutually Exclusive, Collectively Exhaustive)"
+      "titulo": "MECE (Mutually Exclusive, Collectively Exhaustive)",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/frameworks/metodo-dos-5-porques-5-whys.md": {
-      "titulo": "Metodo dos 5 Porques (5 Whys)"
+      "titulo": "Metodo dos 5 Porques (5 Whys)",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/frameworks/ooda-nav.md": {
-      "titulo": "OODA-Nav"
+      "titulo": "OODA-Nav",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/30s-regra-de-timeout-maximo.md": {
-      "titulo": "30s regra de timeout maximo"
+      "titulo": "30s regra de timeout maximo",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/antes-de-clicar-verifique-o-interceptador.md": {
-      "titulo": "Antes de clicar, verifique o interceptador"
+      "titulo": "Antes de clicar, verifique o interceptador",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/cache-de-decisoes-caras.md": {
-      "titulo": "Cache de decisoes caras"
+      "titulo": "Cache de decisoes caras",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/canvas-e-graficos-template-matching.md": {
-      "titulo": "Canvas e graficos: template matching"
+      "titulo": "Canvas e graficos: template matching",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/dados-algoritmos-para-debugging.md": {
-      "titulo": "Dados > Algoritmos para debugging"
+      "titulo": "Dados > Algoritmos para debugging",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/elemento-existe-3-fontes-de-verdade.md": {
-      "titulo": "Elemento existe? 3 fontes de verdade"
+      "titulo": "Elemento existe? 3 fontes de verdade",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/escrita-atomica-sempre.md": {
-      "titulo": "Escrita atomica sempre"
+      "titulo": "Escrita atomica sempre",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/heuristica-de-isolamento-de-falha.md": {
-      "titulo": "Heuristica de isolamento de falha"
+      "titulo": "Heuristica de isolamento de falha",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/hierarquia-de-confianca-de-seletores.md": {
-      "titulo": "Hierarquia de confianca de seletores"
+      "titulo": "Hierarquia de confianca de seletores",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/interface-sobre-implementacao-em-parametros.md": {
-      "titulo": "Interface sobre implementacao em parametros"
+      "titulo": "Interface sobre implementacao em parametros",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/json-rpc-notifications.md": {
-      "titulo": "JSON-RPC notifications"
+      "titulo": "JSON-RPC notifications",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/log-de-fallback-para-diagnostico-rapido.md": {
-      "titulo": "Log de fallback para diagnostico rapido"
+      "titulo": "Log de fallback para diagnostico rapido",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/mcp-tool-naming.md": {
-      "titulo": "MCP tool naming"
+      "titulo": "MCP tool naming",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/navegacao-em-spa-3-sinais-de-sucesso.md": {
-      "titulo": "Navegacao em SPA: 3 sinais de sucesso"
+      "titulo": "Navegacao em SPA: 3 sinais de sucesso",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/nunca-armazenar-api-keys-em-config-files.md": {
-      "titulo": "Nunca armazenar API keys em config files"
+      "titulo": "Nunca armazenar API keys em config files",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/open-sempre-com-encoding-no-windows.md": {
-      "titulo": "open() sempre com encoding no Windows"
+      "titulo": "open() sempre com encoding no Windows",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/primeiro-scan-depois-interaja.md": {
-      "titulo": "Primeiro scan, depois interaja"
+      "titulo": "Primeiro scan, depois interaja",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/principio-do-menor-escopo-de-variavel.md": {
-      "titulo": "Principio do menor escopo de variavel"
+      "titulo": "Principio do menor escopo de variavel",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/projete-para-falha-nao-para-sucesso.md": {
-      "titulo": "Projete para falha, nao para sucesso"
+      "titulo": "Projete para falha, nao para sucesso",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/regra-do-nao-magico.md": {
-      "titulo": "Regra do 'nao magico'"
+      "titulo": "Regra do 'nao magico'",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/regra-dos-3-logs.md": {
-      "titulo": "Regra dos 3 logs"
+      "titulo": "Regra dos 3 logs",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/scroll-forcado-revela-conteudo-oculto.md": {
-      "titulo": "Scroll forcado revela conteudo oculto"
+      "titulo": "Scroll forcado revela conteudo oculto",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/seletor-mais-especifico-mais-fragil.md": {
-      "titulo": "Seletor mais especifico = mais fragil"
+      "titulo": "Seletor mais especifico = mais fragil",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/sempre-esperar-o-inesperado-em-es.md": {
-      "titulo": "Sempre esperar o inesperado em E/S"
+      "titulo": "Sempre esperar o inesperado em E/S",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/sempre-validar-schema-apos-migracao-de-config.md": {
-      "titulo": "Sempre validar schema apos migracao de config"
+      "titulo": "Sempre validar schema apos migracao de config",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/stale-element-re-query-nao-re-tentar.md": {
-      "titulo": "Stale element = re-query, nao re-tentar"
+      "titulo": "Stale element = re-query, nao re-tentar",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/state-deve-ser-explícito-nunca-implícito.md": {
-      "titulo": "State deve ser explícito, nunca implícito"
+      "titulo": "State deve ser explícito, nunca implícito",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/teclado-vence-layout.md": {
-      "titulo": "Teclado vence layout"
+      "titulo": "Teclado vence layout",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/testar-failover-ativamente.md": {
-      "titulo": "Testar failover ativamente"
+      "titulo": "Testar failover ativamente",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/velocidade-evitar-esperas-fixas.md": {
-      "titulo": "Velocidade = evitar esperas fixas"
+      "titulo": "Velocidade = evitar esperas fixas",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/verifique-o-que-voce-acha-que-sabe.md": {
-      "titulo": "Verifique o que voce acha que sabe"
+      "titulo": "Verifique o que voce acha que sabe",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/heuristicas/workspace-root.md": {
-      "titulo": "Workspace root"
+      "titulo": "Workspace root",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-27-4-teste-do-ciclo-de-polling-verificar-se-o-vigila.md": {
-      "titulo": "2026-07-27-4: Teste do ciclo de polling — Verificar se o vigilante detecta arqui"
+      "titulo": "2026-07-27-4: Teste do ciclo de polling — Verificar se o vigilante detecta arqui",
+      "data": "2026-07-27",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-27-5-teste-final-do-vigilante-em-processo-real-verif.md": {
-      "titulo": "2026-07-27-5: Teste final do vigilante em processo real — Verificar detecção em"
+      "titulo": "2026-07-27-5: Teste final do vigilante em processo real — Verificar detecção em",
+      "data": "2026-07-27",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-27-fallback-automãtico-de-modelo-llm-com-bun-razrooo.md": {
-      "titulo": "# 2026-07-27: Fallback automÃ¡tico de modelo LLM com Bun + @razroo/opencode-mod"
+      "titulo": "# 2026-07-27: Fallback automÃ¡tico de modelo LLM com Bun + @razroo/opencode-mod",
+      "data": "2026-07-27",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-27-scan-proativo-biblia.md": {
-      "titulo": "# 2026-07-27 - Scan proativo: Biblia —"
+      "titulo": "# 2026-07-27 - Scan proativo: Biblia —",
+      "data": "2026-07-27",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-27-scan-proativo-cellcleaner.md": {
-      "titulo": "# 2026-07-27 - Scan proativo: CellCleaner —"
+      "titulo": "# 2026-07-27 - Scan proativo: CellCleaner —",
+      "data": "2026-07-27",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-27-scan-proativo-mp3player.md": {
-      "titulo": "# 2026-07-27 - Scan proativo: Mp3Player —"
+      "titulo": "# 2026-07-27 - Scan proativo: Mp3Player —",
+      "data": "2026-07-27",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-27-scan-proativo-supermarketcalculator.md": {
-      "titulo": "# 2026-07-27 - Scan proativo: SupermarketCalculator —"
+      "titulo": "# 2026-07-27 - Scan proativo: SupermarketCalculator —",
+      "data": "2026-07-27",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-27-sistema-automãtico-de-captura-de-conhecimento-do-.md": {
-      "titulo": "# 2026-07-27: Sistema automÃ¡tico de captura de conhecimento do ecossistema — I"
+      "titulo": "# 2026-07-27: Sistema automÃ¡tico de captura de conhecimento do ecossistema — I",
+      "data": "2026-07-27",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-27-teste-do-vigilante-automático-teste-do-sistema-de.md": {
-      "titulo": "2026-07-27: Teste do vigilante automático — Teste do sistema de vigilância autom"
+      "titulo": "2026-07-27: Teste do vigilante automático — Teste do sistema de vigilância autom",
+      "data": "2026-07-27",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-27-unificacao-completa-do-ecossistema.md": {
-      "titulo": "# 2026-07-27 - Unificacao completa do ecossistema —"
+      "titulo": "# 2026-07-27 - Unificacao completa do ecossistema —",
+      "data": "2026-07-27",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-28-clãusula-pãtrea-â-toda-alteraãão-no-ecossistema-d.md": {
-      "titulo": "# 2026-07-28: ClÃ¡usula PÃ©trea â€” Toda alteraÃ§Ã£o no ecossistema deve ser te"
+      "titulo": "# 2026-07-28: ClÃ¡usula PÃ©trea â€” Toda alteraÃ§Ã£o no ecossistema deve ser te",
+      "data": "2026-07-28",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-28-formato-correto-do-mcp-no-opencode-1187-ao-adicio.md": {
-      "titulo": "# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 — Ao adicionar servidor"
+      "titulo": "# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 — Ao adicionar servidor",
+      "data": "2026-07-28",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-28-scan-proativo-biblia.md": {
-      "titulo": "# 2026-07-28 - Scan proativo: Biblia —"
+      "titulo": "# 2026-07-28 - Scan proativo: Biblia —",
+      "data": "2026-07-28",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-28-scan-proativo-cellcleaner.md": {
-      "titulo": "# 2026-07-28 - Scan proativo: CellCleaner —"
+      "titulo": "# 2026-07-28 - Scan proativo: CellCleaner —",
+      "data": "2026-07-28",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-28-scan-proativo-mp3player.md": {
-      "titulo": "# 2026-07-28 - Scan proativo: Mp3Player —"
+      "titulo": "# 2026-07-28 - Scan proativo: Mp3Player —",
+      "data": "2026-07-28",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-28-scan-proativo-supermarketcalculator.md": {
-      "titulo": "# 2026-07-28 - Scan proativo: SupermarketCalculator —"
+      "titulo": "# 2026-07-28 - Scan proativo: SupermarketCalculator —",
+      "data": "2026-07-28",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-29-integração-de-clima-via-openweathermap.md": {
-      "titulo": "2026-07-29 — Integração de clima via OpenWeatherMap —"
+      "titulo": "2026-07-29 — Integração de clima via OpenWeatherMap —",
+      "data": "2026-07-29",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-29-scan-proativo-biblia.md": {
-      "titulo": "# 2026-07-29 - Scan proativo: Biblia —"
+      "titulo": "# 2026-07-29 - Scan proativo: Biblia —",
+      "data": "2026-07-29",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-29-scan-proativo-cellcleaner.md": {
-      "titulo": "# 2026-07-29 - Scan proativo: CellCleaner —"
+      "titulo": "# 2026-07-29 - Scan proativo: CellCleaner —",
+      "data": "2026-07-29",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-29-scan-proativo-mp3player.md": {
-      "titulo": "# 2026-07-29 - Scan proativo: Mp3Player —"
+      "titulo": "# 2026-07-29 - Scan proativo: Mp3Player —",
+      "data": "2026-07-29",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-29-scan-proativo-supermarketcalculator.md": {
-      "titulo": "# 2026-07-29 - Scan proativo: SupermarketCalculator —"
+      "titulo": "# 2026-07-29 - Scan proativo: SupermarketCalculator —",
+      "data": "2026-07-29",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-29-â-integraãão-de-clima-via-openweathermap.md": {
-      "titulo": "# 2026-07-29 â€” IntegraÃ§Ã£o de clima via OpenWeatherMap —"
+      "titulo": "# 2026-07-29 â€” IntegraÃ§Ã£o de clima via OpenWeatherMap —",
+      "data": "2026-07-29",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-29-â-mcp-integration.md": {
-      "titulo": "# 2026-07-29 â€” MCP Integration —"
+      "titulo": "# 2026-07-29 â€” MCP Integration —",
+      "data": "2026-07-29",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-30-scan-proativo-biblia.md": {
-      "titulo": "# 2026-07-30 - Scan proativo: Biblia —"
+      "titulo": "# 2026-07-30 - Scan proativo: Biblia —",
+      "data": "2026-07-30",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-30-scan-proativo-cellcleaner.md": {
-      "titulo": "# 2026-07-30 - Scan proativo: CellCleaner —"
+      "titulo": "# 2026-07-30 - Scan proativo: CellCleaner —",
+      "data": "2026-07-30",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-30-scan-proativo-mp3player.md": {
-      "titulo": "# 2026-07-30 - Scan proativo: Mp3Player —"
+      "titulo": "# 2026-07-30 - Scan proativo: Mp3Player —",
+      "data": "2026-07-30",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-07-30-scan-proativo-supermarketcalculator.md": {
-      "titulo": "# 2026-07-30 - Scan proativo: SupermarketCalculator —"
+      "titulo": "# 2026-07-30 - Scan proativo: SupermarketCalculator —",
+      "data": "2026-07-30",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-02-regras-do-ecossistema-garantia-de-obediãncia-pelo.md": {
-      "titulo": "# 2026-08-02 - Regras do ecossistema: garantia de obediÃªncia pelo LLM —"
+      "titulo": "# 2026-08-02 - Regras do ecossistema: garantia de obediÃªncia pelo LLM —",
+      "data": "2026-08-02",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-02-regras-em-3-camadas-com-sincronizaãão-e-detecãão-.md": {
-      "titulo": "# 2026-08-02 - Regras em 3 camadas com sincronizaÃ§Ã£o e detecÃ§Ã£o de divergÃª"
+      "titulo": "# 2026-08-02 - Regras em 3 camadas com sincronizaÃ§Ã£o e detecÃ§Ã£o de divergÃª",
+      "data": "2026-08-02",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-03-build-android-lento-travava-por-falta-de-ram-buil.md": {
-      "titulo": "2026-08-03: Build Android lento travava por falta de RAM — Build do projeto VoxU"
+      "titulo": "2026-08-03: Build Android lento travava por falta de RAM — Build do projeto VoxU",
+      "data": "2026-08-03",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-bibliaestudocompleta.md": {
-      "titulo": "# 2026-08-03 - Scan proativo: BibliaEstudoCompleta —"
+      "titulo": "# 2026-08-03 - Scan proativo: BibliaEstudoCompleta —",
+      "data": "2026-08-03",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-cellcleaner.md": {
-      "titulo": "# 2026-08-03 - Scan proativo: CellCleaner —"
+      "titulo": "# 2026-08-03 - Scan proativo: CellCleaner —",
+      "data": "2026-08-03",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-compiladorapk.md": {
-      "titulo": "# 2026-08-03 - Scan proativo: compiladorAPK —"
+      "titulo": "# 2026-08-03 - Scan proativo: compiladorAPK —",
+      "data": "2026-08-03",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-ecosystemumgrau.md": {
-      "titulo": "# 2026-08-03 - Scan proativo: EcoSystemUmGrau —"
+      "titulo": "# 2026-08-03 - Scan proativo: EcoSystemUmGrau —",
+      "data": "2026-08-03",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-mp3player.md": {
-      "titulo": "# 2026-08-03 - Scan proativo: Mp3Player —"
+      "titulo": "# 2026-08-03 - Scan proativo: Mp3Player —",
+      "data": "2026-08-03",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-orquestradorapk-flutter.md": {
-      "titulo": "# 2026-08-03 - Scan proativo: OrquestradorAPK-FLUTTER —"
+      "titulo": "# 2026-08-03 - Scan proativo: OrquestradorAPK-FLUTTER —",
+      "data": "2026-08-03",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-supermarketcalculator.md": {
-      "titulo": "# 2026-08-03 - Scan proativo: SupermarketCalculator —"
+      "titulo": "# 2026-08-03 - Scan proativo: SupermarketCalculator —",
+      "data": "2026-08-03",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-windowsmaintenancesuitev3.md": {
-      "titulo": "# 2026-08-03 - Scan proativo: WindowsMaintenanceSuite_v3 —"
+      "titulo": "# 2026-08-03 - Scan proativo: WindowsMaintenanceSuite_v3 —",
+      "data": "2026-08-03",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-04-foco-vocal-via-jarvis-voz-orienta-o-grafo-do-conh.md": {
-      "titulo": "2026-08-04: Foco vocal via Jarvis — voz orienta o grafo do conhecimento — Usuari"
+      "titulo": "2026-08-04: Foco vocal via Jarvis — voz orienta o grafo do conhecimento — Usuari",
+      "data": "2026-08-04",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-04-jarvis-do-celular-conectado-ao-bridge-via-tailsca.md": {
-      "titulo": "2026-08-04: Jarvis do celular conectado ao bridge via Tailscale — Usuario enfati"
+      "titulo": "2026-08-04: Jarvis do celular conectado ao bridge via Tailscale — Usuario enfati",
+      "data": "2026-08-04",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-04-labels-ocultas-por-padrão-botão-de-ocultar-menus-.md": {
-      "titulo": "2026-08-04: Labels ocultas por padrão + botão de ocultar menus persistente — Usu"
+      "titulo": "2026-08-04: Labels ocultas por padrão + botão de ocultar menus persistente — Usu",
+      "data": "2026-08-04",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-04-malha-viva-onda-viajante-de-profundidade-giro-3d-.md": {
-      "titulo": "2026-08-04: Malha viva — onda viajante de profundidade (giro 3D natural) + fix c"
+      "titulo": "2026-08-04: Malha viva — onda viajante de profundidade (giro 3D natural) + fix c",
+      "data": "2026-08-04",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-04-pseudo-3d-vivo-profundidade-sem-webgl-pedido-para.md": {
-      "titulo": "2026-08-04: Pseudo-3D vivo — profundidade sem WebGL — Pedido para incluir efeito"
+      "titulo": "2026-08-04: Pseudo-3D vivo — profundidade sem WebGL — Pedido para incluir efeito",
+      "data": "2026-08-04",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl.md": {
-      "titulo": "2026-08-04: Tamanho por uso real + iniciar GUI com pythonw — Implementar \"tamanh"
+      "titulo": "2026-08-04: Tamanho por uso real + iniciar GUI com pythonw — Implementar \"tamanh",
+      "data": "2026-08-04",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-05-scan-proativo-ecosystemumgrau.md": {
-      "titulo": "# 2026-08-05 - Scan proativo: EcoSystemUmGrau —"
+      "titulo": "# 2026-08-05 - Scan proativo: EcoSystemUmGrau —",
+      "data": "2026-08-05",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/2026-08-06-scan-proativo-ecosystemumgrau.md": {
-      "titulo": "# 2026-08-06 - Scan proativo: EcoSystemUmGrau —"
+      "titulo": "# 2026-08-06 - Scan proativo: EcoSystemUmGrau —",
+      "data": "2026-08-06",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/aprendizado-â-2026-07-31-â-horas-faladas-corretamente-no-tts.md": {
-      "titulo": "# Aprendizado â€” 2026-07-31 â€” Horas faladas corretamente no TTS do Jarvis —"
+      "titulo": "# Aprendizado â€” 2026-07-31 â€” Horas faladas corretamente no TTS do Jarvis —",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/aprendizado-â-2026-07-31-â-reorg-catãlogo-ãnico-habilidades-.md": {
-      "titulo": "# Aprendizado â€” 2026-07-31 â€” Reorg: catÃ¡logo Ãºnico Habilidades/ + caminho"
+      "titulo": "# Aprendizado â€” 2026-07-31 â€” Reorg: catÃ¡logo Ãºnico Habilidades/ + caminho",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/confirmaãão-em-ãudio-â-regra-permanente-01082026.md": {
-      "titulo": "# ConfirmaÃ§Ã£o em Ãudio â€” Regra Permanente (01/08/2026) —"
+      "titulo": "# ConfirmaÃ§Ã£o em Ãudio â€” Regra Permanente (01/08/2026) —",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/controle-de-tv-lg-01082026.md": {
-      "titulo": "# Controle de TV LG (01/08/2026) —"
+      "titulo": "# Controle de TV LG (01/08/2026) —",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/evoluãão-do-tts-jarvis-â-naturalidade-via-ssml.md": {
-      "titulo": "EvoluÃ§Ã£o do TTS Jarvis â€” naturalidade via SSML —"
+      "titulo": "EvoluÃ§Ã£o do TTS Jarvis â€” naturalidade via SSML —",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/grafo-movimento-organico-vis-network-usuario-pediu-refinamen.md": {
-      "titulo": "grafo movimento organico vis network — Usuario pediu refinamento do widget do gr"
+      "titulo": "grafo movimento organico vis network — Usuario pediu refinamento do widget do gr",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/gramãtica-do-portuguãs-brasileiro-â-guia-prãtico-do-dia-a-di.md": {
-      "titulo": "# GramÃ¡tica do PortuguÃªs Brasileiro â€” Guia prÃ¡tico do dia a dia —"
+      "titulo": "# GramÃ¡tica do PortuguÃªs Brasileiro â€” Guia prÃ¡tico do dia a dia —",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/habilidade-navegaãão-perita-â-internet-pc-e-celular.md": {
-      "titulo": "# Habilidade: NavegaÃ§Ã£o Perita â€” Internet, PC e Celular —"
+      "titulo": "# Habilidade: NavegaÃ§Ã£o Perita â€” Internet, PC e Celular —",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/jarvis-do-celular-e-do-pc-um-sã-cãrebro-arquitetura-sincroni.md": {
-      "titulo": "# Jarvis do celular e do PC: um sÃ³ cÃ©rebro (arquitetura sincronizada) —"
+      "titulo": "# Jarvis do celular e do PC: um sÃ³ cÃ©rebro (arquitetura sincronizada) —",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/jarvis-do-celular-e-do-pc-um-só-cérebro-arquitetura-sincroni.md": {
-      "titulo": "Jarvis do celular e do PC: um só cérebro (arquitetura sincronizada) —"
+      "titulo": "Jarvis do celular e do PC: um só cérebro (arquitetura sincronizada) —",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/polãtica-de-resposta-rãpida-â-caminhos-rãpidos-constantes-no.md": {
-      "titulo": "# PolÃ­tica de Resposta RÃ¡pida â€” caminhos rÃ¡pidos constantes no Jarvis —"
+      "titulo": "# PolÃ­tica de Resposta RÃ¡pida â€” caminhos rÃ¡pidos constantes no Jarvis —",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/pontuaãão-da-transcriãão-voltando-ao-balão-do-app-corrigido.md": {
-      "titulo": "# PontuaÃ§Ã£o da transcriÃ§Ã£o voltando ao balÃ£o do app (corrigido) —"
+      "titulo": "# PontuaÃ§Ã£o da transcriÃ§Ã£o voltando ao balÃ£o do app (corrigido) —",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/pronãncia-jãrvis-escrita-sem-acento-fala-com-acento.md": {
-      "titulo": "# PronÃºncia \"JÃ¡rvis\" (escrita sem acento, fala com acento) —"
+      "titulo": "# PronÃºncia \"JÃ¡rvis\" (escrita sem acento, fala com acento) —",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/sessao-de-configuracao-do-opencode-com-failover-de-servidor-.md": {
-      "titulo": "Sessao de configuracao do OpenCode com failover de servidor, migracao de config,"
+      "titulo": "Sessao de configuracao do OpenCode com failover de servidor, migracao de config,",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/sessao-focada-em-organizacao-de-workspace-unificacao-de-proj.md": {
-      "titulo": "Sessao focada em organizacao de workspace (unificacao de projetos em Desktop\\Cod"
+      "titulo": "Sessao focada em organizacao de workspace (unificacao de projetos em Desktop\\Cod",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/missoes/treinamento-especializado-em-navegacao-multi-plataforma-reco.md": {
-      "titulo": "Treinamento especializado em navegacao multi-plataforma: reconhecimento de eleme"
+      "titulo": "Treinamento especializado em navegacao multi-plataforma: reconhecimento de eleme",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/padroes/2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos.md": {
-      "titulo": "# 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS)"
+      "titulo": "# 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS)",
+      "data": "2026-08-02",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/2026-08-03-adb-remoto-via-tailscale-script-automatico-de-rot.md": {
-      "titulo": "2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6)"
+      "titulo": "2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6)",
+      "data": "2026-08-03",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/2026-08-04-persistencia-da-conexao-do-jarvis.md": {
-      "titulo": "2026-08-04: Persistencia da conexao do Jarvis"
+      "titulo": "2026-08-04: Persistencia da conexao do Jarvis",
+      "data": "2026-08-04",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/aapt-javac-d8-apksigner.md": {
-      "titulo": "aapt + javac + d8 + apksigner"
+      "titulo": "aapt + javac + d8 + apksigner",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/adb-workflow.md": {
-      "titulo": "ADB Workflow"
+      "titulo": "ADB Workflow",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/album-art-download-pipeline.md": {
-      "titulo": "Album Art Download Pipeline"
+      "titulo": "Album Art Download Pipeline",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/android-gesture-patterns.md": {
-      "titulo": "Android gesture patterns"
+      "titulo": "Android gesture patterns",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/android-keyboard-dismissal.md": {
-      "titulo": "Android keyboard dismissal"
+      "titulo": "Android keyboard dismissal",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/android-view-hierarchy-scanning.md": {
-      "titulo": "Android View hierarchy scanning"
+      "titulo": "Android View hierarchy scanning",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/approach-mediacodecaudiorenderer-with-audioprocessor-varargs.md": {
-      "titulo": "Approach: `MediaCodecAudioRenderer` with `AudioProcessor...` varargs"
+      "titulo": "Approach: `MediaCodecAudioRenderer` with `AudioProcessor...` varargs",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/audioprocessorisactive-must-be-dynamic.md": {
-      "titulo": "AudioProcessor.isActive() must be dynamic"
+      "titulo": "AudioProcessor.isActive() must be dynamic",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/bug-pattern.md": {
-      "titulo": "Bug pattern"
+      "titulo": "Bug pattern",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/build-pipeline.md": {
-      "titulo": "Build Pipeline"
+      "titulo": "Build Pipeline",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/button-visibility-pattern-maintain-grid.md": {
-      "titulo": "Button Visibility Pattern (maintain grid)"
+      "titulo": "Button Visibility Pattern (maintain grid)",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/cadeia-de-provedores-com-failover-inteligente.md": {
-      "titulo": "Cadeia de provedores com failover inteligente"
+      "titulo": "Cadeia de provedores com failover inteligente",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/certificacao-forense-de-processos-boot-do-watchdog.md": {
-      "titulo": "Certificacao forense de processos + boot do watchdog"
+      "titulo": "Certificacao forense de processos + boot do watchdog",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/complete-build-pipeline-intelligence.md": {
-      "titulo": "Complete Build Pipeline Intelligence"
+      "titulo": "Complete Build Pipeline Intelligence",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/config-2026-07-27-4-teste-do-ciclo-de-polling.md": {
-      "titulo": "Config: 2026-07-27-4: Teste do ciclo de polling"
+      "titulo": "Config: 2026-07-27-4: Teste do ciclo de polling",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea.md": {
-      "titulo": "Config: 2026-07-27-5: Teste final do vigilante em processo real"
+      "titulo": "Config: 2026-07-27-5: Teste final do vigilante em processo real",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/config-2026-07-27-teste-do-vigilante-automático.md": {
-      "titulo": "Config: 2026-07-27: Teste do vigilante automático"
+      "titulo": "Config: 2026-07-27: Teste do vigilante automático",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/config-2026-07-28-formato-correto-do-mcp-no-opencode-1187.md": {
-      "titulo": "Config: # 2026-07-28: Formato correto do MCP no OpenCode 1.18.7"
+      "titulo": "Config: # 2026-07-28: Formato correto do MCP no OpenCode 1.18.7",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/config-opencode-v11714-schema.md": {
-      "titulo": "Config opencode v1.17.14 schema"
+      "titulo": "Config opencode v1.17.14 schema",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/controle-da-tv-lg-webos-via-ssap.md": {
-      "titulo": "Controle da TV LG webOS via SSAP"
+      "titulo": "Controle da TV LG webOS via SSAP",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/css-selector-priority-ladder.md": {
-      "titulo": "CSS selector priority ladder"
+      "titulo": "CSS selector priority ladder",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/custom-numpad-pattern.md": {
-      "titulo": "Custom Numpad Pattern"
+      "titulo": "Custom Numpad Pattern",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/dependency-inclusion-pattern.md": {
-      "titulo": "Dependency Inclusion Pattern"
+      "titulo": "Dependency Inclusion Pattern",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/dom-element-hierarchy-mapping.md": {
-      "titulo": "DOM element hierarchy mapping"
+      "titulo": "DOM element hierarchy mapping",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/dual-mode-dialog-pattern.md": {
-      "titulo": "Dual-mode Dialog Pattern"
+      "titulo": "Dual-mode Dialog Pattern",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/edittext-inline-editing-toggle.md": {
-      "titulo": "EditText inline editing toggle"
+      "titulo": "EditText inline editing toggle",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/encoding-utf-8-explicito-em-python-no-windows.md": {
-      "titulo": "Encoding UTF-8 explicito em Python no Windows"
+      "titulo": "Encoding UTF-8 explicito em Python no Windows",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/filename-artist-extraction-two-strategies.md": {
-      "titulo": "Filename artist extraction (two strategies)"
+      "titulo": "Filename artist extraction (two strategies)",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/form-starts-empty-pattern.md": {
-      "titulo": "Form Starts Empty Pattern"
+      "titulo": "Form Starts Empty Pattern",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/iframecontenteditable-text-entry.md": {
-      "titulo": "Iframe/contenteditable text entry"
+      "titulo": "Iframe/contenteditable text entry",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/ilhas-no-grafo-notas-com-grau-0-e-como-conecta-las.md": {
-      "titulo": "Ilhas no grafo: notas com grau 0 e como conecta-las"
+      "titulo": "Ilhas no grafo: notas com grau 0 e como conecta-las",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/inline-editing-pattern.md": {
-      "titulo": "Inline Editing Pattern"
+      "titulo": "Inline Editing Pattern",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/itunes-search-with-scoring-thresholds.md": {
-      "titulo": "iTunes search with scoring thresholds"
+      "titulo": "iTunes search with scoring thresholds",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/json-persistence-com-file-parameter.md": {
-      "titulo": "JSON persistence com File parameter"
+      "titulo": "JSON persistence com File parameter",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/json-persistence-pattern.md": {
-      "titulo": "JSON Persistence Pattern"
+      "titulo": "JSON Persistence Pattern",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/key-design-decisions.md": {
-      "titulo": "Key Design Decisions"
+      "titulo": "Key Design Decisions",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/keyboard-only-navigation-fallback.md": {
-      "titulo": "Keyboard-only navigation fallback"
+      "titulo": "Keyboard-only navigation fallback",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/lazy-loaded-content-detection.md": {
-      "titulo": "Lazy-loaded content detection"
+      "titulo": "Lazy-loaded content detection",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/listview-baseadapter-pattern.md": {
-      "titulo": "ListView + BaseAdapter Pattern"
+      "titulo": "ListView + BaseAdapter Pattern",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/mcp-json-rpc-notification-handling.md": {
-      "titulo": "MCP JSON-RPC notification handling"
+      "titulo": "MCP JSON-RPC notification handling",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/mcp-server-handshake-obrigatorio.md": {
-      "titulo": "MCP server handshake obrigatorio"
+      "titulo": "MCP server handshake obrigatorio",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/mcp-toolscall-method-dispatch.md": {
-      "titulo": "MCP tools/call method dispatch"
+      "titulo": "MCP tools/call method dispatch",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/metadata-search-pipeline.md": {
-      "titulo": "Metadata Search Pipeline"
+      "titulo": "Metadata Search Pipeline",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/miuihyperos-permission-dialogs.md": {
-      "titulo": "MIUI/HyperOS permission dialogs"
+      "titulo": "MIUI/HyperOS permission dialogs",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/modaldialog-overlay-detection.md": {
-      "titulo": "Modal/dialog overlay detection"
+      "titulo": "Modal/dialog overlay detection",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/numpad-with-stringbuilder-buffer.md": {
-      "titulo": "Numpad with StringBuilder buffer"
+      "titulo": "Numpad with StringBuilder buffer",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/ocr-fallback-para-elementos-sem-identificador.md": {
-      "titulo": "OCR fallback para elementos sem identificador"
+      "titulo": "OCR fallback para elementos sem identificador",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/opencode-mcp-config-format.md": {
-      "titulo": "OpenCode MCP config format"
+      "titulo": "OpenCode MCP config format",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/packageactivity-launch-pattern.md": {
-      "titulo": "Package/activity launch pattern"
+      "titulo": "Package/activity launch pattern",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/process-hierarchy-for-multi-window-apps.md": {
-      "titulo": "Process hierarchy for multi-window apps"
+      "titulo": "Process hierarchy for multi-window apps",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/registro-de-habilidades-de-jarvis.md": {
-      "titulo": "Registro de Habilidades de Jarvis"
+      "titulo": "Registro de Habilidades de Jarvis",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/renderersfactory-for-custom-audioprocessor.md": {
-      "titulo": "RenderersFactory for custom AudioProcessor"
+      "titulo": "RenderersFactory for custom AudioProcessor",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/retry-com-backoff-exponencial.md": {
-      "titulo": "Retry com backoff exponencial"
+      "titulo": "Retry com backoff exponencial",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/saudacoes-inteligentes-reconexao-vs-primeira-vez.md": {
-      "titulo": "Saudacoes inteligentes: reconexao vs primeira vez"
+      "titulo": "Saudacoes inteligentes: reconexao vs primeira vez",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/saveload-pattern.md": {
-      "titulo": "Save/Load Pattern"
+      "titulo": "Save/Load Pattern",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/secrets-guard-no-preflightcheck.md": {
-      "titulo": "Secrets Guard no preflight_check"
+      "titulo": "Secrets Guard no preflight_check",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/server-failover-com-auto-return.md": {
-      "titulo": "Server failover com auto-return"
+      "titulo": "Server failover com auto-return",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/shadow-dom-penetration.md": {
-      "titulo": "Shadow DOM penetration"
+      "titulo": "Shadow DOM penetration",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/sharedpreferences-pattern-immediate-save.md": {
-      "titulo": "SharedPreferences Pattern (immediate save)"
+      "titulo": "SharedPreferences Pattern (immediate save)",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/spa-navigation-detection.md": {
-      "titulo": "SPA navigation detection"
+      "titulo": "SPA navigation detection",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/stale-element-reference-recovery.md": {
-      "titulo": "Stale element reference recovery"
+      "titulo": "Stale element reference recovery",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/step-by-step-pipeline.md": {
-      "titulo": "Step-by-Step Pipeline"
+      "titulo": "Step-by-Step Pipeline",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/strategy-engine-v20.md": {
-      "titulo": "Strategy Engine v2.0"
+      "titulo": "Strategy Engine v2.0",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/sub-tab-pattern-nested-tabs.md": {
-      "titulo": "Sub-tab Pattern (nested tabs)"
+      "titulo": "Sub-tab Pattern (nested tabs)",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/tab-navigation-pattern.md": {
-      "titulo": "Tab Navigation Pattern"
+      "titulo": "Tab Navigation Pattern",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/taxonomia-correta-de-habilidades-jarvis.md": {
-      "titulo": "Taxonomia correta de habilidades Jarvis"
+      "titulo": "Taxonomia correta de habilidades Jarvis",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/template-matching-para-botoes-graficos.md": {
-      "titulo": "Template matching para botoes graficos"
+      "titulo": "Template matching para botoes graficos",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/theme-system-pattern.md": {
-      "titulo": "Theme System Pattern"
+      "titulo": "Theme System Pattern",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/vibration-pattern.md": {
-      "titulo": "Vibration Pattern"
+      "titulo": "Vibration Pattern",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/wait-strategy-adaptive.md": {
-      "titulo": "Wait strategy adaptive"
+      "titulo": "Wait strategy adaptive",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/widget-desktop-grafo-tempo-real.md": {
-      "titulo": "widget desktop grafo tempo real"
+      "titulo": "widget desktop grafo tempo real",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/win32-control-pattern-recognition.md": {
-      "titulo": "Win32 control pattern recognition"
+      "titulo": "Win32 control pattern recognition",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/windows-notificationballoon-dismissal.md": {
-      "titulo": "Windows notification/balloon dismissal"
+      "titulo": "Windows notification/balloon dismissal",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/windows-ui-element-tree-traversal.md": {
-      "titulo": "Windows UI element tree traversal"
+      "titulo": "Windows UI element tree traversal",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/padroes/workspace-organization.md": {
-      "titulo": "Workspace organization"
+      "titulo": "Workspace organization",
+      "data": "2026-08-07",
+      "dominio": "padroes"
     },
     "nota:conhecimento/notas/_hubs/bug-hub-bugs.md": {
-      "titulo": "Bugs e Correcoes"
+      "titulo": "Bugs e Correcoes",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/_hubs/cluster-hub-android.md": {
-      "titulo": "Cluster: Android (SDK puro)"
+      "titulo": "Cluster: Android (SDK puro)",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/_hubs/cluster-hub-cognicao.md": {
-      "titulo": "Cluster: Cognicao"
+      "titulo": "Cluster: Cognicao",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/_hubs/cluster-hub-ecossistema.md": {
-      "titulo": "Cluster: Ecossistema OpenCode"
+      "titulo": "Cluster: Ecossistema OpenCode",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/_hubs/cluster-hub-geral.md": {
-      "titulo": "Cluster: Geral"
+      "titulo": "Cluster: Geral",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/_hubs/cluster-hub-ler.md": {
-      "titulo": "Cluster: LER (Loop de Execucao)"
+      "titulo": "Cluster: LER (Loop de Execucao)",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/_hubs/cluster-hub-mp3player.md": {
-      "titulo": "Cluster: MP3 Player"
+      "titulo": "Cluster: MP3 Player",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/_hubs/cluster-hub-navegacao.md": {
-      "titulo": "Cluster: Navegacao (web/PC/mobile)"
+      "titulo": "Cluster: Navegacao (web/PC/mobile)",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/_hubs/cognitivo-hub-cognitivo.md": {
-      "titulo": "Padroes Cognitivos"
+      "titulo": "Padroes Cognitivos",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/_hubs/decisao-hub-decisoes.md": {
-      "titulo": "Decisoes"
+      "titulo": "Decisoes",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/_hubs/framework-hub-frameworks.md": {
-      "titulo": "Frameworks"
+      "titulo": "Frameworks",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/_hubs/heuristica-hub-heuristicas.md": {
-      "titulo": "Heuristicas"
+      "titulo": "Heuristicas",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/_hubs/home.md": {
-      "titulo": "Cerebro Vivo — Ecossistema UmGrau"
+      "titulo": "Cerebro Vivo — Ecossistema UmGrau",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/_hubs/missao-hub-missoes.md": {
-      "titulo": "Missoes"
+      "titulo": "Missoes",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/notas/_hubs/padrao-hub-padroes.md": {
-      "titulo": "Padroes Tecnicos"
+      "titulo": "Padroes Tecnicos",
+      "data": "2026-08-07",
+      "dominio": "notas"
     },
     "nota:conhecimento/aprendizados/2026-07-27-1.md": {
-      "titulo": "2026-07-27-1"
+      "titulo": "2026-07-27-1",
+      "data": "2026-07-27",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-27-2.md": {
-      "titulo": "2026-07-27-2"
+      "titulo": "2026-07-27-2",
+      "data": "2026-07-27",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-27-correcao-final.md": {
-      "titulo": "2026-07-27-correcao-final"
+      "titulo": "2026-07-27-correcao-final",
+      "data": "2026-07-27",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-27-scan-Biblia.md": {
-      "titulo": "2026-07-27-scan-Biblia"
+      "titulo": "2026-07-27-scan-Biblia",
+      "data": "2026-07-27",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-27-scan-CellCleaner.md": {
-      "titulo": "2026-07-27-scan-CellCleaner"
+      "titulo": "2026-07-27-scan-CellCleaner",
+      "data": "2026-07-27",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-27-scan-Mp3Player.md": {
-      "titulo": "2026-07-27-scan-Mp3Player"
+      "titulo": "2026-07-27-scan-Mp3Player",
+      "data": "2026-07-27",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-27-scan-SupermarketCalculator.md": {
-      "titulo": "2026-07-27-scan-SupermarketCalculator"
+      "titulo": "2026-07-27-scan-SupermarketCalculator",
+      "data": "2026-07-27",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-27-setup-plug-play.md": {
-      "titulo": "2026-07-27-setup-plug-play"
+      "titulo": "2026-07-27-setup-plug-play",
+      "data": "2026-07-27",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-27-unificacao-ecossistema.md": {
-      "titulo": "2026-07-27-unificacao-ecossistema"
+      "titulo": "2026-07-27-unificacao-ecossistema",
+      "data": "2026-07-27",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-28-aprendizado-automatico-sempre.md": {
-      "titulo": "2026-07-28-aprendizado-automatico-sempre"
+      "titulo": "2026-07-28-aprendizado-automatico-sempre",
+      "data": "2026-07-28",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-28-clausula-petrea-resiliencia.md": {
-      "titulo": "2026-07-28-clausula-petrea-resiliencia"
+      "titulo": "2026-07-28-clausula-petrea-resiliencia",
+      "data": "2026-07-28",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-28-fix-botoes-filtro-mp3player.md": {
-      "titulo": "2026-07-28-fix-botoes-filtro-mp3player"
+      "titulo": "2026-07-28-fix-botoes-filtro-mp3player",
+      "data": "2026-07-28",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-28-formato-mcp-opencode.md": {
-      "titulo": "2026-07-28-formato-mcp-opencode"
+      "titulo": "2026-07-28-formato-mcp-opencode",
+      "data": "2026-07-28",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-28-jarvis-arquitetura.md": {
-      "titulo": "2026-07-28-jarvis-arquitetura"
+      "titulo": "2026-07-28-jarvis-arquitetura",
+      "data": "2026-07-28",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-28-scan-Biblia.md": {
-      "titulo": "2026-07-28-scan-Biblia"
+      "titulo": "2026-07-28-scan-Biblia",
+      "data": "2026-07-28",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-28-scan-CellCleaner.md": {
-      "titulo": "2026-07-28-scan-CellCleaner"
+      "titulo": "2026-07-28-scan-CellCleaner",
+      "data": "2026-07-28",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-28-scan-Mp3Player.md": {
-      "titulo": "2026-07-28-scan-Mp3Player"
+      "titulo": "2026-07-28-scan-Mp3Player",
+      "data": "2026-07-28",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-28-scan-SupermarketCalculator.md": {
-      "titulo": "2026-07-28-scan-SupermarketCalculator"
+      "titulo": "2026-07-28-scan-SupermarketCalculator",
+      "data": "2026-07-28",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-29-clima-api.md": {
-      "titulo": "2026-07-29-clima-api"
+      "titulo": "2026-07-29-clima-api",
+      "data": "2026-07-29",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-29-mcp-integration.md": {
-      "titulo": "2026-07-29-mcp-integration"
+      "titulo": "2026-07-29-mcp-integration",
+      "data": "2026-07-29",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-29-scan-Biblia.md": {
-      "titulo": "2026-07-29-scan-Biblia"
+      "titulo": "2026-07-29-scan-Biblia",
+      "data": "2026-07-29",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-29-scan-CellCleaner.md": {
-      "titulo": "2026-07-29-scan-CellCleaner"
+      "titulo": "2026-07-29-scan-CellCleaner",
+      "data": "2026-07-29",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-29-scan-Mp3Player.md": {
-      "titulo": "2026-07-29-scan-Mp3Player"
+      "titulo": "2026-07-29-scan-Mp3Player",
+      "data": "2026-07-29",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-29-scan-SupermarketCalculator.md": {
-      "titulo": "2026-07-29-scan-SupermarketCalculator"
+      "titulo": "2026-07-29-scan-SupermarketCalculator",
+      "data": "2026-07-29",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-30-android-diagnostics-skill.md": {
-      "titulo": "2026-07-30-android-diagnostics-skill"
+      "titulo": "2026-07-30-android-diagnostics-skill",
+      "data": "2026-07-30",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-30-scan-Biblia.md": {
-      "titulo": "2026-07-30-scan-Biblia"
+      "titulo": "2026-07-30-scan-Biblia",
+      "data": "2026-07-30",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-30-scan-CellCleaner.md": {
-      "titulo": "2026-07-30-scan-CellCleaner"
+      "titulo": "2026-07-30-scan-CellCleaner",
+      "data": "2026-07-30",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-30-scan-Mp3Player.md": {
-      "titulo": "2026-07-30-scan-Mp3Player"
+      "titulo": "2026-07-30-scan-Mp3Player",
+      "data": "2026-07-30",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-30-scan-SupermarketCalculator.md": {
-      "titulo": "2026-07-30-scan-SupermarketCalculator"
+      "titulo": "2026-07-30-scan-SupermarketCalculator",
+      "data": "2026-07-30",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-31-clima-open-meteo-saudacao-local.md": {
-      "titulo": "Aprendizado — 2026-07-31 — Clima Open-Meteo + saudação local no app"
+      "titulo": "Aprendizado — 2026-07-31 — Clima Open-Meteo + saudação local no app",
+      "data": "2026-07-31",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-31-fonemas-ssml-reativados-fallback-seguro.md": {
-      "titulo": "2026-07-31-fonemas-ssml-reativados-fallback-seguro"
+      "titulo": "2026-07-31-fonemas-ssml-reativados-fallback-seguro",
+      "data": "2026-07-31",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-31-hora-tela-vs-audio.md": {
-      "titulo": "2026-07-31-hora-tela-vs-audio"
+      "titulo": "2026-07-31-hora-tela-vs-audio",
+      "data": "2026-07-31",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-31-horas-faladas-tts-jarvis.md": {
-      "titulo": "2026-07-31-horas-faladas-tts-jarvis"
+      "titulo": "2026-07-31-horas-faladas-tts-jarvis",
+      "data": "2026-07-31",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-31-pontuacao-transcricoes-de-voz-jarvis.md": {
-      "titulo": "2026-07-31-pontuacao-transcricoes-de-voz-jarvis"
+      "titulo": "2026-07-31-pontuacao-transcricoes-de-voz-jarvis",
+      "data": "2026-07-31",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-31-recuperacao-jarvis-novo-pc.md": {
-      "titulo": "2026-07-31 - Recuperação do Jarvis no novo PC"
+      "titulo": "2026-07-31 - Recuperação do Jarvis no novo PC",
+      "data": "2026-07-31",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-31-reorg-habilidades-catalogo-unico.md": {
-      "titulo": "2026-07-31-reorg-habilidades-catalogo-unico"
+      "titulo": "2026-07-31-reorg-habilidades-catalogo-unico",
+      "data": "2026-07-31",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-07-31-saudacao-formatada-pt-br-monitor-saude.md": {
-      "titulo": "Aprendizado — 2026-07-31 — Saudação formatada em pt-BR + monitor de saúde"
+      "titulo": "Aprendizado — 2026-07-31 — Saudação formatada em pt-BR + monitor de saúde",
+      "data": "2026-07-31",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-01-clausula-petrea-comunicacao-audio.md": {
-      "titulo": "2026-08-01-clausula-petrea-comunicacao-audio"
+      "titulo": "2026-08-01-clausula-petrea-comunicacao-audio",
+      "data": "2026-08-01",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-01-controle-total-tv-lg-webos.md": {
-      "titulo": "2026-08-01-controle-total-tv-lg-webos"
+      "titulo": "2026-08-01-controle-total-tv-lg-webos",
+      "data": "2026-08-01",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-01-gramatica-portugues-br.md": {
-      "titulo": "2026-08-01-gramatica-portugues-br"
+      "titulo": "2026-08-01-gramatica-portugues-br",
+      "data": "2026-08-01",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-01-guia-controle-tv-lg-webos.md": {
-      "titulo": "2026-08-01-guia-controle-tv-lg-webos"
+      "titulo": "2026-08-01-guia-controle-tv-lg-webos",
+      "data": "2026-08-01",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-01-habilidade-navegacao-perita.md": {
-      "titulo": "2026-08-01-habilidade-navegacao-perita"
+      "titulo": "2026-08-01-habilidade-navegacao-perita",
+      "data": "2026-08-01",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-01-instrucao-permanente-confirmacao-em-audio.md": {
-      "titulo": "2026-08-01-instrucao-permanente-confirmacao-em-audio"
+      "titulo": "2026-08-01-instrucao-permanente-confirmacao-em-audio",
+      "data": "2026-08-01",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-01-jarvis-celular-e-pc-um-so.md": {
-      "titulo": "2026-08-01-jarvis-celular-e-pc-um-so"
+      "titulo": "2026-08-01-jarvis-celular-e-pc-um-so",
+      "data": "2026-08-01",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-01-opencode-desktop-crash-gpu-memoria.md": {
-      "titulo": "2026-08-01-opencode-desktop-crash-gpu-memoria"
+      "titulo": "2026-08-01-opencode-desktop-crash-gpu-memoria",
+      "data": "2026-08-01",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-01-politica-resposta-rapida-caminhos-rapidos.md": {
-      "titulo": "2026-08-01-politica-resposta-rapida-caminhos-rapidos"
+      "titulo": "2026-08-01-politica-resposta-rapida-caminhos-rapidos",
+      "data": "2026-08-01",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-01-pontuacao-transcricao-volta-ao-balao-app.md": {
-      "titulo": "2026-08-01-pontuacao-transcricao-volta-ao-balao-app"
+      "titulo": "2026-08-01-pontuacao-transcricao-volta-ao-balao-app",
+      "data": "2026-08-01",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-01-pronuncia-jarvis.md": {
-      "titulo": "2026-08-01-pronuncia-jarvis"
+      "titulo": "2026-08-01-pronuncia-jarvis",
+      "data": "2026-08-01",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-aprendizado-tv-lg-webos.md": {
-      "titulo": "2026-08-02-aprendizado-tv-lg-webos"
+      "titulo": "2026-08-02-aprendizado-tv-lg-webos",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-ativacao-eco-voz.md": {
-      "titulo": "ClÃ¡usula PÃ©trea â€” AtivaÃ§Ã£o de Voz (Eco System)"
+      "titulo": "ClÃ¡usula PÃ©trea â€” AtivaÃ§Ã£o de Voz (Eco System)",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-controle-tv-lg-webos-ssap.md": {
-      "titulo": "Controle da TV LG webOS via SSAP"
+      "titulo": "Controle da TV LG webOS via SSAP",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-corrigido-travamento-widget-pywebview.md": {
-      "titulo": "2026-08-02-corrigido-travamento-widget-pywebview"
+      "titulo": "2026-08-02-corrigido-travamento-widget-pywebview",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-ecosystem-sync-um-comando.md": {
-      "titulo": "2026-08-02-ecosystem-sync-um-comando"
+      "titulo": "2026-08-02-ecosystem-sync-um-comando",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-evolucao-tts-naturalidade-ssml.md": {
-      "titulo": "EvoluÃ§Ã£o do TTS Jarvis â€” naturalidade via SSML"
+      "titulo": "EvoluÃ§Ã£o do TTS Jarvis â€” naturalidade via SSML",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-feedback-continuo-tarefas-longas.md": {
-      "titulo": "2026-08-02-feedback-continuo-tarefas-longas"
+      "titulo": "2026-08-02-feedback-continuo-tarefas-longas",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-grafo-vis-network-bug-string-js-json-dumps.md": {
-      "titulo": "2026-08-02-grafo-vis-network-bug-string-js-json-dumps"
+      "titulo": "2026-08-02-grafo-vis-network-bug-string-js-json-dumps",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-mcp-obsidian-server.md": {
-      "titulo": "MCP Obsidian server â€” vault consumido pelo LLM"
+      "titulo": "MCP Obsidian server â€” vault consumido pelo LLM",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-mcp-servers-node-criados.md": {
-      "titulo": "Servidores MCP Node criados e validados"
+      "titulo": "Servidores MCP Node criados e validados",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-pontes-inter-cluster-cerebro-vivo-grafo.md": {
-      "titulo": "2026-08-02-pontes-inter-cluster-cerebro-vivo-grafo"
+      "titulo": "2026-08-02-pontes-inter-cluster-cerebro-vivo-grafo",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-regras-3-camadas-sync-deteccao.md": {
-      "titulo": "2026-08-02-regras-3-camadas-sync-deteccao"
+      "titulo": "2026-08-02-regras-3-camadas-sync-deteccao",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-regras-obediencia-agents.md": {
-      "titulo": "2026-08-02-regras-obediencia-agents"
+      "titulo": "2026-08-02-regras-obediencia-agents",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-secrets-guard-preflight.md": {
-      "titulo": "Secrets Guard no preflight_check"
+      "titulo": "Secrets Guard no preflight_check",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-setup-scheduled-task-vigilante.md": {
-      "titulo": "2026-08-02-setup-scheduled-task-vigilante"
+      "titulo": "2026-08-02-setup-scheduled-task-vigilante",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-tts-prosody-dinamico-pronuncia-autoevolutiva.md": {
-      "titulo": "2026-08-02-tts-prosody-dinamico-pronuncia-autoevolutiva"
+      "titulo": "2026-08-02-tts-prosody-dinamico-pronuncia-autoevolutiva",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-vault-obsidian-cerebro-vivo-grafo.md": {
-      "titulo": "2026-08-02-vault-obsidian-cerebro-vivo-grafo"
+      "titulo": "2026-08-02-vault-obsidian-cerebro-vivo-grafo",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-vault-obsidian-fonte-viva.md": {
-      "titulo": "2026-08-02-vault-obsidian-fonte-viva"
+      "titulo": "2026-08-02-vault-obsidian-fonte-viva",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-vazamento-caracteres-tts-edge-tts-escapa-ssml.md": {
-      "titulo": "2026-08-02-vazamento-caracteres-tts-edge-tts-escapa-ssml"
+      "titulo": "2026-08-02-vazamento-caracteres-tts-edge-tts-escapa-ssml",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-vigilante-inativo-scheduled-task-faltante.md": {
-      "titulo": "2026-08-02-vigilante-inativo-scheduled-task-faltante"
+      "titulo": "2026-08-02-vigilante-inativo-scheduled-task-faltante",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-widget-desktop-frameless-persistente.md": {
-      "titulo": "2026-08-02-widget-desktop-frameless-persistente"
+      "titulo": "2026-08-02-widget-desktop-frameless-persistente",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-02-widget-desktop-grafo-tempo-real.md": {
-      "titulo": "2026-08-02-widget-desktop-grafo-tempo-real"
+      "titulo": "2026-08-02-widget-desktop-grafo-tempo-real",
+      "data": "2026-08-02",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-adb-remoto-tailscale-rota-ipv4-ipv6.md": {
-      "titulo": "2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6)"
+      "titulo": "2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6)",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-build-android-lento-por-falta-ram.md": {
-      "titulo": "2026-08-03: Build Android lento travava por falta de RAM"
+      "titulo": "2026-08-03: Build Android lento travava por falta de RAM",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-consolidacao-projetos-ecosystem.md": {
-      "titulo": "Consolidacao de projetos em EcoSystemUmGrau/Projetos"
+      "titulo": "Consolidacao de projetos em EcoSystemUmGrau/Projetos",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-gitmodules-projetos-submodules.md": {
-      "titulo": "Formalizacao de submodules dos projetos"
+      "titulo": "Formalizacao de submodules dos projetos",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-ids-duplicados-vis-dataset-grafo-branco.md": {
-      "titulo": "Bug grafo em branco — ids duplicados no vis.DataSet"
+      "titulo": "Bug grafo em branco — ids duplicados no vis.DataSet",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-scan-BibliaEstudoCompleta.md": {
-      "titulo": "2026-08-03-scan-BibliaEstudoCompleta"
+      "titulo": "2026-08-03-scan-BibliaEstudoCompleta",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-scan-CellCleaner.md": {
-      "titulo": "2026-08-03-scan-CellCleaner"
+      "titulo": "2026-08-03-scan-CellCleaner",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-scan-EcoSystemUmGrau.md": {
-      "titulo": "2026-08-03-scan-EcoSystemUmGrau"
+      "titulo": "2026-08-03-scan-EcoSystemUmGrau",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-scan-Mp3Player.md": {
-      "titulo": "2026-08-03-scan-Mp3Player"
+      "titulo": "2026-08-03-scan-Mp3Player",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-scan-OrquestradorAPK-FLUTTER.md": {
-      "titulo": "2026-08-03-scan-OrquestradorAPK-FLUTTER"
+      "titulo": "2026-08-03-scan-OrquestradorAPK-FLUTTER",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-scan-SupermarketCalculator.md": {
-      "titulo": "2026-08-03-scan-SupermarketCalculator"
+      "titulo": "2026-08-03-scan-SupermarketCalculator",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-scan-WindowsMaintenanceSuite_v3.md": {
-      "titulo": "2026-08-03-scan-WindowsMaintenanceSuite_v3"
+      "titulo": "2026-08-03-scan-WindowsMaintenanceSuite_v3",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-scan-claude-code-extra-agents.md": {
-      "titulo": "2026-08-03-scan-claude-code-extra-agents"
+      "titulo": "2026-08-03-scan-claude-code-extra-agents",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-scan-compiladorAPK.md": {
-      "titulo": "2026-08-03-scan-compiladorAPK"
+      "titulo": "2026-08-03-scan-compiladorAPK",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-sync-github-organizacao-repos.md": {
-      "titulo": "Sync GitHub e organizacao de repos"
+      "titulo": "Sync GitHub e organizacao de repos",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-widget-geometria-travada-384x100.md": {
-      "titulo": "Widget \"Cerebro Vivo\" — geometria travada em 384x100 e detalhe do container vis.js"
+      "titulo": "Widget \"Cerebro Vivo\" — geometria travada em 384x100 e detalhe do container vis.js",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-widget-pywebview-bridge-js-nao-funcionava.md": {
-      "titulo": "Widget pywebview edgechromium: bridge JS nunca funcionava"
+      "titulo": "Widget pywebview edgechromium: bridge JS nunca funcionava",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-03-wireless-debugging-porta-pareamento-vs-conexao.md": {
-      "titulo": "2026-08-03: Wireless Debugging Android - porta de pareamento vs porta de conexao"
+      "titulo": "2026-08-03: Wireless Debugging Android - porta de pareamento vs porta de conexao",
+      "data": "2026-08-03",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-04-48-skills-dominios-tecnicos.md": {
-      "titulo": "48 skills tecnicas do plano (96 no total)"
+      "titulo": "48 skills tecnicas do plano (96 no total)",
+      "data": "2026-08-04",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-04-context-engine-manifesto-dominios-mcp.md": {
-      "titulo": "context-engine + manifesto + domínios multimídia/comportamentais"
+      "titulo": "context-engine + manifesto + domínios multimídia/comportamentais",
+      "data": "2026-08-04",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-04-foco-vocal-jarvis-orienta-grafo.md": {
-      "titulo": "2026-08-04: Foco vocal via Jarvis — voz orienta o grafo do conhecimento"
+      "titulo": "2026-08-04: Foco vocal via Jarvis — voz orienta o grafo do conhecimento",
+      "data": "2026-08-04",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-04-grafo-movimento-organico-vis-network.md": {
-      "titulo": "2026-08-04-grafo-movimento-organico-vis-network"
+      "titulo": "2026-08-04-grafo-movimento-organico-vis-network",
+      "data": "2026-08-04",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-04-grafo-pseudo-3d-profundidade-viva.md": {
-      "titulo": "2026-08-04: Pseudo-3D vivo — profundidade sem WebGL"
+      "titulo": "2026-08-04: Pseudo-3D vivo — profundidade sem WebGL",
+      "data": "2026-08-04",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-04-grafo-zoom-microscopio-expandir-cerebro-vivo.md": {
-      "titulo": "2026-08-04: Refinamento do grafo — zoom microscópio, expandir e cognição viva"
+      "titulo": "2026-08-04: Refinamento do grafo — zoom microscópio, expandir e cognição viva",
+      "data": "2026-08-04",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-04-ilhas-grau0-wikilinks-slug.md": {
-      "titulo": "Ilhas no grafo: notas com grau 0 e como conecta-las"
+      "titulo": "Ilhas no grafo: notas com grau 0 e como conecta-las",
+      "data": "2026-08-04",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-04-jarvis-celular-conectado-bridge-tailscale.md": {
-      "titulo": "2026-08-04: Jarvis do celular conectado ao bridge via Tailscale"
+      "titulo": "2026-08-04: Jarvis do celular conectado ao bridge via Tailscale",
+      "data": "2026-08-04",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-04-labels-ocultas-padrao-botao-menus-persistente.md": {
-      "titulo": "2026-08-04: Labels ocultas por padrão + botão de ocultar menus persistente"
+      "titulo": "2026-08-04: Labels ocultas por padrão + botão de ocultar menus persistente",
+      "data": "2026-08-04",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-04-malha-viva-onda-viajante-profundidade-giro-3d.md": {
-      "titulo": "2026-08-04: Malha viva — onda viajante de profundidade (giro 3D natural) + fix clique"
+      "titulo": "2026-08-04: Malha viva — onda viajante de profundidade (giro 3D natural) + fix clique",
+      "data": "2026-08-04",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-04-motor-criticalidade-avalanches-neurais.md": {
-      "titulo": "Motor de Criticalidade Auto-Organizada e Avalanches Neurais"
+      "titulo": "Motor de Criticalidade Auto-Organizada e Avalanches Neurais",
+      "data": "2026-08-04",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-04-persistencia-conexao-jarvis-verificacao.md": {
-      "titulo": "2026-08-04: Persistencia da conexao do Jarvis"
+      "titulo": "2026-08-04: Persistencia da conexao do Jarvis",
+      "data": "2026-08-04",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-04-reorg-habilidades-mcp-dominios.md": {
-      "titulo": "Reorganização: Habilidades dentro de MCP por domínio"
+      "titulo": "Reorganização: Habilidades dentro de MCP por domínio",
+      "data": "2026-08-04",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-04-tamanho-por-uso-real-pythonw-sem-console.md": {
-      "titulo": "2026-08-04: Tamanho por uso real + iniciar GUI com pythonw"
+      "titulo": "2026-08-04: Tamanho por uso real + iniciar GUI com pythonw",
+      "data": "2026-08-04",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-04-watchdog-persistente-start-process-aspas.md": {
-      "titulo": "2026-08-04-watchdog-persistente-start-process-aspas"
+      "titulo": "2026-08-04-watchdog-persistente-start-process-aspas",
+      "data": "2026-08-04",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-04-widget-grafo-turbinado.md": {
-      "titulo": "Widget do grafo turbinado (velocidade + tamanho + tooltips + MCPs/Conhecimento)"
+      "titulo": "Widget do grafo turbinado (velocidade + tamanho + tooltips + MCPs/Conhecimento)",
+      "data": "2026-08-04",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-05-adb-perito-skill.md": {
-      "titulo": "ADB Perito — Skill Completo"
+      "titulo": "ADB Perito — Skill Completo",
+      "data": "2026-08-05",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-05-cluster-mapper-aprendizado.md": {
-      "titulo": "ClusterMapper — Mapeamento Aprendido de Notas/Nós (2026-08-05)"
+      "titulo": "ClusterMapper — Mapeamento Aprendido de Notas/Nós (2026-08-05)",
+      "data": "2026-08-05",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-05-fisica-animacao-grafo-orbital.md": {
-      "titulo": "Física e Animação Viva do Grafo — Deriva Orbital + Zoom Suave (2026-08-05)"
+      "titulo": "Física e Animação Viva do Grafo — Deriva Orbital + Zoom Suave (2026-08-05)",
+      "data": "2026-08-05",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-05-painel-controles-posicionamento.md": {
-      "titulo": "Painel de Controles do Grafo — Posicionamento Seguro (2026-08-05)"
+      "titulo": "Painel de Controles do Grafo — Posicionamento Seguro (2026-08-05)",
+      "data": "2026-08-05",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-05-runtime-camada1-estado-bootloader.md": {
-      "titulo": "Runtime Persistente — Camada 1: Estado + Bootloader (2026-08-05)"
+      "titulo": "Runtime Persistente — Camada 1: Estado + Bootloader (2026-08-05)",
+      "data": "2026-08-05",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-05-runtime-camada2-kernel-constituicao.md": {
-      "titulo": "Runtime Persistente — Camada 2: Kernel + Constituicao (2026-08-05)"
+      "titulo": "Runtime Persistente — Camada 2: Kernel + Constituicao (2026-08-05)",
+      "data": "2026-08-05",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-05-runtime-camada3-context-auditor.md": {
-      "titulo": "Runtime Persistente — Camada 3: Context Loader + Auditor (2026-08-05)"
+      "titulo": "Runtime Persistente — Camada 3: Context Loader + Auditor (2026-08-05)",
+      "data": "2026-08-05",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-05-scan-EcoSystemUmGrau.md": {
-      "titulo": "2026-08-05-scan-EcoSystemUmGrau"
+      "titulo": "2026-08-05-scan-EcoSystemUmGrau",
+      "data": "2026-08-05",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-05-widget-busca-stats-orbita.md": {
-      "titulo": "Widget Grafo: Busca, Stats Vivos e Controle de Orbita (2026-08-05)"
+      "titulo": "Widget Grafo: Busca, Stats Vivos e Controle de Orbita (2026-08-05)",
+      "data": "2026-08-05",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-06-adb-expert-knowledge.md": {
-      "titulo": "ADB (Android Debug Bridge) — Domínio Completo"
+      "titulo": "ADB (Android Debug Bridge) — Domínio Completo",
+      "data": "2026-08-06",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-06-adb-perito-expansao-cmd.md": {
-      "titulo": "ADB Perito - Expansao Completa do Subsystem `cmd`"
+      "titulo": "ADB Perito - Expansao Completa do Subsystem `cmd`",
+      "data": "2026-08-06",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-06-algoritmo-recuperacao-rapida-conexao.md": {
-      "titulo": "Algoritmo de Recuperacao Rapida de Conexao"
+      "titulo": "Algoritmo de Recuperacao Rapida de Conexao",
+      "data": "2026-08-06",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-06-bug-pid-watchdog-variavel-automatica.md": {
-      "titulo": "Bug: parametro Pid e variavel automatica do PowerShell"
+      "titulo": "Bug: parametro Pid e variavel automatica do PowerShell",
+      "data": "2026-08-06",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-06-certificacao-forense-e-boot-do-watchdog.md": {
-      "titulo": "Certificacao forense de processos + boot do watchdog"
+      "titulo": "Certificacao forense de processos + boot do watchdog",
+      "data": "2026-08-06",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-06-clausula-petrea-protecao-desktop-e-resiliencia-bridge.md": {
-      "titulo": "Clausula Petrea: protecao do OpenCode desktop + resiliencia da bridge"
+      "titulo": "Clausula Petrea: protecao do OpenCode desktop + resiliencia da bridge",
+      "data": "2026-08-06",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-06-encerramento-boot-runtime.md": {
-      "titulo": "Encerramento e Boot do Runtime"
+      "titulo": "Encerramento e Boot do Runtime",
+      "data": "2026-08-06",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-06-implementacao-recuperacao-conexao.md": {
-      "titulo": "Implementacao Completa - Recuperacao Rapida de Conexao"
+      "titulo": "Implementacao Completa - Recuperacao Rapida de Conexao",
+      "data": "2026-08-06",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-06-janela-conversa-ativa-suprime-saudacao.md": {
-      "titulo": "2026-08-06-janela-conversa-ativa-suprime-saudacao"
+      "titulo": "2026-08-06-janela-conversa-ativa-suprime-saudacao",
+      "data": "2026-08-06",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-06-jarvis-perito-adb-mapeamento-completo.md": {
-      "titulo": "Jarvis — Perito ADB"
+      "titulo": "Jarvis — Perito ADB",
+      "data": "2026-08-06",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-06-jarvis-perito-adb.md": {
-      "titulo": "Jarvis Perito em ADB — Aprendizado Completo"
+      "titulo": "Jarvis Perito em ADB — Aprendizado Completo",
+      "data": "2026-08-06",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-06-recuperacao-rapida-conexao.md": {
-      "titulo": "Recuperacao Rapida de Conexao — Pesquisa e Evolucao"
+      "titulo": "Recuperacao Rapida de Conexao — Pesquisa e Evolucao",
+      "data": "2026-08-06",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-06-saudacoes-inteligentes-reconexao-vs-primeira-vez.md": {
-      "titulo": "Saudacoes inteligentes: reconexao vs primeira vez"
+      "titulo": "Saudacoes inteligentes: reconexao vs primeira vez",
+      "data": "2026-08-06",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-06-scan-EcoSystemUmGrau.md": {
-      "titulo": "2026-08-06-scan-EcoSystemUmGrau"
+      "titulo": "2026-08-06-scan-EcoSystemUmGrau",
+      "data": "2026-08-06",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-06-teste-integracao-ler-completo.md": {
-      "titulo": "Teste de Integracao LER Completo - 2026-08-06"
+      "titulo": "Teste de Integracao LER Completo - 2026-08-06",
+      "data": "2026-08-06",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-06-widget-grafo-causa-raiz-travamento-e-loop-regenerar.md": {
-      "titulo": "2026-08-06-widget-grafo-causa-raiz-travamento-e-loop-regenerar"
+      "titulo": "2026-08-06-widget-grafo-causa-raiz-travamento-e-loop-regenerar",
+      "data": "2026-08-06",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-06-widget-grafo-correcao-bugs-e-teste-completo.md": {
-      "titulo": "Widget Grafo Desktop — Correção de Bugs + Teste Completo (2026-08-06)"
+      "titulo": "Widget Grafo Desktop — Correção de Bugs + Teste Completo (2026-08-06)",
+      "data": "2026-08-06",
+      "dominio": "aprendizados"
+    },
+    "nota:conhecimento/aprendizados/2026-08-07-memoria-semantica-notas-obsidian.md": {
+      "titulo": "2026-08-07 - Memoria semantica aprofundada com notas Obsidian",
+      "data": "2026-08-07",
+      "dominio": "aprendizados"
     },
     "nota:conhecimento/aprendizados/2026-08-07-scan-EcoSystemUmGrau.md": {
-      "titulo": "2026-08-07-scan-EcoSystemUmGrau"
+      "titulo": "2026-08-07-scan-EcoSystemUmGrau",
+      "data": "2026-08-07",
+      "dominio": "aprendizados"
+    },
+    "nota:docs/EcossistemaAgentes.md": {
+      "titulo": "Ecossistema Inteligente de Agentes",
+      "data": "2026-08-02",
+      "dominio": "docs"
+    },
+    "nota:docs/auditoria_jarvis_2026-07-29.md": {
+      "titulo": "Auditoria Arquitetural — Jarvis (Vox UmGrau)",
+      "data": "2026-07-31",
+      "dominio": "docs"
+    },
+    "nota:docs/jarvis-arquitetura.md": {
+      "titulo": "Arquitetura Jarvis — Assistente de Voz do Ecossistema",
+      "data": "2026-07-31",
+      "dominio": "docs"
     }
   },
-  "vocab_size": 40151,
-  "count": 600,
-  "count_mem": 125,
-  "count_notas": 475
+  "vocab_size": 41015,
+  "count": 612,
+  "count_mem": 133,
+  "count_notas": 479
 }

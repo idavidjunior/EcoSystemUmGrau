@@ -32,7 +32,28 @@ VECTORIZER_FILE = os.path.join(MEM_DIR, 'tfidf_vectorizer.pkl')
 NOTAS_DIRS = [
     os.path.join(BASE, 'conhecimento', 'notas'),
     os.path.join(BASE, 'conhecimento', 'aprendizados'),
+    os.path.join(BASE, 'docs'),
+    os.path.join(BASE, 'documentos'),
 ]
+
+# Bônus de domínio aplicado ao score final (relevância de contexto).
+# Notas recentes/aprendizados pesam mais que memoria genérica.
+DOMAIN_BOOST = {
+    'aprendizados': 0.12,
+    'docs': 0.10,
+    'padroes': 0.08,
+    'decisoes': 0.05,
+    'notas': 0.03,
+    'mem': 0.0,
+}
+
+# Contador de acesso por doc (frequência de uso -> boost). Persistido entre execuções.
+ACCESS_FILE = os.path.join(MEM_DIR, 'tfidf_acesso.json')
+
+# Modelo de embeddings densos (camada extra, opcional). Só é carregado se já
+# estiver em cache — nunca força download de centenas de MB.
+DENSE_MODEL = 'paraphrase-multilingual-MiniLM-L12-v2'
+DENSE_MATRIX_FILE = os.path.join(MEM_DIR, 'dense_matrix.npy')
 
 # Cache estatico (carregado uma vez por processo; cold ~10s, quente <50ms).
 _CACHE = None
@@ -85,8 +106,41 @@ def _nota_texto(path: str) -> tuple:
     return title, f'{title} {tags} {corpo[:2500]}'.strip().lower()
 
 
+def _nota_data(path: str) -> str:
+    """Extrai data da nota no formato YYYY-MM-DD (do filename ou frontmatter).
+
+    Filename de aprendizados: '2026-08-06-saudacoes-...md'. Fallback: mtime.
+    """
+    base = os.path.basename(path).replace('\ufeff', '')
+    m = re.match(r'^(\d{4}-\d{2}-\d{2})', base)
+    if m:
+        return m.group(1)
+    try:
+        fm = re.search(r'^---\s*\n(.*?)\n---', open(path, encoding='utf-8', errors='replace').read(), re.S | re.M)
+        if fm:
+            dm = re.search(r'^\s*data\s*:\s*["\']?(\d{4}-\d{2}-\d{2})', fm.group(1), re.M)
+            if dm:
+                return dm.group(1)
+    except Exception:
+        pass
+    try:
+        import time as _time
+        return _time.strftime('%Y-%m-%d', _time.localtime(os.path.getmtime(path)))
+    except Exception:
+        return ''
+
+
+def _nota_dominio(rel: str) -> str:
+    """Segmento de dominio da nota (aprendizados/docs/padroes/decisoes/notas)."""
+    low = rel.lower()
+    for key in ('aprendizados', 'docs', 'padroes', 'decisoes'):
+        if f'/{key}/' in low or low.startswith(key + '/'):
+            return key
+    return 'notas'
+
+
 def _carregar_notas() -> list:
-    """Lista de dicts {id, titulo, texto} para todas as notas Obsidian."""
+    """Lista de dicts {id, titulo, texto, data, dominio} para todas as notas Obsidian."""
     notas = []
     seen = set()
     for d in NOTAS_DIRS:
@@ -103,7 +157,13 @@ def _carregar_notas() -> list:
                 seen.add(rel)
                 titulo, texto = _nota_texto(path)
                 if texto:
-                    notas.append({'id': f'nota:{rel}', 'titulo': titulo, 'texto': texto})
+                    notas.append({
+                        'id': f'nota:{rel}',
+                        'titulo': titulo,
+                        'texto': texto,
+                        'data': _nota_data(path),
+                        'dominio': _nota_dominio(rel),
+                    })
     return notas
 
 
@@ -133,7 +193,9 @@ def build_index(verbose: bool = False) -> dict:
         corresp_ids.append(n['id'])
         corresp_kinds.append('nota')
         corpus.append(n['texto'])
-        nota_meta[n['id']] = {'titulo': n['titulo']}
+        nota_meta[n['id']] = {'titulo': n['titulo'],
+                              'data': n.get('data', ''),
+                              'dominio': n.get('dominio', 'notas')}
 
     vectorizer = TfidfVectorizer(
         ngram_range=(1, 2),
@@ -201,6 +263,7 @@ def search(query: str, k: int = 5, min_score: float = 0.05) -> list:
             'vectorizer': vectorizer,
             'mem_by_id': {m['id']: m for m in memories},
             'cosine': cosine_similarity,
+            'acesso': _carregar_acesso(),
         }
 
     c = _CACHE
@@ -209,19 +272,34 @@ def search(query: str, k: int = 5, min_score: float = 0.05) -> list:
 
     idx_sorted = np.argsort(sims)[::-1]
     results = []
-    for idx in idx_sorted[:k * 3]:
+    seen_ids = set()
+    for idx in idx_sorted:
         score = float(sims[idx])
         if score < min_score:
             break
         doc_id = c['meta']['ids'][idx]
+        if doc_id in seen_ids:
+            continue
+        seen_ids.add(doc_id)
         kind = c['meta']['kinds'][idx]
+        # Bônus de recência + domínio + acesso sobre o score TF-IDF.
+        bonus = 0.0
+        if kind == 'nota':
+            info = c['meta'].get('notas', {}).get(doc_id, {})
+            bonus = _boost_recencia(info.get('data', '')) \
+                + DOMAIN_BOOST.get(info.get('dominio', 'notas'), 0.03) \
+                + _boost_acesso(doc_id, c['acesso'])
+        else:
+            bonus = DOMAIN_BOOST.get('mem', 0.0) + _boost_acesso(doc_id, c['acesso'])
+        final_score = score + bonus
         if kind == 'nota':
             info = c['meta'].get('notas', {}).get(doc_id, {})
             results.append({
                 'id': doc_id,
                 'kind': 'nota',
                 'source': 'nota',
-                'score': round(score, 4),
+                'score': round(final_score, 4),
+                'base': round(score, 4),
                 'title': info.get('titulo', doc_id)[:120],
                 'summary': '',
             })
@@ -233,13 +311,21 @@ def search(query: str, k: int = 5, min_score: float = 0.05) -> list:
                     'id': doc_id,
                     'kind': kind,
                     'source': 'mem',
-                    'score': round(score, 4),
+                    'score': round(final_score, 4),
+                    'base': round(score, 4),
                     'title': titulo[:120],
                     'summary': mem.get('summary', mem.get('resumo', '')),
                 })
-        if len(results) >= k:
-            break
-    return results
+
+    # Ranking final pelo score ponderado.
+    results.sort(key=lambda r: r['score'], reverse=True)
+
+    # Registra acesso dos docs retornados (persistido para reforçar frequência).
+    for r in results[:k]:
+        c['acesso'][r['id']] = c['acesso'].get(r['id'], 0) + 1
+    _salvar_acesso(c['acesso'])
+
+    return results[:k]
 
 
 def cli_main(argv):
@@ -265,6 +351,74 @@ def cli_main(argv):
         return 0
     print(f'comando desconhecido: {cmd}')
     return 1
+
+
+def _carregar_acesso() -> dict:
+    """Carrega o contador de acesso por doc (doc_id -> n)."""
+    try:
+        with open(ACCESS_FILE, encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def _salvar_acesso(acesso: dict) -> None:
+    try:
+        with open(ACCESS_FILE, 'w', encoding='utf-8') as f:
+            json.dump(acesso, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+
+
+def _boost_acesso(doc_id: str, acesso: dict) -> float:
+    """Boost por frequencia de uso: quanto mais consultado, maior (limitado a +0.1)."""
+    return min(acesso.get(doc_id, 0), 10) * 0.01
+
+
+def _boost_recencia(data: str, dias_meia_vida: float = 60.0) -> float:
+    """Boost por recencia: notas recentes pesam mais (decai exponencialmente).
+
+    Bônus max ~0.15 hoje, metade disso em ~60 dias, ~0 depois de ~6 meses.
+    """
+    if not data:
+        return 0.0
+    try:
+        from datetime import date
+        y, mo, d = map(int, data.split('-'))
+        delta = (date.today() - date(y, mo, d)).days
+        if delta < 0:
+            delta = 0
+        return 0.15 * (0.5 ** (delta / dias_meia_vida))
+    except Exception:
+        return 0.0
+
+
+def _dense_disponivel() -> bool:
+    """True se a camada densa ja foi construida (matriz em disco)."""
+    return os.path.exists(DENSE_MATRIX_FILE)
+
+
+def build_dense(verbose: bool = False) -> dict:
+    """(Opcional) Constrói embeddings densos das memórias + notas.
+
+    Só roda se o modelo de sentence-transformers já estiver em cache local —
+    nunca força download. Se não estiver, retorna ok=False sem erro fatal.
+    """
+    try:
+        from sentence_transformers import SentenceTransformer
+        import numpy as np
+        with open(META_FILE, encoding='utf-8') as f:
+            meta = json.load(f)
+        model = SentenceTransformer(DENSE_MODEL)
+        emb = model.encode(meta['texts'], show_progress_bar=False, normalize_embeddings=True)
+        np.save(DENSE_MATRIX_FILE, np.asarray(emb))
+        if verbose:
+            print(f'[semantic] dense: {len(meta["texts"])} docs | {DENSE_MODEL}')
+        return {'ok': True, 'count': len(meta['texts'])}
+    except Exception as e:
+        if verbose:
+            print(f'[semantic] dense indisponivel: {e}')
+        return {'ok': False, 'erro': str(e)}
 
 
 if __name__ == '__main__':

@@ -308,5 +308,7 @@
   "Usuário: Não se esqueça de falar tudo.",
   "Jarvis: Entendido. Vou narrar cada passo em áudio enquanto executo.\n\n**Primeiro passo:** vou ler o `memory_semantic.py` atual para entender a implementação TF-IDF existente.",
   "Usuário: O áudio não está saindo Aconteceu alguma coisa.",
-  "Jarvis: Sem resposta."
+  "Jarvis: Sem resposta.",
+  "Usuário: Voltou?",
+  "Jarvis: Entendi, senhor. Confirmando: voltei e o áudio já está funcionando novamente. Testei a voz agora e ela saiu normalmente pela ponte.\n\nO que houve foi uma queda na geração de áudio, mas já está resolvido — o TTS respondeu no teste. Estávamos na tarefa de aprofundar a busca semântica. Quer que eu retome de onde paramos, que era expandir o índice para todas as notas do Obsidian e melhorar o ranking?"
 ]

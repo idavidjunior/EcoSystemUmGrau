@@ -2288,5 +2288,45 @@
     "access_count": 0,
     "created_at": "2026-08-07T06:09:05.313523",
     "last_accessed": "2026-08-07T06:09:05.313523"
+  },
+  {
+    "id": 145,
+    "kind": "decisao",
+    "task": "Retomar sem perguntar (regra permanente)",
+    "summary": "Ao reconectar ou iniciar sessao, o Jarvis diz 'Estou retomando' e continua executando a tarefa pendente imediatamente, sem perguntar 'quer que eu retome?' (proibido). Vale para toda sessao e toda tarefa.",
+    "project": "",
+    "tags": [
+      "retome",
+      "quer",
+      "imediatamente",
+      "pendente",
+      "executando",
+      "continua"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T07:31:59.453543",
+    "last_accessed": "2026-08-07T07:31:59.453543"
+  },
+  {
+    "id": 146,
+    "kind": "decisao",
+    "task": "Busca semantica aprimorada ranking ponderado",
+    "summary": "Expandi memory_semantic.py: indice agora inclui docs/ e documentos/ (612 docs no total). Ranking agora pondera bonus de recencia (meia-vida 60d), dominio (aprendizados/docs/padroes/decisoes) e frequencia de acesso (tfidf_acesso.json). Adicionada camada densa opcional (sentence-transformers, so carrega se modelo em cache, nunca forca download). Validado com buscas reais.",
+    "project": "",
+    "tags": [
+      "tfidf",
+      "acesso",
+      "frequencia",
+      "decisoes",
+      "padroes",
+      "aprendizados"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T07:32:30.814540",
+    "last_accessed": "2026-08-07T07:32:30.814540"
   }
 ]
