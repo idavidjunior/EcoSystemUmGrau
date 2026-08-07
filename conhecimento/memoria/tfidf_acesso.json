@@ -1,7 +1,7 @@
 {
-  "nota:conhecimento/notas/padroes/controle-da-tv-lg-webos-via-ssap.md": 3,
-  "nota:conhecimento/notas/padroes/2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos.md": 3,
-  "nota:conhecimento/notas/missoes/controle-de-tv-lg-01082026.md": 3,
+  "nota:conhecimento/notas/padroes/controle-da-tv-lg-webos-via-ssap.md": 4,
+  "nota:conhecimento/notas/padroes/2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos.md": 4,
+  "nota:conhecimento/notas/missoes/controle-de-tv-lg-01082026.md": 4,
   "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-mp3player.md": 2,
   "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-supermarketcalculator.md": 2,
   "nota:conhecimento/aprendizados/2026-08-06-janela-conversa-ativa-suprime-saudacao.md": 2,
@@ -24,7 +24,7 @@
   "nota:conhecimento/aprendizados/2026-08-02-feedback-continuo-tarefas-longas.md": 1,
   "nota:conhecimento/aprendizados/2026-08-04-48-skills-dominios-tecnicos.md": 1,
   "nota:conhecimento/aprendizados/2026-07-31-clima-open-meteo-saudacao-local.md": 2,
-  "nota:conhecimento/aprendizados/2026-07-31-saudacao-formatada-pt-br-monitor-saude.md": 4,
+  "nota:conhecimento/aprendizados/2026-07-31-saudacao-formatada-pt-br-monitor-saude.md": 6,
   "nota:conhecimento/aprendizados/2026-08-01-instrucao-permanente-confirmacao-em-audio.md": 3,
   "nota:conhecimento/notas/cognitivo/lei-de-postel-aplicada-a-engenharia.md": 2,
   "nota:conhecimento/notas/heuristicas/verifique-o-que-voce-acha-que-sabe.md": 2,
@@ -37,5 +37,9 @@
   "nota:conhecimento/aprendizados/2026-07-27-correcao-final.md": 2,
   "nota:conhecimento/aprendizados/2026-07-27-unificacao-ecossistema.md": 2,
   "nota:conhecimento/aprendizados/2026-08-03-consolidacao-projetos-ecosystem.md": 2,
-  "nota:conhecimento/aprendizados/2026-08-07-semantica-liderada-por-significado.md": 2
+  "nota:conhecimento/aprendizados/2026-08-07-semantica-liderada-por-significado.md": 2,
+  "nota:conhecimento/notas/_hubs/decisao-hub-decisoes.md": 2,
+  "nota:conhecimento/aprendizados/2026-08-07-426-upgrade-required-health-check-http-na-porta-ws.md": 2,
+  "nota:conhecimento/aprendizados/2026-08-01-guia-controle-tv-lg-webos.md": 1,
+  "nota:conhecimento/aprendizados/2026-08-01-controle-total-tv-lg-webos.md": 1
 }

@@ -330,5 +330,7 @@
   "Usuário: Voltou?",
   "Jarvis: Vim, David. Tô aqui.",
   "Usuário: Correção: Não existe oresponsável. O correto é: o responsável.",
-  "Jarvis: Anotado, David. É \"o responsável\", sem o \"o\" duplicado."
+  "Jarvis: Anotado, David. É \"o responsável\", sem o \"o\" duplicado.",
+  "Usuário: Onde estávamos?",
+  "Jarvis: Estávamos no meio de duas frentes, David. A principal: aprofundar a memória semântica — índice TF-IDF expandido com as notas do Obsidian, ranking melhorado e embeddings densos como próxima camada. A pendência concreta era reiniciar a bridge para ativar o novo índice em produção.\n\nA segunda frente era o widget do grafo, que estava parado e precisava de correções no `toggle_labels` e no problema de piscar durante atualizações.\n\nQuer que eu retome por qual das duas?"
 ]
