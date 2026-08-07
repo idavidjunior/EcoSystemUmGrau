@@ -1881,3 +1881,7 @@
 {"timestamp": "2026-08-07T07:09:14.703437", "epoch": 1786097354.703437, "endpoint_id": "mqtt_broker", "level": "CRITICAL", "message": "Todos os m\u00e9todos de fallback falharam", "data": {}, "uptime_pct": 100.0}
 {"timestamp": "2026-08-07T07:09:14.703437", "epoch": 1786097354.703437, "endpoint_id": "mqtt_cloud", "level": "WARNING", "message": "Endpoint indispon\u00edvel: [Errno 11001] getaddrinfo failed", "data": {}, "uptime_pct": 100.0}
 {"timestamp": "2026-08-07T07:09:14.703437", "epoch": 1786097354.703437, "endpoint_id": "dns_primary", "level": "OK", "message": "Endpoint saud\u00e1vel", "data": {}, "uptime_pct": 100.0}
+{"timestamp": "2026-08-07T07:09:24.709442", "epoch": 1786097364.709442, "endpoint_id": "ws_service", "level": "WARNING", "message": "Endpoint indispon\u00edvel: unknown", "data": {}, "uptime_pct": 100.0}
+{"timestamp": "2026-08-07T07:09:24.709442", "epoch": 1786097364.709442, "endpoint_id": "ws_service", "level": "FAILOVER", "message": "Iniciando failover autom\u00e1tico", "data": {}, "uptime_pct": 100.0}
+{"timestamp": "2026-08-07T07:09:24.709442", "epoch": 1786097364.709442, "endpoint_id": "ws_service", "level": "CRITICAL", "message": "Todos os m\u00e9todos de fallback falharam", "data": {}, "uptime_pct": 100.0}
+{"timestamp": "2026-08-07T07:09:24.757405", "epoch": 1786097364.757405, "endpoint_id": "vpn_alternative", "level": "WARNING", "message": "Endpoint indispon\u00edvel: unknown", "data": {}, "uptime_pct": 100.0}
