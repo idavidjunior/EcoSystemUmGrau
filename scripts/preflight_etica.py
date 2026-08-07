@@ -144,9 +144,13 @@ def data_inventory():
     inventory = {}
     skip = {'.git', 'node_modules', '__pycache__', '.venv', 'health',
             'backups', '.obsidian', 'vendor', 'dist', 'build', 'site-packages'}
+    skip_files = {'preflight_etica.py', 'niveis_etica.py', 'inventario_dados.json',
+                  'niveis_etica.json'}
     for root, dirs, files in os.walk(BASE):
         dirs[:] = [d for d in dirs if d not in skip]
         for fname in files:
+            if fname in skip_files:
+                continue
             if not fname.endswith(('.py', '.js', '.ts', '.json', '.md')):
                 continue
             fpath = os.path.join(root, fname)
