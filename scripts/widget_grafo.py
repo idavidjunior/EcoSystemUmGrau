@@ -521,22 +521,22 @@ WIDGET_JS_EXTRA = """
       'background:' + cores.fundo + ';color:' + cores.texto + ';border:1px solid ' +
       cores.borda + ';border-radius:4px;font-size:11px;padding:2px 4px;cursor:pointer;';
     [
-      {{ nome: 'Neon',    valor: 'neon',  icone: '\\u26A1' }},
-      {{ nome: 'Glow',    valor: 'glow',  icone: '\\u2600' }},
-      {{ nome: 'Calmo',   valor: 'calm',  icone: '\\uD83C\\uDF3F' }},
-      {{ nome: 'Padrao',  valor: 'padrao',icone: '\\u25C9' }}
-    ].forEach(function(t){{
+      { nome: 'Neon',    valor: 'neon',  icone: '\\u26A1' },
+      { nome: 'Glow',    valor: 'glow',  icone: '\\u2600' },
+      { nome: 'Calmo',   valor: 'calm',  icone: '\\uD83C\\uDF3F' },
+      { nome: 'Padrao',  valor: 'padrao',icone: '\\u25C9' }
+    ].forEach(function(t){
       var op = mkEl('option');
       op.value = t.valor;
       op.textContent = t.icone + ' ' + t.nome;
       temaSel.appendChild(op);
-    }});
+    });
     var temaSalvo = localStorage.getItem('temaGrafo') || 'glow';
     temaSel.value = temaSalvo;
-    temaSel.addEventListener('change', function(){{
-      try {{ if (typeof aplicarTema === 'function') aplicarTema(temaSel.value); }}
-      catch(e){{}}
-    }});
+    temaSel.addEventListener('change', function(){
+      try { if (typeof aplicarTema === 'function') aplicarTema(temaSel.value); }
+      catch(e){}
+    });
     var temaLbl = mkEl('span');
     temaLbl.style.cssText = 'font-size:10px;color:' + cores.texto2 + ';';
     temaLbl.textContent = 'Tema';
@@ -591,15 +591,11 @@ WIDGET_JS_EXTRA = """
 
     ctrl.onmousedown = function(e) {
       e.preventDefault(); e.stopPropagation();
-      // Toggle painel de controles (recolhivel)
-      var atual = painel.style.display;
-      if (atual === 'none') {
-        painel.style.display = 'flex';
-        ctrl.style.opacity = '1';
-      } else {
-        painel.style.display = 'none';
-        ctrl.style.opacity = '0.55';
-      }
+      // Toggle etiquetas: 'false' explicito = mostrar; qualquer outro = oculto
+      var oculto = localStorage.getItem('labelsOcultos') !== 'false';
+      localStorage.setItem('labelsOcultos', oculto ? 'false' : 'true');
+      aplicarLabels();
+      ctrl.style.opacity = oculto ? '1' : '0.55';
     };
 
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
@@ -758,10 +754,16 @@ def _build_view() -> Path | None:
     else:
         src += '<style>' + WIDGET_CSS + '</style>'
 
-    if '</body>' in src:
-        src = src.replace('</body>', WIDGET_JS_EXTRA + '</body>', 1)
+    api_inject = API_INJECT.replace('%POLL_MS%', str(POLL_MS))
+    if '</head>' in src:
+        src = src.replace('</head>', api_inject + '</head>', 1)
     else:
-        src += WIDGET_JS_EXTRA
+        src += api_inject
+
+    if '</body>' in src:
+        src = src.replace('</body>', RESIZE_JS + WIDGET_JS_EXTRA + '</body>', 1)
+    else:
+        src += RESIZE_JS + WIDGET_JS_EXTRA
 
     VIEW_COPY.write_text(src, encoding='utf-8')
     return VIEW_COPY

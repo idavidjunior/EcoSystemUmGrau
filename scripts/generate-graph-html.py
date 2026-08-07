@@ -1646,6 +1646,9 @@ arestasUp = arestasUp.map(a =>
 
 
 def main():
+    if len(sys.argv) > 1 and sys.argv[1] in ('-h', '--help'):
+        print(__doc__)
+        return 0
     output = DEFAULT_OUTPUT
     if len(sys.argv) > 1:
         output = sys.argv[1]

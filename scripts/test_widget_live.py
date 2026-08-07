@@ -68,17 +68,18 @@ test_js = """
         
         // Test pet plasticity {no: temaSel exists
         report('temaSel_exists', document.querySelector('select') !== null && 
-               Array.from(document.querySelectorAll('option')).some(o => o.textContent.indexOf('Neon') !== 0));
+               Array.from(document.querySelectorAll('option')).some(o => o.textContent.indexOf('Neon') > -1));
         
         // Test 5: Header functions
         report('header_min_present', document.getElementById('header') !== null);
         
         // Test 6: Click Bug button
-        var btnFechar = document.querySelector('.lg[data-value="bugs"]');
+        var btnBug = document.querySelector('.lg[data-filter="st"][data-value="resolvido"]') ||
+                     document.querySelector('.lg[data-value="bugs"]');
         if (btnBug) {
             btnBug.click();
             setTimeout(function() {
-                report('btn_bugs_click', typeof _destacado !== 'undefined' 0 ? _destacado === true : false);
+                report('btn_bugs_click', typeof _destacado !== 'undefined' ? _destacado === true : false);
                 salvar();
             }, 200);
         } else {
@@ -145,27 +146,18 @@ win = webview.create_window(
 )
 bridge._win = win
 
-# Start webview in thread with timeout
-result_ready = threading.Event()
-
-def start_webview():
+# pywebview precisa rodar na thread principal (GUI). Agendamos auto-destruicao
+# em thread separada e iniciamos o loop GUI aqui (main thread).
+def auto_fechar():
+    import time as _t
+    _t.sleep(15)
     try:
-        webview.start(debug=False)
-    except:
+        webview.destroy_window(win)
+    except Exception:
         pass
-    result_ready.set()
 
-t = threading.Thread(target=start_webview, daemon=True)
-t.start()
-
-# Wait for results or timeout
-timeout = 12
-if not result_ready.wait(timeout):
-    print(f"[4] Timeout after {timeout}s — killing window")
-    try:
-        win.destroy()
-    except:
-        pass
+threading.Thread(target=auto_fechar, daemon=True).start()
+webview.start(debug=False)
 
 # Read results
 if TEST_RESULT.exists():
