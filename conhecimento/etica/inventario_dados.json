@@ -85,7 +85,6 @@
     "conhecimento\\aprendizados\\2026-08-06-widget-grafo-correcao-bugs-e-teste-completo.md",
     "conhecimento\\aprendizados\\2026-08-07-scan-EcoSystemUmGrau.md",
     "conhecimento\\aprendizados\\cluster_mapper.json",
-    "conhecimento\\etica\\inventario_dados.json",
     "conhecimento\\etica\\POLITICA_RETENCAO.md",
     "conhecimento\\memoria\\index.json",
     "conhecimento\\memoria\\memories.json",
@@ -244,7 +243,6 @@
     "scripts\\lg_pair_tv.py",
     "scripts\\opencode_wrapper.py",
     "scripts\\preflight_check.py",
-    "scripts\\preflight_etica.py",
     "scripts\\rotacao_dados.py",
     "scripts\\runtime_auditor.py",
     "scripts\\runtime_kernel.py",
@@ -369,7 +367,6 @@
     "conhecimento\\aprendizados\\2026-08-06-widget-grafo-correcao-bugs-e-teste-completo.md",
     "conhecimento\\aprendizados\\2026-08-07-memoria-semantica-notas-obsidian.md",
     "conhecimento\\aprendizados\\cluster_mapper.json",
-    "conhecimento\\etica\\inventario_dados.json",
     "conhecimento\\memoria\\index.json",
     "conhecimento\\memoria\\memories.json",
     "conhecimento\\memoria\\tfidf_meta.json",
@@ -637,13 +634,11 @@
     "scripts\\mcp-obsidian-server.py",
     "scripts\\memory_engine.py",
     "scripts\\memory_semantic.py",
-    "scripts\\niveis_etica.py",
     "scripts\\nvidia_quota_monitor.py",
     "scripts\\openapi_spec.json",
     "scripts\\opencode_wrapper.py",
     "scripts\\parallel_dispatcher.py",
     "scripts\\preflight_check.py",
-    "scripts\\preflight_etica.py",
     "scripts\\rotacao_dados.py",
     "scripts\\runtime_auditor.py",
     "scripts\\runtime_boot.py",
@@ -672,7 +667,6 @@
     "conhecimento\\aprendizados\\2026-08-05-adb-perito-skill.md",
     "conhecimento\\aprendizados\\2026-08-06-jarvis-perito-adb-mapeamento-completo.md",
     "conhecimento\\aprendizados\\2026-08-06-jarvis-perito-adb.md",
-    "conhecimento\\etica\\inventario_dados.json",
     "conhecimento\\memoria\\tfidf_meta.json",
     "conhecimento\\notas\\cognitivo\\2026-08-01-opencode-desktop-crash-do-renderer-por-gpu-fecham.md",
     "conhecimento\\notas\\cognitivo\\antecipacao-de-comportamento-adaptativo.md",
@@ -740,8 +734,7 @@
     "scripts\\generate-graph-html.py",
     "scripts\\jarvis_bridge.py",
     "scripts\\JARVIS_SYSTEM.md",
-    "scripts\\memory_semantic.py",
-    "scripts\\preflight_etica.py"
+    "scripts\\memory_semantic.py"
   ],
   "localizacao": [
     "conversa_unica.json",
@@ -759,8 +752,6 @@
     "conhecimento\\aprendizados\\2026-08-06-adb-perito-expansao-cmd.md",
     "conhecimento\\aprendizados\\2026-08-06-jarvis-perito-adb-mapeamento-completo.md",
     "conhecimento\\aprendizados\\cluster_mapper.json",
-    "conhecimento\\etica\\inventario_dados.json",
-    "conhecimento\\etica\\niveis_etica.json",
     "conhecimento\\memoria\\index.json",
     "conhecimento\\memoria\\memories.json",
     "conhecimento\\memoria\\tfidf_meta.json",
@@ -817,7 +808,6 @@
     "scripts\\jarvis_bridge.py",
     "scripts\\JARVIS_SYSTEM.md",
     "scripts\\openapi_spec.json",
-    "scripts\\preflight_etica.py",
     "scripts\\rebuild_widget.py",
     "scripts\\test_widget_live.py",
     "scripts\\widget_grafo.py",
@@ -831,7 +821,6 @@
     "conhecimento\\aprendizados\\2026-07-31-saudacao-formatada-pt-br-monitor-saude.md",
     "conhecimento\\aprendizados\\2026-08-06-adb-expert-knowledge.md",
     "conhecimento\\aprendizados\\2026-08-06-jarvis-perito-adb-mapeamento-completo.md",
-    "conhecimento\\etica\\inventario_dados.json",
     "conhecimento\\memoria\\tfidf_meta.json",
     "connectivity\\bridge_resiliencia.py",
     "connectivity\\README.md",
@@ -845,8 +834,7 @@
     "Projetos\\claude-code-extra-agents\\scripts\\generate_sample_results.py",
     "Projetos\\WindowsMaintenanceSuite_v3\\Technical_Analysis.md",
     "scripts\\jarvis_bridge.py",
-    "scripts\\JARVIS_SYSTEM.md",
-    "scripts\\preflight_etica.py"
+    "scripts\\JARVIS_SYSTEM.md"
   ],
   "credito": [
     "conversa_unica.json",
@@ -861,7 +849,6 @@
     "Projetos\\claude-code-extra-agents\\skills\\e2e-testing\\skill.md",
     "Projetos\\claude-code-extra-agents\\skills\\state-machine-patterns\\skill.md",
     "Projetos\\Rob-Trader\\frontend\\package-lock.json",
-    "scripts\\preflight_etica.py",
     "scripts\\runtime_auditor.py"
   ],
   "comunicacao": [
@@ -900,7 +887,6 @@
     "conhecimento\\aprendizados\\2026-08-06-recuperacao-rapida-conexao.md",
     "conhecimento\\aprendizados\\2026-08-06-saudacoes-inteligentes-reconexao-vs-primeira-vez.md",
     "conhecimento\\aprendizados\\cluster_mapper.json",
-    "conhecimento\\etica\\inventario_dados.json",
     "conhecimento\\etica\\POLITICA_RETENCAO.md",
     "conhecimento\\memoria\\index.json",
     "conhecimento\\memoria\\memories.json",
@@ -988,13 +974,7 @@
     "scripts\\JARVIS_SYSTEM.md",
     "scripts\\nvidia_quota_monitor.py",
     "scripts\\preflight_check.py",
-    "scripts\\preflight_etica.py",
     "scripts\\vox_audio.py",
     "scripts\\widget_grafo.py"
-  ],
-  "criancas": [
-    "conhecimento\\etica\\inventario_dados.json",
-    "conhecimento\\etica\\niveis_etica.json",
-    "scripts\\preflight_etica.py"
   ]
 }
