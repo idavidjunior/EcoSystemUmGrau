@@ -318,5 +318,7 @@
   "Usuário: Você tem acesso à minha localização atual Jarvis?",
   "Jarvis: Concluo que não há próximos passos automáticos — preciso verificar o estado atual do widget (ele está parado ou rodando) e verificar os pontos específicos que ainda precisam ser corrigidos.\n\n**Para prosseguir, posso:**\n1. Verificar se o widget está rodando (ele parou, não está)\n2. Conferir o `toggle_labels` está corrigido no `widget_grafo.py` (está sendo exposto como `window.pywebview.api.toggle_labels`)\n3. Investigar o piscar/flash durante atualizações\n4. Reiniciar o widget e testar\n\nPosso fazer um desses 3 itens agora — qual eu priorizo?",
   "Usuário: Como está o seu humor hoje?",
-  "Jarvis: Oi, senhor! Estou online e pronto. Como posso ajudar agora?"
+  "Jarvis: Oi, senhor! Estou online e pronto. Como posso ajudar agora?",
+  "Usuário: No que você está pensando agora já.",
+  "Jarvis: Estou processando sua pergunta e aguardando seu próximo comando. Os sistemas estão todos operantes."
 ]

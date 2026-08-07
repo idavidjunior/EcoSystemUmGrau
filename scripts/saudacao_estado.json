@@ -1,18 +1,18 @@
 {
-  "conexoes": 44,
+  "conexoes": 50,
   "hoje": "2026-08-07",
   "saudacoes_hoje": [
-    "David, voltou. Continuei rodando enquanto esteve fora.",
-    "David, sempre cai no pior momento. Seguindo.",
-    "Te peguei no meio do sprint, David. Tô aqui.",
-    "David, retornando ao canal. De onde paramos?",
-    "David, sinal restabelecido. Continua de onde a gente tava.",
-    "De volta, David. Tava aqui te esperando retomar o fôlego.",
     "De volta no ar, David. Pode continuar de onde a gente tava.",
     "E a conexão voltou. Estou por aqui.",
     "Oi de novo, David. Te ouço.",
-    "Te peguei de volta, David. Seguindo."
+    "Te peguei de volta, David. Seguindo.",
+    "Voltou. Sistemas seguem quentes, é só falar.",
+    "Voltou. Sistemas seguem quentes, é só falar.",
+    "De volta, David. Estava só esperando você respirar pra continuar.",
+    "Ainda aqui, David. O silêncio era só pausa dramática.",
+    "Por aí de novo, David. Não saí daqui, só dava pra você não me ouvir.",
+    "Te ouvi de novo, David. Pode mandar."
   ],
-  "ultima_saudacao": "Te peguei de volta, David. Seguindo.",
-  "ultima_saudacao_ts": 1786115136.5920467
+  "ultima_saudacao": "Te ouvi de novo, David. Pode mandar.",
+  "ultima_saudacao_ts": 1786115945.688004
 }

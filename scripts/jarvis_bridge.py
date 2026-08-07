@@ -1494,7 +1494,11 @@ async def lidar(ws):
         except Exception as e:
             logger.warning(f"tts startup: {e}")
             a = ""
-        await ws.send(json.dumps({"audio": a, "text": saudacao_tela}))
+        try:
+            await ws.send(json.dumps({"audio": a, "text": saudacao_tela}))
+        except websockets.exceptions.ConnectionClosed:
+            logger.info("cliente desconectou durante a saudacao")
+            return
     else:
         logger.info("sem saudacao (conversa ativa) — aguardando próxima fala do usuário")
 
