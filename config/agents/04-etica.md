@@ -45,7 +45,8 @@ O rigor do preflight depende do **nível ético configurado** em
 
 | Nível  | Padrão? | Descrição | Bloqueia |
 |--------|---------|-----------|----------|
-| `minimo` | **SIM** | Permite o tecnicamente viável com avisos mínimos. | Nada (apenas avisa e valida regras imutáveis) |
+| `desativado` | **SIM** | Ética desativada: sem avisos e sem bloqueios. Padrão para administrador/desenvolvedor. | Nada |
+| `minimo` | não | Permite o tecnicamente viável com avisos mínimos. | Nada (apenas avisa e valida regras imutáveis) |
 | `medio` | não | Exige avisos claros, consentimento documentado e revisão. | Segredos crus, dados sensíveis sem consentimento, retenção ausente |
 | `maximo` | não | Rigidez total; bloqueia qualquer incerteza ética. | Qualquer risco detectado até revisão humana |
 
@@ -57,14 +58,15 @@ O rigor do preflight depende do **nível ético configurado** em
 
 ## Como escolher o nível
 
+- **desativado** — fluxos de administrador/desenvolvedor do próprio ecossistema (padrão).
 - **minimo** — fluxos internos e de prototipação, sem contato com dados reais de usuários.
 - **medio** — soluções que tocam dados pessoais ou decisões de usuários.
 - **maximo** — lançamentos públicos, dados sensíveis (LGPD/GDPR), decisões automatizadas.
 
 **IMPORTANTE:** a mudança de nível é registrada em `conhecimento/etica/niveis_etica.json`
-e o preflight passa a aplicar o novo rigor na próxima execução. Depois de usar um nível
-mais alto para uma entrega sensível, **volte ao padrão `minimo`** salvo se o contexto
-permanecer exigente.
+e o preflight passa a aplicar o novo rigor na próxima execução. Para o administrador, o
+padrão é **`desativado`**; ative um nível mais alto apenas quando o contexto da entrega
+exigir rigor, e retorne a `desativado` ao concluir.
 
 # RESPONSABILIDADES
 

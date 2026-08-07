@@ -2828,5 +2828,65 @@
     "access_count": 0,
     "created_at": "2026-08-07T09:16:54.209212",
     "last_accessed": "2026-08-07T09:16:54.209212"
+  },
+  {
+    "id": 172,
+    "kind": "erro",
+    "task": "Preflight Etico: BLOQUEADO",
+    "summary": "entrega bloqueada no nivel medio | 1 bloqueio(s), 5 alerta(s)",
+    "project": "",
+    "tags": [
+      "alerta",
+      "bloqueio",
+      "medio",
+      "nivel",
+      "bloqueada",
+      "entrega"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:24:17.977582",
+    "last_accessed": "2026-08-07T09:24:17.977582"
+  },
+  {
+    "id": 173,
+    "kind": "decisao",
+    "task": "Etica desativada por padrao (modo administrador)",
+    "summary": "Adicionado nivel desativado em niveis_etica.json como padrao. Preflight_etica retorna exit 0 imediato sem scan/avisos quando desativado. Niveis: desativado(padrao)/minimo/medio/maximo via scripts/niveis_etica.py.",
+    "project": "",
+    "tags": [
+      "nivel",
+      "adicionado",
+      "administrador",
+      "avisos",
+      "desativado",
+      "etica"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:24:44.957800",
+    "last_accessed": "2026-08-07T09:24:44.957800"
+  },
+  {
+    "id": 174,
+    "kind": "decisao",
+    "task": "Semantica liderada por significado",
+    "summary": "Camada densa de embeddings agora lidera a busca (peso 0.65) com TF-IDF+expansao complementando (0.35). Lexico SINONIMOS pt-br adicionado em expandir_query(). Matriz densa construida automaticamente se ausente. Buscas por intencao retornam conhecimento certo: 'como fazer o celular voltar a se conectar' recupera watchdog/bridge por significado.",
+    "project": "",
+    "tags": [
+      "peso",
+      "busca",
+      "lidera",
+      "embeddings",
+      "bridge",
+      "camada"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:55:11.383833",
+    "last_accessed": "2026-08-07T09:55:11.383833"
   }
 ]

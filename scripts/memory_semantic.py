@@ -59,10 +59,63 @@ DOMAIN_BOOST = {
 # Contador de acesso por doc (frequência de uso -> boost). Persistido entre execuções.
 ACCESS_FILE = os.path.join(MEM_DIR, 'tfidf_acesso.json')
 
-# Modelo de embeddings densos (camada extra, opcional). Só é carregado se já
-# estiver em cache — nunca força download de centenas de MB.
+# Modelo de embeddings densos (camada de SIGNIFICADO). Lidera a busca quando
+# disponível; TF-IDF atua como complemento. Nunca força download de centenas de MB.
 DENSE_MODEL = 'paraphrase-multilingual-MiniLM-L12-v2'
 DENSE_MATRIX_FILE = os.path.join(MEM_DIR, 'dense_matrix.npy')
+
+# Léxico de expansão de query (pt-br, domínio do ecossistema). Transforma a
+# consulta em variantes de intenção: "quebrou" -> "quebrou caiu parou falhou".
+# Permite recuperar por significado mesmo sem TF-IDF denso.
+SINONIMOS = {
+    # conectividade / rede
+    'ponte': ['bridge', 'conexao', 'ligacao'],
+    'caiu': ['quebrou', 'parou', 'falhou', 'cai', 'queda'],
+    'reconexao': ['reconectar', 'reconecta', 'voltar', 'retomar'],
+    'rede': ['network', 'internet', 'wifi', 'tailscale'],
+    'dispositivo': ['celular', 'telefone', 'android', 'phone', 'device'],
+    'wifi': ['rede', 'internet', 'conexao', 'sem fio'],
+    'tailscale': ['vpn', 'rede', 'malha', 'mesh'],
+    # resiliencia
+    'resiliencia': ['robustez', 'recuperacao', 'falha', 'failover', 'tolerancia'],
+    'watchdog': ['guardiao', 'vigia', 'monitor', 'zelador', 'sentinel'],
+    'daemon': ['servico', 'processo', 'background', 'servico'],
+    'monitorar': ['observar', 'acompanhar', 'checar', 'verificar', 'monitor'],
+    # audio / voz
+    'audio': ['voz', 'som', 'tts', 'falado'],
+    'voz': ['audio', 'som', 'voz ativa', 'tts'],
+    'ouvir': ['escuta', 'audio', 'vad', 'microfone', 'stt'],
+    # memoria / conhecimento
+    'memoria': ['memorias', 'lembrar', 'relembrar', 'registro', 'historico'],
+    'conhecimento': ['notas', 'obsidian', 'saber', 'base', 'aprendizado'],
+    'semantica': ['significado', 'sentido', 'busca por significado', 'dense'],
+    # etica
+    'etica': ['moral', 'conformidade', 'lgpd', 'conformidade', 'privacidade'],
+    'preflight': ['checagem', 'verificacao', 'gate', 'check'],
+    # dispositivo / adb
+    'adb': ['android', 'dispositivo', 'celular', 'conectividade'],
+    'tela': ['display', 'screen', 'monitor'],
+    'bateria': ['baterias', 'energia', 'carregamento'],
+    # app / interface
+    'widget': ['grafo', 'interface', 'componente', 'painel'],
+    'bug': ['erro', 'falha', 'defeito', 'crash', 'problema'],
+    'jarvis': ['jarvis', 'assistente', 'assistente de voz', 'eco'],
+    'opencode': ['opencode', 'cli', 'terminal', 'ide'],
+}
+
+
+def expandir_query(query: str) -> str:
+    """Expande a query com sinônimos de intenção do ecossistema.
+
+    Ex.: 'a ponte caiu' -> 'a ponte bridge conexao ligacao caiu quebrou parou falhou'.
+    """
+    palavras = re.findall(r'\w+', query.lower())
+    expandidas = set(palavras)
+    for p in palavras:
+        variantes = SINONIMOS.get(p)
+        if variantes:
+            expandidas.update(variantes)
+    return ' '.join(expandidas)
 
 # Cache estatico (carregado uma vez por processo; cold ~10s, quente <50ms).
 _CACHE = None
@@ -268,6 +321,11 @@ def search(query: str, k: int = 5, min_score: float = 0.05) -> list:
             memories = json.load(f)
         dense = None
         dense_model = None
+        if not os.path.exists(DENSE_MATRIX_FILE):
+            # Tenta construir a camada densa uma vez (best-effort, nunca bloqueia
+            # a busca se o modelo estiver indisponível). Tempo total de download
+            # NUNCA é forçado: build_dense() só usa modelo em cache.
+            build_dense(verbose=False)
         if os.path.exists(DENSE_MATRIX_FILE):
             try:
                 dense = np.load(DENSE_MATRIX_FILE)
@@ -288,14 +346,15 @@ def search(query: str, k: int = 5, min_score: float = 0.05) -> list:
         }
 
     c = _CACHE
-    q_vec = c['vectorizer'].transform([query.lower()])
+    q_expandida = expandir_query(query)
+    q_vec = c['vectorizer'].transform([q_expandida])
     sims = c['cosine'](q_vec, c['matrix']).flatten()
     # sims fica no intervalo [0,1] tipicamente; normaliza para comparação estável.
     max_sim = float(sims.max()) if len(sims) else 0.0
     if max_sim > 0:
         sims = sims / max_sim
 
-    # Camada densa (embeddings) — fusão com TF-IDF se disponível.
+    # Camada densa (embeddings de SIGNIFICADO) — lidera a busca quando disponível.
     denso = None
     if c.get('dense') is not None and c.get('dense_model') is not None \
             and len(c['dense']) == len(c['meta']['ids']):
@@ -311,7 +370,9 @@ def search(query: str, k: int = 5, min_score: float = 0.05) -> list:
             denso = None
 
     if denso is not None:
-        sims = 0.5 * sims + 0.5 * denso
+        # Denso lidera (0.65) — captura significado; TF-IDF com expansão complementa
+        # (0.35) para palavras-chave exatas. Peso denso domina quando há contexto.
+        sims = 0.35 * sims + 0.65 * denso
 
     idx_sorted = np.argsort(sims)[::-1]
     results = []

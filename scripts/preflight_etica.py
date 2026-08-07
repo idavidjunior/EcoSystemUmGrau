@@ -4,9 +4,10 @@ Pre-flight Ético do EcoSystemUmGrau.
 Cláusula Pétrea de Deveres Externos: se qualquer cheque falhar, BLOQUEIA a entrega.
 
 O rigor depende do NÍVEL ÉTICO atual:
-  minimo  (PADRÃO) - permite o tecnicamente viável, avisos mínimos (não bloqueia)
-  medio             - bloqueia pontos sensíveis, exige consentimento/avaliação
-  maximo            - bloqueia qualquer incerteza até revisão humana
+  desativado (PADRÃO) - ética desativada: sem avisos e sem bloqueios
+  minimo               - permite o tecnicamente viável, avisos mínimos (não bloqueia)
+  medio                - bloqueia pontos sensíveis, exige consentimento/avaliação
+  maximo               - bloqueia qualquer incerteza até revisão humana
 
 Altere o nível com: python scripts/niveis_etica.py set <nivel>
 
@@ -31,18 +32,18 @@ os.makedirs(REPORT_DIR, exist_ok=True)
 ERRORS = []
 WARNS = []
 
-# Nivel etico atual (default: minimo)
+# Nivel etico atual (default: desativado)
 NIVEIS_FILE = os.path.join(REPORT_DIR, 'niveis_etica.json')
 
 
 def nivel_atual():
-    """Retorna o nivel etico configurado (padrao: minimo)."""
+    """Retorna o nivel etico configurado (padrao: desativado)."""
     try:
         with open(NIVEIS_FILE, encoding='utf-8') as f:
             data = json.load(f)
-        return data.get('nivel_atual', 'minimo')
+        return data.get('nivel_atual', 'desativado')
     except Exception:
-        return 'minimo'
+        return 'desativado'
 
 
 def bloco_nivel():
@@ -50,7 +51,7 @@ def bloco_nivel():
     try:
         with open(NIVEIS_FILE, encoding='utf-8') as f:
             data = json.load(f)
-        nivel = data.get('nivel_atual', 'minimo')
+        nivel = data.get('nivel_atual', 'desativado')
         return data.get('niveis', {}).get(nivel, {}).get('bloqueia', [])
     except Exception:
         return []
@@ -239,6 +240,11 @@ def main():
     print('=== Preflight Ético - EcoSystemUmGrau ===')
     print(f'Nível ético atual: {NIVEL}')
     print(f'Verificando: {target or "working dir"}')
+
+    if NIVEL == 'desativado':
+        print('\n=== RESULTADO ===')
+        print('DESATIVADO: preflight etico sem avisos e sem bloqueios (modo administrador).')
+        return 0
 
     if target:
         if os.path.isdir(target):

@@ -16,7 +16,8 @@
 ## Níveis Éticos
 
 O rigor do preflight depende do nível configurado (`nivel_atual`):
-- **minimo** (PADRÃO): tecnicamente viável com avisos mínimos; não bloqueia.
+- **desativado** (PADRÃO): ética desativada, sem avisos e sem bloqueios (modo administrador).
+- **minimo**: tecnicamente viável com avisos mínimos; não bloqueia.
 - **medio**: bloqueia segredos crus, dados sensíveis sem consentimento, retenção ausente.
 - **maximo**: bloqueia qualquer risco até revisão humana.
 

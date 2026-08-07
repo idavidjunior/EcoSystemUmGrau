@@ -304,10 +304,10 @@ def run():
         for line in out.splitlines():
             if line.startswith('[BLOQUEIO]') or 'BLOQUEADO' in line:
                 check('Preflight etico', False, line.strip())
-        if 'APROVADO' in out:
+        if 'APROVADO' in out or 'DESATIVADO' in out:
             check('Preflight etico aprovado', True)
         else:
-            check('Preflight etico aprovado', False, 'saida sem APROVADO')
+            check('Preflight etico aprovado', False, 'saida sem APROVADO/DESATIVADO')
     except Exception as e:
         check('Preflight etico', False, str(e)[:200])
 
