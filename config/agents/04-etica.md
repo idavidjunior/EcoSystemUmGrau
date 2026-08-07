@@ -32,6 +32,40 @@ A ética é um **gate operacional**, não um checklist opcional. Todo agente DEV
 6. **Consultar o inventário de dados** (`conhecimento/etica/inventario_dados.json`)
    antes de modificar qualquer fluxo que processe dados sensíveis.
 
+# NÍVEIS ÉTICOS
+
+O rigor do preflight depende do **nível ético configurado** em
+`conhecimento/etica/niveis_etica.json` (campo `nivel_atual`). Gerencie com:
+
+- `python scripts/niveis_etica.py status` — mostra o nível atual.
+- `python scripts/niveis_etica.py list` — lista os níveis disponíveis.
+- `python scripts/niveis_etica.py set <nivel>` — muda o nível.
+
+## Níveis disponíveis
+
+| Nível  | Padrão? | Descrição | Bloqueia |
+|--------|---------|-----------|----------|
+| `minimo` | **SIM** | Permite o tecnicamente viável com avisos mínimos. | Nada (apenas avisa e valida regras imutáveis) |
+| `medio` | não | Exige avisos claros, consentimento documentado e revisão. | Segredos crus, dados sensíveis sem consentimento, retenção ausente |
+| `maximo` | não | Rigidez total; bloqueia qualquer incerteza ética. | Qualquer risco detectado até revisão humana |
+
+## Regras imutáveis (valem em QUALQUER nível)
+
+- Nunca coletar dados de crianças.
+- Nunca armazenar credenciais em texto plano.
+- Sempre permitir exclusão de dados do usuário.
+
+## Como escolher o nível
+
+- **minimo** — fluxos internos e de prototipação, sem contato com dados reais de usuários.
+- **medio** — soluções que tocam dados pessoais ou decisões de usuários.
+- **maximo** — lançamentos públicos, dados sensíveis (LGPD/GDPR), decisões automatizadas.
+
+**IMPORTANTE:** a mudança de nível é registrada em `conhecimento/etica/niveis_etica.json`
+e o preflight passa a aplicar o novo rigor na próxima execução. Depois de usar um nível
+mais alto para uma entrega sensível, **volte ao padrão `minimo`** salvo se o contexto
+permanecer exigente.
+
 # RESPONSABILIDADES
 
 - Identificar impactos em dados sensíveis (LGPD/GDPR).

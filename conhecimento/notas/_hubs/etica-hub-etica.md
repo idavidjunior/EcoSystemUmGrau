@@ -11,6 +11,16 @@
 - **Política de Retenção** — `conhecimento/etica/POLITICA_RETENCAO.md`
 - **Inventário de Dados** — `conhecimento/etica/inventario_dados.json`
 - **Rotação de Dados** — `scripts/rotacao_dados.py`
+- **Níveis Éticos** — `conhecimento/etica/niveis_etica.json` + `scripts/niveis_etica.py`
+
+## Níveis Éticos
+
+O rigor do preflight depende do nível configurado (`nivel_atual`):
+- **minimo** (PADRÃO): tecnicamente viável com avisos mínimos; não bloqueia.
+- **medio**: bloqueia segredos crus, dados sensíveis sem consentimento, retenção ausente.
+- **maximo**: bloqueia qualquer risco até revisão humana.
+
+Gerenciar: `python scripts/niveis_etica.py status|list|set <nivel>`
 
 ## Comandos
 
@@ -23,6 +33,10 @@ python scripts/preflight_etica.py --data-inventory
 
 # Aplicar política de retenção
 python scripts/rotacao_dados.py
+
+# Gerenciar nível ético (padrão: minimo)
+python scripts/niveis_etica.py status
+python scripts/niveis_etica.py set medio
 ```
 
 ## Decisões éticas registradas
