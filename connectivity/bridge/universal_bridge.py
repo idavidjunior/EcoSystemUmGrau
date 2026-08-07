@@ -22,12 +22,13 @@ from EcoSystemUmGrau.connectivity.bridge.core import (
 )
 
 BASE_DIR = Path(__file__).parent.parent.parent
-BRIDGE_DIR = BASE_DIR / "connectivity" / "bridge"
+BRIDGE_DIR = Path(__file__).parent
 CONFIG_DIR = BRIDGE_DIR / "configs"
 HEALTH_DIR = BRIDGE_DIR / "health"
 LEARNING_DIR = BRIDGE_DIR / "learning"
+DEPLOY_DIR = BRIDGE_DIR.parent / "deployment"
 
-for d in [CONFIG_DIR, HEALTH_DIR, LEARNING_DIR]:
+for d in [CONFIG_DIR, HEALTH_DIR, LEARNING_DIR, DEPLOY_DIR]:
     d.mkdir(parents=True, exist_ok=True)
 
 

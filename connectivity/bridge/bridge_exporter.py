@@ -10,7 +10,7 @@ import os
 from pathlib import Path
 from datetime import datetime
 
-BRIDGE_DIR = Path(__file__).parent.parent
+BRIDGE_DIR = Path(__file__).parent
 CONFIG_DIR = BRIDGE_DIR / "configs"
 LEARNING_DIR = BRIDGE_DIR / "learning"
 HEALTH_DIR = BRIDGE_DIR / "health"

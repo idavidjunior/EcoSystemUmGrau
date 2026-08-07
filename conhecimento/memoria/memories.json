@@ -2248,5 +2248,45 @@
     "access_count": 0,
     "created_at": "2026-08-07T06:07:24.988894",
     "last_accessed": "2026-08-07T06:07:24.988894"
+  },
+  {
+    "id": 143,
+    "kind": "decisao",
+    "task": "Universal Bridge Full Deployment",
+    "summary": "Sistema completo de resiliencia migravel: export/import via bridge_exporter.py, deploy scripts (systemd, LaunchAgent, Windows Startup), configs JSON, learning history, health reports - tudo versionado no repo",
+    "project": "",
+    "tags": [
+      "repo",
+      "versionado",
+      "reports",
+      "health",
+      "history",
+      "learning"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T06:09:05.034910",
+    "last_accessed": "2026-08-07T06:09:05.034910"
+  },
+  {
+    "id": 144,
+    "kind": "padrao",
+    "task": "12-Protocol Resilience Architecture",
+    "summary": "Arquitetura unificada monitora ADB/Tailscale/SSH/HTTP/DNS/MQTT/WebSocket/Serial/VPN/USB-HID com failover cascata e health checks. 95%%+ uptime em protocolos criticos",
+    "project": "",
+    "tags": [
+      "checks",
+      "health",
+      "cascata",
+      "failover",
+      "hid",
+      "usb"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T06:09:05.313523",
+    "last_accessed": "2026-08-07T06:09:05.313523"
   }
 ]
