@@ -2,17 +2,17 @@
   "conexoes": 33,
   "hoje": "2026-08-07",
   "saudacoes_hoje": [
-    "Tô aqui de novo, David. Pode falar.",
-    "Voltei, David. Tava no meio do quê mesmo?",
-    "De volta, David. Te ouço.",
-    "De volta, David. Diga a palavra.",
-    "De volta ao ar, David. Continue de onde paramos.",
-    "Aqui de novo, David. Pode mandar.",
-    "David, teclado quente de novo. Mande o próximo.",
-    "Tá de volta, David. Estava justamente esperando você continuar.",
-    "Voltamos, David. Tava com o cursor parado esperando você.",
-    "David, sinal voltou. Pode continuar de onde travou."
+    "Voltou, David. Continuando.",
+    "De novo por aqui, David. Tava no aguardo.",
+    "Tava aqui te esperando, David. Segue o fluxo.",
+    "Aí de novo, senhor. Onde paramos?",
+    "Te ouço de novo, David. Diga o comando.",
+    "De volta à linha, David. Diga a próxima.",
+    "Continuamos, David. Estou ouvindo.",
+    "Cê voltou, David. Fala.",
+    "Tô de volta na escuta, David. Manda.",
+    "De volta na linha, David. Pode continuar."
   ],
-  "ultima_saudacao": "David, sinal voltou. Pode continuar de onde travou.",
-  "ultima_saudacao_ts": 1786113950.9452548
+  "ultima_saudacao": "De volta na linha, David. Pode continuar.",
+  "ultima_saudacao_ts": 1786113988.1553178
 }
