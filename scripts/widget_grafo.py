@@ -49,9 +49,14 @@ WIDGET_CSS = """
              cursor: grab; z-index: 9999; background: transparent; }
   #mk-drag:active { cursor: grabbing; }
   #mk-resize { position: fixed; right: 0; bottom: 0; width: 18px; height: 18px;
-               cursor: nwse-resize; display: none; z-index: 9999; }
-  body.desktop #mk-resize { display: block; }
-"""
+               cursor: nwse-resize; display: block; z-index: 9999;
+               background: rgba(203,166,247,0.15);
+               border-top: 2px solid rgba(203,166,247,0.4);
+               border-left: 2px solid rgba(203,166,247,0.4); }
+  #mk-resize:hover { background: rgba(203,166,247,0.35); }
+  /* Painel de controles: sempre visivel por padrao, toggle via botao olho */
+  #mk-controles { display: flex !important; }
+  """
 
 WIDGET_JS = """
 <script>

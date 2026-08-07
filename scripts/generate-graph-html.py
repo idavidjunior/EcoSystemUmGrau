@@ -583,7 +583,22 @@ def gerar_html(nos, arestas, output_path):
     position: relative;
     z-index: 9998;
   }}
-</style>
+
+  /* Labels responsivas com transicao suave */
+  .vis-network .vis-node shape > text,
+  .vis-network .vis-label {{
+    transition: opacity 0.35s ease-out, font-size 0.35s ease-out, fill 0.35s ease-out !important;
+  }}
+  /* Flash de sinapse */
+  .vis-node.flash {{
+    animation: flashPulse 0.8s ease-out;
+  }}
+  @keyframes flashPulse {{
+    0%   {{ filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 8px #fff) drop-shadow(0 0 16px #fff); }}
+    50%  {{ filter: drop-shadow(0 0 8px #fff) drop-shadow(0 0 16px #fff) drop-shadow(0 0 32px #fff); }}
+    100% {{ filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 8px #fff) drop-shadow(0 0 16px #fff); }}
+  }}
+  </style>
 <script src="vendor/vis-network.min.js"></script>
 </head>
 <body>
@@ -699,7 +714,7 @@ def gerar_html(nos, arestas, output_path):
       raio = Math.min(1, Math.sqrt((p.x - c.x) * (p.x - c.x) + (p.y - c.y) * (p.y - c.y)) / 380);
     }}
     // onda gira em torno do centro: lado 0 sempre na "frente" por fase
-    var viajante = Math.sin(t * 0.00050 * _waveVel * _velGlobal + ang + raio * 3.0) * 0.26 * _waveDir;
+    var viajante = Math.sin(t * 0.00050 * _waveVel * _velGlobal + ang + raio * 3.0) * 0.26 * _waveDir * _waveIntensidade * (_modo3D ? 1 : 0);
     var z = z0 + 0.20 * onda * 0.5 + viajante;
     return Math.max(0.04, Math.min(1, z));
   }}
@@ -734,6 +749,12 @@ def gerar_html(nos, arestas, output_path):
   var _velGlobal = 1; // multiplicador de velocidade ajustado pelo usuario
   var _cachePos = {{}};
   var _cacheCentro = {{ x: 0, y: 0 }};
+
+  // --- Configuracoes de visualizacao (persistidas no localStorage) ---
+  var _modo3D = (typeof localStorage !== 'undefined' && localStorage.getItem('modo3D') === 'true');
+  var _waveIntensidade = parseFloat((typeof localStorage !== 'undefined' && localStorage.getItem('waveIntensidade')) || '1') || 1;
+  var _flashEnabled = (typeof localStorage !== 'undefined' && localStorage.getItem('flashEnabled') !== 'false');
+  var _labelsAnimated = (typeof localStorage !== 'undefined' && localStorage.getItem('labelsAnimated') !== 'false');
   (function() {{
     _waveDir = Math.random() < 0.5 ? 1 : -1;
     _waveVel = 0.6 + Math.random() * 0.9;
@@ -1015,6 +1036,13 @@ def gerar_html(nos, arestas, output_path):
   function _aplicarOrbita(fator) {{
     fator = Number(fator) || 1;
     _orbAmplGlobal = Math.max(0, Math.min(3, fator));
+  }}
+
+  // Expoe controle de intensidade da onda 3D para o painel do widget
+  function _aplicarWaveIntensidade(fator) {{
+    fator = Number(fator) || 1;
+    _waveIntensidade = Math.max(0, Math.min(3, fator));
+    try {{ if (typeof localStorage !== 'undefined') localStorage.setItem('waveIntensidade', String(_waveIntensidade)); }} catch(e) {{}}
   }}
 
   // --- STATS VIVOS ----------------------------------------------------------
@@ -1304,6 +1332,54 @@ arestasUp = arestasUp.map(a =>
     return '#' + [r,g,b].map(x => x.toString(16).padStart(2,'0')).join('');
   }}
 
+  // --- Flash visual no clique do no ---
+  // Pulsos de brilho branco/tema que se expandem e recolhem, com fade.
+  var _flashAtivo = false;
+  function flashNo(id, cor) {{
+    if (_flashAtivo) return;
+    var orig = original[id];
+    if (!orig) return;
+    _flashAtivo = true;
+    var c = cor || '#ffffff';
+    nodes.update([{{ id: id, color: c, size: Math.max(orig.size, 16) * 1.4, shadow: true, shadowSize: 42, shadowColor: c }}]);
+    setTimeout(function() {{
+      _flashAtivo = false;
+      nodes.update([{{ id: id, color: orig.color, size: orig.size, shadow: false, shadowSize: 0 }}]);
+    }}, 750);
+  }}
+
+  // --- Alternar modo 3D (onda viajante de profundidade) ---
+  function _toggle3D(ativo) {{
+    _modo3D = ativo;
+    if (typeof localStorage !== 'undefined') localStorage.setItem('modo3D', ativo);
+    // se desativado, restaura a z base de todos os nos
+    if (!ativo) {{
+      var agora = Date.now();
+      nodes.get().forEach(function(n) {{
+        var z = _zBase[n.id] != null ? _zBase[n.id] : 0.5;
+        var esc = 0.68 + 0.62 * z;
+        var op = Math.min(1, 0.85 * (0.55 + 0.55 * z));
+        nodes.update([{{ id: n.id, size: Math.max(6, (original[n.id] ? original[n.id].size : 12) * esc), opacity: op }}]);
+      }});
+    }}
+  }}
+
+  // --- Alternar flash nos cliques ---
+  function _toggleFlash(ativo) {{
+    _flashEnabled = ativo;
+    if (typeof localStorage !== 'undefined') localStorage.setItem('flashEnabled', ativo ? 'true' : 'false');
+  }}
+
+  // --- Click no no: flash + foco na vizinhanca ---
+  network.on('click', function(params) {{
+    if (params.nodes && params.nodes.length > 0) {{
+      var nid = params.nodes[0];
+      if (_flashEnabled) flashNo(nid, _glowCor || '#89b4fa');
+      if (!_destacado) focarVizinhanca(nid, (original[nid] && original[nid].color) || '#89b4fa');
+    }}
+  }});
+
+
   const _fontLimpo = (function() {{
     // respeita o padrao de labels ocultas (so 'false' mostra)
     var oc = (typeof localStorage !== 'undefined' && localStorage.getItem('labelsOcultos') !== 'false');
@@ -1311,6 +1387,7 @@ arestasUp = arestasUp.map(a =>
   }})();
   function limpar() {{
     _destacado = false; // libera de volta a decoracao viva (cerebro vivo)
+    _flashAtivo = false;
     // reseta o estado do motor de avalanches: pausa correntes/residual
     _avalanche = {{ ativo: false, fila: [], maior: 0, size: 0 }};
     _memb = {{}}; _refrat = {{}};
