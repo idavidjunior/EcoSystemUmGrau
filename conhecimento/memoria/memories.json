@@ -2048,5 +2048,25 @@
     "access_count": 0,
     "created_at": "2026-08-06T21:31:32.366140",
     "last_accessed": "2026-08-06T21:31:32.366140"
+  },
+  {
+    "id": 133,
+    "kind": "erro",
+    "task": "Bug critico watchdog: parametro \\1180 e variavel automatica read-only do PowerShell",
+    "summary": "A funcao Test-ForensicoLixo e Invoke-KillCertificado usavam [int]\\1180 como parametro. \\1180 e variavel automatica read-only do PowerShell (PID do processo). Com ErrorActionPreference=SilentlyContinue, a atribuicao falhava em silencio e \\1180 referenciava o proprio PID do watchdog, podendo matar o proprio processo. Corrigido renomeando para \\. Tambem corrigido Write-Log que descartava os motivos de auditoria ('texto' + array virava args posicionais). Testes secos: bloqueio de nao-alvo e de processo supervisionado validados.",
+    "project": "",
+    "tags": [
+      "int",
+      "usavam",
+      "killcertificado",
+      "matar",
+      "invoke",
+      "podendo"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-06T22:03:09.965881",
+    "last_accessed": "2026-08-06T22:03:09.965881"
   }
 ]
