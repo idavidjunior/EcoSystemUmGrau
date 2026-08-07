@@ -1,41 +1,5 @@
 [
   {
-    "timestamp": "2026-08-07T06:33:12.074419",
-    "failure_type": "failover_ssh_primary",
-    "details": "Recuperado via tailscale_exit",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T06:33:14.942568",
-    "failure_type": "total_failure_api_local",
-    "details": "Todos os m\u00e9todos falharam",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T06:33:24.972856",
-    "failure_type": "total_failure_mqtt_broker",
-    "details": "Todos os m\u00e9todos falharam",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T06:33:34.992501",
-    "failure_type": "total_failure_ws_service",
-    "details": "Todos os m\u00e9todos falharam",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T06:34:03.320527",
-    "failure_type": "failover_ssh_primary",
-    "details": "Recuperado via tailscale_exit",
-    "resolved": true
-  },
-  {
-    "timestamp": "2026-08-07T06:34:06.159535",
-    "failure_type": "total_failure_api_local",
-    "details": "Todos os m\u00e9todos falharam",
-    "resolved": true
-  },
-  {
     "timestamp": "2026-08-07T06:34:16.398757",
     "failure_type": "total_failure_mqtt_broker",
     "details": "Todos os m\u00e9todos falharam",
@@ -596,6 +560,42 @@
   {
     "timestamp": "2026-08-07T06:54:13.379838",
     "failure_type": "total_failure_ws_service",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:54:41.219904",
+    "failure_type": "failover_ssh_primary",
+    "details": "Recuperado via tailscale_exit",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:54:43.896361",
+    "failure_type": "total_failure_api_local",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:54:54.139659",
+    "failure_type": "total_failure_mqtt_broker",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:55:04.163810",
+    "failure_type": "total_failure_ws_service",
+    "details": "Todos os m\u00e9todos falharam",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:55:32.758092",
+    "failure_type": "failover_ssh_primary",
+    "details": "Recuperado via tailscale_exit",
+    "resolved": true
+  },
+  {
+    "timestamp": "2026-08-07T06:55:35.083685",
+    "failure_type": "total_failure_api_local",
     "details": "Todos os m\u00e9todos falharam",
     "resolved": true
   }
