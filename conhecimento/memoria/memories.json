@@ -2788,5 +2788,45 @@
     "access_count": 0,
     "created_at": "2026-08-07T09:16:01.386100",
     "last_accessed": "2026-08-07T09:16:01.386100"
+  },
+  {
+    "id": 170,
+    "kind": "decisao",
+    "task": "Etica em tres niveis operacional",
+    "summary": "Niveis eticos minimo(padrao)/medio/maximo implementados em conhecimento/etica/niveis_etica.json + scripts/niveis_etica.py. Preflight_etica promove avisos a bloqueios por nivel. Regras imutaveis valem em todos os niveis. Falso positivo crianca corrigido (keyword crianc).",
+    "project": "",
+    "tags": [
+      "conhecimento",
+      "implementados",
+      "maximo",
+      "medio",
+      "padrao",
+      "minimo"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:16:43.469874",
+    "last_accessed": "2026-08-07T09:16:43.469874"
+  },
+  {
+    "id": 171,
+    "kind": "decisao",
+    "task": "Preflight Etico: APROVADO",
+    "summary": "entrega aprovada no nivel minimo | 0 bloqueio(s), 6 alerta(s)",
+    "project": "",
+    "tags": [
+      "alerta",
+      "bloqueio",
+      "minimo",
+      "nivel",
+      "aprovada",
+      "entrega"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:16:54.209212",
+    "last_accessed": "2026-08-07T09:16:54.209212"
   }
 ]
