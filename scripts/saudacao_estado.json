@@ -1,11 +1,12 @@
 {
-  "conexoes": 3,
+  "conexoes": 4,
   "hoje": "2026-08-07",
   "saudacoes_hoje": [
     "Online e em alerta, senhor. São cinco e quarenta e oito da manhã desta sexta-feira, e o PC está reclamando: processador perto do limite e memória pesando. O céu está parcialmente nublado, vinte graus, e amanhã a chuva deve chegar com força.",
     "De volta à linha, David. Pode falar.",
-    "Voltou, David. Tava no meio de uma coisa aqui, me diz que eu retomo."
+    "Voltou, David. Tava no meio de uma coisa aqui, me diz que eu retomo.",
+    "Tô aqui, David. Audio reconectado, pode seguir."
   ],
-  "ultima_saudacao": "Voltou, David. Tava no meio de uma coisa aqui, me diz que eu retomo.",
-  "ultima_saudacao_ts": 1786096871.4703984
+  "ultima_saudacao": "Tô aqui, David. Audio reconectado, pode seguir.",
+  "ultima_saudacao_ts": 1786097133.5024703
 }

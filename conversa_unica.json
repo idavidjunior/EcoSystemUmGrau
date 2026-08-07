@@ -286,5 +286,6 @@
   "Usuário: O resultado do concreto.",
   "Jarvis: Resultado concreto, executado agora:\n\n- **Busca semântica rodando com o novo índice** — `memory_semantic.py search \"controle da tv lg webos\"` retornou a nota certa em 1º lugar, com **score 0.3622**: `conhecimento/notas/padroes/controle-da-tv-lg-webos-via-ssap.md`.\n- As 5 notas mais relevantes vieram de `conhecimento/notas/` (as 475 notas Obsidian agora no índice), não só das memórias.\n- Indexação real: 600 documentos TF-IDF (125 memórias + 475 notas) + corpus BM25 com 883 documentos.\n\nConfirma que o aprofundamento funcionou. Próximo passo que ficou pendente: reiniciar a bridge (`jarvis_bridge.py`) para ativar o índice em produção. Quer que eu reinicie agora?",
   "Usuário: Quero.",
-  "Jarvis: Entendido. O que o senhor quer fazer?"
+  "Jarvis: Entendido. O que o senhor quer fazer?",
+  "Jarvis: Ponte reiniciada e indice semantico ativo em producao. Busca de controle da TV retornou a nota certa em 1o lugar (score 0.3622). Tudo validado."
 ]
