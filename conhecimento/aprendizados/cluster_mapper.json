@@ -15,21 +15,21 @@
   "musicbrainz": {
    "mp3player": 2
   },
-  "itunes": {
-   "mp3player": 2
-  },
   "fails": {
    "mp3player": 1
   },
   "mp3playermetadatarescue": {
    "mp3player": 34
   },
-  "fallback": {
-   "mp3player": 3,
-   "cognicao": 1
+  "itunes": {
+   "mp3player": 2
   },
   "artwork": {
    "mp3player": 1
+  },
+  "fallback": {
+   "mp3player": 3,
+   "cognicao": 1
   },
   "store": {
    "mp3player": 1
@@ -40,14 +40,11 @@
   "second": {
    "mp3player": 2
   },
-  "double": {
-   "mp3player": 3
-  },
   "segment": {
    "mp3player": 1
   },
-  "inside": {
-   "mp3player": 1
+  "double": {
+   "mp3player": 3
   },
   "stalls": {
    "mp3player": 1
@@ -58,7 +55,13 @@
   "decide": {
    "mp3player": 1
   },
+  "inside": {
+   "mp3player": 1
+  },
   "sessaolimpezaauth": {
+   "ecossistema": 1
+  },
+  "legitimo": {
    "ecossistema": 1
   },
   "github": {
@@ -67,23 +70,26 @@
   "copilot": {
    "ecossistema": 1
   },
-  "legitimo": {
-   "ecossistema": 1
-  },
   "oauth": {
    "ecossistema": 1
   },
-  "janelas": {
-   "navegacao": 2
-  },
-  "diferentes": {
-   "navegacao": 1
+  "treinamentonavegacao": {
+   "navegacao": 35
   },
   "redimensionadas": {
    "navegacao": 1
   },
-  "treinamentonavegacao": {
-   "navegacao": 35
+  "diferentes": {
+   "navegacao": 1
+  },
+  "janelas": {
+   "navegacao": 2
+  },
+  "antigo": {
+   "navegacao": 1
+  },
+  "permanece": {
+   "navegacao": 1
   },
   "elemento": {
    "navegacao": 1,
@@ -93,11 +99,15 @@
    "navegacao": 1,
    "ler": 1
   },
-  "permanece": {
-   "navegacao": 1
+  "lerauditoria": {
+   "ler": 8
   },
-  "antigo": {
-   "navegacao": 1
+  "json": {
+   "ler": 3
+  },
+  "read": {
+   "ler": 1,
+   "cognicao": 1
   },
   "identica": {
    "ler": 1
@@ -105,15 +115,8 @@
   "logica": {
    "ler": 1
   },
-  "lerauditoria": {
-   "ler": 8
-  },
-  "read": {
-   "ler": 1,
-   "cognicao": 1
-  },
-  "json": {
-   "ler": 3
+  "ocultas": {
+   "navegacao": 1
   },
   "opcoes": {
    "navegacao": 1
@@ -121,24 +124,18 @@
   "div": {
    "navegacao": 1
   },
-  "ocultas": {
-   "navegacao": 1
-  },
-  "adding": {
-   "mp3player": 1
-  },
   "early": {
-   "mp3player": 1
-  },
-  "times": {
    "mp3player": 1
   },
   "fragments": {
    "mp3player": 1,
    "android": 1
   },
-  "encontrados": {
-   "navegacao": 1
+  "adding": {
+   "mp3player": 1
+  },
+  "times": {
+   "mp3player": 1
   },
   "penetra": {
    "navegacao": 1
@@ -146,16 +143,22 @@
   "shadowroots": {
    "navegacao": 1
   },
-  "actual": {
+  "encontrados": {
+   "navegacao": 1
+  },
+  "gains": {
    "mp3player": 1
   },
-  "always": {
+  "actual": {
    "mp3player": 1
   },
   "enabled": {
    "mp3player": 1
   },
-  "gains": {
+  "always": {
+   "mp3player": 1
+  },
+  "inactive": {
    "mp3player": 1
   },
   "caching": {
@@ -168,13 +171,7 @@
   "exoplayer": {
    "mp3player": 1
   },
-  "inactive": {
-   "mp3player": 1
-  },
   "equalizerfragment": {
-   "mp3player": 1
-  },
-  "until": {
    "mp3player": 1
   },
   "stayed": {
@@ -183,10 +180,7 @@
   "flat": {
    "mp3player": 1
   },
-  "reset": {
-   "mp3player": 2
-  },
-  "restart": {
+  "until": {
    "mp3player": 1
   },
   "switch": {
@@ -195,13 +189,19 @@
   "every": {
    "mp3player": 2
   },
-  "frequencies": {
+  "restart": {
    "mp3player": 1
+  },
+  "reset": {
+   "mp3player": 2
   },
   "exceeding": {
    "mp3player": 1
   },
   "saturation": {
+   "mp3player": 1
+  },
+  "frequencies": {
    "mp3player": 1
   },
   "threshold": {
@@ -210,14 +210,17 @@
   "btn": {
    "mp3player": 1
   },
-  "active": {
-   "mp3player": 1
-  },
   "styles": {
    "mp3player": 1
   },
   "preset": {
    "mp3player": 1
+  },
+  "active": {
+   "mp3player": 1
+  },
+  "refactor": {
+   "ler": 1
   },
   "fix": {
    "ler": 1,
@@ -226,19 +229,16 @@
   "apos": {
    "ler": 1
   },
-  "refactor": {
+  "antigas": {
+   "ler": 1
+  },
+  "estourar": {
    "ler": 1
   },
   "remover": {
    "ler": 1
   },
-  "antigas": {
-   "ler": 1
-  },
   "entradas": {
-   "ler": 1
-  },
-  "estourar": {
    "ler": 1
   },
   "split": {
@@ -247,22 +247,22 @@
   "queries": {
    "mp3player": 2
   },
-  "filename": {
-   "mp3player": 1
-  },
   "noisy": {
    "mp3player": 1
   },
-  "visual": {
-   "mp3player": 1
-  },
-  "filtering": {
+  "filename": {
    "mp3player": 1
   },
   "rescue": {
    "mp3player": 6
   },
+  "filtering": {
+   "mp3player": 1
+  },
   "feedback": {
+   "mp3player": 1
+  },
+  "visual": {
    "mp3player": 1
   },
   "indefinidamente": {
@@ -277,11 +277,14 @@
   "atingido": {
    "ler": 2
   },
+  "objetivo": {
+   "ler": 2
+  },
   "prematura": {
    "ler": 1
   },
-  "objetivo": {
-   "ler": 2
+  "requests": {
+   "ecossistema": 1
   },
   "quebrando": {
    "ecossistema": 1
@@ -289,18 +292,9 @@
   "providermcpserverpy5255": {
    "ecossistema": 1
   },
-  "requests": {
-   "ecossistema": 1
-  },
   "protocolo": {
    "ecossistema": 2,
    "cognicao": 1
-  },
-  "request": {
-   "ecossistema": 1
-  },
-  "providermcpserverpy": {
-   "ecossistema": 1
   },
   "handle": {
    "ecossistema": 1
@@ -308,14 +302,20 @@
   "nomes": {
    "ecossistema": 1
   },
+  "request": {
+   "ecossistema": 1
+  },
+  "providermcpserverpy": {
+   "ecossistema": 1
+  },
   "mapping": {
+   "ecossistema": 2
+  },
+  "comando": {
    "ecossistema": 2
   },
   "sessaoprovidermanager": {
    "ecossistema": 5
-  },
-  "comando": {
-   "ecossistema": 2
   },
   "capabilities": {
    "ecossistema": 1,
@@ -324,9 +324,6 @@
   "terminava": {
    "ler": 1
   },
-  "fragment": {
-   "mp3player": 1
-  },
   "header": {
    "mp3player": 1
   },
@@ -334,38 +331,44 @@
    "mp3player": 1,
    "android": 1
   },
-  "frequency": {
+  "fragment": {
    "mp3player": 1
   },
   "sortmode": {
+   "mp3player": 1
+  },
+  "playsongfromlist": {
+   "mp3player": 1
+  },
+  "frequency": {
    "mp3player": 1
   },
   "increment": {
    "mp3player": 1,
    "android": 1
   },
-  "playsongfromlist": {
+  "polled": {
    "mp3player": 1
-  },
-  "handler": {
-   "mp3player": 2
   },
   "250ms": {
    "mp3player": 1
   },
-  "polled": {
-   "mp3player": 1
-  },
-  "pode": {
-   "ecossistema": 1,
-   "cognicao": 2,
-   "navegacao": 1
+  "handler": {
+   "mp3player": 2
   },
   "check": {
    "ecossistema": 1
   },
   "mensagem": {
    "ecossistema": 1
+  },
+  "pode": {
+   "ecossistema": 1,
+   "cognicao": 2,
+   "navegacao": 1
+  },
+  "tap": {
+   "navegacao": 1
   },
   "botao": {
    "navegacao": 1
@@ -374,33 +377,27 @@
    "navegacao": 1,
    "cognicao": 1
   },
-  "tap": {
-   "navegacao": 1
-  },
   "input": {
    "navegacao": 2
+  },
+  "meio": {
+   "ler": 1
   },
   "ntfs": {
    "ler": 1,
    "cognicao": 1
   },
-  "meio": {
-   "ler": 1
-  },
   "never": {
    "mp3player": 2,
    "android": 1
   },
-  "sent": {
-   "mp3player": 1
-  },
   "master": {
    "mp3player": 1
   },
-  "multiplier": {
+  "sent": {
    "mp3player": 1
   },
-  "without": {
+  "multiplier": {
    "mp3player": 1
   },
   "touching": {
@@ -409,20 +406,23 @@
   "bands": {
    "mp3player": 1
   },
-  "splits": {
-   "mp3player": 1
-  },
-  "parts": {
+  "without": {
    "mp3player": 1
   },
   "expected": {
    "mp3player": 1,
    "ecossistema": 2
   },
-  "irreversible": {
+  "parts": {
+   "mp3player": 1
+  },
+  "splits": {
    "mp3player": 1
   },
   "audible": {
+   "mp3player": 1
+  },
+  "irreversible": {
    "mp3player": 1
   },
   "real": {
@@ -449,37 +449,34 @@
   "artist": {
    "mp3player": 3
   },
-  "visivel": {
-   "navegacao": 2
-  },
   "tem": {
    "navegacao": 2,
    "ecossistema": 1,
    "cognicao": 1
   },
+  "visivel": {
+   "navegacao": 2
+  },
   "minimum": {
+   "mp3player": 1
+  },
+  "return": {
    "mp3player": 1
   },
   "met": {
    "mp3player": 1
   },
-  "return": {
+  "3xx": {
    "mp3player": 1
   },
   "loop": {
    "mp3player": 1,
    "cognicao": 2
   },
-  "3xx": {
-   "mp3player": 1
-  },
   "codes": {
    "mp3player": 1
   },
   "mode": {
-   "mp3player": 1
-  },
-  "lower": {
    "mp3player": 1
   },
   "thresholds": {
@@ -488,31 +485,31 @@
   "relaxed": {
    "mp3player": 1
   },
-  "agentes": {
+  "lower": {
+   "mp3player": 1
+  },
+  "python": {
    "ecossistema": 1
   },
   "graph": {
    "ecossistema": 1
   },
-  "python": {
+  "agentes": {
    "ecossistema": 1
-  },
-  "pede": {
-   "cognicao": 1
-  },
-  "narrar": {
-   "cognicao": 1,
-   "ecossistema": 1
-  },
-  "ticos": {
-   "cognicao": 1
   },
   "fazendo": {
    "cognicao": 1,
    "ecossistema": 2
   },
-  "cerebro": {
+  "pede": {
    "cognicao": 1
+  },
+  "ticos": {
+   "cognicao": 1
+  },
+  "narrar": {
+   "cognicao": 1,
+   "ecossistema": 1
   },
   "vivo": {
    "cognicao": 1,
@@ -523,18 +520,24 @@
    "navegacao": 1,
    "ecossistema": 1
   },
+  "cerebro": {
+   "cognicao": 1
+  },
+  "rio": {
+   "ecossistema": 1,
+   "cognicao": 1
+  },
   "hor": {
    "ecossistema": 1
   },
   "fuso": {
    "ecossistema": 1
   },
-  "rio": {
-   "ecossistema": 1,
-   "cognicao": 1
-  },
   "etapa": {
    "ecossistema": 1
+  },
+  "desugardebugfiledependencies": {
+   "ecossistema": 2
   },
   "minutos": {
    "ecossistema": 1
@@ -542,8 +545,11 @@
   "slowness": {
    "ecossistema": 1
   },
-  "desugardebugfiledependencies": {
-   "ecossistema": 2
+  "parent": {
+   "ecossistema": 1
+  },
+  "inteiro": {
+   "ecossistema": 1
   },
   "ficar": {
    "ecossistema": 2
@@ -551,22 +557,13 @@
   "nico": {
    "ecossistema": 3
   },
-  "parent": {
-   "ecossistema": 1
-  },
-  "inteiro": {
-   "ecossistema": 1
+  "agents": {
+   "cognicao": 1
   },
   "extra": {
    "cognicao": 1
   },
   "code": {
-   "cognicao": 1
-  },
-  "agents": {
-   "cognicao": 1
-  },
-  "clicar": {
    "cognicao": 1
   },
   "sumiram": {
@@ -580,15 +577,18 @@
   "persistencia": {
    "cognicao": 1
   },
+  "clicar": {
+   "cognicao": 1
+  },
+  "testing": {
+   "cognicao": 3
+  },
   "mobile": {
    "cognicao": 1,
    "navegacao": 1
   },
   "adaptability": {
    "cognicao": 1
-  },
-  "testing": {
-   "cognicao": 3
   },
   "alteram": {
    "cognicao": 1
@@ -597,15 +597,15 @@
    "cognicao": 2,
    "ecossistema": 3
   },
-  "fala": {
-   "cognicao": 1,
-   "ecossistema": 1
-  },
   "melodia": {
    "cognicao": 1
   },
   "chega": {
    "cognicao": 1
+  },
+  "fala": {
+   "cognicao": 1,
+   "ecossistema": 1
   },
   "funcoes": {
    "cognicao": 1
@@ -615,6 +615,9 @@
   },
   "forenses": {
    "cognicao": 1
+  },
+  "metodo": {
+   "navegacao": 1
   },
   "act": {
    "navegacao": 1
@@ -628,8 +631,8 @@
   "execute": {
    "navegacao": 1
   },
-  "metodo": {
-   "navegacao": 1
+  "desativar": {
+   "ecossistema": 1
   },
   "ativar": {
    "ecossistema": 1
@@ -640,16 +643,13 @@
   "ecosystemumgrau": {
    "ecossistema": 2
   },
-  "desativar": {
-   "ecossistema": 1
-  },
-  "dispara": {
-   "cognicao": 1
-  },
   "while": {
    "cognicao": 1
   },
   "infinita": {
+   "cognicao": 1
+  },
+  "dispara": {
    "cognicao": 1
   },
   "processing": {
@@ -662,25 +662,28 @@
    "cognicao": 1,
    "ecossistema": 1
   },
-  "entrada": {
-   "cognicao": 1
-  },
   "debugging": {
    "cognicao": 12,
    "ecossistema": 1
   },
-  "camada": {
-   "ecossistema": 1
-  },
-  "chain": {
-   "ecossistema": 1
+  "entrada": {
+   "cognicao": 1
   },
   "completo": {
    "ecossistema": 1,
    "cognicao": 1
   },
+  "chain": {
+   "ecossistema": 1
+  },
   "handshake": {
    "ecossistema": 1
+  },
+  "camada": {
+   "ecossistema": 1
+  },
+  "corrompidos": {
+   "cognicao": 1
   },
   "validos": {
    "cognicao": 1
@@ -688,11 +691,12 @@
   "perfeitamente": {
    "cognicao": 1
   },
-  "corrompidos": {
-   "cognicao": 1
-  },
   "utf": {
    "cognicao": 1
+  },
+  "skill": {
+   "cognicao": 1,
+   "ecossistema": 1
   },
   "existente": {
    "cognicao": 1,
@@ -704,27 +708,24 @@
   "metacognicao": {
    "cognicao": 1
   },
-  "skill": {
-   "cognicao": 1,
-   "ecossistema": 1
-  },
-  "fout": {
-   "cognicao": 1
-  },
   "foit": {
    "cognicao": 1
   },
   "variavel": {
    "cognicao": 1
   },
-  "calls": {
-   "cognicao": 1
-  },
   "performance": {
    "cognicao": 1
   },
-  "systemdesign": {
-   "cognicao": 5
+  "fout": {
+   "cognicao": 1
+  },
+  "calls": {
+   "cognicao": 1
+  },
+  "automatico": {
+   "cognicao": 1,
+   "ecossistema": 1
   },
   "proxima": {
    "cognicao": 1
@@ -732,11 +733,13 @@
   "preferencia": {
    "cognicao": 1
   },
-  "automatico": {
-   "cognicao": 1,
-   "ecossistema": 1
+  "systemdesign": {
+   "cognicao": 5
   },
   "precisa": {
+   "cognicao": 1
+  },
+  "iteracoes": {
    "cognicao": 1
   },
   "progresso": {
@@ -745,16 +748,13 @@
   "estagnacao": {
    "cognicao": 1
   },
-  "iteracoes": {
-   "cognicao": 1
-  },
   "nenhum": {
    "cognicao": 1
   },
-  "invalida": {
+  "vault": {
    "cognicao": 1
   },
-  "vault": {
+  "invalida": {
    "cognicao": 1
   },
   "atualiza": {
@@ -764,6 +764,9 @@
   "todo": {
    "cognicao": 1
   },
+  "agente": {
+   "cognicao": 1
+  },
   "comunica": {
    "cognicao": 1
   },
@@ -771,29 +774,26 @@
    "cognicao": 2,
    "ecossistema": 1
   },
-  "agente": {
+  "serialnumber": {
    "cognicao": 1
   },
   "2024": {
    "cognicao": 1
   },
-  "serialnumber": {
+  "similares": {
    "cognicao": 1
   },
   "manufacture": {
    "cognicao": 1
   },
-  "similares": {
-   "cognicao": 1
+  "logo": {
+   "ecossistema": 1
   },
   "tecnicas": {
    "ecossistema": 2
   },
   "habilidades": {
    "ecossistema": 3
-  },
-  "logo": {
-   "ecossistema": 1
   },
   "grupo": {
    "cognicao": 1
@@ -811,9 +811,6 @@
   "efficiency": {
    "cognicao": 4
   },
-  "muda": {
-   "cognicao": 1
-  },
   "sintoma": {
    "cognicao": 1
   },
@@ -823,27 +820,21 @@
   "obvio": {
    "cognicao": 1
   },
+  "muda": {
+   "cognicao": 1
+  },
+  "trocar": {
+   "ecossistema": 2,
+   "android": 1
+  },
   "independente": {
    "ecossistema": 1
   },
   "adb": {
    "ecossistema": 1
   },
-  "trocar": {
-   "ecossistema": 2,
-   "android": 1
-  },
   "usb": {
    "ecossistema": 1
-  },
-  "contratos": {
-   "cognicao": 1
-  },
-  "architecture": {
-   "cognicao": 3
-  },
-  "recuperaveis": {
-   "cognicao": 1
   },
   "externos": {
    "cognicao": 1
@@ -851,11 +842,14 @@
   "explicitos": {
    "cognicao": 1
   },
-  "composicao": {
+  "contratos": {
    "cognicao": 1
   },
-  "gpu": {
+  "recuperaveis": {
    "cognicao": 1
+  },
+  "architecture": {
+   "cognicao": 3
   },
   "dom": {
    "cognicao": 2,
@@ -864,8 +858,15 @@
   "browserarchitecture": {
    "cognicao": 1
   },
-  "330": {
-   "ecossistema": 1
+  "composicao": {
+   "cognicao": 1
+  },
+  "gpu": {
+   "cognicao": 1
+  },
+  "atual": {
+   "ecossistema": 1,
+   "cognicao": 1
   },
   "bridge": {
    "ecossistema": 1
@@ -873,54 +874,53 @@
   "jarvis": {
    "ecossistema": 6
   },
-  "atual": {
-   "ecossistema": 1,
+  "330": {
+   "ecossistema": 1
+  },
+  "algorithm": {
    "cognicao": 1
   },
   "errada": {
    "cognicao": 1
   },
-  "algorithm": {
+  "retornar": {
    "cognicao": 1
   },
   "baixo": {
    "cognicao": 1
   },
-  "retornar": {
-   "cognicao": 1
-  },
   "informacao": {
-   "cognicao": 1
-  },
-  "webrendering": {
-   "cognicao": 1
-  },
-  "consultar": {
-   "cognicao": 1
-  },
-  "acao": {
    "cognicao": 1
   },
   "difere": {
    "cognicao": 1
   },
-  "ext4": {
+  "webrendering": {
    "cognicao": 1
   },
-  "arquivos": {
-   "cognicao": 1,
-   "ecossistema": 1,
-   "ler": 1
+  "acao": {
+   "cognicao": 1
+  },
+  "consultar": {
+   "cognicao": 1
+  },
+  "ext4": {
+   "cognicao": 1
   },
   "sistema": {
    "cognicao": 2,
    "navegacao": 1,
    "ecossistema": 1
   },
-  "inputs": {
-   "cognicao": 1
+  "arquivos": {
+   "cognicao": 1,
+   "ecossistema": 1,
+   "ler": 1
   },
   "formularios": {
+   "cognicao": 1
+  },
+  "inputs": {
    "cognicao": 1
   },
   "uirecognition": {
@@ -929,20 +929,20 @@
   "repetidos": {
    "cognicao": 1
   },
-  "modais": {
-   "cognicao": 1,
-   "navegacao": 1
-  },
-  "planning": {
+  "barreiras": {
    "cognicao": 1
   },
   "possiveis": {
    "cognicao": 1
   },
-  "barreiras": {
+  "permissoes": {
    "cognicao": 1
   },
-  "permissoes": {
+  "modais": {
+   "cognicao": 1,
+   "navegacao": 1
+  },
+  "planning": {
    "cognicao": 1
   },
   "aplicada": {
@@ -958,13 +958,19 @@
   "slaba": {
    "cognicao": 1
   },
+  "assistente": {
+   "cognicao": 1
+  },
   "ltima": {
    "cognicao": 1
   },
   "jarvs": {
    "cognicao": 1
   },
-  "assistente": {
+  "verde": {
+   "cognicao": 1
+  },
+  "sucesso": {
    "cognicao": 1
   },
   "toast": {
@@ -973,31 +979,25 @@
   "vermelha": {
    "cognicao": 1
   },
-  "verde": {
-   "cognicao": 1
-  },
   "statedetection": {
-   "cognicao": 1
-  },
-  "sucesso": {
-   "cognicao": 1
-  },
-  "classes": {
-   "cognicao": 1
-  },
-  "mui": {
-   "cognicao": 1
-  },
-  "col": {
    "cognicao": 1
   },
   "material": {
    "cognicao": 1
   },
+  "classes": {
+   "cognicao": 1
+  },
+  "col": {
+   "cognicao": 1
+  },
   "frameworkdetection": {
    "cognicao": 1
   },
-  "terminal": {
+  "mui": {
+   "cognicao": 1
+  },
+  "ind": {
    "ecossistema": 1
   },
   "nome": {
@@ -1006,50 +1006,50 @@
   "failed": {
    "ecossistema": 1
   },
-  "ind": {
+  "terminal": {
    "ecossistema": 1
   },
   "concorrencia": {
    "cognicao": 1
   },
-  "corrompido": {
+  "inconsistente": {
    "cognicao": 1
   },
   "estado": {
    "cognicao": 3,
    "ecossistema": 1
   },
-  "inconsistente": {
+  "corrompido": {
    "cognicao": 1
   },
   "david": {
    "cognicao": 1
   },
-  "pronunciava": {
-   "cognicao": 1
-  },
   "deveriam": {
    "cognicao": 1
   },
-  "errors": {
+  "pronunciava": {
+   "cognicao": 1
+  },
+  "ttft": {
    "ecossistema": 1
   },
   "ecosistemaopencode": {
    "ecossistema": 2
   },
-  "timeouts": {
-   "ecossistema": 1
-  },
   "uso": {
    "ecossistema": 2
   },
-  "ttft": {
+  "timeouts": {
    "ecossistema": 1
   },
-  "conversa": {
+  "errors": {
    "ecossistema": 1
   },
   "extrair": {
+   "ecossistema": 1
+  },
+  "conversa": {
    "ecossistema": 1
   },
   "estruturado": {
@@ -1058,20 +1058,23 @@
   "reutilizado": {
    "ecossistema": 1
   },
+  "passar": {
+   "ecossistema": 1
+  },
   "validao": {
    "ecossistema": 1
   },
-  "passar": {
+  "valida": {
+   "ecossistema": 1
+  },
+  "prvia": {
    "ecossistema": 1
   },
   "opencode": {
    "ecossistema": 61,
    "ler": 27
   },
-  "prvia": {
-   "ecossistema": 1
-  },
-  "valida": {
+  "marca": {
    "ecossistema": 1
   },
   "vers": {
@@ -1083,13 +1086,10 @@
   "vozes": {
    "ecossistema": 1
   },
-  "marca": {
+  "commits": {
    "ecossistema": 1
   },
   "desrespeitando": {
-   "ecossistema": 1
-  },
-  "commits": {
    "ecossistema": 1
   },
   "relat": {
@@ -1098,16 +1098,16 @@
   "til": {
    "ecossistema": 1
   },
-  "manual": {
-   "mp3player": 1
-  },
-  "false": {
+  "redirect": {
    "mp3player": 1
   },
   "mp3player": {
    "mp3player": 11
   },
-  "redirect": {
+  "manual": {
+   "mp3player": 1
+  },
+  "false": {
    "mp3player": 1
   },
   "instancefollowredirects": {
@@ -1116,15 +1116,9 @@
   "title": {
    "mp3player": 2
   },
-  "sessaoseguranca": {
-   "ecossistema": 1
-  },
   "etc": {
    "ecossistema": 1,
    "android": 1
-  },
-  "nvidia": {
-   "ecossistema": 1
   },
   "openai": {
    "ecossistema": 2
@@ -1132,27 +1126,39 @@
   "isoladas": {
    "ecossistema": 1
   },
-  "crash": {
-   "ler": 1
+  "sessaoseguranca": {
+   "ecossistema": 1
+  },
+  "nvidia": {
+   "ecossistema": 1
   },
   "lerarquitetura": {
    "ler": 6
+  },
+  "viavel": {
+   "ler": 1
+  },
+  "crash": {
+   "ler": 1
   },
   "qualquer": {
    "ler": 1,
    "cognicao": 1,
    "ecossistema": 1
   },
-  "viavel": {
-   "ler": 1
-  },
   "robustez": {
+   "ecossistema": 1
+  },
+  "revelaram": {
    "ecossistema": 1
   },
   "podia": {
    "ecossistema": 1
   },
-  "revelaram": {
+  "flag": {
+   "ecossistema": 1
+  },
+  "task": {
    "ecossistema": 1
   },
   "depends": {
@@ -1162,13 +1168,7 @@
    "ecossistema": 1,
    "android": 1
   },
-  "task": {
-   "ecossistema": 1
-  },
-  "flag": {
-   "ecossistema": 1
-  },
-  "necessidade": {
+  "expl": {
    "ecossistema": 1
   },
   "cita": {
@@ -1177,26 +1177,20 @@
   "solicita": {
    "ecossistema": 1
   },
-  "expl": {
-   "ecossistema": 1
-  },
-  "resultados": {
-   "ecossistema": 1
-  },
-  "comandos": {
-   "ecossistema": 1
-  },
-  "ouvindo": {
+  "necessidade": {
    "ecossistema": 1
   },
   "falando": {
    "ecossistema": 1
   },
-  "corrupted": {
-   "android": 1
+  "comandos": {
+   "ecossistema": 1
   },
-  "characters": {
-   "android": 1
+  "resultados": {
+   "ecossistema": 1
+  },
+  "ouvindo": {
+   "ecossistema": 1
   },
   "portuguese": {
    "android": 1
@@ -1204,7 +1198,13 @@
   "androidpuresdk": {
    "android": 31
   },
-  "editavel": {
+  "corrupted": {
+   "android": 1
+  },
+  "characters": {
+   "android": 1
+  },
+  "sqlite": {
    "ler": 1
   },
   "migrations": {
@@ -1213,7 +1213,10 @@
   "legivel": {
    "ler": 1
   },
-  "sqlite": {
+  "editavel": {
+   "ler": 1
+  },
+  "probability": {
    "ler": 1
   },
   "success": {
@@ -1226,15 +1229,12 @@
    "ler": 1,
    "ecossistema": 1
   },
-  "probability": {
-   "ler": 1
+  "auto": {
+   "android": 1
   },
   "load": {
    "android": 1,
    "navegacao": 1
-  },
-  "auto": {
-   "android": 1
   },
   "forms": {
    "android": 1
@@ -1242,14 +1242,15 @@
   "carregam": {
    "android": 1
   },
-  "aba": {
-   "android": 1
-  },
   "arquivo": {
    "android": 3
   },
-  "ecossistema": {
-   "ecossistema": 4
+  "aba": {
+   "android": 1
+  },
+  "leraprendizado": {
+   "ecossistema": 3,
+   "ler": 2
   },
   "capacidades": {
    "ecossistema": 1,
@@ -1258,24 +1259,26 @@
   "niveis": {
    "ecossistema": 1
   },
-  "leraprendizado": {
-   "ecossistema": 3,
-   "ler": 2
+  "ecossistema": {
+   "ecossistema": 4
   },
-  "buscar": {
-   "mp3player": 2
+  "campos": {
+   "mp3player": 1
   },
   "novamente": {
    "mp3player": 1
   },
-  "campos": {
-   "mp3player": 1
+  "buscar": {
+   "mp3player": 2
+  },
+  "futura": {
+   "ler": 1
   },
   "system": {
    "ler": 1,
    "ecossistema": 1
   },
-  "futura": {
+  "ambiente": {
    "ler": 1
   },
   "dependencias": {
@@ -1284,11 +1287,11 @@
   "intencionalmente": {
    "ler": 1
   },
-  "ambiente": {
-   "ler": 1
-  },
   "externas": {
    "ler": 1
+  },
+  "instead": {
+   "android": 1
   },
   "duplicating": {
    "android": 1
@@ -1296,20 +1299,17 @@
   "quantity": {
    "android": 1
   },
-  "instead": {
-   "android": 1
+  "aceito": {
+   "mp3player": 1
   },
   "natural": {
    "mp3player": 1,
    "ecossistema": 1
   },
-  "aceito": {
-   "mp3player": 1
-  },
-  "tinta": {
+  "balanceadas": {
    "ecossistema": 1
   },
-  "balanceadas": {
+  "tinta": {
    "ecossistema": 1
   },
   "colar": {
@@ -1318,21 +1318,17 @@
   "espontanea": {
    "ecossistema": 1
   },
-  "objeto": {
-   "ecossistema": 1
-  },
-  "providermcpdebug": {
-   "ecossistema": 1
-  },
   "config": {
    "ecossistema": 5
   },
   "arrayopencode": {
    "ecossistema": 1
   },
-  "documentos": {
-   "ecossistema": 1,
-   "navegacao": 1
+  "objeto": {
+   "ecossistema": 1
+  },
+  "providermcpdebug": {
+   "ecossistema": 1
   },
   "workspaceorganization": {
    "ecossistema": 3
@@ -1340,13 +1336,13 @@
   "projetos": {
    "ecossistema": 2
   },
+  "documentos": {
+   "ecossistema": 1,
+   "navegacao": 1
+  },
   "unica": {
    "ecossistema": 1,
    "cognicao": 1
-  },
-  "inteira": {
-   "ecossistema": 1,
-   "ler": 1
   },
   "conexos": {
    "ecossistema": 1
@@ -1354,19 +1350,23 @@
   "solta": {
    "ecossistema": 1
   },
+  "inteira": {
+   "ecossistema": 1,
+   "ler": 1
+  },
   "isolados": {
    "ecossistema": 1
   },
-  "completados": {
+  "commit": {
    "ler": 1
   },
   "passos": {
    "ler": 1
   },
-  "auditoria": {
+  "completados": {
    "ler": 1
   },
-  "commit": {
+  "auditoria": {
    "ler": 1
   },
   "idioma": {
@@ -1376,13 +1376,13 @@
   "operacional": {
    "navegacao": 1
   },
+  "frequentemente": {
+   "navegacao": 1
+  },
   "sao": {
    "navegacao": 4,
    "cognicao": 1,
    "ecossistema": 1
-  },
-  "frequentemente": {
-   "navegacao": 1
   },
   "dinamicos": {
    "navegacao": 1
@@ -1393,25 +1393,25 @@
   "caminhos": {
    "ecossistema": 1
   },
-  "workflow": {
-   "ecossistema": 1
-  },
   "tdd": {
    "ecossistema": 1
   },
   "machine": {
    "ecossistema": 1
   },
-  "timestampado": {
-   "android": 1
+  "workflow": {
+   "ecossistema": 1
   },
   "sobrescreve": {
    "android": 1
   },
-  "existing": {
+  "timestampado": {
    "android": 1
   },
   "saved": {
+   "android": 1
+  },
+  "existing": {
    "android": 1
   },
   "mudam": {
@@ -1421,10 +1421,10 @@
   "tokens": {
    "ecossistema": 1
   },
-  "sessaorustdesk": {
+  "one": {
    "ecossistema": 1
   },
-  "one": {
+  "sessaorustdesk": {
    "ecossistema": 1
   },
   "null": {
@@ -1434,12 +1434,15 @@
   "amplas": {
    "mp3player": 1
   },
-  "proximo": {
-   "navegacao": 1
-  },
   "android": {
    "navegacao": 2,
    "android": 12
+  },
+  "proximo": {
+   "navegacao": 1
+  },
+  "ocupadas": {
+   "ecossistema": 1
   },
   "localhost": {
    "ecossistema": 1
@@ -1450,25 +1453,22 @@
   "sessaoservermanager": {
    "ecossistema": 1
   },
-  "ocupadas": {
-   "ecossistema": 1
-  },
-  "suporte": {
+  "setvisibility": {
    "android": 1
   },
   "visibilidade": {
    "android": 1
   },
-  "setvisibility": {
+  "suporte": {
    "android": 1
   },
   "4m9q2k9p": {
    "mp3player": 1
   },
-  "invalid": {
+  "400": {
    "mp3player": 1
   },
-  "400": {
+  "invalid": {
    "mp3player": 1
   },
   "point": {
@@ -1486,15 +1486,15 @@
   "modulo": {
    "ler": 1
   },
-  "description": {
-   "mp3player": 1
+  "root": {
+   "mp3player": 1,
+   "navegacao": 1
   },
   "cause": {
    "mp3player": 1
   },
-  "root": {
-   "mp3player": 1,
-   "navegacao": 1
+  "description": {
+   "mp3player": 1
   },
   "absolutas": {
    "navegacao": 1
@@ -1518,14 +1518,11 @@
   "falsos": {
    "navegacao": 1
   },
-  "internet": {
-   "mp3player": 1,
-   "ecossistema": 1
-  },
   "taps": {
    "mp3player": 1
   },
-  "conectados": {
+  "internet": {
+   "mp3player": 1,
    "ecossistema": 1
   },
   "cores": {
@@ -1537,17 +1534,17 @@
   "frontmatter": {
    "ecossistema": 1
   },
-  "espelho": {
+  "conectados": {
    "ecossistema": 1
   },
-  "automaticamente": {
+  "espelho": {
    "ecossistema": 1
   },
   "reflete": {
    "ecossistema": 1
   },
-  "causam": {
-   "navegacao": 2
+  "automaticamente": {
+   "ecossistema": 1
   },
   "elementclickinterceptedexception": {
    "navegacao": 1
@@ -1558,26 +1555,32 @@
   "cliques": {
    "navegacao": 1
   },
+  "causam": {
+   "navegacao": 2
+  },
   "historical": {
    "android": 1
   },
   "requirement": {
    "android": 1
   },
-  "toolchain": {
+  "trees": {
    "android": 1
   },
-  "trees": {
+  "toolchain": {
    "android": 1
   },
   "mental": {
    "android": 1
   },
+  "calculation": {
+   "android": 1
+  },
   "model": {
    "android": 1
   },
-  "calculation": {
-   "android": 1
+  "filha": {
+   "ecossistema": 1
   },
   "proprias": {
    "ecossistema": 1
@@ -1585,29 +1588,29 @@
   "resistem": {
    "ecossistema": 1
   },
-  "filha": {
-   "ecossistema": 1
-  },
   "reparent": {
    "ecossistema": 1
   },
-  "boyd": {
+  "automatizada": {
    "navegacao": 1
   },
   "navegacao": {
    "navegacao": 2
   },
-  "automatizada": {
+  "boyd": {
    "navegacao": 1
   },
   "infinito": {
+   "cognicao": 1
+  },
+  "rede": {
    "cognicao": 1
   },
   "servidor": {
    "cognicao": 1,
    "ecossistema": 1
   },
-  "rede": {
+  "loading": {
    "cognicao": 1
   },
   "overlay": {
@@ -1616,24 +1619,18 @@
   "crossplatform": {
    "cognicao": 2
   },
-  "loading": {
-   "cognicao": 1
-  },
-  "explicitamente": {
-   "cognicao": 1
-  },
   "precisam": {
-   "cognicao": 1
-  },
-  "invalide": {
    "cognicao": 1
   },
   "consistentes": {
    "cognicao": 1,
    "navegacao": 1
   },
-  "elementdetection": {
-   "cognicao": 3
+  "explicitamente": {
+   "cognicao": 1
+  },
+  "invalide": {
+   "cognicao": 1
   },
   "utilizavel": {
    "cognicao": 1
@@ -1642,19 +1639,25 @@
    "cognicao": 1,
    "navegacao": 1
   },
+  "elementdetection": {
+   "cognicao": 3
+  },
   "valores": {
    "cognicao": 1
   },
   "range": {
    "cognicao": 1
   },
-  "deveria": {
-   "cognicao": 1
-  },
   "encoding": {
    "cognicao": 1
   },
+  "deveria": {
+   "cognicao": 1
+  },
   "position": {
+   "cognicao": 1
+  },
+  "viewport": {
    "cognicao": 1
   },
   "scroll": {
@@ -1663,13 +1666,7 @@
   "ocr": {
    "cognicao": 1
   },
-  "viewport": {
-   "cognicao": 1
-  },
-  "perde": {
-   "cognicao": 1
-  },
-  "trivial": {
+  "quao": {
    "cognicao": 1
   },
   "persistence": {
@@ -1678,10 +1675,10 @@
   "parece": {
    "cognicao": 1
   },
-  "quao": {
+  "perde": {
    "cognicao": 1
   },
-  "resolveu": {
+  "trivial": {
    "cognicao": 1
   },
   "qual": {
@@ -1690,20 +1687,17 @@
   "sabe": {
    "cognicao": 1
   },
-  "relativas": {
+  "resolveu": {
+   "cognicao": 1
+  },
+  "desc": {
    "cognicao": 1
   },
   "text": {
    "cognicao": 1,
    "navegacao": 1
   },
-  "desc": {
-   "cognicao": 1
-  },
-  "especifico": {
-   "cognicao": 1
-  },
-  "possivel": {
+  "relativas": {
    "cognicao": 1
   },
   "coding": {
@@ -1712,32 +1706,38 @@
   "generico": {
    "cognicao": 1
   },
+  "possivel": {
+   "cognicao": 1
+  },
+  "especifico": {
+   "cognicao": 1
+  },
   "path": {
-   "cognicao": 1
-  },
-  "responda": {
-   "cognicao": 1
-  },
-  "notification": {
-   "cognicao": 1
-  },
-  "responder": {
    "cognicao": 1
   },
   "protocol": {
    "cognicao": 1,
    "ecossistema": 1
   },
+  "responda": {
+   "cognicao": 1
+  },
+  "responder": {
+   "cognicao": 1
+  },
+  "notification": {
+   "cognicao": 1
+  },
   "deu": {
    "cognicao": 1
   },
-  "usou": {
+  "encontrou": {
    "cognicao": 1
   },
   "errado": {
    "cognicao": 1
   },
-  "encontrou": {
+  "usou": {
    "cognicao": 1
   },
   "internos": {
@@ -1758,16 +1758,16 @@
   "container": {
    "navegacao": 1
   },
-  "vars": {
+  "auth": {
    "ecossistema": 1
   },
   "env": {
    "ecossistema": 1
   },
-  "security": {
+  "vars": {
    "ecossistema": 1
   },
-  "auth": {
+  "security": {
    "ecossistema": 1
   },
   "especificar": {
@@ -1779,13 +1779,16 @@
   "faca": {
    "cognicao": 1
   },
+  "reuse": {
+   "cognicao": 1
+  },
   "funcao": {
    "cognicao": 1
   },
   "inicio": {
    "cognicao": 1
   },
-  "reuse": {
+  "graciosamente": {
    "cognicao": 1
   },
   "falha": {
@@ -1794,7 +1797,7 @@
   "lida": {
    "cognicao": 1
   },
-  "graciosamente": {
+  "acontecer": {
    "cognicao": 1
   },
   "bugs": {
@@ -1803,20 +1806,14 @@
   "esperando": {
    "cognicao": 1
   },
-  "acontecer": {
-   "cognicao": 1
-  },
-  "saida": {
-   "cognicao": 1
-  },
   "dentro": {
    "cognicao": 1
   },
   "resultado": {
    "cognicao": 1
   },
-  "loaded": {
-   "navegacao": 1
+  "saida": {
+   "cognicao": 1
   },
   "faz": {
    "navegacao": 1
@@ -1824,27 +1821,27 @@
   "repete": {
    "navegacao": 1
   },
-  "quebra": {
-   "cognicao": 1
+  "loaded": {
+   "navegacao": 1
   },
   "exato": {
-   "cognicao": 1
-  },
-  "123": {
    "cognicao": 1
   },
   "mudar": {
    "cognicao": 1,
    "navegacao": 1
   },
+  "123": {
+   "cognicao": 1
+  },
+  "quebra": {
+   "cognicao": 1
+  },
   "banco": {
    "cognicao": 1
   },
   "falhar": {
    "cognicao": 1
-  },
-  "configuration": {
-   "ecossistema": 1
   },
   "edicao": {
    "ecossistema": 1,
@@ -1853,19 +1850,22 @@
   "invalido": {
    "ecossistema": 1
   },
-  "produzir": {
+  "configuration": {
    "ecossistema": 1
   },
-  "original": {
-   "cognicao": 1
+  "produzir": {
+   "ecossistema": 1
   },
   "solucao": {
    "cognicao": 1
   },
-  "combinacao": {
+  "original": {
    "cognicao": 1
   },
   "multiplos": {
+   "cognicao": 1
+  },
+  "combinacao": {
    "cognicao": 1
   },
   "sinais": {
@@ -1875,6 +1875,9 @@
    "cognicao": 1,
    "navegacao": 1
   },
+  "secundario": {
+   "cognicao": 1
+  },
   "assume": {
    "cognicao": 1
   },
@@ -1882,38 +1885,25 @@
    "cognicao": 1,
    "ecossistema": 2
   },
-  "secundario": {
-   "cognicao": 1
-  },
-  "custa": {
-   "cognicao": 1
-  },
   "10s": {
-   "cognicao": 1
-  },
-  "operacao": {
    "cognicao": 1
   },
   "timeout": {
    "cognicao": 1
   },
-  "causa": {
+  "operacao": {
    "cognicao": 1
   },
-  "sei": {
+  "custa": {
+   "cognicao": 1
+  },
+  "causa": {
    "cognicao": 1
   },
   "funciona": {
    "cognicao": 1
   },
-  "scripts": {
-   "cognicao": 1,
-   "navegacao": 1
-  },
-  "espacos": {
-   "cognicao": 1
-  },
-  "organization": {
+  "sei": {
    "cognicao": 1
   },
   "compatibilidade": {
@@ -1923,14 +1913,24 @@
    "cognicao": 1,
    "ecossistema": 1
   },
-  "arqui": {
-   "ecossistema": 1
+  "espacos": {
+   "cognicao": 1
   },
-  "vigilante": {
+  "scripts": {
+   "cognicao": 1,
+   "navegacao": 1
+  },
+  "organization": {
+   "cognicao": 1
+  },
+  "arqui": {
    "ecossistema": 1
   },
   "detecta": {
    "ecossistema": 2
+  },
+  "vigilante": {
+   "ecossistema": 1
   },
   "deteco": {
    "ecossistema": 1
@@ -1944,41 +1944,41 @@
   "2026scanproativo": {
    "ler": 25
   },
-  "captura": {
-   "ecossistema": 1
-  },
   "ler": {
    "ecossistema": 1,
    "ler": 2
   },
-  "vigilncia": {
+  "captura": {
    "ecossistema": 1
   },
   "autom": {
    "ecossistema": 1
   },
-  "unificacao": {
+  "vigilncia": {
    "ecossistema": 1
   },
   "completa": {
    "ecossistema": 1
   },
+  "unificacao": {
+   "ecossistema": 1
+  },
   "altera": {
    "ecossistema": 1
   },
-  "correto": {
+  "mcp": {
    "ecossistema": 2
   },
-  "mcp": {
+  "correto": {
    "ecossistema": 2
   },
   "integrao": {
    "ecossistema": 1
   },
-  "clima": {
+  "openweathermap": {
    "ecossistema": 2
   },
-  "openweathermap": {
+  "clima": {
    "ecossistema": 2
   },
   "palavras": {
@@ -1993,10 +1993,13 @@
   "ncia": {
    "ecossistema": 2
   },
+  "llm": {
+   "ecossistema": 1
+  },
   "pelo": {
    "ecossistema": 1
   },
-  "llm": {
+  "diverg": {
    "ecossistema": 1
   },
   "detec": {
@@ -2005,13 +2008,10 @@
   "sincroniza": {
    "ecossistema": 1
   },
-  "diverg": {
+  "voxu": {
    "ecossistema": 1
   },
   "ram": {
-   "ecossistema": 1
-  },
-  "voxu": {
    "ecossistema": 1
   },
   "flutterstatus": {
@@ -2023,9 +2023,6 @@
   "usuari": {
    "ecossistema": 1
   },
-  "usuario": {
-   "ecossistema": 1
-  },
   "enfati": {
    "ecossistema": 1
   },
@@ -2035,13 +2032,16 @@
   "tailscale": {
    "ecossistema": 1
   },
+  "usuario": {
+   "ecossistema": 1
+  },
   "persistente": {
    "ecossistema": 2
   },
-  "usu": {
+  "network": {
    "ecossistema": 1
   },
-  "network": {
+  "usu": {
    "ecossistema": 1
   },
   "menus": {
@@ -2059,13 +2059,13 @@
   "incluir": {
    "ecossistema": 1
   },
+  "pythonw": {
+   "ecossistema": 1
+  },
   "implementar": {
    "ecossistema": 1
   },
   "tamanh": {
-   "ecossistema": 1
-  },
-  "pythonw": {
    "ecossistema": 1
   },
   "tts": {
@@ -2080,13 +2080,13 @@
   "regra": {
    "ecossistema": 1
   },
-  "p20": {
+  "2026status": {
    "ler": 1
   },
   "controle2026status": {
    "ler": 1
   },
-  "2026status": {
+  "p20": {
    "ler": 1
   },
   "naturalidade": {
@@ -2101,20 +2101,17 @@
   "refinamento": {
    "ecossistema": 1
   },
-  "dia": {
-   "ecossistema": 1
-  },
   "tico": {
    "ecossistema": 1
   },
-  "perita": {
+  "dia": {
    "ecossistema": 1
   },
   "celular": {
    "ecossistema": 1
   },
-  "sincronizada": {
-   "ecossistema": 2
+  "perita": {
+   "ecossistema": 1
   },
   "arquitetura": {
    "ecossistema": 2
@@ -2122,13 +2119,16 @@
   "rebro": {
    "ecossistema": 1
   },
+  "sincronizada": {
+   "ecossistema": 2
+  },
   "crebro": {
    "ecossistema": 1
   },
-  "pidos": {
+  "constantes": {
    "ecossistema": 1
   },
-  "constantes": {
+  "pidos": {
    "ecossistema": 1
   },
   "corrigido": {
@@ -2137,10 +2137,13 @@
   "bal": {
    "ecossistema": 1
   },
+  "acento": {
+   "ecossistema": 1
+  },
   "escrita": {
    "ecossistema": 1
   },
-  "acento": {
+  "migracao": {
    "ecossistema": 1
   },
   "failover": {
@@ -2149,7 +2152,11 @@
   "rustdesk": {
    "ecossistema": 1
   },
-  "migracao": {
+  "desktop": {
+   "ecossistema": 1,
+   "navegacao": 1
+  },
+  "jsonrpc": {
    "ecossistema": 1
   },
   "cod": {
@@ -2158,24 +2165,17 @@
   "mcpprotocol": {
    "ecossistema": 1
   },
-  "jsonrpc": {
-   "ecossistema": 1
-  },
-  "desktop": {
-   "ecossistema": 1,
+  "multi": {
    "navegacao": 1
   },
   "especializado": {
    "navegacao": 1
   },
-  "web": {
-   "navegacao": 2
-  },
   "plataforma": {
    "navegacao": 1
   },
-  "multi": {
-   "navegacao": 1
+  "web": {
+   "navegacao": 2
   },
   "wss": {
    "ecossistema": 2
@@ -2186,19 +2186,19 @@
   "voz": {
    "ecossistema": 1
   },
-  "powershell": {
+  "intermitentemente": {
    "ecossistema": 1
   },
   "scrcpy": {
    "ecossistema": 1
   },
-  "intermitentemente": {
-   "ecossistema": 1
-  },
   "rota": {
    "ecossistema": 1
   },
-  "travado": {
+  "powershell": {
+   "ecossistema": 1
+  },
+  "verificacao": {
    "ecossistema": 1
   },
   "desde": {
@@ -2207,7 +2207,7 @@
   "voxumgrau": {
    "ecossistema": 1
   },
-  "verificacao": {
+  "travado": {
    "ecossistema": 1
   },
   "apk": {
@@ -2216,17 +2216,17 @@
   "zipalign": {
    "android": 1
   },
-  "add": {
-   "android": 1
-  },
   "dex": {
    "android": 1
   },
-  "metadata": {
-   "mp3player": 5
+  "add": {
+   "android": 1
   },
   "androidpuresdkmp3playermetadatarescueandroidpuresdkmp3": {
    "mp3player": 1
+  },
+  "metadata": {
+   "mp3player": 5
   },
   "pipeline": {
    "mp3player": 1
@@ -2234,25 +2234,22 @@
   "tela": {
    "navegacao": 3
   },
-  "metade": {
-   "navegacao": 1
+  "elementos": {
+   "navegacao": 3
   },
   "esconde": {
    "navegacao": 1
   },
-  "elementos": {
-   "navegacao": 3
-  },
-  "tipo": {
+  "metade": {
    "navegacao": 1
   },
   "class": {
    "navegacao": 1
   },
-  "trava": {
-   "mp3player": 1
+  "tipo": {
+   "navegacao": 1
   },
-  "bytes": {
+  "trava": {
    "mp3player": 1
   },
   "consumidos": {
@@ -2261,14 +2258,17 @@
   "audio": {
    "mp3player": 1
   },
-  "androidpuresdkandroidpuresdkandroidpuresdkandroidpure": {
-   "android": 1
+  "bytes": {
+   "mp3player": 1
   },
-  "maintain": {
+  "androidpuresdkandroidpuresdkandroidpuresdkandroidpure": {
    "android": 1
   },
   "grid": {
    "android": 2
+  },
+  "maintain": {
+   "android": 1
   },
   "openrouter": {
    "ecossistema": 1
@@ -2279,10 +2279,10 @@
   "anthropic": {
    "ecossistema": 1
   },
-  "ganhou": {
+  "130": {
    "ecossistema": 1
   },
-  "130": {
+  "ganhou": {
    "ecossistema": 1
   },
   "filtro": {
@@ -2294,13 +2294,13 @@
   "intelligence": {
    "android": 1
   },
-  "30s": {
-   "ecossistema": 1
-  },
   "rodando": {
    "ecossistema": 1
   },
   "est": {
+   "ecossistema": 1
+  },
+  "30s": {
    "ecossistema": 1
   },
   "background": {
@@ -2323,15 +2323,15 @@
   "type": {
    "ecossistema": 1
   },
-  "string": {
-   "ecossistema": 1
+  "array": {
+   "ecossistema": 1,
+   "navegacao": 1
   },
   "sessaomigracaoconfig": {
    "ecossistema": 1
   },
-  "array": {
-   "ecossistema": 1,
-   "navegacao": 1
+  "string": {
+   "ecossistema": 1
   },
   "command": {
    "ecossistema": 1
@@ -2339,28 +2339,28 @@
   "provider": {
    "ecossistema": 1
   },
-  "50ut8050psa": {
-   "ecossistema": 1
-  },
   "ssapwss": {
    "ecossistema": 1
   },
-  "tailwind": {
-   "navegacao": 1
+  "50ut8050psa": {
+   "ecossistema": 1
   },
   "frameworks": {
    "navegacao": 1
   },
+  "tailwind": {
+   "navegacao": 1
+  },
   "modules": {
+   "navegacao": 1
+  },
+  "filho": {
    "navegacao": 1
   },
   "posicao": {
    "navegacao": 1
   },
   "instavel": {
-   "navegacao": 1
-  },
-  "filho": {
    "navegacao": 1
   },
   "pattern": {
@@ -2375,16 +2375,16 @@
   "channel": {
    "mp3player": 1
   },
-  "diretamente": {
-   "navegacao": 2
+  "keys": {
+   "navegacao": 1
   },
   "aceitam": {
    "navegacao": 1
   },
-  "send": {
-   "navegacao": 1
+  "diretamente": {
+   "navegacao": 2
   },
-  "keys": {
+  "send": {
    "navegacao": 1
   },
   "uteis": {
@@ -2393,13 +2393,13 @@
   "perguntou": {
    "ecossistema": 1
   },
+  "chars": {
+   "mp3player": 1
+  },
   "words": {
    "mp3player": 1
   },
   "album": {
-   "mp3player": 1
-  },
-  "chars": {
    "mp3player": 1
   },
   "overlap": {
@@ -2417,6 +2417,12 @@
   "onipresentes": {
    "navegacao": 1
   },
+  "session": {
+   "navegacao": 4
+  },
+  "field": {
+   "navegacao": 1
+  },
   "run": {
    "navegacao": 1
   },
@@ -2426,25 +2432,19 @@
   "writing": {
    "navegacao": 1
   },
-  "session": {
-   "navegacao": 4
-  },
-  "field": {
-   "navegacao": 1
-  },
   "initialize": {
    "ecossistema": 1
-  },
-  "maps": {
-   "navegacao": 1
   },
   "names": {
    "navegacao": 1
   },
-  "tool": {
+  "maps": {
    "navegacao": 1
   },
   "handlers": {
+   "navegacao": 1
+  },
+  "tool": {
    "navegacao": 1
   },
   "permissao": {
@@ -2471,10 +2471,10 @@
   "comma": {
    "android": 1
   },
-  "acessibilidade": {
+  "expoem": {
    "navegacao": 1
   },
-  "expoem": {
+  "acessibilidade": {
    "navegacao": 1
   },
   "objects": {
@@ -2486,13 +2486,10 @@
   "single": {
    "navegacao": 1
   },
-  "inicial": {
-   "navegacao": 1
-  },
   "pula": {
    "navegacao": 1
   },
-  "notepad": {
+  "inicial": {
    "navegacao": 1
   },
   "multiplas": {
@@ -2501,17 +2498,14 @@
   "chrome": {
    "navegacao": 1
   },
+  "notepad": {
+   "navegacao": 1
+  },
   "annotation": {
    "mp3player": 1
   },
   "listener": {
    "mp3player": 1
-  },
-  "tempo": {
-   "navegacao": 1
-  },
-  "corrida": {
-   "navegacao": 1
   },
   "resolverem": {
    "navegacao": 1
@@ -2519,13 +2513,19 @@
   "condicoes": {
    "navegacao": 1
   },
+  "tempo": {
+   "navegacao": 1
+  },
+  "corrida": {
+   "navegacao": 1
+  },
   "distinguir": {
    "ecossistema": 1
   },
-  "camufladas": {
+  "limpeza": {
    "ecossistema": 1
   },
-  "limpeza": {
+  "camufladas": {
    "ecossistema": 1
   },
   "nvapi": {
@@ -2534,10 +2534,10 @@
   "vazar": {
    "ecossistema": 1
   },
-  "120s": {
+  "primary": {
    "ecossistema": 1
   },
-  "primary": {
+  "120s": {
    "ecossistema": 1
   },
   "encapsulam": {
@@ -2552,10 +2552,10 @@
   "event": {
    "navegacao": 1
   },
-  "referencias": {
+  "invalidando": {
    "navegacao": 1
   },
-  "invalidando": {
+  "referencias": {
    "navegacao": 1
   },
   "strategyengine": {
@@ -2564,10 +2564,10 @@
   "engine": {
    "ler": 1
   },
-  "nested": {
+  "tabs": {
    "android": 1
   },
-  "tabs": {
+  "nested": {
    "android": 1
   },
   "codigo": {
@@ -2576,13 +2576,13 @@
   "implementacao": {
    "ecossistema": 1
   },
-  "robusta": {
-   "navegacao": 1
-  },
   "texto": {
    "navegacao": 1
   },
-  "sacrificar": {
+  "robusta": {
+   "navegacao": 1
+  },
+  "confiabilidade": {
    "navegacao": 1
   },
   "velocidade": {
@@ -2591,11 +2591,8 @@
   "melhora": {
    "navegacao": 1
   },
-  "confiabilidade": {
+  "sacrificar": {
    "navegacao": 1
-  },
-  "aprende": {
-   "ler": 1
   },
   "enquanto": {
    "ler": 1
@@ -2603,11 +2600,8 @@
   "crescer": {
    "ler": 1
   },
-  "combobox": {
-   "navegacao": 1
-  },
-  "setcursel": {
-   "navegacao": 1
+  "aprende": {
+   "ler": 1
   },
   "requer": {
    "navegacao": 1
@@ -2615,13 +2609,19 @@
   "click": {
    "navegacao": 1
   },
+  "setcursel": {
+   "navegacao": 1
+  },
+  "combobox": {
+   "navegacao": 1
+  },
+  "consomem": {
+   "navegacao": 1
+  },
   "teclado": {
    "navegacao": 1
   },
   "foco": {
-   "navegacao": 1
-  },
-  "consomem": {
    "navegacao": 1
   },
   "automation": {
@@ -2638,216 +2638,234 @@
   }
  },
  "cooc": {
-  "itunes": {
+  "fails": {
    "musicbrainz": 1,
-   "mp3playermetadatarescue": 2,
-   "fails": 1,
-   "fallback": 1,
-   "artwork": 1,
-   "store": 1
+   "mp3playermetadatarescue": 1,
+   "itunes": 1
   },
   "musicbrainz": {
-   "itunes": 1,
    "fails": 1,
    "mp3playermetadatarescue": 1,
-   "fallback": 1,
-   "mp3player": 1,
+   "itunes": 1,
    "natural": 1,
-   "aceito": 1
+   "aceito": 1,
+   "fallback": 1,
+   "mp3player": 1
   },
   "mp3playermetadatarescue": {
-   "itunes": 2,
    "fails": 1,
    "musicbrainz": 1,
-   "fallback": 2,
+   "itunes": 2,
    "artwork": 1,
+   "fallback": 2,
    "store": 1,
    "space": 2,
    "second": 1,
    "segment": 1,
    "double": 2,
-   "inside": 1,
-   "stalls": 1,
    "bypass": 1,
+   "stalls": 1,
    "decide": 1,
-   "adding": 1,
-   "times": 1,
+   "inside": 1,
    "early": 1,
+   "times": 1,
    "fragments": 1,
-   "actual": 1,
-   "always": 1,
-   "enabled": 1,
+   "adding": 1,
    "gains": 1,
-   "caching": 1,
-   "exoplayer": 1,
-   "state": 1,
+   "actual": 1,
+   "enabled": 1,
+   "always": 1,
    "inactive": 1,
+   "caching": 1,
+   "state": 1,
+   "exoplayer": 1,
    "equalizerfragment": 1,
-   "until": 1,
    "stayed": 1,
+   "until": 1,
    "flat": 1,
-   "reset": 2,
-   "restart": 1,
-   "switch": 1,
    "every": 2,
+   "switch": 1,
+   "restart": 1,
+   "reset": 2,
+   "exceeding": 1,
+   "frequencies": 1,
    "saturation": 1,
    "threshold": 2,
-   "frequencies": 1,
-   "exceeding": 1,
    "btn": 1,
-   "active": 1,
    "styles": 1,
    "preset": 1,
+   "active": 1,
    "split": 1,
    "queries": 2,
    "noisy": 1,
    "filename": 1,
    "filtering": 1,
-   "visual": 1,
    "rescue": 5,
+   "visual": 1,
    "feedback": 1,
-   "fragment": 1,
    "header": 1,
    "default": 1,
-   "frequency": 1,
+   "fragment": 1,
    "sortmode": 1,
    "playsongfromlist": 1,
+   "frequency": 1,
    "increment": 1,
-   "handler": 1,
-   "250ms": 1,
    "polled": 1,
+   "250ms": 1,
+   "handler": 1,
+   "master": 1,
    "never": 2,
    "sent": 1,
    "multiplier": 1,
-   "master": 1,
-   "without": 1,
-   "touching": 1,
    "bands": 1,
-   "splits": 1,
-   "parts": 1,
+   "touching": 1,
+   "without": 1,
    "expected": 1,
-   "irreversible": 1,
+   "parts": 1,
+   "splits": 1,
    "audible": 1,
+   "irreversible": 1,
+   "artist": 2,
    "wrong": 1,
    "results": 1,
-   "artist": 2,
    "minimum": 1,
-   "met": 1,
    "return": 1,
-   "loop": 1,
+   "met": 1,
    "3xx": 1,
+   "loop": 1,
    "codes": 1,
    "mode": 1,
-   "lower": 1,
    "thresholds": 1,
    "relaxed": 1,
+   "lower": 1,
    "title": 1,
+   "campos": 1,
    "buscar": 2,
    "novamente": 1,
-   "campos": 1,
    "4m9q2k9p": 1,
-   "invalid": 1,
    "400": 1,
+   "invalid": 1,
+   "cause": 1,
    "description": 1,
    "root": 1,
-   "cause": 1,
    "internet": 1,
    "taps": 1,
-   "metadata": 4,
    "pipeline": 1,
+   "metadata": 4,
    "mp3player": 3
   },
-  "fails": {
+  "itunes": {
+   "fails": 1,
    "musicbrainz": 1,
-   "itunes": 1,
-   "mp3playermetadatarescue": 1
-  },
-  "fallback": {
    "mp3playermetadatarescue": 2,
-   "itunes": 1,
-   "store": 1,
    "artwork": 1,
-   "split": 1,
-   "space": 1,
-   "double": 1,
-   "natural": 1,
-   "mp3player": 1,
-   "musicbrainz": 1,
-   "aceito": 1,
-   "testing": 1,
-   "verificar": 1,
-   "secundario": 1,
-   "assume": 1
-  },
-  "store": {
    "fallback": 1,
-   "artwork": 1,
-   "mp3playermetadatarescue": 1,
-   "itunes": 1
+   "store": 1
   },
   "artwork": {
    "fallback": 1,
    "mp3playermetadatarescue": 1,
+   "store": 1,
+   "itunes": 1
+  },
+  "fallback": {
+   "artwork": 1,
+   "mp3playermetadatarescue": 2,
+   "store": 1,
    "itunes": 1,
-   "store": 1
+   "split": 1,
+   "space": 1,
+   "double": 1,
+   "aceito": 1,
+   "musicbrainz": 1,
+   "mp3player": 1,
+   "natural": 1,
+   "testing": 1,
+   "secundario": 1,
+   "verificar": 1,
+   "assume": 1
+  },
+  "store": {
+   "artwork": 1,
+   "fallback": 1,
+   "mp3playermetadatarescue": 1,
+   "itunes": 1
+  },
+  "space": {
+   "mp3playermetadatarescue": 2,
+   "second": 2,
+   "segment": 1,
+   "double": 3,
+   "fallback": 1,
+   "split": 1,
+   "channel": 1,
+   "mp3player": 1
   },
   "second": {
+   "mp3playermetadatarescue": 1,
    "space": 2,
    "segment": 1,
-   "mp3playermetadatarescue": 1,
    "double": 2,
    "channel": 1,
    "mp3player": 1
   },
-  "space": {
-   "second": 2,
-   "mp3playermetadatarescue": 2,
-   "double": 3,
-   "segment": 1,
-   "fallback": 1,
-   "split": 1,
-   "channel": 1,
-   "mp3player": 1
-  },
   "segment": {
-   "second": 1,
    "mp3playermetadatarescue": 1,
-   "double": 1,
-   "space": 1
+   "second": 1,
+   "space": 1,
+   "double": 1
   },
   "double": {
+   "mp3playermetadatarescue": 2,
    "space": 3,
    "second": 2,
-   "mp3playermetadatarescue": 2,
    "segment": 1,
    "fallback": 1,
    "split": 1,
    "channel": 1,
    "mp3player": 1
   },
-  "inside": {
+  "bypass": {
    "stalls": 1,
    "mp3playermetadatarescue": 1,
-   "bypass": 1,
-   "decide": 1
+   "decide": 1,
+   "inside": 1
   },
   "stalls": {
-   "inside": 1,
-   "mp3playermetadatarescue": 1,
    "bypass": 1,
-   "decide": 1
-  },
-  "bypass": {
-   "inside": 1,
-   "stalls": 1,
    "mp3playermetadatarescue": 1,
-   "decide": 1
+   "decide": 1,
+   "inside": 1
   },
   "decide": {
    "bypass": 1,
-   "inside": 1,
+   "stalls": 1,
+   "mp3playermetadatarescue": 1,
+   "inside": 1
+  },
+  "inside": {
+   "bypass": 1,
+   "decide": 1,
    "stalls": 1,
    "mp3playermetadatarescue": 1
+  },
+  "legitimo": {
+   "sessaolimpezaauth": 1,
+   "oauth": 1,
+   "github": 1,
+   "copilot": 1
+  },
+  "sessaolimpezaauth": {
+   "legitimo": 1,
+   "github": 1,
+   "copilot": 1,
+   "oauth": 1
+  },
+  "oauth": {
+   "legitimo": 1,
+   "github": 1,
+   "copilot": 1,
+   "sessaolimpezaauth": 1
   },
   "github": {
    "sessaolimpezaauth": 1,
@@ -2855,439 +2873,421 @@
    "oauth": 1,
    "copilot": 1
   },
-  "sessaolimpezaauth": {
-   "github": 1,
-   "copilot": 1,
-   "legitimo": 1,
-   "oauth": 1
-  },
-  "legitimo": {
-   "github": 1,
-   "copilot": 1,
-   "sessaolimpezaauth": 1,
-   "oauth": 1
-  },
-  "oauth": {
-   "github": 1,
-   "copilot": 1,
-   "legitimo": 1,
-   "sessaolimpezaauth": 1
-  },
   "copilot": {
    "sessaolimpezaauth": 1,
-   "github": 1,
    "legitimo": 1,
+   "github": 1,
    "oauth": 1
   },
-  "janelas": {
-   "redimensionadas": 1,
-   "treinamentonavegacao": 2,
-   "diferentes": 1,
-   "chrome": 1,
-   "notepad": 1,
-   "multiplas": 1
-  },
   "redimensionadas": {
-   "janelas": 1,
+   "treinamentonavegacao": 1,
    "diferentes": 1,
-   "treinamentonavegacao": 1
+   "janelas": 1
   },
   "treinamentonavegacao": {
-   "janelas": 2,
-   "diferentes": 1,
    "redimensionadas": 1,
+   "diferentes": 1,
+   "janelas": 2,
+   "antigo": 1,
+   "permanece": 1,
    "elemento": 1,
    "referencia": 1,
-   "permanece": 1,
-   "antigo": 1,
+   "ocultas": 1,
    "opcoes": 1,
    "div": 1,
-   "ocultas": 1,
-   "encontrados": 1,
    "penetra": 1,
    "shadowroots": 1,
+   "encontrados": 1,
+   "tap": 1,
    "botao": 1,
    "coordenadas": 1,
-   "tap": 1,
    "input": 2,
-   "tem": 2,
    "visivel": 2,
-   "sistema": 1,
+   "tem": 2,
    "idioma": 1,
+   "sistema": 1,
    "operacional": 1,
-   "sao": 3,
    "frequentemente": 1,
+   "sao": 3,
    "dinamicos": 1,
-   "proximo": 1,
    "clique": 1,
    "android": 2,
+   "proximo": 1,
    "absolutas": 1,
    "mobile": 1,
    "gestos": 2,
+   "zoom": 1,
    "tema": 1,
    "layout": 2,
-   "zoom": 1,
    "sujeito": 1,
    "positivos": 1,
    "falsos": 1,
-   "causam": 2,
    "elementclickinterceptedexception": 1,
    "desnecessarios": 1,
    "cliques": 1,
+   "causam": 2,
    "tela": 3,
    "consistentes": 1,
-   "metade": 1,
-   "esconde": 1,
    "elementos": 3,
+   "esconde": 1,
+   "metade": 1,
+   "class": 1,
    "tipo": 1,
    "text": 1,
-   "class": 1,
-   "mudam": 2,
-   "tailwind": 1,
    "frameworks": 1,
+   "tailwind": 1,
+   "mudam": 2,
    "modules": 1,
+   "filho": 1,
    "posicao": 1,
    "instavel": 1,
-   "filho": 1,
-   "diretamente": 2,
-   "aceitam": 1,
-   "send": 1,
    "keys": 1,
-   "tab": 1,
+   "aceitam": 1,
+   "diretamente": 2,
+   "send": 1,
    "independentes": 1,
+   "tab": 1,
    "conteudo": 1,
-   "onipresentes": 1,
    "oculto": 1,
+   "onipresentes": 1,
    "permissao": 1,
    "stock": 1,
    "adicionais": 1,
    "falhas": 1,
    "misteriosas": 1,
-   "acessibilidade": 1,
    "arvore": 1,
    "expoem": 1,
    "nao": 2,
-   "inicial": 1,
+   "acessibilidade": 1,
    "pula": 1,
-   "notepad": 1,
+   "inicial": 1,
    "multiplas": 1,
    "chrome": 1,
-   "tempo": 1,
-   "corrida": 1,
+   "notepad": 1,
    "resolverem": 1,
    "condicoes": 1,
+   "tempo": 1,
+   "corrida": 1,
    "encapsulam": 1,
    "web": 1,
    "dom": 3,
-   "load": 1,
    "pagina": 1,
+   "load": 1,
    "event": 1,
-   "referencias": 1,
    "casos": 1,
    "invalidando": 1,
-   "robusta": 1,
+   "referencias": 1,
    "texto": 1,
-   "sacrificar": 1,
-   "melhora": 1,
+   "robusta": 1,
    "confiabilidade": 1,
+   "melhora": 1,
    "velocidade": 1,
-   "combobox": 1,
-   "setcursel": 1,
+   "sacrificar": 1,
    "requer": 1,
    "click": 1,
+   "setcursel": 1,
+   "combobox": 1,
+   "consomem": 1,
    "teclado": 1,
    "foco": 1,
-   "consomem": 1,
    "automation": 1,
    "mudar": 1,
-   "pode": 1,
-   "localizacao": 1
+   "localizacao": 1,
+   "pode": 1
   },
   "diferentes": {
-   "janelas": 1,
+   "treinamentonavegacao": 1,
    "redimensionadas": 1,
-   "treinamentonavegacao": 1
+   "janelas": 1
   },
-  "elemento": {
-   "referencia": 1,
+  "janelas": {
+   "diferentes": 1,
+   "treinamentonavegacao": 2,
+   "redimensionadas": 1,
+   "chrome": 1,
+   "multiplas": 1,
+   "notepad": 1
+  },
+  "antigo": {
    "treinamentonavegacao": 1,
    "permanece": 1,
+   "elemento": 1,
+   "referencia": 1
+  },
+  "permanece": {
    "antigo": 1,
+   "treinamentonavegacao": 1,
+   "referencia": 1,
+   "elemento": 1
+  },
+  "elemento": {
+   "antigo": 1,
+   "treinamentonavegacao": 1,
+   "permanece": 1,
+   "referencia": 1,
+   "loading": 1,
    "overlay": 1,
    "qualquer": 1,
-   "loading": 1,
    "crossplatform": 1
   },
   "referencia": {
-   "elemento": 1,
-   "treinamentonavegacao": 1,
-   "permanece": 1,
    "antigo": 1,
-   "futura": 1,
-   "system": 1,
+   "permanece": 1,
+   "elemento": 1,
+   "treinamentonavegacao": 1,
+   "leraprendizado": 1,
    "capacidades": 1,
-   "leraprendizado": 1
-  },
-  "permanece": {
-   "elemento": 1,
-   "referencia": 1,
-   "treinamentonavegacao": 1,
-   "antigo": 1
-  },
-  "antigo": {
-   "elemento": 1,
-   "referencia": 1,
-   "treinamentonavegacao": 1,
-   "permanece": 1
-  },
-  "identica": {
-   "logica": 1,
-   "lerauditoria": 1,
-   "read": 1,
-   "json": 1
-  },
-  "logica": {
-   "identica": 1,
-   "read": 1,
-   "lerauditoria": 1,
-   "json": 1
+   "futura": 1,
+   "system": 1
   },
   "lerauditoria": {
-   "identica": 1,
-   "logica": 1,
    "read": 1,
+   "logica": 1,
    "json": 2,
+   "identica": 1,
+   "refactor": 1,
    "fix": 1,
    "apos": 1,
-   "refactor": 1,
    "antigas": 1,
    "remover": 1,
-   "entradas": 1,
    "estourar": 1,
+   "entradas": 1,
    "indefinidamente": 1,
    "atingir": 1,
    "512kb": 1,
    "atingido": 2,
-   "prematura": 1,
    "objetivo": 2,
+   "prematura": 1,
    "terminava": 1,
-   "ntfs": 1,
    "meio": 1,
+   "ntfs": 1,
    "real": 1,
    "verified": 1,
    "nao": 1
   },
   "read": {
-   "identica": 1,
-   "logica": 1,
    "lerauditoria": 1,
    "json": 1,
+   "identica": 1,
+   "logica": 1,
    "funcoes": 1,
    "processo": 1,
    "forenses": 1
   },
-  "json": {
+  "logica": {
+   "lerauditoria": 1,
+   "json": 1,
    "identica": 1,
-   "logica": 1,
+   "read": 1
+  },
+  "json": {
    "lerauditoria": 2,
    "read": 1,
-   "ntfs": 1,
+   "logica": 1,
+   "identica": 1,
    "meio": 1,
-   "arquivos": 1,
-   "leraprendizado": 1,
+   "ntfs": 1,
    "diagnosticos": 1,
-   "corrupcao": 1
+   "leraprendizado": 1,
+   "corrupcao": 1,
+   "arquivos": 1
   },
-  "opcoes": {
-   "treinamentonavegacao": 1,
-   "div": 1,
-   "ocultas": 1
-  },
-  "div": {
-   "opcoes": 1,
-   "ocultas": 1,
-   "treinamentonavegacao": 1
+  "identica": {
+   "lerauditoria": 1,
+   "json": 1,
+   "read": 1,
+   "logica": 1
   },
   "ocultas": {
-   "div": 1,
+   "treinamentonavegacao": 1,
    "opcoes": 1,
-   "treinamentonavegacao": 1
+   "div": 1
   },
-  "adding": {
-   "mp3playermetadatarescue": 1,
-   "early": 1,
-   "times": 1,
-   "fragments": 1
+  "opcoes": {
+   "ocultas": 1,
+   "treinamentonavegacao": 1,
+   "div": 1
+  },
+  "div": {
+   "treinamentonavegacao": 1,
+   "ocultas": 1,
+   "opcoes": 1
   },
   "early": {
-   "adding": 1,
    "mp3playermetadatarescue": 1,
+   "fragments": 1,
    "times": 1,
-   "fragments": 1
-  },
-  "times": {
-   "adding": 1,
-   "mp3playermetadatarescue": 1,
-   "early": 1,
-   "fragments": 1
+   "adding": 1
   },
   "fragments": {
-   "adding": 1,
    "early": 1,
    "mp3playermetadatarescue": 1,
    "times": 1,
+   "adding": 1,
    "androidpuresdk": 1,
-   "suporte": 1,
+   "setvisibility": 1,
    "visibilidade": 1,
-   "setvisibility": 1
+   "suporte": 1
+  },
+  "times": {
+   "early": 1,
+   "mp3playermetadatarescue": 1,
+   "fragments": 1,
+   "adding": 1
+  },
+  "adding": {
+   "early": 1,
+   "mp3playermetadatarescue": 1,
+   "fragments": 1,
+   "times": 1
+  },
+  "penetra": {
+   "treinamentonavegacao": 1,
+   "shadowroots": 1,
+   "encontrados": 1
+  },
+  "shadowroots": {
+   "penetra": 1,
+   "treinamentonavegacao": 1,
+   "encontrados": 1
   },
   "encontrados": {
    "penetra": 1,
-   "shadowroots": 1,
-   "treinamentonavegacao": 1
+   "treinamentonavegacao": 1,
+   "shadowroots": 1
   },
-  "penetra": {
-   "encontrados": 1,
-   "shadowroots": 1,
-   "treinamentonavegacao": 1
-  },
-  "shadowroots": {
-   "encontrados": 1,
-   "penetra": 1,
-   "treinamentonavegacao": 1
+  "gains": {
+   "mp3playermetadatarescue": 1,
+   "actual": 1,
+   "enabled": 1,
+   "always": 1
   },
   "actual": {
-   "mp3playermetadatarescue": 1,
-   "always": 1,
-   "enabled": 1,
-   "gains": 1
-  },
-  "always": {
-   "actual": 1,
+   "gains": 1,
    "mp3playermetadatarescue": 1,
    "enabled": 1,
-   "gains": 1
+   "always": 1
   },
   "enabled": {
    "actual": 1,
-   "always": 1,
+   "gains": 1,
    "mp3playermetadatarescue": 1,
-   "gains": 1
+   "always": 1
   },
-  "gains": {
+  "always": {
    "actual": 1,
-   "always": 1,
-   "enabled": 1,
-   "mp3playermetadatarescue": 1
-  },
-  "caching": {
-   "state": 1,
-   "exoplayer": 1,
+   "gains": 1,
    "mp3playermetadatarescue": 1,
-   "inactive": 1
+   "enabled": 1
+  },
+  "inactive": {
+   "state": 1,
+   "mp3playermetadatarescue": 1,
+   "caching": 1,
+   "exoplayer": 1
   },
   "state": {
-   "caching": 1,
-   "exoplayer": 1,
-   "mp3playermetadatarescue": 1,
    "inactive": 1,
-   "workflow": 1,
+   "caching": 1,
+   "mp3playermetadatarescue": 1,
+   "exoplayer": 1,
    "tdd": 1,
-   "opencode": 1,
-   "machine": 1
+   "workflow": 1,
+   "machine": 1,
+   "opencode": 1
+  },
+  "caching": {
+   "inactive": 1,
+   "state": 1,
+   "mp3playermetadatarescue": 1,
+   "exoplayer": 1
   },
   "exoplayer": {
    "caching": 1,
-   "state": 1,
-   "mp3playermetadatarescue": 1,
-   "inactive": 1
-  },
-  "inactive": {
-   "caching": 1,
-   "exoplayer": 1,
+   "inactive": 1,
    "state": 1,
    "mp3playermetadatarescue": 1
   },
   "equalizerfragment": {
-   "until": 1,
-   "mp3playermetadatarescue": 1,
    "stayed": 1,
-   "flat": 1
-  },
-  "until": {
-   "equalizerfragment": 1,
    "mp3playermetadatarescue": 1,
-   "stayed": 1,
-   "flat": 1
+   "flat": 1,
+   "until": 1
   },
   "stayed": {
    "equalizerfragment": 1,
-   "mp3playermetadatarescue": 1,
    "until": 1,
+   "mp3playermetadatarescue": 1,
    "flat": 1
   },
   "flat": {
    "equalizerfragment": 1,
-   "until": 1,
+   "stayed": 1,
    "mp3playermetadatarescue": 1,
-   "stayed": 1
+   "until": 1
   },
-  "reset": {
-   "mp3playermetadatarescue": 2,
-   "restart": 1,
-   "switch": 1,
-   "every": 1,
-   "without": 1,
-   "touching": 1,
-   "bands": 1
-  },
-  "restart": {
+  "until": {
+   "equalizerfragment": 1,
+   "stayed": 1,
    "mp3playermetadatarescue": 1,
-   "reset": 1,
-   "switch": 1,
-   "every": 1
-  },
-  "switch": {
-   "mp3playermetadatarescue": 1,
-   "reset": 1,
-   "restart": 1,
-   "every": 1
+   "flat": 1
   },
   "every": {
-   "mp3playermetadatarescue": 2,
-   "reset": 1,
-   "restart": 1,
    "switch": 1,
-   "250ms": 1,
+   "mp3playermetadatarescue": 2,
+   "restart": 1,
+   "reset": 1,
+   "polled": 1,
    "handler": 1,
-   "polled": 1
+   "250ms": 1
+  },
+  "switch": {
+   "every": 1,
+   "mp3playermetadatarescue": 1,
+   "restart": 1,
+   "reset": 1
+  },
+  "restart": {
+   "every": 1,
+   "mp3playermetadatarescue": 1,
+   "switch": 1,
+   "reset": 1
+  },
+  "reset": {
+   "every": 1,
+   "mp3playermetadatarescue": 2,
+   "switch": 1,
+   "restart": 1,
+   "bands": 1,
+   "touching": 1,
+   "without": 1
+  },
+  "exceeding": {
+   "saturation": 1,
+   "frequencies": 1,
+   "mp3playermetadatarescue": 1,
+   "threshold": 1
   },
   "saturation": {
-   "mp3playermetadatarescue": 1,
-   "frequencies": 1,
    "exceeding": 1,
+   "threshold": 1,
+   "frequencies": 1,
+   "mp3playermetadatarescue": 1
+  },
+  "frequencies": {
+   "exceeding": 1,
+   "saturation": 1,
+   "mp3playermetadatarescue": 1,
    "threshold": 1
   },
   "threshold": {
-   "mp3playermetadatarescue": 2,
-   "frequencies": 1,
    "exceeding": 1,
    "saturation": 1,
-   "minimum": 1,
-   "met": 1,
-   "return": 1
-  },
-  "frequencies": {
-   "mp3playermetadatarescue": 1,
-   "saturation": 1,
-   "threshold": 1,
-   "exceeding": 1
-  },
-  "exceeding": {
-   "mp3playermetadatarescue": 1,
    "frequencies": 1,
-   "saturation": 1,
-   "threshold": 1
+   "mp3playermetadatarescue": 2,
+   "minimum": 1,
+   "return": 1,
+   "met": 1
   },
   "btn": {
    "styles": 1,
@@ -3297,15 +3297,15 @@
   },
   "styles": {
    "btn": 1,
-   "active": 1,
    "mp3playermetadatarescue": 1,
-   "preset": 1
+   "preset": 1,
+   "active": 1
   },
   "preset": {
    "btn": 1,
-   "active": 1,
    "mp3playermetadatarescue": 1,
-   "styles": 1
+   "styles": 1,
+   "active": 1
   },
   "active": {
    "btn": 1,
@@ -3313,99 +3313,99 @@
    "mp3playermetadatarescue": 1,
    "preset": 1
   },
-  "fix": {
-   "refactor": 1,
-   "lerauditoria": 1,
-   "apos": 1,
-   "natural": 1,
-   "giro": 1,
-   "opencode": 1,
-   "sumiram": 1
-  },
   "refactor": {
+   "lerauditoria": 1,
    "fix": 1,
+   "apos": 1
+  },
+  "fix": {
+   "lerauditoria": 1,
+   "refactor": 1,
    "apos": 1,
-   "lerauditoria": 1
+   "giro": 1,
+   "sumiram": 1,
+   "natural": 1,
+   "opencode": 1
   },
   "apos": {
-   "fix": 1,
+   "lerauditoria": 1,
    "refactor": 1,
-   "lerauditoria": 1
+   "fix": 1
   },
   "antigas": {
-   "remover": 1,
    "lerauditoria": 1,
-   "entradas": 1,
-   "estourar": 1
+   "estourar": 1,
+   "remover": 1,
+   "entradas": 1
+  },
+  "estourar": {
+   "antigas": 1,
+   "lerauditoria": 1,
+   "remover": 1,
+   "entradas": 1
   },
   "remover": {
    "antigas": 1,
    "lerauditoria": 1,
-   "entradas": 1,
-   "estourar": 1
+   "estourar": 1,
+   "entradas": 1
   },
   "entradas": {
    "antigas": 1,
-   "remover": 1,
    "lerauditoria": 1,
-   "estourar": 1
-  },
-  "estourar": {
-   "antigas": 1,
-   "entradas": 1,
-   "remover": 1,
-   "lerauditoria": 1
+   "estourar": 1,
+   "remover": 1
   },
   "split": {
    "fallback": 1,
-   "space": 1,
    "mp3playermetadatarescue": 1,
+   "space": 1,
    "double": 1
   },
   "queries": {
    "mp3playermetadatarescue": 2,
-   "filename": 1,
    "noisy": 1,
-   "artist": 1,
-   "title": 1
+   "filename": 1,
+   "title": 1,
+   "artist": 1
   },
   "noisy": {
    "mp3playermetadatarescue": 1,
-   "filename": 1,
-   "queries": 1
+   "queries": 1,
+   "filename": 1
   },
   "filename": {
    "queries": 1,
    "mp3playermetadatarescue": 1,
    "noisy": 1
   },
-  "filtering": {
-   "visual": 1,
-   "mp3playermetadatarescue": 1,
-   "rescue": 1,
-   "feedback": 1
-  },
-  "visual": {
-   "filtering": 1,
-   "mp3playermetadatarescue": 1,
-   "rescue": 1,
-   "feedback": 1
-  },
   "rescue": {
+   "visual": 1,
    "filtering": 1,
    "mp3playermetadatarescue": 5,
-   "visual": 1,
    "feedback": 1,
-   "metadata": 5,
    "mp3player": 4,
    "androidpuresdkmp3playermetadatarescueandroidpuresdkmp3": 1,
+   "metadata": 5,
    "pipeline": 1
   },
-  "feedback": {
-   "visual": 1,
+  "visual": {
+   "rescue": 1,
    "filtering": 1,
    "mp3playermetadatarescue": 1,
-   "rescue": 1
+   "feedback": 1
+  },
+  "filtering": {
+   "rescue": 1,
+   "mp3playermetadatarescue": 1,
+   "visual": 1,
+   "feedback": 1
+  },
+  "feedback": {
+   "rescue": 1,
+   "filtering": 1,
+   "mp3playermetadatarescue": 1,
+   "visual": 1
   },
   "indefinidamente": {
    "lerauditoria": 1,
@@ -3419,25 +3419,25 @@
   },
   "512kb": {
    "indefinidamente": 1,
-   "lerauditoria": 1,
-   "atingir": 1
+   "atingir": 1,
+   "lerauditoria": 1
   },
   "atingido": {
-   "lerauditoria": 2,
-   "prematura": 1,
    "objetivo": 2,
+   "prematura": 1,
+   "lerauditoria": 2,
+   "terminava": 1
+  },
+  "objetivo": {
+   "atingido": 2,
+   "prematura": 1,
+   "lerauditoria": 2,
    "terminava": 1
   },
   "prematura": {
    "atingido": 1,
-   "lerauditoria": 1,
-   "objetivo": 1
-  },
-  "objetivo": {
-   "atingido": 2,
-   "lerauditoria": 2,
-   "prematura": 1,
-   "terminava": 1
+   "objetivo": 1,
+   "lerauditoria": 1
   },
   "quebrando": {
    "requests": 1,
@@ -3450,38 +3450,26 @@
    "protocolo": 1
   },
   "providermcpserverpy5255": {
-   "quebrando": 1,
    "requests": 1,
+   "quebrando": 1,
    "protocolo": 1
   },
   "protocolo": {
+   "requests": 1,
    "quebrando": 1,
    "providermcpserverpy5255": 1,
-   "requests": 1,
-   "sessaoprovidermanager": 1,
    "comando": 1,
+   "sessaoprovidermanager": 1,
    "capabilities": 1,
    "inverso": 1,
    "conexao": 1,
-   "entrada": 1,
-   "debugging": 1
-  },
-  "providermcpserverpy": {
-   "request": 1,
-   "handle": 1,
-   "nomes": 1,
-   "mapping": 1
-  },
-  "request": {
-   "providermcpserverpy": 1,
-   "handle": 1,
-   "nomes": 1,
-   "mapping": 1
+   "debugging": 1,
+   "entrada": 1
   },
   "handle": {
+   "nomes": 1,
    "request": 1,
    "providermcpserverpy": 1,
-   "nomes": 1,
    "mapping": 1
   },
   "nomes": {
@@ -3490,32 +3478,27 @@
    "providermcpserverpy": 1,
    "mapping": 1
   },
+  "request": {
+   "handle": 1,
+   "nomes": 1,
+   "providermcpserverpy": 1,
+   "mapping": 1
+  },
+  "providermcpserverpy": {
+   "handle": 1,
+   "nomes": 1,
+   "request": 1,
+   "mapping": 1
+  },
   "mapping": {
    "handle": 1,
+   "nomes": 1,
    "request": 1,
    "providermcpserverpy": 1,
-   "nomes": 1,
    "internos": 1,
-   "protocol": 1,
    "metodos": 1,
+   "protocol": 1,
    "explicito": 1
-  },
-  "sessaoprovidermanager": {
-   "protocolo": 1,
-   "comando": 2,
-   "capabilities": 1,
-   "pode": 1,
-   "check": 1,
-   "mensagem": 1,
-   "openrouter": 1,
-   "gemini": 1,
-   "anthropic": 1,
-   "openai": 1,
-   "initialize": 1,
-   "qualquer": 1,
-   "automatico": 1,
-   "120s": 1,
-   "primary": 1
   },
   "comando": {
    "sessaoprovidermanager": 2,
@@ -3524,364 +3507,381 @@
    "initialize": 1,
    "qualquer": 1
   },
+  "sessaoprovidermanager": {
+   "comando": 2,
+   "protocolo": 1,
+   "capabilities": 1,
+   "check": 1,
+   "mensagem": 1,
+   "pode": 1,
+   "openai": 1,
+   "openrouter": 1,
+   "gemini": 1,
+   "anthropic": 1,
+   "initialize": 1,
+   "qualquer": 1,
+   "primary": 1,
+   "automatico": 1,
+   "120s": 1
+  },
   "capabilities": {
+   "comando": 1,
    "sessaoprovidermanager": 1,
    "protocolo": 1,
-   "comando": 1,
-   "handler": 1,
-   "mp3player": 1,
+   "annotation": 1,
    "listener": 1,
-   "annotation": 1
+   "mp3player": 1,
+   "handler": 1
   },
   "terminava": {
    "atingido": 1,
-   "lerauditoria": 1,
-   "objetivo": 1
-  },
-  "fragment": {
-   "mp3playermetadatarescue": 1,
-   "header": 1,
-   "default": 1
+   "objetivo": 1,
+   "lerauditoria": 1
   },
   "header": {
-   "fragment": 1,
    "mp3playermetadatarescue": 1,
-   "default": 1
+   "default": 1,
+   "fragment": 1
   },
   "default": {
+   "header": 1,
    "fragment": 1,
    "mp3playermetadatarescue": 1,
-   "header": 1,
-   "salvo": 1,
-   "nao": 1,
+   "arquivo": 1,
    "androidpuresdk": 1,
-   "arquivo": 1
+   "nao": 1,
+   "salvo": 1
   },
-  "frequency": {
-   "mp3playermetadatarescue": 1,
+  "fragment": {
+   "default": 1,
+   "header": 1,
+   "mp3playermetadatarescue": 1
+  },
+  "playsongfromlist": {
    "sortmode": 1,
-   "increment": 1,
-   "playsongfromlist": 1
+   "mp3playermetadatarescue": 1,
+   "frequency": 1,
+   "increment": 1
   },
   "sortmode": {
-   "frequency": 1,
+   "playsongfromlist": 1,
    "mp3playermetadatarescue": 1,
-   "increment": 1,
-   "playsongfromlist": 1
+   "frequency": 1,
+   "increment": 1
+  },
+  "frequency": {
+   "sortmode": 1,
+   "playsongfromlist": 1,
+   "mp3playermetadatarescue": 1,
+   "increment": 1
   },
   "increment": {
    "frequency": 1,
-   "mp3playermetadatarescue": 1,
    "sortmode": 1,
    "playsongfromlist": 1,
+   "mp3playermetadatarescue": 1,
    "androidpuresdk": 1,
    "duplicating": 1,
-   "quantity": 1,
-   "instead": 1
-  },
-  "playsongfromlist": {
-   "frequency": 1,
-   "mp3playermetadatarescue": 1,
-   "increment": 1,
-   "sortmode": 1
-  },
-  "handler": {
-   "mp3playermetadatarescue": 1,
-   "polled": 1,
-   "250ms": 1,
-   "every": 1,
-   "mp3player": 1,
-   "listener": 1,
-   "capabilities": 1,
-   "annotation": 1
+   "instead": 1,
+   "quantity": 1
   },
   "polled": {
-   "handler": 1,
+   "every": 1,
+   "mp3playermetadatarescue": 1,
+   "250ms": 1,
+   "handler": 1
+  },
+  "handler": {
+   "every": 1,
    "250ms": 1,
    "mp3playermetadatarescue": 1,
-   "every": 1
+   "polled": 1,
+   "annotation": 1,
+   "capabilities": 1,
+   "listener": 1,
+   "mp3player": 1
   },
   "250ms": {
-   "handler": 1,
+   "every": 1,
    "mp3playermetadatarescue": 1,
    "polled": 1,
-   "every": 1
+   "handler": 1
+  },
+  "check": {
+   "mensagem": 1,
+   "sessaoprovidermanager": 1,
+   "pode": 1
+  },
+  "mensagem": {
+   "check": 1,
+   "sessaoprovidermanager": 1,
+   "pode": 1
   },
   "pode": {
-   "sessaoprovidermanager": 1,
    "check": 1,
    "mensagem": 1,
+   "sessaoprovidermanager": 1,
    "systemdesign": 1,
    "banco": 1,
    "falhar": 1,
    "causa": 1,
-   "debugging": 1,
    "sei": 1,
+   "debugging": 1,
    "funciona": 1,
    "automation": 1,
    "mudar": 1,
+   "localizacao": 1,
+   "treinamentonavegacao": 1
+  },
+  "tap": {
    "treinamentonavegacao": 1,
-   "localizacao": 1
-  },
-  "check": {
-   "pode": 1,
-   "sessaoprovidermanager": 1,
-   "mensagem": 1
-  },
-  "mensagem": {
-   "check": 1,
-   "pode": 1,
-   "sessaoprovidermanager": 1
+   "botao": 1,
+   "coordenadas": 1,
+   "input": 1
   },
   "botao": {
-   "coordenadas": 1,
    "tap": 1,
-   "input": 1,
-   "treinamentonavegacao": 1
+   "coordenadas": 1,
+   "treinamentonavegacao": 1,
+   "input": 1
   },
   "coordenadas": {
    "botao": 1,
    "tap": 1,
+   "treinamentonavegacao": 1,
    "input": 1,
-   "treinamentonavegacao": 1,
    "elementdetection": 1,
-   "relativas": 1,
+   "desc": 1,
    "text": 1,
-   "desc": 1
-  },
-  "tap": {
-   "botao": 1,
-   "coordenadas": 1,
-   "treinamentonavegacao": 1,
-   "input": 1
+   "relativas": 1
   },
   "input": {
    "botao": 1,
    "coordenadas": 1,
    "tap": 1,
    "treinamentonavegacao": 2,
-   "visivel": 1,
-   "tem": 1
-  },
-  "ntfs": {
-   "json": 1,
-   "meio": 1,
-   "lerauditoria": 1,
-   "ext4": 1,
-   "arquivos": 1,
-   "systemdesign": 1,
-   "sistema": 1
+   "tem": 1,
+   "visivel": 1
   },
   "meio": {
-   "json": 1,
+   "lerauditoria": 1,
    "ntfs": 1,
-   "lerauditoria": 1
+   "json": 1
+  },
+  "ntfs": {
+   "lerauditoria": 1,
+   "meio": 1,
+   "json": 1,
+   "ext4": 1,
+   "sistema": 1,
+   "systemdesign": 1,
+   "arquivos": 1
   },
   "never": {
    "sent": 1,
-   "mp3playermetadatarescue": 2,
    "master": 1,
+   "mp3playermetadatarescue": 2,
    "multiplier": 1,
-   "irreversible": 1,
    "audible": 1,
-   "load": 1,
+   "irreversible": 1,
    "androidpuresdk": 1,
    "auto": 1,
+   "load": 1,
    "forms": 1
   },
   "sent": {
    "never": 1,
-   "mp3playermetadatarescue": 1,
    "master": 1,
+   "mp3playermetadatarescue": 1,
    "multiplier": 1
-  },
-  "multiplier": {
-   "mp3playermetadatarescue": 1,
-   "master": 1,
-   "never": 1,
-   "sent": 1
   },
   "master": {
    "never": 1,
-   "mp3playermetadatarescue": 1,
    "sent": 1,
+   "mp3playermetadatarescue": 1,
    "multiplier": 1
+  },
+  "multiplier": {
+   "master": 1,
+   "mp3playermetadatarescue": 1,
+   "never": 1,
+   "sent": 1
   },
   "touching": {
    "without": 1,
-   "mp3playermetadatarescue": 1,
-   "reset": 1,
-   "bands": 1
-  },
-  "without": {
-   "touching": 1,
-   "mp3playermetadatarescue": 1,
-   "reset": 1,
-   "bands": 1
-  },
-  "bands": {
-   "without": 1,
-   "touching": 1,
+   "bands": 1,
    "mp3playermetadatarescue": 1,
    "reset": 1
   },
-  "parts": {
-   "splits": 1,
+  "without": {
+   "touching": 1,
+   "bands": 1,
    "mp3playermetadatarescue": 1,
-   "expected": 1
+   "reset": 1
   },
-  "splits": {
-   "parts": 1,
+  "bands": {
+   "touching": 1,
    "mp3playermetadatarescue": 1,
-   "expected": 1
+   "reset": 1,
+   "without": 1
   },
   "expected": {
-   "splits": 1,
    "parts": 1,
+   "splits": 1,
    "mp3playermetadatarescue": 1,
-   "correto": 1,
    "config": 1,
+   "correto": 1,
    "mcp": 1,
    "opencode": 2,
    "expectedreadonly": 1,
    "type": 1
   },
-  "irreversible": {
-   "mp3playermetadatarescue": 1,
-   "never": 1,
-   "audible": 1
+  "parts": {
+   "expected": 1,
+   "splits": 1,
+   "mp3playermetadatarescue": 1
+  },
+  "splits": {
+   "expected": 1,
+   "parts": 1,
+   "mp3playermetadatarescue": 1
   },
   "audible": {
-   "mp3playermetadatarescue": 1,
    "irreversible": 1,
-   "never": 1
+   "never": 1,
+   "mp3playermetadatarescue": 1
+  },
+  "irreversible": {
+   "audible": 1,
+   "never": 1,
+   "mp3playermetadatarescue": 1
   },
   "real": {
    "verified": 1,
-   "lerauditoria": 1,
    "nao": 1,
-   "consultar": 1,
-   "acao": 1,
+   "lerauditoria": 1,
    "difere": 1,
    "webrendering": 1,
-   "deteco": 1,
-   "opencode": 1,
+   "acao": 1,
+   "consultar": 1,
    "config": 1,
-   "verificar": 1
+   "deteco": 1,
+   "verificar": 1,
+   "opencode": 1
   },
   "verified": {
    "real": 1,
-   "lerauditoria": 1,
-   "nao": 1
+   "nao": 1,
+   "lerauditoria": 1
   },
   "nao": {
-   "lerauditoria": 1,
    "real": 1,
    "verified": 1,
+   "lerauditoria": 1,
+   "workspaceorganization": 1,
    "escapam": 1,
    "caminhos": 1,
-   "workspaceorganization": 1,
    "debugging": 1,
-   "resolveu": 1,
    "qual": 1,
    "sabe": 1,
-   "combinacao": 1,
-   "architecture": 1,
+   "resolveu": 1,
    "multiplos": 1,
+   "combinacao": 1,
    "sinais": 1,
+   "architecture": 1,
    "background": 1,
-   "androidpuresdk": 2,
    "edicao": 1,
+   "androidpuresdk": 2,
    "null": 1,
-   "default": 1,
    "arquivo": 1,
    "salvo": 1,
-   "acessibilidade": 1,
+   "default": 1,
    "arvore": 1,
    "expoem": 1,
    "treinamentonavegacao": 2,
-   "tem": 1,
+   "acessibilidade": 1,
+   "texto": 1,
    "robusta": 1,
-   "texto": 1
+   "tem": 1
   },
   "results": {
    "wrong": 1,
-   "mp3playermetadatarescue": 1,
-   "artist": 1
+   "artist": 1,
+   "mp3playermetadatarescue": 1
   },
   "wrong": {
    "results": 1,
-   "mp3playermetadatarescue": 1,
-   "artist": 1
+   "artist": 1,
+   "mp3playermetadatarescue": 1
   },
   "artist": {
    "wrong": 1,
    "results": 1,
    "mp3playermetadatarescue": 2,
-   "title": 2,
    "queries": 1,
-   "amplas": 1,
+   "title": 2,
+   "null": 1,
    "mp3player": 1,
-   "null": 1
+   "amplas": 1
   },
   "visivel": {
+   "treinamentonavegacao": 2,
    "input": 1,
    "tem": 1,
-   "treinamentonavegacao": 2,
+   "class": 1,
    "tipo": 1,
-   "text": 1,
-   "class": 1
+   "text": 1
   },
   "tem": {
    "input": 1,
-   "visivel": 1,
    "treinamentonavegacao": 2,
-   "agentes": 1,
-   "graph": 1,
+   "visivel": 1,
    "python": 1,
-   "elementdetection": 1,
-   "utilizavel": 1,
+   "graph": 1,
+   "agentes": 1,
    "arvore": 1,
+   "elementdetection": 1,
    "dom": 1,
-   "texto": 1,
+   "utilizavel": 1,
+   "nao": 1,
    "robusta": 1,
-   "nao": 1
+   "texto": 1
   },
   "minimum": {
-   "return": 1,
    "mp3playermetadatarescue": 1,
    "threshold": 1,
+   "return": 1,
    "met": 1
   },
   "return": {
    "minimum": 1,
-   "met": 1,
+   "mp3playermetadatarescue": 1,
    "threshold": 1,
-   "mp3playermetadatarescue": 1
+   "met": 1
   },
   "met": {
    "minimum": 1,
-   "return": 1,
    "mp3playermetadatarescue": 1,
-   "threshold": 1
-  },
-  "loop": {
-   "mp3playermetadatarescue": 1,
-   "3xx": 1,
-   "codes": 1,
-   "infinito": 1,
-   "efficiency": 1,
-   "servidor": 1,
-   "rede": 1,
-   "dentro": 1,
-   "saida": 1,
-   "resultado": 1,
-   "debugging": 1
+   "threshold": 1,
+   "return": 1
   },
   "3xx": {
    "loop": 1,
+   "codes": 1,
+   "mp3playermetadatarescue": 1
+  },
+  "loop": {
+   "3xx": 1,
    "mp3playermetadatarescue": 1,
-   "codes": 1
+   "codes": 1,
+   "infinito": 1,
+   "rede": 1,
+   "servidor": 1,
+   "efficiency": 1,
+   "resultado": 1,
+   "saida": 1,
+   "debugging": 1,
+   "dentro": 1
   },
   "codes": {
    "3xx": 1,
@@ -3889,98 +3889,98 @@
    "mp3playermetadatarescue": 1
   },
   "mode": {
-   "mp3playermetadatarescue": 1,
    "thresholds": 1,
    "relaxed": 1,
+   "mp3playermetadatarescue": 1,
    "lower": 1
   },
   "thresholds": {
    "mode": 1,
-   "lower": 1,
+   "relaxed": 1,
    "mp3playermetadatarescue": 1,
-   "relaxed": 1
+   "lower": 1
   },
   "relaxed": {
    "mode": 1,
-   "lower": 1,
+   "thresholds": 1,
    "mp3playermetadatarescue": 1,
-   "thresholds": 1
+   "lower": 1
   },
   "lower": {
    "mode": 1,
-   "mp3playermetadatarescue": 1,
    "thresholds": 1,
-   "relaxed": 1
+   "relaxed": 1,
+   "mp3playermetadatarescue": 1
+  },
+  "python": {
+   "tem": 1,
+   "graph": 1,
+   "agentes": 1
+  },
+  "graph": {
+   "tem": 1,
+   "python": 1,
+   "agentes": 1
   },
   "agentes": {
    "tem": 1,
-   "graph": 1,
-   "python": 1
-  },
-  "graph": {
-   "agentes": 1,
-   "tem": 1,
-   "python": 1
-  },
-  "python": {
-   "agentes": 1,
-   "graph": 1,
-   "tem": 1
-  },
-  "pede": {
-   "ticos": 1,
-   "narrar": 1,
-   "fazendo": 1
-  },
-  "ticos": {
-   "pede": 1,
-   "narrar": 1,
-   "fazendo": 1
-  },
-  "narrar": {
-   "pede": 1,
-   "ticos": 1,
-   "fazendo": 2,
-   "desrespeitando": 1,
-   "commits": 1,
-   "opencode": 1
+   "python": 1,
+   "graph": 1
   },
   "fazendo": {
    "pede": 1,
-   "narrar": 2,
    "ticos": 1,
+   "narrar": 2,
    "opencode": 2,
-   "desrespeitando": 1,
    "commits": 1,
+   "desrespeitando": 1,
    "permanente": 1,
    "regra": 1
+  },
+  "pede": {
+   "fazendo": 1,
+   "ticos": 1,
+   "narrar": 1
+  },
+  "ticos": {
+   "fazendo": 1,
+   "pede": 1,
+   "narrar": 1
+  },
+  "narrar": {
+   "fazendo": 2,
+   "pede": 1,
+   "ticos": 1,
+   "commits": 1,
+   "desrespeitando": 1,
+   "opencode": 1
+  },
+  "vivo": {
+   "zoom": 1,
+   "cerebro": 1,
+   "ocupadas": 1,
+   "localhost": 1,
+   "threads": 1,
+   "sessaoservermanager": 1,
+   "espelho": 1,
+   "reflete": 1,
+   "automaticamente": 1,
+   "opencode": 1
+  },
+  "zoom": {
+   "vivo": 1,
+   "cerebro": 1,
+   "treinamentonavegacao": 1,
+   "tema": 1,
+   "layout": 1,
+   "pedido": 1,
+   "efeito": 1,
+   "incluir": 1,
+   "opencode": 1
   },
   "cerebro": {
    "vivo": 1,
    "zoom": 1
-  },
-  "vivo": {
-   "cerebro": 1,
-   "zoom": 1,
-   "localhost": 1,
-   "threads": 1,
-   "sessaoservermanager": 1,
-   "ocupadas": 1,
-   "espelho": 1,
-   "automaticamente": 1,
-   "reflete": 1,
-   "opencode": 1
-  },
-  "zoom": {
-   "cerebro": 1,
-   "vivo": 1,
-   "tema": 1,
-   "layout": 1,
-   "treinamentonavegacao": 1,
-   "pedido": 1,
-   "efeito": 1,
-   "opencode": 1,
-   "incluir": 1
   },
   "hor": {
    "rio": 1,
@@ -3989,13 +3989,13 @@
   "rio": {
    "hor": 1,
    "fuso": 1,
+   "agente": 1,
    "comunica": 1,
-   "deve": 1,
-   "agente": 1
+   "deve": 1
   },
   "fuso": {
-   "hor": 1,
-   "rio": 1
+   "rio": 1,
+   "hor": 1
   },
   "etapa": {
    "minutos": 1,
@@ -4004,89 +4004,89 @@
   },
   "minutos": {
    "etapa": 1,
-   "slowness": 1,
-   "desugardebugfiledependencies": 1
+   "desugardebugfiledependencies": 1,
+   "slowness": 1
   },
   "slowness": {
    "etapa": 1,
-   "minutos": 1,
-   "desugardebugfiledependencies": 1
+   "desugardebugfiledependencies": 1,
+   "minutos": 1
   },
   "desugardebugfiledependencies": {
    "etapa": 1,
    "minutos": 1,
    "slowness": 1,
-   "ram": 1,
    "voxu": 1,
+   "ram": 1,
    "opencode": 1
   },
-  "ficar": {
+  "inteiro": {
+   "parent": 1,
    "nico": 1,
-   "parent": 1,
-   "inteiro": 1,
-   "env": 1,
-   "auth": 1,
-   "vars": 1,
-   "security": 1
-  },
-  "nico": {
-   "ficar": 1,
-   "parent": 1,
-   "inteiro": 1,
-   "opencode": 2,
-   "relat": 1,
-   "til": 1,
-   "habilidades": 1,
-   "caminho": 1
+   "ficar": 1
   },
   "parent": {
+   "inteiro": 1,
    "ficar": 1,
-   "nico": 1,
-   "inteiro": 1
+   "nico": 1
   },
-  "inteiro": {
+  "nico": {
+   "inteiro": 1,
    "ficar": 1,
+   "parent": 1,
+   "relat": 1,
+   "opencode": 2,
+   "til": 1,
+   "caminho": 1,
+   "habilidades": 1
+  },
+  "ficar": {
+   "parent": 1,
+   "inteiro": 1,
    "nico": 1,
-   "parent": 1
-  },
-  "code": {
-   "extra": 1,
-   "agents": 1
-  },
-  "extra": {
-   "code": 1,
-   "agents": 1
+   "auth": 1,
+   "env": 1,
+   "vars": 1,
+   "security": 1
   },
   "agents": {
    "extra": 1,
    "code": 1
   },
+  "extra": {
+   "agents": 1,
+   "code": 1
+  },
+  "code": {
+   "agents": 1,
+   "extra": 1
+  },
+  "clique": {
+   "sumiram": 1,
+   "persistencia": 1,
+   "clicar": 1,
+   "treinamentonavegacao": 1,
+   "proximo": 1,
+   "android": 1
+  },
+  "sumiram": {
+   "clique": 1,
+   "persistencia": 1,
+   "clicar": 1,
+   "fix": 1,
+   "giro": 1,
+   "natural": 1,
+   "opencode": 1
+  },
+  "persistencia": {
+   "clique": 1,
+   "sumiram": 1,
+   "clicar": 1
+  },
   "clicar": {
    "sumiram": 1,
    "clique": 1,
    "persistencia": 1
-  },
-  "sumiram": {
-   "clicar": 1,
-   "clique": 1,
-   "persistencia": 1,
-   "natural": 1,
-   "giro": 1,
-   "fix": 1,
-   "opencode": 1
-  },
-  "clique": {
-   "clicar": 1,
-   "sumiram": 1,
-   "persistencia": 1,
-   "proximo": 1,
-   "treinamentonavegacao": 1,
-   "android": 1
-  },
-  "persistencia": {
-   "clicar": 1,
-   "clique": 1,
-   "sumiram": 1
   },
   "mobile": {
    "testing": 1,
@@ -4101,58 +4101,58 @@
    "adaptability": 1,
    "alteram": 1,
    "concorrencia": 1,
-   "corrompido": 1,
-   "estado": 1,
    "inconsistente": 1,
+   "estado": 1,
+   "corrompido": 1,
    "fallback": 1,
    "verificar": 1,
-   "assume": 1,
-   "secundario": 1
+   "secundario": 1,
+   "assume": 1
   },
   "adaptability": {
-   "mobile": 1,
    "testing": 1,
+   "mobile": 1,
    "alteram": 1
   },
   "alteram": {
    "adaptability": 1,
-   "mobile": 1,
-   "testing": 1
+   "testing": 1,
+   "mobile": 1
   },
   "conhecimento": {
-   "fala": 1,
    "melodia": 1,
+   "fala": 1,
    "chega": 1,
+   "skill": 1,
    "existente": 1,
    "ferramenta": 1,
    "metacognicao": 1,
-   "skill": 1,
-   "captura": 1,
+   "ler": 1,
    "ecossistema": 1,
    "opencode": 3,
-   "ler": 1,
+   "captura": 1,
    "usuari": 1,
+   "aprendizados": 1,
    "registra": 1,
-   "arquivos": 1,
-   "aprendizados": 1
-  },
-  "fala": {
-   "conhecimento": 1,
-   "melodia": 1,
-   "chega": 1,
-   "escrita": 1,
-   "opencode": 1,
-   "acento": 1
+   "arquivos": 1
   },
   "melodia": {
    "conhecimento": 1,
-   "fala": 1,
-   "chega": 1
+   "chega": 1,
+   "fala": 1
+  },
+  "fala": {
+   "conhecimento": 1,
+   "chega": 1,
+   "melodia": 1,
+   "acento": 1,
+   "opencode": 1,
+   "escrita": 1
   },
   "chega": {
    "conhecimento": 1,
-   "fala": 1,
-   "melodia": 1
+   "melodia": 1,
+   "fala": 1
   },
   "funcoes": {
    "processo": 1,
@@ -4170,28 +4170,10 @@
    "read": 1
   },
   "act": {
+   "metodo": 1,
    "decisionmaking": 1,
    "escolha": 1,
-   "execute": 1,
-   "metodo": 1
-  },
-  "decisionmaking": {
-   "act": 1,
-   "escolha": 1,
-   "execute": 1,
-   "metodo": 1
-  },
-  "escolha": {
-   "act": 1,
-   "decisionmaking": 1,
-   "execute": 1,
-   "metodo": 1
-  },
-  "execute": {
-   "act": 1,
-   "decisionmaking": 1,
-   "escolha": 1,
-   "metodo": 1
+   "execute": 1
   },
   "metodo": {
    "act": 1,
@@ -4199,190 +4181,217 @@
    "escolha": 1,
    "execute": 1
   },
-  "ativar": {
-   "seguindo": 1,
-   "ecosystemumgrau": 1,
-   "desativar": 1
+  "decisionmaking": {
+   "act": 1,
+   "metodo": 1,
+   "escolha": 1,
+   "execute": 1
   },
-  "seguindo": {
-   "ativar": 1,
-   "ecosystemumgrau": 1,
-   "desativar": 1
+  "escolha": {
+   "act": 1,
+   "decisionmaking": 1,
+   "metodo": 1,
+   "execute": 1
   },
-  "ecosystemumgrau": {
-   "ativar": 1,
-   "seguindo": 1,
-   "desativar": 1,
-   "mcp": 1,
-   "opencode": 1,
-   "integration": 1
+  "execute": {
+   "act": 1,
+   "decisionmaking": 1,
+   "escolha": 1,
+   "metodo": 1
   },
   "desativar": {
+   "seguindo": 1,
+   "ecosystemumgrau": 1,
+   "ativar": 1
+  },
+  "seguindo": {
+   "desativar": 1,
+   "ativar": 1,
+   "ecosystemumgrau": 1
+  },
+  "ecosystemumgrau": {
+   "desativar": 1,
    "ativar": 1,
    "seguindo": 1,
+   "integration": 1,
+   "opencode": 1,
+   "mcp": 1
+  },
+  "ativar": {
+   "desativar": 1,
+   "seguindo": 1,
    "ecosystemumgrau": 1
+  },
+  "infinita": {
+   "while": 1,
+   "processing": 1,
+   "dispara": 1
+  },
+  "while": {
+   "infinita": 1,
+   "dispara": 1,
+   "processing": 1
+  },
+  "processing": {
+   "infinita": 1,
+   "dispara": 1,
+   "while": 1
   },
   "dispara": {
    "while": 1,
    "infinita": 1,
    "processing": 1
   },
-  "while": {
-   "dispara": 1,
-   "infinita": 1,
-   "processing": 1
-  },
-  "infinita": {
-   "dispara": 1,
-   "while": 1,
-   "processing": 1
-  },
-  "processing": {
-   "dispara": 1,
-   "infinita": 1,
-   "while": 1
-  },
   "inverso": {
    "protocolo": 1,
    "conexao": 1,
-   "entrada": 1,
-   "debugging": 1
+   "debugging": 1,
+   "entrada": 1
   },
   "conexao": {
    "inverso": 1,
-   "entrada": 1,
    "debugging": 1,
    "protocolo": 1,
-   "distinguir": 1,
+   "entrada": 1,
    "persistente": 1,
    "estado": 1,
+   "distinguir": 1,
    "opencode": 1
-  },
-  "entrada": {
-   "conexao": 1,
-   "inverso": 1,
-   "protocolo": 1,
-   "debugging": 1
   },
   "debugging": {
    "conexao": 1,
    "inverso": 1,
-   "entrada": 1,
    "protocolo": 1,
-   "camada": 1,
-   "chain": 1,
-   "handshake": 1,
+   "entrada": 1,
    "completo": 1,
+   "chain": 1,
+   "camada": 1,
+   "handshake": 1,
    "corrompidos": 1,
    "validos": 1,
    "perfeitamente": 1,
    "utf": 1,
-   "muda": 1,
    "sintoma": 1,
    "veja": 1,
    "obvio": 1,
+   "muda": 1,
+   "aplicada": 1,
    "momento": 1,
    "reportado": 1,
-   "aplicada": 1,
    "valores": 1,
    "range": 1,
-   "deveria": 1,
    "encoding": 1,
+   "deveria": 1,
    "position": 1,
+   "viewport": 1,
    "scroll": 1,
    "ocr": 1,
-   "viewport": 1,
-   "resolveu": 1,
    "qual": 1,
    "nao": 1,
    "sabe": 1,
+   "resolveu": 1,
    "deu": 1,
-   "usou": 1,
-   "errado": 1,
    "encontrou": 1,
-   "especificar": 1,
+   "errado": 1,
+   "usou": 1,
    "deve": 1,
+   "especificar": 1,
    "sistema": 1,
    "locale": 1,
-   "saida": 1,
-   "dentro": 1,
    "loop": 1,
+   "dentro": 1,
    "resultado": 1,
-   "original": 1,
-   "solucao": 1,
+   "saida": 1,
    "unica": 1,
+   "solucao": 1,
+   "original": 1,
    "causa": 1,
-   "sei": 1,
    "pode": 1,
-   "funciona": 1
+   "funciona": 1,
+   "sei": 1
   },
-  "camada": {
-   "chain": 1,
+  "entrada": {
+   "conexao": 1,
    "debugging": 1,
-   "completo": 1,
-   "handshake": 1
-  },
-  "chain": {
-   "camada": 1,
-   "debugging": 1,
-   "completo": 1,
-   "handshake": 1
+   "inverso": 1,
+   "protocolo": 1
   },
   "completo": {
-   "camada": 1,
-   "chain": 1,
-   "debugging": 1,
    "handshake": 1,
-   "faca": 1,
+   "debugging": 1,
+   "chain": 1,
+   "camada": 1,
    "estado": 1,
+   "faca": 1,
    "efficiency": 1,
    "atual": 1
   },
   "handshake": {
-   "camada": 1,
+   "completo": 1,
    "chain": 1,
-   "debugging": 1,
-   "completo": 1
-  },
-  "perfeitamente": {
-   "validos": 1,
-   "utf": 1,
-   "corrompidos": 1,
+   "camada": 1,
    "debugging": 1
   },
-  "validos": {
+  "chain": {
+   "completo": 1,
+   "handshake": 1,
+   "debugging": 1,
+   "camada": 1
+  },
+  "camada": {
+   "completo": 1,
+   "chain": 1,
+   "handshake": 1,
+   "debugging": 1
+  },
+  "corrompidos": {
+   "debugging": 1,
+   "validos": 1,
    "perfeitamente": 1,
+   "utf": 1
+  },
+  "validos": {
    "corrompidos": 1,
    "debugging": 1,
+   "perfeitamente": 1,
+   "utf": 1
+  },
+  "perfeitamente": {
+   "corrompidos": 1,
+   "debugging": 1,
+   "validos": 1,
    "utf": 1
   },
   "utf": {
-   "perfeitamente": 1,
    "corrompidos": 1,
    "debugging": 1,
+   "perfeitamente": 1,
    "validos": 1
   },
-  "corrompidos": {
-   "validos": 1,
-   "perfeitamente": 1,
-   "debugging": 1,
-   "utf": 1
+  "skill": {
+   "conhecimento": 1,
+   "existente": 1,
+   "ferramenta": 1,
+   "metacognicao": 1,
+   "logo": 1,
+   "habilidades": 1,
+   "tecnicas": 1
   },
   "existente": {
    "conhecimento": 1,
+   "skill": 1,
    "ferramenta": 1,
    "metacognicao": 1,
-   "skill": 1,
-   "timestampado": 1,
+   "arquivo": 1,
    "sobrescreve": 1,
-   "androidpuresdk": 1,
-   "arquivo": 1
+   "timestampado": 1,
+   "androidpuresdk": 1
   },
   "ferramenta": {
    "conhecimento": 1,
    "existente": 1,
-   "metacognicao": 1,
-   "skill": 1
+   "skill": 1,
+   "metacognicao": 1
   },
   "metacognicao": {
    "conhecimento": 1,
@@ -4390,116 +4399,107 @@
    "ferramenta": 1,
    "skill": 1
   },
-  "skill": {
-   "conhecimento": 1,
-   "existente": 1,
-   "ferramenta": 1,
-   "metacognicao": 1,
-   "tecnicas": 1,
-   "habilidades": 1,
-   "logo": 1
-  },
-  "fout": {
+  "foit": {
    "variavel": 1,
    "performance": 1,
-   "foit": 1,
+   "fout": 1,
    "calls": 1
   },
   "variavel": {
-   "fout": 1,
    "foit": 1,
-   "calls": 1,
-   "performance": 1
+   "performance": 1,
+   "fout": 1,
+   "calls": 1
   },
   "performance": {
-   "fout": 1,
    "foit": 1,
-   "calls": 1,
-   "variavel": 1
-  },
-  "foit": {
+   "variavel": 1,
    "fout": 1,
+   "calls": 1
+  },
+  "fout": {
+   "foit": 1,
    "variavel": 1,
    "performance": 1,
    "calls": 1
   },
   "calls": {
-   "fout": 1,
    "foit": 1,
    "variavel": 1,
-   "performance": 1
-  },
-  "proxima": {
-   "systemdesign": 1,
-   "preferencia": 1,
-   "automatico": 1,
-   "precisa": 1
-  },
-  "systemdesign": {
-   "proxima": 1,
-   "preferencia": 1,
-   "automatico": 1,
-   "precisa": 1,
-   "progresso": 1,
-   "estagnacao": 1,
-   "iteracoes": 1,
-   "nenhum": 1,
-   "ext4": 1,
-   "arquivos": 1,
-   "ntfs": 1,
-   "sistema": 1,
-   "explicitamente": 1,
-   "precisam": 1,
-   "invalide": 1,
-   "consistentes": 1,
-   "pode": 1,
-   "banco": 1,
-   "falhar": 1
-  },
-  "preferencia": {
-   "systemdesign": 1,
-   "proxima": 1,
-   "automatico": 1,
-   "precisa": 1
+   "performance": 1,
+   "fout": 1
   },
   "automatico": {
-   "systemdesign": 1,
    "proxima": 1,
    "preferencia": 1,
+   "systemdesign": 1,
    "precisa": 1,
    "primary": 1,
    "sessaoprovidermanager": 1,
    "120s": 1
   },
-  "precisa": {
+  "proxima": {
    "automatico": 1,
    "systemdesign": 1,
+   "preferencia": 1,
+   "precisa": 1
+  },
+  "preferencia": {
+   "automatico": 1,
    "proxima": 1,
-   "preferencia": 1
-  },
-  "progresso": {
    "systemdesign": 1,
-   "estagnacao": 1,
-   "iteracoes": 1,
-   "nenhum": 1
+   "precisa": 1
   },
-  "estagnacao": {
+  "systemdesign": {
+   "automatico": 1,
+   "proxima": 1,
+   "preferencia": 1,
+   "precisa": 1,
+   "iteracoes": 1,
    "progresso": 1,
-   "systemdesign": 1,
-   "iteracoes": 1,
-   "nenhum": 1
+   "estagnacao": 1,
+   "nenhum": 1,
+   "ext4": 1,
+   "ntfs": 1,
+   "sistema": 1,
+   "arquivos": 1,
+   "precisam": 1,
+   "consistentes": 1,
+   "explicitamente": 1,
+   "invalide": 1,
+   "pode": 1,
+   "banco": 1,
+   "falhar": 1
+  },
+  "precisa": {
+   "automatico": 1,
+   "proxima": 1,
+   "preferencia": 1,
+   "systemdesign": 1
   },
   "iteracoes": {
-   "estagnacao": 1,
    "progresso": 1,
    "systemdesign": 1,
+   "nenhum": 1,
+   "estagnacao": 1
+  },
+  "progresso": {
+   "iteracoes": 1,
+   "systemdesign": 1,
+   "estagnacao": 1,
    "nenhum": 1
   },
   "nenhum": {
-   "estagnacao": 1,
    "iteracoes": 1,
+   "estagnacao": 1,
    "progresso": 1,
    "systemdesign": 1
+  },
+  "estagnacao": {
+   "iteracoes": 1,
+   "progresso": 1,
+   "systemdesign": 1,
+   "nenhum": 1
   },
   "invalida": {
    "vault": 1,
@@ -4517,42 +4517,47 @@
    "vault": 1
   },
   "atualiza": {
-   "invalida": 1,
    "vault": 1,
+   "invalida": 1,
    "todo": 1,
-   "opencode": 1,
    "pediu": 1,
+   "opencode": 1,
    "refinamento": 1
   },
-  "comunica": {
-   "deve": 1,
+  "agente": {
    "rio": 1,
-   "agente": 1
+   "comunica": 1,
+   "deve": 1
+  },
+  "comunica": {
+   "agente": 1,
+   "rio": 1,
+   "deve": 1
   },
   "deve": {
+   "agente": 1,
    "comunica": 1,
    "rio": 1,
-   "agente": 1,
    "especificar": 1,
    "sistema": 1,
    "locale": 1,
    "debugging": 1,
-   "altera": 1,
+   "opencode": 1,
    "ecossistema": 1,
-   "opencode": 1
+   "altera": 1
   },
-  "agente": {
-   "comunica": 1,
-   "deve": 1,
-   "rio": 1
+  "serialnumber": {
+   "similares": 1,
+   "2024": 1,
+   "manufacture": 1
+  },
+  "similares": {
+   "serialnumber": 1,
+   "2024": 1,
+   "manufacture": 1
   },
   "2024": {
    "serialnumber": 1,
-   "manufacture": 1,
-   "similares": 1
-  },
-  "serialnumber": {
-   "2024": 1,
    "similares": 1,
    "manufacture": 1
   },
@@ -4561,36 +4566,31 @@
    "serialnumber": 1,
    "similares": 1
   },
-  "similares": {
-   "2024": 1,
-   "serialnumber": 1,
-   "manufacture": 1
+  "logo": {
+   "tecnicas": 1,
+   "skill": 1,
+   "habilidades": 1
   },
   "tecnicas": {
-   "skill": 1,
-   "habilidades": 1,
    "logo": 1,
+   "habilidades": 1,
+   "skill": 1,
+   "celular": 1,
    "perita": 1,
    "opencode": 1,
-   "celular": 1,
    "internet": 1
   },
   "habilidades": {
-   "skill": 1,
-   "tecnicas": 1,
    "logo": 1,
-   "nico": 1,
-   "opencode": 1,
-   "caminho": 1,
-   "system": 1,
-   "permanente": 1,
-   "jarvis": 1,
-   "leraprendizado": 1
-  },
-  "logo": {
-   "habilidades": 1,
+   "tecnicas": 1,
    "skill": 1,
-   "tecnicas": 1
+   "caminho": 1,
+   "opencode": 1,
+   "nico": 1,
+   "leraprendizado": 1,
+   "jarvis": 1,
+   "permanente": 1,
+   "system": 1
   },
   "grupo": {
    "modal": 1,
@@ -4609,10 +4609,10 @@
    "modal": 1,
    "accordion": 1,
    "efficiency": 1,
-   "layout": 1,
-   "treinamentonavegacao": 1,
+   "independentes": 1,
    "sao": 1,
-   "independentes": 1
+   "treinamentonavegacao": 1,
+   "layout": 1
   },
   "accordion": {
    "grupo": 1,
@@ -4626,201 +4626,195 @@
    "modal": 1,
    "tab": 1,
    "infinito": 1,
+   "rede": 1,
    "servidor": 1,
    "loop": 1,
-   "rede": 1,
    "completo": 1,
-   "faca": 1,
-   "estado": 1,
    "atual": 1,
-   "custa": 1,
+   "estado": 1,
+   "faca": 1,
    "10s": 1,
-   "operacao": 1,
-   "timeout": 1
-  },
-  "muda": {
-   "sintoma": 1,
-   "veja": 1,
-   "obvio": 1,
-   "debugging": 1
+   "custa": 1,
+   "timeout": 1,
+   "operacao": 1
   },
   "sintoma": {
-   "muda": 1,
    "veja": 1,
+   "obvio": 1,
    "debugging": 1,
-   "obvio": 1
+   "muda": 1
   },
   "veja": {
-   "muda": 1,
    "sintoma": 1,
+   "obvio": 1,
    "debugging": 1,
-   "obvio": 1
+   "muda": 1
   },
   "obvio": {
-   "muda": 1,
+   "sintoma": 1,
+   "veja": 1,
+   "debugging": 1,
+   "muda": 1
+  },
+  "muda": {
    "debugging": 1,
    "sintoma": 1,
-   "veja": 1
+   "veja": 1,
+   "obvio": 1
+  },
+  "trocar": {
+   "usb": 1,
+   "independente": 1,
+   "adb": 1,
+   "carregam": 1,
+   "arquivo": 1,
+   "androidpuresdk": 1,
+   "aba": 1,
+   "naturalidade": 1,
+   "ssml": 1,
+   "jarvis": 1,
+   "opencode": 1
+  },
+  "usb": {
+   "trocar": 1,
+   "independente": 1,
+   "adb": 1
   },
   "independente": {
    "trocar": 1,
    "usb": 1,
    "adb": 1
   },
-  "trocar": {
-   "independente": 1,
-   "adb": 1,
-   "usb": 1,
-   "carregam": 1,
-   "aba": 1,
-   "androidpuresdk": 1,
-   "arquivo": 1,
-   "jarvis": 1,
-   "naturalidade": 1,
-   "opencode": 1,
-   "ssml": 1
-  },
-  "usb": {
-   "independente": 1,
-   "adb": 1,
-   "trocar": 1
-  },
   "adb": {
-   "independente": 1,
    "trocar": 1,
+   "independente": 1,
    "usb": 1
   },
-  "contratos": {
+  "externos": {
    "recuperaveis": 1,
-   "externos": 1,
    "explicitos": 1,
+   "contratos": 1,
    "architecture": 1
   },
   "recuperaveis": {
-   "contratos": 1,
-   "architecture": 1,
-   "externos": 1,
-   "explicitos": 1
-  },
-  "externos": {
-   "contratos": 1,
-   "architecture": 1,
-   "recuperaveis": 1,
-   "explicitos": 1
-  },
-  "explicitos": {
-   "contratos": 1,
-   "architecture": 1,
-   "recuperaveis": 1,
-   "externos": 1
-  },
-  "architecture": {
-   "contratos": 1,
-   "recuperaveis": 1,
    "externos": 1,
    "explicitos": 1,
+   "contratos": 1,
+   "architecture": 1
+  },
+  "explicitos": {
+   "externos": 1,
+   "recuperaveis": 1,
+   "contratos": 1,
+   "architecture": 1
+  },
+  "contratos": {
+   "externos": 1,
+   "explicitos": 1,
+   "recuperaveis": 1,
+   "architecture": 1
+  },
+  "architecture": {
+   "externos": 1,
+   "explicitos": 1,
+   "contratos": 1,
+   "recuperaveis": 1,
+   "graciosamente": 1,
    "falha": 1,
    "lida": 1,
-   "graciosamente": 1,
-   "combinacao": 1,
    "multiplos": 1,
+   "combinacao": 1,
    "sinais": 1,
    "nao": 1
   },
-  "composicao": {
-   "gpu": 1,
-   "dom": 1,
-   "browserarchitecture": 1
-  },
-  "gpu": {
-   "composicao": 1,
-   "dom": 1,
-   "browserarchitecture": 1
-  },
   "dom": {
-   "composicao": 1,
    "gpu": 1,
    "browserarchitecture": 1,
+   "composicao": 1,
    "arvore": 1,
+   "utilizavel": 1,
    "elementdetection": 1,
    "tem": 1,
-   "utilizavel": 1,
-   "web": 1,
    "encapsulam": 1,
-   "treinamentonavegacao": 3,
+   "web": 1,
    "elementos": 1,
-   "load": 1,
+   "treinamentonavegacao": 3,
    "pagina": 1,
+   "load": 1,
    "event": 1,
    "casos": 1,
-   "referencias": 1,
-   "invalidando": 1
+   "invalidando": 1,
+   "referencias": 1
+  },
+  "gpu": {
+   "dom": 1,
+   "browserarchitecture": 1,
+   "composicao": 1
   },
   "browserarchitecture": {
+   "dom": 1,
    "composicao": 1,
-   "gpu": 1,
-   "dom": 1
+   "gpu": 1
   },
-  "330": {
+  "composicao": {
+   "browserarchitecture": 1,
+   "dom": 1,
+   "gpu": 1
+  },
+  "atual": {
    "bridge": 1,
    "jarvis": 1,
-   "atual": 1
+   "330": 1,
+   "completo": 1,
+   "estado": 1,
+   "faca": 1,
+   "efficiency": 1
   },
   "bridge": {
-   "330": 1,
+   "atual": 1,
    "jarvis": 1,
-   "atual": 1
+   "330": 1
   },
   "jarvis": {
-   "330": 1,
-   "bridge": 1,
    "atual": 1,
+   "bridge": 1,
+   "330": 1,
+   "corretamente": 1,
    "tts": 1,
    "opencode": 3,
-   "corretamente": 1,
    "naturalidade": 1,
    "ssml": 1,
    "trocar": 1,
-   "pidos": 1,
    "constantes": 1,
-   "system": 1,
-   "permanente": 1,
+   "pidos": 1,
    "leraprendizado": 2,
+   "permanente": 1,
+   "system": 1,
    "habilidades": 1,
    "codigo": 1,
    "implementacao": 1
   },
-  "atual": {
-   "330": 1,
+  "330": {
+   "atual": 1,
    "bridge": 1,
-   "jarvis": 1,
-   "faca": 1,
-   "estado": 1,
-   "completo": 1,
-   "efficiency": 1
-  },
-  "errada": {
-   "retornar": 1,
-   "informacao": 1,
-   "algorithm": 1,
-   "baixo": 1
-  },
-  "retornar": {
-   "errada": 1,
-   "algorithm": 1,
-   "baixo": 1,
-   "informacao": 1
-  },
-  "informacao": {
-   "errada": 1,
-   "algorithm": 1,
-   "baixo": 1,
-   "retornar": 1
+   "jarvis": 1
   },
   "algorithm": {
    "errada": 1,
-   "baixo": 1,
    "retornar": 1,
+   "baixo": 1,
+   "informacao": 1
+  },
+  "errada": {
+   "algorithm": 1,
+   "retornar": 1,
+   "informacao": 1,
+   "baixo": 1
+  },
+  "retornar": {
+   "algorithm": 1,
+   "errada": 1,
+   "baixo": 1,
    "informacao": 1
   },
   "baixo": {
@@ -4829,323 +4823,347 @@
    "retornar": 1,
    "informacao": 1
   },
-  "consultar": {
-   "webrendering": 1,
-   "difere": 1,
-   "real": 1,
-   "acao": 1
-  },
-  "webrendering": {
-   "consultar": 1,
-   "acao": 1,
-   "difere": 1,
-   "real": 1
+  "informacao": {
+   "algorithm": 1,
+   "errada": 1,
+   "baixo": 1,
+   "retornar": 1
   },
   "difere": {
-   "consultar": 1,
-   "acao": 1,
    "webrendering": 1,
-   "real": 1
+   "real": 1,
+   "acao": 1,
+   "consultar": 1
+  },
+  "webrendering": {
+   "difere": 1,
+   "real": 1,
+   "acao": 1,
+   "consultar": 1
   },
   "acao": {
-   "webrendering": 1,
-   "consultar": 1,
    "difere": 1,
+   "webrendering": 1,
+   "real": 1,
+   "consultar": 1
+  },
+  "consultar": {
+   "acao": 1,
+   "difere": 1,
+   "webrendering": 1,
    "real": 1
   },
   "ext4": {
-   "systemdesign": 1,
    "ntfs": 1,
    "sistema": 1,
+   "systemdesign": 1,
    "arquivos": 1
   },
   "sistema": {
    "ext4": 1,
-   "arquivos": 1,
    "ntfs": 1,
    "systemdesign": 1,
-   "treinamentonavegacao": 1,
+   "arquivos": 1,
    "idioma": 1,
+   "treinamentonavegacao": 1,
    "operacional": 1,
-   "especificar": 1,
    "deve": 1,
+   "especificar": 1,
    "debugging": 1,
    "locale": 1,
-   "vigilncia": 1,
-   "opencode": 1,
    "config": 1,
-   "autom": 1
+   "vigilncia": 1,
+   "autom": 1,
+   "opencode": 1
   },
   "arquivos": {
-   "systemdesign": 1,
    "ext4": 1,
    "ntfs": 1,
    "sistema": 1,
+   "systemdesign": 1,
+   "aprendizados": 1,
+   "registra": 1,
    "conhecimento": 1,
    "opencode": 1,
-   "registra": 1,
-   "aprendizados": 1,
    "leraprendizado": 1,
-   "json": 1,
    "diagnosticos": 1,
+   "json": 1,
    "corrupcao": 1
-  },
-  "inputs": {
-   "uirecognition": 1,
-   "repetidos": 1,
-   "formularios": 1
-  },
-  "uirecognition": {
-   "inputs": 1,
-   "formularios": 1,
-   "repetidos": 1
-  },
-  "repetidos": {
-   "inputs": 1,
-   "formularios": 1,
-   "uirecognition": 1
   },
   "formularios": {
    "inputs": 1,
    "uirecognition": 1,
    "repetidos": 1
   },
-  "modais": {
-   "planning": 1,
-   "possiveis": 1,
-   "permissoes": 1,
-   "barreiras": 1,
-   "navegacao": 1,
-   "boyd": 1,
-   "automatizada": 1
+  "inputs": {
+   "formularios": 1,
+   "uirecognition": 1,
+   "repetidos": 1
   },
-  "planning": {
-   "modais": 1,
-   "possiveis": 1,
-   "barreiras": 1,
-   "permissoes": 1
+  "uirecognition": {
+   "formularios": 1,
+   "inputs": 1,
+   "repetidos": 1
   },
-  "possiveis": {
-   "modais": 1,
-   "planning": 1,
-   "barreiras": 1,
-   "permissoes": 1
-  },
-  "permissoes": {
-   "modais": 1,
-   "barreiras": 1,
-   "planning": 1,
-   "possiveis": 1
+  "repetidos": {
+   "formularios": 1,
+   "inputs": 1,
+   "uirecognition": 1
   },
   "barreiras": {
-   "modais": 1,
-   "planning": 1,
    "possiveis": 1,
-   "permissoes": 1
+   "permissoes": 1,
+   "modais": 1,
+   "planning": 1
   },
-  "momento": {
-   "debugging": 1,
-   "aplicada": 1,
-   "reportado": 1,
-   "crash": 1,
-   "qualquer": 1,
-   "viavel": 1,
-   "lerarquitetura": 1
+  "possiveis": {
+   "barreiras": 1,
+   "permissoes": 1,
+   "modais": 1,
+   "planning": 1
   },
-  "reportado": {
-   "debugging": 1,
-   "aplicada": 1,
-   "momento": 1
+  "permissoes": {
+   "barreiras": 1,
+   "possiveis": 1,
+   "planning": 1,
+   "modais": 1
+  },
+  "modais": {
+   "barreiras": 1,
+   "possiveis": 1,
+   "permissoes": 1,
+   "planning": 1,
+   "navegacao": 1,
+   "automatizada": 1,
+   "boyd": 1
+  },
+  "planning": {
+   "barreiras": 1,
+   "permissoes": 1,
+   "modais": 1,
+   "possiveis": 1
   },
   "aplicada": {
-   "debugging": 1,
    "momento": 1,
-   "reportado": 1
+   "reportado": 1,
+   "debugging": 1
   },
-  "ltima": {
-   "slaba": 1,
-   "jarvs": 1,
-   "assistente": 1
+  "momento": {
+   "aplicada": 1,
+   "reportado": 1,
+   "debugging": 1,
+   "lerarquitetura": 1,
+   "crash": 1,
+   "viavel": 1,
+   "qualquer": 1
   },
-  "slaba": {
-   "ltima": 1,
-   "jarvs": 1,
-   "assistente": 1
-  },
-  "jarvs": {
-   "slaba": 1,
-   "ltima": 1,
-   "assistente": 1
+  "reportado": {
+   "aplicada": 1,
+   "momento": 1,
+   "debugging": 1
   },
   "assistente": {
    "slaba": 1,
    "ltima": 1,
    "jarvs": 1
   },
-  "toast": {
-   "vermelha": 1,
-   "verde": 1,
-   "statedetection": 1,
-   "sucesso": 1
+  "slaba": {
+   "assistente": 1,
+   "ltima": 1,
+   "jarvs": 1
   },
-  "vermelha": {
-   "toast": 1,
-   "verde": 1,
-   "statedetection": 1,
-   "sucesso": 1
+  "ltima": {
+   "assistente": 1,
+   "slaba": 1,
+   "jarvs": 1
+  },
+  "jarvs": {
+   "assistente": 1,
+   "slaba": 1,
+   "ltima": 1
   },
   "verde": {
-   "toast": 1,
    "vermelha": 1,
-   "statedetection": 1,
-   "sucesso": 1
+   "sucesso": 1,
+   "toast": 1,
+   "statedetection": 1
   },
-  "statedetection": {
-   "toast": 1,
-   "vermelha": 1,
+  "vermelha": {
    "verde": 1,
-   "sucesso": 1
+   "sucesso": 1,
+   "toast": 1,
+   "statedetection": 1
   },
   "sucesso": {
-   "statedetection": 1,
+   "verde": 1,
    "toast": 1,
    "vermelha": 1,
-   "verde": 1
+   "statedetection": 1
   },
-  "classes": {
+  "toast": {
+   "sucesso": 1,
+   "verde": 1,
+   "vermelha": 1,
+   "statedetection": 1
+  },
+  "statedetection": {
+   "verde": 1,
+   "sucesso": 1,
+   "toast": 1,
+   "vermelha": 1
+  },
+  "material": {
    "mui": 1,
+   "classes": 1,
    "col": 1,
-   "material": 1,
    "frameworkdetection": 1
   },
   "mui": {
+   "material": 1,
    "classes": 1,
    "col": 1,
-   "material": 1,
    "frameworkdetection": 1
+  },
+  "classes": {
+   "material": 1,
+   "col": 1,
+   "frameworkdetection": 1,
+   "mui": 1
   },
   "col": {
    "classes": 1,
-   "mui": 1,
    "material": 1,
-   "frameworkdetection": 1
-  },
-  "material": {
-   "classes": 1,
-   "col": 1,
-   "mui": 1,
-   "frameworkdetection": 1
+   "frameworkdetection": 1,
+   "mui": 1
   },
   "frameworkdetection": {
    "classes": 1,
    "col": 1,
-   "mui": 1,
-   "material": 1
-  },
-  "nome": {
-   "terminal": 1,
-   "failed": 1,
-   "ind": 1
-  },
-  "terminal": {
-   "nome": 1,
-   "failed": 1,
-   "ind": 1
-  },
-  "failed": {
-   "terminal": 1,
-   "nome": 1,
-   "ind": 1
+   "material": 1,
+   "mui": 1
   },
   "ind": {
-   "failed": 1,
+   "nome": 1,
    "terminal": 1,
-   "nome": 1
+   "failed": 1
+  },
+  "nome": {
+   "ind": 1,
+   "terminal": 1,
+   "failed": 1
+  },
+  "terminal": {
+   "ind": 1,
+   "nome": 1,
+   "failed": 1
+  },
+  "failed": {
+   "ind": 1,
+   "nome": 1,
+   "terminal": 1
   },
   "concorrencia": {
-   "testing": 1,
-   "corrompido": 1,
-   "estado": 1,
-   "inconsistente": 1
-  },
-  "corrompido": {
-   "concorrencia": 1,
-   "testing": 1,
-   "estado": 1,
-   "inconsistente": 1
-  },
-  "estado": {
-   "concorrencia": 1,
-   "corrompido": 1,
-   "testing": 1,
    "inconsistente": 1,
-   "faca": 1,
-   "completo": 1,
-   "efficiency": 1,
-   "atual": 1,
-   "coding": 1,
-   "funcao": 1,
-   "inicio": 1,
-   "reuse": 1,
-   "distinguir": 1,
-   "conexao": 1,
-   "persistente": 1,
-   "opencode": 1
+   "testing": 1,
+   "estado": 1,
+   "corrompido": 1
   },
   "inconsistente": {
    "concorrencia": 1,
-   "corrompido": 1,
+   "testing": 1,
    "estado": 1,
-   "testing": 1
+   "corrompido": 1
+  },
+  "estado": {
+   "concorrencia": 1,
+   "inconsistente": 1,
+   "testing": 1,
+   "corrompido": 1,
+   "completo": 1,
+   "faca": 1,
+   "atual": 1,
+   "efficiency": 1,
+   "reuse": 1,
+   "funcao": 1,
+   "inicio": 1,
+   "coding": 1,
+   "persistente": 1,
+   "opencode": 1,
+   "conexao": 1,
+   "distinguir": 1
+  },
+  "corrompido": {
+   "concorrencia": 1,
+   "inconsistente": 1,
+   "testing": 1,
+   "estado": 1
   },
   "david": {
-   "pronunciava": 1,
-   "deveriam": 1
-  },
-  "pronunciava": {
-   "david": 1,
-   "deveriam": 1
+   "deveriam": 1,
+   "pronunciava": 1
   },
   "deveriam": {
    "david": 1,
    "pronunciava": 1
   },
-  "errors": {
-   "timeouts": 1,
-   "uso": 1,
-   "ttft": 1,
-   "ecosistemaopencode": 1
+  "pronunciava": {
+   "david": 1,
+   "deveriam": 1
   },
-  "timeouts": {
-   "errors": 1,
-   "ecosistemaopencode": 1,
+  "ttft": {
    "uso": 1,
-   "ttft": 1
+   "ecosistemaopencode": 1,
+   "timeouts": 1,
+   "errors": 1
   },
   "uso": {
-   "errors": 1,
+   "ttft": 1,
    "ecosistemaopencode": 1,
    "timeouts": 1,
-   "ttft": 1,
+   "errors": 1,
    "razroo": 1,
    "opencode": 1,
    "mod": 1
   },
-  "ttft": {
-   "errors": 1,
-   "ecosistemaopencode": 1,
-   "timeouts": 1,
-   "uso": 1
-  },
   "ecosistemaopencode": {
-   "errors": 1,
-   "timeouts": 1,
-   "uso": 1,
    "ttft": 1,
-   "conversa": 1,
+   "uso": 1,
+   "timeouts": 1,
+   "errors": 1,
    "extrair": 1,
    "estruturado": 1,
+   "reutilizado": 1,
+   "conversa": 1
+  },
+  "timeouts": {
+   "ecosistemaopencode": 1,
+   "ttft": 1,
+   "uso": 1,
+   "errors": 1
+  },
+  "errors": {
+   "ecosistemaopencode": 1,
+   "ttft": 1,
+   "uso": 1,
+   "timeouts": 1
+  },
+  "extrair": {
+   "ecosistemaopencode": 1,
+   "reutilizado": 1,
+   "conversa": 1,
+   "estruturado": 1
+  },
+  "estruturado": {
+   "ecosistemaopencode": 1,
+   "conversa": 1,
+   "extrair": 1,
    "reutilizado": 1
+  },
+  "reutilizado": {
+   "ecosistemaopencode": 1,
+   "extrair": 1,
+   "conversa": 1,
+   "estruturado": 1
   },
   "conversa": {
    "ecosistemaopencode": 1,
@@ -5153,179 +5171,161 @@
    "estruturado": 1,
    "reutilizado": 1
   },
-  "extrair": {
-   "conversa": 1,
-   "ecosistemaopencode": 1,
-   "reutilizado": 1,
-   "estruturado": 1
-  },
-  "estruturado": {
-   "conversa": 1,
-   "ecosistemaopencode": 1,
-   "extrair": 1,
-   "reutilizado": 1
-  },
-  "reutilizado": {
-   "conversa": 1,
-   "ecosistemaopencode": 1,
-   "extrair": 1,
-   "estruturado": 1
-  },
   "passar": {
    "validao": 1,
-   "prvia": 1,
    "valida": 1,
+   "prvia": 1,
    "opencode": 1
   },
   "validao": {
    "passar": 1,
-   "opencode": 1,
+   "valida": 1,
    "prvia": 1,
-   "valida": 1
-  },
-  "prvia": {
-   "passar": 1,
-   "opencode": 1,
-   "validao": 1,
-   "valida": 1
+   "opencode": 1
   },
   "valida": {
    "passar": 1,
-   "opencode": 1,
+   "validao": 1,
    "prvia": 1,
-   "validao": 1
+   "opencode": 1
+  },
+  "prvia": {
+   "passar": 1,
+   "validao": 1,
+   "valida": 1,
+   "opencode": 1
   },
   "opencode": {
-   "validao": 1,
    "passar": 1,
-   "prvia": 1,
+   "validao": 1,
    "valida": 1,
+   "prvia": 1,
+   "marca": 1,
    "algumas": 1,
    "vers": 1,
    "vozes": 1,
-   "marca": 1,
    "fazendo": 2,
-   "desrespeitando": 1,
    "commits": 1,
+   "desrespeitando": 1,
    "narrar": 1,
-   "nico": 2,
    "relat": 1,
    "til": 1,
+   "nico": 2,
    "robustez": 1,
-   "podia": 1,
    "revelaram": 1,
-   "depends": 1,
-   "files": 1,
+   "podia": 1,
    "flag": 1,
    "task": 1,
-   "necessidade": 1,
-   "cita": 1,
-   "solicita": 1,
+   "depends": 1,
+   "files": 1,
    "expl": 1,
+   "cita": 1,
+   "necessidade": 1,
+   "solicita": 1,
+   "falando": 1,
    "comandos": 1,
    "resultados": 1,
    "ouvindo": 1,
-   "falando": 1,
-   "tinta": 1,
    "balanceadas": 1,
    "colar": 1,
    "espontanea": 1,
-   "objeto": 1,
-   "providermcpdebug": 1,
+   "tinta": 1,
    "config": 5,
    "arrayopencode": 1,
-   "inteira": 1,
+   "objeto": 1,
+   "providermcpdebug": 1,
    "conexos": 1,
+   "inteira": 1,
    "solta": 1,
    "isolados": 1,
-   "workflow": 1,
-   "state": 1,
-   "tdd": 1,
    "machine": 1,
-   "conectados": 1,
+   "tdd": 1,
+   "state": 1,
+   "workflow": 1,
    "cores": 1,
    "aprendizados": 2,
    "frontmatter": 1,
+   "conectados": 1,
    "espelho": 1,
    "automaticamente": 1,
-   "vivo": 1,
    "reflete": 1,
+   "vivo": 1,
    "filha": 1,
    "proprias": 1,
    "resistem": 1,
    "reparent": 1,
    "arqui": 1,
-   "vigilante": 1,
    "detecta": 2,
+   "vigilante": 1,
    "deteco": 1,
-   "verificar": 2,
    "real": 1,
-   "razroo": 1,
+   "verificar": 2,
    "uso": 1,
+   "razroo": 1,
    "mod": 1,
    "2026scanproativo": 25,
-   "captura": 1,
-   "ecossistema": 3,
    "conhecimento": 3,
    "ler": 2,
+   "ecossistema": 3,
+   "captura": 1,
+   "autom": 1,
    "sistema": 1,
    "vigilncia": 1,
-   "autom": 1,
    "unificacao": 1,
    "completa": 1,
-   "altera": 1,
    "deve": 1,
-   "correto": 2,
+   "altera": 1,
    "mcp": 2,
+   "correto": 2,
    "expected": 2,
    "integrao": 1,
-   "openweathermap": 2,
    "clima": 2,
-   "palavras": 1,
+   "openweathermap": 2,
    "integra": 1,
-   "ecosystemumgrau": 1,
+   "palavras": 1,
    "integration": 1,
+   "ecosystemumgrau": 1,
    "ncia": 2,
-   "pelo": 1,
    "llm": 1,
-   "detec": 1,
+   "pelo": 1,
    "diverg": 1,
+   "detec": 1,
    "sincroniza": 1,
-   "ram": 1,
    "voxu": 1,
+   "ram": 1,
    "desugardebugfiledependencies": 1,
    "flutterstatus": 1,
    "final": 1,
    "usuari": 1,
-   "usuario": 1,
-   "tailscale": 1,
    "enfati": 1,
    "conectado": 1,
+   "tailscale": 1,
+   "usuario": 1,
    "network": 1,
+   "menus": 1,
    "persistente": 2,
    "usu": 1,
-   "menus": 1,
-   "natural": 1,
-   "giro": 1,
    "fix": 1,
+   "giro": 1,
+   "natural": 1,
    "sumiram": 1,
    "efeito": 1,
+   "incluir": 1,
    "pedido": 1,
    "zoom": 1,
-   "incluir": 1,
    "implementar": 1,
-   "tamanh": 1,
    "pythonw": 1,
+   "tamanh": 1,
+   "corretamente": 1,
    "tts": 1,
    "jarvis": 3,
-   "corretamente": 1,
-   "habilidades": 1,
    "caminho": 1,
+   "habilidades": 1,
    "permanente": 1,
    "regra": 1,
-   "controle2026status": 1,
-   "p20": 1,
    "2026status": 1,
+   "p20": 1,
+   "controle2026status": 1,
    "naturalidade": 1,
    "ssml": 1,
    "trocar": 1,
@@ -5334,423 +5334,411 @@
    "atualiza": 1,
    "tico": 1,
    "dia": 1,
+   "celular": 1,
    "perita": 1,
    "tecnicas": 1,
-   "celular": 1,
    "internet": 1,
    "arquitetura": 2,
-   "sincronizada": 2,
    "rebro": 1,
+   "sincronizada": 2,
    "crebro": 1,
-   "pidos": 1,
    "constantes": 1,
+   "pidos": 1,
    "corrigido": 1,
    "bal": 1,
-   "escrita": 1,
-   "fala": 1,
    "acento": 1,
-   "failover": 1,
+   "fala": 1,
+   "escrita": 1,
    "migracao": 1,
-   "rustdesk": 1,
+   "failover": 1,
    "servidor": 1,
+   "rustdesk": 1,
    "wss": 2,
    "ssap": 1,
    "voz": 1,
    "intermitentemente": 1,
-   "powershell": 1,
    "scrcpy": 1,
    "rota": 1,
-   "desde": 1,
-   "travado": 1,
-   "voxumgrau": 1,
+   "powershell": 1,
    "verificacao": 1,
-   "ganhou": 1,
+   "voxumgrau": 1,
+   "travado": 1,
+   "desde": 1,
    "130": 1,
+   "ganhou": 1,
    "filtro": 1,
    "orfaos": 1,
-   "30s": 1,
-   "rodando": 1,
    "est": 1,
+   "rodando": 1,
+   "30s": 1,
    "background": 1,
    "job": 1,
    "oculto": 1,
-   "arquivos": 1,
    "registra": 1,
+   "arquivos": 1,
    "expectedreadonly": 1,
    "type": 1,
    "ssapwss": 1,
    "50ut8050psa": 1,
+   "sao": 1,
    "uteis": 1,
    "perguntou": 1,
-   "sao": 1,
-   "distinguir": 1,
-   "conexao": 1,
    "estado": 1,
-   "camufladas": 1,
-   "vazar": 1,
+   "conexao": 1,
+   "distinguir": 1,
    "limpeza": 1,
+   "camufladas": 1,
    "nvapi": 1,
-   "aprende": 1,
+   "vazar": 1,
    "enquanto": 1,
-   "crescer": 1
-  },
-  "vers": {
-   "vozes": 1,
-   "algumas": 1,
-   "opencode": 1,
-   "marca": 1
-  },
-  "vozes": {
-   "vers": 1,
-   "algumas": 1,
-   "opencode": 1,
-   "marca": 1
-  },
-  "algumas": {
-   "vers": 1,
-   "vozes": 1,
-   "opencode": 1,
-   "marca": 1
+   "crescer": 1,
+   "aprende": 1
   },
   "marca": {
+   "vers": 1,
+   "vozes": 1,
+   "opencode": 1,
+   "algumas": 1
+  },
+  "vers": {
+   "marca": 1,
+   "vozes": 1,
    "algumas": 1,
+   "opencode": 1
+  },
+  "vozes": {
+   "marca": 1,
+   "vers": 1,
+   "algumas": 1,
+   "opencode": 1
+  },
+  "algumas": {
+   "marca": 1,
    "vers": 1,
    "vozes": 1,
    "opencode": 1
   },
-  "desrespeitando": {
-   "fazendo": 1,
-   "opencode": 1,
-   "narrar": 1,
-   "commits": 1
-  },
   "commits": {
    "fazendo": 1,
+   "opencode": 1,
    "desrespeitando": 1,
+   "narrar": 1
+  },
+  "desrespeitando": {
+   "commits": 1,
+   "fazendo": 1,
    "opencode": 1,
    "narrar": 1
   },
   "relat": {
-   "nico": 1,
+   "til": 1,
    "opencode": 1,
-   "til": 1
+   "nico": 1
   },
   "til": {
-   "nico": 1,
+   "relat": 1,
    "opencode": 1,
-   "relat": 1
-  },
-  "manual": {
-   "mp3player": 1,
-   "redirect": 1,
-   "false": 1,
-   "instancefollowredirects": 1
+   "nico": 1
   },
   "mp3player": {
+   "redirect": 1,
    "manual": 1,
    "false": 1,
-   "redirect": 1,
    "instancefollowredirects": 1,
-   "fallback": 1,
-   "natural": 1,
-   "musicbrainz": 1,
    "aceito": 1,
+   "fallback": 1,
+   "musicbrainz": 1,
+   "natural": 1,
+   "artist": 1,
+   "amplas": 1,
    "null": 1,
    "title": 1,
-   "amplas": 1,
-   "artist": 1,
-   "metadata": 4,
    "rescue": 4,
    "androidpuresdkmp3playermetadatarescueandroidpuresdkmp3": 1,
+   "metadata": 4,
    "mp3playermetadatarescue": 3,
-   "bytes": 1,
-   "trava": 1,
    "consumidos": 1,
+   "trava": 1,
    "audio": 1,
+   "bytes": 1,
    "channel": 1,
    "space": 1,
    "second": 1,
    "double": 1,
+   "chars": 1,
    "album": 1,
    "words": 1,
    "overlap": 1,
-   "chars": 1,
-   "handler": 1,
-   "capabilities": 1,
    "annotation": 1,
-   "listener": 1
+   "listener": 1,
+   "capabilities": 1,
+   "handler": 1
   },
   "redirect": {
+   "mp3player": 1,
    "manual": 1,
    "false": 1,
+   "instancefollowredirects": 1
+  },
+  "manual": {
+   "redirect": 1,
    "mp3player": 1,
+   "false": 1,
    "instancefollowredirects": 1
   },
   "false": {
-   "manual": 1,
-   "mp3player": 1,
    "redirect": 1,
+   "mp3player": 1,
+   "manual": 1,
    "instancefollowredirects": 1
   },
   "instancefollowredirects": {
    "false": 1,
-   "manual": 1,
+   "redirect": 1,
    "mp3player": 1,
-   "redirect": 1
+   "manual": 1
   },
   "title": {
-   "mp3playermetadatarescue": 1,
-   "artist": 2,
    "queries": 1,
-   "mp3player": 1,
+   "artist": 2,
+   "mp3playermetadatarescue": 1,
    "null": 1,
-   "amplas": 1
+   "amplas": 1,
+   "mp3player": 1
   },
   "etc": {
-   "sessaoseguranca": 1,
-   "nvidia": 1,
    "openai": 1,
    "isoladas": 1,
-   "corrupted": 1,
-   "portuguese": 1,
-   "characters": 1,
-   "androidpuresdk": 1
-  },
-  "sessaoseguranca": {
-   "etc": 1,
-   "nvidia": 1,
-   "openai": 1,
-   "isoladas": 1
-  },
-  "nvidia": {
-   "etc": 1,
    "sessaoseguranca": 1,
-   "openai": 1,
-   "isoladas": 1
+   "nvidia": 1,
+   "portuguese": 1,
+   "androidpuresdk": 1,
+   "corrupted": 1,
+   "characters": 1
   },
   "openai": {
    "etc": 1,
-   "nvidia": 1,
    "sessaoseguranca": 1,
    "isoladas": 1,
-   "gemini": 1,
-   "anthropic": 1,
+   "nvidia": 1,
    "openrouter": 1,
-   "sessaoprovidermanager": 1
+   "sessaoprovidermanager": 1,
+   "gemini": 1,
+   "anthropic": 1
   },
   "isoladas": {
    "etc": 1,
+   "openai": 1,
    "sessaoseguranca": 1,
-   "nvidia": 1,
-   "openai": 1
+   "nvidia": 1
   },
-  "crash": {
-   "momento": 1,
-   "lerarquitetura": 1,
-   "qualquer": 1,
-   "viavel": 1
+  "sessaoseguranca": {
+   "etc": 1,
+   "openai": 1,
+   "isoladas": 1,
+   "nvidia": 1
+  },
+  "nvidia": {
+   "etc": 1,
+   "isoladas": 1,
+   "openai": 1,
+   "sessaoseguranca": 1
   },
   "lerarquitetura": {
-   "crash": 1,
-   "momento": 1,
-   "qualquer": 1,
    "viavel": 1,
-   "editavel": 1,
-   "migrations": 1,
+   "qualquer": 1,
+   "momento": 1,
+   "crash": 1,
    "sqlite": 1,
+   "migrations": 1,
    "legivel": 1,
+   "editavel": 1,
+   "probability": 1,
    "success": 1,
    "time": 1,
-   "probability": 1,
    "complexity": 1,
+   "ambiente": 1,
    "dependencias": 1,
    "intencionalmente": 1,
-   "ambiente": 1,
    "externas": 1,
    "passos": 1,
+   "commit": 1,
    "completados": 1,
    "auditoria": 1,
-   "commit": 1,
+   "inteira": 1,
    "reinicia": 1,
-   "modulo": 1,
-   "inteira": 1
-  },
-  "qualquer": {
-   "crash": 1,
-   "momento": 1,
-   "lerarquitetura": 1,
-   "viavel": 1,
-   "overlay": 1,
-   "elemento": 1,
-   "crossplatform": 1,
-   "loading": 1,
-   "initialize": 1,
-   "sessaoprovidermanager": 1,
-   "comando": 1
+   "modulo": 1
   },
   "viavel": {
-   "crash": 1,
-   "momento": 1,
    "lerarquitetura": 1,
-   "qualquer": 1
+   "crash": 1,
+   "qualquer": 1,
+   "momento": 1
+  },
+  "qualquer": {
+   "lerarquitetura": 1,
+   "crash": 1,
+   "viavel": 1,
+   "momento": 1,
+   "elemento": 1,
+   "loading": 1,
+   "overlay": 1,
+   "crossplatform": 1,
+   "initialize": 1,
+   "comando": 1,
+   "sessaoprovidermanager": 1
+  },
+  "crash": {
+   "lerarquitetura": 1,
+   "viavel": 1,
+   "qualquer": 1,
+   "momento": 1
+  },
+  "revelaram": {
+   "robustez": 1,
+   "opencode": 1,
+   "podia": 1
   },
   "robustez": {
+   "revelaram": 1,
    "opencode": 1,
-   "podia": 1,
-   "revelaram": 1
+   "podia": 1
   },
   "podia": {
    "opencode": 1,
    "robustez": 1,
    "revelaram": 1
   },
-  "revelaram": {
+  "flag": {
+   "task": 1,
    "opencode": 1,
-   "podia": 1,
-   "robustez": 1
+   "depends": 1,
+   "files": 1
+  },
+  "task": {
+   "flag": 1,
+   "opencode": 1,
+   "depends": 1,
+   "files": 1
   },
   "depends": {
-   "files": 1,
-   "task": 1,
    "flag": 1,
-   "opencode": 1
+   "task": 1,
+   "opencode": 1,
+   "files": 1
   },
   "files": {
    "depends": 1,
-   "task": 1,
    "flag": 1,
+   "task": 1,
    "opencode": 1,
    "existing": 1,
-   "androidpuresdk": 1,
-   "saved": 1
+   "saved": 1,
+   "androidpuresdk": 1
   },
-  "task": {
-   "depends": 1,
-   "files": 1,
-   "flag": 1,
-   "opencode": 1
+  "expl": {
+   "solicita": 1,
+   "necessidade": 1,
+   "opencode": 1,
+   "cita": 1
   },
-  "flag": {
-   "depends": 1,
-   "files": 1,
-   "task": 1,
+  "solicita": {
+   "expl": 1,
+   "cita": 1,
+   "necessidade": 1,
    "opencode": 1
   },
   "necessidade": {
-   "opencode": 1,
+   "expl": 1,
+   "cita": 1,
    "solicita": 1,
-   "cita": 1,
-   "expl": 1
-  },
-  "solicita": {
-   "necessidade": 1,
-   "cita": 1,
-   "opencode": 1,
-   "expl": 1
+   "opencode": 1
   },
   "cita": {
-   "necessidade": 1,
-   "opencode": 1,
+   "expl": 1,
    "solicita": 1,
-   "expl": 1
-  },
-  "expl": {
-   "cita": 1,
    "necessidade": 1,
-   "opencode": 1,
-   "solicita": 1
-  },
-  "comandos": {
-   "resultados": 1,
-   "ouvindo": 1,
-   "opencode": 1,
-   "falando": 1
-  },
-  "resultados": {
-   "comandos": 1,
-   "ouvindo": 1,
-   "opencode": 1,
-   "falando": 1
-  },
-  "ouvindo": {
-   "comandos": 1,
-   "resultados": 1,
-   "opencode": 1,
-   "falando": 1
+   "opencode": 1
   },
   "falando": {
+   "resultados": 1,
+   "ouvindo": 1,
+   "opencode": 1,
+   "comandos": 1
+  },
+  "resultados": {
+   "falando": 1,
    "comandos": 1,
+   "ouvindo": 1,
+   "opencode": 1
+  },
+  "ouvindo": {
+   "falando": 1,
+   "comandos": 1,
+   "resultados": 1,
+   "opencode": 1
+  },
+  "comandos": {
+   "falando": 1,
    "resultados": 1,
    "ouvindo": 1,
    "opencode": 1
   },
-  "corrupted": {
-   "etc": 1,
-   "portuguese": 1,
-   "characters": 1,
-   "androidpuresdk": 1
-  },
   "portuguese": {
-   "corrupted": 1,
    "etc": 1,
-   "characters": 1,
-   "androidpuresdk": 1
-  },
-  "characters": {
+   "androidpuresdk": 1,
    "corrupted": 1,
-   "etc": 1,
-   "portuguese": 1,
-   "androidpuresdk": 1
+   "characters": 1
   },
   "androidpuresdk": {
-   "corrupted": 1,
    "etc": 1,
-   "characters": 1,
    "portuguese": 1,
+   "corrupted": 1,
+   "characters": 1,
    "never": 1,
-   "load": 1,
    "auto": 1,
+   "load": 1,
    "forms": 1,
-   "aba": 1,
    "carregam": 1,
    "arquivo": 3,
    "trocar": 1,
+   "aba": 1,
+   "instead": 1,
    "duplicating": 1,
    "quantity": 1,
-   "instead": 1,
    "increment": 1,
    "existente": 1,
-   "timestampado": 1,
    "sobrescreve": 1,
+   "timestampado": 1,
+   "saved": 1,
    "existing": 1,
    "files": 1,
-   "saved": 1,
-   "suporte": 1,
-   "visibilidade": 1,
    "setvisibility": 1,
+   "visibilidade": 1,
    "fragments": 1,
+   "suporte": 1,
    "point": 1,
    "issues": 1,
    "floating": 1,
    "historical": 1,
    "requirement": 1,
-   "toolchain": 1,
    "trees": 1,
+   "toolchain": 1,
    "mental": 1,
-   "model": 1,
    "calculation": 1,
+   "model": 1,
    "apk": 1,
    "zipalign": 1,
    "dex": 1,
    "add": 1,
-   "maintain": 1,
    "grid": 2,
+   "maintain": 1,
    "intelligence": 1,
    "android": 11,
    "pattern": 2,
    "background": 1,
-   "null": 1,
    "edicao": 1,
+   "null": 1,
    "nao": 2,
    "salvo": 1,
    "default": 1,
@@ -5758,76 +5746,88 @@
    "insert": 1,
    "comma": 1,
    "save": 1,
-   "nested": 1,
-   "tabs": 1
+   "tabs": 1,
+   "nested": 1
   },
-  "editavel": {
-   "migrations": 1,
-   "lerarquitetura": 1,
-   "legivel": 1,
-   "sqlite": 1
+  "corrupted": {
+   "androidpuresdk": 1,
+   "etc": 1,
+   "portuguese": 1,
+   "characters": 1
   },
-  "migrations": {
-   "editavel": 1,
-   "sqlite": 1,
-   "lerarquitetura": 1,
-   "legivel": 1
-  },
-  "legivel": {
-   "editavel": 1,
-   "migrations": 1,
-   "lerarquitetura": 1,
-   "sqlite": 1
+  "characters": {
+   "androidpuresdk": 1,
+   "etc": 1,
+   "portuguese": 1,
+   "corrupted": 1
   },
   "sqlite": {
-   "editavel": 1,
-   "migrations": 1,
    "lerarquitetura": 1,
+   "migrations": 1,
+   "legivel": 1,
+   "editavel": 1
+  },
+  "migrations": {
+   "lerarquitetura": 1,
+   "sqlite": 1,
+   "legivel": 1,
+   "editavel": 1
+  },
+  "legivel": {
+   "sqlite": 1,
+   "lerarquitetura": 1,
+   "migrations": 1,
+   "editavel": 1
+  },
+  "editavel": {
+   "sqlite": 1,
+   "lerarquitetura": 1,
+   "migrations": 1,
    "legivel": 1
   },
-  "success": {
-   "lerarquitetura": 1,
+  "probability": {
+   "success": 1,
    "time": 1,
-   "complexity": 1,
-   "probability": 1
+   "lerarquitetura": 1,
+   "complexity": 1
+  },
+  "success": {
+   "probability": 1,
+   "time": 1,
+   "lerarquitetura": 1,
+   "complexity": 1
   },
   "time": {
-   "lerarquitetura": 1,
-   "success": 1,
-   "complexity": 1,
    "probability": 1,
-   "mudam": 1,
-   "tokens": 1,
-   "sessaorustdesk": 1,
-   "one": 1
-  },
-  "probability": {
+   "success": 1,
    "lerarquitetura": 1,
    "complexity": 1,
-   "success": 1,
-   "time": 1
+   "tokens": 1,
+   "mudam": 1,
+   "one": 1,
+   "sessaorustdesk": 1
   },
   "complexity": {
-   "lerarquitetura": 1,
+   "probability": 1,
    "success": 1,
-   "time": 1,
-   "probability": 1
-  },
-  "load": {
-   "never": 1,
-   "androidpuresdk": 1,
-   "auto": 1,
-   "forms": 1,
-   "pagina": 1,
-   "treinamentonavegacao": 1,
-   "dom": 1,
-   "event": 1
+   "lerarquitetura": 1,
+   "time": 1
   },
   "auto": {
    "androidpuresdk": 1,
    "never": 1,
    "load": 1,
    "forms": 1
+  },
+  "load": {
+   "androidpuresdk": 1,
+   "auto": 1,
+   "never": 1,
+   "forms": 1,
+   "pagina": 1,
+   "treinamentonavegacao": 1,
+   "dom": 1,
+   "event": 1
   },
   "forms": {
    "androidpuresdk": 1,
@@ -5837,120 +5837,102 @@
   },
   "carregam": {
    "trocar": 1,
-   "aba": 1,
+   "arquivo": 1,
    "androidpuresdk": 1,
-   "arquivo": 1
+   "aba": 1
+  },
+  "arquivo": {
+   "carregam": 1,
+   "trocar": 1,
+   "androidpuresdk": 3,
+   "aba": 1,
+   "existente": 1,
+   "sobrescreve": 1,
+   "timestampado": 1,
+   "nao": 1,
+   "salvo": 1,
+   "default": 1
   },
   "aba": {
    "carregam": 1,
-   "androidpuresdk": 1,
    "arquivo": 1,
+   "androidpuresdk": 1,
    "trocar": 1
   },
-  "arquivo": {
-   "aba": 1,
-   "androidpuresdk": 3,
-   "carregam": 1,
-   "trocar": 1,
-   "existente": 1,
-   "timestampado": 1,
-   "sobrescreve": 1,
-   "salvo": 1,
-   "default": 1,
-   "nao": 1
-  },
-  "ecossistema": {
-   "niveis": 1,
-   "leraprendizado": 1,
-   "capacidades": 1,
-   "captura": 1,
-   "opencode": 3,
-   "ler": 1,
-   "conhecimento": 1,
-   "unificacao": 1,
-   "completa": 1,
-   "altera": 1,
-   "deve": 1
-  },
-  "niveis": {
-   "ecossistema": 1,
-   "capacidades": 1,
-   "leraprendizado": 1
-  },
   "leraprendizado": {
-   "ecossistema": 1,
-   "capacidades": 2,
    "niveis": 1,
-   "futura": 1,
-   "system": 2,
+   "capacidades": 2,
+   "ecossistema": 1,
    "referencia": 1,
-   "arquivos": 1,
-   "json": 1,
+   "system": 2,
+   "futura": 1,
    "diagnosticos": 1,
+   "json": 1,
    "corrupcao": 1,
+   "arquivos": 1,
+   "permanente": 1,
    "jarvis": 2,
    "habilidades": 1,
-   "permanente": 1,
    "codigo": 1,
    "implementacao": 1
   },
+  "niveis": {
+   "leraprendizado": 1,
+   "capacidades": 1,
+   "ecossistema": 1
+  },
   "capacidades": {
-   "ecossistema": 1,
-   "niveis": 1,
    "leraprendizado": 2,
-   "system": 1,
+   "niveis": 1,
+   "ecossistema": 1,
    "futura": 1,
-   "referencia": 1
+   "referencia": 1,
+   "system": 1
   },
-  "buscar": {
-   "novamente": 1,
-   "mp3playermetadatarescue": 2,
-   "campos": 1,
-   "internet": 1,
-   "taps": 1
-  },
-  "novamente": {
-   "buscar": 1,
-   "mp3playermetadatarescue": 1,
-   "campos": 1
+  "ecossistema": {
+   "capacidades": 1,
+   "leraprendizado": 1,
+   "niveis": 1,
+   "conhecimento": 1,
+   "ler": 1,
+   "opencode": 3,
+   "captura": 1,
+   "unificacao": 1,
+   "completa": 1,
+   "deve": 1,
+   "altera": 1
   },
   "campos": {
-   "buscar": 1,
    "novamente": 1,
+   "mp3playermetadatarescue": 1,
+   "buscar": 1
+  },
+  "novamente": {
+   "campos": 1,
+   "buscar": 1,
    "mp3playermetadatarescue": 1
   },
-  "futura": {
-   "system": 1,
-   "referencia": 1,
-   "leraprendizado": 1,
-   "capacidades": 1
+  "buscar": {
+   "campos": 1,
+   "novamente": 1,
+   "mp3playermetadatarescue": 2,
+   "taps": 1,
+   "internet": 1
   },
   "system": {
+   "leraprendizado": 2,
+   "capacidades": 1,
    "futura": 1,
    "referencia": 1,
-   "capacidades": 1,
-   "leraprendizado": 2,
-   "permanente": 1,
    "jarvis": 1,
+   "permanente": 1,
    "habilidades": 1
   },
-  "dependencias": {
-   "lerarquitetura": 1,
-   "intencionalmente": 1,
-   "externas": 1,
-   "ambiente": 1
-  },
-  "intencionalmente": {
-   "dependencias": 1,
-   "lerarquitetura": 1,
-   "ambiente": 1,
-   "externas": 1
-  },
-  "externas": {
-   "dependencias": 1,
-   "ambiente": 1,
-   "lerarquitetura": 1,
-   "intencionalmente": 1
+  "futura": {
+   "capacidades": 1,
+   "leraprendizado": 1,
+   "referencia": 1,
+   "system": 1
   },
   "ambiente": {
    "lerarquitetura": 1,
@@ -5958,57 +5940,75 @@
    "intencionalmente": 1,
    "externas": 1
   },
-  "duplicating": {
-   "androidpuresdk": 1,
+  "dependencias": {
+   "ambiente": 1,
+   "lerarquitetura": 1,
+   "intencionalmente": 1,
+   "externas": 1
+  },
+  "intencionalmente": {
+   "ambiente": 1,
+   "dependencias": 1,
+   "lerarquitetura": 1,
+   "externas": 1
+  },
+  "externas": {
+   "ambiente": 1,
+   "dependencias": 1,
+   "lerarquitetura": 1,
+   "intencionalmente": 1
+  },
+  "instead": {
    "quantity": 1,
-   "instead": 1,
+   "androidpuresdk": 1,
+   "duplicating": 1,
    "increment": 1
   },
   "quantity": {
+   "instead": 1,
    "androidpuresdk": 1,
    "duplicating": 1,
-   "instead": 1,
    "increment": 1
   },
-  "instead": {
+  "duplicating": {
    "androidpuresdk": 1,
-   "duplicating": 1,
+   "instead": 1,
    "quantity": 1,
    "increment": 1
   },
   "natural": {
-   "fallback": 1,
-   "mp3player": 1,
    "musicbrainz": 1,
    "aceito": 1,
-   "opencode": 1,
-   "sumiram": 1,
+   "fallback": 1,
+   "mp3player": 1,
+   "fix": 1,
    "giro": 1,
-   "fix": 1
+   "sumiram": 1,
+   "opencode": 1
   },
   "aceito": {
+   "musicbrainz": 1,
    "fallback": 1,
-   "natural": 1,
    "mp3player": 1,
-   "musicbrainz": 1
-  },
-  "tinta": {
-   "opencode": 1,
-   "balanceadas": 1,
-   "colar": 1,
-   "espontanea": 1
+   "natural": 1
   },
   "balanceadas": {
    "tinta": 1,
-   "opencode": 1,
    "colar": 1,
-   "espontanea": 1
+   "espontanea": 1,
+   "opencode": 1
+  },
+  "tinta": {
+   "balanceadas": 1,
+   "colar": 1,
+   "espontanea": 1,
+   "opencode": 1
   },
   "colar": {
    "balanceadas": 1,
    "tinta": 1,
-   "opencode": 1,
-   "espontanea": 1
+   "espontanea": 1,
+   "opencode": 1
   },
   "espontanea": {
    "balanceadas": 1,
@@ -6016,175 +6016,175 @@
    "tinta": 1,
    "opencode": 1
   },
-  "objeto": {
-   "providermcpdebug": 1,
-   "opencode": 1,
-   "config": 1,
-   "arrayopencode": 1
-  },
-  "providermcpdebug": {
-   "objeto": 1,
-   "opencode": 1,
-   "config": 1,
-   "arrayopencode": 1
-  },
   "config": {
    "objeto": 1,
    "providermcpdebug": 1,
    "opencode": 5,
    "arrayopencode": 1,
-   "arqui": 1,
-   "vigilante": 1,
    "detecta": 1,
+   "vigilante": 1,
+   "arqui": 1,
    "deteco": 1,
-   "verificar": 1,
    "real": 1,
+   "verificar": 1,
    "sistema": 1,
    "vigilncia": 1,
    "autom": 1,
-   "correto": 1,
    "mcp": 1,
+   "correto": 1,
    "expected": 1
   },
+  "objeto": {
+   "config": 1,
+   "arrayopencode": 1,
+   "providermcpdebug": 1,
+   "opencode": 1
+  },
+  "providermcpdebug": {
+   "config": 1,
+   "arrayopencode": 1,
+   "objeto": 1,
+   "opencode": 1
+  },
   "arrayopencode": {
+   "config": 1,
    "objeto": 1,
    "providermcpdebug": 1,
-   "opencode": 1,
-   "config": 1
+   "opencode": 1
+  },
+  "projetos": {
+   "workspaceorganization": 2,
+   "unica": 1,
+   "documentos": 1,
+   "desktop": 1,
+   "jsonrpc": 1,
+   "cod": 1,
+   "mcpprotocol": 1
+  },
+  "workspaceorganization": {
+   "projetos": 2,
+   "documentos": 1,
+   "unica": 1,
+   "nao": 1,
+   "escapam": 1,
+   "caminhos": 1,
+   "desktop": 1,
+   "jsonrpc": 1,
+   "cod": 1,
+   "mcpprotocol": 1
+  },
+  "unica": {
+   "projetos": 1,
+   "documentos": 1,
+   "workspaceorganization": 1,
+   "debugging": 1,
+   "solucao": 1,
+   "original": 1
   },
   "documentos": {
    "workspaceorganization": 1,
    "projetos": 1,
    "unica": 1,
-   "scripts": 1,
+   "session": 1,
    "midia": 1,
    "ferramentas": 1,
-   "session": 1
+   "scripts": 1
   },
-  "workspaceorganization": {
-   "documentos": 1,
-   "projetos": 2,
-   "unica": 1,
-   "escapam": 1,
-   "caminhos": 1,
-   "nao": 1,
-   "cod": 1,
-   "mcpprotocol": 1,
-   "jsonrpc": 1,
-   "desktop": 1
+  "conexos": {
+   "solta": 1,
+   "inteira": 1,
+   "opencode": 1,
+   "isolados": 1
   },
-  "projetos": {
-   "documentos": 1,
-   "workspaceorganization": 2,
-   "unica": 1,
-   "cod": 1,
-   "mcpprotocol": 1,
-   "jsonrpc": 1,
-   "desktop": 1
-  },
-  "unica": {
-   "documentos": 1,
-   "projetos": 1,
-   "workspaceorganization": 1,
-   "debugging": 1,
-   "original": 1,
-   "solucao": 1
+  "solta": {
+   "conexos": 1,
+   "inteira": 1,
+   "opencode": 1,
+   "isolados": 1
   },
   "inteira": {
-   "opencode": 1,
-   "solta": 1,
-   "isolados": 1,
    "conexos": 1,
+   "solta": 1,
+   "opencode": 1,
+   "isolados": 1,
    "reinicia": 1,
    "modulo": 1,
    "lerarquitetura": 1
   },
-  "solta": {
-   "inteira": 1,
-   "conexos": 1,
-   "opencode": 1,
-   "isolados": 1
-  },
   "isolados": {
-   "inteira": 1,
    "conexos": 1,
-   "opencode": 1,
-   "solta": 1
-  },
-  "conexos": {
    "inteira": 1,
-   "opencode": 1,
    "solta": 1,
-   "isolados": 1
+   "opencode": 1
   },
   "passos": {
    "lerarquitetura": 1,
+   "commit": 1,
    "completados": 1,
-   "auditoria": 1,
-   "commit": 1
+   "auditoria": 1
   },
-  "completados": {
+  "commit": {
    "lerarquitetura": 1,
    "passos": 1,
-   "auditoria": 1,
-   "commit": 1
+   "completados": 1,
+   "auditoria": 1
+  },
+  "completados": {
+   "commit": 1,
+   "lerarquitetura": 1,
+   "passos": 1,
+   "auditoria": 1
   },
   "auditoria": {
    "lerarquitetura": 1,
-   "completados": 1,
+   "commit": 1,
    "passos": 1,
-   "commit": 1
-  },
-  "commit": {
-   "auditoria": 1,
-   "lerarquitetura": 1,
-   "completados": 1,
-   "passos": 1
+   "completados": 1
   },
   "idioma": {
-   "sistema": 1,
    "treinamentonavegacao": 1,
+   "sistema": 1,
    "operacional": 1,
+   "tema": 1,
    "casos": 1,
-   "crossplatform": 1,
-   "tema": 1
+   "crossplatform": 1
   },
   "operacional": {
    "idioma": 1,
-   "sistema": 1,
-   "treinamentonavegacao": 1
-  },
-  "sao": {
-   "treinamentonavegacao": 3,
-   "frequentemente": 1,
-   "dinamicos": 1,
-   "bugs": 1,
-   "esperando": 1,
-   "coding": 1,
-   "acontecer": 1,
-   "loaded": 1,
-   "faz": 1,
-   "webnavigation": 1,
-   "repete": 1,
-   "perguntou": 1,
-   "opencode": 1,
-   "uteis": 1,
-   "verificar": 1,
-   "layout": 1,
-   "tab": 1,
-   "independentes": 1,
-   "conteudo": 1,
-   "onipresentes": 1,
-   "oculto": 1
+   "treinamentonavegacao": 1,
+   "sistema": 1
   },
   "frequentemente": {
    "sao": 1,
    "treinamentonavegacao": 1,
    "dinamicos": 1
   },
-  "dinamicos": {
-   "sao": 1,
+  "sao": {
    "frequentemente": 1,
+   "treinamentonavegacao": 3,
+   "dinamicos": 1,
+   "acontecer": 1,
+   "coding": 1,
+   "bugs": 1,
+   "esperando": 1,
+   "faz": 1,
+   "repete": 1,
+   "webnavigation": 1,
+   "loaded": 1,
+   "uteis": 1,
+   "verificar": 1,
+   "opencode": 1,
+   "perguntou": 1,
+   "independentes": 1,
+   "tab": 1,
+   "layout": 1,
+   "conteudo": 1,
+   "oculto": 1,
+   "onipresentes": 1
+  },
+  "dinamicos": {
+   "frequentemente": 1,
+   "sao": 1,
    "treinamentonavegacao": 1
   },
   "escapam": {
@@ -6193,153 +6193,153 @@
    "caminhos": 1
   },
   "caminhos": {
-   "escapam": 1,
    "workspaceorganization": 1,
-   "nao": 1
-  },
-  "workflow": {
-   "state": 1,
-   "opencode": 1,
-   "tdd": 1,
-   "machine": 1
+   "nao": 1,
+   "escapam": 1
   },
   "tdd": {
-   "state": 1,
-   "opencode": 1,
    "workflow": 1,
-   "machine": 1
+   "state": 1,
+   "machine": 1,
+   "opencode": 1
+  },
+  "workflow": {
+   "tdd": 1,
+   "state": 1,
+   "machine": 1,
+   "opencode": 1
   },
   "machine": {
-   "workflow": 1,
+   "tdd": 1,
    "state": 1,
-   "opencode": 1,
-   "tdd": 1
-  },
-  "timestampado": {
-   "existente": 1,
-   "sobrescreve": 1,
-   "androidpuresdk": 1,
-   "arquivo": 1
+   "workflow": 1,
+   "opencode": 1
   },
   "sobrescreve": {
+   "arquivo": 1,
    "existente": 1,
    "timestampado": 1,
-   "androidpuresdk": 1,
-   "arquivo": 1
+   "androidpuresdk": 1
+  },
+  "timestampado": {
+   "arquivo": 1,
+   "existente": 1,
+   "sobrescreve": 1,
+   "androidpuresdk": 1
   },
   "existing": {
-   "files": 1,
    "saved": 1,
+   "files": 1,
    "androidpuresdk": 1
   },
   "saved": {
    "existing": 1,
-   "androidpuresdk": 1,
-   "files": 1
-  },
-  "mudam": {
-   "tokens": 1,
-   "time": 1,
-   "sessaorustdesk": 1,
-   "one": 1,
-   "tailwind": 1,
-   "treinamentonavegacao": 2,
-   "frameworks": 1,
-   "modules": 1,
-   "instavel": 1,
-   "posicao": 1,
-   "filho": 1
+   "files": 1,
+   "androidpuresdk": 1
   },
   "tokens": {
-   "mudam": 1,
    "time": 1,
-   "sessaorustdesk": 1,
-   "one": 1
+   "mudam": 1,
+   "one": 1,
+   "sessaorustdesk": 1
   },
-  "sessaorustdesk": {
-   "mudam": 1,
-   "tokens": 1,
+  "mudam": {
    "time": 1,
-   "one": 1
+   "tokens": 1,
+   "one": 1,
+   "sessaorustdesk": 1,
+   "frameworks": 1,
+   "tailwind": 1,
+   "treinamentonavegacao": 2,
+   "modules": 1,
+   "filho": 1,
+   "posicao": 1,
+   "instavel": 1
   },
   "one": {
    "mudam": 1,
-   "tokens": 1,
    "time": 1,
+   "tokens": 1,
    "sessaorustdesk": 1
   },
+  "sessaorustdesk": {
+   "mudam": 1,
+   "one": 1,
+   "time": 1,
+   "tokens": 1
+  },
   "null": {
-   "mp3player": 1,
    "title": 1,
-   "amplas": 1,
    "artist": 1,
+   "amplas": 1,
+   "mp3player": 1,
    "background": 1,
-   "androidpuresdk": 1,
    "edicao": 1,
+   "androidpuresdk": 1,
    "nao": 1
   },
   "amplas": {
-   "mp3player": 1,
    "null": 1,
+   "artist": 1,
    "title": 1,
-   "artist": 1
+   "mp3player": 1
   },
   "proximo": {
-   "treinamentonavegacao": 1,
    "clique": 1,
-   "android": 1
+   "android": 1,
+   "treinamentonavegacao": 1
   },
   "android": {
-   "proximo": 1,
-   "clique": 1,
    "treinamentonavegacao": 2,
+   "clique": 1,
+   "proximo": 1,
    "androidpuresdkandroidpuresdkandroidpuresdkandroidpure": 1,
    "androidpuresdk": 11,
    "permissao": 1,
    "stock": 1,
    "adicionais": 1
   },
-  "localhost": {
-   "threads": 1,
+  "ocupadas": {
    "vivo": 1,
+   "threads": 1,
    "sessaoservermanager": 1,
-   "ocupadas": 1
+   "localhost": 1
   },
   "threads": {
+   "ocupadas": 1,
    "localhost": 1,
-   "vivo": 1,
-   "sessaoservermanager": 1,
-   "ocupadas": 1
-  },
-  "sessaoservermanager": {
-   "localhost": 1,
-   "threads": 1,
-   "vivo": 1,
-   "ocupadas": 1
-  },
-  "ocupadas": {
-   "localhost": 1,
-   "threads": 1,
    "vivo": 1,
    "sessaoservermanager": 1
   },
-  "suporte": {
+  "sessaoservermanager": {
+   "ocupadas": 1,
+   "localhost": 1,
+   "vivo": 1,
+   "threads": 1
+  },
+  "localhost": {
+   "ocupadas": 1,
+   "vivo": 1,
+   "threads": 1,
+   "sessaoservermanager": 1
+  },
+  "setvisibility": {
    "visibilidade": 1,
-   "setvisibility": 1,
+   "suporte": 1,
    "androidpuresdk": 1,
    "fragments": 1
   },
   "visibilidade": {
-   "suporte": 1,
    "setvisibility": 1,
    "androidpuresdk": 1,
-   "fragments": 1
+   "fragments": 1,
+   "suporte": 1
   },
-  "setvisibility": {
-   "suporte": 1,
-   "visibilidade": 1,
+  "suporte": {
+   "setvisibility": 1,
    "androidpuresdk": 1,
-   "fragments": 1
+   "fragments": 1,
+   "visibilidade": 1
   },
   "4m9q2k9p": {
    "mp3playermetadatarescue": 1,
@@ -6348,84 +6348,84 @@
   },
   "invalid": {
    "4m9q2k9p": 1,
-   "mp3playermetadatarescue": 1,
-   "400": 1
+   "400": 1,
+   "mp3playermetadatarescue": 1
   },
   "400": {
    "4m9q2k9p": 1,
    "mp3playermetadatarescue": 1,
    "invalid": 1
   },
-  "point": {
-   "androidpuresdk": 1,
-   "issues": 1,
-   "floating": 1
-  },
   "issues": {
-   "androidpuresdk": 1,
    "point": 1,
-   "floating": 1
+   "floating": 1,
+   "androidpuresdk": 1
+  },
+  "point": {
+   "issues": 1,
+   "floating": 1,
+   "androidpuresdk": 1
   },
   "floating": {
-   "androidpuresdk": 1,
    "point": 1,
-   "issues": 1
-  },
-  "modulo": {
-   "reinicia": 1,
-   "lerarquitetura": 1,
-   "inteira": 1
+   "issues": 1,
+   "androidpuresdk": 1
   },
   "reinicia": {
+   "inteira": 1,
    "modulo": 1,
-   "lerarquitetura": 1,
-   "inteira": 1
+   "lerarquitetura": 1
   },
-  "description": {
-   "mp3playermetadatarescue": 1,
-   "root": 1,
-   "cause": 1
-  },
-  "root": {
-   "description": 1,
-   "mp3playermetadatarescue": 1,
-   "cause": 1,
-   "webnavigation": 1,
-   "principal": 1,
-   "container": 1
+  "modulo": {
+   "inteira": 1,
+   "reinicia": 1,
+   "lerarquitetura": 1
   },
   "cause": {
+   "root": 1,
+   "description": 1,
+   "mp3playermetadatarescue": 1
+  },
+  "root": {
+   "cause": 1,
    "description": 1,
    "mp3playermetadatarescue": 1,
-   "root": 1
+   "principal": 1,
+   "container": 1,
+   "webnavigation": 1
+  },
+  "description": {
+   "cause": 1,
+   "root": 1,
+   "mp3playermetadatarescue": 1
   },
   "absolutas": {
+   "treinamentonavegacao": 1,
    "mobile": 1,
-   "gestos": 1,
-   "treinamentonavegacao": 1
+   "gestos": 1
   },
   "gestos": {
    "absolutas": 1,
-   "mobile": 1,
    "treinamentonavegacao": 2,
+   "mobile": 1,
    "tela": 1,
    "consistentes": 1
   },
   "tema": {
-   "zoom": 1,
    "treinamentonavegacao": 1,
+   "zoom": 1,
    "layout": 1,
+   "idioma": 1,
    "casos": 1,
-   "crossplatform": 1,
-   "idioma": 1
+   "crossplatform": 1
   },
   "layout": {
+   "treinamentonavegacao": 2,
    "zoom": 1,
    "tema": 1,
-   "treinamentonavegacao": 2,
-   "tab": 1,
+   "independentes": 1,
    "sao": 1,
-   "independentes": 1
+   "tab": 1
   },
   "sujeito": {
    "treinamentonavegacao": 1,
@@ -6443,283 +6443,289 @@
    "positivos": 1
   },
   "internet": {
-   "buscar": 1,
-   "mp3playermetadatarescue": 1,
    "taps": 1,
+   "mp3playermetadatarescue": 1,
+   "buscar": 1,
    "celular": 1,
    "perita": 1,
    "tecnicas": 1,
    "opencode": 1
   },
   "taps": {
-   "buscar": 1,
    "internet": 1,
+   "buscar": 1,
    "mp3playermetadatarescue": 1
   },
-  "conectados": {
-   "opencode": 1,
-   "cores": 1,
-   "frontmatter": 1,
-   "aprendizados": 1
-  },
   "cores": {
-   "conectados": 1,
-   "opencode": 1,
    "frontmatter": 1,
-   "aprendizados": 1
+   "opencode": 1,
+   "aprendizados": 1,
+   "conectados": 1
   },
   "frontmatter": {
-   "conectados": 1,
    "cores": 1,
    "aprendizados": 1,
-   "opencode": 1
+   "opencode": 1,
+   "conectados": 1
   },
   "aprendizados": {
-   "conectados": 1,
-   "opencode": 2,
    "cores": 1,
    "frontmatter": 1,
+   "opencode": 2,
+   "conectados": 1,
+   "registra": 1,
    "conhecimento": 1,
-   "arquivos": 1,
-   "registra": 1
+   "arquivos": 1
+  },
+  "conectados": {
+   "aprendizados": 1,
+   "cores": 1,
+   "frontmatter": 1,
+   "opencode": 1
   },
   "espelho": {
-   "vivo": 1,
    "reflete": 1,
+   "vivo": 1,
    "opencode": 1,
    "automaticamente": 1
   },
   "reflete": {
    "espelho": 1,
-   "automaticamente": 1,
    "vivo": 1,
+   "automaticamente": 1,
    "opencode": 1
   },
   "automaticamente": {
-   "vivo": 1,
    "espelho": 1,
    "reflete": 1,
+   "vivo": 1,
    "opencode": 1
   },
-  "causam": {
-   "treinamentonavegacao": 2,
+  "elementclickinterceptedexception": {
+   "treinamentonavegacao": 1,
+   "desnecessarios": 1,
+   "cliques": 1,
+   "causam": 1
+  },
+  "desnecessarios": {
+   "elementclickinterceptedexception": 1,
+   "treinamentonavegacao": 1,
+   "cliques": 1,
+   "causam": 1
+  },
+  "cliques": {
    "elementclickinterceptedexception": 1,
    "desnecessarios": 1,
+   "treinamentonavegacao": 1,
+   "causam": 1
+  },
+  "causam": {
+   "elementclickinterceptedexception": 1,
+   "desnecessarios": 1,
+   "treinamentonavegacao": 2,
    "cliques": 1,
    "falhas": 1,
    "misteriosas": 1
   },
-  "elementclickinterceptedexception": {
-   "causam": 1,
-   "treinamentonavegacao": 1,
-   "desnecessarios": 1,
-   "cliques": 1
-  },
-  "desnecessarios": {
-   "causam": 1,
-   "treinamentonavegacao": 1,
-   "elementclickinterceptedexception": 1,
-   "cliques": 1
-  },
-  "cliques": {
-   "causam": 1,
-   "treinamentonavegacao": 1,
-   "elementclickinterceptedexception": 1,
-   "desnecessarios": 1
-  },
   "historical": {
    "requirement": 1,
-   "toolchain": 1,
    "trees": 1,
+   "toolchain": 1,
    "androidpuresdk": 1
   },
   "requirement": {
    "historical": 1,
+   "trees": 1,
    "toolchain": 1,
-   "trees": 1,
-   "androidpuresdk": 1
-  },
-  "toolchain": {
-   "historical": 1,
-   "requirement": 1,
-   "trees": 1,
    "androidpuresdk": 1
   },
   "trees": {
    "historical": 1,
    "requirement": 1,
-   "toolchain": 1,
-   "androidpuresdk": 1
+   "androidpuresdk": 1,
+   "toolchain": 1
+  },
+  "toolchain": {
+   "historical": 1,
+   "requirement": 1,
+   "androidpuresdk": 1,
+   "trees": 1
   },
   "mental": {
    "model": 1,
-   "androidpuresdk": 1,
-   "calculation": 1
+   "calculation": 1,
+   "androidpuresdk": 1
   },
   "model": {
    "mental": 1,
-   "androidpuresdk": 1,
-   "calculation": 1
+   "calculation": 1,
+   "androidpuresdk": 1
   },
   "calculation": {
-   "androidpuresdk": 1,
    "mental": 1,
-   "model": 1
-  },
-  "proprias": {
-   "resistem": 1,
-   "reparent": 1,
-   "filha": 1,
-   "opencode": 1
-  },
-  "resistem": {
-   "proprias": 1,
-   "filha": 1,
-   "opencode": 1,
-   "reparent": 1
-  },
-  "reparent": {
-   "proprias": 1,
-   "filha": 1,
-   "opencode": 1,
-   "resistem": 1
+   "model": 1,
+   "androidpuresdk": 1
   },
   "filha": {
    "proprias": 1,
    "resistem": 1,
-   "opencode": 1,
-   "reparent": 1
+   "reparent": 1,
+   "opencode": 1
+  },
+  "proprias": {
+   "filha": 1,
+   "resistem": 1,
+   "reparent": 1,
+   "opencode": 1
+  },
+  "resistem": {
+   "filha": 1,
+   "proprias": 1,
+   "reparent": 1,
+   "opencode": 1
+  },
+  "reparent": {
+   "filha": 1,
+   "proprias": 1,
+   "resistem": 1,
+   "opencode": 1
   },
   "navegacao": {
    "modais": 1,
-   "boyd": 1,
    "automatizada": 1,
+   "boyd": 1,
+   "multi": 1,
    "especializado": 1,
    "desktop": 1,
-   "web": 1,
    "plataforma": 1,
-   "multi": 1
-  },
-  "boyd": {
-   "modais": 1,
-   "navegacao": 1,
-   "automatizada": 1
+   "web": 1
   },
   "automatizada": {
    "modais": 1,
-   "boyd": 1,
+   "navegacao": 1,
+   "boyd": 1
+  },
+  "boyd": {
+   "automatizada": 1,
+   "modais": 1,
    "navegacao": 1
   },
   "infinito": {
+   "rede": 1,
    "servidor": 1,
    "loop": 1,
-   "rede": 1,
+   "efficiency": 1
+  },
+  "rede": {
+   "infinito": 1,
+   "servidor": 1,
+   "loop": 1,
    "efficiency": 1
   },
   "servidor": {
    "infinito": 1,
-   "efficiency": 1,
-   "loop": 1,
    "rede": 1,
+   "loop": 1,
+   "efficiency": 1,
+   "migracao": 1,
    "failover": 1,
    "rustdesk": 1,
-   "migracao": 1,
    "opencode": 1
-  },
-  "rede": {
-   "infinito": 1,
-   "efficiency": 1,
-   "loop": 1,
-   "servidor": 1
-  },
-  "overlay": {
-   "qualquer": 1,
-   "elemento": 1,
-   "crossplatform": 1,
-   "loading": 1
   },
   "loading": {
    "elemento": 1,
-   "crossplatform": 1,
-   "overlay": 1,
-   "qualquer": 1
-  },
-  "crossplatform": {
    "overlay": 1,
    "qualquer": 1,
+   "crossplatform": 1
+  },
+  "overlay": {
    "elemento": 1,
    "loading": 1,
-   "casos": 1,
-   "tema": 1,
-   "idioma": 1
+   "qualquer": 1,
+   "crossplatform": 1
   },
-  "explicitamente": {
-   "systemdesign": 1,
-   "precisam": 1,
-   "invalide": 1,
-   "consistentes": 1
+  "crossplatform": {
+   "elemento": 1,
+   "loading": 1,
+   "overlay": 1,
+   "qualquer": 1,
+   "casos": 1,
+   "idioma": 1,
+   "tema": 1
   },
   "precisam": {
-   "explicitamente": 1,
    "systemdesign": 1,
-   "invalide": 1,
-   "consistentes": 1
-  },
-  "invalide": {
+   "consistentes": 1,
    "explicitamente": 1,
-   "systemdesign": 1,
-   "precisam": 1,
-   "consistentes": 1
+   "invalide": 1
   },
   "consistentes": {
-   "explicitamente": 1,
    "systemdesign": 1,
    "precisam": 1,
+   "explicitamente": 1,
    "invalide": 1,
    "tela": 1,
    "gestos": 1,
    "treinamentonavegacao": 1
   },
-  "elementdetection": {
-   "tem": 1,
-   "utilizavel": 1,
-   "arvore": 1,
-   "dom": 1,
-   "relativas": 1,
-   "text": 1,
-   "coordenadas": 1,
-   "desc": 1,
-   "quebra": 1,
-   "exato": 1,
-   "mudar": 1,
-   "123": 1
+  "explicitamente": {
+   "consistentes": 1,
+   "systemdesign": 1,
+   "precisam": 1,
+   "invalide": 1
   },
-  "utilizavel": {
-   "elementdetection": 1,
-   "tem": 1,
-   "arvore": 1,
-   "dom": 1
+  "invalide": {
+   "consistentes": 1,
+   "explicitamente": 1,
+   "systemdesign": 1,
+   "precisam": 1
   },
   "arvore": {
-   "elementdetection": 1,
-   "tem": 1,
    "utilizavel": 1,
+   "elementdetection": 1,
    "dom": 1,
-   "acessibilidade": 1,
-   "treinamentonavegacao": 1,
+   "tem": 1,
    "expoem": 1,
-   "nao": 1
+   "nao": 1,
+   "treinamentonavegacao": 1,
+   "acessibilidade": 1
+  },
+  "utilizavel": {
+   "arvore": 1,
+   "elementdetection": 1,
+   "dom": 1,
+   "tem": 1
+  },
+  "elementdetection": {
+   "arvore": 1,
+   "utilizavel": 1,
+   "tem": 1,
+   "dom": 1,
+   "text": 1,
+   "relativas": 1,
+   "desc": 1,
+   "coordenadas": 1,
+   "123": 1,
+   "exato": 1,
+   "mudar": 1,
+   "quebra": 1
   },
   "range": {
    "valores": 1,
-   "deveria": 1,
    "encoding": 1,
+   "deveria": 1,
    "debugging": 1
   },
   "valores": {
    "range": 1,
-   "deveria": 1,
    "encoding": 1,
+   "deveria": 1,
+   "debugging": 1
+  },
+  "encoding": {
+   "valores": 1,
+   "range": 1,
+   "deveria": 1,
    "debugging": 1
   },
   "deveria": {
@@ -6728,21 +6734,9 @@
    "encoding": 1,
    "debugging": 1
   },
-  "encoding": {
-   "deveria": 1,
-   "valores": 1,
-   "range": 1,
-   "debugging": 1
-  },
   "position": {
+   "viewport": 1,
    "scroll": 1,
-   "viewport": 1,
-   "debugging": 1,
-   "ocr": 1
-  },
-  "scroll": {
-   "position": 1,
-   "viewport": 1,
    "debugging": 1,
    "ocr": 1
   },
@@ -6752,361 +6746,367 @@
    "debugging": 1,
    "ocr": 1
   },
+  "scroll": {
+   "position": 1,
+   "viewport": 1,
+   "debugging": 1,
+   "ocr": 1
+  },
   "ocr": {
    "debugging": 1,
    "position": 1,
-   "scroll": 1,
-   "viewport": 1
-  },
-  "perde": {
-   "trivial": 1,
-   "persistence": 1,
-   "quao": 1,
-   "parece": 1
-  },
-  "trivial": {
-   "perde": 1,
-   "persistence": 1,
-   "parece": 1,
-   "quao": 1
-  },
-  "persistence": {
-   "perde": 1,
-   "trivial": 1,
-   "quao": 1,
-   "parece": 1
+   "viewport": 1,
+   "scroll": 1
   },
   "quao": {
-   "perde": 1,
-   "persistence": 1,
-   "parece": 1,
-   "trivial": 1
-  },
-  "parece": {
-   "perde": 1,
    "trivial": 1,
    "persistence": 1,
-   "quao": 1
+   "parece": 1,
+   "perde": 1
   },
-  "resolveu": {
+  "trivial": {
+   "quao": 1,
+   "persistence": 1,
+   "parece": 1,
+   "perde": 1
+  },
+  "persistence": {
+   "quao": 1,
+   "trivial": 1,
+   "parece": 1,
+   "perde": 1
+  },
+  "parece": {
+   "quao": 1,
+   "persistence": 1,
+   "perde": 1,
+   "trivial": 1
+  },
+  "perde": {
+   "parece": 1,
+   "quao": 1,
+   "persistence": 1,
+   "trivial": 1
+  },
+  "qual": {
    "sabe": 1,
+   "resolveu": 1,
    "debugging": 1,
-   "qual": 1,
    "nao": 1
   },
   "sabe": {
-   "resolveu": 1,
-   "debugging": 1,
    "qual": 1,
-   "nao": 1
-  },
-  "qual": {
    "debugging": 1,
-   "resolveu": 1,
-   "sabe": 1,
-   "nao": 1
+   "nao": 1,
+   "resolveu": 1
   },
-  "relativas": {
-   "elementdetection": 1,
-   "text": 1,
-   "coordenadas": 1,
-   "desc": 1
+  "resolveu": {
+   "qual": 1,
+   "debugging": 1,
+   "nao": 1,
+   "sabe": 1
   },
   "text": {
    "elementdetection": 1,
-   "relativas": 1,
-   "coordenadas": 1,
    "desc": 1,
-   "tipo": 1,
-   "visivel": 1,
-   "treinamentonavegacao": 1,
-   "class": 1
-  },
-  "desc": {
    "coordenadas": 1,
-   "elementdetection": 1,
    "relativas": 1,
+   "class": 1,
+   "tipo": 1,
+   "treinamentonavegacao": 1,
+   "visivel": 1
+  },
+  "relativas": {
+   "elementdetection": 1,
+   "desc": 1,
+   "coordenadas": 1,
    "text": 1
   },
-  "especifico": {
-   "possivel": 1,
-   "generico": 1,
-   "path": 1,
-   "coding": 1
+  "desc": {
+   "elementdetection": 1,
+   "text": 1,
+   "relativas": 1,
+   "coordenadas": 1
   },
-  "possivel": {
-   "especifico": 1,
-   "coding": 1,
+  "coding": {
    "generico": 1,
-   "path": 1
+   "possivel": 1,
+   "especifico": 1,
+   "path": 1,
+   "reuse": 1,
+   "funcao": 1,
+   "estado": 1,
+   "inicio": 1,
+   "acontecer": 1,
+   "sao": 1,
+   "esperando": 1,
+   "bugs": 1
   },
   "generico": {
-   "especifico": 1,
    "coding": 1,
+   "possivel": 1,
+   "path": 1,
+   "especifico": 1
+  },
+  "possivel": {
+   "coding": 1,
+   "generico": 1,
+   "especifico": 1,
+   "path": 1
+  },
+  "especifico": {
+   "coding": 1,
+   "generico": 1,
    "possivel": 1,
    "path": 1
   },
   "path": {
-   "especifico": 1,
    "coding": 1,
    "generico": 1,
+   "especifico": 1,
    "possivel": 1
   },
-  "coding": {
-   "especifico": 1,
-   "possivel": 1,
-   "generico": 1,
-   "path": 1,
-   "estado": 1,
-   "funcao": 1,
-   "inicio": 1,
-   "reuse": 1,
-   "bugs": 1,
-   "esperando": 1,
-   "sao": 1,
-   "acontecer": 1
-  },
-  "responda": {
-   "responder": 1,
-   "notification": 1,
-   "protocol": 1
-  },
-  "responder": {
-   "responda": 1,
-   "notification": 1,
-   "protocol": 1
-  },
-  "notification": {
-   "responda": 1,
-   "responder": 1,
-   "protocol": 1
-  },
   "protocol": {
-   "notification": 1,
    "responda": 1,
    "responder": 1,
+   "notification": 1,
    "internos": 1,
-   "mapping": 1,
    "metodos": 1,
+   "mapping": 1,
    "explicito": 1
   },
+  "responda": {
+   "protocol": 1,
+   "responder": 1,
+   "notification": 1
+  },
+  "responder": {
+   "protocol": 1,
+   "responda": 1,
+   "notification": 1
+  },
+  "notification": {
+   "protocol": 1,
+   "responda": 1,
+   "responder": 1
+  },
   "deu": {
-   "usou": 1,
-   "errado": 1,
    "encontrou": 1,
-   "debugging": 1
-  },
-  "usou": {
-   "deu": 1,
    "errado": 1,
-   "debugging": 1,
-   "encontrou": 1
-  },
-  "errado": {
-   "deu": 1,
    "usou": 1,
-   "debugging": 1,
-   "encontrou": 1
+   "debugging": 1
   },
   "encontrou": {
    "deu": 1,
-   "debugging": 1,
+   "errado": 1,
    "usou": 1,
+   "debugging": 1
+  },
+  "errado": {
+   "deu": 1,
+   "encontrou": 1,
+   "debugging": 1,
+   "usou": 1
+  },
+  "usou": {
+   "deu": 1,
+   "encontrou": 1,
+   "debugging": 1,
    "errado": 1
   },
   "internos": {
+   "metodos": 1,
    "protocol": 1,
    "mapping": 1,
-   "metodos": 1,
    "explicito": 1
   },
   "metodos": {
    "internos": 1,
-   "mapping": 1,
    "protocol": 1,
+   "mapping": 1,
    "explicito": 1
   },
   "explicito": {
    "internos": 1,
+   "metodos": 1,
    "protocol": 1,
-   "mapping": 1,
-   "metodos": 1
-  },
-  "webnavigation": {
-   "root": 1,
-   "principal": 1,
-   "container": 1,
-   "loaded": 1,
-   "faz": 1,
-   "sao": 1,
-   "repete": 1
+   "mapping": 1
   },
   "principal": {
-   "root": 1,
    "webnavigation": 1,
+   "root": 1,
    "container": 1
   },
-  "container": {
-   "root": 1,
+  "webnavigation": {
    "principal": 1,
-   "webnavigation": 1
+   "container": 1,
+   "root": 1,
+   "faz": 1,
+   "repete": 1,
+   "sao": 1,
+   "loaded": 1
   },
-  "env": {
+  "container": {
+   "principal": 1,
+   "webnavigation": 1,
+   "root": 1
+  },
+  "auth": {
+   "env": 1,
    "vars": 1,
    "security": 1,
-   "ficar": 1,
-   "auth": 1
+   "ficar": 1
+  },
+  "env": {
+   "auth": 1,
+   "vars": 1,
+   "security": 1,
+   "ficar": 1
   },
   "vars": {
+   "auth": 1,
    "env": 1,
    "security": 1,
-   "auth": 1,
    "ficar": 1
   },
   "security": {
-   "env": 1,
-   "vars": 1,
    "auth": 1,
-   "ficar": 1
-  },
-  "auth": {
-   "vars": 1,
    "env": 1,
-   "security": 1,
+   "vars": 1,
    "ficar": 1
   },
   "especificar": {
+   "deve": 1,
    "sistema": 1,
    "locale": 1,
-   "deve": 1,
    "debugging": 1
   },
   "locale": {
-   "especificar": 1,
    "deve": 1,
+   "especificar": 1,
    "debugging": 1,
    "sistema": 1
   },
   "faca": {
-   "estado": 1,
    "completo": 1,
-   "efficiency": 1,
-   "atual": 1
+   "estado": 1,
+   "atual": 1,
+   "efficiency": 1
   },
   "funcao": {
-   "coding": 1,
-   "estado": 1,
+   "reuse": 1,
    "inicio": 1,
-   "reuse": 1
-  },
-  "inicio": {
-   "coding": 1,
    "estado": 1,
-   "funcao": 1,
-   "reuse": 1
+   "coding": 1
   },
   "reuse": {
-   "coding": 1,
-   "estado": 1,
    "funcao": 1,
+   "estado": 1,
+   "coding": 1,
    "inicio": 1
   },
-  "falha": {
+  "inicio": {
+   "funcao": 1,
+   "estado": 1,
+   "coding": 1,
+   "reuse": 1
+  },
+  "graciosamente": {
    "lida": 1,
-   "graciosamente": 1,
+   "falha": 1,
    "architecture": 1
   },
   "lida": {
+   "graciosamente": 1,
    "falha": 1,
-   "architecture": 1,
-   "graciosamente": 1
+   "architecture": 1
   },
-  "graciosamente": {
-   "falha": 1,
-   "architecture": 1,
-   "lida": 1
-  },
-  "bugs": {
-   "esperando": 1,
-   "coding": 1,
-   "sao": 1,
-   "acontecer": 1
-  },
-  "esperando": {
-   "bugs": 1,
-   "sao": 1,
-   "coding": 1,
-   "acontecer": 1
+  "falha": {
+   "graciosamente": 1,
+   "lida": 1,
+   "architecture": 1
   },
   "acontecer": {
-   "bugs": 1,
-   "esperando": 1,
+   "sao": 1,
    "coding": 1,
+   "bugs": 1,
+   "esperando": 1
+  },
+  "bugs": {
+   "acontecer": 1,
+   "sao": 1,
+   "coding": 1,
+   "esperando": 1
+  },
+  "esperando": {
+   "acontecer": 1,
+   "coding": 1,
+   "bugs": 1,
    "sao": 1
-  },
-  "dentro": {
-   "saida": 1,
-   "loop": 1,
-   "resultado": 1,
-   "debugging": 1
-  },
-  "saida": {
-   "dentro": 1,
-   "loop": 1,
-   "debugging": 1,
-   "resultado": 1
   },
   "resultado": {
-   "dentro": 1,
    "loop": 1,
    "debugging": 1,
+   "dentro": 1,
    "saida": 1
   },
-  "loaded": {
-   "webnavigation": 1,
-   "sao": 1,
-   "repete": 1,
-   "faz": 1
+  "saida": {
+   "loop": 1,
+   "debugging": 1,
+   "dentro": 1,
+   "resultado": 1
   },
-  "repete": {
-   "loaded": 1,
-   "faz": 1,
-   "webnavigation": 1,
-   "sao": 1
+  "dentro": {
+   "debugging": 1,
+   "loop": 1,
+   "resultado": 1,
+   "saida": 1
   },
   "faz": {
-   "webnavigation": 1,
-   "loaded": 1,
+   "repete": 1,
    "sao": 1,
-   "repete": 1
+   "webnavigation": 1,
+   "loaded": 1
   },
-  "quebra": {
-   "elementdetection": 1,
-   "exato": 1,
-   "123": 1,
-   "mudar": 1
+  "repete": {
+   "faz": 1,
+   "sao": 1,
+   "webnavigation": 1,
+   "loaded": 1
+  },
+  "loaded": {
+   "faz": 1,
+   "repete": 1,
+   "sao": 1,
+   "webnavigation": 1
   },
   "exato": {
-   "elementdetection": 1,
-   "quebra": 1,
    "mudar": 1,
-   "123": 1
+   "quebra": 1,
+   "123": 1,
+   "elementdetection": 1
   },
   "mudar": {
-   "elementdetection": 1,
    "exato": 1,
-   "123": 1,
    "quebra": 1,
+   "123": 1,
+   "elementdetection": 1,
    "automation": 1,
    "pode": 1,
    "treinamentonavegacao": 1,
    "localizacao": 1
   },
-  "123": {
-   "elementdetection": 1,
-   "quebra": 1,
+  "quebra": {
    "exato": 1,
-   "mudar": 1
+   "mudar": 1,
+   "123": 1,
+   "elementdetection": 1
+  },
+  "123": {
+   "exato": 1,
+   "mudar": 1,
+   "elementdetection": 1,
+   "quebra": 1
   },
   "banco": {
    "pode": 1,
@@ -7118,39 +7118,51 @@
    "pode": 1,
    "systemdesign": 1
   },
+  "edicao": {
+   "invalido": 1,
+   "produzir": 1,
+   "configuration": 1,
+   "background": 1,
+   "null": 1,
+   "nao": 1,
+   "androidpuresdk": 1
+  },
+  "invalido": {
+   "edicao": 1,
+   "produzir": 1,
+   "configuration": 1
+  },
+  "produzir": {
+   "edicao": 1,
+   "invalido": 1,
+   "configuration": 1
+  },
   "configuration": {
    "edicao": 1,
    "invalido": 1,
    "produzir": 1
   },
-  "edicao": {
-   "configuration": 1,
-   "invalido": 1,
-   "produzir": 1,
-   "background": 1,
-   "androidpuresdk": 1,
-   "null": 1,
-   "nao": 1
-  },
-  "invalido": {
-   "configuration": 1,
-   "edicao": 1,
-   "produzir": 1
-  },
-  "produzir": {
-   "configuration": 1,
-   "edicao": 1,
-   "invalido": 1
+  "solucao": {
+   "debugging": 1,
+   "unica": 1,
+   "original": 1
   },
   "original": {
    "debugging": 1,
-   "solucao": 1,
-   "unica": 1
+   "unica": 1,
+   "solucao": 1
   },
-  "solucao": {
-   "debugging": 1,
-   "original": 1,
-   "unica": 1
+  "multiplos": {
+   "sinais": 1,
+   "nao": 1,
+   "combinacao": 1,
+   "architecture": 1
+  },
+  "sinais": {
+   "multiplos": 1,
+   "combinacao": 1,
+   "nao": 1,
+   "architecture": 1
   },
   "combinacao": {
    "multiplos": 1,
@@ -7158,157 +7170,145 @@
    "nao": 1,
    "architecture": 1
   },
-  "multiplos": {
-   "combinacao": 1,
-   "architecture": 1,
-   "sinais": 1,
-   "nao": 1
-  },
-  "sinais": {
-   "combinacao": 1,
-   "architecture": 1,
-   "multiplos": 1,
-   "nao": 1
-  },
   "casos": {
+   "idioma": 1,
    "crossplatform": 1,
    "tema": 1,
-   "idioma": 1,
-   "referencias": 1,
-   "treinamentonavegacao": 1,
    "invalidando": 1,
+   "treinamentonavegacao": 1,
+   "referencias": 1,
    "dom": 1
+  },
+  "secundario": {
+   "fallback": 1,
+   "testing": 1,
+   "verificar": 1,
+   "assume": 1
   },
   "verificar": {
    "fallback": 1,
    "testing": 1,
-   "assume": 1,
    "secundario": 1,
-   "deteco": 1,
-   "opencode": 2,
-   "config": 1,
-   "real": 1,
-   "uteis": 1,
-   "perguntou": 1,
-   "sao": 1
-  },
-  "secundario": {
-   "fallback": 1,
    "assume": 1,
-   "testing": 1,
-   "verificar": 1
+   "config": 1,
+   "deteco": 1,
+   "real": 1,
+   "opencode": 2,
+   "sao": 1,
+   "uteis": 1,
+   "perguntou": 1
   },
   "assume": {
    "fallback": 1,
    "testing": 1,
-   "verificar": 1,
-   "secundario": 1
+   "secundario": 1,
+   "verificar": 1
   },
-  "custa": {
+  "10s": {
+   "timeout": 1,
    "operacao": 1,
-   "efficiency": 1,
-   "timeout": 1,
-   "10s": 1
-  },
-  "operacao": {
    "custa": 1,
-   "10s": 1,
-   "timeout": 1,
    "efficiency": 1
   },
   "timeout": {
-   "custa": 1,
    "10s": 1,
+   "operacao": 1,
+   "custa": 1,
+   "efficiency": 1
+  },
+  "operacao": {
+   "10s": 1,
+   "timeout": 1,
+   "custa": 1,
+   "efficiency": 1
+  },
+  "custa": {
+   "10s": 1,
+   "timeout": 1,
    "operacao": 1,
    "efficiency": 1
   },
-  "10s": {
-   "custa": 1,
-   "operacao": 1,
-   "efficiency": 1,
-   "timeout": 1
-  },
   "causa": {
-   "debugging": 1,
-   "sei": 1,
    "pode": 1,
-   "funciona": 1
-  },
-  "sei": {
-   "causa": 1,
    "debugging": 1,
-   "pode": 1,
-   "funciona": 1
+   "funciona": 1,
+   "sei": 1
   },
   "funciona": {
    "causa": 1,
    "debugging": 1,
-   "sei": 1,
-   "pode": 1
+   "pode": 1,
+   "sei": 1
   },
-  "espacos": {
-   "scripts": 1,
-   "organization": 1,
-   "compatibilidade": 1,
-   "caminho": 1
-  },
-  "scripts": {
-   "espacos": 1,
-   "organization": 1,
-   "compatibilidade": 1,
-   "caminho": 1,
-   "session": 1,
-   "documentos": 1,
-   "midia": 1,
-   "ferramentas": 1
-  },
-  "organization": {
-   "espacos": 1,
-   "scripts": 1,
-   "compatibilidade": 1,
-   "caminho": 1
+  "sei": {
+   "causa": 1,
+   "pode": 1,
+   "debugging": 1,
+   "funciona": 1
   },
   "compatibilidade": {
-   "scripts": 1,
    "espacos": 1,
+   "scripts": 1,
    "organization": 1,
    "caminho": 1
   },
-  "caminho": {
+  "espacos": {
+   "compatibilidade": 1,
+   "caminho": 1,
    "scripts": 1,
+   "organization": 1
+  },
+  "scripts": {
+   "compatibilidade": 1,
+   "caminho": 1,
    "espacos": 1,
    "organization": 1,
+   "documentos": 1,
+   "midia": 1,
+   "ferramentas": 1,
+   "session": 1
+  },
+  "organization": {
    "compatibilidade": 1,
-   "nico": 1,
-   "opencode": 1,
-   "habilidades": 1
+   "caminho": 1,
+   "espacos": 1,
+   "scripts": 1
   },
-  "arqui": {
+  "caminho": {
+   "compatibilidade": 1,
+   "espacos": 1,
+   "scripts": 1,
+   "organization": 1,
+   "habilidades": 1,
    "opencode": 1,
-   "config": 1,
-   "vigilante": 1,
-   "detecta": 1
-  },
-  "vigilante": {
-   "arqui": 1,
-   "opencode": 1,
-   "config": 1,
-   "detecta": 1
+   "nico": 1
   },
   "detecta": {
-   "arqui": 1,
    "config": 1,
-   "opencode": 2,
+   "arqui": 1,
    "vigilante": 1,
-   "30s": 1,
+   "opencode": 2,
    "rodando": 1,
-   "est": 1
+   "est": 1,
+   "30s": 1
+  },
+  "vigilante": {
+   "config": 1,
+   "arqui": 1,
+   "detecta": 1,
+   "opencode": 1
+  },
+  "arqui": {
+   "config": 1,
+   "detecta": 1,
+   "vigilante": 1,
+   "opencode": 1
   },
   "deteco": {
-   "opencode": 1,
-   "verificar": 1,
+   "config": 1,
    "real": 1,
-   "config": 1
+   "opencode": 1,
+   "verificar": 1
   },
   "razroo": {
    "uso": 1,
@@ -7316,41 +7316,41 @@
    "mod": 1
   },
   "mod": {
-   "razroo": 1,
    "uso": 1,
+   "razroo": 1,
    "opencode": 1
   },
   "2026scanproativo": {
    "opencode": 25
   },
-  "captura": {
-   "ecossistema": 1,
-   "conhecimento": 1,
-   "opencode": 1,
-   "ler": 1
-  },
   "ler": {
-   "captura": 1,
-   "ecossistema": 1,
    "conhecimento": 1,
    "opencode": 2,
+   "ecossistema": 1,
+   "captura": 1,
    "engine": 1,
    "strategyengine": 1,
-   "aprende": 1,
    "enquanto": 1,
-   "crescer": 1
+   "crescer": 1,
+   "aprende": 1
+  },
+  "captura": {
+   "conhecimento": 1,
+   "ler": 1,
+   "ecossistema": 1,
+   "opencode": 1
   },
   "vigilncia": {
-   "sistema": 1,
-   "opencode": 1,
    "config": 1,
-   "autom": 1
+   "sistema": 1,
+   "autom": 1,
+   "opencode": 1
   },
   "autom": {
-   "sistema": 1,
-   "opencode": 1,
    "config": 1,
-   "vigilncia": 1
+   "sistema": 1,
+   "vigilncia": 1,
+   "opencode": 1
   },
   "unificacao": {
    "ecossistema": 1,
@@ -7363,100 +7363,100 @@
    "unificacao": 1
   },
   "altera": {
-   "ecossistema": 1,
+   "deve": 1,
    "opencode": 1,
-   "deve": 1
-  },
-  "correto": {
-   "mcp": 1,
-   "opencode": 2,
-   "expected": 1,
-   "config": 1,
-   "ncia": 1,
-   "pelo": 1,
-   "llm": 1
+   "ecossistema": 1
   },
   "mcp": {
-   "correto": 1,
-   "opencode": 2,
    "config": 1,
+   "opencode": 2,
+   "correto": 1,
    "expected": 1,
-   "ecosystemumgrau": 1,
-   "integration": 1
+   "integration": 1,
+   "ecosystemumgrau": 1
+  },
+  "correto": {
+   "config": 1,
+   "mcp": 1,
+   "expected": 1,
+   "opencode": 2,
+   "ncia": 1,
+   "llm": 1,
+   "pelo": 1
   },
   "integrao": {
-   "opencode": 1,
    "openweathermap": 1,
+   "opencode": 1,
    "clima": 1
   },
   "openweathermap": {
    "integrao": 1,
-   "opencode": 2,
    "clima": 2,
+   "opencode": 2,
    "palavras": 1,
    "integra": 1
   },
   "clima": {
    "integrao": 1,
-   "opencode": 2,
    "openweathermap": 2,
+   "opencode": 2,
    "palavras": 1,
    "integra": 1
   },
   "palavras": {
+   "clima": 1,
    "openweathermap": 1,
-   "opencode": 1,
    "integra": 1,
-   "clima": 1
+   "opencode": 1
   },
   "integra": {
-   "openweathermap": 1,
+   "clima": 1,
    "palavras": 1,
-   "opencode": 1,
-   "clima": 1
+   "openweathermap": 1,
+   "opencode": 1
   },
   "integration": {
-   "ecosystemumgrau": 1,
+   "opencode": 1,
    "mcp": 1,
-   "opencode": 1
+   "ecosystemumgrau": 1
   },
   "ncia": {
    "pelo": 1,
    "opencode": 2,
-   "correto": 1,
    "llm": 1,
-   "detec": 1,
+   "correto": 1,
    "diverg": 1,
-   "sincroniza": 1
+   "sincroniza": 1,
+   "detec": 1
   },
   "pelo": {
    "ncia": 1,
+   "llm": 1,
    "correto": 1,
-   "opencode": 1,
-   "llm": 1
+   "opencode": 1
   },
   "llm": {
-   "correto": 1,
    "ncia": 1,
    "pelo": 1,
+   "opencode": 1,
+   "correto": 1
+  },
+  "diverg": {
+   "ncia": 1,
+   "sincroniza": 1,
+   "opencode": 1,
+   "detec": 1
+  },
+  "sincroniza": {
+   "diverg": 1,
+   "ncia": 1,
+   "detec": 1,
    "opencode": 1
   },
   "detec": {
-   "sincroniza": 1,
    "diverg": 1,
    "ncia": 1,
-   "opencode": 1
-  },
-  "sincroniza": {
-   "detec": 1,
-   "diverg": 1,
-   "ncia": 1,
-   "opencode": 1
-  },
-  "diverg": {
-   "detec": 1,
    "sincroniza": 1,
-   "ncia": 1,
    "opencode": 1
   },
   "ram": {
@@ -7481,44 +7481,44 @@
    "conhecimento": 1,
    "opencode": 1
   },
-  "usuario": {
-   "opencode": 1,
-   "enfati": 1,
-   "conectado": 1,
-   "tailscale": 1
-  },
-  "tailscale": {
-   "opencode": 1,
-   "enfati": 1,
-   "conectado": 1,
-   "usuario": 1
-  },
   "enfati": {
-   "usuario": 1,
-   "opencode": 1,
    "tailscale": 1,
+   "opencode": 1,
+   "usuario": 1,
    "conectado": 1
   },
-  "conectado": {
-   "usuario": 1,
-   "opencode": 1,
+  "tailscale": {
    "enfati": 1,
-   "tailscale": 1
+   "conectado": 1,
+   "usuario": 1,
+   "opencode": 1
+  },
+  "usuario": {
+   "enfati": 1,
+   "conectado": 1,
+   "tailscale": 1,
+   "opencode": 1
+  },
+  "conectado": {
+   "enfati": 1,
+   "tailscale": 1,
+   "opencode": 1,
+   "usuario": 1
   },
   "persistente": {
    "usu": 1,
    "network": 1,
-   "opencode": 2,
    "menus": 1,
-   "distinguir": 1,
+   "opencode": 2,
+   "estado": 1,
    "conexao": 1,
-   "estado": 1
+   "distinguir": 1
   },
   "usu": {
    "persistente": 1,
    "network": 1,
-   "opencode": 1,
-   "menus": 1
+   "menus": 1,
+   "opencode": 1
   },
   "network": {
    "persistente": 1,
@@ -7528,108 +7528,108 @@
   },
   "menus": {
    "persistente": 1,
-   "usu": 1,
    "network": 1,
+   "usu": 1,
    "opencode": 1
   },
   "giro": {
-   "natural": 1,
-   "opencode": 1,
+   "fix": 1,
    "sumiram": 1,
-   "fix": 1
+   "natural": 1,
+   "opencode": 1
   },
   "pedido": {
    "zoom": 1,
    "efeito": 1,
-   "opencode": 1,
-   "incluir": 1
+   "incluir": 1,
+   "opencode": 1
   },
   "efeito": {
    "pedido": 1,
-   "opencode": 1,
    "incluir": 1,
-   "zoom": 1
+   "zoom": 1,
+   "opencode": 1
   },
   "incluir": {
    "efeito": 1,
    "pedido": 1,
-   "opencode": 1,
-   "zoom": 1
-  },
-  "implementar": {
-   "opencode": 1,
-   "tamanh": 1,
-   "pythonw": 1
-  },
-  "tamanh": {
-   "implementar": 1,
-   "opencode": 1,
-   "pythonw": 1
+   "zoom": 1,
+   "opencode": 1
   },
   "pythonw": {
+   "tamanh": 1,
    "implementar": 1,
-   "opencode": 1,
-   "tamanh": 1
+   "opencode": 1
   },
-  "tts": {
-   "opencode": 1,
-   "jarvis": 1,
-   "corretamente": 1
+  "tamanh": {
+   "pythonw": 1,
+   "implementar": 1,
+   "opencode": 1
+  },
+  "implementar": {
+   "pythonw": 1,
+   "tamanh": 1,
+   "opencode": 1
   },
   "corretamente": {
    "tts": 1,
    "opencode": 1,
    "jarvis": 1
   },
+  "tts": {
+   "corretamente": 1,
+   "opencode": 1,
+   "jarvis": 1
+  },
   "permanente": {
+   "fazendo": 1,
    "regra": 1,
    "opencode": 1,
-   "fazendo": 1,
-   "system": 1,
+   "leraprendizado": 1,
    "jarvis": 1,
-   "habilidades": 1,
-   "leraprendizado": 1
+   "system": 1,
+   "habilidades": 1
   },
   "regra": {
+   "fazendo": 1,
    "permanente": 1,
-   "opencode": 1,
-   "fazendo": 1
-  },
-  "controle2026status": {
-   "p20": 1,
-   "opencode": 1,
-   "2026status": 1
-  },
-  "p20": {
-   "controle2026status": 1,
-   "opencode": 1,
-   "2026status": 1
-  },
-  "2026status": {
-   "p20": 1,
-   "controle2026status": 1,
    "opencode": 1
   },
-  "naturalidade": {
-   "jarvis": 1,
+  "2026status": {
    "opencode": 1,
+   "controle2026status": 1,
+   "p20": 1
+  },
+  "controle2026status": {
+   "2026status": 1,
+   "opencode": 1,
+   "p20": 1
+  },
+  "p20": {
+   "2026status": 1,
+   "opencode": 1,
+   "controle2026status": 1
+  },
+  "naturalidade": {
    "ssml": 1,
-   "trocar": 1
+   "trocar": 1,
+   "opencode": 1,
+   "jarvis": 1
   },
   "ssml": {
-   "jarvis": 1,
    "naturalidade": 1,
-   "opencode": 1,
-   "trocar": 1
+   "trocar": 1,
+   "jarvis": 1,
+   "opencode": 1
   },
   "pediu": {
-   "opencode": 1,
    "refinamento": 1,
+   "opencode": 1,
    "atualiza": 1
   },
   "refinamento": {
-   "opencode": 1,
    "pediu": 1,
+   "opencode": 1,
    "atualiza": 1
   },
   "tico": {
@@ -7640,28 +7640,22 @@
    "opencode": 1,
    "tico": 1
   },
-  "perita": {
-   "tecnicas": 1,
-   "opencode": 1,
-   "celular": 1,
-   "internet": 1
-  },
   "celular": {
    "perita": 1,
    "tecnicas": 1,
    "opencode": 1,
    "internet": 1
   },
-  "arquitetura": {
-   "sincronizada": 2,
-   "opencode": 2,
-   "rebro": 1,
-   "crebro": 1
+  "perita": {
+   "celular": 1,
+   "tecnicas": 1,
+   "opencode": 1,
+   "internet": 1
   },
-  "sincronizada": {
-   "arquitetura": 2,
+  "arquitetura": {
    "opencode": 2,
    "rebro": 1,
+   "sincronizada": 2,
    "crebro": 1
   },
   "rebro": {
@@ -7669,18 +7663,24 @@
    "opencode": 1,
    "sincronizada": 1
   },
+  "sincronizada": {
+   "arquitetura": 2,
+   "opencode": 2,
+   "rebro": 1,
+   "crebro": 1
+  },
   "crebro": {
    "arquitetura": 1,
-   "sincronizada": 1,
-   "opencode": 1
-  },
-  "pidos": {
    "opencode": 1,
-   "jarvis": 1,
-   "constantes": 1
+   "sincronizada": 1
   },
   "constantes": {
+   "opencode": 1,
    "pidos": 1,
+   "jarvis": 1
+  },
+  "pidos": {
+   "constantes": 1,
    "opencode": 1,
    "jarvis": 1
   },
@@ -7692,105 +7692,105 @@
    "corrigido": 1,
    "opencode": 1
   },
-  "escrita": {
+  "acento": {
    "fala": 1,
    "opencode": 1,
-   "acento": 1
+   "escrita": 1
   },
-  "acento": {
-   "escrita": 1,
+  "escrita": {
+   "acento": 1,
    "fala": 1,
-   "opencode": 1
-  },
-  "failover": {
-   "rustdesk": 1,
-   "servidor": 1,
-   "migracao": 1,
-   "opencode": 1
-  },
-  "rustdesk": {
-   "failover": 1,
-   "servidor": 1,
-   "migracao": 1,
    "opencode": 1
   },
   "migracao": {
-   "failover": 1,
+   "servidor": 1,
    "rustdesk": 1,
+   "opencode": 1,
+   "failover": 1
+  },
+  "rustdesk": {
+   "migracao": 1,
+   "failover": 1,
    "servidor": 1,
    "opencode": 1
   },
-  "cod": {
-   "mcpprotocol": 1,
-   "jsonrpc": 1,
-   "desktop": 1,
-   "projetos": 1,
-   "workspaceorganization": 1
-  },
-  "mcpprotocol": {
-   "cod": 1,
-   "projetos": 1,
-   "workspaceorganization": 1,
-   "jsonrpc": 1,
-   "desktop": 1
-  },
-  "jsonrpc": {
-   "cod": 1,
-   "mcpprotocol": 1,
-   "projetos": 1,
-   "workspaceorganization": 1,
-   "desktop": 1
+  "failover": {
+   "migracao": 1,
+   "servidor": 1,
+   "rustdesk": 1,
+   "opencode": 1
   },
   "desktop": {
-   "cod": 1,
-   "mcpprotocol": 1,
    "jsonrpc": 1,
-   "projetos": 1,
    "workspaceorganization": 1,
-   "especializado": 1,
-   "web": 1,
-   "plataforma": 1,
-   "navegacao": 1,
-   "multi": 1
-  },
-  "especializado": {
-   "web": 1,
-   "plataforma": 1,
-   "navegacao": 1,
+   "projetos": 1,
+   "mcpprotocol": 1,
+   "cod": 1,
    "multi": 1,
-   "desktop": 1
-  },
-  "web": {
    "especializado": 1,
-   "desktop": 1,
    "plataforma": 1,
-   "navegacao": 1,
-   "multi": 1,
-   "encapsulam": 1,
-   "treinamentonavegacao": 1,
-   "elementos": 1,
-   "dom": 1
-  },
-  "plataforma": {
-   "especializado": 1,
-   "desktop": 1,
    "web": 1,
-   "navegacao": 1,
-   "multi": 1
+   "navegacao": 1
+  },
+  "jsonrpc": {
+   "desktop": 1,
+   "workspaceorganization": 1,
+   "projetos": 1,
+   "mcpprotocol": 1,
+   "cod": 1
+  },
+  "mcpprotocol": {
+   "desktop": 1,
+   "jsonrpc": 1,
+   "cod": 1,
+   "workspaceorganization": 1,
+   "projetos": 1
+  },
+  "cod": {
+   "desktop": 1,
+   "jsonrpc": 1,
+   "workspaceorganization": 1,
+   "projetos": 1,
+   "mcpprotocol": 1
   },
   "multi": {
+   "plataforma": 1,
+   "web": 1,
+   "navegacao": 1,
+   "especializado": 1,
+   "desktop": 1
+  },
+  "plataforma": {
+   "multi": 1,
    "especializado": 1,
    "desktop": 1,
    "web": 1,
-   "plataforma": 1,
    "navegacao": 1
+  },
+  "web": {
+   "multi": 1,
+   "especializado": 1,
+   "desktop": 1,
+   "plataforma": 1,
+   "navegacao": 1,
+   "encapsulam": 1,
+   "elementos": 1,
+   "treinamentonavegacao": 1,
+   "dom": 1
+  },
+  "especializado": {
+   "multi": 1,
+   "plataforma": 1,
+   "web": 1,
+   "navegacao": 1,
+   "desktop": 1
   },
   "wss": {
    "opencode": 2,
    "ssap": 1,
    "voz": 1,
-   "50ut8050psa": 1,
-   "ssapwss": 1
+   "ssapwss": 1,
+   "50ut8050psa": 1
   },
   "ssap": {
    "opencode": 1,
@@ -7802,53 +7802,53 @@
    "ssap": 1,
    "wss": 1
   },
-  "powershell": {
+  "intermitentemente": {
    "scrcpy": 1,
    "rota": 1,
-   "intermitentemente": 1,
-   "opencode": 1
+   "opencode": 1,
+   "powershell": 1
   },
   "scrcpy": {
-   "powershell": 1,
    "intermitentemente": 1,
+   "rota": 1,
    "opencode": 1,
-   "rota": 1
+   "powershell": 1
   },
   "rota": {
-   "powershell": 1,
    "intermitentemente": 1,
-   "opencode": 1,
-   "scrcpy": 1
-  },
-  "intermitentemente": {
-   "powershell": 1,
    "scrcpy": 1,
    "opencode": 1,
+   "powershell": 1
+  },
+  "powershell": {
+   "intermitentemente": 1,
+   "opencode": 1,
+   "scrcpy": 1,
    "rota": 1
   },
-  "travado": {
+  "verificacao": {
    "voxumgrau": 1,
-   "verificacao": 1,
+   "opencode": 1,
    "desde": 1,
-   "opencode": 1
+   "travado": 1
   },
   "voxumgrau": {
-   "travado": 1,
+   "verificacao": 1,
+   "opencode": 1,
+   "desde": 1,
+   "travado": 1
+  },
+  "travado": {
+   "opencode": 1,
    "desde": 1,
    "verificacao": 1,
-   "opencode": 1
-  },
-  "verificacao": {
-   "travado": 1,
-   "desde": 1,
-   "voxumgrau": 1,
-   "opencode": 1
+   "voxumgrau": 1
   },
   "desde": {
-   "travado": 1,
-   "voxumgrau": 1,
    "verificacao": 1,
-   "opencode": 1
+   "opencode": 1,
+   "voxumgrau": 1,
+   "travado": 1
   },
   "apk": {
    "zipalign": 1,
@@ -7859,152 +7859,140 @@
   "zipalign": {
    "apk": 1,
    "androidpuresdk": 1,
-   "add": 1,
-   "dex": 1
+   "dex": 1,
+   "add": 1
   },
   "dex": {
    "apk": 1,
    "androidpuresdk": 1,
-   "add": 1,
-   "zipalign": 1
+   "zipalign": 1,
+   "add": 1
   },
   "add": {
    "apk": 1,
-   "androidpuresdk": 1,
    "zipalign": 1,
+   "androidpuresdk": 1,
    "dex": 1
   },
+  "androidpuresdkmp3playermetadatarescueandroidpuresdkmp3": {
+   "mp3player": 1,
+   "rescue": 1,
+   "metadata": 1
+  },
   "metadata": {
+   "androidpuresdkmp3playermetadatarescueandroidpuresdkmp3": 1,
    "mp3player": 4,
    "rescue": 5,
-   "androidpuresdkmp3playermetadatarescueandroidpuresdkmp3": 1,
    "mp3playermetadatarescue": 4,
    "pipeline": 1
   },
-  "androidpuresdkmp3playermetadatarescueandroidpuresdkmp3": {
-   "metadata": 1,
-   "mp3player": 1,
-   "rescue": 1
-  },
   "pipeline": {
-   "metadata": 1,
    "mp3playermetadatarescue": 1,
-   "rescue": 1
+   "rescue": 1,
+   "metadata": 1
   },
   "tela": {
    "treinamentonavegacao": 3,
    "gestos": 1,
    "consistentes": 1,
-   "metade": 1,
-   "esconde": 1,
    "elementos": 1,
-   "diretamente": 1,
-   "inicial": 1,
-   "pula": 1
-  },
-  "metade": {
-   "treinamentonavegacao": 1,
-   "tela": 1,
    "esconde": 1,
-   "elementos": 1
-  },
-  "esconde": {
    "metade": 1,
-   "treinamentonavegacao": 1,
-   "tela": 1,
-   "elementos": 1
+   "pula": 1,
+   "diretamente": 1,
+   "inicial": 1
   },
   "elementos": {
-   "metade": 1,
+   "tela": 1,
    "esconde": 1,
    "treinamentonavegacao": 3,
-   "tela": 1,
-   "web": 1,
+   "metade": 1,
    "encapsulam": 1,
+   "web": 1,
    "dom": 1,
+   "consomem": 1,
    "teclado": 1,
-   "foco": 1,
-   "consomem": 1
+   "foco": 1
   },
-  "tipo": {
-   "visivel": 1,
+  "esconde": {
+   "elementos": 1,
+   "tela": 1,
    "treinamentonavegacao": 1,
-   "text": 1,
-   "class": 1
+   "metade": 1
+  },
+  "metade": {
+   "elementos": 1,
+   "esconde": 1,
+   "tela": 1,
+   "treinamentonavegacao": 1
   },
   "class": {
    "tipo": 1,
-   "visivel": 1,
+   "treinamentonavegacao": 1,
    "text": 1,
-   "treinamentonavegacao": 1
+   "visivel": 1
   },
-  "bytes": {
-   "trava": 1,
-   "mp3player": 1,
-   "consumidos": 1,
-   "audio": 1
-  },
-  "trava": {
-   "bytes": 1,
-   "mp3player": 1,
-   "consumidos": 1,
-   "audio": 1
+  "tipo": {
+   "class": 1,
+   "treinamentonavegacao": 1,
+   "visivel": 1,
+   "text": 1
   },
   "consumidos": {
-   "bytes": 1,
    "trava": 1,
    "mp3player": 1,
-   "audio": 1
+   "audio": 1,
+   "bytes": 1
+  },
+  "trava": {
+   "consumidos": 1,
+   "mp3player": 1,
+   "audio": 1,
+   "bytes": 1
   },
   "audio": {
    "trava": 1,
-   "bytes": 1,
+   "consumidos": 1,
    "mp3player": 1,
-   "consumidos": 1
+   "bytes": 1
+  },
+  "bytes": {
+   "audio": 1,
+   "trava": 1,
+   "consumidos": 1,
+   "mp3player": 1
   },
   "androidpuresdkandroidpuresdkandroidpuresdkandroidpure": {
    "android": 1
   },
-  "maintain": {
-   "androidpuresdk": 1,
-   "grid": 1
-  },
   "grid": {
-   "androidpuresdk": 2,
    "maintain": 1,
-   "comma": 1,
+   "androidpuresdk": 2,
    "len": 1,
-   "insert": 1
+   "insert": 1,
+   "comma": 1
+  },
+  "maintain": {
+   "grid": 1,
+   "androidpuresdk": 1
   },
   "openrouter": {
+   "openai": 1,
    "sessaoprovidermanager": 1,
    "gemini": 1,
-   "anthropic": 1,
-   "openai": 1
+   "anthropic": 1
   },
   "gemini": {
+   "openai": 1,
    "openrouter": 1,
    "sessaoprovidermanager": 1,
-   "openai": 1,
    "anthropic": 1
   },
   "anthropic": {
+   "openai": 1,
    "openrouter": 1,
-   "sessaoprovidermanager": 1,
    "gemini": 1,
-   "openai": 1
-  },
-  "ganhou": {
-   "opencode": 1,
-   "orfaos": 1,
-   "130": 1,
-   "filtro": 1
-  },
-  "orfaos": {
-   "ganhou": 1,
-   "130": 1,
-   "filtro": 1,
-   "opencode": 1
+   "sessaoprovidermanager": 1
   },
   "130": {
    "ganhou": 1,
@@ -8012,39 +8000,51 @@
    "opencode": 1,
    "orfaos": 1
   },
+  "ganhou": {
+   "130": 1,
+   "opencode": 1,
+   "orfaos": 1,
+   "filtro": 1
+  },
   "filtro": {
    "130": 1,
    "ganhou": 1,
    "opencode": 1,
    "orfaos": 1
   },
+  "orfaos": {
+   "130": 1,
+   "ganhou": 1,
+   "filtro": 1,
+   "opencode": 1
+  },
   "intelligence": {
    "androidpuresdk": 1
   },
-  "30s": {
-   "rodando": 1,
-   "opencode": 1,
-   "detecta": 1,
-   "est": 1
-  },
   "rodando": {
-   "30s": 1,
-   "opencode": 1,
    "detecta": 1,
-   "est": 1
+   "est": 1,
+   "opencode": 1,
+   "30s": 1
   },
   "est": {
-   "30s": 1,
    "detecta": 1,
    "rodando": 1,
+   "opencode": 1,
+   "30s": 1
+  },
+  "30s": {
+   "rodando": 1,
+   "detecta": 1,
+   "est": 1,
    "opencode": 1
   },
   "background": {
    "opencode": 1,
    "job": 1,
    "oculto": 1,
-   "null": 1,
    "edicao": 1,
+   "null": 1,
    "nao": 1,
    "androidpuresdk": 1
   },
@@ -8058,354 +8058,348 @@
    "job": 1,
    "opencode": 1,
    "conteudo": 1,
+   "sao": 1,
    "treinamentonavegacao": 1,
-   "onipresentes": 1,
-   "sao": 1
+   "onipresentes": 1
   },
   "registra": {
+   "aprendizados": 1,
    "conhecimento": 1,
-   "arquivos": 1,
    "opencode": 1,
-   "aprendizados": 1
+   "arquivos": 1
   },
   "expectedreadonly": {
-   "opencode": 1,
    "type": 1,
+   "opencode": 1,
    "expected": 1
   },
   "type": {
    "expectedreadonly": 1,
-   "opencode": 1,
-   "expected": 1
+   "expected": 1,
+   "opencode": 1
+  },
+  "array": {
+   "sessaomigracaoconfig": 1,
+   "string": 1,
+   "command": 1,
+   "provider": 1,
+   "objects": 1,
+   "session": 1,
+   "object": 1,
+   "single": 1
   },
   "sessaomigracaoconfig": {
-   "string": 1,
    "array": 1,
+   "string": 1,
    "command": 1,
    "provider": 1
   },
   "string": {
-   "sessaomigracaoconfig": 1,
    "array": 1,
+   "sessaomigracaoconfig": 1,
    "command": 1,
    "provider": 1
   },
-  "array": {
-   "string": 1,
-   "sessaomigracaoconfig": 1,
-   "command": 1,
-   "provider": 1,
-   "objects": 1,
-   "object": 1,
-   "session": 1,
-   "single": 1
-  },
   "command": {
    "array": 1,
-   "string": 1,
    "sessaomigracaoconfig": 1,
+   "string": 1,
    "provider": 1
   },
   "provider": {
    "array": 1,
    "command": 1,
-   "string": 1,
-   "sessaomigracaoconfig": 1
+   "sessaomigracaoconfig": 1,
+   "string": 1
   },
   "ssapwss": {
+   "wss": 1,
    "opencode": 1,
-   "50ut8050psa": 1,
-   "wss": 1
+   "50ut8050psa": 1
   },
   "50ut8050psa": {
    "wss": 1,
-   "opencode": 1,
-   "ssapwss": 1
-  },
-  "tailwind": {
-   "mudam": 1,
-   "treinamentonavegacao": 1,
-   "frameworks": 1,
-   "modules": 1
+   "ssapwss": 1,
+   "opencode": 1
   },
   "frameworks": {
-   "mudam": 1,
    "tailwind": 1,
+   "mudam": 1,
    "modules": 1,
    "treinamentonavegacao": 1
   },
+  "tailwind": {
+   "frameworks": 1,
+   "treinamentonavegacao": 1,
+   "mudam": 1,
+   "modules": 1
+  },
   "modules": {
    "frameworks": 1,
-   "mudam": 1,
    "tailwind": 1,
+   "mudam": 1,
    "treinamentonavegacao": 1
   },
-  "posicao": {
-   "treinamentonavegacao": 1,
-   "instavel": 1,
+  "filho": {
    "mudam": 1,
-   "filho": 1
+   "posicao": 1,
+   "treinamentonavegacao": 1,
+   "instavel": 1
+  },
+  "posicao": {
+   "filho": 1,
+   "mudam": 1,
+   "treinamentonavegacao": 1,
+   "instavel": 1
   },
   "instavel": {
-   "posicao": 1,
+   "filho": 1,
    "mudam": 1,
-   "treinamentonavegacao": 1,
-   "filho": 1
-  },
-  "filho": {
    "posicao": 1,
-   "instavel": 1,
-   "mudam": 1,
    "treinamentonavegacao": 1
   },
   "pattern": {
    "androidpuresdk": 2
   },
   "diagnosticos": {
-   "arquivos": 1,
    "leraprendizado": 1,
    "json": 1,
-   "corrupcao": 1
+   "corrupcao": 1,
+   "arquivos": 1
   },
   "corrupcao": {
-   "arquivos": 1,
    "leraprendizado": 1,
+   "diagnosticos": 1,
    "json": 1,
-   "diagnosticos": 1
+   "arquivos": 1
   },
   "channel": {
    "space": 1,
-   "mp3player": 1,
    "second": 1,
+   "mp3player": 1,
    "double": 1
   },
-  "diretamente": {
-   "treinamentonavegacao": 2,
+  "keys": {
    "send": 1,
-   "keys": 1,
+   "treinamentonavegacao": 1,
    "aceitam": 1,
-   "inicial": 1,
-   "tela": 1,
-   "pula": 1
+   "diretamente": 1
   },
   "send": {
-   "diretamente": 1,
+   "keys": 1,
    "aceitam": 1,
-   "treinamentonavegacao": 1,
-   "keys": 1
-  },
-  "keys": {
    "diretamente": 1,
-   "aceitam": 1,
-   "treinamentonavegacao": 1,
-   "send": 1
+   "treinamentonavegacao": 1
   },
   "aceitam": {
+   "keys": 1,
    "diretamente": 1,
-   "treinamentonavegacao": 1,
    "send": 1,
-   "keys": 1
+   "treinamentonavegacao": 1
+  },
+  "diretamente": {
+   "aceitam": 1,
+   "keys": 1,
+   "send": 1,
+   "treinamentonavegacao": 2,
+   "pula": 1,
+   "tela": 1,
+   "inicial": 1
   },
   "uteis": {
+   "sao": 1,
    "verificar": 1,
-   "perguntou": 1,
    "opencode": 1,
-   "sao": 1
+   "perguntou": 1
   },
   "perguntou": {
-   "uteis": 1,
-   "verificar": 1,
+   "opencode": 1,
    "sao": 1,
-   "opencode": 1
-  },
-  "album": {
-   "words": 1,
-   "mp3player": 1,
-   "chars": 1,
-   "overlap": 1
-  },
-  "words": {
-   "album": 1,
-   "mp3player": 1,
-   "chars": 1,
-   "overlap": 1
+   "uteis": 1,
+   "verificar": 1
   },
   "chars": {
-   "album": 1,
    "words": 1,
+   "overlap": 1,
    "mp3player": 1,
-   "overlap": 1
+   "album": 1
+  },
+  "words": {
+   "chars": 1,
+   "album": 1,
+   "overlap": 1,
+   "mp3player": 1
   },
   "overlap": {
-   "album": 1,
-   "mp3player": 1,
    "chars": 1,
-   "words": 1
+   "album": 1,
+   "words": 1,
+   "mp3player": 1
+  },
+  "album": {
+   "chars": 1,
+   "words": 1,
+   "overlap": 1,
+   "mp3player": 1
   },
   "salvo": {
-   "default": 1,
-   "androidpuresdk": 1,
    "arquivo": 1,
-   "nao": 1
+   "androidpuresdk": 1,
+   "nao": 1,
+   "default": 1
   },
   "independentes": {
-   "layout": 1,
+   "sao": 1,
    "tab": 1,
-   "treinamentonavegacao": 1,
-   "sao": 1
+   "layout": 1,
+   "treinamentonavegacao": 1
   },
   "conteudo": {
-   "treinamentonavegacao": 1,
-   "onipresentes": 1,
    "sao": 1,
-   "oculto": 1
+   "oculto": 1,
+   "treinamentonavegacao": 1,
+   "onipresentes": 1
   },
   "onipresentes": {
    "conteudo": 1,
-   "treinamentonavegacao": 1,
+   "oculto": 1,
    "sao": 1,
-   "oculto": 1
-  },
-  "run": {
-   "stdout": 1,
-   "writing": 1,
-   "session": 1,
-   "field": 1
-  },
-  "stdout": {
-   "run": 1,
-   "writing": 1,
-   "session": 1,
-   "field": 1
-  },
-  "writing": {
-   "run": 1,
-   "stdout": 1,
-   "session": 1,
-   "field": 1
+   "treinamentonavegacao": 1
   },
   "session": {
-   "run": 1,
    "stdout": 1,
    "writing": 1,
    "field": 1,
-   "maps": 1,
-   "names": 1,
+   "run": 1,
    "tool": 1,
+   "names": 1,
+   "maps": 1,
    "handlers": 1,
-   "objects": 1,
    "array": 1,
-   "object": 1,
+   "objects": 1,
    "single": 1,
-   "scripts": 1,
+   "object": 1,
    "documentos": 1,
    "midia": 1,
-   "ferramentas": 1
+   "ferramentas": 1,
+   "scripts": 1
+  },
+  "stdout": {
+   "session": 1,
+   "field": 1,
+   "run": 1,
+   "writing": 1
+  },
+  "writing": {
+   "session": 1,
+   "field": 1,
+   "run": 1,
+   "stdout": 1
   },
   "field": {
+   "session": 1,
    "run": 1,
    "stdout": 1,
-   "writing": 1,
-   "session": 1
+   "writing": 1
+  },
+  "run": {
+   "field": 1,
+   "session": 1,
+   "stdout": 1,
+   "writing": 1
   },
   "initialize": {
-   "sessaoprovidermanager": 1,
    "qualquer": 1,
+   "sessaoprovidermanager": 1,
    "comando": 1
   },
-  "maps": {
-   "names": 1,
-   "tool": 1,
+  "tool": {
    "session": 1,
+   "names": 1,
+   "maps": 1,
    "handlers": 1
   },
   "names": {
-   "maps": 1,
-   "tool": 1,
    "session": 1,
+   "tool": 1,
+   "maps": 1,
    "handlers": 1
   },
-  "tool": {
-   "maps": 1,
-   "names": 1,
+  "maps": {
    "session": 1,
+   "names": 1,
+   "tool": 1,
    "handlers": 1
   },
   "handlers": {
-   "maps": 1,
+   "session": 1,
    "names": 1,
-   "tool": 1,
-   "session": 1
+   "maps": 1,
+   "tool": 1
   },
   "permissao": {
+   "android": 1,
    "treinamentonavegacao": 1,
    "stock": 1,
-   "android": 1,
    "adicionais": 1
   },
   "stock": {
-   "permissao": 1,
    "android": 1,
+   "permissao": 1,
    "treinamentonavegacao": 1,
    "adicionais": 1
   },
   "adicionais": {
-   "permissao": 1,
    "android": 1,
+   "permissao": 1,
    "treinamentonavegacao": 1,
    "stock": 1
   },
   "falhas": {
-   "misteriosas": 1,
    "treinamentonavegacao": 1,
+   "misteriosas": 1,
    "causam": 1
   },
   "misteriosas": {
    "falhas": 1,
-   "treinamentonavegacao": 1,
-   "causam": 1
+   "causam": 1,
+   "treinamentonavegacao": 1
   },
   "len": {
+   "grid": 1,
    "androidpuresdk": 1,
    "insert": 1,
-   "comma": 1,
-   "grid": 1
+   "comma": 1
   },
   "insert": {
+   "grid": 1,
    "androidpuresdk": 1,
    "len": 1,
-   "comma": 1,
-   "grid": 1
+   "comma": 1
   },
   "comma": {
    "androidpuresdk": 1,
    "len": 1,
-   "insert": 1,
-   "grid": 1
+   "grid": 1,
+   "insert": 1
+  },
+  "expoem": {
+   "arvore": 1,
+   "nao": 1,
+   "treinamentonavegacao": 1,
+   "acessibilidade": 1
   },
   "acessibilidade": {
    "arvore": 1,
-   "treinamentonavegacao": 1,
    "expoem": 1,
-   "nao": 1
-  },
-  "expoem": {
-   "acessibilidade": 1,
-   "arvore": 1,
-   "treinamentonavegacao": 1,
-   "nao": 1
+   "nao": 1,
+   "treinamentonavegacao": 1
   },
   "objects": {
+   "array": 1,
    "session": 1,
    "single": 1,
-   "array": 1,
    "object": 1
-  },
-  "single": {
-   "objects": 1,
-   "array": 1,
-   "object": 1,
-   "session": 1
   },
   "object": {
    "array": 1,
@@ -8413,110 +8407,116 @@
    "session": 1,
    "single": 1
   },
-  "inicial": {
-   "diretamente": 1,
-   "treinamentonavegacao": 1,
-   "tela": 1,
-   "pula": 1
+  "single": {
+   "array": 1,
+   "objects": 1,
+   "session": 1,
+   "object": 1
   },
   "pula": {
+   "tela": 1,
+   "treinamentonavegacao": 1,
    "diretamente": 1,
-   "inicial": 1,
-   "treinamentonavegacao": 1,
-   "tela": 1
+   "inicial": 1
   },
-  "notepad": {
-   "treinamentonavegacao": 1,
-   "multiplas": 1,
-   "chrome": 1,
-   "janelas": 1
+  "inicial": {
+   "diretamente": 1,
+   "pula": 1,
+   "tela": 1,
+   "treinamentonavegacao": 1
   },
   "multiplas": {
-   "notepad": 1,
    "treinamentonavegacao": 1,
+   "notepad": 1,
    "chrome": 1,
    "janelas": 1
   },
-  "chrome": {
-   "notepad": 1,
+  "notepad": {
    "multiplas": 1,
+   "chrome": 1,
    "janelas": 1,
    "treinamentonavegacao": 1
   },
-  "listener": {
-   "handler": 1,
-   "capabilities": 1,
-   "annotation": 1,
-   "mp3player": 1
+  "chrome": {
+   "multiplas": 1,
+   "treinamentonavegacao": 1,
+   "janelas": 1,
+   "notepad": 1
   },
   "annotation": {
-   "handler": 1,
+   "listener": 1,
    "capabilities": 1,
    "mp3player": 1,
-   "listener": 1
+   "handler": 1
   },
-  "tempo": {
-   "treinamentonavegacao": 1,
-   "corrida": 1,
-   "resolverem": 1,
-   "condicoes": 1
-  },
-  "corrida": {
-   "tempo": 1,
-   "treinamentonavegacao": 1,
-   "resolverem": 1,
-   "condicoes": 1
+  "listener": {
+   "annotation": 1,
+   "mp3player": 1,
+   "capabilities": 1,
+   "handler": 1
   },
   "resolverem": {
-   "corrida": 1,
    "tempo": 1,
    "treinamentonavegacao": 1,
-   "condicoes": 1
+   "condicoes": 1,
+   "corrida": 1
+  },
+  "tempo": {
+   "resolverem": 1,
+   "condicoes": 1,
+   "treinamentonavegacao": 1,
+   "corrida": 1
   },
   "condicoes": {
+   "resolverem": 1,
    "tempo": 1,
-   "corrida": 1,
    "treinamentonavegacao": 1,
-   "resolverem": 1
+   "corrida": 1
+  },
+  "corrida": {
+   "condicoes": 1,
+   "resolverem": 1,
+   "tempo": 1,
+   "treinamentonavegacao": 1
   },
   "distinguir": {
+   "conexao": 1,
    "persistente": 1,
    "estado": 1,
-   "opencode": 1,
-   "conexao": 1
-  },
-  "camufladas": {
-   "opencode": 1,
-   "limpeza": 1,
-   "nvapi": 1,
-   "vazar": 1
+   "opencode": 1
   },
   "limpeza": {
-   "camufladas": 1,
-   "opencode": 1,
    "nvapi": 1,
-   "vazar": 1
+   "opencode": 1,
+   "vazar": 1,
+   "camufladas": 1
   },
   "nvapi": {
-   "camufladas": 1,
    "limpeza": 1,
+   "camufladas": 1,
    "opencode": 1,
    "vazar": 1
   },
   "vazar": {
-   "camufladas": 1,
-   "opencode": 1,
    "limpeza": 1,
-   "nvapi": 1
+   "camufladas": 1,
+   "nvapi": 1,
+   "opencode": 1
+  },
+  "camufladas": {
+   "limpeza": 1,
+   "nvapi": 1,
+   "opencode": 1,
+   "vazar": 1
   },
   "primary": {
+   "sessaoprovidermanager": 1,
    "automatico": 1,
-   "120s": 1,
-   "sessaoprovidermanager": 1
+   "120s": 1
   },
   "120s": {
-   "automatico": 1,
    "primary": 1,
+   "automatico": 1,
    "sessaoprovidermanager": 1
   },
   "encapsulam": {
@@ -8529,26 +8529,26 @@
    "androidpuresdk": 1
   },
   "pagina": {
-   "load": 1,
    "treinamentonavegacao": 1,
+   "load": 1,
    "dom": 1,
    "event": 1
   },
   "event": {
    "dom": 1,
-   "load": 1,
    "pagina": 1,
-   "treinamentonavegacao": 1
-  },
-  "referencias": {
    "treinamentonavegacao": 1,
-   "casos": 1,
-   "invalidando": 1,
-   "dom": 1
+   "load": 1
   },
   "invalidando": {
    "casos": 1,
+   "treinamentonavegacao": 1,
    "referencias": 1,
+   "dom": 1
+  },
+  "referencias": {
+   "casos": 1,
+   "invalidando": 1,
    "treinamentonavegacao": 1,
    "dom": 1
   },
@@ -8570,115 +8570,115 @@
   },
   "codigo": {
    "implementacao": 1,
-   "jarvis": 1,
-   "leraprendizado": 1
+   "leraprendizado": 1,
+   "jarvis": 1
   },
   "implementacao": {
    "codigo": 1,
-   "jarvis": 1,
-   "leraprendizado": 1
+   "leraprendizado": 1,
+   "jarvis": 1
   },
   "texto": {
-   "tem": 1,
-   "robusta": 1,
    "treinamentonavegacao": 1,
-   "nao": 1
+   "nao": 1,
+   "robusta": 1,
+   "tem": 1
   },
   "robusta": {
-   "tem": 1,
-   "treinamentonavegacao": 1,
+   "nao": 1,
    "texto": 1,
-   "nao": 1
-  },
-  "sacrificar": {
-   "velocidade": 1,
    "treinamentonavegacao": 1,
-   "melhora": 1,
-   "confiabilidade": 1
-  },
-  "velocidade": {
-   "sacrificar": 1,
-   "melhora": 1,
-   "confiabilidade": 1,
-   "treinamentonavegacao": 1
-  },
-  "melhora": {
-   "sacrificar": 1,
-   "velocidade": 1,
-   "treinamentonavegacao": 1,
-   "confiabilidade": 1
+   "tem": 1
   },
   "confiabilidade": {
-   "sacrificar": 1,
    "velocidade": 1,
    "melhora": 1,
-   "treinamentonavegacao": 1
+   "treinamentonavegacao": 1,
+   "sacrificar": 1
   },
-  "aprende": {
-   "enquanto": 1,
-   "crescer": 1,
-   "opencode": 1,
-   "ler": 1
+  "velocidade": {
+   "confiabilidade": 1,
+   "melhora": 1,
+   "treinamentonavegacao": 1,
+   "sacrificar": 1
+  },
+  "melhora": {
+   "confiabilidade": 1,
+   "velocidade": 1,
+   "treinamentonavegacao": 1,
+   "sacrificar": 1
+  },
+  "sacrificar": {
+   "confiabilidade": 1,
+   "melhora": 1,
+   "velocidade": 1,
+   "treinamentonavegacao": 1
   },
   "enquanto": {
-   "aprende": 1,
-   "opencode": 1,
    "ler": 1,
-   "crescer": 1
+   "opencode": 1,
+   "crescer": 1,
+   "aprende": 1
   },
   "crescer": {
-   "aprende": 1,
+   "ler": 1,
    "enquanto": 1,
    "opencode": 1,
-   "ler": 1
+   "aprende": 1
   },
-  "combobox": {
-   "setcursel": 1,
-   "requer": 1,
-   "treinamentonavegacao": 1,
-   "click": 1
-  },
-  "setcursel": {
-   "combobox": 1,
-   "treinamentonavegacao": 1,
-   "requer": 1,
-   "click": 1
+  "aprende": {
+   "ler": 1,
+   "enquanto": 1,
+   "crescer": 1,
+   "opencode": 1
   },
   "requer": {
-   "combobox": 1,
    "setcursel": 1,
    "treinamentonavegacao": 1,
-   "click": 1
+   "click": 1,
+   "combobox": 1
+  },
+  "setcursel": {
+   "requer": 1,
+   "click": 1,
+   "treinamentonavegacao": 1,
+   "combobox": 1
   },
   "click": {
-   "combobox": 1,
-   "setcursel": 1,
    "requer": 1,
+   "setcursel": 1,
+   "treinamentonavegacao": 1,
+   "combobox": 1
+  },
+  "combobox": {
+   "click": 1,
+   "requer": 1,
+   "setcursel": 1,
    "treinamentonavegacao": 1
-  },
-  "teclado": {
-   "treinamentonavegacao": 1,
-   "foco": 1,
-   "elementos": 1,
-   "consomem": 1
-  },
-  "foco": {
-   "teclado": 1,
-   "treinamentonavegacao": 1,
-   "elementos": 1,
-   "consomem": 1
   },
   "consomem": {
    "teclado": 1,
+   "elementos": 1,
    "foco": 1,
+   "treinamentonavegacao": 1
+  },
+  "teclado": {
+   "consomem": 1,
    "treinamentonavegacao": 1,
-   "elementos": 1
+   "elementos": 1,
+   "foco": 1
+  },
+  "foco": {
+   "consomem": 1,
+   "elementos": 1,
+   "teclado": 1,
+   "treinamentonavegacao": 1
   },
   "automation": {
    "mudar": 1,
+   "localizacao": 1,
    "pode": 1,
-   "treinamentonavegacao": 1,
-   "localizacao": 1
+   "treinamentonavegacao": 1
   },
   "localizacao": {
    "automation": 1,
@@ -8688,15 +8688,15 @@
   },
   "midia": {
    "documentos": 1,
-   "scripts": 1,
    "session": 1,
+   "scripts": 1,
    "ferramentas": 1
   },
   "ferramentas": {
    "documentos": 1,
-   "scripts": 1,
+   "session": 1,
    "midia": 1,
-   "session": 1
+   "scripts": 1
   }
  },
  "fontes": {
@@ -8936,7 +8936,7 @@
    },
    "architecture": {
     "n_notas": 3,
-    "junto_com": "contratos",
+    "junto_com": "externos",
     "frequencia": 1
    },
    "android": {
@@ -8952,4 +8952,4 @@
   }
  },
  "n_notas": 319
-}
+}  
