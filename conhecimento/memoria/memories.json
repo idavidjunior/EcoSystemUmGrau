@@ -2208,5 +2208,45 @@
     "access_count": 0,
     "created_at": "2026-08-07T06:03:44.510597",
     "last_accessed": "2026-08-07T06:03:44.510597"
+  },
+  {
+    "id": 141,
+    "kind": "decisao",
+    "task": "Bridge Resilience Migration Guide Created",
+    "summary": "Guia de migracao completo criado com: export/import de configs, pacote deploy (systemd, LaunchAgent), auto-start Windows, documentacao completa",
+    "project": "",
+    "tags": [
+      "completa",
+      "documentacao",
+      "windows",
+      "start",
+      "auto",
+      "launchagent"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T06:07:24.702731",
+    "last_accessed": "2026-08-07T06:07:24.702731"
+  },
+  {
+    "id": 142,
+    "kind": "padrao",
+    "task": "Multi-Protocol Resilience Pattern",
+    "summary": "Sistema de failover cascata conecta 12 protocolos diferentes (ADB, Tailscale, SSH, HTTP, DNS, MQTT, WebSocket, Serial, VPN) com health checks a cada 15-30s",
+    "project": "",
+    "tags": [
+      "30s",
+      "checks",
+      "health",
+      "vpn",
+      "serial",
+      "websocket"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T06:07:24.988894",
+    "last_accessed": "2026-08-07T06:07:24.988894"
   }
 ]
