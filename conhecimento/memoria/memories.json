@@ -560,7 +560,7 @@
   },
   {
     "id": 56,
-    "kind": "decisoes",
+    "kind": "decisao",
     "task": "Pontes inter-cluster no Cerebro Vivo",
     "summary": "Adicionei BRIDGES_CLUSTERS curadas ao gerador do grafo: 13 pontes semantica entre clusters (cognicao->android/ler/mp3/ecossistema, ler->android UTF-8, etc) + hub de cognicao ligando a todos os hubs. Resultado: 12 arestas inter-cluster (antes 0), pares de clusters conectados 0->7, componentes 67->55. Resolucao segura: fragmento de rotulo deve casar exatamente 1 no, senao a ponte e ignorada. Regenerado docs/grafo.html.",
     "project": "",
@@ -586,7 +586,7 @@
   },
   {
     "id": 58,
-    "kind": "padrão",
+    "kind": "padrao",
     "task": "Widget desktop do grafo do conhecimento em tempo real",
     "summary": "Criado scripts/widget_grafo.py: abre docs/grafo.html num janela pywebview e monitora knowledge_graph.json + conhecimento/. Arquitetura: injeta bloco JS no HTML que chama webview.api.versao() a cada 2s; se a versao composta dos mtimes das fontes muda, a pagina recarrega com cache-bypass. Versao = join de mtime_ns de knowledge_graph.json, max mtime de conhecimento/** e mtime do próprio grafo gerado. pywebview.start() roda o mainloop no thread principal e a bridge (window.pywebview.api) resolve JS<->Python sem conflito de threads. Gerar via subprocess [sys.executable, GEN_SCRIPT, OUTPUT]. Valdado: sintaxe OK, versao muda ao toque na fonte e fica estavel sem mudanca, janela abre e processo nao crasha ao tocar fonte.",
     "project": "",
@@ -599,7 +599,7 @@
   },
   {
     "id": 59,
-    "kind": "decisão",
+    "kind": "decisao",
     "task": "Widget desktop do grafo: redimensionavel e persistente",
     "summary": "Aprimorado scripts/widget_grafo.py para widget estilo Rainmeter no Windows. Janela frameless (frameless=True), ancorada ATRAS das outras janelas via SetWindowPos HWND_BOTTOM persistente num loop (1s). Controles (header/legenda) ocultos por padrao (CSS opacity:0 + pointer-events:none); clique DIRETO do mouse (contextmenu) alterna classe .desktop no body que revela header + alca. Alca de redimensionamento no canto (div #mk-resize) chama pywebview.api.redimensionar(w,h) -> win.resize(). Geometria (x,y,width,height) persistida em docs/grafo_widget_geometria.json, restaurada no create_window e re-salva por watcher de 1s + no fechamento. \n\nLICAO IMPORTANTE: ancoragem Progman/WorkerW (SetParent p/ WorkerW) NAO funciona de forma confiavel com pywebview 6 (EdgeChromium/WebView2): o WebView2 cria janelas-filha proprias que resistem ao reparent p/ WorkerW, parent fica None. A abordagem robusta e manter HWND_BOTTOM + re-baixamento continuo pelo estilo WS_EX_TOOLWINDOW|WS_EX_NOACTIVATE. FindWindowW(None,title) pode retornar 0 para janelas ancoradas; usar EnumWindows por classe/processo. ctypes.wintypes precisa import (from ctypes import wintypes) nao ctypes.wintypes.",
     "project": "",
@@ -625,7 +625,7 @@
   },
   {
     "id": 61,
-    "kind": "decisão",
+    "kind": "decisao",
     "task": "Widget do grafo: arasta livre + persistencia de posicao (solucao definitiva)",
     "summary": "Usuario queria ARRASTAR o widget livremente pelo desktop e que a posicao persistisse apos reiniciar. Diagnostico do travamento anterior: a ancoragem Progman/WorkerW (SetParent para WorkerW) mandava a janela para ATRAS dos icones do desktop, tornando-a inutilizavel/fria - parecia 'travada'. Solucao definitiva: REMOVER toda ancoragem e tornala uma janela top-level normal (parent=0), flutuante. Arrasto via JS: barra #mk-drag de 16px no topo, mousedown+mousemove computa nova posicao (win.screenX + delta) e chama api.mover(x,y) -> win.move(). Redimensionar via alca #mk-resize -> win.resize(). Geometria persistida a cada mover/resize/close via JS que chama bridge.guardar_geo(screenX,screenY,innerW,innerH); arquivo docs/grafo_widget_geometria.json. IMPORTANTE: mover()/resize() nao disparam a recursao infinita (essa vinha de LER win.width/height/native por getter, nao de chamar move/resize). Resultado: janela top-level visivel, viva >24s, posicao 683,0 persistida. Removidas todas as funcoes de ancoragem (_anchor, _find_workerw, _keep_behind) e imports ctypes/wintypes/time/threading nao mais necessarios.",
     "project": "",
@@ -891,7 +891,7 @@
   },
   {
     "id": 75,
-    "kind": "como",
+    "kind": "padrao",
     "task": "Watchdog persistente via Start-Process com aspas embutidas",
     "summary": "Start-Process com ArgumentList quebra caminho com espacos (cada espaco vira argumento). Solucao: passar '-File \" caminho com espaco\\'",
     "project": "",
@@ -1091,7 +1091,7 @@
   },
   {
     "id": 85,
-    "kind": "mostra",
+    "kind": "decisao",
     "task": "Labels ocultas por padrao + botao de ocultar menus persistente no widget",
     "summary": "Semantica invertida: labels (etiquetas) agora DESATIVADAS por padrao. Oculto = localStorage.getItem('labelsOcultos') !== 'false' (ausente/'true'=oculto; so 'false' explicito mostra). Aplicado em todas as leituras: aplicarLabels, ctrl.onmousedown (botao T), _ajustarFontes, restore_initial_state, update_labels_on_reload. Botao 'T' ativa (",
     "project": "",
