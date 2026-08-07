@@ -2948,5 +2948,25 @@
     "access_count": 0,
     "created_at": "2026-08-07T10:41:42.496657",
     "last_accessed": "2026-08-07T10:41:42.496657"
+  },
+  {
+    "id": 178,
+    "kind": "erro",
+    "task": "Bug 426: health-check HTTP na porta WS da bridge",
+    "summary": "Causa raiz: universal_bridge fazia check_http em http://127.0.0.1:8765 (porta WebSocket) gerando '426 Upgrade Required' 1/min no log. Corrigido com checker ws_health (handshake WS real via websockets.sync.client) em core.py; endpoint api_local trocado para ws://127.0.0.1:8765 no config de disco e template. Ultimo 426 11:14:22, zero desde entao.",
+    "project": "",
+    "tags": [
+      "log",
+      "min",
+      "required",
+      "upgrade",
+      "gerando",
+      "raiz"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T11:18:29.745978",
+    "last_accessed": "2026-08-07T11:18:29.745978"
   }
 ]

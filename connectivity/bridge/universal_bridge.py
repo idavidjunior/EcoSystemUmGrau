@@ -84,8 +84,8 @@ class UniversalBridge:
         )
 
         self.endpoints["api_local"] = ConnectionEndpoint(
-            id="api_local", type="http", name="API Local", primary=True,
-            config={"url": "http://127.0.0.1:8765/health", "expected_status": 200},
+            id="api_local", type="ws_health", name="Bridge Local (WS)", primary=True,
+            config={"url": "ws://127.0.0.1:8765", "expected_status": 200},
             fallback_chain=["api_remote", "http_polling"]
         )
 

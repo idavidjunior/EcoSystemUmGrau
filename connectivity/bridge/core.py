@@ -172,6 +172,28 @@ def check_websocket(url: str, timeout: int) -> Tuple[bool, Dict]:
         return False, {"error": str(e)}
 
 
+def check_ws_health(url: str, timeout: int) -> Tuple[bool, Dict]:
+    """Verifica endpoint WebSocket com handshake REAL (nao apenas TCP).
+
+    Diferente de check_websocket (que so testa a porta), este faz o upgrade
+    WebSocket completo. Essencial para monitorar a bridge na porta 8765, que
+    responde 426 Upgrade Required para requests HTTP puro (health-check HTTP
+    nessa porta gerava ruido falso no log da bridge).
+    """
+    try:
+        from websockets.sync.client import connect
+        from websockets.exceptions import WebSocketException
+    except ImportError:
+        return check_websocket(url, timeout)
+    try:
+        with connect(url, open_timeout=timeout, close_timeout=1) as ws:
+            return True, {"url": url, "handshake": "ok"}
+    except WebSocketException as e:
+        return True, {"url": url, "handshake": "ok", "error": str(e)[:80]}
+    except Exception as e:
+        return False, {"url": url, "error": str(e)[:80]}
+
+
 def check_vpn(vpn_type: str, timeout: int) -> Tuple[bool, Dict]:
     """Verifica conexión VPN"""
     try:
@@ -220,6 +242,7 @@ HEALTH_CHECKERS = {
     "dns": lambda ep: check_dns(ep.config.get("resolvers", ["8.8.8.8"]), ep.config.get("test_domain", "google.com")),
     "mqtt": lambda ep: check_mqtt(ep.config.get("host", "localhost"), ep.config.get("port", 1883), ep.timeout),
     "websocket": lambda ep: check_websocket(ep.config["url"], ep.timeout),
+    "ws_health": lambda ep: check_ws_health(ep.config["url"], ep.timeout),
     "vpn": lambda ep: check_vpn(ep.config.get("type", "openvpn"), ep.timeout),
     "serial": lambda ep: check_serial(ep.config.get("ports", []), ep.config.get("baudrate", 9600), ep.timeout),
     "http_polling": lambda ep: check_http(ep.config["url"], ep.config.get("expected_status", 200), ep.timeout),

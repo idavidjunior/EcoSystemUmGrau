@@ -42,11 +42,11 @@
     },
     {
       "id": "api_local",
-      "type": "http",
+      "type": "ws_health",
       "name": "API Local (Jarvis Bridge)",
       "primary": true,
       "config": {
-        "url": "http://127.0.0.1:8765/",
+        "url": "ws://127.0.0.1:8765",
         "expected_status": 200,
         "timeout": 5
       },
