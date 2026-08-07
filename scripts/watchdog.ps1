@@ -88,6 +88,143 @@ function Get-BridgePid {
     return [int]$pidStr
 }
 
+# =====================================================================
+# CERTIFICAÇÃO FORENSE DE LIXO / ÓRFÃO
+# ---------------------------------------------------------------------
+# Antes de matar QUALQUER processo, o watchdog certifica que ele é lixo
+# de verdade. Só libera o kill se TODOS os critérios forem atendidos.
+# Retorna @{ Liberar = bool; Motivos = [string[]] } — a razão de cada
+# critério falhar ou passar, para auditoria no log.
+# =====================================================================
+function Test-ForensicoLixo {
+    param(
+        [int]$Pid,
+        [string]$NomeEsperado,          # nome do processo (ex.: python, opencode)
+        [int]$IdadeMinimaSeg = 30,      # não mata processo recém-criado
+        [int]$PortaListen = $null,      # se definida, o socket órfão desta porta é o alvo
+        [string[]]$CaminhoProtegido = @()  # caminhos absolutos intocáveis
+    )
+    $motivos = New-Object System.Collections.Generic.List[string]
+    $libera = $true
+
+    # 1) Processo existe? Se não existe, nada a fazer (já morreu).
+    $proc = Get-Process -Id $Pid -ErrorAction SilentlyContinue
+    if (-not $proc) {
+        $motivos.Add("processo inexistente (ja morto)")
+        return @{ Liberar = $false; Motivos = $motivos.ToArray() }
+    }
+    # 2) Nome confere com o esperado? Nome diferente = não é nosso alvo.
+    if ($NomeEsperado -and $proc.ProcessName -ne $NomeEsperado) {
+        $motivos.Add("nome diverge (esperado '$NomeEsperado', tem '$($proc.ProcessName)')")
+        $libera = $false
+    }
+    # 3) Caminho protegido? Jamais tocar (ex.: desktop).
+    $cim = Get-CimInstance Win32_Process -Filter "ProcessId=$Pid" -ErrorAction SilentlyContinue
+    if ($cim -and $cim.ExecutablePath) {
+        foreach ($prot in $CaminhoProtegido) {
+            if ($cim.ExecutablePath -match [regex]::Escape($prot)) {
+                $motivos.Add("caminho protegido: $($cim.ExecutablePath)")
+                $libera = $false
+            }
+        }
+    }
+    # 4) Tem janela visível? Processo com UI ativa NUNCA é lixo.
+    if ($proc.MainWindowHandle -ne 0 -or $proc.MainWindowTitle) {
+        $motivos.Add("tem janela ativa: '$($proc.MainWindowTitle)'")
+        $libera = $false
+    }
+    # 5) Idade mínima: processo recém-iniciado pode ser o que o próprio
+    #    watchdog acabou de criar (evita matar o que acabamos de subir).
+    $idadeSeg = 0
+    try {
+        $inicio = $cim.CreationDate
+        if ($inicio) {
+            $inicioDt = [Management.ManagementDateTimeConverter]::ToDateTime($inicio)
+            $idadeSeg = ((Get-Date) - $inicioDt).TotalSeconds
+        }
+    } catch { }
+    if ($idadeSeg -lt $IdadeMinimaSeg) {
+        $motivos.Add("recém-criado ($([math]::Round($idadeSeg))s < ${IdadeMinimaSeg}s)")
+        $libera = $false
+    }
+    # 6) Tem processos filhos vivos? Processo com filhos ativos é pai em uso.
+    $filhos = Get-CimInstance Win32_Process -Filter "ParentProcessId=$Pid" -ErrorAction SilentlyContinue
+    if ($filhos) {
+        $filhosVivos = $filhos | Where-Object {
+            (Get-Process -Id $_.ProcessId -ErrorAction SilentlyContinue) -ne $null
+        }
+        if ($filhosVivos) {
+            $motivos.Add("tem $($filhosVivos.Count) filhos vivos (atividade real)")
+            $libera = $false
+        }
+    }
+    # 7) Tem conexões de rede ativas (não-listen)? Uso real de rede = não é lixo.
+    $conns = Get-NetTCPConnection -OwningProcess $Pid -ErrorAction SilentlyContinue
+    $conexoesAtivas = $conns | Where-Object { $_.State -in @("Established", "CloseWait", "TimeWait", "FinWait1", "FinWait2", "SynSent") }
+    if ($conexoesAtivas) {
+        $motivos.Add("tem $($conexoesAtivas.Count) conexoes de rede ativas (Ex.: $($conexoesAtivas[0].RemoteAddress):$($conexoesAtivas[0].RemotePort))")
+        $libera = $false
+    }
+    # 8) Está escutando uma porta de SERVIÇO (além da órfã)? Porta listen com
+    #    processo vivo que não é a porta órfã alvo = servidor em uso, não matar.
+    $connsListen = $conns | Where-Object { $_.State -eq "Listen" }
+    foreach ($cl in $connsListen) {
+        if ($PortaListen -and $cl.LocalPort -eq $PortaListen) {
+            # Esta é exatamente a porta órfã que queremos limpar — permitido.
+            $motivos.Add("socket alvo na porta $PortaListen identificado (processo dono vivo)")
+        } else {
+            $motivos.Add("escutando porta $($cl.LocalPort) (servico possivelmente em uso)")
+            $libera = $false
+        }
+    }
+    # 9) Processo pai está vivo? Sem pai vivo + sem filhos + sem rede + sem janela
+    #    = candidato a órfão de verdade. Pai vivo não desqualifica sozinho, mas
+    #    é auditado.
+    $pai = $null
+    if ($cim) {
+        $pai = Get-Process -Id $cim.ParentProcessId -ErrorAction SilentlyContinue
+        if ($pai) {
+            $motivos.Add("pai vivo: $($pai.ProcessName) (PID $($pai.Id)) — supervisionado")
+        } else {
+            $motivos.Add("processo pai morto — orfao de verdade")
+        }
+    }
+    # 10) Responde a health-check HTTP? Se servir uma porta e responder, está vivo.
+    if ($PortaListen) {
+        $resp = Invoke-WebRequest -Uri "http://127.0.0.1:$PortaListen/global/health" -UseBasicParsing -TimeoutSec 3 -ErrorAction SilentlyContinue
+        if ($resp -and $resp.StatusCode -ge 200 -and $resp.StatusCode -lt 300) {
+            $motivos.Add("responde health-check HTTP na porta $PortaListen")
+            $libera = $false
+        }
+    }
+    if (-not $motivos) {
+        $motivos.Add("nenhum indício de atividade — candidato classificado como lixo")
+    }
+    return @{ Liberar = $libera; Motivos = $motivos.ToArray() }
+}
+
+function Invoke-KillCertificado {
+    param(
+        [int]$Pid,
+        [string]$Alvo,
+        [string]$NomeEsperado,
+        [int]$IdadeMinimaSeg = 30,
+        [int]$PortaListen = $null,
+        [string[]]$CaminhoProtegido = @()
+    )
+    $veredito = Test-ForensicoLixo -Pid $Pid -NomeEsperado $NomeEsperado `
+        -IdadeMinimaSeg $IdadeMinimaSeg -PortaListen $PortaListen `
+        -CaminhoProtegido $CaminhoProtegido
+    if ($veredito.Liberar) {
+        Write-Log "KILL CERTIFICADO [$Alvo PID $Pid]: " + ($veredito.Motivos -join "; ")
+        Stop-Process -Id $Pid -Force -ErrorAction SilentlyContinue
+        return $true
+    } else {
+        Write-Log "KILL BLOQUEADO [$Alvo PID $Pid]: " + ($veredito.Motivos -join "; ")
+        return $false
+    }
+}
+
 Write-Log "Watchdog iniciado (intervalo: ${Interval}s, bridge: $BridgePort, serve: $ServePort)"
 
 while ($true) {
