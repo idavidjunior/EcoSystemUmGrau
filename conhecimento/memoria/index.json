@@ -3,7 +3,8 @@
     63
   ],
   "integrado": [
-    63
+    63,
+    156
   ],
   "puro": [
     63
@@ -489,7 +490,8 @@
   "memoria": [
     88,
     94,
-    113
+    113,
+    157
   ],
   "context": [
     89
@@ -1407,7 +1409,8 @@
     151,
     152,
     153,
-    154
+    154,
+    155
   ],
   "etico bloqueio": [
     150,
@@ -1424,5 +1427,48 @@
   ],
   "bloqueada": [
     154
+  ],
+  "toda": [
+    155
+  ],
+  "obrigatorio": [
+    155
+  ],
+  "etico": [
+    155
+  ],
+  "preflight": [
+    155,
+    156
+  ],
+  "resposta": [
+    155
+  ],
+  "bloco": [
+    156
+  ],
+  "tecnico": [
+    156
+  ],
+  "automatica": [
+    156
+  ],
+  "rotacao": [
+    156
+  ],
+  "inventario": [
+    157
+  ],
+  "consulta": [
+    157
+  ],
+  "erro": [
+    157
+  ],
+  "decisao": [
+    157
+  ],
+  "registro": [
+    157
   ]
 }

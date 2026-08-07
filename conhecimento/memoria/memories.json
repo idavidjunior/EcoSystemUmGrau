@@ -2488,5 +2488,65 @@
     "access_count": 0,
     "created_at": "2026-08-07T09:02:02.751637",
     "last_accessed": "2026-08-07T09:02:02.751637"
+  },
+  {
+    "id": 155,
+    "kind": "decisao",
+    "task": "Clausula Petrea de Deveres Externos",
+    "summary": "Adicionada a 9a clausula petrea a Constituicao: deveres externos (LGPD/GDPR, consentimento, privacidade por design, transparencia, nao discriminacao, acessibilidade, retencao minima, seguranca de terceiros, direito de resposta) + preflight etico obrigatorio antes de toda entrega",
+    "project": "",
+    "tags": [
+      "entrega",
+      "toda",
+      "obrigatorio",
+      "etico",
+      "preflight",
+      "resposta"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:02:42.348575",
+    "last_accessed": "2026-08-07T09:02:42.348575"
+  },
+  {
+    "id": 156,
+    "kind": "decisao",
+    "task": "Preflight Etico operacional",
+    "summary": "Gate de bloqueio etico integrado ao preflight tecnico (bloco 7). Cria politica de retencao, inventario de dados sensiveis, rotacao automatica. Teste negativo confirmou bloqueio correto.",
+    "project": "",
+    "tags": [
+      "bloco",
+      "tecnico",
+      "integrado",
+      "automatica",
+      "rotacao",
+      "preflight"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:02:42.560034",
+    "last_accessed": "2026-08-07T09:02:42.560034"
+  },
+  {
+    "id": 157,
+    "kind": "padrao",
+    "task": "Etica como gate operacional",
+    "summary": "Agente 04-etica agora exige: acionamento pre-entrega, preflight etico, registro na memoria (decisao/erro), consulta ao inventario. Etica deixou de ser declarativa.",
+    "project": "",
+    "tags": [
+      "inventario",
+      "consulta",
+      "erro",
+      "decisao",
+      "memoria",
+      "registro"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T09:02:42.763942",
+    "last_accessed": "2026-08-07T09:02:42.763942"
   }
 ]
