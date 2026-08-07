@@ -38,17 +38,9 @@ explicita por caminho (`opencode-aidesktop`) e filtro restrito a `opencode run`.
 5. **Filtro de orfaos seguro**: so mata `opencode.exe run` (CLI), nunca o desktop.
 
 ## Reestruturacao das saudacoes (jarvis_bridge.py)
-- **Estado persistente** `saudacao_estado.json`: conexoes, saudoes_hoje (max 10),
-  ultima_saudacao, ultima_saudacao_ts.
-- **`_classificar_conexao()`**: distingue PRIMEIRA vez de RECONEXAO usando 3 fontes:
-  (1) estado de saudoes (ja saudou hoje?), (2) atividade persistida via
-  `_marcar_atividade()` (atualizada a cada mensagem real, cobre o caminho rapido),
-  (3) mtime do conversa_unica.json.
-- **Prompt do LLM diferenciado**: reconexao = retomada curta de conversa, sem briefing,
-  sem "como posso ajudar", com lista de saudoes ja usadas para evitar repeticao.
-- **Fallback variado**: reconexao usa frases de retomada ("De volta, senhor...");
-  primeira vez usa o molde antigo com briefing.
-- Timeout da saudacao: 25s -> 90s (evita timeout no cold start do modelo).
+> Detalhado em `2026-08-06-saudacoes-inteligentes-reconexao-vs-primeira-vez.md`
+> (memoria #131). Estado persistente `saudacao_estado.json`, `_classificar_conexao()`
+> com 3 fontes, prompt de retomada curto na reconexao, fallback variado, timeout 90s.
 
 ## Testes realizados (100%)
 1. **Recuperacao do bridge**: derrubado -> watchdog restaurou em <60s (novo PID).
