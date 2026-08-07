@@ -2328,3 +2328,5 @@
 {"timestamp": "2026-08-07T07:26:32.889853", "epoch": 1786098392.889853, "endpoint_id": "adb_usb", "level": "OK", "message": "Endpoint saud\u00e1vel", "data": {}, "uptime_pct": 100.0}
 {"timestamp": "2026-08-07T07:26:32.991088", "epoch": 1786098392.991088, "endpoint_id": "adb_tcp", "level": "OK", "message": "Endpoint saud\u00e1vel", "data": {}, "uptime_pct": 100.0}
 {"timestamp": "2026-08-07T07:26:33.054615", "epoch": 1786098393.054615, "endpoint_id": "tailscale_exit", "level": "OK", "message": "Endpoint saud\u00e1vel", "data": {}, "uptime_pct": 100.0}
+{"timestamp": "2026-08-07T07:26:43.071539", "epoch": 1786098403.071539, "endpoint_id": "ssh_primary", "level": "WARNING", "message": "Endpoint indispon\u00edvel: unknown", "data": {}, "uptime_pct": 100.0}
+{"timestamp": "2026-08-07T07:26:43.071539", "epoch": 1786098403.071539, "endpoint_id": "ssh_primary", "level": "FAILOVER", "message": "Iniciando failover autom\u00e1tico", "data": {}, "uptime_pct": 100.0}
