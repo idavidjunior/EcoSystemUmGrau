@@ -3478,5 +3478,25 @@
     "access_count": 0,
     "created_at": "2026-08-08T17:15:37.934411",
     "last_accessed": "2026-08-08T17:15:37.934411"
+  },
+  {
+    "id": 204,
+    "kind": "erro",
+    "task": "Corrigido transporte MCP do prompt-optimization (Content-Length framing)",
+    "summary": "MCP server prompt-optimization usava JSON por linha e nunca conectava com o opencode (que usa MCP stdio com Content-Length framing). Reescrito _read_frame/_write_frame no padrao MCP; probe confirma initialize/tools/list/tools/call respondendo. Otimizador agora ativo na proxima sessao.",
+    "project": "",
+    "tags": [
+      "stdio",
+      "usa",
+      "opencode",
+      "conectava",
+      "framing",
+      "linha"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T17:34:16.340343",
+    "last_accessed": "2026-08-08T17:34:16.340343"
   }
 ]

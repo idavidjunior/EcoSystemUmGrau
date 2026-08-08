@@ -57,3 +57,7 @@ Probe MCP padrão (framing correto) agora responde:
 - Ao criar/editar MCP servers, validar com um probe que faça `initialize` + `tools/list`
   + `tools/call` usando framing, não com pipe de JSON cru.
 - A configuração no opencode.jsonc já apontava corretamente; o bug era 100% no server.
+
+## Conexoes
+
+- [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
