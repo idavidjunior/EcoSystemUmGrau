@@ -259,9 +259,11 @@ class Bridge:
         return _versao()
 
     def debug_log(self, msg: str) -> None:
-        print("[DEBUG_BRIDGE] " + msg, flush=True)
+        msg_str = "[DEBUG_BRIDGE] " + str(msg)
+        print(msg_str, flush=True)
         try:
-            with open(BASE / "docs" / "widget_log.txt", "a", encoding="utf-8") as f:
+            log_path = Path(r"C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/docs/widget_log.txt")
+            with open(log_path, "a", encoding="utf-8") as f:
                 f.write(f"{time.time():.0f} | {msg}\n")
         except Exception as e:
             print("[DEBUG_BRIDGE ERROR] " + str(e), flush=True)
