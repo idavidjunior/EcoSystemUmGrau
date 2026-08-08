@@ -1,11 +1,11 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-08T17:36:48.714649
+**Exportado em:** 2026-08-08T17:45:38.383965
 **Projetos:** 4
 **Padroes Tecnicos:** 85
 **Decisoes:** 57
 **Bug Fixes:** 52
-**Padroes Cognitivos:** 52
+**Padroes Cognitivos:** 53
 **Heuristicas:** 32
 **Frameworks:** 10
 **Missoes Aprendidas:** 134
@@ -454,11 +454,11 @@ decisao: Atualizada a CLÁUSULA PÉTREA — ATIVAÇÃO DE VOZ — ECO SYSTEM na 
 | 73 | ler_aprendizado | Taxonomia correta de habilidades Jarvis |
 | 74 | opencode | Controle da TV LG webOS via SSAP |
 | 75 | opencode | # 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS) |
-| 76 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | Config: # 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 |
+| 76 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | Config: # 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 |
 | 77 | opencode | Secrets Guard no preflight_check |
 | 78 | opencode | widget desktop grafo tempo real |
 | 79 | opencode+opencode+opencode+opencode+opencode | 2026-08-04: Persistencia da conexao do Jarvis |
-| 80 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | 2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6) |
+| 80 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | 2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6) |
 | 81 | opencode | Ilhas no grafo: notas com grau 0 e como conecta-las |
 | 82 | opencode+opencode | Certificacao forense de processos + boot do watchdog |
 | 83 | opencode+opencode | Saudacoes inteligentes: reconexao vs primeira vez |
@@ -1295,6 +1295,18 @@ data: 2026-08-02
 contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
 decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente
 
+### MCP prompt-optimization não conectava: transporte JSON por linha em vez de MCP stdio
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [mcp, prompt-optimization, transporte, stdio, content-length, opencode, jsonrpc]
+data: 2026-08-08
+contexto: Usuário perguntou se o otimizador de prompt estava ativo no ecossistema; verificação revelou que estava configurado mas nunca conectava
+decisao: Corrigir o transporte do MCP server prompt-optimization para o padrão stdio com Content-Length framing (JSON-RPC MCP), em vez de JSON por linha
+impacto: O MCP server agora responde a initialize/tools/list/tools/call com o prot
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -1389,7 +1401,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-08T17:36:48.511521
+**Ultima atualizacao:** 2026-08-08T17:45:38.363826
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

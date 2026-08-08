@@ -1,6 +1,6 @@
 # Padroes Cognitivos
 
-**43 notas** conectadas a este hub.
+**44 notas** conectadas a este hub.
 
 
 ## Notas
@@ -35,6 +35,7 @@
 - [[lei-de-postel-aplicada-a-engenharia]]
 - [[mapa-mental-de-navegadores-web]]
 - [[mcp-obsidian-server-â-vault-consumido-pelo-llm]]
+- [[mcp-prompt-optimization-não-conectava-transporte-json-por-li]]
 - [[modelo-de-scoring-para-busca-multi-resultado]]
 - [[modelo-mental-de-dom-virtual]]
 - [[padrao-de-escrita-atomica-para-persistencia]]
