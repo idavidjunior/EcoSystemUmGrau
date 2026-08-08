@@ -1350,7 +1350,8 @@
     145
   ],
   "imediatamente": [
-    145
+    145,
+    183
   ],
   "pendente": [
     145
@@ -1718,5 +1719,20 @@
   ],
   "foco": [
     182
+  ],
+  "comunicar": [
+    183
+  ],
+  "registrar": [
+    183
+  ],
+  "consertar": [
+    183
+  ],
+  "avisar": [
+    183
+  ],
+  "detectar": [
+    183
   ]
 }

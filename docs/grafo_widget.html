@@ -132,30 +132,21 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
     document.body.classList.toggle('desktop');
   }, false);
 
-  // Initialize widget controls when pywebview is ready
+  function initWidgetControls() {
+    if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.test_bridge === 'function') {
+      window.pywebview.api.test_bridge().then(function(v){
+        console.log('>>> test_bridge() returned:', v);
+      }).catch(function(e){
+        console.log('>>> test_bridge ERROR:', e);
+      });
+    }
+  }
+
   if (window.pywebview && window.pywebview.api) {
     initWidgetControls();
   } else {
-    window.addEventListener("pywebviewready", initWidgetControls);
+    window.addEventListener('pywebviewready', initWidgetControls);
   }
-
-    // Sync bridge test
-    if(window.pywebview && window.pywebview.api){
-      console.log(">>> Testing bridge test_bridge...");
-      window.pywebview.api.test_bridge().then(function(v){
-        console.log(">>> test_bridge() returned:", v);
-      }).catch(function(e){ console.log(">>> test_bridge ERROR:", e); });
-    }
-    // Call initWidgetControls now if bridge is ready
-    try {
-      if(window.pywebview && window.pywebview.api){
-        console.log(">>> Calling initWidgetControls directly...");
-        initWidgetControls();
-      }
-    } catch(e) {
-      console.log(">>> ERROR calling initWidgetControls:", e);
-    }
-    }
 </script>
 <style>
   #header { transition: opacity .25s ease; position: relative; z-index: 10000; }
@@ -176,6 +167,7 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
                border-left: 2px solid rgba(203,166,247,0.4);
                pointer-events: auto; }
   #mk-resize:hover { background: rgba(203,166,247,0.35); }
+  #mk-topbar { position: fixed; top: 10px; right: 12px; left: 52px; z-index: 99998; display: flex; justify-content: flex-end; align-items: center; pointer-events: auto; }
   /* Painel de controles: sempre visivel por padrao, toggle via botao olho */
   #mk-controles { position: fixed; right: 10px; top: 70px; z-index: 9999; display: flex !important; flex-direction: column; gap: 8px; padding: 8px 10px; border-radius: 8px; background: rgba(30,30,46,0.88); border: 1px solid #45475a; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
   </style>
@@ -1862,7 +1854,12 @@ arestasUp = arestasUp.map(a =>
     grupo3D.appendChild(label3D);
     grupo3D.appendChild(slider3D);
     grupo3D.appendChild(btn3D);
-    grupo3D.appendChild(btnFlash);
+
+    var flashGroup = mkEl('div');
+    flashGroup.style.cssText = 'display:flex;align-items:center;gap:6px;';
+    flashGroup.appendChild(mkEl('span', 'font-size:10px;color:' + cores.texto2 + ';'));
+    flashGroup.firstChild.textContent = 'Flash';
+    flashGroup.appendChild(btnFlash);
 
     // ---- Botao reset (🔄) alinhado ao lado do painel ----
     var btnReset = mkEl('div');
@@ -1939,13 +1936,20 @@ arestasUp = arestasUp.map(a =>
     painel.appendChild(flashGroup);
     painel.appendChild(buscaGroup);
     painel.appendChild(tamGroup);
+
+    var topBar = mkEl('div');
+    topBar.id = 'mk-topbar';
+    topBar.style.cssText =
+      'position:fixed;top:10px;right:12px;left:52px;z-index:99998;' +
+      'display:flex;justify-content:flex-end;align-items:center;gap:6px;';
     layoutGroup.appendChild(btnReset);
-    painel.appendChild(layoutGroup);
-    
+    topBar.appendChild(layoutGroup);
+
     if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
       window.pywebview.api.debug_log("WIDGET_JS_EXTRA: appending painel");
     }
-document.body.appendChild(painel);
+    document.body.appendChild(topBar);
+    document.body.appendChild(painel);
 
     // ---- Botao hide panel (olho) ----
     var painelToggle = mkEl('div');

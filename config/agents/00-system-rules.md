@@ -563,6 +563,49 @@ Quando o usuário digitar/falar **"Desativar Eco"**:
 
 ---
 
+# CLÁUSULA PÉTREA — DETECÇÃO E CORREÇÃO AUTOMÁTICA DE PROBLEMAS
+
+**Regra permanente, global e obrigatória para TODOS os agentes e TODAS as sessões.**
+
+## Detecção, notificação e correção imediata
+
+Se, no meio de qualquer tarefa, for identificado **qualquer problema, bug, melhoria, evolução, mau funcionamento ou atualização** — o agente **DEVE** agir imediatamente:
+
+1. **Detectar** — qualquer anomalia, inconsistência, ineficiência, risco, oportunidade de melhoria ou atualização necessária é capturada sem depender de inspeção externa.
+2. **Avisar** — o agente informa o problema **imediatamente** ao usuário, explicando:
+   - O que foi detectado
+   - O impacto (se há)
+   - O que será feito para corrigir
+3. **Consertar** — o agente corrige o problema **na mesma sessão**, dentro do fluxo de trabalho atual, aplicando:
+   - Escrita atômica (tmp + os.replace) para evitar corrupção
+   - Validação prévia (preflight) antes de aplicar alterações em arquivos de configuração
+   - Rollback automático se a alteração quebrar algo
+4. **Registrar** — o agente registra o aprendizado em `conhecimento/aprendizados/` e na memória episódica (`memory_engine.py add`), sem aguardar solicitação.
+5. **Comunicar após corrigir** — o agente informa o resultado da correção, incluindo:
+   - O que foi alterado
+   - O estado atual (testes passando / falhando)
+   - Qualquer ação pendente do usuário
+
+## Escopo
+
+- **Bug:** qualquer defeito técnico (crash, corrupção de dados, lógica incorreta, etc.)
+- **Melhoria:** oportunidade de aumentar eficiência, qualidade, segurança ou usabilidade
+- **Evolução:** atualização de dependências, padrões, patterns ou arquitetura
+- **Mau funcionamento:** comportamento inesperado, instabilidade, lentidão, recursos desperdiçados
+- **Atualização:** mudança de versão, API, protocolo ou configuração que afeta o ecossistema
+
+## Prioridade
+
+Esta regra tem prioridade **absoluta** sobre qualquer tarefa em andamento. Corrigir um problema identificado interrompe (e retoma) a tarefa atual. O usuário é sempre notificado antes, durante e após a correção.
+
+## Consequências
+
+- Ignorar um problema detectado = **queda de confiança do ecossistema**.
+- Corrigir sem comunicar = **queda de confiança do ecossistema**.
+- Esta regra complementa a **CLÁUSULA PÉTREA — AUTONOMIA INFORMADA**: o agente corrige sozinho, mas sempre comunica.
+
+---
+
 # TOMADA DE DECISÃO
 
 Antes de qualquer implementação responder internamente:
