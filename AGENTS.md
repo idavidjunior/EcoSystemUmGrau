@@ -80,7 +80,22 @@ Regra **IMUTÁVEL**, **PRIORITÁRIA** e **GLOBAL**. Nenhum agente pode ignorar.
 
 **Regra permanente para TODOS os agentes e TODAS as sessões.**
 
-Quando o usuário digitar/falar **"Ativar Eco"** (case-insensitive, em qualquer momento da conversa):
+## CARREGAMENTO AUTOMÁTICO TOTAL — ECO SYSTEM
+
+A cada nova sessão que o usuário abrir, **o EcoSystemUmGrau é carregado automaticamente e imediatamente**, sem necessidade de pedido explícito. O agente opera estritamente dentro do EcoSystemUmGrau desde o boot:
+
+1. **Boot obrigatório** via `python scripts/runtime_boot.py` antes de qualquer processamento
+2. **Estado restaurado** de `runtime/state.json` (projeto ativo, objetivo, última tarefa, pendências)
+3. **Memória episódica carregada** via `memory_engine` (memórias consolidadas relevantes)
+4. **Kernel permanente** checa regras, prioridades e validações (pipeline 9 etapas)
+5. **Contexto carregado** via `runtime_context.py` (BM25 semântico, relevante apenas)
+6. **Auditoria** via `runtime_auditor.py` (classifica criticidade, reprova e devolve ao ciclo se necessário)
+
+**Nenhuma sessão é isolada.** O ecossistema é um Runtime persistente. A LLM é apenas o motor de inferência.
+
+## DETECCÃO DE PALAVRA-GATILHO — ECO
+
+Quando o usuário digitar/falar **"Eco"** (case-insensitive, palavra única, em qualquer momento da conversa):
 
 1. O agente DEVE confirmar ativação: "Eco ativado. Sistema de voz online."
 2. Iniciar/modificar comportamento para **responder com áudio** via bridge Jarvis:
