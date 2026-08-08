@@ -57,9 +57,28 @@ WIDGET_CSS = """
                border-left: 2px solid rgba(203,166,247,0.4);
                pointer-events: auto; }
   #mk-resize:hover { background: rgba(203,166,247,0.35); }
-  #mk-topbar { position: fixed; top: 10px; right: 12px; left: 52px; z-index: 99998; display: flex; justify-content: flex-end; align-items: center; pointer-events: auto; }
+  #mk-topbar { position: fixed; top: 10px; right: 12px; left: 52px; z-index: 99998; display: flex; justify-content: flex-end; align-items: center; flex-wrap: wrap; gap: 6px; pointer-events: auto; max-width: calc(100vw - 72px); }
+  #mk-topbar > * { flex: 0 0 auto; }
+  #mk-topbar select,
+  #mk-topbar input,
+  #mk-topbar span,
+  #mk-topbar div { box-sizing: border-box; }
+  #mk-painel-toggle { position: fixed; top: 10px; left: 10px; z-index: 99999; width: 30px; height: 30px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; background: #313244; border: 1px solid #45475a; color: #cba6f7; }
   /* Painel de controles: sempre visivel por padrao, toggle via botao olho */
-  #mk-controles { position: fixed; right: 10px; top: 70px; z-index: 9999; display: flex !important; flex-direction: column; gap: 8px; padding: 8px 10px; border-radius: 8px; background: rgba(30,30,46,0.88); border: 1px solid #45475a; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+  #mk-controles { position: fixed; right: 10px; top: 70px; z-index: 9999; display: flex !important; flex-direction: column; gap: 8px; padding: 8px 10px; border-radius: 8px; background: rgba(30,30,46,0.88); border: 1px solid #45475a; box-shadow: 0 2px 10px rgba(0,0,0,0.5); max-width: min(320px, calc(100vw - 20px)); width: min(320px, calc(100vw - 20px)); }
+  #mk-controles > div,
+  #mk-controles > select,
+  #mk-controles > input { max-width: 100%; }
+  @media (max-width: 760px) {
+    #mk-topbar { left: 46px; right: 8px; top: 8px; max-width: calc(100vw - 60px); }
+    #mk-painel-toggle { left: 8px; top: 8px; width: 28px; height: 28px; }
+    #mk-controles { top: 58px; right: 8px; width: min(270px, calc(100vw - 16px)); max-width: calc(100vw - 16px); }
+  }
+  @media (max-width: 500px) {
+    #mk-topbar { gap: 4px; }
+    #mk-controles { top: 54px; gap: 6px; padding: 8px; width: min(220px, calc(100vw - 12px)); max-width: calc(100vw - 12px); }
+    #mk-controles input[type="range"] { width: 90px !important; }
+  }
   """
 
 API_INJECT = """
