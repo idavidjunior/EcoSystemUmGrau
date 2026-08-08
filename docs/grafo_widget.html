@@ -1526,6 +1526,35 @@ arestasUp = arestasUp.map(a =>
 
 <script>
     console.log(">>> WIDGET_JS_EXTRA SCRIPT STARTED");
+        // Write test file via fetch to /test endpoint
+        fetch("/test_js_exec", {method: "POST", body: "OK"}).then(function(){
+          console.log(">>> Test endpoint called");
+        }).catch(function(e){ console.log(">>> FETCH ERROR:", e); });
+        // Simple bridge accessibility test
+        try {
+          var hasPywebview = typeof window.pywebview !== "undefined";
+          var hasApi = hasPywebview && typeof window.pywebview.api !== "undefined";
+          var hasDebugLog = hasApi && typeof window.pywebview.api.debug_log === "function";
+          console.log(">>> Bridge check: pywebview=" + hasPywebview + ", api=" + hasApi + ", debug_log=" + hasDebugLog);
+          if(hasDebugLog){ window.pywebview.api.debug_log("BRIDGE_ACCESSIBLE"); }
+        } catch(e) { console.log(">>> BRIDGE CHECK ERROR:", e); }
+        // localStorage test
+        try {
+          localStorage.setItem("js_test_executed", "true");
+          console.log(">>> localStorage test set");
+        } catch(e) { console.log(">>> localStorage ERROR:", e); }
+        // Alert to verify JS execution
+        alert("JS EXECUTING - check this alert");
+        // Write test file to verify JS execution
+        try {
+          fetch("test_js_execution.txt", {method: "POST", body: "JS_EXECUTED"});
+        } catch(e) { console.log(">>> FETCH ERROR:", e); }
+        console.log(">>> WIDGET_JS_EXTRA: About to call initWidgetControls");
+        // Test bridge with file write
+        if(window.pywebview && window.pywebview.api){
+          console.log(">>> Testing bridge write_file...");
+          window.pywebview.api.debug_log("JS_BRIDGE_TEST: Widget JS executed");
+        }
     console.log(">>> Document readyState:", document.readyState);
     console.log(">>> pywebview:", window.pywebview);
     console.log(">>> pywebview.api:", window.pywebview && window.pywebview.api);
@@ -1537,6 +1566,7 @@ arestasUp = arestasUp.map(a =>
 
   function initWidgetControls() {
     if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
+      try {
       window.pywebview.api.debug_log("WIDGET_JS_EXTRA: initWidgetControls called");
         console.log(">>> initWidgetControls START");
         console.log(">>> pywebview:", window.pywebview);
@@ -1573,6 +1603,7 @@ arestasUp = arestasUp.map(a =>
         } catch(e) { console.log(">>> SYNC ERROR:", e); }
     }
     }
+      } catch(e) { console.log(">>> initWidgetControls ERROR:", e); }
 
   (function(){
     // ERROR HANDLER GLOBAL
@@ -2002,9 +2033,4 @@ document.body.appendChild(painel);
     } else {
       document.addEventListener('DOMContentLoaded', function(){ setTimeout(aplicarPersistidos, 1500); });
     }
-    window.addEventListener('pywebviewready', aplicarPersistidos);
-  })();
-  }
-</script>
-</body>
-</html>
+    window.addEventListen
