@@ -372,7 +372,7 @@ def _refinar_via_opencode(prompt, timeout=90):
     try:
         os.makedirs(cwd, exist_ok=True)
         proc = subprocess.run(
-            [exe, 'run', '-m', _modelo_opencode(), '--format', 'json',
+            [exe, 'run', '--agent', 'compreensao-refino', '-m', _modelo_opencode(), '--format', 'json',
              prompt + ' Nao use nenhuma ferramenta. Responda somente em texto.'],
             capture_output=True, text=True, timeout=timeout,
             encoding='utf-8', errors='replace',
