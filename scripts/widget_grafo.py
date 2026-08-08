@@ -57,26 +57,27 @@ WIDGET_CSS = """
                border-left: 2px solid rgba(203,166,247,0.4);
                pointer-events: auto; }
   #mk-resize:hover { background: rgba(203,166,247,0.35); }
-  #mk-topbar { position: fixed; top: 10px; right: 12px; left: 52px; z-index: 99998; display: flex; justify-content: flex-end; align-items: center; flex-wrap: wrap; gap: 6px; pointer-events: auto; max-width: calc(100vw - 72px); }
+  #mk-topbar { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 99998; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; pointer-events: auto; width: min(780px, calc(100vw - 96px)); padding: 8px 12px; border-radius: 12px; background: rgba(30,30,46,0.9); border: 1px solid #45475a; box-shadow: 0 6px 18px rgba(0,0,0,0.38); }
   #mk-topbar > * { flex: 0 0 auto; }
   #mk-topbar select,
   #mk-topbar input,
   #mk-topbar span,
   #mk-topbar div { box-sizing: border-box; }
-  #mk-painel-toggle { position: fixed; top: 10px; left: 10px; z-index: 99999; width: 30px; height: 30px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; background: #313244; border: 1px solid #45475a; color: #cba6f7; }
-  /* Painel de controles: sempre visivel por padrao, toggle via botao olho */
-  #mk-controles { position: fixed; right: 10px; top: 70px; z-index: 9999; display: flex !important; flex-direction: column; gap: 8px; padding: 8px 10px; border-radius: 8px; background: rgba(30,30,46,0.88); border: 1px solid #45475a; box-shadow: 0 2px 10px rgba(0,0,0,0.5); max-width: min(320px, calc(100vw - 20px)); width: min(320px, calc(100vw - 20px)); }
+  #mk-painel-toggle { position: fixed; bottom: 18px; left: 18px; top: auto; z-index: 99999; width: 30px; height: 30px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; background: #313244; border: 1px solid #45475a; color: #cba6f7; }
+  /* Painel de controles: organizado em faixa inferior e visivel por padrao */
+  #mk-controles { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex !important; flex-direction: row; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; padding: 8px 12px; border-radius: 12px; background: rgba(30,30,46,0.9); border: 1px solid #45475a; box-shadow: 0 6px 18px rgba(0,0,0,0.38); max-width: min(780px, calc(100vw - 96px)); width: min(780px, calc(100vw - 96px)); }
   #mk-controles > div,
   #mk-controles > select,
   #mk-controles > input { max-width: 100%; }
   @media (max-width: 760px) {
-    #mk-topbar { left: 46px; right: 8px; top: 8px; max-width: calc(100vw - 60px); }
-    #mk-painel-toggle { left: 8px; top: 8px; width: 28px; height: 28px; }
-    #mk-controles { top: 58px; right: 8px; width: min(270px, calc(100vw - 16px)); max-width: calc(100vw - 16px); }
+    #mk-topbar,
+    #mk-controles { width: min(560px, calc(100vw - 74px)); max-width: calc(100vw - 74px); }
+    #mk-painel-toggle { left: 12px; bottom: 12px; width: 28px; height: 28px; }
   }
   @media (max-width: 500px) {
-    #mk-topbar { gap: 4px; }
-    #mk-controles { top: 54px; gap: 6px; padding: 8px; width: min(220px, calc(100vw - 12px)); max-width: calc(100vw - 12px); }
+    #mk-topbar,
+    #mk-controles { width: min(310px, calc(100vw - 62px)); max-width: calc(100vw - 62px); gap: 6px; }
+    #mk-controles { padding: 7px 8px; }
     #mk-controles input[type="range"] { width: 90px !important; }
   }
   """
@@ -155,6 +156,68 @@ WIDGET_JS = """
   })();
 </script>
 """
+
+
+class Bridge:
+    def __init__(self):
+        self._win = None
+
+    def versao(self):
+        return 'Cerebro Vivo widget'
+
+    def echo(self, value):
+        return value
+
+    def ping(self):
+        return 'pong'
+
+    def test_bridge(self):
+        return 'OK'
+
+    def debug_log(self, msg):
+        print(f'[widget-bridge] {msg}', flush=True)
+        return True
+
+    def perguntar(self, last_ts=0):
+        return {'ts': int(time.time() * 1000), 'last_ts': int(last_ts or 0)}
+
+    def guardar_geo(self, x=None, y=None, width=None, height=None):
+        data = _carregar_geo()
+        if x is not None: data['x'] = int(x)
+        if y is not None: data['y'] = int(y)
+        if width is not None: data['width'] = int(width)
+        if height is not None: data['height'] = int(height)
+        GEO_FILE.parent.mkdir(parents=True, exist_ok=True)
+        GEO_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
+        return data
+
+    def guardar_orbGrafo(self, valor):
+        try:
+            ORB_FILE.parent.mkdir(parents=True, exist_ok=True)
+            ORB_FILE.write_text(str(valor), encoding='utf-8')
+        except Exception:
+            pass
+        return valor
+
+    def redimensionar(self, width, height):
+        if self._win is not None and hasattr(self._win, 'resize'):
+            try:
+                self._win.resize(int(width), int(height))
+            except Exception:
+                pass
+        return {'width': int(width), 'height': int(height)}
+
+
+def _carregar_geo() -> dict:
+    if not GEO_FILE.exists():
+        return {'x': None, 'y': None, 'width': DEFAULT_W, 'height': DEFAULT_H}
+    try:
+        raw = GEO_FILE.read_text(encoding='utf-8')
+        data = json.loads(raw) if raw.strip() else {}
+    except Exception:
+        data = {}
+    out = {'x': data.get('x'), 'y': data.get('y'), 'width': int(data.get('width', DEFAULT_W)), 'height': int(data.get('height', DEFAULT_H))}
+    return out
 
 WIDGET_JS_EXTRA = """
 <script>
@@ -263,7 +326,7 @@ WIDGET_JS_EXTRA = """
     var panel = mk('div');
     panel.id = 'mk-controles';
     panel.title = 'Controles do grafo';
-    panel.style.cssText = 'position:fixed;right:10px;top:70px;z-index:9999;display:flex;flex-direction:column;gap:8px;padding:8px 10px;border-radius:8px;background:rgba(30,30,46,0.88);border:1px solid ' + cores.borda + ';box-shadow:0 2px 10px rgba(0,0,0,0.5);';
+    panel.style.cssText = 'position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:row;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;padding:8px 12px;border-radius:12px;background:rgba(30,30,46,0.9);border:1px solid ' + cores.borda + ';box-shadow:0 6px 18px rgba(0,0,0,0.38);';
     panel.appendChild(themeWrap);
     panel.appendChild(speedWrap);
     panel.appendChild(orbitWrap);

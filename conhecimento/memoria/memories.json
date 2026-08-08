@@ -3068,5 +3068,25 @@
     "access_count": 0,
     "created_at": "2026-08-08T10:24:04.685468",
     "last_accessed": "2026-08-08T10:24:04.685468"
+  },
+  {
+    "id": 184,
+    "kind": "decisao",
+    "task": "Pipeline de otimização de prompts integrado (DSPy + PromptWizard + PromptFlow)",
+    "summary": "Integrado MCP server mcp-prompt-optimization ao ecossistema com 6 tools: optimize_prompt_dspy, refine_prompt_wizard, evaluate_prompt, compare_prompts, generate_prompt_tests, suggest_prompt_improvement. DSPy instalado (v3.3.0). Prompt optimization pipeline adicionado à Constituição como nova CLÁUSULA PÉTREA. Análise estática funcional (5D scoring: Accuracy, Relevance, Brevity, Consistency, Safety). Preflight: TODOS OS TESTES PASSARAM (13 MCPs).",
+    "project": "",
+    "tags": [
+      "improvement",
+      "tools",
+      "suggest",
+      "ecossistema",
+      "tests",
+      "generate"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T11:34:42.377070",
+    "last_accessed": "2026-08-08T11:34:42.377070"
   }
 ]
