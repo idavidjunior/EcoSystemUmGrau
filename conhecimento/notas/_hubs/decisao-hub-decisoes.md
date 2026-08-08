@@ -1,6 +1,6 @@
 # Decisoes
 
-**55 notas** conectadas a este hub.
+**56 notas** conectadas a este hub.
 
 
 ## Notas
@@ -11,6 +11,7 @@
 - [[2026-08-01-clãusula-pãtrea-â-comunicaãão-contãnua-em-ãudio]]
 - [[2026-08-02-feedback-contãnuo-em-tarefas-longas]]
 - [[album-art-download-com-redirect-loop-manual-instancefollowre]]
+- [[atualização-ecosystemumgrau-auto-carregamento-gatilho-único-]]
 - [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]
 - [[checkpoints-salvos-antes-de-cada-iteracao-sobrevive-a-crash-]]

@@ -1,9 +1,9 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-08T16:37:42.331682
+**Exportado em:** 2026-08-08T16:39:29.809574
 **Projetos:** 4
 **Padroes Tecnicos:** 83
-**Decisoes:** 56
+**Decisoes:** 57
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 52
 **Heuristicas:** 32
@@ -365,6 +365,15 @@ data: 2026-08-06
 contexto: "Usuario exigiu que nenhum processo automatico possa fechar o OpenCode desktop — apenas o usuario manualmente. Testes de resiliencia do bridge (que morria sem log) revelaram que o watchdog podia derrubar o desktop por erro de filtro."
 decisao: "Corrigir watchdog.ps1 com protecao absoluta do desktop (clausula petrea) e robustez de instancia unica via lock de PID. Reestru
 
+### Atualização: EcoSystemUmGrau Auto-Carregamento + Gatilho Único "Eco"
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [voz, eco, clausula-petrea, bridge, config, regras, autoload, runtime]
+data: 2026-08-07
+contexto: O usuário pediu que (1) a cada nova sessão, o EcoSystemUmGrau seja carregado automaticamente sem precisar pedir, operando estritamente dentro dele; e (2) a palavra-gatilho para ativar/desativar o sistema de voz seja apenas "Eco" (em vez de "Ativar Eco"/"Desativar Eco").
+decisao: Atualizada a CLÁUSULA PÉTREA — ATIVAÇÃO DE VOZ — ECO SYSTEM na Constituição (config/agents/00-syst
+
 
 ## Padroes Tecnicos
 
@@ -445,11 +454,11 @@ decisao: "Corrigir watchdog.ps1 com protecao absoluta do desktop (clausula petre
 | 73 | ler_aprendizado | Taxonomia correta de habilidades Jarvis |
 | 74 | opencode | Controle da TV LG webOS via SSAP |
 | 75 | opencode | # 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS) |
-| 76 | opencode+opencode+opencode+opencode+opencode | Config: # 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 |
+| 76 | opencode+opencode+opencode+opencode+opencode+opencode | Config: # 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 |
 | 77 | opencode | Secrets Guard no preflight_check |
 | 78 | opencode | widget desktop grafo tempo real |
 | 79 | opencode+opencode+opencode+opencode+opencode | 2026-08-04: Persistencia da conexao do Jarvis |
-| 80 | opencode+opencode+opencode+opencode | 2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6) |
+| 80 | opencode+opencode+opencode+opencode+opencode | 2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6) |
 | 81 | opencode | Ilhas no grafo: notas com grau 0 e como conecta-las |
 | 82 | opencode+opencode | Certificacao forense de processos + boot do watchdog |
 | 83 | opencode+opencode | Saudacoes inteligentes: reconexao vs primeira vez |
@@ -993,6 +1002,7 @@ data: 2026-08-02
 contexto: O vault Obsidian (docs/, conhecimento/, documentos/) estava sendo alimentado (330 notas .md) mas o LLM sÃ³ via a CONTAGEM de notas no estado da bridge (gerar_estado_atual em jarvis_bridge.py), nunca o conteÃºdo. Busca semÃ¢ntica via eco-knowledge cobria CONHECIMENTO.md e memory graph, mas nÃ£o os 327 .md de conhecimento/. Sem MCP server dedicado, sem file watcher.
 decisao: Criar sc
 
+
 ### # Hora na tela vs hora no Ã¡udio (Jarvis)
 **Dominio:** general
 **Fonte:** opencode
@@ -1082,6 +1092,7 @@ data: 2026-08-02
 contexto: DivergÃªncia detectada â€” config/opencode.jsonc referenciava 4 servidores MCP Node em `mcp-servers/mcp-servers/...` que nÃ£o existiam, e `{{USERPROFILE}}` nÃ£o Ã© resolvido em comandos MCP (apenas em instructions). `opencode mcp list` mostrava eco-knowledge/filesystem/search/terminal como "failed".
 decisao: Criar os 4 servidores Node (filesystem, search, terminal, github) em `mcp-servers/<nome>/ind
 
+
 ### ---
 **Dominio:** general
 **Fonte:** opencode
@@ -1135,6 +1146,7 @@ data: 2026-08-02
 contexto: O usuÃ¡rio pediu que o sistema de voz seja ativÃ¡vel em qualquer sessÃ£o do OpenCode (nova ou em andamento) com os comandos "Ativar Eco" e "Desativar Eco", seguindo as regras do EcoSystemUmGrau.
 decisao: Adicionada a CLÃUSULA PÃ‰TREA â€” ATIVAÃ‡ÃƒO DE VOZ â€” ECO SYSTEM Ã  ConstituiÃ§Ã£o (config/agents/00-system-rules.md) e sincronizada nas 3 camadas (AGENTS.md regenerado via sync_rules.py, d
 
+
 ### # 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView
 **Dominio:** general
 **Fonte:** opencode
@@ -1165,6 +1177,7 @@ App Mp3Player Android. 5 botÃµes de filtro no topo da aba "MÃºsicas": Todas,
 - Modelo do dispositivo, versÃ£o Android, SDK, fuso horÃ¡rio
 - Bateria (nÃ­vel, temperatura, status de carga)
 - Aplicativo (versÃ£oCode, versionName, PID, memÃ³ria 
+
 
 ### vazamento caracteres tts edge tts escapa ssml
 **Dominio:** general
@@ -1374,7 +1387,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-08T16:37:42.316058
+**Ultima atualizacao:** 2026-08-08T16:39:29.785150
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

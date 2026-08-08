@@ -452,6 +452,71 @@ Rodou `python tests/test_integration.py` no `ler-runtime/`.
 - test_imports.py: 3 marcadores
 - test_smoke.py: 3 marcadores
 - consolidate_build_pipeline.py: 9 marcadores
+
+﻿# 2026-07-27 - Scan proativo: Mp3Player
+## Marcadores encontrados
+- BiquadFilter.kt: 1 marcadores
+- EqualizerAudioProcessor.kt: 2 marcadores
+- AudioDecoder.kt: 1 marcadores
+- EqPresetManager.kt: 2 marcadores
+- MainActivity.kt: 2 marcadores
+- TagEditorActivity.kt: 1 marcadores
+
+## Conexoes
+
+- [[cluster-hub-mp3player]]
+
+﻿# 2026-07-28 - Scan proativo: Mp3Player
+## Marcadores encontrados
+- BiquadFilter.kt: 1 marcadores
+- EqualizerAudioProcessor.kt: 2 marcadores
+- AudioDecoder.kt: 1 marcadores
+- EqPresetManager.kt: 2 marcadores
+- MainActivity.kt: 2 marcadores
+- TagEditorActivity.kt: 1 marcadores
+
+## Conexoes
+
+- [[cluster-hub-mp3player]]
+
+﻿# 2026-07-29 - Scan proativo: Mp3Player
+## Marcadores encontrados
+- BiquadFilter.kt: 1 marcadores
+- EqualizerAudioProcessor.kt: 2 marcadores
+- AudioDecoder.kt: 1 marcadores
+- EqPresetManager.kt: 2 marcadores
+- MainActivity.kt: 2 marcadores
+- TagEditorActivity.kt: 1 marcadores
+
+## Conexoes
+
+- [[cluster-hub-mp3player]]
+
+﻿# 2026-07-30 - Scan proativo: Mp3Player
+## Marcadores encontrados
+- BiquadFilter.kt: 1 marcadores
+- EqualizerAudioProcessor.kt: 2 marcadores
+- AudioDecoder.kt: 1 marcadores
+- EqPresetManager.kt: 2 marcadores
+- MainActivity.kt: 2 marcadores
+- TagEditorActivity.kt: 1 marcadores
+
+## Conexoes
+
+- [[cluster-hub-mp3player]]
+
+﻿# 2026-08-03 - Scan proativo: Mp3Player
+## Marcadores encontrados
+- BiquadFilter.kt: 1 marcadores
+- EqualizerAudioProcessor.kt: 2 marcadores
+- AudioDecoder.kt: 1 marcadores
+- EqPresetManager.kt: 2 marcadores
+- MainActivity.kt: 2 marcadores
+- TagEditorActivity.kt: 1 marcadores
+
+## Conexoes
+
+- [[cluster-hub-mp3player]]
 ## Conexoes
 
 - [[cluster-hub-cognicao]]

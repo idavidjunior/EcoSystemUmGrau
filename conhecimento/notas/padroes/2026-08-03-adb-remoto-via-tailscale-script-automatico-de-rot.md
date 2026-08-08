@@ -1,12 +1,12 @@
 ---
-tags: [intermitentemente, opencodeopencodeopencodeopencode, padrao, powershell, rota, scrcpy]
+tags: [intermitentemente, opencodeopencodeopencodeopencodeopencode, padrao, powershell, rota, scrcpy]
 aliases: [2026-08-03: ADB remoto via Tailscale - script automatico de ]
 date: 2026-08-08
 ---
 
 # 2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6)
 
-**Fonte:** opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -16,5 +16,6 @@ fonte: tarefa
 contexto: Conexao ADB remota ao Redmi Note 11 via Tailscale falhava intermitentemente. O IPv4 100.64.71.9:5555 dava timeout as vezes, mas o IPv6 direto funcionava em outro
 ## Conexoes
 
+- [[2026-08-04-persistencia-da-conexao-do-jarvis]]
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]
