@@ -16,11 +16,13 @@ $gitInterval = 300  # 5 min entre git sync (eco/ler)
 $projectGitInterval = 60  # 1 min entre git sync para projetos (menor = mais responsivo)
 
 # Auto-descoberta de projetos Android com git remote
+# EXCLUI o proprio EcoSystemUmGrau (repo principal) e ler-runtime (sem remote)
 $projectRepos = @()
 if (Test-Path $projectsDir) {
     Get-ChildItem $projectsDir -Directory | Where-Object {
         $remote = git -C $_.FullName remote -v 2>&1 | Where-Object { $_ -match "fetch" }
-        $remote -and (Test-Path "$($_.FullName)\.git")
+        $remote -and (Test-Path "$($_.FullName)\.git") -and
+        $_.FullName -ne $ecoDir -and $_.Name -ne "ler-runtime"
     } | ForEach-Object { $projectRepos += @{Path=$_.FullName; Name=$_.Name; LastSync=[datetime]::MinValue} }
 }
 
@@ -279,14 +281,14 @@ $gitTimer.AutoReset = $true
 $onGitSync = {
     $changed = Sync-GitRepo -Path $ecoDir -Label "EcoSystemUmGrau" -Push -LastSync ([ref]$ecoLastSync)
     Sync-GitRepo -Path $lerDir -Label "LER" -LastSync ([ref]$lerLastSync)
-    # Log memory on git activity
-    if ($changed) { python "$ecoDir\scripts\memory_engine.py" log "git-sync: EcoSystemUmGrau" 2>$null }
+    # ATENCAO (fix loop infinito 2026-08-08): NAO logar git-sync aqui.
+    # memory_engine log escreve em conhecimento/memoria/sessions/*.jsonl (dentro do repo),
+    # o que re-dispara o FileSystemWatcher -> novo push -> novo log -> loop infinito.
     # Sincroniza projetos Android (cada um tem seu proprio cooldown)
     foreach ($proj in $projectRepos) {
         $lastRef = [ref]$proj.LastSync
         $projName = $proj.Name
         $projChanged = Sync-GitRepo -Path $proj.Path -Label "Android/$projName" -Push -LastSync $lastRef -Cooldown $projectGitInterval
-        if ($projChanged) { python "$ecoDir\scripts\memory_engine.py" log "git-sync: $projName" 2>$null }
     }
 }
 
