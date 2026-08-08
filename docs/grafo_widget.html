@@ -2033,4 +2033,9 @@ document.body.appendChild(painel);
     } else {
       document.addEventListener('DOMContentLoaded', function(){ setTimeout(aplicarPersistidos, 1500); });
     }
-    window.addEventListen
+    window.addEventListener('pywebviewready', aplicarPersistidos);
+  })();
+  }
+</script>
+</body>
+</html>
