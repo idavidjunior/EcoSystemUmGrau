@@ -241,13 +241,13 @@ WIDGET_JS_EXTRA = """
 
     var topBar = mk('div');
     topBar.id = 'mk-topbar';
-    topBar.style.cssText = 'position:fixed;top:10px;left:46px;right:auto;max-width:calc(100vw - 92px);z-index:99998;display:flex;justify-content:flex-start;align-items:center;gap:4px;pointer-events:auto;';
+    topBar.style.cssText = 'position:fixed;top:10px;left:52px;right:auto;z-index:99998;display:flex;align-items:center;gap:4px;pointer-events:auto;';
 
     var eye = mk('div');
     eye.id = 'mk-painel-toggle';
-    eye.title = 'Ocultar/mostrar tudo';
+    eye.title = 'Ocultar/mostrar controles';
     eye.textContent = '👁';
-    eye.style.cssText = 'position:fixed;top:12px;left:10px;z-index:99999;width:28px;height:28px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#313244;border:1px solid ' + cores.borda + ';color:' + cores.destaque + ';font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,0.22);transition:transform .12s ease, box-shadow .12s ease, background .12s ease;';
+    eye.style.cssText = 'position:fixed;bottom:12px;left:12px;z-index:99999;width:28px;height:28px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#313244;border:1px solid ' + cores.borda + ';color:' + cores.destaque + ';font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,0.22);transition:transform .12s ease, box-shadow .12s ease, background .12s ease;';
 
     var ctrl = mk('div');
     ctrl.id = 'mk-labels';
@@ -272,6 +272,7 @@ WIDGET_JS_EXTRA = """
     actions.appendChild(ctrl);
     actions.appendChild(menuBtn);
     actions.appendChild(resetBtn);
+    topBar.appendChild(actions);
 
     var topTheme = mk('select');
     topTheme.style.cssText = 'background:' + cores.fundo + ';color:' + cores.texto + ';border:1px solid ' + cores.borda + ';border-radius:4px;font-size:11px;padding:2px 4px;';
@@ -336,9 +337,7 @@ WIDGET_JS_EXTRA = """
     panel.appendChild(themeWrap);
     panel.appendChild(speedWrap);
     panel.appendChild(orbitWrap);
-    panel.appendChild(actions);
 
-    topBar.appendChild(actions);
     document.body.appendChild(topBar);
     document.body.appendChild(panel);
     document.body.appendChild(eye);
@@ -347,17 +346,20 @@ WIDGET_JS_EXTRA = """
       var hidden = !visible;
       localStorage.setItem('labelsOcultos', hidden ? 'true' : 'false');
       try {
-        if (typeof network !== 'undefined' && network && network.body) {
+        if (typeof network !== 'undefined' && network) {
           var nodeSet = null;
-          if (network.body.data && network.body.data.nodes && typeof network.body.data.nodes.get === 'function') {
+          if (network.body && network.body.data && network.body.data.nodes && typeof network.body.data.nodes.get === 'function') {
             nodeSet = network.body.data.nodes;
-          } else if (network.body.nodes && typeof network.body.nodes.get === 'function') {
+          } else if (network.body && network.body.nodes && typeof network.body.nodes.get === 'function') {
             nodeSet = network.body.nodes;
+          } else if (typeof nodes !== 'undefined' && nodes && typeof nodes.get === 'function') {
+            nodeSet = nodes;
           }
+
           if (nodeSet && typeof nodeSet.get === 'function') {
-            var nodes = nodeSet.get();
             if (!window.__mkLabelBase) window.__mkLabelBase = {};
-            var payload = nodes.map(function(n) {
+            var currentNodes = nodeSet.get();
+            var payload = currentNodes.map(function(n) {
               if (!n || typeof n.id === 'undefined') return null;
               if (typeof window.__mkLabelBase[n.id] !== 'number' || window.__mkLabelBase[n.id] <= 0) {
                 window.__mkLabelBase[n.id] = (n.font && typeof n.font.size === 'number' && n.font.size > 0) ? n.font.size : 13;
@@ -367,11 +369,15 @@ WIDGET_JS_EXTRA = """
                 font: Object.assign({}, n.font || {}, { size: hidden ? 0 : window.__mkLabelBase[n.id] })
               };
             }).filter(Boolean);
-            if (payload.length) nodeSet.update(payload);
+
+            if (payload.length) {
+              try { nodeSet.update(payload); } catch (e) {}
+            }
           }
           if (typeof network.redraw === 'function') network.redraw();
         }
       } catch (e) {}
+
       ctrl.style.opacity = hidden ? '0.6' : '1';
       ctrl.style.borderColor = hidden ? '#7c7f93' : cores.destaque;
       ctrl.style.background = hidden ? '#2b2d3a' : '#313244';
@@ -432,30 +438,26 @@ WIDGET_JS_EXTRA = """
       } catch (e) {}
     });
 
+    var panelVisible = localStorage.getItem('painelGrafoVisivel') !== 'false';
     function syncControlsPanel(show) {
-      visible = !!show;
-      topBar.style.display = visible ? 'flex' : 'none';
-      topBar.hidden = !visible;
-      topBar.setAttribute('aria-hidden', String(!visible));
-      panel.style.display = visible ? 'flex' : 'none';
-      panel.hidden = !visible;
-      panel.setAttribute('aria-hidden', String(!visible));
-      eye.title = visible ? 'Ocultar tudo' : 'Mostrar tudo';
-      eye.textContent = visible ? '👁' : '🚫';
-      eye.style.background = visible ? '#313244' : '#45475a';
-      eye.style.boxShadow = visible ? '0 4px 12px rgba(0,0,0,0.22)' : '0 0 0 2px rgba(203,166,247,0.2), 0 6px 14px rgba(0,0,0,0.24)';
-      localStorage.setItem('painelGrafoVisivel', visible ? 'true' : 'false');
+      panelVisible = !!show;
+      panel.style.display = panelVisible ? 'flex' : 'none';
+      panel.hidden = !panelVisible;
+      panel.setAttribute('aria-hidden', String(!panelVisible));
+      eye.title = panelVisible ? 'Ocultar controles' : 'Mostrar controles';
+      eye.textContent = panelVisible ? '👁' : '🚫';
+      eye.style.background = panelVisible ? '#313244' : '#45475a';
+      eye.style.boxShadow = panelVisible ? '0 4px 12px rgba(0,0,0,0.22)' : '0 0 0 2px rgba(203,166,247,0.2), 0 6px 14px rgba(0,0,0,0.24)';
+      localStorage.setItem('painelGrafoVisivel', panelVisible ? 'true' : 'false');
     }
 
-    var visible = localStorage.getItem('painelGrafoVisivel') !== 'false';
-    syncControlsPanel(visible);
+    syncControlsPanel(panelVisible);
 
     eye.addEventListener('click', function(){
-      syncControlsPanel(!visible);
+      syncControlsPanel(!panelVisible);
     });
 
     menuBtn.addEventListener('click', function(){
-      if (!visible) return;
       topBar.style.display = (topBar.style.display === 'none') ? 'flex' : 'none';
     });
 
