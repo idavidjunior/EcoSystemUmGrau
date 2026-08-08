@@ -3458,5 +3458,25 @@
     "access_count": 0,
     "created_at": "2026-08-08T16:53:53.053670",
     "last_accessed": "2026-08-08T16:53:53.053670"
+  },
+  {
+    "id": 203,
+    "kind": "padrao",
+    "task": "Backup de APKs e fontes no GitHub (padrao releases/)",
+    "summary": "SupermarketCalculator v1.5.0 (sons) e VoxUmGrau v17 (audio/chamada) commitados e pushados; padrao estabelecido: APKs de release versionados em releases/ via negacao no .gitignore, builds/logs ignorados, gitlinks dos submodulos atualizados no pai EcoSystemUmGrau",
+    "project": "",
+    "tags": [
+      "ecosystemumgrau",
+      "pai",
+      "atualizados",
+      "submodulos",
+      "gitlinks",
+      "supermarketcalculator"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T17:15:37.934411",
+    "last_accessed": "2026-08-08T17:15:37.934411"
   }
 ]
