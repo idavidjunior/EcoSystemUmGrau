@@ -12,9 +12,9 @@
     }
   },
   "instructions": [
-    "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp/**/habilidades/**/SKILL.md",
-    "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp/**/habilidades/**/skill.md",
-    "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp/internet/habilidades/clima-api/skill.md",
-    "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/ler-runtime/CONHECIMENTO.md"
+    "{{PROJECT_ROOT}}/mcp/**/habilidades/**/SKILL.md",
+    "{{PROJECT_ROOT}}/mcp/**/habilidades/**/skill.md",
+    "{{PROJECT_ROOT}}/mcp/internet/habilidades/clima-api/skill.md",
+    "{{PROJECT_ROOT}}/ler-runtime/CONHECIMENTO.md"
   ]
 }
