@@ -399,6 +399,16 @@ class Bridge:
 WIDGET_JS_EXTRA = """
 <script>
     console.log(">>> WIDGET_JS_EXTRA SCRIPT STARTED");
+        // Test echo method
+        if(window.pywebview && window.pywebview.api && window.pywebview.api.echo){
+          console.log(">>> Testing echo...");
+          window.pywebview.api.echo("test123").then(function(v){
+            console.log(">>> echo() returned:", v);
+            if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
+              window.pywebview.api.debug_log("ECHO_TEST: " + v);
+            }
+          }).catch(function(e){ console.log(">>> ECHO ERROR:", e); });
+        }
         // Test ping method
         if(window.pywebview && window.pywebview.api && window.pywebview.api.ping){
           console.log(">>> Testing ping...");
@@ -462,6 +472,11 @@ WIDGET_JS_EXTRA = """
 
   function initWidgetControls() {
     if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
+      // File write test to verify initWidgetControls execution
+      try {
+        fetch("/initwidgetcontrols_test", {method: "POST", body: "initWidgetControls_called"});
+        console.log(">>> initWidgetControls: fetch test sent");
+      } catch(e) { console.log(">>> initWidgetControls fetch ERROR:", e); }
       try {
       window.pywebview.api.debug_log("WIDGET_JS_EXTRA: initWidgetControls called");
         console.log(">>> initWidgetControls START");
@@ -786,7 +801,7 @@ WIDGET_JS_EXTRA = """
     painel.id = 'mk-controles';
     painel.title = 'Controles do cerebro';
     painel.style.cssText =
-      'position:fixed;right:10px;z-index:9999;display:flex;' +
+      'position:fixed;right:10px;top:70px;z-index:9999;display:flex;' +
       'flex-direction:column;gap:8px;padding:8px 10px;border-radius:8px;' +
       'background:rgba(30,30,46,0.88);border:1px solid ' + cores.borda + ';' +
       'box-shadow:0 2px 10px rgba(0,0,0,0.5);';
