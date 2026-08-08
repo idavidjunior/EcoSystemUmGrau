@@ -16,4 +16,5 @@ contexto: Usuario pediu para verificar a conexao com o Jarvis. Constatado que a 
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]
+- [[compreensao-de-pedidos-refino-com-a-llm-do-opencode-primaria]]
 - [[padrao-hub-padroes]]

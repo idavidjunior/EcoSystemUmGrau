@@ -40,11 +40,6 @@ class AppTheme {
         bodyColor: AppColors.textPrimary,
         displayColor: AppColors.textPrimary,
       ),
-      cardTheme: CardThemeData(
-        color: AppColors.surface,
-        elevation: 0,
-        margin: EdgeInsets.zero,
-      ),
       dividerTheme: const DividerThemeData(color: AppColors.surfaceAlt),
     );
   }

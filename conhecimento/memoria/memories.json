@@ -3558,5 +3558,45 @@
     "access_count": 0,
     "created_at": "2026-08-08T19:14:36.629397",
     "last_accessed": "2026-08-08T19:14:36.629397"
+  },
+  {
+    "id": 208,
+    "kind": "padrao",
+    "task": "MVP StreamUmGrau criado - catalogo Flutter + Supabase",
+    "summary": "Estrutura base do app Flutter StreamUmGrau criada em Projetos/StreamUmGrau: lib/core (config/services/theme), lib/models/midia_model.dart mapeando tabela midias, lib/views/home_view.dart com GridView 2 colunas em tema escuro, lib/widgets/midia_card.dart com capa+titulo+tags FILME DUB+ano. Schema SQL da tabela midias em database/schema_midias.sql. Flutter nao instalado na maquina - estrutura Dart gerada manualmente.",
+    "project": "",
+    "tags": [
+      "projetos",
+      "criada",
+      "streamumgrau",
+      "app",
+      "base",
+      "supabase"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T19:34:15.953140",
+    "last_accessed": "2026-08-08T19:34:15.953140"
+  },
+  {
+    "id": 209,
+    "kind": "decisao",
+    "task": "PROIBIDO subir StreamUmGrau ao GitHub sem autorizacao",
+    "summary": "Regra do usuario: nada do projeto StreamUmGrau (Projetos/StreamUmGrau) pode ser commitado/pushed ao GitHub sem autorizacao explicita dele. Vale para todas as sessoes. Qualquer sync/push desse projeto exige consentimento previo.",
+    "project": "",
+    "tags": [
+      "explicita",
+      "pushed",
+      "commitado",
+      "pode",
+      "autorizacao",
+      "previo"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T19:35:14.168126",
+    "last_accessed": "2026-08-08T19:35:14.168126"
   }
 ]

@@ -1,12 +1,12 @@
 ---
-tags: [backup, indisponiveis, lentas, manter, opencodeopencodeopencodeopencode, padrao]
+tags: [backup, indisponiveis, lentas, manter, opencodeopencodeopencodeopencodeopencode, padrao]
 aliases: [Compreensao de pedidos: refino com a LLM do opencode (primar]
 date: 2026-08-08
 ---
 
 # Compreensao de pedidos: refino com a LLM do opencode (primaria) + backups
 
-**Fonte:** opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -16,5 +16,6 @@ contexto: Modulo compreensao-pedidos refinava via NVIDIA/OpenAI/Anthropic (lenta
 decisao: Refino usa `ope
 ## Conexoes
 
+- [[2026-08-04-persistencia-da-conexao-do-jarvis]]
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]
