@@ -341,11 +341,110 @@ WIDGET_JS_EXTRA = """
     document.body.appendChild(panel);
     document.body.appendChild(eye);
 
+    function setLabelVisibility(visible) {
+      var hidden = !visible;
+      localStorage.setItem('labelsOcultos', hidden ? 'true' : 'false');
+      try {
+        if (typeof network !== 'undefined' && network && network.body && network.body.nodes) {
+          Object.keys(network.body.nodes).forEach(function(id) {
+            var n = network.body.nodes[id];
+            if (!n || !n.options) return;
+            var opt = n.options || {};
+            if (hidden) {
+              n.label = n.label || '';
+              if (opt.font) opt.font.size = 0;
+            } else {
+              if (opt.font) opt.font.size = 13;
+            }
+          });
+          network.redraw();
+        }
+      } catch (e) {}
+    }
+
+    function applyTheme(theme) {
+      theme = theme || 'glow';
+      localStorage.setItem('temaGrafo', theme);
+      try {
+        if (typeof window !== 'undefined') {
+          window.__mkTemaAtual = theme;
+          document.body.setAttribute('data-theme', theme);
+        }
+      } catch (e) {}
+    }
+
+    function resetWidgetState() {
+      topTheme.value = 'glow';
+      speed.value = '1';
+      orbit.value = '1';
+      localStorage.setItem('temaGrafo', 'glow');
+      localStorage.setItem('velGrafo', '1');
+      localStorage.setItem('orbGrafo', '1');
+      localStorage.setItem('labelsOcultos', 'false');
+      applyTheme('glow');
+      setLabelVisibility(true);
+      speedValue.textContent = 'x1.00';
+      orbitValue.textContent = 'x1.0';
+      try {
+        if (typeof _aplicarVelocidade === 'function') _aplicarVelocidade(1);
+      } catch (e) {}
+      try {
+        if (typeof _aplicarOrbita === 'function') _aplicarOrbita(1);
+      } catch (e) {}
+      try {
+        if (typeof network !== 'undefined' && network && network.fit) network.fit({ animation: true });
+      } catch (e) {}
+    }
+
+    topTheme.addEventListener('change', function(){
+      applyTheme(topTheme.value);
+    });
+
+    speed.addEventListener('input', function(){
+      speedValue.textContent = 'x' + parseFloat(speed.value).toFixed(2);
+      localStorage.setItem('velGrafo', speed.value);
+      try {
+        if (typeof _aplicarVelocidade === 'function') _aplicarVelocidade(parseFloat(speed.value));
+      } catch (e) {}
+    });
+
+    orbit.addEventListener('input', function(){
+      orbitValue.textContent = 'x' + parseFloat(orbit.value).toFixed(1);
+      localStorage.setItem('orbGrafo', orbit.value);
+      try {
+        if (typeof _aplicarOrbita === 'function') _aplicarOrbita(parseFloat(orbit.value));
+      } catch (e) {}
+    });
+
     var visible = true;
     eye.addEventListener('click', function(){
       visible = !visible;
       panel.style.display = visible ? 'flex' : 'none';
     });
+
+    menuBtn.addEventListener('click', function(){
+      topBar.style.display = (topBar.style.display === 'none') ? 'flex' : 'none';
+    });
+
+    ctrl.addEventListener('click', function(){
+      var shouldShow = localStorage.getItem('labelsOcultos') !== 'true';
+      setLabelVisibility(shouldShow);
+    });
+
+    resetBtn.addEventListener('click', function(){
+      resetWidgetState();
+    });
+
+    window.__mkWidgetApi = {
+      applyTheme: applyTheme,
+      setLabelVisibility: setLabelVisibility,
+      resetWidgetState: resetWidgetState
+    };
+
+    applyTheme(topTheme.value);
+    setLabelVisibility(localStorage.getItem('labelsOcultos') !== 'true');
+    if (typeof _aplicarVelocidade === 'function') _aplicarVelocidade(parseFloat(speed.value));
+    if (typeof _aplicarOrbita === 'function') _aplicarOrbita(parseFloat(orbit.value));
   }
 
   if (document.readyState === 'loading') {
