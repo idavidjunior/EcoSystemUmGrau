@@ -1,0 +1,112 @@
+{
+  "id": "20260807_213357",
+  "label": "antes-refino-grafo-3d-zoom-foco",
+  "created": "2026-08-07T21:33:57",
+  "state": {
+    "schema_version": 1,
+    "updated_at": "2026-08-07T12:40:26",
+    "active_project": "EcoSystemUmGrau",
+    "objective": "Transformar o Ecossistema Jarvis em Runtime de IA persistente (camada 1: estado+boot)",
+    "last_task": "Busca semantica densa integrada (memory_semantic.py) + sync constituicao deployada",
+    "operational_context": "Runtime v1: estado persistente em runtime/state.json, boot via scripts/runtime_boot.py. LLM = motor de inferencia; governanca/memoria/continuidade = ecossistema.",
+    "active_agents": [],
+    "loaded_memory": [],
+    "pending": [
+      {
+        "id": 1,
+        "text": "Camada 2: Kernel permanente (autoridade maxima, controla regras/prioridades/formatos/validacao)",
+        "done": true,
+        "created": "2026-08-05T09:24:58"
+      },
+      {
+        "id": 2,
+        "text": "Camada 2: Constituicao imutavel com clausulas absolutas (nunca ignorar kernel/runtime/auditoria)",
+        "done": true,
+        "created": "2026-08-05T09:24:59"
+      },
+      {
+        "id": 3,
+        "text": "Camada 3: Context Loader inteligente (seleciona docs/memorias relevantes por assunto)",
+        "done": true,
+        "created": "2026-08-05T09:33:05"
+      },
+      {
+        "id": 4,
+        "text": "Camada 3: Auditor adaptativo (somente tarefas de alta criticidade)",
+        "done": true,
+        "created": "2026-08-05T09:33:05"
+      }
+    ],
+    "history": [
+      {
+        "timestamp": "2026-08-05T09:24:59",
+        "text": "Runtime v1 operacional: estado persistente + bootloader + restauracao automatica"
+      },
+      {
+        "timestamp": "2026-08-05T09:33:04",
+        "text": "Kernel permanente operacional (7 regras absolutas, contratos entrada/saida, pipeline 9 etapas). Constituicao v1.1 com clausula de soberania."
+      },
+      {
+        "timestamp": "2026-08-05T09:49:17",
+        "text": "Context Loader (BM25, carrega so o relevante) e Auditor adaptativo (classifica criticidade, reprova e devolve ao ciclo) operacionais. Pipeline runtime completo."
+      },
+      {
+        "timestamp": "2026-08-05T13:30:33",
+        "text": "orbGrafo salva em arquivo (docs/grafo_widget_orbGrafo.json) via Bridge.guardar_orbGrafo. Pipeline multi-LLM: Bridge.perguntar com 7 modelos fallback. Widget reiniciado PID 7732."
+      },
+      {
+        "timestamp": "2026-08-05T14:45:48",
+        "text": "3 criticos fase 1 RESOLVIDOS: (1) memoria semantica TF-IDF 86 mems; (2) bridge Jarvis 8765 + STT/TTS; (3) pipeline LLM curado llm_feedback. Memorias 99-101 registradas."
+      },
+      {
+        "timestamp": "2026-08-06T07:34:22",
+        "text": "Teste de integracao LER executado e aprendizado registrado. Ecossistema validado: loop completo, supervisor, OpenCode, replanejamento autonomo."
+      },
+      {
+        "timestamp": "2026-08-06T15:18:56",
+        "text": "Mapeamento completo em aprendizado de hoje. Bridge: ativar ping_interval=20 ping_timeout=20 no websockets.serve(). App: backoff exponencial 1s->5s com jitter 50% + heartbeat 15s + fila ack. Fallback Tailscale->hostname->IP local."
+      },
+      {
+        "timestamp": "2026-08-06T15:19:09",
+        "text": "Pesquisa online concluida. 5 padroes consolidados mapeados. Aprendizado #111 + arquivo 2026-08-06-algoritmo-recuperacao-rapida-conexao.md. Aguarda aprovacao para implementar camada 1 (conn_recovery.py)."
+      },
+      {
+        "timestamp": "2026-08-06T15:50:34",
+        "text": "Sessao encerrada apos boot e confirmacao do usuario. Memoria 113 registrada. Estado atualizado."
+      },
+      {
+        "timestamp": "2026-08-06T16:06:00",
+        "text": "Bridge: ping_interval=20/timeout=20 (deteccao ~20s). App: backoff 1s->5s jitter 50%, heartbeat 15s, fila ack. Bridge extrai tipo=mensagem e devolve ack. Fallback Tailscale->LAN 192.168.15.9->localhost. Sintaxe + preflight OK."
+      },
+      {
+        "timestamp": "2026-08-06T16:11:21",
+        "text": "Recuperacao de conexao implementada e ativa: keepalive, backoff, fila ACK, fallback Tailscale em operacao."
+      },
+      {
+        "timestamp": "2026-08-06T16:14:23",
+        "text": "Sincronização app + ecossistema concluída: bridge curado, app v15 Eco, runtime persistente operacional"
+      },
+      {
+        "timestamp": "2026-08-06T16:38:03",
+        "text": "Extensao perito ADB concluida: am instrument, pm grant/revoke/hide, cmd statusbar/notification/uimode, wm size/density override, settings put/get, input completo com keycodes exaustivo, dumpsys por servico (battery/window/notification/power/wifi/gfxinfo/cpuinfo/meminfo/alarms), backup/restore, logcat avancado, profiling, MIUI especifico, automacao de UI swipe/tap/texto/uiautomator. Aprendizado estendido em 2026-08-06-jarvis-perito-adb-mapeamento-completo.md."
+      },
+      {
+        "timestamp": "2026-08-06T22:19:56",
+        "text": "Treinamento completo da tarefa de resiliencia: clausula petrea (#129), watchdog resiliente (#130), saudacoes inteligentes (#131), bug \\5512 corrigido (#133), certificacao forense + boot via Startup (#134). Kinds de 6 memorias normalizados, indice TF-IDF reconstruido, watchdog.lock fora do git, 3 aprendizados organizados sem duplicacao. Watchdog ativo (PID 2172), bridge e serve saudaveis, desktop intocado."
+      },
+      {
+        "timestamp": "2026-08-07T05:15:39",
+        "text": "Análise completa do widget grafo Cerebro Vivo - imersão total em layout, interface, efeitos visuais, motor de funcionamento e bugs históricos"
+      },
+      {
+        "timestamp": "2026-08-07T05:57:22",
+        "text": "Implementadas funcionalidades de visualizacao no widget grafo: toggle 3D (onda viajante), flash no clique, hide/show painel, reset de prefs, slider intensidade 3D. Validado py_compile + node --check."
+      },
+      {
+        "timestamp": "2026-08-07T12:40:26",
+        "text": "Progresso em etapas no app VoxUmGrau + health-check sem gastar LLM. Bridge e universal_bridge reiniciados. APK instalado. Memoria #179. Preflight passou."
+      }
+    ],
+    "last_checkpoint": "20260807_055610"
+  }
+}

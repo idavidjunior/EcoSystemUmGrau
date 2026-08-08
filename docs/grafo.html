@@ -192,7 +192,10 @@
       raio = Math.min(1, Math.sqrt((p.x - c.x) * (p.x - c.x) + (p.y - c.y) * (p.y - c.y)) / 380);
     }
     // onda gira em torno do centro: lado 0 sempre na "frente" por fase
-    var viajante = Math.sin(t * 0.00050 * _waveVel * _velGlobal + ang + raio * 3.0) * 0.26 * _waveDir * _waveIntensidade * (_modo3D ? 1 : 0);
+    // Quando _modo3D esta ativo, a amplitude da onda viajante e ampliada
+    // (0.26 -> 0.45) para tornar o efeito de rotacao perceptivel.
+    var ampViajante = _modo3D ? 0.45 * _waveIntensidade : 0.26 * _waveIntensidade;
+    var viajante = Math.sin(t * 0.00050 * _waveVel * _velGlobal + ang + raio * 3.0) * ampViajante * _waveDir * (_modo3D ? 1 : 0);
     var z = z0 + 0.20 * onda * 0.5 + viajante;
     return Math.max(0.04, Math.min(1, z));
   }
@@ -830,9 +833,11 @@ arestasUp = arestasUp.map(a =>
   function _toggle3D(ativo) {
     _modo3D = ativo;
     if (typeof localStorage !== 'undefined') localStorage.setItem('modo3D', ativo);
+    // Força update imediato: quando ativado/disativado, o tick loop precisa
+    // recalculal a profundidade viva com a onda viajante.
+    _tickPausado = false;
     // se desativado, restaura a z base de todos os nos
     if (!ativo) {
-      var agora = Date.now();
       nodes.get().forEach(function(n) {
         var z = _zBase[n.id] != null ? _zBase[n.id] : 0.5;
         var esc = 0.68 + 0.62 * z;
@@ -848,12 +853,118 @@ arestasUp = arestasUp.map(a =>
     if (typeof localStorage !== 'undefined') localStorage.setItem('flashEnabled', ativo ? 'true' : 'false');
   }
 
-  // --- Click no no: flash + foco na vizinhanca ---
+  // --- Click no no: flash + expansao focal (microscopio) ---
+  // Ao clicar num no: o no central CRESCER + 2x, os vizinhos diretos se ESPACAM
+  // (puxao para fora em espiral), e o restante se escurece. Simula um microscopio
+  // focal: voce aproxima do detalhe e a vizinhaca se expande ao redor.
+  function _expandirFoco(id, corGrupo) {
+    _destacado = true;
+    _tickPausado = true; // pausa a decoracao viva para preservar o foco
+
+    // vizinhos diretos (1 hop) + 2 hop para expansao cascata
+    var viz1 = new Set([id]);
+    var viz2 = new Set([id]);
+    edges.get().forEach(function(e) {
+      if (e.from === id) { viz1.add(e.to); }
+      if (e.to === id) { viz1.add(e.from); }
+    });
+    viz1.forEach(function(v1) {
+      edges.get().forEach(function(e) {
+        if (e.from === v1 && e.to !== id) viz2.add(e.to);
+        if (e.to === v1 && e.from !== id) viz2.add(e.from);
+      });
+    });
+
+    var corViva = clarear(corGrupo || '#89b4fa', 0.4);
+
+    // animacao de expansao: move vizinhos para fora em espiral
+    var origPos = {};
+    nodes.get().forEach(function(n) {
+      if (!viz1.has(n.id) && !viz2.has(n.id)) return;
+      origPos[n.id] = network.getPositions([n.id])[n.id] || { x: n.x || 0, y: n.y || 0 };
+    });
+
+    var frame = 0, maxFrame = 20;
+    var anima = setInterval(function() {
+      frame++;
+      var t = frame / maxFrame;
+      var atualizacoes = [];
+      nodes.get().forEach(function(n) {
+        if (!viz1.has(n.id) && !viz2.has(n.id) && n.id !== id) {
+          // fondo: esconde, mas mostra leve brilho do tema
+          if (frame === 1) {
+            atualizacoes.push({
+              id: n.id, color: '#14141f', size: 3, opacity: 0.06,
+              borderWidth: 0, borderWidthSelected: 0, shadow: false
+            });
+          }
+          return;
+        });
+
+        // nó central: cresce e flutua
+        if (n.id === id) {
+          var szOrig = original[id] ? original[id].size : 14;
+          atualizacoes.push({
+            id: id,
+            color: corViva,
+            borderColor: '#ffffff',
+            borderWidth: 4,
+            shadow: true,
+            shadowColor: corViva,
+            shadowSize: 36 + 10 * Math.sin(t * Math.PI),
+            size: szOrig + 24 * t
+          });
+        } else if (viz1.has(n.id)) {
+          // vizinhos diretos: se espacam em espiral + crescem
+          var op = origPos[n.id];
+          var ang = Math.atan2(op.y - (_cacheCentro.y || 0), op.x - (_cacheCentro.x || 0));
+          var raio = Math.sqrt(Math.pow(op.x - (_cacheCentro.x || 0), 2) + Math.pow(op.y - (_cacheCentro.y || 0), 2));
+          var exp = 28 * t;
+          atualizacoes.push({
+            id: n.id,
+            x: op.x + Math.cos(ang + t * 2) * exp,
+            y: op.y + Math.sin(ang + t * 2) * exp,
+            color: clarear(corViva, 0.2),
+            borderWidth: 2,
+            shadow: true,
+            shadowSize: 20,
+            size: (original[n.id] ? original[n.id].size : 10) + 4 * t
+          });
+        } else if (viz2.has(n.id)) {
+          // vizinhos de 2º: crescem levemente
+          atualizacoes.push({ id: n.id, size: (original[n.id] ? original[n.id].size : 8) + 3 * t });
+        }
+      });
+
+      // esconder arestas que nao conectam ao foco
+      var arestasUp = [];
+      edges.get().forEach(function(e) {
+        if (viz1.has(e.from) && viz1.has(e.to) || viz1.has(e.from) && e.to === id || viz1.has(e.to) && e.from === id) {
+          arestasUp.push({ id: e.id, color: corViva, width: 4, opacity: 1 });
+        } else {
+          arestasUp.push({ id: e.id, color: '#2a2a3a', width: 0.3, opacity: 0.05 });
+        }
+      });
+      nodes.update(atualizacoes);
+      edges.update(arestasUp);
+
+      if (frame >= maxFrame) {
+        clearInterval(anima);
+        // zoom foca no nó central
+        if (network.focus) {
+          network.focus(id, { scale: 0.9, animation: { duration: 400 } });
+        }
+      }
+    }, 16);
+  }
+
   network.on('click', function(params) {
     if (params.nodes && params.nodes.length > 0) {
       var nid = params.nodes[0];
       if (_flashEnabled) flashNo(nid, _glowCor || '#89b4fa');
-      if (!_destacado) focarVizinhanca(nid, (original[nid] && original[nid].color) || '#89b4fa');
+      if (!_destacado) {
+        _expandirFoco(nid, (original[nid] && original[nid].color) || '#89b4fa');
+      }
     }
   });
 

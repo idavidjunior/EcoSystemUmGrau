@@ -565,27 +565,7 @@ WIDGET_JS_EXTRA = """
     grupo3D.appendChild(label3D);
     grupo3D.appendChild(slider3D);
     grupo3D.appendChild(btn3D);
-
-    // ---- Grupo Flash: toggle ----
-    var btnFlash = mkEl('div');
-    btnFlash.id = 'mk-btn-flash';
-    btnFlash.title = 'Alternar flash nos cliques';
-    btnFlash.style.cssText = btn3D.style.cssText;
-    btnFlash.innerHTML = '\\u26A1';
-    btnFlash._ativo = (typeof localStorage !== 'undefined' && localStorage.getItem('flashEnabled') !== 'false');
-    btnFlash.addEventListener('click', function() {
-      btnFlash._ativo = !btnFlash._ativo;
-      btnFlash.style.opacity = btnFlash._ativo ? '1' : '0.4';
-      if (typeof _toggleFlash === 'function') _toggleFlash(btnFlash._ativo);
-    });
-
-    var labelFlash = mkEl('span');
-    labelFlash.style.cssText = 'font-size:10px;color:' + cores.texto2 + ';min-width:40px;';
-    labelFlash.textContent = 'Flash';
-    var flashGroup = mkEl('div');
-    flashGroup.style.cssText = 'display:flex;align-items:center;gap:6px;';
-    flashGroup.appendChild(labelFlash);
-    flashGroup.appendChild(btnFlash);
+    grupo3D.appendChild(btnFlash);
 
     // ---- Botao reset (🔄) alinhado ao lado do painel ----
     var btnReset = mkEl('div');

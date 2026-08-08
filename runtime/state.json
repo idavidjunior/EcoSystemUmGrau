@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-07T12:40:26",
+  "updated_at": "2026-08-07T21:36:57",
   "active_project": "EcoSystemUmGrau",
   "objective": "Transformar o Ecossistema Jarvis em Runtime de IA persistente (camada 1: estado+boot)",
-  "last_task": "Busca semantica densa integrada (memory_semantic.py) + sync constituicao deployada",
+  "last_task": "Widget grafo: corrigido loop de reload, typo pulsoForza, efeito 3D mais perceptível, implementado zoom microscópio com expansão focal",
   "operational_context": "Runtime v1: estado persistente em runtime/state.json, boot via scripts/runtime_boot.py. LLM = motor de inferencia; governanca/memoria/continuidade = ecossistema.",
   "active_agents": [],
   "loaded_memory": [],
@@ -103,5 +103,5 @@
       "text": "Progresso em etapas no app VoxUmGrau + health-check sem gastar LLM. Bridge e universal_bridge reiniciados. APK instalado. Memoria #179. Preflight passou."
     }
   ],
-  "last_checkpoint": "20260807_055610"
+  "last_checkpoint": "20260807_213357"
 }

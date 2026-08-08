@@ -3028,5 +3028,25 @@
     "access_count": 0,
     "created_at": "2026-08-07T21:19:56.994108",
     "last_accessed": "2026-08-07T21:19:56.994108"
+  },
+  {
+    "id": 182,
+    "kind": "padrao",
+    "task": "Widget grafo 3D + Zoom Microscopio - correcoes e novas funcionalidades",
+    "summary": "Corrigido: (1) Loop de reload infinito - _versao() exclui cluster_mapper.json e outros arquivos nao-md; (2) Typo pulsoForza->pulsoForca nas configuracoes de tema Neon/Glow/Calm; (3) Efeito 3D mais perceptivel - amplitude da onda viajante aumentada de 0.26 para 0.45 quando ativado; (4) Botao 3D com feedback visual (glow ativo); (5) Removido btnFlash duplicado do widget panel. Implementado: zoom-microscopio com expansao fokal - ao clicar num no, ele cresce 2x enquanto vizinhos diretos se espacam em espiral, arestas do foco brilham, o restante se escurece e faz zoom focal. Botao Flash integrado com estado visual.",
+    "project": "",
+    "tags": [
+      "focal",
+      "faz",
+      "escurece",
+      "restante",
+      "brilham",
+      "foco"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T21:34:16.553590",
+    "last_accessed": "2026-08-07T21:34:16.553590"
   }
 ]
