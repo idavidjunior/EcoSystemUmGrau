@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**79 notas** conectadas a este hub.
+**80 notas** conectadas a este hub.
 
 
 ## Notas
@@ -15,6 +15,7 @@
 - [[android-view-hierarchy-scanning]]
 - [[approach-mediacodecaudiorenderer-with-audioprocessor-varargs]]
 - [[audioprocessorisactive-must-be-dynamic]]
+- [[backup-de-apks-fontes-no-github]]
 - [[bug-pattern]]
 - [[build-pipeline]]
 - [[button-visibility-pattern-maintain-grid]]
