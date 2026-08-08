@@ -311,6 +311,30 @@ def run():
     except Exception as e:
         check('Preflight etico', False, str(e)[:200])
 
+    # 8. JSON Sanitization (hardcoded paths regression)
+    print('\n[8] JSON Sanitization (hardcoded paths)')
+    try:
+        import subprocess as sp
+        r = sp.run([sys.executable, os.path.join(BASE, 'scripts', 'test_json_sanitization.py')],
+                   capture_output=True, text=True, timeout=60, cwd=BASE)
+        out = (r.stdout + r.stderr).strip()
+        for line in out.splitlines():
+            if '[FAIL]' in line:
+                check('JSON sanitization', False, line.strip())
+        if r.returncode == 0:
+            # Extract pass count from output
+            import re
+            m = re.search(r'Pass:\s*(\d+)', out)
+            total = re.search(r'Total.*?:\s*(\d+)', out)
+            if m and total:
+                check(f'JSON sanitization ({m.group(1)}/{total.group(1)} clean)', True)
+            else:
+                check('JSON sanitization', True)
+        else:
+            check('JSON sanitization', False, f'exit code {r.returncode}')
+    except Exception as e:
+        check('JSON sanitization', False, str(e)[:200])
+
     # Summary
     print('\n========================================')
     if not ERRORS:
