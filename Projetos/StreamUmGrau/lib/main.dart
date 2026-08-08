@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'core/config/app_config.dart';
 import 'core/services/supabase_service.dart';
 import 'core/theme/app_theme.dart';
 import 'views/home_view.dart';
@@ -7,7 +8,11 @@ import 'views/home_view.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await SupabaseService.instance.init();
+  // So inicializa o Supabase quando as credenciais reais estao presentes.
+  // Com placeholders, o app usa o repositorio mock local.
+  if (AppConfig.supabaseConfigurado) {
+    await SupabaseService.instance.init();
+  }
 
   runApp(const StreamUmGrauApp());
 }
@@ -19,7 +24,7 @@ class StreamUmGrauApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'StreamUmGrau',
+      title: AppConfig.appName,
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
       theme: AppTheme.dark,

@@ -11,6 +11,9 @@
 class AppConfig {
   AppConfig._();
 
+  /// Nome exibido do aplicativo.
+  static const String appName = 'StreamUmGrau';
+
   /// Nome da tabela que guarda o catalogo de midias no Supabase.
   static const String midiasTable = 'midias';
 
@@ -25,4 +28,12 @@ class AppConfig {
     'SUPABASE_ANON_KEY',
     defaultValue: 'SUA_CHAVE_ANON_AQUI',
   );
+
+  /// Indica se o Supabase esta configurado (URL e chave reais).
+  static bool get supabaseConfigurado =>
+      !supabaseUrl.contains('SEU_PROJETO') &&
+      !supabaseAnonKey.contains('SUA_CHAVE');
+
+  /// Usa dados mock locais quando o Supabase ainda nao foi configurado.
+  static bool get usarMock => !supabaseConfigurado;
 }

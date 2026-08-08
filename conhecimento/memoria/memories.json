@@ -3598,5 +3598,25 @@
     "access_count": 0,
     "created_at": "2026-08-08T19:35:14.168126",
     "last_accessed": "2026-08-08T19:35:14.168126"
+  },
+  {
+    "id": 210,
+    "kind": "decisao",
+    "task": "Protocolo de higiene do repo StreamUmGrau (GitHub)",
+    "summary": "Usuario determinou: manter repositorio github/stream-um-grau limpo e organizado - sem lixo, sem arquivos desnecessarios, sem commits excessivos e sem subidas descontroladas. Compilar via GitHub Actions e baixar APK como artifact (nao commitar APK). Nao subir screenshots de debug, logs, builds intermediarios, node_modules, backups. Commits pequenos, focados e significativos. Regra anterior (2026-08-08) continua valendo: so subir com autorizacao.",
+    "project": "",
+    "tags": [
+      "descontroladas",
+      "subidas",
+      "excessivos",
+      "desnecessarios",
+      "arquivos",
+      "lixo"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T20:09:12.763690",
+    "last_accessed": "2026-08-08T20:09:12.763690"
   }
 ]

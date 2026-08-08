@@ -2,11 +2,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../config/app_config.dart';
 import '../../models/midia_model.dart';
+import 'midia_repository.dart';
 
 /// Servico de acesso ao backend Supabase.
 ///
 /// Centraliza a inicializacao do cliente e as consultas ao catalogo.
-class SupabaseService {
+class SupabaseService implements MidiaRepository {
   SupabaseService._();
 
   static final SupabaseService instance = SupabaseService._();
@@ -22,7 +23,7 @@ class SupabaseService {
   /// Retorna o cliente Supabase ativo.
   SupabaseClient get client => Supabase.instance.client;
 
-  /// Busca todo o catalogo de midias da tabela `midias`.
+  @override
   Future<List<Midia>> fetchMidias() async {
     final response = await client
         .from(AppConfig.midiasTable)
@@ -34,7 +35,7 @@ class SupabaseService {
         .toList();
   }
 
-  /// Busca midias filtrando por tipo (filme, serie, dorama).
+  @override
   Future<List<Midia>> fetchMidiasPorTipo(String tipo) async {
     final response = await client
         .from(AppConfig.midiasTable)
