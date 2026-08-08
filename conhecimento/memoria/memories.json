@@ -263,7 +263,7 @@
     "id": 33,
     "kind": "erro",
     "task": "Vigilante estava inativo - nenhum mecanismo criava a scheduled task",
-    "summary": "Causa raiz: setup.bat so registra funcoes no profile, mas nenhum script criava a task EcoSystemVigilante (README prometia logon). Profile.ps1 nao existia. Corrigido com Register-ScheduledTask (AtLogOn) + profile recriado + path hardcoded -> \\C:\\Users\\David Jr.",
+    "summary": "Causa raiz: setup.bat so registra funcoes no profile, mas nenhum script criava a task EcoSystemVigilante (README prometia logon). Profile.ps1 nao existia. Corrigido com Register-ScheduledTask (AtLogOn) + profile recriado + path hardcoded -> {{USERPROFILE}}.",
     "project": "",
     "tags": [],
     "metadata": {},
@@ -1873,7 +1873,7 @@
     "id": 124,
     "kind": "padrao",
     "task": "Perito ADB - validacao completa",
-    "summary": "Mapeamento ADB estendido e validado: arquivos 2026-08-06-jarvis-perito-adb-mapeamento-completo.md e 2026-08-06-jarvis-perito-adb.md continuam atuais. ADB 1.0.41 em C:\\Users\\David Jr\\AppData\\Local\\Android\\platform-tools. Capacidades cobertas: pm, am, input, uiautomator, dumpsys, logcat, screencap, screenrecord, forward/reverse, pair, install/uninstall, backup, sideload, root/unroot, bugreport, keygen, reboot, remount, env vars. Heuristicas operacionais MIUI e Tailscale Redmi Note 11 consolidadas.",
+    "summary": "Mapeamento ADB estendido e validado: arquivos 2026-08-06-jarvis-perito-adb-mapeamento-completo.md e 2026-08-06-jarvis-perito-adb.md continuam atuais. ADB 1.0.41 em {{USERPROFILE}}\\AppData\\Local\\Android\\platform-tools. Capacidades cobertas: pm, am, input, uiautomator, dumpsys, logcat, screencap, screenrecord, forward/reverse, pair, install/uninstall, backup, sideload, root/unroot, bugreport, keygen, reboot, remount, env vars. Heuristicas operacionais MIUI e Tailscale Redmi Note 11 consolidadas.",
     "project": "",
     "tags": [
       "vars",
