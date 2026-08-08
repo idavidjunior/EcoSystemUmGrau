@@ -41,6 +41,7 @@ ACOES = [
     (r'\b(aprend|trein|estud|registr|document)\w*', 'aprender'),
     (r'\b(backup|salv|guard|persist)\w*', 'persistir'),
     (r'\b(consult|busc|busqu|pesquis|procur|localiz)\w*', 'consultar'),
+    (r'\b(execut|realiz|faz|faca|faça|rode|roda)\w*', 'executar'),
 ]
 
 NON_VERBOS = {'geral', 'gerencia', 'gerente', 'crise', 'fixo', 'política', 'policia',
@@ -96,6 +97,11 @@ def _extrair_acoes(pedido):
         for m in re.finditer(padrao, pedido, re.I):
             matches.append((m.start(), m, categoria))
     matches.sort(key=lambda t: t[0])  # ordem de aparição no texto
+    # verbo auxiliar genérico ("faça o backup", "faz a análise") imediatamente
+    # antes de outra ação real não é uma ação própria
+    matches = [m for m in matches
+               if not (m[2] == 'executar' and
+                       any(j != m and 0 <= j[0] - m[1].end() <= 12 for j in matches))]
     vistos = set()
     acoes = []
     for _, m, categoria in matches:
@@ -114,6 +120,15 @@ def _extrair_acoes(pedido):
         # corta conectores que iniciam sub-oração (para/quando/sem/e/com/então...)
         objeto = re.sub(r'\s+(para|quando|sem|com|então|depois|também|se|após|antes|porque|e|em|ou)\s*$',
                         '', objeto, flags=re.I).strip()
+        # corta "e <verbo>" que inicia a próxima ação (ex.: "... X e faca o backup")
+        partes = re.split(r'\s+e\s+', objeto)
+        objeto = partes[0]
+        for p in partes[1:]:
+            primeira = (p.strip().split()[0] if p.strip() else '')
+            if primeira and (primeira.lower() in STOP_TERMOS or
+                             any(re.search(padrao, primeira, re.I) for padrao, _ in ACOES)):
+                break
+            objeto += ' e ' + p
         acoes.append({'verbo': verbo, 'categoria': categoria, 'objeto': objeto[:120] or '—'})
     return acoes[:6]
 

@@ -148,21 +148,35 @@ def handle_tool(tool, args, rid):
 
 
 def _read_frame(stream):
-    headers = {}
-    while True:
-        line = stream.readline()
-        if not line:
-            return None
-        line = line.rstrip(b"\r\n")
-        if not line:
-            break
-        if b":" in line:
-            key, value = line.split(b":", 1)
-            headers[key.strip().lower()] = value.strip()
-    length = int(headers.get(b"content-length", b"0") or b"0")
-    if length <= 0:
+    """Lê UMA mensagem JSON-RPC de um stream stdio.
+
+    Suporta os dois protocolos do ecossistema:
+      - Framing MCP oficial (Content-Length: <n>\\r\\n\\r\\n<body>) — usado pelo opencode.
+      - JSON por linha (sem header) — usado por preflight_check.py e servidores legados.
+    """
+    first = stream.readline()
+    if not first:
         return None
-    body = stream.read(length)
+    first = first.rstrip(b"\r\n")
+    if first.startswith(b"Content-Length:"):
+        headers = {}
+        while True:
+            line = stream.readline()
+            if not line:
+                return None
+            line = line.rstrip(b"\r\n")
+            if not line:
+                break
+            if b":" in line:
+                key, value = line.split(b":", 1)
+                headers[key.strip().lower()] = value.strip()
+        length = int(headers.get(b"content-length", b"0") or b"0")
+        if length <= 0:
+            return None
+        body = stream.read(length)
+    else:
+        # protocolo por linha: a linha lida já é o JSON
+        body = first
     try:
         return json.loads(body.decode("utf-8"))
     except (json.JSONDecodeError, UnicodeDecodeError):

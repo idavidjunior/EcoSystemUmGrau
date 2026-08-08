@@ -62,11 +62,19 @@ def test_mcp_server(server_name, command, args):
         proc.kill()
         if stderr and 'Error' in stderr:
             return check(f'MCP {server_name}', False, stderr[:200])
-        lines = [l for l in stdout.strip().split('\n') if l.strip()]
-        if len(lines) >= 2:
-            result = json.loads(lines[1])  # tools/list response
-            if 'result' in result and 'tools' in result['result']:
-                n_tools = len(result['result']['tools'])
+        # Aceita os dois protocolos de resposta: JSON por linha (servidores
+        # legados) e framing MCP oficial (Content-Length: n\r\n\r\n<body>).
+        for l in stdout.split('\n'):
+            l = l.strip()
+            if not l or not l.startswith('{'):
+                continue
+            try:
+                obj = json.loads(l)
+            except json.JSONDecodeError:
+                continue
+            result = obj.get('result') or {}
+            if isinstance(result, dict) and 'tools' in result:
+                n_tools = len(result['tools'])
                 return check(f'MCP {server_name}', True, f'{n_tools} tools')
         return check(f'MCP {server_name}', False, 'No valid tools/list response')
     except subprocess.TimeoutExpired:
