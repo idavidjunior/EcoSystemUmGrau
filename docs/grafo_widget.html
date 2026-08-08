@@ -1526,6 +1526,19 @@ arestasUp = arestasUp.map(a =>
 
 <script>
     console.log(">>> WIDGET_JS_EXTRA SCRIPT STARTED");
+        // Test: write to localStorage and check
+        try {
+          localStorage.setItem("widget_js_test", Date.now().toString());
+          console.log(">>> localStorage write OK");
+        } catch(e) { console.log(">>> localStorage ERROR:", e); }
+        // Force initWidgetControls call with error handling
+        setTimeout(function(){
+          try {
+            console.log(">>> Timeout: calling initWidgetControls");
+            initWidgetControls();
+            console.log(">>> initWidgetControls returned");
+          } catch(e) { console.log(">>> initWidgetControls ERROR:", e); }
+        }, 100);
         // Write test file via fetch to /test endpoint
         fetch("/test_js_exec", {method: "POST", body: "OK"}).then(function(){
           console.log(">>> Test endpoint called");
