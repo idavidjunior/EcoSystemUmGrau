@@ -507,6 +507,10 @@ def compreender(pedido, refinar=False):
 # CLI
 # ---------------------------------------------------------------------------
 def main():
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except (AttributeError, ValueError):
+        pass
     parser = argparse.ArgumentParser(description='Compreensão de Pedidos do EcoSystemUmGrau')
     parser.add_argument('pedido', nargs='*', default=[])
     parser.add_argument('--refinar', action='store_true', help='refina com a LLM disponível (fail-soft)')

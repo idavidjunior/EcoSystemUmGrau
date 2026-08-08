@@ -1,6 +1,6 @@
 # Cluster: Cognicao
 
-**42 notas** do cluster cognicao.
+**43 notas** do cluster cognicao.
 
 
 ## Notas
@@ -19,6 +19,7 @@
 - [[elemento-existe-3-fontes-de-verdade]]
 - [[encoding-aware-diagnostics]]
 - [[entender-antes-de-criar-ontologia-de-habilidades]]
+- [[erro-unicodeencodeerror-no-runtimecontext-cp1252]]
 - [[escrita-atomica-sempre]]
 - [[estrategia-de-fallback-em-cadeia-chain-of-responsibility]]
 - [[estrategia-de-loop-autonomo-planejar-executar-verificar-corr]]

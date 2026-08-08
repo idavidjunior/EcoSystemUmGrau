@@ -1,6 +1,6 @@
 # Padroes Cognitivos
 
-**44 notas** conectadas a este hub.
+**45 notas** conectadas a este hub.
 
 
 ## Notas
@@ -22,6 +22,7 @@
 - [[diagnostico-por-eliminacao-em-config-complexa]]
 - [[encoding-aware-diagnostics]]
 - [[entender-antes-de-criar-ontologia-de-habilidades]]
+- [[erro-unicodeencodeerror-no-runtimecontext-cp1252]]
 - [[espera-adaptativa-por-tipo-de-recurso]]
 - [[estrategia-de-fallback-em-cadeia-chain-of-responsibility]]
 - [[estrategia-de-loop-autonomo-planejar-executar-verificar-corr]]

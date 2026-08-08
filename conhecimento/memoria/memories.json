@@ -3538,5 +3538,25 @@
     "access_count": 0,
     "created_at": "2026-08-08T19:02:31.964759",
     "last_accessed": "2026-08-08T19:02:31.964759"
+  },
+  {
+    "id": 207,
+    "kind": "padrao",
+    "task": "Refino de compreensao usa LLM do opencode como primaria (resiliencia)",
+    "summary": "O modulo mcp/nucleo/habilidades/compreensao-pedidos refina pedidos com a LLM padrao do opencode via opencode run --agent compreensao-refino (agente text-only, permission deny all, prompt forcando JSON). Backup em cadeia: NVIDIA -> OpenAI -> Anthropic. Guarda anti-recursao COMPREENSAO_EM_REFINO, cwd neutro runtime/refino, sys.stdout reconfigure utf-8 no CLI. Falha de primaria cai para backup; tudo falho vira llm_refino.usado:false (fail-soft).",
+    "project": "",
+    "tags": [
+      "json",
+      "forcando",
+      "prompt",
+      "deny",
+      "permission",
+      "text"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T19:14:36.629397",
+    "last_accessed": "2026-08-08T19:14:36.629397"
   }
 ]

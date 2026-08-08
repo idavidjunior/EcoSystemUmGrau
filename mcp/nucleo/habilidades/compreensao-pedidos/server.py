@@ -3,14 +3,14 @@
 Transforma pedidos do usuário em entendimento estruturado (objetivo, ações,
 contexto, conceitos, restrições, ambiguidades, critérios, plano) e conecta ao
 acervo do ecossistema (memória, skills, projetos, scripts). Sem DSPy; refino
-com LLM é opcional e fail-soft (usa a LLM disponível).
+com LLM é opcional e fail-soft (LLM do opencode como primária, NVIDIA/OpenAI/Anthropic de backup).
 
 Transporte: MCP stdio padrão (Content-Length framing).
 
 Tools:
   - compreender_pedido    — entendimento completo de um pedido
   - avaliar_clareza       — score de clareza estático + lacunas
-  - refinar_entendimento  — compreensão + refino opcional com a LLM disponível
+  - refinar_entendimento  — compreensão + refino com a LLM do opencode (fallback NVIDIA/OpenAI/Anthropic)
   - resolver_conceitos    — resolve termos do pedido no acervo do ecossistema
   - detectar_desperdicio  — riscos de desperdício e atalhos (repetição, escopo)
 """
@@ -48,7 +48,7 @@ TOOLS = [
     },
     {
         "name": "refinar_entendimento",
-        "description": "Executa a compreensão completa e refina com UMA chamada de LLM (a que estiver disponível: NVIDIA/OpenAI/Anthropic). Fail-soft: sem chave/modelo, retorna o entendimento estático com o motivo. Use para pedidos críticos/complexos.\n\nTrigger keywords: refinar entendimento, pedido crítico, validar interpretação, ambiguidade alta.",
+        "description": "Executa a compreensão completa e refina com a LLM do opencode (primária; se não responder, backup NVIDIA → OpenAI → Anthropic). Fail-soft: sem LLM disponível, retorna o entendimento estático com o motivo. Use para pedidos críticos/complexos.\n\nTrigger keywords: refinar entendimento, pedido crítico, validar interpretação, ambiguidade alta.",
         "inputSchema": {
             "type": "object",
             "properties": {

@@ -117,7 +117,8 @@
       "temperature": 0.2,
       "permission": {
         "*": "deny"
-      }
+      },
+      "prompt": "Voce e o refinador do modulo de Compreensao de Pedidos do EcoSystemUmGrau. Recebe um pedido e um entendimento heuristico. Responda APENAS com um unico objeto JSON valido, sem markdown e sem texto antes ou depois: {\"objetivo_corrigido\": string, \"lacunas\": [strings], \"melhorias\": [strings], \"observacao\": string}. Nao use ferramentas. Nao mencione boot, runtime, memoria ou processos internos."
     }
   },
   "permission": "allow",

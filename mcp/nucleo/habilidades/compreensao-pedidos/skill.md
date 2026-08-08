@@ -36,10 +36,13 @@ Campos retornados: `objetivo`, `acoes` (verbo/categoria/objeto em ordem),
 python "mcp/nucleo/habilidades/compreensao-pedidos/compreensao.py" "<pedido>" --refinar --json
 ```
 
-- Usa a PRIMEIRA LLM disponível: NVIDIA (padrão) → OpenAI → Anthropic.
-- Chaves vêm SÓ de `scripts/.env` (nunca de `.env.example`).
-- Modelo NVIDIA configurável via `COMPREENSAO_MODELO_NVIDIA`.
-- Se nenhuma chave existir ou a chamada falhar, retorna
+- Primária: a LLM padrão do opencode (mesma da sessão, via `opencode run --agent
+  compreensao-refino`). Quando não responde, os backups entram em ação (resiliência):
+  NVIDIA → OpenAI → Anthropic.
+- Chaves de backup vêm SÓ de `scripts/.env` (nunca de `.env.example`).
+- Modelo primário configurável via `COMPREENSAO_MODELO_OPENCODE` (default `opencode/big-pickle`);
+  modelo NVIDIA via `COMPREENSAO_MODELO_NVIDIA`.
+- Se a LLM primária e os backups falharem, retorna
   `llm_refino.usado: false` com o motivo — a compreensão estática NUNCA falha.
 
 ### 3. Via MCP server `mcp-compreensao-pedidos` (5 tools)

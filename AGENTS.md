@@ -461,8 +461,10 @@ O ecossistema conta com um **módulo de compreensão de pedidos** integrado via 
    - Objetivo, ações explícitas (em ordem de aparição), contexto e conceitos conhecidos
    - Restrições, ambiguidades (com custo), critérios de sucesso, riscos de desperdício
    - Plano sugerido, score de clareza (0-100) e julgamento (`CLARO` / `PARCIALMENTE_CLARO` / `AMBIGUO`)
-2. **Refino LLM opcional** (`--refinar` ou tool `refinar_entendimento`) — UMA chamada à LLM disponível
-   (NVIDIA → OpenAI → Anthropic, chaves SÓ de `scripts/.env`). Fail-soft: sem chave ou com falha, a compreensão estática NUNCA falha.
+2. **Refino LLM opcional** (`--refinar` ou tool `refinar_entendimento`) — UMA chamada à LLM do opencode
+   (primária, via `opencode run --agent compreensao-refino`, mesma LLM da sessão). Se não responder,
+   os backups entram em ação (resiliência): NVIDIA → OpenAI → Anthropic (chaves SÓ de `scripts/.env`).
+   Fail-soft: sem LLM disponível ou com falha, a compreensão estática NUNCA falha.
 3. **Resolução de conceitos** — termos do pedido são resolvidos contra o acervo real
    (memória, skills, projetos, scripts) antes de qualquer execução.
 4. **Detecção de desperdício** — pedido repetido (última tarefa), escopo creep, sem entregável claro.
