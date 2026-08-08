@@ -647,7 +647,8 @@ def gerar_html(nos, arestas, output_path):
       adaptiveTimestep: false,
       stabilization: false
     }},
-    interaction: {{ hover:true, tooltipDelay:120, navigationButtons:true, zoomSpeed:0.35, smoothWheel:true }}
+    interaction: {{ hover:true, tooltipDelay:120, navigationButtons:true, zoomSpeed:0.35, smoothWheel:true }},
+    configure: {{ enabled: true, filter: 'physics', showButton: true, container: undefined }}
   }};
   const network = new vis.Network(container, {{ nodes, edges }}, options);
 
