@@ -131,6 +131,13 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
     e.preventDefault();
     document.body.classList.toggle('desktop');
   }, false);
+
+  // Initialize widget controls when pywebview is ready
+  if (window.pywebview && window.pywebview.api) {
+    initWidgetControls();
+  } else {
+    window.addEventListener("pywebviewready", initWidgetControls);
+  }
 </script>
 <style>
   #header { transition: opacity .25s ease; position: relative; z-index: 10000; }
@@ -1521,6 +1528,16 @@ arestasUp = arestasUp.map(a =>
     console.log("INIT WIDGET CONTROLS RUNNING");
     if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
       window.pywebview.api.debug_log("WIDGET_JS_EXTRA: initWidgetControls CONSOLE LOG TEST");
+        // Direct synchronous bridge test
+        try {
+          console.log(">>> Testing bridge versao()...");
+          window.pywebview.api.versao().then(function(v) {
+            console.log(">>> versao() returned:", v);
+            if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
+              window.pywebview.api.debug_log("WIDGET_JS_EXTRA: versao() returned " + v);
+            }
+          }).catch(function(e) { console.log(">>> versao() ERROR:", e); });
+        } catch(e) { console.log(">>> SYNC ERROR:", e); }
     }
     }
 
