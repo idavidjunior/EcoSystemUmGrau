@@ -239,34 +239,34 @@ WIDGET_JS_EXTRA = """
 
     var topBar = mk('div');
     topBar.id = 'mk-topbar';
-    topBar.style.cssText = 'position:fixed;top:10px;right:12px;left:52px;z-index:99998;display:flex;justify-content:flex-end;align-items:center;gap:6px;pointer-events:auto;';
+    topBar.style.cssText = 'position:fixed;top:10px;right:10px;left:auto;max-width:calc(100vw - 72px);z-index:99998;display:flex;justify-content:flex-end;align-items:center;gap:4px;pointer-events:auto;';
 
     var eye = mk('div');
     eye.id = 'mk-painel-toggle';
     eye.title = 'Ocultar/mostrar painel';
     eye.textContent = '👁';
-    eye.style.cssText = 'position:fixed;top:12px;left:10px;z-index:99999;width:30px;height:30px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#313244;border:1px solid ' + cores.borda + ';color:' + cores.destaque + ';';
+    eye.style.cssText = 'position:fixed;top:12px;left:10px;z-index:99999;width:26px;height:26px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#313244;border:1px solid ' + cores.borda + ';color:' + cores.destaque + ';font-size:12px;';
 
     var ctrl = mk('div');
     ctrl.id = 'mk-labels';
     ctrl.title = 'Alternar visibilidade das etiquetas';
     ctrl.textContent = 'T';
-    ctrl.style.cssText = 'width:30px;height:30px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:' + cores.destaque + ';background:#313244;border:1px solid ' + cores.destaque + ';font-size:14px;';
+    ctrl.style.cssText = 'width:24px;height:24px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:' + cores.destaque + ';background:#313244;border:1px solid ' + cores.destaque + ';font-size:12px;';
 
     var menuBtn = mk('div');
     menuBtn.id = 'mk-menu-btn';
     menuBtn.title = 'Mostrar/ocultar menus';
     menuBtn.textContent = '☰';
-    menuBtn.style.cssText = 'width:30px;height:30px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:' + cores.destaque + ';background:#313244;border:1px solid ' + cores.destaque + ';font-size:14px;';
+    menuBtn.style.cssText = 'width:24px;height:24px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:' + cores.destaque + ';background:#313244;border:1px solid ' + cores.destaque + ';font-size:12px;';
 
     var resetBtn = mk('div');
     resetBtn.id = 'mk-btn-reset';
     resetBtn.title = 'Resetar preferências';
     resetBtn.textContent = '↺';
-    resetBtn.style.cssText = 'width:30px;height:30px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:' + cores.destaque + ';background:#313244;border:1px solid ' + cores.destaque + ';font-size:14px;';
+    resetBtn.style.cssText = 'width:24px;height:24px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:' + cores.destaque + ';background:#313244;border:1px solid ' + cores.destaque + ';font-size:12px;';
 
     var actions = mk('div');
-    actions.style.cssText = 'display:flex;gap:6px;border:1px solid ' + cores.destaque + ';border-radius:6px;padding:4px;background:#313244;';
+    actions.style.cssText = 'display:flex;gap:4px;border:1px solid ' + cores.destaque + ';border-radius:6px;padding:3px 4px;background:#313244;';
     actions.appendChild(ctrl);
     actions.appendChild(menuBtn);
     actions.appendChild(resetBtn);
@@ -345,21 +345,30 @@ WIDGET_JS_EXTRA = """
       var hidden = !visible;
       localStorage.setItem('labelsOcultos', hidden ? 'true' : 'false');
       try {
-        if (typeof network !== 'undefined' && network && network.body && network.body.nodes) {
-          Object.keys(network.body.nodes).forEach(function(id) {
-            var n = network.body.nodes[id];
-            if (!n || !n.options) return;
-            var opt = n.options || {};
-            if (hidden) {
-              n.label = n.label || '';
-              if (opt.font) opt.font.size = 0;
-            } else {
-              if (opt.font) opt.font.size = 13;
-            }
-          });
-          network.redraw();
+        if (typeof network !== 'undefined' && network && network.body) {
+          var nodeSet = null;
+          if (network.body.data && network.body.data.nodes && typeof network.body.data.nodes.get === 'function') {
+            nodeSet = network.body.data.nodes;
+          } else if (network.body.nodes && typeof network.body.nodes.get === 'function') {
+            nodeSet = network.body.nodes;
+          }
+          if (nodeSet && typeof nodeSet.get === 'function') {
+            var nodes = nodeSet.get();
+            var payload = nodes.map(function(n) {
+              var base = (n && n.font && typeof n.font.size === 'number' && n.font.size > 0) ? n.font.size : 13;
+              return {
+                id: n.id,
+                font: Object.assign({}, n.font || {}, { size: hidden ? 0 : base })
+              };
+            });
+            if (payload.length) nodeSet.update(payload);
+          }
+          if (typeof network.redraw === 'function') network.redraw();
         }
       } catch (e) {}
+      ctrl.style.opacity = hidden ? '0.6' : '1';
+      ctrl.style.borderColor = hidden ? '#7c7f93' : cores.destaque;
+      ctrl.title = visible ? 'Ocultar etiquetas' : 'Mostrar etiquetas';
     }
 
     function applyTheme(theme) {
@@ -418,10 +427,13 @@ WIDGET_JS_EXTRA = """
 
     function syncControlsPanel(show) {
       visible = !!show;
+      topBar.style.display = visible ? 'flex' : 'none';
+      topBar.hidden = !visible;
+      topBar.setAttribute('aria-hidden', String(!visible));
       panel.style.display = visible ? 'flex' : 'none';
       panel.hidden = !visible;
       panel.setAttribute('aria-hidden', String(!visible));
-      eye.title = visible ? 'Ocultar painel' : 'Mostrar painel';
+      eye.title = visible ? 'Ocultar controles' : 'Mostrar controles';
       eye.textContent = visible ? '👁' : '🚫';
       localStorage.setItem('painelGrafoVisivel', visible ? 'true' : 'false');
     }
@@ -434,6 +446,7 @@ WIDGET_JS_EXTRA = """
     });
 
     menuBtn.addEventListener('click', function(){
+      if (!visible) return;
       topBar.style.display = (topBar.style.display === 'none') ? 'flex' : 'none';
     });
 
