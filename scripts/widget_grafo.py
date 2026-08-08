@@ -57,13 +57,15 @@ WIDGET_CSS = """
                border-left: 2px solid rgba(203,166,247,0.4);
                pointer-events: auto; }
   #mk-resize:hover { background: rgba(203,166,247,0.35); }
-  #mk-topbar { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 99998; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 6px; pointer-events: auto; width: min(760px, calc(100vw - 110px)); padding: 7px 10px; border-radius: 10px; background: rgba(24, 24, 37, 0.82); border: 1px solid rgba(145, 160, 198, 0.2); box-shadow: 0 8px 22px rgba(0,0,0,0.32); backdrop-filter: blur(6px); }
+  #mk-topbar { position: fixed; top: 10px; left: 46px; right: auto; z-index: 99998; display: flex; justify-content: flex-start; align-items: center; flex-wrap: wrap; gap: 4px; pointer-events: auto; width: min(220px, calc(100vw - 90px)); padding: 4px 6px; border-radius: 8px; background: rgba(24, 24, 37, 0.82); border: 1px solid rgba(145, 160, 198, 0.2); box-shadow: 0 8px 22px rgba(0,0,0,0.32); backdrop-filter: blur(6px); }
   #mk-topbar > * { flex: 0 0 auto; }
   #mk-topbar select,
   #mk-topbar input,
   #mk-topbar span,
   #mk-topbar div { box-sizing: border-box; }
-  #mk-painel-toggle { position: fixed; bottom: 16px; left: 16px; top: auto; z-index: 99999; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; background: rgba(49, 50, 68, 0.95); border: 1px solid rgba(203,166,247,0.35); color: #cba6f7; box-shadow: 0 4px 12px rgba(0,0,0,0.22); }
+  #mk-painel-toggle { position: fixed; top: 12px; left: 10px; z-index: 99999; width: 28px; height: 28px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; background: rgba(49, 50, 68, 0.95); border: 1px solid rgba(203,166,247,0.35); color: #cba6f7; box-shadow: 0 4px 12px rgba(0,0,0,0.22); font-size: 13px; transition: transform .12s ease, box-shadow .12s ease, background .12s ease; }
+  #mk-painel-toggle:hover { transform: scale(1.05); box-shadow: 0 0 0 2px rgba(203,166,247,0.15), 0 6px 14px rgba(0,0,0,0.24); }
+  #mk-painel-toggle[aria-hidden='true'] { background: rgba(90, 92, 111, 0.86); color: #d9d9e7; }
   /* Painel de controles: organizado em faixa inferior e visivel por padrao */
   #mk-controles { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: row; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; padding: 8px 12px; border-radius: 10px; background: rgba(24, 24, 37, 0.82); border: 1px solid rgba(145, 160, 198, 0.2); box-shadow: 0 8px 22px rgba(0,0,0,0.32); backdrop-filter: blur(6px); max-width: min(760px, calc(100vw - 110px)); width: min(760px, calc(100vw - 110px)); }
   #mk-controles > div,
@@ -239,34 +241,34 @@ WIDGET_JS_EXTRA = """
 
     var topBar = mk('div');
     topBar.id = 'mk-topbar';
-    topBar.style.cssText = 'position:fixed;top:10px;right:10px;left:auto;max-width:calc(100vw - 72px);z-index:99998;display:flex;justify-content:flex-end;align-items:center;gap:4px;pointer-events:auto;';
+    topBar.style.cssText = 'position:fixed;top:10px;left:46px;right:auto;max-width:calc(100vw - 92px);z-index:99998;display:flex;justify-content:flex-start;align-items:center;gap:4px;pointer-events:auto;';
 
     var eye = mk('div');
     eye.id = 'mk-painel-toggle';
-    eye.title = 'Ocultar/mostrar painel';
+    eye.title = 'Ocultar/mostrar tudo';
     eye.textContent = '👁';
-    eye.style.cssText = 'position:fixed;top:12px;left:10px;z-index:99999;width:26px;height:26px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#313244;border:1px solid ' + cores.borda + ';color:' + cores.destaque + ';font-size:12px;';
+    eye.style.cssText = 'position:fixed;top:12px;left:10px;z-index:99999;width:28px;height:28px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#313244;border:1px solid ' + cores.borda + ';color:' + cores.destaque + ';font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,0.22);transition:transform .12s ease, box-shadow .12s ease, background .12s ease;';
 
     var ctrl = mk('div');
     ctrl.id = 'mk-labels';
     ctrl.title = 'Alternar visibilidade das etiquetas';
     ctrl.textContent = 'T';
-    ctrl.style.cssText = 'width:24px;height:24px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:' + cores.destaque + ';background:#313244;border:1px solid ' + cores.destaque + ';font-size:12px;';
+    ctrl.style.cssText = 'width:22px;height:22px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:' + cores.destaque + ';background:#313244;border:1px solid ' + cores.destaque + ';font-size:11px;';
 
     var menuBtn = mk('div');
     menuBtn.id = 'mk-menu-btn';
     menuBtn.title = 'Mostrar/ocultar menus';
     menuBtn.textContent = '☰';
-    menuBtn.style.cssText = 'width:24px;height:24px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:' + cores.destaque + ';background:#313244;border:1px solid ' + cores.destaque + ';font-size:12px;';
+    menuBtn.style.cssText = 'width:22px;height:22px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:' + cores.destaque + ';background:#313244;border:1px solid ' + cores.destaque + ';font-size:11px;';
 
     var resetBtn = mk('div');
     resetBtn.id = 'mk-btn-reset';
     resetBtn.title = 'Resetar preferências';
     resetBtn.textContent = '↺';
-    resetBtn.style.cssText = 'width:24px;height:24px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:' + cores.destaque + ';background:#313244;border:1px solid ' + cores.destaque + ';font-size:12px;';
+    resetBtn.style.cssText = 'width:22px;height:22px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:' + cores.destaque + ';background:#313244;border:1px solid ' + cores.destaque + ';font-size:11px;';
 
     var actions = mk('div');
-    actions.style.cssText = 'display:flex;gap:4px;border:1px solid ' + cores.destaque + ';border-radius:6px;padding:3px 4px;background:#313244;';
+    actions.style.cssText = 'display:flex;gap:4px;border:1px solid ' + cores.destaque + ';border-radius:6px;padding:2px 4px;background:#313244;';
     actions.appendChild(ctrl);
     actions.appendChild(menuBtn);
     actions.appendChild(resetBtn);
@@ -354,13 +356,17 @@ WIDGET_JS_EXTRA = """
           }
           if (nodeSet && typeof nodeSet.get === 'function') {
             var nodes = nodeSet.get();
+            if (!window.__mkLabelBase) window.__mkLabelBase = {};
             var payload = nodes.map(function(n) {
-              var base = (n && n.font && typeof n.font.size === 'number' && n.font.size > 0) ? n.font.size : 13;
+              if (!n || typeof n.id === 'undefined') return null;
+              if (typeof window.__mkLabelBase[n.id] !== 'number' || window.__mkLabelBase[n.id] <= 0) {
+                window.__mkLabelBase[n.id] = (n.font && typeof n.font.size === 'number' && n.font.size > 0) ? n.font.size : 13;
+              }
               return {
                 id: n.id,
-                font: Object.assign({}, n.font || {}, { size: hidden ? 0 : base })
+                font: Object.assign({}, n.font || {}, { size: hidden ? 0 : window.__mkLabelBase[n.id] })
               };
-            });
+            }).filter(Boolean);
             if (payload.length) nodeSet.update(payload);
           }
           if (typeof network.redraw === 'function') network.redraw();
@@ -368,6 +374,7 @@ WIDGET_JS_EXTRA = """
       } catch (e) {}
       ctrl.style.opacity = hidden ? '0.6' : '1';
       ctrl.style.borderColor = hidden ? '#7c7f93' : cores.destaque;
+      ctrl.style.background = hidden ? '#2b2d3a' : '#313244';
       ctrl.title = visible ? 'Ocultar etiquetas' : 'Mostrar etiquetas';
     }
 
@@ -433,8 +440,10 @@ WIDGET_JS_EXTRA = """
       panel.style.display = visible ? 'flex' : 'none';
       panel.hidden = !visible;
       panel.setAttribute('aria-hidden', String(!visible));
-      eye.title = visible ? 'Ocultar controles' : 'Mostrar controles';
+      eye.title = visible ? 'Ocultar tudo' : 'Mostrar tudo';
       eye.textContent = visible ? '👁' : '🚫';
+      eye.style.background = visible ? '#313244' : '#45475a';
+      eye.style.boxShadow = visible ? '0 4px 12px rgba(0,0,0,0.22)' : '0 0 0 2px rgba(203,166,247,0.2), 0 6px 14px rgba(0,0,0,0.24)';
       localStorage.setItem('painelGrafoVisivel', visible ? 'true' : 'false');
     }
 
