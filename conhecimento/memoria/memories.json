@@ -3518,5 +3518,25 @@
     "access_count": 0,
     "created_at": "2026-08-08T18:27:16.123080",
     "last_accessed": "2026-08-08T18:27:16.123080"
+  },
+  {
+    "id": 206,
+    "kind": "erro",
+    "task": "UnicodeEncodeError no runtime_context ao renderizar memoria com seta",
+    "summary": "runtime_context.py crashava com UnicodeEncodeError (cp1252) ao imprimir contexto com caracter U+2194 (seta) presente na memoria @sync. Corrigido com sys.stdout.reconfigure(encoding=utf-8, errors=replace), padrao ja usado em lg_pair_tv.py. Preflight nao pega pois nao exercita loader com memorias acentuadas/simbolos.",
+    "project": "",
+    "tags": [
+      "sync",
+      "presente",
+      "2194",
+      "simbolos",
+      "caracter",
+      "memoria"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T19:02:31.964759",
+    "last_accessed": "2026-08-08T19:02:31.964759"
   }
 ]

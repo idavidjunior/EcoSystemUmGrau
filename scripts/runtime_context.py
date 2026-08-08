@@ -30,6 +30,11 @@ BASE = str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SCRIPTS = os.path.join(BASE, 'scripts')
 sys.path.insert(0, SCRIPTS)
 
+try:
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+except Exception:
+    pass
+
 _BOM = '\ufeff'
 _STOP = set("""a o os as um uma uns umas e mas nem ou que se no na nos nas de do da dos
 das em ao aos perante por para com contra entre sem sob sobre apos antes depois

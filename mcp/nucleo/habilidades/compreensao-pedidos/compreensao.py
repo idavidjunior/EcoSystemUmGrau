@@ -355,15 +355,28 @@ def _modelo_opencode():
 
 
 def _refinar_via_opencode(prompt, timeout=90):
-    """Chama a LLM padrão do opencode via `opencode run` (headless). Fail-soft: '' em qualquer falha."""
+    """Chama a LLM padrão do opencode via `opencode run` (headless). Fail-soft: '' em qualquer falha.
+
+    Guarda de recursão: o agente headless carrega a Constituição e poderia chamar a
+    própria tool `refinar_entendimento` (recursão). Um flag de ambiente quebra a cadeia
+    no primeiro nível. Rodamos em cwd neutro (sem AGENTS.md) e ordenamos "sem ferramentas".
+    """
+    if os.environ.get('COMPREENSAO_EM_REFINO') == '1':
+        return ''
     exe = shutil.which('opencode') or shutil.which('opencode.cmd') or shutil.which('opencode.exe')
     if not exe:
         return ''
+    env = dict(os.environ)
+    env['COMPREENSAO_EM_REFINO'] = '1'
+    cwd = os.path.join(BASE, 'runtime', 'refino')
     try:
+        os.makedirs(cwd, exist_ok=True)
         proc = subprocess.run(
-            [exe, 'run', '-m', _modelo_opencode(), '--format', 'json', prompt],
+            [exe, 'run', '-m', _modelo_opencode(), '--format', 'json',
+             prompt + ' Nao use nenhuma ferramenta. Responda somente em texto.'],
             capture_output=True, text=True, timeout=timeout,
             encoding='utf-8', errors='replace',
+            env=env, cwd=cwd,
             creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
     except (OSError, subprocess.TimeoutExpired):
         return ''
