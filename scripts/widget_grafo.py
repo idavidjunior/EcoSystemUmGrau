@@ -399,6 +399,16 @@ class Bridge:
 WIDGET_JS_EXTRA = """
 <script>
     console.log(">>> WIDGET_JS_EXTRA SCRIPT STARTED");
+        // Test ping method
+        if(window.pywebview && window.pywebview.api && window.pywebview.api.ping){
+          console.log(">>> Testing ping...");
+          window.pywebview.api.ping().then(function(v){
+            console.log(">>> ping() returned:", v);
+            if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
+              window.pywebview.api.debug_log("PING_TEST: " + v);
+            }
+          }).catch(function(e){ console.log(">>> PING ERROR:", e); });
+        }
         // Test: write to localStorage and check
         try {
           localStorage.setItem("widget_js_test", Date.now().toString());
