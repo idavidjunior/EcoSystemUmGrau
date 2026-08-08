@@ -513,22 +513,37 @@ WIDGET_JS_EXTRA = """
     // ---- Grupo 3D: toggle + slider de intensidade ----
     var btn3D = mkEl('div');
     btn3D.id = 'mk-btn-3d';
-    btn3D.title = 'Alternar modo 3D (onda viajante)';
+    btn3D.title = 'Alternar modo 3D (onda viajante de profundidade)';
     btn3D.style.cssText =
       'width:30px;height:30px;border-radius:4px;cursor:pointer;' +
       'display:flex;align-items:center;justify-content:center;' +
-      'font-size:14px;user-select:none;color:' + cores.destaque + ';' +
+      'font-size:14px;user-select:none;transition:all .3s ease;' +
       'background:#313244;border:1px solid ' + cores.destaque + ';';
-    btn3D.innerHTML = '\\u1F34D'; // onda de serpente (3D / dinamico)
+    btn3D.innerHTML = '\\u1F34D'; // onda de serpente (3D ativo)
     var modo3DAtivo = (typeof localStorage !== 'undefined' && localStorage.getItem('modo3D') === 'true');
     btn3D._ativo = modo3DAtivo;
+    btn3D.style.boxShadow = btn3D._ativo ? '0 0 12px ' + cores.destaque : 'none';
     btn3D.addEventListener('click', function() {
       btn3D._ativo = !btn3D._ativo;
-      var icone = btn3D._ativo ? '\\u1F34D' : '\\u1F34E'; // serpente vs abacate (3D desligado)
-      // Usa abacate quando desligado para contraste visual simples
-      btn3D.innerHTML = btn3D._ativo ? '\\u1F34D' : '\\u2605';
+      btn3D.innerHTML = btn3D._ativo ? '\\u1F34D' : '\\u2605'; // serpente vs estrela
       btn3D.style.background = btn3D._ativo ? cores.fundo : '#313244';
+      btn3D.style.boxShadow = btn3D._ativo ? '0 0 14px ' + cores.destaque : 'none';
       if (typeof _toggle3D === 'function') _toggle3D(btn3D._ativo);
+    });
+
+    // Botao flash
+    var btnFlash = mkEl('div');
+    btnFlash.id = 'mk-btn-flash';
+    btnFlash.title = 'Alternar flash nos cliques nos nos';
+    btnFlash.style.cssText = btn3D.style.cssText;
+    btnFlash.innerHTML = '\\u26A1';
+    btnFlash._ativo = (typeof localStorage !== 'undefined' && localStorage.getItem('flashEnabled') !== 'false');
+    btnFlash.style.boxShadow = btnFlash._ativo ? '0 0 12px ' + cores.destaque : 'none';
+    btnFlash.addEventListener('click', function() {
+      btnFlash._ativo = !btnFlash._ativo;
+      btnFlash.style.opacity = btnFlash._ativo ? '1' : '0.4';
+      btnFlash.style.boxShadow = btnFlash._ativo ? '0 0 14px ' + cores.destaque : 'none';
+      if (typeof _toggleFlash === 'function') _toggleFlash(btnFlash._ativo);
     });
 
     var label3D = mkEl('span');
