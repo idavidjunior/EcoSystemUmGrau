@@ -1,4 +1,4 @@
-import '../models/midia_model.dart';
+import '../../models/midia_model.dart';
 
 /// Contrato de acesso ao catalogo de midias.
 ///
