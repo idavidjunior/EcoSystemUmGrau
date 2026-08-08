@@ -378,6 +378,10 @@ class Bridge:
 
 WIDGET_JS_EXTRA = """
 <script>
+    console.log(">>> WIDGET_JS_EXTRA SCRIPT STARTED");
+    console.log(">>> Document readyState:", document.readyState);
+    console.log(">>> pywebview:", window.pywebview);
+    console.log(">>> pywebview.api:", window.pywebview && window.pywebview.api);
     console.log(">>> WIDGET_JS_EXTRA LOADED AND EXECUTING");
     // DEBUG LOG
     if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
