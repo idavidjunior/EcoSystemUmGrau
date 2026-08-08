@@ -74,6 +74,24 @@ WIDGET_JS = """
   } else {
     window.addEventListener("pywebviewready", initWidgetControls);
   }
+
+    // Sync bridge test
+    if(window.pywebview && window.pywebview.api){
+      console.log(">>> Testing bridge test_bridge...");
+      window.pywebview.api.test_bridge().then(function(v){
+        console.log(">>> test_bridge() returned:", v);
+      }).catch(function(e){ console.log(">>> test_bridge ERROR:", e); });
+    }
+    // Call initWidgetControls now if bridge is ready
+    try {
+      if(window.pywebview && window.pywebview.api){
+        console.log(">>> Calling initWidgetControls directly...");
+        initWidgetControls();
+      }
+    } catch(e) {
+      console.log(">>> ERROR calling initWidgetControls:", e);
+    }
+    }
 </script>
 """
 
