@@ -797,6 +797,7 @@ document.body.appendChild(painel);
     }
     window.addEventListener('pywebviewready', aplicarPersistidos);
   })();
+  }
 </script>
 """
 
