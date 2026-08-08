@@ -3319,5 +3319,24 @@
     "access_count": 0,
     "created_at": "2026-08-08T14:58:34.954189",
     "last_accessed": "2026-08-08T14:58:34.954189"
+  },
+  {
+    "id": 196,
+    "kind": "padrao",
+    "task": "JSON sanitization 100% + LLM wizard + regression tests",
+    "summary": "Eletronicidade de 7/10 para 10/10. Corrigidos: (1) {{PROJECT_ROOT}} nao resolvido em opencode-serve.jsonc -> trocado por {{USERPROFILE}} pattern; (2) BOM embedidos em knowledge_graph.json (225 instancias) e tfidf_meta.json (225 chars); (3) 1 path hardcoded remanescente em memories.json (id=189). Criado: scripts/test_json_sanitization.py (regression test para 70 JSONs tracked). Integrado: check #8 no preflight_check.py (JSON sanitization 70/70 clean). Testado: LLM wizard (--json, --detect-only, env var detection), render pipeline (template -> deploy -> 12 checks pass). Resultado final: 0 hardcoded paths, 0 unresolved templates, 0 FAILs, 0 WARNs.",
+    "project": "",
+    "tags": [
+      "json",
+      "sanitization",
+      "llm-wizard",
+      "regression-test",
+      "preflight"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T15:17:41.260103",
+    "last_accessed": "2026-08-08T15:17:41.260103"
   }
 ]

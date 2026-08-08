@@ -49,3 +49,34 @@ impacto: >
 - Lista modelos nativos OpenCode + proveedores baseados em keys
 - Salva escolha em config/.llm-choice.json (gitignored)
 - Template var {{LLM_MODEL}} renderizada no deploy
+
+
+## Testes e Regressao (10/10)
+
+### Problemas Encontrados e Corrigidos
+
+1. **{{PROJECT_ROOT}} nao resolvido**: `scripts/opencode-serve.jsonc` usava `{{PROJECT_ROOT}}` que nao era resolvido por nenhum script. Trocado por `{{USERPROFILE}}` pattern (padrao do ecossistema).
+
+2. **BOM embedidos em JSONs**: `knowledge_graph.json` tinha caracteres BOM (U+FEFF) embedados em 225 strings body. `tfidf_meta.json` tinha 225 BOM chars. Ambos corrigidos.
+
+3. **Path hardcoded remanescente**: Memoria id=189 (registro do trabalho anterior) contia "C:\Users\David Jr" no summary. Removido.
+
+### Testes Criados
+
+- `scripts/test_json_sanitization.py`: escaneia todos os 70 JSON/JSONC tracked por:
+  - Hardcoded paths (C:\Users\David, C:/Users/David)
+  - BOM (file-level e embedado)
+  - Template vars nao resolvidos ({{USERPROFILE}} em arquivos nao-template)
+
+- Integrado ao `preflight_check.py` como check #8
+
+### Resultado Final
+
+| Metrica | Valor |
+|---------|-------|
+| JSON files tracked | 70 |
+| Pass | 70 |
+| Fail | 0 |
+| Warn | 0 |
+| Hardcoded paths | 0 |
+| Unresolved templates | 0 |
