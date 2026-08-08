@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-07T22:03:24",
+  "updated_at": "2026-08-07T22:57:32",
   "active_project": "EcoSystemUmGrau",
   "objective": "Transformar o Ecossistema Jarvis em Runtime de IA persistente (camada 1: estado+boot)",
-  "last_task": "Widget grafo: corrigido loop de reload, typo pulsoForza, efeito 3D mais perceptível, implementado zoom microscópio com expansão focal",
+  "last_task": "Widget grafo: 7 bugs corrigidos, zoom microscópio focal implementado, geometria forçada visível, pythonw funcional",
   "operational_context": "Runtime v1: estado persistente em runtime/state.json, boot via scripts/runtime_boot.py. LLM = motor de inferencia; governanca/memoria/continuidade = ecossistema.",
   "active_agents": [],
   "loaded_memory": [],
@@ -105,6 +105,10 @@
     {
       "timestamp": "2026-08-07T22:03:24",
       "text": "Widget grafo corrigido e validado: 0 erros JS, efeito 3D turbinado, zoom microscopio implementado. Pisca parou."
+    },
+    {
+      "timestamp": "2026-08-07T22:57:32",
+      "text": "Widget Cerebro Vivo corrigido e validado: sem reload infinito, 3D perceptível, zoom focal, controles visíveis."
     }
   ],
   "last_checkpoint": "20260807_220051"
