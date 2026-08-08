@@ -1,12 +1,12 @@
 ---
-tags: [falhava, intermitentemente, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, powershell, scrcpy]
+tags: [intermitentemente, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, powershell, scrcpy]
 aliases: [2026-08-03: ADB remoto via Tailscale - script automatico de ]
 date: 2026-08-08
 ---
 
 # 2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6)
 
-**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao

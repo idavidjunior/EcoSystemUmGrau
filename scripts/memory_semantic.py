@@ -234,6 +234,17 @@ def _carregar_notas() -> list:
 # Reindexar denso a cada add era caro (MiniLM sobre todo o corpus); agora
 # so reconstroi apos esse intervalo ou quando a matriz nao existe.
 DENSE_MAX_AGE = 600  # 10 min
+# Lock anti-concorrencia: impede dois rebuilds densos simultaneos.
+DENSE_LOCK_FILE = os.path.join(MEM_DIR, '.dense_rebuild.lock')
+
+
+def _dense_lock_held() -> bool:
+    """True se um rebuild denso esta em andamento (lock recente)."""
+    try:
+        return os.path.exists(DENSE_LOCK_FILE) and \
+            (time.time() - os.path.getmtime(DENSE_LOCK_FILE)) < DENSE_MAX_AGE
+    except Exception:
+        return os.path.exists(DENSE_LOCK_FILE)
 
 
 def _index_fingerprint(mem_count: int | None = None):
@@ -498,6 +509,10 @@ def cli_main(argv):
         r = build_index(verbose=True)
         print(json.dumps(r, ensure_ascii=False, indent=2))
         return 0 if r.get('ok') else 1
+    if cmd == 'build-dense':
+        r = build_dense(verbose=True)
+        print(json.dumps(r, ensure_ascii=False, indent=2))
+        return 0 if r.get('ok') else 1
     if cmd == 'search':
         if len(argv) < 2:
             print('uso: memory_semantic.py search <query>')
@@ -563,8 +578,17 @@ def build_dense(verbose: bool = False) -> dict:
     """(Opcional) Constrói embeddings densos das memórias + notas.
 
     Só roda se o modelo de sentence-transformers já estiver em cache local —
-    nunca força download. Se não estiver, retorna ok=False sem erro fatal.
+    nunca força download (local_files_only=True). Se não estiver, retorna
+    ok=False sem erro fatal. Lock impede rebuilds concorrentes.
     """
+    if _dense_lock_held():
+        if verbose:
+            print('[semantic] dense: rebuild ja em andamento (lock)')
+        return {'ok': False, 'erro': 'rebuild denso ja em andamento'}
+    try:
+        open(DENSE_LOCK_FILE, 'w').close()
+    except Exception:
+        pass
     try:
         from sentence_transformers import SentenceTransformer
         import numpy as np
@@ -582,6 +606,11 @@ def build_dense(verbose: bool = False) -> dict:
         if verbose:
             print(f'[semantic] dense indisponivel: {e}')
         return {'ok': False, 'erro': str(e)}
+    finally:
+        try:
+            os.remove(DENSE_LOCK_FILE)
+        except Exception:
+            pass
 
 
 if __name__ == '__main__':

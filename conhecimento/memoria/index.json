@@ -928,7 +928,9 @@
     114
   ],
   "local": [
-    115
+    115,
+    200,
+    202
   ],
   "hostname": [
     115
@@ -1629,7 +1631,8 @@
     174
   ],
   "add": [
-    175
+    175,
+    201
   ],
   "automaticamente": [
     175
@@ -1973,5 +1976,42 @@
   ],
   "disparando": [
     199
+  ],
+  "files": [
+    200,
+    202
+  ],
+  "lock": [
+    200,
+    202
+  ],
+  "background": [
+    200,
+    202
+  ],
+  "dense": [
+    200,
+    202
+  ],
+  "rapido": [
+    200
+  ],
+  "otimizado": [
+    201
+  ],
+  "reindex": [
+    201
+  ],
+  "estabilidade": [
+    201
+  ],
+  "confirmar": [
+    201
+  ],
+  "verificacao": [
+    201
+  ],
+  "subprocess": [
+    202
   ]
 }

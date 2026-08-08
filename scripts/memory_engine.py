@@ -137,19 +137,26 @@ def reindexar_semantico(best_effort=True):
     Otimização 2026-08-08 (fix: add travava baixando modelo do HuggingFace):
       - Se o índice TF-IDF já reflete o corpus (fingerprint igual), pula tudo.
       - TF-IDF é reconstruído quando desatualizado (rápido, ~1s).
-      - Camada densa (MiniLM) só é reconstruída se a matriz não existir ou for
-        mais velha que DENSE_MAX_AGE — nunca a cada add.
+      - Camada densa (MiniLM) NUNCA bloqueia o add: é reconstruída em um
+        subprocesso destacado (background) quando a matriz está velha ou ausente.
       - O download do modelo nunca é forçado (local_files_only=True).
     """
     try:
-        from memory_semantic import build_index, build_dense, index_stale, _dense_recente
+        from memory_semantic import build_index, index_stale, _dense_recente, _dense_lock_held
+        import subprocess
         if not index_stale():
             return
         r = build_index(verbose=False)
         if r.get('ok'):
-            if not _dense_recente():
-                build_dense(verbose=False)
             print(f'[REINDEX] índice semântico atualizado: {r["count"]} docs')
+            if not _dense_recente() and not _dense_lock_held():
+                # Rebuild denso em background: ~2min no CPU nao pode bloquear o add.
+                script = os.path.join(BASE, 'scripts', 'memory_semantic.py')
+                flags = getattr(subprocess, 'DETACHED_PROCESS', 0) if os.name == 'nt' else 0
+                subprocess.Popen([sys.executable, script, 'build-dense'],
+                                 creationflags=flags, close_fds=True,
+                                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                print('[REINDEX] rebuild denso disparado em background')
         else:
             print(f'[REINDEX] aviso: {r.get("erro", "falha no build")}')
     except Exception as e:

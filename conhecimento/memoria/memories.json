@@ -3398,5 +3398,65 @@
     "access_count": 0,
     "created_at": "2026-08-08T16:37:26.714165",
     "last_accessed": "2026-08-08T16:37:26.714165"
+  },
+  {
+    "id": 200,
+    "kind": "padrao",
+    "task": "Otimizacao memory_engine add (fix travamento)",
+    "summary": "Reindex semantico agora faz TF-IDF rapido + dense em background com lock e local_files_only. Add nao trava mais.",
+    "project": "",
+    "tags": [
+      "files",
+      "local",
+      "lock",
+      "background",
+      "dense",
+      "rapido"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T16:52:14.703521",
+    "last_accessed": "2026-08-08T16:52:14.703521"
+  },
+  {
+    "id": 201,
+    "kind": "episodio",
+    "task": "Verificacao segundo add",
+    "summary": "Segundo add para confirmar estabilidade do reindex otimizado.",
+    "project": "",
+    "tags": [
+      "otimizado",
+      "reindex",
+      "estabilidade",
+      "confirmar",
+      "add",
+      "verificacao"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T16:52:33.739983",
+    "last_accessed": "2026-08-08T16:52:33.739983"
+  },
+  {
+    "id": 202,
+    "kind": "padrao",
+    "task": "Otimizacao reindex memory engine (fix add travando no HF)",
+    "summary": "TF-IDF rapido no add + dense em background (subprocess + lock + local_files_only). Add caiu de 120s para ~6s. Nunca mais baixa modelo silenciosamente.",
+    "project": "",
+    "tags": [
+      "files",
+      "local",
+      "lock",
+      "subprocess",
+      "background",
+      "dense"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T16:53:53.053670",
+    "last_accessed": "2026-08-08T16:53:53.053670"
   }
 ]
