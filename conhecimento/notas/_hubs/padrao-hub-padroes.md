@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**78 notas** conectadas a este hub.
+**79 notas** conectadas a este hub.
 
 
 ## Notas
@@ -55,6 +55,7 @@
 - [[numpad-with-stringbuilder-buffer]]
 - [[ocr-fallback-para-elementos-sem-identificador]]
 - [[opencode-mcp-config-format]]
+- [[otimização-do-reindex-semântico-do-memory-engine]]
 - [[packageactivity-launch-pattern]]
 - [[process-hierarchy-for-multi-window-apps]]
 - [[registro-de-habilidades-de-jarvis]]
