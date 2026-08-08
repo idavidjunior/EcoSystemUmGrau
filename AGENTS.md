@@ -304,6 +304,70 @@ Documentação.
 
 ---
 
+# CLÁUSULA PÉTREA — PIPELINE DE OTIMIZAÇÃO DE PROMPTS
+
+**Regra permanente, global e obrigatória para TODOS os agentes e TODAS as sessões.**
+
+## Todo prompt recebido, produzido ou utilizado pelo ecossistema passa pelo pipeline de otimização
+
+### Integração obrigatória
+
+O ecossistema conta com um **pipeline de otimização de prompts** integrado via MCP server `mcp-prompt-optimization`, exposto em 4 tecnologias:
+
+1. **DSPy (Stanford)** — otimização automática via teleprompters:
+   - `MIPRO` (Bayesian optimization) — melhor qualidade gerada
+   - `BootstrapFewShot` — gera exemplos few-shot automaticamente
+   - `BootstrapFewShotWithRandomSearch` — mais robusto
+
+2. **PromptWizard (Microsoft)** — técnica Critique & Refine:
+   - Gera variações de estilo pensando em diferentes estilos
+   - Meta-critique identifica falhas do prompt atual
+   - Refina iterativamente até convergência
+
+3. **PromptFlow (Microsoft)** — avaliação e experimentação:
+   - Validação de prompts em produção
+   - A/B testing de variantes
+   - Trace/logging completo
+
+4. **Análise estática** — detecção instantânea de problemas sem LLM:
+   - Clareza, ambiguidade, over-engineering, token economy
+   - Alinhamento com cláusulas pétreas, safety
+   - Métrica: Accuracy, Relevance, Brevity, Consistency, Safety (0-100)
+
+### Pipeline de execução (ordem obrigatória)
+
+1. **Receber prompt** (do usuário, de uma skill, ou de um agente especializado)
+2. **Análise estática imediata** (`suggest_prompt_improvement`) — detecta problemas em <100ms
+3. **Avaliação de qualidade** (`evaluate_prompt`) — score 5D
+4. **Otimização automática** (`optimize_prompt_dspy`) — se score < 70 ou sob requisição
+5. **Refinamento iterativo** (`refine_prompt_wizard`) — se houver falhas conhecidas
+6. **Validação** (`generate_prompt_tests`) — gera casos de teste
+7. **Deploy** — prompt otimizado salvo em `mcp/**/habilidades/**/SKILL.md`
+
+### Gatilhos automáticos
+
+- **Toda skill.md carregada** passa por análise estática antes de ser aplicada
+- **Todo comando `@opencodereview` ou `otimizar`** ativa o pipeline completo
+- **Detecção de baixa qualidade** (output inconsistente, alucinações, alucinações factuais) dispara otimização automática
+- **Nova sessão** — prompts críticos (system instructions) são reavaliados via `evaluate_prompt`
+
+### Comando de uso
+
+```
+@otimizar <prompt a otimizar>
+```
+
+Ou via MCP tool `mcp-prompt-optimization:suggest_prompt_improvement`.
+
+### Persistência
+
+Prompts otimizados são registrados em:
+- `conhecimento/aprendizados/YYYY-MM-DD-prompt-optimization-<tema>.md`
+- `memory_engine.py` (kind: `padrao`, tags: `[prompt, optimization]`)
+- `mcp/**/habilidades/**/SKILL.md` (prompt otimizado inline)
+
+---
+
 <!-- RULES:END -->
 
 # RUNTIME PERSISTENTE — BOOT OBRIGATÓRIO
