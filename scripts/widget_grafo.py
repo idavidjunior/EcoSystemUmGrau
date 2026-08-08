@@ -57,26 +57,30 @@ WIDGET_CSS = """
                border-left: 2px solid rgba(203,166,247,0.4);
                pointer-events: auto; }
   #mk-resize:hover { background: rgba(203,166,247,0.35); }
-  #mk-topbar { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 99998; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; pointer-events: auto; width: min(780px, calc(100vw - 96px)); padding: 8px 12px; border-radius: 12px; background: rgba(30,30,46,0.9); border: 1px solid #45475a; box-shadow: 0 6px 18px rgba(0,0,0,0.38); }
+  #mk-topbar { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 99998; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 6px; pointer-events: auto; width: min(760px, calc(100vw - 110px)); padding: 7px 10px; border-radius: 10px; background: rgba(24, 24, 37, 0.82); border: 1px solid rgba(145, 160, 198, 0.2); box-shadow: 0 8px 22px rgba(0,0,0,0.32); backdrop-filter: blur(6px); }
   #mk-topbar > * { flex: 0 0 auto; }
   #mk-topbar select,
   #mk-topbar input,
   #mk-topbar span,
   #mk-topbar div { box-sizing: border-box; }
-  #mk-painel-toggle { position: fixed; bottom: 18px; left: 18px; top: auto; z-index: 99999; width: 30px; height: 30px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; background: #313244; border: 1px solid #45475a; color: #cba6f7; }
+  #mk-painel-toggle { position: fixed; bottom: 16px; left: 16px; top: auto; z-index: 99999; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; background: rgba(49, 50, 68, 0.95); border: 1px solid rgba(203,166,247,0.35); color: #cba6f7; box-shadow: 0 4px 12px rgba(0,0,0,0.22); }
   /* Painel de controles: organizado em faixa inferior e visivel por padrao */
-  #mk-controles { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex !important; flex-direction: row; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; padding: 8px 12px; border-radius: 12px; background: rgba(30,30,46,0.9); border: 1px solid #45475a; box-shadow: 0 6px 18px rgba(0,0,0,0.38); max-width: min(780px, calc(100vw - 96px)); width: min(780px, calc(100vw - 96px)); }
+  #mk-controles { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex !important; flex-direction: row; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; padding: 8px 12px; border-radius: 10px; background: rgba(24, 24, 37, 0.82); border: 1px solid rgba(145, 160, 198, 0.2); box-shadow: 0 8px 22px rgba(0,0,0,0.32); backdrop-filter: blur(6px); max-width: min(760px, calc(100vw - 110px)); width: min(760px, calc(100vw - 110px)); }
   #mk-controles > div,
   #mk-controles > select,
   #mk-controles > input { max-width: 100%; }
+  #mk-controles > div,
+  #mk-controles > select,
+  #mk-controles > input,
+  #mk-controles > span { border-radius: 6px; }
   @media (max-width: 760px) {
     #mk-topbar,
-    #mk-controles { width: min(560px, calc(100vw - 74px)); max-width: calc(100vw - 74px); }
+    #mk-controles { width: min(560px, calc(100vw - 70px)); max-width: calc(100vw - 70px); }
     #mk-painel-toggle { left: 12px; bottom: 12px; width: 28px; height: 28px; }
   }
   @media (max-width: 500px) {
     #mk-topbar,
-    #mk-controles { width: min(310px, calc(100vw - 62px)); max-width: calc(100vw - 62px); gap: 6px; }
+    #mk-controles { width: min(300px, calc(100vw - 56px)); max-width: calc(100vw - 56px); gap: 5px; }
     #mk-controles { padding: 7px 8px; }
     #mk-controles input[type="range"] { width: 90px !important; }
   }
@@ -326,7 +330,7 @@ WIDGET_JS_EXTRA = """
     var panel = mk('div');
     panel.id = 'mk-controles';
     panel.title = 'Controles do grafo';
-    panel.style.cssText = 'position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:row;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;padding:8px 12px;border-radius:12px;background:rgba(30,30,46,0.9);border:1px solid ' + cores.borda + ';box-shadow:0 6px 18px rgba(0,0,0,0.38);';
+    panel.style.cssText = 'position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:row;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;padding:8px 12px;border-radius:10px;background:rgba(24,24,37,0.82);border:1px solid rgba(145, 160, 198, 0.2);box-shadow:0 8px 22px rgba(0,0,0,0.32);backdrop-filter:blur(6px);';
     panel.appendChild(themeWrap);
     panel.appendChild(speedWrap);
     panel.appendChild(orbitWrap);
