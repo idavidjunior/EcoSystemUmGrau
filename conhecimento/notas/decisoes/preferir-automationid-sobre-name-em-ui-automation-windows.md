@@ -1,7 +1,7 @@
 ---
 tags: [app, decisao, idioma, operacional, sistema, treinamentonavegacao]
 aliases: [Preferir AutomationId sobre Name em UI Automation Windows]
-date: 2026-08-07
+date: 2026-08-08
 ---
 
 # Preferir AutomationId sobre Name em UI Automation Windows

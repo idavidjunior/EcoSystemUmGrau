@@ -1,7 +1,7 @@
 ---
 tags: [causam, falhas, fonte, misteriosas, padrao, treinamentonavegacao]
 aliases: [Modal/dialog overlay detection]
-date: 2026-08-07
+date: 2026-08-08
 ---
 
 # Modal/dialog overlay detection

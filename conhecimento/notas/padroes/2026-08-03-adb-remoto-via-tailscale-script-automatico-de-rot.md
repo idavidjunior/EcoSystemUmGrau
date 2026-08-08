@@ -1,7 +1,7 @@
 ---
-tags: [intermitentemente, opencodeopencodeopencodeopencode, padrao, powershell, rota, scrcpy]
+tags: [android, intermitentemente, opencodeopencodeopencodeopencode, padrao, powershell, scrcpy]
 aliases: [2026-08-03: ADB remoto via Tailscale - script automatico de ]
-date: 2026-08-07
+date: 2026-08-08
 ---
 
 # 2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6)

@@ -52,3 +52,7 @@ Simplificado de "Ativar Eco" para apenas **"Eco"**:
 
 - [[2026-08-02-ativacao-eco-voz]]
 - [[2026-08-07-runtime-boot-operacional]]
+
+## Conexoes
+
+- [[2026-07-27-teste-do-vigilante-automático-teste-do-sistema-de]]

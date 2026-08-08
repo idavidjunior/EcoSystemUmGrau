@@ -1,7 +1,7 @@
 ---
 tags: [confiabilidade, melhora, padrao, sacrificar, treinamentonavegacao, velocidade]
 aliases: [Wait strategy adaptive]
-date: 2026-08-07
+date: 2026-08-08
 ---
 
 # Wait strategy adaptive

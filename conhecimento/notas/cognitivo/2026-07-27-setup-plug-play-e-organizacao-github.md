@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, fazendo, general, narrar, pede, ticos]
 aliases: [﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub]
-date: 2026-08-07
+date: 2026-08-08
 ---
 
 # ﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub
@@ -437,6 +437,21 @@ impacto: Validou arquitetura completa: planejamento, execucao, validacao, aprend
 Rodou `python tests/test_integration.py` no `ler-runtime/`.
 
 #
+
+﻿# 2026-08-08 - Scan proativo: EcoSystemUmGrau
+## Marcadores encontrados
+- adapt_agent_prompts.py: 3 marcadores
+- generate_sample_results.py: 9 marcadores
+- install.ps1: 3 marcadores
+- app.py: 12 marcadores
+- checklist.py: 6 marcadores
+- knowledge_base.py: 6 marcadores
+- __init__.py: 3 marcadores
+- fix_encoding_and_build.py: 18 marcadores
+- patch_flutter_orchestrator_final.py: 3 marcadores
+- test_imports.py: 3 marcadores
+- test_smoke.py: 3 marcadores
+- consolidate_build_pipeline.py: 9 marcadores
 ## Conexoes
 
 - [[cluster-hub-cognicao]]

@@ -1,7 +1,7 @@
 ---
 tags: [banco, erro, falhar, heuristica, pode, systemdesign]
 aliases: [Sempre esperar o inesperado em E/S]
-date: 2026-08-07
+date: 2026-08-08
 ---
 
 # Sempre esperar o inesperado em E/S

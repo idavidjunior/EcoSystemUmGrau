@@ -1,7 +1,7 @@
 ---
-tags: [aosp, botao, bug, coordenadas, tap, treinamentonavegacao]
+tags: [botao, bug, coordenadas, input, tap, treinamentonavegacao]
 aliases: [Permission dialogs do MIUI bloqueiam instalacao de APK]
-date: 2026-08-07
+date: 2026-08-08
 ---
 
 # Permission dialogs do MIUI bloqueiam instalacao de APK

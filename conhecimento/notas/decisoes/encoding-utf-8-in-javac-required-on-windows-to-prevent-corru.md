@@ -1,7 +1,7 @@
 ---
 tags: [android-pure-sdk, characters, corrupted, decisao, etc, portuguese]
 aliases: [**`-encoding UTF-8` in javac** — Required on Windows to prev]
-date: 2026-08-07
+date: 2026-08-08
 ---
 
 # **`-encoding UTF-8` in javac** — Required on Windows to prevent corrupted Portuguese characters (ç, ã, é, etc.)
