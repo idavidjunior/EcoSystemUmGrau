@@ -3168,5 +3168,25 @@
     "access_count": 0,
     "created_at": "2026-08-08T13:12:51.516367",
     "last_accessed": "2026-08-08T13:12:51.516367"
+  },
+  {
+    "id": 189,
+    "kind": "padrao",
+    "task": "JSON sanitization + LLM wizard",
+    "summary": "Sanitized all hardcoded user paths (C:\\Users\\David Jr) in tracked JSON files. Added runtime/ and conversa_unica.json to .gitignore as build artifacts. Created LLM Selection Wizard (scripts/llm-wizard.py) with interactive model/provider detection and integrated into setup-auto.ps1 step 9/10. Added {{LLM_MODEL}} template var to config/opencode.jsonc and scripts/opencode-serve.jsonc. All 86 tracked JSONs reduced to 70, with 0 remaining hardcoded paths.",
+    "project": "",
+    "tags": [
+      "user",
+      "auto",
+      "paths",
+      "setup",
+      "sanitized",
+      "config"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T13:45:41.725146",
+    "last_accessed": "2026-08-08T13:45:41.725146"
   }
 ]
