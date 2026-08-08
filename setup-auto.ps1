@@ -215,8 +215,28 @@ if ($kc -eq 0) {
     Write-Host "  [OK] $kc chave(s) detectada(s)" -ForegroundColor Green
 }
 
-# ─── 9. Validação ─────────────────────────────────
-Write-Host ">>> [9/9] Validacao" -ForegroundColor Cyan
+# ─── 9. LLM Wizard ──────────────────────────────────
+Write-Host ">>> [9/10] LLM Selection Wizard" -ForegroundColor Cyan
+Write-Host "  [..] Provedores detectados:" -ForegroundColor Gray
+python scripts\llm-wizard.py --detect-only 2>&1 | ForEach-Object { Write-Host "  [..] $_" -ForegroundColor Gray }
+Write-Host "  [..] Pressione Enter para abrir o wizard interativo" -ForegroundColor Gray
+$llmChoice = Read-Host "  Escolher modelo? (Enter=sim, S=sim, N=pular)"
+if ($llmChoice -eq "" -or $llmChoice -match "^[SNsn]") {
+    python scripts\llm-wizard.py 2>&1 | ForEach-Object { Write-Host "  [..] $_" -ForegroundColor Gray }
+    if (Test-Path "$ECO_DIR\config\.llm-choice.json") {
+        $llmModel = (Get-Content "$ECO_DIR\config\.llm-choice.json" -Raw | ConvertFrom-Json).model
+        # Re-render config with new model
+        $template = Get-Content "$ECO_DIR\config\opencode.jsonc" -Raw
+        $rendered = $template.Replace("{{USERPROFILE}}", $up).Replace("{{LLM_MODEL}}", $llmModel)
+        Set-Content "$OCODE_DIR\opencode.jsonc" -Value $rendered -Encoding UTF8 -Force
+        Write-Host "  [OK] opencode.jsonc re-renderizado (model: $llmModel)" -ForegroundColor Green
+    }
+} else {
+    Write-Host "  [..] Pulado, usando modelo anterior" -ForegroundColor Gray
+}
+
+# ─── 10. Validação ─────────────────────────────────
+Write-Host ">>> [10/10] Validacao" -ForegroundColor Cyan
 Push-Location $ECO_DIR
 $preflight = python scripts\preflight_check.py 2>&1 | Out-String
 if ($preflight -match "TODOS TESTES PASSARAM") {
@@ -233,8 +253,8 @@ if ($boot -match "OK") {
 }
 Pop-Location
 
-# ─── 10. Atalhos visuais ─────────────────────────
-Write-Host ">>> [10/10] Atalhos visuais" -ForegroundColor Cyan
+# ─── 11. Atalhos visuais ─────────────────────────
+Write-Host ">>> [11/11] Atalhos visuais" -ForegroundColor Cyan
 
 # 10a. Batch file no Desktop
 $desktop = [Environment]::GetFolderPath("Desktop")
