@@ -1002,7 +1002,7 @@ arestasUp = arestasUp.map(a =>
       var atualizacoes = [];
       nodes.get().forEach(function(n) {
         if (!viz1.has(n.id) && !viz2.has(n.id) && n.id !== id) {
-          // fondo: esconde, mas mostra leve brilho do tema
+          // nós fora do foco: esconde, mas mostra leve brilho
           if (frame === 1) {
             atualizacoes.push({
               id: n.id, color: '#14141f', size: 3, opacity: 0.06,
@@ -1010,7 +1010,7 @@ arestasUp = arestasUp.map(a =>
             });
           }
           return;
-        });
+        } // <-- fecha if (!viz1.has...
 
         // nó central: cresce e flutua
         if (n.id === id) {

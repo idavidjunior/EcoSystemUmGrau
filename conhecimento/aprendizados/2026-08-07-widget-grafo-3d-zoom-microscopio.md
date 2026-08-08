@@ -19,7 +19,7 @@ impacto: Widget volta a ficar estável (sem reload infinito), efeitos 3D torna-s
 2. **Typo `pulsoForza` → `pulsoForca`** (`scripts/generate-graph-html.py`)
    - Variável global é `_pulsoForca` (com "ç"), mas os temas Neon/Glow/Calm definiam `pulsoForza` (com "z")
    - O `aplicarTema()` fazia `t.pulsoForza` = `undefined` → pulsos de sinapse sempre 0
-   - **Fix**: corrigido em 3 temas
+   - **Fix**: corrigido em 3 temas (linhas 1622, 1636, 1651)
 
 3. **Efeito 3D imperceptível** (`scripts/generate-graph-html.py` — `_zVivo`)
    - A onda viajante (`viajante`) tinha amplitude 0.26 quando `_modo3D=true`
@@ -33,6 +33,12 @@ impacto: Widget volta a ficar estável (sem reload infinito), efeitos 3D torna-s
 5. **Botão 3D sem feedback visual** (`scripts/widget_grafo.py` — `WIDGET_JS_EXTRA`)
    - O botão não mostrava estado ativo visualmente
    - **Fix**: `box-shadow` cintilante quando ativo (glow no botão)
+
+6. **Sintaxe JS quebrada no `_expandirFoco`** (`scripts/generate-graph-html.py`)
+   - O f-string Python gerou `}});` que renderizou `})`, fechando o `forEach` sem fechar o `if (!viz1.has...)` interno
+   - Resultava em `SyntaxError: Unexpected token ')'` → widget travava no boot, mostrando apenas HTML vazio
+   - **Fix**: adicionada `}}` extra para fechar o if antes do `}});` do forEach
+   - **Lição**: validar JS do HTML gerado com esprima após cada alteração no template
 
 ## Zoom Microscópio com Expansão Focal
 
