@@ -103,6 +103,10 @@
     "eco": {
       "description": "Ativar/verificar EcoSystemUmGrau: confirma se o runtime esta operante ou ativa tudo + diagnostica problemas",
       "template": "Verifique se o EcoSystemUmGrau esta operante e ative se necessario. Execute:\n1. `python scripts/runtime_boot.py --check` para verificar integridade\n2. Se falhar, execute `python scripts/runtime_boot.py` para boot em modo emergencia\n3. Se ainda falhar, execute `python scripts/preflight_check.py` para diagnosticar\n4. Carregue memoria relevante via `memory_engine.py query\n5. Confirme ao usuario: 'EcoSystemUmGrau operante. Todas as regras ativas.' ouReporte os problemas detectados e corrigidos.\n\nComando recebido: $ARGUMENTS"
+    },
+    "sync": {
+      "description": "Sincronizar EcoSystemUmGrau: verifica local PC + GitHub, 3 camadas de regras, MCPs, secrets, memória e runtime. Corrige automaticamente e reporta relatório.",
+      "template": "Execute o protocolo de sincronização @sync completo:\n\n1. `python scripts/runtime_boot.py` — boot e integridade\n2. `python scripts/sync_rules.py audit` — verifica e corrige 3 camadas\n3. Sincronize config: copy config/opencode.jsonc -> ~/.config/opencode/\n4. `python scripts/preflight_check.py` — valida MCPs, secrets, agents\n5. `git status --short` — verifica arquivos pendentes e conflitos\n6. `python scripts/memory_engine.py stats` — verifica integridade da memória\n7. `python scripts/runtime_state.py checkpoint \"@sync\"` — salva checkpoint\n8. Reporte relatório objetivo: local PC OK/WARN/ERROR, GitHub status, 3 camadas, MCPs online, secrets guard, memory integrity, runtime state, preflight, arquivos pendentes, conflitos, ação tomada.\n\nSe detectar inconsistências: corrija, notifique, revalide e commite automaticamente.\n\nComando: $ARGUMENTS"
     }
   },
   "permission": "allow",

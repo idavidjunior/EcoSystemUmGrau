@@ -176,6 +176,66 @@ Esta regra tem prioridade **absoluta** sobre qualquer tarefa em andamento. Corri
 
 ---
 
+# CLÁUSULA PÉTREA — SINCRONIZAÇÃO FORÇADA — ECO SYSTEM (@sync)
+
+**Regra permanente, global e obrigatória para TODOS os agentes e TODAS as sessões.**
+
+## @sync — verificação e correção de sincronização
+
+Quando o usuário digitar **"@sync"**, o agente DEVE executar o protocolo de sincronização completo e reportar um **relatório objetivo**:
+
+### Etapas do protocolo @sync (ordem obrigatória)
+
+1. **Bootloader** — `python scripts/runtime_boot.py` (verifica integridade do ecossistema)
+2. **Constituição** — `python scripts/sync_rules.py audit` (verifica + corrige 3 camadas: Constituição ↔ AGENTS.md ↔ Deployed)
+3. **Deploy config** — sincroniza `config/opencode.jsonc` para `~/.config/opencode/opencode.jsonc`
+4. **Preflight** — `python scripts/preflight_check.py` (valida MCPs, secrets, agents, etc.)
+5. **Git status** — verifica arquivos modificados, não trackeados, conflitos
+6. **Memory sync** — `python scripts/memory_engine.py` (verifica sanitidade do memories.json)
+7. **Checkpoint** — salva estado atual via `runtime_state.py checkpoint "@sync"`
+
+### Verificações de integridade
+
+- **Local PC** ↔ **GitHub**: sem conflitos, sem arquivos perdidos
+- **3 camadas de regras**: Constituição, AGENTS.md, Deployed — consistentes
+- **13 MCP servers**: todos online e respondendo (initialize + tools/list)
+- **Secrets**: sem chaves expostas, sem regressão
+- **Memória**: sem corrupção, sem entries truncados
+- **Runtime**: sem estado obsoleto, sem pendências pendentes
+
+### Correção automática
+
+Se qualquer inconsistência for detectada:
+1. **Corrigir** — aplicar a correção (sync_rules update, redeploy config, atomic write)
+2. **Notificar** — relatar o problema e a correção aplicada
+3. **Revalidar** — rodar preflight novamente
+4. **Commit** — se tudo OK, commit automático com mensagem padronizada
+
+### Relatório final (@sync)
+
+```
+=== RELATÓRIO DE SINCRONIZAÇÃO @sync ===
+
+Status Local PC:     [OK] / [WARN] / [ERROR]
+Status GitHub:       [OK] / [WARN] / [ERROR]
+Branch ativa:        opencode/mighty-meadow
+Upstream:            origin/opencode/mighty-meadow (sync)
+
+3 Camadas de Regras: [OK] 11 regras consistentes
+MCP Servers:         [OK] 13/13 online
+Secrets Guard:       [OK] sem exposição
+Memory Integrity:    [OK] memories.json saudável
+Runtime State:       [OK] estado restaurado
+Preflight:           [OK] todos testes passaram
+
+Arquivos pendentes:  0 (ou N arquivos não comiteados)
+Conflitos:           0
+
+Ação tomada:         Nenhuma necessária / Corrigido X / Commit realizado (#N)
+```
+
+---
+
 # CLÁUSULA PÉTREA — APRENDIZADO AUTOMÁTICO PERMANENTE
 
 Instrução **IMUTÁVEL**. Todo agente DEVE aprender ao final de cada tarefa SEM depender de solicitação do usuário.
