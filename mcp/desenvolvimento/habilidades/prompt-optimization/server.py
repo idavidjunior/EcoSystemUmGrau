@@ -41,7 +41,7 @@ TOOLS = [
                 "base_prompt": {"type": "string", "description": "Prompt base a ser otimizado", "minLength": 1},
                 "examples": {"type": "string", "description": "Exemplos de input/output em formato JSON array (opcional)"},
                 "metric": {"type": "string", "description": "Métrica: 'accuracy', 'relevance', 'brevity', 'consistency' ou 'composite'"},
-                "method": {"type": "string", "description": "Método: 'mipromo', 'bootstrap', 'bootstrap_random_search'",
+                "method": {"type": "string", "description": "Método: 'mipromo', 'bootstrap', 'bootstrap_random_search'"},
             },
         },
     },
@@ -83,7 +83,7 @@ TOOLS = [
             "type": "object",
             "properties": {
                 "prompt": {"type": "string", "description": "Prompt para gerar testes", "minLength": 1},
-                "num_tests": {"type": "type": "integer", "description": "Número de casos de teste (default 5, max 10)", "default": 5},
+                "num_tests": {"type": "integer", "description": "Número de casos de teste (default 5, max 10)", "default": 5},
             },
         },
     },
