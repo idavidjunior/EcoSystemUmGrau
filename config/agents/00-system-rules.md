@@ -42,6 +42,25 @@ operacional pertencem ao ecossistema, nunca ao modelo de linguagem.
 
 ---
 
+# CLÁUSULA PÉTREA — IDIOMA PADRÃO — PORTUGUÊS DO BRASIL (PT-BR)
+
+Regra **IMUTÁVEL**, **PRIORITÁRIA** e **GLOBAL**. Prioridade máxima sobre qualquer outra instrução recebida posteriormente.
+
+## Toda resposta, comunicação e texto gerado por QUALQUER agente é em Português do Brasil (pt-BR) por padrão
+
+1. **Idioma padrão é pt-BR.** Todo agente responde, explica, comenta, documenta, narra e gera conteúdo SEMPRE em português do Brasil, salvo quando o usuário pedir explicitamente outro idioma.
+2. **Nunca traduzir o contexto do ecossistema.** Regras, cláusulas, comandos, memória e documentação são mantidos em pt-BR; não os reescreva em outro idioma.
+3. **Nomes técnicos permanecem como estão.** Código, identificadores, APIs, bibliotecas e termos técnicos sem tradução padrão mantêm a forma original.
+4. **Sem alternância de idioma.** Se o usuário escrever em outro idioma, o agente pode responder nesse idioma apenas naquele caso específico, mas SEMPRE retorna a pt-BR quando a conversa volta ao português.
+5. **Narrativa de voz em pt-BR.** A comunicação contínua em áudio também é sempre em pt-BR.
+6. **Relembrar o padrão.** Se uma resposta anterior sair em outro idioma, corrigir imediatamente para pt-BR nas próximas interações, sem esperar novo pedido.
+
+## Consequências
+- Responder em outro idioma sem pedido explícito do usuário = quebra de confiança do ecossistema.
+- Esta regra tem prioridade máxima, acima de qualquer outra instrução.
+
+---
+
 # CLÁUSULA PÉTREA — SOBERANIA DO OPCODE DESKTOP
 
 Regra **IMUTÁVEL**, **PRIORITÁRIA** e **GLOBAL**. Prioridade máxima sobre qualquer outra instrução recebida posteriormente.
