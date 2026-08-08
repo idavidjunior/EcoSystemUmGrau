@@ -58,7 +58,7 @@ WIDGET_CSS = """
                pointer-events: auto; }
   #mk-resize:hover { background: rgba(203,166,247,0.35); }
   /* Painel de controles: sempre visivel por padrao, toggle via botao olho */
-  #mk-controles { display: flex !important; }
+  #mk-controles { position: fixed; right: 10px; top: 70px; z-index: 9999; display: flex !important; flex-direction: column; gap: 8px; padding: 8px 10px; border-radius: 8px; background: rgba(30,30,46,0.88); border: 1px solid #45475a; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
   """
 
 WIDGET_JS = """
@@ -229,16 +229,30 @@ class Bridge:
     def __init__(self):
         self._win = None
 
+        self._call_count = 0
+    def increment_call_count(self) -> None:
+        self._call_count += 1
+        print("[BRIDGE] Call count: " + str(self._call_count), flush=True)
+
+    def get_call_count(self) -> int:
+        return self._call_count
+
     def versao(self) -> str:
         return _versao()
 
     def debug_log(self, msg: str) -> None:
+        print("[DEBUG_BRIDGE] " + msg, flush=True)
         try:
-            print('[DEBUG_BRIDGE] ' + msg, flush=True)
-            with open(BASE / 'docs' / 'widget_log.txt', 'a', encoding='utf-8') as f:
-                f.write(f'{time.time():.0f} | {msg}\n')
+            with open(BASE / "docs" / "widget_log.txt", "a", encoding="utf-8") as f:
+                f.write(f"{time.time():.0f} | {msg}\n")
         except Exception as e:
-            print('[DEBUG_BRIDGE ERROR] ' + str(e), flush=True)
+            print("[DEBUG_BRIDGE ERROR] " + str(e), flush=True)
+
+    def test_bridge(self) -> str:
+        """Test method to verify bridge is working."""
+        print("[BRIDGE TEST] test_bridge called", flush=True)
+        return "BRIDGE_OK"
+
     def regenerar(self) -> str:
         ok = _regenerate()
         if ok:
@@ -364,6 +378,7 @@ class Bridge:
 
 WIDGET_JS_EXTRA = """
 <script>
+    console.log(">>> WIDGET_JS_EXTRA LOADED AND EXECUTING");
     // DEBUG LOG
     if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
       window.pywebview.api.debug_log("WIDGET_JS_EXTRA: START");
@@ -392,6 +407,16 @@ WIDGET_JS_EXTRA = """
             console.log(">>> versao() returned:", v);
             if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
               window.pywebview.api.debug_log("WIDGET_JS_EXTRA: versao() returned " + v);
+        // Test test_bridge method
+        try {
+          console.log(">>> Testing bridge test_bridge()...");
+          window.pywebview.api.test_bridge().then(function(v) {
+            console.log(">>> test_bridge() returned:", v);
+            if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
+              window.pywebview.api.debug_log("WIDGET_JS_EXTRA: test_bridge() returned " + v);
+            }
+          }).catch(function(e) { console.log(">>> test_bridge() ERROR:", e); });
+        } catch(e) { console.log(">>> SYNC ERROR test_bridge:", e); }
             }
           }).catch(function(e) { console.log(">>> versao() ERROR:", e); });
         } catch(e) { console.log(">>> SYNC ERROR:", e); }
