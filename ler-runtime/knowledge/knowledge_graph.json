@@ -4152,5 +4152,6 @@
       "category": "resource_leak",
       "extracted_at": "2026-08-06T23:24:06"
     }
-  ]
+  ],
+  "_last_reload": 1786152093.0103226
 }
