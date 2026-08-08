@@ -17,6 +17,7 @@ import json
 import os
 import re
 import sys
+import time
 from pathlib import Path
 
 import numpy as np
@@ -229,6 +230,61 @@ def _carregar_notas() -> list:
     return notas
 
 
+# Idade maxima da camada densa (embeddings) antes de ser reconstruida.
+# Reindexar denso a cada add era caro (MiniLM sobre todo o corpus); agora
+# so reconstroi apos esse intervalo ou quando a matriz nao existe.
+DENSE_MAX_AGE = 600  # 10 min
+
+
+def _index_fingerprint(mem_count: int | None = None):
+    """Fingerprint leve do corpus (count memorias + mtimes das notas).
+
+    Usado para detectar se o indice TF-IDF esta desatualizado sem reindexar
+    tudo. Barato: so conta memorias e faz stat de arquivos .md.
+    """
+    if mem_count is None:
+        mem_count = 0
+        if os.path.exists(MEMORIES_FILE):
+            try:
+                with open(MEMORIES_FILE, encoding='utf-8') as f:
+                    mem_count = len(json.load(f))
+            except Exception:
+                mem_count = 0
+    notas_fp = []
+    for d in NOTAS_DIRS:
+        newest = 0.0
+        if os.path.isdir(d):
+            for root, _, files in os.walk(d):
+                for fn in files:
+                    if fn.endswith('.md'):
+                        try:
+                            newest = max(newest, os.path.getmtime(os.path.join(root, fn)))
+                        except Exception:
+                            pass
+        notas_fp.append(round(newest, 1))
+    return (mem_count, tuple(notas_fp))
+
+
+def index_stale() -> bool:
+    """True se o indice TF-IDF nao reflete o corpus atual (memorias + notas)."""
+    try:
+        with open(META_FILE, encoding='utf-8') as f:
+            meta = json.load(f)
+        return meta.get('fingerprint') != _index_fingerprint()
+    except Exception:
+        return True
+
+
+def _dense_recente() -> bool:
+    """True se a matriz densa existe e foi construida ha menos de DENSE_MAX_AGE."""
+    if not os.path.exists(DENSE_MATRIX_FILE):
+        return False
+    try:
+        return (time.time() - os.path.getmtime(DENSE_MATRIX_FILE)) < DENSE_MAX_AGE
+    except Exception:
+        return False
+
+
 def build_index(verbose: bool = False) -> dict:
     """Constroi (ou reconstrroi) o indice TF-IDF a partir de memories.json."""
     from sklearn.feature_extraction.text import TfidfVectorizer
@@ -283,6 +339,7 @@ def build_index(verbose: bool = False) -> dict:
         'count': len(corresp_ids),
         'count_mem': len(memories),
         'count_notas': len(notas),
+        'fingerprint': _index_fingerprint(len(memories)),
     }
     with open(META_FILE, 'w', encoding='utf-8') as f:
         json.dump(meta, f, ensure_ascii=False, indent=2)
@@ -330,7 +387,7 @@ def search(query: str, k: int = 5, min_score: float = 0.05) -> list:
             try:
                 dense = np.load(DENSE_MATRIX_FILE)
                 from sentence_transformers import SentenceTransformer
-                dense_model = SentenceTransformer(DENSE_MODEL)
+                dense_model = SentenceTransformer(DENSE_MODEL, local_files_only=True)
             except Exception:
                 dense = None
                 dense_model = None
@@ -513,7 +570,9 @@ def build_dense(verbose: bool = False) -> dict:
         import numpy as np
         with open(META_FILE, encoding='utf-8') as f:
             meta = json.load(f)
-        model = SentenceTransformer(DENSE_MODEL)
+        # local_files_only: NUNCA faz download do HuggingFace. Se o modelo nao
+        # estiver em cache local, falha rapido e retorna ok=False (best-effort).
+        model = SentenceTransformer(DENSE_MODEL, local_files_only=True)
         emb = model.encode(meta['texts'], show_progress_bar=False, normalize_embeddings=True)
         np.save(DENSE_MATRIX_FILE, np.asarray(emb))
         if verbose:

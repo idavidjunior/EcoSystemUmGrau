@@ -1,12 +1,12 @@
 ---
-tags: [android, intermitentemente, opencodeopencodeopencodeopencodeopencodeopencode, padrao, powershell, scrcpy]
+tags: [falhava, intermitentemente, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, powershell, scrcpy]
 aliases: [2026-08-03: ADB remoto via Tailscale - script automatico de ]
 date: 2026-08-08
 ---
 
 # 2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6)
 
-**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -17,4 +17,5 @@ contexto: Conexao ADB remota ao Redmi Note 11 via Tailscale falhava intermitente
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]
+- [[config-2026-07-28-formato-correto-do-mcp-no-opencode-1187]]
 - [[padrao-hub-padroes]]

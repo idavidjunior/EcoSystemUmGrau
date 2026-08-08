@@ -133,12 +133,22 @@ def reindexar_semantico(best_effort=True):
     Chamado após cada add_memory para que a memória nova seja recuperável por
     significado imediatamente. Em best_effort, falhas são reportadas mas nunca
     quebram o fluxo do add.
+
+    Otimização 2026-08-08 (fix: add travava baixando modelo do HuggingFace):
+      - Se o índice TF-IDF já reflete o corpus (fingerprint igual), pula tudo.
+      - TF-IDF é reconstruído quando desatualizado (rápido, ~1s).
+      - Camada densa (MiniLM) só é reconstruída se a matriz não existir ou for
+        mais velha que DENSE_MAX_AGE — nunca a cada add.
+      - O download do modelo nunca é forçado (local_files_only=True).
     """
     try:
-        from memory_semantic import build_index, build_dense
+        from memory_semantic import build_index, build_dense, index_stale, _dense_recente
+        if not index_stale():
+            return
         r = build_index(verbose=False)
         if r.get('ok'):
-            build_dense(verbose=False)
+            if not _dense_recente():
+                build_dense(verbose=False)
             print(f'[REINDEX] índice semântico atualizado: {r["count"]} docs')
         else:
             print(f'[REINDEX] aviso: {r.get("erro", "falha no build")}')
