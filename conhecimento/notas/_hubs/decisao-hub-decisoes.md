@@ -1,6 +1,6 @@
 # Decisoes
 
-**56 notas** conectadas a este hub.
+**57 notas** conectadas a este hub.
 
 
 ## Notas
@@ -37,6 +37,7 @@
 - [[pontuacao-ponderada-com-6-categorias-req-30-func-30-testes-1]]
 - [[preferir-automationid-sobre-name-em-ui-automation-windows]]
 - [[priorizar-data-testid-sobre-classes-css-em-automacao-web]]
+- [[protocolo-higiene-repo-streamumgrau]]
 - [[renomear-pastas-com-espacos-para-nomes-sem-espaco]]
 - [[reorganização-habilidades-dentro-de-mcp-por-domínio]]
 - [[salvar-cria-novo-arquivo-timestampado-nunca-sobrescreve-exis]]
