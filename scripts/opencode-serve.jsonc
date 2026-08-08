@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "opencode/deepseek-v4-flash-free",
+  "model": "{{LLM_MODEL}}",
   "provider": {
     "nvidia": {
       "npm": "@ai-sdk/openai-compatible",

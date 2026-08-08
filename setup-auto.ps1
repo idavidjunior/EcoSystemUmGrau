@@ -60,7 +60,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 # ─── 3. Deploy config ─────────────────────────────
-Write-Host ">>> [3/9] Config OpenCode" -ForegroundColor Cyan
+Write-Host ">>> [3/10] Config OpenCode" -ForegroundColor Cyan
 Push-Location $ECO_DIR
 $up = $env:USERPROFILE.Replace('\', '/')
 
@@ -69,10 +69,20 @@ python scripts\sync_rules.py update 2>&1 | ForEach-Object { Write-Host "  [..] $
 if (-not (Test-Path $OCODE_DIR))      { New-Item -ItemType Directory -Path $OCODE_DIR -Force | Out-Null }
 if (-not (Test-Path "$OCODE_DIR\agents")) { New-Item -ItemType Directory -Path "$OCODE_DIR\agents" -Force | Out-Null }
 
+# LLM Wizard: detecta providers e permite escolha interativa
+$llmChoiceFile = "$ECO_DIR\config\.llm-choice.json"
+if (Test-Path $llmChoiceFile) {
+    $llmModel = (Get-Content $llmChoiceFile -Raw | ConvertFrom-Json).model
+    Write-Host "  [..] Modelo LLM salvo: $llmModel" -ForegroundColor Gray
+} else {
+    Write-Host "  [..] Nenhuma escolha salva, usando padrão" -ForegroundColor Gray
+    $llmModel = "opencode/deepseek-v4-flash-free"
+}
+
 $template = Get-Content "$ECO_DIR\config\opencode.jsonc" -Raw
-$rendered = $template.Replace("{{USERPROFILE}}", $up)
+$rendered = $template.Replace("{{USERPROFILE}}", $up).Replace("{{LLM_MODEL}}", $llmModel)
 Set-Content "$OCODE_DIR\opencode.jsonc" -Value $rendered -Encoding UTF8 -Force
-Write-Host "  [OK] opencode.jsonc rendered" -ForegroundColor Green
+Write-Host "  [OK] opencode.jsonc rendered (model: $llmModel)" -ForegroundColor Green
 
 Copy-Item "$ECO_DIR\config\opencode-model-fallback.jsonc" "$OCODE_DIR\" -Force
 Copy-Item "$AGENTS_SRC\*.md" "$OCODE_DIR\agents\" -Force
