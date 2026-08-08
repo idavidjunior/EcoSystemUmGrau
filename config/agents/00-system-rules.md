@@ -522,7 +522,9 @@ Não inventar APIs, bibliotecas ou funcionalidades inexistentes.
 
 **Regra permanente para TODOS os agentes e TODAS as sessões.**
 
-## CARREGAMENTO AUTOMÁTICO TOTAL — ECO SYSTEM
+## CARREGAMENTO AUTOMÁTICO TOTAL — ECO SYSTEM (PRIMEIRA PRIORIDADE)
+
+**Esta é a regra de ordem zero — sempre executada primeiro em qualquer sessão.**
 
 A cada nova sessão que o usuário abrir, **o EcoSystemUmGrau é carregado automaticamente e imediatamente**, sem necessidade de pedido explícito. O agente opera estritamente dentro do EcoSystemUmGrau desde o boot:
 
@@ -546,6 +548,17 @@ Quando o usuário digitar/falar **"Eco"** (case-insensitive, palavra única, em 
    - Se no celular: bridge já atende via WebSocket (app VoxUmGrau conectado)
 3. Manter modo voz ativo até "Desativar Eco"
 
+Quando o usuário digitar "**@eco**":
+
+1. **Verificar se EcoSystemUmGrau está operante** (runtime boot OK, kernel ativo, memória carregada)
+2. Se **já operante**: confirmar "EcoSystemUmGrau operante. Todas as regras ativas."
+3. Se **não operante** (fallhou boot, kernel offline, etc.): ativar imediatamente tudo e diagnosticar o problema:
+   - Executar `python scripts/runtime_boot.py` em modo emergência
+   - Verificar integridade via `preflight_check.py`
+   - Restaurar estado de `runtime/state.json`
+   - Notificar o usuário sobre o problema detectado e a correção aplicada
+4. Garantir que **toda LLM opera estritamente dentro do EcoSystemUmGrau** — carregar Constituição, AGENTS.md e todas as cláusulas pétreas
+
 Quando o usuário digitar/falar **"Desativar Eco"**:
 
 1. O agente DEVE confirmar: "Eco desativado. Modo texto restaurado."
@@ -553,11 +566,10 @@ Quando o usuário digitar/falar **"Desativar Eco"**:
 3. Se `dialogo.py` estiver rodando em background, finalizá-lo (Ctrl+C)
 
 **Implementação técnica:**
-- Bridge já roda em `ws://0.0.0.0:8765` (porta 8765)
-- TTS: `edge-tts` voz `pt-BR-AntonioNeural` via `jarvis_bridge.py:gerar_audio()`
-- STT (PC): `vox_audio.py ouvir` → Whisper local
-- STT (Celular): `SpeechRecognizer` Android → WebSocket → bridge
-- Comando para iniciar modo diálogo PC: `python scripts/dialogo.py --modo vad` (bg)
+- `@eco` — confirma operationalidade ou ativa + diagnostica
+- `Eco` (palavra única) — ativa modo voz (TTS/STT)
+- `Desativar Eco` — desativa modo voz
+- Auto-carregamento via runtime_boot.py é **prioridade zero absoluta**
 
 **Persistência:** Esta regra vale para QUALQUER sessão nova ou existente. Não depende de estado anterior.
 
