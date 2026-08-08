@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**81 notas** conectadas a este hub.
+**82 notas** conectadas a este hub.
 
 
 ## Notas
@@ -22,6 +22,7 @@
 - [[cadeia-de-provedores-com-failover-inteligente]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[complete-build-pipeline-intelligence]]
+- [[compreensao-de-pedidos-refino-com-a-llm-do-opencode-primaria]]
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
 - [[config-2026-07-27-teste-do-vigilante-automático]]
