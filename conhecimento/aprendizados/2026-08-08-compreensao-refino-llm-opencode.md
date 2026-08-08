@@ -43,3 +43,8 @@ NVIDIA dava timeout (30/60s) e o refino ficava inutil na pratica.
 - Failover: `COMPREENSAO_MODELO_OPENCODE=opencode/modelo-inexistente` -> caiu para NVIDIA,
   timeout, `usado:false` com motivo (fail-soft) — resiliencia comprovada.
 - `preflight_check.py`: TODOS TESTES PASSARAM. `sync_rules.py update`: 3 camadas OK (13 regras).
+
+## Conexoes
+
+- [[cluster-hub-ecossistema]]
+- [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
