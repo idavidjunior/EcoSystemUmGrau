@@ -1,0 +1,22 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.iml
+*.ipr
+*.iws
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Credenciais / ambiente
+lib/core/config/.env
+.env
+
+# Sistema
+Thumbs.db
+.DS_Store
