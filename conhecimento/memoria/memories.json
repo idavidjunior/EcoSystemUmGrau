@@ -3008,5 +3008,25 @@
     "access_count": 0,
     "created_at": "2026-08-07T21:17:35.147538",
     "last_accessed": "2026-08-07T21:17:35.147538"
+  },
+  {
+    "id": 181,
+    "kind": "decisao",
+    "task": "EcoSystemUmGrau auto-carregamento + gatilho 'Eco'",
+    "summary": "Atualizada a CLÁUSULA PÉTREA — ATIVAÇÃO DE VOZ — ECO SYSTEM na Constituição: (1) o EcoSystemUmGrau é carregado automaticamente em toda nova sessão via runtime_boot.py + estado persistente + memória episódica + kernel + context loader + auditor — nenhuma sessão é isolada; (2) o gatilho mudou de 'Ativar Eco' para apenas 'Eco' (palavra única, case-insensitive) para ativar o sistema de voz via jarvis_bridge.py porta 8765 + dialogo.py --modo vad no PC. Sincronizado em 3 camadas. Preflight: TODOS OS TESTES PASSARAM.",
+    "project": "",
+    "tags": [
+      "bridge",
+      "jarvis",
+      "constituição",
+      "sistema",
+      "system",
+      "voz"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-07T21:19:56.994108",
+    "last_accessed": "2026-08-07T21:19:56.994108"
   }
 ]

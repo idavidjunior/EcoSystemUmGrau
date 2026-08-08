@@ -210,7 +210,7 @@ def _versao() -> str:
     v = [_mtime_ns(KNOWLEDGE_GRAPH)]
     late = 0
     if CONHECIMENTO_DIR.is_dir():
-        for p in CONHECIMENTO_DIR.rglob('*'):
+        for p in CONHECIMENTO_DIR.rglob('*.md'):
             if p.is_file():
                 late = max(late, _mtime_ns(p))
     v.append(late)
