@@ -3498,5 +3498,25 @@
     "access_count": 0,
     "created_at": "2026-08-08T17:34:16.340343",
     "last_accessed": "2026-08-08T17:34:16.340343"
+  },
+  {
+    "id": 205,
+    "kind": "padrao",
+    "task": "Modulo de Compreensao de Pedidos (mcp-compreensao-pedidos) substitui DSPy/prompt-optimization",
+    "summary": "Novo modulo mcp/nucleo/habilidades/compreensao-pedidos: 100%% stdlib, converte pedido em objetivo/acoes/conceitos/ambiguidades/score, refino LLM opcional fail-soft (NVIDIA via litellm openai/ prefixo + api_base). Integrado ao Kernel contrato-entrada, config (comando compreender), manifesto e Constituicao (3 camadas OK, preflight TODOS PASS). Aposentado prompt-optimization. NVIDIA_API_KEY e a unica chave real (scripts/.env); .env.example nunca deve ser carregado.",
+    "project": "",
+    "tags": [
+      "base",
+      "prefixo",
+      "openai",
+      "litellm",
+      "soft",
+      "fail"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T18:27:16.123080",
+    "last_accessed": "2026-08-08T18:27:16.123080"
   }
 ]

@@ -160,6 +160,9 @@ def _read_frame(stream):
     first = first.rstrip(b"\r\n")
     if first.startswith(b"Content-Length:"):
         headers = {}
+        if b":" in first:
+            key, value = first.split(b":", 1)
+            headers[key.strip().lower()] = value.strip()
         while True:
             line = stream.readline()
             if not line:
