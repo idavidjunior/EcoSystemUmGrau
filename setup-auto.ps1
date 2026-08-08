@@ -197,7 +197,7 @@ if (-not $te) {
 }
 
 # ─── 8. API Keys ──────────────────────────────────
-Write-Host ">>> [8/9] API Keys" -ForegroundColor Cyan
+Write-Host ">>> [8/10] API Keys" -ForegroundColor Cyan
 $keys = @{
     "NVIDIA_API_KEY" = $env:NVIDIA_API_KEY
     "OPENAI_API_KEY" = $env:OPENAI_API_KEY
