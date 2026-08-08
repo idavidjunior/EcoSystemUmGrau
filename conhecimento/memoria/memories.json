@@ -3338,5 +3338,45 @@
     "access_count": 0,
     "created_at": "2026-08-08T15:17:41.260103",
     "last_accessed": "2026-08-08T15:17:41.260103"
+  },
+  {
+    "id": 197,
+    "kind": "padrao",
+    "task": "Som personalizado + 6 efeitos no Supermercado Caixa v1.5.0",
+    "summary": "Adicionados 6 novos efeitos sonoros (moeda, barcode, sucesso, erro, clique, gaveta) + opcao de som personalizado via ACTION_OPEN_DOCUMENT no app Supermercado Caixa. Bug de cancelamento do seletor corrigido com previousSound + guarda de boot. Build release v1.5.0 instalado.",
+    "project": "",
+    "tags": [
+      "app",
+      "document",
+      "open",
+      "action",
+      "opcao",
+      "gaveta"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T15:35:58.380574",
+    "last_accessed": "2026-08-08T15:35:58.380574"
+  },
+  {
+    "id": 198,
+    "kind": "padrao",
+    "task": "Som personalizado v1.5.0 Supermercado Caixa",
+    "summary": "Adicionados 6 novos efeitos sonoros + som personalizado via ACTION_OPEN_DOCUMENT. Bug de cancelamento do seletor corrigido (previousSound + boot guard). Build release instalado.",
+    "project": "",
+    "tags": [
+      "document",
+      "open",
+      "action",
+      "sonoros",
+      "efeitos",
+      "novos"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T15:36:37.451899",
+    "last_accessed": "2026-08-08T15:36:37.451899"
   }
 ]
