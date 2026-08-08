@@ -42,7 +42,10 @@ jobs:
           NEW_DIR="android/app/src/main/kotlin/${APP_ID//.//}"
           mkdir -p "$NEW_DIR"
           mv "$OLD_DIR/MainActivity.kt" "$NEW_DIR/MainActivity.kt"
-          sed -i "s|package ${OLD_DIR#android/app/src/main/kotlin/}|package ${APP_ID}|" "$NEW_DIR/MainActivity.kt"
+          # 3) Atualizar a declaracao de package (com PONTOS, nao barras)
+          OLD_PKG="${OLD_DIR#android/app/src/main/kotlin/}"
+          OLD_PKG="${OLD_PKG//\//.}"
+          sed -i "s|package ${OLD_PKG}|package ${APP_ID}|" "$NEW_DIR/MainActivity.kt"
           grep -r "$OLD_ID" android/ || echo "OK: nenhuma referencia restante ao antigo id"
 
       - name: Gerar icones e splash
