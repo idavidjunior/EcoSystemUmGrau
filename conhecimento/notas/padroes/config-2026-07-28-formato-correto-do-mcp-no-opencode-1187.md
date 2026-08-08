@@ -1,12 +1,12 @@
 ---
-tags: [erro, expected, opencode, opencodeopencodeopencodeopencodeopencodeopencode, padrao, type]
+tags: [erro, expected, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencode, padrao, type]
 aliases: [Config: # 2026-07-28: Formato correto do MCP no OpenCode 1.1]
 date: 2026-08-08
 ---
 
 # Config: # 2026-07-28: Formato correto do MCP no OpenCode 1.18.7
 
-**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode
 
 # 2026-07-28: Formato correto do MCP no OpenCode 1.18.7
 
