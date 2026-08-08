@@ -3208,5 +3208,90 @@
     "access_count": 0,
     "created_at": "2026-08-08T13:50:32.098634",
     "last_accessed": "2026-08-08T13:50:32.098634"
+  },
+  {
+    "id": 191,
+    "kind": "episodio",
+    "task": "Persistencia do carrinho SupermarketCalculator e build.ps1 resiliente",
+    "summary": "Corrigido perda de dados do carrinho ao bloquear tela: implementado saveCartState/loadCartState em SharedPreferences a cada mutacao + onPause. build.ps1 refeito para auto-detectar build-tools/platform, gerar DEX na raiz (aapt add via Push-Location), e usar argfile relativo no javac (espacos no caminho). APK compilado, instalado via ADB e testado no Redmi Note 11.",
+    "project": "",
+    "tags": [
+      "caminho",
+      "espacos",
+      "javac",
+      "relativo",
+      "argfile",
+      "usar"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T14:26:29.194102",
+    "last_accessed": "2026-08-08T14:26:29.194102"
+  },
+  {
+    "id": 192,
+    "kind": "episodio",
+    "task": "Persistencia carrinho + release v1.3.0 SupermarketCalculator",
+    "summary": "Carrinho perdido ao bloquear tela era ArrayList em memoria sem persistencia. Fix: saveCartState/loadCartState em SharedPreferences a cada mutacao + onPause. build.ps1 reescrito: auto-detect build-tools/platform, argfile relativo, DEX na raiz. Release v1.3.0 (versionCode 4) assinado com release.keystore nova (alias supermarket) e instalado no Redmi Note 11. Guia: RELEASE.md.",
+    "project": "",
+    "tags": [
+      "raiz",
+      "dex",
+      "memoria",
+      "relativo",
+      "arraylist",
+      "argfile"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T14:37:37.113215",
+    "last_accessed": "2026-08-08T14:37:37.113215"
+  },
+  {
+    "id": 193,
+    "kind": "Carrinho perdido ao bloquear tela era ArrayList em memoria. Fix: saveCartState/loadCartState SharedPreferences + onPause. build.ps1 resiliente. Release v1.3.0 (versionCode 4) assinado com release.keystore e instalado. Guia: RELEASE.md.",
+    "task": "episodio",
+    "summary": "Persistencia carrinho + release v1.3.0 SupermarketCalculator",
+    "project": "SupermarketCalculator",
+    "tags": [
+      "android",
+      "build",
+      "release",
+      "persistencia",
+      "carrinho",
+      "episodio",
+      "supermarketcalculator"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T14:41:05.043169",
+    "last_accessed": "2026-08-08T14:41:05.043169"
+  },
+  {
+    "id": 194,
+    "kind": "episodio",
+    "task": "Persistencia carrinho + release v1.3.0 SupermarketCalculator",
+    "summary": "Carrinho perdido ao bloquear tela era ArrayList em memoria. Fix: saveCartState/loadCartState SharedPreferences + onPause. build.ps1 resiliente (auto-detect, argfile, DEX raiz). Release v1.3.0 versionCode 4 assinado com release.keystore (alias supermarket) e instalado no Redmi Note 11. Guia: RELEASE.md.",
+    "project": "SupermarketCalculator",
+    "tags": [
+      "android",
+      "build",
+      "release",
+      "persistencia",
+      "memoria",
+      "arraylist",
+      "era",
+      "raiz",
+      "dex",
+      "tela"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T14:42:35.096179",
+    "last_accessed": "2026-08-08T14:42:35.096179"
   }
 ]
