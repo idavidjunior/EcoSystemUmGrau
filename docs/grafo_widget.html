@@ -173,7 +173,7 @@ function zu(){return zu=Object.assign||function(g){for(var t=1;t<arguments.lengt
   #mk-topbar div { box-sizing: border-box; }
   #mk-painel-toggle { position: fixed; bottom: 16px; left: 16px; top: auto; z-index: 99999; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; background: rgba(49, 50, 68, 0.95); border: 1px solid rgba(203,166,247,0.35); color: #cba6f7; box-shadow: 0 4px 12px rgba(0,0,0,0.22); }
   /* Painel de controles: organizado em faixa inferior e visivel por padrao */
-  #mk-controles { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex !important; flex-direction: row; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; padding: 8px 12px; border-radius: 10px; background: rgba(24, 24, 37, 0.82); border: 1px solid rgba(145, 160, 198, 0.2); box-shadow: 0 8px 22px rgba(0,0,0,0.32); backdrop-filter: blur(6px); max-width: min(760px, calc(100vw - 110px)); width: min(760px, calc(100vw - 110px)); }
+  #mk-controles { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: row; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; padding: 8px 12px; border-radius: 10px; background: rgba(24, 24, 37, 0.82); border: 1px solid rgba(145, 160, 198, 0.2); box-shadow: 0 8px 22px rgba(0,0,0,0.32); backdrop-filter: blur(6px); max-width: min(760px, calc(100vw - 110px)); width: min(760px, calc(100vw - 110px)); }
   #mk-controles > div,
   #mk-controles > select,
   #mk-controles > input { max-width: 100%; }
@@ -1677,10 +1677,21 @@ arestasUp = arestasUp.map(a =>
       } catch (e) {}
     });
 
-    var visible = true;
-    eye.addEventListener('click', function(){
-      visible = !visible;
+    function syncControlsPanel(show) {
+      visible = !!show;
       panel.style.display = visible ? 'flex' : 'none';
+      panel.hidden = !visible;
+      panel.setAttribute('aria-hidden', String(!visible));
+      eye.title = visible ? 'Ocultar painel' : 'Mostrar painel';
+      eye.textContent = visible ? '👁' : '🚫';
+      localStorage.setItem('painelGrafoVisivel', visible ? 'true' : 'false');
+    }
+
+    var visible = localStorage.getItem('painelGrafoVisivel') !== 'false';
+    syncControlsPanel(visible);
+
+    eye.addEventListener('click', function(){
+      syncControlsPanel(!visible);
     });
 
     menuBtn.addEventListener('click', function(){
