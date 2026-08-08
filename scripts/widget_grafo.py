@@ -357,6 +357,11 @@ class Bridge:
 
 WIDGET_JS_EXTRA = """
 <script>
+    // DEBUG LOG
+    if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
+      window.pywebview.api.debug_log("WIDGET_JS_EXTRA: START");
+    }
+
   (function(){
     var cores = {
       fundo: '#1e1e2e', borda: '#45475a', destaque: '#cba6f7',
@@ -644,7 +649,11 @@ WIDGET_JS_EXTRA = """
     painel.appendChild(tamGroup);
     layoutGroup.appendChild(btnReset);
     painel.appendChild(layoutGroup);
-    document.body.appendChild(painel);
+    
+    if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
+      window.pywebview.api.debug_log("WIDGET_JS_EXTRA: appending painel");
+    }
+document.body.appendChild(painel);
 
     // ---- Botao hide panel (olho) ----
     var painelToggle = mkEl('div');
