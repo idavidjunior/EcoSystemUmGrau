@@ -177,6 +177,7 @@
     187,
     188,
     189,
+    190,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -844,6 +845,7 @@
     "decisao",
     "decisao",
     "decisao",
+    "padrao",
     "padrao",
     "nota",
     "nota",
@@ -1513,6 +1515,7 @@
     "criado setup-auto.ps1 — instalador automatico e nao-interativo (sem prompts para api keys). em qualquer pc novo: powershell -executionpolicy bypass -file setup-auto.ps1. fluxo: verifica requisitos -> git clone/pull -> npm i opencode-ai -> deploy config (renderiza userprofile) -> sync_rules -> instala python deps (dspy-ai, edge-tts, etc) -> configura profile powershell -> cria scheduled task -> valida preflight. resolvido problema de escaping powershell usando add-content linha por linha. mcp server mcp-prompt-optimization (6 tools) valido. preflight: todos os testes passaram. 12 regras na constituicao, 13 mcp servers. valida task scheduled cria profile configura decisao",
     "@sync agora sincroniza local pc <-> github: bootloader -> sync_rules audit -> deploy config -> preflight -> git pull/push -> memory stats -> checkpoint. commit + push realizado (6 files). constituicao com 13 clausulas pétreas. todos testes preflight passaram. setup-auto.ps1 atualizado com suporte a @sync. checkpoint stats memory pull git config decisao",
     "sanitized all hardcoded user paths (c:\\users\\david jr) in tracked json files. added runtime/ and conversa_unica.json to .gitignore as build artifacts. created llm selection wizard (scripts/llm-wizard.py) with interactive model/provider detection and integrated into setup-auto.ps1 step 9/10. added {{llm_model}} template var to config/opencode.jsonc and scripts/opencode-serve.jsonc. all 86 tracked jsons reduced to 70, with 0 remaining hardcoded paths. user auto paths setup sanitized config padrao",
+    "json file categorization e sanitizacao concluida. 86 tracked jsons -> 70 (removed 16 runtime artifacts). zero hardcoded user paths restantes. llm selection wizard criado e integrado ao setup-auto.ps1. concluida sanitizacao categorization auto concluido setup padrao",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -4450,8 +4453,8 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 43343,
-  "count": 666,
-  "count_mem": 177,
+  "vocab_size": 43369,
+  "count": 667,
+  "count_mem": 178,
   "count_notas": 489
 }

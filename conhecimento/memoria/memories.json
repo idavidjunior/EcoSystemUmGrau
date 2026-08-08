@@ -3188,5 +3188,25 @@
     "access_count": 0,
     "created_at": "2026-08-08T13:45:41.725146",
     "last_accessed": "2026-08-08T13:45:41.725146"
+  },
+  {
+    "id": 190,
+    "kind": "padrao",
+    "task": "JSON package + LLM wizard concluido",
+    "summary": "JSON file categorization e sanitizacao concluida. 86 tracked JSONs -> 70 (removed 16 runtime artifacts). Zero hardcoded user paths restantes. LLM Selection Wizard criado e integrado ao setup-auto.ps1.",
+    "project": "",
+    "tags": [
+      "concluida",
+      "sanitizacao",
+      "categorization",
+      "auto",
+      "concluido",
+      "setup"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T13:50:32.098634",
+    "last_accessed": "2026-08-08T13:50:32.098634"
   }
 ]
