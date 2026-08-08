@@ -3148,5 +3148,25 @@
     "access_count": 0,
     "created_at": "2026-08-08T13:01:28.226380",
     "last_accessed": "2026-08-08T13:01:28.226380"
+  },
+  {
+    "id": 188,
+    "kind": "decisao",
+    "task": "@sync operacional - sincronizacao Local PC <-> GitHub",
+    "summary": "@sync agora sincroniza Local PC <-> GitHub: bootloader -> sync_rules audit -> deploy config -> preflight -> git pull/push -> memory stats -> checkpoint. Commit + push realizado (6 files). Constituicao com 13 clausulas pétreas. Todos testes preflight passaram. setup-auto.ps1 atualizado com suporte a @sync.",
+    "project": "",
+    "tags": [
+      "checkpoint",
+      "stats",
+      "memory",
+      "pull",
+      "git",
+      "config"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T13:12:51.516367",
+    "last_accessed": "2026-08-08T13:12:51.516367"
   }
 ]

@@ -1,0 +1,5 @@
+O arquivo setup-auto.ps1 que instala todo o ecossistema em um novo PC com um único comando:
+
+Abra o powershell e execute:
+
+powershell -ExecutionPolicy Bypass -File setup-auto.ps1
