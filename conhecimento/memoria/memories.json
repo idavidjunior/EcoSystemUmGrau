@@ -3618,5 +3618,25 @@
     "access_count": 0,
     "created_at": "2026-08-08T20:09:12.763690",
     "last_accessed": "2026-08-08T20:09:12.763690"
+  },
+  {
+    "id": 211,
+    "kind": "decisao",
+    "task": "Idioma padrao pt-BR",
+    "summary": "Clausula petrea adicionada a Constituicao: todas as respostas, comunicacoes e textos gerados por qualquer agente devem ser em portugues do Brasil por padrao. Corrige respostas em ingles que ocorriam por falta de regra explicita de idioma.",
+    "project": "",
+    "tags": [
+      "brasil",
+      "portugues",
+      "devem",
+      "agente",
+      "qualquer",
+      "explicita"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T20:45:08.934337",
+    "last_accessed": "2026-08-08T20:45:08.934337"
   }
 ]
