@@ -227,11 +227,11 @@ class Bridge:
 
     def debug_log(self, msg: str) -> None:
         try:
+            print('[DEBUG_BRIDGE] ' + msg, flush=True)
             with open(BASE / 'docs' / 'widget_log.txt', 'a', encoding='utf-8') as f:
                 f.write(f'{time.time():.0f} | {msg}\n')
-        except Exception:
-            pass
-
+        except Exception as e:
+            print('[DEBUG_BRIDGE ERROR] ' + str(e), flush=True)
     def regenerar(self) -> str:
         ok = _regenerate()
         if ok:
@@ -362,7 +362,23 @@ WIDGET_JS_EXTRA = """
       window.pywebview.api.debug_log("WIDGET_JS_EXTRA: START");
     }
 
+  function initWidgetControls() {
+    if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
+      window.pywebview.api.debug_log("WIDGET_JS_EXTRA: initWidgetControls called");
+    }
+
   (function(){
+    // ERROR HANDLER GLOBAL
+    window.addEventListener('error', function(ev){
+      if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
+        window.pywebview.api.debug_log('JS_ERROR: ' + (ev.message||'') + ' @ ' + (ev.filename||'') + ':' + (ev.lineno||''));
+      }
+    });
+    window.addEventListener('unhandledrejection', function(ev){
+      if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
+        window.pywebview.api.debug_log('UNHANDLED_REJECTION: ' + (ev.reason||(ev.reason&&ev.reason.message)||''));
+      }
+    });
     var cores = {
       fundo: '#1e1e2e', borda: '#45475a', destaque: '#cba6f7',
       texto: '#cdd6f4', texto2: '#a6adc8'
@@ -882,6 +898,7 @@ def _build_view() -> Path | None:
 
 
 def main() -> int:
+    print("[WIDGET] main() started", flush=True)
     import webview
 
     view = _build_view()
