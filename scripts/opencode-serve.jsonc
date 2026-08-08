@@ -12,9 +12,9 @@
     }
   },
   "instructions": [
-    "{{PROJECT_ROOT}}/mcp/**/habilidades/**/SKILL.md",
-    "{{PROJECT_ROOT}}/mcp/**/habilidades/**/skill.md",
-    "{{PROJECT_ROOT}}/mcp/internet/habilidades/clima-api/skill.md",
-    "{{PROJECT_ROOT}}/ler-runtime/CONHECIMENTO.md"
+    "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/**/habilidades/**/SKILL.md",
+    "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/**/habilidades/**/skill.md",
+    "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/internet/habilidades/clima-api/skill.md",
+    "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/ler-runtime/CONHECIMENTO.md"
   ]
 }
