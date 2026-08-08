@@ -365,6 +365,16 @@ WIDGET_JS_EXTRA = """
   function initWidgetControls() {
     if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
       window.pywebview.api.debug_log("WIDGET_JS_EXTRA: initWidgetControls called");
+        console.log(">>> initWidgetControls START");
+        console.log(">>> pywebview:", window.pywebview);
+        console.log(">>> pywebview.api:", window.pywebview && window.pywebview.api);
+        if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
+          window.pywebview.api.debug_log("WIDGET_JS_EXTRA: initWidgetControls BRIDGE TEST");
+        }
+        // Direct bridge test
+        if(window.pywebview && window.pywebview.api){
+          window.pywebview.api.versao().then(function(v){ console.log("versao:", v); });
+        }
     console.log("INIT WIDGET CONTROLS RUNNING");
     if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
       window.pywebview.api.debug_log("WIDGET_JS_EXTRA: initWidgetControls CONSOLE LOG TEST");
