@@ -3293,5 +3293,31 @@
     "access_count": 0,
     "created_at": "2026-08-08T14:42:35.096179",
     "last_accessed": "2026-08-08T14:42:35.096179"
+  },
+  {
+    "id": 195,
+    "kind": "episodio",
+    "task": "Som no botao Adicionar + release v1.4.0 SupermarketCalculator",
+    "summary": "Botao Adicionar agora toca som escolhido em Config (3 sons em res/raw: som_caixa/pop/bip). SoundPool carregado no onCreate e liberado no onDestroy. Preferencia KEY_SOUND em SharedPreferences settings. versionCode 5 / versionName 1.4.0, release assinado e instalado com adb install -r preservando dados.",
+    "project": "SupermarketCalculator",
+    "tags": [
+      "android",
+      "som",
+      "soundpool",
+      "raw",
+      "release",
+      "audio",
+      "res",
+      "sons",
+      "config",
+      "escolhido",
+      "dados",
+      "preservando"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T14:58:34.954189",
+    "last_accessed": "2026-08-08T14:58:34.954189"
   }
 ]

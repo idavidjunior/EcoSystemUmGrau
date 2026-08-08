@@ -58,6 +58,21 @@ O build.ps1 original hardcodava build-tools 36.0.0 e android-36 (inexistentes na
 - APK publicado: `releases/SupermarketCalculator-v1.3.0.apk`.
 - **Guia operacional:** `Projetos/SupermarketCalculator/RELEASE.md` (compilar/versionar/assinar/instalar).
 
+## Release v1.4.0 (2026-08-08) — Som no botão Adicionar
+
+- **versionCode 5 / versionName 1.4.0**.
+- **3 sons pré-carregados** em `res/raw/`: `som_caixa.wav` (caixa registradora, sintetizado), `som_pop.wav`, `som_bip.wav`.
+  `aapt package -S res` empacota `res/raw/` automaticamente — sem mudança no build.ps1.
+- **Reprodução via SoundPool** (`SoundPool.Builder().setMaxStreams(1)`), sons carregados no `onCreate`
+  (`soundPool.load(this, R.raw.som_caixa, 1)`), liberados no `onDestroy` (evita vazamento nativo).
+- **Config:** Config → Som do botão Adicionar (RadioGroup `soundGroup`; RadioButtons `soundCashRegister`/`soundPop`/`soundBeep`).
+  Preferência em SharedPreferences `settings`, chave `KEY_SOUND = "add_sound"` (int: 0=caixa, 1=pop, 2=bip). Ao trocar, toca o som como prévia.
+- **Gatilho:** `playAddSound()` em `addOrUpdateItem` após a validação do preço (só toca quando o item é de fato adicionado).
+- **Decisão de design:** SoundPool (e não MediaPlayer) para efeitos curtos repetidos — pré-carrega em memória e tem baixa latência.
+- Build: `.\build.ps1 -Release -OutputName "SupermarketCalculator-v1.4.0"`; instalado com `adb install -r` (update por cima da v1.3.0, dados preservados — mesma assinatura).
+- APK publicado: `releases/SupermarketCalculator-v1.4.0.apk`.
+- **Nota de teste:** depurar o app instalado (release) com APK debug falha com `INSTALL_FAILED_UPDATE_INCOMPATIBLE` (assinaturas diferentes). Sempre gerar release para testes de funcionalidade sobre a versão instalada.
+
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]
