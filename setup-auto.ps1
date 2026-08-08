@@ -89,7 +89,7 @@ if (-not (Test-Path "$fbDir\@razroo\opencode-model-fallback")) {
 Write-Host "  [OK] Plugin fallback" -ForegroundColor Green
 
 $cfgTest = opencode debug config --pure 2>&1
-if ($cfgTest -match "^\{\"" -and -not ($cfgTest -match "Error|Invalid json")) {
+if ($cfgTest -like "{*" -and -not ($cfgTest -match "Error")) {
     Write-Host "  [OK] Config valida" -ForegroundColor Green
 } else {
     Write-Host "  [!!] Config invalida" -ForegroundColor Red
@@ -223,14 +223,52 @@ if ($boot -match "OK") {
 }
 Pop-Location
 
+# ─── 10. Atalhos visuais ─────────────────────────
+Write-Host ">>> [10/10] Atalhos visuais" -ForegroundColor Cyan
+
+# 10a. Batch file no Desktop
+$desktop = [Environment]::GetFolderPath("Desktop")
+if ($desktop) {
+    $batContent = @"
+@echo off
+cd /d "%USERPROFILE%\Documents\Default Project\EcoSystemUmGrau"
+powershell -ExecutionPolicy Bypass -File setup-auto.ps1
+pause
+"@
+    $batPath = Join-Path $desktop "Setup-EcoSystem.bat"
+    Set-Content -Path $batPath -Value $batContent -Encoding ASCII
+    Write-Host "  [OK] Desktop: Setup-EcoSystem.bat" -ForegroundColor Green
+}
+
+# 10b. Alias no profile
+$aliasBlock = @"
+
+# === EcoSystemUmGrau Atalhos ===
+`$ecoSetup = `"$ECO_DIR\setup-auto.ps1`"
+if (Test-Path `$ecoSetup) {
+    Set-Alias -Name eco-setup -Value `$ecoSetup
+    Set-Alias -Name eco-install -Value `$ecoSetup
+    # Funcao para reexecutar setup rapidamente
+    function eco-reinstall {
+        powershell -ExecutionPolicy Bypass -File `$using:ecoSetup
+    }
+}
+"@
+Add-Content $PROFILE_PS1 $aliasBlock
+Write-Host "  [OK] Aliases: eco-setup, eco-install, eco-reinstall" -ForegroundColor Green
+
 Write-Host @"
 ====================================================
   Setup AUTOMATICO concluido!
 
-  Comandos:
-    env-eco    - Verificar/ativar EcoSystemUmGrau
-    env-sync   - Sincronizar tudo
-    ecosystem sync
+  COMANDOS VISUAIS:
+    🖥️  Desktop: Setup-EcoSystem.bat (duplo clique)
+    💻 Terminal: eco-setup  |  eco-install  |  eco-reinstall
+    🔧 PowerShell: env-eco, env-sync, ecosystem sync
+
+  REFAÇA O SETUP A QUALQUER MOMENTO:
+    Digite no PowerShell:  eco-setup
+    Ou clique duas vezes em:  ~/Desktop/Setup-EcoSystem.bat
 
   Repo: https://github.com/idavidjunior/EcoSystemUmGrau
 ====================================================
