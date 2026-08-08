@@ -365,6 +365,10 @@ WIDGET_JS_EXTRA = """
   function initWidgetControls() {
     if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
       window.pywebview.api.debug_log("WIDGET_JS_EXTRA: initWidgetControls called");
+    console.log("INIT WIDGET CONTROLS RUNNING");
+    if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
+      window.pywebview.api.debug_log("WIDGET_JS_EXTRA: initWidgetControls CONSOLE LOG TEST");
+    }
     }
 
   (function(){
