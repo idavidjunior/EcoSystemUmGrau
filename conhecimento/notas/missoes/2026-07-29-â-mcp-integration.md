@@ -1,14 +1,14 @@
 ---
 tags: [2026, ecosystemumgrau, geral, integration, mcp, missao, opencode, status]
-aliases: [﻿# 2026-07-29 â€” MCP Integration — ]
+aliases: [# 2026-07-29 â€” MCP Integration — ]
 date: 2026-08-04
 ---
 
-# ﻿# 2026-07-29 â€” MCP Integration — 
+# # 2026-07-29 â€” MCP Integration — 
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# 2026-07-29 â€” MCP Integration — 
+**Objetivo:** # 2026-07-29 â€” MCP Integration — 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

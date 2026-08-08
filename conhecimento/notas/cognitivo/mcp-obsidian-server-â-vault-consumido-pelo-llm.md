@@ -8,7 +8,7 @@ date: 2026-08-08
 
 **Dominio:** general
 
-﻿---
+---
 tipo: decisao
 tags: [obsidian, mcp, infraestrutura, config, clausula-petrea, vault]
 data: 2026-08-02

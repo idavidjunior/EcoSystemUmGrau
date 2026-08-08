@@ -3378,5 +3378,25 @@
     "access_count": 0,
     "created_at": "2026-08-08T15:36:37.451899",
     "last_accessed": "2026-08-08T15:36:37.451899"
+  },
+  {
+    "id": 199,
+    "kind": "erro",
+    "task": "Loop infinito de push no vigilante - emails GitHub por minuto",
+    "summary": "Vigilante escrevia memory_engine log de git-sync dentro do repo, re-disparando o FileSystemWatcher (auto-descoberta pegou o proprio EcoSystemUmGrau como projeto). Fix: remover log de git-sync + excluir ecoDir da auto-descoberta. Loop quebrado, sem pushes espurios.",
+    "project": "",
+    "tags": [
+      "projeto",
+      "ecosystemumgrau",
+      "proprio",
+      "pegou",
+      "filesystemwatcher",
+      "disparando"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T16:37:26.714165",
+    "last_accessed": "2026-08-08T16:37:26.714165"
   }
 ]

@@ -1,14 +1,14 @@
 ---
 tags: [corretamente, geral, jarvis, missao, opencode, status, tts]
-aliases: [﻿# Aprendizado â€” 2026-07-31 â€” Horas faladas corretamente]
+aliases: [# Aprendizado â€” 2026-07-31 â€” Horas faladas corretamente ]
 date: 2026-08-04
 ---
 
-# ﻿# Aprendizado â€” 2026-07-31 â€” Horas faladas corretamente no TTS do Jarvis — 
+# # Aprendizado â€” 2026-07-31 â€” Horas faladas corretamente no TTS do Jarvis — 
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# Aprendizado â€” 2026-07-31 â€” Horas faladas corretamente no TTS do Jarvis — 
+**Objetivo:** # Aprendizado â€” 2026-07-31 â€” Horas faladas corretamente no TTS do Jarvis — 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

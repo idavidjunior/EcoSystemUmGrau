@@ -1,14 +1,14 @@
 ---
 tags: [dia, geral, missao, opencode, prã, status, tico]
-aliases: [﻿# GramÃ¡tica do PortuguÃªs Brasileiro â€” Guia prÃ¡tico do ]
+aliases: [# GramÃ¡tica do PortuguÃªs Brasileiro â€” Guia prÃ¡tico do d]
 date: 2026-08-04
 ---
 
-# ﻿# GramÃ¡tica do PortuguÃªs Brasileiro â€” Guia prÃ¡tico do dia a dia — 
+# # GramÃ¡tica do PortuguÃªs Brasileiro â€” Guia prÃ¡tico do dia a dia — 
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# GramÃ¡tica do PortuguÃªs Brasileiro â€” Guia prÃ¡tico do dia a dia — 
+**Objetivo:** # GramÃ¡tica do PortuguÃªs Brasileiro â€” Guia prÃ¡tico do dia a dia — 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

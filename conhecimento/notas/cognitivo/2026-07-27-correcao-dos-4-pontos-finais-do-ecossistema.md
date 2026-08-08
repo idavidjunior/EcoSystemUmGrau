@@ -1,14 +1,14 @@
 ---
 tags: [agentes, cognitivo, general, graph, python, tem]
-aliases: [﻿# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema]
+aliases: [# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema]
 date: 2026-08-08
 ---
 
-# ﻿# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema
+# # 2026-07-27 - Correcao dos 4 pontos finais do ecossistema
 
 **Dominio:** general
 
-﻿# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema
+# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema
 
 ## Problemas resolvidos
 1. **Paths fixos**: vigilante.ps1, ecosystem.ps1, SKILL.md agora usam env:USERPROFILE
@@ -17,7 +17,7 @@ date: 2026-08-08
 4. **Vigilante aprende sozinho**: timer diario executa ecosystem learn automaticamente
 5.
 
-﻿# 2026-08-02 - Regras do ecossistema: garantia de obediÃªncia pelo LLM
+# 2026-08-02 - Regras do ecossistema: garantia de obediÃªncia pelo LLM
 
 ## Contexto
 O usuÃ¡rio perguntou se as regras estavam no local correto. InvestigaÃ§Ã£o honesta

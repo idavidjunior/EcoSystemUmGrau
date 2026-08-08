@@ -1,14 +1,14 @@
 ---
 tags: [algumas, decisao, marcaã, opencode, versã, vozes]
-aliases: [﻿# 2026-07-31 - Mecanismo de fonemas SSML reativado com fall]
+aliases: [# 2026-07-31 - Mecanismo de fonemas SSML reativado com fallb]
 date: 2026-08-08
 ---
 
-# ﻿# 2026-07-31 - Mecanismo de fonemas SSML reativado com fallback seguro
+# # 2026-07-31 - Mecanismo de fonemas SSML reativado com fallback seguro
 
 **Fonte:** opencode
 
-﻿# 2026-07-31 - Mecanismo de fonemas SSML reativado com fallback seguro
+# 2026-07-31 - Mecanismo de fonemas SSML reativado com fallback seguro
 
 **Categoria:** decisao
 **Fonte:** sessao_jarvis_vox

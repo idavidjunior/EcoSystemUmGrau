@@ -1,14 +1,14 @@
 ---
 tags: [arquitetura, geral, missao, opencode, rebro, sincronizada, status]
-aliases: [﻿# Jarvis do celular e do PC: um sÃ³ cÃ©rebro (arquitetura s]
+aliases: [# Jarvis do celular e do PC: um sÃ³ cÃ©rebro (arquitetura si]
 date: 2026-08-04
 ---
 
-# ﻿# Jarvis do celular e do PC: um sÃ³ cÃ©rebro (arquitetura sincronizada) — 
+# # Jarvis do celular e do PC: um sÃ³ cÃ©rebro (arquitetura sincronizada) — 
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# Jarvis do celular e do PC: um sÃ³ cÃ©rebro (arquitetura sincronizada) — 
+**Objetivo:** # Jarvis do celular e do PC: um sÃ³ cÃ©rebro (arquitetura sincronizada) — 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

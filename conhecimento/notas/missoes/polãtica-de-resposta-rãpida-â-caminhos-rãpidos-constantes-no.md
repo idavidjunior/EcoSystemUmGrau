@@ -1,14 +1,14 @@
 ---
 tags: [constantes, geral, jarvis, missao, opencode, pidos, status]
-aliases: [﻿# PolÃ­tica de Resposta RÃ¡pida â€” caminhos rÃ¡pidos const]
+aliases: [# PolÃ­tica de Resposta RÃ¡pida â€” caminhos rÃ¡pidos consta]
 date: 2026-08-04
 ---
 
-# ﻿# PolÃ­tica de Resposta RÃ¡pida â€” caminhos rÃ¡pidos constantes no Jarvis — 
+# # PolÃ­tica de Resposta RÃ¡pida â€” caminhos rÃ¡pidos constantes no Jarvis — 
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# PolÃ­tica de Resposta RÃ¡pida â€” caminhos rÃ¡pidos constantes no Jarvis — 
+**Objetivo:** # PolÃ­tica de Resposta RÃ¡pida â€” caminhos rÃ¡pidos constantes no Jarvis — 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

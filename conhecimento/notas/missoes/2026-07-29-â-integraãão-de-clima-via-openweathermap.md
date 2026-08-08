@@ -1,14 +1,14 @@
 ---
 tags: [clima, geral, integraã, missao, opencode, openweathermap, palavras, status]
-aliases: [﻿# 2026-07-29 â€” IntegraÃ§Ã£o de clima via OpenWeatherMap —]
+aliases: [# 2026-07-29 â€” IntegraÃ§Ã£o de clima via OpenWeatherMap — ]
 date: 2026-08-04
 ---
 
-# ﻿# 2026-07-29 â€” IntegraÃ§Ã£o de clima via OpenWeatherMap — 
+# # 2026-07-29 â€” IntegraÃ§Ã£o de clima via OpenWeatherMap — 
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# 2026-07-29 â€” IntegraÃ§Ã£o de clima via OpenWeatherMap — 
+**Objetivo:** # 2026-07-29 â€” IntegraÃ§Ã£o de clima via OpenWeatherMap — 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

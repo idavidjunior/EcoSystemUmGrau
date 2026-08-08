@@ -1,14 +1,14 @@
 ---
 tags: [adb, cognitivo, general, independente, trocar, usb]
-aliases: [﻿# Hora na tela vs hora no Ã¡udio (Jarvis)]
+aliases: [# Hora na tela vs hora no Ã¡udio (Jarvis)]
 date: 2026-08-08
 ---
 
-# ﻿# Hora na tela vs hora no Ã¡udio (Jarvis)
+# # Hora na tela vs hora no Ã¡udio (Jarvis)
 
 **Dominio:** general
 
-﻿# Hora na tela vs hora no Ã¡udio (Jarvis)
+# Hora na tela vs hora no Ã¡udio (Jarvis)
 
 - **Data:** 31/07/2026
 - **SessÃ£o:** ImplementaÃ§Ã£o de `normalizar_hora_display()` na bridge
@@ -22,7 +22,7 @@ Jarvis precisava ser corrigida.**
 ## SoluÃ§Ã£o (divisÃ£o de responsabilidades)
 - `melhorar_fala(texto)` â†’ 
 
-﻿# Aprendizado â€” 2026-07-31 â€” Horas faladas corretamente no TTS do Jarvis
+# Aprendizado â€” 2026-07-31 â€” Horas faladas corretamente no TTS do Jarvis
 
 ## Contexto
 - O edge-tts lia `21:44` de forma errada (como razÃ£o/hora digital). O usuÃ¡rio trouxe 3 estratÃ©gias e recomendou a **#1: substituiÃ§Ã£o de texto via cÃ³digo antes do TTS**.
@@ -31,7 +31,7 @@ Jarvis precisava ser corrigida.**
 - Em `melhorar_fala()` (preparaÃ§Ã£o do texto para o Ã¡udio), **antes** da troca de `:` por vÃ­rgula (que comeria o tempo):
   - `(\d{1,2}):00\b` â†’ `\1 horas em ponto` (ex.: "22:00" â†
 
-﻿---
+---
 tipo: decisao
 tags: [tts, edge-tts, ssml, naturalidade, jarvis, pronuncia, clausula-petrea]
 data: 2026-08-02

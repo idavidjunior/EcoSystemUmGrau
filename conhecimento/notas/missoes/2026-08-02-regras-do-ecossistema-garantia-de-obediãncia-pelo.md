@@ -1,14 +1,14 @@
 ---
 tags: [correto, geral, llm, missao, ncia, opencode, pelo, status]
-aliases: [﻿# 2026-08-02 - Regras do ecossistema: garantia de obediÃªnc]
+aliases: [# 2026-08-02 - Regras do ecossistema: garantia de obediÃªnci]
 date: 2026-08-04
 ---
 
-# ﻿# 2026-08-02 - Regras do ecossistema: garantia de obediÃªncia pelo LLM — 
+# # 2026-08-02 - Regras do ecossistema: garantia de obediÃªncia pelo LLM — 
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# 2026-08-02 - Regras do ecossistema: garantia de obediÃªncia pelo LLM — 
+**Objetivo:** # 2026-08-02 - Regras do ecossistema: garantia de obediÃªncia pelo LLM — 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-08T03:22:23.405934",
+  "last_updated": "2026-08-08T16:37:42.316058",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -1499,6 +1499,13 @@
       "fix": "Promoted tempFile to function scope with null-safe cleanup in catch block; VoxAudioPlayer.kt now uses var tempFile: File? = null and deletes in all error paths",
       "category": "resource_leak",
       "extracted_at": "2026-08-06T23:24:06"
+    },
+    {
+      "source": "opencode",
+      "issue": "Loop infinito de push no Vigilante (emails do GitHub a cada minuto)",
+      "root_cause": "Usuário relatou receber emails do GitHub a cada minuto — algo estava subindo constantemente",
+      "fix": "---\ntipo: bug\ntags: [vigilante, github, git-sync, loop-infinito, memory-engine, push, automacao]\ndata: 2026-08-08\ncontexto: Usuário relatou receber emails do GitHub a cada minuto — algo estava subindo constantemente\ndecisao: Remover log de git-sync do loop do vigilante + excluir EcoSystemUmGrau da auto-descoberta de projetos\nimpacto: Sem pushes automáticos a cada 30-60s; vigilante volta a sincronizar só quando há mudança real (cooldown 5min)\n---\n\n# Loop infinito de push no Vigilante (emails do G",
+      "extracted_at": "2026-08-08T16:37:41.906236"
     }
   ],
   "cognitive_patterns": [

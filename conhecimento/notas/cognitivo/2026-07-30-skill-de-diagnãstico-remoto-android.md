@@ -1,14 +1,14 @@
 ---
 tags: [cognitivo, dominio, fuso, general, horã, rio]
-aliases: [﻿# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android]
+aliases: [# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android]
 date: 2026-08-08
 ---
 
-# ﻿# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android
+# # 2026-07-30 - Skill de DiagnÃ³stico Remoto Android
 
 **Dominio:** general
 
-﻿# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android
+# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android
 
 ## O que foi criado
 - `scripts/android_diagnostics.py` â€” Script Python que conecta via ADB ao dispositivo `100.64.71.9:5555` e coleta diagnÃ³stico completo do VoxUmGrau

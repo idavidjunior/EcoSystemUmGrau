@@ -1,14 +1,14 @@
 ---
-tags: [decisao, missao, mod, opencode, razroo, status, uso]
-aliases: [﻿# 2026-07-27: Fallback automÃ¡tico de modelo LLM com Bun + ]
+tags: [decisao, missao, mode, opencode, razroo, status, uso]
+aliases: [# 2026-07-27: Fallback automÃ¡tico de modelo LLM com Bun + @]
 date: 2026-08-04
 ---
 
-# ﻿# 2026-07-27: Fallback automÃ¡tico de modelo LLM com Bun + @razroo/opencode-mod
+# # 2026-07-27: Fallback automÃ¡tico de modelo LLM com Bun + @razroo/opencode-mode
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# 2026-07-27: Fallback automÃ¡tico de modelo LLM com Bun + @razroo/opencode-mod
+**Objetivo:** # 2026-07-27: Fallback automÃ¡tico de modelo LLM com Bun + @razroo/opencode-mode
 ## Conexoes
 
 - [[checkpoints-salvos-antes-de-cada-iteracao-sobrevive-a-crash-]]

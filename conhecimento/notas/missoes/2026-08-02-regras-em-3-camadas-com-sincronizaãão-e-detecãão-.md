@@ -1,14 +1,14 @@
 ---
 tags: [detecã, divergã, geral, missao, ncia, opencode, sincronizaã, status]
-aliases: [﻿# 2026-08-02 - Regras em 3 camadas com sincronizaÃ§Ã£o e de]
+aliases: [# 2026-08-02 - Regras em 3 camadas com sincronizaÃ§Ã£o e det]
 date: 2026-08-04
 ---
 
-# ﻿# 2026-08-02 - Regras em 3 camadas com sincronizaÃ§Ã£o e detecÃ§Ã£o de divergÃª
+# # 2026-08-02 - Regras em 3 camadas com sincronizaÃ§Ã£o e detecÃ§Ã£o de divergÃªn
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# 2026-08-02 - Regras em 3 camadas com sincronizaÃ§Ã£o e detecÃ§Ã£o de divergÃª
+**Objetivo:** # 2026-08-02 - Regras em 3 camadas com sincronizaÃ§Ã£o e detecÃ§Ã£o de divergÃªn
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

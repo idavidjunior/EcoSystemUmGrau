@@ -1,14 +1,14 @@
 ---
-tags: [2026 scan proativo, geral, missao, opencode, proativo, scan, status]
-aliases: [﻿# 2026-08-03 - Scan proativo: BibliaEstudoCompleta — ]
+tags: [2026 scan proativo, geral, learning, missao, opencode, proativo, scan]
+aliases: [# 2026-08-03 - Scan proativo: BibliaEstudoCompleta — ]
 date: 2026-08-03
 ---
 
-# ﻿# 2026-08-03 - Scan proativo: BibliaEstudoCompleta — 
+# # 2026-08-03 - Scan proativo: BibliaEstudoCompleta — 
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# 2026-08-03 - Scan proativo: BibliaEstudoCompleta — 
+**Objetivo:** # 2026-08-03 - Scan proativo: BibliaEstudoCompleta — 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

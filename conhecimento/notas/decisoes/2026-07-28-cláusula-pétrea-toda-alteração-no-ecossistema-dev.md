@@ -57,7 +57,7 @@ Sempre que qualquer alteração for feita em:
 2. Integrar no vigilante
 3. Atualizar system-rules e Maestro
 4. Testar ciclo: alterar config → preflight barra → rollback
- // ﻿# 2026-07-28: ClÃ¡usula PÃ©trea â€” Toda alteraÃ§Ã£o no ecossistema deve ser testada antes de aplicar
+ // # 2026-07-28: ClÃ¡usula PÃ©trea â€” Toda alteraÃ§Ã£o no ecossistema deve ser testada antes de aplicar
 
 **Categoria:** decisao
 **Contexto:** AdiÃ§Ã£o de servidores MCP via npx quebraram a inicializaÃ§Ã£o do OpenCode. Ao reiniciar, os modelos nÃ£o carregavam â†’ sistema inutilizÃ¡vel. O usuÃ¡rio precisou apagar arquivos manualmente para recuperar.

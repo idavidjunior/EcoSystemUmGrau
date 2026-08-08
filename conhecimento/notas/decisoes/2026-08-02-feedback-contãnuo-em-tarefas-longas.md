@@ -1,14 +1,14 @@
 ---
-tags: [curtas, decisao, nico, opencode, relatã, til]
-aliases: [﻿# 2026-08-02 - Feedback contÃ­nuo em tarefas longas]
+tags: [decisao, inã, nico, opencode, relatã, til]
+aliases: [# 2026-08-02 - Feedback contÃ­nuo em tarefas longas]
 date: 2026-08-08
 ---
 
-# ﻿# 2026-08-02 - Feedback contÃ­nuo em tarefas longas
+# # 2026-08-02 - Feedback contÃ­nuo em tarefas longas
 
 **Fonte:** opencode
 
-﻿# 2026-08-02 - Feedback contÃ­nuo em tarefas longas
+# 2026-08-02 - Feedback contÃ­nuo em tarefas longas
 
 **Categoria:** decisao
 **Fonte:** sessao_jarvis_vox

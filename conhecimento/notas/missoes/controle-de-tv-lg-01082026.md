@@ -1,14 +1,14 @@
 ---
 tags: [2026 status, controle 2026 status, geral, learning, missao, opencode, p20, status]
-aliases: [﻿# Controle de TV LG (01/08/2026) — ]
+aliases: [# Controle de TV LG (01/08/2026) — ]
 date: 2026-08-04
 ---
 
-# ﻿# Controle de TV LG (01/08/2026) — 
+# # Controle de TV LG (01/08/2026) — 
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# Controle de TV LG (01/08/2026) — 
+**Objetivo:** # Controle de TV LG (01/08/2026) — 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

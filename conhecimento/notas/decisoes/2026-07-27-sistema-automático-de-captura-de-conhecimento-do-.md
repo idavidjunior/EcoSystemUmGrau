@@ -42,7 +42,7 @@ Antes desta implementação, cada interação com o ecossistema gerava conhecime
 - `~/.config/opencode/agents/00-maestro.md` (fluxo obrigatório atualizado)
 - `EcoSystemUmGrau/conhecimento/INDEX.md`
 - `~/.ler/integrations/opencode/knowledge_bridge.py`
- // ﻿# 2026-07-27: Sistema automÃ¡tico de captura de conhecimento do ecossistema
+ // # 2026-07-27: Sistema automÃ¡tico de captura de conhecimento do ecossistema
 
 **Categoria:** decisao
 **Contexto:** ImplementaÃ§Ã£o das trÃªs camadas de aprendizado contÃ­nuo para o ecossistema OpenCode + LER

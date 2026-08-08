@@ -1,14 +1,14 @@
 ---
 tags: [app, balã, corrigido, geral, missao, opencode, status]
-aliases: [﻿# PontuaÃ§Ã£o da transcriÃ§Ã£o voltando ao balÃ£o do app (c]
+aliases: [# PontuaÃ§Ã£o da transcriÃ§Ã£o voltando ao balÃ£o do app (co]
 date: 2026-08-04
 ---
 
-# ﻿# PontuaÃ§Ã£o da transcriÃ§Ã£o voltando ao balÃ£o do app (corrigido) — 
+# # PontuaÃ§Ã£o da transcriÃ§Ã£o voltando ao balÃ£o do app (corrigido) — 
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# PontuaÃ§Ã£o da transcriÃ§Ã£o voltando ao balÃ£o do app (corrigido) — 
+**Objetivo:** # PontuaÃ§Ã£o da transcriÃ§Ã£o voltando ao balÃ£o do app (corrigido) — 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

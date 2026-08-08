@@ -31,7 +31,7 @@ assistente que opera no computador.
 
 ## Como a sincronização acontece (
 
-﻿# Habilidade: NavegaÃ§Ã£o Perita â€” Internet, PC e Celular
+# Habilidade: NavegaÃ§Ã£o Perita â€” Internet, PC e Celular
 
 - **Data:** 01/08/2026
 - **SessÃ£o:** CriaÃ§Ã£o da habilidade de navegaÃ§Ã£o perita com pesquisa de ferramentas no GitHub
@@ -41,7 +41,7 @@ Criada a habilidade `navegacao-perita` no catÃ¡logo do ecossistema (Habilidade
 registrada no `manifesto_geral.json`, cobrindo as trÃªs frentes: navegador (internet), programas do PC (Windows)
 e aplicativos de celular (Android). Baseada em pesquisa do estado da arte d
 
-﻿# Jarvis do celular e do PC: um sÃ³ cÃ©rebro (arquitetura sincronizada)
+# Jarvis do celular e do PC: um sÃ³ cÃ©rebro (arquitetura sincronizada)
 
 - **Data:** 01/08/2026
 - **SessÃ£o:** VerificaÃ§Ã£o da sincronizaÃ§Ã£o entre o app Android e o opencode no PC

@@ -1,14 +1,14 @@
 ---
 tags: [final, flutter status, geral, missao, opencode, proativo, scan, status]
-aliases: [﻿# 2026-08-03 - Scan proativo: OrquestradorAPK-FLUTTER — ]
+aliases: [# 2026-08-03 - Scan proativo: OrquestradorAPK-FLUTTER — ]
 date: 2026-08-03
 ---
 
-# ﻿# 2026-08-03 - Scan proativo: OrquestradorAPK-FLUTTER — 
+# # 2026-08-03 - Scan proativo: OrquestradorAPK-FLUTTER — 
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# 2026-08-03 - Scan proativo: OrquestradorAPK-FLUTTER — 
+**Objetivo:** # 2026-08-03 - Scan proativo: OrquestradorAPK-FLUTTER — 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

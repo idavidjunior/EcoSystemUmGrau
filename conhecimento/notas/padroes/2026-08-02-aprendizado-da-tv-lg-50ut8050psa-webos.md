@@ -1,14 +1,14 @@
 ---
 tags: [nativo, opencode, padrao, ssap, voz, wss]
-aliases: [﻿# 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS)]
+aliases: [# 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS)]
 date: 2026-08-08
 ---
 
-# ﻿# 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS)
+# # 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS)
 
 **Fonte:** opencode
 
-﻿# 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS)
+# 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS)
 
 **Categoria:** padrao
 **Fonte:** sessao_aprendizado_tv

@@ -1,5 +1,5 @@
 ---
-tags: [agente, cognitivo, deve, dominio, general, rio]
+tags: [agente, cognitivo, comunicaã, deve, dominio, general]
 aliases: [Gramática do Português Brasileiro — Guia prático do dia a di]
 date: 2026-08-08
 ---
@@ -21,7 +21,7 @@ uso prático, sem jargão acadêmico desnecessário.
 ## Ortografia e acentuação
 - Acentuação segue o novo acordo ortográfico (em vigor no Brasil d
 
-﻿# GramÃ¡tica do PortuguÃªs Brasileiro â€” Guia prÃ¡tico do dia a dia
+# GramÃ¡tica do PortuguÃªs Brasileiro â€” Guia prÃ¡tico do dia a dia
 
 - **Data:** 01/08/2026
 - **SessÃ£o:** Aprendizado permanente â€” gramÃ¡tica PT-BR para uso contÃ­nuo em comunicaÃ§Ãµes

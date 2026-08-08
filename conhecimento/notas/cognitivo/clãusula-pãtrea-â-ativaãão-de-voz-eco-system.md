@@ -8,7 +8,7 @@ date: 2026-08-08
 
 **Dominio:** general
 
-﻿---
+---
 tipo: decisao
 tags: [voz, eco, clausula-petrea, bridge, config, regras]
 data: 2026-08-02

@@ -1,5 +1,5 @@
 ---
-tags: [cognitivo, dominio, general, jarvã, jarvís, sílaba]
+tags: [assistente, cognitivo, general, jarvís, sílaba, última]
 aliases: [Pronúncia "Járvis" (escrita sem acento, fala com acento)]
 date: 2026-08-08
 ---
@@ -22,7 +22,7 @@ date: 2026-08-08
 - Registrado em `scripts/pronuncias.json`:
   `"jarvis": 
 
-﻿# PronÃºncia "JÃ¡rvis" (escrita sem acento, fala com acento)
+# PronÃºncia "JÃ¡rvis" (escrita sem acento, fala com acento)
 
 - **Data:** 01/08/2026
 - **SessÃ£o:** Pedido direto do usuÃ¡rio sobre pronÃºncia do nome do assistente
@@ -35,7 +35,7 @@ date: 2026-08-08
 ## ImplementaÃ§Ã£o
 - Registrado em `scripts/pronuncias
 
-﻿# 2026-08-02 - Regras em 3 camadas com sincronizaÃ§Ã£o e detecÃ§Ã£o de divergÃªncia
+# 2026-08-02 - Regras em 3 camadas com sincronizaÃ§Ã£o e detecÃ§Ã£o de divergÃªncia
 
 ## Contexto
 UsuÃ¡rio pediu: (1) garantir que ao atualizar/injetar regra, as 3 camadas sincronizem;

@@ -1,14 +1,14 @@
 ---
 tags: [celular, geral, internet, missao, opencode, perita, status, tecnicas]
-aliases: [﻿# Habilidade: NavegaÃ§Ã£o Perita â€” Internet, PC e Celular]
+aliases: [# Habilidade: NavegaÃ§Ã£o Perita â€” Internet, PC e Celular ]
 date: 2026-08-04
 ---
 
-# ﻿# Habilidade: NavegaÃ§Ã£o Perita â€” Internet, PC e Celular — 
+# # Habilidade: NavegaÃ§Ã£o Perita â€” Internet, PC e Celular — 
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# Habilidade: NavegaÃ§Ã£o Perita â€” Internet, PC e Celular — 
+**Objetivo:** # Habilidade: NavegaÃ§Ã£o Perita â€” Internet, PC e Celular — 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

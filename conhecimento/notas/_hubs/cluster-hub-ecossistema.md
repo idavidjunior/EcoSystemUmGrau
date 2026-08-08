@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**119 notas** do cluster ecossistema.
+**120 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -93,6 +93,7 @@
 - [[ilhas-no-grafo-notas-com-grau-0-e-como-conecta-las]]
 - [[jarvis-do-celular-e-do-pc-um-sã-cãrebro-arquitetura-sincroni]]
 - [[jarvis-do-celular-e-do-pc-um-só-cérebro-arquitetura-sincroni]]
+- [[loop-infinito-de-push-no-vigilante-emails-do-github-a-cada-m]]
 - [[mcp-obsidian-server-â-vault-consumido-pelo-llm]]
 - [[mcp-server-failed-to-get-tools-no-opencode]]
 - [[mcp-server-handshake-obrigatorio]]

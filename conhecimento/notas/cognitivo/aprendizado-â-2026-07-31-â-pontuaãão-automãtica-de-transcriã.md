@@ -1,14 +1,14 @@
 ---
-tags: [chega, cognitivo, dia, fala, general, melodia]
-aliases: [﻿# Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de]
+tags: [chega, cognitivo, conhecimento, fala, general, melodia]
+aliases: [# Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de ]
 date: 2026-08-08
 ---
 
-# ﻿# Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis)
+# # Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis)
 
 **Dominio:** general
 
-﻿# Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis)
+# Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis)
 
 ## Contexto
 - O Android STT (SpeechRecognizer) devolve texto corrido, sem pontuaÃ§Ã£o e **sem prosÃ³dia** (a melodia da fala nÃ£o chega Ã  bridge). O usuÃ¡rio pediu: `?` em perguntas, pontuaÃ§Ã£o correta e **primeira letra maiÃºscula** sempre.
@@ -17,7 +17,7 @@ date: 2026-08-08
 ## O que foi feito (`scripts/jarvis_bridge.py`)
 1. **Clas
 
-﻿# Aprendizado â€” 2026-07-31 â€” Reorg: catÃ¡logo Ãºnico Habilidades/ + caminhos novos
+# Aprendizado â€” 2026-07-31 â€” Reorg: catÃ¡logo Ãºnico Habilidades/ + caminhos novos
 
 ## Contexto
 - Skills estavam espalhadas em `skills/` e `scripts/` (clima, busca), e o array `plugin` do opencode.jsonc apontava para `plugins/ponytail` (inexistente â€” ClÃ¡usula PÃ©trea). DecisÃ£o `2026-07-31-habilidades-catalogo-unico-jarvis.md`: Habilidades = aÃ§Ãµes executÃ¡veis; Agentes = tomadores de decisÃ£o (nÃ£o mexer).
@@ -26,7 +26,7 @@ date: 2026-08-08
 1. **`Habilidades/`** â€” catÃ¡logo Ãºnico, 38 habilidades:
 
 
-﻿# PolÃ­tica de Resposta RÃ¡pida â€” caminhos rÃ¡pidos constantes no Jarvis
+# PolÃ­tica de Resposta RÃ¡pida â€” caminhos rÃ¡pidos constantes no Jarvis
 
 - **Data:** 01/08/2026
 - **SessÃ£o:** Ensino permanente de caminhos de resposta rÃ¡pida + otimizaÃ§Ã£o de latÃªncia
@@ -41,7 +41,7 @@ constante."
 ### 1. PolÃ­tica permanente no prompt (JARVIS_SYSTEM.md)
 Nova seÃ§Ã£o logo apÃ³s "Identidade
 
-﻿# PontuaÃ§Ã£o da transcriÃ§Ã£o voltando ao balÃ£o do app (corrigido)
+# PontuaÃ§Ã£o da transcriÃ§Ã£o voltando ao balÃ£o do app (corrigido)
 
 - **Data:** 01/08/2026
 - **SessÃ£o:** Bug â€” "Que horas sÃ£o" transcrito sem o sinal "?"

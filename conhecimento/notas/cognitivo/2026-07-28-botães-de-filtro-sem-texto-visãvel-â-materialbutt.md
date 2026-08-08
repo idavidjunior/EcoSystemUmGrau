@@ -1,14 +1,14 @@
 ---
-tags: [cerebro, cognitivo, general, labels, vivo, zoom]
-aliases: [﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” Mate]
+tags: [cognitivo, fisica, general, labels, vivo, zoom]
+aliases: [# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” Mater]
 date: 2026-08-08
 ---
 
-# ﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView
+# # 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView
 
 **Dominio:** general
 
-﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView
+# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView
 
 ## Contexto
 App Mp3Player Android. 5 botÃµes de filtro no topo da aba "MÃºsicas": Todas, Favoritas, A-Z, Lista, Sel. O texto nÃ£o aparecia â€” os botÃµes ficavam verdes uniformes sem nenhum texto visÃ­vel.

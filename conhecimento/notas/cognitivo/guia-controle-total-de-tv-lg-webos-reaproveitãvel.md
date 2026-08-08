@@ -1,14 +1,14 @@
 ---
 tags: [2024, cognitivo, general, manufacture, serialnumber, similares]
-aliases: [﻿# Guia: Controle Total de TV LG webOS (reaproveitÃ¡vel)]
+aliases: [# Guia: Controle Total de TV LG webOS (reaproveitÃ¡vel)]
 date: 2026-08-08
 ---
 
-# ﻿# Guia: Controle Total de TV LG webOS (reaproveitÃ¡vel)
+# # Guia: Controle Total de TV LG webOS (reaproveitÃ¡vel)
 
 **Dominio:** general
 
-﻿# Guia: Controle Total de TV LG webOS (reaproveitÃ¡vel)
+# Guia: Controle Total de TV LG webOS (reaproveitÃ¡vel)
 **Criado:** 01/08/2026 | Aplica-se a qualquer TV LG webOS (UT80 e similares, 2024+)
 
 > **Know-how de ouro:** este passo-a-passo reaplica-se a qualquer TV LG webOS. SÃ³ muda o IP e o MAC.

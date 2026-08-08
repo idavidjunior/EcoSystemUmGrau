@@ -1,5 +1,5 @@
 ---
-tags: [decisao, ecosistema-opencode, errors, fonte, timeouts, ttft]
+tags: [decisao, ecosistema-opencode, errors, timeouts, ttft, uso]
 aliases: [2026-07-27: Fallback automático de modelo LLM com Bun + @raz]
 date: 2026-08-08
 ---
@@ -39,7 +39,7 @@ O OpenCode 1.18.7 não suporta fallback nativo (PR #26292 ainda em andamento). A
 - `~/.config/opencode/opencode.jsonc` (plugin array)
 - `~/.config/opencode/opencode-model-fallback.jsonc`
 - `~/.config/opencode/node_modules/@razroo/opencode-model-fallback/`
- // ﻿# 2026-07-27: Fallback automÃ¡tico de modelo LLM com Bun + @razroo/opencode-model-fallback
+ // # 2026-07-27: Fallback automÃ¡tico de modelo LLM com Bun + @razroo/opencode-model-fallback
 
 **Categoria:** decisao
 **Contexto:** Necessidade de fallback automÃ¡tico quando o modelo primÃ¡rio do OpenCode bate limite de uso

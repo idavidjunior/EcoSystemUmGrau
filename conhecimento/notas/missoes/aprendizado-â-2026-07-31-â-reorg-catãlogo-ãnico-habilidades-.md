@@ -1,14 +1,14 @@
 ---
-tags: [caminho, geral, habilidades, missao, nico, opencode, status]
-aliases: [﻿# Aprendizado â€” 2026-07-31 â€” Reorg: catÃ¡logo Ãºnico Ha]
+tags: [caminhos, geral, habilidades, missao, nico, opencode, status]
+aliases: [# Aprendizado â€” 2026-07-31 â€” Reorg: catÃ¡logo Ãºnico Hab]
 date: 2026-08-04
 ---
 
-# ﻿# Aprendizado â€” 2026-07-31 â€” Reorg: catÃ¡logo Ãºnico Habilidades/ + caminho
+# # Aprendizado â€” 2026-07-31 â€” Reorg: catÃ¡logo Ãºnico Habilidades/ + caminhos
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# Aprendizado â€” 2026-07-31 â€” Reorg: catÃ¡logo Ãºnico Habilidades/ + caminho
+**Objetivo:** # Aprendizado â€” 2026-07-31 â€” Reorg: catÃ¡logo Ãºnico Habilidades/ + caminhos
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

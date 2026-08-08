@@ -1,14 +1,14 @@
 ---
 tags: [cognitivo, fazendo, general, narrar, pede, ticos]
-aliases: [﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub]
+aliases: [# 2026-07-27 - Setup Plug & Play e organizacao GitHub]
 date: 2026-08-08
 ---
 
-# ﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub
+# # 2026-07-27 - Setup Plug & Play e organizacao GitHub
 
 **Dominio:** general
 
-﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub
+# 2026-07-27 - Setup Plug & Play e organizacao GitHub
 
 ## O que foi feito
 - Repositorios do GitHub mapeados: 11 existentes, nenhum LER separado
@@ -18,7 +18,7 @@ date: 2026-08-08
 - config/opencode-model-fallback.jsonc: config do plugin fallback
 - Vigilante atualizado:
 
-﻿# 2026-07-27 - Unificacao completa do ecossistema
+# 2026-07-27 - Unificacao completa do ecossistema
 
 ## Problemas resolvidos
 1. **LER fora do repo**: movido ~/.ler/ → ler-runtime/ com junction. Tudo versionado.
@@ -30,7 +30,7 @@ date: 2026-08-08
 ## Decisoes
 - LER runtime 
 
-﻿# 2026-07-27 - Scan proativo: Biblia
+# 2026-07-27 - Scan proativo: Biblia
 ## Marcadores encontrados
 - parse_apocrypha.py: 1 marcadores
 - parse_apocrypha2.py: 1 marcadores
@@ -39,13 +39,13 @@ date: 2026-08-08
 
 
 
-﻿# 2026-07-27 - Scan proativo: CellCleaner
+# 2026-07-27 - Scan proativo: CellCleaner
 ## Marcadores encontrados
 - MainActivity.java: 1 marcadores
 
 
 
-﻿# 2026-07-27 - Scan proativo: Mp3Player
+# 2026-07-27 - Scan proativo: Mp3Player
 ## Marcadores encontrados
 - BiquadFilter.kt: 1 marcadores
 - EqualizerAudioProcessor.kt: 2 marcadores
@@ -56,13 +56,13 @@ date: 2026-08-08
 
 
 
-﻿# 2026-07-27 - Scan proativo: SupermarketCalculator
+# 2026-07-27 - Scan proativo: SupermarketCalculator
 ## Marcadores encontrados
 - MainActivity.java: 2 marcadores
 
 
 
-﻿# 2026-07-28 - Scan proativo: Biblia
+# 2026-07-28 - Scan proativo: Biblia
 ## Marcadores encontrados
 - parse_apocrypha.py: 1 marcadores
 - parse_apocrypha2.py: 1 marcadores
@@ -71,13 +71,13 @@ date: 2026-08-08
 
 
 
-﻿# 2026-07-28 - Scan proativo: CellCleaner
+# 2026-07-28 - Scan proativo: CellCleaner
 ## Marcadores encontrados
 - MainActivity.java: 1 marcadores
 
 
 
-﻿# 2026-07-28 - Scan proativo: Mp3Player
+# 2026-07-28 - Scan proativo: Mp3Player
 ## Marcadores encontrados
 - BiquadFilter.kt: 1 marcadores
 - EqualizerAudioProcessor.kt: 2 marcadores
@@ -88,13 +88,13 @@ date: 2026-08-08
 
 
 
-﻿# 2026-07-28 - Scan proativo: SupermarketCalculator
+# 2026-07-28 - Scan proativo: SupermarketCalculator
 ## Marcadores encontrados
 - MainActivity.java: 4 marcadores
 
 
 
-﻿# 2026-07-29 - Scan proativo: Biblia
+# 2026-07-29 - Scan proativo: Biblia
 ## Marcadores encontrados
 - parse_apocrypha.py: 1 marcadores
 - parse_apocrypha2.py: 1 marcadores
@@ -103,13 +103,13 @@ date: 2026-08-08
 
 
 
-﻿# 2026-07-29 - Scan proativo: CellCleaner
+# 2026-07-29 - Scan proativo: CellCleaner
 ## Marcadores encontrados
 - MainActivity.java: 1 marcadores
 
 
 
-﻿# 2026-07-29 - Scan proativo: Mp3Player
+# 2026-07-29 - Scan proativo: Mp3Player
 ## Marcadores encontrados
 - BiquadFilter.kt: 1 marcadores
 - EqualizerAudioProcessor.kt: 2 marcadores
@@ -120,7 +120,7 @@ date: 2026-08-08
 
 
 
-﻿# 2026-07-29 - Scan proativo: SupermarketCalculator
+# 2026-07-29 - Scan proativo: SupermarketCalculator
 ## Marcadores encontrados
 - MainActivity.java: 4 marcadores
 
@@ -139,7 +139,7 @@ date: 2026-08-08
 - Idioma: português brasileiro, unidades métricas
 - Chave da API deve estar em `scripts/.env` como `OPENWEAT
 
-﻿# 2026-07-30 - Scan proativo: Biblia
+# 2026-07-30 - Scan proativo: Biblia
 ## Marcadores encontrados
 - parse_apocrypha.py: 1 marcadores
 - parse_apocrypha2.py: 1 marcadores
@@ -148,13 +148,13 @@ date: 2026-08-08
 
 
 
-﻿# 2026-07-30 - Scan proativo: CellCleaner
+# 2026-07-30 - Scan proativo: CellCleaner
 ## Marcadores encontrados
 - MainActivity.java: 1 marcadores
 
 
 
-﻿# 2026-07-30 - Scan proativo: Mp3Player
+# 2026-07-30 - Scan proativo: Mp3Player
 ## Marcadores encontrados
 - BiquadFilter.kt: 1 marcadores
 - EqualizerAudioProcessor.kt: 2 marcadores
@@ -165,13 +165,13 @@ date: 2026-08-08
 
 
 
-﻿# 2026-07-30 - Scan proativo: SupermarketCalculator
+# 2026-07-30 - Scan proativo: SupermarketCalculator
 ## Marcadores encontrados
 - MainActivity.java: 4 marcadores
 
 
 
-﻿# 2026-08-03 - Scan proativo: BibliaEstudoCompleta
+# 2026-08-03 - Scan proativo: BibliaEstudoCompleta
 ## Marcadores encontrados
 - parse_apocrypha.py: 1 marcadores
 - parse_apocrypha2.py: 1 marcadores
@@ -180,13 +180,13 @@ date: 2026-08-08
 
 
 
-﻿# 2026-08-03 - Scan proativo: CellCleaner
+# 2026-08-03 - Scan proativo: CellCleaner
 ## Marcadores encontrados
 - MainActivity.java: 1 marcadores
 
 
 
-﻿# 2026-08-03 - Scan proativo: compiladorAPK
+# 2026-08-03 - Scan proativo: compiladorAPK
 ## Marcadores encontrados
 - apk-compiler-ui.ps1: 11 marcadores
 - test-modules.ps1: 1 marcadores
@@ -195,7 +195,7 @@ date: 2026-08-08
 
 
 
-﻿# 2026-08-03 - Scan proativo: EcoSystemUmGrau
+# 2026-08-03 - Scan proativo: EcoSystemUmGrau
 ## Marcadores encontrados
 - adapt_agent_prompts.py: 1 marcadores
 - generate_sample_results.py: 3 marcadores
@@ -211,7 +211,7 @@ date: 2026-08-08
 - consolidate_build_pipeline.py: 3 marcadores
 -
 
-﻿# 2026-08-03 - Scan proativo: Mp3Player
+# 2026-08-03 - Scan proativo: Mp3Player
 ## Marcadores encontrados
 - BiquadFilter.kt: 1 marcadores
 - EqualizerAudioProcessor.kt: 2 marcadores
@@ -222,7 +222,7 @@ date: 2026-08-08
 
 
 
-﻿# 2026-08-03 - Scan proativo: OrquestradorAPK-FLUTTER
+# 2026-08-03 - Scan proativo: OrquestradorAPK-FLUTTER
 ## Marcadores encontrados
 - app.py: 4 marcadores
 - checklist.py: 2 marcadores
@@ -238,13 +238,13 @@ date: 2026-08-08
 
 
 
-﻿# 2026-08-03 - Scan proativo: SupermarketCalculator
+# 2026-08-03 - Scan proativo: SupermarketCalculator
 ## Marcadores encontrados
 - MainActivity.java: 4 marcadores
 
 
 
-﻿# 2026-08-03 - Scan proativo: WindowsMaintenanceSuite_v3
+# 2026-08-03 - Scan proativo: WindowsMaintenanceSuite_v3
 ## Marcadores encontrados
 - MainMenu.ps1: 1 marcadores
 - DiskSpaceAnalyzer.ps1: 1 marcadores
@@ -260,7 +260,7 @@ date: 2026-08-08
 
 
 
-﻿# Controle de TV LG (01/08/2026)
+# Controle de TV LG (01/08/2026)
 
 ## TV identificada
 - Modelo: **50UT8050PSA** (LG 50" webOS, firmware p20.33.31.61)
@@ -274,7 +274,7 @@ date: 2026-08-08
 - Pareamento: PROMPT (confirmaÃ§Ã£o na tela) ou WoL para ligar.
 - Client-
 
-﻿# ConfirmaÃ§Ã£o em Ãudio â€” Regra Permanente (01/08/2026)
+# ConfirmaÃ§Ã£o em Ãudio â€” Regra Permanente (01/08/2026)
 
 ## Contexto
 O usuÃ¡rio deu uma **instruÃ§Ã£o global, imediata e permanente**: ao receber QUALQUER comando, o Jarvis deve confirmar em Ã¡udio se entendeu, dizer o que vai fazer, e narrar o que estÃ¡ fazendo. Complementa e reforÃ§a a clÃ¡usula pÃ©trea de comunicaÃ§Ã£o em Ã¡udio.
@@ -286,7 +286,7 @@ O usuÃ¡rio deu uma **instruÃ§Ã£o global, imediata e permanente**: ao receb
 
 #
 
-﻿# 2026-07-27 - Scan proativo: Mp3Player
+# 2026-07-27 - Scan proativo: Mp3Player
 ## Marcadores encontrados
 - BiquadFilter.kt: 1 marcadores
 - EqualizerAudioProcessor.kt: 2 marcadores
@@ -299,7 +299,7 @@ O usuÃ¡rio deu uma **instruÃ§Ã£o global, imediata e permanente**: ao receb
 
 - [[cluster-hub-mp3player]]
 
-﻿# 2026-07-28 - Scan proativo: Mp3Player
+# 2026-07-28 - Scan proativo: Mp3Player
 ## Marcadores encontrados
 - BiquadFilter.kt: 1 marcadores
 - EqualizerAudioProcessor.kt: 2 marcadores
@@ -312,7 +312,7 @@ O usuÃ¡rio deu uma **instruÃ§Ã£o global, imediata e permanente**: ao receb
 
 - [[cluster-hub-mp3player]]
 
-﻿# 2026-07-29 - Scan proativo: Mp3Player
+# 2026-07-29 - Scan proativo: Mp3Player
 ## Marcadores encontrados
 - BiquadFilter.kt: 1 marcadores
 - EqualizerAudioProcessor.kt: 2 marcadores
@@ -325,7 +325,7 @@ O usuÃ¡rio deu uma **instruÃ§Ã£o global, imediata e permanente**: ao receb
 
 - [[cluster-hub-mp3player]]
 
-﻿# 2026-07-30 - Scan proativo: Mp3Player
+# 2026-07-30 - Scan proativo: Mp3Player
 ## Marcadores encontrados
 - BiquadFilter.kt: 1 marcadores
 - EqualizerAudioProcessor.kt: 2 marcadores
@@ -338,7 +338,7 @@ O usuÃ¡rio deu uma **instruÃ§Ã£o global, imediata e permanente**: ao receb
 
 - [[cluster-hub-mp3player]]
 
-﻿# 2026-07-29 â€” IntegraÃ§Ã£o de clima via OpenWeatherMap
+# 2026-07-29 â€” IntegraÃ§Ã£o de clima via OpenWeatherMap
 
 ## Habilidade adicionada ao Jarvis
 - Nova skill: `skills/clima-api/skill.md`
@@ -351,7 +351,7 @@ O usuÃ¡rio deu uma **instruÃ§Ã£o global, imediata e permanente**: ao receb
 - Idioma: portuguÃªs brasileiro, unidades mÃ©tricas
 - Chave da API deve estar em `scripts/.env`
 
-﻿# 2026-07-29 â€” MCP Integration
+# 2026-07-29 â€” MCP Integration
 
 ## Learning
 Integrated 5 MCP servers from `opencode-agents-mcp` repo into EcoSystemUmGrau:
@@ -364,7 +364,7 @@ Integrated 5 MCP servers from `opencode-agents-mcp` repo into EcoSystemUmGrau:
 ## Config Schema (opencode v1.18.9)
 - `mcp` is a plain object: keys = server names, values = server
 
-﻿# 2026-08-05 - Scan proativo: EcoSystemUmGrau
+# 2026-08-05 - Scan proativo: EcoSystemUmGrau
 ## Marcadores encontrados
 - adapt_agent_prompts.py: 3 marcadores
 - generate_sample_results.py: 9 marcadores
@@ -379,7 +379,7 @@ Integrated 5 MCP servers from `opencode-agents-mcp` repo into EcoSystemUmGrau:
 - test_smoke.py: 3 marcadores
 - consolidate_build_pipeline.py: 9 marcadores
 
-﻿# 2026-08-03 - Scan proativo: Mp3Player
+# 2026-08-03 - Scan proativo: Mp3Player
 ## Marcadores encontrados
 - BiquadFilter.kt: 1 marcadores
 - EqualizerAudioProcessor.kt: 2 marcadores
@@ -392,7 +392,7 @@ Integrated 5 MCP servers from `opencode-agents-mcp` repo into EcoSystemUmGrau:
 
 - [[cluster-hub-mp3player]]
 
-﻿# 2026-08-06 - Scan proativo: EcoSystemUmGrau
+# 2026-08-06 - Scan proativo: EcoSystemUmGrau
 ## Marcadores encontrados
 - adapt_agent_prompts.py: 3 marcadores
 - generate_sample_results.py: 9 marcadores
@@ -407,7 +407,7 @@ Integrated 5 MCP servers from `opencode-agents-mcp` repo into EcoSystemUmGrau:
 - test_smoke.py: 3 marcadores
 - consolidate_build_pipeline.py: 9 marcadores
 
-﻿# 2026-08-07 - Scan proativo: EcoSystemUmGrau
+# 2026-08-07 - Scan proativo: EcoSystemUmGrau
 ## Marcadores encontrados
 - adapt_agent_prompts.py: 3 marcadores
 - generate_sample_results.py: 9 marcadores
@@ -438,7 +438,7 @@ Rodou `python tests/test_integration.py` no `ler-runtime/`.
 
 #
 
-﻿# 2026-08-08 - Scan proativo: EcoSystemUmGrau
+# 2026-08-08 - Scan proativo: EcoSystemUmGrau
 ## Marcadores encontrados
 - adapt_agent_prompts.py: 3 marcadores
 - generate_sample_results.py: 9 marcadores

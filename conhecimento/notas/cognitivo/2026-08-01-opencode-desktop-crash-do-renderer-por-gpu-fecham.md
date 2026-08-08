@@ -1,14 +1,14 @@
 ---
 tags: [cognitivo, desugardebugfiledependencies, etapa, general, minutos, slowness]
-aliases: [﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU ]
+aliases: [# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU +]
 date: 2026-08-08
 ---
 
-# ﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria
+# # 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria
 
 **Dominio:** general
 
-﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria
+# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria
 
 **Categoria:** aprendizado
 **Contexto:** OpenCode Desktop v1.18.10 (Electron 42.3.3) em notebook com Intel HD Graphics 5500 (driver 10.18.15.4248, 2015) e 3,9 GB RAM. A interface abria e fechava logo em seguida, sem mensagem de erro.

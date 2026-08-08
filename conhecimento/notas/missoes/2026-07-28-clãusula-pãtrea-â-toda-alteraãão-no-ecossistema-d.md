@@ -1,14 +1,14 @@
 ---
-tags: [alteraã, decisao, deve, ecossistema, missao, opencode, status]
-aliases: [﻿# 2026-07-28: ClÃ¡usula PÃ©trea â€” Toda alteraÃ§Ã£o no eco]
+tags: [decisao, deve, ecossistema, missao, opencode, status, tes]
+aliases: [# 2026-07-28: ClÃ¡usula PÃ©trea â€” Toda alteraÃ§Ã£o no ecos]
 date: 2026-08-04
 ---
 
-# ﻿# 2026-07-28: ClÃ¡usula PÃ©trea â€” Toda alteraÃ§Ã£o no ecossistema deve ser te
+# # 2026-07-28: ClÃ¡usula PÃ©trea â€” Toda alteraÃ§Ã£o no ecossistema deve ser tes
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# 2026-07-28: ClÃ¡usula PÃ©trea â€” Toda alteraÃ§Ã£o no ecossistema deve ser te
+**Objetivo:** # 2026-07-28: ClÃ¡usula PÃ©trea â€” Toda alteraÃ§Ã£o no ecossistema deve ser tes
 ## Conexoes
 
 - [[checkpoints-salvos-antes-de-cada-iteracao-sobrevive-a-crash-]]

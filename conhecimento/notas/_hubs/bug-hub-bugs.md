@@ -1,6 +1,6 @@
 # Bugs e Correcoes
 
-**49 notas** conectadas a este hub.
+**50 notas** conectadas a este hub.
 
 
 ## Notas
@@ -30,6 +30,7 @@
 - [[http-401-unauthorized-on-session-and-globalsessions]]
 - [[logs-dont-appear]]
 - [[logs-sem-rotacao-logs-cresciam-indefinidamente]]
+- [[loop-infinito-de-push-no-vigilante-emails-do-github-a-cada-m]]
 - [[maxiterations-hard-stop-forca-parada-prematura-mesmo-sem-obj]]
 - [[mcp-server-failed-to-get-tools-no-opencode]]
 - [[mcp-server-nao-respondia-a-toolscall]]

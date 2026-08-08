@@ -1,14 +1,14 @@
 ---
 tags: [cognitivo, ecossistema, ficar, general, inteiro, nico]
-aliases: [﻿# 2026-08-02 - ecosystem sync: 1 comando para sincronizar t]
+aliases: [# 2026-08-02 - ecosystem sync: 1 comando para sincronizar tu]
 date: 2026-08-08
 ---
 
-# ﻿# 2026-08-02 - ecosystem sync: 1 comando para sincronizar tudo
+# # 2026-08-02 - ecosystem sync: 1 comando para sincronizar tudo
 
 **Dominio:** general
 
-﻿# 2026-08-02 - ecosystem sync: 1 comando para sincronizar tudo
+# 2026-08-02 - ecosystem sync: 1 comando para sincronizar tudo
 
 ## Contexto
 O usuÃ¡rio queria sincronizar o ecossistema inteiro com um Ãºnico comando, para ficar

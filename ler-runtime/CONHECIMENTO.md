@@ -1,10 +1,10 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-08T03:22:23.737150
+**Exportado em:** 2026-08-08T16:37:42.331682
 **Projetos:** 4
 **Padroes Tecnicos:** 83
 **Decisoes:** 56
-**Bug Fixes:** 51
+**Bug Fixes:** 52
 **Padroes Cognitivos:** 52
 **Heuristicas:** 32
 **Frameworks:** 10
@@ -205,9 +205,9 @@ data: 2026-08-02
 contexto: Reestruturacao do pipeline de geracao do grafo — Obsidian vira cerebro vivo, widget espelho
 decisao: generate-graph-html.py agora le o vault Obsidian (conhecimento/notas/*.md) em vez de knowledge_graph.json. O widget_grafo.py chama Bridge.regenerar() quando a versao detecta mudança no vault. Smart Connections (plugin Obsidian) cria [[wikilinks]] semanticos que o widget reflete automat
 
-### ﻿# 2026-08-02 - Feedback contÃ­nuo em tarefas longas
+### # 2026-08-02 - Feedback contÃ­nuo em tarefas longas
 **Fonte:** opencode
-﻿# 2026-08-02 - Feedback contÃ­nuo em tarefas longas
+# 2026-08-02 - Feedback contÃ­nuo em tarefas longas
 
 **Categoria:** decisao
 **Fonte:** sessao_jarvis_vox
@@ -224,11 +224,11 @@ Adicionada regra permanente de **feedback contÃ­nuo** em `JARVIS_SYSTEM.md`:
 - Regra 16 em "Regras de Resposta".
 - Nova seÃ§Ã£o "Regra de Feedback ContÃ­nuo (02/08/2026)".
 
-O que m
+O que mu
 
-### ﻿# 2026-07-31 - Mecanismo de fonemas SSML reativado com fallback seguro
+### # 2026-07-31 - Mecanismo de fonemas SSML reativado com fallback seguro
 **Fonte:** opencode
-﻿# 2026-07-31 - Mecanismo de fonemas SSML reativado com fallback seguro
+# 2026-07-31 - Mecanismo de fonemas SSML reativado com fallback seguro
 
 **Categoria:** decisao
 **Fonte:** sessao_jarvis_vox
@@ -241,21 +241,21 @@ O usuÃ¡rio pediu para ligar o mecanismo de fonemas (`aplicar_phonemes` + SSML 
 ## VerificaÃ§Ãµes
 
 1. edge-tts 7.2.8 aceita SSML `<phoneme alphabet="ipa">` sem erro (testado com Ã¡udio real).
-2. `aplicar_phonemes()` jÃ¡ estava conectado em `gerar_audio()`, mas **sem fallback**: se o SSML falhas
+2. `aplicar_phonemes()` jÃ¡ estava conectado em `gerar_audio()`, mas **sem fallback**: se o SSML falhass
 
-### ﻿# 2026-08-01: ClÃ¡usula PÃ©trea â€” ComunicaÃ§Ã£o contÃ­nua em Ã¡udio
+### # 2026-08-01: ClÃ¡usula PÃ©trea â€” ComunicaÃ§Ã£o contÃ­nua em Ã¡udio
 **Fonte:** opencode
-﻿# 2026-08-01: ClÃ¡usula PÃ©trea â€” ComunicaÃ§Ã£o contÃ­nua em Ã¡udio
+# 2026-08-01: ClÃ¡usula PÃ©trea â€” ComunicaÃ§Ã£o contÃ­nua em Ã¡udio
 
 **Categoria:** decisao
 **Contexto:** UsuÃ¡rio apontou que o Jarvis executou tarefas (verificaÃ§Ã£o de sync, commits, pronÃºncia) sem narrar em Ã¡udio o que estava fazendo, desrespeitando a regra de comunicaÃ§Ã£o por voz. A regra existia no contexto da sessÃ£o, mas nÃ£o estava registrada em lugar nenhum â€” por isso foi esquecida.
 
 ## DecisÃ£o
-**Todo passo que o Jarvis executa DEVE ser narrado em Ã¡udio**, sempre, sem exceÃ§Ã
+**Todo passo que o Jarvis executa DEVE ser narrado em Ã¡udio**, sempre, sem exceÃ§Ã£
 
-### ﻿# DecisÃ£o: Aprendizado automÃ¡tico permanente
+### # DecisÃ£o: Aprendizado automÃ¡tico permanente
 **Fonte:** opencode
-﻿# DecisÃ£o: Aprendizado automÃ¡tico permanente
+# DecisÃ£o: Aprendizado automÃ¡tico permanente
 
 **Data:** 2026-07-28
 **Tipo:** decisao
@@ -267,11 +267,11 @@ UsuÃ¡rio instruiu que o aprendizado deve ser feito automaticamente ao final de
 ## DecisÃ£o
 Todo agente do ecossistema deve, ao final de cada tarefa concluÃ­da:
 
-1. **Registrar memÃ³ria** via `memory_engine.py add` com tipo apropriado (decisao, erro, 
+1. **Registrar memÃ³ria** via `memory_engine.py add` com tipo apropriado (decisao, erro, p
 
-### ﻿# DecisÃ£o: Arquitetura Jarvis App
+### # DecisÃ£o: Arquitetura Jarvis App
 **Fonte:** opencode
-﻿# DecisÃ£o: Arquitetura Jarvis App
+# DecisÃ£o: Arquitetura Jarvis App
 
 **Data:** 2026-07-28
 **Tipo:** decisao
@@ -283,7 +283,7 @@ Necessidade de um app Android que funcione como assistente de voz (Jarvis) para 
 ## DecisÃ£o
 Arquitetura em duas camadas:
 - **PC (backend):** `notifier_bridge.py` (WebSocket) + `mcp-knowledge-server.py` (MCP, jÃ¡ existe)
-- **Android (frontend):** Foreground S
+- **Android (frontend):** Foreground Se
 
 ### vault obsidian cerebro vivo grafo
 **Fonte:** opencode
@@ -444,8 +444,8 @@ decisao: "Corrigir watchdog.ps1 com protecao absoluta do desktop (clausula petre
 | 72 | ler_aprendizado | Registro de Habilidades de Jarvis |
 | 73 | ler_aprendizado | Taxonomia correta de habilidades Jarvis |
 | 74 | opencode | Controle da TV LG webOS via SSAP |
-| 75 | opencode | ﻿# 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS) |
-| 76 | opencode+opencode+opencode+opencode+opencode | Config: ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 |
+| 75 | opencode | # 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS) |
+| 76 | opencode+opencode+opencode+opencode+opencode | Config: # 2026-07-28: Formato correto do MCP no OpenCode 1.18.7 |
 | 77 | opencode | Secrets Guard no preflight_check |
 | 78 | opencode | widget desktop grafo tempo real |
 | 79 | opencode+opencode+opencode+opencode+opencode | 2026-08-04: Persistencia da conexao do Jarvis |
@@ -707,6 +707,16 @@ decisao: "Corrigir watchdog.ps1 com protecao absoluta do desktop (clausula petre
 **Causa Raiz:** tempFile variable was scoped inside try block; if exception before MediaPlayer setup, tempFile was orphaned; stop() before play() could leave old tempFile undeleted
 **Correcao:** Promoted tempFile to function scope with null-safe cleanup in catch block; VoxAudioPlayer.kt now uses var tempFile: File? = null and deletes in all error paths
 
+### Loop infinito de push no Vigilante (emails do GitHub a cada minuto)
+**Fonte:** opencode
+**Causa Raiz:** Usuário relatou receber emails do GitHub a cada minuto — algo estava subindo constantemente
+**Correcao:** ---
+tipo: bug
+tags: [vigilante, github, git-sync, loop-infinito, memory-engine, push, automacao]
+data: 2026-08-08
+contexto: Usuário relatou receber emails do GitHub a cada minuto — algo estava subindo constantemente
+decisao: Remover log de git-sync do loop do vigilante + excluir EcoSystemUmGrau da a
+
 ## Padroes Cognitivos
 
 ### Debugging em cascata reversa
@@ -833,11 +843,11 @@ Navegadores modernos sao multi-processo: processo browser (UI), processo rendere
 
 Tempos de carregamento variam por tipo: HTML inicial (rede), CSS (bloqueante ate parsed), JS (bloqueante ate executed), imagens (nao bloqueantes), fontes (FOUT/FOIT), API calls (variavel). Navegacao so esta completa quando HTML+CSS+JS processaram. Imagens podem continuar carregando
 
-### ﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub
+### # 2026-07-27 - Setup Plug & Play e organizacao GitHub
 **Dominio:** general
 **Fonte:** opencode
 
-﻿# 2026-07-27 - Setup Plug & Play e organizacao GitHub
+# 2026-07-27 - Setup Plug & Play e organizacao GitHub
 
 ## O que foi feito
 - Repositorios do GitHub mapeados: 11 existentes, nenhum LER separado
@@ -847,11 +857,12 @@ Tempos de carregamento variam por tipo: HTML inicial (rede), CSS (bloqueante ate
 - config/opencode-model-fallback.jsonc: config do plugin fallback
 - Vigilante atualizado:
 
-### ﻿# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema
+
+### # 2026-07-27 - Correcao dos 4 pontos finais do ecossistema
 **Dominio:** general
 **Fonte:** opencode
 
-﻿# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema
+# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema
 
 ## Problemas resolvidos
 1. **Paths fixos**: vigilante.ps1, ecosystem.ps1, SKILL.md agora usam env:USERPROFILE
@@ -859,6 +870,7 @@ Tempos de carregamento variam por tipo: HTML inicial (rede), CSS (bloqueante ate
 3. **ecosystem learn**: varredura proativa que escaneia projetos Android + registra no knowledge graph
 4. **Vigilante aprende sozinho**: timer diario executa ecosystem learn automaticamente
 5.
+
 
 ### Encoding-aware diagnostics
 **Dominio:** debugging
@@ -958,11 +970,11 @@ e memory_engine para enriquecer as sinapses do grafo Obsidian.
 
 O grafo do widget deve mostrar ma
 
-### ﻿# 2026-08-03 - Scan proativo: claude-code-extra-agents
+### # 2026-08-03 - Scan proativo: claude-code-extra-agents
 **Dominio:** general
 **Fonte:** opencode
 
-﻿# 2026-08-03 - Scan proativo: claude-code-extra-agents
+# 2026-08-03 - Scan proativo: claude-code-extra-agents
 ## Marcadores encontrados
 - adapt_agent_prompts.py: 1 marcadores
 - generate_sample_results.py: 3 marcadores
@@ -974,18 +986,18 @@ O grafo do widget deve mostrar ma
 **Dominio:** general
 **Fonte:** opencode
 
-﻿---
+---
 tipo: decisao
 tags: [obsidian, mcp, infraestrutura, config, clausula-petrea, vault]
 data: 2026-08-02
 contexto: O vault Obsidian (docs/, conhecimento/, documentos/) estava sendo alimentado (330 notas .md) mas o LLM sÃ³ via a CONTAGEM de notas no estado da bridge (gerar_estado_atual em jarvis_bridge.py), nunca o conteÃºdo. Busca semÃ¢ntica via eco-knowledge cobria CONHECIMENTO.md e memory graph, mas nÃ£o os 327 .md de conhecimento/. Sem MCP server dedicado, sem file watcher.
 decisao: Criar sc
 
-### ﻿# Hora na tela vs hora no Ã¡udio (Jarvis)
+### # Hora na tela vs hora no Ã¡udio (Jarvis)
 **Dominio:** general
 **Fonte:** opencode
 
-﻿# Hora na tela vs hora no Ã¡udio (Jarvis)
+# Hora na tela vs hora no Ã¡udio (Jarvis)
 
 - **Data:** 31/07/2026
 - **SessÃ£o:** ImplementaÃ§Ã£o de `normalizar_hora_display()` na bridge
@@ -999,11 +1011,12 @@ Jarvis precisava ser corrigida.**
 ## SoluÃ§Ã£o (divisÃ£o de responsabilidades)
 - `melhorar_fala(texto)` â†’ 
 
-### ﻿# Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis)
+
+### # Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis)
 **Dominio:** general
 **Fonte:** opencode
 
-﻿# Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis)
+# Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis)
 
 ## Contexto
 - O Android STT (SpeechRecognizer) devolve texto corrido, sem pontuaÃ§Ã£o e **sem prosÃ³dia** (a melodia da fala nÃ£o chega Ã  bridge). O usuÃ¡rio pediu: `?` em perguntas, pontuaÃ§Ã£o correta e **primeira letra maiÃºscula** sempre.
@@ -1012,11 +1025,12 @@ Jarvis precisava ser corrigida.**
 ## O que foi feito (`scripts/jarvis_bridge.py`)
 1. **Clas
 
-### ﻿# Guia: Controle Total de TV LG webOS (reaproveitÃ¡vel)
+
+### # Guia: Controle Total de TV LG webOS (reaproveitÃ¡vel)
 **Dominio:** general
 **Fonte:** opencode
 
-﻿# Guia: Controle Total de TV LG webOS (reaproveitÃ¡vel)
+# Guia: Controle Total de TV LG webOS (reaproveitÃ¡vel)
 **Criado:** 01/08/2026 | Aplica-se a qualquer TV LG webOS (UT80 e similares, 2024+)
 
 > **Know-how de ouro:** este passo-a-passo reaplica-se a qualquer TV LG webOS. SÃ³ muda o IP e o MAC.
@@ -1024,11 +1038,11 @@ Jarvis precisava ser corrigida.**
 ## 1. Descoberta e identificaÃ§Ã£o
 - **mDNS (224.0.0.251:5353):** pergunte por `_googlecast._tcp.local`, `_airplay._tcp.local`, `_webos._tcp.local`, `_services._dns-sd._udp.local`. A TV responde com hostname + TXT records (model, serialNumber, manufacture
 
-### ﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria
+### # 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria
 **Dominio:** general
 **Fonte:** opencode
 
-﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria
+# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria
 
 **Categoria:** aprendizado
 **Contexto:** OpenCode Desktop v1.18.10 (Electron 42.3.3) em notebook com Intel HD Graphics 5500 (driver 10.18.15.4248, 2015) e 3,9 GB RAM. A interface abria e fechava logo em seguida, sem mensagem de erro.
@@ -1039,11 +1053,12 @@ Jarvis precisava ser corrigida.**
 
 InvestigaÃ§Ã£o exaustiva do ciclo 
 
-### ﻿# 2026-08-02 - ecosystem sync: 1 comando para sincronizar tudo
+
+### # 2026-08-02 - ecosystem sync: 1 comando para sincronizar tudo
 **Dominio:** general
 **Fonte:** opencode
 
-﻿# 2026-08-02 - ecosystem sync: 1 comando para sincronizar tudo
+# 2026-08-02 - ecosystem sync: 1 comando para sincronizar tudo
 
 ## Contexto
 O usuÃ¡rio queria sincronizar o ecossistema inteiro com um Ãºnico comando, para ficar
@@ -1060,18 +1075,18 @@ sempre atualizado e nada se perder ao trocar de PC.
 **Dominio:** general
 **Fonte:** opencode
 
-﻿---
+---
 tipo: padrao
 tags: [mcp, infraestrutura, config, clausula-petrea]
 data: 2026-08-02
 contexto: DivergÃªncia detectada â€” config/opencode.jsonc referenciava 4 servidores MCP Node em `mcp-servers/mcp-servers/...` que nÃ£o existiam, e `{{USERPROFILE}}` nÃ£o Ã© resolvido em comandos MCP (apenas em instructions). `opencode mcp list` mostrava eco-knowledge/filesystem/search/terminal como "failed".
 decisao: Criar os 4 servidores Node (filesystem, search, terminal, github) em `mcp-servers/<nome>/ind
 
-### ﻿---
+### ---
 **Dominio:** general
 **Fonte:** opencode
 
-﻿---
+---
 tipo: decisao
 tags:
   - setup
@@ -1082,22 +1097,22 @@ contexto: Vigilante estava inativo porque nenhum mecanismo criava a scheduled ta
 decisao: Adicionado passo 7/9 ao setup.bat que cria a task EcoSystemVigilante via Register-ScheduledTask (AtLogOn, StartWhenAvailable, restart 3x, sem -Principal para nao exigir admin). Verificacao previa com schtasks /Query; se ja existir, pula.
 impac
 
-### ﻿---
+### ---
 **Dominio:** general
 **Fonte:** opencode
 
-﻿---
+---
 tipo: decisao
 tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
 data: 2026-08-02
 contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
 decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente
 
-### ﻿---
+### ---
 **Dominio:** general
 **Fonte:** opencode
 
-﻿---
+---
 tipo: erro
 tags:
   - vigilante
@@ -1113,18 +1128,18 @@ impacto: Vigilante agora inicia no l
 **Dominio:** general
 **Fonte:** opencode
 
-﻿---
+---
 tipo: decisao
 tags: [voz, eco, clausula-petrea, bridge, config, regras]
 data: 2026-08-02
 contexto: O usuÃ¡rio pediu que o sistema de voz seja ativÃ¡vel em qualquer sessÃ£o do OpenCode (nova ou em andamento) com os comandos "Ativar Eco" e "Desativar Eco", seguindo as regras do EcoSystemUmGrau.
 decisao: Adicionada a CLÃUSULA PÃ‰TREA â€” ATIVAÃ‡ÃƒO DE VOZ â€” ECO SYSTEM Ã  ConstituiÃ§Ã£o (config/agents/00-system-rules.md) e sincronizada nas 3 camadas (AGENTS.md regenerado via sync_rules.py, d
 
-### ﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView
+### # 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView
 **Dominio:** general
 **Fonte:** opencode
 
-﻿# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView
+# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView
 
 ## Contexto
 App Mp3Player Android. 5 botÃµes de filtro no topo da aba "MÃºsicas": Todas, Favoritas, A-Z, Lista, Sel. O texto nÃ£o aparecia â€” os botÃµes ficavam verdes uniformes sem nenhum texto visÃ­vel.
@@ -1135,11 +1150,12 @@ App Mp3Player Android. 5 botÃµes de filtro no topo da aba "MÃºsicas": Todas,
 - `TagEditorActivity` usava `TextInputLayout` do Material Components, que REQUER tema `MaterialComponents`
 - Ao 
 
-### ﻿# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android
+
+### # 2026-07-30 - Skill de DiagnÃ³stico Remoto Android
 **Dominio:** general
 **Fonte:** opencode
 
-﻿# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android
+# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android
 
 ## O que foi criado
 - `scripts/android_diagnostics.py` â€” Script Python que conecta via ADB ao dispositivo `100.64.71.9:5555` e coleta diagnÃ³stico completo do VoxUmGrau
@@ -1202,33 +1218,33 @@ data: 2026-08-04
 contexto: Refinamento do widget "Cerebro Vivo" (scripts/widget_grafo.py + scripts/generate-graph-html.py) para movimento mais vivo/realista e zoom com papel narrativo.
 decisao: Movimento organico = physics.stabilization:false + timestep:0.2 + maxVelocity:6 + minVelocity:0 + adaptiveTimestep:false + barnesHut(avoidOverlap:0.55, damping:0.88). Respiracao do layout vi
 
-### ﻿---
+### ---
 **Dominio:** general
 **Fonte:** opencode
 
-﻿---
+---
 tipo: decisao
 tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
 data: 2026-08-02
 contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
 decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente
 
-### ﻿---
+### ---
 **Dominio:** general
 **Fonte:** opencode
 
-﻿---
+---
 tipo: decisao
 tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
 data: 2026-08-02
 contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
 decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente
 
-### ﻿---
+### ---
 **Dominio:** general
 **Fonte:** opencode
 
-﻿---
+---
 tipo: decisao
 tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
 data: 2026-08-02
@@ -1253,11 +1269,11 @@ impacto: Evita que o watchdog mate o proprio processo (variavel automatica PID r
 ## Sintoma
 A funcao `Test-ForensicoLixo` e `Invoke-KillCertificado` declaravam `[int
 
-### ﻿---
+### ---
 **Dominio:** general
 **Fonte:** opencode
 
-﻿---
+---
 tipo: decisao
 tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
 data: 2026-08-02
@@ -1358,7 +1374,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-08T03:22:23.405934
+**Ultima atualizacao:** 2026-08-08T16:37:42.316058
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

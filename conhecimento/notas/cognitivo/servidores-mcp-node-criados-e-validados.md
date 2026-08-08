@@ -8,7 +8,7 @@ date: 2026-08-08
 
 **Dominio:** general
 
-﻿---
+---
 tipo: padrao
 tags: [mcp, infraestrutura, config, clausula-petrea]
 data: 2026-08-02

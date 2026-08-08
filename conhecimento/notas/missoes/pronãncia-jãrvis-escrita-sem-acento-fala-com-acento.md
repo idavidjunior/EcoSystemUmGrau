@@ -1,14 +1,14 @@
 ---
 tags: [acento, escrita, fala, geral, missao, opencode, status]
-aliases: [﻿# PronÃºncia "JÃ¡rvis" (escrita sem acento, fala com acento]
+aliases: [# PronÃºncia "JÃ¡rvis" (escrita sem acento, fala com acento)]
 date: 2026-08-04
 ---
 
-# ﻿# PronÃºncia "JÃ¡rvis" (escrita sem acento, fala com acento) — 
+# # PronÃºncia "JÃ¡rvis" (escrita sem acento, fala com acento) — 
 
 **Status:** session_learning
 
-**Objetivo:** ﻿# PronÃºncia "JÃ¡rvis" (escrita sem acento, fala com acento) — 
+**Objetivo:** # PronÃºncia "JÃ¡rvis" (escrita sem acento, fala com acento) — 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
