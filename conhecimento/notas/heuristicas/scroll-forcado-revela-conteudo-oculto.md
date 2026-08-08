@@ -1,5 +1,5 @@
 ---
-tags: [faz, heuristica, loaded, repete, sao, web-navigation]
+tags: [faz, heuristica, loaded, repete, usuario, web-navigation]
 aliases: [Scroll forcado revela conteudo oculto]
 date: 2026-08-08
 ---

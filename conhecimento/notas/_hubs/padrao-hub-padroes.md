@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**80 notas** conectadas a este hub.
+**81 notas** conectadas a este hub.
 
 
 ## Notas
@@ -53,6 +53,7 @@
 - [[metadata-search-pipeline]]
 - [[miuihyperos-permission-dialogs]]
 - [[modaldialog-overlay-detection]]
+- [[módulo-de-compreensão-de-pedidos-mcp-compreensao-pedidos]]
 - [[numpad-with-stringbuilder-buffer]]
 - [[ocr-fallback-para-elementos-sem-identificador]]
 - [[opencode-mcp-config-format]]

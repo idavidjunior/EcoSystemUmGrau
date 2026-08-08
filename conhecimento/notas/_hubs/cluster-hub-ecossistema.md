@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**124 notas** do cluster ecossistema.
+**125 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -104,6 +104,7 @@
 - [[mcp-server-nao-respondia-nenhum-comando]]
 - [[motor-de-criticalidade-auto-organizada-e-avalanches-neurais]]
 - [[mudar-config-mcp-de-objeto-para-array-no-opencodejson]]
+- [[módulo-de-compreensão-de-pedidos-mcp-compreensao-pedidos]]
 - [[opencode-go-provider-crash-ao-processar-mensagem]]
 - [[organizar-desktopcodigos-como-raiz-unica-de-projetos]]
 - [[otimização-do-reindex-semântico-do-memory-engine]]

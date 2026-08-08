@@ -17,6 +17,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -342,9 +343,63 @@ def detectar_desperdicio(pedido):
 
 # ---------------------------------------------------------------------------
 # Refino com LLM (fail-soft, agnóstico de fornecedor)
+# Primária: LLM padrão do opencode (mesma da sessão, sem chave extra).
+# Backup: NVIDIA → OpenAI → Anthropic (chaves de scripts/.env). Quando a
+# primária não responde, o backup entra em ação — resiliência.
 # ---------------------------------------------------------------------------
+def _modelo_opencode():
+    """Modelo da LLM do opencode usado no refino. Configurável, default = modelo da sessão."""
+    return (os.environ.get('COMPREENSAO_MODELO_OPENCODE')
+            or os.environ.get('LLM_MODEL')
+            or 'opencode/big-pickle')
+
+
+def _refinar_via_opencode(prompt, timeout=90):
+    """Chama a LLM padrão do opencode via `opencode run` (headless). Fail-soft: '' em qualquer falha."""
+    exe = shutil.which('opencode') or shutil.which('opencode.cmd') or shutil.which('opencode.exe')
+    if not exe:
+        return ''
+    try:
+        proc = subprocess.run(
+            [exe, 'run', '-m', _modelo_opencode(), '--format', 'json', prompt],
+            capture_output=True, text=True, timeout=timeout,
+            encoding='utf-8', errors='replace',
+            creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+    except (OSError, subprocess.TimeoutExpired):
+        return ''
+    if proc.returncode != 0:
+        return ''
+    texto = []
+    for linha in proc.stdout.splitlines():
+        linha = linha.strip()
+        if not linha:
+            continue
+        try:
+            evt = json.loads(linha)
+        except ValueError:
+            continue
+        if evt.get('type') == 'error':
+            return ''
+        if evt.get('type') == 'text':
+            parte = evt.get('part', {}) or {}
+            t = parte.get('text', '')
+            if t:
+                texto.append(t)
+    return '\n'.join(texto).strip()
+
+
+def _extrair_critica(texto):
+    m = re.search(r'\{.*\}', texto, re.S)
+    if m:
+        try:
+            return json.loads(m.group(0))
+        except ValueError:
+            pass
+    return {'observacao': texto[:300]}
+
+
 def _resolver_providers():
-    """Devolve lista de (provedor, modelo_litellm, chave, api_base) na ordem de preferência."""
+    """Devolve lista de (provedor, modelo_litellm, chave, api_base) na ordem de preferência (backups)."""
     providers = []
     modelo_nv = os.environ.get('COMPREENSAO_MODELO_NVIDIA', 'meta/llama-3.3-70b-instruct')
     if os.environ.get('NVIDIA_API_KEY'):
@@ -358,15 +413,8 @@ def _resolver_providers():
 
 
 def refinar_com_llm(pedido, entendimento):
-    """Chama UMA LLM disponível para criticar/melhorar o entendimento. Fail-soft."""
+    """Chama a LLM do opencode (primária); se não responder, cai para os backups. Fail-soft."""
     _carregar_env()
-    providers = _resolver_providers()
-    if not providers:
-        return {'usado': False, 'motivo': 'nenhuma chave de LLM disponível (NVIDIA/OpenAI/Anthropic)'}
-    try:
-        import litellm
-    except ImportError:
-        return {'usado': False, 'motivo': 'litellm não instalado'}
     prompt = (
         'Você é o módulo de Compreensão de Pedidos do EcoSystemUmGrau. O usuário pediu: '
         f'"{pedido[:1000]}"\n\n'
@@ -374,6 +422,20 @@ def refinar_com_llm(pedido, entendimento):
         'Responda APENAS com JSON: {"objetivo_corrigido": "...", "lacunas": [...], '
         '"melhorias": [...], "observacao": "..."}. '
         'Corrija erros de interpretação e aponte apenas o que faltou para transformar em ação.')
+    # 1) LLM padrão do opencode — mesma da sessão, sem chave extra
+    texto = _refinar_via_opencode(prompt)
+    if texto:
+        return {'usado': True, 'provedor': 'opencode', 'modelo': _modelo_opencode(),
+                'critica': _extrair_critica(texto),
+                'resumo': {'objetivo': entendimento.get('objetivo'), 'score': entendimento.get('score_entendimento')}}
+    # 2) Backup: NVIDIA → OpenAI → Anthropic (litellm)
+    providers = _resolver_providers()
+    if not providers:
+        return {'usado': False, 'motivo': 'LLM do opencode indisponível e nenhuma chave de backup (NVIDIA/OpenAI/Anthropic)'}
+    try:
+        import litellm
+    except ImportError:
+        return {'usado': False, 'motivo': 'opencode indisponível e litellm não instalado'}
     ultimo_erro = 'desconhecido'
     for provedor, modelo, chave, api_base in providers:
         try:
@@ -387,14 +449,13 @@ def refinar_com_llm(pedido, entendimento):
                 **kwargs,
             )
             texto = resp['choices'][0]['message']['content']
-            m = re.search(r'\{.*\}', texto, re.S)
-            criticas = json.loads(m.group(0)) if m else {'observacao': texto[:300]}
-            return {'usado': True, 'provedor': provedor, 'modelo': modelo, 'critica': criticas,
+            return {'usado': True, 'provedor': provedor, 'modelo': modelo,
+                    'critica': _extrair_critica(texto),
                     'resumo': {'objetivo': entendimento.get('objetivo'), 'score': entendimento.get('score_entendimento')}}
         except Exception as e:
             ultimo_erro = f'{provedor}: {e}'
             continue
-    return {'usado': False, 'motivo': f'falha em todos os provedores ({ultimo_erro})'}
+    return {'usado': False, 'motivo': f'opencode indisponível; falha nos backups ({ultimo_erro})'}
 
 
 # ---------------------------------------------------------------------------
