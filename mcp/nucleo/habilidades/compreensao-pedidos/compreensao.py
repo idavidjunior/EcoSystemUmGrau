@@ -1,4 +1,4 @@
-"""Compreensão de Pedidos — núcleo.
+﻿"""Compreensão de Pedidos — núcleo.
 
 Converte um pedido (fala/texto/comando) do usuário em um entendimento estruturado:
 objetivo, ações esperadas, contexto, conceitos, restrições, ambiguidades,
@@ -26,25 +26,37 @@ SCRIPTS = os.path.join(BASE, 'scripts')
 MCP_DIR = os.path.join(BASE, 'mcp')
 PROJETOS_DIR = os.path.join(BASE, 'Projetos')
 
-# Ações explícitas comuns (verbo -> categoria de ação)
+# Ações explícitas (radicais cobrem infinitivo e imperativo: explicar/explique;
+# inclui variantes c→qu da conjugação: explic/expliqu, verific/verifiqu...)
 ACOES = [
-    (r'\b(commit|commitar|publicar|push|enviar|subir)\w*', 'sincronizar'),
-    (r'\b(criar|montar|construir|desenvolver|escrever|gerar)\w*', 'construir'),
-    (r'\b(atualizar|melhorar|aprimorar|evoluir|upgrade)\w*', 'evoluir'),
-    (r'\b(corrigir|consertar|arrumar|resolver|ajustar|fixar)\w*', 'corrigir'),
-    (r'\b(verificar|checar|auditar|validar|testar|inspecionar)\w*', 'verificar'),
-    (r'\b(analisar|entender|explicar|diagnosticar|investigar)\w*', 'analisar'),
-    (r'\b(instalar|deploy|deployar|implantar|publicar)\w*', 'implantar'),
-    (r'\b(apagar|excluir|remover|deletar|limpar|organizar|mover|renomear)\w*', 'manipular'),
-    (r'\b(otimizar|refinar|polir|enxugar)\w*', 'otimizar'),
-    (r'\b(aprender|treinar|estudar|registrar|documentar)\w*', 'aprender'),
-    (r'\b(backup|salvar|guardar|persistir)\w*', 'persistir'),
-    (r'\b(consultar|buscar|pesquisar|procurar|localizar)\w*', 'consultar'),
+    (r'\b(commit|push|public|subir|enviar|sincroniz)\w*', 'sincronizar'),
+    (r'\b(criar|cri|montar|construir|desenvolver|escrever|gerar|implementar)\w*', 'construir'),
+    (r'\b(atualiz|melhor|aprimor|evolu|upgrade)\w*', 'evoluir'),
+    (r'\b(corrig|consert|arrum|resolv|ajust|repar)\w*', 'corrigir'),
+    (r'\b(verific|verifiqu|chec|chequ|audit|valid|test|inspecion)\w*', 'verificar'),
+    (r'\b(analis|entend|explic|expliqu|diagnostic|diagnostiqu|investig)\w*', 'analisar'),
+    (r'\b(instal|deploy|implant)\w*', 'implantar'),
+    (r'\b(apag|exclu|remov|delet|limpa|organiz|mover|renome)\w*', 'manipular'),
+    (r'\b(otimiz|refin|polir|enxug)\w*', 'otimizar'),
+    (r'\b(aprend|trein|estud|registr|document)\w*', 'aprender'),
+    (r'\b(backup|salv|guard|persist)\w*', 'persistir'),
+    (r'\b(consult|busc|busqu|pesquis|procur|localiz)\w*', 'consultar'),
 ]
+
+NON_VERBOS = {'geral', 'gerencia', 'gerente', 'crise', 'fixo', 'política', 'policia',
+              'polícia', 'movimento', 'removível', 'removivel', 'gerador', 'criação',
+              'criacao', 'salvo', 'salva'}
+
+STOP_TERMOS = {
+    'quero', 'vou', 'preciso', 'poderia', 'pode', 'faça', 'fazer', 'me', 'eu',
+    'você', 'voce', 'então', 'sobre', 'agora', 'também', 'depois', 'aquela', 'aquele',
+    'uma', 'um', 'qualquer', 'todo', 'toda', 'todos', 'todas', 'como', 'quando', 'onde',
+    'seja', 'ser', 'está', 'estao', 'foi', 'sao', 'vamos', 'gostaria', 'precisaria', 'queria',
+}
 
 VAGOS = re.compile(r'\b(fazer|coisa|isso|aquilo|qualquer|tudo|etc|deixa)\b', re.I)
 RESTRICOES = re.compile(
-    r'(n[aã]o\w*\s+\w+|nunca|evite|evitar|sem\s+\w+|exceto|somente|apenas|apenas|'
+    r'(n[aã]o\w*\s+\w+|nunca|evite|evitar|sem\s+\w+|exceto|somente|apenas|'
     r'cuidado|importante|obrigat[oó]rio|proibido|n[aã]o toque|n[aã]o altere)', re.I)
 ESCOPO_CREEP = re.compile(r'\b(tamb[eé]m|de quebra|j[aá] que|aproveitando|e mais|ainda)\b', re.I)
 PERGUNTAS = re.compile(r'^(o que|como|quando|onde|por que|porque|existe|est[aá]|voc[eê]|qual|quais|quanto|quantos)\b', re.I)
@@ -75,46 +87,62 @@ def _carregar_env():
 # Extração heurística (estática, sem LLM)
 # ---------------------------------------------------------------------------
 def _extrair_acoes(pedido):
-    acoes = []
+    matches = []
     for padrao, categoria in ACOES:
         for m in re.finditer(padrao, pedido, re.I):
-            # evita repetir o mesmo verbo
-            verbo = m.group(0).lower()
-            if any(a['verbo'] == verbo for a in acoes):
-                continue
-            # objeto = palavras após o verbo até o próximo verbo de ação
-            resto = pedido[m.end():]
-            fim = len(resto)
-            for p2, _ in ACOES:
-                prox = re.search(p2, resto, re.I)
-                if prox and prox.start() < fim:
-                    fim = prox.start()
-            objeto = ' '.join(re.findall(r'\b[\wÀ-ÿ]+[\wÀ-ÿ\-\./]*\b', resto[:fim]))[:120]
-            acoes.append({'verbo': verbo, 'categoria': categoria, 'objeto': objeto or '—'})
+            matches.append((m.start(), m, categoria))
+    matches.sort(key=lambda t: t[0])  # ordem de aparição no texto
+    vistos = set()
+    acoes = []
+    for _, m, categoria in matches:
+        verbo = m.group(0).lower()
+        if verbo in vistos or verbo in NON_VERBOS:
+            continue
+        vistos.add(verbo)
+        # objeto = palavras após o verbo até o próximo verbo de ação
+        resto = pedido[m.end():]
+        fim = len(resto)
+        for p2, _ in ACOES:
+            prox = re.search(p2, resto, re.I)
+            if prox and prox.start() < fim:
+                fim = prox.start()
+        objeto = ' '.join(re.findall(r'\b[\wÀ-ÿ]+[\wÀ-ÿ\-\./]*\b', resto[:fim]))
+        # corta conectores que iniciam sub-oração (para/quando/sem/e/com/então...)
+        objeto = re.sub(r'\s+(para|quando|sem|com|então|depois|também|se|após|antes|porque|e|em|ou)\s*$',
+                        '', objeto, flags=re.I).strip()
+        acoes.append({'verbo': verbo, 'categoria': categoria, 'objeto': objeto[:120] or '—'})
     return acoes[:6]
 
 
 def _extrair_conceitos(pedido):
-    # entidades conhecidas: nomes de projetos, skills, scripts e termos em maiúscula
-    conhecidos = set()
-    for raiz in (PROJETOS_DIR,):
-        if os.path.isdir(raiz):
-            for nome in os.listdir(raiz):
-                if re.search(r'\b' + re.escape(nome.lower()) + r'\b', pedido.lower()):
-                    conhecidos.add(nome)
+    # entidades conhecidas: nomes de projetos, skills, scripts
+    conhecidos = []
+    baixo = pedido.lower()
+    if os.path.isdir(PROJETOS_DIR):
+        for nome in os.listdir(PROJETOS_DIR):
+            if re.search(r'\b' + re.escape(nome.lower()) + r'\b', baixo):
+                conhecidos.append(nome)
     if os.path.isdir(MCP_DIR):
         for dominio in os.listdir(MCP_DIR):
             hab = os.path.join(MCP_DIR, dominio, 'habilidades')
             if os.path.isdir(hab):
                 for skill in os.listdir(hab):
-                    if re.search(r'\b' + re.escape(skill.replace('-', ' ').lower()) + r'\b', pedido.lower()):
-                        conhecidos.add(f'skill:{skill}')
-    for nome in os.listdir(SCRIPTS) if os.path.isdir(SCRIPTS) else []:
-        nome = nome[:-3] if nome.endswith('.py') else nome
-        if re.search(r'\b' + re.escape(nome.lower().replace('_', ' ')) + r'\b', pedido.lower()):
-            conhecidos.add(f'script:{nome}')
-    termos = [t.lower() for t in re.findall(r'\b[A-ZÀ-Ý][A-Za-zÀ-ÿ]{3,}\b', pedido)]
-    return sorted(set(list(conhecidos) + termos))[:12]
+                    if re.search(r'\b' + re.escape(skill.replace('-', ' ').lower()) + r'\b', baixo):
+                        conhecidos.append(f'skill:{skill}')
+    if os.path.isdir(SCRIPTS):
+        for nome in os.listdir(SCRIPTS):
+            nome_py = nome[:-3] if nome.endswith('.py') else nome
+            if re.search(r'\b' + re.escape(nome_py.lower().replace('_', ' ')) + r'\b', baixo):
+                conhecidos.append(f'script:{nome_py}')
+    # termos capitulizados genéricos (sem stopwords e sem duplicar conhecidos)
+    termos = []
+    for t in re.findall(r'\b[A-ZÀ-Ý][A-Za-zÀ-ÿ]{3,}\b', pedido):
+        if t.lower() in STOP_TERMOS:
+            continue
+        if any(t.lower() == c.lower() for c in conhecidos):
+            continue
+        termos.append(t.lower())
+    return sorted(set(conhecidos + termos))[:12]
 
 
 def _extrair_objetivo(pedido):
@@ -149,7 +177,7 @@ def _detectar_ambiguidades(pedido):
         amb.append({'tipo': 'LINGUAGEM_VAGA', 'custo': 'medio',
                     'msg': 'Termos vagos ("fazer", "coisa", "isso") — defina o alvo concreto.'})
     if 'projeto' in pedido.lower() or 'app' in pedido.lower():
-        alvos = [n for n in (os.listdir(PROJETOS_DIR) if os.path.isdir(PROJETOS_DIR) else [])]
+        alvos = os.listdir(PROJETOS_DIR) if os.path.isdir(PROJETOS_DIR) else []
         achados = [a for a in alvos if a.lower() in pedido.lower()]
         if not achados:
             amb.append({'tipo': 'ALVO_NAO_ESPECIFICADO', 'custo': 'alto',
@@ -190,7 +218,8 @@ def _plano_sugerido(entendimento):
     for a in entendimento.get('acoes', [])[:4]:
         plano.append(f"{a['categoria'].capitalize()} — {a['objeto'][:60] or a['verbo']}")
     if not plano:
-        plano = ['Interpretar o pedido como pergunta/resposta objetiva', 'Verificar se já há resposta no conhecimento/memória antes de executar']
+        plano = ['Interpretar o pedido como pergunta/resposta objetiva',
+                 'Verificar se já há resposta no conhecimento/memória antes de executar']
     plano.append('Validar entrega no Kernel (contrato de saída) antes de responder')
     return plano
 
@@ -199,7 +228,7 @@ def _score_clareza(pedido, entendimento):
     pontos = 100
     if not entendimento.get('acoes'):
         pontos -= 30
-    if len(entendimento.get('ambiguidades', [])):
+    if entendimento.get('ambiguidades'):
         pontos -= 15 * len(entendimento['ambiguidades'])
     if VAGOS.search(pedido):
         pontos -= 10
@@ -227,14 +256,15 @@ def resolver_conceitos(conceitos):
     alvos = list(conceitos)
     if not alvos:
         return resultados
+    memoria = ''
     try:
         proc = subprocess.run(
-            [sys.executable, os.path.join(SCRIPTS, 'memory_engine.py'), 'search', ' '.join(alvos[:4])],
+            [sys.executable, os.path.join(SCRIPTS, 'memory_engine.py'), 'search', ' '.join(str(a) for a in alvos[:4])],
             capture_output=True, text=True, timeout=25, encoding='utf-8', errors='replace')
-        memoria = proc.stdout.strip()[:800] if proc.returncode == 0 else ''
+        if proc.returncode == 0:
+            memoria = proc.stdout.strip()[:800]
     except (OSError, subprocess.TimeoutExpired):
-        memoria = ''
-    # acervo de skills: cada skill conhecida vira referência
+        pass
     skills = []
     if os.path.isdir(MCP_DIR):
         for dominio in os.listdir(MCP_DIR):
@@ -243,17 +273,19 @@ def resolver_conceitos(conceitos):
                 for s in os.listdir(hab):
                     skills.append(f'mcp/{dominio}/habilidades/{s}')
     for c in alvos:
-        entrada = {'conceito': c, 'referencias': []}
-        if 'skill:' in str(c):
-            nome = str(c).split(':', 1)[1]
+        entrada = {'conceito': str(c), 'referencias': []}
+        nome = str(c)
+        if nome.startswith('skill:'):
+            nome_skill = nome.split(':', 1)[1]
             for s in skills:
-                if s.endswith('/' + nome):
+                if s.endswith('/' + nome_skill):
                     entrada['referencias'].append({'tipo': 'skill', 'local': s})
                     break
-        if 'script:' in str(c):
-            entrada['referencias'].append({'tipo': 'script', 'local': os.path.join('scripts', str(c).split(':', 1)[1] + '.py')})
+        elif nome.startswith('script:'):
+            nome_script = nome.split(':', 1)[1]
+            entrada['referencias'].append({'tipo': 'script', 'local': os.path.join('scripts', nome_script + '.py')})
         for p in (os.listdir(PROJETOS_DIR) if os.path.isdir(PROJETOS_DIR) else []):
-            if str(c).lower() == p.lower():
+            if nome.lower() == p.lower():
                 entrada['referencias'].append({'tipo': 'projeto', 'local': os.path.join('Projetos', p)})
         entrada['memoria'] = memoria[:300] if memoria else ''
         resultados.append(entrada)
@@ -265,7 +297,6 @@ def resolver_conceitos(conceitos):
 # ---------------------------------------------------------------------------
 def detectar_desperdicio(pedido):
     analise = {'riscos': [], 'sugestoes': [], 'repeticao': {'possivel': False, 'fonte': ''}}
-    # pedido repetido vs última tarefa registrada
     state_path = os.path.join(BASE, 'runtime', 'state.json')
     try:
         if os.path.exists(state_path):
@@ -273,12 +304,13 @@ def detectar_desperdicio(pedido):
                 state = json.load(f)
             ultima = str(state.get('last_task', ''))
             if ultima and ultima.strip():
-                n = max(len(pedido), len(ultima))
-                if n and len(set(pedido.lower()) & set(ultima.lower())) / n > 0.55:
+                pedido_n = set(pedido.lower())
+                ultima_n = set(ultima.lower())
+                n = max(len(pedido_n) | len(ultima_n), 1)
+                if len(pedido_n & ultima_n) / n > 0.55:
                     analise['repeticao'] = {'possivel': True, 'fonte': f'last_task (runtime/state.json): "{ultima[:80]}"'}
     except (OSError, ValueError):
         pass
-    # atalho: se o pedido menciona uma skill/script conhecido, recomendar
     conceitos = _extrair_conceitos(pedido)
     for c in conceitos:
         if str(c).startswith(('skill:', 'script:')):
@@ -308,11 +340,11 @@ def refinar_com_llm(pedido, entendimento):
     _carregar_env()
     providers = _resolver_providers()
     if not providers:
-        return {'usado': False, 'motivo': 'nenhuma chave de LLM disponível (NVIDIA/OpenAI/Anthropic)', 'entendimento': entendimento}
+        return {'usado': False, 'motivo': 'nenhuma chave de LLM disponível (NVIDIA/OpenAI/Anthropic)'}
     try:
         import litellm
     except ImportError:
-        return {'usado': False, 'motivo': 'litellm não instalado', 'entendimento': entendimento}
+        return {'usado': False, 'motivo': 'litellm não instalado'}
     prompt = (
         'Você é o módulo de Compreensão de Pedidos do EcoSystemUmGrau. O usuário pediu: '
         f'"{pedido[:1000]}"\n\n'
@@ -320,6 +352,7 @@ def refinar_com_llm(pedido, entendimento):
         'Responda APENAS com JSON: {"objetivo_corrigido": "...", "lacunas": [...], '
         '"melhorias": [...], "observacao": "..."}. '
         'Corrija erros de interpretação e aponte apenas o que faltou para transformar em ação.')
+    ultimo_erro = 'desconhecido'
     for provedor, modelo, chave in providers:
         try:
             resp = litellm.completion(
@@ -330,12 +363,14 @@ def refinar_com_llm(pedido, entendimento):
                 timeout=30,
             )
             texto = resp['choices'][0]['message']['content']
-            criticas = json.loads(re.search(r'\{.*\}', texto, re.S).group(0)) if re.search(r'\{.*\}', texto, re.S) else {'observacao': texto[:300]}
-            return {'usado': True, 'provedor': provedor, 'modelo': modelo, 'critica': criticas, 'entendimento': entendimento}
+            m = re.search(r'\{.*\}', texto, re.S)
+            criticas = json.loads(m.group(0)) if m else {'observacao': texto[:300]}
+            return {'usado': True, 'provedor': provedor, 'modelo': modelo, 'critica': criticas,
+                    'resumo': {'objetivo': entendimento.get('objetivo'), 'score': entendimento.get('score_entendimento')}}
         except Exception as e:
             ultimo_erro = f'{provedor}: {e}'
             continue
-    return {'usado': False, 'motivo': f'falha em todos os provedores ({ultimo_erro})', 'entendimento': entendimento}
+    return {'usado': False, 'motivo': f'falha em todos os provedores ({ultimo_erro})'}
 
 
 # ---------------------------------------------------------------------------
