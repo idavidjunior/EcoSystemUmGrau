@@ -68,19 +68,23 @@ DESPERDICIO_SEM_ENTREGAVEL = re.compile(r'\b(melhorar|deixar|arrumar|ver depois|
 # .env (chaves de LLM ficam no scripts/.env)
 # ---------------------------------------------------------------------------
 def _carregar_env():
-    for arq in (os.path.join(SCRIPTS, '.env'), os.path.join(BASE, '.env.example')):
-        if not os.path.exists(arq):
-            continue
-        try:
-            with open(arq, encoding='utf-8') as f:
-                for linha in f:
-                    linha = linha.strip()
-                    if not linha or linha.startswith('#') or '=' not in linha:
-                        continue
-                    k, v = linha.split('=', 1)
-                    os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
-        except OSError:
-            pass
+    # Fonte única de chaves: scripts/.env (NUNCA .env.example — só placeholders).
+    arq = os.path.join(SCRIPTS, '.env')
+    if not os.path.exists(arq):
+        return
+    try:
+        with open(arq, encoding='utf-8') as f:
+            for linha in f:
+                linha = linha.strip()
+                if not linha or linha.startswith('#') or '=' not in linha:
+                    continue
+                k, v = linha.split('=', 1)
+                v = v.strip().strip('"').strip("'")
+                if not v or re.search(r'your[-_ ]|example|xxxx|sk-replace|^<.*>$', v, re.I):
+                    continue
+                os.environ.setdefault(k.strip(), v)
+    except OSError:
+        pass
 
 
 # ---------------------------------------------------------------------------
@@ -140,6 +144,8 @@ def _extrair_conceitos(pedido):
         if t.lower() in STOP_TERMOS:
             continue
         if any(t.lower() == c.lower() for c in conhecidos):
+            continue
+        if any(re.search(p, t, re.I) for p, _ in ACOES):  # verbo capitalizado (início de frase)
             continue
         termos.append(t.lower())
     return sorted(set(conhecidos + termos))[:12]
@@ -323,15 +329,16 @@ def detectar_desperdicio(pedido):
 # Refino com LLM (fail-soft, agnóstico de fornecedor)
 # ---------------------------------------------------------------------------
 def _resolver_providers():
-    """Devolve lista de (provedor, modelo, chave) na ordem de preferência."""
+    """Devolve lista de (provedor, modelo_litellm, chave, api_base) na ordem de preferência."""
     providers = []
-    modelo_nv = os.environ.get('COMPREENSAO_MODELO_NVIDIA', 'nvidia/llama-3.3-70b-instruct')
+    modelo_nv = os.environ.get('COMPREENSAO_MODELO_NVIDIA', 'meta/llama-3.3-70b-instruct')
     if os.environ.get('NVIDIA_API_KEY'):
-        providers.append(('nvidia', modelo_nv, os.environ['NVIDIA_API_KEY']))
+        providers.append(('nvidia', 'openai/' + modelo_nv, os.environ['NVIDIA_API_KEY'],
+                          'https://integrate.api.nvidia.com/v1'))
     if os.environ.get('OPENAI_API_KEY'):
-        providers.append(('openai', 'openai/gpt-4o-mini', os.environ['OPENAI_API_KEY']))
+        providers.append(('openai', 'openai/gpt-4o-mini', os.environ['OPENAI_API_KEY'], None))
     if os.environ.get('ANTHROPIC_API_KEY'):
-        providers.append(('anthropic', 'anthropic/claude-sonnet-4-5', os.environ['ANTHROPIC_API_KEY']))
+        providers.append(('anthropic', 'anthropic/claude-sonnet-4-5', os.environ['ANTHROPIC_API_KEY'], None))
     return providers
 
 
@@ -353,14 +360,16 @@ def refinar_com_llm(pedido, entendimento):
         '"melhorias": [...], "observacao": "..."}. '
         'Corrija erros de interpretação e aponte apenas o que faltou para transformar em ação.')
     ultimo_erro = 'desconhecido'
-    for provedor, modelo, chave in providers:
+    for provedor, modelo, chave, api_base in providers:
         try:
+            kwargs = {'api_base': api_base} if api_base else {}
             resp = litellm.completion(
                 model=modelo,
                 messages=[{'role': 'user', 'content': prompt}],
                 api_key=chave,
                 max_tokens=500,
-                timeout=30,
+                timeout=25,
+                **kwargs,
             )
             texto = resp['choices'][0]['message']['content']
             m = re.search(r'\{.*\}', texto, re.S)

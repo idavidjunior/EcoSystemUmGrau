@@ -952,67 +952,57 @@ Tenha menor acoplamento.
 
 ---
 
-# CLÁUSULA PÉTREA — PIPELINE DE OTIMIZAÇÃO DE PROMPTS
+# CLÁUSULA PÉTREA — COMPREENSÃO DE PEDIDOS ANTES DE EXECUTAR
 
 **Regra permanente, global e obrigatória para TODOS os agentes e TODAS as sessões.**
 
-## Todo prompt recebido, produzido ou utilizado pelo ecossistema passa pelo pipeline de otimização
+## Todo pedido do usuário é compreendido antes de ser executado
 
 ### Integração obrigatória
 
-O ecossistema conta com um **pipeline de otimização de prompts** integrado via MCP server `mcp-prompt-optimization`, exposto em 4 tecnologias:
+O ecossistema conta com um **módulo de compreensão de pedidos** integrado via MCP server `mcp-compreensao-pedidos`
+(`mcp/nucleo/habilidades/compreensao-pedidos/`), 100% stdlib, com refino LLM opcional e fail-soft:
 
-1. **DSPy (Stanford)** — otimização automática via teleprompters:
-   - `MIPRO` (Bayesian optimization) — melhor qualidade gerada
-   - `BootstrapFewShot` — gera exemplos few-shot automaticamente
-   - `BootstrapFewShotWithRandomSearch` — mais robusto
-
-2. **PromptWizard (Microsoft)** — técnica Critique & Refine:
-   - Gera variações de estilo pensando em diferentes estilos
-   - Meta-critique identifica falhas do prompt atual
-   - Refina iterativamente até convergência
-
-3. **PromptFlow (Microsoft)** — avaliação e experimentação:
-   - Validação de prompts em produção
-   - A/B testing de variantes
-   - Trace/logging completo
-
-4. **Análise estática** — detecção instantânea de problemas sem LLM:
-   - Clareza, ambiguidade, over-engineering, token economy
-   - Alinhamento com cláusulas pétreas, safety
-   - Métrica: Accuracy, Relevance, Brevity, Consistency, Safety (0-100)
+1. **Compreensão estática (instantânea, sem LLM)** — extrai:
+   - Objetivo, ações explícitas (em ordem de aparição), contexto e conceitos conhecidos
+   - Restrições, ambiguidades (com custo), critérios de sucesso, riscos de desperdício
+   - Plano sugerido, score de clareza (0-100) e julgamento (`CLARO` / `PARCIALMENTE_CLARO` / `AMBIGUO`)
+2. **Refino LLM opcional** (`--refinar` ou tool `refinar_entendimento`) — UMA chamada à LLM disponível
+   (NVIDIA → OpenAI → Anthropic, chaves SÓ de `scripts/.env`). Fail-soft: sem chave ou com falha, a compreensão estática NUNCA falha.
+3. **Resolução de conceitos** — termos do pedido são resolvidos contra o acervo real
+   (memória, skills, projetos, scripts) antes de qualquer execução.
+4. **Detecção de desperdício** — pedido repetido (última tarefa), escopo creep, sem entregável claro.
 
 ### Pipeline de execução (ordem obrigatória)
 
-1. **Receber prompt** (do usuário, de uma skill, ou de um agente especializado)
-2. **Análise estática imediata** (`suggest_prompt_improvement`) — detecta problemas em <100ms
-3. **Avaliação de qualidade** (`evaluate_prompt`) — score 5D
-4. **Otimização automática** (`optimize_prompt_dspy`) — se score < 70 ou sob requisição
-5. **Refinamento iterativo** (`refine_prompt_wizard`) — se houver falhas conhecidas
-6. **Validação** (`generate_prompt_tests`) — gera casos de teste
-7. **Deploy** — prompt otimizado salvo em `mcp/**/habilidades/**/SKILL.md`
+1. **Receber pedido** (do usuário, de uma skill, de um agente especializado ou da voz)
+2. **Compreender** (`compreender_pedido`) — objetivo, ações, conceitos, restrições, ambiguidades, score
+3. **Se `score < 60` ou `julgamento == AMBIGUO`:** esclarecer com o usuário citando as ambiguidades e seu custo. Nunca "adivinhar".
+4. **Se houver risco de desperdício** (repetição, escopo creep, sem entregável): combinar escopo antes de ampliar
+5. **Executar usando `criterios_sucesso` e `plano_sugerido`** como contrato da tarefa
+6. **Validar a entrega contra os critérios** antes de responder (Kernel valida o contrato de saída)
 
 ### Gatilhos automáticos
 
-- **Toda skill.md carregada** passa por análise estática antes de ser aplicada
-- **Todo comando `@opencodereview` ou `otimizar`** ativa o pipeline completo
-- **Detecção de baixa qualidade** (output inconsistente, alucinações, alucinações factuais) dispara otimização automática
-- **Nova sessão** — prompts críticos (system instructions) são reavaliados via `evaluate_prompt`
+- **Todo novo pedido de tarefa** passa por compreensão antes da execução
+- **Todo comando `@compreender <pedido>`** ativa o fluxo completo
+- **Pedidos vagos, múltiplos objetivos ou com termos desconhecidos** disparam esclarecimento obrigatório
+- **Ao final de cada sessão**, a última tarefa é persistida (`runtime/state.json last_task`) para detectar repetição futura
 
 ### Comando de uso
 
 ```
-@otimizar <prompt a otimizar>
+@compreender <pedido a entender>
 ```
 
-Ou via MCP tool `mcp-prompt-optimization:suggest_prompt_improvement`.
+Ou via MCP tools `mcp-compreensao-pedidos:compreender_pedido`, `avaliar_clareza`, `refinar_entendimento`,
+`resolver_conceitos`, `detectar_desperdicio`.
 
 ### Persistência
 
-Prompts otimizados são registrados em:
-- `conhecimento/aprendizados/YYYY-MM-DD-prompt-optimization-<tema>.md`
-- `memory_engine.py` (kind: `padrao`, tags: `[prompt, optimization]`)
-- `mcp/**/habilidades/**/SKILL.md` (prompt otimizado inline)
+Entendimentos e lições de compreensão são registrados em:
+- `conhecimento/aprendizados/YYYY-MM-DD-compreensao-<tema>.md`
+- `memory_engine.py` (kind: `padrao`, tags: `[compreensao, pedido]`)
 
 ---
 

@@ -84,11 +84,38 @@ class Kernel:
                     rules.append(m.group(1))
         return rules
 
-    def authorize(self, goal):
-        """Enquadra a tarefa no contrato de entrada. Retorna contrato preenchido."""
+    def compreender(self, pedido):
+        """Gancho: compreensão de pedidos antes da execução (fail-soft, stdlib).
+
+        Alimenta o contrato de entrada com objetivo, ações, restrições,
+        critérios de sucesso, ambiguidades e riscos do pedido.
+        """
+        try:
+            import importlib.util
+            mod_path = os.path.join(BASE, 'mcp', 'nucleo', 'habilidades',
+                                    'compreensao-pedidos', 'compreensao.py')
+            spec = importlib.util.spec_from_file_location('compreensao_pedidos_mod', mod_path)
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            return mod.compreender(pedido, refinar=False)
+        except Exception as e:
+            return {'objetivo': pedido.strip(), 'erro_compreensao': str(e)}
+
+    def authorize(self, goal, ent=None):
+        """Enquadra a tarefa no contrato de entrada. Retorna contrato preenchido.
+
+        Se `ent` (entendimento do pedido) for fornecido, o contrato é enriquecido
+        com restrições e critérios de sucesso extraídos da compreensão.
+        """
         contract = {k: '' for k in ENTRADA_CONTRATO}
         contract['objetivo'] = goal.strip()
         contract['contexto'] = '(restaurar via runtime_boot)'
+        if ent and not ent.get('erro_compreensao'):
+            acoes = '; '.join(f"{a['verbo']} {a['objeto']}" for a in ent.get('acoes', []))
+            if acoes:
+                contract['contexto'] += f' | ações: {acoes}'
+            contract['restricoes'] = '; '.join(ent.get('restricoes', [])) or '(sem restrições declaradas)'
+            contract['criterios_sucesso'] = '; '.join(ent.get('criterios_sucesso', [])) or '(definir durante execução)'
         return contract
 
     def validate_output(self, text, goal=''):
@@ -168,20 +195,12 @@ def main():
         print(kernel.render_contract('entrada'))
         if args.objetivo:
             goal = ' '.join(args.objetivo)
-            contract = kernel.authorize(goal)
+            ent = kernel.compreender(goal)
+            contract = kernel.authorize(goal, ent)
             print(f'\nContrato preenchido:\n  objetivo: {contract["objetivo"]}')
-    elif cmd == 'check':
-        text = ' '.join(args.texto)
-        ok, failures = kernel.validate_output(text)
-        if ok:
-            print('[OK] Resposta conforme as regras do Kernel.')
-        else:
-            print('[REPROVADO]')
-            for f in failures:
-                print(f'  - {f}')
-            sys.exit(1)
-    return 0
-
-
-if __name__ == '__main__':
-    sys.exit(main())
+            if not ent.get('erro_compreensao'):
+                print(f'  COMPREENSÃO: score {ent.get("score_entendimento")} ({ent.get("julgamento")})')
+                for a in ent.get('acoes', []):
+                    print(f"    ação: {a['verbo']} {a['objeto']}")
+                for am in ent.get('ambiguidades', []):
+                   

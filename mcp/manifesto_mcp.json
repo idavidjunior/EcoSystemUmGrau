@@ -101,6 +101,24 @@
    "path": "mcp/desenvolvimento/habilidades/cost-aware-llm-pipeline/"
   },
   {
+   "id": "compreensao-pedidos",
+   "categoria": "nucleo",
+   "descricao": "Compreende pedidos do usuario: objetivo, acoes, conceitos, restricoes, ambiguidades, criterios de sucesso e riscos de desperdicio",
+   "entrypoint": "server.py",
+   "parametros": [],
+   "triggers": [
+    "compreender pedido",
+    "entender o pedido",
+    "o que o usuario quer",
+    "pedido ambiguo",
+    "refinar entendimento",
+    "detectar desperdicio"
+   ],
+   "dependencias": [],
+   "dominio": "nucleo",
+   "path": "mcp/nucleo/habilidades/compreensao-pedidos/"
+  },
+  {
    "id": "data-privacy-by-design",
    "categoria": "tecnica",
    "descricao": "",

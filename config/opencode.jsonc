@@ -78,9 +78,9 @@
       "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/comportamentais/server.py"],
       "enabled": true
     },
-    "mcp-prompt-optimization": {
+    "mcp-compreensao-pedidos": {
       "type": "local",
-      "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/desenvolvimento/habilidades/prompt-optimization/server.py"],
+      "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/nucleo/habilidades/compreensao-pedidos/server.py"],
       "enabled": true
     }
   },
@@ -97,9 +97,9 @@
       "description": "Dialogo por voz: inicia o modo conversa (fala, ele ouve/responde/executa)",
       "template": "O usuario quer iniciar o modo dialogo por voz no PC. Execute em background (nao bloqueie esta sessao):\n\n!`python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/dialogo.py\" --modo $ARGUMENTS`\n\nModos validos: vad (maos-livres), push (segure espaco), ativacao (diga Jarvis). Se $ARGUMENTS estiver vazio, use vad. Explique como voltar (Ctrl+C)."
     },
-    "otimizar": {
-      "description": "Otimizar prompt: analisa e otimiza um prompt via DSPy/PromptWizard. Usa o prompt passado como argumento.",
-      "template": "O usuario quer otimizar um prompt. Execute a analise de qualidade e sugestoes usando o MCP mcp-prompt-optimization:\n\n1. Execute `suggest_prompt_improvement` com o prompt: \"$ARGUMENTS\"\n2. Execute `evaluate_prompt` com o mesmo prompt para scores\n3. Se necessario, execute `optimize_prompt_dspy` para otimizacao automatica\n4. Reporte os resultados e sugestoes ao usuario\n\nPrompt a otimizar: \"$ARGUMENTS\""
+    "compreender": {
+      "description": "Compreender pedido: analisa o que o usuario quer (objetivo, acoes, conceitos, restricoes, ambiguidades, desperdicio) antes de executar",
+      "template": "Compreenda o pedido antes de executar. Use o MCP mcp-compreensao-pedidos:\n\n1. Execute `compreender_pedido` com o pedido: \"$ARGUMENTS\"\n2. Se score < 60 ou julgamento AMBIGUO, esclareca com o usuario citando as ambiguidades antes de agir\n3. Se `detectar_desperdicio` apontar repeticao ou escopo creep, combine antes de ampliar\n4. Use `criterios_sucesso` e `plano_sugerido` como contrato da execucao\n\nPedido a compreender: \"$ARGUMENTS\""
     },
     "eco": {
       "description": "Ativar/verificar EcoSystemUmGrau: confirma se o runtime esta operante ou ativa tudo + diagnostica problemas",
