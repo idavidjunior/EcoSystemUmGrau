@@ -203,4 +203,25 @@ def main():
                 for a in ent.get('acoes', []):
                     print(f"    ação: {a['verbo']} {a['objeto']}")
                 for am in ent.get('ambiguidades', []):
-                   
+                    print(f"    ambiguidade: {am['tipo']} — {am['msg']}")
+                for r in ent.get('riscos', []):
+                    print(f"    risco: {r['tipo']} ({r['nivel']}) — {r['msg']}")
+            else:
+                print(f'  COMPREENSÃO: indisponível ({ent.get("erro_compreensao")})')
+            print(f'  restricoes: {contract["restricoes"]}')
+            print(f'  criterios_sucesso: {contract["criterios_sucesso"]}')
+    elif cmd == 'check':
+        text = ' '.join(args.texto)
+        ok, failures = kernel.validate_output(text)
+        if ok:
+            print('[OK] Resposta conforme as regras do Kernel.')
+        else:
+            print('[REPROVADO]')
+            for f in failures:
+                print(f'  - {f}')
+            sys.exit(1)
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())
