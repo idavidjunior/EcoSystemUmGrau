@@ -408,15 +408,43 @@ def handle_tool(tool, args, rid):
     return {"jsonrpc": "2.0", "id": rid, "result": {"content": [{"type": "text", "text": json.dumps(result, ensure_ascii=False, indent=2)}]}}
 
 
-if __name__ == "__main__":
-    for line in sys.stdin:
-        line = line.strip()
+def _read_frame(stream):
+    """Lê uma mensagem MCP no transporte padrão (Content-Length framing)."""
+    headers = {}
+    while True:
+        line = stream.readline()
         if not line:
-            continue
-        try:
-            req = json.loads(line)
-            resp = handle(req)
-            if resp is not None:
-                print(json.dumps(resp), flush=True)
-        except json.JSONDecodeError:
-            pass
+            return None
+        line = line.rstrip(b"\r\n")
+        if not line:
+            break
+        if b":" in line:
+            key, value = line.split(b":", 1)
+            headers[key.strip().lower()] = value.strip()
+    length = int(headers.get(b"content-length", b"0") or b"0")
+    if length <= 0:
+        return None
+    body = stream.read(length)
+    try:
+        return json.loads(body.decode("utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        return None
+
+
+def _write_frame(stream, obj):
+    """Envia uma resposta MCP com Content-Length framing."""
+    data = json.dumps(obj, ensure_ascii=False).encode("utf-8")
+    stream.write(b"Content-Length: " + str(len(data)).encode("ascii") + b"\r\n\r\n" + data)
+    stream.flush()
+
+
+if __name__ == "__main__":
+    stdin = sys.stdin.buffer
+    stdout = sys.stdout.buffer
+    while True:
+        req = _read_frame(stdin)
+        if req is None:
+            break
+        resp = handle(req)
+        if resp is not None:
+            _write_frame(stdout, resp)
