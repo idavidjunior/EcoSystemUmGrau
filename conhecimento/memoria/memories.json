@@ -3938,5 +3938,25 @@
     "access_count": 0,
     "created_at": "2026-08-09T16:46:54.307924",
     "last_accessed": "2026-08-09T16:46:54.307924"
+  },
+  {
+    "id": 227,
+    "kind": "decisao",
+    "task": "Importação de pasta preservando árvore + remoção de referência",
+    "summary": "BibliaEstudoCompleta: UserResourceDao agora persiste a hierarquia real de pastas importadas (coluna parent_id, getChildren/getRootResources/deleteSubtree, importFolderTree recursivo idempotente por (uri,type)). Remoção apaga apenas as referências no banco, nunca os arquivos originais do dispositivo. ResourcesActivity navega a árvore com pilha + item Voltar e materializa filhos sob demanda.",
+    "project": "",
+    "tags": [
+      "type",
+      "uri",
+      "idempotente",
+      "recursivo",
+      "importfoldertree",
+      "deletesubtree"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T19:29:49.770940",
+    "last_accessed": "2026-08-09T19:29:49.770940"
   }
 ]

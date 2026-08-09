@@ -2367,5 +2367,23 @@
   ],
   "pure": [
     226
+  ],
+  "type": [
+    227
+  ],
+  "uri": [
+    227
+  ],
+  "idempotente": [
+    227
+  ],
+  "recursivo": [
+    227
+  ],
+  "importfoldertree": [
+    227
+  ],
+  "deletesubtree": [
+    227
   ]
 }
