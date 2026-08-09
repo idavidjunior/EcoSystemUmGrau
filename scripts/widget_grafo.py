@@ -594,13 +594,16 @@ def _build_view() -> Path | None:
     src = OUTPUT_HTML.read_text(encoding='utf-8')
 
     VENDOR = BASE / 'docs' / 'vendor' / 'vis-network.min.js'
+    # NÃO inliner o vendor JS - usar referência externa para evitar HTML de 500KB+
+    # O arquivo local existe e é servido pelo webview via file://
     if VENDOR.exists():
-        vendor_js = VENDOR.read_text(encoding='utf-8')
+        # Manter referência local - webview serve arquivos locais
         src = src.replace(
             '<script src="vendor/vis-network.min.js"></script>',
-            '<script>' + vendor_js + '</script>'
+            '<script src="vendor/vis-network.min.js"></script>'
         )
     else:
+        # Fallback para CDN se vendor não existir
         src = src.replace(
             '<script src="vendor/vis-network.min.js"></script>',
             '<script src="https://unpkg.com/vis-network@9.1.2/standalone/umd/vis-network.min.js"></script>'

@@ -467,6 +467,7 @@ def gerar_html(nos, arestas, output_path):
             'cl': n['cl'],
             'atv': round(n.get('atv', 0.5), 3),
             'tags': n.get('tags', []),
+            'group': n['categoria'],  # para vis-network groups styling
         }
         if n['categoria'] == 'bugs':
             node_obj['st'] = n.get('status', 'resolvido')
@@ -648,7 +649,18 @@ def gerar_html(nos, arestas, output_path):
       stabilization: false
     }},
     interaction: {{ hover:true, tooltipDelay:120, navigationButtons:true, zoomSpeed:0.35, smoothWheel:true }},
-    configure: {{ enabled: true, filter: 'physics', showButton: true, container: undefined }}
+    configure: {{ enabled: true, filter: 'physics', showButton: true, container: undefined }},
+    // Grupos por categoria para styling consistente (vis-network groups)
+    groups: {{
+      padroes: {{ color: '#4e79a7', borderWidth: 2, font: {{ color: '#cdd6f4' }} }},
+      decisoes: {{ color: '#f28e2b', borderWidth: 2, font: {{ color: '#cdd6f4' }} }},
+      bugs: {{ color: '#e15759', borderWidth: 2, font: {{ color: '#cdd6f4' }} }},
+      cognitivo: {{ color: '#59a14f', borderWidth: 2, font: {{ color: '#cdd6f4' }} }},
+      heuristicas: {{ color: '#76b7b2', borderWidth: 2, font: {{ color: '#cdd6f4' }} }},
+      frameworks: {{ color: '#edc948', borderWidth: 2, font: {{ color: '#cdd6f4' }} }},
+      missoes: {{ color: '#b07aa1', borderWidth: 2, font: {{ color: '#cdd6f4' }} }},
+      hub: {{ color: '#888888', borderWidth: 3, font: {{ color: '#cdd6f4', size: 14 }} }}
+    }}
   }};
   const network = new vis.Network(container, {{ nodes, edges }}, options);
 
