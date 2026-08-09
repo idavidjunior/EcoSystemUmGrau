@@ -110,31 +110,18 @@ PYTHON_STDLIB = frozenset({
     'syslog', 'commands',
 })
 
-# Known third-party packages to skip (common ones in this project)
-THIRD_PARTY_PACKAGES = frozenset({
-    'aiohttp', 'webview', 'psutil', 'requests', 'numpy', 'pandas',
-    'yaml', 'jinja2', 'markdown', 'bs4', 'lxml', 'pytest', 'ruff',
-    'mypy', 'bandit', 'vulture', 'pyflakes', 'pylint', 'radon',
-    'eslint', 'typescript', 'prettier', 'jscpd', 'madge',
-})
-
 def extract_imports_python(content):
-    """Extrai imports Python."""
+    """Extrai imports Python - only check relative imports (local files)."""
     imports = []
     for m in re.finditer(r'^(?:from\s+(\S+)\s+import|import\s+(\S+))', content, re.MULTILINE):
         mod = m.group(1) or m.group(2)
         if mod and not mod.startswith('.'):
-            # Strip trailing commas and whitespace
-            mod = mod.rstrip(',').strip()
-            if not mod:
-                continue
-            # Skip standard library modules
-            root_mod = mod.split('.')[0]
-            if root_mod in PYTHON_STDLIB:
-                continue
-            # Skip known third-party packages
-            if root_mod in THIRD_PARTY_PACKAGES:
-                continue
+            # Skip absolute imports (stdlib, third-party, or local packages)
+            # Only relative imports (starting with .) point to local files
+            continue
+        if mod and mod.startswith('.'):
+            # Relative import - strip leading dots and convert to path
+            mod = mod.lstrip('.')
             imports.append((mod, 'import'))
     return imports
 
