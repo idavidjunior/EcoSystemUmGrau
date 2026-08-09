@@ -4,7 +4,7 @@
   "nota:conhecimento/notas/missoes/controle-de-tv-lg-01082026.md": 3,
   "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-mp3player.md": 2,
   "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-supermarketcalculator.md": 2,
-  "nota:conhecimento/aprendizados/2026-08-06-janela-conversa-ativa-suprime-saudacao.md": 8,
+  "nota:conhecimento/aprendizados/2026-08-06-janela-conversa-ativa-suprime-saudacao.md": 11,
   "nota:conhecimento/aprendizados/2026-08-06-saudacoes-inteligentes-reconexao-vs-primeira-vez.md": 6,
   "nota:conhecimento/notas/padroes/saudacoes-inteligentes-reconexao-vs-primeira-vez.md": 1,
   "nota:conhecimento/aprendizados/2026-08-06-recuperacao-rapida-conexao.md": 1,
@@ -25,10 +25,10 @@
   "nota:conhecimento/aprendizados/2026-08-04-48-skills-dominios-tecnicos.md": 1,
   "nota:conhecimento/aprendizados/2026-07-31-clima-open-meteo-saudacao-local.md": 7,
   "nota:conhecimento/aprendizados/2026-07-31-saudacao-formatada-pt-br-monitor-saude.md": 13,
-  "nota:conhecimento/aprendizados/2026-08-01-instrucao-permanente-confirmacao-em-audio.md": 8,
+  "nota:conhecimento/aprendizados/2026-08-01-instrucao-permanente-confirmacao-em-audio.md": 10,
   "nota:conhecimento/notas/cognitivo/lei-de-postel-aplicada-a-engenharia.md": 2,
   "nota:conhecimento/notas/heuristicas/verifique-o-que-voce-acha-que-sabe.md": 2,
-  "nota:conhecimento/aprendizados/2026-08-01-pronuncia-jarvis.md": 10,
+  "nota:conhecimento/aprendizados/2026-08-01-pronuncia-jarvis.md": 12,
   "nota:conhecimento/notas/missoes/aprendizado-â-2026-07-31-â-reorg-catãlogo-ãnico-habilidades-.md": 2,
   "nota:conhecimento/aprendizados/2026-08-02-regras-obediencia-agents.md": 5,
   "nota:conhecimento/aprendizados/2026-08-06-certificacao-forense-e-boot-do-watchdog.md": 3,
@@ -55,7 +55,7 @@
   "nota:conhecimento/notas/missoes/jarvis-do-celular-e-do-pc-um-sã-cãrebro-arquitetura-sincroni.md": 2,
   "nota:conhecimento/aprendizados/2026-08-04-grafo-zoom-microscopio-expandir-cerebro-vivo.md": 1,
   "nota:conhecimento/aprendizados/2026-08-03-wireless-debugging-porta-pareamento-vs-conexao.md": 1,
-  "145": 1,
+  "145": 2,
   "nota:conhecimento/notas/cognitivo/2026-08-03-scan-proativo-claude-code-extra-agents.md": 1,
   "nota:conhecimento/notas/cognitivo/reconhecimento-de-estado-por-elementos-chave.md": 1,
   "nota:conhecimento/aprendizados/2026-08-07-eco-autoload-gatilho-unico.md": 1,
@@ -64,5 +64,6 @@
   "nota:conhecimento/aprendizados/2026-07-28-aprendizado-automatico-sempre.md": 4,
   "nota:conhecimento/aprendizados/2026-08-05-runtime-camada2-kernel-constituicao.md": 2,
   "nota:conhecimento/notas/decisoes/renomear-pastas-com-espacos-para-nomes-sem-espaco.md": 2,
-  "nota:conhecimento/notas/decisoes/ler-usa-python-puro-stdlib-only-zero-dependencias-externas-i.md": 2
+  "nota:conhecimento/notas/decisoes/ler-usa-python-puro-stdlib-only-zero-dependencias-externas-i.md": 2,
+  "nota:conhecimento/aprendizados/2026-08-01-politica-resposta-rapida-caminhos-rapidos.md": 1
 }
