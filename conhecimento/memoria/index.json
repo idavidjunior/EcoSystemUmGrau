@@ -436,7 +436,8 @@
   ],
   "grafo": [
     84,
-    97
+    97,
+    220
   ],
   "invertida": [
     85
@@ -2267,5 +2268,20 @@
   ],
   "check": [
     219
+  ],
+  "desktop": [
+    220
+  ],
+  "criticos": [
+    220
+  ],
+  "problemas": [
+    220
+  ],
+  "corrigidos": [
+    220
+  ],
+  "issues": [
+    220
   ]
 }

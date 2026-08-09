@@ -3798,5 +3798,25 @@
     "access_count": 0,
     "created_at": "2026-08-09T08:44:09.437821",
     "last_accessed": "2026-08-09T08:44:09.437821"
+  },
+  {
+    "id": 220,
+    "kind": "padrao",
+    "task": "Fix critical widget grafo issues",
+    "summary": "Corrigidos 3 problemas criticos P0 no widget grafo desktop: 1) Removido inlining do vis-network.min.js (688KB) - agora usa script src externo. 2) Adicionado groups config ao vis-network options para styling por categoria. 3) Adicionado propriedade group nos nodes para usar o groups config. HTML do widget passou de 552KB com vendor inlined para referencia externa.",
+    "project": "",
+    "tags": [
+      "desktop",
+      "criticos",
+      "grafo",
+      "problemas",
+      "corrigidos",
+      "issues"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T09:15:46.059394",
+    "last_accessed": "2026-08-09T09:15:46.059394"
   }
 ]
