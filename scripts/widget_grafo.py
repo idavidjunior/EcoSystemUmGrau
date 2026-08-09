@@ -202,9 +202,13 @@ API_INJECT = """
                 window.location.reload();
               }
             }
-          }.bind(this)).catch(function() {});
+          }.bind(this)).catch(function(err) {
+            console.warn('[widget] perguntar error:', err);
+          });
         }
-      } catch (e) {}
+      } catch (e) {
+        console.warn('[widget] tick error:', e);
+      }
     }
   };
   setInterval(function(){ window.__widgetApiPoll.tick(); }, 1000);
@@ -251,8 +255,12 @@ WIDGET_JS = """
       if (document.getElementById('mk-controles')) return;
       if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.test_bridge === 'function') {
         try {
-          window.pywebview.api.test_bridge().catch(function() {});
-        } catch (e) {}
+          window.pywebview.api.test_bridge().catch(function(err) {
+            console.warn('[widget] test_bridge error:', err);
+          });
+        } catch (e) {
+          console.warn('[widget] initWidgetControls error:', e);
+        }
       }
     }
 
@@ -572,18 +580,13 @@ def _persistir_saida(win) -> None:
 
 
 def _regenerate() -> bool:
-    print('[widget] Regenerando grafo...')
     try:
         r = subprocess.run([sys.executable, str(GEN_SCRIPT), str(OUTPUT_HTML)],
                            capture_output=True, text=True, timeout=60)
         if r.returncode != 0:
-            print('[widget] Erro ao gerar:')
-            print((r.stderr or r.stdout or '').strip())
             return False
-        print('[widget] Grafo atualizado.')
         return True
-    except Exception as e:
-        print(f'[widget] Falha na geracao: {e}')
+    except Exception:
         return False
 
 
@@ -619,7 +622,9 @@ def _build_view() -> Path | None:
       if(window.pywebview && window.pywebview.api && window.pywebview.api.debug_log){
         window.pywebview.api.debug_log('ERRO-TARDE: ' + txt);
       }
-    } catch(e){}
+    } catch(e){
+      console.warn('[widget] debug_log error:', e);
+    }
   }, true);
 </script>
 """
