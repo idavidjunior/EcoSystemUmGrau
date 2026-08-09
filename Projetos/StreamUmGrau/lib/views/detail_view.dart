@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../core/services/favoritos_service.dart';
+import '../core/services/web_video_cast_bridge.dart';
 import '../core/theme/app_theme.dart';
 import '../models/midia_model.dart';
 
@@ -53,6 +54,8 @@ class DetailView extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 _InfoRow(midia: midia),
+                const SizedBox(height: 20),
+                _BotaoAssistirNaTv(titulo: midia.titulo),
                 const SizedBox(height: 24),
                 Text(
                   'Sinopse',
@@ -194,6 +197,41 @@ class _ChipInfo extends StatelessWidget {
       child: Text(
         rotulo,
         style: const TextStyle(color: Colors.white, fontSize: 12),
+      ),
+    );
+  }
+}
+
+/// Botao principal que delega ao Web Video Cast o envio da obra para a TV.
+class _BotaoAssistirNaTv extends StatelessWidget {
+  final String titulo;
+
+  const _BotaoAssistirNaTv({required this.titulo});
+
+  Future<void> _assistir(BuildContext context) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final abriu = await WebVideoCastBridge.assistirNaTv(titulo: titulo);
+    if (!abriu) {
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text('Não foi possível abrir o Web Video Cast.'),
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 48,
+      child: FilledButton.icon(
+        onPressed: () => _assistir(context),
+        icon: const Icon(Icons.cast),
+        label: const Text(
+          'Assistir na TV',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
       ),
     );
   }
