@@ -1,12 +1,12 @@
 ---
-tags: [agent, named, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, see, skill]
+tags: [agent, named, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, skill]
 aliases: [eco agente e comando global]
 date: 2026-08-08
 ---
 
 # eco agente e comando global
 
-**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
