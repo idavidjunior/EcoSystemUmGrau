@@ -244,18 +244,18 @@ def _build_view() -> Path | None:
 """
     src = _inject_into_head(src, early_error)
 
-    # Widget JS (init controls)
-    src = _inject_into_head(src, WIDGET_JS)
+    # Widget CSS (external file)
+    src = _inject_into_head(src, '<link rel="stylesheet" href="widget.css">')
 
-    # Widget CSS
-    src = _inject_into_head(src, '<style>' + WIDGET_CSS + '</style>')
+    # Widget JS (init controls) - external file
+    src = _inject_into_head(src, '<script src="widget.js"></script>')
 
     # API inject (polling)
     api_inject = API_INJECT.replace('%POLL_MS%', str(POLL_MS))
     src = _inject_into_head(src, api_inject)
 
-    # Resize handler + extra widget UI
-    src = _inject_into_body(src, RESIZE_JS + WIDGET_JS_EXTRA)
+    # Resize handler + extra widget UI - external files
+    src = _inject_into_body(src, '<script src="resize.js"></script><script src="widget-extra.js"></script>')
 
     VIEW_COPY.write_text(src, encoding='utf-8')
     return VIEW_COPY

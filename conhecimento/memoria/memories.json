@@ -3838,5 +3838,25 @@
     "access_count": 0,
     "created_at": "2026-08-09T09:34:26.872513",
     "last_accessed": "2026-08-09T09:34:26.872513"
+  },
+  {
+    "id": 222,
+    "kind": "padrao",
+    "task": "Fix P2 widget grafo issues",
+    "summary": "Corrigidos problemas P2 no widget grafo desktop: 1) CSS/JS extraidos para arquivos externos: widget.css (2.8KB), widget.js (809B), widget-extra.js (13.5KB), api-inject.js (872B), resize.js (884B). 2) HTML do widget agora referencia arquivos externos via <link rel=stylesheet> e <script src=> ao inves de inlining. 3) Tamanho do HTML reduzido (era 553KB inline, agora 535KB com refs externas - vendor ja era externo). 4) Removido RESIZE_JS redundante (CSS ja define #mk-resize). 5) Pipeline _build_view atualizado para injetar referencias externas.",
+    "project": "",
+    "tags": [
+      "externo",
+      "inlining",
+      "inves",
+      "src",
+      "vendor",
+      "script"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T09:56:40.755176",
+    "last_accessed": "2026-08-09T09:56:40.755176"
   }
 ]
