@@ -1,18 +1,9 @@
 {
-  "conexoes": 78,
-  "hoje": "2026-08-07",
+  "conexoes": 1,
+  "hoje": "2026-08-09",
   "saudacoes_hoje": [
-    "Por aqui de novo, David. Seguindo.",
-    "De volta, David. Te escuto.",
-    "De novo na linha, David. Diga o comando.",
-    "Tô de volta na frequência, David. Continue de onde paramos.",
-    "Conexão estável de novo, David. Pode mandar.",
-    "Ótimo, David, você voltou. Pode continuar.",
-    "Voltamos, David. Dá o play aí.",
-    "De volta, David. De onde paramos?",
-    "Continuamos, David. Tava no meio de uma coisa aqui.",
-    "Tô aqui, David. Trecho de onde cortou."
+    "Boa tarde! Data e hora de agora: hoje em São Paulo/SP, na Capital, domingo, 9 de agosto de 2026, 13:09. Clima atual: predominantemente limpo, 25°C, umidade de 64%. Previsão para amanhã (segunda-feira, 10/08): mínima de 13°C e máxima de 17°C, garoa leve, chance de chuva de 47%. Estou online, com minha ponte de voz e o meu cérebro ativos. O que precisa?"
   ],
-  "ultima_saudacao": "Tô aqui, David. Trecho de onde cortou.",
-  "ultima_saudacao_ts": 1786140247.9121552
+  "ultima_saudacao": "Boa tarde! Data e hora de agora: hoje em São Paulo/SP, na Capital, domingo, 9 de agosto de 2026, 13:09. Clima atual: predominantemente limpo, 25°C, umidade de 64%. Previsão para amanhã (segunda-feira, 10/08): mínima de 13°C e máxima de 17°C, garoa leve, chance de chuva de 47%. Estou online, com minha ponte de voz e o meu cérebro ativos. O que precisa?",
+  "ultima_saudacao_ts": 1786291775.6532207
 }

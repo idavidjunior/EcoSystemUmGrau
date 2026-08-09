@@ -15,8 +15,8 @@
   "nota:conhecimento/notas/heuristicas/heuristica-de-isolamento-de-falha.md": 1,
   "46": 1,
   "nota:conhecimento/notas/cognitivo/clãusula-pãtrea-â-ativaãão-de-voz-eco-system.md": 2,
-  "nota:conhecimento/notas/missoes/2026-07-27-unificacao-completa-do-ecossistema.md": 1,
-  "nota:conhecimento/aprendizados/2026-07-27-1.md": 1,
+  "nota:conhecimento/notas/missoes/2026-07-27-unificacao-completa-do-ecossistema.md": 2,
+  "nota:conhecimento/aprendizados/2026-07-27-1.md": 2,
   "nota:conhecimento/notas/missoes/2026-08-02-regras-do-ecossistema-garantia-de-obediãncia-pelo.md": 1,
   "nota:conhecimento/aprendizados/2026-08-02-setup-scheduled-task-vigilante.md": 2,
   "nota:conhecimento/aprendizados/2026-08-02-vigilante-inativo-scheduled-task-faltante.md": 2,
@@ -48,5 +48,6 @@
   "nota:conhecimento/notas/bugs/loop-infinito-de-push-no-vigilante-emails-do-github-a-cada-m.md": 1,
   "nota:conhecimento/aprendizados/2026-08-03-sync-github-organizacao-repos.md": 1,
   "nota:conhecimento/aprendizados/2026-08-08-loop-infinito-push-vigilante.md": 1,
-  "nota:conhecimento/notas/cognitivo/estrategia-de-loop-autonomo-planejar-executar-verificar-corr.md": 1
+  "nota:conhecimento/notas/cognitivo/estrategia-de-loop-autonomo-planejar-executar-verificar-corr.md": 1,
+  "nota:conhecimento/notas/cognitivo/2026-08-02-ecosystem-sync-1-comando-para-sincronizar-tudo.md": 1
 }
