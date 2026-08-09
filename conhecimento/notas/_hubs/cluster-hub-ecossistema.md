@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**131 notas** do cluster ecossistema.
+**132 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -118,6 +118,7 @@
 - [[pontuaãão-da-transcriãão-voltando-ao-balão-do-app-corrigido]]
 - [[pronãncia-jãrvis-escrita-sem-acento-fala-com-acento]]
 - [[protocolo-higiene-repo-streamumgrau]]
+- [[regra-do-usuário-buildinstalatestavalida-antes-de-commitar-e]]
 - [[renomear-pastas-com-espacos-para-nomes-sem-espaco]]
 - [[reorganização-habilidades-dentro-de-mcp-por-domínio]]
 - [[salvar-rustdesk-password-e-id-em-local-permanente-nao-gerar-]]

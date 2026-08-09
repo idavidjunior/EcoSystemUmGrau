@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**85 notas** conectadas a este hub.
+**86 notas** conectadas a este hub.
 
 
 ## Notas
@@ -65,6 +65,7 @@
 - [[packageactivity-launch-pattern]]
 - [[process-hierarchy-for-multi-window-apps]]
 - [[registro-de-habilidades-de-jarvis]]
+- [[regra-do-usuário-buildinstalatestavalida-antes-de-commitar-e]]
 - [[renderersfactory-for-custom-audioprocessor]]
 - [[retry-com-backoff-exponencial]]
 - [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]
