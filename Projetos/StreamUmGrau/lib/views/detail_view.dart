@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../core/services/favoritos_service.dart';
 import '../core/theme/app_theme.dart';
 import '../models/midia_model.dart';
 
@@ -19,6 +20,23 @@ class DetailView extends StatelessWidget {
             pinned: true,
             backgroundColor: AppColors.background,
             leading: const BackButton(color: Colors.white),
+            actions: [
+              ListenableBuilder(
+                listenable: FavoritosService.instance,
+                builder: (context, _) {
+                  final ehFavorito =
+                      FavoritosService.instance.ehFavorito(midia.id);
+                  return IconButton(
+                    onPressed: () => FavoritosService.instance.toggle(midia.id),
+                    tooltip: ehFavorito ? 'Remover dos favoritos' : 'Favoritar',
+                    icon: Icon(
+                      ehFavorito ? Icons.favorite : Icons.favorite_border,
+                      color: ehFavorito ? Colors.redAccent : Colors.white,
+                    ),
+                  );
+                },
+              ),
+            ],
             flexibleSpace: FlexibleSpaceBar(
               background: _Banner(midia: midia),
             ),
@@ -69,7 +87,7 @@ class DetailView extends StatelessWidget {
                       width: double.infinity,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) =>
-                          const SizedBox.shrink(),
+                          const _BannerFundo(),
                     ),
                   ),
                 ],
@@ -128,7 +146,7 @@ class _BannerFundo extends StatelessWidget {
   }
 }
 
-/// Linha de metadados: tipo • ano • classificação etária.
+/// Linha de metadados: tipo • ano • classificação etária • categoria.
 class _InfoRow extends StatelessWidget {
   final Midia midia;
 
@@ -150,6 +168,11 @@ class _InfoRow extends StatelessWidget {
       chips
         ..add(const SizedBox(width: 8))
         ..add(_ChipInfo(rotulo: midia.categoria));
+    }
+    if (midia.popularidade > 0) {
+      chips
+        ..add(const SizedBox(width: 8))
+        ..add(_ChipInfo(rotulo: '★ ${midia.popularidade}'));
     }
     return Wrap(spacing: 0, runSpacing: 8, children: chips);
   }
