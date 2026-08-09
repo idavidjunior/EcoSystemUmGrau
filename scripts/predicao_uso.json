@@ -1,0 +1,114 @@
+{
+  "gerado_em": "2026-08-09T16:23:05.741496",
+  "padroes": {
+    "total_perguntas": 182,
+    "freq_categorias": {
+      "outros": 111,
+      "saudacao": 25,
+      "pronuncia": 9,
+      "hora": 9,
+      "ecossistema": 8,
+      "rede": 5,
+      "aprendizado": 4,
+      "status": 4,
+      "clima": 3,
+      "memoria": 2
+    },
+    "freq_recentes": {
+      "outros": 11,
+      "hora": 3,
+      "ecossistema": 2,
+      "rede": 2,
+      "pronuncia": 1
+    },
+    "perguntas_repetidas": {
+      "tipo mensagem id 1 texto concluiu a última tarefa": 12,
+      "tipo mensagem id 2 texto a recuperação de conexão está a função foi implementada com sucesso você já pode usála ela já está rodando": 10,
+      "tipo mensagem id 3 texto você sabe o que é adb": 7,
+      "teste de integracao": 3,
+      "bom dia": 3
+    },
+    "sequencias_comuns": {
+      "saudacao -> saudacao": 3,
+      "saudacao -> clima": 2,
+      "ecossistema -> rede": 2,
+      "hora -> hora": 2,
+      "rede -> saudacao": 1
+    },
+    "horario_ultima_atividade": "2026-08-09 15:44:31",
+    "ultima_pergunta": "quando você olha para o ecossistema um grau o que você gostaria de aprender?"
+  },
+  "predicoes": [
+    {
+      "tipo": "categoria_frequente",
+      "categoria": "outros",
+      "frequencia": 111,
+      "confianca": "alta",
+      "sugestao": "Usuario costuma pedir coisas relacionadas a outros"
+    },
+    {
+      "tipo": "sequencia",
+      "padrao": "saudacao -> saudacao",
+      "frequencia": 3,
+      "confianca": "media",
+      "sugestao": "Apos falar de saudacao, costuma falar de saudacao"
+    },
+    {
+      "tipo": "sequencia",
+      "padrao": "saudacao -> clima",
+      "frequencia": 2,
+      "confianca": "media",
+      "sugestao": "Apos falar de saudacao, costuma falar de clima"
+    },
+    {
+      "tipo": "sequencia",
+      "padrao": "ecossistema -> rede",
+      "frequencia": 2,
+      "confianca": "media",
+      "sugestao": "Apos falar de ecossistema, costuma falar de rede"
+    },
+    {
+      "tipo": "sequencia",
+      "padrao": "hora -> hora",
+      "frequencia": 2,
+      "confianca": "media",
+      "sugestao": "Apos falar de hora, costuma falar de hora"
+    },
+    {
+      "tipo": "pergunta_repetida",
+      "pergunta": "tipo mensagem id 1 texto concluiu a última tarefa",
+      "frequencia": 12,
+      "confianca": "alta",
+      "sugestao": "Pergunta recorrente: tipo mensagem id 1 texto concluiu a última tarefa"
+    },
+    {
+      "tipo": "pergunta_repetida",
+      "pergunta": "tipo mensagem id 2 texto a recuperação de conexão está a função foi implementada",
+      "frequencia": 10,
+      "confianca": "alta",
+      "sugestao": "Pergunta recorrente: tipo mensagem id 2 texto a recuperação de conexão está a fun"
+    },
+    {
+      "tipo": "pergunta_repetida",
+      "pergunta": "tipo mensagem id 3 texto você sabe o que é adb",
+      "frequencia": 7,
+      "confianca": "alta",
+      "sugestao": "Pergunta recorrente: tipo mensagem id 3 texto você sabe o que é adb"
+    },
+    {
+      "tipo": "pergunta_repetida",
+      "pergunta": "teste de integracao",
+      "frequencia": 3,
+      "confianca": "alta",
+      "sugestao": "Pergunta recorrente: teste de integracao"
+    },
+    {
+      "tipo": "pergunta_repetida",
+      "pergunta": "bom dia",
+      "frequencia": 3,
+      "confianca": "alta",
+      "sugestao": "Pergunta recorrente: bom dia"
+    }
+  ],
+  "total_predicoes": 10
+}

@@ -1,0 +1,13 @@
+{
+  "gerado_em": "2026-08-09T16:23:46.556587",
+  "total_alertas": 1,
+  "alertas": [
+    {
+      "tipo": "acumulo_debug",
+      "quantidade": 74,
+      "risco": "baixo",
+      "mensagem": "74 arquivos de debug/acesso - considerar limpeza"
+    }
+  ],
+  "sistema_saudavel": false
+}
