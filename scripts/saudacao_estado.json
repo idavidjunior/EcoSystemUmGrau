@@ -1,11 +1,13 @@
 {
-  "conexoes": 3,
+  "conexoes": 5,
   "hoje": "2026-08-09",
   "saudacoes_hoje": [
     "Boa tarde! Data e hora de agora: hoje em São Paulo/SP, na Capital, domingo, 9 de agosto de 2026, 13:09. Clima atual: predominantemente limpo, 25°C, umidade de 64%. Previsão para amanhã (segunda-feira, 10/08): mínima de 13°C e máxima de 17°C, garoa leve, chance de chuva de 47%. Estou online, com minha ponte de voz e o meu cérebro ativos. O que precisa?",
     "Aí de novo, senhor. Onde paramos?",
-    "Voltou. Sistemas seguem quentes, é só falar."
+    "Voltou. Sistemas seguem quentes, é só falar.",
+    "E a conexão voltou. Estou por aqui.",
+    "Reconectado. Continue de onde estava."
   ],
-  "ultima_saudacao": "Voltou. Sistemas seguem quentes, é só falar.",
-  "ultima_saudacao_ts": 1786293776.089892
+  "ultima_saudacao": "Reconectado. Continue de onde estava.",
+  "ultima_saudacao_ts": 1786294007.2876995
 }
