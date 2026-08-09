@@ -21,4 +21,3 @@ Verificar se o vigilante detecta automaticamente novos arquivos em conhecimento/
 
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]
-- [[projetos-irmaos-do-ecosystemumgrau]]

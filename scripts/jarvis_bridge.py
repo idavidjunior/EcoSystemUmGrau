@@ -795,18 +795,28 @@ class Cliente:
 
     async def _get_session(self):
         if self._session_id:
-            return self._session_id
-        sessions = await _http_async("GET", "/session")
-        if sessions and len(sessions) > 0:
-            sid = sessions[-1].get("id")
-            if sid:
-                self._session_id = sid
-                logger.info(f"reusing session {sid}")
-                return sid
-        result = await _http_async("POST", "/session", {"title": "Jarvis"})
-        if result:
-            self._session_id = result.get("id")
-            logger.info(f"created session {self._session_id}")
+            # Verifica se a sessão ainda é válida
+            try:
+                sessions = await _http_async("GET", "/session")
+                if sessions and isinstance(sessions, list):
+                    # Procura a sessão atual na lista
+                    for s in sessions:
+                        if s.get("id") == self._session_id:
+                            logger.info(f"reusing session {self._session_id}")
+                            return self._session_id
+                # Sessão não encontrada — cria nova
+                logger.info(f"session {self._session_id} expirou, criando nova")
+                self._session_id = None
+            except Exception as e:
+                logger.warning(f"verificando sessao: {e}")
+                self._session_id = None
+
+        # Cria nova sessão
+        if not self._session_id:
+            result = await _http_async("POST", "/session", {"title": "Jarvis"})
+            if result:
+                self._session_id = result.get("id")
+                logger.info(f"created session {self._session_id}")
         return self._session_id
 
     async def perguntar(self, msg, img_base64=None, img_mime="image/jpeg", tentativa=1):
