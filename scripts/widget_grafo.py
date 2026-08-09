@@ -96,8 +96,9 @@ class Bridge:
         vault_hash = _get_vault_version()
         # last_ts vem do JS como string do hash anterior
         last_hash = str(last_ts or '')
-        changed = vault_hash != last_hash
-        return {'ts': vault_hash, 'last_ts': last_hash, 'changed': changed}
+        if vault_hash != last_hash:
+            return {'ts': vault_hash, 'last_ts': last_hash, 'changed': True}
+        return {'ts': vault_hash, 'last_ts': last_hash, 'changed': False}
 
     def guardar_geo(self, x=None, y=None, width=None, height=None):
         data = _carregar_geo()
@@ -193,14 +194,9 @@ API_INJECT = """
     tick: function(){
       try {
         if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.perguntar === 'function') {
-          // Recupera hash salvo se não temos em memória (ex: após reload)
-          if (!this.lastTs) {
-            this.lastTs = localStorage.getItem('vaultHash') || '';
-          }
           window.pywebview.api.perguntar(this.lastTs).then(function(resp){
             if (resp && resp.ts) {
               this.lastTs = resp.ts;
-              localStorage.setItem('vaultHash', resp.ts);
               if (resp.changed) {
                 // Vault mudou: recarrega a página para regenerar o grafo
                 window.location.reload();
@@ -211,7 +207,7 @@ API_INJECT = """
       } catch (e) {}
     }
   };
-  setInterval(function(){ window.__widgetApiPoll.tick(); }, %POLL_MS%);
+  setInterval(function(){ window.__widgetApiPoll.tick(); }, 1000);
 })();
 </script>
 """
@@ -610,14 +606,6 @@ def _build_view() -> Path | None:
             '<script src="https://unpkg.com/vis-network@9.1.2/standalone/umd/vis-network.min.js"></script>'
         )
 
-    # --- Patch 1: Replace original <style>...</style> with WIDGET_CSS (no duplicate) ---
-    # Original grafo.html has one <style> block. We replace its content.
-    style_start = src.find('<style>')
-    style_end = src.find('</style>')
-    if style_start >= 0 and style_end >= 0:
-        style_end += len('</style>')
-        src = src[:style_start] + '<style>' + WIDGET_CSS + '</style>' + src[style_end:]
-
     early_error = """
 <script>
   window.__widgerrs = [];
@@ -642,48 +630,16 @@ def _build_view() -> Path | None:
     else:
         src += WIDGET_JS
 
-    # No more CSS injection here - already replaced above
+    if '</head>' in src:
+        src = src.replace('</head>', '<style>' + WIDGET_CSS + '</style></head>', 1)
+    else:
+        src += '<style>' + WIDGET_CSS + '</style>'
 
     api_inject = API_INJECT.replace('%POLL_MS%', str(POLL_MS))
     if '</head>' in src:
         src = src.replace('</head>', api_inject + '</head>', 1)
     else:
         src += api_inject
-
-    # --- Patch 2: Fix label conflict - make _fontLimpo dynamic and update limpar() ---
-    # Replace the IIFE _fontLimpo with a function that reads localStorage dynamically
-    src = src.replace(
-        """_fontLimpo = (function() {
-    // respeita o padrao de labels ocultas (so 'false' mostra)
-    var oc = (typeof localStorage !== 'undefined' && localStorage.getItem('labelsOcultos') !== 'false');
-    return oc ? 0 : 11;
-  })();""",
-        """function _getFontLimpo() {
-    // respeita o padrao de labels ocultas (so 'false' mostra)
-    var oc = (typeof localStorage !== 'undefined' && localStorage.getItem('labelsOcultos') !== 'false');
-    return oc ? 0 : 11;
-  }
-  var _fontLimpo = _getFontLimpo();"""
-    )
-
-    # Update limpar() to use _getFontLimpo() instead of stale _fontLimpo
-    src = src.replace(
-        """font: { size: _fontLimpo, color: '#cdd6f4', face: 'Segoe UI', bold: false }""",
-        """font: { size: _getFontLimpo(), color: '#cdd6f4', face: 'Segoe UI', bold: false }"""
-    )
-
-    # --- Patch 3: Reduce flashing in tick loop ---
-    # The base oscillation (0.80 + 0.20 * sin) causes pulsing. Reduce amplitude.
-    src = src.replace(
-        'const base = 0.80 + 0.20 * Math.sin(agora * 0.0022);',
-        'const base = 0.90 + 0.10 * Math.sin(agora * 0.0022); // reduzido flashing'
-    )
-
-    # Also reduce the pulso amplitude in the tick loop
-    src = src.replace(
-        'const pulso = Math.sin(agora * 0.0020 * _velGlobal + fase) * (0.07 + 0.13 * atv) * _pulsoForca;',
-        'const pulso = Math.sin(agora * 0.0020 * _velGlobal + fase) * (0.03 + 0.06 * atv) * _pulsoForca; // reduzido flashing'
-    )
 
     if '</body>' in src:
         src = src.replace('</body>', RESIZE_JS + WIDGET_JS_EXTRA + '</body>', 1)
