@@ -3718,5 +3718,25 @@
     "access_count": 0,
     "created_at": "2026-08-08T21:57:30.356955",
     "last_accessed": "2026-08-08T21:57:30.356955"
+  },
+  {
+    "id": 216,
+    "kind": "padrao",
+    "task": "Regra: build/instala/testa/valida antes de commitar e subir",
+    "summary": "Nova regra de processo do usuario (aplicavel ao StreamUmGrau e a todo projeto): ANTES de commitar e fazer push ao GitHub, o codigo deve obrigatoriamente passar por: 1) compilar (flutter build apk local), 2) instalar no Redmi via adb, 3) testar/rodar (sem crash, activity displayed), 4) validar resultado. So depois subir. Foi detectado um push (2643d6b) feito antes da validacao completa - falha de processo, corrigida validando apos o push (build 66s OK, install Success, PID 12396, sem FATAL). CI enxuto do repo ja valida analyze+test+build como rede de seguranca, mas a ordem correta e validar LOCAL primeiro.",
+    "project": "",
+    "tags": [
+      "fatal",
+      "12396",
+      "pid",
+      "success",
+      "install",
+      "66s"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T22:25:29.940096",
+    "last_accessed": "2026-08-08T22:25:29.940096"
   }
 ]
