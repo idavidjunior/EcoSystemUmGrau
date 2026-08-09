@@ -3898,5 +3898,25 @@
     "access_count": 0,
     "created_at": "2026-08-09T10:34:20.322579",
     "last_accessed": "2026-08-09T10:34:20.322579"
+  },
+  {
+    "id": 225,
+    "kind": "padrao",
+    "task": "Ponte StreamUmGrau -> Web Video Cast implementada",
+    "summary": "Botao 'Assistir na TV' na DetailView delega ao app Web Video Cast (com.instantbits.cast.webvideo) via url_launcher: com videoUrl usa wvc-x-callback://open, sem videoUrl abre intent pelo pacote, fallback Play Store. Testado: 5 testes passando, analyze limpo, APK instalado no Redmi. url_launcher adicionado ao pubspec.",
+    "project": "",
+    "tags": [
+      "app",
+      "delega",
+      "detailview",
+      "video",
+      "assistir",
+      "web"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T12:26:12.519929",
+    "last_accessed": "2026-08-09T12:26:12.519929"
   }
 ]
