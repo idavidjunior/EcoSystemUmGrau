@@ -3738,5 +3738,25 @@
     "access_count": 0,
     "created_at": "2026-08-08T22:25:29.940096",
     "last_accessed": "2026-08-08T22:25:29.940096"
+  },
+  {
+    "id": 217,
+    "kind": "decisao",
+    "task": "Fase A StreamUmGrau: catalogo real Supabase+TMDB (64 obras)",
+    "summary": "Fase A concluida. Tabela midias criada via pooler sa-east-1 (senha completa com prefixo Family/), RLS leitura publica. Script fetch_tmdb_catalog.py: doramas exigem discover/tv?with_original_language=ko (tv/popular duplica series) e sinopses precisam de sanitizacao de newline para SQL. 64 obras no ar (22 filmes, 21 series, 21 doramas). App usa publishable key (sb_publishable_), nunca secret. Build com --dart-define SUPABASE_URL + SUPABASE_ANON_KEY. Validado no Redmi sem crash. Chave secret exposta no chat pelo usuario - recomendado rotacionar.",
+    "project": "",
+    "tags": [
+      "publica",
+      "leitura",
+      "rls",
+      "family",
+      "prefixo",
+      "sql"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T23:24:52.106145",
+    "last_accessed": "2026-08-08T23:24:52.106145"
   }
 ]
