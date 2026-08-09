@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**139 notas** do cluster ecossistema.
+**140 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -82,6 +82,7 @@
 - [[config-2026-07-28-formato-correto-do-mcp-no-opencode-1187]]
 - [[config-opencode-v11714-schema]]
 - [[confirmaãão-em-ãudio-â-regra-permanente-01082026]]
+- [[contagem-subpastas-arquivos-pastas]]
 - [[context-engine-manifesto-domínios-multimídiacomportamentais]]
 - [[controle-da-tv-lg-webos-via-ssap]]
 - [[controle-de-tv-lg-01082026]]

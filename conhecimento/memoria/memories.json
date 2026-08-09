@@ -4038,5 +4038,25 @@
     "access_count": 0,
     "created_at": "2026-08-09T20:07:43.414660",
     "last_accessed": "2026-08-09T20:07:43.414660"
+  },
+  {
+    "id": 232,
+    "kind": "erro",
+    "task": "Bug favoritos: schema do banco pré-populado divergente do código (tag vs tags) + contagem por capítulo",
+    "summary": "O banco pré-populado biblia_estudo.db tinha coluna tag (singular) na tabela favorites, mas FavoriteDao usava tags (plural), fazendo insert falhar silenciosamente. Correção: renomear coluna no assets (ALTER TABLE RENAME COLUMN) + migração defensiva no DatabaseManager (ADD COLUMN tags + UPDATE tags=tag). Também: getCountByChapter no FavoriteDao e NoteDao, spinner de capítulos reativado (estava visibility=gone) mostrando 'Capítulo N ★X 📝Y', estrela ★ visível no número do versículo favoritado, refresh no onResume/após salvar nota.",
+    "project": "",
+    "tags": [
+      "nota",
+      "salvar",
+      "onresume",
+      "refresh",
+      "favoritado",
+      "versículo"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T20:29:22.629480",
+    "last_accessed": "2026-08-09T20:29:22.629480"
   }
 ]

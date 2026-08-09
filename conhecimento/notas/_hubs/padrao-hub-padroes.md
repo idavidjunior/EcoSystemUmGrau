@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**90 notas** conectadas a este hub.
+**91 notas** conectadas a este hub.
 
 
 ## Notas
@@ -30,6 +30,7 @@
 - [[config-2026-07-27-teste-do-vigilante-automático]]
 - [[config-2026-07-28-formato-correto-do-mcp-no-opencode-1187]]
 - [[config-opencode-v11714-schema]]
+- [[contagem-subpastas-arquivos-pastas]]
 - [[controle-da-tv-lg-webos-via-ssap]]
 - [[css-selector-priority-ladder]]
 - [[custom-numpad-pattern]]
