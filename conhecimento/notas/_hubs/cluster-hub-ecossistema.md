@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**128 notas** do cluster ecossistema.
+**129 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -93,6 +93,7 @@
 - [[habilidade-navegaãão-perita-â-internet-pc-e-celular]]
 - [[hora-na-tela-vs-hora-no-ãudio-jarvis]]
 - [[http-401-unauthorized-on-session-and-globalsessions]]
+- [[idioma-padrao-pt-br]]
 - [[ilhas-no-grafo-notas-com-grau-0-e-como-conecta-las]]
 - [[jarvis-do-celular-e-do-pc-um-sã-cãrebro-arquitetura-sincroni]]
 - [[jarvis-do-celular-e-do-pc-um-só-cérebro-arquitetura-sincroni]]

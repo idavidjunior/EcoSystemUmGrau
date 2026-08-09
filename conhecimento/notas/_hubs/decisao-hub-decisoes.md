@@ -1,6 +1,6 @@
 # Decisoes
 
-**57 notas** conectadas a este hub.
+**58 notas** conectadas a este hub.
 
 
 ## Notas
@@ -25,6 +25,7 @@
 - [[form-starts-empty-input-forms-never-auto-load-from-file-user]]
 - [[form-starts-empty-input-forms-nunca-auto-carregam-arquivo-ao]]
 - [[habilidades-de-jarvis-seguem-taxonomia-de-3-niveis]]
+- [[idioma-padrao-pt-br]]
 - [[if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-]]
 - [[jarvis-deve-manter-registro-de-suas-proprias-habilidades-em-]]
 - [[ler-usa-python-puro-stdlib-only-zero-dependencias-externas-i]]
