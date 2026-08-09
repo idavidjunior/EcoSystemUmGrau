@@ -6,12 +6,16 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:stream_um_grau/core/services/favoritos_service.dart';
 import 'package:stream_um_grau/core/services/mock_midia_repository.dart';
 import 'package:stream_um_grau/main.dart';
+import 'package:stream_um_grau/models/midia_model.dart';
+import 'package:stream_um_grau/views/detail_view.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -58,5 +62,80 @@ void main() {
 
     await service.toggle('id-1');
     expect(service.ehFavorito('id-1'), isFalse);
+  });
+
+  testWidgets('DetailView exibe o botao "Assistir na TV" (ponte Web Video Cast)',
+      (WidgetTester tester) async {
+    const midia = Midia(
+      id: 'teste-1',
+      titulo: 'O Filme Teste',
+      tipo: 'filme',
+      categoria: 'Aventura',
+      sinopse: 'Sinopse de teste.',
+      capaUrl: '',
+      bannerUrl: '',
+      ano: 2024,
+      idiomaTipo: 'LEG',
+      classificacaoEtaria: 12,
+    );
+
+    await tester.pumpWidget(
+      const MaterialApp(home: DetailView(midia: midia)),
+    );
+    await tester.pumpAndSettle();
+
+    // Botao principal de cast deve estar presente na ficha.
+    expect(find.text('Assistir na TV'), findsOneWidget);
+    expect(find.byIcon(Icons.cast), findsOneWidget);
+  });
+
+  testWidgets(
+      'Botao "Assistir na TV" tenta abrir o Web Video Cast (via url_launcher)',
+      (WidgetTester tester) async {
+    const midia = Midia(
+      id: 'teste-2',
+      titulo: 'Outro Filme',
+      tipo: 'serie',
+      categoria: 'Drama',
+      sinopse: 'Sinopse.',
+      capaUrl: '',
+      bannerUrl: '',
+      ano: 2023,
+      idiomaTipo: 'DUB',
+      classificacaoEtaria: 14,
+    );
+
+    // Mock do canal do url_launcher para capturar a URL aberta pelo botao.
+    const channel = MethodChannel('plugins.flutter.io/url_launcher');
+    final urlsAbertas = <String>[];
+    tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+      channel,
+      (call) async {
+        if (call.method == 'canLaunch') return true;
+        if (call.method == 'launch') {
+          final args = call.arguments as Map<dynamic, dynamic>;
+          urlsAbertas.add(args['url'] as String);
+          return true;
+        }
+        return null;
+      },
+    );
+
+    await tester.pumpWidget(
+      const MaterialApp(home: DetailView(midia: midia)),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Assistir na TV'));
+    await tester.pumpAndSettle();
+
+    // Sem videoUrl no catalogo, deve tentar abrir o app pelo pacote do WVC
+    // (intent://) com fallback para a Play Store embutido.
+    expect(urlsAbertas, isNotEmpty);
+    expect(urlsAbertas.first, startsWith('intent:'));
+    expect(
+      urlsAbertas.first,
+      contains('com.instantbits.cast.webvideo'),
+    );
   });
 }
