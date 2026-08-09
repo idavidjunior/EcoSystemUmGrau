@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**136 notas** do cluster ecossistema.
+**137 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -119,6 +119,7 @@
 - [[ponte-web-video-cast]]
 - [[pontes-inter-cluster-cerebro-vivo-grafo]]
 - [[pontuaãão-da-transcriãão-voltando-ao-balão-do-app-corrigido]]
+- [[projetos-irmaos-do-ecosystemumgrau]]
 - [[pronuncia-do-nome-do-usuario-david-deivid]]
 - [[pronãncia-jãrvis-escrita-sem-acento-fala-com-acento]]
 - [[protocolo-higiene-repo-streamumgrau]]
