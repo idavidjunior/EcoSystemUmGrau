@@ -207,7 +207,7 @@ API_INJECT = """
       } catch (e) {}
     }
   };
-  setInterval(function(){ window.__widgetApiPoll.tick(); }, 1000);
+  setInterval(function(){ window.__widgetApiPoll.tick(); }, %POLL_MS%);
 })();
 </script>
 """

@@ -16,9 +16,9 @@ class MockMidiaRepository implements MidiaRepository {
           'em busca de um novo lar para a humanidade, guiados pelo amor que '
           'transcende o tempo e as dimensões.',
       'capa_url':
-          'https://image.tmdb.org/t/p/w500/nCbkOyOMTEgEVqbz0U1ekYqkpLy.jpg',
+          'https://m.media-amazon.com/images/M/MV5BYzdjMDAxZGItMjI2My00ODA1LTlkNzItOWFjMDU5ZDJlYWY3XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg',
       'banner_url':
-          'https://image.tmdb.org/t/p/w1280/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg',
+          'https://m.media-amazon.com/images/M/MV5BYzdjMDAxZGItMjI2My00ODA1LTlkNzItOWFjMDU5ZDJlYWY3XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg',
       'ano': 2014,
       'idioma_tipo': 'DUB',
       'classificacao_etaria': 10,
@@ -48,9 +48,9 @@ class MockMidiaRepository implements MidiaRepository {
           'Um homem investiga a queda de um avião que envolve seu sobrinho e '
           'descobre uma conspiração muito maior por trás do acidente.',
       'capa_url':
-          'https://image.tmdb.org/t/p/w500/d7tDnYNN6cXb0Hpq0SJAIzkVX4u.jpg',
+          'https://static.tvmaze.com/uploads/images/original_untouched/211/529234.jpg',
       'banner_url':
-          'https://image.tmdb.org/t/p/w1280/6qh4xH8eEIDnEQQnZxWjO3CVJQx.jpg',
+          'https://static.tvmaze.com/uploads/images/original_untouched/211/529234.jpg',
       'ano': 2019,
       'idioma_tipo': 'DUAL',
       'classificacao_etaria': 16,
@@ -64,9 +64,9 @@ class MockMidiaRepository implements MidiaRepository {
           'O leãozinho Simba foge de casa após a morte do pai e precisa '
           'encontrar coragem para assumir seu lugar como rei da savana.',
       'capa_url':
-          'https://image.tmdb.org/t/p/w500/sKCr78MXSLixwmZ8DyJLrpRsd6Q.jpg',
+          'https://m.media-amazon.com/images/M/MV5BZGRiZDZhZjItM2M3ZC00Y2IyLTk3Y2MtMWY5YjliNDFkZTJlXkEyXkFqcGc@._V1_SX300.jpg',
       'banner_url':
-          'https://image.tmdb.org/t/p/w1280/wFwspdCbKVwPjAtMsHUO8qVm3qW.jpg',
+          'https://m.media-amazon.com/images/M/MV5BZGRiZDZhZjItM2M3ZC00Y2IyLTk3Y2MtMWY5YjliNDFkZTJlXkEyXkFqcGc@._V1_SX300.jpg',
       'ano': 1994,
       'idioma_tipo': 'DUB',
       'classificacao_etaria': 0,
@@ -80,9 +80,9 @@ class MockMidiaRepository implements MidiaRepository {
           'Uma herdeira sul-coreana cai de parapente na Coreia do Norte e '
           'encontra abrigo com um oficial que a ajuda a esconder sua origem.',
       'capa_url':
-          'https://image.tmdb.org/t/p/w500/s9OE80lRUuBIxnEJeLDNslVn8G6.jpg',
+          'https://static.tvmaze.com/uploads/images/original_untouched/235/588087.jpg',
       'banner_url':
-          'https://image.tmdb.org/t/p/w1280/rtc32GVyOVxYvAj7sKS2SYMEdWE.jpg',
+          'https://static.tvmaze.com/uploads/images/original_untouched/235/588087.jpg',
       'ano': 2019,
       'idioma_tipo': 'LEG',
       'classificacao_etaria': 12,
@@ -149,6 +149,4 @@ class MockMidiaRepository implements MidiaRepository {
     return _seed
         .where((m) => m['tipo'] == tipo)
         .map(Midia.fromJson)
-        .toList();
-  }
-}
+    
