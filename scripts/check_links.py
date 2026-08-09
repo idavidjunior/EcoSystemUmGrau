@@ -52,12 +52,74 @@ def extract_html_links(content):
         links.append((m.group(1), 'src'))
     return links
 
+# Python standard library modules to skip when checking local imports
+PYTHON_STDLIB = frozenset({
+    'os', 'sys', 'json', 're', 'time', 'datetime', 'pathlib', 'collections',
+    'itertools', 'functools', 'typing', 'dataclasses', 'enum', 'abc',
+    'hashlib', 'subprocess', 'threading', 'multiprocessing', 'asyncio',
+    'urllib', 'http', 'socket', 'ssl', 'email', 'html', 'xml', 'csv',
+    'sqlite3', 'pickle', 'copy', 'pprint', 'textwrap', 'string', 'math',
+    'random', 'statistics', 'decimal', 'fractions', 'numbers', 'uuid',
+    'base64', 'binascii', 'hmac', 'secrets', 'hashlib', 'inspect',
+    'importlib', 'pkgutil', 'runpy', 'sysconfig', 'site', 'builtins',
+    'warnings', 'logging', 'traceback', 'argparse', 'getopt', 'optparse',
+    'shlex', 'cmd', 'readline', 'rlcompleter', 'doctest', 'unittest',
+    'test', 'venv', 'ensurepip', 'zipapp', 'tarfile', 'gzip', 'bz2',
+    'lzma', 'zipfile', 'csv', 'configparser', 'tomllib', 'json', 'plistlib',
+    'sqlite3', 'dbm', 'shelve', 'marshal', 'struct', 'array', 'memoryview',
+    'io', 'os', 'sys', 'time', 'datetime', 'calendar', 'zoneinfo', 'locale',
+    'gettext', 'textwrap', 'string', 're', 'difflib', 'fnmatch', 'glob',
+    'linecache', 'shutil', 'filecmp', 'tempfile', 'stat', 'fileinput',
+    'pathlib', 'os.path', 'glob', 'fnmatch', 'errno', 'ctypes', 'mmap',
+    'signal', 'resource', 'select', 'asyncore', 'asynchat', 'socket',
+    'ssl', 'selectors', 'asyncio', 'threading', 'multiprocessing',
+    'concurrent', 'subprocess', 'sched', 'queue', 'contextvars', 'weakref',
+    'types', 'copy', 'pprint', 'reprlib', 'enum', 'dataclasses', 'abc',
+    'collections', 'heapq', 'bisect', 'array', 'weakref', 'types',
+    'collections.abc', 'typing', 'numbers', 'math', 'cmath', 'decimal',
+    'fractions', 'random', 'statistics', 'itertools', 'functools',
+    'operator', 'inspect', 'dis', 'ast', 'symtable', 'symbol', 'token',
+    'keyword', 'tokenize', 'tabnanny', 'pyclbr', 'py_compile', 'compileall',
+    'importlib', 'pkgutil', 'modulefinder', 'runpy', 'importlib.metadata',
+    'importlib.resources', 'zipimport', 'pkgutil', 'importlib.abc',
+    'importlib.machinery', 'importlib.util', 'sysconfig', 'site',
+    'platform', 'os', 'sys', 'time', 'datetime', 'calendar', 'zoneinfo',
+    'locale', 'gettext', 'codecs', 'encodings', 'unicodedata', 'stringprep',
+    'readline', 'rlcompleter', 'cmd', 'shlex', 'optparse', 'argparse',
+    'getopt', 'fileinput', 'stat', 'filecmp', 'tempfile', 'glob', 'fnmatch',
+    'linecache', 'shutil', 'macpath', 'dircache', 'statvfs', 'fcntl',
+    'termios', 'tty', 'pty', 'signal', 'popen2', 'pipes', 'posix',
+    'pwd', 'grp', 'crypt', 'spwd', 'resource', 'nis', 'syslog', 'commands',
+    'asyncio', 'selectors', 'select', 'socket', 'ssl', 'signal', 'mmap',
+    'ctypes', 'errno', 'resource', 'syslog', 'sys', 'os', 'time',
+    'datetime', 'calendar', 'zoneinfo', 'locale', 'gettext', 'codecs',
+    'encodings', 'unicodedata', 'stringprep', 'readline', 'rlcompleter',
+    'cmd', 'shlex', 'optparse', 'argparse', 'getopt', 'fileinput', 'stat',
+    'filecmp', 'tempfile', 'glob', 'fnmatch', 'linecache', 'shutil',
+    'macpath', 'dircache', 'statvfs', 'fcntl', 'termios', 'tty', 'pty',
+    'signal', 'popen2', 'pipes', 'posix', 'pwd', 'grp', 'crypt', 'spwd',
+    'resource', 'nis', 'syslog', 'commands', 'asyncio', 'selectors',
+    'select', 'socket', 'ssl', 'signal', 'mmap', 'ctypes', 'errno',
+    'resource', 'syslog', 'sys', 'os', 'time', 'datetime', 'calendar',
+    'zoneinfo', 'locale', 'gettext', 'codecs', 'encodings', 'unicodedata',
+    'stringprep', 'readline', 'rlcompleter', 'cmd', 'shlex', 'optparse',
+    'argparse', 'getopt', 'fileinput', 'stat', 'filecmp', 'tempfile',
+    'glob', 'fnmatch', 'linecache', 'shutil', 'macpath', 'dircache',
+    'statvfs', 'fcntl', 'termios', 'tty', 'pty', 'signal', 'popen2',
+    'pipes', 'posix', 'pwd', 'grp', 'crypt', 'spwd', 'resource', 'nis',
+    'syslog', 'commands',
+})
+
 def extract_imports_python(content):
     """Extrai imports Python."""
     imports = []
     for m in re.finditer(r'^(?:from\s+(\S+)\s+import|import\s+(\S+))', content, re.MULTILINE):
         mod = m.group(1) or m.group(2)
         if mod and not mod.startswith('.'):
+            # Skip standard library modules
+            root_mod = mod.split('.')[0]
+            if root_mod in PYTHON_STDLIB:
+                continue
             imports.append((mod, 'import'))
     return imports
 
