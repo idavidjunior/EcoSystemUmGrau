@@ -285,6 +285,15 @@ WIDGET_JS_EXTRA = """
     return el;
   }
 
+  function logError(context, err) {
+    console.warn('[widget] ' + context + ':', err);
+    try {
+      if (window.pywebview && window.pywebview.api && window.pywebview.api.debug_log) {
+        window.pywebview.api.debug_log('JS-ERROR: ' + context + ': ' + err);
+      }
+    } catch (e) {}
+  }
+
   function mountWidgetUI() {
     if (document.getElementById('mk-controles')) return;
 
@@ -426,12 +435,12 @@ WIDGET_JS_EXTRA = """
             }).filter(Boolean);
 
             if (payload.length) {
-              try { nodeSet.update(payload); } catch (e) {}
+              try { nodeSet.update(payload); } catch (e) { logError('nodeSet.update', e); }
             }
           }
           if (typeof network.redraw === 'function') network.redraw();
         }
-      } catch (e) {}
+      } catch (e) { logError('setLabelVisibility', e); }
 
       // Atualiza aparência do botão T
       ctrl.style.opacity = hidden ? '0.6' : '1';
@@ -448,7 +457,7 @@ WIDGET_JS_EXTRA = """
           window.__mkTemaAtual = theme;
           document.body.setAttribute('data-theme', theme);
         }
-      } catch (e) {}
+      } catch (e) { logError('applyTheme', e); }
     }
 
     function resetWidgetState() {
@@ -467,13 +476,13 @@ WIDGET_JS_EXTRA = """
       orbitValue.textContent = 'x1.0';
       try {
         if (typeof _aplicarVelocidade === 'function') _aplicarVelocidade(1);
-      } catch (e) {}
+      } catch (e) { logError('_aplicarVelocidade', e); }
       try {
         if (typeof _aplicarOrbita === 'function') _aplicarOrbita(1);
-      } catch (e) {}
+      } catch (e) { logError('_aplicarOrbita', e); }
       try {
         if (typeof network !== 'undefined' && network && network.fit) network.fit({ animation: true });
-      } catch (e) {}
+      } catch (e) { logError('network.fit', e); }
     }
 
     topTheme.addEventListener('change', function(){
@@ -485,7 +494,7 @@ WIDGET_JS_EXTRA = """
       localStorage.setItem('velGrafo', speed.value);
       try {
         if (typeof _aplicarVelocidade === 'function') _aplicarVelocidade(parseFloat(speed.value));
-      } catch (e) {}
+      } catch (e) { logError('_aplicarVelocidade (speed)', e); }
     });
 
     orbit.addEventListener('input', function(){
@@ -493,7 +502,7 @@ WIDGET_JS_EXTRA = """
       localStorage.setItem('orbGrafo', orbit.value);
       try {
         if (typeof _aplicarOrbita === 'function') _aplicarOrbita(parseFloat(orbit.value));
-      } catch (e) {}
+      } catch (e) { logError('_aplicarOrbita (orbit)', e); }
     });
 
     // Estado do painel inferior (controlado APENAS pelo botão do olho)
@@ -565,16 +574,13 @@ WIDGET_JS_EXTRA = """
 def _persistir_saida(win) -> None:
     try:
         if hasattr(win, 'evaluate_js'):
-            try:
-                win.evaluate_js("""
-                  if(window.pywebview && window.pywebview.api){
-                    window.pywebview.api.guardar_geo(
-                      Math.round(window.screenX||0), Math.round(window.screenY||0),
-                      Math.round(window.innerWidth||0), Math.round(window.innerHeight||0));
-                  }
-                """)
-            except Exception:
-                pass
+            win.evaluate_js("""
+              if(window.pywebview && window.pywebview.api){
+                window.pywebview.api.guardar_geo(
+                  Math.round(window.screenX||0), Math.round(window.screenY||0),
+                  Math.round(window.innerWidth||0), Math.round(window.innerHeight||0));
+              }
+            """)
     except Exception:
         pass
 
