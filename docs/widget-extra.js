@@ -283,11 +283,8 @@
     if (typeof _aplicarOrbita === 'function') _aplicarOrbita(parseFloat(orbit.value));
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', mountWidgetUI, { once: true });
-  } else {
-    mountWidgetUI();
-  }
+  // DOM already loaded when this script runs at end of body
+  mountWidgetUI();
 
   window.addEventListener('pywebviewready', mountWidgetUI, { once: true });
 })();

@@ -254,8 +254,8 @@ def _build_view() -> Path | None:
     api_inject = API_INJECT.replace('%POLL_MS%', str(POLL_MS))
     src = _inject_into_head(src, api_inject)
 
-    # Resize handler + extra widget UI - external files
-    src = _inject_into_body(src, '<script src="resize.js"></script><script src="widget-extra.js"></script>')
+    # Extra widget UI - external file (resize handled by CSS #mk-resize)
+    src = _inject_into_body(src, '<script src="widget-extra.js"></script>')
 
     VIEW_COPY.write_text(src, encoding='utf-8')
     return VIEW_COPY

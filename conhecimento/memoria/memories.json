@@ -3858,5 +3858,25 @@
     "access_count": 0,
     "created_at": "2026-08-09T09:56:40.755176",
     "last_accessed": "2026-08-09T09:56:40.755176"
+  },
+  {
+    "id": 223,
+    "kind": "padrao",
+    "task": "Fix P3 widget grafo issues",
+    "summary": "Corrigidos problemas P3 no widget grafo desktop: 1) Removido RESIZE_JS redundante (884 bytes) - CSS ja define #mk-resize nativamente. 2) Eliminada duplicacao DOMContentLoaded check entre widget.js (head) e widget-extra.js (body) - agora widget-extra.js chama mountWidgetUI() diretamente ja que DOM esta carregado. 3) Pipeline _build_view simplificado para injetar apenas: widget.css, widget.js, api-inject (dinamico), widget-extra.js. HTML final: 535KB.",
+    "project": "",
+    "tags": [
+      "nativamente",
+      "desktop",
+      "define",
+      "problemas",
+      "grafo",
+      "corrigidos"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T10:01:34.907081",
+    "last_accessed": "2026-08-09T10:01:34.907081"
   }
 ]
