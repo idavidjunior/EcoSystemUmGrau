@@ -1,4 +1,4 @@
-package com.umgrau.stream_um_grau
+package com.umgrau.stream
 
 import io.flutter.embedding.android.FlutterActivity
 
