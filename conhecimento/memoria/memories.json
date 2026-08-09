@@ -4018,5 +4018,25 @@
     "access_count": 0,
     "created_at": "2026-08-09T19:58:43.462230",
     "last_accessed": "2026-08-09T19:58:43.462230"
+  },
+  {
+    "id": 231,
+    "kind": "padrao",
+    "task": "Contagem de subpastas e arquivos nas pastas de recursos",
+    "summary": "BibliaEstudoCompleta: ResourceListAdapter agora exibe 'N subpastas • M arquivos' em cada pasta (via UserResourceDao.countChildren/countByFolder). Ao abrir Meus Recursos, pastas referenciadas antigas sao materializadas em background (importChildrenForFolder) para contagem real.",
+    "project": "",
+    "tags": [
+      "real",
+      "importchildrenforfolder",
+      "background",
+      "materializadas",
+      "sao",
+      "antigas"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T20:07:43.414660",
+    "last_accessed": "2026-08-09T20:07:43.414660"
   }
 ]
