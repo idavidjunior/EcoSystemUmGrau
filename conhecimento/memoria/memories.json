@@ -3958,5 +3958,25 @@
     "access_count": 0,
     "created_at": "2026-08-09T19:29:49.770940",
     "last_accessed": "2026-08-09T19:29:49.770940"
+  },
+  {
+    "id": 228,
+    "kind": "decisao",
+    "task": "Recursos: ordenação, ícones e origem do armazenamento",
+    "summary": "BibliaEstudoCompleta: adicionados SORT_NAME/TYPE/SIZE/DATE no UserResourceDao (pastas primeiro), remoção do container Sem pasta, ícone de pasta 📂 e arquivos por tipo, item Voltar sem ícone, e StorageOrigin.java detecta Dispositivo/SD/Nuvem pela authority do Uri.",
+    "project": "",
+    "tags": [
+      "storageorigin",
+      "voltar",
+      "item",
+      "ícone",
+      "tipo",
+      "arquivos"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T19:41:44.437326",
+    "last_accessed": "2026-08-09T19:41:44.437326"
   }
 ]
