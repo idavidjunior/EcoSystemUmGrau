@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../core/services/favoritos_service.dart';
 import '../models/midia_model.dart';
 
 /// Card vertical do catalogo: capa arredondada, titulo e tags.
@@ -25,8 +26,12 @@ class MidiaCard extends StatelessWidget {
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: SizedBox.expand(
-                child: _Capa(midia: midia),
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  _Capa(midia: midia),
+                  _BotaoFavorito(midia: midia),
+                ],
               ),
             ),
           ),
@@ -73,6 +78,42 @@ class MidiaCard extends StatelessWidget {
       default:
         return Colors.grey;
     }
+  }
+}
+
+/// Botao de coracao no canto superior direito da capa (favoritar/desfavoritar).
+class _BotaoFavorito extends StatelessWidget {
+  final Midia midia;
+
+  const _BotaoFavorito({required this.midia});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.topRight,
+      child: ListenableBuilder(
+        listenable: FavoritosService.instance,
+        builder: (context, _) {
+          final ehFavorito = FavoritosService.instance.ehFavorito(midia.id);
+          return Material(
+            color: Colors.black54,
+            shape: const CircleBorder(),
+            child: InkWell(
+              customBorder: const CircleBorder(),
+              onTap: () => FavoritosService.instance.toggle(midia.id),
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: Icon(
+                  ehFavorito ? Icons.favorite : Icons.favorite_border,
+                  size: 18,
+                  color: ehFavorito ? Colors.redAccent : Colors.white70,
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }
 

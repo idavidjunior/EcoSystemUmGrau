@@ -17,6 +17,7 @@ enum IdiomaTipo { dub, leg, dual, desconhecido }
 /// - ano                (Inteiro)
 /// - idioma_tipo        (Texto: DUB, LEG, DUAL)
 /// - classificacao_etaria (Inteiro)
+/// - popularidade       (Inteiro 0-100, rank para 'Populares')
 class Midia {
   final String id;
   final String titulo;
@@ -28,6 +29,7 @@ class Midia {
   final int ano;
   final String idiomaTipo;
   final int classificacaoEtaria;
+  final int popularidade;
 
   const Midia({
     required this.id,
@@ -40,6 +42,7 @@ class Midia {
     required this.ano,
     required this.idiomaTipo,
     required this.classificacaoEtaria,
+    this.popularidade = 0,
   });
 
   /// Converte o enum [TipoMidia] para o valor armazenado no banco.
@@ -83,6 +86,7 @@ class Midia {
       ano: _parseInt(json['ano']) ?? 0,
       idiomaTipo: json['idioma_tipo']?.toString() ?? '',
       classificacaoEtaria: _parseInt(json['classificacao_etaria']) ?? 0,
+      popularidade: _parseInt(json['popularidade']) ?? 0,
     );
   }
 
@@ -99,6 +103,7 @@ class Midia {
       'ano': ano,
       'idioma_tipo': idiomaTipo,
       'classificacao_etaria': classificacaoEtaria,
+      'popularidade': popularidade,
     };
   }
 
@@ -114,6 +119,7 @@ class Midia {
     int? ano,
     String? idiomaTipo,
     int? classificacaoEtaria,
+    int? popularidade,
   }) {
     return Midia(
       id: id ?? this.id,
@@ -126,6 +132,7 @@ class Midia {
       ano: ano ?? this.ano,
       idiomaTipo: idiomaTipo ?? this.idiomaTipo,
       classificacaoEtaria: classificacaoEtaria ?? this.classificacaoEtaria,
+      popularidade: popularidade ?? this.popularidade,
     );
   }
 

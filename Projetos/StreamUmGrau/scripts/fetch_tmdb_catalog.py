@@ -114,6 +114,7 @@ def extrair_obra(item, tipo, api_key):
 
     idioma = IDIOMA_PADRAO.get(tipo, "LEG")
     idade = classificacao_por_categoria(cat_nome)
+    popularidade = int(round(item.get("popularity") or 0)) or 0
 
     return {
         "titulo": titulo,
@@ -125,6 +126,7 @@ def extrair_obra(item, tipo, api_key):
         "ano": ano,
         "idioma_tipo": idioma,
         "classificacao_etaria": idade,
+        "popularidade": min(popularidade, 100),
     }
 
 
@@ -144,13 +146,13 @@ def gerar_sql(obras):
             f"'{escapar(o['titulo'])}', '{o['tipo']}', '{escapar(o['categoria'])}', "
             f"'{escapar(o['sinopse'])}', '{escapar(o['capa_url'])}', "
             f"'{escapar(o['banner_url'])}', {o['ano']}, "
-            f"'{o['idioma_tipo']}', {o['classificacao_etaria']}"
+            f"'{o['idioma_tipo']}', {o['classificacao_etaria']}, {o['popularidade']}"
             ")"
         )
     return (
         "-- Seed gerado por fetch_tmdb_catalog.py em "
         f"{datetime.now().strftime('%Y-%m-%d %H:%M')}\n"
-        "insert into public.midias (titulo, tipo, categoria, sinopse, capa_url, banner_url, ano, idioma_tipo, classificacao_etaria)\n"
+        "insert into public.midias (titulo, tipo, categoria, sinopse, capa_url, banner_url, ano, idioma_tipo, classificacao_etaria, popularidade)\n"
         "values\n"
         + ",\n".join(linhas)
         + "\non conflict (id) do nothing;"

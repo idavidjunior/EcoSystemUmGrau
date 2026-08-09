@@ -16,6 +16,7 @@ create table if not exists public.midias (
   ano                  integer not null default 0,
   idioma_tipo          text not null default 'DUB',         -- DUB | LEG | DUAL
   classificacao_etaria integer not null default 0,
+  popularidade         integer not null default 0,         -- 0-100 (rank para 'Populares')
   criado_em            timestamptz not null default now(),
   atualizado_em        timestamptz not null default now()
 );

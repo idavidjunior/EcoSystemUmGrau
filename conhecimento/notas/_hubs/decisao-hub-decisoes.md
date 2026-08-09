@@ -1,6 +1,6 @@
 # Decisoes
 
-**58 notas** conectadas a este hub.
+**59 notas** conectadas a este hub.
 
 
 ## Notas
@@ -22,6 +22,7 @@
 - [[encoding-utf-8-in-javac-required-on-windows-to-prevent-corru]]
 - [[estado-persiste-em-json-nao-sqlite-legivel-editavel-fora-do-]]
 - [[estrategia-selecionada-por-ranking-cost-risk-time-complexity]]
+- [[fase-a-concluída-catálogo-real-no-supabase-64-obras-via-tmdb]]
 - [[form-starts-empty-input-forms-never-auto-load-from-file-user]]
 - [[form-starts-empty-input-forms-nunca-auto-carregam-arquivo-ao]]
 - [[habilidades-de-jarvis-seguem-taxonomia-de-3-niveis]]
