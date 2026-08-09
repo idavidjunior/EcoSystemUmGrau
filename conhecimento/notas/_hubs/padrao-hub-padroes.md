@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**87 notas** conectadas a este hub.
+**88 notas** conectadas a este hub.
 
 
 ## Notas
@@ -64,6 +64,7 @@
 - [[opencode-mcp-config-format]]
 - [[otimização-do-reindex-semântico-do-memory-engine]]
 - [[packageactivity-launch-pattern]]
+- [[ponte-web-video-cast]]
 - [[process-hierarchy-for-multi-window-apps]]
 - [[registro-de-habilidades-de-jarvis]]
 - [[regra-do-usuário-buildinstalatestavalida-antes-de-commitar-e]]
