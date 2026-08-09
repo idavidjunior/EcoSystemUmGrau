@@ -19,9 +19,10 @@ password = env.get("OPENCODE_SERVER_PASSWORD", "")
 log.write(f"Auth password set: {'yes' if password else 'no'}\n")
 
 cmd = [
-    OPENCODE_BIN, "serve",
-    "--port", "8767",
-]
+        OPENCODE_BIN, "serve",
+        "--port", "8767",
+        "-c", "scripts/opencode-serve.jsonc",
+    ]
 
 log.write(f"Command: {' '.join(cmd)}\n")
 log.flush()
