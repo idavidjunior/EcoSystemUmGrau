@@ -28,6 +28,7 @@ class _HomeViewState extends State<HomeView> {
   List<Midia> _exibidas = const [];
   bool _carregando = true;
   String? _erro;
+  bool _usandoFallback = false;
 
   _Aba _aba = _Aba.catalogo;
   String _filtroTipo = 'todos';
@@ -60,13 +61,30 @@ class _HomeViewState extends State<HomeView> {
         _todas = midias;
         _aplicarFiltros();
         _carregando = false;
+        _usandoFallback = false;
       });
     } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _erro = e.toString();
-        _carregando = false;
-      });
+      // Fallback automatico: se o backend real falhar (sem rede, sem
+      // credenciais), usa o espelho local do catalogo em vez de erro.
+      try {
+        final fallback = MockMidiaRepository();
+        final midias = await fallback.fetchMidias();
+        if (!mounted) return;
+        setState(() {
+          _todas = midias;
+          _aplicarFiltros();
+          _carregando = false;
+          _erro = null;
+          _usandoFallback = true;
+        });
+      } catch (fallbackErro) {
+        if (!mounted) return;
+        setState(() {
+          _erro = e.toString();
+          _carregando = false;
+          _usandoFallback = false;
+        });
+      }
     }
   }
 
@@ -217,6 +235,27 @@ class _HomeViewState extends State<HomeView> {
             ),
           ],
           Expanded(child: _corpo()),
+          if (_usandoFallback)
+            Container(
+              width: double.infinity,
+              color: AppColors.surface,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              child: Row(
+                children: [
+                  const Icon(Icons.cloud_off, size: 16, color: Colors.white54),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Offline — mostrando catálogo local',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(color: Colors.white54),
+                    ),
+                  ),
+                ],
+              ),
+            ),
         ],
       ),
     );

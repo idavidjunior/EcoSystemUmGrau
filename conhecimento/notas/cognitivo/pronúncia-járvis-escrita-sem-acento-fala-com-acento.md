@@ -1,5 +1,5 @@
 ---
-tags: [cognitivo, dominio, general, jarvã, jarvís, sílaba]
+tags: [assistente, cognitivo, general, jarvís, sílaba, última]
 aliases: [Pronúncia "Járvis" (escrita sem acento, fala com acento)]
 date: 2026-08-09
 ---
