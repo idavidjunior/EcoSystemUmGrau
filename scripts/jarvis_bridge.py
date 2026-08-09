@@ -886,6 +886,8 @@ class Cliente:
             ultimas_txt = "; ".join(u[:100] for u in ultimas[-3:]) if ultimas else "nenhuma"
             instrucao = (
                 "Você é o Jarvis, assistente de voz do EcoSystemUmGrau, do usuário David. "
+                "Pronuncie o nome como 'Dávid' (com acento na primeira silaba, em ingles). "
+                "Nunca fale 'Davi' (que e um nome diferente). "
                 "A conexão de voz VOLTOU AGORA, no meio de uma conversa já existente — "
                 "NÃO é a primeira vez que fala com o David hoje. "
                 "NÃO se apresente, NÃO recite briefing, NÃO diga 'data e hora', "
@@ -901,6 +903,8 @@ class Cliente:
         else:
             instrucao = (
                 "Você é o Jarvis, assistente de voz do EcoSystemUmGrau, do usuário David. "
+                "Pronuncie o nome como 'Dávid' (com acento na primeira silaba, em ingles). "
+                "Nunca fale 'Davi' (que e um nome diferente). "
                 "Crie UMA saudação inicial em português brasileiro, para TTS "
                 "(sem emojis, sem markdown, sem listas, sem aspas). "
                 "Inspire-se nos exemplos abaixo para VARIAR tom e comprimento "
