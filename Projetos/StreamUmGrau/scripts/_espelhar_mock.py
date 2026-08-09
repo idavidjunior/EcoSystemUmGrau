@@ -13,6 +13,58 @@ SEED = "database/seed_tmdb.sql"
 SAIDA = "lib/core/services/mock_midia_repository.dart"
 NAMESPACE = uuid.UUID("9e6a1c9e-8b10-4a10-8f10-123456789abc")
 
+# Obras extra do seed minimo do schema (presentes no banco real, fora do seed TMDB).
+EXTRA_SCHEMA = [
+    {
+        "titulo": "Interestelar",
+        "tipo": "filme",
+        "categoria": "Ficção Científica",
+        "sinopse": "A exploração de buracos de minhoca em busca de um novo lar para a humanidade.",
+        "capa": "https://m.media-amazon.com/images/M/MV5BYzdjMDAxZGItMjI2My00ODA1LTlkNzItOWFjMDU5ZDJlYWY3XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+        "banner": "https://m.media-amazon.com/images/M/MV5BYzdjMDAxZGItMjI2My00ODA1LTlkNzItOWFjMDU5ZDJlYWY3XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+        "ano": 2014,
+        "idioma": "DUB",
+        "idade": 10,
+        "pop": 92,
+    },
+    {
+        "titulo": "Breaking Bad",
+        "tipo": "serie",
+        "categoria": "Drama",
+        "sinopse": "Um professor de química vira produtor de metanfetamina.",
+        "capa": "https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg",
+        "banner": "https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg",
+        "ano": 2008,
+        "idioma": "LEG",
+        "idade": 16,
+        "pop": 95,
+    },
+    {
+        "titulo": "Vagabond",
+        "tipo": "dorama",
+        "categoria": "Ação",
+        "sinopse": "Um homem investiga a queda de um avião que envolve seu sobrinho.",
+        "capa": "https://static.tvmaze.com/uploads/images/original_untouched/211/529234.jpg",
+        "banner": "https://static.tvmaze.com/uploads/images/original_untouched/211/529234.jpg",
+        "ano": 2019,
+        "idioma": "DUAL",
+        "idade": 16,
+        "pop": 88,
+    },
+    {
+        "titulo": "O Rei Leão",
+        "tipo": "filme",
+        "categoria": "Animação",
+        "sinopse": "Um leãozinho herdeiro do trono foge de casa.",
+        "capa": "https://m.media-amazon.com/images/M/MV5BZGRiZDZhZjItM2M3ZC00Y2IyLTk3Y2MtMWY5YjliNDFkZTJlXkEyXkFqcGc@._V1_SX300.jpg",
+        "banner": "https://m.media-amazon.com/images/M/MV5BZGRiZDZhZjItM2M3ZC00Y2IyLTk3Y2MtMWY5YjliNDFkZTJlXkEyXkFqcGc@._V1_SX300.jpg",
+        "ano": 1994,
+        "idioma": "DUB",
+        "idade": 0,
+        "pop": 85,
+    },
+]
+
 
 def parse_linha(linha):
     """Extrai os 10 campos de uma linha `  ('a', 'b', ...),`."""
@@ -89,6 +141,27 @@ def main():
 
     if not obras:
         raise SystemExit("Nenhuma obra extraída do seed.")
+
+    # Deduplica por (titulo em minusculas, tipo) — o seed TMDB tem duplicatas
+    # (ex.: Paradise Hotel x3, The Odyssey x2). Mantem a primeira ocorrencia.
+    vistos = set()
+    unicas = []
+    for o in obras:
+        chave = (o["titulo"].lower().strip(), o["tipo"])
+        if chave in vistos:
+            continue
+        vistos.add(chave)
+        unicas.append(o)
+
+    # Mescla com as obras do seed minimo do schema (presentes no banco real).
+    for o in EXTRA_SCHEMA:
+        chave = (o["titulo"].lower().strip(), o["tipo"])
+        if chave in vistos:
+            continue
+        vistos.add(chave)
+        unicas.append(o)
+    obras = unicas
+    print(f"Seed TMDB: 60 | apos dedupe + schema: {len(obras)} obras")
 
     linhas = []
     linhas.append("import '../../models/midia_model.dart';")

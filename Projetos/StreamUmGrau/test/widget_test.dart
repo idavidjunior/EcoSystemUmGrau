@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:stream_um_grau/core/services/favoritos_service.dart';
+import 'package:stream_um_grau/core/services/mock_midia_repository.dart';
 import 'package:stream_um_grau/main.dart';
 
 void main() {
@@ -26,6 +27,21 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('StreamUmGrau'), findsOneWidget);
+  });
+
+  test('Mock espelhado carrega o catalogo real completo (61 obras)',
+      () async {
+    final midias = await const MockMidiaRepository().fetchMidias();
+
+    expect(midias, hasLength(61));
+    final tipos = midias.map((m) => m.tipo).toSet();
+    expect(tipos, containsAll(['filme', 'serie', 'dorama']));
+    // IDs estaveis (UUID v5) e sem duplicidade.
+    final ids = midias.map((m) => m.id).toList();
+    expect(ids.toSet(), hasLength(61));
+    // Favoritos nao podem quebrar se o espelho for regenerado:
+    // nenhum id pode ser vazio.
+    expect(ids.where((id) => id.isEmpty), isEmpty);
   });
 
   test('FavoritosService persiste e alterna por id', () async {
