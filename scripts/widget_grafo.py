@@ -682,7 +682,7 @@ def main() -> int:
     bridge._win = win
 
     try:
-        webview.start(debug=False)
+        webview.start(debug=True)
     finally:
         _persistir_saida(win)
     return 0

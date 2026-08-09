@@ -25,33 +25,14 @@ jobs:
         with:
           channel: stable
 
-      - name: Gerar scaffold de plataformas
-        run: |
-          flutter config --no-analytics
-          flutter create --project-name stream_um_grau --org com.umgrau --platforms android .
-          flutter pub get
+      - name: Dependencias
+        run: flutter pub get
 
-      - name: Definir applicationId definitivo (com.umgrau.stream)
-        run: |
-          APP_ID="com.umgrau.stream"
-          OLD_ID="com.umgrau.stream_um_grau"
-          # 1) Namespace + applicationId no build.gradle.kts
-          sed -i "s|${OLD_ID}|${APP_ID}|g" android/app/build.gradle.kts
-          # 2) Mover MainActivity para o novo pacote Kotlin
-          OLD_DIR=$(dirname "$(find android/app/src/main/kotlin -name MainActivity.kt | head -n1)")
-          NEW_DIR="android/app/src/main/kotlin/${APP_ID//.//}"
-          mkdir -p "$NEW_DIR"
-          mv "$OLD_DIR/MainActivity.kt" "$NEW_DIR/MainActivity.kt"
-          # 3) Atualizar a declaracao de package (com PONTOS, nao barras)
-          OLD_PKG="${OLD_DIR#android/app/src/main/kotlin/}"
-          OLD_PKG="${OLD_PKG//\//.}"
-          sed -i "s|package ${OLD_PKG}|package ${APP_ID}|" "$NEW_DIR/MainActivity.kt"
-          grep -r "$OLD_ID" android/ || echo "OK: nenhuma referencia restante ao antigo id"
+      - name: Analise estatica (gate)
+        run: flutter analyze
 
-      - name: Gerar icones e splash
-        run: |
-          dart run flutter_launcher_icons
-          dart run flutter_native_splash:create
+      - name: Testes (gate)
+        run: flutter test
 
       - name: Build APK
         run: flutter build apk --debug

@@ -16,4 +16,5 @@ contexto: Usuario pediu para verificar a conexao com o Jarvis. Constatado que a 
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]
+- [[eco-agente-e-comando-global]]
 - [[padrao-hub-padroes]]
