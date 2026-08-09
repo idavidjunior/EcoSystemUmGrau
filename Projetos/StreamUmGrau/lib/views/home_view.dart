@@ -44,7 +44,7 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     _repository = AppConfig.usarMock
-        ? MockMidiaRepository()
+        ? const MockMidiaRepository()
         : SupabaseService.instance;
     _carregar();
   }
@@ -67,7 +67,7 @@ class _HomeViewState extends State<HomeView> {
       // Fallback automatico: se o backend real falhar (sem rede, sem
       // credenciais), usa o espelho local do catalogo em vez de erro.
       try {
-        final fallback = MockMidiaRepository();
+        const fallback = MockMidiaRepository();
         final midias = await fallback.fetchMidias();
         if (!mounted) return;
         setState(() {
