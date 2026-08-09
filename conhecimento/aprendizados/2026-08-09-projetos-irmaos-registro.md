@@ -51,3 +51,7 @@ O Jarvis passa a conhecer os tres projetos irmaos para futuras referencias em co
 - Todo projeto irmao deve ser registrado em `projetos-irmaos.json` ao ser criado/auxiliado.
 - O Jarvis consulta o registry antes de buscar arquivos/dados de projetos irmaos.
 - Builds Android seguem `build.ps1` quando existir (SupermarketCalculator e BibliaEstudoCompleta); Mp3Player ainda sem script de build.
+
+## Conexoes
+
+- [[filename-artist-extraction-two-strategies]]
