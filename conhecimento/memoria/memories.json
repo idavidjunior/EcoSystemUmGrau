@@ -3878,5 +3878,25 @@
     "access_count": 0,
     "created_at": "2026-08-09T10:01:34.907081",
     "last_accessed": "2026-08-09T10:01:34.907081"
+  },
+  {
+    "id": 224,
+    "kind": "padrao",
+    "task": "Fix link checker false positives",
+    "summary": "Corrigido check_links.py para eliminar falsos positivos: 1) Python imports: agora só verifica imports relativos (./module, ../module) - ignora stdlib, third-party, absolute imports. 2) JS/TS imports: agora só verifica imports relativos (./path, ../path) - ignora npm packages. 3) Resultado: de 2279 'broken' falsos para 16 reais (maioria em backups/subprojects). Link checker agora foca no que importa: links relativos locais e URLs externas.",
+    "project": "",
+    "tags": [
+      "check",
+      "subprojects",
+      "corrigido",
+      "positives",
+      "backups",
+      "absolute"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T10:34:20.322579",
+    "last_accessed": "2026-08-09T10:34:20.322579"
   }
 ]

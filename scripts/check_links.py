@@ -126,13 +126,13 @@ def extract_imports_python(content):
     return imports
 
 def extract_imports_js_ts(content):
-    """Extrai imports JS/TS."""
+    """Extrai imports JS/TS - only check relative imports (local files)."""
     imports = []
-    # import ... from '...'
-    for m in re.finditer(r'import\s+.*\s+from\s+[\'"]([^\'"]+)[\'"]', content):
+    # import ... from './...' or '../...'
+    for m in re.finditer(r'import\s+.*\s+from\s+[\'"](\.\.?/[^\'"]+)[\'"]', content):
         imports.append((m.group(1), 'import'))
-    # require('...')
-    for m in re.finditer(r'require\s*\(\s*[\'"]([^\'"]+)[\'"]\s*\)', content):
+    # require('./...') or require('../...')
+    for m in re.finditer(r'require\s*\(\s*[\'"](\.\.?/[^\'"]+)[\'"]\s*\)', content):
         imports.append((m.group(1), 'require'))
     return imports
 
