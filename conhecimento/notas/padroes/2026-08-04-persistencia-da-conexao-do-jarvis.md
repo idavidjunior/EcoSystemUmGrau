@@ -17,4 +17,3 @@ contexto: Usuario pediu para verificar a conexao com o Jarvis. Constatado que a 
 
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]
-- [[projetos-irmaos-do-ecosystemumgrau]]

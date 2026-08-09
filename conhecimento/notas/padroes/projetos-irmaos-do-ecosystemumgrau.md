@@ -1,12 +1,12 @@
 ---
-tags: [bibliaestudocompleta, conhecimento, opencodeopencodeopencodeopencodeopencode, padrao, registrados, tres]
+tags: [bibliaestudocompleta, conhecimento, opencodeopencodeopencodeopencodeopencodeopencodeopencode, padrao, registrados, tres]
 aliases: [Projetos irmaos do EcoSystemUmGrau]
 date: 2026-08-09
 ---
 
 # Projetos irmaos do EcoSystemUmGrau
 
-**Fonte:** opencode+opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -18,6 +18,5 @@ contexto: Usuario pediu para aprender/memorizar os tres projetos irmaos registra
 # Projetos irmaos do EcoSyst
 ## Conexoes
 
-- [[2026-08-04-persistencia-da-conexao-do-jarvis]]
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]
