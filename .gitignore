@@ -39,6 +39,7 @@ scripts/watchdog_log.txt
 scripts/watchdog.lock
 scripts/test_greeting.json
 *.pid
+conhecimento/memoria/.dense_rebuild.lock
 
 # Debug/probe temporarios (nao sobem)
 scripts/_*.py
