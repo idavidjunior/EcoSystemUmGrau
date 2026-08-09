@@ -1,12 +1,12 @@
 ---
-tags: [bibliaestudocompleta, conhecimento, opencode, padrao, registrados, tres]
+tags: [bibliaestudocompleta, conhecimento, opencodeopencodeopencode, padrao, registrados, tres]
 aliases: [Projetos irmaos do EcoSystemUmGrau]
 date: 2026-08-09
 ---
 
 # Projetos irmaos do EcoSystemUmGrau
 
-**Fonte:** opencode
+**Fonte:** opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -18,9 +18,6 @@ contexto: Usuario pediu para aprender/memorizar os tres projetos irmaos registra
 # Projetos irmaos do EcoSyst
 ## Conexoes
 
-- [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
-- [[controle-da-tv-lg-webos-via-ssap]]
+- [[config-2026-07-27-teste-do-vigilante-automático]]
 - [[padrao-hub-padroes]]
-- [[secrets-guard-no-preflightcheck]]

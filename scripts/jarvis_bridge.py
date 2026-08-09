@@ -1315,6 +1315,105 @@ def _ultima_fala_usuario():
         return None, None
 
 
+def _ultima_msg_sem_resposta():
+    """Verifica se a última mensagem do usuário no histórico ficou sem resposta.
+    Retorna o texto da última mensagem do usuário se ela não foi respondida,
+    ou None se a última mensagem já foi respondida ou se não há mensagens.
+
+    Lógica: a última linha do histórico deve ser "Jarvis: ...". Se for
+    "Usuário: ...", significa que a conexão caiu antes do Jarvis responder.
+    """
+    try:
+        if not HIST_PATH.exists():
+            return None
+        with open(HIST_PATH, "r", encoding="utf-8-sig") as f:
+            d = json.load(f)
+        if not isinstance(d, list) or len(d) == 0:
+            return None
+
+        # Encontra a última mensagem do usuário no histórico
+        ultima_user_msg = None
+        for i in range(len(d) - 1, -1, -1):
+            s = d[i]
+            if isinstance(s, str) and s.startswith("Usuário:"):
+                ultima_user_msg = s[len("Usuário:"):].strip()
+                break
+
+        if ultima_user_msg is None:
+            return None
+
+        # Verifica se há uma resposta do Jarvis DEPOIS da última mensagem do usuário
+        # Encontra o índice da última mensagem do usuário
+        idx_ultima_user = None
+        for i in range(len(d) - 1, -1, -1):
+            s = d[i]
+            if isinstance(s, str) and s.startswith("Usuário:"):
+                idx_ultima_user = i
+                break
+
+        if idx_ultima_user is None:
+            return None
+
+        # Procura por uma resposta do Jarvis após a última mensagem do usuário
+        tem_resposta = False
+        for i in range(idx_ultima_user + 1, len(d)):
+            s = d[i]
+            if isinstance(s, str) and s.startswith("Jarvis:"):
+                tem_resposta = True
+                break
+
+        if tem_resposta:
+            return None  # Já foi respondida
+
+        return ultima_user_msg  # Não foi respondida — precisa retomar
+    except Exception as e:
+        logger.warning(f"_ultima_msg_sem_resposta: {e}")
+        return None
+
+
+async def _retomar_ultima_tarefa(ws, c):
+    """Retoma automaticamente a última tarefa que ficou sem resposta.
+    Retorna True se retomou alguma tarefa, False caso contrário."""
+    msg = _ultima_msg_sem_resposta()
+    if not msg:
+        return False
+
+    logger.info(f"RETOMADA AUTOMATICA: '{msg[:80]}' — reenviando sem pedir ao usuário")
+
+    # Avisa o usuário que está retomando
+    aviso = f"Conexão restabelecida. Retomando automaticamente: {msg[:50]}{'...' if len(msg) > 50 else ''}"
+    try:
+        a = await gerar_audio(aviso)
+        await ws.send(json.dumps({"audio": a, "text": aviso, "retomada": True}))
+    except Exception as e:
+        logger.warning(f"aviso retomada: {e}")
+        await ws.send(json.dumps({"text": aviso, "retomada": True}))
+
+    # Reenvia a mensagem para o LLM processar
+    try:
+        r = await c.perguntar(msg)
+        if r:
+            r_tela = normalizar_hora_display(r)
+            try:
+                a = await gerar_audio(r_tela)
+                if a:
+                    await ws.send(json.dumps({"text": r_tela, "audio": a, "retomada": True}))
+                    logger.info(f"retomada resp: {len(r_tela)}c / audio {len(a)}c")
+                else:
+                    await ws.send(json.dumps({"text": r_tela, "retomada": True}))
+            except Exception as e:
+                logger.warning(f"audio retomada: {e}")
+                await ws.send(json.dumps({"text": r_tela, "retomada": True}))
+        else:
+            await ws.send(json.dumps({"text": "Não consegui processar a retomada. Pode repetir?", "retomada": True}))
+    except Exception as e:
+        logger.error(f"erro retomada: {e}")
+        await ws.send(json.dumps({"text": f"Erro ao retomar: {e}", "retomada": True}))
+
+    _marcar_atividade()
+    return True
+
+
 def _carregar_saudacao_estado():
     """Carrega o estado persistente de saudações (reconexões, últimas saudações)."""
     try:
@@ -1522,6 +1621,17 @@ async def lidar(ws):
             return
     else:
         logger.info("sem saudacao (conversa ativa) — aguardando próxima fala do usuário")
+
+    # RETOMADA AUTOMÁTICA: verifica se a última mensagem do usuário ficou sem
+    # resposta (conexão caiu antes do Jarvis responder) e reenvia automaticamente.
+    # Isso acontece SEMPRE que a conexão é restabelecida — o usuário não precisa pedir.
+    if cx.get("eh_reconexao", False):
+        try:
+            retomou = await _retomar_ultima_tarefa(ws, c)
+            if retomou:
+                logger.info("retomada automatica concluida — aguardando proxima fala")
+        except Exception as e:
+            logger.warning(f"retomada automatica falhou: {e}")
 
     try:
         async for m in ws:
