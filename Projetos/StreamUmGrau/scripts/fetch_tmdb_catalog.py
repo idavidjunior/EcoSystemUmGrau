@@ -36,7 +36,12 @@ IDIOMA_PADRAO = {
 TIPOS = {
     "filme": {"route": "movie/popular", "field": "title"},
     "serie": {"route": "tv/popular", "field": "name"},
-    "dorama": {"route": "tv/popular", "field": "name", "region": "KR"},
+    # Doramas = series com idioma original coreano (ko), via discover.
+    "dorama": {
+        "route": "discover/tv",
+        "field": "name",
+        "extra": "with_original_language=ko",
+    },
 }
 
 
@@ -94,6 +99,7 @@ def extrair_obra(item, tipo, api_key):
     banner_url = f"{IMG_BASE_BACKDROP}{backdrop}" if backdrop else capa_url
 
     sinopse = (item.get("overview") or "").strip()[:400]
+    sinopse = " ".join(sinopse.split())
     ano = 0
     if tipo == "filme":
         try:
@@ -168,12 +174,15 @@ def main():
             print(f"[skip] tipo desconhecido: {tipo}")
             continue
         rota = TIPOS[tipo]["route"]
+        extra = TIPOS[tipo].get("extra", "")
         pagina = 1
         coletadas = 0
         tentativas = 0
         print(f"[{tipo}] buscando em {rota}...")
         while coletadas < args.por_tipo and tentativas < 5:
             url = f"{TMDB_BASE}/{rota}?page={pagina}"
+            if extra:
+                url += f"&{extra}"
             try:
                 dados = http_json(url, args.api_key)
             except Exception as e:
