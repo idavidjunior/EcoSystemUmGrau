@@ -20,5 +20,4 @@ Verificar se o vigilante detecta automaticamente novos arquivos em conhecimento/
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]
-- [[eco-agente-e-comando-global]]
 - [[padrao-hub-padroes]]

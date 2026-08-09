@@ -1,12 +1,12 @@
 ---
-tags: [agent, named, opencodeopencodeopencode, padrao, see, skill]
+tags: [agent, named, opencodeopencodeopencodeopencode, padrao, see, skill]
 aliases: [eco agente e comando global]
 date: 2026-08-08
 ---
 
 # eco agente e comando global
 
-**Fonte:** opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -16,5 +16,4 @@ contexto: Em nova sessão com outra LLM, o usuário digitou "@eco" e recebeu "I 
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-teste-do-vigilante-automático]]
 - [[padrao-hub-padroes]]
