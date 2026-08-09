@@ -596,28 +596,46 @@ def _regenerate() -> bool:
         return False
 
 
+def _inject_vendor_script(src: str) -> str:
+    """Inject vendor script reference (not inline)."""
+    VENDOR = BASE / 'docs' / 'vendor' / 'vis-network.min.js'
+    if VENDOR.exists():
+        src = src.replace(
+            '<script src="vendor/vis-network.min.js"></script>',
+            '<script src="vendor/vis-network.min.js"></script>'
+        )
+    else:
+        src = src.replace(
+            '<script src="vendor/vis-network.min.js"></script>',
+            '<script src="https://unpkg.com/vis-network@9.1.2/standalone/umd/vis-network.min.js"></script>'
+        )
+    return src
+
+
+def _inject_into_head(src: str, injection: str) -> str:
+    """Inject content before </head> tag, or append if not found."""
+    if '</head>' in src:
+        return src.replace('</head>', injection + '</head>', 1)
+    return src + injection
+
+
+def _inject_into_body(src: str, injection: str) -> str:
+    """Inject content before </body> tag, or append if not found."""
+    if '</body>' in src:
+        return src.replace('</body>', injection + '</body>', 1)
+    return src + injection
+
+
 def _build_view() -> Path | None:
     # Sempre regenera para garantir HTML atualizado
     if not _regenerate():
         return None
     src = OUTPUT_HTML.read_text(encoding='utf-8')
 
-    VENDOR = BASE / 'docs' / 'vendor' / 'vis-network.min.js'
-    # NÃO inliner o vendor JS - usar referência externa para evitar HTML de 500KB+
-    # O arquivo local existe e é servido pelo webview via file://
-    if VENDOR.exists():
-        # Manter referência local - webview serve arquivos locais
-        src = src.replace(
-            '<script src="vendor/vis-network.min.js"></script>',
-            '<script src="vendor/vis-network.min.js"></script>'
-        )
-    else:
-        # Fallback para CDN se vendor não existir
-        src = src.replace(
-            '<script src="vendor/vis-network.min.js"></script>',
-            '<script src="https://unpkg.com/vis-network@9.1.2/standalone/umd/vis-network.min.js"></script>'
-        )
+    # Vendor script (external reference, not inlined)
+    src = _inject_vendor_script(src)
 
+    # Early error handler
     early_error = """
 <script>
   window.__widgerrs = [];
@@ -634,31 +652,20 @@ def _build_view() -> Path | None:
   }, true);
 </script>
 """
-    if '</head>' in src:
-        src = src.replace('</head>', early_error + '</head>', 1)
-    else:
-        src = early_error + src
+    src = _inject_into_head(src, early_error)
 
-    if '</head>' in src:
-        src = src.replace('</head>', WIDGET_JS + '</head>', 1)
-    else:
-        src += WIDGET_JS
+    # Widget JS (init controls)
+    src = _inject_into_head(src, WIDGET_JS)
 
-    if '</head>' in src:
-        src = src.replace('</head>', '<style>' + WIDGET_CSS + '</style></head>', 1)
-    else:
-        src += '<style>' + WIDGET_CSS + '</style>'
+    # Widget CSS
+    src = _inject_into_head(src, '<style>' + WIDGET_CSS + '</style>')
 
+    # API inject (polling)
     api_inject = API_INJECT.replace('%POLL_MS%', str(POLL_MS))
-    if '</head>' in src:
-        src = src.replace('</head>', api_inject + '</head>', 1)
-    else:
-        src += api_inject
+    src = _inject_into_head(src, api_inject)
 
-    if '</body>' in src:
-        src = src.replace('</body>', RESIZE_JS + WIDGET_JS_EXTRA + '</body>', 1)
-    else:
-        src += RESIZE_JS + WIDGET_JS_EXTRA
+    # Resize handler + extra widget UI
+    src = _inject_into_body(src, RESIZE_JS + WIDGET_JS_EXTRA)
 
     VIEW_COPY.write_text(src, encoding='utf-8')
     return VIEW_COPY

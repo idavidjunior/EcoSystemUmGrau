@@ -1,0 +1,45 @@
+/* Widget CSS - Cerebro Vivo Desktop Widget */
+#header { transition: opacity .25s ease; position: relative; z-index: 10000; }
+body.desktop #header { opacity: 1; }
+#painel { display: none !important; }
+#wrap { display: flex; height: 100vh; }
+#net { flex: 1; height: 100vh !important; width: 100% !important; }
+body { margin: 0; width: 100vw; height: 100vh; overflow: hidden; background: #1e1e2e; }
+#mk-drag { position: fixed; left: 0; top: 0; width: 100%; height: 16px;
+           cursor: grab; z-index: 10001; background: rgba(203,166,247,0.08);
+           pointer-events: auto; }
+#mk-drag:active { cursor: grabbing; background: rgba(203,166,247,0.15); }
+#mk-drag:hover { background: rgba(203,166,247,0.12); }
+#mk-resize { position: fixed; right: 0; bottom: 0; width: 18px; height: 18px;
+             cursor: nwse-resize; display: block; z-index: 10001;
+             background: rgba(203,166,247,0.15);
+             border-top: 2px solid rgba(203,166,247,0.4);
+             border-left: 2px solid rgba(203,166,247,0.4);
+             pointer-events: auto; }
+#mk-resize:hover { background: rgba(203,166,247,0.35); }
+#mk-topbar { position: fixed; top: 10px; left: 12px; right: auto; z-index: 99998; display: flex; justify-content: flex-start; align-items: center; flex-wrap: wrap; gap: 4px; pointer-events: auto; width: min(220px, calc(100vw - 90px)); padding: 4px 6px; border-radius: 8px; background: rgba(24, 24, 37, 0.82); border: 1px solid rgba(145, 160, 198, 0.2); box-shadow: 0 8px 22px rgba(0,0,0,0.32); backdrop-filter: blur(6px); }
+#mk-topbar > * { flex: 0 0 auto; }
+#mk-topbar select,
+#mk-topbar input,
+#mk-topbar span,
+#mk-topbar div { box-sizing: border-box; }
+
+/* Painel de controles: organizado em faixa inferior e visivel por padrao */
+#mk-controles { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: row; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; padding: 8px 12px; border-radius: 10px; background: rgba(24, 24, 37, 0.82); border: 1px solid rgba(145, 160, 198, 0.2); box-shadow: 0 8px 22px rgba(0,0,0,0.32); backdrop-filter: blur(6px); max-width: min(760px, calc(100vw - 110px)); width: min(760px, calc(100vw - 110px)); }
+#mk-controles > div,
+#mk-controles > select,
+#mk-controles > input { max-width: 100%; }
+#mk-controles > div,
+#mk-controles > select,
+#mk-controles > input,
+#mk-controles > span { border-radius: 6px; }
+@media (max-width: 760px) {
+  #mk-topbar,
+  #mk-controles { width: min(560px, calc(100vw - 70px)); max-width: calc(100vw - 70px); }
+}
+@media (max-width: 500px) {
+  #mk-topbar,
+  #mk-controles { width: min(300px, calc(100vw - 56px)); max-width: calc(100vw - 56px); gap: 5px; }
+  #mk-controles { padding: 7px 8px; }
+  #mk-controles input[type="range"] { width: 90px !important; }
+}
