@@ -79,7 +79,7 @@ if ($ocodeVersion) {
 # ─── 7. Agents ─────────────────────────────────────────────
 Write-Host "[7] Agents OpenCode" -ForegroundColor White
 $agentDir = "$env:USERPROFILE\.config\opencode\agents"
-$expectedAgents = @("00-maestro", "01-estrategista", "02-cetico", "03-realista", "04-etica", "05-futuro", "06-recursos", "07-criativo", "08-revisor", "09-executor", "10-aprendizado", "11-ler-executor", "99-gerador-de-agentes")
+$expectedAgents = @("00-maestro", "01-estrategista", "02-cetico", "03-realista", "04-etica", "05-futuro", "06-recursos", "07-criativo", "08-revisor", "09-executor", "10-aprendizado", "11-ler-executor", "12-parallel-planner", "13-flutter-orquestrador", "99-gerador-de-agentes")
 $foundAgents = 0
 if (Test-Path $agentDir) {
     foreach ($a in $expectedAgents) {

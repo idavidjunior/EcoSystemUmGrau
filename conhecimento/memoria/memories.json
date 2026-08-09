@@ -3678,5 +3678,45 @@
     "access_count": 0,
     "created_at": "2026-08-08T21:00:50.934332",
     "last_accessed": "2026-08-08T21:00:50.934332"
+  },
+  {
+    "id": 214,
+    "kind": "padrao",
+    "task": "Flutter local no PC + orquestrador Flutter criado",
+    "summary": "Flutter 3.44.9 instalado em .flutter_auto\\flutter (mesma versao do CI). Build local do StreamUmGrau funcionando (~10min 1o build, gradle.properties com -Xmx1536M por causa dos 4GB de RAM; -Xmx8G causa OOM e crash do daemon). Flutter analyze/test como gate local (achou erro de import e teste MyApp que o CI nao pegava). Criado agente 13-flutter-orquestrador + scripts/rename_flutter_package.sh. android/ agora versionado (package com.umgrau.stream) - CI enxuto sem scaffold/rename.",
+    "project": "",
+    "tags": [
+      "pegava",
+      "nao",
+      "myapp",
+      "teste",
+      "import",
+      "erro"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T21:57:28.678386",
+    "last_accessed": "2026-08-08T21:57:28.678386"
+  },
+  {
+    "id": 215,
+    "kind": "erro",
+    "task": "ClassNotFoundException MainActivity por sed com barras",
+    "summary": "No CI, o sed que renomeava o package do MainActivity.kt usava o caminho com barras (com/umgrau/stream_um_grau) mas a declaracao Kotlin usa pontos (com.umgrau.stream_um_grau) - nunca casava. Resultado: classe ficava no pacote antigo e o manifest apontava pro novo = ClassNotFoundException. Correcao: substituir barras por pontos no OLD_PKG. Validado em bash local antes do push. Agora o script scripts/rename_flutter_package.sh e a fonte unica do procedimento.",
+    "project": "",
+    "tags": [
+      "usa",
+      "kotlin",
+      "novo",
+      "declaracao",
+      "pro",
+      "apontava"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T21:57:30.356955",
+    "last_accessed": "2026-08-08T21:57:30.356955"
   }
 ]
