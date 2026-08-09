@@ -21,6 +21,7 @@ import json
 import subprocess
 import sys
 import time
+import hashlib
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
@@ -37,6 +38,106 @@ TITLE = 'Cerebro Vivo'
 BG = '#1e1e2e'
 DEFAULT_W, DEFAULT_H = 1280, 800
 MIN_W, MIN_H = 400, 300
+
+# Cache de versão do vault para evitar recalcular a cada poll
+_vault_version_cache = {'hash': None, 'mtime': 0}
+
+def _compute_vault_hash() -> str:
+    """Calcula hash MD5 dos mtimes de todos .md em conhecimento/.
+    Só muda quando arquivos .md reais são modificados (ignora cluster_mapper.json etc)."""
+    try:
+        md_files = list(CONHECIMENTO_DIR.rglob('*.md'))
+        if not md_files:
+            return 'empty'
+        # Usa mtime + size para detectar mudanças rápidas sem ler conteúdo
+        parts = []
+        for f in sorted(md_files):
+            try:
+                st = f.stat()
+                parts.append(f'{f.name}:{int(st.st_mtime)}:{st.st_size}')
+            except OSError:
+                pass
+        return hashlib.md5('|'.join(parts).encode()).hexdigest()[:16]
+    except Exception:
+        return 'error'
+
+def _get_vault_version() -> str:
+    """Retorna hash do vault, com cache de 2s para não saturar I/O."""
+    global _vault_version_cache
+    now = time.time()
+    if now - _vault_version_cache['mtime'] > 2:
+        _vault_version_cache['hash'] = _compute_vault_hash()
+        _vault_version_cache['mtime'] = now
+    return _vault_version_cache['hash']
+
+
+class Bridge:
+    def __init__(self):
+        self._win = None
+
+    def versao(self):
+        return 'Cerebro Vivo widget'
+
+    def echo(self, value):
+        return value
+
+    def ping(self):
+        return 'pong'
+
+    def test_bridge(self):
+        return 'OK'
+
+    def debug_log(self, msg):
+        print(f'[widget-bridge] {msg}', flush=True)
+        return True
+
+    def perguntar(self, last_ts=0):
+        """Retorna versão do vault. Só muda ts se hash dos .md mudou."""
+        vault_hash = _get_vault_version()
+        # last_ts vem do JS como string do hash anterior
+        last_hash = str(last_ts or '')
+        if vault_hash != last_hash:
+            return {'ts': vault_hash, 'last_ts': last_hash, 'changed': True}
+        return {'ts': vault_hash, 'last_ts': last_hash, 'changed': False}
+
+    def guardar_geo(self, x=None, y=None, width=None, height=None):
+        data = _carregar_geo()
+        if x is not None: data['x'] = int(x)
+        if y is not None: data['y'] = int(y)
+        if width is not None: data['width'] = int(width)
+        if height is not None: data['height'] = int(height)
+        GEO_FILE.parent.mkdir(parents=True, exist_ok=True)
+        GEO_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
+        return data
+
+    def guardar_orbGrafo(self, valor):
+        try:
+            ORB_FILE.parent.mkdir(parents=True, exist_ok=True)
+            ORB_FILE.write_text(str(valor), encoding='utf-8')
+        except Exception:
+            pass
+        return valor
+
+    def redimensionar(self, width, height):
+        if self._win is not None and hasattr(self._win, 'resize'):
+            try:
+                self._win.resize(int(width), int(height))
+            except Exception:
+                pass
+        return {'width': int(width), 'height': int(height)}
+
+
+def _carregar_geo() -> dict:
+    if not GEO_FILE.exists():
+        return {'x': None, 'y': None, 'width': DEFAULT_W, 'height': DEFAULT_H}
+    try:
+        raw = GEO_FILE.read_text(encoding='utf-8')
+        data = json.loads(raw) if raw.strip() else {}
+    except Exception:
+        data = {}
+    out = {'x': data.get('x'), 'y': data.get('y'), 'width': int(data.get('width', DEFAULT_W)), 'height': int(data.get('height', DEFAULT_H))}
+    return out
+
 
 WIDGET_CSS = """
   #header { transition: opacity .25s ease; position: relative; z-index: 10000; }
@@ -89,12 +190,18 @@ API_INJECT = """
 <script>
 (function(){
   window.__widgetApiPoll = window.__widgetApiPoll || {
-    lastTs: 0,
+    lastTs: '',
     tick: function(){
       try {
         if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.perguntar === 'function') {
           window.pywebview.api.perguntar(this.lastTs).then(function(resp){
-            if (resp && resp.ts) this.lastTs = Number(resp.ts) || this.lastTs;
+            if (resp && resp.ts) {
+              this.lastTs = resp.ts;
+              if (resp.changed) {
+                // Vault mudou: recarrega a página para regenerar o grafo
+                window.location.reload();
+              }
+            }
           }.bind(this)).catch(function() {});
         }
       } catch (e) {}
@@ -160,67 +267,6 @@ WIDGET_JS = """
 </script>
 """
 
-
-class Bridge:
-    def __init__(self):
-        self._win = None
-
-    def versao(self):
-        return 'Cerebro Vivo widget'
-
-    def echo(self, value):
-        return value
-
-    def ping(self):
-        return 'pong'
-
-    def test_bridge(self):
-        return 'OK'
-
-    def debug_log(self, msg):
-        print(f'[widget-bridge] {msg}', flush=True)
-        return True
-
-    def perguntar(self, last_ts=0):
-        return {'ts': int(time.time() * 1000), 'last_ts': int(last_ts or 0)}
-
-    def guardar_geo(self, x=None, y=None, width=None, height=None):
-        data = _carregar_geo()
-        if x is not None: data['x'] = int(x)
-        if y is not None: data['y'] = int(y)
-        if width is not None: data['width'] = int(width)
-        if height is not None: data['height'] = int(height)
-        GEO_FILE.parent.mkdir(parents=True, exist_ok=True)
-        GEO_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
-        return data
-
-    def guardar_orbGrafo(self, valor):
-        try:
-            ORB_FILE.parent.mkdir(parents=True, exist_ok=True)
-            ORB_FILE.write_text(str(valor), encoding='utf-8')
-        except Exception:
-            pass
-        return valor
-
-    def redimensionar(self, width, height):
-        if self._win is not None and hasattr(self._win, 'resize'):
-            try:
-                self._win.resize(int(width), int(height))
-            except Exception:
-                pass
-        return {'width': int(width), 'height': int(height)}
-
-
-def _carregar_geo() -> dict:
-    if not GEO_FILE.exists():
-        return {'x': None, 'y': None, 'width': DEFAULT_W, 'height': DEFAULT_H}
-    try:
-        raw = GEO_FILE.read_text(encoding='utf-8')
-        data = json.loads(raw) if raw.strip() else {}
-    except Exception:
-        data = {}
-    out = {'x': data.get('x'), 'y': data.get('y'), 'width': int(data.get('width', DEFAULT_W)), 'height': int(data.get('height', DEFAULT_H))}
-    return out
 
 WIDGET_JS_EXTRA = """
 <script>
