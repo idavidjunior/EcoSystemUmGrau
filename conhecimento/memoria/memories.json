@@ -3978,5 +3978,25 @@
     "access_count": 0,
     "created_at": "2026-08-09T19:41:44.437326",
     "last_accessed": "2026-08-09T19:41:44.437326"
+  },
+  {
+    "id": 229,
+    "kind": "decisao",
+    "task": "Home: +Importar unificado com arvore",
+    "summary": "BibliaEstudoCompleta: botao +Importar da Home agora abre ACTION_OPEN_DOCUMENT_TREE e usa importFolderTree, mesma funcao do +Importar Pasta de Recursos. Removido menu antigo que so guardava a raiz.",
+    "project": "",
+    "tags": [
+      "recursos",
+      "pasta",
+      "funcao",
+      "importfoldertree",
+      "usa",
+      "tree"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T19:50:33.342934",
+    "last_accessed": "2026-08-09T19:50:33.342934"
   }
 ]
