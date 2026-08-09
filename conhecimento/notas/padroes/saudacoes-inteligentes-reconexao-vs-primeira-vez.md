@@ -18,4 +18,5 @@ contexto: "O bridge Jarvis (jarvis_bridge.py) cumprimentava toda conexao com o m
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
+- [[eco-agente-e-comando-global]]
 - [[padrao-hub-padroes]]

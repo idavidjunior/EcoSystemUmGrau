@@ -239,15 +239,10 @@ WIDGET_JS_EXTRA = """
 
     var cores = { fundo: '#1e1e2e', borda: '#45475a', destaque: '#cba6f7', texto: '#cdd6f4', texto2: '#a6adc8' };
 
+    // ===== BARRA SUPERIOR (topBar) =====
     var topBar = mk('div');
     topBar.id = 'mk-topbar';
     topBar.style.cssText = 'position:fixed;top:10px;left:52px;right:auto;z-index:99998;display:flex;align-items:center;gap:4px;pointer-events:auto;';
-
-    var eye = mk('div');
-    eye.id = 'mk-painel-toggle';
-    eye.title = 'Ocultar/mostrar controles';
-    eye.textContent = '👁';
-    eye.style.cssText = 'position:fixed;bottom:12px;left:12px;z-index:99999;width:28px;height:28px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#313244;border:1px solid ' + cores.borda + ';color:' + cores.destaque + ';font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,0.22);transition:transform .12s ease, box-shadow .12s ease, background .12s ease;';
 
     var ctrl = mk('div');
     ctrl.id = 'mk-labels';
@@ -257,7 +252,7 @@ WIDGET_JS_EXTRA = """
 
     var menuBtn = mk('div');
     menuBtn.id = 'mk-menu-btn';
-    menuBtn.title = 'Mostrar/ocultar menus';
+    menuBtn.title = 'Mostrar/ocultar menus (barra superior)';
     menuBtn.textContent = '☰';
     menuBtn.style.cssText = 'width:22px;height:22px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:' + cores.destaque + ';background:#313244;border:1px solid ' + cores.destaque + ';font-size:11px;';
 
@@ -330,6 +325,7 @@ WIDGET_JS_EXTRA = """
     orbitWrap.appendChild(orbit);
     orbitWrap.appendChild(orbitValue);
 
+    // ===== PAINEL INFERIOR (mk-controles) =====
     var panel = mk('div');
     panel.id = 'mk-controles';
     panel.title = 'Controles do grafo';
@@ -338,10 +334,18 @@ WIDGET_JS_EXTRA = """
     panel.appendChild(speedWrap);
     panel.appendChild(orbitWrap);
 
+    // Botão do Olho DENTRO do painel inferior (único controle de visibilidade global da área)
+    var eye = mk('div');
+    eye.id = 'mk-painel-toggle';
+    eye.title = 'Ocultar/mostrar painel de controles';
+    eye.textContent = '👁';
+    eye.style.cssText = 'width:28px;height:28px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#313244;border:1px solid ' + cores.destaque + ';color:' + cores.destaque + ';font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,0.22);transition:transform .12s ease, box-shadow .12s ease, background .12s ease;flex-shrink:0;';
+    panel.appendChild(eye);
+
     document.body.appendChild(topBar);
     document.body.appendChild(panel);
-    document.body.appendChild(eye);
 
+    // ===== FUNÇÕES =====
     function setLabelVisibility(visible) {
       var hidden = !visible;
       localStorage.setItem('labelsOcultos', hidden ? 'true' : 'false');
@@ -378,6 +382,7 @@ WIDGET_JS_EXTRA = """
         }
       } catch (e) {}
 
+      // Atualiza aparência do botão T
       ctrl.style.opacity = hidden ? '0.6' : '1';
       ctrl.style.borderColor = hidden ? '#7c7f93' : cores.destaque;
       ctrl.style.background = hidden ? '#2b2d3a' : '#313244';
@@ -403,8 +408,10 @@ WIDGET_JS_EXTRA = """
       localStorage.setItem('velGrafo', '1');
       localStorage.setItem('orbGrafo', '1');
       localStorage.setItem('labelsOcultos', 'false');
+      localStorage.setItem('painelGrafoVisivel', 'true');
       applyTheme('glow');
       setLabelVisibility(true);
+      syncControlsPanel(true);
       speedValue.textContent = 'x1.00';
       orbitValue.textContent = 'x1.0';
       try {
@@ -438,14 +445,16 @@ WIDGET_JS_EXTRA = """
       } catch (e) {}
     });
 
+    // Estado do painel inferior (controlado APENAS pelo botão do olho)
     var panelVisible = localStorage.getItem('painelGrafoVisivel') !== 'false';
     function syncControlsPanel(show) {
       panelVisible = !!show;
       panel.style.display = panelVisible ? 'flex' : 'none';
       panel.hidden = !panelVisible;
       panel.setAttribute('aria-hidden', String(!panelVisible));
-      eye.title = panelVisible ? 'Ocultar controles' : 'Mostrar controles';
-      eye.textContent = panelVisible ? '👁' : '🚫';
+      // Olho SEMPRE visível - só muda ícone/title
+      eye.title = panelVisible ? 'Ocultar painel de controles' : 'Mostrar painel de controles';
+      eye.textContent = panelVisible ? '👁' : '👁️';
       eye.style.background = panelVisible ? '#313244' : '#45475a';
       eye.style.boxShadow = panelVisible ? '0 4px 12px rgba(0,0,0,0.22)' : '0 0 0 2px rgba(203,166,247,0.2), 0 6px 14px rgba(0,0,0,0.24)';
       localStorage.setItem('painelGrafoVisivel', panelVisible ? 'true' : 'false');
@@ -453,14 +462,22 @@ WIDGET_JS_EXTRA = """
 
     syncControlsPanel(panelVisible);
 
+    // ===== EVENT LISTENERS (estados independentes) =====
+    
+    // Olho: controla APENAS o painel inferior (mk-controles)
     eye.addEventListener('click', function(){
       syncControlsPanel(!panelVisible);
     });
 
+    // Menu (☰): controla APENAS a barra superior (mk-topbar)
     menuBtn.addEventListener('click', function(){
-      topBar.style.display = (topBar.style.display === 'none') ? 'flex' : 'none';
+      var isHidden = topBar.style.display === 'none';
+      topBar.style.display = isHidden ? 'flex' : 'none';
+      menuBtn.textContent = isHidden ? '☰' : '…';
+      menuBtn.title = isHidden ? 'Mostrar barra superior' : 'Ocultar barra superior';
     });
 
+    // Botão T: alterna etiquetas dos nós (independente)
     ctrl.addEventListener('click', function(){
       var shouldShow = localStorage.getItem('labelsOcultos') !== 'true';
       setLabelVisibility(shouldShow);

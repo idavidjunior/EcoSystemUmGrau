@@ -91,7 +91,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppConfig.appName),
+        title: const Text(AppConfig.appName),
         actions: [
           IconButton(
             onPressed: _carregando ? null : _carregar,

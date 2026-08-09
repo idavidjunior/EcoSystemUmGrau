@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**83 notas** conectadas a este hub.
+**84 notas** conectadas a este hub.
 
 
 ## Notas
@@ -34,6 +34,7 @@
 - [[dependency-inclusion-pattern]]
 - [[dom-element-hierarchy-mapping]]
 - [[dual-mode-dialog-pattern]]
+- [[eco-agente-e-comando-global]]
 - [[edittext-inline-editing-toggle]]
 - [[encoding-utf-8-explicito-em-python-no-windows]]
 - [[filename-artist-extraction-two-strategies]]

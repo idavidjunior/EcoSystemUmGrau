@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**129 notas** do cluster ecossistema.
+**130 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -84,6 +84,7 @@
 - [[controle-de-tv-lg-01082026]]
 - [[decisão-aprendizado-automãtico-permanente]]
 - [[decisão-arquitetura-jarvis-app]]
+- [[eco-agente-e-comando-global]]
 - [[ensureserve-spawns-opencode-serve-without-passing-env-contex]]
 - [[evoluãão-do-tts-jarvis-â-naturalidade-via-ssml]]
 - [[geraraudio-blocks-until-full-tts-generation-no-streaming]]

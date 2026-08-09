@@ -137,7 +137,7 @@ class Midia {
 
   /// Tag composta exibida nos cards: "FILME • DUB" ou "SERIE • LEG".
   String get tagFormato =>
-      '${tipoFormatado.toUpperCase()} • ${idiomaFormatado}';
+      '${tipoFormatado.toUpperCase()} • $idiomaFormatado';
 
   bool get temCapa => capaUrl.isNotEmpty;
   bool get temBanner => bannerUrl.isNotEmpty;

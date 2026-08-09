@@ -17,5 +17,6 @@ contexto: "Apos a clausula petrea (memoria #129) e o watchdog resiliente (memori
 
 - [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
+- [[eco-agente-e-comando-global]]
 - [[padrao-hub-padroes]]
 - [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]
