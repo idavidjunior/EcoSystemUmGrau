@@ -96,9 +96,9 @@ class MockMidiaRepository implements MidiaRepository {
           'O desaparecimento de um garoto na pequena Hawkins abre uma porta '
           'para um mundo paralelo cheio de mistérios e perigos.',
       'capa_url':
-          'https://image.tmdb.org/t/p/w500/x2LSRK2Cm7MZhjluni1msVv3UIn.jpg',
+          'https://static.tvmaze.com/uploads/images/original_untouched/595/1489169.jpg',
       'banner_url':
-          'https://image.tmdb.org/t/p/w1280/56v2KjBlU4XaOv9rVYEQYROue7s.jpg',
+          'https://static.tvmaze.com/uploads/images/original_untouched/595/1489169.jpg',
       'ano': 2016,
       'idioma_tipo': 'DUAL',
       'classificacao_etaria': 14,
@@ -149,4 +149,6 @@ class MockMidiaRepository implements MidiaRepository {
     return _seed
         .where((m) => m['tipo'] == tipo)
         .map(Midia.fromJson)
-    
+        .toList();
+  }
+}
