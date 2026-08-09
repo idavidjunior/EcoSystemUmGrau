@@ -206,7 +206,7 @@ def main():
                 total_checks += 1
                 status = result['status']
                 details = result.get('details', '')
-                icon = {'pass': '✓', 'fail': '✗', 'warn': '⚠', 'error': '✗', 'skipped': '○', 'info': 'ℹ'}.get(status, '?')
+                icon = {'pass': '[OK]', 'fail': '[FAIL]', 'warn': '[WARN]', 'error': '[ERR]', 'skipped': '[SKIP]', 'info': '[INFO]'}.get(status, '[?]')
                 print(f'  {icon} {check_name}: {status} {details}')
                 if status == 'fail':
                     failed += 1

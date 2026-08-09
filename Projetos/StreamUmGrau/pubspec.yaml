@@ -18,6 +18,9 @@ dependencies:
   # Persistencia local (favoritos)
   shared_preferences: ^2.3.0
 
+  # Abrir apps/URLs externas (ex.: Web Video Cast para assistir na TV)
+  url_launcher: ^6.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
