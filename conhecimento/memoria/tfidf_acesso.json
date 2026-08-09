@@ -10,7 +10,7 @@
   "nota:conhecimento/aprendizados/2026-08-06-recuperacao-rapida-conexao.md": 1,
   "nota:conhecimento/notas/padroes/cadeia-de-provedores-com-failover-inteligente.md": 1,
   "nota:conhecimento/aprendizados/2026-08-01-clausula-petrea-comunicacao-audio.md": 4,
-  "nota:conhecimento/aprendizados/2026-07-31-pontuacao-transcricoes-de-voz-jarvis.md": 8,
+  "nota:conhecimento/aprendizados/2026-07-31-pontuacao-transcricoes-de-voz-jarvis.md": 9,
   "nota:conhecimento/notas/padroes/config-2026-07-27-4-teste-do-ciclo-de-polling.md": 3,
   "nota:conhecimento/notas/heuristicas/heuristica-de-isolamento-de-falha.md": 2,
   "46": 1,
@@ -28,12 +28,12 @@
   "nota:conhecimento/aprendizados/2026-08-01-instrucao-permanente-confirmacao-em-audio.md": 10,
   "nota:conhecimento/notas/cognitivo/lei-de-postel-aplicada-a-engenharia.md": 2,
   "nota:conhecimento/notas/heuristicas/verifique-o-que-voce-acha-que-sabe.md": 2,
-  "nota:conhecimento/aprendizados/2026-08-01-pronuncia-jarvis.md": 13,
+  "nota:conhecimento/aprendizados/2026-08-01-pronuncia-jarvis.md": 15,
   "nota:conhecimento/notas/missoes/aprendizado-â-2026-07-31-â-reorg-catãlogo-ãnico-habilidades-.md": 2,
   "nota:conhecimento/aprendizados/2026-08-02-regras-obediencia-agents.md": 5,
   "nota:conhecimento/aprendizados/2026-08-06-certificacao-forense-e-boot-do-watchdog.md": 3,
   "nota:conhecimento/notas/_hubs/etica-hub-etica.md": 3,
-  "nota:conhecimento/notas/cognitivo/pronúncia-járvis-escrita-sem-acento-fala-com-acento.md": 3,
+  "nota:conhecimento/notas/cognitivo/pronúncia-járvis-escrita-sem-acento-fala-com-acento.md": 5,
   "nota:conhecimento/aprendizados/2026-07-27-correcao-final.md": 2,
   "nota:conhecimento/aprendizados/2026-07-27-unificacao-ecossistema.md": 3,
   "nota:conhecimento/aprendizados/2026-08-03-consolidacao-projetos-ecosystem.md": 2,
@@ -66,5 +66,5 @@
   "nota:conhecimento/notas/decisoes/renomear-pastas-com-espacos-para-nomes-sem-espaco.md": 2,
   "nota:conhecimento/notas/decisoes/ler-usa-python-puro-stdlib-only-zero-dependencias-externas-i.md": 2,
   "nota:conhecimento/aprendizados/2026-08-01-politica-resposta-rapida-caminhos-rapidos.md": 1,
-  "nota:conhecimento/aprendizados/2026-08-02-tts-prosody-dinamico-pronuncia-autoevolutiva.md": 1
+  "nota:conhecimento/aprendizados/2026-08-02-tts-prosody-dinamico-pronuncia-autoevolutiva.md": 2
 }

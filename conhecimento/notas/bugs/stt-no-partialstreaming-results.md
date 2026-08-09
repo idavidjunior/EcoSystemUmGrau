@@ -20,4 +20,4 @@ Added partial_callback parameter to _stt_whisper for incremental segment reporti
 - [[bug-hub-bugs]]
 - [[cluster-hub-ecossistema]]
 - [[http-401-unauthorized-on-session-and-globalsessions]]
-- [[pronuncia-do-nome-do-usuario-david]]
+- [[pronuncia-do-nome-do-usuario-david-deivid]]

@@ -119,7 +119,7 @@
 - [[ponte-web-video-cast]]
 - [[pontes-inter-cluster-cerebro-vivo-grafo]]
 - [[pontuaãão-da-transcriãão-voltando-ao-balão-do-app-corrigido]]
-- [[pronuncia-do-nome-do-usuario-david]]
+- [[pronuncia-do-nome-do-usuario-david-deivid]]
 - [[pronãncia-jãrvis-escrita-sem-acento-fala-com-acento]]
 - [[protocolo-higiene-repo-streamumgrau]]
 - [[regra-do-usuário-buildinstalatestavalida-antes-de-commitar-e]]

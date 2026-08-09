@@ -1,5 +1,5 @@
 ---
-tags: [conversa, decisao, ecosistema-opencode, estruturado, extrair, reutilizado]
+tags: [conversa, decisao, ecosistema-opencode, estruturado, extrair, tarefa]
 aliases: [2026-07-27: Sistema automático de captura de conhecimento do]
 date: 2026-08-09
 ---
@@ -84,4 +84,4 @@ Antes desta implementaÃ§Ã£o, cada interaÃ§Ã£o com o ecossistema gerava c
 - [[decisao-hub-decisoes]]
 - [[ensureserve-spawns-opencode-serve-without-passing-env-contex]]
 - [[http-401-unauthorized-on-session-and-globalsessions]]
-- [[pronuncia-do-nome-do-usuario-david]]
+- [[pronuncia-do-nome-do-usuario-david-deivid]]

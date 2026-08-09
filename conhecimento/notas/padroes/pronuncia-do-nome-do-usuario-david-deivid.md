@@ -1,14 +1,14 @@
 ---
-tags: [antonioneural, deve, diferente, ecosistema-opencode, padrao, pronunciado]
-aliases: [Pronuncia do nome do usuario: David]
+tags: [deivid ingles, ecosistema-opencode, escreve, ingles, padrao, som]
+aliases: [Pronuncia do nome do usuario: David (Deivid)]
 date: 2026-08-09
 ---
 
-# Pronuncia do nome do usuario: David
+# Pronuncia do nome do usuario: David (Deivid)
 
 **Fonte:** ecosistema-opencode
 
-O usuario se chama David. Pronuncia correta: Dávid (com acento na primeira silaba, como em ingles). Nao falar Davi (que e nome diferente). O edge-tts com voz pt-BR-AntonioNeural deve pronunciado como Dávid.
+O usuario se chama David. Escreve-se David, mas pronuncia-se Deivid (como em ingles, som de ei). Nunca falar Davi nem Dávid.
 ## Conexoes
 
 - [[2026-07-27-fallback-automático-de-modelo-llm-com-bun-razrooo]]

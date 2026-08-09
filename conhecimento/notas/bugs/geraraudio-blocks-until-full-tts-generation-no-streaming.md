@@ -20,4 +20,4 @@ Added gerar_audio_stream() async generator yielding base64 chunks incrementally;
 - [[bug-hub-bugs]]
 - [[cluster-hub-ecossistema]]
 - [[http-401-unauthorized-on-session-and-globalsessions]]
-- [[pronuncia-do-nome-do-usuario-david]]
+- [[pronuncia-do-nome-do-usuario-david-deivid]]

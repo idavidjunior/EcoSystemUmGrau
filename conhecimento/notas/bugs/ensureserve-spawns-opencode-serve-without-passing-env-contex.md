@@ -20,4 +20,4 @@ Added env={**os.environ} to _ensure_serve() and _ensure_serve_global() in jarvis
 - [[bug-hub-bugs]]
 - [[cluster-hub-ecossistema]]
 - [[http-401-unauthorized-on-session-and-globalsessions]]
-- [[pronuncia-do-nome-do-usuario-david]]
+- [[pronuncia-do-nome-do-usuario-david-deivid]]

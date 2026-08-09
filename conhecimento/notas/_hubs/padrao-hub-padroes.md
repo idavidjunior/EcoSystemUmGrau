@@ -66,7 +66,7 @@
 - [[packageactivity-launch-pattern]]
 - [[ponte-web-video-cast]]
 - [[process-hierarchy-for-multi-window-apps]]
-- [[pronuncia-do-nome-do-usuario-david]]
+- [[pronuncia-do-nome-do-usuario-david-deivid]]
 - [[registro-de-habilidades-de-jarvis]]
 - [[regra-do-usuário-buildinstalatestavalida-antes-de-commitar-e]]
 - [[renderersfactory-for-custom-audioprocessor]]
