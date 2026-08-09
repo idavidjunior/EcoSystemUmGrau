@@ -1,6 +1,6 @@
 # Decisoes
 
-**59 notas** conectadas a este hub.
+**60 notas** conectadas a este hub.
 
 
 ## Notas
@@ -28,6 +28,7 @@
 - [[habilidades-de-jarvis-seguem-taxonomia-de-3-niveis]]
 - [[idioma-padrao-pt-br]]
 - [[if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-]]
+- [[importação-de-pasta-preservando-árvore-remoção-de-referência]]
 - [[jarvis-deve-manter-registro-de-suas-proprias-habilidades-em-]]
 - [[ler-usa-python-puro-stdlib-only-zero-dependencias-externas-i]]
 - [[merge-by-name-if-name-matches-existing-item-increment-quanti]]
