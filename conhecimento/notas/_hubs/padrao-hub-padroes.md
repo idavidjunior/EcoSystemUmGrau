@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**86 notas** conectadas a este hub.
+**87 notas** conectadas a este hub.
 
 
 ## Notas
@@ -14,6 +14,7 @@
 - [[android-keyboard-dismissal]]
 - [[android-view-hierarchy-scanning]]
 - [[approach-mediacodecaudiorenderer-with-audioprocessor-varargs]]
+- [[aprendizado-debugging-expertise-skill]]
 - [[audioprocessorisactive-must-be-dynamic]]
 - [[backup-de-apks-fontes-no-github]]
 - [[bug-pattern]]
