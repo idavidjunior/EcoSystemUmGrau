@@ -57,15 +57,13 @@ WIDGET_CSS = """
                border-left: 2px solid rgba(203,166,247,0.4);
                pointer-events: auto; }
   #mk-resize:hover { background: rgba(203,166,247,0.35); }
-  #mk-topbar { position: fixed; top: 10px; left: 46px; right: auto; z-index: 99998; display: flex; justify-content: flex-start; align-items: center; flex-wrap: wrap; gap: 4px; pointer-events: auto; width: min(220px, calc(100vw - 90px)); padding: 4px 6px; border-radius: 8px; background: rgba(24, 24, 37, 0.82); border: 1px solid rgba(145, 160, 198, 0.2); box-shadow: 0 8px 22px rgba(0,0,0,0.32); backdrop-filter: blur(6px); }
+  #mk-topbar { position: fixed; top: 10px; left: 12px; right: auto; z-index: 99998; display: flex; justify-content: flex-start; align-items: center; flex-wrap: wrap; gap: 4px; pointer-events: auto; width: min(220px, calc(100vw - 90px)); padding: 4px 6px; border-radius: 8px; background: rgba(24, 24, 37, 0.82); border: 1px solid rgba(145, 160, 198, 0.2); box-shadow: 0 8px 22px rgba(0,0,0,0.32); backdrop-filter: blur(6px); }
   #mk-topbar > * { flex: 0 0 auto; }
   #mk-topbar select,
   #mk-topbar input,
   #mk-topbar span,
   #mk-topbar div { box-sizing: border-box; }
-  #mk-painel-toggle { position: fixed; top: 12px; left: 10px; z-index: 99999; width: 28px; height: 28px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; background: rgba(49, 50, 68, 0.95); border: 1px solid rgba(203,166,247,0.35); color: #cba6f7; box-shadow: 0 4px 12px rgba(0,0,0,0.22); font-size: 13px; transition: transform .12s ease, box-shadow .12s ease, background .12s ease; }
-  #mk-painel-toggle:hover { transform: scale(1.05); box-shadow: 0 0 0 2px rgba(203,166,247,0.15), 0 6px 14px rgba(0,0,0,0.24); }
-  #mk-painel-toggle[aria-hidden='true'] { background: rgba(90, 92, 111, 0.86); color: #d9d9e7; }
+  /* mk-painel-toggle (olho) é criado dentro do #mk-controles pelo JS, não precisa CSS fixo aqui */
   /* Painel de controles: organizado em faixa inferior e visivel por padrao */
   #mk-controles { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: row; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; padding: 8px 12px; border-radius: 10px; background: rgba(24, 24, 37, 0.82); border: 1px solid rgba(145, 160, 198, 0.2); box-shadow: 0 8px 22px rgba(0,0,0,0.32); backdrop-filter: blur(6px); max-width: min(760px, calc(100vw - 110px)); width: min(760px, calc(100vw - 110px)); }
   #mk-controles > div,
@@ -78,7 +76,6 @@ WIDGET_CSS = """
   @media (max-width: 760px) {
     #mk-topbar,
     #mk-controles { width: min(560px, calc(100vw - 70px)); max-width: calc(100vw - 70px); }
-    #mk-painel-toggle { left: 12px; bottom: 12px; width: 28px; height: 28px; }
   }
   @media (max-width: 500px) {
     #mk-topbar,
@@ -242,7 +239,7 @@ WIDGET_JS_EXTRA = """
     // ===== BARRA SUPERIOR (topBar) =====
     var topBar = mk('div');
     topBar.id = 'mk-topbar';
-    topBar.style.cssText = 'position:fixed;top:10px;left:52px;right:auto;z-index:99998;display:flex;align-items:center;gap:4px;pointer-events:auto;';
+    topBar.style.cssText = 'position:fixed;top:10px;left:12px;right:auto;z-index:99998;display:flex;align-items:center;gap:4px;pointer-events:auto;';
 
     var ctrl = mk('div');
     ctrl.id = 'mk-labels';
