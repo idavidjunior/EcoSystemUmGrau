@@ -1,5 +1,5 @@
 ---
-tags: [antonioneural, deve, ecosistema-opencode, padrao, pronunciado, voz]
+tags: [antonioneural, deve, diferente, ecosistema-opencode, padrao, pronunciado]
 aliases: [Pronuncia do nome do usuario: David]
 date: 2026-08-09
 ---
