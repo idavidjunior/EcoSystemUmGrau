@@ -19,5 +19,5 @@ Promoted tempFile to function scope with null-safe cleanup in catch block; VoxAu
 - [[2026-07-27-sistema-automático-de-captura-de-conhecimento-do-]]
 - [[bug-hub-bugs]]
 - [[cluster-hub-ecossistema]]
-- [[ensureserve-spawns-opencode-serve-without-passing-env-contex]]
 - [[http-401-unauthorized-on-session-and-globalsessions]]
+- [[pronuncia-do-nome-do-usuario-david]]

@@ -19,5 +19,5 @@ Added env={**os.environ} to _ensure_serve() and _ensure_serve_global() in jarvis
 - [[2026-07-27-sistema-automático-de-captura-de-conhecimento-do-]]
 - [[bug-hub-bugs]]
 - [[cluster-hub-ecossistema]]
-- [[geraraudio-blocks-until-full-tts-generation-no-streaming]]
 - [[http-401-unauthorized-on-session-and-globalsessions]]
+- [[pronuncia-do-nome-do-usuario-david]]

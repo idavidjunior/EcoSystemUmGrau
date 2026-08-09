@@ -19,5 +19,5 @@ Added partial_callback parameter to _stt_whisper for incremental segment reporti
 - [[2026-07-27-sistema-automático-de-captura-de-conhecimento-do-]]
 - [[bug-hub-bugs]]
 - [[cluster-hub-ecossistema]]
-- [[ensureserve-spawns-opencode-serve-without-passing-env-contex]]
 - [[http-401-unauthorized-on-session-and-globalsessions]]
+- [[pronuncia-do-nome-do-usuario-david]]

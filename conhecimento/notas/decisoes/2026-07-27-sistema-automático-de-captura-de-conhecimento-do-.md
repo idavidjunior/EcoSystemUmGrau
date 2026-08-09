@@ -83,5 +83,5 @@ Antes desta implementaÃ§Ã£o, cada interaÃ§Ã£o com o ecossistema gerava c
 - [[cluster-hub-ecossistema]]
 - [[decisao-hub-decisoes]]
 - [[ensureserve-spawns-opencode-serve-without-passing-env-contex]]
-- [[geraraudio-blocks-until-full-tts-generation-no-streaming]]
 - [[http-401-unauthorized-on-session-and-globalsessions]]
+- [[pronuncia-do-nome-do-usuario-david]]

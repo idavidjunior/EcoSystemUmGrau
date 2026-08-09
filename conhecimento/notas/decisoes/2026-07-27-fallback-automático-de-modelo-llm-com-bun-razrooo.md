@@ -1,5 +1,5 @@
 ---
-tags: [decisao, ecosistema-opencode, errors, quota, timeouts, ttft]
+tags: [decisao, ecosistema-opencode, errors, timeouts, ttft, uso]
 aliases: [2026-07-27: Fallback automático de modelo LLM com Bun + @raz]
 date: 2026-08-09
 ---
@@ -77,5 +77,5 @@ O OpenCode 1.18.7 nÃ£o suporta fallback nativo (PR #26292 ainda em andamento).
 - [[cluster-hub-ecossistema]]
 - [[decisao-hub-decisoes]]
 - [[ensureserve-spawns-opencode-serve-without-passing-env-contex]]
-- [[geraraudio-blocks-until-full-tts-generation-no-streaming]]
 - [[http-401-unauthorized-on-session-and-globalsessions]]
+- [[pronuncia-do-nome-do-usuario-david]]

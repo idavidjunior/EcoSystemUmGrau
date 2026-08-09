@@ -20,4 +20,4 @@ Updated Windows HKCU env var to match .env password, killed stale serve (PID 472
 - [[bug-hub-bugs]]
 - [[cluster-hub-ecossistema]]
 - [[ensureserve-spawns-opencode-serve-without-passing-env-contex]]
-- [[geraraudio-blocks-until-full-tts-generation-no-streaming]]
+- [[pronuncia-do-nome-do-usuario-david]]

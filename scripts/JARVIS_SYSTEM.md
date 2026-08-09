@@ -123,7 +123,8 @@ O projeto está em `C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau`
 
 - **Bridge**: `jarvis_bridge.py`, standalone, não usa `--attach` (instável)
 - **Modelo**: `opencode/deepseek-v4-flash-free` (~20-30s por query: 10s boot + 10-20s inferência)
-- **TTS**: `edge-tts pt-BR-ThalitaMultilingualNeural`
+- **TTS**: `edge-tts pt-BR-AntonioNeural`
+- **Pronúncia do nome**: O usuário se chama **David** — pronuncie como **"Dávid"** (acento na primeira sílaba, como em inglês). **Nunca fale "Davi"** (que é nome diferente)
 - **Rede**: Tailscale (PC: `100.91.141.101`, Phone: `100.64.71.9`)
 - **Watchdog**: `watchdog.ps1` monitora bridge a cada 20s, reinicia se cair
 - **Histórico**: `conversa_unica.json` (na raiz do ecossistema, max 500 pares), compartilhado com o CLI. Todos os diálogos (app + CLI) ficam no mesmo arquivo para contexto unificado
