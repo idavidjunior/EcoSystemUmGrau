@@ -654,12 +654,10 @@ def _build_view() -> Path | None:
 
 
 def main() -> int:
-    print("[WIDGET] main() started", flush=True)
     import webview
 
     view = _build_view()
     if not view:
-        print('[widget] Nao foi possivel obter o grafo.')
         return 1
 
     geo = _carregar_geo()
@@ -685,7 +683,7 @@ def main() -> int:
     bridge._win = win
 
     try:
-        webview.start(debug=True)
+        webview.start(debug=False)
     finally:
         _persistir_saida(win)
     return 0
