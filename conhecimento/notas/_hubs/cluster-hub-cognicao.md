@@ -1,6 +1,6 @@
 # Cluster: Cognicao
 
-**43 notas** do cluster cognicao.
+**44 notas** do cluster cognicao.
 
 
 ## Notas
@@ -23,6 +23,7 @@
 - [[escrita-atomica-sempre]]
 - [[estrategia-de-fallback-em-cadeia-chain-of-responsibility]]
 - [[estrategia-de-loop-autonomo-planejar-executar-verificar-corr]]
+- [[fix-favoritos-tags-e-contagem-por-capitulo]]
 - [[grafo-vis-network-bug-string-js-json-dumps]]
 - [[guia-controle-total-de-tv-lg-webos-reaproveitãvel]]
 - [[habilidade-navegação-perita-internet-pc-e-celular]]

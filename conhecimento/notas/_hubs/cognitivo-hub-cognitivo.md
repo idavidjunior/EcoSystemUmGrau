@@ -1,6 +1,6 @@
 # Padroes Cognitivos
 
-**45 notas** conectadas a este hub.
+**46 notas** conectadas a este hub.
 
 
 ## Notas
@@ -26,6 +26,7 @@
 - [[espera-adaptativa-por-tipo-de-recurso]]
 - [[estrategia-de-fallback-em-cadeia-chain-of-responsibility]]
 - [[estrategia-de-loop-autonomo-planejar-executar-verificar-corr]]
+- [[fix-favoritos-tags-e-contagem-por-capitulo]]
 - [[grafo-vis-network-bug-string-js-json-dumps]]
 - [[gramática-do-português-brasileiro-guia-prático-do-dia-a-dia]]
 - [[guia-controle-total-de-tv-lg-webos-reaproveitãvel]]

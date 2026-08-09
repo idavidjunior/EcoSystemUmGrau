@@ -4058,5 +4058,40 @@
     "access_count": 0,
     "created_at": "2026-08-09T20:29:22.629480",
     "last_accessed": "2026-08-09T20:29:22.629480"
+  },
+  {
+    "id": 233,
+    "kind": "decisao",
+    "task": "Chave NVIDIA padronizada: single source no env",
+    "summary": "opencode.json da raiz Default Project tinha apiKey NVIDIA hardcoded (nvapi-XwBTqs...) diferente da env (nvapi-Rt2ptt...), criando 2 pools de quota e segredo em texto plano. Padronizado para {env:NVIDIA_API_KEY}; ambas chaves validadas (100 modelos cada); preflight passou. Causa do bug 'contextos nao reconhecidos apos troca de LLM': model={{LLM_MODEL}} nao substituido pelo opencode (so resolve {env:...}) -> model_not_found -> fallback salva. Fix: setar env LLM_MODEL.",
+    "project": "",
+    "tags": [
+      "xwbtqs",
+      "hardcoded",
+      "resolve",
+      "apikey",
+      "troca",
+      "pelo"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T20:54:00.838038",
+    "last_accessed": "2026-08-09T20:54:00.838038"
+  },
+  {
+    "id": 234,
+    "kind": "episodio",
+    "task": "--help",
+    "summary": "",
+    "project": "",
+    "tags": [
+      "help"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T20:58:29.704488",
+    "last_accessed": "2026-08-09T20:58:29.704488"
   }
 ]
