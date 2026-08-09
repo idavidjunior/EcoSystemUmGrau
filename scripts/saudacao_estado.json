@@ -1,8 +1,7 @@
 {
-  "conexoes": 23,
+  "conexoes": 24,
   "hoje": "2026-08-09",
   "saudacoes_hoje": [
-    "E a conexão voltou. Estou por aqui.",
     "Aí de novo, senhor. Onde paramos?",
     "Aí de novo, senhor. Onde paramos?",
     "E a conexão voltou. Estou por aqui.",
@@ -11,8 +10,9 @@
     "Voltou. Sistemas seguem quentes, é só falar.",
     "Voltou. Sistemas seguem quentes, é só falar.",
     "De volta, senhor. A linha continua aberta.",
-    "De volta, senhor. A linha continua aberta."
+    "De volta, senhor. A linha continua aberta.",
+    "Reconectado. Continue de onde estava."
   ],
-  "ultima_saudacao": "De volta, senhor. A linha continua aberta.",
-  "ultima_saudacao_ts": 1786308356.9543204
+  "ultima_saudacao": "Reconectado. Continue de onde estava.",
+  "ultima_saudacao_ts": 1786308594.781342
 }

@@ -24,7 +24,7 @@
   "nota:conhecimento/aprendizados/2026-08-02-feedback-continuo-tarefas-longas.md": 4,
   "nota:conhecimento/aprendizados/2026-08-04-48-skills-dominios-tecnicos.md": 1,
   "nota:conhecimento/aprendizados/2026-07-31-clima-open-meteo-saudacao-local.md": 11,
-  "nota:conhecimento/aprendizados/2026-07-31-saudacao-formatada-pt-br-monitor-saude.md": 18,
+  "nota:conhecimento/aprendizados/2026-07-31-saudacao-formatada-pt-br-monitor-saude.md": 20,
   "nota:conhecimento/aprendizados/2026-08-01-instrucao-permanente-confirmacao-em-audio.md": 18,
   "nota:conhecimento/notas/cognitivo/lei-de-postel-aplicada-a-engenharia.md": 2,
   "nota:conhecimento/notas/heuristicas/verifique-o-que-voce-acha-que-sabe.md": 2,
@@ -61,7 +61,7 @@
   "nota:conhecimento/aprendizados/2026-08-07-eco-autoload-gatilho-unico.md": 1,
   "nota:conhecimento/notas/cognitivo/pre-compilacao-de-estrategia-de-interacao.md": 3,
   "22": 4,
-  "nota:conhecimento/aprendizados/2026-07-28-aprendizado-automatico-sempre.md": 11,
+  "nota:conhecimento/aprendizados/2026-07-28-aprendizado-automatico-sempre.md": 13,
   "nota:conhecimento/aprendizados/2026-08-05-runtime-camada2-kernel-constituicao.md": 2,
   "nota:conhecimento/notas/decisoes/renomear-pastas-com-espacos-para-nomes-sem-espaco.md": 2,
   "nota:conhecimento/notas/decisoes/ler-usa-python-puro-stdlib-only-zero-dependencias-externas-i.md": 2,
@@ -71,8 +71,9 @@
   "nota:conhecimento/notas/decisoes/2026-07-27-sistema-automático-de-captura-de-conhecimento-do-.md": 1,
   "nota:conhecimento/notas/cognitivo/validacao-contra-intuitiva-teste-o-erro-nao-o-acerto.md": 1,
   "nota:conhecimento/notas/cognitivo/vazamento-caracteres-tts-edge-tts-escapa-ssml.md": 1,
-  "nota:conhecimento/aprendizados/2026-07-28-clausula-petrea-resiliencia.md": 8,
-  "nota:conhecimento/notas/padroes/config-2026-07-27-teste-do-vigilante-automático.md": 12,
+  "nota:conhecimento/aprendizados/2026-07-28-clausula-petrea-resiliencia.md": 10,
+  "nota:conhecimento/notas/padroes/config-2026-07-27-teste-do-vigilante-automático.md": 14,
   "131": 4,
-  "nota:conhecimento/notas/missoes/polãtica-de-resposta-rãpida-â-caminhos-rãpidos-constantes-no.md": 4
+  "nota:conhecimento/notas/missoes/polãtica-de-resposta-rãpida-â-caminhos-rãpidos-constantes-no.md": 6,
+  "22": 2
 }
