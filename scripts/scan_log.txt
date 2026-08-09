@@ -1,0 +1,10 @@
+--- Scan de conexões 2026-08-09T21:02:34.477846 UTC ---
+ADB:
+List of devices attached
+100.64.71.9:5555	device
+
+Tailscale:
+100.91.141.101  desktop-ip8nvql  i.davidjunior@  windows  -                                                              
+100.120.67.64   desktop-6i6nsfs  i.davidjunior@  windows  offline, last seen 9d ago                                      
+100.64.71.9     redmi-note-11    i.davidjunior@  android  active; direct 192.168.15.4:46689, tx 2134653392 rx 117495012
+

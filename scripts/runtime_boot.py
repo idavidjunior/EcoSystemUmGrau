@@ -193,6 +193,9 @@ def main():
         return 0 if ok else 1
 
     code = run_boot(status_only=args.status)
+    # executar escaneamento de conexões ao finalizar o boot
+    import subprocess
+    subprocess.run(["python", "scripts/scan_connections.py"], check=False)
     return code
 
 
