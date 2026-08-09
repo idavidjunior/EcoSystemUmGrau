@@ -96,9 +96,8 @@ class Bridge:
         vault_hash = _get_vault_version()
         # last_ts vem do JS como string do hash anterior
         last_hash = str(last_ts or '')
-        if vault_hash != last_hash:
-            return {'ts': vault_hash, 'last_ts': last_hash, 'changed': True}
-        return {'ts': vault_hash, 'last_ts': last_hash, 'changed': False}
+        changed = vault_hash != last_hash
+        return {'ts': vault_hash, 'last_ts': last_hash, 'changed': changed}
 
     def guardar_geo(self, x=None, y=None, width=None, height=None):
         data = _carregar_geo()
@@ -194,9 +193,14 @@ API_INJECT = """
     tick: function(){
       try {
         if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.perguntar === 'function') {
+          // Recupera hash salvo se não temos em memória (ex: após reload)
+          if (!this.lastTs) {
+            this.lastTs = localStorage.getItem('vaultHash') || '';
+          }
           window.pywebview.api.perguntar(this.lastTs).then(function(resp){
             if (resp && resp.ts) {
               this.lastTs = resp.ts;
+              localStorage.setItem('vaultHash', resp.ts);
               if (resp.changed) {
                 // Vault mudou: recarrega a página para regenerar o grafo
                 window.location.reload();

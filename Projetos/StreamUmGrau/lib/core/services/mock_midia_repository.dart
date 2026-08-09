@@ -128,9 +128,9 @@ class MockMidiaRepository implements MidiaRepository {
           'Um ladrão especializado em invadir sonhos precisa realizar a '
           'inversão de um pensamento: plantar uma ideia na mente de um alvo.',
       'capa_url':
-          'https://image.tmdb.org/t/p/w500/qQ1SZUdy3GZtSl8Xk6fPqJ9YrZ.jpg',
+          'https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_QL75_UX380_CR0,0,380,562_.jpg',
       'banner_url':
-          'https://image.tmdb.org/t/p/w1280/s3TBrRGB1iav7gFOCNx3H31MoES.jpg',
+          'https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_QL75_UX380_CR0,0,380,562_.jpg',
       'ano': 2010,
       'idioma_tipo': 'DUB',
       'classificacao_etaria': 12,

@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**84 notas** conectadas a este hub.
+**85 notas** conectadas a este hub.
 
 
 ## Notas
@@ -17,6 +17,7 @@
 - [[audioprocessorisactive-must-be-dynamic]]
 - [[backup-de-apks-fontes-no-github]]
 - [[bug-pattern]]
+- [[build-local-flutter-orquestrador]]
 - [[build-pipeline]]
 - [[button-visibility-pattern-maintain-grid]]
 - [[cadeia-de-provedores-com-failover-inteligente]]
