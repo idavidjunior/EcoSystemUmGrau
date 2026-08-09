@@ -3638,5 +3638,45 @@
     "access_count": 0,
     "created_at": "2026-08-08T20:45:08.934337",
     "last_accessed": "2026-08-08T20:45:08.934337"
+  },
+  {
+    "id": 212,
+    "kind": "decisao",
+    "task": "Agente eco para @eco",
+    "summary": "Criado o agente subagent 'eco' (config/agents/eco.md + deploy ~/.config/opencode/agents/). Causa raiz: opencode trata @ para agentes/skills, nao comandos; comandos sao /eco. Agora @eco resolve deterministicamente em qualquer LLM e executa o protocolo de ativacao do EcoSystemUmGrau.",
+    "project": "",
+    "tags": [
+      "ecosystemumgrau",
+      "ativacao",
+      "protocolo",
+      "subagent",
+      "executa",
+      "llm"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T20:57:15.842436",
+    "last_accessed": "2026-08-08T20:57:15.842436"
+  },
+  {
+    "id": 213,
+    "kind": "decisao",
+    "task": "Agentes sync e compreender para @sync/@compreender",
+    "summary": "Criados os agentes subagent 'sync' e 'compreender' (config/agents/*.md + deploy ~/.config/opencode/agents/). Agora @sync, /sync, @compreender e /compreender resolvem deterministicamente em qualquer LLM, seguindo o mesmo padrao do agente eco. Comandos / atualizados com caminhos absolutos via {{USERPROFILE}} e roteamento agent.",
+    "project": "",
+    "tags": [
+      "eco",
+      "agente",
+      "padrao",
+      "seguindo",
+      "subagent",
+      "llm"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-08T21:00:50.934332",
+    "last_accessed": "2026-08-08T21:00:50.934332"
   }
 ]
