@@ -2314,7 +2314,8 @@
     222
   ],
   "script": [
-    222
+    222,
+    226
   ],
   "nativamente": [
     223
@@ -2351,5 +2352,20 @@
   ],
   "web": [
     225
+  ],
+  "bibliaestudocompleta": [
+    226
+  ],
+  "desenvolvimento": [
+    226
+  ],
+  "mp3player": [
+    226
+  ],
+  "sdk": [
+    226
+  ],
+  "pure": [
+    226
   ]
 }

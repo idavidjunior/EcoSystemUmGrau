@@ -3918,5 +3918,25 @@
     "access_count": 0,
     "created_at": "2026-08-09T12:26:12.519929",
     "last_accessed": "2026-08-09T12:26:12.519929"
+  },
+  {
+    "id": 226,
+    "kind": "padrao",
+    "task": "Projetos irmaos do EcoSystemUmGrau",
+    "summary": "Memorizei os tres projetos irmaos: SupermarketCalculator (android, funcional, v1.2, build.ps1, skill android-pure-sdk), Mp3Player (android, em desenvolvimento, sem build script), BibliaEstudoCompleta (android, funcional, build.ps1). Registry em conhecimento/projetos-irmaos.json.",
+    "project": "",
+    "tags": [
+      "bibliaestudocompleta",
+      "script",
+      "desenvolvimento",
+      "mp3player",
+      "sdk",
+      "pure"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T16:46:54.307924",
+    "last_accessed": "2026-08-09T16:46:54.307924"
   }
 ]

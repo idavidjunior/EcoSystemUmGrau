@@ -1,9 +1,9 @@
 {
   "opencode-serve": {
-    "sucessos": 171,
+    "sucessos": 175,
     "falhas": 0,
-    "latencia_ms_total": 15568276,
+    "latencia_ms_total": 15836694,
     "falhas_consecutivas": 0,
-    "ultima_atualizacao": "2026-08-09T16:39:05.304173"
+    "ultima_atualizacao": "2026-08-09T16:47:05.036726"
   }
 }
