@@ -1,12 +1,12 @@
 ---
 tags: [named, opencode, opencode mention, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, skill]
 aliases: [eco agente e comando global]
-date: 2026-08-08
+date: 2026-08-09
 ---
 
 # eco agente e comando global
 
-**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao

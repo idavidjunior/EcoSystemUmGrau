@@ -1,7 +1,7 @@
 ---
 tags: [condicoes, corrida, padrao, resolverem, tempo, treinamentonavegacao]
 aliases: [Retry com backoff exponencial]
-date: 2026-08-08
+date: 2026-08-09
 ---
 
 # Retry com backoff exponencial

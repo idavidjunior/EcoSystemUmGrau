@@ -1,7 +1,7 @@
 ---
 tags: [android, android-pure-sdkandroid-pure-sdk, fonte, padrao, pure, sdk]
 aliases: [JSON Persistence Pattern]
-date: 2026-08-08
+date: 2026-08-09
 ---
 
 # JSON Persistence Pattern

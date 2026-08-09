@@ -1,7 +1,7 @@
 ---
 tags: [elementos, encapsulam, fonte, padrao, treinamentonavegacao, web]
 aliases: [Shadow DOM penetration]
-date: 2026-08-08
+date: 2026-08-09
 ---
 
 # Shadow DOM penetration

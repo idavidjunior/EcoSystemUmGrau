@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, desugardebugfiledependencies, etapa, general, minutos, slowness]
 aliases: [# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU +]
-date: 2026-08-08
+date: 2026-08-09
 ---
 
 # # 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria

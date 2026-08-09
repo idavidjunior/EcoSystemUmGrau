@@ -1,7 +1,7 @@
 ---
 tags: [caminho, compatibilidade, espacos, heuristica, organization, scripts]
 aliases: [Workspace root]
-date: 2026-08-08
+date: 2026-08-09
 ---
 
 # Workspace root

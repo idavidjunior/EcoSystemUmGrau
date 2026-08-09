@@ -1,7 +1,7 @@
 ---
 tags: [handlers, maps, names, padrao, sessionsession, tool]
 aliases: [MCP tools/call method dispatch]
-date: 2026-08-08
+date: 2026-08-09
 ---
 
 # MCP tools/call method dispatch

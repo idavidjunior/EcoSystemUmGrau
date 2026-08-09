@@ -1,7 +1,7 @@
 ---
 tags: [elementos, esconde, metade, padrao, tela, treinamentonavegacao]
 aliases: [Android keyboard dismissal]
-date: 2026-08-08
+date: 2026-08-09
 ---
 
 # Android keyboard dismissal

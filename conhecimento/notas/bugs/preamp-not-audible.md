@@ -1,7 +1,7 @@
 ---
-tags: [bug, mp3player-metadata-rescue, multiplier, never, sent, software]
+tags: [bug, gains, mp3player-metadata-rescue, multiplier, never, sent]
 aliases: [**Preamp not audible**]
-date: 2026-08-08
+date: 2026-08-09
 ---
 
 # **Preamp not audible**

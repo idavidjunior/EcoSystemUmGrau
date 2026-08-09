@@ -1,7 +1,7 @@
 ---
 tags: [audible, bug, irreversible, mp3player-metadata-rescue, never, projeto]
 aliases: [**Preset not persisting across sessions**]
-date: 2026-08-08
+date: 2026-08-09
 ---
 
 # **Preset not persisting across sessions**
