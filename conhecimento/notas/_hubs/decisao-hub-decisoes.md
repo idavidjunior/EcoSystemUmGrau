@@ -1,6 +1,6 @@
 # Decisoes
 
-**60 notas** conectadas a este hub.
+**61 notas** conectadas a este hub.
 
 
 ## Notas
@@ -12,6 +12,7 @@
 - [[2026-08-02-feedback-contãnuo-em-tarefas-longas]]
 - [[album-art-download-com-redirect-loop-manual-instancefollowre]]
 - [[atualização-ecosystemumgrau-auto-carregamento-gatilho-único-]]
+- [[botao-importar-unificado]]
 - [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]
 - [[checkpoints-salvos-antes-de-cada-iteracao-sobrevive-a-crash-]]
