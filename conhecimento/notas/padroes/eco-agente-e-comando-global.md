@@ -1,12 +1,12 @@
 ---
-tags: [agent, named, opencodeopencodeopencodeopencodeopencodeopencode, padrao, see, skill]
+tags: [agent, named, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, see, skill]
 aliases: [eco agente e comando global]
 date: 2026-08-08
 ---
 
 # eco agente e comando global
 
-**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -15,5 +15,8 @@ data: 2026-08-08
 contexto: Em nova sessão com outra LLM, o usuário digitou "@eco" e recebeu "I don't see an agent or skill named 'eco'". O mesmo ocorreu com "@ecosystemumgrau". A LLM não via "eco" em
 ## Conexoes
 
+- [[2026-08-03-adb-remoto-via-tailscale-script-automatico-de-rot]]
 - [[cluster-hub-ecossistema]]
+- [[compreensao-de-pedidos-refino-com-a-llm-do-opencode-primaria]]
+- [[config-2026-07-28-formato-correto-do-mcp-no-opencode-1187]]
 - [[padrao-hub-padroes]]

@@ -6,7 +6,7 @@ date: 2026-08-08
 
 # Compreensao de pedidos: refino com a LLM do opencode (primaria) + backups
 
-**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -19,4 +19,5 @@ decisao: Refino usa `ope
 - [[2026-08-03-adb-remoto-via-tailscale-script-automatico-de-rot]]
 - [[cluster-hub-ecossistema]]
 - [[config-2026-07-28-formato-correto-do-mcp-no-opencode-1187]]
+- [[eco-agente-e-comando-global]]
 - [[padrao-hub-padroes]]
