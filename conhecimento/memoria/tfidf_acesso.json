@@ -4,7 +4,7 @@
   "nota:conhecimento/notas/missoes/controle-de-tv-lg-01082026.md": 3,
   "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-mp3player.md": 2,
   "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-supermarketcalculator.md": 2,
-  "nota:conhecimento/aprendizados/2026-08-06-janela-conversa-ativa-suprime-saudacao.md": 5,
+  "nota:conhecimento/aprendizados/2026-08-06-janela-conversa-ativa-suprime-saudacao.md": 6,
   "nota:conhecimento/aprendizados/2026-08-06-saudacoes-inteligentes-reconexao-vs-primeira-vez.md": 6,
   "nota:conhecimento/notas/padroes/saudacoes-inteligentes-reconexao-vs-primeira-vez.md": 1,
   "nota:conhecimento/aprendizados/2026-08-06-recuperacao-rapida-conexao.md": 1,
@@ -25,7 +25,7 @@
   "nota:conhecimento/aprendizados/2026-08-04-48-skills-dominios-tecnicos.md": 1,
   "nota:conhecimento/aprendizados/2026-07-31-clima-open-meteo-saudacao-local.md": 7,
   "nota:conhecimento/aprendizados/2026-07-31-saudacao-formatada-pt-br-monitor-saude.md": 11,
-  "nota:conhecimento/aprendizados/2026-08-01-instrucao-permanente-confirmacao-em-audio.md": 4,
+  "nota:conhecimento/aprendizados/2026-08-01-instrucao-permanente-confirmacao-em-audio.md": 5,
   "nota:conhecimento/notas/cognitivo/lei-de-postel-aplicada-a-engenharia.md": 2,
   "nota:conhecimento/notas/heuristicas/verifique-o-que-voce-acha-que-sabe.md": 2,
   "nota:conhecimento/aprendizados/2026-08-01-pronuncia-jarvis.md": 7,
@@ -49,5 +49,9 @@
   "nota:conhecimento/aprendizados/2026-08-03-sync-github-organizacao-repos.md": 1,
   "nota:conhecimento/aprendizados/2026-08-08-loop-infinito-push-vigilante.md": 1,
   "nota:conhecimento/notas/cognitivo/estrategia-de-loop-autonomo-planejar-executar-verificar-corr.md": 1,
-  "nota:conhecimento/notas/cognitivo/2026-08-02-ecosystem-sync-1-comando-para-sincronizar-tudo.md": 1
+  "nota:conhecimento/notas/cognitivo/2026-08-02-ecosystem-sync-1-comando-para-sincronizar-tudo.md": 1,
+  "nota:conhecimento/aprendizados/2026-08-04-jarvis-celular-conectado-bridge-tailscale.md": 2,
+  "nota:conhecimento/aprendizados/2026-08-01-jarvis-celular-e-pc-um-so.md": 2,
+  "nota:conhecimento/notas/missoes/jarvis-do-celular-e-do-pc-um-sã-cãrebro-arquitetura-sincroni.md": 2,
+  "nota:conhecimento/aprendizados/2026-08-04-grafo-zoom-microscopio-expandir-cerebro-vivo.md": 1
 }
