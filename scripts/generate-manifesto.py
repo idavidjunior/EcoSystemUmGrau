@@ -76,10 +76,11 @@ def main():
                 if (sk / e).exists():
                     entry = f"mcp/{dominio}/habilidades/{sk.name}/{e}"
                     break
-            script = None
-            for e in sorted(sk.glob("*.py")):
-                script = f"mcp/{dominio}/habilidades/{sk.name}/{e.name}"
-                break
+            script = fm.get("script")
+            if not script:
+                for e in sorted(sk.glob("*.py")):
+                    script = f"mcp/{dominio}/habilidades/{sk.name}/{e.name}"
+                    break
             manifest["habilidades"].append({
                 "id": sk.name,
                 "categoria": CATEGORIA.get(dominio, "tecnica"),

@@ -1,8 +1,13 @@
-# Skill: os-automation
+---
+id: os-automation
+categoria: os
+nome: os-automation
+descricao: "Automação de OS (Windows desktop + Web) para o Jarvis executar ações reais: clicar, digitar, navegar, extrair dados, screenshots. Unifica Playwright (web) e pywinauto (desktop)."
+entrypoint: server.py
+script: server.py
+---
 
-**Categoria:** os
-**Entrypoint:** server.py
-**Descrição:** Automação de OS (Windows desktop + Web) para o Jarvis executar ações reais: clicar, digitar, navegar, extrair dados, screenshots. Unifica Playwright (web) e pywinauto (desktop).
+# Skill: os-automation
 
 ## Tools
 

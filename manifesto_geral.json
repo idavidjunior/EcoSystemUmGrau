@@ -1010,6 +1010,16 @@
       ]
     },
     {
+      "id": "os-automation",
+      "categoria": "tecnica",
+      "dominio": "os",
+      "nome": "os-automation",
+      "descricao": "",
+      "entrypoint": "mcp/os/habilidades/os-automation/skill.md",
+      "script": "server.py",
+      "triggers": []
+    },
+    {
       "id": "performance-testing",
       "categoria": "tecnica",
       "dominio": "desenvolvimento",
