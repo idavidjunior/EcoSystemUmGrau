@@ -1,18 +1,9 @@
 {
-  "conexoes": 26,
-  "hoje": "2026-08-09",
+  "conexoes": 1,
+  "hoje": "2026-08-10",
   "saudacoes_hoje": [
-    "E a conexão voltou. Estou por aqui.",
-    "Reconectado. Continue de onde estava.",
-    "Voltou. Sistemas seguem quentes, é só falar.",
-    "Voltou. Sistemas seguem quentes, é só falar.",
-    "Voltou. Sistemas seguem quentes, é só falar.",
-    "De volta, senhor. A linha continua aberta.",
-    "De volta, senhor. A linha continua aberta.",
-    "Reconectado. Continue de onde estava.",
-    "Reconectado. Continue de onde estava.",
-    "Voltou. Sistemas seguem quentes, é só falar."
+    "Bom dia, senhor. São cinco e trinta e três da manhã de segunda-feira, céu nublado e quatorze graus lá fora. Sistemas online e prontos para começarmos a semana."
   ],
-  "ultima_saudacao": "Voltou. Sistemas seguem quentes, é só falar.",
-  "ultima_saudacao_ts": 1786325743.6983242
+  "ultima_saudacao": "Bom dia, senhor. São cinco e trinta e três da manhã de segunda-feira, céu nublado e quatorze graus lá fora. Sistemas online e prontos para começarmos a semana.",
+  "ultima_saudacao_ts": 1786350825.9830427
 }
