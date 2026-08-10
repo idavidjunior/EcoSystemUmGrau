@@ -40,20 +40,20 @@ CATEGORIA_COR = {
     'missoes': '#b07aa1',
 }
 CATEGORIA_LABEL = {
-    'padroes': 'Padroes', 'decisoes': 'Decisoes', 'bugs': 'Bugs',
-    'cognitivo': 'Cognitivo', 'heuristicas': 'Heuristicas',
-    'frameworks': 'Frameworks', 'missoes': 'Missoes', 'hub': 'Hub',
+    'padroes': 'Padrões', 'decisoes': 'Decisões', 'bugs': 'Bugs',
+    'cognitivo': 'Cognitivo', 'heuristicas': 'Heurísticas',
+    'frameworks': 'Frameworks', 'missoes': 'Missões', 'hub': 'Hub',
 }
 # Descricoes curtas para os tooltips dos botoes de categoria
 CATEGORIA_DESC = {
-    'padroes': 'Padroes e convencoes reutilizaveis do ecossistema',
-    'decisoes': 'Decisoes arquiteturais e de projeto ja tomadas (ADRs)',
-    'bugs': 'Bugs e limitacoes conhecidas, com status de resolucao',
-    'cognitivo': 'Meta-cognicao, estrategias de raciocinio e debugging',
-    'heuristicas': 'Heuristicas praticas e atalhos mentais validados',
+    'padroes': 'Padrões e convenções reutilizáveis do ecossistema',
+    'decisoes': 'Decisões arquiteturais e de projeto já tomadas (ADRs)',
+    'bugs': 'Bugs e limitações conhecidas, com status de resolução',
+    'cognitivo': 'Meta-cognição, estratégias de raciocínio e debugging',
+    'heuristicas': 'Heurísticas práticas e atalhos mentais validados',
     'frameworks': 'Frameworks, bibliotecas e ferramentas adotadas',
-    'missoes': 'Missoes e objetivos em andamento do ecossistema',
-    'hub': 'No central que agrupa e conecta um conjunto de notas',
+    'missoes': 'Missões e objetivos em andamento do ecossistema',
+    'hub': 'Nó central que agrupa e conecta um conjunto de notas',
 }
 
 CLUSTERS = {

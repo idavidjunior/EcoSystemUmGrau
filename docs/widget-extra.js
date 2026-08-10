@@ -30,6 +30,12 @@
     ctrl.textContent = 'T';
     ctrl.style.cssText = 'width:22px;height:22px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:' + cores.destaque + ';background:#313244;border:1px solid ' + cores.destaque + ';font-size:11px;';
 
+    var headerBtn = mk('div');
+    headerBtn.id = 'mk-btn-header';
+    headerBtn.title = 'Ocultar barra de filtros';
+    headerBtn.textContent = '☰';
+    headerBtn.style.cssText = 'width:22px;height:22px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:' + cores.destaque + ';background:#313244;border:1px solid ' + cores.destaque + ';font-size:11px;';
+
     var resetBtn = mk('div');
     resetBtn.id = 'mk-btn-reset';
     resetBtn.title = 'Resetar preferências';
@@ -39,6 +45,7 @@
     var actions = mk('div');
     actions.style.cssText = 'display:flex;gap:4px;border:1px solid ' + cores.destaque + ';border-radius:6px;padding:2px 4px;background:#313244;';
     actions.appendChild(ctrl);
+    actions.appendChild(headerBtn);
     actions.appendChild(resetBtn);
 
     var topTheme = mk('select');
@@ -213,6 +220,7 @@
       localStorage.setItem('orbGrafo', '1');
       localStorage.setItem('labelsOcultos', 'true');
       localStorage.setItem('painelGrafoVisivel', 'true');
+      localStorage.setItem('headerGrafoVisivel', 'true');
       try { localStorage.removeItem('modo3D'); } catch (e) {}
       try { localStorage.removeItem('waveIntensidade'); } catch (e) {}
       try { localStorage.removeItem('camGrafo'); } catch (e) {}
@@ -221,6 +229,7 @@
       applyTheme('glow');
       setLabelVisibility(false); // padrao: etiquetas desativadas
       syncControlsPanel(true);
+      syncHeader(true); // padrao: barra de filtros visivel
       speedValue.textContent = 'x1.00';
       orbitValue.textContent = 'x1.0';
       try { if (typeof _aplicarVelocidade === 'function') _aplicarVelocidade(1); } catch (e) { logError('_aplicarVelocidade', e); }
@@ -274,11 +283,34 @@
 
     syncControlsPanel(panelVisible);
 
+    // Barra de filtros do topo (#header, a barra de 21 botoes: categorias,
+    // clusters, status, dominios, Home/Limpar) — ocultavel a pedido do usuario.
+    var headerVisible = localStorage.getItem('headerGrafoVisivel') !== 'false';
+    function syncHeader(show) {
+      headerVisible = !!show;
+      try {
+        var hdr = document.getElementById('header');
+        if (hdr) hdr.style.display = headerVisible ? '' : 'none';
+        localStorage.setItem('headerGrafoVisivel', headerVisible ? 'true' : 'false');
+        if (window.__mkAjustarNet) window.__mkAjustarNet();
+      } catch (e) { logError('syncHeader', e); }
+      headerBtn.style.opacity = headerVisible ? '1' : '0.6';
+      headerBtn.style.borderColor = headerVisible ? cores.destaque : '#7c7f93';
+      headerBtn.style.background = headerVisible ? '#313244' : '#2b2d3a';
+      headerBtn.title = headerVisible ? 'Ocultar barra de filtros' : 'Mostrar barra de filtros';
+    }
+    syncHeader(headerVisible);
+
     // ===== EVENT LISTENERS (estados independentes) =====
     
     // Olho: controla APENAS o painel inferior (mk-controles)
     eye.addEventListener('click', function(){
       syncControlsPanel(!panelVisible);
+    });
+
+    // Botão ☰: alterna a barra de filtros do topo (#header)
+    headerBtn.addEventListener('click', function(){
+      syncHeader(!headerVisible);
     });
 
     // Botão T: alterna etiquetas dos nós (independente)

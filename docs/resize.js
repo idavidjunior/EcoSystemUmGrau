@@ -89,6 +89,7 @@
     var h = Math.max(120, window.innerHeight - hh);
     net.style.height = h + 'px';
   }
+  window.__mkAjustarNet = ajustarNet;
   updateHandle();
   initDrag();
   initResize();
