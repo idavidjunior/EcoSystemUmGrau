@@ -1,17 +1,23 @@
-"""jarvis_audio.py — liga e desliga a narração do Jarvis no desktop.
+"""jarvis_audio.py — controle padrão de narração do ecossistema.
 
-Palavras-gatilho da conversa:
-  "Eco"                -> on   (ativa narração)
-  "D Eco"/"Desativar Eco" -> off (pausa narração)
-  "Para" / "Cala"      -> stop (interrompe fala atual + pausa)
+Palavras-gatilho OFICIAIS (padrão único do ecossistema):
+  AT ECO    -> on   (ativa narração)
+  DT ECO    -> off  (desativa narração)
+  PS ECO    -> pause (pausa narração - mantém processo, só para de falar)
+  STOP ECO  -> stop  (interrompe fala atual + pausa)
 
-Mecanismo: grava runtime/narracao_estado.json ({"ativo": bool}). O narrador
-(scripts/narrador_desktop.py) lê esse arquivo a cada loop e pausa sem ser
-encerrado. "on" também garante que o processo do narrador esteja rodando.
+Legados (ainda funcionam, mas depreciados):
+  "Eco" / "ativar"      -> on
+  "D Eco" / "desativar" -> off
+  "Para" / "Cala"       -> stop
+
+Mecanismo: grava runtime/narracao_estado.json ({"ativo": bool, "pausado": bool}).
+O narrador (scripts/narrador_desktop.py) lê esse arquivo a cada loop.
+"on" garante que o processo do narrador esteja rodando.
 "stop" mata o subprocesso TTS ativo (vox_audio.py falar) imediatamente.
 
 Uso:
-  python scripts/jarvis_audio.py on|off|status|stop
+  python scripts/jarvis_audio.py on|off|pause|stop|status
 """
 import json
 import os
