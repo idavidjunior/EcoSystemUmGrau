@@ -102,6 +102,7 @@
     panel.id = 'mk-controles';
     panel.title = 'Controles do grafo';
     panel.style.cssText = 'position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:row;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;padding:8px 12px;border-radius:10px;background:var(--mk-panel-bg, rgba(24,24,37,0.82));border:1px solid rgba(145, 160, 198, 0.2);box-shadow:0 8px 22px rgba(0,0,0,0.32);backdrop-filter:blur(6px);';
+    panel.appendChild(actions);
     panel.appendChild(themeWrap);
     panel.appendChild(speedWrap);
     panel.appendChild(orbitWrap);
@@ -114,7 +115,6 @@
     eye.style.cssText = 'width:28px;height:28px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#313244;border:1px solid ' + cores.destaque + ';color:' + cores.destaque + ';font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,0.22);transition:transform .12s ease, box-shadow .12s ease, background .12s ease;flex-shrink:0;';
     panel.appendChild(eye);
 
-    document.body.appendChild(topBar);
     document.body.appendChild(panel);
 
     // ===== FUNÇÕES =====
@@ -211,13 +211,13 @@
       localStorage.setItem('temaGrafo', 'glow');
       localStorage.setItem('velGrafo', '1');
       localStorage.setItem('orbGrafo', '1');
-      localStorage.setItem('labelsOcultos', 'false');
+      localStorage.setItem('labelsOcultos', 'true');
       localStorage.setItem('painelGrafoVisivel', 'true');
       try { localStorage.removeItem('modo3D'); } catch (e) {}
       try { localStorage.removeItem('waveIntensidade'); } catch (e) {}
       try { localStorage.setItem('flashEnabled', 'true'); } catch (e) {}
       applyTheme('glow');
-      setLabelVisibility(true);
+      setLabelVisibility(false); // padrao: etiquetas desativadas
       syncControlsPanel(true);
       speedValue.textContent = 'x1.00';
       orbitValue.textContent = 'x1.0';
@@ -279,14 +279,6 @@
       syncControlsPanel(!panelVisible);
     });
 
-    // Menu (☰): controla APENAS a barra superior (mk-topbar)
-    menuBtn.addEventListener('click', function(){
-      var isHidden = topBar.style.display === 'none';
-      topBar.style.display = isHidden ? 'flex' : 'none';
-      menuBtn.textContent = isHidden ? '☰' : '…';
-      menuBtn.title = isHidden ? 'Mostrar barra superior' : 'Ocultar barra superior';
-    });
-
     // Botão T: alterna etiquetas dos nós (independente)
     ctrl.addEventListener('click', function(){
       // Alterna: mostrar se estiver oculto, ocultar se estiver visivel
@@ -305,7 +297,8 @@
     };
 
     applyTheme(topTheme.value);
-    setLabelVisibility(localStorage.getItem('labelsOcultos') !== 'true');
+    // Padrao: etiquetas DESATIVADAS. So 'false' explicito mostra.
+    setLabelVisibility(localStorage.getItem('labelsOcultos') === 'false');
     if (typeof _aplicarVelocidade === 'function') _aplicarVelocidade(parseFloat(speed.value));
     if (typeof _aplicarOrbita === 'function') _aplicarOrbita(parseFloat(orbit.value));
   }
