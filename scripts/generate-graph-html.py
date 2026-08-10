@@ -688,6 +688,35 @@ def gerar_html(nos, arestas, output_path):
   setTimeout(() => network.fit({{ animation: true }}), 1200);
 
   // =====================================================================
+  // CAMERA PERSISTENTE — o zoom/pane escolhido pelo usuario sobrevive a
+  // reinicios, regeneracoes (?rc=) e recargas do widget. Salva quando o
+  // usuario zooma/paneia ou quando uma animacao programatica termina.
+  // =====================================================================
+  function _salvarCamera() {{
+    try {{
+      if (!network || !network.getViewPosition) return;
+      var vp = network.getViewPosition();
+      var sc = network.getScale();
+      if (!vp || typeof vp.x !== 'number' || typeof vp.y !== 'number' || typeof sc !== 'number') return;
+      localStorage.setItem('camGrafo', JSON.stringify({{ x: vp.x, y: vp.y, s: sc }}));
+    }} catch (e) {{}}
+  }}
+  function _restaurarCamera() {{
+    try {{
+      var raw = localStorage.getItem('camGrafo');
+      if (!raw) return;
+      var c = JSON.parse(raw);
+      if (!c || typeof c.x !== 'number' || typeof c.y !== 'number' || typeof c.s !== 'number') return;
+      var sc = Math.max(0.05, Math.min(6, c.s));
+      if (network.moveTo) network.moveTo({{ position: {{ x: c.x, y: c.y }}, scale: sc, animation: false }});
+    }} catch (e) {{}}
+  }}
+  network.on('zoom', _salvarCamera);
+  network.on('dragEnd', _salvarCamera);
+  if (network.on) network.on('animationFinished', _salvarCamera);
+  window.addEventListener('beforeunload', _salvarCamera);
+
+  // =====================================================================
   // PSEUDO-3D â€” PROFUNDIDADE VIVA (sem WebGL)
   // Simulamos um eixo Z dentro do motor 2D do vis-network. Cada no recebe
   // uma profundidade inicial (hubs na FRENTE, folhas ao fundo) com um
@@ -837,7 +866,7 @@ def gerar_html(nos, arestas, output_path):
       // A respiracao (intervalo abaixo) continua a dar vida ao layout.
     }}
   }};
-  setTimeout(guardaInicial, 2500);
+  setTimeout(guardaInicial, 3400);
 
   // --- Respiracao do layout ------------------------------------------------
   // Ciclo organico que alterna a energia da fisica: "inspira" (mais repulsao,
@@ -1568,6 +1597,7 @@ arestasUp = arestasUp.map(a =>
   function limpar() {{
     _destacado = false; // libera de volta a decoracao viva (cerebro vivo)
     _flashAtivo = false;
+    try {{ localStorage.removeItem('destGrafo'); }} catch (e) {{}}
     // reseta o estado do motor de avalanches: pausa correntes/residual
     _avalanche = {{ ativo: false, fila: [], maior: 0, size: 0 }};
     _memb = {{}}; _refrat = {{}};
@@ -1600,8 +1630,10 @@ arestasUp = arestasUp.map(a =>
         position: viewInical,
         scale: scaleInical
       }});
+      _salvarCamera();
     }} else {{
       network.fit({{ animation: true }});
+      _salvarCamera();
     }}
   }}
 
@@ -1690,7 +1722,7 @@ arestasUp = arestasUp.map(a =>
     }});
   }}
 
-  function destacar(filtro, valor, corGrupo) {{
+  function destacar(filtro, valor, corGrupo, semFit) {{
     if (filtro === 'home') {{
       telaInicial();
       return;
@@ -1699,6 +1731,7 @@ arestasUp = arestasUp.map(a =>
       limpar();
       return;
     }}
+    try {{ localStorage.setItem('destGrafo', JSON.stringify({{ f: filtro, v: valor }})); }} catch (e) {{}}
     _destacado = true; // congela decoracao viva: preserva o destaque do grupo
     document.querySelectorAll('.lg').forEach(b => b.classList.remove('active'));
     const alvo = document.querySelector(`.lg[data-filter="${{filtro}}"][data-value="${{valor}}"]`);
@@ -1766,7 +1799,10 @@ arestasUp = arestasUp.map(a =>
       }}
     }});
     edges.update(arestasUp);
-    network.fit({{ animation: true }});
+    if (!semFit) {{
+      network.fit({{ animation: true }});
+      _salvarCamera();
+    }}
 
     // lista dos itens do grupo
     const nome = alvo ? alvo.textContent.trim() : valor;
@@ -1906,6 +1942,26 @@ arestasUp = arestasUp.map(a =>
     var salvo = localStorage.getItem('temaGrafo') || 'glow';
     aplicarTema(salvo);
   }})();
+
+  // =====================================================================
+  // RESTORE DE PERSONALIZACOES NO BOOT — filtro ativo + camera (zoom/pane).
+  // Roda DEPOIS do enquadramento inicial (~1s) para ele nao sobrescrever a
+  // visao salva. O filtro e reaplicado sem fit (semFit); a camera e a fonte
+  // de verdade para a visao exata do usuario.
+  // =====================================================================
+  setTimeout(function() {{
+    try {{
+      var dr = localStorage.getItem('destGrafo');
+      if (dr) {{
+        var d = JSON.parse(dr);
+        if (d && d.f && d.f !== 'home' && d.f !== 'all') {{
+          var btn = document.querySelector('.lg[data-filter="' + d.f + '"][data-value="' + d.v + '"]');
+          if (btn && btn.dataset.color) destacar(d.f, d.v, btn.dataset.color, true);
+        }}
+      }}
+    }} catch (e) {{}}
+    _restaurarCamera();
+  }}, 2600);
 </script>
 </body>
 </html>"""

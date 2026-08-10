@@ -215,6 +215,8 @@
       localStorage.setItem('painelGrafoVisivel', 'true');
       try { localStorage.removeItem('modo3D'); } catch (e) {}
       try { localStorage.removeItem('waveIntensidade'); } catch (e) {}
+      try { localStorage.removeItem('camGrafo'); } catch (e) {}
+      try { localStorage.removeItem('destGrafo'); } catch (e) {}
       try { localStorage.setItem('flashEnabled', 'true'); } catch (e) {}
       applyTheme('glow');
       setLabelVisibility(false); // padrao: etiquetas desativadas
