@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**97 notas** conectadas a este hub.
+**98 notas** conectadas a este hub.
 
 
 ## Notas
@@ -14,6 +14,7 @@
 - [[android-keyboard-dismissal]]
 - [[android-view-hierarchy-scanning]]
 - [[approach-mediacodecaudiorenderer-with-audioprocessor-varargs]]
+- [[aprendizado-controle-eco-d-eco-da-narração]]
 - [[aprendizado-debugging-expertise-skill]]
 - [[aprendizado-jarvis-manifesta-o-que-quer-aprender]]
 - [[aprendizado-narrador-de-voz-do-jarvis-no-opencode-desktop]]
