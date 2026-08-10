@@ -1,5 +1,5 @@
 ---
-tags: [cognitivo, failed, general, github, ind, nome]
+tags: [cognitivo, failed, general, ind, nome, terminal]
 aliases: [Servidores MCP Node criados e validados]
 date: 2026-08-10
 ---
