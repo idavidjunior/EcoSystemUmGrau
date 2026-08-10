@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**94 notas** conectadas a este hub.
+**95 notas** conectadas a este hub.
 
 
 ## Notas
@@ -16,6 +16,7 @@
 - [[approach-mediacodecaudiorenderer-with-audioprocessor-varargs]]
 - [[aprendizado-debugging-expertise-skill]]
 - [[aprendizado-skill-auditoria-de-codigo-auto-evolutiva]]
+- [[aprendizado-skill-auditoria-de-codigo-viva-com-evolução-gate]]
 - [[audioprocessorisactive-must-be-dynamic]]
 - [[backup-de-apks-fontes-no-github]]
 - [[bug-pattern]]
