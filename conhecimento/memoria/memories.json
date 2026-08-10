@@ -4198,5 +4198,25 @@
     "access_count": 0,
     "created_at": "2026-08-09T23:38:42.820913",
     "last_accessed": "2026-08-09T23:38:42.820913"
+  },
+  {
+    "id": 240,
+    "kind": "episodio",
+    "task": "Barra de 21 botoes do topo ocultavel (toggle no painel)",
+    "summary": "Adicionado botao ☰ no painel inferior (entre T e ↺) que oculta/mostra a barra de filtros do topo (#header, 21 botoes: categorias+clusters+status+dominios+Home/Limpar). Persistido em headerGrafoVisivel (default visivel). syncHeader ajusta display do header, persiste e chama __mkAjustarNet (exposto pelo resize.js) para o grafo ocupar a altura inteira quando a barra some. Reset (↺) restaura barra visivel.",
+    "project": "",
+    "tags": [
+      "filtros",
+      "mostra",
+      "oculta",
+      "inferior",
+      "botoes",
+      "topo"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T23:46:22.158819",
+    "last_accessed": "2026-08-09T23:46:22.158819"
   }
 ]
