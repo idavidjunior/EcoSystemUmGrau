@@ -204,12 +204,63 @@ async def loop_voz():
     log("Loop de voz encerrado")
 
 
+async def loop_teste():
+    """Modo teste: lê comandos de stdin (um por linha) e executa."""
+    log("Modo TESTE iniciado - digite comandos (Enter=vazio sai)")
+    print("Comandos de teste (ex: 'abra google.com', 'clique no botao enviar', 'pare')")
+    print("Digite comando vazio para sair.")
+    
+    while True:
+        try:
+            if not narracao_ativa():
+                print("[Narração PAUSADA - use 'python scripts/jarvis_audio.py on' para ativar]")
+                time.sleep(2)
+                continue
+            
+            texto = input("> ").strip()
+            if not texto:
+                break
+            
+            log(f"Comando teste: {texto}")
+            
+            tl = texto.lower()
+            if any(k in tl for k in ["para", "cala", "chega", "pare", "sair", "exit", "quit"]):
+                falar("Encerrando teste.")
+                break
+            
+            acao, params = parse_comando(texto)
+            if acao:
+                print(f"[Ação: {acao}] {params}")
+                falar("Executando.")
+                resultado = await executar_acao(acao, params)
+                print(f"[Resultado] {resultado}")
+                falar(resultado)
+            else:
+                msg = "Não entendi. Exemplos: abra google.com | clique no botao enviar | digite 'texto' no campo | encontre janela Chrome"
+                print(f"[?] {msg}")
+                falar(msg)
+                
+        except KeyboardInterrupt:
+            break
+        except EOFError:
+            break
+        except Exception as e:
+            log(f"Erro no teste: {e}")
+            print(f"[Erro] {e}")
+    
+    log("Modo teste encerrado")
+
+
 def main():
     import asyncio
-    try:
-        asyncio.run(loop_voz())
-    except KeyboardInterrupt:
-        pass
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "--test":
+        asyncio.run(loop_teste())
+    else:
+        try:
+            asyncio.run(loop_voz())
+        except KeyboardInterrupt:
+            pass
 
 
 if __name__ == "__main__":
