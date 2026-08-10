@@ -1,12 +1,12 @@
 ---
-tags: [base, descobertas, experiências, gostaria, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao]
+tags: [base, descobertas, experiências, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao]
 aliases: [Aprendizado: Jarvis manifesta o que quer aprender]
 date: 2026-08-10
 ---
 
 # Aprendizado: Jarvis manifesta o que quer aprender
 
-**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
