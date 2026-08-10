@@ -54,8 +54,11 @@ def parse_comando(texto: str):
     Retorna (acao, params) ou (None, None) se não reconhecido."""
     t = texto.lower().strip()
     
+    # Normaliza acentos básicos para robustez
+    t = t.replace('á', 'a').replace('é', 'e').replace('í', 'i').replace('ó', 'o').replace('ú', 'u').replace('ã', 'a').replace('õ', 'o').replace('ç', 'c')
+    
     # Web: navegar
-    m = re.search(r'(?:abra|vá para|acesse|navegue para|vá?)\s+(https?://\S+|www\.\S+|\S+\.\w+)', t)
+    m = re.search(r'(?:abra|va para|acesse|navegue para|va)\s+(https?://\S+|www\.\S+|\S+\.\w+)', t)
     if m:
         url = m.group(1)
         if not url.startswith('http'):
@@ -84,7 +87,7 @@ def parse_comando(texto: str):
         return "web_screenshot", {}
     
     # Desktop: encontrar janela
-    m = re.search(r'(?:encontre|ache|foque|vá para)\s+(?:a\s+)?janela\s+(.+)', t)
+    m = re.search(r'(?:encontre|ache|foque|va para)\s+(?:a\s+)?janela\s+(.+)', t)
     if m:
         return "desktop_find_window", {"title_regex": m.group(1).strip()}
     
@@ -106,6 +109,8 @@ def parse_comando(texto: str):
     m = re.search(r'espere\s+(\d+(?:\.\d+)?)\s*segundos?', t)
     if m:
         return "sleep", {"seconds": float(m.group(1))}
+    
+    return None, None
     
     return None, None
 
