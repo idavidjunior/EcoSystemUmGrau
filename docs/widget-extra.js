@@ -23,22 +23,12 @@
 
     var cores = { fundo: '#1e1e2e', borda: '#45475a', destaque: '#cba6f7', texto: '#cdd6f4', texto2: '#a6adc8' };
 
-    // ===== BARRA SUPERIOR (topBar) =====
-    var topBar = mk('div');
-    topBar.id = 'mk-topbar';
-    topBar.style.cssText = 'position:fixed;top:10px;left:12px;right:auto;z-index:99998;display:flex;align-items:center;gap:4px;pointer-events:auto;';
-
+    // ===== BOTOES DE ACAO (vivem no painel inferior) =====
     var ctrl = mk('div');
     ctrl.id = 'mk-labels';
     ctrl.title = 'Alternar visibilidade das etiquetas';
     ctrl.textContent = 'T';
     ctrl.style.cssText = 'width:22px;height:22px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:' + cores.destaque + ';background:#313244;border:1px solid ' + cores.destaque + ';font-size:11px;';
-
-    var menuBtn = mk('div');
-    menuBtn.id = 'mk-menu-btn';
-    menuBtn.title = 'Mostrar/ocultar menus (barra superior)';
-    menuBtn.textContent = '☰';
-    menuBtn.style.cssText = 'width:22px;height:22px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:' + cores.destaque + ';background:#313244;border:1px solid ' + cores.destaque + ';font-size:11px;';
 
     var resetBtn = mk('div');
     resetBtn.id = 'mk-btn-reset';
@@ -49,9 +39,7 @@
     var actions = mk('div');
     actions.style.cssText = 'display:flex;gap:4px;border:1px solid ' + cores.destaque + ';border-radius:6px;padding:2px 4px;background:#313244;';
     actions.appendChild(ctrl);
-    actions.appendChild(menuBtn);
     actions.appendChild(resetBtn);
-    topBar.appendChild(actions);
 
     var topTheme = mk('select');
     topTheme.style.cssText = 'background:' + cores.fundo + ';color:' + cores.texto + ';border:1px solid ' + cores.borda + ';border-radius:4px;font-size:11px;padding:2px 4px;';
