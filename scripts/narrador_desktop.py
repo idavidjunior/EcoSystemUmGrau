@@ -26,6 +26,7 @@ import subprocess
 import sys
 import threading
 import time
+import unicodedata
 from datetime import datetime
 from pathlib import Path
 
@@ -83,6 +84,33 @@ def estado_ativo():
     except Exception:
         pass
     return True
+
+
+def limpar_texto(texto):
+    """Remove Markdown, emojis e simbolos especiais; fica so o texto puro para TTS."""
+    if not texto:
+        return ""
+    texto = unicodedata.normalize("NFC", texto)
+    texto = re.sub(r"```.*?```", " ", texto, flags=re.DOTALL)
+    texto = re.sub(r"`([^`]+)`", r"\1", texto)
+    texto = re.sub(r"^#{1,6}\s*", "", texto, flags=re.MULTILINE)
+    texto = re.sub(r"(\*\*|__|~~)", "", texto)
+    texto = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", texto)
+    texto = re.sub(r"^\s*[-*+]\s+", "", texto, flags=re.MULTILINE)
+    texto = re.sub(r"^\s*\d+[.)]\s+", "", texto, flags=re.MULTILINE)
+    texto = re.sub(r"<[^>]+>", " ", texto)
+
+    def _limpar_simbolos(c):
+        if c.isspace():
+            return " "
+        cat = unicodedata.category(c)
+        if cat in ("Cc", "Cf", "Cs", "Co", "Mn") or cat.startswith("S"):
+            return " "
+        return c
+
+    texto = "".join(_limpar_simbolos(c) for c in texto)
+    texto = re.sub(r"\s+", " ", texto)
+    return texto.strip()
 
 
 def partes_novas(conn, ultimo_ts, excluir):
@@ -146,7 +174,7 @@ class Narrador:
             self.buffer = []
         self.timer = None
         texto = " ".join(textos).strip()
-        texto = re.sub(r"\s+", " ", texto)
+        texto = limpar_texto(texto)
         if len(texto) < 15:
             return
         with self.falando:
