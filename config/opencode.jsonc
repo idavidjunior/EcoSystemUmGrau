@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "{env:LLM_MODEL}",
+  "model": "{{LLM_MODEL}}",
   "plugin": [
     "@razroo/opencode-model-fallback"
   ],
