@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**145 notas** do cluster ecossistema.
+**146 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -65,6 +65,7 @@
 - [[2026-08-06-scan-proativo-ecosystemumgrau]]
 - [[aprendizado-debugging-expertise-skill]]
 - [[aprendizado-jarvis-manifesta-o-que-quer-aprender]]
+- [[aprendizado-narrador-de-voz-do-jarvis-no-opencode-desktop]]
 - [[aprendizado-skill-auditoria-de-codigo-auto-evolutiva]]
 - [[aprendizado-skill-auditoria-de-codigo-viva-com-evolução-gate]]
 - [[aprendizado-â-2026-07-31-â-horas-faladas-corretamente-no-tts]]

@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**96 notas** conectadas a este hub.
+**97 notas** conectadas a este hub.
 
 
 ## Notas
@@ -16,6 +16,7 @@
 - [[approach-mediacodecaudiorenderer-with-audioprocessor-varargs]]
 - [[aprendizado-debugging-expertise-skill]]
 - [[aprendizado-jarvis-manifesta-o-que-quer-aprender]]
+- [[aprendizado-narrador-de-voz-do-jarvis-no-opencode-desktop]]
 - [[aprendizado-skill-auditoria-de-codigo-auto-evolutiva]]
 - [[aprendizado-skill-auditoria-de-codigo-viva-com-evolução-gate]]
 - [[audioprocessorisactive-must-be-dynamic]]

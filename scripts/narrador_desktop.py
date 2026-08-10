@@ -9,6 +9,9 @@ Recursos:
   - Debounce: acumula texto e fala após 1,5s de pausa (evita narrar meio texto).
   - Sessões com título em --excluir não são narradas (ex.: watchdog-health).
   - Posição salva em runtime/narrador_posicao.json (continua de onde parou).
+  - Controle on/off por runtime/narracao_estado.json ({"ativo": bool}); acesse
+    via scripts/jarvis_audio.py on|off|status. Palavra-gatilho: "Eco" liga,
+    "D Eco"/"Desativar Eco" pausa.
 
 Uso:
   python scripts/narrador_desktop.py [--teste] [--intervalo 2] [--voz assistant]
@@ -29,6 +32,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DB = Path(os.environ.get("OPENCODE_DB", r"C:\Users\David Jr\.local\share\opencode\opencode.db"))
 POSICAO = ROOT / "runtime" / "narrador_posicao.json"
+CONTROLE = ROOT / "runtime" / "narracao_estado.json"
 VOX = ROOT / "scripts" / "vox_audio.py"
 LOG = ROOT / "scripts" / "narrador_desktop_log.txt"
 EXCLUIR_PADRAO = ["watchdog-health"]
@@ -69,6 +73,16 @@ def salvar_posicao(pos):
         tmp.replace(POSICAO)
     except Exception as e:
         log(f"posicao nao salva: {e}")
+
+
+def estado_ativo():
+    """True se a narracao estiver ativa (padrao: ativa quando sem arquivo)."""
+    try:
+        if CONTROLE.exists():
+            return bool(json.loads(CONTROLE.read_text(encoding="utf-8")).get("ativo", True))
+    except Exception:
+        pass
+    return True
 
 
 def partes_novas(conn, ultimo_ts, excluir):
@@ -176,12 +190,18 @@ def main():
     log(f"narrador iniciado (banco={DB.name}, intervalo={args.intervalo}s, voz={args.voz}, exclui={excluir})")
     ultimo_ts = pos.get("ultimo_ts", 0)
     conn = conectar()
+    estado_logado = None
     try:
         while True:
+            ativo = estado_ativo()
+            if ativo != estado_logado:
+                estado_logado = ativo
+                log("narracao ATIVADA (Eco)" if ativo else "narracao PAUSADA (D Eco)")
             novas = partes_novas(conn, ultimo_ts, excluir)
             if novas:
                 textos = [t for _, _, _, t in novas]
-                narrador.alimentar(textos)
+                if ativo:
+                    narrador.alimentar(textos)
                 ultimo_ts = max(x[0] for x in novas)
                 salvar_posicao({"ultimo_ts": ultimo_ts})
             time.sleep(args.intervalo)
