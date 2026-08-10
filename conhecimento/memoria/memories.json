@@ -4298,5 +4298,25 @@
     "access_count": 0,
     "created_at": "2026-08-10T05:51:42.428003",
     "last_accessed": "2026-08-10T05:51:42.428003"
+  },
+  {
+    "id": 245,
+    "kind": "decisao",
+    "task": "Watchdog OpenCode Serve - Implementacao e Debug",
+    "summary": "Implementado watchdog (scripts/serve_watchdog.py) que monitora o opencode serve na porta 8767 a cada 30s. Detecta 3 falhas consecutivas e reinicia o serve automaticamente. Integrado ao bridge (jarvis_bridge.py) que detecta HTTP 500 e reinicia o serve via _restart_serve_hard(). Problema de senha resolvido: ha 3 fontes de senha (User-level ENV, Process-level ENV, arquivo .env). O serve do OpenCode desktop usa a User-level ENV. O .env foi sincronizado para 'edbe7432-2bab-454c-b6d5-dd23f9380bba'. O watchdog foi configurizado para priorizar o .env file.",
+    "project": "",
+    "tags": [
+      "arquivo",
+      "scripts",
+      "implementado",
+      "process",
+      "debug",
+      "dd23f9380bba"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-10T06:03:01.826320",
+    "last_accessed": "2026-08-10T06:03:01.826320"
   }
 ]
