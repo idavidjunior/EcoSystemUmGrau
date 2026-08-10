@@ -262,13 +262,18 @@
       } catch (e) { logError('_aplicarOrbita (orbit)', e); }
     });
 
-    // Estado do painel inferior (controlado APENAS pelo botão do olho)
+    // Estado do painel inferior (controlado APENAS pelo botão do olho).
+    // O olho vive DENTRO do painel: ao ocultar os controles mantemos o painel
+    // minimo com apenas o olho, para nunca perder a forma de re-exibir.
     var panelVisible = localStorage.getItem('painelGrafoVisivel') !== 'false';
     function syncControlsPanel(show) {
       panelVisible = !!show;
-      panel.style.display = panelVisible ? 'flex' : 'none';
-      panel.hidden = !panelVisible;
-      panel.setAttribute('aria-hidden', String(!panelVisible));
+      themeWrap.style.display = panelVisible ? 'flex' : 'none';
+      speedWrap.style.display = panelVisible ? 'flex' : 'none';
+      orbitWrap.style.display = panelVisible ? 'flex' : 'none';
+      panel.style.display = 'flex'; // painel nunca some: vira o "puxador" do olho
+      panel.hidden = false;
+      panel.classList.toggle('mk-painel-min', !panelVisible);
       // Olho SEMPRE visível - só muda ícone/title
       eye.title = panelVisible ? 'Ocultar painel de controles' : 'Mostrar painel de controles';
       eye.textContent = panelVisible ? '👁' : '👁️';

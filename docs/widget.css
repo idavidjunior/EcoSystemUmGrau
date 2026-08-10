@@ -52,3 +52,6 @@ body { margin: 0; width: 100vw; height: 100vh; overflow: hidden; background: var
   #mk-controles { padding: 7px 8px; }
   #mk-controles input[type="range"] { width: 90px !important; }
 }
+
+/* Painel minimo: so o olho (controles ocultos) — o olho nunca some */
+#mk-controles.mk-painel-min { padding: 6px; gap: 0; width: auto; max-width: none; }
