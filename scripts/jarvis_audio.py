@@ -33,16 +33,42 @@ NARRADOR = ROOT / "scripts" / "narrador_desktop.py"
 VOX = ROOT / "scripts" / "vox_audio.py"
 
 
-def gravar(ativo):
+def gravar(ativo=None, pausado=None):
+    """Grava estado de narração. ativo=True/False, pausado=True/False.
+    Se ambos None, não altera. Mantém compatibilidade: gravar(True) -> ativo=True, pausado=False."""
     try:
+        estado = {"ativo": True, "pausado": False}
+        if CONTROLE.exists():
+            try:
+                estado = json.loads(CONTROLE.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+        if ativo is not None:
+            estado["ativo"] = bool(ativo)
+        if pausado is not None:
+            estado["pausado"] = bool(pausado)
+        # Compat: se ativo=False, pausado=True implícito
+        if ativo is False and pausado is None:
+            estado["pausado"] = True
         CONTROLE.parent.mkdir(parents=True, exist_ok=True)
         tmp = CONTROLE.with_suffix(".tmp")
-        tmp.write_text(json.dumps({"ativo": ativo}), encoding="utf-8")
+        tmp.write_text(json.dumps(estado), encoding="utf-8")
         tmp.replace(CONTROLE)
     except Exception as e:
         print(f"ERRO ao gravar controle: {e}")
         return False
     return True
+
+
+def estado_atual():
+    """Retorna (ativo, pausado) do controle."""
+    try:
+        if CONTROLE.exists():
+            d = json.loads(CONTROLE.read_text(encoding="utf-8"))
+            return d.get("ativo", True), d.get("pausado", False)
+    except Exception:
+        pass
+    return True, False
 
 
 def narrador_rodando():
