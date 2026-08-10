@@ -218,18 +218,28 @@ async def loop_voz():
             
             log(f"Comando: {texto}")
             
-            # Verifica comandos de controle
+            # Verifica comandos de controle (padrão ecossistema)
             tl = texto.lower()
-            if any(k in tl for k in ["para", "cala", "chega", "pare"]):
+            if any(k in tl for k in ["stop eco", "para", "cala", "chega", "pare"]):
                 falar("Parando.")
-                # Escreve controle off
-                CONTROLE.parent.mkdir(parents=True, exist_ok=True)
-                tmp = CONTROLE.with_suffix(".tmp")
-                tmp.write_text(json.dumps({"ativo": False}), encoding="utf-8")
-                tmp.replace(CONTROLE)
+                import jarvis_audio
+                jarvis_audio.gravar(ativo=False, pausado=True)
+                jarvis_audio.matar_tts_ativo()
                 continue
-            if any(k in tl for k in ["eco", "ativar"]):
-                falar("Já estou ativo.")
+            if any(k in tl for k in ["dt eco", "desativar eco", "desativar"]):
+                falar("Desativando narração.")
+                import jarvis_audio
+                jarvis_audio.gravar(ativo=False, pausado=True)
+                continue
+            if any(k in tl for k in ["ps eco", "pausar eco", "pausar"]):
+                falar("Pausando narração.")
+                import jarvis_audio
+                jarvis_audio.gravar(pausado=True)
+                continue
+            if any(k in tl for k in ["at eco", "ativar eco", "ativar", "eco"]):
+                falar("Narração ativada.")
+                import jarvis_audio
+                jarvis_audio.gravar(ativo=True, pausado=False)
                 continue
             
             # Parse e executa
