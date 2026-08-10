@@ -10154,4 +10154,14 @@
    "android": {
     "n_notas": 13,
     "junto_com": "androidpuresdk",
- 
+    "frequencia": 11
+   },
+   "2026 scan proativo": {
+    "n_notas": 25,
+    "junto_com": "opencode",
+    "frequencia": 25
+   }
+  }
+ },
+ "n_notas": 354
+}
