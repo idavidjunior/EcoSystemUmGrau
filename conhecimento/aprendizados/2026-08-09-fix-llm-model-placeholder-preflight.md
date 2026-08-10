@@ -19,3 +19,8 @@ impacto: >
   Tambem foi descoberto que o commit b27dc11 reportado da Biblia nao existia:
   o trabalho da pesquisa biblia estava na working tree sem commit; commitado como
   ef256c4 e publicado em origin/master (o remote NAO tem branch main).
+
+## Conexoes
+
+- [[2026-07-27-teste-do-vigilante-automático-teste-do-sistema-de]]
+- [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]

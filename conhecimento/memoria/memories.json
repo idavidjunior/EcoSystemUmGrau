@@ -4098,5 +4098,25 @@
     "access_count": 0,
     "created_at": "2026-08-09T20:59:26.627277",
     "last_accessed": "2026-08-09T20:59:26.627277"
+  },
+  {
+    "id": 235,
+    "kind": "episodio",
+    "task": "erro",
+    "summary": "Commit 323a3879 trocou {{LLM_MODEL}} por {env:LLM_MODEL} no template sem atualizar setup-auto.ps1 (que renderiza {{LLM_MODEL}}) -> preflight falhava env LLM_MODEL ausente. Fix: reverter template para {{LLM_MODEL}} e renderizar deployed com modelo de .llm-choice.json. Sempre manter template consistente com setup-auto.ps1.",
+    "project": "",
+    "tags": [
+      "ausente",
+      "falhava",
+      "env",
+      "preflight",
+      "modelo",
+      "model ausente"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T21:40:36.685978",
+    "last_accessed": "2026-08-09T21:40:36.685978"
   }
 ]
