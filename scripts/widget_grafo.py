@@ -317,7 +317,9 @@ def _watcher(win, stop) -> None:
         with _regen_lock:
             try:
                 if _build_view():
-                    win.evaluate_js('window.location.reload();')
+                    # Recarrega com ?rc=<ts> para a cascata neural ser disparada
+                    # (o gerador le o rc e solta a cascata de pulso de vez).
+                    win.evaluate_js("window.location.search = 'rc=' + Date.now();")
             except Exception:
                 pass
 
