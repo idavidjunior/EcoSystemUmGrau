@@ -56,18 +56,31 @@ persistência; depois valide cada elo com ferramentas autoritativas.
   toggle de UI vs layout dependente, `!important` vs estilo inline, timing de
   animações (ex.: fit programático não dispara eventos de zoom).
 
-## Auto-evolução (OBRIGATÓRIA ao final de CADA auditoria)
-1. Registre aprendizado no ecossistema:
-   `python scripts/memory_engine.py add "<título>" "<lição>" <tipo>`
-2. Crie/atualize `conhecimento/aprendizados/AAAA-MM-DD-<slug>.md` com
-   contexto → decisão → implementação → lições.
-3. Append em `evolucao.md` (na pasta desta skill):
-   `- data | tarefa | o que funcionou | o que falhou | padrão novo/refinado`.
-4. **Revisão do próprio SKILL.md**: SE 3+ aprendizados novos acumularem desde o
-   último refinamento OU se alguma fase falhou/atrasou a auditoria:
-   - Dobre padrões repetidos no checklist de armadilhas.
-   - Adicione novas armadilhas descobertas.
-   - Afie passos ambíguos e registre a revisão em `evolucao.md`.
+## Auto-evolução com portão de qualidade (OBRIGATÓRIA ao final de CADA auditoria)
+
+O cérebro da skill é `mcp/desenvolvimento/habilidades/auditoria-de-codigo/evolucao.py`
+(rodar da raiz do repo ou via `python mcp/desenvolvimento/habilidades/auditoria-de-codigo/evolucao.py`).
+Ele aplica gates anti-lixo ANTES de qualquer aprendizado entrar na skill:
+
+1. **`evolucao.py add "<título>" "<lição>" --tipo <padrao|erro|episodio> --evidencia <caminho>`**
+   - **Evidência obrigatória**: o caminho do arquivo onde o bug/padrão foi encontrado
+     deve existir. Sem evidência → rejeitado (vai para `rejeitados.json` com o motivo).
+   - **Dedup por similaridade**: se ≈ duplicado (similaridade ≥ 0.80), NÃO duplica —
+     incrementa `recorrencias` do padrão existente.
+   - **Acionabilidade**: lição sem ação prática é marcada como observação e NÃO vira
+     regra no checklist até recorrer.
+   - **Anti-overfitting**: padrão único só vira armadilha se impacto `alto`.
+   - Ao ser aceito, registra no ecossistema via `memory_engine.py add` (loop fechado).
+2. **`evolucao.py review`** — quando ≥3 padrões elegíveis acumulam (acionáveis,
+   não no checklist, com ≥2 ocorrências OU impacto alto), absorve-os no checklist do
+   próprio SKILL.md (com backup `skill.md.bak` + registro em `evolucao.md`).
+3. **`evolucao.py stats`** — painel: aceitos/rejeitados/duplicados/elegíveis/revisões.
+4. **`evolucao.py prune --dias 90`** — limpeza periódica: remove rejeitados antigos e
+   padrões mortos (nunca os que já estão no checklist).
+5. Além do script, crie/atualize `conhecimento/aprendizados/AAAA-MM-DD-<slug>.md`
+   (contexto → decisão → implementação → lições) e registre na memória episódica.
+6. **Após um `review`**: sincronize o espelho `~/.claude/skills/auditoria-de-codigo/SKILL.md`
+   com o canônico (FONTE ÚNICA).
 
 ## Checklist de armadilhas conhecidas (manter atualizado via auto-evolução)
 - [ ] Saída corrompida/duplicada na leitura → validar com ferramenta autoritativa.
