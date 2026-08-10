@@ -144,7 +144,9 @@ def gerar(limite, linhas_unica):
         if not escolhidas:
             escolhidas = candidatas[:limite]
     for chave, _ in escolhidas:
-        hist.append({"data": date.today().isoformat(), "sig": assinar(chave), "chave": chave})
+        sig = assinar(chave)
+        if not any(h.get("sig") == sig for h in hist):
+            hist.append({"data": date.today().isoformat(), "sig": sig, "chave": chave})
     if len(hist) > MAX_HISTORICO:
         hist = hist[-MAX_HISTORICO:]
     salvar_historico(hist)
