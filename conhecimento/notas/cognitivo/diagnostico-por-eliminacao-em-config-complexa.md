@@ -1,7 +1,7 @@
 ---
 tags: [camada, chain, cognitivo, completo, debugging, handshake]
 aliases: [Diagnostico por eliminacao em config complexa]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # Diagnostico por eliminacao em config complexa

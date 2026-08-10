@@ -1,7 +1,7 @@
 ---
 tags: [camufladas, limpeza, nvapi, opencode, padrao, vazar]
 aliases: [Secrets Guard no preflight_check]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # Secrets Guard no preflight_check

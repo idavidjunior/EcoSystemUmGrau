@@ -1,7 +1,7 @@
 ---
 tags: [arquivos, cognitivo, ext4, ntfs, sistema, systemdesign]
 aliases: [Padrao de escrita atomica para persistencia]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # Padrao de escrita atomica para persistencia

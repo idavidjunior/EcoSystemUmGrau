@@ -1,7 +1,7 @@
 ---
 tags: [cause, decisao, description, fonte, mp3player-metadata-rescue, root]
 aliases: [The issue description and root cause]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # The issue description and root cause

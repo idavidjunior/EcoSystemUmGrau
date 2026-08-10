@@ -1,7 +1,7 @@
 ---
 tags: [consistentes, gestos, padrao, resolucao, tela, treinamentonavegacao]
 aliases: [Android gesture patterns]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # Android gesture patterns

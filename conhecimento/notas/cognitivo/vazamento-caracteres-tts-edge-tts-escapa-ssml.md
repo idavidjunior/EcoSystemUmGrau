@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, david, deveriam, general, não, pronunciava]
 aliases: [vazamento caracteres tts edge tts escapa ssml]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # vazamento caracteres tts edge tts escapa ssml

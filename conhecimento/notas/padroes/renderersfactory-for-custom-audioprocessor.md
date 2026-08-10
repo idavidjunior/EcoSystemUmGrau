@@ -1,7 +1,7 @@
 ---
 tags: [annotation, capabilities, handler, listener, mp3player, padrao]
 aliases: [RenderersFactory for custom AudioProcessor]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # RenderersFactory for custom AudioProcessor

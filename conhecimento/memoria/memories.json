@@ -4218,5 +4218,25 @@
     "access_count": 0,
     "created_at": "2026-08-09T23:46:22.158819",
     "last_accessed": "2026-08-09T23:46:22.158819"
+  },
+  {
+    "id": 241,
+    "kind": "padrao",
+    "task": "Skill auditoria-de-codigo auto-evolutiva",
+    "summary": "Criada skill de auditoria por fluxo com 5 fases (escanear fluxo, ferramentas autoritativas, corrigir no fonte, rastrear dado vs codigo, efeitos colaterais) e auto-evolucao: registra aprendizado por auditoria e revisa o proprio SKILL.md a cada 3 aprendizados. Espelhada em ~/.claude/skills/auditoria-de-codigo/.",
+    "project": "",
+    "tags": [
+      "evolucao",
+      "colaterais",
+      "efeitos",
+      "dado",
+      "rastrear",
+      "fonte"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T23:58:26.006234",
+    "last_accessed": "2026-08-09T23:58:26.006234"
   }
 ]

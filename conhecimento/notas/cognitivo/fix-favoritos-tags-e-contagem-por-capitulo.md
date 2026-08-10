@@ -1,7 +1,7 @@
 ---
 tags: [boot, cognitivo, fallback, general, quebrava, vigor]
 aliases: [fix favoritos tags e contagem por capitulo]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # fix favoritos tags e contagem por capitulo

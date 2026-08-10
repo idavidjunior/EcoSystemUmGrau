@@ -1,7 +1,7 @@
 ---
 tags: [field, padrao, run, sessionsession, stdout, writing]
 aliases: [MCP JSON-RPC notification handling]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # MCP JSON-RPC notification handling

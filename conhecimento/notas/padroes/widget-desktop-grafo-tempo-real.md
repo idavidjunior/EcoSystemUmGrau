@@ -1,7 +1,7 @@
 ---
 tags: [aprende, crescer, enquanto, ler, opencode, padrao]
 aliases: [widget desktop grafo tempo real]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # widget desktop grafo tempo real

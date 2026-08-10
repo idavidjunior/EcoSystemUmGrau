@@ -1,7 +1,7 @@
 ---
 tags: [auth, env, ficar, heuristica, security, vars]
 aliases: [Nunca armazenar API keys em config files]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # Nunca armazenar API keys em config files

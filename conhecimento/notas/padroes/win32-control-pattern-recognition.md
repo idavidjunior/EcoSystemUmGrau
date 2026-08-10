@@ -1,7 +1,7 @@
 ---
 tags: [click, combobox, padrao, requer, setcursel, treinamentonavegacao]
 aliases: [Win32 control pattern recognition]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # Win32 control pattern recognition

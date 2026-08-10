@@ -1,7 +1,7 @@
 ---
 tags: [bug, encontrados, penetra, projeto, shadowroots, treinamentonavegacao]
 aliases: [Elementos nao encontrados em Shadow DOM]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # Elementos nao encontrados em Shadow DOM

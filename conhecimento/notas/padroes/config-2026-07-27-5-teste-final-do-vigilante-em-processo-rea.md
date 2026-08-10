@@ -1,7 +1,7 @@
 ---
 tags: [background, job, não, oculto, opencode, padrao]
 aliases: [Config: 2026-07-27-5: Teste final do vigilante em processo r]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # Config: 2026-07-27-5: Teste final do vigilante em processo real

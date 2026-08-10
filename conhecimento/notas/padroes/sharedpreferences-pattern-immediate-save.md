@@ -1,7 +1,7 @@
 ---
 tags: [android-pure-sdkandroid-pure-sdk, fonte, padrao, pure, save, sdk]
 aliases: [SharedPreferences Pattern (immediate save)]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # SharedPreferences Pattern (immediate save)

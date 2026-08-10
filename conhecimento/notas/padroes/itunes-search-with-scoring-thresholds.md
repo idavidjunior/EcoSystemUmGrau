@@ -1,7 +1,7 @@
 ---
 tags: [album, chars, mp3player, overlap, padrao, words]
 aliases: [iTunes search with scoring thresholds]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # iTunes search with scoring thresholds

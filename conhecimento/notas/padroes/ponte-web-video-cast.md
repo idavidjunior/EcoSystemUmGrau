@@ -1,7 +1,7 @@
 ---
 tags: [app, assistir, instan, obras, opencode, padrao]
 aliases: [ponte web video cast]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # ponte web video cast

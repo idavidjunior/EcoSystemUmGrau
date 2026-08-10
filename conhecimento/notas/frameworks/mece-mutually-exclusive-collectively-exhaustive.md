@@ -1,7 +1,7 @@
 ---
 tags: [cobrir, coletivamente, exaustivas, framework, possibilidades]
 aliases: [MECE (Mutually Exclusive, Collectively Exhaustive)]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # MECE (Mutually Exclusive, Collectively Exhaustive)

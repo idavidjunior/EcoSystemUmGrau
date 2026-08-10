@@ -1,7 +1,7 @@
 ---
 tags: [bug, equalizerfragment, flat, mp3player-metadata-rescue, stayed, until]
 aliases: [**EQ only applies after opening fragment**]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # **EQ only applies after opening fragment**

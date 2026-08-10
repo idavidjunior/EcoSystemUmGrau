@@ -1,7 +1,7 @@
 ---
 tags: [framework, inteligente, sessoes, similaridade, texto]
 aliases: [Framework de Aprendizado Continuo (Auto-Learning)]
-date: 2026-08-09
+date: 2026-08-10
 ---
 
 # Framework de Aprendizado Continuo (Auto-Learning)
