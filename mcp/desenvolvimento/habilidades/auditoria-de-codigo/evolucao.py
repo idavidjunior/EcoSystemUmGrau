@@ -90,7 +90,7 @@ def curto(texto, limite=160):
 
 def acionavel(texto):
     base = texto.lower()
-    return any(k in base for k in AACIONAVEIS)
+    return any(k in base for k in ACIONAVEIS)
 
 
 def cmd_add(args):

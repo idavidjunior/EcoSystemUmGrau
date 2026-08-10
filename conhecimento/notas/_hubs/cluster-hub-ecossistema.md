@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**141 notas** do cluster ecossistema.
+**142 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -119,6 +119,7 @@
 - [[opencode-go-provider-crash-ao-processar-mensagem]]
 - [[organizar-desktopcodigos-como-raiz-unica-de-projetos]]
 - [[otimização-do-reindex-semântico-do-memory-engine]]
+- [[persistencia-completa-widget-grafo]]
 - [[polãtica-de-resposta-rãpida-â-caminhos-rãpidos-constantes-no]]
 - [[ponte-web-video-cast]]
 - [[pontes-inter-cluster-cerebro-vivo-grafo]]

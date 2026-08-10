@@ -241,6 +241,26 @@
       ]
     },
     {
+      "id": "adb-expert",
+      "categoria": "tecnica",
+      "dominio": "android",
+      "nome": "adb-expert",
+      "descricao": "",
+      "entrypoint": null,
+      "script": null,
+      "triggers": []
+    },
+    {
+      "id": "adb-perito",
+      "categoria": "tecnica",
+      "dominio": "android",
+      "nome": "adb-perito",
+      "descricao": "",
+      "entrypoint": "mcp/android/habilidades/adb-perito/skill.md",
+      "script": null,
+      "triggers": []
+    },
+    {
       "id": "adr",
       "categoria": "tecnica",
       "dominio": "desenvolvimento",
@@ -315,6 +335,25 @@
       "script": null,
       "triggers": [
         "Documentacao de APIs: OpenAPI/Swagger, exemplos, schemas, versionamento e experienca do consumidor. Trigger keywords: API docs, documentacao de API, OpenAPI, Swagger, schema, endpoints, versionar API."
+      ]
+    },
+    {
+      "id": "auditoria-de-codigo",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "auditoria-de-codigo",
+      "descricao": "Auditoria sistemática de código para encontrar e corrigir bugs. Use quando o usuário pedir para \"auditar\", \"olhe a função X\", \"olhe/veja a barra/a tela/o controle Y\", \"teste cada controle\", \"encontre bugs\", \"escaneie o código\", \"o que está errado/acontecendo em Z\". Aplica o pipeline de escaneamento por fluxo com verificação por ferramentas autoritativas e auto-evolui a partir dos aprendizados que registra a cada auditoria.",
+      "entrypoint": "mcp/desenvolvimento/habilidades/auditoria-de-codigo/skill.md",
+      "script": "mcp/desenvolvimento/habilidades/auditoria-de-codigo/evolucao.py",
+      "triggers": [
+        "Auditoria sistemática de código para encontrar e corrigir bugs. Use quando o usuário pedir para",
+        "auditar",
+        ",",
+        "olhe a função X",
+        ",",
+        "olhe/veja a barra/a tela/o controle Y",
+        ",",
+        "teste cada controle"
       ]
     },
     {
@@ -399,6 +438,18 @@
       "script": null,
       "triggers": [
         "Conformidade e auditoria: LGPD/GDPR, trilhas de auditoria, retencao, provas de conformidade e revisoes. Trigger keywords: compliance, LGPD, GDPR, auditoria, trilha de auditoria, retencao, conformidade."
+      ]
+    },
+    {
+      "id": "compreensao-pedidos",
+      "categoria": "tecnica",
+      "dominio": "nucleo",
+      "nome": "compreensao-pedidos",
+      "descricao": "Use for ANY user request to turn it into a structured action plan before executing: extract goal, explicit actions, concepts, constraints, ambiguities, success criteria, waste risks and suggested plan. Trigger keywords: 'compreender pedido', 'entender pedido', 'analisar pedido', 'qual o objetivo', 'o que o usuário quer', 'pedido ambíguo', 'refinar entendimento', 'detectar desperdício'. Fast static analysis (stdlib, no LLM) with optional fail-soft LLM refinement.",
+      "entrypoint": "mcp/nucleo/habilidades/compreensao-pedidos/skill.md",
+      "script": "mcp/nucleo/habilidades/compreensao-pedidos/compreensao.py",
+      "triggers": [
+        "Use for ANY user request to turn it into a structured action plan before executing: extract goal, explicit actions, concepts, constraints, ambiguities, success criteria, waste risks and suggested plan. Trigger keywords: 'compreender pedido', 'entender pedido', 'analisar pedido', 'qual o objetivo', 'o que o usuário quer', 'pedido ambíguo', 'refinar entendimento', 'detectar desperdício'. Fast static analysis (stdlib, no LLM) with optional fail-soft LLM refinement."
       ]
     },
     {
@@ -504,6 +555,18 @@
       "nome": "database-migrations",
       "descricao": "|",
       "entrypoint": "mcp/desenvolvimento/habilidades/database-migrations/skill.md",
+      "script": null,
+      "triggers": [
+        "|"
+      ]
+    },
+    {
+      "id": "debugging-expertise",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "debugging-expertise",
+      "descricao": "|",
+      "entrypoint": "mcp/desenvolvimento/habilidades/debugging-expertise/skill.md",
       "script": null,
       "triggers": [
         "|"

@@ -1,8 +1,8 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-10T00:08:23.947119
+**Exportado em:** 2026-08-10T00:12:49.302911
 **Projetos:** 4
-**Padroes Tecnicos:** 97
+**Padroes Tecnicos:** 98
 **Decisoes:** 62
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 55
@@ -535,6 +535,7 @@ decisao: Criado ResourceImportMenu (com.biblia.estudo.utils) como menu unico com
 | 95 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | Projetos irmaos do EcoSystemUmGrau |
 | 96 | opencode | contagem subpastas arquivos pastas |
 | 97 | opencode | fix widget grafo desktop |
+| 98 | opencode | persistencia completa widget grafo |
 
 ## Bug Fixes e Corrigidos
 
@@ -1496,7 +1497,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-10T00:08:23.850033
+**Ultima atualizacao:** 2026-08-10T00:12:48.868874
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*
