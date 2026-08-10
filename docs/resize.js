@@ -79,9 +79,24 @@
       window.addEventListener('mouseup', onUp);
     });
   }
+  function ajustarNet(){
+    // O grafo preenche exatamente o espaco abaixo do header (#header com a
+    // legenda de botoes), cuja altura varia conforme a quebra de linha.
+    var net = document.getElementById('net');
+    if (!net) return;
+    var hdr = document.getElementById('header');
+    var hh = (hdr && hdr.offsetHeight) ? hdr.offsetHeight : 0;
+    var h = Math.max(120, window.innerHeight - hh);
+    net.style.height = h + 'px';
+  }
   updateHandle();
   initDrag();
   initResize();
   window.addEventListener('resize', updateHandle);
+  window.addEventListener('resize', ajustarNet);
+  window.addEventListener('load', function(){ setTimeout(ajustarNet, 200); });
+  setTimeout(ajustarNet, 100);
+  setTimeout(ajustarNet, 1200);
+  setTimeout(ajustarNet, 3000);
 })();
 </script>

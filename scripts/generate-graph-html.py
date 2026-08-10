@@ -4,7 +4,7 @@ Le o vault Obsidian (conhecimento/notas/*.md) e produz um arquivo HTML
 standalone (vis-network via CDN) que abre em qualquer navegador. O vault e a
 fonte viva: notas + links [[wikilinks]] (incluindo os criados pelo Smart
 Connections no Obsidian). Assim o grafico reflete exatamente o que esta no
-Obsidian â€” sinapses semanticas incluidas.
+Obsidian — sinapses semanticas incluidas.
 
 Nos:   cada nota .md (conhecimento + hubs)
 Arestas: links bidirecionais [[wikilinks]] presentes em cada nota
@@ -393,7 +393,7 @@ def extrair_nos():
     id_set = set(nos_por_id)
     for slug, links in no_cache.items():
         for link in links:
-            # link pode ser 'nota-slug' ou 'nota-slug|alias' â€” pega so o slug
+            # link pode ser 'nota-slug' ou 'nota-slug|alias' — pega so o slug
             link_slug = link.split('|')[0].strip()
             if link_slug in id_set and slug in id_set:
                 arestas.add(tuple(sorted((slug, link_slug))))
@@ -456,7 +456,7 @@ def gerar_html(nos, arestas, output_path):
         label = n['label']
         if n['categoria'] == 'bugs':
             st = n.get('status', 'pendente')
-            label = f"{'âœ”' if st == 'resolvido' else ('â€ ' if st == 'conhecido' else 'âœ–')} {label}"
+            label = f"{'✔' if st == 'resolvido' else ('⚠' if st == 'conhecido' else '✖')} {label}"
         node_obj = {
             'id': n['id'],
             'label': label,
@@ -525,7 +525,7 @@ def gerar_html(nos, arestas, output_path):
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Cerebro Vivo â€” Grafo do Conhecimento</title>
+<title>Cerebro Vivo — Grafo do Conhecimento</title>
 <style>
   body {{ margin:0; font-family:'Segoe UI', sans-serif; background:#1e1e2e; color:#eee; }}
   #header {{ padding:10px 16px; background:#181825; border-bottom:1px solid #313244; }}
@@ -604,18 +604,18 @@ def gerar_html(nos, arestas, output_path):
 </head>
 <body>
 <div id="header">
-  <h1>Cerebro Vivo â€” Grafo do Conhecimento</h1>
+  <h1>Cerebro Vivo — Grafo do Conhecimento</h1>
   <div id="legend">
     {legend_cat}
     {legend_cl}
     {legend_st}
     {legend_dom}
     <button class="lg home" data-filter="home" data-value="" data-color="#89b4fa"
-      title="Home: restaura a visao inicial do grafo (posicao e zoom originais).">ðŸ  Home</button>
+      title="Home: restaura a visao inicial do grafo (posicao e zoom originais)."> Home</button>
     <button class="lg" data-filter="all" data-value="" data-color="#888"
-      title="Limpar: remove o destaque atual e restaura as cores e tamanhos originais dos nos.">âœ• Limpar</button>
+      title="Limpar: remove o destaque atual e restaura as cores e tamanhos originais dos nos.">✕ Limpar</button>
   </div>
-  <div id="stats" title="Resumo do grafo. Passe o mouse sobre os botoes acima para ver a explicacao de cada um.">{len(nos)} nos | {len(arestas)} conexoes â€” clique em uma categoria ou cluster para destacar</div>
+  <div id="stats" title="Resumo do grafo. Passe o mouse sobre os botoes acima para ver a explicacao de cada um.">{len(nos)} nos | {len(arestas)} conexoes — clique em uma categoria ou cluster para destacar</div>
 </div>
 <div id="wrap">
   <div id="net"></div>
@@ -717,7 +717,7 @@ def gerar_html(nos, arestas, output_path):
   window.addEventListener('beforeunload', _salvarCamera);
 
   // =====================================================================
-  // PSEUDO-3D â€” PROFUNDIDADE VIVA (sem WebGL)
+  // PSEUDO-3D — PROFUNDIDADE VIVA (sem WebGL)
   // Simulamos um eixo Z dentro do motor 2D do vis-network. Cada no recebe
   // uma profundidade inicial (hubs na FRENTE, folhas ao fundo) com um
   // jitter estavel, e DEPOIS "flutua" em z ao longo do tempo (onda lenta
@@ -802,7 +802,7 @@ def gerar_html(nos, arestas, output_path):
   }}
 
   // =====================================================================
-  // ROTACAO VIVA (sem WebGL) â€” a malha gira como um globo de conhecimento
+  // ROTACAO VIVA (sem WebGL) — a malha gira como um globo de conhecimento
   // Em vez de girar o canvas (artificial: o quadro inteiro vira como folha),
   // movemos a PROFUNDIDADE como uma ONDA VIAJANTE que rodeia o centro.
   // Cada no orbita em sua propria "camada"; com o tempo a profundidade sobe
