@@ -1,12 +1,12 @@
 ---
-tags: [conclusões, conteúdo, erradas, gerando, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao]
+tags: [conclusões, erradas, gerando, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao]
 aliases: [Aprendizado: Skill auditoria-de-codigo (auto-evolutiva)]
 date: 2026-08-10
 ---
 
 # Aprendizado: Skill auditoria-de-codigo (auto-evolutiva)
 
-**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
