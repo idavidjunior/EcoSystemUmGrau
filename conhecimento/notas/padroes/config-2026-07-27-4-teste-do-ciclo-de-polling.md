@@ -20,6 +20,7 @@ Criado manualmente enquanto o vigilante está rodando para verificar se o pollin
 
 ## Conexoes
 
+- [[aprendizado-jarvis-manifesta-o-que-quer-aprender]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]

@@ -1,12 +1,12 @@
 ---
-tags: [base, descobertas, experiências, gostaria, opencode, padrao]
+tags: [base, descobertas, experiências, gostaria, opencodeopencode, padrao]
 aliases: [Aprendizado: Jarvis manifesta o que quer aprender]
 date: 2026-08-10
 ---
 
 # Aprendizado: Jarvis manifesta o que quer aprender
 
-**Fonte:** opencode
+**Fonte:** opencode+opencode
 
 ---
 tipo: padrao
@@ -15,9 +15,8 @@ data: 2026-08-10
 contexto: "Usuário pediu que o Jarvis 'dissesse ou manifestasse, de vez em quando, o que gostaria de aprender, com base em suas experiências ou descobertas'. Não existia mecanismo de manifesta
 ## Conexoes
 
-- [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
+- [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
-- [[controle-da-tv-lg-webos-via-ssap]]
+- [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
 - [[padrao-hub-padroes]]
-- [[secrets-guard-no-preflightcheck]]
+- [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]
