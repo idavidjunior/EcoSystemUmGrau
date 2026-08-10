@@ -19,5 +19,6 @@ date: 2026-08-10
 Verificar se o vigilante detecta automaticamente novos arquivos em conhecimento/aprendizados/, registra no K
 ## Conexoes
 
+- [[aprendizado-skill-auditoria-de-codigo-auto-evolutiva]]
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]
