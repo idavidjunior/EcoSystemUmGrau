@@ -43,6 +43,8 @@ if not SERVER_PASS:
     except Exception:
         pass
 
+BIN_DIR = str(Path(os.environ["APPDATA"]) / r"npm\node_modules\opencode-ai\bin\opencode.exe")
+
 WATCHDOG_INTERVAL = 30
 WATCHDOG_LOG = SCRIPTS_DIR / "watchdog.log"
 PID_FILE = SCRIPTS_DIR / "watchdog.pid"
@@ -81,7 +83,7 @@ def _serve_healthy(port):
             method="POST",
             headers={"Content-Type": "application/json", "Authorization": f"Basic {creds}"},
         )
-        with urllib.request.urlopen(req, timeout=10) as resp:
+        with urllib.request.urlopen(req, timeout=15) as resp:
             data = json.loads(resp.read().decode())
             if "id" in data:
                 sid = data["id"]
@@ -92,7 +94,7 @@ def _serve_healthy(port):
                     method="POST",
                     headers={"Content-Type": "application/json", "Authorization": f"Basic {creds}"},
                 )
-                with urllib.request.urlopen(req2, timeout=30) as resp2:
+                with urllib.request.urlopen(req2, timeout=60) as resp2:
                     d2 = json.loads(resp2.read().decode())
                     texts = [p.get("text", "") for p in d2.get("parts", []) if p.get("type") == "text"]
                     return len(texts) > 0
@@ -134,9 +136,9 @@ def _kill_pid(pid):
 def _start_serve(port):
     try:
         proc = subprocess.Popen(
-            [BIN, "serve", "--port", str(port)],
+            [BIN_DIR, "serve", "--port", str(port)],
             cwd=str(WORKDIR),
-            env={**os.environ},
+            env={**os.environ, "OPENCODE_SERVER_PASSWORD": SERVER_PASS},
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
             creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
@@ -193,6 +195,8 @@ def run_watchdog():
     logger.info(f"  portas: {PORT}, {PORT_RESERVA}")
     logger.info(f"  intervalo: {WATCHDOG_INTERVAL}s")
     logger.info("=" * 50)
+    consecutive_failures = 0
+    max_failures = 3
     try:
         while True:
             time.sleep(WATCHDOG_INTERVAL)
@@ -200,15 +204,21 @@ def run_watchdog():
             for port in (PORT, PORT_RESERVA):
                 if _port_responding(port) and _serve_healthy(port):
                     healthy = True
+                    consecutive_failures = 0
                     break
             if not healthy:
-                logger.warning("serve não saudável — reiniciando")
-                for port in (PORT, PORT_RESERVA):
-                    if _port_responding(port):
-                        if _restart_serve(port):
-                            break
-                else:
-                    _start_serve(PORT)
+                consecutive_failures += 1
+                logger.warning(f"serve não saudável ({consecutive_failures}/{max_failures})")
+                if consecutive_failures >= max_failures:
+                    logger.warning(f"limite atingido ({max_failures}) — reiniciando serve")
+                    for port in (PORT, PORT_RESERVA):
+                        if _port_responding(port):
+                            if _restart_serve(port):
+                                consecutive_failures = 0
+                                break
+                    else:
+                        if _start_serve(PORT):
+                            consecutive_failures = 0
     except KeyboardInterrupt:
         logger.info("watchdog interrompido")
     finally:

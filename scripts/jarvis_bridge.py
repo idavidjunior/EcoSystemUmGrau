@@ -623,7 +623,7 @@ def _restart_serve_hard():
         subprocess.Popen(
             [BIN, "serve", "--port", str(PORTA_SERVE)],
             cwd=WORKDIR,
-            env={**os.environ},
+            env={**os.environ, "OPENCODE_SERVER_PASSWORD": SERVER_PASS},
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
             creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
