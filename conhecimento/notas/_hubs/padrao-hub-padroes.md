@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**91 notas** conectadas a este hub.
+**92 notas** conectadas a este hub.
 
 
 ## Notas
@@ -41,6 +41,7 @@
 - [[edittext-inline-editing-toggle]]
 - [[encoding-utf-8-explicito-em-python-no-windows]]
 - [[filename-artist-extraction-two-strategies]]
+- [[fix-widget-grafo-desktop]]
 - [[form-starts-empty-pattern]]
 - [[iframecontenteditable-text-entry]]
 - [[ilhas-no-grafo-notas-com-grau-0-e-como-conecta-las]]
