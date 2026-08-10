@@ -2199,3 +2199,6 @@
 [2026-08-10T11:48:37] Erro no loop: Error opening InputStream: Unanticipated host error [PaErrorCode -9999]: 'Undefined external error.' [MME error 1]
 [2026-08-10T11:48:38] Ouvindo comando...
 [2026-08-10T11:48:38] Erro no loop: Error opening InputStream: Unanticipated host error [PaErrorCode -9999]: 'Undefined external error.' [MME error 1]
+[2026-08-10T11:50:42] Modo TESTE iniciado - digite comandos (Enter=vazio sai)
+[2026-08-10T11:50:42] Comando teste: abra google.com
+[2026-08-10T11:50:48] Modo teste encerrado

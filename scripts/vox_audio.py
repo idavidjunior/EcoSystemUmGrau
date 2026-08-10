@@ -223,6 +223,52 @@ def cmd_ouvir_google():
     return texto
 
 
+async def _falar_async(texto, parar_evento=None):
+    """Versão async de _falar para uso dentro de event loop."""
+    if not texto or not texto.strip():
+        return
+    mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
+    try:
+        await _tts_salvar(texto, str(mp3))
+    except Exception as e:
+        print(f"[erro tts] {e}")
+        return
+    if not mp3.exists():
+        return
+    try:
+        _tocar_mci(str(mp3), parar_evento=parar_evento)
+    except Exception as e:
+        print(f"[erro play] {e}")
+
+
+def _falar(texto, parar_evento=None):
+    """Gera MP3 com edge-tts e toca via MCI (suporta MP3). Se `parar_evento`
+    for fornecido, a fala pode ser interrompida a qualquer momento."""
+    if not texto or not texto.strip():
+        return
+    mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
+    try:
+        asyncio.run(
+            _tts_salvar(texto, str(mp3))
+        )
+    except Exception as e:
+        print(f"[erro tts] {e}")
+        return
+    if not mp3.exists():
+        return
+    try:
+        _tocar_mci(str(mp3), parar_evento=parar_evento)
+    except Exception as e:
+        print(f"[erro play] {e}")
+
+
+async def cmd_falar_async(texto, interruptivel=False):
+    import threading
+    evento = threading.Event()
+    await _falar_async(texto, parar_evento=evento)
+    print(f"[Falado {len(texto)} chars]" + (" (interruptivel)" if interruptivel else ""))
+
+
 def cmd_falar(texto, interruptivel=False):
     import threading
     evento = threading.Event()

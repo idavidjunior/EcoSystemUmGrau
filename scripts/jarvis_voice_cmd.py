@@ -45,8 +45,15 @@ def narracao_ativa():
 
 
 def falar(texto):
-    """Fala via vox_audio (interruptível)."""
-    vox_audio.cmd_falar(texto, interruptivel=True)
+    """Fala via vox_audio (interruptível). Usa versão async se em event loop."""
+    try:
+        import asyncio
+        loop = asyncio.get_running_loop()
+        # Se já estamos em event loop, agenda a tarefa async
+        loop.create_task(vox_audio.cmd_falar_async(texto, interruptivel=True))
+    except RuntimeError:
+        # Sem event loop rodando, usa versão síncrona
+        vox_audio.cmd_falar(texto, interruptivel=True)
 
 
 def parse_comando(texto: str):
