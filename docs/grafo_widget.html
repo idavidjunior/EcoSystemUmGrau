@@ -1544,4 +1544,19 @@ arestasUp = arestasUp.map(a =>
     var hdr = document.getElementById('header');
     var hh = (hdr && hdr.offsetHeight) ? hdr.offsetHeight : 0;
     var h = Math.max(120, window.innerHeight - hh);
-    net.style.height = 
+    net.style.height = h + 'px';
+  }
+  window.__mkAjustarNet = ajustarNet;
+  updateHandle();
+  initDrag();
+  initResize();
+  window.addEventListener('resize', updateHandle);
+  window.addEventListener('resize', ajustarNet);
+  window.addEventListener('load', function(){ setTimeout(ajustarNet, 200); });
+  setTimeout(ajustarNet, 100);
+  setTimeout(ajustarNet, 1200);
+  setTimeout(ajustarNet, 3000);
+})();
+</script>
+</body>
+</html>

@@ -1428,4 +1428,17 @@ arestasUp = arestasUp.map(a =>
   // =====================================================================
   setTimeout(function() {
     try {
-      var dr = localStorage.getItem('
+      var dr = localStorage.getItem('destGrafo');
+      if (dr) {
+        var d = JSON.parse(dr);
+        if (d && d.f && d.f !== 'home' && d.f !== 'all') {
+          var btn = document.querySelector('.lg[data-filter="' + d.f + '"][data-value="' + d.v + '"]');
+          if (btn && btn.dataset.color) destacar(d.f, d.v, btn.dataset.color, true);
+        }
+      }
+    } catch (e) {}
+    _restaurarCamera();
+  }, 2600);
+</script>
+</body>
+</html>
