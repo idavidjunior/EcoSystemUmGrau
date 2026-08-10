@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**142 notas** do cluster ecossistema.
+**143 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -64,6 +64,7 @@
 - [[2026-08-05-scan-proativo-ecosystemumgrau]]
 - [[2026-08-06-scan-proativo-ecosystemumgrau]]
 - [[aprendizado-debugging-expertise-skill]]
+- [[aprendizado-skill-auditoria-de-codigo-auto-evolutiva]]
 - [[aprendizado-â-2026-07-31-â-horas-faladas-corretamente-no-tts]]
 - [[aprendizado-â-2026-07-31-â-reorg-catãlogo-ãnico-habilidades-]]
 - [[atualização-ecosystemumgrau-auto-carregamento-gatilho-único-]]

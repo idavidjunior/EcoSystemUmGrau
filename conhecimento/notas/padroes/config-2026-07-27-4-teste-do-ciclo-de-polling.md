@@ -20,6 +20,7 @@ Criado manualmente enquanto o vigilante está rodando para verificar se o pollin
 
 ## Conexoes
 
+- [[aprendizado-skill-auditoria-de-codigo-auto-evolutiva]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]
