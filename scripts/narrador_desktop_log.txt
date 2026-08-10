@@ -54,3 +54,8 @@
 [2026-08-10T15:28:15] narracao ATIVADA (Eco)
 [2026-08-10T15:30:00] narracao PAUSADA (D Eco)
 [2026-08-10T15:37:32] narracao ATIVADA (Eco)
+[2026-08-10T15:48:05] narrador iniciado (banco=opencode.db, intervalo=2.0s, voz=assistant, exclui=['watchdog-health'])
+[2026-08-10T15:48:05] narracao ATIVADA (AT ECO)
+[2026-08-10T15:48:11] narracao DESATIVADA (DT ECO)
+[2026-08-10T15:48:13] narracao ATIVADA (AT ECO)
+[2026-08-10T15:48:15] narracao DESATIVADA (DT ECO)
