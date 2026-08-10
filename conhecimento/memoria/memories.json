@@ -4081,17 +4081,22 @@
   },
   {
     "id": 234,
-    "kind": "episodio",
-    "task": "--help",
-    "summary": "",
+    "kind": "erro",
+    "task": "Fix modelo trocado: placeholder {{LLM_MODEL}} nao era substituido pelo opencode",
+    "summary": "Causa raiz do 'model_not_found' ao trocar de LLM: config com placeholder nao resolvido quebrava sessoes novas (sem fallback). Fix definitivo: config/opencode.jsonc usa '{env:LLM_MODEL}' (resolvido pelo opencode, igual apiKey) + setx LLM_MODEL=opencode/big-pickle. Template e deployed iguais -> sobrevive @sync. Chave NVIDIA unificada via {env:NVIDIA_API_KEY}. Manter env LLM_MODEL sempre definida (preflight exige).",
     "project": "",
     "tags": [
-      "help"
+      "trocar",
+      "pickle",
+      "found",
+      "big",
+      "raiz",
+      "causa"
     ],
     "metadata": {},
     "strength": 1.0,
     "access_count": 0,
-    "created_at": "2026-08-09T20:58:29.704488",
-    "last_accessed": "2026-08-09T20:58:29.704488"
+    "created_at": "2026-08-09T20:59:26.627277",
+    "last_accessed": "2026-08-09T20:59:26.627277"
   }
 ]
