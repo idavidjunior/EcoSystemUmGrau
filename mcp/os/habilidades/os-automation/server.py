@@ -79,7 +79,15 @@ class OSAutomation:
 
     async def web_extract(self, selector: str, attribute: str = "text", multiple: bool = False, timeout_ms: int = 10000) -> Dict:
         await self._ensure_browser()
-        await self.page.wait_for_selector(selector, timeout=timeout_ms)
+        # Caso especial: page.title() para <title> que está hidden
+        if selector == "title" and attribute == "text":
+            t = await self.page.title()
+            return {"data": t}
+        try:
+            await self.page.wait_for_selector(selector, timeout=timeout_ms)
+        except Exception:
+            # Tenta mesmo assim (elemento pode estar hidden)
+            pass
         if multiple:
             elements = await self.page.query_selector_all(selector)
             results = []
@@ -94,6 +102,8 @@ class OSAutomation:
             return {"data": results}
         else:
             el = await self.page.query_selector(selector)
+            if not el:
+                return {"data": "", "error": f"Elemento não encontrado: {selector}"}
             if attribute == "text":
                 val = await el.inner_text()
             elif attribute == "html":
