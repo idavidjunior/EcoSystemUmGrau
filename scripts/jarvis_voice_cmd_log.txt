@@ -2205,3 +2205,13 @@
 [2026-08-10T11:53:59] Modo TESTE iniciado - digite comandos (Enter=vazio sai)
 [2026-08-10T11:53:59] Comando teste: abra google.com
 [2026-08-10T11:54:07] Modo teste encerrado
+[2026-08-10T12:17:32] Modo TESTE iniciado - digite comandos (Enter=vazio sai)
+[2026-08-10T12:17:32] Comando teste: leia o titulo da pagina
+[2026-08-10T12:17:48] Comando teste: tire print
+[2026-08-10T12:17:48] Comando teste: pare
+[2026-08-10T12:17:48] Modo teste encerrado
+[2026-08-10T12:18:38] Modo TESTE iniciado - digite comandos (Enter=vazio sai)
+[2026-08-10T12:18:38] Comando teste: encontre janela OpenCode
+[2026-08-10T12:19:38] Comando teste: clique na janela botao minimizar
+[2026-08-10T12:19:38] Comando teste: pare
+[2026-08-10T12:19:38] Modo teste encerrado
