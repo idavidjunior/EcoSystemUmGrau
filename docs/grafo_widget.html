@@ -1434,6 +1434,26 @@ arestasUp = arestasUp.map(a =>
     var salvo = localStorage.getItem('temaGrafo') || 'glow';
     aplicarTema(salvo);
   })();
+
+  // =====================================================================
+  // RESTORE DE PERSONALIZACOES NO BOOT — filtro ativo + camera (zoom/pane).
+  // Roda DEPOIS do enquadramento inicial (~1s) para ele nao sobrescrever a
+  // visao salva. O filtro e reaplicado sem fit (semFit); a camera e a fonte
+  // de verdade para a visao exata do usuario.
+  // =====================================================================
+  setTimeout(function() {
+    try {
+      var dr = localStorage.getItem('destGrafo');
+      if (dr) {
+        var d = JSON.parse(dr);
+        if (d && d.f && d.f !== 'home' && d.f !== 'all') {
+          var btn = document.querySelector('.lg[data-filter="' + d.f + '"][data-value="' + d.v + '"]');
+          if (btn && btn.dataset.color) destacar(d.f, d.v, btn.dataset.color, true);
+        }
+      }
+    } catch (e) {}
+    _restaurarCamera();
+  }, 2600);
 </script>
 <script src="widget-extra.js"></script><script>
 (function(){

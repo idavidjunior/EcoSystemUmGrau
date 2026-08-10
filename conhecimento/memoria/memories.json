@@ -4158,5 +4158,25 @@
     "access_count": 0,
     "created_at": "2026-08-09T22:21:02.850846",
     "last_accessed": "2026-08-09T22:21:02.850846"
+  },
+  {
+    "id": 238,
+    "kind": "padrao",
+    "task": "Persistencia completa de personalizacoes no widget do grafo",
+    "summary": "Widget Cerebro Vivo agora persiste todas as escolhas do usuario: tema, velocidade, orbita, etiquetas, painel, câmera (zoom/pane) e filtro/destaque ativo. Câmera salva em camGrafo via zoom/dragEnd/animationFinished; filtro em destGrafo; restore de boot apos o fit inicial (2600ms), com destacar(...,semFit) para nao sobrescrever a camera; guardaInicial movido para 3400ms; reset (↺) limpa camGrafo/destGrafo.",
+    "project": "",
+    "tags": [
+      "ativo",
+      "usuario",
+      "escolhas",
+      "destaque",
+      "persiste",
+      "pane"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T23:27:25.791167",
+    "last_accessed": "2026-08-09T23:27:25.791167"
   }
 ]
