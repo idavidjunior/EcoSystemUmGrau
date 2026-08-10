@@ -2237,3 +2237,4 @@
 [2026-08-10T12:30:29] Comando teste: leia o titulo
 [2026-08-10T12:30:29] Comando teste: pare
 [2026-08-10T12:30:29] Modo teste encerrado
+[2026-08-10T15:32:45] Modo TESTE iniciado - digite comandos (Enter=vazio sai)
