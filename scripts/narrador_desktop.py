@@ -230,7 +230,21 @@ def main():
             ativo = estado_ativo()
             if ativo != estado_logado:
                 estado_logado = ativo
-                log("narracao ATIVADA (Eco)" if ativo else "narracao PAUSADA (D Eco)")
+                if ativo:
+                    log("narracao ATIVADA (AT ECO)")
+                else:
+                    # Distingue entre pausado e desativado lendo o estado completo
+                    try:
+                        if CONTROLE.exists():
+                            estado = json.loads(CONTROLE.read_text(encoding="utf-8"))
+                            if estado.get("ativo", True) and estado.get("pausado", False):
+                                log("narracao PAUSADA (PS ECO)")
+                            else:
+                                log("narracao DESATIVADA (DT ECO)")
+                        else:
+                            log("narracao DESATIVADA (DT ECO)")
+                    except Exception:
+                        log("narracao PAUSADA (PS ECO)")
             novas = partes_novas(conn, ultimo_ts, excluir)
             if novas:
                 textos = [t for _, _, _, t in novas]
