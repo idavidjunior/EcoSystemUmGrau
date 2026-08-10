@@ -102,26 +102,37 @@ def iniciar_narrador():
 
 
 def cmd_on():
-    if not gravar(True):
+    if not gravar(ativo=True, pausado=False):
         return 1
     ok = iniciar_narrador()
-    print("Narracao ATIVADA (Eco)." + ("" if ok else " (processo nao confirmado)"))
+    print("Narracao ATIVADA (AT ECO)." + ("" if ok else " (processo nao confirmado)"))
     return 0
 
 
 def cmd_off():
-    if not gravar(False):
+    if not gravar(ativo=False, pausado=True):
         return 1
-    print("Narracao PAUSADA (D Eco).")
+    print("Narracao DESATIVADA (DT ECO).")
+    return 0
+
+
+def cmd_pause():
+    """Pausa narração (mantém processo vivo, só para de falar)."""
+    if not gravar(pausado=True):
+        return 1
+    print("Narracao PAUSADA (PS ECO).")
     return 0
 
 
 def cmd_status():
-    try:
-        ativo = json.loads(CONTROLE.read_text(encoding="utf-8")).get("ativo", True)
-    except Exception:
-        ativo = True
-    print(f"narracao: {'ATIVA' if ativo else 'PAUSADA'} | processo narrador: {'rodando' if narrador_rodando() else 'parado'}")
+    ativo, pausado = estado_atual()
+    if ativo and not pausado:
+        estado = "ATIVA"
+    elif ativo and pausado:
+        estado = "PAUSADA"
+    else:
+        estado = "DESATIVADA"
+    print(f"narracao: {estado} | processo narrador: {'rodando' if narrador_rodando() else 'parado'}")
     return 0
 
 
