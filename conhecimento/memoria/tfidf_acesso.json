@@ -9,7 +9,7 @@
   "nota:conhecimento/notas/padroes/saudacoes-inteligentes-reconexao-vs-primeira-vez.md": 3,
   "nota:conhecimento/aprendizados/2026-08-06-recuperacao-rapida-conexao.md": 1,
   "nota:conhecimento/notas/padroes/cadeia-de-provedores-com-failover-inteligente.md": 1,
-  "nota:conhecimento/aprendizados/2026-08-01-clausula-petrea-comunicacao-audio.md": 12,
+  "nota:conhecimento/aprendizados/2026-08-01-clausula-petrea-comunicacao-audio.md": 13,
   "nota:conhecimento/aprendizados/2026-07-31-pontuacao-transcricoes-de-voz-jarvis.md": 11,
   "nota:conhecimento/notas/padroes/config-2026-07-27-4-teste-do-ciclo-de-polling.md": 16,
   "nota:conhecimento/notas/heuristicas/heuristica-de-isolamento-de-falha.md": 4,
@@ -80,8 +80,9 @@
   "nota:conhecimento/notas/padroes/taxonomia-correta-de-habilidades-jarvis.md": 4,
   "nota:conhecimento/notas/padroes/registro-de-habilidades-de-jarvis.md": 4,
   "nota:conhecimento/notas/decisoes/habilidades-de-jarvis-seguem-taxonomia-de-3-niveis.md": 4,
-  "nota:conhecimento/notas/padroes/aprendizado-narrador-de-voz-do-jarvis-no-opencode-desktop.md": 1,
-  "nota:conhecimento/aprendizados/2026-08-10-narrador-voz-jarvis-desktop.md": 1,
-  "nota:conhecimento/aprendizados/2026-08-04-foco-vocal-jarvis-orienta-grafo.md": 1,
-  "nota:conhecimento/aprendizados/2026-08-08-sons-supermercado-caixa.md": 1
+  "nota:conhecimento/notas/padroes/aprendizado-narrador-de-voz-do-jarvis-no-opencode-desktop.md": 2,
+  "nota:conhecimento/aprendizados/2026-08-10-narrador-voz-jarvis-desktop.md": 2,
+  "nota:conhecimento/aprendizados/2026-08-04-foco-vocal-jarvis-orienta-grafo.md": 2,
+  "nota:conhecimento/aprendizados/2026-08-08-sons-supermercado-caixa.md": 1,
+  "nota:conhecimento/notas/padroes/aprendizado-controle-eco-d-eco-da-narração.md": 1
 }
