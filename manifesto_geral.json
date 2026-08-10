@@ -1016,7 +1016,7 @@
       "nome": "os-automation",
       "descricao": "",
       "entrypoint": "mcp/os/habilidades/os-automation/skill.md",
-      "script": "server.py",
+      "script": "mcp/os/habilidades/os-automation/server.py",
       "triggers": []
     },
     {
