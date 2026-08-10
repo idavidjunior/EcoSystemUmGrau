@@ -15,6 +15,5 @@ data: 2026-08-04
 contexto: Usuario pediu para verificar a conexao com o Jarvis. Constatado que a bridge havia morrido e o watchdog estava travado desde 07:29 (7h sem reescrever o log). A dific
 ## Conexoes
 
-- [[aprendizado-jarvis-manifesta-o-que-quer-aprender]]
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]
