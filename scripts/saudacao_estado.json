@@ -1,10 +1,12 @@
 {
-  "conexoes": 2,
+  "conexoes": 4,
   "hoje": "2026-08-10",
   "saudacoes_hoje": [
     "Bom dia, senhor. São cinco e trinta e três da manhã de segunda-feira, céu nublado e quatorze graus lá fora. Sistemas online e prontos para começarmos a semana.",
-    "De volta, Deivid. Voz reconectada, tudo continua do ponto onde paramos."
+    "De volta, Deivid. Voz reconectada, tudo continua do ponto onde paramos.",
+    "Voltou. Sistemas seguem quentes, é só falar.",
+    "De volta, senhor. A linha continua aberta."
   ],
-  "ultima_saudacao": "De volta, Deivid. Voz reconectada, tudo continua do ponto onde paramos.",
-  "ultima_saudacao_ts": 1786351339.493498
+  "ultima_saudacao": "De volta, senhor. A linha continua aberta.",
+  "ultima_saudacao_ts": 1786352347.89609
 }

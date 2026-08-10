@@ -30,18 +30,18 @@ BIN = str(Path(os.environ["APPDATA"]) / r"npm\node_modules\opencode-ai\bin\openc
 PORT = int(os.environ.get("OPENCODE_SERVE_PORT", "8767"))
 PORT_RESERVA = int(os.environ.get("OPENCODE_SERVE_PORT_RESERVA", "8768"))
 SERVER_USER = "opencode"
-SERVER_PASS = os.environ.get("OPENCODE_SERVER_PASSWORD", "")
-
+SERVER_PASS = ""
+try:
+    _env = SCRIPTS_DIR / ".env"
+    if _env.exists():
+        for _ln in _env.read_text(encoding="utf-8").splitlines():
+            if _ln.startswith("OPENCODE_SERVER_PASSWORD="):
+                SERVER_PASS = _ln.split("=", 1)[1].strip().strip('"').strip("'")
+                break
+except Exception:
+    pass
 if not SERVER_PASS:
-    try:
-        _env = SCRIPTS_DIR / ".env"
-        if _env.exists():
-            for _ln in _env.read_text(encoding="utf-8").splitlines():
-                if _ln.startswith("OPENCODE_SERVER_PASSWORD="):
-                    SERVER_PASS = _ln.split("=", 1)[1].strip().strip('"').strip("'")
-                    break
-    except Exception:
-        pass
+    SERVER_PASS = os.environ.get("OPENCODE_SERVER_PASSWORD", "")
 
 BIN_DIR = str(Path(os.environ["APPDATA"]) / r"npm\node_modules\opencode-ai\bin\opencode.exe")
 
