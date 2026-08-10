@@ -15,7 +15,6 @@ data: 2026-08-06
 contexto: "Apos a clausula petrea (memoria #129) e o watchdog resiliente (memoria #130), o filtro de orfaos ganhou certificacao forense: so mata processo se for 'lixo' comprovado. O watch
 ## Conexoes
 
-- [[aprendizado-jarvis-manifesta-o-que-quer-aprender]]
 - [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
 - [[padrao-hub-padroes]]
