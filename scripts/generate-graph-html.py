@@ -676,6 +676,14 @@ def gerar_html(nos, arestas, output_path):
     arestaOriginal[e.id] = {{ color: e.color || '#999', width: e.width || 1 }};
   }});
 
+  // Base REAL das etiquetas, capturada ANTES de qualquer compensacao de zoom
+  // (hubs = 14 via grupo, demais = 13). O widget usa isso ao re-mostrar para
+  // nunca restaurar um tamanho poluido por zoom (13/scale gravado no cache).
+  window.__mkLabelBase = {{}};
+  nodes.get().forEach(n => {{
+    window.__mkLabelBase[n.id] = (n.group === 'hub') ? 14 : 13;
+  }});
+
   // Enquadra o grafo e liberta a fisica para o balanco organico perpetuo.
   setTimeout(() => network.fit({{ animation: true }}), 1200);
 
@@ -902,12 +910,36 @@ def gerar_html(nos, arestas, output_path):
     if (oculto) return; // usuario escondeu: nao forca visibilidade via zoom
     var scale = network.getScale ? network.getScale() : 1;
     if (scale < 0.4) scale = 0.4; // nunca fique muito pequena
-    var tam = Math.round(13 / scale);
-    if (tam > 22) tam = 22;
+    // usa a base REAL de cada no (hubs 14, demais 13) em vez de 13 fixo
+    var baseMap = window.__mkLabelBase || {{}};
     nodes.update(nodes.get().map(function(n) {{
       if (n.isHidden) return null;
+      var base = (baseMap[n.id] > 0) ? baseMap[n.id] : 13;
+      var tam = Math.round(base / scale);
+      if (tam > 22) tam = 22;
       return {{ id: n.id, font: Object.assign({{}}, n.font, {{ size: tam }}) }};
     }}).filter(Boolean));
+    _sincronizarClusterLabels();
+  }}
+
+  // Etiquetas dos cluster nodes: vivem FORA do DataSet (em network.body.nodes),
+  // entao nao sao atingidas por nodes.update. Respeita o estado oculto/mostrado
+  // aplicando font.size via updateOptions (base dos clusters = 10).
+  function _sincronizarClusterLabels() {{
+    if (typeof network === 'undefined' || !network || typeof network.getClusters !== 'function') return;
+    var oculto = (typeof localStorage !== 'undefined' && localStorage.getItem('labelsOcultos') === 'true');
+    try {{
+      var cls = network.getClusters() || {{}};
+      Object.keys(cls).forEach(function(k) {{
+        var info = cls[k];
+        var id = info && info.clusterNodeId;
+        if (!id) return;
+        var body = network.body && network.body.nodes ? network.body.nodes[id] : null;
+        if (body && typeof body.updateOptions === 'function') {{
+          body.updateOptions({{ font: {{ size: oculto ? 0 : 10 }} }});
+        }}
+      }});
+    }} catch(e) {{}}
   }}
 
   // --- EXPANDIR (clustering por proximidade de folhas) ---
@@ -951,6 +983,8 @@ def gerar_html(nos, arestas, output_path):
         }});
       }} catch(e) {{ }}
     }}
+    // clusters novos devem respeitar o estado oculto/mostrado das etiquetas
+    _sincronizarClusterLabels();
   }}
 
   function _expandirTudo() {{

@@ -135,33 +135,63 @@
       localStorage.setItem('labelsOcultos', hidden ? 'true' : 'false');
       try {
         if (typeof network !== 'undefined' && network) {
-          var nodeSet = null;
-          if (network.body && network.body.data && network.body.data.nodes && typeof network.body.data.nodes.get === 'function') {
-            nodeSet = network.body.data.nodes;
-          } else if (network.body && network.body.nodes && typeof network.body.nodes.get === 'function') {
-            nodeSet = network.body.nodes;
-          } else if (typeof nodes !== 'undefined' && nodes && typeof nodes.get === 'function') {
-            nodeSet = nodes;
-          }
-
-          if (nodeSet && typeof nodeSet.get === 'function') {
-            if (!window.__mkLabelBase) window.__mkLabelBase = {};
-            var currentNodes = nodeSet.get();
-            var payload = currentNodes.map(function(n) {
-              if (!n || typeof n.id === 'undefined') return null;
-              if (typeof window.__mkLabelBase[n.id] !== 'number' || window.__mkLabelBase[n.id] <= 0) {
-                window.__mkLabelBase[n.id] = (n.font && typeof n.font.size === 'number' && n.font.size > 0) ? n.font.size : 13;
+          if (hidden) {
+            // Ocultar: zera o font.size de cada no do dataset.
+            var nodeSet = null;
+            if (network.body && network.body.data && network.body.data.nodes && typeof network.body.data.nodes.get === 'function') {
+              nodeSet = network.body.data.nodes;
+            } else if (network.body && network.body.nodes && typeof network.body.nodes.get === 'function') {
+              nodeSet = network.body.nodes;
+            } else if (typeof nodes !== 'undefined' && nodes && typeof nodes.get === 'function') {
+              nodeSet = nodes;
+            }
+            if (nodeSet && typeof nodeSet.get === 'function') {
+              // Preenche a base apenas se ainda nao existir — nunca sobrescreve
+              // a base REAL semeada pelo grafo com um valor poluido por zoom.
+              if (!window.__mkLabelBase) window.__mkLabelBase = {};
+              var currentNodes = nodeSet.get();
+              var payload = currentNodes.map(function(n) {
+                if (!n || typeof n.id === 'undefined') return null;
+                if (typeof window.__mkLabelBase[n.id] !== 'number' || window.__mkLabelBase[n.id] <= 0) {
+                  window.__mkLabelBase[n.id] = (n.font && typeof n.font.size === 'number' && n.font.size > 0) ? n.font.size : 13;
+                }
+                return {
+                  id: n.id,
+                  font: Object.assign({}, n.font || {}, { size: 0 })
+                };
+              }).filter(Boolean);
+              if (payload.length) {
+                try { nodeSet.update(payload); } catch (e) { logError('nodeSet.update', e); }
               }
-              return {
-                id: n.id,
-                font: Object.assign({}, n.font || {}, { size: hidden ? 0 : window.__mkLabelBase[n.id] })
-              };
-            }).filter(Boolean);
-
-            if (payload.length) {
-              try { nodeSet.update(payload); } catch (e) { logError('nodeSet.update', e); }
+            }
+          } else {
+            // Mostrar: delega ao _ajustarFontes do grafo, que usa a base REAL
+            // (hubs 14, demais 13) compensada pelo zoom atual — nunca o cache
+            // poluido por um zoom antigo. Fallback: restaura __mkLabelBase.
+            var ajustado = false;
+            try { if (typeof _ajustarFontes === 'function') { _ajustarFontes(); ajustado = true; } } catch (e) { logError('_ajustarFontes', e); }
+            if (!ajustado) {
+              var nodeSet2 = null;
+              if (network.body && network.body.data && network.body.data.nodes && typeof network.body.data.nodes.get === 'function') {
+                nodeSet2 = network.body.data.nodes;
+              } else if (network.body && network.body.nodes && typeof network.body.nodes.get === 'function') {
+                nodeSet2 = network.body.nodes;
+              } else if (typeof nodes !== 'undefined' && nodes && typeof nodes.get === 'function') {
+                nodeSet2 = nodes;
+              }
+              if (nodeSet2 && typeof nodeSet2.get === 'function') {
+                var cur = nodeSet2.get();
+                var pl = cur.map(function(n) {
+                  if (!n || typeof n.id === 'undefined') return null;
+                  var base = (window.__mkLabelBase && typeof window.__mkLabelBase[n.id] === 'number' && window.__mkLabelBase[n.id] > 0) ? window.__mkLabelBase[n.id] : 13;
+                  return { id: n.id, font: Object.assign({}, n.font || {}, { size: base }) };
+                }).filter(Boolean);
+                if (pl.length) { try { nodeSet2.update(pl); } catch (e) { logError('nodeSet.update (show)', e); } }
+              }
             }
           }
+          // Etiquetas de cluster nodes respeitam o mesmo estado
+          try { if (typeof _sincronizarClusterLabels === 'function') _sincronizarClusterLabels(); } catch (e) { logError('_sincronizarClusterLabels', e); }
           if (typeof network.redraw === 'function') network.redraw();
         }
       } catch (e) { logError('setLabelVisibility', e); }
