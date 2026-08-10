@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**95 notas** conectadas a este hub.
+**96 notas** conectadas a este hub.
 
 
 ## Notas
@@ -15,6 +15,7 @@
 - [[android-view-hierarchy-scanning]]
 - [[approach-mediacodecaudiorenderer-with-audioprocessor-varargs]]
 - [[aprendizado-debugging-expertise-skill]]
+- [[aprendizado-jarvis-manifesta-o-que-quer-aprender]]
 - [[aprendizado-skill-auditoria-de-codigo-auto-evolutiva]]
 - [[aprendizado-skill-auditoria-de-codigo-viva-com-evolução-gate]]
 - [[audioprocessorisactive-must-be-dynamic]]

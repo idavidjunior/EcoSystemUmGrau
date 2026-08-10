@@ -1,8 +1,8 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-10T06:40:42.172331
+**Exportado em:** 2026-08-10T06:41:32.134009
 **Projetos:** 4
-**Padroes Tecnicos:** 100
+**Padroes Tecnicos:** 101
 **Decisoes:** 62
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 55
@@ -538,6 +538,7 @@ decisao: Criado ResourceImportMenu (com.biblia.estudo.utils) como menu unico com
 | 98 | opencode | persistencia completa widget grafo |
 | 99 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | Aprendizado: Skill auditoria-de-codigo (auto-evolutiva) |
 | 100 | opencode | Aprendizado: Skill auditoria-de-codigo viva com evolução gated |
+| 101 | opencode | Aprendizado: Jarvis manifesta o que quer aprender |
 
 ## Bug Fixes e Corrigidos
 
@@ -1499,7 +1500,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-10T06:40:42.097509
+**Ultima atualizacao:** 2026-08-10T06:41:32.056924
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

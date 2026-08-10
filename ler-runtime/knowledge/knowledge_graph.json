@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-10T06:40:42.097509",
+  "last_updated": "2026-08-10T06:41:32.056924",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -824,6 +824,14 @@
       "description": "---\ntipo: padrao\ntags: [auditoria, auto-evolucao, qualidade, dedup, gates, skill, manifesto, memory]\ndata: 2026-08-10\ncontexto: \"Skill auditoria-de-codigo criada como documento não era viva: não estava no manifesto_geral.json e não tinha mecanismo para auto-evoluir sem acumular lixo, redundância e f",
       "domain": "general",
       "extracted_at": "2026-08-10T01:03:51.678392"
+    },
+    {
+      "source": "opencode",
+      "title": "Aprendizado: Jarvis manifesta o que quer aprender",
+      "action": "\"Usuário pediu que o Jarvis 'dissesse ou manifestasse, de vez em quando, o que gostaria de aprender, com base em suas experiências ou descobertas'. Não existia mecanismo de manifestação proativa de desejos de aprendizado.\"",
+      "description": "---\ntipo: padrao\ntags: [jarvis, voz, proatividade, aprendizado, autonomia, memoria, ciclo]\ndata: 2026-08-10\ncontexto: \"Usuário pediu que o Jarvis 'dissesse ou manifestasse, de vez em quando, o que gostaria de aprender, com base em suas experiências ou descobertas'. Não existia mecanismo de manifesta",
+      "domain": "general",
+      "extracted_at": "2026-08-10T06:41:31.228448"
     }
   ],
   "decisions": [
