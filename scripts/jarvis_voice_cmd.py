@@ -3,7 +3,13 @@
 
 Escuta comandos de voz (via vox_audio STT), executa via os-automation,
 e responde em áudio (via vox_audio TTS). Roda em background quando
-a narração está ATIVA (Eco).
+a narração está ATIVA (AT ECO).
+
+Comandos de controle de voz (padrão ecossistema):
+  AT ECO   -> ativa narração
+  DT ECO   -> desativa narração
+  PS ECO   -> pausa narração
+  STOP ECO -> interrompe fala atual + pausa
 """
 
 import json
@@ -37,9 +43,13 @@ def log(msg):
 
 
 def narracao_ativa():
+    """True se narração ativa e não pausada."""
     try:
-        if CONTROLE.exists():
-            return bool(json.loads(CONTROLE.read_text(encoding="utf-8")).get("ativo", True))
+        import sys
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import jarvis_audio
+        ativo, pausado = jarvis_audio.estado_atual()
+        return ativo and not pausado
     except Exception:
         pass
     return True
