@@ -2225,3 +2225,15 @@
 [2026-08-10T12:27:03] Comando teste: clique na janela botao minimizar
 [2026-08-10T12:27:04] Comando teste: pare
 [2026-08-10T12:27:04] Modo teste encerrado
+[2026-08-10T12:28:04] Modo TESTE iniciado - digite comandos (Enter=vazio sai)
+[2026-08-10T12:28:04] Comando teste: leia o t??tulo
+[2026-08-10T12:28:10] Comando teste: abra github.com
+[2026-08-10T12:28:15] Comando teste: leia o t??tulo
+[2026-08-10T12:28:15] Comando teste: pare
+[2026-08-10T12:28:15] Modo teste encerrado
+[2026-08-10T12:30:20] Modo TESTE iniciado - digite comandos (Enter=vazio sai)
+[2026-08-10T12:30:20] Comando teste: leia o titulo
+[2026-08-10T12:30:25] Comando teste: abra github.com
+[2026-08-10T12:30:29] Comando teste: leia o titulo
+[2026-08-10T12:30:29] Comando teste: pare
+[2026-08-10T12:30:29] Modo teste encerrado

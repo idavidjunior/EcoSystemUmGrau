@@ -88,7 +88,24 @@ def parse_comando(texto: str):
     # Web: extrair
     m = re.search(r'(?:leia|extraia|pegue|obtenha)\s+(?:o|a)?\s*(.+)', t)
     if m:
-        return "web_extract", {"selector": m.group(1).strip(), "attribute": "text"}
+        alvo = m.group(1).strip()
+        # Mapeia termos comuns para seletores CSS
+        seletores = {
+            "titulo": "title",
+            "titulo da pagina": "title",
+            "corpo": "body",
+            "pagina": "body",
+            "link": "a",
+            "links": "a",
+            "imagem": "img",
+            "imagens": "img",
+            "botao": "button",
+            "botoes": "button",
+            "campo": "input, textarea",
+            "campos": "input, textarea",
+        }
+        selector = seletores.get(alvo, alvo)
+        return "web_extract", {"selector": selector, "attribute": "text"}
     
     # Web: screenshot
     if any(k in t for k in ["print", "captura", "screenshot", "tire print"]):
