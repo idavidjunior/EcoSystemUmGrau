@@ -1,16 +1,16 @@
 """Widget desktop do Cerebro Vivo - grafo do conhecimento em tempo real.
 
 Janela flutuante (pywebview) com o grafo interativo. Sem bordas visuais, mas
-MOVIDA livremente pelo desktop arrastando a barra superior (moldura discreta)
-e REDIMENSIONADA pela alca do canto inferior direito (aparece junto aos
-controles). Os controles ficam ocultos por padrao; ao clicar com o botao
-DIREITO do mouse a barra de controles (header/legenda) aparece/reaparece.
+MOVIDA livremente pelo desktop arrastando a barra superior (moldura discreta
+#mk-drag) e REDIMENSIONADA pela alca do canto inferior direito (#mk-resize).
+Os controles ficam na faixa inferior (#mk-controles), alternada pelo botao do
+olho; a barra superior (#mk-topbar) guarda T (etiquetas), menu e reset.
 
 A posicao e o tamanho sao persistidos em JSON (docs/grafo_widget_geometria.json)
 e restaurados a cada execucao, inclusive apos reiniciar o computador.
 
-Observa continuamente as fontes do conhecimento (knowledge_graph.json +
-conhecimento/*). Quando algo muda, re-gera docs/grafo.html e recarrega.
+Observa continuamente o vault (conhecimento/*.md). Quando algo muda,
+re-gera docs/grafo.html, remonta docs/grafo_widget.html e recarrega a janela.
 
 Dependencias: pip install pywebview
 
@@ -20,6 +20,7 @@ Uso:
 import json
 import subprocess
 import sys
+import threading
 import time
 import hashlib
 from pathlib import Path
@@ -27,11 +28,9 @@ from pathlib import Path
 BASE = Path(__file__).resolve().parent.parent
 GEN_SCRIPT = BASE / 'scripts' / 'generate-graph-html.py'
 OUTPUT_HTML = BASE / 'docs' / 'grafo.html'
-KNOWLEDGE_GRAPH = BASE / 'ler-runtime' / 'knowledge' / 'knowledge_graph.json'
 CONHECIMENTO_DIR = BASE / 'conhecimento'
 VIEW_COPY = BASE / 'docs' / 'grafo_widget.html'
 GEO_FILE = BASE / 'docs' / 'grafo_widget_geometria.json'
-ORB_FILE = BASE / 'docs' / 'grafo_widget_orbGrafo.json'
 
 POLL_MS = 10000
 TITLE = 'Cerebro Vivo'
@@ -102,48 +101,84 @@ class Bridge:
 
     def guardar_geo(self, x=None, y=None, width=None, height=None):
         data = _carregar_geo()
-        if x is not None: data['x'] = int(x)
-        if y is not None: data['y'] = int(y)
         if width is not None: data['width'] = int(width)
         if height is not None: data['height'] = int(height)
+        # (0,0) vindo do JS costuma ser posicao duvidosa (screenX/screenY nao
+        # confiaveis no WebView2): ignora e mantem a ultima posicao conhecida.
+        if not (x is not None and y is not None and int(x) == 0 and int(y) == 0):
+            if x is not None: data['x'] = int(x)
+            if y is not None: data['y'] = int(y)
+        data = _clamp_geo(data)
         GEO_FILE.parent.mkdir(parents=True, exist_ok=True)
         GEO_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
         return data
 
-    def guardar_orbGrafo(self, valor):
-        try:
-            ORB_FILE.parent.mkdir(parents=True, exist_ok=True)
-            ORB_FILE.write_text(str(valor), encoding='utf-8')
-        except Exception:
-            pass
-        return valor
+    def mover(self, x, y):
+        if self._win is not None and hasattr(self._win, 'move'):
+            try:
+                self._win.move(int(x), int(y))
+            except Exception:
+                pass
+        return {'x': int(x), 'y': int(y)}
 
     def redimensionar(self, width, height):
         if self._win is not None and hasattr(self._win, 'resize'):
             try:
-                self._win.resize(int(width), int(height))
+                self._win.resize(max(MIN_W, int(width)), max(MIN_H, int(height)))
             except Exception:
                 pass
         return {'width': int(width), 'height': int(height)}
 
 
+def _screen_area():
+    """Dimensoes da area de trabalho (monitor principal) em pixels, ou None."""
+    try:
+        import ctypes
+        u = ctypes.windll.user32
+        return int(u.GetSystemMetrics(0)), int(u.GetSystemMetrics(1))
+    except Exception:
+        return None
+
+
+def _clamp_geo(data: dict) -> dict:
+    """Garante que a janela caiba na tela e fique com pelo menos 80px visiveis."""
+    w = int(data.get('width', DEFAULT_W))
+    h = int(data.get('height', DEFAULT_H))
+    x = data.get('x')
+    y = data.get('y')
+    area = _screen_area()
+    if area:
+        sw, sh = area
+        if sw > 160 and sh > 120:
+            w = max(MIN_W, min(int(w), sw))
+            h = max(MIN_H, min(int(h), sh))
+            if x is not None:
+                x = int(x)
+                if x > sw - 80: x = sw - 80
+                if x < -(w - 80): x = 0
+            if y is not None:
+                y = int(y)
+                if y > sh - 40: y = sh - 40
+                if y < -(h - 40): y = 0
+    return {'x': x, 'y': y, 'width': int(w), 'height': int(h)}
+
+
 def _carregar_geo() -> dict:
     if not GEO_FILE.exists():
-        return {'x': None, 'y': None, 'width': DEFAULT_W, 'height': DEFAULT_H}
+        return _clamp_geo({'x': None, 'y': None, 'width': DEFAULT_W, 'height': DEFAULT_H})
     try:
         raw = GEO_FILE.read_text(encoding='utf-8')
         data = json.loads(raw) if raw.strip() else {}
     except Exception:
         data = {}
     out = {'x': data.get('x'), 'y': data.get('y'), 'width': int(data.get('width', DEFAULT_W)), 'height': int(data.get('height', DEFAULT_H))}
-    return out
+    return _clamp_geo(out)
 
 
 # External asset file paths
 WIDGET_CSS_FILE = BASE / 'docs' / 'widget.css'
 WIDGET_JS_FILE = BASE / 'docs' / 'widget.js'
 WIDGET_EXTRA_JS_FILE = BASE / 'docs' / 'widget-extra.js'
-API_INJECT_FILE = BASE / 'docs' / 'api-inject.js'
 RESIZE_JS_FILE = BASE / 'docs' / 'resize.js'
 
 def _read_asset(path: Path) -> str:
@@ -157,7 +192,6 @@ def _read_asset(path: Path) -> str:
 WIDGET_CSS = _read_asset(WIDGET_CSS_FILE)
 WIDGET_JS = _read_asset(WIDGET_JS_FILE)
 WIDGET_JS_EXTRA = _read_asset(WIDGET_EXTRA_JS_FILE)
-API_INJECT = _read_asset(API_INJECT_FILE)
 RESIZE_JS = _read_asset(RESIZE_JS_FILE)
 
 
@@ -250,15 +284,42 @@ def _build_view() -> Path | None:
     # Widget JS (init controls) - external file
     src = _inject_into_head(src, '<script src="widget.js"></script>')
 
-    # API inject (polling)
-    api_inject = API_INJECT.replace('%POLL_MS%', str(POLL_MS))
-    src = _inject_into_head(src, api_inject)
-
-    # Extra widget UI - external file (resize handled by CSS #mk-resize)
+    # Extra widget UI - external file
     src = _inject_into_body(src, '<script src="widget-extra.js"></script>')
+
+    # Handles de mover/redimensionar - external file (apos o DOM estar pronto)
+    src = _inject_into_body(src, RESIZE_JS)
 
     VIEW_COPY.write_text(src, encoding='utf-8')
     return VIEW_COPY
+
+
+_regen_lock = threading.Lock()
+
+
+def _watcher(win, stop) -> None:
+    """Observa o vault e regenera+recarrega quando algo muda.
+
+    Antes, a mudanca era detectada pelo JS e o `window.location.reload()`
+    recarregava um HTML estatico SEM regenerar o grafo (e ainda reiniciava o
+    estado do polling a cada reload, causando reload em loop). Agora a
+    regeneracao e o reload acontecem no Python: o grafo novo e de fato gerado.
+    """
+    last = _get_vault_version()
+    while not stop.wait(POLL_MS / 1000.0):
+        try:
+            cur = _get_vault_version()
+        except Exception:
+            continue
+        if cur == last or cur in ('empty', 'error'):
+            continue
+        last = cur
+        with _regen_lock:
+            try:
+                if _build_view():
+                    win.evaluate_js('window.location.reload();')
+            except Exception:
+                pass
 
 
 def main() -> int:
@@ -290,9 +351,13 @@ def main() -> int:
     )
     bridge._win = win
 
+    stop = threading.Event()
+    threading.Thread(target=_watcher, args=(win, stop), daemon=True).start()
+
     try:
         webview.start(debug=False)
     finally:
+        stop.set()
         _persistir_saida(win)
     return 0
 

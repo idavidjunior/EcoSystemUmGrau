@@ -4138,5 +4138,25 @@
     "access_count": 0,
     "created_at": "2026-08-09T21:56:20.399673",
     "last_accessed": "2026-08-09T21:56:20.399673"
+  },
+  {
+    "id": 237,
+    "kind": "padrao",
+    "task": "Fix completo widget grafo desktop",
+    "summary": "Corrigidos 8 problemas no widget Cerebro Vivo: resize.js nao era injetado (alca #mk-resize inexistente), #mk-drag nao criado (janela imovel), polling JS recarregava HTML estatico sem regenerar e causava reload em loop, tema sem efeito real, bridge morta (guardar_orbGrafo/ORB_FILE), geo sem clamp, poluicao de debug removida (103 arquivos em _backup_debug_temp + check_*.py + _test_*.js + api-inject.js). Solucao: watcher Python com _regen_lock regenera e recarrega, resize.js agora cria mk-drag+mk-resize e chama mover/redimensionar via bridge, tema via CSS vars data-theme, guardar_geo ignora (0,0) e clampeia a tela.",
+    "project": "",
+    "tags": [
+      "check",
+      "temp",
+      "backup",
+      "arquivos",
+      "debug",
+      "103"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T22:21:02.850846",
+    "last_accessed": "2026-08-09T22:21:02.850846"
   }
 ]

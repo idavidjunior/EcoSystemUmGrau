@@ -113,7 +113,7 @@
     var panel = mk('div');
     panel.id = 'mk-controles';
     panel.title = 'Controles do grafo';
-    panel.style.cssText = 'position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:row;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;padding:8px 12px;border-radius:10px;background:rgba(24,24,37,0.82);border:1px solid rgba(145, 160, 198, 0.2);box-shadow:0 8px 22px rgba(0,0,0,0.32);backdrop-filter:blur(6px);';
+    panel.style.cssText = 'position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:row;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;padding:8px 12px;border-radius:10px;background:var(--mk-panel-bg, rgba(24,24,37,0.82));border:1px solid rgba(145, 160, 198, 0.2);box-shadow:0 8px 22px rgba(0,0,0,0.32);backdrop-filter:blur(6px);';
     panel.appendChild(themeWrap);
     panel.appendChild(speedWrap);
     panel.appendChild(orbitWrap);
