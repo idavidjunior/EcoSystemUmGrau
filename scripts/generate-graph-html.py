@@ -649,7 +649,7 @@ def gerar_html(nos, arestas, output_path):
       stabilization: false
     }},
     interaction: {{ hover:true, tooltipDelay:120, navigationButtons:true, zoomSpeed:0.35, smoothWheel:true }},
-    configure: {{ enabled: true, filter: 'physics', showButton: true, container: undefined }},
+    configure: {{ enabled: false }},
     // Grupos por categoria para styling consistente (vis-network groups)
     groups: {{
       padroes: {{ color: '#4e79a7', borderWidth: 2, font: {{ color: '#cdd6f4' }} }},
@@ -735,19 +735,33 @@ def gerar_html(nos, arestas, output_path):
     return Math.max(0.04, Math.min(1, z));
   }}
 
+  // Fisica base unificada: velocidade, tema e respiracao partem daqui, sem
+  // se sobrescreverem. v=1 eh o padrao.
+  var _fisBase = {{ gravit: -720, central: 0.30, mola: 0.045, amort: 0.82, velMax: 13, delta: 0.32 }};
+  function _aplicarForcas(f) {{
+    try {{
+      network.setOptions({{ physics: {{ barnesHut: {{
+        gravitationalConstant: f.gravit,
+        centralGravity: f.central,
+        springConstant: f.mola,
+        damping: f.amort
+      }}, maxVelocity: f.velMax, timestep: f.delta }} }});
+    }} catch(e) {{}}
+  }}
   // Ajusta a velocidade global do movimento (ondas, pulsos e fisica).
   // Chamada pelo painel de controles do widget; v=1 eh o padrao.
   function _aplicarVelocidade(v) {{
     v = Number(v) || 1;
     _velGlobal = v;
-    try {{
-      network.setOptions({{ physics: {{ barnesHut: {{
-        gravitationalConstant: -720 * Math.sqrt(v),
-        springConstant: 0.045 * Math.sqrt(v),
-        damping: Math.max(0.45, 0.82 / Math.sqrt(v)),
-        centralGravity: 0.30 * Math.sqrt(v)
-      }}, maxVelocity: 13 * v, timestep: 0.32 * Math.sqrt(v) }} }});
-    }} catch(e) {{}}
+    _fisBase = {{
+      gravit: -720 * Math.sqrt(v),
+      central: 0.30 * Math.sqrt(v),
+      mola: 0.045 * Math.sqrt(v),
+      amort: Math.max(0.45, 0.82 / Math.sqrt(v)),
+      velMax: 13 * v,
+      delta: 0.32 * Math.sqrt(v)
+    }};
+    _aplicarForcas(_fisBase);
   }}
 
   // =====================================================================
@@ -812,11 +826,7 @@ def gerar_html(nos, arestas, output_path):
         const p = network.getPositions([n.id])[n.id];
         posIniciais[n.id] = {{ x: p.x, y: p.y }};
       }});
-      // Mantem o cerebro vivo: balanco lento e respirando.
-      network.setOptions({{ physics: {{ barnesHut: {{
-        gravitationalConstant: -720, springLength: 120, springConstant: 0.030,
-        damping: 0.86, centralGravity: 0.34, avoidOverlap: 0.55
-      }} }} }});
+      // A respiracao (intervalo abaixo) continua a dar vida ao layout.
     }}
   }};
   setTimeout(guardaInicial, 2500);
@@ -824,15 +834,19 @@ def gerar_html(nos, arestas, output_path):
   // --- Respiracao do layout ------------------------------------------------
   // Ciclo organico que alterna a energia da fisica: "inspira" (mais repulsao,
   // espaca) e "expira" (mais coesao, aproxima) sem nunca parar. As variacoes
-  // sao mais fortes que antes para o movimento ficar perceptivel.
+  // sao mais fortes que antes para o movimento ficar perceptivel. Escala a
+  // fisica base (velocidade/tema do usuario) em vez de valores fixos.
   let _respirando = 1;
   setInterval(() => {{
     _respirando = 0.72 + 0.28 * Math.sin(Date.now() * 0.00045);
-    network.setOptions({{ physics: {{ barnesHut: {{
-      gravitationalConstant: -720 * _respirando,
-      centralGravity: 0.34 * (1.5 - _respirando),
-      springConstant: 0.030 * (1.8 - _respirando)
-    }} }} }});
+    _aplicarForcas({{
+      gravit: _fisBase.gravit * _respirando,
+      central: _fisBase.central * (1.5 - _respirando),
+      mola: _fisBase.mola * (1.8 - _respirando),
+      amort: _fisBase.amort,
+      velMax: _fisBase.velMax,
+      delta: _fisBase.delta
+    }});
   }}, 2500);
 
   // =========================================================================
@@ -996,15 +1010,23 @@ def gerar_html(nos, arestas, output_path):
     }} catch (e) {{}}
     // breve aceleracao da fisica para a cascata se dissipar organicamente
     try {{
-      network.setOptions({{ physics: {{ barnesHut: {{
-        gravitationalConstant: -760, springConstant: 0.050, damping: 0.78
-      }} }} }});
+      _aplicarForcas({{
+        gravit: _fisBase.gravit * 1.05,
+        central: _fisBase.central,
+        mola: _fisBase.mola * 1.1,
+        amort: Math.max(0.45, _fisBase.amort * 0.95),
+        velMax: _fisBase.velMax,
+        delta: _fisBase.delta
+      }});
       setTimeout(() => {{
-        network.setOptions({{ physics: {{ barnesHut: {{
-          gravitationalConstant: -720 * _respirando,
-          springConstant: 0.030 * (1.8 - _respirando),
-          damping: 0.82
-        }} }} }});
+        _aplicarForcas({{
+          gravit: _fisBase.gravit * _respirando,
+          central: _fisBase.central * (1.5 - _respirando),
+          mola: _fisBase.mola * (1.8 - _respirando),
+          amort: _fisBase.amort,
+          velMax: _fisBase.velMax,
+          delta: _fisBase.delta
+        }});
       }}, 450);
     }} catch (e) {{}}
   }});
@@ -1793,20 +1815,15 @@ arestasUp = arestasUp.map(a =>
   // ---- Preset de forcas calibradas por tema ----
   function _aplicarForcasTema(tema) {{
     var f = tema.forca;
-    try {{
-      network.setOptions({{
-        physics: {{
-          barnesHut: {{
-            gravitationalConstant: f.gravit,
-            centralGravity: f.gravidade,
-            springConstant: f.mola,
-            damping: f.amort
-          }},
-          maxVelocity: f.velMax,
-          timestep: f.delta
-        }}
-      }});
-    }} catch(e) {{ }}
+    _fisBase = {{
+      gravit: f.gravit,
+      central: f.gravidade,
+      mola: f.mola,
+      amort: f.amort,
+      velMax: f.velMax,
+      delta: f.delta
+    }};
+    _aplicarForcas(_fisBase);
     // Desestabiliza propositalmente por 600ms
     network.stabilize(50);
   }}

@@ -177,10 +177,12 @@
       theme = theme || 'glow';
       localStorage.setItem('temaGrafo', theme);
       try {
-        if (typeof window !== 'undefined') {
-          window.__mkTemaAtual = theme;
-          document.body.setAttribute('data-theme', theme);
-        }
+        // Aplica o preset COMPLETO do grafo (glow, arestas, forcas e fisica)
+        if (typeof aplicarTema === 'function') aplicarTema(theme);
+      } catch (e) { logError('aplicarTema', e); }
+      try {
+        window.__mkTemaAtual = theme;
+        document.body.setAttribute('data-theme', theme);
       } catch (e) { logError('applyTheme', e); }
     }
 
@@ -193,20 +195,21 @@
       localStorage.setItem('orbGrafo', '1');
       localStorage.setItem('labelsOcultos', 'false');
       localStorage.setItem('painelGrafoVisivel', 'true');
+      try { localStorage.removeItem('modo3D'); } catch (e) {}
+      try { localStorage.removeItem('waveIntensidade'); } catch (e) {}
+      try { localStorage.setItem('flashEnabled', 'true'); } catch (e) {}
       applyTheme('glow');
       setLabelVisibility(true);
       syncControlsPanel(true);
       speedValue.textContent = 'x1.00';
       orbitValue.textContent = 'x1.0';
-      try {
-        if (typeof _aplicarVelocidade === 'function') _aplicarVelocidade(1);
-      } catch (e) { logError('_aplicarVelocidade', e); }
-      try {
-        if (typeof _aplicarOrbita === 'function') _aplicarOrbita(1);
-      } catch (e) { logError('_aplicarOrbita', e); }
-      try {
-        if (typeof network !== 'undefined' && network && network.fit) network.fit({ animation: true });
-      } catch (e) { logError('network.fit', e); }
+      try { if (typeof _aplicarVelocidade === 'function') _aplicarVelocidade(1); } catch (e) { logError('_aplicarVelocidade', e); }
+      try { if (typeof _aplicarOrbita === 'function') _aplicarOrbita(1); } catch (e) { logError('_aplicarOrbita', e); }
+      try { if (typeof _toggle3D === 'function') _toggle3D(false); } catch (e) { logError('_toggle3D', e); }
+      try { if (typeof _aplicarWaveIntensidade === 'function') _aplicarWaveIntensidade(1); } catch (e) { logError('_aplicarWaveIntensidade', e); }
+      try { if (typeof _toggleFlash === 'function') _toggleFlash(true); } catch (e) { logError('_toggleFlash', e); }
+      try { if (typeof limpar === 'function') limpar(); } catch (e) { logError('limpar', e); }
+      try { if (typeof network !== 'undefined' && network && network.fit) network.fit({ animation: true }); } catch (e) { logError('network.fit', e); }
     }
 
     topTheme.addEventListener('change', function(){
