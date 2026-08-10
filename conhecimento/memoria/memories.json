@@ -4258,5 +4258,25 @@
     "access_count": 0,
     "created_at": "2026-08-10T00:19:06.017219",
     "last_accessed": "2026-08-10T00:19:06.017219"
+  },
+  {
+    "id": 243,
+    "kind": "episodio",
+    "task": "Reflexao de aprendizado - antecipacao de gargalos",
+    "summary": "Jarvis expressou desejo de aprender a antecipar gargalos com dados reais de uso, aprofundar a frente de previsao e manter controle na importacao de conhecimento externo.",
+    "project": "",
+    "tags": [
+      "externo",
+      "conhecimento",
+      "importacao",
+      "controle",
+      "manter",
+      "previsao"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-10T05:37:44.414240",
+    "last_accessed": "2026-08-10T05:37:44.414240"
   }
 ]
