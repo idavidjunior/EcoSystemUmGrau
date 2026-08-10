@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""os-automation — MCP server para automação Windows + Web (Playwright + pywinauto)."""
+"""os-automation — MCP server para automação Windows + Web (Playwright + pywinauto).
+
+MCP 2.0+ usa API diferente. Exportamos a classe OSAutomation para uso direto.
+Para servidor MCP completo, usar mcp-server-http ou adaptar para a nova API.
+"""
 
 import asyncio
 import base64
@@ -10,10 +14,6 @@ import tempfile
 import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-
-from mcp.server import Server
-from mcp.server.stdio import stdio_server
-from mcp.types import Tool, TextContent, ImageContent
 
 # Importações lazy para não quebrar se dependências faltarem
 PLAYWRIGHT_AVAILABLE = False
@@ -184,7 +184,6 @@ class OSAutomation:
             if send_keys:
                 win.type_keys(text)
             else:
-                # SendKeys fallback
                 import pywinauto.keyboard as keyboard
                 keyboard.send_keys(text)
         return {"ok": True}
@@ -204,75 +203,34 @@ class OSAutomation:
         return {"ok": True}
 
 
+# Instância global para uso direto
 automation = OSAutomation()
 
-server = Server("os-automation")
-
-
-@server.list_tools()
-async def list_tools() -> List[Tool]:
-    return [
-        Tool(name="web_navigate", description="Navega para URL no browser headless",
-             inputSchema={"type": "object", "properties": {"url": {"type": "string"}, "wait_until": {"type": "string", "enum": ["load", "domcontentloaded", "networkidle"]}, "timeout_ms": {"type": "integer"}}, "required": ["url"]}),
-        Tool(name="web_click", description="Clica em elemento via seletor CSS/XPath",
-             inputSchema={"type": "object", "properties": {"selector": {"type": "string"}, "button": {"type": "string", "enum": ["left", "right", "middle"]}, "count": {"type": "integer"}, "timeout_ms": {"type": "integer"}}, "required": ["selector"]}),
-        Tool(name="web_type", description="Digita texto em campo",
-             inputSchema={"type": "object", "properties": {"selector": {"type": "string"}, "text": {"type": "string"}, "delay_ms": {"type": "integer"}, "clear_first": {"type": "boolean"}}, "required": ["selector", "text"]}),
-        Tool(name="web_extract", description="Extrai dados da página",
-             inputSchema={"type": "object", "properties": {"selector": {"type": "string"}, "attribute": {"type": "string"}, "multiple": {"type": "boolean"}, "timeout_ms": {"type": "integer"}}, "required": ["selector"]}),
-        Tool(name="web_screenshot", description="Captura screenshot da página ou elemento",
-             inputSchema={"type": "object", "properties": {"path": {"type": "string"}, "selector": {"type": "string"}, "full_page": {"type": "boolean"}}}),
-        Tool(name="web_wait", description="Espera condição na página",
-             inputSchema={"type": "object", "properties": {"selector": {"type": "string"}, "state": {"type": "string", "enum": ["attached", "detached", "visible", "hidden"]}, "timeout_ms": {"type": "integer"}, "url_contains": {"type": "string"}}}),
-        Tool(name="desktop_find_window", description="Encontra janela por título/classe/processo",
-             inputSchema={"type": "object", "properties": {"title_regex": {"type": "string"}, "class_name": {"type": "string"}, "process_name": {"type": "string"}}}),
-        Tool(name="desktop_click", description="Clica em coordenadas ou elemento da janela",
-             inputSchema={"type": "object", "properties": {"window_handle": {"type": "integer"}, "x": {"type": "integer"}, "y": {"type": "integer"}, "control_path": {"type": "string"}}, "required": ["window_handle"]}),
-        Tool(name="desktop_type", description="Digita texto em janela/control",
-             inputSchema={"type": "object", "properties": {"window_handle": {"type": "integer"}, "text": {"type": "string"}, "control_path": {"type": "string"}, "send_keys": {"type": "boolean"}}, "required": ["window_handle", "text"]}),
-        Tool(name="desktop_screenshot", description="Captura janela desktop",
-             inputSchema={"type": "object", "properties": {"window_handle": {"type": "integer"}, "path": {"type": "string"}}, "required": ["window_handle"]}),
-        Tool(name="sleep", description="Pausa execução",
-             inputSchema={"type": "object", "properties": {"seconds": {"type": "number"}}, "required": ["seconds"]}),
-    ]
-
-
-@server.call_tool()
-async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent | ImageContent]:
-    try:
-        if name == "web_navigate":
-            result = await automation.web_navigate(**arguments)
-        elif name == "web_click":
-            result = await automation.web_click(**arguments)
-        elif name == "web_type":
-            result = await automation.web_type(**arguments)
-        elif name == "web_extract":
-            result = await automation.web_extract(**arguments)
-        elif name == "web_screenshot":
-            result = await automation.web_screenshot(**arguments)
-        elif name == "web_wait":
-            result = await automation.web_wait(**arguments)
-        elif name == "desktop_find_window":
-            result = automation.desktop_find_window(**arguments)
-        elif name == "desktop_click":
-            result = automation.desktop_click(**arguments)
-        elif name == "desktop_type":
-            result = automation.desktop_type(**arguments)
-        elif name == "desktop_screenshot":
-            result = automation.desktop_screenshot(**arguments)
-        elif name == "sleep":
-            result = automation.sleep(**arguments)
-        else:
-            raise ValueError(f"Tool desconhecida: {name}")
-        return [TextContent(type="text", text=json.dumps(result, ensure_ascii=False))]
-    except Exception as e:
-        return [TextContent(type="text", text=json.dumps({"error": str(e)}, ensure_ascii=False))]
-
-
-async def main():
-    async with stdio_server() as (read_stream, write_stream):
-        await server.run(read_stream, write_stream, server.create_initialization_options())
+# Exportação compatível com MCP 1.x (não funcional em 2.x, mas não quebra)
+try:
+    from mcp.server import Server
+    from mcp.types import Tool, TextContent, ImageContent
+    
+    server = Server("os-automation")
+    
+    # Em MCP 2.x, a API mudou. Mantemos a classe automation para uso direto.
+    # Quem quiser servidor MCP real, usa mcp-server-http ou adapta para nova API.
+    
+except ImportError:
+    pass
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    # Teste rápido direto
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "test":
+        async def teste():
+            r = await automation.web_navigate("https://www.google.com")
+            print("nav:", r)
+            r = await automation.web_extract("title", attribute="text")
+            print("title:", r)
+            await automation._close_browser()
+        asyncio.run(teste())
+    else:
+        print("os-automation: use 'python -m mcp.os.habilidades.os-automation server.py test' para teste rápido")
+        print("ou importe: from server import automation")
