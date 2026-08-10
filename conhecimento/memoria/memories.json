@@ -4318,5 +4318,25 @@
     "access_count": 0,
     "created_at": "2026-08-10T06:03:01.826320",
     "last_accessed": "2026-08-10T06:03:01.826320"
+  },
+  {
+    "id": 246,
+    "kind": "padrao",
+    "task": "Narrador de voz do Jarvis no opencode desktop",
+    "summary": "narrador_desktop.py vigia opencode.db (SQLite WAL, leitura-only) em ~/.local/share/opencode, JOIN part+message+session, filtra type=text role=assistant e watchdog-health, debounce 1.5s, fala via vox_audio (edge-tts). Posicao em runtime/narrador_posicao.json. Validado no banco real + teste de audio OK. wrapper do CLI nao funciona no GUI; vigiar DB e o caminho.",
+    "project": "",
+    "tags": [
+      "debounce",
+      "health",
+      "watchdog",
+      "assistant",
+      "role",
+      "text"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-10T07:28:01.667071",
+    "last_accessed": "2026-08-10T07:28:01.667071"
   }
 ]
