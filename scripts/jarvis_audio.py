@@ -168,10 +168,10 @@ def cmd_stop():
 
 
 def main():
-    if len(sys.argv) < 2 or sys.argv[1] not in ("on", "off", "status", "stop"):
+    if len(sys.argv) < 2 or sys.argv[1] not in ("on", "off", "pause", "status", "stop"):
         print(__doc__)
         return 1
-    return {"on": cmd_on, "off": cmd_off, "status": cmd_status, "stop": cmd_stop}[sys.argv[1]]()
+    return {"on": cmd_on, "off": cmd_off, "pause": cmd_pause, "status": cmd_status, "stop": cmd_stop}[sys.argv[1]]()
 
 
 if __name__ == "__main__":
