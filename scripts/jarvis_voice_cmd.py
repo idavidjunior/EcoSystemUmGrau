@@ -282,9 +282,28 @@ async def loop_teste():
             log(f"Comando teste: {texto}")
             
             tl = texto.lower()
-            if any(k in tl for k in ["para", "cala", "chega", "pare", "sair", "exit", "quit"]):
+            # Comandos de controle padrão ecossistema
+            if any(k in tl for k in ["stop eco", "para", "cala", "chega", "pare", "sair", "exit", "quit"]):
                 falar("Encerrando teste.")
+                import jarvis_audio
+                jarvis_audio.gravar(ativo=False, pausado=True)
+                jarvis_audio.matar_tts_ativo()
                 break
+            if any(k in tl for k in ["dt eco", "desativar eco", "desativar"]):
+                falar("Desativando narração.")
+                import jarvis_audio
+                jarvis_audio.gravar(ativo=False, pausado=True)
+                continue
+            if any(k in tl for k in ["ps eco", "pausar eco", "pausar"]):
+                falar("Pausando narração.")
+                import jarvis_audio
+                jarvis_audio.gravar(pausado=True)
+                continue
+            if any(k in tl for k in ["at eco", "ativar eco", "ativar", "eco"]):
+                falar("Narração ativada.")
+                import jarvis_audio
+                jarvis_audio.gravar(ativo=True, pausado=False)
+                continue
             
             acao, params = parse_comando(texto)
             if acao:
