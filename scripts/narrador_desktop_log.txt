@@ -59,3 +59,5 @@
 [2026-08-10T15:48:11] narracao DESATIVADA (DT ECO)
 [2026-08-10T15:48:13] narracao ATIVADA (AT ECO)
 [2026-08-10T15:48:15] narracao DESATIVADA (DT ECO)
+[2026-08-10T16:10:37] narracao ATIVADA (AT ECO)
+[2026-08-10T16:11:38] falando (338 chars): Já é o padrão. Sem arquivo de controle (runtime/narracao_estado.json):...
