@@ -1,5 +1,5 @@
 ---
-tags: [capítulo, cognitivo, defensiva, general, migração, notas]
+tags: [adicionar, capítulo, cognitivo, defensiva, general, migração]
 aliases: [fix favoritos tags e contagem por capitulo]
 date: 2026-08-09
 ---
