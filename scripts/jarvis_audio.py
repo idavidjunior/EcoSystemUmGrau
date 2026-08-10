@@ -160,11 +160,10 @@ def matar_tts_ativo():
 
 
 def cmd_stop():
-    # pausa narração futura
-    gravar(False)
-    # interrompe TTS atual
+    # pausa narração futura + interrompe TTS atual
+    gravar(ativo=False, pausado=True)
     matar_tts_ativo()
-    print("Fala interrompida. Narracao PAUSADA.")
+    print("Fala interrompida. Narracao PAUSADA (STOP ECO).")
     return 0
 
 
