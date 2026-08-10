@@ -2220,3 +2220,5 @@
 [2026-08-10T12:22:13] Comando teste: clique na janela botao minimizar
 [2026-08-10T12:22:13] Comando teste: pare
 [2026-08-10T12:22:13] Modo teste encerrado
+[2026-08-10T12:26:03] Modo TESTE iniciado - digite comandos (Enter=vazio sai)
+[2026-08-10T12:26:03] Comando teste: encontre janela OpenCode

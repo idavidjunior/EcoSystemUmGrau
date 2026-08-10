@@ -23,6 +23,7 @@ from server import automation as os_auto
 
 CONTROLE = ROOT / "runtime" / "narracao_estado.json"
 LOG = ROOT / "scripts" / "jarvis_voice_cmd_log.txt"
+ULTIMA_JANELA = None
 
 
 def log(msg):
@@ -123,6 +124,7 @@ def parse_comando(texto: str):
 
 
 async def executar_acao(acao, params):
+    global ULTIMA_JANELA
     try:
         if acao == "web_navigate":
             r = await os_auto.web_navigate(**params)
@@ -142,14 +144,26 @@ async def executar_acao(acao, params):
             return f"Print salvo em {r.get('path')}"
         elif acao == "desktop_find_window":
             r = os_auto.desktop_find_window(**params)
+            ULTIMA_JANELA = r.get("handle")
             return f"Janela encontrada: {r.get('title')} (PID {r.get('process_id')})"
         elif acao == "desktop_click":
-            # precisa do handle - simplificado: usa último find_window
-            return "Use 'encontre janela X' primeiro, depois 'clique na janela...'"
+            if ULTIMA_JANELA is None:
+                return "Nenhuma janela selecionada. Use 'encontre janela X' primeiro."
+            params["window_handle"] = ULTIMA_JANELA
+            os_auto.desktop_click(**params)
+            return f"Cliquei na janela (handle {ULTIMA_JANELA})"
         elif acao == "desktop_type":
-            return "Use 'encontre janela X' primeiro."
+            if ULTIMA_JANELA is None:
+                return "Nenhuma janela selecionada. Use 'encontre janela X' primeiro."
+            params["window_handle"] = ULTIMA_JANELA
+            os_auto.desktop_type(**params)
+            return f"Digitei na janela (handle {ULTIMA_JANELA})"
         elif acao == "desktop_screenshot":
-            return "Use 'encontre janela X' primeiro."
+            if ULTIMA_JANELA is None:
+                return "Nenhuma janela selecionada. Use 'encontre janela X' primeiro."
+            params["window_handle"] = ULTIMA_JANELA
+            r = os_auto.desktop_screenshot(**params)
+            return f"Print da janela salvo em {r.get('path')}"
         elif acao == "sleep":
             os_auto.sleep(**params)
             return f"Esperei {params.get('seconds')} segundos"
