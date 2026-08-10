@@ -4118,5 +4118,25 @@
     "access_count": 0,
     "created_at": "2026-08-09T21:40:36.685978",
     "last_accessed": "2026-08-09T21:40:36.685978"
+  },
+  {
+    "id": 236,
+    "kind": "episodio",
+    "task": "decisao",
+    "summary": "Memória do EcoSystemUmGrau (conhecimento/memoria/*: memories.json, index.json, sessions/*.jsonl, tfidf_*) É VERSIONADA de propósito no git (auto-commit do ecossistema inclui esses arquivos). Não são secrets (secrets ficam em config/ guardados). Manter versionado garante backup/histórico e continuidade entre sessões. Não adicionar ao .gitignore nem git rm --cached. Sujeira/duplicata no disco: C:\\Users\\David Jr\\Documents\\EcoSystemUmGrauBACKUP é clone antigo (03/ago) — candidato a remoção.",
+    "project": "",
+    "tags": [
+      "arquivos",
+      "inclui",
+      "ecossistema",
+      "remoção",
+      "candidato",
+      "commit"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-09T21:56:20.399673",
+    "last_accessed": "2026-08-09T21:56:20.399673"
   }
 ]
