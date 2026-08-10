@@ -114,13 +114,44 @@ async def _tts_salvar(texto, caminho):
 
 
 def _gravar_audio(seconds=RECORD_SECONDS):
-    """Grava microfone e retorna ndarray float32 mono 16kHz."""
+    """Grava microfone e retorna ndarray float32 mono 16kHz.
+    Usa device 11 (WDM-KS) a 44100Hz e faz downsample para 16kHz."""
     import sounddevice as sd
     import numpy as np
-    print(f"Ouvindo... (fale agora, {seconds:.0f}s, `^C` para cortar)")
-    rec = sd.rec(int(seconds * SAMPLE_RATE), samplerate=SAMPLE_RATE, channels=1, dtype="float32")
-    sd.wait()
-    return rec.flatten()
+    try:
+        import scipy.signal
+        HAVE_SCIPY = True
+    except ImportError:
+        HAVE_SCIPY = False
+    
+    # Device 11 funciona a 44100Hz
+    DEVICE_ID = 11
+    RECORD_SR = 44100
+    
+    print(f"Ouvindo... (fale agora, {seconds:.0f}s)")
+    try:
+        n_samples = int(seconds * RECORD_SR)
+        rec = sd.rec(n_samples, samplerate=RECORD_SR, channels=1, dtype="float32", device=DEVICE_ID)
+        sd.wait()
+        audio = rec.flatten()
+        
+        # Downsample 44100 -> 16000
+        if HAVE_SCIPY:
+            audio = scipy.signal.resample(audio, int(len(audio) * SAMPLE_RATE / RECORD_SR))
+        else:
+            # Fallback simples: decimação linear
+            step = RECORD_SR / SAMPLE_RATE
+            idx = np.arange(0, len(audio), step).astype(int)
+            idx = idx[idx < len(audio)]
+            audio = audio[idx]
+        
+        return audio
+    except Exception as e:
+        print(f"[erro gravacao device 11: {e}] - tentando default")
+        # Fallback: device default
+        rec = sd.rec(int(seconds * SAMPLE_RATE), samplerate=SAMPLE_RATE, channels=1, dtype="float32")
+        sd.wait()
+        return rec.flatten()
 
 
 def _stt_whisper(audio, partial_callback=None):
