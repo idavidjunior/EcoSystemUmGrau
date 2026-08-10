@@ -1526,11 +1526,11 @@ arestasUp = arestasUp.map(a =>
   }});
 
 
-  const _fontLimpo = (function() {{
-    // respeita o padrao de labels ocultas (so 'false' mostra)
+  // Respeita o estado ATUAL de labels ocultas (so 'false' explicito mostra).
+  function _fontLimpo() {{
     var oc = (typeof localStorage !== 'undefined' && localStorage.getItem('labelsOcultos') !== 'false');
     return oc ? 0 : 11;
-  }})();
+  }}
   function limpar() {{
     _destacado = false; // libera de volta a decoracao viva (cerebro vivo)
     _flashAtivo = false;
@@ -1543,7 +1543,7 @@ arestasUp = arestasUp.map(a =>
     const atualizacoes = nodes.get().map(n => ({{
       id: n.id, color: original[n.id].color, size: original[n.id].size,
       opacity: 1, borderWidth: 0, borderWidthSelected: 0, shadow: false,
-      font: {{ size: _fontLimpo, color: '#cdd6f4', face: 'Segoe UI', bold: false }}
+      font: {{ size: _fontLimpo(), color: '#cdd6f4', face: 'Segoe UI', bold: false }}
     }}));
     nodes.update(atualizacoes);
     const arestasUp = edges.get().map(e => ({{

@@ -586,7 +586,70 @@ async def gerar_audio_stream(texto):
 
 # --- HTTP client para opencode serve ---
 
+_serve_error_count = 0
+_serve_error_threshold = 3
+_serve_restarting = False
+
+
+def _restart_serve_hard():
+    """Mata o processo serve existente e inicia um novo. Chamado quando o
+    serve atinge o limiar de erros consecutivos (provavelmente travado)."""
+    global _serve_restarting
+    if _serve_restarting:
+        return
+    _serve_restarting = True
+    logger.warning("WATCHDOM: limiar de erros atingido — reiniciando serve")
+    try:
+        for porta in (PORTA_SERVE, PORTA_SERVE_RESERVA):
+            try:
+                r = subprocess.run(
+                    ["netstat", "-ano"],
+                    capture_output=True, text=True,
+                    creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+                )
+                for line in r.stdout.splitlines():
+                    if f":{porta}" in line and "LISTENING" in line:
+                        pid = line.split()[-1].strip()
+                        if pid.isdigit():
+                            logger.info(f"WATCHDOM: matando pid={porta} porta={porta}")
+                            subprocess.run(
+                                ["taskkill", "/PID", pid, "/F"],
+                                capture_output=True,
+                                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+                            )
+            except Exception:
+                pass
+        time.sleep(2)
+        subprocess.Popen(
+            [BIN, "serve", "--port", str(PORTA_SERVE)],
+            cwd=WORKDIR,
+            env={**os.environ},
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+        )
+        for _ in range(15):
+            time.sleep(1)
+            try:
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.settimeout(1)
+                ok = s.connect_ex(("127.0.0.1", PORTA_SERVE)) == 0
+                s.close()
+                if ok:
+                    logger.info("WATCHDOM: serve reiniciado com sucesso")
+                    break
+            except Exception:
+                pass
+        else:
+            logger.error("WATCHDOM: serve não subiu após reinício")
+    except Exception as e:
+        logger.error(f"WATCHDOM: erro no reinício: {e}")
+    finally:
+        _serve_restarting = False
+
+
 def _http(method, path, data=None, timeout=120):
+    global _serve_error_count
     url = f"{SERVE_URL}{path}"
     creds = base64.b64encode(f"{SERVER_USER}:{SERVER_PASS}".encode()).decode()
     body = json.dumps(data).encode() if data else None
@@ -594,9 +657,17 @@ def _http(method, path, data=None, timeout=120):
         headers={"Content-Type": "application/json", "Authorization": f"Basic {creds}"})
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
-            return json.loads(resp.read().decode())
+            result = json.loads(resp.read().decode())
+            _serve_error_count = 0
+            return result
     except urllib.error.HTTPError as e:
         logger.error(f"HTTP {e.code} {method} {path}: {e.read().decode()[:300]}")
+        if e.code >= 500:
+            _serve_error_count += 1
+            logger.warning(f"WATCHDOM: erro {_serve_error_count}/{_serve_error_threshold}")
+            if _serve_error_count >= _serve_error_threshold:
+                _restart_serve_hard()
+                _serve_error_count = 0
         return None
     except Exception as e:
         logger.error(f"HTTP {method} {path}: {e}")

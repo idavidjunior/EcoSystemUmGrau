@@ -266,8 +266,9 @@
 
     // Botão T: alterna etiquetas dos nós (independente)
     ctrl.addEventListener('click', function(){
-      var shouldShow = localStorage.getItem('labelsOcultos') !== 'true';
-      setLabelVisibility(shouldShow);
+      // Alterna: mostrar se estiver oculto, ocultar se estiver visivel
+      var estaOculto = localStorage.getItem('labelsOcultos') === 'true';
+      setLabelVisibility(estaOculto ? true : false);
     });
 
     resetBtn.addEventListener('click', function(){
