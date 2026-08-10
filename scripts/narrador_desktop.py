@@ -77,10 +77,14 @@ def salvar_posicao(pos):
 
 
 def estado_ativo():
-    """True se a narracao estiver ativa (padrao: ativa quando sem arquivo)."""
+    """True se a narracao estiver ativa E não pausada.
+    Formato: {"ativo": bool, "pausado": bool}. Default: ativo=true, pausado=false."""
     try:
         if CONTROLE.exists():
-            return bool(json.loads(CONTROLE.read_text(encoding="utf-8")).get("ativo", True))
+            estado = json.loads(CONTROLE.read_text(encoding="utf-8"))
+            ativo = estado.get("ativo", True)
+            pausado = estado.get("pausado", False)
+            return ativo and not pausado
     except Exception:
         pass
     return True
