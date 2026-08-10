@@ -4123,7 +4123,7 @@
     "id": 236,
     "kind": "episodio",
     "task": "decisao",
-    "summary": "Memória do EcoSystemUmGrau (conhecimento/memoria/*: memories.json, index.json, sessions/*.jsonl, tfidf_*) É VERSIONADA de propósito no git (auto-commit do ecossistema inclui esses arquivos). Não são secrets (secrets ficam em config/ guardados). Manter versionado garante backup/histórico e continuidade entre sessões. Não adicionar ao .gitignore nem git rm --cached. Sujeira/duplicata no disco: C:\\Users\\David Jr\\Documents\\EcoSystemUmGrauBACKUP é clone antigo (03/ago) — candidato a remoção.",
+    "summary": "Memória do EcoSystemUmGrau (conhecimento/memoria/*: memories.json, index.json, sessions/*.jsonl, tfidf_*) É VERSIONADA de propósito no git (auto-commit do ecossistema inclui esses arquivos). Não são secrets (secrets ficam em config/ guardados). Manter versionado garante backup/histórico e continuidade entre sessões. Não adicionar ao .gitignore nem git rm --cached. Sujeira/duplicata no disco: EcoSystemUmGrauBACKUP (clone antigo, 03/ago) é clone antigo (03/ago) — candidato a remoção.",
     "project": "",
     "tags": [
       "arquivos",
@@ -4238,5 +4238,4 @@
     "access_count": 0,
     "created_at": "2026-08-09T23:58:26.006234",
     "last_accessed": "2026-08-09T23:58:26.006234"
-  }
-]
+  },
