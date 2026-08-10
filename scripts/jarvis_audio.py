@@ -3,13 +3,15 @@
 Palavras-gatilho da conversa:
   "Eco"                -> on   (ativa narração)
   "D Eco"/"Desativar Eco" -> off (pausa narração)
+  "Para" / "Cala"      -> stop (interrompe fala atual + pausa)
 
 Mecanismo: grava runtime/narracao_estado.json ({"ativo": bool}). O narrador
 (scripts/narrador_desktop.py) lê esse arquivo a cada loop e pausa sem ser
 encerrado. "on" também garante que o processo do narrador esteja rodando.
+"stop" mata o subprocesso TTS ativo (vox_audio.py falar) imediatamente.
 
 Uso:
-  python scripts/jarvis_audio.py on|off|status
+  python scripts/jarvis_audio.py on|off|status|stop
 """
 import json
 import os
@@ -22,6 +24,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CONTROLE = ROOT / "runtime" / "narracao_estado.json"
 PID_FILE = ROOT / "runtime" / "narrador.pid"
 NARRADOR = ROOT / "scripts" / "narrador_desktop.py"
+VOX = ROOT / "scripts" / "vox_audio.py"
 
 
 def gravar(ativo):
@@ -90,11 +93,43 @@ def cmd_status():
     return 0
 
 
+def matar_tts_ativo():
+    """Mata qualquer processo python rodando vox_audio.py falar."""
+    try:
+        saida = subprocess.run(["tasklist", "/FI", "IMAGENAME eq python.exe", "/NH"],
+                               capture_output=True, text=True, timeout=20).stdout
+        pids = []
+        for linha in saida.splitlines():
+            if "vox_audio.py" in linha and "falar" in linha:
+                partes = linha.split()
+                if len(partes) >= 2 and partes[1].isdigit():
+                    pids.append(int(partes[1]))
+        for pid in pids:
+            try:
+                subprocess.run(["taskkill", "/PID", str(pid), "/F"], capture_output=True, timeout=5)
+                print(f"TTS interrompido (PID {pid})")
+            except Exception:
+                pass
+        if not pids:
+            print("Nenhum TTS ativo encontrado")
+    except Exception as e:
+        print(f"Erro ao interromper TTS: {e}")
+
+
+def cmd_stop():
+    # pausa narração futura
+    gravar(False)
+    # interrompe TTS atual
+    matar_tts_ativo()
+    print("Fala interrompida. Narracao PAUSADA.")
+    return 0
+
+
 def main():
-    if len(sys.argv) < 2 or sys.argv[1] not in ("on", "off", "status"):
+    if len(sys.argv) < 2 or sys.argv[1] not in ("on", "off", "status", "stop"):
         print(__doc__)
         return 1
-    return {"on": cmd_on, "off": cmd_off, "status": cmd_status}[sys.argv[1]]()
+    return {"on": cmd_on, "off": cmd_off, "status": cmd_status, "stop": cmd_stop}[sys.argv[1]]()
 
 
 if __name__ == "__main__":
