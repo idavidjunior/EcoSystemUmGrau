@@ -181,7 +181,8 @@ class Narrador:
             log(f"falando ({len(texto)} chars): {texto[:70]}...")
             try:
                 subprocess.run([sys.executable, str(VOX), "falar", texto],
-                               cwd=str(ROOT), timeout=FALAR_TIMEOUT, check=False)
+                               cwd=str(ROOT), timeout=FALAR_TIMEOUT, check=False,
+                               creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             except Exception as e:
                 log(f"falha de voz: {e}")
 
@@ -194,7 +195,8 @@ def teste_audio():
     log("teste de audio")
     try:
         subprocess.run([sys.executable, str(VOX), "falar", "Teste de voz do Jarvis. Estou ouvindo."],
-                       cwd=str(ROOT), timeout=FALAR_TIMEOUT, check=False)
+                       cwd=str(ROOT), timeout=FALAR_TIMEOUT, check=False,
+                       creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         print("OK: audio reproduzido. Se voce nao ouviu, verifique o som do PC.")
     except Exception as e:
         print(f"ERRO no teste de audio: {e}")
