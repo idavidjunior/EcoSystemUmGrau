@@ -149,7 +149,7 @@ class OSAutomation:
         windows = desktop.windows()
         for w in windows:
             try:
-                if title_regex and not __import__("re").search(title_regex, w.window_text()):
+                if title_regex and not __import__("re").search(title_regex, w.window_text(), __import__("re").IGNORECASE):
                     continue
                 if class_name and w.class_name() != class_name:
                     continue
