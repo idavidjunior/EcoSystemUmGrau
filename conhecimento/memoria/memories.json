@@ -4239,3 +4239,24 @@
     "created_at": "2026-08-09T23:58:26.006234",
     "last_accessed": "2026-08-09T23:58:26.006234"
   },
+  {
+    "id": 242,
+    "kind": "padrao",
+    "task": "Skill auditoria-de-codigo viva com evolucao gated",
+    "summary": "Evolucao.py implementado com gates anti-lixo: evidencia obrigatoria (rejeitados.json), dedup Jaccard>=0.80 (incrementa recorrencia), acionabilidade, anti-overfitting (>=2 ocorrencias ou impacto alto). review absorve >=3 elegiveis com backup; prune limpa mortos. Registrada no manifesto (101 habilidades); loop fecha via memory_engine. Preflight passou apos sanear path hardcoded pre-existente na memoria 236.",
+    "project": "",
+    "tags": [
+      "236",
+      "memoria",
+      "existente",
+      "pre",
+      "alto",
+      "hardcoded"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-10T00:19:06.017219",
+    "last_accessed": "2026-08-10T00:19:06.017219"
+  }
+]
