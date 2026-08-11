@@ -1,7 +1,7 @@
 ---
 tags: [checkout, designpatterns, fakes, finas, padrao, simples]
 aliases: [Design patterns: estruturais — adapter, facade e decorator]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Design patterns: estruturais — adapter, facade e decorator

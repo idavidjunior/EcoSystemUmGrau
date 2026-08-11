@@ -1,7 +1,7 @@
 ---
 tags: [críticas, padrao, setup, supera, testes, áreas]
 aliases: [Testes: TDD e quando ele compensa]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Testes: TDD e quando ele compensa

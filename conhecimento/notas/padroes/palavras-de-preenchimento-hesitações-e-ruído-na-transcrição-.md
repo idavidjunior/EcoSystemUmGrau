@@ -1,7 +1,7 @@
 ---
 tags: [conteúdo, obrigatório, padrao, reflete, texto, traducao-audio]
 aliases: [Palavras de preenchimento, hesitações e ruído na transcrição]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Palavras de preenchimento, hesitações e ruído na transcrição: quando manter ou remover

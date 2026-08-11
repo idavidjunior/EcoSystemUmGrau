@@ -1,7 +1,7 @@
 ---
-tags: [agente, cognitivo, comunicaã, deve, general, rio]
+tags: [agente, cognitivo, comunicaã, deve, dominio, general]
 aliases: [Gramática do Português Brasileiro — Guia prático do dia a di]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Gramática do Português Brasileiro — Guia prático do dia a dia

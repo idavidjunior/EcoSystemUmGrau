@@ -1,7 +1,7 @@
 ---
 tags: [aplicáveis, consistente, glossários, padrao, terminologia, traducao]
 aliases: [Pipeline de tradução de qualidade: análise, rascunho, revisã]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Pipeline de tradução de qualidade: análise, rascunho, revisão e QA

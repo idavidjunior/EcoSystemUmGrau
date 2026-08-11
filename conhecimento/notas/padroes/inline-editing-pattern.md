@@ -1,7 +1,7 @@
 ---
 tags: [android, android-pure-sdkandroid-pure-sdk, fonte, padrao, pure, sdk]
 aliases: [Inline Editing Pattern]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Inline Editing Pattern

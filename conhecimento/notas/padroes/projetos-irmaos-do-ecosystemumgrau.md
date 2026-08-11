@@ -1,7 +1,7 @@
 ---
 tags: [conhecimento, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, registrados, tres]
 aliases: [Projetos irmaos do EcoSystemUmGrau]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Projetos irmaos do EcoSystemUmGrau

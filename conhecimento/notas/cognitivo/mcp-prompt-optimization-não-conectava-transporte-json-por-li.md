@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, framing, general, json, padrão, rpc]
 aliases: [MCP prompt-optimization não conectava: transporte JSON por l]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # MCP prompt-optimization não conectava: transporte JSON por linha em vez de MCP stdio

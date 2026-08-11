@@ -1,7 +1,7 @@
 ---
 tags: [caso, clássico, padrao, produtos, são, traducao-texto]
 aliases: [Tradução adaptativa (transcreation) para marketing e publici]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Tradução adaptativa (transcreation) para marketing e publicidade

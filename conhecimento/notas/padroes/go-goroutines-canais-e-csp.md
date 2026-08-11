@@ -1,7 +1,7 @@
 ---
-tags: [consumidores, demanda, fatal, golang, padrao, pelo]
+tags: [demanda, fatal, golang, padrao, pelo, sincronização]
 aliases: [Go: goroutines, canais e CSP]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Go: goroutines, canais e CSP

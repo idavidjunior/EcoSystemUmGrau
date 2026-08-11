@@ -1,7 +1,7 @@
 ---
 tags: [artwork, bug, fallback, itunes, mp3player-metadata-rescue, store]
 aliases: [Album art not found]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Album art not found

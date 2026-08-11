@@ -1,7 +1,7 @@
 ---
 tags: [awk, bash, padrao, reinventar, sed, xargs]
 aliases: [Bash: exit codes, controle de fluxo e funções]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Bash: exit codes, controle de fluxo e funções

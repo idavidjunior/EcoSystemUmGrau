@@ -1,7 +1,7 @@
 ---
 tags: [decisao, dentro, linha, multiline, opencode, strings]
 aliases: [Fase A concluída: catálogo real no Supabase (64 obras via TM]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Fase A concluída: catálogo real no Supabase (64 obras via TMDB)

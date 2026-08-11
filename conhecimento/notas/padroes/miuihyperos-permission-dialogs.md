@@ -1,7 +1,7 @@
 ---
 tags: [adicionais, android, padrao, permissao, stock, treinamentonavegacao]
 aliases: [MIUI/HyperOS permission dialogs]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # MIUI/HyperOS permission dialogs

@@ -1,7 +1,7 @@
 ---
 tags: [garantir, padrao, plural, tools, traducao-texto, traduzidos]
 aliases: [Tradução técnica: manuais, especificações e documentação de ]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Tradução técnica: manuais, especificações e documentação de software

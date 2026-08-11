@@ -1,7 +1,7 @@
 ---
 tags: [bug, child, ecosistema-opencode, password, process, propagated]
 aliases: [_ensure_serve() spawns opencode serve without passing env co]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # _ensure_serve() spawns opencode serve without passing env context

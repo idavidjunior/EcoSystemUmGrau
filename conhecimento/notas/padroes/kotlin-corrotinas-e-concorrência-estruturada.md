@@ -1,7 +1,7 @@
 ---
 tags: [future, kotlin, padrao, ponte, runblocking, tests]
 aliases: [Kotlin: corrotinas e concorrência estruturada]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Kotlin: corrotinas e concorrência estruturada

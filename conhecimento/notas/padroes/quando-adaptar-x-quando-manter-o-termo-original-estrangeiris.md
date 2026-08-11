@@ -1,7 +1,7 @@
 ---
-tags: [fonte, menção, nacional, padrao, traducao, whatsapp]
+tags: [fonte, mantido, menção, padrao, traducao, whatsapp]
 aliases: [Quando adaptar x quando manter o termo original (estrangeiri]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Quando adaptar x quando manter o termo original (estrangeirismos e termos técnicos)

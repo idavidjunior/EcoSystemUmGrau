@@ -1,7 +1,7 @@
 ---
-tags: [bug, json, lerauditoria, meio, ntfs, projeto]
+tags: [bug, crash, json, lerauditoria, meio, projeto]
 aliases: [Persistencia sem atomicidade — crash no meio do json.dump co]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Persistencia sem atomicidade — crash no meio do json.dump corrompia arquivo

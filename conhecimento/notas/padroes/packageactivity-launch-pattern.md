@@ -1,7 +1,7 @@
 ---
 tags: [diretamente, inicial, padrao, pula, tela, treinamentonavegacao]
 aliases: [Package/activity launch pattern]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Package/activity launch pattern

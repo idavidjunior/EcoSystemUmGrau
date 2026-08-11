@@ -1,7 +1,7 @@
 ---
 tags: [bug, ecosistema-opencode, incremental, parameter, reporting, segment]
 aliases: [STT no partial/streaming results]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # STT no partial/streaming results

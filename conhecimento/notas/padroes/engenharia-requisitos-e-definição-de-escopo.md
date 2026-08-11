@@ -1,7 +1,7 @@
 ---
 tags: [engenharia, espalhadas, estável, iteração, numa, padrao]
 aliases: [Engenharia: requisitos e definição de escopo]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Engenharia: requisitos e definição de escopo

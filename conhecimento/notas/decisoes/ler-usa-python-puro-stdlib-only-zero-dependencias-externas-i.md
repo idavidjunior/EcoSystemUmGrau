@@ -1,7 +1,7 @@
 ---
 tags: [decisao, dependencias, externas, intencionalmente, lerarquitetura, zero]
 aliases: [LER usa Python puro (stdlib only) — zero dependencias extern]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # LER usa Python puro (stdlib only) — zero dependencias externas intencionalmente.

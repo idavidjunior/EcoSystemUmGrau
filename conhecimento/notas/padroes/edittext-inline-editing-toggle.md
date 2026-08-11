@@ -1,7 +1,7 @@
 ---
 tags: [androidpuresdk, background, edicao, nao, null, padrao]
 aliases: [EditText inline editing toggle]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # EditText inline editing toggle

@@ -1,7 +1,7 @@
 ---
 tags: [ajustado, canto, padrao, texto, traducao-audio, vocábulo]
 aliases: [Tradução de músicas e letras: adaptação rítmica x tradução l]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Tradução de músicas e letras: adaptação rítmica x tradução literal

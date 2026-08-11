@@ -1,7 +1,7 @@
 ---
 tags: [automation, correction, opencode, padrao, research, self]
 aliases: [Aprendizado: Debugging Expertise Skill]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Aprendizado: Debugging Expertise Skill

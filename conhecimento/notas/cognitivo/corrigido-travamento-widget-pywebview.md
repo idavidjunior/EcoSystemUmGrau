@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, general, infinita, loop, processing, regenerar]
 aliases: [corrigido travamento widget pywebview]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # corrigido travamento widget pywebview

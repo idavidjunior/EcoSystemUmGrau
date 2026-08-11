@@ -1,7 +1,7 @@
 ---
 tags: [autorização, debitar, designpatterns, explícitas, notificar, padrao]
 aliases: [Design patterns: comportamentais — strategy, observer, templ]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Design patterns: comportamentais — strategy, observer, template method e state

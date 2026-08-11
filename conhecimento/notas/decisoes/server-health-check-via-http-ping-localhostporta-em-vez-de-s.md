@@ -1,7 +1,7 @@
 ---
 tags: [decisao, localhost, ocupadas, sessaoservermanager, threads, vivo]
 aliases: [Server health check via HTTP ping (localhost:porta) em vez d]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Server health check via HTTP ping (localhost:porta) em vez de stdin/stdout

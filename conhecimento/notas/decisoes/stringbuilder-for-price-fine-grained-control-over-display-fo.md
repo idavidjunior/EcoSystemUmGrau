@@ -1,7 +1,7 @@
 ---
 tags: [android-pure-sdk, decisao, floating, fonte, issues, point]
 aliases: [**StringBuilder for price** — Fine-grained control over disp]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # **StringBuilder for price** — Fine-grained control over display format, avoids floating-point display issues

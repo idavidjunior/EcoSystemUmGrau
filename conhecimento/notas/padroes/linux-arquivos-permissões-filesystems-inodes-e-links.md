@@ -1,7 +1,7 @@
 ---
 tags: [container, containers, linux, negadas, overlayfs, padrao]
 aliases: [Linux: arquivos, permissões, filesystems, inodes e links]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Linux: arquivos, permissões, filesystems, inodes e links

@@ -1,7 +1,7 @@
 ---
 tags: [arquivos, corrupcao, diagnosticos, json, leraprendizado, padrao]
 aliases: [Encoding UTF-8 explicito em Python no Windows]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # Encoding UTF-8 explicito em Python no Windows

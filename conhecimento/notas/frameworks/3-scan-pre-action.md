@@ -1,7 +1,7 @@
 ---
 tags: [completo, evitar, evitaveis, falhas, framework]
 aliases: [3-Scan Pre-Action]
-date: 2026-08-10
+date: 2026-08-11
 ---
 
 # 3-Scan Pre-Action
