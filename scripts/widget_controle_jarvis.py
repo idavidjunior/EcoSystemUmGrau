@@ -1,23 +1,25 @@
-"""widget_controle_jarvis.py — Janela flutuante de controle visual da narração Jarvis no PC.
+"""widget_controle_jarvis.py — Janela flutuante que materializa a voz do Jarvis no PC.
 
-Controles visuais (sempre no topo, sem bordas, arrastável pela barra superior):
-  - Voz ON/OFF      -> liga/desliga narração  (AT ECO / DT ECO)
-  - Parar Fala      -> interrompe TTS ativo   (STOP ECO)
-  - Mic ON/OFF      -> liga/desliga escuta STT (dialogo.py --modo vad)
+Essa janela e a voice UI do opencode-desktop: reflete e controla a narração que o
+narrador_desktop.py extrai do SQLite e fala via vox_audio (pt-BR, AntonioNeural),
+alem de ligar o microfone (dialogo.py --modo vad). Quando o Jarvis esta falando,
+o widget mostra "LUNO FALANDO" + o texto corrente.
 
-Estado em tempo real: a cada 1s o JS consulta bridge.ler_estado() que le os mesmos
-arquivos que os demais scripts usam (runtime/narracao_estado.json e
-runtime/mic_estado.json). Nada eh pelejado: o widget eh 100% leitor de estados e
-100% compativel com jarvis_audio.py / narrador_desktop.py / dialogo.py.
+Arquitetura Python-Driven (robusta, backend-independente):
+  - O Python polleia o estado (arquivos de estado + PIDs) e empurra UI via
+    win.evaluate_js("applyState(JSON)") — funciona sem window.pywebview global.
+  - Os cliques do JS vao pro localStorage; o Python detecta via evaluate_js
+    polling (nao depende de window.pywebview.api, que eh unreliable neste backend).
+  - Drag da barra superior: JS escreve posicao no localStorage; Python chama win.move.
 
-Posicao/tamanho persistidos em runtime/widget_controle_geometria.json
-(mesma convencao do widget_grafo.py).
+Motivo da arquitetura (bug aprendido): em pywebview 6.2.1 + WebView2, passar
+shadow=False ou depender da global window.pywebview.api deixa de funcionar.
+O evaluate_js (Python->JS) e localStorage (JS->Python) sao confiaveis ao passo.
 
 Uso:
-  python scripts/widget_controle_jarvis.py
-
-Integre globalmente: registre o comando `controle` no opencode.jsonc:
-  $ controle   -> abre esta janela flutuante
+  python scripts/widget_controle_jarvis.py        (console visivel)
+  pythonw scripts/widget_controle_jarvis.py       (sem console)
+  $ controle  (via opencode.jsonc -> scripts/controle.bat -> pythonw)
 """
 import json
 import subprocess
@@ -30,19 +32,21 @@ ROOT = Path(__file__).resolve().parent.parent
 SCRIPTS = ROOT / "scripts"
 
 # --- Arquivos de estado do ecossistema (fonte unica) ---
-CONTROLE = ROOT / "runtime" / "narracao_estado.json"          # voz: {ativo, pausado}
-NARRADOR_PID = ROOT / "runtime" / "narrador.pid"               # PID do narrador_desktop
+CONTROLE = ROOT / "runtime" / "narracao_estado.json"     # voz: {ativo, pausado}
+NARRADOR_PID = ROOT / "runtime" / "narrador.pid"
 NARRADOR = SCRIPTS / "narrador_desktop.py"
-VOX = SCRIPTS / "vox_audio.py"
-JARVIS_AUDIO = SCRIPTS / "jarvis_audio.py"                    # CLI de controle existente
+JARVIS_AUDIO = SCRIPTS / "jarvis_audio.py"               # CLI de controle existente
 
-# --- Novo estado de microfone (convencao runtime/*.json) ---
-MIC_ESTADO = ROOT / "runtime" / "mic_estado.json"             # {ativo, timestamp}
-MIC_PID = ROOT / "runtime" / "mic.pid"                        # PID do dialogo.py
-DIALOGO = SCRIPTS / "dialogo.py"                               # loop STT VAD
+# --- Estado de microfone (conveno runtime/*.json) ---
+MIC_ESTADO = ROOT / "runtime" / "mic_estado.json"
+MIC_PID = ROOT / "runtime" / "mic.pid"
+DIALOGO = SCRIPTS / "dialogo.py"
+
+LOG_NARRADOR = SCRIPTS / "narrador_desktop_log.txt"      # para texto corrente da fala
 
 # --- Geometria da janela ---
 GEO_FILE = ROOT / "runtime" / "widget_controle_geometria.json"
+VIEW_COPY = ROOT / "docs" / "widget_controle.html"
 DEFAULT_W, DEFAULT_H = 220, 284
 TITLE = "Jarvis Controle"
 BG = "#1e1e2e"
@@ -64,11 +68,10 @@ def _atomic_write(path: Path, data: dict):
 
 
 # ============================================================
-# Leituras de estado (visao unificada)
+# Leituras de estado (visao unificada — fonte unica de verdade)
 # ============================================================
 
 def ler_estado_voz():
-    """Retorna (ativo, pausado) de runtime/narracao_estado.json."""
     try:
         if CONTROLE.exists():
             d = json.loads(CONTROLE.read_text(encoding="utf-8"))
@@ -79,7 +82,6 @@ def ler_estado_voz():
 
 
 def processo_vivo(pid_path: Path):
-    """True se o PID em pid_path corresponde a um processo python vivo."""
     try:
         if pid_path.exists():
             pid = int(pid_path.read_text(encoding="utf-8").strip())
@@ -98,7 +100,7 @@ def narrador_rodando():
 
 
 def tts_ativo():
-    """Detecta processo TTS (vox_audio.py falar) em execucao."""
+    """True se houver processo vox_audio.py falar em execucao."""
     try:
         out = subprocess.run(
             ["tasklist", "/FI", "IMAGENAME eq python.exe", "/NH"],
@@ -112,7 +114,6 @@ def tts_ativo():
 
 
 def mic_ativo():
-    """True se o microfone esta logicamente ativo e o processo esta vivo."""
     try:
         if MIC_ESTADO.exists():
             d = json.loads(MIC_ESTADO.read_text(encoding="utf-8"))
@@ -123,6 +124,35 @@ def mic_ativo():
     return processo_vivo(MIC_PID)
 
 
+def ultima_fala():
+    """Texto corrente que o Jarvis esta falando (ultima linha 'falando' do log)."""
+    try:
+        if LOG_NARRADOR.exists():
+            for l in reversed(LOG_NARRADOR.read_text(encoding="utf-8", errors="replace").splitlines()):
+                lk = l.lower()
+                if "falando (" in lk:
+                    idx = l.find(":")
+                    if idx > 0:
+                        return l[idx + 1:].strip()[:140]
+    except Exception:
+        pass
+    return ""
+
+
+def estado_unificado():
+    at, pa = ler_estado_voz()
+    return {
+        "voz": at and not pa,
+        "ativo": at,
+        "pausado": pa,
+        "mic": mic_ativo(),
+        "narrador": narrador_rodando(),
+        "tts_ativo": tts_ativo(),
+        "texto": ultima_fala() if tts_ativo() else "",
+        "ts": int(time.time()),
+    }
+
+
 # ============================================================
 # Acoes de controle (rodam em background via threads)
 # ============================================================
@@ -131,8 +161,11 @@ def _detached():
     return getattr(subprocess, "DETACHED_PROCESS", 0) | subprocess.CREATE_NEW_PROCESS_GROUP
 
 
+def _thread(target, *args):
+    threading.Thread(target=target, args=args, daemon=True).start()
+
+
 def cmd_voz(ativar: bool):
-    """Liga/desliga narracao via jarvis_audio.py (fonte unica de verdade)."""
     try:
         if ativar:
             subprocess.run([sys.executable, str(JARVIS_AUDIO), "on"],
@@ -147,7 +180,6 @@ def cmd_voz(ativar: bool):
 
 
 def cmd_interromper_fala():
-    """Mata TTS ativo imediatamente (STOP ECO)."""
     try:
         subprocess.run([sys.executable, str(JARVIS_AUDIO), "stop"],
                        cwd=str(ROOT), capture_output=True, timeout=20)
@@ -156,7 +188,6 @@ def cmd_interromper_fala():
 
 
 def cmd_mic(ativar: bool):
-    """Liga/desliga microfone via dialogo.py --modo vad."""
     if ativar:
         if mic_ativo():
             return
@@ -187,7 +218,7 @@ def cmd_mic(ativar: bool):
 
 
 # ============================================================
-# Bridge Python <-> JavaScript (pywebview js_api)
+# Geometria da janela
 # ============================================================
 
 def _screen_area():
@@ -221,9 +252,7 @@ def _carregar_geo() -> dict:
         return {"x": None, "y": None, "width": DEFAULT_W, "height": DEFAULT_H}
     try:
         raw = GEO_FILE.read_text(encoding="utf-8")
-        if not raw.strip():
-            return {"x": None, "y": None, "width": DEFAULT_W, "height": DEFAULT_H}
-        d = json.loads(raw)
+        d = json.loads(raw) if raw.strip() else {}
     except Exception:
         d = {}
     return _clamp_geo({"x": d.get("x"), "y": d.get("y"),
@@ -231,87 +260,21 @@ def _carregar_geo() -> dict:
                        "height": int(d.get("height", DEFAULT_H))})
 
 
-class Bridge:
-    def __init__(self):
-        self._win = None
-
-    def ping(self):
-        return "pong"
-
-    def ler_estado(self):
-        """Visao unificada em tempo real (polling de 1s pelo JS)."""
-        ativo, pausado = ler_estado_voz()
-        return {
-            "voz": ativo and not pausado,
-            "ativo": ativo,
-            "pausado": pausado,
-            "mic": mic_ativo(),
-            "narrador": narrador_rodando(),
-            "tts_ativo": tts_ativo(),
-            "ts": int(time.time()),
-        }
-
-    def toggle_voz(self):
-        ativo, pausado = ler_estado_voz()
-        novo_estado_ativo = ativo and not pausado
-        threading.Thread(target=cmd_voz, args=(not novo_estado_ativo,), daemon=True).start()
-        return {"acao": "voz", "destino": not novo_estado_ativo}
-
-    def interromper_fala(self):
-        threading.Thread(target=cmd_interromper_fala, daemon=True).start()
-        return {"acao": "stop"}
-
-    def toggle_mic(self):
-        ativo = mic_ativo()
-        threading.Thread(target=cmd_mic, args=(not ativo,), daemon=True).start()
-        return {"acao": "mic", "destino": not ativo}
-
-    def fechar(self):
-        _persistir_geo()
-
-    # --- movimento / geometria da janela ---
-    def mover(self, x, y):
-        if self._win is not None and hasattr(self._win, "move"):
-            try:
-                self._win.move(int(x), int(y))
-            except Exception:
-                pass
-        return {"x": int(x), "y": int(y)}
-
-    def guardar_geo(self, x=None, y=None, width=None, height=None):
-        data = _carregar_geo()
-        if width is not None:
-            data["width"] = int(width)
-        if height is not None:
-            data["height"] = int(height)
-        if x is not None and not (x == 0 and y == 0):
-            data["x"] = int(x)
-        if y is not None and not (x == 0 and y == 0):
-            data["y"] = int(y)
-        data = _clamp_geo(data)
-        _atomic_write(GEO_FILE, data)
-        return data
-
-
-def _persistir_geo():
+def _guardar_geo(win):
     try:
-        if _janela_global is not None and hasattr(_janela_global, "evaluate_js"):
-            _janela_global.evaluate_js("""
-              if(window.pywebview && window.pywebview.api){
-                window.pywebview.api.guardar_geo(
-                  Math.round(window.screenX||0), Math.round(window.screenY||0),
-                  Math.round(window.innerWidth||0), Math.round(window.innerHeight||0));
-              }
-            """)
+        win.evaluate_js("""
+          (function(){
+            var x=window.screenX||0,y=window.screenY||0,w=window.innerWidth||0,h=window.innerHeight||0;
+            window.pywebview=null;  /* noop de compat */
+            localStorage.setItem('jarvis_geo', JSON.stringify({x:x,y:y,width:w,height:h}));
+          })();
+        """)
     except Exception:
         pass
 
 
-_janela_global = None
-
-
 # ============================================================
-# HTML / CSS / JS (self-contained, dark theme do ecossistema)
+# HTML / CSS / JS (self-contained; Python-Driven via evaluate_js)
 # ============================================================
 
 HTML = """<!DOCTYPE html>
@@ -339,153 +302,153 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
 .sw{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:6px;}
 .sw.on{background:#a6e3a1;box-shadow:0 0 6px #a6e3a1;}
 .sw.off{background:#f38ba8;}
-.info{font-size:10px;color:#6c7086;margin-top:2px;}
+.info{font-size:10px;color:#6c7086;margin-top:2px;word-break:break-word;}
+.info.falando{color:#a6e3a1;}
 </style>
 </head><body>
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:4px;">
-    <div class="drag" id="drag"></div>
-    <span>🎙️ Jarvis</span>
+    <div class="drag" id="drag"></div><span>🎙️ Jarvis</span>
   </div>
   <div class="close" id="closeBtn">✕</div>
 </div>
 <div class="controls">
-  <button class="btn off" id="btnVoz">
-    <span><span class="sw off" id="swVoz"></span>Voz</span>
-    <span id="lblVoz">OFF</span>
-  </button>
-  <button class="btn stop" id="btnFala">
-    <span>⏹ Parar Fala</span>
-  </button>
-  <button class="btn off" id="btnMic">
-    <span><span class="sw off" id="swMic"></span>Mic</span>
-    <span id="lblMic">OFF</span>
-  </button>
+  <button class="btn off" id="btnVoz"><span><span class="sw off" id="swVoz"></span>Voz</span><span id="lblVoz">OFF</span></button>
+  <button class="btn stop" id="btnFala"><span>⏹ Parar Fala</span></button>
+  <button class="btn off" id="btnMic"><span><span class="sw off" id="swMic"></span>Mic</span><span id="lblMic">OFF</span></button>
   <div class="info" id="info">conectando...</div>
 </div>
 <script>
 (function(){
-  const api = window.pywebview && window.pywebview.api;
-  let estado = null;
+  // ---- UI driven pelo Python via win.evaluate_js("applyState({...})") ----
+  function cls(el,c){ if(el) el.className=c; }
+  window.applyState = function(s){
+    var v=s.voz, m=s.mic;
+    cls(document.getElementById('swVoz'),'sw '+(v?'on':'off'));
+    cls(document.getElementById('btnVoz'),'btn '+(v?'on':'off'));
+    document.getElementById('lblVoz').textContent = v?'ON':'OFF';
+    cls(document.getElementById('swMic'),'sw '+(m?'on':'off'));
+    cls(document.getElementById('btnMic'),'btn '+(m?'on':'off'));
+    document.getElementById('lblMic').textContent = m?'ON':'OFF';
+    var info=document.getElementById('info');
+    if(s.tts_ativo){ info.textContent='🔊 FALANDO'; info.className='info falando'; }
+    else if(s.narrador){ info.textContent='narrador ativo | online'; info.className='info'; }
+    else { info.textContent='online (voz off)'; info.className='info'; }
+  };
 
-  function esc(e,c){e.className=c;}
-
-  async function refresh(){
-    if(!api){document.getElementById('info').textContent='sem bridge';return;}
-    try{
-      estado = await api.ler_estado();
-      const v = estado.voz;
-      esc(document.getElementById('swVoz'),'sw '+(v?'on':'off'));
-      esc(document.getElementById('btnVoz'),'btn '+(v?'on':'off'));
-      document.getElementById('lblVoz').textContent=v?'ON':'OFF';
-      esc(document.getElementById('swMic'),'sw '+(estado.mic?'on':'off'));
-      esc(document.getElementById('btnMic'),'btn '+(estado.mic?'on':'off'));
-      document.getElementById('lblMic').textContent=estado.mic?'ON':'OFF';
-      let inf='online';
-      if(estado.narrador) inf='narrador● ';
-      if(estado.tts_ativo) inf+='tts● ';
-      document.getElementById('info').textContent=inf+'| '+new Date().toLocaleTimeString();
-    }catch(e){
-      document.getElementById('info').textContent='erro: '+e;
-    }
-  }
-
-  // Aplica estado visual imediato a partir do estado retornado pelo bridge.
-  function applyDestino(destino, chave){
-    // chave: 'voz' | 'mic'
-    if(chave==='voz'){
-      const on=Boolean(destino); esc(document.getElementById('swVoz'),'sw '+(on?'on':'off'));
-      esc(document.getElementById('btnVoz'),'btn '+(on?'on':'off'));
-      document.getElementById('lblVoz').textContent=on?'ON':'OFF';
-    }else if(chave==='mic'){
-      const on=Boolean(destino); esc(document.getElementById('swMic'),'sw '+(on?'on':'off'));
-      esc(document.getElementById('btnMic'),'btn '+(on?'on':'off'));
-      document.getElementById('lblMic').textContent=on?'ON':'OFF';
-    }
-  }
-
-  document.getElementById('btnVoz').addEventListener('click',async()=>{
-    try{ const r=await api.toggle_voz(); if(r&&r.destino!==undefined) applyDestino(r.destino,'voz'); }catch(e){}
-    setTimeout(refresh,800);
+  // ---- feedback otimistico no clique (o Python confirma/corrige em ~1s) ----
+  function clickSet(k){ localStorage.setItem('jarvis_click', k); }
+  document.getElementById('btnVoz').addEventListener('click', function(){
+    cls(this,'btn on'); document.getElementById('lblVoz').textContent='ON'; clickSet('voz');
   });
-  document.getElementById('btnFala').addEventListener('click',async()=>{
-    try{ await api.interromper_fala(); }catch(e){}
-    // feedback visual imediato: desativa o indicador tts
-    document.getElementById('info').textContent='fala interrompida';
-    setTimeout(refresh,500);
+  document.getElementById('btnMic').addEventListener('click', function(){
+    cls(this,'btn on'); document.getElementById('lblMic').textContent='ON'; clickSet('mic');
   });
-  document.getElementById('btnMic').addEventListener('click',async()=>{
-    try{ const r=await api.toggle_mic(); if(r&&r.destino!==undefined) applyDestino(r.destino,'mic'); }catch(e){}
-    setTimeout(refresh,800);
-  });
-  document.getElementById('closeBtn').addEventListener('click',()=>{
-    api.fechar();
-  });
+  document.getElementById('btnFala').addEventListener('click', function(){ clickSet('fala'); });
+  document.getElementById('closeBtn').addEventListener('click', function(){ clickSet('close'); });
 
-  // drag da barra superior
-  const drag=document.getElementById('drag');
-  let px=0,py=0,fx=0,fy=0,dragging=false;
-  drag.addEventListener('mousedown',e=>{
-    px=e.clientX;py=e.clientY;
-    fx=window.screenX||0;fy=window.screenY||0;
-    dragging=true;
+  // ---- drag da barra superior: JS escreve posicao -> Python faz win.move ----
+  var drag=null, msx=0, msy=0;
+  document.getElementById('drag').addEventListener('mousedown', function(e){
+    drag={x:e.screenX,y:e.screenY}; msx=window.screenX||0; msy=window.screenY||0;
     e.preventDefault();
   });
-  document.addEventListener('mousemove',e=>{
-    if(!dragging)return;
-    const dx=e.clientX-px,dy=e.clientY-py;
-    api.mover(fx+dx,fy+dy);
-    fx+=dx;fy+=dy;
+  document.addEventListener('mousemove', function(e){
+    if(!drag) return;
+    msx = msx + (e.screenX - drag.x); msy = msy + (e.screenY - drag.y);
+    localStorage.setItem('jarvis_move', JSON.stringify({x:Math.round(msx),y:Math.round(msy)}));
+    drag={x:e.screenX,y:e.screenY};
   });
-  document.addEventListener('mouseup',()=>{dragging=false;});
-
-  // salva geometria no beforeunload
-  window.addEventListener('beforeunload',()=>{
-    api.guardar_geo(
-      Math.round(window.screenX||0),Math.round(window.screenY||0),
-      Math.round(window.innerWidth||0),Math.round(window.innerHeight||0));
-  });
-
-  setInterval(refresh,1000);
-  refresh();
+  document.addEventListener('mouseup', function(){ drag=null; });
 })();
 </script>
 </body></html>
 """
 
 
-# ============================================================
-# Main
-# ============================================================
-
-VIEW_COPY = ROOT / "docs" / "widget_controle.html"
-
-
 def _build_view() -> Path:
-    """Escreve o HTML inline num arquivo local e retorna o caminho.
-
-    CRUCIAL: servir via url=file:// (e NAO html=) faz o pywebview injetar
-    window.pywebview.api no contexto da pagina. Com html= inline a ponte NAO
-    aparece na pagina (window.pywebview fica undefined -> 'sem bridge').
-    O widget_grafo.py ja usava url=file:// e funcionava por isso.
-    """
+    """Escreve HTML inline num arquivo local (carregado via url=file://)."""
     VIEW_COPY.parent.mkdir(parents=True, exist_ok=True)
     VIEW_COPY.write_text(HTML, encoding="utf-8")
     return VIEW_COPY
+
+
+# ============================================================
+# Poller Python-Driven (Python->JS via evaluate_js; JS->Python via localStorage)
+# ============================================================
+
+_janela_global = None
+
+
+def _dispatch(click: str, win):
+    if click == "voz":
+        at, pa = ler_estado_voz()
+        _thread(cmd_voz, not (at and not pa))
+    elif click == "fala":
+        _thread(cmd_interromper_fala)
+    elif click == "mic":
+        _thread(cmd_mic, not mic_ativo())
+    elif click == "close":
+        try:
+            win.evaluate_js("localStorage.removeItem('jarvis_click')")
+        except Exception:
+            pass
+        _thread(win.destroy)
+
+
+def _poller(win, stop):
+    """loop principal: detecta cliques + drag via localStorage, empurra estado via evaluate_js."""
+    last_click = ""
+    tick = 0
+    while not stop.wait(0.25):
+        # --- cliques (JS->Python via localStorage) ---
+        try:
+            click = win.evaluate_js("localStorage.getItem('jarvis_click')||''") or ""
+        except Exception:
+            click = ""
+        if click and click != last_click:
+            last_click = click
+            _dispatch(click, win)
+            try:
+                win.evaluate_js("localStorage.removeItem('jarvis_click')")
+            except Exception:
+                pass
+        # --- drag (JS escreve, Python move a janela) ---
+        try:
+            mv = win.evaluate_js("localStorage.getItem('jarvis_move')")
+        except Exception:
+            mv = None
+        if mv:
+            try:
+                d = json.loads(mv)
+                win.move(int(d["x"]), int(d["y"]))
+                win.evaluate_js("localStorage.removeItem('jarvis_move')")
+            except Exception:
+                pass
+        # --- estado UI (Python->JS) a cada ~1s ---
+        tick += 1
+        if tick >= 4:
+            tick = 0
+            try:
+                st = estado_unificado()
+                win.evaluate_js(
+                    "if(window.applyState)window.applyState(" + json.dumps(st) + ")",
+                )
+            except Exception:
+                pass
 
 
 def main() -> int:
     global _janela_global
     import webview
 
+    view = _build_view()
     geo = _carregar_geo()
     w = int(geo.get("width", DEFAULT_W))
     h = int(geo.get("height", DEFAULT_H))
     x = geo.get("x")
     y = geo.get("y")
 
-    view = _build_view()
-    bridge = Bridge()
     win = webview.create_window(
         TITLE,
         url=str(view.resolve()),
@@ -496,16 +459,19 @@ def main() -> int:
         easy_drag=False,
         focus=False,
         on_top=True,
-        js_api=bridge,
+        # NOTE: js_api omitido de proposital — arquitetura Python-Driven (evaluate_js + localStorage)
         background_color=BG,
     )
-    bridge._win = win
     _janela_global = win
+
+    stop = threading.Event()
+    threading.Thread(target=_poller, args=(win, stop), daemon=True).start()
 
     try:
         webview.start(debug=False)
     finally:
-        _persistir_geo()
+        stop.set()
+        _guardar_geo(win)
     return 0
 
 
