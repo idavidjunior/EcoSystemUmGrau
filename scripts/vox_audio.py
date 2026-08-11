@@ -3,7 +3,7 @@
 Modos:
   ouvir            → captura microfone e transcreve (whisper, fallback google)
   ouvir-google     → captura microfone e transcreve via Google Web Speech
-  falar "texto"    → gera e toca o áudio via edge-tts + WPF MediaPlayer
+  falar "texto"    → gera e toca o áudio via SpeechPipeline (ou fallback legado)
   testar-mic       → lista dispositivos de áudio de entrada
 """
 
@@ -18,6 +18,19 @@ import tempfile
 from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
+# Speech Pipeline — pipeline central de TTS
+ECOSSISTEMA_DIR = Path(__file__).resolve().parent.parent
+if str(ECOSSISTEMA_DIR) not in sys.path:
+    sys.path.insert(0, str(ECOSSISTEMA_DIR))
+try:
+    from tts import SpeechPipeline
+    _speech_pipeline = SpeechPipeline()
+    SPEECH_PIPELINE_AVAILABLE = True
+except ImportError as e:
+    print(f"[warning] SpeechPipeline não disponível: {e}")
+    SPEECH_PIPELINE_AVAILABLE = False
+    _speech_pipeline = None
 
 TTS_VOICE = "pt-BR-AntonioNeural"
 TTS_RATE = "+0%"
@@ -87,15 +100,24 @@ def _parar_mci_tudo():
 
 
 def _falar(texto, parar_evento=None):
-    """Gera MP3 com edge-tts e toca via MCI (suporta MP3). Se `parar_evento`
-    for fornecido, a fala pode ser interrompida a qualquer momento."""
+    """Gera MP3 e toca via MCI. Usa SpeechPipeline quando disponível."""
     if not texto or not texto.strip():
         return
+
+    # Tenta usar SpeechPipeline primeiro
+    if SPEECH_PIPELINE_AVAILABLE and _speech_pipeline:
+        try:
+            mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
+            if _speech_pipeline.save(texto, str(mp3)):
+                _tocar_mci(str(mp3), parar_evento=parar_evento)
+                return
+        except Exception as e:
+            print(f"[SpeechPipeline falhou: {e}]")
+
+    # Fallback: código legado
     mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
     try:
-        asyncio.run(
-            _tts_salvar(texto, str(mp3))
-        )
+        asyncio.run(_tts_salvar(texto, str(mp3)))
     except Exception as e:
         print(f"[erro tts] {e}")
         return

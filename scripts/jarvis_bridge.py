@@ -1,8 +1,23 @@
 import asyncio, websockets, edge_tts, base64, json, logging, os, re, time, xml.sax.saxutils, socket, urllib.request, urllib.error, random, datetime, subprocess, sys, unicodedata
 from pathlib import Path
 
-# NVIDIA Quota Monitor
+# Speech Pipeline — pipeline central de TTS
 SCRIPTS_DIR = Path(__file__).resolve().parent
+ECOSSISTEMA_DIR = SCRIPTS_DIR.parent
+if str(ECOSSISTEMA_DIR) not in sys.path:
+    sys.path.insert(0, str(ECOSSISTEMA_DIR))
+try:
+    from tts import SpeechPipeline
+    _speech_pipeline = SpeechPipeline()
+    SPEECH_PIPELINE_AVAILABLE = True
+except ImportError as e:
+    logging.warning(f"SpeechPipeline não disponível: {e}")
+    SPEECH_PIPELINE_AVAILABLE = False
+    _speech_pipeline = None
+
+# NVIDIA Quota Monitor
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
 if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
 try:
@@ -320,7 +335,15 @@ def _estado_cacheado():
 
 
 def sanitizar(t):
+    """Sanitiza texto para TTS. Usa SpeechPipeline quando disponível."""
     if not t: return ""
+    if SPEECH_PIPELINE_AVAILABLE and _speech_pipeline:
+        try:
+            texto, _ = _speech_pipeline.prepare(t)
+            return texto
+        except Exception:
+            pass
+    # Fallback: sanitização legada
     for p in [r'```[\s\S]*?```', r'`[^`]+`', r'[*_~#]', r'\[([^\]]+)\]\([^)]+\)', r'[<>{}()\[\]]']:
         t = re.sub(p, '', t)
     t = t.replace('"','').replace("'",'').replace('`','')
@@ -534,12 +557,17 @@ def _registrar_pronuncia(palavra, fala):
 
 
 async def gerar_audio(texto):
+    """Gera áudio via SpeechPipeline quando disponível, senão usa legado."""
+    if not texto: return ""
+    if SPEECH_PIPELINE_AVAILABLE and _speech_pipeline:
+        try:
+            return await _speech_pipeline.synthesize(texto)
+        except Exception as e:
+            logger.warning(f"SpeechPipeline falhou ({e}); fallback legado")
+    # Fallback: código legado
     t = sanitizar(texto)
     if not t: return ""
     t = melhorar_fala(t)
-    # edge-tts >= 7.x escapa todo texto e não suporta SSML custom: enviamos
-    # TEXTO PURO. Pronúncias por grafia falada ("fala") são texto e funcionam;
-    # tags <phoneme>/<break>/<say-as> seriam lidas literalmente, então não existem.
 
     async def _stream(entrada):
         c = edge_tts.Communicate(entrada, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
@@ -562,14 +590,24 @@ async def gerar_audio(texto):
 
 
 async def gerar_audio_stream(texto):
-    """Async generator que yield chunks base64 de audio conforme o edge-tts
-    gera. Clients podem tocar audio progressivamente sem esperar geracao completa.
+    """Async generator que yield chunks base64 de áudio.
 
+    Usa SpeechPipeline quando disponível, senão usa legado.
     Protocolo streaming:
         1. Bridge envia {text, corrigido, audio_streaming: True}  (texto imediato)
         2. Bridge envia {audio_chunk: <b64>} para cada chunk (play imediato)
         3. Bridge envia {audio_done: True}  (finaliza playback)
     """
+    if not texto:
+        return
+    if SPEECH_PIPELINE_AVAILABLE and _speech_pipeline:
+        try:
+            async for chunk in _speech_pipeline.stream(texto):
+                yield chunk
+            return
+        except Exception as e:
+            logger.warning(f"SpeechPipeline stream falhou ({e}); fallback legado")
+    # Fallback: código legado
     t = sanitizar(texto)
     if not t:
         return
