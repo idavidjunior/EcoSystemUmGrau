@@ -4358,5 +4358,25 @@
     "access_count": 0,
     "created_at": "2026-08-10T21:19:01.578955",
     "last_accessed": "2026-08-10T21:19:01.578955"
+  },
+  {
+    "id": 248,
+    "kind": "padrao",
+    "task": "Widget GUI pythonw (sem console)",
+    "summary": "Apps GUI pywebview no Windows devem ser lancadas via pythonw.exe (nao python.exe) para nao abrir janela de console preta ao lado. pythonw.exe esta no mesmo dir de python.exe e esta no PATH. Template do comando 'controle' atualizado: python->pythonw.",
+    "project": "",
+    "tags": [
+      "lancadas",
+      "devem",
+      "windows",
+      "pywebview",
+      "apps",
+      "gui"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-10T21:25:37.236159",
+    "last_accessed": "2026-08-10T21:25:37.236159"
   }
 ]

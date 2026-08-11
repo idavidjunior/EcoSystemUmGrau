@@ -114,7 +114,7 @@
     },
     "controle": {
       "description": "Controle: abre janela flutuante visual do Jarvis (voz ON/OFF, parar fala, microfone ON/OFF)",
-      "template": "!`python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/widget_controle_jarvis.py\"`"
+      "template": "!`pythonw \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/widget_controle_jarvis.py\"`"
     }
   },
   "agent": {
