@@ -4578,5 +4578,49 @@
     "access_count": 0,
     "created_at": "2026-08-11T05:37:26.654990",
     "last_accessed": "2026-08-11T05:37:26.654990"
+  },
+  {
+    "id": 259,
+    "kind": "padrao",
+    "task": "Conhecimento Android Manutenção",
+    "summary": "Base de conhecimento completa sobre limpeza e manutenção Android via ADB. Inclui diagnóstico, limpeza, manutenção preventiva, bateria, armazenamento, rede, segurança e desempenho. Scripts criados: android_diagnostico.py, android_limpeza.py, android_manutencao.py.",
+    "project": "",
+    "tags": [
+      "adb",
+      "desempenho",
+      "segurança",
+      "rede",
+      "armazenamento",
+      "bateria"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-11T09:18:20.780212",
+    "last_accessed": "2026-08-11T09:18:20.780212"
+  },
+  {
+    "id": 260,
+    "kind": "padrao",
+    "task": "Conhecimento Android Manutenção",
+    "summary": "Base de conhecimento completa sobre limpeza e manutenção Android via ADB. Inclui diagnóstico, limpeza, manutenção preventiva, bateria, armazenamento, rede, segurança e desempenho. Scripts criados: android_diagnostico.py, android_limpeza.py, android_manutencao.py.",
+    "project": "",
+    "tags": [
+      "android",
+      "manutencao",
+      "limpeza",
+      "adb",
+      "diagnostico",
+      "desempenho",
+      "segurança",
+      "rede",
+      "armazenamento",
+      "completa"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-11T09:19:02.282126",
+    "last_accessed": "2026-08-11T09:19:02.282126"
   }
 ]

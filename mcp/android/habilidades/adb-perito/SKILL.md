@@ -696,6 +696,38 @@ adb connect 100.64.71.9:5555
 adb install -r -g Android\VoxUmGrau\app\build\outputs\apk\debug\app-debug.apk
 ```
 
+### Diagnóstico e Manutenção Android
+
+### Scripts de Diagnóstico
+```powershell
+python scripts/android_diagnostico.py                # Diagnóstico completo
+python scripts/android_diagnostico.py --bateria      # Só bateria
+python scripts/android_diagnostico.py --armazenamento # Só armazenamento
+python scripts/android_diagnostico.py --desempenho   # Só desempenho
+python scripts/android_diagnostico.py --rede         # Só rede
+python scripts/android_diagnostico.py --seguranca    # Só segurança
+```
+
+### Scripts de Limpeza
+```powershell
+python scripts/android_limpeza.py                    # Limpeza completa
+python scripts/android_limpeza.py --cache            # Só cache
+python scripts/android_limpeza.py --downloads        # Só downloads
+python scripts/android_limpeza.py --thumbnails       # Só thumbnails
+python scripts/android_limpeza.py --logs             # Só logs
+python scripts/android_limpeza.py --apps             # Só apps
+python scripts/android_limpeza.py --seguro           # Limpeza segura (sem dados pessoais)
+```
+
+### Scripts de Manutenção Preventiva
+```powershell
+python scripts/android_manutencao.py                # Manutenção completa
+python scripts/android_manutencao.py --otimizar     # Só otimização
+python scripts/android_manutencao.py --atualizar    # Só verifica atualizações
+python scripts/android_manutencao.py --backup       # Só backup
+python scripts/android_manutencao.py --relatorio    # Gera relatório completo
+```
+
 ### Diagnóstico do VoxUmGrau
 ```powershell
 python scripts/android_diagnostics.py           # Diagnóstico completo automático
