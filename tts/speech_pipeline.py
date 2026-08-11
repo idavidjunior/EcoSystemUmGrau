@@ -232,20 +232,49 @@ class SpeechPipeline:
         return base64.b64encode(audio).decode()
 
     def save(self, text: str, path: str) -> bool:
-        """Sintetiza e salva em arquivo MP3.
+        """Sintetiza e salva em arquivo MP3. Com cache para baixa latência.
 
         Returns:
             True se salvo com sucesso.
         """
+        # Cache: verifica se já tem áudio gerado para este texto
+        import hashlib
+        cache_key = hashlib.md5(text.encode("utf-8")).hexdigest()[:12]
+        from .config import TTS_DIR
+        cache_dir = TTS_DIR.parent / "runtime" / "tts_cache"
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        cache_file = cache_dir / f"{cache_key}.mp3"
+        
+        if cache_file.exists():
+            # Cache hit — copia direto (0ms latência de rede)
+            import shutil
+            shutil.copy2(str(cache_file), path)
+            return True
+        
+        # Cache miss — gera áudio
         texto, metadata = self.prepare(text)
         if not texto:
             return False
 
         tts = self._get_tts()
-        return tts.save_sync(texto, path)
+        ok = tts.save_sync(texto, path)
+        
+        if ok:
+            # Salva no cache para próximas vezes
+            import shutil
+            shutil.copy2(path, str(cache_file))
+            # Limpa cache antigo (máx 50 arquivos)
+            try:
+                arquivos = sorted(cache_dir.glob("*.mp3"), key=lambda f: f.stat().st_atime)
+                while len(arquivos) > 50:
+                    arquivos.pop(0).unlink(missing_ok=True)
+            except Exception:
+                pass
+        
+        return ok
 
     def speak(self, text: str, block: bool = True) -> bool:
-        """Sintetiza e toca o áudio (para uso local no PC).
+        """Sintetiza e toca o áudio (para uso local no PC). Com cache para baixa latência.
 
         Args:
             text: Texto a ser falado.
@@ -254,23 +283,44 @@ class SpeechPipeline:
         Returns:
             True se reproduziu com sucesso.
         """
-        texto, metadata = self.prepare(text)
-        if not texto:
-            return False
-
-        tts = self._get_tts()
-        audio = tts.synthesize_sync(texto)
-        if not audio:
-            return False
-
-        # Salva em arquivo temporário e toca via MCI
-        import tempfile
-        import time
-        import ctypes
-
+        # Cache: verifica se já tem áudio gerado para este texto
+        import hashlib
+        cache_key = hashlib.md5(text.encode("utf-8")).hexdigest()[:12]
+        from .config import TTS_DIR
+        cache_dir = TTS_DIR.parent / "runtime" / "tts_cache"
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        cache_file = cache_dir / f"{cache_key}.mp3"
+        
         mp3_path = Path(tempfile.gettempdir()) / "speech_pipeline_fala.mp3"
-        with open(mp3_path, 'wb') as f:
-            f.write(audio)
+        
+        if cache_file.exists():
+            # Cache hit — copia direto
+            import shutil
+            shutil.copy2(str(cache_file), str(mp3_path))
+        else:
+            # Cache miss — gera áudio
+            texto, metadata = self.prepare(text)
+            if not texto:
+                return False
+
+            tts = self._get_tts()
+            audio = tts.synthesize_sync(texto)
+            if not audio:
+                return False
+
+            with open(mp3_path, 'wb') as f:
+                f.write(audio)
+            
+            # Salva no cache
+            import shutil
+            shutil.copy2(str(mp3_path), str(cache_file))
+            # Limpa cache antigo
+            try:
+                arquivos = sorted(cache_dir.glob("*.mp3"), key=lambda f: f.stat().st_atime)
+                while len(arquivos) > 50:
+                    arquivos.pop(0).unlink(missing_ok=True)
+            except Exception:
+                pass
 
         mci = ctypes.windll.winmm.mciSendStringW
         alias = f"sp{int(time.time() * 1000)}"

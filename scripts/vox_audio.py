@@ -104,6 +104,16 @@ def _parar_mci_tudo():
         pass
 
 
+def _limpar_cache_tts():
+    """Remove arquivos antigos do cache TTS se exceder o limite."""
+    try:
+        arquivos = sorted(AUDIO_CACHE_DIR.glob("*.mp3"), key=lambda f: f.stat().st_atime)
+        while len(arquivos) > AUDIO_CACHE_MAX:
+            arquivos.pop(0).unlink(missing_ok=True)
+    except Exception:
+        pass
+
+
 def _falar(texto, parar_evento=None):
     """Gera MP3 e toca via MCI. Otimizado para baixa latência com cache."""
     if not texto or not texto.strip():
