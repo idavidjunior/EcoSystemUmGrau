@@ -4478,5 +4478,65 @@
     "access_count": 0,
     "created_at": "2026-08-10T22:52:55.633395",
     "last_accessed": "2026-08-10T22:52:55.633395"
+  },
+  {
+    "id": 254,
+    "kind": "decisao",
+    "task": "Aprendizado de traducao pt-BR (36 cards + clausula petrea)",
+    "summary": "Ecossistema aprendeu a traduzir textos e audios para pt-BR: 36 cards (fontes traducao, traducao-texto, traducao-audio, pt-br, localizacao) no knowledge_graph (208->244), cluster-hub-traducao no vault, mapa-mestre 2026-08-10-traducao-pt-br-mapa-do-conhecimento. Nova CLAUSULA PETREA - TRADUCAO PARA O PORTUGUES DO BRASIL (TEXTOS E AUDIOS) obriga uso sempre que necessario/solicitado. Commit a08879e1.",
+    "project": "",
+    "tags": [
+      "conhecimento",
+      "mapa",
+      "2026",
+      "mestre",
+      "vault",
+      "hub"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-10T23:08:14.575039",
+    "last_accessed": "2026-08-10T23:08:14.575039"
+  },
+  {
+    "id": 255,
+    "kind": "padrao",
+    "task": "Corrida com runtime LER ao editar knowledge_graph",
+    "summary": "Ao inserir cards diretamente no ler-runtime/knowledge/knowledge_graph.json, o runtime LER/vigilante pode reconsolidar o grafo a partir de processos com versao antiga em memoria e sobrescrever a edicao. Padrao seguro: fazer o ingest + consolidate imediato (carimba a nova versao) + generate-obsidian-notes + commit+push rapido, e criar aprendizados em conhecimento/aprendizados (o watcher consolida lendo o disco atual, preservando).",
+    "project": "",
+    "tags": [
+      "preservando",
+      "atual",
+      "disco",
+      "lendo",
+      "consolida",
+      "watcher"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-10T23:08:51.114392",
+    "last_accessed": "2026-08-10T23:08:51.114392"
+  },
+  {
+    "id": 256,
+    "kind": "erro",
+    "task": "Bug drag widget: .drag 0-height + window.screenX unreliable",
+    "summary": ".drag{flex:1;cursor:move;} tinha altura 0 (div vazia em flex container align-items:center) — elemento nao clicavel, mousedown nunca fazia. Fix: min-height:22px. window.screenX/screenY retornam 0 no WebView2 — fix: Python sincroniza window.__winPosX/Y via evaluate_js no poller, JS usa essa var em vez de window.screenX. Arquitetura Python-Driven confirma: evaluate_js (Python-to-JS) e localStorage (JS-to-Python) sao a combinacao confiavel. PID 6376, controle.bat, janela visivel.",
+    "project": "",
+    "tags": [
+      "items",
+      "align",
+      "container",
+      "confiavel",
+      "combinacao",
+      "vazia"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-10T23:12:55.513136",
+    "last_accessed": "2026-08-10T23:12:55.513136"
   }
 ]

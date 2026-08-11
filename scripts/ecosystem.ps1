@@ -102,14 +102,8 @@ function Invoke-Sync {
     Write-OK "CONHECIMENTO.md atualizado"
     python "$ecoDir\scripts\generate-obsidian-notes.py" 2>&1 | ForEach-Object { Write-Info "Obsidian: $_" }
 
-    $status = git status --porcelain
-    if ($status) {
-        $status | ForEach-Object { Write-Info $_ }
-        git add -A
-        git commit -m "[ecosystem sync] $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
-        git push 2>&1 | ForEach-Object { Write-Info ($_ -replace '.*To https', 'To https') }
-        Write-OK "Commit + push realizado"
-    } else { Write-OK "Nada a commitar" }
+    # PONTO UNICO DE PERSISTENCIA: commit via gate (respeita modo manual)
+    & "$PSScriptRoot\persistencia.ps1" run-sync -Repo eco -Label "ecosystem sync" -Push | ForEach-Object { Write-Info $_ }
     Pop-Location
 
     Sync-DeployConfig
@@ -120,17 +114,7 @@ function Invoke-Sync {
         if (-not (Test-Path "$($proj.FullName)\.git")) { continue }
         if ($proj.FullName -eq $ecoDir) { continue }
         Write-Step "Sincronizando $($proj.Name)"
-        Push-Location $proj.FullName
-        git pull --ff-only 2>&1 | ForEach-Object { Write-Info $_ }
-        $status = git status --porcelain
-        if ($status) {
-            $status | ForEach-Object { Write-Info $_ }
-            git add -A
-            git commit -m "[auto] $($proj.Name) - $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
-            git push 2>&1 | ForEach-Object { Write-Info ($_ -replace '.*To https', 'To https') }
-            Write-OK "Commit + push realizado"
-        } else { Write-OK "Nada a commitar" }
-        Pop-Location
+        & "$PSScriptRoot\persistencia.ps1" run-sync -Repo $proj.FullName -Label "ecosystem/$($proj.Name)" -Push | ForEach-Object { Write-Info $_ }
     }
 }
 

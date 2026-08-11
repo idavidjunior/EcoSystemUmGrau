@@ -205,38 +205,11 @@ function Sync-GitRepo {
     $now = Get-Date
     if (($now - $LastSync.Value).TotalSeconds -lt $Cooldown) { return $false }
 
-    try {
-        Push-Location $Path -ErrorAction Stop
-
-        # PULL primeiro (traz mudancas remotas)
-        if ($Push) {
-            $pullOut = git pull --ff-only 2>&1
-            if ($LASTEXITCODE -eq 0 -and $pullOut -match "Fast-forward|Updating") {
-                Write-Log "Git pull ($Label): ${pullOut}"
-            }
-        }
-
-        # Depois COMMIT + PUSH (se houver mudancas locais)
-        $status = git status --porcelain 2>&1 | Out-String
-        if ($status.Trim()) {
-        git add -A 2>&1 | Out-Null
-        $dateStr = Get-Date -Format "yyyy-MM-dd HH:mm"
-        git commit -m "[auto] $Label - $dateStr" 2>&1 | Out-Null
-        if ($Push) {
-            $pushOut = git push 2>&1
-            Write-Log "Git sync ($Label): commit + push OK"
-        } else {
-            Write-Log "Git sync ($Label): commit local OK"
-        }
-        Pop-Location
-        $LastSync.Value = $now
-        return $true
-    }
-
-    Pop-Location
+    # PONTO UNICO DE PERSISTENCIA: todo commit/push passa pelo gate.
+    # Em modo manual, o gate retem as pendencias (nada e commitado).
+    & "$PSScriptRoot\persistencia.ps1" run-sync -Repo $Path -Label $Label -Push:$Push | Out-Null
     $LastSync.Value = $now
-    return $false
-} catch { Write-Log "Git sync ($Label) ignorado: $_"; return $false }
+    return $true
 }
 
 # Sincroniza um repo de projeto Android (pull + commit + push)
@@ -247,23 +220,9 @@ function Sync-ProjectRepo {
     $now = Get-Date
     if (-not $Force -and ($now - $proj.LastSync).TotalSeconds -lt $projectGitInterval) { return }
 
-    try {
-        Push-Location $Path -ErrorAction Stop
-        # pull
-        $pullOut = git pull --ff-only 2>&1
-        if ($LASTEXITCODE -eq 0 -and $pullOut -match "Fast-forward|Updating") { Write-Log "Git pull ($($proj.Name)): $pullOut" }
-        # commit
-        $status = git status --porcelain 2>&1 | Out-String
-        if ($status.Trim()) {
-            git add -A 2>&1 | Out-Null
-            $dateStr = Get-Date -Format "yyyy-MM-dd HH:mm"
-            git commit -m "[auto] $($proj.Name) - $dateStr" 2>&1 | Out-Null
-            $pushOut = git push 2>&1
-            Write-Log "Git sync ($($proj.Name)): commit + push OK"
-        }
-        Pop-Location
-        $proj.LastSync = $now
-    } catch { Write-Log "Git sync ($($proj.Name)) ignorado: $_" }
+    # PONTO UNICO DE PERSISTENCIA: mesmo gate usado para projetos Android
+    & "$PSScriptRoot\persistencia.ps1" run-sync -Repo $Path -Label "Android/$($proj.Name)" -Push | Out-Null
+    $proj.LastSync = $now
 }
 
 Write-Log "Vigilante pronto (FSW + git sync a cada ${gitInterval}s)"

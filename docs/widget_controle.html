@@ -7,7 +7,7 @@ background:#1e1e2e;color:#cdd6f4;width:100%;height:100%;}
 .topbar{background:#313244;height:22px;cursor:move;
 display:flex;align-items:center;justify-content:space-between;
 padding:0 8px;font-size:11px;color:#a6adc8;user-select:none;}
-.drag{flex:1;cursor:move;}
+  .drag{flex:1;cursor:move;min-height:22px;}
 .title{display:flex;align-items:center;gap:5px;font-weight:600;}
 .close{background:#f38ba8;width:14px;height:14px;border-radius:3px;
 display:flex;align-items:center;justify-content:center;
@@ -69,14 +69,18 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
   document.getElementById('closeBtn').addEventListener('click', function(){ clickSet('close'); });
 
   // ---- drag da barra superior: JS escreve posicao -> Python faz win.move ----
+  // window.__winPosX/Y sao inicializados pelo Python (confiaveis no WebView2),
+  // pois window.screenX/screenY costumam retornar 0 nesta plataforma.
   var drag=null, msx=0, msy=0;
   document.getElementById('drag').addEventListener('mousedown', function(e){
-    drag={x:e.screenX,y:e.screenY}; msx=window.screenX||0; msy=window.screenY||0;
+    drag={x:e.screenX,y:e.screenY};
+    msx=window.__winPosX||window.screenX||0; msy=window.__winPosY||window.screenY||0;
     e.preventDefault();
   });
   document.addEventListener('mousemove', function(e){
     if(!drag) return;
     msx = msx + (e.screenX - drag.x); msy = msy + (e.screenY - drag.y);
+    window.__winPosX=Math.round(msx); window.__winPosY=Math.round(msy);
     localStorage.setItem('jarvis_move', JSON.stringify({x:Math.round(msx),y:Math.round(msy)}));
     drag={x:e.screenX,y:e.screenY};
   });

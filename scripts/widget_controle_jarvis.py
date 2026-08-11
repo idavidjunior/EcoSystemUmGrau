@@ -485,7 +485,7 @@ def main() -> int:
     _janela_global = win
 
     stop = threading.Event()
-    threading.Thread(target=_poller, args=(win, stop), daemon=True).start()
+    threading.Thread(target=_poller, args=(win, stop, x, y), daemon=True).start()
 
     try:
         webview.start(debug=False)
