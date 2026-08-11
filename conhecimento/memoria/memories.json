@@ -4338,5 +4338,25 @@
     "access_count": 0,
     "created_at": "2026-08-10T07:28:01.667071",
     "last_accessed": "2026-08-10T07:28:01.667071"
+  },
+  {
+    "id": 247,
+    "kind": "decisao",
+    "task": "Widget controle Jarvis flutuante pywebview",
+    "summary": "Criado scripts/widget_controle_jarvis.py: janela flutuante pywebview (on_top/frameless/drag) controlando voz (via jarvis_audio.py), parar fala (STOP ECO) e micromfone (dialogo.py --modo vad). Estado em tempo real via polling 1s do runtime/narracao_estado.json + runtime/mic_estado.json. Registrado comando 'controle' em opencode.jsonc. pywebview local usa on_top (nao topmost). Preflight OK.",
+    "project": "",
+    "tags": [
+      "audio",
+      "voz",
+      "jarvis",
+      "scripts",
+      "controlando",
+      "drag"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-10T21:19:01.578955",
+    "last_accessed": "2026-08-10T21:19:01.578955"
   }
 ]
