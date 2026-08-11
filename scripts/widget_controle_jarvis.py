@@ -494,7 +494,6 @@ def main() -> int:
         resizable=True,
         frameless=True,
         easy_drag=False,
-        shadow=False,
         focus=False,
         on_top=True,
         js_api=bridge,
