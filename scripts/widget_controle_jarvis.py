@@ -463,7 +463,7 @@ def main() -> int:
         easy_drag=False,
         shadow=False,
         focus=False,
-        topmost=True,
+        on_top=True,
         js_api=bridge,
         background_color=BG,
     )
