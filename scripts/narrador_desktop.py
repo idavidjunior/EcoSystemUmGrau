@@ -51,7 +51,7 @@ CONTROLE = ROOT / "runtime" / "narracao_estado.json"
 VOX = ROOT / "scripts" / "vox_audio.py"
 LOG = ROOT / "scripts" / "narrador_desktop_log.txt"
 EXCLUIR_PADRAO = ["watchdog-health"]
-DEBOUNCE_S = 1.5
+DEBOUNCE_S = 0.5
 FALAR_TIMEOUT = 90
 
 
@@ -244,7 +244,7 @@ def teste_audio():
 def main():
     ap = argparse.ArgumentParser(description="Narrador de voz do Jarvis no opencode desktop")
     ap.add_argument("--teste", action="store_true", help="fala uma frase de teste e sai")
-    ap.add_argument("--intervalo", type=float, default=2.0, help="segundos entre leituras do banco")
+    ap.add_argument("--intervalo", type=float, default=0.5, help="segundos entre leituras do banco")
     ap.add_argument("--voz", choices=["assistant", "user", "ambos"], default="assistant",
                     help="quem narrar (padrao: assistant)")
     ap.add_argument("--excluir", default=",".join(EXCLUIR_PADRAO),

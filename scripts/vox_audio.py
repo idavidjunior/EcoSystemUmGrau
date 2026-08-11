@@ -36,6 +36,11 @@ TTS_VOICE = "pt-BR-AntonioNeural"
 TTS_RATE = "+0%"
 TTS_PITCH = "+0Hz"
 
+# Cache de áudio para frases comuns (elimina latência de rede)
+AUDIO_CACHE_DIR = Path(tempfile.gettempdir()) / "jarvis_tts_cache"
+AUDIO_CACHE_DIR.mkdir(exist_ok=True)
+AUDIO_CACHE_MAX = 50  # máximo de arquivos em cache
+
 WHISPER_MODEL = os.environ.get("VOX_WHISPER_MODEL", "base")
 WHISPER_DEVICE = "cpu"
 WHISPER_COMPUTE = "int8"
@@ -100,7 +105,7 @@ def _parar_mci_tudo():
 
 
 def _falar(texto, parar_evento=None):
-    """Gera MP3 e toca via MCI. Streaming: toca enquanto gera (reduz latência)."""
+    """Gera MP3 e toca via MCI. Otimizado para baixa latência com cache."""
     if not texto or not texto.strip():
         return
 
@@ -114,19 +119,42 @@ def _falar(texto, parar_evento=None):
         except Exception as e:
             print(f"[SpeechPipeline falhou: {e}]")
 
-    # Streaming: gera áudio em chunks e toca assim que tiver buffer suficiente
-    mp3 = Path(tempfile.gettempdir()) / "vox_fala_stream.mp3"
-    try:
-        asyncio.run(_tts_stream_e_tocar(texto, str(mp3), parar_evento))
-    except Exception as e:
-        print(f"[erro stream tts] {e}")
-        # Fallback: método legado (batch)
-        mp3_batch = Path(tempfile.gettempdir()) / "vox_fala.mp3"
+    # Cache: verifica se já tem áudio gerado para este texto
+    import hashlib
+    cache_key = hashlib.md5(texto.encode("utf-8")).hexdigest()[:12]
+    cache_file = AUDIO_CACHE_DIR / f"{cache_key}.mp3"
+    
+    if cache_file.exists():
+        # Áudio em cache — toca instantaneamente (0ms latência)
         try:
-            asyncio.run(_tts_salvar(texto, str(mp3_batch)))
-            _tocar_mci(str(mp3_batch), parar_evento=parar_evento)
-        except Exception as e2:
-            print(f"[erro fallback tts] {e2}")
+            _tocar_mci(str(cache_file), parar_evento=parar_evento)
+            return
+        except Exception:
+            pass  # cache corrompido, gera de novo
+    
+    # Fallback: gera e toca diretamente
+    mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
+    try:
+        asyncio.run(_tts_salvar(texto, str(mp3)))
+    except Exception as e:
+        print(f"[erro tts] {e}")
+        return
+    if not mp3.exists():
+        return
+    
+    # Salva no cache para próximas vezes
+    try:
+        import shutil
+        shutil.copy2(str(mp3), str(cache_file))
+        # Limpa cache antigo se muito grande
+        _limpar_cache_tts()
+    except Exception:
+        pass
+    
+    try:
+        _tocar_mci(str(mp3), parar_evento=parar_evento)
+    except Exception as e:
+        print(f"[erro play] {e}")
 
 
 async def _tts_stream_e_tocar(texto, caminho_mp3, parar_evento=None):
@@ -136,7 +164,6 @@ async def _tts_stream_e_tocar(texto, caminho_mp3, parar_evento=None):
     toca os primeiros chunks enquanto o resto ainda está sendo gerado.
     """
     import edge_tts
-    import threading
 
     # Prepara communicate
     try:
@@ -153,8 +180,9 @@ async def _tts_stream_e_tocar(texto, caminho_mp3, parar_evento=None):
     # Coleta chunks de áudio
     audio_chunks = []
     total_bytes = 0
-    PREBUFFER_BYTES = 8000  # ~8KB = ~200ms de áudio (suficiente para começar a tocar)
+    PREBUFFER_BYTES = 4000  # ~4KB = ~100ms de áudio (início mais rápido)
     started_playing = False
+    play_thread = None
     
     async for chunk in communicate.stream():
         if parar_evento and parar_evento.is_set():
@@ -163,23 +191,24 @@ async def _tts_stream_e_tocar(texto, caminho_mp3, parar_evento=None):
             audio_chunks.append(chunk["data"])
             total_bytes += len(chunk["data"])
             
-            # Quando tiver buffer suficiente, começa a tocar em thread separada
+            # Quando tiver buffer suficiente, salva e toca em thread separada
             if not started_playing and total_bytes >= PREBUFFER_BYTES:
                 started_playing = True
-                # Salva o que já tem e começa a tocar
+                # Salva o que já tem
                 with open(caminho_mp3, "wb") as f:
                     for c in audio_chunks:
                         f.write(c)
                 # Toca em background enquanto continua recebendo
-                play_thread = threading.Thread(
-                    target=_tocar_mci, 
-                    args=(caminho_mp3,), 
-                    kwargs={"parar_evento": parar_evento},
-                    daemon=True
-                )
-                play_thread.start()
+                if play_thread is None or not play_thread.is_alive():
+                    play_thread = threading.Thread(
+                        target=_tocar_mci, 
+                        args=(caminho_mp3,), 
+                        kwargs={"parar_evento": parar_evento},
+                        daemon=True
+                    )
+                    play_thread.start()
     
-    # Salva áudio completo (para futuras reproduções ou cache)
+    # Salva áudio completo
     if audio_chunks:
         with open(caminho_mp3, "wb") as f:
             for c in audio_chunks:
@@ -188,6 +217,10 @@ async def _tts_stream_e_tocar(texto, caminho_mp3, parar_evento=None):
     # Se não deu para tocar streaming (texto muito curto), toca agora
     if not started_playing and audio_chunks:
         _tocar_mci(caminho_mp3, parar_evento=parar_evento)
+    
+    # Espera thread de reprodução terminar
+    if play_thread and play_thread.is_alive():
+        play_thread.join(timeout=10)
 
 
 async def _tts_salvar(texto, caminho):
