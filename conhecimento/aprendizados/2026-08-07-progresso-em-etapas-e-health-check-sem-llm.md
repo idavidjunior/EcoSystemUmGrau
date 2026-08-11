@@ -6,7 +6,3 @@ contexto: Usuário pediu mais detalhes de processamento no app (em vez do genér
 decisao: 1) Adicionado _enviar_progresso(ws, etapa) na bridge com envios 'Entendendo sua solicitação', 'Reconectando ao assistente' e 'Criando sua resposta em áudio'. 2) App (VoxViewModel.kt) tem estado progressoEtapa, trata campo 'progresso', inicia com 'Enviando sua mensagem'/'Enviando imagem' e limpa em 3 pontos de resposta. 3) Corrigido ConnectionClosedOK na saudação (try/except com return) — cliente que desconecta durante geração não crasha mais o handler. 4) Health-check agora se identifica ({"tipo":"ping","origem":"health-check"}) e a bridge responde pong e retorna SEM gerar saudação LLM (wait_for 3s na primeira mensagem).
 impacto: Fluxo validado via WebSocket: ACK → PROGRESSO 'Criando sua resposta em áudio' → AUDIO DONE. Health-check atendido em ~3s sem gastar LLM (validado em ciclos de 60s). Bridge reiniciada (PID 3412), universal_bridge reiniciado (PID 10140) para carregar novo core.py. APK recompilado (BUILD SUCCESSFUL 1m18s) e instalado no dispositivo (Streamed Install Success); app enviando mensagens reais. Observação: saudação LLM de reconexão pode levar 30-70s — app Android mantém conexão via heartbeat próprio.
 status: resolvido
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

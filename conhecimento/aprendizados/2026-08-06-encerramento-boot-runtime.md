@@ -20,7 +20,3 @@ Apos confirmacao do usuario sem nova solicitacao, registrar aprendizado (memoria
 - Estado restaurado automaticamente (projeto ativo, objetivo, ultima tarefa)
 - Memoria carregada para a sessao
 - Encerramento sem tarefa explicita ainda registra padrao e atualiza estado
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

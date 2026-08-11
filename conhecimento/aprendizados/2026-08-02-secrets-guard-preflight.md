@@ -31,5 +31,4 @@ Adicionada a secao [6] Secrets Guard ao `scripts/preflight_check.py`:
 
 ## Conexoes
 
-- [[cluster-hub-programacao]]
 - [[segurança-owasp-top-10-aplicado-na-prática]]

@@ -27,7 +27,3 @@ domínio ou frequência de uso.
 - `python scripts/memory_semantic.py build` → 612 docs, vocab 41015.
 - Buscas reais validam o novo ranking (recência + domínio).
 - Bridge (`jarvis_bridge.py:1171`) já usa o módulo cacheado — nova lógica vale sem mudança na ponte.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

@@ -11,7 +11,3 @@
 - test_smoke.py: 1 marcadores
 - consolidate_build_pipeline.py: 3 marcadores
 - flutter_orchestrator.py: 6 marcadores
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

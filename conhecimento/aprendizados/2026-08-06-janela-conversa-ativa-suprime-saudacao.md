@@ -9,7 +9,3 @@ arquivos: [scripts/jarvis_bridge.py]
 funcoes: [_ultima_atividade_minutos, lidar]
 referencias: [conversa_unica.json, clausula_petrea_continuidade_contexto_04_08_2026]
 ---
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

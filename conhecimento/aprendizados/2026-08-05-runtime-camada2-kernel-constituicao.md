@@ -53,4 +53,3 @@ controla regras, prioridades, contratos, formatos, sequência e autorização.
 ## Conexoes
 
 - [[arquitetura-estilos-de-arquitetura-monólito-soa-microserviço]]
-- [[cluster-hub-programacao]]

@@ -65,4 +65,3 @@ SeguranÃ§a: `safe_resolve()` bloqueia traversal de path fora do ecossistema.
 ## Conexoes
 
 - [[2026-07-27-teste-do-vigilante-automático-teste-do-sistema-de]]
-- [[cluster-hub-programacao]]

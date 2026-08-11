@@ -47,7 +47,3 @@ Janela flutuante pywebview (`scripts/widget_controle_jarvis.py`) com:
   ou atalho (`hotkey_pause_win32.py`) refletem no widget em ≤1s.
 - Comando `controle` disponível no opencode (CLI/desktop).
 - Não abre outra sessão: o widget é apenas uma VISÃO do estado real.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

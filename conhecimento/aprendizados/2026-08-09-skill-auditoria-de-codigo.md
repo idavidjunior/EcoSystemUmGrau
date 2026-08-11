@@ -43,6 +43,5 @@ deploy do opencode.
 
 ## Conexoes
 
-- [[cluster-hub-programacao]]
 - [[debugging-em-cascata-reversa]]
 - [[maxiterations-hard-stop-forca-parada-prematura-mesmo-sem-obj]]

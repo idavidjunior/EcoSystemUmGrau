@@ -40,5 +40,4 @@ Em máquinas com pouca RAM (<8GB) e builds Android, o heap do Gradle precisa ser
 
 ## Conexoes
 
-- [[cluster-hub-android]]
 - [[performance-profiling-primeiro-onde-o-tempo-realmente-vai]]

@@ -66,7 +66,3 @@ Toda ocorrencia de `$Pid`/`$PID` como variavel propria e PROIBIDA no ecossistema
 - #130 (padrao): Watchdog resiliente com lock de PID e protecao do desktop.
 - #131 (padrao): Saudacoes inteligentes (reconexao vs primeira vez).
 - #133 (erro): Bug do parametro `$Pid` (variavel automatica read-only).
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

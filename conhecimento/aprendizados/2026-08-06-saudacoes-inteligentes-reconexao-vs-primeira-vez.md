@@ -52,7 +52,3 @@ Qualquer sinal de atividade recente => RECONEXAO. Ausencia total => PRIMEIRA VEZ
 ## Memorias relacionadas
 - #131 (padrao): Saudacoes inteligentes (reconexao vs primeira vez).
 - #129 (decisao): Clausula petrea — protecao do desktop e resiliencia da bridge.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

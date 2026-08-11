@@ -7,7 +7,3 @@ decisao: Implementado botao "Assistir na TV" na DetailView que delega ao Web Vid
 impacto: App nao embute reprodutor nem agregador de fontes; WVC faz a ponte com Chromecast/Roku/Fire TV/DLNA. url_launcher ^6.3.0 adicionado.
 validacao: flutter analyze limpo; 5 testes passando (novos: botao presente na DetailView + botao dispara intent do pacote com.instantbits.cast.webvideo); APK debug instalado no Redmi (mock local), WVC ja instalado no aparelho.
 detalhes: Package com.instantbits.cast.webvideo. Intent oficial: ACTION_VIEW + video/* + setPackage. Scheme: wvc-x-callback://open?url=<encoded>. Play Store fallback: https://play.google.com/store/apps/details?id=com.instantbits.cast.webvideo. O modelo Midia nao ganhou campo video_url (nao ha URL no catalogo); o bridge aceita videoUrl opcional para uso futuro.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

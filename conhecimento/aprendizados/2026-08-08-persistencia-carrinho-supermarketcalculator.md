@@ -72,7 +72,3 @@ O build.ps1 original hardcodava build-tools 36.0.0 e android-36 (inexistentes na
 - Build: `.\build.ps1 -Release -OutputName "SupermarketCalculator-v1.4.0"`; instalado com `adb install -r` (update por cima da v1.3.0, dados preservados — mesma assinatura).
 - APK publicado: `releases/SupermarketCalculator-v1.4.0.apk`.
 - **Nota de teste:** depurar o app instalado (release) com APK debug falha com `INSTALL_FAILED_UPDATE_INCOMPATIBLE` (assinaturas diferentes). Sempre gerar release para testes de funcionalidade sobre a versão instalada.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

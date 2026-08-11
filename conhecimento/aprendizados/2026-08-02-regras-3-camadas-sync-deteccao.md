@@ -46,7 +46,3 @@ Comandos:
 - Parse de regras por `#` nÃ­vel 1 + filtro por padrÃ£o de tÃ­tulo evita capturar seÃ§Ãµes
   intermediÃ¡rias (ex.: FILOSOFIA/HIERARQUIA) â€” primeiro rascunho inchou AGENTS.md para
   633 linhas; corrigido para 126.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

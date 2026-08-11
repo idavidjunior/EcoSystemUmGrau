@@ -31,7 +31,3 @@ Toda personalizacao do widget do grafo persiste em localStorage:
 
 - vis-network: `moveTo`/`fit`/`focus` NAO disparam 'zoom'/'dragEnd' (sao so do usuario); usar 'animationFinished' para animacoes programaticas.
 - Restore de camera/filtro DEVE rodar apos o fit inicial, senao o enquadramento sobrescreve a visao salva.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

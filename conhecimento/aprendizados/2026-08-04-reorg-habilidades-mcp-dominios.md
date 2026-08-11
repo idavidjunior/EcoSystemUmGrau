@@ -38,4 +38,3 @@ Arquitetura MCP com habilidades dentro de domínios — clone recursivo funciona
 ## Conexoes
 
 - [[arquitetura-estilos-de-arquitetura-monólito-soa-microserviço]]
-- [[cluster-hub-programacao]]

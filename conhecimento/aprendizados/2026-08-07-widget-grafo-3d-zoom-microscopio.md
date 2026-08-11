@@ -103,7 +103,3 @@ python scripts/widget_grafo.py
 - [[2026-08-06-widget-grafo-correcao-bugs-e-teste-completo]] — correções anteriores (TDZ, chaves duplas)
 - [[2026-08-05-fisica-animacao-grafo-orbital]] — deriva orbital
 - [[2026-08-04-widget-grafo-turbinado]] — controles velocidade, tooltips, temas
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

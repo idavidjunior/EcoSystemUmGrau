@@ -44,7 +44,3 @@ Padrões aprendidos: `opencode`->ecossistema (85), `debugging`->cognicao (12),
 - Aprender sob o rótulo 'geral' cria ruído; só aprenda com clusters conhecidos.
 - `treinar(reset=True)` por padrão para não inflar contadores entre execuções.
 - O slug/título é fonte rica quando tags estão vazias (2 casos resolvidos).
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

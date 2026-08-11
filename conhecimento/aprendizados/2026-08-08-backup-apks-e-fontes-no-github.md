@@ -67,7 +67,3 @@ do VoxUmGrau ficava em `app/build/` (ignorado). Ou seja: não havia backup dos A
   mesmo APK que o `build.ps1` gera), nunca duplicatas soltas na raiz.
 - Rodar `build.ps1` do VoxUmGrau faz auto-bump de `version.properties`/`build.gradle.kts`
   (versionCode++); o commit deve incluir esses arquivos junto com o APK.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

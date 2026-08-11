@@ -22,5 +22,4 @@ Ecossistema evolui sozinho. Cada sessÃ£o adiciona ao conhecimento coletivo aut
 
 ## Conexoes
 
-- [[cluster-hub-programacao]]
 - [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]

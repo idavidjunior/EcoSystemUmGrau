@@ -4378,5 +4378,65 @@
     "access_count": 0,
     "created_at": "2026-08-10T21:25:37.236159",
     "last_accessed": "2026-08-10T21:25:37.236159"
+  },
+  {
+    "id": 249,
+    "kind": "erro",
+    "task": "Bug shadow=False quebra bridge pywebview",
+    "summary": "Em pywebview 6.2.1/WebView2, passar shadow=False cria janela layered transparente e quebra a injecao de window.pywebview.api no contexto da pagina (erro 'sem bridge' -> nenhum botao funciona). Solucao: omitir shadow=False (espelhar widget_grafo.py). Tambem: pythonw sobrevive com 'script.py' (arquivo), mas morre com 'pythonw -c' (inline). Launchers .bat devem usar pythonw script.py.",
+    "project": "",
+    "tags": [
+      "window",
+      "injecao",
+      "transparente",
+      "layered",
+      "janela",
+      "cria"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-10T22:04:55.432302",
+    "last_accessed": "2026-08-10T22:04:55.432302"
+  },
+  {
+    "id": 250,
+    "kind": "episodio",
+    "task": "decisao",
+    "summary": "Conhecimento de programacao do ecossistema: FONTE UNICA = ler-runtime/knowledge/knowledge_graph.json (campo patterns). Notas do vault (conhecimento/notas/*) sao GERADAS (nunca editar a mao; gerador remove orfaos). Novo cluster 'programacao' no generate-obsidian-notes.py com 27 sources (linguagens + dominios). Precedencia do mapeamento estatico por source sobre o ClusterMapper aprendido. 105 knowledge cards (12 linguagens + 11 dominios engenharia/IT) + mapa-mestre em conhecimento/aprendizados/2026-08-10-programacao-mapa-do-conhecimento.md como indice navegavel (sem duplicar cards).",
+    "project": "",
+    "tags": [
+      "2026",
+      "aprendizados",
+      "mapa",
+      "mestre",
+      "engenharia",
+      "conhecimento"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-10T22:05:44.964128",
+    "last_accessed": "2026-08-10T22:05:44.964128"
+  },
+  {
+    "id": 251,
+    "kind": "episodio",
+    "task": "padrao",
+    "summary": "Gerador de vault (generate-obsidian-notes.py) corrigido: (1) match de cluster por nome de arquivo deve usar PALAVRA INTEIRA com regex (fonte 'c' da linguagem C casava em qualquer palavra, criando links falsos); (2) secao ## Conexoes em aprendizados deve ser gravada mesmo quando links==[] (comparar com o conteudo ORIGINAL do disco, nao com o ja-limpado), senao links obsoletos persistem. Regra: todo aprendizado/card novo entra no knowledge_graph.json e o vault e regerado.",
+    "project": "",
+    "tags": [
+      "falsos",
+      "criando",
+      "persistem",
+      "obsoletos",
+      "qualquer",
+      "casava"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-10T22:06:02.059869",
+    "last_accessed": "2026-08-10T22:06:02.059869"
   }
 ]

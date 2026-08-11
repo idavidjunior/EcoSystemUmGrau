@@ -34,7 +34,3 @@ Get-NetTCPConnection -LocalPort 8765 -State Established
 # Estado salvo da ultima conexao
 Get-Content scripts\bridge_estado.json
 ```
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

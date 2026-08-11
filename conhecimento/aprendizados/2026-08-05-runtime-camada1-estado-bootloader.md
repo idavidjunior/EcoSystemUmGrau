@@ -48,4 +48,3 @@ ecossistema. Camada 1 = estado persistente + boot automático em toda sessão.
 ## Conexoes
 
 - [[arquitetura-estilos-de-arquitetura-monólito-soa-microserviço]]
-- [[cluster-hub-programacao]]

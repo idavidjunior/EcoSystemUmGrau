@@ -17,5 +17,4 @@ git clone --recursive do EcoSystemUmGrau agora baixa todos os projetos automatic
 
 ## Conexoes
 
-- [[cluster-hub-programacao]]
 - [[git-fluxos-de-trabalho-trunk-based-e-git-flow-e-quando-usar-]]

@@ -67,4 +67,3 @@ criticidade).
 ## Conexoes
 
 - [[arquitetura-estilos-de-arquitetura-monólito-soa-microserviço]]
-- [[cluster-hub-programacao]]

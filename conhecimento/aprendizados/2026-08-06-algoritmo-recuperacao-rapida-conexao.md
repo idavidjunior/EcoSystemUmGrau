@@ -156,7 +156,3 @@ Com essas 3 metricas no log, ajustar:
 - Pesquisa concluida: 06/08/2026 14:40
 - Aprendizado registrado na memoria: #111 (padrao)
 - Implementacao: pendente aprovacao do usuario para comecar pela camada 1.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

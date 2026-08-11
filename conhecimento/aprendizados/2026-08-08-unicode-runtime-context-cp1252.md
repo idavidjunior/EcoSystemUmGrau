@@ -42,7 +42,3 @@ Padrão já consolidado no ecossistema (ver `scripts/lg_pair_tv.py:15`).
 - `python scripts/runtime_context.py "preflight runtime erro"` → renderiza as 5
   memórias relevantes (incluindo a de @sync com `↔`) sem erro.
 - Preflight continua passando.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

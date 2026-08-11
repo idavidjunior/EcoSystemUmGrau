@@ -8,7 +8,3 @@ impacto: Ética deixou de ser declarativa e passou a ser gate operacional obriga
 recursos: scripts/preflight_etica.py, scripts/rotacao_dados.py, conhecimento/etica/POLITICA_RETENCAO.md, conhecimento/etica/inventario_dados.json, config/agents/04-etica.md, config/agents/00-system-rules.md
 nota: Teste negativo confirmou que o preflight bloqueia corretamente quando a política de retenção está ausente (exit 1).
 ---
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

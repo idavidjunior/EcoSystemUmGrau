@@ -40,5 +40,4 @@ Criar `scripts/tv_control.py` — biblioteca SSAP com classe `TvSap` cobrindo: r
 
 ## Conexoes
 
-- [[cluster-hub-programacao]]
 - [[python-sintaxe-e-núcleo-da-linguagem]]

@@ -28,7 +28,3 @@ impacto: v1.5.0 (versionCode 6) — seleção persistente, cancelamento seguro, 
 
 ## Pendência de validação manual
 - Seleção real de arquivo no seletor de arquivos do MIUI não pôde ser validada via uiautomator (navegação instável). Lógica de cópia compilada e padrão; validar manualmente no dispositivo.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

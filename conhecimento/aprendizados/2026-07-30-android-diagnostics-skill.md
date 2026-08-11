@@ -25,7 +25,3 @@ python scripts/android_diagnostics.py --watch   # monitoramento contÃ­nuo (fut
 
 ## Gatilhos de uso
 Usar quando o usuÃ¡rio relatar problemas no app Android: nÃ£o responde, nÃ£o ouve, sem Ã¡udio, lento, desconectado.
-
-## Conexoes
-
-- [[cluster-hub-android]]

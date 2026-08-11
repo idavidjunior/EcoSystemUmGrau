@@ -48,7 +48,3 @@ flutter build apk --debug \
 ## Regra de processo do usuário (novo padrão)
 
 **Sempre** antes de commit/push: compilar -> instalar -> testar -> validar. Só depois subir.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

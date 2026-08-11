@@ -83,6 +83,5 @@ impacto: Painel de controles voltou a funcionar (tema, velocidade, orbita, busca
 
 ## Conexoes
 
-- [[cluster-hub-programacao]]
 - [[maxiterations-hard-stop-forca-parada-prematura-mesmo-sem-obj]]
 - [[nodejs-event-loop-e-io-não-bloqueante]]

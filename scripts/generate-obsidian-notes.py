@@ -53,7 +53,7 @@ CLUSTERS = {
                     'c', 'cpp', 'rust', 'csharp', 'golang', 'php', 'ruby', 'sql',
                     'fundamentos', 'engenharia', 'arquitetura', 'designpatterns',
                     'testes', 'git', 'apis-web', 'bancos-dados', 'seguranca',
-                    'devops', 'linux', 'performance'],
+                    'devops', 'linux', 'performance', 'programacao'],
 }
 
 CATEGORIA_EMOJI = {
@@ -373,9 +373,9 @@ def generate(dry_run=False, inject_links=True):
             print('AVISO: pasta de aprendizados nao encontrada, pulando injecao')
         else:
             for ap in sorted(Path(APRENDIZADOS_DIR).glob('*.md')):
-                content = ap.read_text(encoding='utf-8')
+                original = ap.read_text(encoding='utf-8')
                 # remove secao "## Conexoes" existente para regenerar (idempotente)
-                content = re.sub(r'\n## Conexoes\n+?(?:- \[\[[^\]]+\]\]\n?)+', '', content).rstrip() + '\n'
+                content = re.sub(r'\n## Conexoes\n+?(?:- \[\[[^\]]+\]\]\n?)+', '', original).rstrip() + '\n'
                 tags = re.findall(r'tags:\s*\[?([^\]]+)\]?', content)
                 tag_list = []
                 for tblock in tags:
@@ -413,12 +413,13 @@ def generate(dry_run=False, inject_links=True):
                     if achou:
                         break
                 links = [l for l in set(links) if l in index or l.startswith('cluster-hub-')]
-                if links:
-                    novo = content + seccao_conexoes(links)
-                    if novo != content:
-                        if not dry_run:
-                            ap.write_text(novo, encoding='utf-8')
-                        injetados += 1
+                # grava SEMPRE a secao regenerada (idempotente): se links==[] a
+                # secao antiga e removida do disco, evitando links obsoletos
+                novo = content + seccao_conexoes(links)
+                if novo != original:
+                    if not dry_run:
+                        ap.write_text(novo, encoding='utf-8')
+                    injetados += 1
 
     print(f'{injetados} aprendizados receberam conexoes')
     print('OK — abra o vault no Obsidian: abrir pasta como vault -> conhecimento/')

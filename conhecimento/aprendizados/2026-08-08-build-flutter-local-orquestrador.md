@@ -34,7 +34,3 @@ impacto: Build local ~1-2min incremental (vs ~7,5min no CI); erros que o CI não
 - Android SDK: `C:\Users\David Jr\AppData\Local\Android\Sdk` (`ANDROID_HOME` já setado)
 - Script rename: `scripts/rename_flutter_package.sh <dir_projeto>`
 - ADB wireless: `adb connect 100.64.71.9:5555` → `adb install -r -t <apk>`
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

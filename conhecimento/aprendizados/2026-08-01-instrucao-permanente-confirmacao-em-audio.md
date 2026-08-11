@@ -18,7 +18,3 @@ O usuÃ¡rio deu uma **instruÃ§Ã£o global, imediata e permanente**: ao receb
 
 ## Data
 01/08/2026
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

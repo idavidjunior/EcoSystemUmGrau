@@ -41,7 +41,3 @@ notas Obsidian com a recuperacao de conhecimento.
   reiniciar a bridge para ativar o novo indice com as notas.
 - Preflight acusou divergencia de regras pre-existente (nao relacionada a esta
   tarefa); a Constituicao deployada precisa de `sync_rules.py update` em outra sessao.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

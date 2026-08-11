@@ -36,7 +36,3 @@ Tornada a skill viva no ecossistema com auto-evolução sem lixo.
 
 - Usar `evolucao.py add` ao fim de cada auditoria real (gate obrigatório).
 - Rodar `review` conforme padrões elegíveis acumulam; re-espelhar após revisão.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

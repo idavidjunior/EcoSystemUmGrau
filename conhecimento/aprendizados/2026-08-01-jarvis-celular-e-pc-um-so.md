@@ -42,7 +42,3 @@ assistente que opera no computador.
   socket zumbi e failover de porta.
 - Barge-in (interrupÃ§Ã£o de fala) agora suportado no PC (ESC/Enter/voz) â€”
   mesmo conceito da interrupÃ§Ã£o do app.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

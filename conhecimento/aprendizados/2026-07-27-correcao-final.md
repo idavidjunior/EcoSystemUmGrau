@@ -19,7 +19,3 @@
 - Usar env:USERPROFILE em vez de paths fixos
 - Timer + intervalo minimo para operacoes periodicas (learn 1x/dia, git sync 5min)
 - Testes como script standalone, executavel a qualquer momento
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

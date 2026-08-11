@@ -14,7 +14,3 @@ Todos os projetos agora vivem em EcoSystemUmGrau/Projetos. Projetos novos devem 
 ## Impacto
 
 Fonte unica de projetos, estrutura limpa, backups em EcoSystemUmGrau/backups.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

@@ -62,3 +62,8 @@ impacto: >
 - **devops** — containers, CI/CD, infra como código, observabilidade.
 - **linux** — processos/systemd, filesystems/permissões, shell/automação.
 - **performance** — profiling, assintótico vs custo real, caching, concorrência.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]
+- [[engenharia-requisitos-e-definição-de-escopo]]

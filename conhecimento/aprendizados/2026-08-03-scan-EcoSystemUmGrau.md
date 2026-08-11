@@ -25,7 +25,3 @@
 - semantic_tags.py: 1 marcadores
 - sync_rules.py: 3 marcadores
 - test-ecosystem.ps1: 2 marcadores
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

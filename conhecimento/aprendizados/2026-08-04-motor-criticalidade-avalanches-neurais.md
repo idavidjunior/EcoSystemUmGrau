@@ -33,7 +33,3 @@ impacto: Sinapticas disparam como avalanches power-law em cascata emergente, nao
 - `py_compile` OK; esprima (python) confirma sintaxe dos 5 scripts do widget.
 - `preflight_check.py`: TODOS TESTES PASSARAM.
 - Widget reiniciado como pythonw (PID 4960, "Cerebro Vivo").
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

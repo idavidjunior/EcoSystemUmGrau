@@ -27,7 +27,3 @@ o processo.
 - Controle por arquivo de estado é mais robusto que matar o processo.
 - No Windows, `os.kill(pid, 0)` não é confiável para checar existência (usa
   TerminateProcess para sinais não-CTRL); `tasklist` resolve.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

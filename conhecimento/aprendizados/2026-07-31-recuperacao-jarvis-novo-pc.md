@@ -22,7 +22,3 @@
 ## Próximos passos
 - Adicionar `OPENWEATHER_API_KEY` ao `.env` para o clima voltar a funcionar (hoje é omitido da saudação para não vazar texto técnico).
 - Revisar demais scripts do ecossistema com paths antigos (`bootstrap.ps1`, `vigilante.ps1`, `watchdog.ps1`, `config/opencode.jsonc`, `estado_atual.md`).
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

@@ -28,7 +28,3 @@ impacto: Navegação em árvore (subpastas com nomes reais), remoção sem tocar
 - O usuário vê a estrutura real de pastas na biblioteca.
 - Remover do app nunca apaga arquivos originais do dispositivo (só referências no SQLite).
 - Build completo (aapt + javac + d8 + apksigner) passou.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]

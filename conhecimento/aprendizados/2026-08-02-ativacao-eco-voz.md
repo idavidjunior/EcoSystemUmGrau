@@ -50,4 +50,3 @@ manualmente removendo o entry 46 incompleto e re-registrando a memÃ³ria.
 ## Conexoes
 
 - [[2026-07-27-teste-do-vigilante-automático-teste-do-sistema-de]]
-- [[cluster-hub-programacao]]

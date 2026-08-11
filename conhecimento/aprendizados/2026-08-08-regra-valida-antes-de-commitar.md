@@ -36,5 +36,4 @@ Só então: **commit + push**.
 
 ## Conexoes
 
-- [[cluster-hub-programacao]]
 - [[git-fluxos-de-trabalho-trunk-based-e-git-flow-e-quando-usar-]]

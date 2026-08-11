@@ -31,7 +31,3 @@
 4. **Prefira a pronÃºncia natural do PB** â€” termos estrangeiros no contexto brasileiro como um nativo diria (ex.: GitHub â†’ GuitirrÃ£bi).
 5. **Registre sempre** â€” toda pronÃºncia corrigida vai para `pronuncias.json` (`fala` ou `ipa`) e vale no prÃ³ximo Ã¡udio.
 6. **Nunca deforme a escrita** â€” a substituiÃ§Ã£o Ã© sÃ³ na fala.
-
-## Conexoes
-
-- [[cluster-hub-programacao]]
