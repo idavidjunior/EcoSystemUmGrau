@@ -28,6 +28,8 @@ import threading
 import time
 from pathlib import Path
 
+_NO_CONSOLE = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+
 ROOT = Path(__file__).resolve().parent.parent
 SCRIPTS = ROOT / "scripts"
 
@@ -88,7 +90,7 @@ def processo_vivo(pid_path: Path):
             if pid > 0:
                 out = subprocess.run(
                     ["tasklist", "/FI", f"PID eq {pid}", "/NH"],
-                    capture_output=True, text=True, timeout=10).stdout
+                    capture_output=True, creationflags=_NO_CONSOLE, text=True, timeout=10).stdout
                 return str(pid) in out
     except Exception:
         pass
@@ -104,7 +106,7 @@ def tts_ativo():
     try:
         out = subprocess.run(
             ["tasklist", "/FI", "IMAGENAME eq python.exe", "/NH"],
-            capture_output=True, text=True, timeout=15).stdout
+            capture_output=True, creationflags=_NO_CONSOLE, text=True, timeout=15).stdout
         for linha in out.splitlines():
             if "vox_audio.py" in linha and "falar" in linha:
                 return True
@@ -158,7 +160,7 @@ def estado_unificado():
 # ============================================================
 
 def _detached():
-    return getattr(subprocess, "DETACHED_PROCESS", 0) | subprocess.CREATE_NEW_PROCESS_GROUP
+    return getattr(subprocess, "DETACHED_PROCESS", 0) | subprocess.CREATE_NEW_PROCESS_GROUP | _NO_CONSOLE
 
 
 def _thread(target, *args):
@@ -169,12 +171,12 @@ def cmd_voz(ativar: bool):
     try:
         if ativar:
             subprocess.run([sys.executable, str(JARVIS_AUDIO), "on"],
-                           cwd=str(ROOT), capture_output=True, timeout=35)
+                           cwd=str(ROOT), capture_output=True, creationflags=_NO_CONSOLE, timeout=35)
         else:
             subprocess.run([sys.executable, str(JARVIS_AUDIO), "stop"],
-                           cwd=str(ROOT), capture_output=True, timeout=20)
+                           cwd=str(ROOT), capture_output=True, creationflags=_NO_CONSOLE, timeout=20)
             subprocess.run([sys.executable, str(JARVIS_AUDIO), "off"],
-                           cwd=str(ROOT), capture_output=True, timeout=20)
+                           cwd=str(ROOT), capture_output=True, creationflags=_NO_CONSOLE, timeout=20)
     except Exception as e:
         print(f"[widget] erro voz({'on' if ativar else 'off'}): {e}", flush=True)
 
@@ -182,7 +184,7 @@ def cmd_voz(ativar: bool):
 def cmd_interromper_fala():
     try:
         subprocess.run([sys.executable, str(JARVIS_AUDIO), "stop"],
-                       cwd=str(ROOT), capture_output=True, timeout=20)
+                       cwd=str(ROOT), capture_output=True, creationflags=_NO_CONSOLE, timeout=20)
     except Exception as e:
         print(f"[widget] erro stop: {e}", flush=True)
 
@@ -207,7 +209,7 @@ def cmd_mic(ativar: bool):
                 pid = int(MIC_PID.read_text(encoding="utf-8").strip())
                 if pid > 0:
                     subprocess.run(["taskkill", "/PID", str(pid), "/F", "/T"],
-                                   capture_output=True, timeout=8)
+                                   capture_output=True, creationflags=_NO_CONSOLE, timeout=8)
         except Exception as e:
             print(f"[widget] erro mic off (kill): {e}", flush=True)
         try:
