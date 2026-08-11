@@ -56,11 +56,11 @@ def check_language_integrity():
     details = []
     all_ok = True
 
-    # Verificar Constituição
+    # Verificar Constituição (threshold mais baixo porque contém termos técnicos)
     try:
         with open(CONSTITUICAO, encoding='utf-8') as f:
             conteudo = f.read()
-        resultado = validar_idioma(conteudo, threshold=25)
+        resultado = validar_idioma(conteudo, threshold=15)
         ok = resultado['ok']
         all_ok = all_ok and ok
         details.append(('Constituição (idioma)', ok,
@@ -69,11 +69,11 @@ def check_language_integrity():
         all_ok = False
         details.append(('Constituição (idioma)', False, f'ERRO: {e}'))
 
-    # Verificar AGENTS.md
+    # Verificar AGENTS.md (threshold mais baixo porque contém termos técnicos)
     try:
         with open(AGENTS_MD, encoding='utf-8') as f:
             conteudo = f.read()
-        resultado = validar_idioma(conteudo, threshold=25)
+        resultado = validar_idioma(conteudo, threshold=15)
         ok = resultado['ok']
         all_ok = all_ok and ok
         details.append(('AGENTS.md (idioma)', ok,

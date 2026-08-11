@@ -52,6 +52,7 @@ def identificar_termos(texto):
     """Identifica termos técnicos em inglês no texto.
 
     Retorna lista de tuplas (termo, posicao_inicio, posicao_fim).
+    Remove duplicatas sobrepostas.
     """
     glossario = carregar_glossario()
     termos_encontrados = []
@@ -63,10 +64,18 @@ def identificar_termos(texto):
         for match in re.finditer(padrao, texto, re.IGNORECASE):
             termos_encontrados.append((match.group(), match.start(), match.end()))
 
-    # Ordenar por posição
+    # Ordenar por posição e remover sobreposições
     termos_encontrados.sort(key=lambda x: x[1])
+    
+    # Filtrar termos sobrepostos (manter apenas o primeiro de cada região)
+    filtrados = []
+    ultima_pos = -1
+    for termo, inicio, fim in termos_encontrados:
+        if inicio >= ultima_pos:
+            filtrados.append((termo, inicio, fim))
+            ultima_pos = fim
 
-    return termos_encontrados
+    return filtrados
 
 
 def marcar_para_tts(texto, formato="ssml"):
