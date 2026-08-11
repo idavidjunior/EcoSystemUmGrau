@@ -1,0 +1,15 @@
+{
+  "applyState_exists": true,
+  "voz_on_lbl": true,
+  "voz_on_btn_class": true,
+  "tts_info_falando": true,
+  "tts_info_class": true,
+  "btnfala_coords": "{\"x\":102,\"y\":92,\"w\":180,\"h\":33}",
+  "click_wrote_localstorage": true,
+  "real_poller_detected": false,
+  "narracao_state_after": {
+    "ativo": true,
+    "pausado": false
+  },
+  "cmd_executed": false
+}
