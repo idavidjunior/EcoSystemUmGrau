@@ -434,20 +434,20 @@ def _poller(win, stop, init_x=None, init_y=None):
                 pass
         # --- drag (JS escreve, Python move a janela) ---
         try:
-            mv = win.evaluate_js("localStorage.getItem('jarvis_move')")
+            mv = win.evaluate_js("localStorage.getItem('jarvis_move')") or ""
         except Exception:
-            mv = None
-        if mv:
+            mv = ""
+        if mv and mv.strip():
             try:
                 d = json.loads(mv)
                 nx, ny = int(d["x"]), int(d["y"])
-                win.move(nx, ny)
-                cur_x, cur_y = nx, ny
-                # mantem JS em sync com a nova posicao da janela
-                win.evaluate_js("window.__winPosX=%d;window.__winPosY=%d;" % (nx, ny))
+                if nx != cur_x or ny != cur_y:
+                    win.move(nx, ny)
+                    cur_x, cur_y = nx, ny
+                    win.evaluate_js("window.__winPosX=%d;window.__winPosY=%d;" % (nx, ny))
                 win.evaluate_js("localStorage.removeItem('jarvis_move')")
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"[drag] error: {e}", flush=True)
         # --- estado UI (Python->JS) a cada ~1s ---
         tick += 1
         if tick >= 4:
