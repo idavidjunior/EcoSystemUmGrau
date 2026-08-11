@@ -390,17 +390,33 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
     }
   }
 
+  // Aplica estado visual imediato a partir do estado retornado pelo bridge.
+  function applyDestino(destino, chave){
+    // chave: 'voz' | 'mic'
+    if(chave==='voz'){
+      const on=Boolean(destino); esc(document.getElementById('swVoz'),'sw '+(on?'on':'off'));
+      esc(document.getElementById('btnVoz'),'btn '+(on?'on':'off'));
+      document.getElementById('lblVoz').textContent=on?'ON':'OFF';
+    }else if(chave==='mic'){
+      const on=Boolean(destino); esc(document.getElementById('swMic'),'sw '+(on?'on':'off'));
+      esc(document.getElementById('btnMic'),'btn '+(on?'on':'off'));
+      document.getElementById('lblMic').textContent=on?'ON':'OFF';
+    }
+  }
+
   document.getElementById('btnVoz').addEventListener('click',async()=>{
-    await api.toggle_voz();
-    setTimeout(refresh,700);
+    try{ const r=await api.toggle_voz(); if(r&&r.destino!==undefined) applyDestino(r.destino,'voz'); }catch(e){}
+    setTimeout(refresh,800);
   });
   document.getElementById('btnFala').addEventListener('click',async()=>{
-    await api.interromper_fala();
-    setTimeout(refresh,300);
+    try{ await api.interromper_fala(); }catch(e){}
+    // feedback visual imediato: desativa o indicador tts
+    document.getElementById('info').textContent='fala interrompida';
+    setTimeout(refresh,500);
   });
   document.getElementById('btnMic').addEventListener('click',async()=>{
-    await api.toggle_mic();
-    setTimeout(refresh,600);
+    try{ const r=await api.toggle_mic(); if(r&&r.destino!==undefined) applyDestino(r.destino,'mic'); }catch(e){}
+    setTimeout(refresh,800);
   });
   document.getElementById('closeBtn').addEventListener('click',()=>{
     api.fechar();
