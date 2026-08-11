@@ -1,0 +1,219 @@
+{
+  "_metadata": {
+    "descricao": "Base de conhecimento completa sobre limpeza e manutenção Android",
+    "versao": "1.0",
+    "ultima_atualizacao": "2026-08-11",
+    "expertise": "Nível Perito - Limpeza e Manutenção Android"
+  },
+
+  "categorias": {
+    "diagnostico": {
+      "descricao": "Ferramentas e comandos para diagnosticar problemas",
+      "comandos_adb": [
+        "adb shell dumpsys battery",
+        "adb shell dumpsys meminfo",
+        "adb shell dumpsys cpuinfo",
+        "adb shell dumpsys diskstats",
+        "adb shell dumpsys activity",
+        "adb shell dumpsys package",
+        "adb shell df -h",
+        "adb shell du -sh /data/data/*",
+        "adb shell top -n 1",
+        "adb shell ps -A",
+        "adb shell netstat",
+        "adb shell getprop ro.build.version.release",
+        "adb shell getprop ro.product.model",
+        "adb shell settings list global",
+        "adb shell settings list system",
+        "adb shell settings list secure"
+      ],
+      "diagnosticos": [
+        "Espaço em disco",
+        "Uso de memória RAM",
+        "Uso de CPU",
+        "Bateria (ciclos, saúde, temperatura)",
+        "Rede (WiFi, dados móveis, DNS)",
+        "Processos ativos",
+        "Apps em background",
+        "Cache do sistema",
+        "Logs de erro",
+        "Atualizações pendentes"
+      ]
+    },
+
+    "limpeza": {
+      "descricao": "Técnicas e comandos para limpeza do dispositivo",
+      "limpeza_cache": [
+        "adb shell pm clear <package>",
+        "adb shell rm -rf /data/cache/*",
+        "adb shell rm -rf /sdcard/Android/data/<package>/cache/*",
+        "adb shell rm -rf /data/system/package_cache/*"
+      ],
+      "limpeza_dados": [
+        "adb shell pm clear <package>",
+        "adb shell rm -rf /sdcard/DCIM/.thumbnails/*",
+        "adb shell rm -rf /sdcard/Pictures/.thumbnails/*",
+        "adb shell rm -rf /sdcard/Download/*.apk",
+        "adb shell rm -rf /sdcard/*.tmp"
+      ],
+      "limpeza_logs": [
+        "adb shell rm -rf /data/log/*",
+        "adb shell rm -rf /sdcard/Android/log/*",
+        "adb logcat -c"
+      ],
+      "limpeza_avancada": [
+        "adb shell pm uninstall -k --user 0 <package>",
+        "adb shell pm disable-user --user 0 <package>",
+        "adb shell settings put global hidden_api_policy 1"
+      ]
+    },
+
+    "manutencao_preventiva": {
+      "descricao": "Rotinas de manutenção para evitar problemas",
+      "rotinas": [
+        {
+          "nome": "Diário",
+          "frequencia": "diaria",
+          "acoes": [
+            "Verificar apps em background",
+            "Fechar apps não utilizados",
+            "Limpar cache se necessário"
+          ]
+        },
+        {
+          "nome": "Semanal",
+          "frequencia": "semanal",
+          "acoes": [
+            "Limpeza completa de cache",
+            "Verificação de atualizações",
+            "Análise de uso de bateria",
+            "Limpeza de downloads antigos"
+          ]
+        },
+        {
+          "nome": "Mensal",
+          "frequencia": "mensal",
+          "acoes": [
+            "Desinstalar apps não utilizados",
+            "Limpeza de dados de apps",
+            "Verificação de saúde da bateria",
+            "Backup de dados importantes",
+            "Atualização do sistema"
+          ]
+        },
+        {
+          "nome": "Trimestral",
+          "frequencia": "trimestral",
+          "acoes": [
+            "Reset de configurações de rede",
+            "Verificação completa de segurança",
+            "Otimização de armazenamento",
+            "Análise de desempenho geral"
+          ]
+        }
+      ]
+    },
+
+    "bateria": {
+      "descricao": "Gerenciamento e manutenção de bateria",
+      "comandos": [
+        "adb shell dumpsys battery",
+        "adb shell dumpsys batterystats",
+        "adb shell cat /sys/class/power_supply/battery/capacity",
+        "adb shell cat /sys/class/power_supply/battery/status",
+        "adb shell cat /sys/class/power_supply/battery/health",
+        "adb shell cat /sys/class/power_supply/battery/temperature"
+      ],
+      "dicas": [
+        "Manter bateria entre 20% e 80%",
+        "Evitar carregar durante longos períodos",
+        "Não usar enquanto carrega (se possível)",
+        "Manter longe de calor excessivo",
+        "Calibrar bateria periodicamente"
+      ],
+      "problemas_comuns": [
+        "Bateria descarregando rápido",
+        "Bateria não carrega",
+        "Bateria inchada",
+        "Temperatura alta",
+        "Ciclos de carga excessivos"
+      ]
+    },
+
+    "armazenamento": {
+      "descricao": "Gerenciamento de armazenamento",
+      "comandos": [
+        "adb shell df -h",
+        "adb shell du -sh /sdcard/*",
+        "adb shell du -sh /data/data/*",
+        "adb shell find /sdcard -name '*.mp4' -size +100M",
+        "adb shell find /sdcard -name '*.jpg' -size +5M"
+      ],
+      "estrategias": [
+        "Mover mídias para cloud",
+        "Comprimir vídeos antigos",
+        "Limpar downloads antigos",
+        "Usar apps de limpeza automática",
+        "Configurar armazenamento inteligente"
+      ]
+    },
+
+    "rede": {
+      "descricao": "Diagnóstico e otimização de rede",
+      "comandos": [
+        "adb shell dumpsys connectivity",
+        "adb shell dumpsys wifi",
+        "adb shell dumpsys telephony.registry",
+        "adb shell ping 8.8.8.8",
+        "adb shell nslookup google.com",
+        "adb shell ip addr show",
+        "adb shell iptables -L"
+      ],
+      "problemas": [
+        "WiFi desconectando",
+        "Lentidão na rede",
+        "DNS não resolve",
+        "IP conflitante",
+        "Firewall bloqueando"
+      ]
+    },
+
+    "seguranca": {
+      "descricao": "Verificação e manutenção de segurança",
+      "comandos": [
+        "adb shell pm list packages -f",
+        "adb shell dumpsys package <package>",
+        "adb shell cat /data/system/packages.xml",
+        "adb shell getprop ro.debuggable",
+        "adb shell settings get global adb_enabled"
+      ],
+      "verificacoes": [
+        "Apps com perigosas permissões",
+        "Root detection",
+        "USB debugging ativo",
+        "Apps de terceiros suspeitos",
+        "Certificados instalados"
+      ]
+    },
+
+    "desempenho": {
+      "descricao": "Otimização de desempenho",
+      "comandos": [
+        "adb shell dumpsys meminfo",
+        "adb shell dumpsys cpuinfo",
+        "adb shell top -n 1",
+        "adb shell dumpsys gfxinfo",
+        "adb shell dumpsys activity",
+        "adb shell am force-stop <package>"
+      ],
+      "otimizacoes": [
+        "Limitar apps em background",
+        "Desativar animações",
+        "Limpar RAM periodicamente",
+        "Otimizar configurações de desenvolvedor",
+        "Usar modo de economia de bateria"
+      ]
+    }
+  }
+
+}
