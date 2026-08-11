@@ -100,7 +100,7 @@ def _parar_mci_tudo():
 
 
 def _falar(texto, parar_evento=None):
-    """Gera MP3 e toca via MCI. Usa SpeechPipeline quando disponível."""
+    """Gera MP3 e toca via MCI. Streaming: toca enquanto gera (reduz latência)."""
     if not texto or not texto.strip():
         return
 
@@ -114,19 +114,80 @@ def _falar(texto, parar_evento=None):
         except Exception as e:
             print(f"[SpeechPipeline falhou: {e}]")
 
-    # Fallback: código legado
-    mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
+    # Streaming: gera áudio em chunks e toca assim que tiver buffer suficiente
+    mp3 = Path(tempfile.gettempdir()) / "vox_fala_stream.mp3"
     try:
-        asyncio.run(_tts_salvar(texto, str(mp3)))
+        asyncio.run(_tts_stream_e_tocar(texto, str(mp3), parar_evento))
     except Exception as e:
-        print(f"[erro tts] {e}")
-        return
-    if not mp3.exists():
-        return
+        print(f"[erro stream tts] {e}")
+        # Fallback: método legado (batch)
+        mp3_batch = Path(tempfile.gettempdir()) / "vox_fala.mp3"
+        try:
+            asyncio.run(_tts_salvar(texto, str(mp3_batch)))
+            _tocar_mci(str(mp3_batch), parar_evento=parar_evento)
+        except Exception as e2:
+            print(f"[erro fallback tts] {e2}")
+
+
+async def _tts_stream_e_tocar(texto, caminho_mp3, parar_evento=None):
+    """Gera áudio via streaming e toca assim que tiver dados suficientes.
+    
+    Reduz latência significativamente: em vez de aguardar áudio completo,
+    toca os primeiros chunks enquanto o resto ainda está sendo gerado.
+    """
+    import edge_tts
+    import threading
+
+    # Prepara communicate
     try:
-        _tocar_mci(str(mp3), parar_evento=parar_evento)
-    except Exception as e:
-        print(f"[erro play] {e}")
+        from pronunciar_termos import marcar_para_tts
+        texto_marcado = marcar_para_tts(texto, formato="ssml")
+        if texto_marcado and '<lang' in str(texto_marcado):
+            texto_ssml = f'<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="pt-BR">{texto_marcado}</speak>'
+            communicate = edge_tts.Communicate(texto_ssml, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
+        else:
+            communicate = edge_tts.Communicate(texto, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
+    except (ImportError, Exception):
+        communicate = edge_tts.Communicate(texto, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
+
+    # Coleta chunks de áudio
+    audio_chunks = []
+    total_bytes = 0
+    PREBUFFER_BYTES = 8000  # ~8KB = ~200ms de áudio (suficiente para começar a tocar)
+    started_playing = False
+    
+    async for chunk in communicate.stream():
+        if parar_evento and parar_evento.is_set():
+            break
+        if chunk["type"] == "audio":
+            audio_chunks.append(chunk["data"])
+            total_bytes += len(chunk["data"])
+            
+            # Quando tiver buffer suficiente, começa a tocar em thread separada
+            if not started_playing and total_bytes >= PREBUFFER_BYTES:
+                started_playing = True
+                # Salva o que já tem e começa a tocar
+                with open(caminho_mp3, "wb") as f:
+                    for c in audio_chunks:
+                        f.write(c)
+                # Toca em background enquanto continua recebendo
+                play_thread = threading.Thread(
+                    target=_tocar_mci, 
+                    args=(caminho_mp3,), 
+                    kwargs={"parar_evento": parar_evento},
+                    daemon=True
+                )
+                play_thread.start()
+    
+    # Salva áudio completo (para futuras reproduções ou cache)
+    if audio_chunks:
+        with open(caminho_mp3, "wb") as f:
+            for c in audio_chunks:
+                f.write(c)
+    
+    # Se não deu para tocar streaming (texto muito curto), toca agora
+    if not started_playing and audio_chunks:
+        _tocar_mci(caminho_mp3, parar_evento=parar_evento)
 
 
 async def _tts_salvar(texto, caminho):
@@ -261,7 +322,7 @@ def cmd_ouvir_google():
 
 
 async def _falar_async(texto, parar_evento=None):
-    """Versão async de _falar para uso dentro de event loop."""
+    """Versão async de _falar para uso dentro de event loop. Streaming: toca enquanto gera."""
     if not texto or not texto.strip():
         return
 
@@ -275,49 +336,19 @@ async def _falar_async(texto, parar_evento=None):
         except Exception as e:
             print(f"[SpeechPipeline falhou: {e}]")
 
-    # Fallback: código legado
-    mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
+    # Streaming: gera áudio em chunks e toca assim que tiver buffer suficiente
+    mp3 = Path(tempfile.gettempdir()) / "vox_fala_stream.mp3"
     try:
-        await _tts_salvar(texto, str(mp3))
+        await _tts_stream_e_tocar(texto, str(mp3), parar_evento)
     except Exception as e:
-        print(f"[erro tts] {e}")
-        return
-    if not mp3.exists():
-        return
-    try:
-        _tocar_mci(str(mp3), parar_evento=parar_evento)
-    except Exception as e:
-        print(f"[erro play] {e}")
-
-
-def _falar(texto, parar_evento=None):
-    """Gera MP3 e toca via MCI. Usa SpeechPipeline quando disponível."""
-    if not texto or not texto.strip():
-        return
-
-    # Tenta usar SpeechPipeline primeiro
-    if SPEECH_PIPELINE_AVAILABLE and _speech_pipeline:
+        print(f"[erro stream tts] {e}")
+        # Fallback: método legado (batch)
+        mp3_batch = Path(tempfile.gettempdir()) / "vox_fala.mp3"
         try:
-            mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
-            if _speech_pipeline.save(texto, str(mp3)):
-                _tocar_mci(str(mp3), parar_evento=parar_evento)
-                return
-        except Exception as e:
-            print(f"[SpeechPipeline falhou: {e}]")
-
-    # Fallback: código legado
-    mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
-    try:
-        asyncio.run(_tts_salvar(texto, str(mp3)))
-    except Exception as e:
-        print(f"[erro tts] {e}")
-        return
-    if not mp3.exists():
-        return
-    try:
-        _tocar_mci(str(mp3), parar_evento=parar_evento)
-    except Exception as e:
-        print(f"[erro play] {e}")
+            await _tts_salvar(texto, str(mp3_batch))
+            _tocar_mci(str(mp3_batch), parar_evento=parar_evento)
+        except Exception as e2:
+            print(f"[erro fallback tts] {e2}")
 
 
 async def cmd_falar_async(texto, interruptivel=False):
