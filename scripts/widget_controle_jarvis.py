@@ -271,7 +271,21 @@ def _carregar_geo() -> dict:
 
 def _minimizar(win):
     try:
+        # Tenta minimizar via JavaScript primeiro
         win.evaluate_js("window.pywebview.minimize()")
+    except Exception:
+        pass
+    # Fallback: esconde a janela Python e mostra novamente após breve delay
+    # (Isso evita que o console apareça/desapareça)
+    try:
+        win.hide()
+        import threading, time
+        def restaurar():
+            try:
+                win.show()
+            except Exception:
+                pass
+        threading.Timer(0.5, restaurar).start()
     except Exception:
         pass
 
@@ -281,7 +295,8 @@ def _guardar_geo(win):
           (function(){
             var x=window.screenX||0,y=window.screenY||0,w=window.innerWidth||0,h=window.innerHeight||0;
             window.pywebview=null;  /* noop de compat */
-            localStorage.setItem('jarvis_geo', JSON.stringify({x:x,y:y,width:w,height:h});
+            var st=window.__sempre_topo||True;
+            localStorage.setItem('jarvis_geo', JSON.stringify({x:x,y:y,width:w,height:h,sempre_topo:st}));
           })();
         """)
     except Exception:
