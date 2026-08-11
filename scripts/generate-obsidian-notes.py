@@ -398,11 +398,19 @@ def generate(dry_run=False, inject_links=True):
                         if hub_cat and len(por_tag[t]) >= 2:
                             links.append(hub_cat)
                 # cluster por nome de arquivo (ex: scan-Mp3Player -> mp3player)
+                # match por PALAVRA inteira (fonte com regex) evita falso positivo
+                # como a fonte 'c' (linguagem C) casando dentro de qualquer palavra
                 fname = ap.stem.lower()
                 for cl, sources in CLUSTERS.items():
-                    if any(s.split('_')[0] in fname or s.replace('_', '').replace('-', '') in fname.replace('-', '').replace('_', '')
-                           for s in sources):
-                        links.append(f'cluster-hub-{cl}')
+                    achou = False
+                    for s in sources:
+                        if not s:
+                            continue
+                        if re.search(r'(?<![a-z0-9])' + re.escape(s) + r'(?![a-z0-9])', fname):
+                            links.append(f'cluster-hub-{cl}')
+                            achou = True
+                            break
+                    if achou:
                         break
                 links = [l for l in set(links) if l in index or l.startswith('cluster-hub-')]
                 if links:
