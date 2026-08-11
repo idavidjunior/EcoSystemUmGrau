@@ -30,6 +30,7 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:4px;">
     <div class="drag" id="drag"></div><span>🎙️ Jarvis</span>
+    <div class="minimize" id="minimizeBtn">_</div>
   </div>
   <div class="close" id="closeBtn">✕</div>
 </div>
@@ -52,9 +53,12 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
     cls(document.getElementById('btnMic'),'btn '+(m?'on':'off'));
     document.getElementById('lblMic').textContent = m?'ON':'OFF';
     var info=document.getElementById('info');
-    if(s.tts_ativo){ info.textContent='🔊 FALANDO'; info.className='info falando'; }
-    else if(s.narrador){ info.textContent='narrador ativo | online'; info.className='info'; }
-    else { info.textContent='online (voz off)'; info.className='info'; }
+    if(s.tts_ativo){ info.textContent='🔊 FALANDO'; info.className='info falando';
+      info.title='FALANDO: ' + (s.texto||''); }
+    else if(s.ativo){ info.textContent='JARVIS ativo | online'; info.className='info';
+      info.title='Ativo'; }
+    else { info.textContent='online (voz off)'; info.className='info';
+      info.title='Desativado'; }
   };
 
   // ---- feedback otimistico no clique (o Python confirma/corrige em ~1s) ----
@@ -69,6 +73,9 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
   });
   document.getElementById('btnFala').addEventListener('click', function(){ clickSet('fala'); });
   document.getElementById('closeBtn').addEventListener('click', function(){ clickSet('close'); });
+  document.getElementById('minimizeBtn').addEventListener('click', function(){
+    window.pywebview.minimize();
+  });
 
   // ---- drag da barra superior: JS escreve posicao -> Python faz win.move ----
   // Usa screenX/screenY absolutos com offset calculado no mousedown.

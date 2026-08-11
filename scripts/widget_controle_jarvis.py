@@ -51,6 +51,9 @@ GEO_FILE = ROOT / "runtime" / "widget_controle_geometria.json"
 
 # --- Atalho de inicialização automática ---
 ATALHO_WINDOWS = ROOT / "runtime" / "jarvis_atalho.lnk"
+
+# --- Atalho de inicialização automática ---
+ATALHO_WINDOWS = ROOT / "runtime" / "jarvis_atalho.lnk"
 VIEW_COPY = ROOT / "docs" / "widget_controle.html"
 DEFAULT_W, DEFAULT_H = 220, 284
 TITLE = "Jarvis Controle"
@@ -265,13 +268,20 @@ def _carregar_geo() -> dict:
                        "height": int(d.get("height", DEFAULT_H))})
 
 
+
+def _minimizar(win):
+    try:
+        win.evaluate_js("window.pywebview.minimize()")
+    except Exception:
+        pass
+
 def _guardar_geo(win):
     try:
         win.evaluate_js("""
           (function(){
             var x=window.screenX||0,y=window.screenY||0,w=window.innerWidth||0,h=window.innerHeight||0;
             window.pywebview=null;  /* noop de compat */
-            localStorage.setItem('jarvis_geo', JSON.stringify({x:x,y:y,width:w,height:h}));
+            localStorage.setItem('jarvis_geo', JSON.stringify({x:x,y:y,width:w,height:h});
           })();
         """)
     except Exception:
@@ -314,6 +324,7 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:4px;">
     <div class="drag" id="drag"></div><span>🎙️ Jarvis</span>
+    <div class="minimize" id="minimizeBtn">_</div>
   </div>
   <div class="close" id="closeBtn">✕</div>
 </div>
@@ -336,9 +347,12 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
     cls(document.getElementById('btnMic'),'btn '+(m?'on':'off'));
     document.getElementById('lblMic').textContent = m?'ON':'OFF';
     var info=document.getElementById('info');
-    if(s.tts_ativo){ info.textContent='🔊 FALANDO'; info.className='info falando'; }
-    else if(s.narrador){ info.textContent='narrador ativo | online'; info.className='info'; }
-    else { info.textContent='online (voz off)'; info.className='info'; }
+    if(s.tts_ativo){ info.textContent='🔊 FALANDO'; info.className='info falando';
+      info.title='FALANDO: ' + (s.texto||''); }
+    else if(s.ativo){ info.textContent='JARVIS ativo | online'; info.className='info';
+      info.title='Ativo'; }
+    else { info.textContent='online (voz off)'; info.className='info';
+      info.title='Desativado'; }
   };
 
   // ---- feedback otimistico no clique (o Python confirma/corrige em ~1s) ----
@@ -353,6 +367,9 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
   });
   document.getElementById('btnFala').addEventListener('click', function(){ clickSet('fala'); });
   document.getElementById('closeBtn').addEventListener('click', function(){ clickSet('close'); });
+  document.getElementById('minimizeBtn').addEventListener('click', function(){
+    window.pywebview.minimize();
+  });
 
   // ---- drag da barra superior: JS escreve posicao -> Python faz win.move ----
   // Usa screenX/screenY absolutos com offset calculado no mousedown.
