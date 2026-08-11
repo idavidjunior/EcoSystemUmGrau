@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-10T23:20:48.366481",
+  "last_updated": "2026-08-10T23:25:56.411201",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -2108,6 +2108,12 @@
       "decision": "botao importar unificado",
       "rationale": "---\ntipo: decisao\ntags: [bibliaestudocompleta, recursos, importacao, ui]\ndata: 2026-08-09\ncontexto: O botao +IMPORTAR deveria abrir o mesmo menu nas telas Home e Meus Recursos, com o mesmo nome.\ndecisao: Criado ResourceImportMenu (com.biblia.estudo.utils) como menu unico com 3 opcoes: Importar Arquivo (multiplo), Importar Pasta (arvore com nomes reais via importFolderTree) e Criar Pasta. Home e ResourcesActivity passaram a usar o mesmo menu; a tela de Recursos deixou de ter botao +Arquivo separado.\nimpacto: UX consistente entre Home e Recursos; menos duplicacao de codigo de menu; importacao de arquivos na tela de Recursos passou a aceitar multiplos.\n",
       "extracted_at": "2026-08-09T20:18:47.674867"
+    },
+    {
+      "source": "opencode",
+      "decision": "Ponto único de persistência (gate)",
+      "rationale": "---\ntipo: decisao\ntags: [persistencia, git, gate, automação, vigilante, arquitetura, pétrea]\ndata: 2026-08-10\ncontexto: Vários serviços em segundo plano (vigilante, ecosystem.ps1, narrador, register_learning órfãos) executavam git add/commit/push de forma concorrente e indiscriminada (git add -A), causando commits genéricos, corrida de escrita no knowledge_graph.json e reversão de cards de conhecimento (processos register_learning antigos sobrescrevendo o grafo com versão defasada).\ndecisao: Criar o PONTO ÚNICO DE PERSISTÊNCIA (scripts/persistencia.ps1) responsável por TODO commit/push do ecossistema (EcoSystemUmGrau, ler-runtime, projetos Android), com modo AUTO/MANUAL desativável via config/persistencia.json e lock por repositório. Vigilante e ecosystem.ps1 delegam ao gate (run-sync); nenhum outro script commita direto. Cláusula pétrea adicionada à Constituição (16 regras sincronizadas nas 3 camadas).\nimpacto: Commits automáticos parados quando o usuário quiser (persistencia.ps1 manual) e retomados com persistencia.ps1 auto; commit manual via persistencia.ps1 commit; status via persistencia.ps1 status; eliminação dos commits espúrios \"[auto] LER\" dentro do repo eco; corrida de register_learning mitigada (processos órfãos matados).\n---\n\n# Ponto único de persistência (gate)\n\n## Comandos\n- `persistencia.ps1 status` → modo atual (AUTO/MANUAL), HEAD e pendências por repo.\n- `persistencia.ps1 manual` → pausa TODOS os commits automáticos (serviços continuam consolidando, nada vai ao git).\n- `persistencia.ps1 auto` → reativa os commits automáticos.\n- `persistencia.ps1 commit -Repo eco -Mensagem \"...\" -Push` → commit manual em qualquer modo.\n- `persistencia.ps1 sync -Push` → commit manual de eco + ler + projetos Android.\n\n## Configuração\n- `config/persistencia.json` → `modo` (\"auto\"/\"manual\") e `excluir` (paths que ficam fora dos commits do gate).\n- Log do gate: `%USERPROFILE%\\.persistencia.log`.\n- Locks por repositório em `%TEMP%\\persistencia-<hash>.lock` (TTL 120s).\n\n## Arquitetura\n- `vigilante.ps1` → `Sync-GitRepo`/`Sync-ProjectRepo` agora chamam `persistencia.ps1 run-sync` (pull → add → commit → push) e NÃO tocam o git diretamente.\n- `ecosystem.ps1` → bloco de commit substituído pela chamada ao gate.\n- Nenhum script/agente executa `git commit`/`git push` direto (cláusula pétrea).\n\n## Causa raiz corrigida (reversão dos cards)\n- Processos `register_learning` órfãos (ex.: PID 9128 da sessão de ontem) recarregavam e salvavam o knowledge_graph.json com versão defasada, revertendo 36 cards de tradução.\n- Ação: matar processos órfãos; o gate serializa commits com lock; novos aprendizados são consolidados lendo o disco atual.\n\n## Verificação\n- `python -c \"import json; len(json.load(open('ler-runtime/knowledge/knowledge_graph.json'))['patterns'])\"` → 244.\n",
+      "extracted_at": "2026-08-10T23:25:29.847992"
     }
   ],
   "bug_fixes": [

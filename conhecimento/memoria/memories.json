@@ -4538,5 +4538,25 @@
     "access_count": 0,
     "created_at": "2026-08-10T23:12:55.513136",
     "last_accessed": "2026-08-10T23:12:55.513136"
+  },
+  {
+    "id": 257,
+    "kind": "decisao",
+    "task": "Ponto unico de persistencia (gate de commits)",
+    "summary": "Criado scripts/persistencia.ps1: unico responsavel por TODO git add/commit/push do ecossistema (eco+ler+projetos Android), com modo manual desativavel (persistencia.ps1 manual -> pausa commits automaticos; auto retoma; commit/sync manuais). Vigilante e ecosystem.ps1 delegam ao gate via run-sync. Config em config/persistencia.json (modo + excluir). Lock por repo em %TEMP%. Causa raiz da reversao dos 36 cards: register_learning orfao (PID 9128) reescrevia o grafo com versao antiga - processos orfaos foram mortos. Clausula petrea na Constituicao (16 regras).",
+    "project": "",
+    "tags": [
+      "desativavel",
+      "android",
+      "projetos",
+      "ler",
+      "eco",
+      "ecossistema"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-10T23:25:21.984152",
+    "last_accessed": "2026-08-10T23:25:21.984152"
   }
 ]

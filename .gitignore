@@ -17,6 +17,8 @@ scripts/serve_log.txt
 scripts/serve_sync_err.txt
 scripts/serve_sync_out.txt
 scripts/opencode_desktop_guardian_log.txt
+scripts/narrador_desktop_log.txt
+scripts/narrador_desktop.log
 
 # OS files
 Thumbs.db

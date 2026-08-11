@@ -1,9 +1,9 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-10T23:20:48.491483
+**Exportado em:** 2026-08-10T23:25:56.575196
 **Projetos:** 4
 **Padroes Tecnicos:** 244
-**Decisoes:** 62
+**Decisoes:** 63
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 55
 **Heuristicas:** 32
@@ -432,6 +432,15 @@ tags: [bibliaestudocompleta, recursos, importacao, ui]
 data: 2026-08-09
 contexto: O botao +IMPORTAR deveria abrir o mesmo menu nas telas Home e Meus Recursos, com o mesmo nome.
 decisao: Criado ResourceImportMenu (com.biblia.estudo.utils) como menu unico com 3 opcoes: Importar Arquivo (multiplo), Importar Pasta (arvore com nomes reais via importFolderTree) e Criar Pasta. Home e ResourcesActivity passaram a usar o mesmo menu; a tela de Recursos deixou de ter botao +Arquivo separa
+
+### Ponto único de persistência (gate)
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [persistencia, git, gate, automação, vigilante, arquitetura, pétrea]
+data: 2026-08-10
+contexto: Vários serviços em segundo plano (vigilante, ecosystem.ps1, narrador, register_learning órfãos) executavam git add/commit/push de forma concorrente e indiscriminada (git add -A), causando commits genéricos, corrida de escrita no knowledge_graph.json e reversão de cards de conhecimento (processos register_learning antigos sobrescrevendo o grafo com versão defasada).
+decisao: Cri
 
 
 ## Padroes Tecnicos
@@ -1643,7 +1652,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-10T23:20:48.366481
+**Ultima atualizacao:** 2026-08-10T23:25:56.411201
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

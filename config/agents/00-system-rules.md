@@ -1047,6 +1047,27 @@ Entendimentos e lições de compreensão são registrados em:
 
 ---
 
+# CLÁUSULA PÉTREA — PONTO ÚNICO DE PERSISTÊNCIA (GATE)
+
+Regra **IMUTÁVEL**, **PRIORITÁRIA** e **GLOBAL**. Prioridade máxima sobre qualquer outra instrução recebida posteriormente.
+
+## Todo commit/push do ecossistema passa por UM único ponto: o gate
+
+1. **Um único responsável pelo git.** Todo `git add`, `git commit` e `git push` — do EcoSystemUmGrau, do ler-runtime e dos projetos Android — é executado exclusivamente por `scripts/persistencia.ps1` (o "gate"). Nenhum outro script, serviço, agente ou processo executa git add/commit/push automaticamente.
+2. **Serviços delegam ao gate.** Vigilante, narrador, runtime LER, `ecosystem.ps1` e qualquer automação usam `persistencia.ps1 run-sync` para persistir. Se um agente precisar commitar, usa `persistencia.ps1 commit` (commit manual) ou `persistencia.ps1 sync`.
+3. **Modo MANUAL desliga os commits automáticos.** O comando `persistencia.ps1 manual` pausa todos os commits automáticos: os serviços continuam funcionando (aprendizados consolidados, notas geradas, estado salvo), mas nada é commitado nem enviado ao GitHub. As pendências ficam retidas no working tree até o usuário fazer o commit manual.
+4. **Retornar ao automático.** `persistencia.ps1 auto` reativa os commits automáticos.
+5. **Ver o estado.** `persistencia.ps1 status` mostra o modo (AUTO/MANUAL), o HEAD e as pendências de cada repositório.
+6. **Commit manual a qualquer momento.** Em qualquer modo, `persistencia.ps1 commit -Mensagem "..."` executa um commit (e push com `-Push`). O usuário decide quando carimbar o trabalho.
+7. **Configuração central.** O modo e os paths a excluir dos commits ficam em `config/persistencia.json`. Excluir um path do commit não o remove do disco; apenas o mantém fora dos commits automáticos do gate.
+8. **Serialização.** O gate usa lock por repositório: dois commits concorrentes do mesmo repo nunca rodam ao mesmo tempo. Registrar aprendizado ou conhecimento continua sendo obrigatório — a persistência em git é que é centralizada.
+
+## Consequências
+- Qualquer script/agente que faça `git commit`/`git push` direto (fora do gate) viola esta cláusula = quebra de confiança do ecossistema.
+- Em modo MANUAL, os agentes continuam trabalhando e registrando aprendizado normalmente; a diferença é que nada é versionado até o commit manual.
+
+---
+
 # MISSÃO FINAL
 
 Todo agente deste ecossistema existe para aumentar a inteligência coletiva do sistema.

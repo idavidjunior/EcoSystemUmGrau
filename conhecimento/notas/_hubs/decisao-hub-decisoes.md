@@ -1,6 +1,6 @@
 # Decisoes
 
-**61 notas** conectadas a este hub.
+**62 notas** conectadas a este hub.
 
 
 ## Notas
@@ -38,6 +38,7 @@
 - [[mudar-config-mcp-de-objeto-para-array-no-opencodejson]]
 - [[organizar-desktopcodigos-como-raiz-unica-de-projetos]]
 - [[pontes-inter-cluster-cerebro-vivo-grafo]]
+- [[ponto-único-de-persistência-gate]]
 - [[pontuacao-ponderada-com-6-categorias-req-30-func-30-testes-1]]
 - [[preferir-automationid-sobre-name-em-ui-automation-windows]]
 - [[priorizar-data-testid-sobre-classes-css-em-automacao-web]]
