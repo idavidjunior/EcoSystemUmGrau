@@ -69,22 +69,23 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
   document.getElementById('closeBtn').addEventListener('click', function(){ clickSet('close'); });
 
   // ---- drag da barra superior: JS escreve posicao -> Python faz win.move ----
-  // window.__winPosX/Y sao inicializados pelo Python (confiaveis no WebView2),
-  // pois window.screenX/screenY costumam retornar 0 nesta plataforma.
-  var drag=null, msx=0, msy=0;
+  // Usa movementX/Y (delta real entre eventos) para evitar problemas com
+  // screenX/screenY que retornam 0 no WebView2. Eventos em window para
+  // capturar mesmo quando o mouse sai da janela durante o arrasto.
+  var dragging=false, msx=0, msy=0;
   document.getElementById('drag').addEventListener('mousedown', function(e){
-    drag={x:e.screenX,y:e.screenY};
-    msx=window.__winPosX||window.screenX||0; msy=window.__winPosY||window.screenY||0;
+    dragging=true;
+    msx=window.__winPosX||0; msy=window.__winPosY||0;
     e.preventDefault();
   });
-  document.addEventListener('mousemove', function(e){
-    if(!drag) return;
-    msx = msx + (e.screenX - drag.x); msy = msy + (e.screenY - drag.y);
+  window.addEventListener('mousemove', function(e){
+    if(!dragging) return;
+    var dx=e.movementX||0, dy=e.movementY||0;
+    msx+=dx; msy+=dy;
     window.__winPosX=Math.round(msx); window.__winPosY=Math.round(msy);
     localStorage.setItem('jarvis_move', JSON.stringify({x:Math.round(msx),y:Math.round(msy)}));
-    drag={x:e.screenX,y:e.screenY};
   });
-  document.addEventListener('mouseup', function(){ drag=null; });
+  window.addEventListener('mouseup', function(){ dragging=false; });
 })();
 </script>
 </body></html>
