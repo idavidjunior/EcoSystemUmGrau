@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{overflow:hidden;font-family:'Segoe UI',system-ui,sans-serif;
+background:#1e1e2e;color:#cdd6f4;width:100%;height:100%;}
+.topbar{background:#313244;height:22px;cursor:move;
+display:flex;align-items:center;justify-content:space-between;
+padding:0 8px;font-size:11px;color:#a6adc8;user-select:none;}
+.drag{flex:1;cursor:move;}
+.title{display:flex;align-items:center;gap:5px;font-weight:600;}
+.close{background:#f38ba8;width:14px;height:14px;border-radius:3px;
+display:flex;align-items:center;justify-content:center;
+font-size:10px;line-height:1;cursor:pointer;color:#1e1e2e;font-weight:bold;}
+.controls{padding:12px;display:flex;flex-direction:column;gap:10px;}
+.btn{display:flex;align-items:center;justify-content:space-between;
+padding:8px 10px;border:none;border-radius:6px;cursor:pointer;
+font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
+.btn:hover{background:#45475a;}
+.btn.on{background:#a6e3a1;color:#1e1e2e;}
+.btn.off{background:#f38ba8;color:#1e1e2e;}
+.btn.stop{background:#f28465;color:#1e1e2e;}
+.sw{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:6px;}
+.sw.on{background:#a6e3a1;box-shadow:0 0 6px #a6e3a1;}
+.sw.off{background:#f38ba8;}
+.info{font-size:10px;color:#6c7086;margin-top:2px;}
+</style>
+</head><body>
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:4px;">
+    <div class="drag" id="drag"></div>
+    <span>🎙️ Jarvis</span>
+  </div>
+  <div class="close" id="closeBtn">✕</div>
+</div>
+<div class="controls">
+  <button class="btn off" id="btnVoz">
+    <span><span class="sw off" id="swVoz"></span>Voz</span>
+    <span id="lblVoz">OFF</span>
+  </button>
+  <button class="btn stop" id="btnFala">
+    <span>⏹ Parar Fala</span>
+  </button>
+  <button class="btn off" id="btnMic">
+    <span><span class="sw off" id="swMic"></span>Mic</span>
+    <span id="lblMic">OFF</span>
+  </button>
+  <div class="info" id="info">conectando...</div>
+</div>
+<script>
+(function(){
+  const api = window.pywebview && window.pywebview.api;
+  let estado = null;
+
+  function esc(e,c){e.className=c;}
+
+  async function refresh(){
+    if(!api){document.getElementById('info').textContent='sem bridge';return;}
+    try{
+      estado = await api.ler_estado();
+      const v = estado.voz;
+      esc(document.getElementById('swVoz'),'sw '+(v?'on':'off'));
+      esc(document.getElementById('btnVoz'),'btn '+(v?'on':'off'));
+      document.getElementById('lblVoz').textContent=v?'ON':'OFF';
+      esc(document.getElementById('swMic'),'sw '+(estado.mic?'on':'off'));
+      esc(document.getElementById('btnMic'),'btn '+(estado.mic?'on':'off'));
+      document.getElementById('lblMic').textContent=estado.mic?'ON':'OFF';
+      let inf='online';
+      if(estado.narrador) inf='narrador● ';
+      if(estado.tts_ativo) inf+='tts● ';
+      document.getElementById('info').textContent=inf+'| '+new Date().toLocaleTimeString();
+    }catch(e){
+      document.getElementById('info').textContent='erro: '+e;
+    }
+  }
+
+  // Aplica estado visual imediato a partir do estado retornado pelo bridge.
+  function applyDestino(destino, chave){
+    // chave: 'voz' | 'mic'
+    if(chave==='voz'){
+      const on=Boolean(destino); esc(document.getElementById('swVoz'),'sw '+(on?'on':'off'));
+      esc(document.getElementById('btnVoz'),'btn '+(on?'on':'off'));
+      document.getElementById('lblVoz').textContent=on?'ON':'OFF';
+    }else if(chave==='mic'){
+      const on=Boolean(destino); esc(document.getElementById('swMic'),'sw '+(on?'on':'off'));
+      esc(document.getElementById('btnMic'),'btn '+(on?'on':'off'));
+      document.getElementById('lblMic').textContent=on?'ON':'OFF';
+    }
+  }
+
+  document.getElementById('btnVoz').addEventListener('click',async()=>{
+    try{ const r=await api.toggle_voz(); if(r&&r.destino!==undefined) applyDestino(r.destino,'voz'); }catch(e){}
+    setTimeout(refresh,800);
+  });
+  document.getElementById('btnFala').addEventListener('click',async()=>{
+    try{ await api.interromper_fala(); }catch(e){}
+    // feedback visual imediato: desativa o indicador tts
+    document.getElementById('info').textContent='fala interrompida';
+    setTimeout(refresh,500);
+  });
+  document.getElementById('btnMic').addEventListener('click',async()=>{
+    try{ const r=await api.toggle_mic(); if(r&&r.destino!==undefined) applyDestino(r.destino,'mic'); }catch(e){}
+    setTimeout(refresh,800);
+  });
+  document.getElementById('closeBtn').addEventListener('click',()=>{
+    api.fechar();
+  });
+
+  // drag da barra superior
+  const drag=document.getElementById('drag');
+  let px=0,py=0,fx=0,fy=0,dragging=false;
+  drag.addEventListener('mousedown',e=>{
+    px=e.clientX;py=e.clientY;
+    fx=window.screenX||0;fy=window.screenY||0;
+    dragging=true;
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!dragging)return;
+    const dx=e.clientX-px,dy=e.clientY-py;
+    api.mover(fx+dx,fy+dy);
+    fx+=dx;fy+=dy;
+  });
+  document.addEventListener('mouseup',()=>{dragging=false;});
+
+  // salva geometria no beforeunload
+  window.addEventListener('beforeunload',()=>{
+    api.guardar_geo(
+      Math.round(window.screenX||0),Math.round(window.screenY||0),
+      Math.round(window.innerWidth||0),Math.round(window.innerHeight||0));
+  });
+
+  setInterval(refresh,1000);
+  refresh();
+})();
+</script>
+</body></html>
