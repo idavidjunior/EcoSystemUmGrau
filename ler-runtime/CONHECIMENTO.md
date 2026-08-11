@@ -1,9 +1,9 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-11T00:25:10.455335
+**Exportado em:** 2026-08-11T15:04:43.971977
 **Projetos:** 4
 **Padroes Tecnicos:** 244
-**Decisoes:** 63
+**Decisoes:** 64
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 55
 **Heuristicas:** 32
@@ -441,6 +441,21 @@ tags: [persistencia, git, gate, automação, vigilante, arquitetura, pétrea]
 data: 2026-08-10
 contexto: Vários serviços em segundo plano (vigilante, ecosystem.ps1, narrador, register_learning órfãos) executavam git add/commit/push de forma concorrente e indiscriminada (git add -A), causando commits genéricos, corrida de escrita no knowledge_graph.json e reversão de cards de conhecimento (processos register_learning antigos sobrescrevendo o grafo com versão defasada).
 decisao: Cri
+
+### Estilo de Comunicação Simples e Direto
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [comunicacao, estilo, clausula-petrea, usuario]
+data: 2026-08-11
+contexto: O usuário pediu que eu falasse de forma mais simples e direta, sem formatação markdown complexa
+decisao: Adicionar Cláusula Pétrea sobre estilo de comunicação simples e direto
+impacto: Todos os agentes agora devem falar de forma natural, como conversa com amigo
+---
+
+# Estilo de Comunicação Simples e Direto
+
+Em 11/08/2026, o usuário pediu que eu abandonasse o estilo formal com tabelas, listas e form
 
 
 ## Padroes Tecnicos
@@ -1652,7 +1667,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-11T00:25:10.344346
+**Ultima atualizacao:** 2026-08-11T15:04:43.849448
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

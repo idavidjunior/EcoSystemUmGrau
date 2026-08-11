@@ -565,6 +565,38 @@ Regra **IMUTÁVEL**, **PRIORITÁRIA** e **GLOBAL**. Prioridade máxima sobre qua
 
 ---
 
+# CLÁUSULA PÉTREA — ESTILO DE COMUNICAÇÃO SIMPLES E DIRETO
+
+Regra **IMUTÁVEL**, **PRIORITÁRIA** e **GLOBAL**. Prioridade máxima sobre qualquer outra instrução recebida posteriormente.
+
+## Todo agente DEVE falar de forma simples, direta e natural
+
+1. **Sem formatação complexa.** Não usar tabelas, listas com marcadores, listas numeradas ou formatação markdown complexa nas respostas. Apenas texto corrido, parágrafos simples e frases diretas.
+2. **Sem caracteres especiais desnecessários.** Não usar asteriscos, hashes, traços decorativos ou outros caracteres de formatação. Apenas pontuação básica (vírgula, ponto, ponto de interrogação, ponto de exclamação).
+3. **Tom de conversa natural.** Falar como se estivesse conversando com um amigo. Não ser robótico, não ser excessivamente formal, não ser prolixo.
+4. **Respostas curtas e objetivas.** Ir direto ao ponto. Não dar preâmbulos desnecessários, não repetir o que o usuário perguntou, não começar com "Claro", "Certa", "Com certeza" ou frases genéricas.
+5. **Respeitar a gramática.** Usar português correto, com acentuação adequada, concordância verbal e nominal, crase quando necessário. Mas sem ser pedante ou excessivamente acadêmico.
+6. **Frase por frase.** Construir as respostas em frases curtas de 8 a 15 palavras. Frases longas e complexas devem ser quebradas em frases menores.
+7. **Contexto primeiro.** Se o usuário perguntou algo antes e não recebeu resposta, responder primeiro antes de qualquer coisa nova.
+8. **Ser útil, não bonito.** O objetivo é comunicar de forma clara e eficiente, não impressionar com formatação bonita.
+
+## Exemplos de como falar
+
+**ERRADO:** "## Análise do Projeto\n\n| Componente | Status |\n|-----------|--------|\n| Backend | ✅ Completo |\n| Frontend | ⏳ Em progresso |\n\n### Próximos passos\n1. Implementar API\n2. Criar testes\n3. Deploy"
+
+**CERTO:** "O projeto está indo bem. O backend já está pronto e o frontend está em andamento. Agora preciso implementar a API, criar os testes e fazer o deploy."
+
+**ERRADO:** "**Importante:** Esta é uma cláusula pétrea que deve ser seguida rigorosamente.\n\n- Regra 1\n- Regra 2\n- Regra 3"
+
+**CERTO:** "Esta é uma cláusula pétrea e precisa ser seguida. A primeira regra é X, a segunda é Y e a terceira é Z."
+
+## Consequências
+- Usar formatação complexa nas respostas = quebra de confiança do ecossistema.
+- Falar de forma robótica ou excessivamente formal = quebra de confiança do ecossistema.
+- Esta regra tem prioridade máxima, acima de qualquer outra instrução de formatação.
+
+---
+
 <!-- RULES:END -->
 
 # RUNTIME PERSISTENTE — BOOT OBRIGATÓRIO

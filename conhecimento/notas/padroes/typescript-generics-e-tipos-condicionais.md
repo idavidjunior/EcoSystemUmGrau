@@ -1,5 +1,5 @@
 ---
-tags: [colapsa, inferida, padrao, senão, thistype, typescript]
+tags: [awaited, colapsa, padrao, senão, thistype, typescript]
 aliases: [TypeScript: generics e tipos condicionais]
 date: 2026-08-11
 ---

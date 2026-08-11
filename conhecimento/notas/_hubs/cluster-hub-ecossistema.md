@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**162 notas** do cluster ecossistema.
+**163 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -104,6 +104,7 @@
 - [[eco-agente-e-comando-global]]
 - [[ensureserve-spawns-opencode-serve-without-passing-env-contex]]
 - [[erro-unicodeencodeerror-no-runtimecontext-cp1252]]
+- [[estilo-de-comunicação-simples-e-direto]]
 - [[evoluãão-do-tts-jarvis-â-naturalidade-via-ssml]]
 - [[fase-a-concluída-catálogo-real-no-supabase-64-obras-via-tmdb]]
 - [[fix-favoritos-tags-e-contagem-por-capitulo]]

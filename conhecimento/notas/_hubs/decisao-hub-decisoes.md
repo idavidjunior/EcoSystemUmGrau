@@ -1,6 +1,6 @@
 # Decisoes
 
-**62 notas** conectadas a este hub.
+**63 notas** conectadas a este hub.
 
 
 ## Notas
@@ -22,6 +22,7 @@
 - [[decisão-arquitetura-jarvis-app]]
 - [[encoding-utf-8-in-javac-required-on-windows-to-prevent-corru]]
 - [[estado-persiste-em-json-nao-sqlite-legivel-editavel-fora-do-]]
+- [[estilo-de-comunicação-simples-e-direto]]
 - [[estrategia-selecionada-por-ranking-cost-risk-time-complexity]]
 - [[fase-a-concluída-catálogo-real-no-supabase-64-obras-via-tmdb]]
 - [[form-starts-empty-input-forms-never-auto-load-from-file-user]]
