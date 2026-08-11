@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-10T23:03:55.139942",
+  "last_updated": "2026-08-10T23:07:04.432718",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -1480,6 +1480,222 @@
       "title": "SQL: transações, ACID e dialetos",
       "action": "learning_card",
       "description": "### ACID\n\nTransação é uma unidade atômica de trabalho:\n- **Atomicity**: ou tudo ou nada — falha no meio reverte tudo (ROLLBACK).\n- **Consistency**: invariantes do banco preservadas (constraints, FKs, CHECKs).\n- **Isolation**: transações concorrentes não se veem parcialmente.\n- **Durability**: commit persistido mesmo em crash (WAL / write-ahead log).\n\n### Controle\n\n`BEGIN` → operações → `COMMIT` ou `ROLLBACK`. Detalhes por dialeto: no **Postgres** até DDL é transacional; no **MySQL**, DDL e DML têm auto-commit (só InnoDB suporta transações; MyISAM não). Para leitura com bloqueio: `SELECT ... FOR UPDATE`.\n\n### Níveis de isolamento (SQL standard)\n\n1. **READ UNCOMMITTED**: permite ler dados sujos (dirty reads).\n2. **READ COMMITTED**: lê só o que já foi commitado — default de Postgres, Oracle e SQL Server.\n3. **REPEATABLE READ**: a mesma consulta retorna o mesmo resultado na transação — default do MySQL/InnoDB.\n4. **SERIALIZABLE**: máximo; execução como se fosse serial.\n\nFenômenos que cada nível evita: dirty read, non-repeatable read, phantom read.\n\n### Implementação e concorrência\n\n- **MVCC** (Postgres, InnoDB, SQLite em modo WAL): leituras não bloqueiam escritas — cada transação vê um snapshot.\n- Locking pessimista vs concorrência otimista: para alta contenção de escrita, use `UPDATE ... SET version = version + 1 WHERE id = ? AND version = ?` (e verifique linhas afetadas).\n- Deadlocks: acesse recursos em ordem consistente; o SGBD detecta e aborta uma transação — implemente retry.\n\n### Diferenças de dialetos (resumo)\n\n- **Auto-increment**: Postgres `BIGSERIAL`/`GENERATED ... AS IDENTITY`, MySQL `AUTO_INCREMENT`, SQLite `INTEGER PRIMARY KEY`, SQL Server `IDENTITY(1,1)`.\n- **Limite de linhas**: `LIMIT/OFFSET` (Postgres, MySQL, SQLite) vs `OFFSET ... FETCH` ou `TOP` (SQL Server).\n- **JSON**: `JSONB` (Postgres), `JSON` (MySQL/SQL Server).\n- **Datas/funções**: `now()`/`CURRENT_DATE` (Postgres/MySQL) vs `GETDATE()` (SQL Server).\n- **Concatenação**: `||` (Postgres/SQLite/SQL Server) vs `CONCAT()` (MySQL).\n- **Case-insensitive**: `ILIKE` (Postgres) vs `LOWER(col) LIKE` (MySQL).\n\n```sql\nBEGIN;\nUPDATE conta SET saldo = saldo - 100 WHERE id = 1;\nUPDATE conta SET saldo = saldo + 100 WHERE id = 2;\nCOMMIT;  -- ou ROLLBACK em caso de erro\n```"
+    },
+    {
+      "source": "traducao",
+      "title": "Princípios fundamentais da tradução: sentido, equivalência e fidelidade",
+      "action": "learning_card",
+      "description": "Toda boa tradução começa por três princípios interligados: sentido, equivalência e fidelidade.\n\nSENTIDO: o texto-fonte carrega um propósito comunicativo — informar, persuadir, emocionar. Traduzir não é trocar palavras, é reconstruir esse propósito na língua de chegada. Se o leitor do texto traduzido entende e reage como o leitor do original, o sentido foi preservado.\n\nEQUIVALÊNCIA: não existe palavra por palavra, existe função por função. Um mesmo termo pode pedir traduções distintas conforme o contexto. Exemplo: \"run\" é \"correr\" em \"I run every day\", mas \"rodar\" em \"run a program\" e \"gerenciar\" em \"run a business\". A equivalência é contextual, nunca mecânica.\n\nFIDELIDADE: ser fiel ao texto não é ser literal, é respeitar a intenção do autor e os efeitos sobre o leitor. Fidelidade exige não omitir informação essencial, não inventar conteúdo e não distorcer o tom.\n\nARMADILHA COMUM: buscar correspondência dicionarizada de cada palavra, produzindo um texto gramaticalmente correto, porém sem naturalidade e com sentido alterado. Sempre traduza frases, períodos e ideias, não itens isolados. Pergunte: \"o que este trecho faz pelo leitor?\" — e reproduza isso."
+    },
+    {
+      "source": "traducao",
+      "title": "Fidelidade x naturalidade: quando priorizar cada um",
+      "action": "learning_card",
+      "description": "Fidelidade e naturalidade formam uma tensão clássica: quanto mais literal, menos natural; quanto mais idiomático, mais se arrisca a desviar do original. O equilíbrio depende do gênero textual.\n\nPREDOMINÂNCIA DA FIDELIDADE: documentos legais, contratos, patentes, normas técnicas, certificados, bulas. Aqui o custo de um erro é alto e o leitor espera rigor. Nesses textos, mantenha estrutura, repita termos (consistência terminológica é requisito), preserve números, unidades e referências exatas.\n\nPREDOMINÂNCIA DA NATURALIDADE: marketing, literatura, roteiros, UX, e-commerce. Nesses gêneros o leitor precisa se sentir em um texto escrito originalmente em português. Frases longas do inglês devem ser quebradas; voz passiva excessiva deve virar voz ativa; metáforas devem ser recriadas.\n\nCRITÉRIO PRÁTICO: priorize a naturalidade onde o efeito sobre o leitor importa mais que a forma; priorize a fidelidade onde a precisão semântica importa mais que a fluência. Documente cada decisão para a revisão.\n\nARMADILHA COMUM: \"tradução de tradutor\" — texto que soa estrangeiro, com o sujeito sempre explícito e a ordem do inglês, mas gramaticalmente correto. O leitor percebe, e o texto perde credibilidade."
+    },
+    {
+      "source": "traducao",
+      "title": "Estratégias de tradução: literal, semântica, adaptativa e quando usar cada uma",
+      "action": "learning_card",
+      "description": "Três grandes estratégias cobrem a maioria das decisões tradutórias: literal, semântica e adaptativa (transcreation).\n\nTRADUÇÃO LITERAL: alinha-se à estrutura e aos itens lexicais do original, preservando forma e ordem. Adequada quando o texto é técnico e o termo já tem correspondência canônica: \"network firewall\" → \"firewall de rede\", \"database\" → \"banco de dados\". Também útil em textos em que a forma é parte do conteúdo, como manuais de instrução e cláusulas contratuais.\n\nTRADUÇÃO SEMÂNTICA: preserva o significado e o tom, mas ajusta a forma para soar natural na língua de chegada. É a estratégia padrão da maioria dos textos: \"a common mistake\" → \"um erro comum\" (e não \"um engano comum\"), \"take into account\" → \"levar em conta\". Quebra frases longas, converte voz passiva em ativa quando conveniente.\n\nTRADUÇÃO ADAPTATIVA (TRANSCREATION): recria livremente o conteúdo para produzir o mesmo efeito — usado em slogans, campanhas, poesia, humor. \"I'm lovin' it\" não é traduzido literalmente; é adaptado para \"Amo muito tudo isso\".\n\nCRITÉRIO: quanto mais o texto depende de efeito, emoção e cultura, mais adaptativa deve ser a estratégia. Quanto mais depende de precisão e normas, mais literal. Misture as três conscientemente, trecho a trecho, sempre justificando a escolha."
+    },
+    {
+      "source": "traducao",
+      "title": "Falsos cognatos e armadilhas interlíngua (inglês-português)",
+      "action": "learning_card",
+      "description": "Falsos cognatos são palavras de escrita semelhante, mas de significado diferente. São a fonte mais comum de erros embaralhosos no par inglês-português.\n\nCASOS CLÁSSICOS: \"actually\" não é \"atualmente\", é \"na verdade\" (atualmente = currently). \"pretend\" não é \"pretender\", é \"fingir\" (pretender = intend). \"policy\" é \"política\" (de empresa/estado), não \"polícia\" (police). \"library\" é \"biblioteca\", não \"livraria\" (bookstore). \"eventually\" é \"finalmente\", não \"eventualmente\" (occasionally). \"sensível\" é \"sensitive\", não \"sensato\" (sensible). \"graduate\" é \"formar-se\", não \"graduar\" em sentido de escala (graduate = colar grau). \"actually\", \"embarrassed\" (= envergonhado, não \"embaraçado\"), \"traduce\" (= difamar, não \"traduzir\").\n\nARMADILHAS ESTRUTURAIS: preposições diferentes (\"depend on\" → \"depender de\"), verbos frasais (\"give up\" → \"desistir\"), palavras com múltiplos sentidos que mudam por área (\"argument\" = argumento/briga; \"balance\" = saldo/equilíbrio).\n\nCOMO EVITAR: nunca confie só na semelhança gráfica. Confirme sentido pelo contexto e pelo registro. Quando a tradução parecer \"óbvia demais\" e mudar o significado do texto, desconfie. Use glossários da área e fontes confiáveis (termos técnicos têm padrões oficiais)."
+    },
+    {
+      "source": "traducao",
+      "title": "Elementos culturalmente intraduzíveis: humor, trocadilhos, provérbios e onomatopeias",
+      "action": "learning_card",
+      "description": "Alguns elementos dependem tanto da cultura-fonte que não podem ser transferidos palavra a palavra — exigem recriação ou explicação.\n\nHUMOR E TROCADILHOS: um trocadilho em inglês (\"I used to be a baker, but I couldn't make enough dough\") perde tudo na tradução literal porque o jogo de sentidos se desfaz. Opções: recriar com um jogo equivalente no português, trocar por humor do mesmo tom, ou, em textos informativos, explicar o trocadilho entre parênteses. No humor, o efeito (fazer rir) vale mais que a forma.\n\nPROVÉRBIOS: existem equivalentes funcionais. \"The early bird catches the worm\" → \"Deus ajuda quem cedo madruga\". \"Don't count your chickens before they hatch\" → \"Não conte com o ovo antes da galinha botar\". Quando não há equivalente, traduza o sentido e, se o registro permitir, adicione o provérbio original entre parênteses.\n\nONOMATOPEIA E SONS: cada língua \"ouve\" de um jeito. \"cock-a-doodle-doo\" é \"cocoricó\"; \"meow\" é \"miau\"; o \"crack\" inglês pode ser \"estalo\", \"rachadura\" ou \"quebra\" conforme o contexto. Escolha a forma sonora natural do português.\n\nNOMES CULTURAIS: pratos, festas e objetos sem correspondência devem receber tradução explicativa na primeira ocorrência e manter o original: \"Thanksgiving\" → \"Ação de Graças (Thanksgiving)\".\n\nARMADILHA: eliminar o humor ou a metáfora por não saber recriar. Melhor adaptar o efeito do que produzir um trecho seco que trai o tom do original."
+    },
+    {
+      "source": "traducao",
+      "title": "Pipeline de tradução de qualidade: análise, rascunho, revisão e QA",
+      "action": "learning_card",
+      "description": "Tradução profissional segue um fluxo de quatro etapas que reduz drasticamente erros.\n\n1. ANÁLISE: leia o texto inteiro antes de traduzir. Identifique gênero, público-alvo, tom, registro, termos técnicos e glossários aplicáveis. Marque trechos problemáticos (ambíguos, jargão, referências culturais) e pesquise antes de começar. Aqui também se decide a estratégia por bloco.\n\n2. RASCUNHO: traduza o texto em passada completa, mantendo coerência terminológica desde a primeira versão. Use um glossário da área ou crie um simples com os termos-chave. Não pare para polir; registre dúvidas em lista à parte.\n\n3. REVISÃO: compare o rascunho com o original, trecho a trecho. Verifique fidelidade (nada omitido ou acrescentado), clareza, tom, registro e terminologia consistente. Depois leia o texto apenas em português, sem olhar o original, para caçar frases não naturais.\n\n4. REVISÃO FINAL (QA): valide detalhes: números, datas, unidades, formatação, código, nomes próprios, links, placeholders (ex.: {nome} em templates), acentuação e pontuação. Verifique termos recorrentes com pesquisa (Ctrl+F). Se houver memória de tradução ou glossário, confira a consistência global.\n\nARMADILHA COMUM: ir direto à tradução e \"revisar enquanto traduz\". Isso mistura tarefas cognitivas distintas e gera texto híbrido com mais erros. Separe as fases e, idealmente, deixe a revisão para horas depois."
+    },
+    {
+      "source": "traducao",
+      "title": "Tom e registro: formal, técnico, coloquial — como detectar e manter",
+      "action": "learning_card",
+      "description": "Tom é a atitude do texto (amigável, sério, entusiasta); registro é o nível de formalidade. Os dois precisam ser detectados no original e reproduzidos no texto traduzido.\n\nCOMO DETECTAR: observe a seleção vocabular (\"get\" vs \"obtain\", \"use\" vs \"utilize\"), a sintaxe (frases curtas e diretas vs períodos longos), o uso de contrações, gírias, humor, e quem é o público. Um e-mail de atendimento usa registro mais próximo do coloquial; um contrato usa o formal. Pergunte: \"se um brasileiro escrevesse este texto com a mesma intenção, como soaria?\"\n\nFORMAL: adequado a contratos, documentos oficiais, academia. Em pt-BR, exige períodos bem estruturados, concordância rígida, vocabulário preciso e tratamento adequado (\"Vossa Senhoria\", \"solicito\").\n\nTÉCNICO: prioriza precisão terminológica sobre estilo. Use o termo técnico consagrado mesmo quando soe pouco natural; a naturalidade vem da estrutura frasal, não da substituição de jargão por sinônimo leigo.\n\nCOLOQUIAL: reproduza a informalidade do original — contrações, interjeições, expressões idiomáticas, tratamento por \"você\". Atenção: coloquial não é errar gramática; é usar registro informal de forma consistente.\n\nARMADILHA COMUM: nivelar tudo ao registro \"neutro\" da tradução, achatando a voz do autor. Um texto coloquial traduzido em tom formal trai a intenção original; o inverso também é grave em textos legais."
+    },
+    {
+      "source": "traducao",
+      "title": "Quando adaptar x quando manter o termo original (estrangeirismos e termos técnicos)",
+      "action": "learning_card",
+      "description": "Uma das decisões mais frequentes: manter o termo em inglês, adaptá-lo ao português ou substituí-lo por um termo nacional.\n\nMANTENHA O ORIGINAL quando: não há correspondência útil; o termo é nome próprio de produto/tecnologia (Photoshop, Kubernetes, WhatsApp); o público-alvo conhece o termo em inglês (público técnico: \"sprint\", \"dashboard\", \"pull request\"); ou o termo é uma marca registrada. Manter é mais seguro do que inventar uma tradução que ninguém usa.\n\nADAPTE (aportuguesamento) quando o uso já consagrou a forma: \"download\" já convive com \"baixar\"; \"e-mail\" é aceito na norma (novo acordo ortográfico). Prefira a forma natural do português quando ela existir e for usada: \"site\" (não \"website\"), \"login\" (ou \"entrar\").\n\nTRADUZA quando houver termo oficial da área: informática \"software\" já é dicionarizada, mas \"memory leak\" → \"vazamento de memória\"; \"cloud computing\" → \"computação em nuvem\"; \"user experience\" → \"experiência do usuário\".\n\nCRITÉRIO PRÁTICO: siga o público e o uso consolidado, não o dicionário nem o purismo. Termo técnico conhecido pelo público em inglês deve ser mantido; se o leitor leigo vai ler, traduza e acrescente o original na primeira menção. Consistência: o mesmo termo, sempre a mesma solução no texto todo."
+    },
+    {
+      "source": "pt-br",
+      "title": "Norma culta x coloquial no pt-BR: quando usar cada registro na tradução",
+      "action": "learning_card",
+      "description": "A norma culta é o padrão de uso prestigiado, empregado em textos formais e na escrita cuidada; o coloquial é o registro espontâneo, informal, do dia a dia. Traduzir bem é escolher o registro que o original indica.\n\nNORMA CULTA: usada em documentos oficiais, contratos, artigos, comunicação corporativa e materiais educativos. Exige concordância rigorosa, pronomes e preposições em conformidade com a gramática normativa (\"temos de\", \"para mim\", ênclise quando apropriada), vocabulário formal e pontuação cuidada.\n\nCOLOQUIAL: presente em chats, redes sociais, marketing descontraído, roteiros e UX. Aceita formas reduzidas (\"tá\", \"pra\", \"cê\"), gírias, interjeições e ordem natural da fala. Importante: o coloquial no Brasil é predominantemente falado; na escrita, aparece quando o gênero pede proximidade.\n\nCOMO DECIDIR NA TRADUÇÃO: um texto de app que usa \"you're all set\" pede algo como \"tudo certo!\" — nunca \"o senhor está devidamente configurado\". Já um contrato com \"shall be deemed\" pede \"será considerado\", jamais \"vai ser levado em conta, tá\".\n\nARMADILHA COMUM: traduzir coloquial estrangeiro com formalismo brasileiro, ou cair no excesso — usar gírias em texto que apenas era informal, mas não regional. O coloquial deve parecer o modo de falar de um brasileiro, sem exageros que datam o texto."
+    },
+    {
+      "source": "pt-br",
+      "title": "Variações PT-PT x PT-BR: reescrever para o brasileiro",
+      "action": "learning_card",
+      "description": "Português de Portugal e do Brasil divergem em vocabulário, sintaxe, pronúncia e ortografia (parcial). Quem traduz para o público brasileiro precisa reescrever — não basta \"converter acentos\".\n\nVOCABULÁRIO: as diferenças são numerosas e perigosas. \"Autocarro\" → \"ônibus\"; \"combinado\" → \"guarda-roupa\" ou \"armário\"; \"biberão\" → \"mamadeira\"; \"gelado\" → \"sorvete\"; \"peão\" → \"pedestre\"; \"fato\" → \"terno\"; \"telemóvel\" → \"celular\"; \"gaveta\" → \"porta-malas\" (em Portugal é \"mala\"). Nunca mantenha o termo lusitano para o leitor brasileiro.\n\nSINTAXE: no Brasil predomina o pronome na forma tônica e o clítico em posição diferente: em PT-PT \"vou dizer-lhe\", no Brasil \"vou lhe dizer\" (e, na fala, \"vou te dizer\"). Uso de \"tu\" com conjugação de terceira pessoa (\"tu vai\") é coloquial brasileiro; \"você\" é o tratamento universal.\n\nORTOGRAFIA: o Acordo Ortográfico de 1990 reduziu diferenças, mas persistem: \"fato\" (PT-PT) vs \"fato\" (PT-BR, mesmo vocábulo, pronúncia diferente), \"direção\" vs \"direcção\" — agora só \"direção\" nas duas variantes; \"ação\" e \"ótimo\" são iguais hoje. Ainda há divergências: \"actor\" (PT) vs \"ator\" (BR); \"contato\" (BR) vs \"contacto\" (PT).\n\nREGRA: o texto traduzido deve ser indistinguível de um texto escrito originalmente por brasileiro. Ao revisar, substitua todo lusitanismo que saltar aos olhos e cheque vocabulário em fontes brasileiras."
+    },
+    {
+      "source": "pt-br",
+      "title": "Formas de tratamento em pt-BR: você, tu, senhor/a e concordância",
+      "action": "learning_card",
+      "description": "O sistema de tratamento brasileiro é complexo e muda com região, idade e contexto. O padrão nacional é o \"você\", que pede verbos na terceira pessoa.\n\nVOCÊ: tratamento universal, de informalidade média. \"Você quer um café?\" é seguro em praticamente qualquer situação — de atendimento a conversa com desconhecidos.\n\nTU: usado com familiaridade no Sul, em partes do Norte/Nordeste e em contextos informais. Na fala cotidiana brasileira é comum \"tu vai\" (verbo na terceira pessoa), mas na escrita cuidada o correto é \"tu vais\". Para tradução, só use \"tu\" se o público-alvo e o registro justificarem; o neutro \"você\" costuma ser mais seguro.\n\nSENHOR/SENHORA: usado com desconhecidos mais velhos, autoridades e em atendimento formal. Requer verbos na terceira pessoa: \"O senhor poderia aguardar?\". Em documentos e comunicação corporativa formal, \"Vossa Senhoria\" ou o nome do destinatário são preferíveis a \"Sr.\".\n\nCONCORDÂNCIA: a maior fonte de erros. O verbo concorda com o sujeito (\"você está\"), os pronomes possessivos e oblíquos seguem o tratamento (\"o senhor e sua\"). \"Vossa Senhoria\" pede verbo na terceira pessoa do singular: \"Vossa Senhoria receberá\".\n\nARMADILHA: traduzir o \"you\" inglês mantendo um único tratamento para todo o texto. O \"you\" formal e o informal precisam ser decididos por contexto, senão o texto brasileiro soa frio demais ou íntimo demais."
+    },
+    {
+      "source": "pt-br",
+      "title": "Regionalismos brasileiros: como traduzir sem cair em gírias muito locais",
+      "action": "learning_card",
+      "description": "O Brasil tem variações regionais marcantes: \"tangerina\" (Sudeste), \"bergamota\" (Sul) e \"mexerica\" (Nordeste) designam a mesma fruta; \"polenta\" e \"massa\" também variam. Traduzir é buscar o termo de alcance nacional, não o regional.\n\nCOMO IDENTIFICAR: verifique se a palavra é compreendida em todo o país. Termos como \"vascaíno\" ou \"manezinho\" são restritos; \"legal\", \"gente boa\" e \"dar certo\" são nacionais. Ao escolher sinônimo, prefira o de distribuição ampla e registro médio.\n\nQUANDO USAR REGIONALISMO: apenas se o texto original for deliberadamente regional (diálogo de um personagem gaúcho, campanha local) ou se o público-alvo for restrito à região. Nesses casos, use com moderação e de forma coerente — não misture gírias de estados diferentes.\n\nCOMO TRADUZIR: para expressões inglesas informais, busque equivalentes brasileiros gerais: \"to hang out\" → \"sair\" ou \"dar um rolê\" (rolê hoje é nacional); \"buddy\" → \"cara\"/\"amigo\" (evite \"brother\"). Prefira o termo usado na mídia nacional, que tende a padronizar o vocabulário.\n\nARMADILHA COMUM: inventar uma \"coloquialidade brasileira genérica\" misturando gírias de várias regiões (\"mano\", \"véi\", \"tchê\" no mesmo parágrafo) — o resultado é inverossímil. Um regionalismo mal aplicado envelhece mal e quebra a credibilidade do texto."
+    },
+    {
+      "source": "pt-br",
+      "title": "Siglas, acrônimos e nomes próprios: manter, traduzir ou adaptar",
+      "action": "learning_card",
+      "description": "Siglas, acrônimos e nomes próprios seguem regras distintas no pt-BR — e a tradução precisa respeitá-las para não produzir textos estranhos.\n\nNOMES PRÓPRIOS: nomes de pessoas, empresas, produtos e marcas não se traduzem (Apple, Google, João, Petrobras). Exceções históricas e consagradas existem: \"United Nations\" → \"Organização das Nações Unidas\" (ONU), \"World Health Organization\" → \"Organização Mundial da Saúde\" (OMS). Cidades famosas têm versões: \"London\" → \"Londres\", \"Moscow\" → \"Moscou\".\n\nSIGLAS E ACRÔNIMOS: quando existir sigla brasileira oficial, use-a: \"NATO\" → \"OTAN\" (às vezes \"OTAN\" é a sigla usada no Brasil; a grafia portuguesa é \"OTAN\", por vezes vista como \"OTAN\" ou \"Otan\"), \"UN\" → \"ONU\", \"EU\" → \"UE\". Para siglas estrangeiras sem versão, mantenha a sigla e traduza a extensão: \"GDPR\" → \"Regulamento Geral de Proteção de Dados (GDPR)\".\n\nADAPTAÇÃO ESTRUTURAL: no pt-BR, siglas se escrevem em caixa alta e, após o Acordo Ortográfico, perdem pontos e espaços: \"ONU\", \"IBGE\". Quando pronunciadas como palavra, viram acrônimos e podem receber plural \"os ONGs\" é incorreto; o correto é \"as ONGs\".\n\nGÊNERO E CONCORDÂNCIA: a sigla herda o gênero do núcleo expandido: \"a ONU\" (Organização), \"o IBGE\" (Instituto). Mantenha a primeira menção com a extensão entre parênteses quando a sigla não for óbvia para o leitor: \"o Sistema Único de Saúde (SUS)\"."
+    },
+    {
+      "source": "pt-br",
+      "title": "Estrangeirismos no pt-BR: anglicismos aceitos, aportuguesamentos e quando recusar",
+      "action": "learning_card",
+      "description": "O português brasileiro incorpora estrangeirismos em ritmo acelerado, especialmente do inglês. A tradução precisa saber o que já é aceito, o que já foi aportuguesado e o que ainda soa estrangeiro demais.\n\nANGLICISMOS ACEITOS: vocabulário de tecnologia e negócios já é dicionarizado e compreendido: \"software\", \"hardware\", \"internet\", \"e-mail\" (com hífen), \"feedback\", \"startup\", \"online\". Nesses casos, manter é a escolha natural — traduzi-los forçadamente (\"realimentação\") produz texto artificial.\n\nAPORTUGUESAMENTOS CONSOLIDADOS: palavras que ganharam forma portuguesa: \"site\" (de site), \"deletar\" (de delete), \"printar\" (de print), \"visualizar\" (de visualize), \"link\" já ganhou o verbo \"linkar\". O Acordo Ortográfico eliminou algumas grafias: \"ideia\", \"heroi\" (sem acento). Ao escrever, use a forma grafada em português: \"show\" virou \"show\" aceito, mas o verbo \"clicar\" (de click) é aportuguesado.\n\nQUANDO RECUSAR: evite anglicismos quando existir correspondência consagrada e o registro pedir formalidade: prefira \"café da manhã\" a \"breakfast\", \"reunião\" a \"meeting\" (embora \"meeting\" seja aceito em ambientes corporativos). Em textos formais e jurídicos, recuse anglicismos gratuitos.\n\nCRITÉRIO: atualidade, público e registro. Tecnologia e público jovem toleram mais; documentos oficiais e públicos leigos exigem mais tradução. A primeira ocorrência de um termo pouco conhecido deve trazer tradução explicativa: \"o onboarding (ambientação de novos clientes)\"."
+    },
+    {
+      "source": "traducao-texto",
+      "title": "Tradução técnica: manuais, especificações e documentação de software",
+      "action": "learning_card",
+      "description": "A tradução técnica prioriza exatidão, clareza e consistência sobre estilo literário. Em manuais e documentação de software, cada termo técnico deve ser estável ao longo do documento: se \"deploy\" virou \"implantação\" no primeiro capítulo, permanece assim até o fim.\n\nCrie um glossário e use memórias de tradução (Trados, memoQ, CAT tools) para garantir consistência. Números, unidades, caminhos de arquivo, nomes de variáveis e comandos de terminal nunca são traduzidos.\n\nArmadilhas: traduzir nomes de produtos, deixar inglês desnecessário e misturar imperativos singular/plural. Escolha um tratamento uniforme (informal \"você\" ou formal) e mantenha-o. Cuidado com falsos sentidos: \"to address an error\" é \"resolver um erro\". Valide o texto no software real para conferir espaço e semântica."
+    },
+    {
+      "source": "traducao-texto",
+      "title": "Tradução literária: prosa e poesia — ritmo, voz e licença poética",
+      "action": "learning_card",
+      "description": "A tradução literária não transfere palavras, mas efeitos: o objetivo é recriar na língua de chegada o ritmo, a voz do autor, o tom e a emoção do original, aceitando que a fidelidade é de sentido e impacto, não de forma literal.\n\nNa poesia, métrica e rima nem sempre são transponíveis; o tradutor negocia prioridades: rima, ritmo ou sentido. A licença poética permite alterar a ordem das palavras, substituir imagens e sacrificar detalhes pela musicalidade. Leia o resultado em voz alta: se não fluir, reescreva.\n\nNa prosa, o risco é o estrangeirismo sintático: frases longas, voz passiva excessiva, pontuação artificial. Releia buscando naturalidade em pt-BR — se um nativo não diria assim, revise. Preserve registros (coloquial/erudito) e jogos de palavras (adaptados com nota)."
+    },
+    {
+      "source": "traducao-texto",
+      "title": "Tradução de interface e microcopias (UI): botões, erros e textos curtos",
+      "action": "learning_card",
+      "description": "Microcopy é todo texto curto de interface: botões, tooltips, mensagens de erro, confirmações e validações. O desafio é traduzir com poucos caracteres, pois o layout foi desenhado para o original e o pt-BR costuma ser 20-30% mais longo que o inglês.\n\nUse verbos de ação claros nos botões (\"Excluir\", \"Salvar\", \"Enviar\"). Erros devem explicar o problema E a solução: em vez de \"Erro 403\", \"Você não tem permissão para ver esta página — solicite acesso ao administrador\".\n\nArmadilhas: ignorar convenções de plataforma (\"Sign in\" é \"Entrar\", não \"Assinar\"), usar tom inconsistente entre telas e plurais/gênero fixos em textos com variáveis. Teste sempre no tamanho real do botão: evite quebras que quebram o layout."
+    },
+    {
+      "source": "traducao-texto",
+      "title": "Tradução adaptativa (transcreation) para marketing e publicidade",
+      "action": "learning_card",
+      "description": "Transcreation recria a mensagem, não a traduz. Em marketing, o objetivo é provocar no público-alvo a mesma reação emocional do público de origem — slogans, headlines, campanhas e nomes de produtos são o caso clássico.\n\nExemplo: \"The ultimate driving machine\" (BMW) virou \"Prazer em dirigir\" no Brasil; \"Just do it\" (Nike) foi mantido em inglês por reconhecimento de marca. Identifique a ideia central e o apelo emocional antes de escrever; pesquise tabus culturais; verifique se o nome não significa algo inapropriado em pt-BR.\n\nArmadilhas: tradução palavra a palavra sem impacto no mercado local, trocadilhos intraduzíveis e mensagens que quebram o tom da marca. Trabalhe com briefing, respeite o tom de voz e ofereça 2-3 alternativas com racional. Valide com nativos do mercado."
+    },
+    {
+      "source": "traducao-texto",
+      "title": "Tradução jurídica: contratos e termos legais — precisão e terminologia",
+      "action": "learning_card",
+      "description": "A tradução jurídica exige precisão absoluta: um termo errado pode alterar obrigações e direitos. Não existe tradução literal — cada sistema legal (common law x direito civil) tem conceitos próprios, e o tradutor busca o equivalente funcional.\n\nExemplos: \"consideration\" ≈ \"contraprestação\"; \"default\" = \"inadimplemento\" (nunca \"padrão\"); \"shall\" = \"deverá\"; \"warranty\" = \"garantia\"; \"force majeure\" = \"caso fortuito e força maior\". Valores em moeda, números de cláusulas e referências a leis devem ser exatos e verificáveis.\n\nArmadilhas: traduzir siglas de órgãos (\"IRS\" ≠ \"Receita Federal\" sem nota), confundir \"liability\" (\"responsabilidade\") com \"guilt\", e falsos cognatos como \"actual\" (= \"real\", não \"atual\"). Documente decisões e recomende revisão por advogado do país."
+    },
+    {
+      "source": "traducao-texto",
+      "title": "Tradução científica e acadêmica: papers, abstracts e nomenclatura",
+      "action": "learning_card",
+      "description": "Na tradução científica, a precisão terminológica é inegociável: um termo errado em um abstract impede que o artigo seja encontrado e compreendido. O tradutor deve dominar o vocabulário técnico da área e a norma culta.\n\nNomenclaturas seguem regras próprias: nomes de espécies em latim (\"Homo sapiens\") não se traduzem; unidades seguem o SI (kg, m/s); compostos químicos seguem a IUPAC. Títulos e resumos mantêm a estrutura do original com fluência do pt-BR.\n\nArmadilhas: colocações inglesas inexistentes em português, maiúsculas incorretas e anglicismos desnecessários. Falsos cognatos traiçoeiros: \"evidence\" = \"evidências\"/\"comprovação\"; \"data\" = \"dados\". Nunca altere sobrenomes, títulos citados ou a numeração de tabelas, equações e referências."
+    },
+    {
+      "source": "traducao-texto",
+      "title": "Tradução jornalística: notícias, manchetes e entrevistas",
+      "action": "learning_card",
+      "description": "A tradução jornalística aplica o estilo direto da notícia: frases curtas, voz ativa e a resposta ao o quê, quem, quando, onde, como e por quê logo no lead. A manchete é a peça mais delicada — deve ser curta e impactante, com impacto que funcione no espaço reduzido.\n\nEm entrevistas, preserve a fala em primeira pessoa e o tom, adaptando idiomatismos (\"kick off the meeting\" = \"dar início à reunião\"). Citações entre aspas devem ser tradução fiel, sem parafrasear.\n\nArmadilhas: manchetes literais e longas demais, ignorar contexto institucional (\"MP\" pode ser Ministério Público ou medida provisória — o contexto decide) e introduzir carga emocional que o original não tem. Verifique nomes próprios, números, datas e a atribuição da fonte antes de publicar."
+    },
+    {
+      "source": "traducao-texto",
+      "title": "Tradução de legendas embutidas (burned-in) e placas de cena",
+      "action": "learning_card",
+      "description": "Texto burned-in é o que já está incrustado na imagem ou vídeo: placas de loja, letreiros, documentos em cena, telas de computador. Não é legenda de diálogo — é conteúdo gráfico. O principal desafio é o espaço: a tradução precisa caber no mesmo espaço visual do original.\n\nUse traduções curtas, mesmo que simplifiquem (\"PARKING\" = \"ESTACIONAMENTO\"; \"Reserved\" pode virar \"Reservado\" ou \"Vaga reservada\" conforme o espaço). Preserve formatação (maiúsculas, itálico) e mantenha consistência entre todas as ocorrências do mesmo texto no projeto.\n\nArmadilhas: traduzir marcas/propriedade intelectual, ignorar o tempo em que a placa fica visível no vídeo e não coordenar fonte, posição e duração com o editor. Em imagens, informe se a tradução ocupa mais espaço para ajustar o layout."
+    },
+    {
+      "source": "localizacao",
+      "title": "Localização (l10n) vs internacionalização (i18n) vs transcreation",
+      "action": "learning_card",
+      "description": "Internacionalização (i18n) é a engenharia que prepara o produto para qualquer língua: código separado das strings, suporte a Unicode, plurais e formatos parametrizados. Localização (l10n) é a adaptação a um mercado: tradução, moeda, leis e convenções. Transcreation é recriar a mensagem para o mesmo efeito emocional — típica de marketing.\n\nA regra de ouro: sem boa i18n, a l10n vira retrabalho. Sistema com textos embutidos no código exige recompilar por idioma; com locales (pt-BR, en-US), troca-se idioma sem tocar no código.\n\nExemplo: \"{n} item(s)\" é i18n ruim; a correta usa regras de plural do CLDR (pt-BR: um/outros). Localizar bem exige o mercado: dd/mm/aaaa, vírgula decimal, R$, país \"BR\". Saber onde termina a l10n e começa a transcreation evita erros de custo e qualidade."
+    },
+    {
+      "source": "localizacao",
+      "title": "Datas, horas e fuso horário no Brasil (dd/mm/aaaa, 24h, BRT)",
+      "action": "learning_card",
+      "description": "O padrão brasileiro de data é dia/mês/ano: 10/08/2026 — jamais 08/10/2026 (seria outubro). Em texto corrido: \"10 de agosto de 2026\". ISO 8601 (2026-08-10) é aceitável em sistemas, não em interface de usuário.\n\nHora: formato de 24 horas em contextos formais e digitais (\"18h30\"), embora o coloquial use \"6h30 da tarde\". Fuso padrão: horário de Brasília, BRT (UTC-3); o horário de verão foi extinto em 2019, não assuma DST. Amazonas (UTC-4) e Acre (UTC-5) têm fusos próprios; Fernando de Noronha usa UTC-2.\n\nArmadilhas: gravar hora local sem fuso (prefira UTC + timezone), confundir BRST (obsoleto) com BRT e usar am/pm. Use Intl.DateTimeFormat('pt-BR') e armazene instantes em UTC, exibindo no fuso do usuário."
+    },
+    {
+      "source": "localizacao",
+      "title": "Números, moedas (R$) e percentuais no pt-BR",
+      "action": "learning_card",
+      "description": "No pt-BR, o separador decimal é a vírgula e o de milhares, o ponto: 1.234,56. \"1,234.56\" é erro clássico de interface não localizada e vira mais de 1234 em vez de 1,23. Moeda: o símbolo R$ vem ANTES, sem espaço: R$ 1.234,56. Em sistemas multi-moeda use o código ISO \"BRL 1.234,56\". Percentual: 23,5%.\n\nUse Intl.NumberFormat('pt-BR', {style:'currency', currency:'BRL'}) em vez de concatenar strings. Armadilha de casas decimais: 0,5 deve aparecer como R$ 0,50 — nunca omita centavos. Em código, o ponto decimal em pt-BR é erro grave: \"1.5\" vira 150% se interpretado como milhar. Em textos corridos, evite o ponto de milhar quando ambíguo: \"mais de 1200 pessoas\"."
+    },
+    {
+      "source": "localizacao",
+      "title": "Unidades de medida e convenções brasileiras (m, kg, °C, telefone, endereço)",
+      "action": "learning_card",
+      "description": "O Brasil usa o SI: metros (m), quilogramas (kg), litros (L) e grau Celsius (°C) — inclusive em interfaces. Velocidade em km/h é obrigatória. Altura usa vírgula decimal: \"1,75 m\".\n\nTelefone: formato nacional (11) 91234-5678, com DDD e 9 nos celulares; internacional +55 11 91234-5678. Endereço segue a ordem: logradouro, número, complemento, bairro, cidade — UF, CEP 00000-000. Não assuma formato norte-americano.\n\nArmadilhas: converter unidades sem necessidade, usar \"lbs\" ou \"miles\", e regex rígidas de telefone que rejeitam +55 ou parênteses. Valide com regex flexível e normalize armazenando apenas dígitos. Nunca force formato de data/endereço de outro país em formulários brasileiros."
+    },
+    {
+      "source": "localizacao",
+      "title": "Localização de software: placeholders, plurais, gênero e espaço de UI",
+      "action": "learning_card",
+      "description": "Localizar software exige projetar para que qualquer língua funcione. Use placeholders nomeados ({nome}) em vez de posicionais (%s): eles permitem reordenar as palavras: \"{nome} salvou {arquivo}\" flui em pt-BR, o que concatenação fixa não permite.\n\nPlurais: não existe \"{n} item(s)\". O pt-BR tem três formas (1 item, 2 itens, muitos), implementadas via ICU MessageFormat ou a regra \"one/other\" do CLDR. Gênero: \"novo arquivo\" x \"nova pasta\" exigem variantes (selects do MessageFormat) ou reescrita neutra: \"Você tem 3 arquivos\".\n\nEspaço: textos em pt-BR crescem ~20-30%; use botões elásticos e teste com strings longas. Armadilhas: hard-coded, datas/números concatenados e strings compostas que quebram em outra língua. Use Gettext/.po ou Transifex/Crowdin com contextos."
+    },
+    {
+      "source": "traducao-audio",
+      "title": "Pipeline de tradução de áudio: STT -> tradução -> TTS",
+      "action": "learning_card",
+      "description": "Pipeline de tradução de áudio em três estágios: transcrição automática (STT), que gera texto com timestamps; tradução para o idioma-alvo preservando sentido e tom; e síntese de voz (TTS), que gera o áudio respeitando pontuação e pausas.\n\nEm pt-BR, use STT treinado em português brasileiro: reconhecedores genéricos erram 'a gente vai' (lido como 'agente') e 'mais'/'mas'. Whisper e Google Cloud STT têm boa precisão para pt-BR.\n\nErro comum: isolar os estágios. Tradução literal mata expressões idiomáticas ('chutar o balde' vira texto sem sentido) e o TTS soa robótico quando a pontuação se perde. Preserve timestamps e quebras de frase entre etapas e pontue a tradução para guiar as pausas do TTS.\n\nArmadilha: medir qualidade só pelo STT. O gargalo está na tradução e na prosódia."
+    },
+    {
+      "source": "traducao-audio",
+      "title": "Dublagem (versão): sincronização labial, tamanho da fala e naturalidade",
+      "action": "learning_card",
+      "description": "Na dublagem (versão), o áudio traduzido deve caber no tempo do original. Três fatores controlam isso: sincronização labial (a boca abre e fecha em momentos específicos), tamanho da fala (caracteres que cabem no tempo) e naturalidade (linguagem real, não tradução literal).\n\nRegra prática: locutor de pt-BR fala 140-160 palavras por minuto, cerca de 13-15 caracteres por segundo. Para uma fala de 3 segundos, a tradução não deve passar de 45-50 caracteres. Em close-up, a boca visível exige sincronia nas bilabiais 'p', 'b', 'm'; em plano aberto, vale mais o timing geral.\n\nArmadilha: traduzir e depois 'espremer' na janela, criando falas aceleradas. Traduza pensando no tempo e prefira reduzir texto a adicionar palavras. Cuidado com falsos cognatos ('actually' não é 'atualmente') e gírias datadas."
+    },
+    {
+      "source": "traducao-audio",
+      "title": "Legendagem: limite de caracteres, tempo em tela e leitura rápida",
+      "action": "learning_card",
+      "description": "Legenda é texto para leitura rápida, não tradução acadêmica. Padrões da indústria (Netflix) recomendam no máximo 42 caracteres por linha, 2 linhas por legenda e velocidade de 15 a 17 caracteres por segundo (cps); acima de 20, o espectador não acompanha.\n\nTempo em tela: mínimo de 0,8-1 segundo, máximo de 6-7 segundos (acima, o espectador relê). Cálculo: duração = caracteres / 17. Uma legenda de 40 caracteres fica 2,35 segundos na tela. Use pop-on em filmes e séries; roll-up em eventos ao vivo.\n\nCorte por shot: a legenda não deve atravessar um corte de cena, pois o olho leva 100-150 ms para se reancorar. Se a fala continua após o corte, divida a legenda em duas.\n\nArmadilhas: mais de 2 linhas e cps alto. Prefira ordem direta (sujeito-verbo-objeto) e corte redundâncias sem perder o sentido."
+    },
+    {
+      "source": "traducao-audio",
+      "title": "Tradução de fala coloquial e falas sobrepostas em podcasts e entrevistas",
+      "action": "learning_card",
+      "description": "Podcasts e entrevistas trazem dois desafios: linguagem coloquial e sobreposição de falas.\n\nNo coloquial, reproduza o registro informal em pt-BR sem traduzir palavra por palavra: 'gonna' vira 'vou', 'ain't' vira 'não é/tô/vou', 'you know' vira 'tipo' ou 'sabe', 'to hang out' vira 'dar um rolê'. Não misture registro: não escreva 'você está' num texto todo coloquial com 'tô'.\n\nSobreposição: identifique falantes por cor fixa ou nome em negrito. Em entrevistas rápidas, introduza a fala do outro antes do corte. O padrão Netflix aceita até 128 caracteres com dois falantes, mantendo o cps.\n\nArmadilha: traduzir interjeições de apoio ('uh-huh', 'right') como conteúdo. São reações: viram 'hum-hum', 'é', 'certo' ou somem. Removê-las reduz o cps e melhora a leitura."
+    },
+    {
+      "source": "traducao-audio",
+      "title": "Tradução para narração TTS em pt-BR: pontuação, entonação e SSML",
+      "action": "learning_card",
+      "description": "O texto traduzido para TTS é escrito para a voz, não para o olho. O TTS lê pontuação como prosódia: ponto final gera pausa e queda de entonação; vírgula, micro-pausa; interrogação sobe a curva melódica. Pontuação pobre = voz robótica.\n\nEscreva números por extenso ('R$ 25,50' vira 'vinte e cinco reais e cinquenta centavos'), evite abreviações e remova símbolos e emojis. SSML dá controle fino: <break time=\"500ms\"/> para pausas, <prosody rate=\"90%\"> para desacelerar e <phoneme> para corrigir nomes que o TTS erra, como 'João' (/ʒuˈɐ̃w/).\n\nPara narração (voz over), use cerca de 150 palavras por minuto: 1 minuto de vídeo = ~150 palavras.\n\nArmadilha: copiar siglas e números do original ('2º' lido errado como 'segundo grau'). Adapte tudo para texto limpo que o sintetizador leia corretamente."
+    },
+    {
+      "source": "traducao-audio",
+      "title": "Sotaques e variantes do português falado: transcrever sem distorcer o sentido",
+      "action": "learning_card",
+      "description": "O português tem muitas variantes faladas: europeu, brasileiro (paulista, carioca, gaúcho, nordestino, mineiro), africano e asiático. A transcrição normaliza a grafia para o padrão brasileiro sem apagar o sentido nem marcas culturais.\n\nNormalize o informal com critério: 'tô', 'tava' só em registro realmente informal; não transcreva fonética (um carioca que diz 'pechis' deve aparecer como 'peixe'). Mantenha nomes e comidas regionais ('pão de queijo', 'vina' no Sul).\n\nRegionalismos são a armadilha: 'tu' + segunda pessoa (Sul) vs 'você', 'carona' (Sudeste) vs 'boleia' (Portugal). Ao traduzir de outro idioma, use o padrão neutro brasileiro ('abóbora' em vez de 'jerimum').\n\nErro comum: 'corrigir' a fala do personagem, apagando sua caracterização, ou usar gíria errada do público-alvo."
+    },
+    {
+      "source": "traducao-audio",
+      "title": "Tradução de músicas e letras: adaptação rítmica x tradução literal",
+      "action": "learning_card",
+      "description": "Traduzir música exige escolher entre tradução literal (legenda) e adaptação rítmica (canto, texto ajustado à melodia). Para filmes, use literal mais livre; para musical dublado, adaptação métrica.\n\nNa adaptação, as sílabas da tradução devem caber na melodia: frase original com 10 sílabas pede ~10 sílabas em pt-BR (flexão de 1-2). As tônicas devem cair nas notas acentuadas do compasso: escreva em sílabas e marque as tônicas antes de escolher as palavras. Rimas ajudam, mas nunca sacrifique a inteligibilidade por rima forçada.\n\nAtenção a elisões: 'o amor' vira 'amor' sem choque, mas 'o avião' gera dois 'a' que quebram a melodia — troque o vocábulo.\n\nArmadilha: adaptação que preserva o literal mas destrói o fraseado, ou legenda que rima e vira nonsense. Defina antes: informar ou cantar."
+    },
+    {
+      "source": "traducao-audio",
+      "title": "Timing e sincronização de legendas: duração mínima, cps e corte por shot",
+      "action": "learning_card",
+      "description": "A sincronização de legendas depende de duração mínima, velocidade (cps) e corte por shot. Duração mínima: 0,8-1 segundo; máxima: 6-7 segundos (acima, o espectador relê). Velocidade ideal: 15-17 caracteres por segundo, com teto de 20.\n\nFórmula: duração = caracteres / 17. Uma legenda de 42 caracteres fica 2,5 segundos na tela. O in-time deve coincidir com o início da fala (tolerância de 80-100 ms) e o out-time com o fim da fala; nunca deixe legenda 'no ar' sem áudio.\n\nCorte por shot: a legenda não cruza um corte de cena. Se a fala começa no shot A e termina no shot B, divida no ponto do corte — o olho leva 100-150 ms para se reancorar.\n\nArmadilhas: definir duração 'no feeling' em vez do cps, legenda com 3 linhas e in-time adiantado. Valide com o Subtitle Edit, que mostra o cps do arquivo."
+    },
+    {
+      "source": "traducao-audio",
+      "title": "Palavras de preenchimento, hesitações e ruído na transcrição: quando manter ou remover",
+      "action": "learning_card",
+      "description": "Ao transcrever áudio, o erro é tratar cada 'uhm', 'er', 'tipo' e ruído como conteúdo obrigatório. A decisão depende do objetivo: para legenda, remova preenchimentos e hesitações — eles inflam o cps. Para transcrição literal ou forense, mantenha tudo. Para TTS, remova sempre: o sintetizador não produz 'uhm' natural.\n\nRegras para legendas: remova 'uhm', 'er', 'ah'; mantenha 'tipo' e 'né' só se forem centrais ao personagem. Marque ininteligível com '[inaudível]' e risadas com '[risos]' quando relevantes. Em sobreposição, use travessão para indicar dois falantes.\n\nNão confunda hesitação com pausa dramática: numa pausa emocional, o timing reflete a pausa, não o texto.\n\nArmadilha: transcrever tudo e cortar depois, ou manter 'uhm' que estoura o cps. Defina a política de filtro antes."
     }
   ],
   "decisions": [

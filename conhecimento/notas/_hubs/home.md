@@ -24,6 +24,7 @@
 - MP3 Player: [[cluster-hub-mp3player]]
 - Navegacao (web/PC/mobile): [[cluster-hub-navegacao]]
 - Programacao (linguagens e engenharia): [[cluster-hub-programacao]]
+- Traducao para pt-BR (texto e audio): [[cluster-hub-traducao]]
 
 ## Aprendizados (vault: conhecimento/)
 

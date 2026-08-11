@@ -11,3 +11,4 @@ impacto: Respostas do ecossistema agora seguem o padrão pt-BR de forma permanen
 
 - [[2026-07-27-teste-do-vigilante-automático-teste-do-sistema-de]]
 - [[cluster-hub-traducao]]
+- [[norma-culta-x-coloquial-no-pt-br-quando-usar-cada-registro-n]]
