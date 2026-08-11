@@ -60,10 +60,12 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
   // ---- feedback otimistico no clique (o Python confirma/corrige em ~1s) ----
   function clickSet(k){ localStorage.setItem('jarvis_click', k); }
   document.getElementById('btnVoz').addEventListener('click', function(){
-    cls(this,'btn on'); document.getElementById('lblVoz').textContent='ON'; clickSet('voz');
+    var isOn=this.classList.contains('on');
+    cls(this,isOn?'btn off':'btn on'); document.getElementById('lblVoz').textContent=isOn?'OFF':'ON'; clickSet('voz');
   });
   document.getElementById('btnMic').addEventListener('click', function(){
-    cls(this,'btn on'); document.getElementById('lblMic').textContent='ON'; clickSet('mic');
+    var isOn=this.classList.contains('on');
+    cls(this,isOn?'btn off':'btn on'); document.getElementById('lblMic').textContent=isOn?'OFF':'ON'; clickSet('mic');
   });
   document.getElementById('btnFala').addEventListener('click', function(){ clickSet('fala'); });
   document.getElementById('closeBtn').addEventListener('click', function(){ clickSet('close'); });
