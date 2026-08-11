@@ -109,7 +109,22 @@ def _falar(texto, parar_evento=None):
 
 async def _tts_salvar(texto, caminho):
     import edge_tts
-    tts = edge_tts.Communicate(texto, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
+    # Marcar termos técnicos em inglês para pronúncia correta via SSML
+    try:
+        from pronunciar_termos import marcar_para_tts
+        texto_marcado = marcar_para_tts(texto, formato="ssml")
+        # Se SSML retornou algo diferente, usar; senão, usar texto original
+        if texto_marcado and '<lang' in str(texto_marcado):
+            # Envolver em SSML completo para edge-tts
+            texto_ssml = f'<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="pt-BR">{texto_marcado}</speak>'
+            tts = edge_tts.Communicate(texto_ssml, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
+        else:
+            tts = edge_tts.Communicate(texto, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
+    except ImportError:
+        tts = edge_tts.Communicate(texto, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
+    except Exception:
+        # Fallback: usar texto original sem marcação
+        tts = edge_tts.Communicate(texto, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
     await tts.save(caminho)
 
 
