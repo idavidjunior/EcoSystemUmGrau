@@ -31,6 +31,8 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
   <div style="display:flex;align-items:center;gap:4px;">
     <div class="drag" id="drag"></div><span>🎙️ Jarvis</span>
     <div class="minimize" id="minimizeBtn">_</div>
+    <div class="toggle-top" id="topoBtn">Top</div>
+    <div class="desktop-fix" id="fixBtn">Trás</div>
   </div>
   <div class="close" id="closeBtn">✕</div>
 </div>
@@ -74,7 +76,17 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
   document.getElementById('btnFala').addEventListener('click', function(){ clickSet('fala'); });
   document.getElementById('closeBtn').addEventListener('click', function(){ clickSet('close'); });
   document.getElementById('minimizeBtn').addEventListener('click', function(){
-    window.pywebview.minimize();
+    // Toggle between always-on-top and always-behind
+    var current = localStorage.getItem('jarvis_mode') || 'always';
+    var newMode = current === 'always' ? 'behind' : 'always';
+    localStorage.setItem('jarvis_mode', newMode);
+    // Atualizar classe CSS da topbar
+    var topbar = document.getElementById('topbar');
+    if(newMode === 'always') {
+      topbar.className = 'topbar always-on-top';
+    } else {
+      topbar.className = 'topbar';
+    }
   });
 
   // ---- drag da barra superior: JS escreve posicao -> Python faz win.move ----
