@@ -1,0 +1,88 @@
+{
+  "_metadata": {
+    "descricao": "Glossário de termos técnicos que devem ser mantidos em inglês",
+    "versao": "1.0",
+    "uso": "Termos listados aqui são pronunciados em inglês no TTS e mantidos em inglês no texto",
+    "regra": "Constituição § IDIOMA PT-BR, item 3: Nomes técnicos permanecem como estão"
+  },
+
+  "linguagens_programacao": [
+    "Python", "JavaScript", "TypeScript", "Java", "C++", "C#", "Go", "Rust",
+    "Kotlin", "Swift", "Ruby", "PHP", "Scala", "Perl", "Lua", "Dart",
+    "Assembly", "SQL", "HTML", "CSS", "SASS", "LESS"
+  ],
+
+  "frameworks_bibliotecas": [
+    "React", "Angular", "Vue", "Next", "Nuxt", "Svelte",
+    "Django", "Flask", "FastAPI", "Celery", "NumPy", "Pandas",
+    "Spring", "Hibernate", "TensorFlow", "PyTorch", "Keras",
+    "Flutter", "React Native", "Ionic", "Electron",
+    "Node", "Express", "NestJS", "Deno", "Bun",
+    "Tailwind", "Bootstrap", "Materialize", "jQuery"
+  ],
+
+  "cloud_devops": [
+    "Docker", "Kubernetes", "K8s", "Podman", "Vagrant",
+    "AWS", "Azure", "GCP", "Google Cloud", "DigitalOcean", "Heroku",
+    "Terraform", "Ansible", "Puppet", "Chef",
+    "Jenkins", "GitHub Actions", "GitLab CI", "Travis CI", "CircleCI",
+    "Nginx", "Apache", "Caddy", "Traefik",
+    "Prometheus", "Grafana", "Datadog", "New Relic", "Sentry"
+  ],
+
+  "bancos_dados": [
+    "PostgreSQL", "MySQL", "MariaDB", "SQLite", "MongoDB", "Redis",
+    "Elasticsearch", "DynamoDB", "Cassandra", "CouchDB", "Firebase",
+    "Supabase", "PlanetScale", "Neon", "Turso"
+  ],
+
+  "api_protocolos": [
+    "REST", "RESTful", "GraphQL", "gRPC", "WebSocket", "HTTP", "HTTPS",
+    "TCP", "UDP", "SSH", "FTP", "SMTP", "OAuth", "JWT", "API",
+    "OpenAPI", "Swagger", "Postman"
+  ],
+
+  "ferramentas": [
+    "Git", "GitHub", "GitLab", "Bitbucket", "VS Code", "IntelliJ",
+    "Vim", "Neovim", "Emacs", "Sublime", "Atom", "Cursor",
+    "Terminal", "Shell", "Bash", "PowerShell", "Zsh",
+    "npm", "yarn", "pnpm", "pip", "poetry", "cargo", "brew",
+    "Chrome", "Firefox", "Edge", "Safari", "DevTools"
+  ],
+
+  "conceitos_tecnicos": [
+    "backend", "frontend", "fullstack", "devops", "cloud",
+    "deployment", "deploy", "rollback", "hotfix", "patch",
+    "refactoring", "debugging", "profiling", "benchmarking",
+    "microservices", "serverless", "monolith", "edge",
+    "CI/CD", "pipeline", "container", "cluster", "pod",
+    "repository", "branch", "commit", "merge", "rebase", "squash",
+    "pull request", "issue", "milestone", "sprint",
+    "agile", "scrum", "kanban", "standup", "retrospective",
+    "logging", "monitoring", "alerting", "tracing",
+    "cache", "queue", "stream", "batch", "real-time",
+    "latency", "throughput", "bandwidth", "timeout",
+    "token", "payload", "header", "endpoint", "middleware",
+    "runtime", "compiler", "interpreter", "VM", "container",
+    "SDK", "CLI", "GUI", "API", "SDK", "IDE", "LSP",
+    "ORM", "MVC", "MVP", "MVVM", "SOLID", "DRY", "KISS", "YAGNI"
+  ],
+
+  "empresas_plataformas": [
+    "Microsoft", "Google", "Amazon", "Meta", "Apple", "Netflix",
+    "OpenAI", "Anthropic", "Mistral", "Cohere", "Hugging Face",
+    "Vercel", "Netlify", "Cloudflare", "Fastly", "Akamai",
+    "Stripe", "Twilio", "SendGrid", "Mailgun", "Auth0"
+  ],
+
+  "mobile": [
+    "Android", "iOS", "SwiftUI", "Jetpack Compose", "Xamarin",
+    "Cordova", "Capacitor", "PWA", "Progressive Web App"
+  ],
+
+  "seguranca": [
+    "HTTPS", "SSL", "TLS", "CORS", "CSRF", "XSS", "SQL Injection",
+    "OAuth", "JWT", "SAML", "OIDC", "MFA", "2FA",
+    "encryption", "decryption", "hashing", "salting"
+  ]
+}

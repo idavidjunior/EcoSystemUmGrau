@@ -43,6 +43,64 @@ def _exists(path):
     return os.path.exists(path)
 
 
+def check_language_integrity():
+    """Verifica se a Constituição e AGENTS.md estão em pt-BR.
+    Retorna (ok, detalhes).
+    """
+    try:
+        from validar_idioma import validar_idioma
+    except ImportError:
+        # Se o módulo não estiver disponível, pular verificação
+        return True, [('Validação de idioma', True, 'módulo não disponível, pulado')]
+
+    details = []
+    all_ok = True
+
+    # Verificar Constituição
+    try:
+        with open(CONSTITUICAO, encoding='utf-8') as f:
+            conteudo = f.read()
+        resultado = validar_idioma(conteudo, threshold=25)
+        ok = resultado['ok']
+        all_ok = all_ok and ok
+        details.append(('Constituição (idioma)', ok,
+                       f"score={resultado['score']}, idioma={resultado['idioma']}"))
+    except Exception as e:
+        all_ok = False
+        details.append(('Constituição (idioma)', False, f'ERRO: {e}'))
+
+    # Verificar AGENTS.md
+    try:
+        with open(AGENTS_MD, encoding='utf-8') as f:
+            conteudo = f.read()
+        resultado = validar_idioma(conteudo, threshold=25)
+        ok = resultado['ok']
+        all_ok = all_ok and ok
+        details.append(('AGENTS.md (idioma)', ok,
+                       f"score={resultado['score']}, idioma={resultado['idioma']}"))
+    except Exception as e:
+        all_ok = False
+        details.append(('AGENTS.md (idioma)', False, f'ERRO: {e}'))
+
+    # Verificar se cláusula PT-BR está no topo da Constituição
+    try:
+        with open(CONSTITUICAO, encoding='utf-8') as f:
+            linhas = f.readlines()
+        # Procurar pela cláusula de idioma nas primeiras 50 linhas
+        ptbr_no_topo = False
+        for i, linha in enumerate(linhas[:50]):
+            if 'IDIOMA' in linha.upper() and 'PT-BR' in linha.upper():
+                ptbr_no_topo = True
+                break
+        details.append(('Cláusula PT-BR no topo', ptbr_no_topo,
+                       'Constituição' if ptbr_no_topo else 'Cláusula não encontrada no topo'))
+        all_ok = all_ok and ptbr_no_topo
+    except Exception as e:
+        details.append(('Cláusula PT-BR no topo', False, f'ERRO: {e}'))
+
+    return all_ok, details
+
+
 def check_integrity():
     """Verifica integridade do ecossistema. Retorna (ok, detalhes)."""
     details = []
@@ -51,6 +109,10 @@ def check_integrity():
         ok = _exists(path)
         all_ok = all_ok and ok
         details.append((label, ok, path))
+    # Verificação de idioma
+    lang_ok, lang_details = check_language_integrity()
+    all_ok = all_ok and lang_ok
+    details.extend(lang_details)
     # runtime_state importável?
     try:
         from runtime_state import load_state
@@ -156,11 +218,16 @@ def render_report(state, integrity_ok, integrity_details, memories, prefs):
                  'Conselho (se necessário) -> LER (se complexo) -> Validador -> '
                  'Resposta -> Auditor.')
     lines.append('')
+    lines.append('--- IDIOMA ---')
+    lines.append('  PT-BR: REGRAS DE IDIOMA ATIVAS (cláusula pétreia no topo)')
+    lines.append('  Todas as respostas DEVEM ser em Português do Brasil.')
+    lines.append('')
     lines.append('--- MÓDULOS DISPONÍVEIS ---')
     lines.append('  context loader: python scripts/runtime_context.py "<assunto>"')
     lines.append('  auditor:        python scripts/runtime_auditor.py <objetivo> '
                  '--resposta "<texto>"')
     lines.append('  kernel:         python scripts/runtime_kernel.py check "<texto>"')
+    lines.append('  validador idioma: python scripts/validar_idioma.py "texto"')
     lines.append('  Nenhuma conversa é sessão isolada: todas compartilham este estado.')
     return '\n'.join(lines)
 
