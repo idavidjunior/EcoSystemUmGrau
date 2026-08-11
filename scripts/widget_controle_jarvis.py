@@ -48,6 +48,9 @@ LOG_NARRADOR = SCRIPTS / "narrador_desktop_log.txt"      # para texto corrente d
 
 # --- Geometria da janela ---
 GEO_FILE = ROOT / "runtime" / "widget_controle_geometria.json"
+
+# --- Atalho de inicialização automática ---
+ATALHO_WINDOWS = ROOT / "runtime" / "jarvis_atalho.lnk"
 VIEW_COPY = ROOT / "docs" / "widget_controle.html"
 DEFAULT_W, DEFAULT_H = 220, 284
 TITLE = "Jarvis Controle"
