@@ -1,8 +1,8 @@
 """narrador_desktop.py — dá voz ao Jarvis no opencode desktop.
 
-Vigia o banco SQLite do opencode (opencode.db) e narra em áudio (TTS local via
-vox_audio falar) as respostas do assistente conforme elas são gravadas. Roda em
-background; basta executar este arquivo no computador.
+Vigia o banco SQLite do opencode (opencode.db) e narra em áudio (TTS via
+SpeechPipeline) as respostas do assistente conforme elas são gravadas.
+Roda em background; basta executar este arquivo no computador.
 
 Recursos:
   - Lê apenas (mode=ro), não interfere no desktop.
@@ -31,6 +31,20 @@ from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+ECOSSISTEMA_DIR = ROOT
+if str(ECOSSISTEMA_DIR) not in sys.path:
+    sys.path.insert(0, str(ECOSSISTEMA_DIR))
+
+# Speech Pipeline — pipeline central de TTS
+try:
+    from tts import SpeechPipeline
+    _speech_pipeline = SpeechPipeline()
+    SPEECH_PIPELINE_AVAILABLE = True
+except ImportError as e:
+    print(f"[warning] SpeechPipeline não disponível: {e}")
+    SPEECH_PIPELINE_AVAILABLE = False
+    _speech_pipeline = None
+
 DB = Path(os.environ.get("OPENCODE_DB", r"C:\Users\David Jr\.local\share\opencode\opencode.db"))
 POSICAO = ROOT / "runtime" / "narrador_posicao.json"
 CONTROLE = ROOT / "runtime" / "narracao_estado.json"
@@ -184,6 +198,15 @@ class Narrador:
         with self.falando:
             log(f"falando ({len(texto)} chars): {texto[:70]}...")
             try:
+                # Tenta usar SpeechPipeline primeiro
+                if SPEECH_PIPELINE_AVAILABLE and _speech_pipeline:
+                    try:
+                        _speech_pipeline.speak(texto, block=True)
+                        return
+                    except Exception as e:
+                        log(f"SpeechPipeline falhou: {e}")
+
+                # Fallback: usa vox_audio.py
                 subprocess.run([sys.executable, str(VOX), "falar", texto],
                                cwd=str(ROOT), timeout=FALAR_TIMEOUT, check=False,
                                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
@@ -197,8 +220,19 @@ class Narrador:
 
 def teste_audio():
     log("teste de audio")
+    texto_teste = "Teste de voz do Jarvis. Estou ouvindo."
     try:
-        subprocess.run([sys.executable, str(VOX), "falar", "Teste de voz do Jarvis. Estou ouvindo."],
+        # Tenta usar SpeechPipeline primeiro
+        if SPEECH_PIPELINE_AVAILABLE and _speech_pipeline:
+            try:
+                _speech_pipeline.speak(texto_teste, block=True)
+                print("OK: audio reproduzido via SpeechPipeline.")
+                return 0
+            except Exception as e:
+                log(f"SpeechPipeline falhou: {e}")
+
+        # Fallback: usa vox_audio.py
+        subprocess.run([sys.executable, str(VOX), "falar", texto_teste],
                        cwd=str(ROOT), timeout=FALAR_TIMEOUT, check=False,
                        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         print("OK: audio reproduzido. Se voce nao ouviu, verifique o som do PC.")

@@ -264,6 +264,18 @@ async def _falar_async(texto, parar_evento=None):
     """Versão async de _falar para uso dentro de event loop."""
     if not texto or not texto.strip():
         return
+
+    # Tenta usar SpeechPipeline primeiro
+    if SPEECH_PIPELINE_AVAILABLE and _speech_pipeline:
+        try:
+            mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
+            if _speech_pipeline.save(texto, str(mp3)):
+                _tocar_mci(str(mp3), parar_evento=parar_evento)
+                return
+        except Exception as e:
+            print(f"[SpeechPipeline falhou: {e}]")
+
+    # Fallback: código legado
     mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
     try:
         await _tts_salvar(texto, str(mp3))
@@ -279,15 +291,24 @@ async def _falar_async(texto, parar_evento=None):
 
 
 def _falar(texto, parar_evento=None):
-    """Gera MP3 com edge-tts e toca via MCI (suporta MP3). Se `parar_evento`
-    for fornecido, a fala pode ser interrompida a qualquer momento."""
+    """Gera MP3 e toca via MCI. Usa SpeechPipeline quando disponível."""
     if not texto or not texto.strip():
         return
+
+    # Tenta usar SpeechPipeline primeiro
+    if SPEECH_PIPELINE_AVAILABLE and _speech_pipeline:
+        try:
+            mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
+            if _speech_pipeline.save(texto, str(mp3)):
+                _tocar_mci(str(mp3), parar_evento=parar_evento)
+                return
+        except Exception as e:
+            print(f"[SpeechPipeline falhou: {e}]")
+
+    # Fallback: código legado
     mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
     try:
-        asyncio.run(
-            _tts_salvar(texto, str(mp3))
-        )
+        asyncio.run(_tts_salvar(texto, str(mp3)))
     except Exception as e:
         print(f"[erro tts] {e}")
         return

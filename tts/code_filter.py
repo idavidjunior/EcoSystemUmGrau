@@ -84,7 +84,7 @@ class CodeFilter:
 
     def remove_inline_code(self, text: str) -> str:
         """Remove código inline e mantém o conteúdo."""
-        return self.CODE_INLINE.sub(r'\1', text)
+        return self.CODE_INLINE.sub('', text)
 
     def remove_json(self, text: str) -> str:
         """Remove blocos JSON."""
