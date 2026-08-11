@@ -4438,5 +4438,45 @@
     "access_count": 0,
     "created_at": "2026-08-10T22:06:02.059869",
     "last_accessed": "2026-08-10T22:06:02.059869"
+  },
+  {
+    "id": 252,
+    "kind": "decisao",
+    "task": "Widget Jarvis controle E2E testado",
+    "summary": "Widget flutuante Python-Driven (pywebview) verificado 100 por cento: (1) Poller push Python-to-JS via evaluate_js(applyState) atualiza DOM em tempo real — botVoz, lblVoz, info (inclui emoji) todos atualizados. (2) Clique JS escreve localStorage jarvis_click; poller Python detecta a cada 250ms; _dispatch rotas fala/voz/mic/close; cmd_interromper_fala executa jarvis_audio stop com sucesso. (3) Bug do emoji U+1F50A no console cp1252 era falso negativo no teste, nao no widget — applyState funciona perfeitamente. (4) pywebview isola localStorage por processo: teste cross-process falha, mas in-proc (mesma janela+poller) funciona. (5) Launch via controle.bat pythonw, PID 6712, WebView2 10964, janela visivel.",
+    "project": "",
+    "tags": [
+      "atualizados",
+      "perfeitamente",
+      "inclui",
+      "info",
+      "lblvoz",
+      "cento"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-10T22:52:11.014794",
+    "last_accessed": "2026-08-10T22:52:11.014794"
+  },
+  {
+    "id": 253,
+    "kind": "decisao",
+    "task": "Widget Jarvis controle E2E testado",
+    "summary": "Widget flutuante Python-Driven pywebview verificado 100: poller push evaluate_js applyState atualiza DOM; clique JS escreve localStorage; poller detecta a cada 250ms; dispatch rotas fala voz mic; cmd_stop executa jarvis_audio stop. pywebview isola localStorage por processo; teste in-proc (mesma janela+poller) e o unico que funciona. Emoji U+1F50A no console cp1252 e falso negativo no teste. Launch via controle.bat pythonw PID 6712.",
+    "project": "",
+    "tags": [
+      "100",
+      "verificado",
+      "driven",
+      "python",
+      "flutuante",
+      "testado"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-10T22:52:55.633395",
+    "last_accessed": "2026-08-10T22:52:55.633395"
   }
 ]

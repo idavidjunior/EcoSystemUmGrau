@@ -1,5 +1,12 @@
 {
   "voz_lbl_ON": true,
   "voz_btn_on": true,
-  "error": "'charmap' codec can't encode character '\\U0001f50a' in position 17: character maps to <undefined>"
+  "info_falando": true,
+  "info_falando_cls": true,
+  "click_wrote_ls": true,
+  "narracao_after": {
+    "ativo": false,
+    "pausado": true
+  },
+  "cmd_executed": true
 }

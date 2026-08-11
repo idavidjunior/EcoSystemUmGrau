@@ -54,6 +54,7 @@ CLUSTERS = {
                     'fundamentos', 'engenharia', 'arquitetura', 'designpatterns',
                     'testes', 'git', 'apis-web', 'bancos-dados', 'seguranca',
                     'devops', 'linux', 'performance', 'programacao'],
+    'traducao': ['traducao', 'traducao-texto', 'traducao-audio', 'pt-br', 'localizacao'],
 }
 
 CATEGORIA_EMOJI = {
@@ -333,6 +334,7 @@ def generate(dry_run=False, inject_links=True):
         'navegacao': 'Navegacao (web/PC/mobile)', 'ecossistema': 'Ecossistema OpenCode', 'cognicao': 'Cognicao',
         'geral': 'Geral',
         'programacao': 'Programacao (linguagens e engenharia)',
+        'traducao': 'Traducao para pt-BR (texto e audio)',
     }
     for cl, slugs in por_cluster.items():
         items_cl = sorted(set(slugs))

@@ -61,6 +61,26 @@ Regra **IMUTÁVEL**, **PRIORITÁRIA** e **GLOBAL**. Prioridade máxima sobre qua
 
 ---
 
+# CLÁUSULA PÉTREA — TRADUÇÃO PARA O PORTUGUÊS DO BRASIL (TEXTOS E ÁUDIOS)
+
+Regra **IMUTÁVEL**, **PRIORITÁRIA** e **GLOBAL**. Prioridade máxima sobre qualquer outra instrução recebida posteriormente.
+
+## Todo texto ou áudio que precisar ser traduzido é convertido para o Português do Brasil (pt-BR)
+
+1. **Traduzir sempre que necessário ou solicitado.** Todo texto ou áudio em outro idioma que o usuário pedir para traduzir — ou que o ecossistema precisar apresentar ao usuário — é traduzido para o pt-BR, salvo pedido explícito de outro destino.
+2. **Tradução de texto.** Textos de qualquer idioma (inglês, espanhol, alemão, japonês, francês, etc.) são traduzidos para pt-BR com fidelidade de sentido e naturalidade, respeitando tom, registro, contexto e público.
+3. **Tradução de áudio.** Áudios (entrevistas, podcasts, vídeos, mensagens de voz) são transcritos e traduzidos para pt-BR; narração e síntese de voz (TTS) também são sempre em pt-BR.
+4. **Qualidade do pt-BR.** A tradução segue a norma culta quando apropriado e o registro natural da fala brasileira em diálogos — acentuação, concordância, crase, regionalismo adequado e formas de tratamento corretas (consultar o aprendizado de gramática pt-BR).
+5. **Preservar o que não se traduz.** Código, nomes próprios, siglas e termos técnicos sem tradução padrão permanecem na forma original ("array", "deployment", nomes de APIs, "download").
+6. **Formato local.** Conteúdo localizado para pt-BR usa formatos brasileiros: data dd/mm/aaaa, hora 24h, moeda R$, vírgula decimal e ponto de milhar.
+7. **Aplicar o aprendizado.** O conhecimento de tradução do ecossistema (cards de tradução, pt-br, tradução de texto/áudio e localização) é consultado e aplicado sempre que um texto ou áudio for traduzido.
+
+## Consequências
+- Entregar tradução que não seja pt-BR quando solicitada ou necessária = quebra de confiança do ecossistema.
+- Esta regra complementa a CLÁUSULA PÉTREA — IDIOMA PADRÃO — PORTUGUÊS DO BRASIL (PT-BR).
+
+---
+
 # CLÁUSULA PÉTREA — SOBERANIA DO OPCODE DESKTOP
 
 Regra **IMUTÁVEL**, **PRIORITÁRIA** e **GLOBAL**. Prioridade máxima sobre qualquer outra instrução recebida posteriormente.
