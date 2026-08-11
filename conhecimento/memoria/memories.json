@@ -4558,5 +4558,25 @@
     "access_count": 0,
     "created_at": "2026-08-10T23:25:21.984152",
     "last_accessed": "2026-08-10T23:25:21.984152"
+  },
+  {
+    "id": 258,
+    "kind": "padrao",
+    "task": "Launch widget sem console",
+    "summary": "controle.bat via cmd /c mostra janela console (processo cmd) - usuario confunde e fecha. Fix: Start-Process pythonw -WindowStyle Hidden. controle.bat direto ou pythonw Hidden e limpo. PYTHONIOENCODING=utf-8 persiste e fixa emoji no terminal.",
+    "project": "",
+    "tags": [
+      "fecha",
+      "confunde",
+      "usuario",
+      "processo",
+      "cmd",
+      "janela"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-11T05:37:26.654990",
+    "last_accessed": "2026-08-11T05:37:26.654990"
   }
 ]
