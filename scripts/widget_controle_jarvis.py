@@ -400,11 +400,23 @@ def _dispatch(click: str, win):
         _thread(win.destroy)
 
 
-def _poller(win, stop):
+def _poller(win, stop, init_x=None, init_y=None):
     """loop principal: detecta cliques + drag via localStorage, empurra estado via evaluate_js."""
     last_click = ""
     tick = 0
+    # Posicao atual da janela (Python e JS mantem em sync)
+    cur_x = init_x if init_x is not None else 0
+    cur_y = init_y if init_y is not None else 0
+    _pos_inited = False
     while not stop.wait(0.25):
+        # --- inicializa posicao JS uma vez (evaluate_js pode falhar antes do webview.start) ---
+        if not _pos_inited:
+            try:
+                win.evaluate_js(
+                    "window.__winPosX=%d;window.__winPosY=%d;" % (int(cur_x), int(cur_y)))
+                _pos_inited = True
+            except Exception:
+                pass
         # --- cliques (JS->Python via localStorage) ---
         try:
             click = win.evaluate_js("localStorage.getItem('jarvis_click')||''") or ""
@@ -425,7 +437,11 @@ def _poller(win, stop):
         if mv:
             try:
                 d = json.loads(mv)
-                win.move(int(d["x"]), int(d["y"]))
+                nx, ny = int(d["x"]), int(d["y"])
+                win.move(nx, ny)
+                cur_x, cur_y = nx, ny
+                # mantem JS em sync com a nova posicao da janela
+                win.evaluate_js("window.__winPosX=%d;window.__winPosY=%d;" % (nx, ny))
                 win.evaluate_js("localStorage.removeItem('jarvis_move')")
             except Exception:
                 pass
