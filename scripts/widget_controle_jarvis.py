@@ -458,6 +458,22 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
 # Main
 # ============================================================
 
+VIEW_COPY = ROOT / "docs" / "widget_controle.html"
+
+
+def _build_view() -> Path:
+    """Escreve o HTML inline num arquivo local e retorna o caminho.
+
+    CRUCIAL: servir via url=file:// (e NAO html=) faz o pywebview injetar
+    window.pywebview.api no contexto da pagina. Com html= inline a ponte NAO
+    aparece na pagina (window.pywebview fica undefined -> 'sem bridge').
+    O widget_grafo.py ja usava url=file:// e funcionava por isso.
+    """
+    VIEW_COPY.parent.mkdir(parents=True, exist_ok=True)
+    VIEW_COPY.write_text(HTML, encoding="utf-8")
+    return VIEW_COPY
+
+
 def main() -> int:
     global _janela_global
     import webview
@@ -468,10 +484,11 @@ def main() -> int:
     x = geo.get("x")
     y = geo.get("y")
 
+    view = _build_view()
     bridge = Bridge()
     win = webview.create_window(
         TITLE,
-        html=HTML,
+        url=str(view.resolve()),
         width=w, height=h,
         x=x, y=y,
         resizable=True,
