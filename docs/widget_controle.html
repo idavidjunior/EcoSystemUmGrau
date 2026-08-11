@@ -69,21 +69,20 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
   document.getElementById('closeBtn').addEventListener('click', function(){ clickSet('close'); });
 
   // ---- drag da barra superior: JS escreve posicao -> Python faz win.move ----
-  // Usa movementX/Y (delta real entre eventos) para evitar problemas com
-  // screenX/screenY que retornam 0 no WebView2. Eventos em window para
-  // capturar mesmo quando o mouse sai da janela durante o arrasto.
-  var dragging=false, msx=0, msy=0;
+  // Usa screenX/screenY absolutos com offset calculado no mousedown.
+  // Eventos em window para capturar quando mouse sai da janela.
+  var dragging=false, offX=0, offY=0, winX=0, winY=0;
   document.getElementById('drag').addEventListener('mousedown', function(e){
     dragging=true;
-    msx=window.__winPosX||0; msy=window.__winPosY||0;
+    winX=window.__winPosX||0; winY=window.__winPosY||0;
+    offX=e.clientX; offY=e.clientY;
     e.preventDefault();
   });
   window.addEventListener('mousemove', function(e){
     if(!dragging) return;
-    var dx=e.movementX||0, dy=e.movementY||0;
-    msx+=dx; msy+=dy;
-    window.__winPosX=Math.round(msx); window.__winPosY=Math.round(msy);
-    localStorage.setItem('jarvis_move', JSON.stringify({x:Math.round(msx),y:Math.round(msy)}));
+    var nx=winX+(e.clientX-offX), ny=winY+(e.clientY-offY);
+    window.__winPosX=Math.round(nx); window.__winPosY=Math.round(ny);
+    localStorage.setItem('jarvis_move', JSON.stringify({x:Math.round(nx),y:Math.round(ny)}));
   });
   window.addEventListener('mouseup', function(){ dragging=false; });
 })();
