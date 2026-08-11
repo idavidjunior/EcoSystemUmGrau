@@ -492,6 +492,8 @@ def main() -> int:
     h = int(geo.get("height", DEFAULT_H))
     x = geo.get("x")
     y = geo.get("y")
+    # Carregar preferência de 'sempre em primeiro plano'
+    sempre_topo = geo.get("sempre_topo", True)  # Padrão: True
 
     win = webview.create_window(
         TITLE,
@@ -502,8 +504,7 @@ def main() -> int:
         frameless=True,
         easy_drag=True,
         focus=False,
-        on_top=True,
-        # NOTE: js_api omitido de proposital — arquitetura Python-Driven (evaluate_js + localStorage)
+        on_top=sempre_topo,  # Manter sempre em primeiro plano por padrão
         background_color=BG,
     )
     _janela_global = win
