@@ -24,3 +24,7 @@
 - Preflight OK (ClÃ¡usula PÃ©trea); JSONs vÃ¡lidos; `py_compile` OK; geolocalizaÃ§Ã£o/busca/briefing OK nos novos caminhos.
 - Bridge reiniciada â†’ saudaÃ§Ã£o real no log; serve reiniciado (`run_serve.py` corrigido) â†’ 8766 ativo, sessÃµes HTTP OK.
 - Commit `38e8468` na branch `reorg/habilidades`, pushada para o GitHub.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

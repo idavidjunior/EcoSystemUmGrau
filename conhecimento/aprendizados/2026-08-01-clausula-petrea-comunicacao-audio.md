@@ -20,3 +20,7 @@
 ## ValidaÃ§Ã£o
 - Regra adicionada ao system prompt (lido a cada conexÃ£o) âœ“
 - Ãudio de confirmaÃ§Ã£o gerado e tocado âœ“
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

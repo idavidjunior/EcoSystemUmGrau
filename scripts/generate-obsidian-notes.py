@@ -49,6 +49,11 @@ CLUSTERS = {
                     'sessao_limpeza_auth', 'provider_mcp_debug', 'provider_mcp_server.py',
                     'provider_mcp_server.py:52-55', 'workspace_organization'],
     'cognicao': ['meta_cognition'],
+    'programacao': ['python', 'javascript', 'typescript', 'node', 'bash', 'java', 'kotlin',
+                    'c', 'cpp', 'rust', 'csharp', 'golang', 'php', 'ruby', 'sql',
+                    'fundamentos', 'engenharia', 'arquitetura', 'designpatterns',
+                    'testes', 'git', 'apis-web', 'bancos-dados', 'seguranca',
+                    'devops', 'linux', 'performance'],
 }
 
 CATEGORIA_EMOJI = {
@@ -76,12 +81,16 @@ def cluster_of(source):
     return 'geral'
 
 
-def cluster_da_nota(tags, categoria='', slug='', mapper=None):
-    """Resolve o cluster de uma nota usando o ClusterMapper (aprendizado +
-    ousadia) quando disponível; senão usa o mapeamento estático."""
+def cluster_da_nota(tags, categoria='', slug='', mapper=None, fonte=''):
+    """Resolve o cluster de uma nota: o mapeamento explícito por fonte tem
+    precedência; o ClusterMapper (aprendizado) só atua quando a fonte é
+    'geral' (sem mapeamento estático)."""
+    estatico = cluster_of(fonte or slug or '') if (fonte or slug) else cluster_of('')
+    if estatico != 'geral':
+        return estatico
     if mapper is not None:
         return mapper.resolver(tags or [], '', categoria, slug)
-    return cluster_of(slug or '') if slug else cluster_of('')
+    return estatico
 
 
 def read_graph():
@@ -268,7 +277,8 @@ def generate(dry_run=False, inject_links=True):
     por_tag = defaultdict(list)
     for slug, meta in index.items():
         por_categoria[meta['categoria']].append(slug)
-        cl = cluster_da_nota(meta['tags'], meta['categoria'], slug, _mapper)
+        cl = cluster_da_nota(meta['tags'], meta['categoria'], slug, _mapper,
+                             meta['sources'][0] if meta['sources'] else '')
         por_cluster[cl].append(slug)
         for t in meta['tags']:
             if t and t not in ('geral', 'general'):
@@ -277,7 +287,7 @@ def generate(dry_run=False, inject_links=True):
     written = 0
     # ---------- notas individuais ----------
     for cat, slug, title, tags, body, sources, updated in items:
-        cl = cluster_da_nota(tags, cat, slug, _mapper)
+        cl = cluster_da_nota(tags, cat, slug, _mapper, sources[0] if sources else '')
         links = []
         links.append(f'{CATEGORIA_EMOJI[cat]}-hub-{cat}')
         if cl != 'geral':
@@ -322,6 +332,7 @@ def generate(dry_run=False, inject_links=True):
         'android': 'Android (SDK puro)', 'mp3player': 'MP3 Player', 'ler': 'LER (Loop de Execucao)',
         'navegacao': 'Navegacao (web/PC/mobile)', 'ecossistema': 'Ecossistema OpenCode', 'cognicao': 'Cognicao',
         'geral': 'Geral',
+        'programacao': 'Programacao (linguagens e engenharia)',
     }
     for cl, slugs in por_cluster.items():
         items_cl = sorted(set(slugs))

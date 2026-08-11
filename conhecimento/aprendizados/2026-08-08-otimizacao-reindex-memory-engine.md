@@ -50,3 +50,7 @@ re-embedding de 681 docs (MiniLM) no CPU leva >2min — bloqueando o add.
   caminho crítico — subprocesso background + lock é o padrão.
 - `TOKENIZERS_PARALLELISM=false` evita warnings/hang de tokenizers no Windows.
 - Fingerprint (count + mtime) é barato e suficiente para detectar índice stale.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

@@ -85,3 +85,7 @@ mcp/nucleo/habilidades/compreensao-pedidos/
 - Probe MCP (framing): INIT + 5 tools + tools/call OK.
 - `preflight_check.py`: TODOS TESTES PASSARAM (13 MCPs, incl. o novo).
 - `sync_rules.py audit`: 3 camadas consistentes (13 regras).
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

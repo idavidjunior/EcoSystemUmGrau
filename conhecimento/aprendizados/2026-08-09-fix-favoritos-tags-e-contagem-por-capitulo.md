@@ -39,3 +39,7 @@ favorito nunca era salvo nem marcado.
 - Contagens por capítulo visíveis no seletor do leitor.
 - Padrão: quando o banco é pré-populado de assets, o schema de `assets/databases/*.db` é a fonte da verdade;
   sempre conferir o schema real antes de assumir o do `onCreate`.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

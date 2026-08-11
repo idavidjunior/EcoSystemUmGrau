@@ -20,3 +20,7 @@ O painel `#mk-controles` (velocidade, tamanho, etiquetas/menus) sobrepunha os bo
 
 ## Lição
 Ao adicionar CSS a `scripts/widget_grafo.py`, SEMPRE rebuildar via `_build_view()` e conferir que a regra aparece em `docs/grafo_widget.html` (grep). Blocos `WIDGET_CSS`/`RESIZE_JS`/`API_INJECT` não são injetados por si só.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

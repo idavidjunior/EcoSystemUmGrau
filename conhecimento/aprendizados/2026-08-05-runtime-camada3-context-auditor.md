@@ -63,3 +63,8 @@ criticidade).
 - Camada de adaptação multi-LLM (provider-agnostic) — LLM como motor
   substituível.
 - Validador formal de saída + orquestração unificada (boot completo de uma vez).
+
+## Conexoes
+
+- [[arquitetura-estilos-de-arquitetura-monólito-soa-microserviço]]
+- [[cluster-hub-programacao]]

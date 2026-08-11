@@ -41,3 +41,4 @@ impacto: 5/5 MCP conectados; preflight_check.py passa em todos os testes; modelo
 ## Conexoes
 
 - [[2026-07-27-teste-do-vigilante-automático-teste-do-sistema-de]]
+- [[cluster-hub-programacao]]

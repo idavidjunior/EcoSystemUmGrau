@@ -60,4 +60,5 @@ Probe MCP padrão (framing correto) agora responde:
 
 ## Conexoes
 
+- [[cluster-hub-programacao]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]

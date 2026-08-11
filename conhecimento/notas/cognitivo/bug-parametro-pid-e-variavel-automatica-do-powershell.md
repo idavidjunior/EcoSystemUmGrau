@@ -23,5 +23,5 @@ impacto: Evita que o watchdog mate o proprio processo (variavel automatica PID r
 A funcao `Test-ForensicoLixo` e `Invoke-KillCertificado` declaravam `[int
 ## Conexoes
 
-- [[cluster-hub-cognicao]]
+- [[cluster-hub-ecossistema]]
 - [[cognitivo-hub-cognitivo]]

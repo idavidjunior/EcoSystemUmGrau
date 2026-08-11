@@ -5,3 +5,6 @@
 - check_android_resources.py: 1 marcadores
 - self_healing_compiler.py: 1 marcadores
 
+## Conexoes
+
+- [[cluster-hub-programacao]]

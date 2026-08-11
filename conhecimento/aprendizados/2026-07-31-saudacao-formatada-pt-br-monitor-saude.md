@@ -32,3 +32,7 @@
 - Jarvis roda no CELULAR → **saúde prioriza o celular** (bateria sempre reportada; crítica ≤20% e aviso ≤35%).
 - **PC em segundo plano**: só entra no briefing se houver alerta (bateria ≤30%, CPU ≥80%, memória ≥85%, disco ≥85%).
 - Instrução do `saudar()` reforça a prioridade celular→PC. Validado: "Saúde do sistema: celular com bateria em 93%, PC com memória em 85%."
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

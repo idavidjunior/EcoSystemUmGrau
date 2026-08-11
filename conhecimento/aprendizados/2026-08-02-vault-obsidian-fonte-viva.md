@@ -26,3 +26,7 @@ enriquecido) → `generate-graph-html.py` lê vault → `grafo.html` + widget.
 
 `semantic_tags.py` é **stdlib puro** (RAKE leve, PT/EN stopwords) — sem keybert/sklearn/
 sentence-transformers, que não estão instalados (apenas torch). Determinístico e offline.
+
+## Conexoes
+
+- [[arquitetura-estilos-de-arquitetura-monólito-soa-microserviço]]

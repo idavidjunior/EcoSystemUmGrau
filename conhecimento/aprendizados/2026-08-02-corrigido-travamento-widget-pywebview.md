@@ -8,3 +8,7 @@ decisao: Duas causas distintas atacadas:
 2. ANCORAGEM: a manutencao continua de z-order (`SetWindowPos HWND_BOTTOM` em loop de 1s) reagia o problema. Mudado para ancoragem one-shot (unico `SetParent` em WorkerW) sem loop.
 impacto: Widget vive >16s de forma estavel. Nota: ainda aparece 1 log UNICO (~6KB) `AccessibilityObject.Bounds.Empty.Empty...` ao abrir janela frameless - e warning benigno do pywebview que NAO trava (widget permanece vivo). Tambem validou-se que frameless sozinho gera esse 1 log (teste minimal T FL), logo nao e causa do travamento.
 uso: python scripts/widget_grafo.py
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

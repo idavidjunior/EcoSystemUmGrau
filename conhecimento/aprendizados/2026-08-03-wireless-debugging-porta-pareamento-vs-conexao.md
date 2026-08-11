@@ -48,3 +48,7 @@ adb-6d92eed7-VIUVer   _adb-tls-connect._tcp   192.168.15.4:40755
 - Pareamento concluido (guid adb-6d92eed7-VIUVer).
 - `scripts/adb-redmi.ps1` atualizado: detecta porta de conexao via mdns e tenta
   com fallback para 5555 (tcpip classico).
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

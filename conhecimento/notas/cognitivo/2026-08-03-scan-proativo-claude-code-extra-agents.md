@@ -17,5 +17,5 @@ date: 2026-08-10
 
 ## Conexoes
 
-- [[cluster-hub-cognicao]]
+- [[cluster-hub-ecossistema]]
 - [[cognitivo-hub-cognitivo]]

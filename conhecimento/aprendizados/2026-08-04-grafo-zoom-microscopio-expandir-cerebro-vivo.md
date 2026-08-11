@@ -47,3 +47,7 @@ impacto: Grafo nunca congela, respira e tem cognicao viva. Zoom recuar/agrandar 
 - Abra `docs/grafo.html` no navegador → veja o balanço + respiração + pulso de sinapses.
 - Abra o widget (`python scripts/widget_grafo.py`) → clique 'T' para ocultar labels → feche e reabra → labels permanecem ocultas.
 - No widget, modifique alguma nota em `conhecimento/notas/` → trigger de versão → recarrega com `rc` → cascata de sinapses dispara.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

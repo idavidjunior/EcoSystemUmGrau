@@ -62,5 +62,5 @@ contexto: Usuario pediu o 'foco vocal via Jarvis' — comando de voz orienta o g
 decisao: Usar o filesystem como canal entre processos (o widget ja vigia arquivos do vault). (1) jarvis_bridge._comando_grafo(t) em caminho_rap
 ## Conexoes
 
-- [[cluster-hub-cognicao]]
+- [[cluster-hub-ecossistema]]
 - [[cognitivo-hub-cognitivo]]

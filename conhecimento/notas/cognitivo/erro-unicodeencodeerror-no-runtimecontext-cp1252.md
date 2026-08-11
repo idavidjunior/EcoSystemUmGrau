@@ -17,5 +17,5 @@ decisao: Adicionar sys.stdout.reconfigure(encoding='utf-8', errors='replace') em
 impacto: Context Loader voltou a renderizar contexto sem crash; caracteres como ↔ (U+2194) presentes na memória (@sync) agora imprimem corretame
 ## Conexoes
 
-- [[cluster-hub-cognicao]]
+- [[cluster-hub-ecossistema]]
 - [[cognitivo-hub-cognitivo]]

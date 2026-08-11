@@ -14,3 +14,7 @@ Todos os 11 projetos consolidados tem repo proprio no GitHub. Repos orfaos delet
 ## Impacto
 
 Repo principal usa gitlinks (modo submodule sem .gitmodules) para Projetos/. VoxUmGrau e BibliaEstudoCompleta sincronizados com push. GitHub organizado e sem repos duplicados.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

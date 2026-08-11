@@ -6,3 +6,7 @@ contexto: O usuário pediu que a reindexação semântica seja automática e def
 decisao: 1) memory_engine.add_memory agora dispara reindexar_semantico() automaticamente (TF-IDF + dense, best-effort, nunca bloqueia o add; flag --no-reindex para lote). 2) Adicionada à Constituição a Cláusula Pétrea de AUTONOMIA INFORMADA: comunicar primeiro, implementar sem pedir permissão quando a mudança for real, consistente e tornar o ecossistema mais efetivo/eficiente/inteligente; registrar aprendizado; nunca quebrar o que funciona (preflight).
 impacto: Memória #175 de teste comprovou o ciclo: add -> REINDEX (647 docs) -> busca por significado recuperou a memória nova no topo imediatamente. Constituição com 9 regras, 3 camadas consistentes. Sync deployada OK. Comportamento esperado: evolução cumulativa e informada.
 status: operacional
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

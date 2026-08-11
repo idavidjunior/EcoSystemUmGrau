@@ -48,3 +48,7 @@ e aplicativos de celular (Android). Baseada em pesquisa do estado da arte de fer
 - CatÃ¡logo: `Habilidades/tecnicas/navegacao-perita/skill.md`
 - Manifesto: `Habilidades/manifesto_geral.json` (agora com 40 habilidades)
 - Triggers: "navegar", "clicar", "automatizar", "reconhecer elemento", "ver a tela", "executar no navegador/pc/celular", "screenshot"
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

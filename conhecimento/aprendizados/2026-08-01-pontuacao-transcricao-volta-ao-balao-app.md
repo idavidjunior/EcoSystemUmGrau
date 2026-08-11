@@ -33,3 +33,7 @@ exibia a transcriÃ§Ã£o crua do STT â€” a correÃ§Ã£o nunca voltava p
   Jarvis entendeu â€” a correÃ§Ã£o que fica sÃ³ no servidor nÃ£o Ã© correÃ§Ã£o visÃ­vel.
 - DivergÃªncia tela-vs-servidor Ã© bug: se o texto exibido difere do processado,
   o usuÃ¡rio vÃª "erro".
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

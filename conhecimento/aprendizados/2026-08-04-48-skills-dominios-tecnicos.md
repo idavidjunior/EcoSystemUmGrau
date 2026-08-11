@@ -42,3 +42,7 @@ Dados: data-pipeline, feature-engineering, model-training, database-design, nosq
 Qualidade: code-review, refactoring-patterns, legacy-modernization, technical-debt,
 contract-testing, performance-testing.
 Documentacao: technical-writing, api-documentation, adr, runbooks.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

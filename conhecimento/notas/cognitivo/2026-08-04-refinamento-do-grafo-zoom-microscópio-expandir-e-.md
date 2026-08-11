@@ -23,5 +23,5 @@ contexto: Usuario pediu para o grafo "girar sozinho em 3d de forma viva e natura
 decisao: (1) Giro via transform CSS no canvas (rotateZ/rotateX) e ARTIFICIAL: gira o rendering 2D inteiro como folha de papel, sem profu
 ## Conexoes
 
-- [[cluster-hub-cognicao]]
+- [[cluster-hub-ecossistema]]
 - [[cognitivo-hub-cognitivo]]

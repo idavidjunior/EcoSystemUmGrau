@@ -49,4 +49,4 @@ impacto: Agente coordenador tem motor de contexto unificado; catalogo de habilid
 
 ## Conexoes
 
-- [[correcao-de-diagnostico-do-knowledge-graph-e-criacao-do-regi]]
+- [[cluster-hub-programacao]]

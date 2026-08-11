@@ -1,5 +1,5 @@
 ---
-tags: [cognitivo, general, habilidades, logo, skill, tecnicas]
+tags: [cognitivo, ecossistema, general, habilidades, skill, tecnicas]
 aliases: [Habilidade: Navegação Perita — Internet, PC e Celular]
 date: 2026-08-10
 ---
@@ -55,5 +55,5 @@ assistente que opera no computador.
 ## Como a sincr
 ## Conexoes
 
-- [[cluster-hub-cognicao]]
+- [[cluster-hub-ecossistema]]
 - [[cognitivo-hub-cognitivo]]

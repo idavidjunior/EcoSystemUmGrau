@@ -18,3 +18,7 @@
 - Junction NTFS para compatibilidade retroativa (~/.ler/ → ler-runtime/)
 - Template com {{USERPROFILE}} + geracao via setup.bat
 - Timer para operacoes periodicas (git sync a cada 5 min)
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

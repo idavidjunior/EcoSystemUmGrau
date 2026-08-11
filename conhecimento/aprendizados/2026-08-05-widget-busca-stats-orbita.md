@@ -32,3 +32,7 @@ Manter o padrão: gerador expõe funções no escopo JS global e o painel do
 widget as consome com `typeof fn === 'function'`. Toda mudança no JS do
 gerador exige: regenerar `docs/grafo.html` + `_build_view()` + validar com
 esprima (5 blocos) antes de reiniciar o widget.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

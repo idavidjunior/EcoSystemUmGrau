@@ -279,3 +279,7 @@ impacto: Qualquer automacao Android (build, install, UI tap, screenshot, statusb
 - **Capturas do widget**: screencap para validar grafico no celular
 - **Automacao de testes**: `am instrument -w com.voxumgrau.app.test/androidx.test.runner.AndroidJUnitRunner`
 - **Limpeza de cache**: `pm clear com.biblia.estudo` reseta estado de testes
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

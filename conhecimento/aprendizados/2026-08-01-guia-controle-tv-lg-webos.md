@@ -59,3 +59,7 @@ lgtv --tv $TV livetv|channel up|down
 
 ## 9. Regra permanente de ouro
 - **Volume: sempre iniciar 10, nunca no mÃ¡ximo. UsuÃ¡rio decide.**
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

@@ -43,4 +43,5 @@ Sempre auditar logs de auditoria em Write-Log com interpolacao, nao concatenacao
 
 ## Conexoes
 
+- [[cluster-hub-programacao]]
 - [[maxiterations-hard-stop-forca-parada-prematura-mesmo-sem-obj]]

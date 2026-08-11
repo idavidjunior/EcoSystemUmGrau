@@ -564,5 +564,5 @@ Rodou `python tests/test_integration.py` no `ler-runtime/`.
 - consolidate_build_pipeline.py: 9 marcadores
 ## Conexoes
 
-- [[cluster-hub-cognicao]]
+- [[cluster-hub-ecossistema]]
 - [[cognitivo-hub-cognitivo]]

@@ -25,3 +25,7 @@ O que mudou na prÃ¡tica:
 
 O usuÃ¡rio prefere receber atualizaÃ§Ãµes frequentes e curtas a um Ãºnico relatÃ³rio
 final longo. TransparÃªncia durante a execuÃ§Ã£o reduz a sensaÃ§Ã£o de espera inÃºtil.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

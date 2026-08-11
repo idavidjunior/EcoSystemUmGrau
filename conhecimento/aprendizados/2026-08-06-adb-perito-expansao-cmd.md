@@ -40,3 +40,7 @@ O `cmd` e mais flexivel que `service call` (que usa codigos binder opacos) e exp
 - "HOME (gesto de acessibilidade)" (estava "HOME点半" com caracteres chineses)
 - "Dispositivo secundario: emulador (Android Virtual Device)" (estava "emulador生殖" com caracter japones)
 - Bloco de mapeamento mental floodado com marcadores de tabela
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

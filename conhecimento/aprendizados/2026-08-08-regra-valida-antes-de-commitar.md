@@ -33,3 +33,8 @@ Só então: **commit + push**.
 - O CI valida o código, mas NÃO substitui a validação no dispositivo real.
 - O fluxo local rápido (build incremental ~66s) permite validar antes de subir sem custo alto.
 - O screenshot do app não pôde ser inspecionado visualmente (modelo sem suporte a imagem) — a validação visual dos posters fica com o usuário; a validação técnica (HTTP 200 nas 8 URLs, app sem crash) foi feita por logcat e verificação de URLs.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]
+- [[git-fluxos-de-trabalho-trunk-based-e-git-flow-e-quando-usar-]]

@@ -46,3 +46,7 @@ Obsidian com 265+ notas + stats). Agora reusa o estado com TTL de 300s.
 - `test_vox.py` ganhou `teste_caminho_rapido()` (8 casos deterministas).
 - WebSocket real: saudaÃ§Ã£o â†’ "que horas sÃ£o" (1.8s) â†’ "qual a data de hoje"
   (â‰ˆ1.8s de TTS), com `resposta rapida` no `bridge_log.txt`.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

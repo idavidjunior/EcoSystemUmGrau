@@ -60,3 +60,7 @@ Arquivo: `Projetos/VoxUmGrau/app/src/main/java/com/voxumgrau/app/VoxWebSocket.kt
 
 ## Resultado
 Cadeia de resiliencia completa: se a ponte cair, o app detecta em ~20s (keepalive nativo), reconecta com backoff exponencial + jitter, reenvia falas pendentes via fila ACK e troca de rota se o host principal falhar. Zero intervencão do usuario.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

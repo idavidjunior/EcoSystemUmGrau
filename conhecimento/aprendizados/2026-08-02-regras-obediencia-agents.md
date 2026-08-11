@@ -33,3 +33,7 @@ eram aplicadas.
 - Regras que devem valer SEMPRE â†’ `AGENTS.md` (auto-carregado) + `instructions` no
   opencode.jsonc. Um arquivo em `config/agents/` sem frontmatter nÃ£o garante nada.
 - `mode: primary` criaria 2 agentes primÃ¡rios (conflito com Maestro) â†’ usar `subagent`.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

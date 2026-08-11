@@ -11,7 +11,7 @@ date: 2026-08-10
 Todo open() de arquivo texto deve especificar encoding. No Windows, o default muda conforme o locale do sistema.
 ## Conexoes
 
-- [[cluster-hub-cognicao]]
+- [[cluster-hub-ler]]
 - [[debugging-em-cascata-reversa]]
 - [[diagnostico-por-eliminacao-em-config-complexa]]
 - [[heuristica-hub-heuristicas]]

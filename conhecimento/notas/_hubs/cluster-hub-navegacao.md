@@ -1,9 +1,10 @@
 # Cluster: Navegacao (web/PC/mobile)
 
-**64 notas** do cluster navegacao.
+**73 notas** do cluster navegacao.
 
 
 ## Notas
+- [[3-scan-pre-action]]
 - [[30s-regra-de-timeout-maximo]]
 - [[android-gesture-patterns]]
 - [[android-keyboard-dismissal]]
@@ -11,12 +12,15 @@
 - [[antecipacao-de-comportamento-adaptativo]]
 - [[antes-de-clicar-verifique-o-interceptador]]
 - [[canvas-e-graficos-template-matching]]
+- [[cascata-de-interacao-ci]]
 - [[ciclo-ooda-aplicado-a-navegacao]]
 - [[cliques-em-coordenadas-erram-alvo-em-resolutions-diferentes]]
 - [[cliques-falhando-em-spa-apos-navegacao]]
 - [[css-selector-priority-ladder]]
+- [[diagnostico-por-eliminacao-em-config-complexa]]
 - [[dom-element-hierarchy-mapping]]
 - [[dropdownselect-nao-responde-a-sendkeys-ou-click]]
+- [[elemento-existe-3-fontes-de-verdade]]
 - [[elementos-nao-encontrados-em-shadow-dom]]
 - [[espera-adaptativa-por-tipo-de-recurso]]
 - [[heuristica-de-densidade-de-informacao]]
@@ -25,6 +29,7 @@
 - [[json-rpc-notifications]]
 - [[keyboard-only-navigation-fallback]]
 - [[lazy-loaded-content-detection]]
+- [[log-de-fallback-para-diagnostico-rapido]]
 - [[mapa-mental-de-navegadores-web]]
 - [[mcp-json-rpc-notification-handling]]
 - [[mcp-tool-naming]]
@@ -35,6 +40,7 @@
 - [[navegacao-em-spa-3-sinais-de-sucesso]]
 - [[nunca-armazenar-api-keys-em-config-files]]
 - [[ocr-fallback-para-elementos-sem-identificador]]
+- [[ooda-nav]]
 - [[opencode-mcp-config-format]]
 - [[packageactivity-launch-pattern]]
 - [[pattern-matching-por-estrutura-de-ui]]
@@ -50,12 +56,15 @@
 - [[scroll-forcado-revela-conteudo-oculto]]
 - [[seletor-mais-especifico-mais-fragil]]
 - [[sempre-fechar-teclado-virtual-android-antes-do-proximo-cliqu]]
+- [[sempre-validar-schema-apos-migracao-de-config]]
 - [[sendkeys-nao-funciona-em-campos-rich-text]]
 - [[shadow-dom-penetration]]
 - [[spa-navigation-detection]]
+- [[stale-element-re-query-nao-re-tentar]]
 - [[stale-element-reference-recovery]]
 - [[teclado-vence-layout]]
 - [[template-matching-para-botoes-graficos]]
+- [[testar-failover-ativamente]]
 - [[treinamento-especializado-em-navegacao-multi-plataforma-reco]]
 - [[usar-coordenadas-relativas-porcentagem-em-vez-de-absolutas-p]]
 - [[usar-keyboard-shortcuts-como-fallback-universal]]

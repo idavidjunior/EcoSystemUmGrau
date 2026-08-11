@@ -39,4 +39,4 @@ Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -match 'watchdog' 
 
 ## Conexoes
 
-- [[aprendizado-â-2026-07-31-â-pontuaãão-automãtica-de-transcriã]]
+- [[cluster-hub-programacao]]

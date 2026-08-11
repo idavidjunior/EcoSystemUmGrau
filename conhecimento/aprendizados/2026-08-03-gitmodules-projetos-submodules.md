@@ -14,3 +14,8 @@ Criado .gitmodules com as 11 entradas de Projetos/ (url + branch). backups/ adic
 ## Impacto
 
 git clone --recursive do EcoSystemUmGrau agora baixa todos os projetos automaticamente. Validado com clone de teste em temp.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]
+- [[git-fluxos-de-trabalho-trunk-based-e-git-flow-e-quando-usar-]]

@@ -47,3 +47,7 @@ Sempre que qualquer alteraÃ§Ã£o for feita em:
 2. Integrar no vigilante
 3. Atualizar system-rules e Maestro
 4. Testar ciclo: alterar config â†’ preflight barra â†’ rollback
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

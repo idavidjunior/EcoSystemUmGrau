@@ -21,3 +21,7 @@
 ## Estado
 - Bridge reiniciada; log real: `"esta tudo pronto para o deploy" -> "Esta tudo pronto para o deploy?"`, `"qual o resumo das ultimas tarefas" -> "Qual o resumo das ultimas tarefas?"`, `"me de um resumo do que fizemos hoje" -> "Me de um resumo do que fizemos hoje."`.
 - 21 casos offline + 3 casos no caminho WebSocket validados.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

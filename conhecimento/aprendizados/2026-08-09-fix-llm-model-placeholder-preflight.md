@@ -23,4 +23,5 @@ impacto: >
 ## Conexoes
 
 - [[2026-07-27-teste-do-vigilante-automático-teste-do-sistema-de]]
+- [[cluster-hub-programacao]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]

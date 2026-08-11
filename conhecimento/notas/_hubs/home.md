@@ -20,10 +20,10 @@
 - Android (SDK puro): [[cluster-hub-android]]
 - Cognicao: [[cluster-hub-cognicao]]
 - Ecossistema OpenCode: [[cluster-hub-ecossistema]]
-- Geral: [[cluster-hub-geral]]
 - LER (Loop de Execucao): [[cluster-hub-ler]]
 - MP3 Player: [[cluster-hub-mp3player]]
 - Navegacao (web/PC/mobile): [[cluster-hub-navegacao]]
+- Programacao (linguagens e engenharia): [[cluster-hub-programacao]]
 
 ## Aprendizados (vault: conhecimento/)
 

@@ -1,12 +1,14 @@
 # Cluster: LER (Loop de Execucao)
 
-**20 notas** do cluster ler.
+**23 notas** do cluster ler.
 
 
 ## Notas
 - [[checkpoints-salvos-antes-de-cada-iteracao-sobrevive-a-crash-]]
 - [[code-duplication-entre-checkpointpy-e-persistencepy-200-linh]]
+- [[encoding-aware-diagnostics]]
 - [[encoding-utf-8-explicito-em-python-no-windows]]
+- [[entender-antes-de-criar-ontologia-de-habilidades]]
 - [[estado-persiste-em-json-nao-sqlite-legivel-editavel-fora-do-]]
 - [[estrategia-selecionada-por-ranking-cost-risk-time-complexity]]
 - [[executor-nao-validava-resultado-real-da-implementacao]]
@@ -17,6 +19,7 @@
 - [[logs-sem-rotacao-logs-cresciam-indefinidamente]]
 - [[maxiterations-hard-stop-forca-parada-prematura-mesmo-sem-obj]]
 - [[nao-havia-feedback-loop-do-usuario-ler-terminava-mesmo-se-ob]]
+- [[open-sempre-com-encoding-no-windows]]
 - [[persistencia-sem-atomicidade-crash-no-meio-do-jsondump-corro]]
 - [[pontuacao-ponderada-com-6-categorias-req-30-func-30-testes-1]]
 - [[registro-de-habilidades-de-jarvis]]

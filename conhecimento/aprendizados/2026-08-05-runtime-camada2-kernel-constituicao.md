@@ -49,3 +49,8 @@ controla regras, prioridades, contratos, formatos, sequência e autorização.
 - Context Loader inteligente (selecionar docs/memórias relevantes por assunto)
 - Auditor adaptativo (somente tarefas de alta criticidade)
 - (Registradas como pendências no runtime state)
+
+## Conexoes
+
+- [[arquitetura-estilos-de-arquitetura-monólito-soa-microserviço]]
+- [[cluster-hub-programacao]]

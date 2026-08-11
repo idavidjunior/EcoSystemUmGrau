@@ -28,3 +28,8 @@ Adicionada a secao [6] Secrets Guard ao `scripts/preflight_check.py`:
 - chave nvapi mascarada como "deepseek" e BLOQUEADA (1 ERRO).
 - Preflight completo: TODOS TESTES PASSARAM.
 - Sincronizado em a81af50 + memoria #53.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]
+- [[segurança-owasp-top-10-aplicado-na-prática]]

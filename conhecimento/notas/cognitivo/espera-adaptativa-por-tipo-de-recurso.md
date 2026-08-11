@@ -13,3 +13,7 @@ Tempos de carregamento variam por tipo: HTML inicial (rede), CSS (bloqueante ate
 
 - [[cluster-hub-navegacao]]
 - [[cognitivo-hub-cognitivo]]
+- [[performance-caching-em-camadas-e-invalidação]]
+- [[performance-complexidade-assintótica-vs-custo-real]]
+- [[performance-concorrência-e-paralelismo-quando-vale-a-pena]]
+- [[performance-profiling-primeiro-onde-o-tempo-realmente-vai]]

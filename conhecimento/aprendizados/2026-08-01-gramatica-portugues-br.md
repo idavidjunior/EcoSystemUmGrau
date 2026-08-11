@@ -93,3 +93,7 @@ uso prÃ¡tico, sem jargÃ£o acadÃªmico desnecessÃ¡rio.
 ## ReferÃªncia
 - Base normativa: Novo Acordo OrtogrÃ¡fico (2009), PortuguÃªs do Brasil.
 - Foco: clareza, naturalidade e correÃ§Ã£o em TTS, STT, documentaÃ§Ã£o e conversaÃ§Ã£o.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

@@ -59,4 +59,4 @@ final: `(\\d{1,3})\\s*%|(\\d{1,3})\\s*por cento`.
 
 ## Conexoes
 
-- [[aprendizado-â-2026-07-31-â-pontuaãão-automãtica-de-transcriã]]
+- [[cluster-hub-programacao]]

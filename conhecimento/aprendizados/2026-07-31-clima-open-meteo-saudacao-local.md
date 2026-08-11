@@ -24,3 +24,7 @@
 - Compilado e instalado APK no Redmi (serial `6d92eed7`), app reiniciado.
 - Bridge reiniciada e ativa em `0.0.0.0:8765`; celular (`100.64.71.9`) reconectado (hist=25).
 - Commits: `8730ea7` (EcoSystemUmGrau) e `3a5b340` (VoxUmGrau), ambos pushed.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

@@ -37,3 +37,7 @@ bloco JS novo (foram 3 correções: `const _orb = {};`, `forEach(n => {`, e um
 - WebGL (sigma.js/@antv G6): só vale para milhares de nós (>2k). Manter
   vis-network enquanto o vault for ~centenas de notas.
 - Persistir preferências de física do usuário (além de `velGrafo`).
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

@@ -31,3 +31,7 @@
 - **Fluxo realista:** usuÃ¡rio navega no app (controle fÃ­sico/app mobile) atÃ© o conteÃºdo desejado (busca, perfil, episÃ³dio), e o Jarvis assume sÃ³ o **player** (play/pause/seek/volume) via SSAP.
 - **NavegaÃ§Ã£o cega = chute.** Tentar buscar "Mestres do Universo" via teclas no teclado virtual da Prime sem ver a tela falhou. NÃ£o tentar â€” combinar com usuÃ¡rio: ele posiciona, eu controlo player.
 - **Se precisar buscar via automaÃ§Ã£o real:** requer OCR/visÃ£o computacional na tela (HDMI capture + CV) ou API oficial do serviÃ§o â€” fora do escopo do SSAP.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

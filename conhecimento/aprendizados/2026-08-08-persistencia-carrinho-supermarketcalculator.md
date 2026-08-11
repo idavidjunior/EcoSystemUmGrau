@@ -75,6 +75,4 @@ O build.ps1 original hardcodava build-tools 36.0.0 e android-36 (inexistentes na
 
 ## Conexoes
 
-- [[cluster-hub-ecossistema]]
-- [[2026-08-03-build-android-lento-por-falta-ram]]
-- [[2026-08-01-pontuacao-transcricao-volta-ao-balao-app]]
+- [[cluster-hub-programacao]]

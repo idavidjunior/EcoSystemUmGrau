@@ -37,3 +37,8 @@ Criar `scripts/tv_control.py` — biblioteca SSAP com classe `TvSap` cobrindo: r
 
 - Re-parear na TV com manifesto completo (aguardar janela sem `403`) para liberar `listApps` e todos os 147 apps.
 - Integrar os comandos de TV no `jarvis_bridge.py` para controle por voz.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]
+- [[python-sintaxe-e-núcleo-da-linguagem]]

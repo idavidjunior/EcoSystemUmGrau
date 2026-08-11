@@ -44,3 +44,8 @@ ecossistema. Camada 1 = estado persistente + boot automático em toda sessão.
 - Kernel permanente (autoridade máxima: regras, prioridades, formatos, validação)
 - Constituição imutável com cláusulas absolutas
 - (Registradas como pendências no runtime state)
+
+## Conexoes
+
+- [[arquitetura-estilos-de-arquitetura-monólito-soa-microserviço]]
+- [[cluster-hub-programacao]]

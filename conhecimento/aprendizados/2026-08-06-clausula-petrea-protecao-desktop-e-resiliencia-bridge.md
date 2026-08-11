@@ -59,4 +59,5 @@ explicita por caminho (`opencode-aidesktop`) e filtro restrito a `opencode run`.
 
 ## Conexoes
 
+- [[cluster-hub-programacao]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]

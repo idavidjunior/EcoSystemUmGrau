@@ -9,4 +9,4 @@ detalhe: Falso positivo "fala o que vocÃª vai fazer como amanhÃ£" nao casa p
 
 ## Conexoes
 
-- [[aprendizado-â-2026-07-31-â-pontuaãão-automãtica-de-transcriã]]
+- [[cluster-hub-programacao]]

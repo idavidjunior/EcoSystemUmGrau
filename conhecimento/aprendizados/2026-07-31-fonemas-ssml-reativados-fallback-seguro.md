@@ -31,3 +31,7 @@ Reescrevi `gerar_audio()` com fallback em dois nÃ­veis:
 ## LiÃ§Ã£o
 
 Sempre que ativar SSML/fonemas no TTS, manter o caminho de texto puro como fallback â€” o edge-tts pode rejeitar marcaÃ§Ãµes em algumas vozes/versÃµes.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

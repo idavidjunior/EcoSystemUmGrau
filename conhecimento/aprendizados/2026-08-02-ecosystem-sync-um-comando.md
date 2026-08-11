@@ -41,3 +41,7 @@ valida (debug config + preflight) â†’ pull/commit/push de todos os 12 repos
   `{{USERPROFILE}}` para o setup.bat/substituiÃ§Ã£o funcionar em qualquer PC. TambÃ©m removida
   a junction `~/.ler` obsoleta (LER usa `run.py`/`run.ps1` no repo) e adicionado passo 8
   de validaÃ§Ã£o (`opencode debug config`) no setup.bat.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

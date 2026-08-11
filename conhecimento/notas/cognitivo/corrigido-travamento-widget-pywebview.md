@@ -30,5 +30,5 @@ decisao: >
   DATASET, 
 ## Conexoes
 
-- [[cluster-hub-cognicao]]
+- [[cluster-hub-ecossistema]]
 - [[cognitivo-hub-cognitivo]]

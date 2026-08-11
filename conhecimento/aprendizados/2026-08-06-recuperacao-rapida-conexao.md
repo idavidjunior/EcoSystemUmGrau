@@ -89,3 +89,7 @@ O servidor (ponte de voz) cai frequentemente. Quedas causam:
 - Socket.IO v4 docs — client-options (reconnection, reconnectionDelay, randomizationFactor)
 - websockets lib Python — server serve() com ping_interval/ping_timeout nativos
 - Memoria #72: ADB do celular nao conecta sempre pelo IPv4 do Tailscale
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

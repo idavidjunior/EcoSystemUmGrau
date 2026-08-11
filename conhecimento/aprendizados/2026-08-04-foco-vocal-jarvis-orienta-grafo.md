@@ -39,3 +39,7 @@ impacto: Voce agrega o visual do grafo: falar 'mostre bugs/abra android/centro n
 - Testar com função isolada antes de confiar no fluxo completo.
 - Sempre rodar `py_compile` + `node --check` (em JS puro, sem tag `<script>`) +
   `preflight_check.py` (cláusula pétrea).
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

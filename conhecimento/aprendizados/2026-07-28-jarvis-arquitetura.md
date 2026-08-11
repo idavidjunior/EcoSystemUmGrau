@@ -21,4 +21,5 @@ App leve e eficiente, reaproveitando todo o ecossistema jÃ¡ construÃ­do. MÃ
 
 ## Conexoes
 
-- [[aprendizado-â-2026-07-31-â-pontuaãão-automãtica-de-transcriã]]
+- [[arquitetura-estilos-de-arquitetura-monólito-soa-microserviço]]
+- [[cluster-hub-programacao]]

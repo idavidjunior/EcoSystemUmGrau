@@ -34,3 +34,7 @@ impacto: Grafo vira termômetro real do uso do vault (notas editadas recente lat
   - porta: `netstat -ano | findstr :8765`
   - processo: `Get-CimInstance Win32_Process -Filter "Name like 'python%'"`
 - O bridge responde via WS 8765 (celular reconecta automaticamente).
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

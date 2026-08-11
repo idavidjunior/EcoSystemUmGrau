@@ -25,3 +25,7 @@ Integrated 5 MCP servers from `opencode-agents-mcp` repo into EcoSystemUmGrau:
 ## Repos
 - `mcp-servers/` cloned from `AliZafar780/opencode-agents-mcp` (depth 1)
 - npm deps installed with `--ignore-scripts`
+
+## Conexoes
+
+- [[cluster-hub-programacao]]

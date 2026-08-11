@@ -56,3 +56,4 @@ Simplificado de "Ativar Eco" para apenas **"Eco"**:
 ## Conexoes
 
 - [[2026-07-27-teste-do-vigilante-automático-teste-do-sistema-de]]
+- [[cluster-hub-programacao]]

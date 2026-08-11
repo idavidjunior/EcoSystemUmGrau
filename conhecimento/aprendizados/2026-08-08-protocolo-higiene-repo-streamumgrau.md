@@ -11,3 +11,7 @@ decisao: Manter o repo github.com/idavidjunior/stream-um-grau LIMPO. Protocolo f
   5. Sem abuso de subidas - apenas mudancas reais e revisadas.
 impacto: Repositorio enxuto, historico legivel, build reproduzivel via workflow build-apk.yml.
 pendente: Nenhuma.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]
