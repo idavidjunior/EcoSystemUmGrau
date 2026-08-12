@@ -230,6 +230,42 @@ def cmd_mic(ativar: bool):
 # Geometria da janela
 # ============================================================
 
+def _enviar_para_tras(win):
+    """Envia a janela para trás de todas as outras janelas (Z-order bottom)."""
+    try:
+        import ctypes
+        user32 = ctypes.windll.user32
+        
+        # Constantes Windows
+        HWND_BOTTOM = 1
+        SWP_NOSIZE = 0x0001
+        SWP_NOMOVE = 0x0002
+        SWP_NOACTIVATE = 0x0010
+        
+        # Tenta obter HWND via pywebview (pode ser None antes de mostrar)
+        hwnd = None
+        try:
+            # Tentativa 1: via win.gui (WebView2)
+            if hasattr(win, 'gui') and win.gui:
+                hwnd = getattr(win.gui, 'hwnd', None) or getattr(win.gui, '_hwnd', None)
+        except Exception:
+            pass
+        
+        # Tentativa 2: buscar por título da janela
+        if not hwnd:
+            hwnd = user32.FindWindowW(None, TITLE)
+        
+        if hwnd:
+            # Envia para trás (bottom do Z-order)
+            user32.SetWindowPos(hwnd, HWND_BOTTOM, 0, 0, 0, 0,
+                              SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE)
+            print(f"[widget] Janela enviada para trás (HWND: {hwnd})", flush=True)
+        else:
+            print("[widget] HWND não encontrado para enviar para trás", flush=True)
+    except Exception as e:
+        print(f"[widget] erro enviar para trás: {e}", flush=True)
+
+
 def _screen_area():
     try:
         import ctypes
@@ -453,7 +489,7 @@ def _dispatch(click: str, win):
     elif click == "topo":
         _thread(_toggle_always_on_top, win, True)
     elif click == "fix":
-        _thread(_toggle_always_on_top, win, False)
+        _thread(_enviar_para_tras, win)
     elif click == "close":
         try:
             win.evaluate_js("localStorage.removeItem('jarvis_click')")
