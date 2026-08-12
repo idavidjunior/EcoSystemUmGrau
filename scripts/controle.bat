@@ -11,7 +11,7 @@ setlocal
 set "ROOT=%~dp0.."
 where python >nul 2>&1
 if %errorlevel% equ 0 (
-  start "" python "%ROOT%\scripts\widget_controle_jarvis.py"
+  python "%ROOT%\scripts\widget_controle_jarvis.py"
 ) else (
   REM fallback: Python via Microsoft Store
   python "%ROOT%\scripts\widget_controle_jarvis.py"
