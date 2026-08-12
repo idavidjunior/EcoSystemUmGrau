@@ -232,38 +232,58 @@ def cmd_mic(ativar: bool):
 
 def _enviar_para_tras(win):
     """Envia a janela para trás de todas as outras janelas (Z-order bottom)."""
+    _set_window_zorder(win, topmost=False)
+
+
+def _fixar_no_topo(win):
+    """Fixar janela no topo de todas as outras (HWND_TOPMOST)."""
+    _set_window_zorder(win, topmost=True)
+
+
+def _set_window_zorder(win, topmost: bool):
+    """Define Z-order da janela via Windows API."""
     try:
         import ctypes
         user32 = ctypes.windll.user32
         
         # Constantes Windows
+        HWND_TOPMOST = -1
+        HWND_NOTOPMOST = -2
         HWND_BOTTOM = 1
         SWP_NOSIZE = 0x0001
         SWP_NOMOVE = 0x0002
         SWP_NOACTIVATE = 0x0010
         
-        # Tenta obter HWND via pywebview (pode ser None antes de mostrar)
+        # Tenta obter HWND
         hwnd = None
         try:
-            # Tentativa 1: via win.gui (WebView2)
             if hasattr(win, 'gui') and win.gui:
                 hwnd = getattr(win.gui, 'hwnd', None) or getattr(win.gui, '_hwnd', None)
         except Exception:
             pass
         
-        # Tentativa 2: buscar por título da janela
         if not hwnd:
             hwnd = user32.FindWindowW(None, TITLE)
         
         if hwnd:
-            # Envia para trás (bottom do Z-order)
-            user32.SetWindowPos(hwnd, HWND_BOTTOM, 0, 0, 0, 0,
-                              SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE)
-            print(f"[widget] Janela enviada para trás (HWND: {hwnd})", flush=True)
+            if topmost:
+                # Fixar no topo (acima de todas)
+                user32.SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0,
+                                  SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE)
+                print(f"[widget] Janela fixada no topo (HWND: {hwnd})", flush=True)
+            else:
+                # Remover fixação no topo OU enviar para trás
+                user32.SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0,
+                                  SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE)
+                # Se for "Trás", envia para bottom
+                if not topmost:
+                    user32.SetWindowPos(hwnd, HWND_BOTTOM, 0, 0, 0, 0,
+                                      SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE)
+                print(f"[widget] Janela {'fixada no topo' if topmost else 'enviada para trás'} (HWND: {hwnd})", flush=True)
         else:
-            print("[widget] HWND não encontrado para enviar para trás", flush=True)
+            print("[widget] HWND não encontrado", flush=True)
     except Exception as e:
-        print(f"[widget] erro enviar para trás: {e}", flush=True)
+        print(f"[widget] erro z-order: {e}", flush=True)
 
 
 def _screen_area():
