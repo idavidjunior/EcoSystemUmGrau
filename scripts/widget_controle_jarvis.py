@@ -269,24 +269,34 @@ def _carregar_geo() -> dict:
 
 
 def _minimizar(win):
+    """Minimiza a janela. Tenta via pywebview, fallback para hide/show com estado persistido."""
     try:
-        # Tenta minimizar via JavaScript primeiro
+        # Tenta minimizar via JavaScript (pywebview API)
         win.evaluate_js("window.pywebview.minimize()")
+        return
     except Exception:
         pass
-    # Fallback: esconde a janela Python e mostra novamente após breve delay
-    # (Isso evita que o console apareça/desapareça)
+    # Fallback: esconde a janela e marca estado para restauração posterior
     try:
         win.hide()
-        import threading, time
-        def restaurar():
-            try:
-                win.show()
-            except Exception:
-                pass
-        threading.Timer(0.5, restaurar).start()
-    except Exception:
-        pass
+        _atomic_write(ROOT / "runtime" / "widget_minimizado.json", {"minimizado": True, "timestamp": int(time.time())})
+        print("[widget] Janela minimizada (hide). Use o atalho ou reabra via 'controle' para restaurar.", flush=True)
+    except Exception as e:
+        print(f"[widget] erro minimizar: {e}", flush=True)
+
+
+def _restaurar_se_minimizado():
+    """Verifica se janela estava minimizada e restaura (chamado no main)."""
+    flag = ROOT / "runtime" / "widget_minimizado.json"
+    if flag.exists():
+        try:
+            d = json.loads(flag.read_text(encoding="utf-8"))
+            if d.get("minimizado"):
+                flag.unlink(missing_ok=True)
+                return True
+        except Exception:
+            pass
+    return False
 
 def _guardar_geo(win):
     try:
@@ -547,6 +557,14 @@ def main() -> int:
         background_color=BG,
     )
     _janela_global = win
+
+    # Restaurar se estava minimizado
+    if _restaurar_se_minimizado():
+        try:
+            win.show()
+            print("[widget] Janela restaurada após minimizar.", flush=True)
+        except Exception as e:
+            print(f"[widget] erro restaurar: {e}", flush=True)
 
     stop = threading.Event()
     threading.Thread(target=_poller, args=(win, stop, x, y), daemon=True).start()
