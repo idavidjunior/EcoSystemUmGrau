@@ -507,7 +507,7 @@ def _dispatch(click: str, win):
     elif click == "minimize":
         _thread(_minimizar, win)
     elif click == "topo":
-        _thread(_toggle_always_on_top, win, True)
+        _thread(_fixar_no_topo, win)
     elif click == "fix":
         _thread(_enviar_para_tras, win)
     elif click == "close":
@@ -519,14 +519,16 @@ def _dispatch(click: str, win):
 
 
 def _toggle_always_on_top(win, on_top: bool):
-    """Alterna preferência de janela sempre no topo. Requer reinício do widget para aplicar."""
+    """Alterna preferência de janela sempre no topo e aplica imediatamente."""
     try:
         geo = _carregar_geo()
         geo["sempre_topo"] = on_top
         _atomic_write(GEO_FILE, geo)
+        # Aplica imediatamente via Windows API
+        _set_window_zorder(win, topmost=on_top)
         # Feedback visual no JS
         win.evaluate_js(f"localStorage.setItem('jarvis_mode', '{'always' if on_top else 'behind'}')")
-        win.evaluate_js(f"console.log('[widget] sempre_topo salvo: {on_top}. Reinicie o widget para aplicar.')")
+        win.evaluate_js(f"console.log('[widget] sempre_topo: {on_top} (aplicado imediatamente)')")
     except Exception as e:
         print(f"[widget] erro toggle on_top: {e}", flush=True)
 
