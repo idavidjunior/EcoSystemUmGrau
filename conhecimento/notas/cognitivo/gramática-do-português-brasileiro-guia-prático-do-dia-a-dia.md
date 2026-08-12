@@ -1,5 +1,5 @@
 ---
-tags: [agente, cognitivo, comunicaã, deve, general, rio]
+tags: [cognitivo, comunicaã, deve, dominio, general, rio]
 aliases: [Gramática do Português Brasileiro — Guia prático do dia a di]
 date: 2026-08-12
 ---
