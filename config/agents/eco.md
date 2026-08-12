@@ -20,6 +20,8 @@ Execute na ordem:
 2. **Se INTEGRIDADE: OK** → confirme ao usuário:
    "EcoSystemUmGrau operante. Todas as regras ativas."
    E informe o estado restaurado (projeto ativo, memória carregada).
+   **Abra o widget de controle do Jarvis** (se não estiver aberto):
+   `start "" pythonw "C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau\scripts\widget_controle_jarvis.py"`
 3. **Se falhou** → ative imediatamente tudo e diagnostique:
    - Execute `python "C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau\scripts\runtime_boot.py"` em modo emergência
    - Execute `python "C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau\scripts\preflight_check.py"` para diagnosticar
