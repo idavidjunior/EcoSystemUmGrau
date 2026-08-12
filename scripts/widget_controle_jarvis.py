@@ -319,6 +319,7 @@ def _guardar_geo(win):
 
 HTML = """<!DOCTYPE html>
 <html><head><meta charset="utf-8">
+<link rel="icon" href="jarvis.ico" type="image/x-icon">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{overflow:hidden;font-family:'Segoe UI',system-ui,sans-serif;
@@ -556,7 +557,6 @@ def main() -> int:
         focus=False,
         on_top=sempre_topo,
         background_color=BG,
-        icon=str(ICON_PATH) if ICON_PATH.exists() else None,
     )
     _janela_global = win
 
