@@ -1,5 +1,5 @@
 ---
-tags: [formal, padrao, pontuação, pt-br, regional, vocabulário]
+tags: [formal, não, padrao, pontuação, pt-br, regional]
 aliases: [Norma culta x coloquial no pt-BR: quando usar cada registro ]
 date: 2026-08-11
 ---
