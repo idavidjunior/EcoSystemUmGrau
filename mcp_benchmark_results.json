@@ -1,0 +1,305 @@
+[
+  {
+    "server": "eco-knowledge",
+    "command": [
+      "python",
+      "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/scripts/mcp-knowledge-server.py"
+    ],
+    "runs": 3,
+    "successful_runs": 3,
+    "spawn_ms": {
+      "mean": 28.292866666258004,
+      "stdev": 34.58627769484073,
+      "min": 6.296300001849886,
+      "max": 68.15849999838974
+    },
+    "total_ms": {
+      "mean": 395.33629999884096,
+      "stdev": 262.778980084551,
+      "min": 240.58169999989332,
+      "max": 698.7468999977864
+    },
+    "tools_count": 4,
+    "errors": []
+  },
+  {
+    "server": "filesystem",
+    "command": [
+      "node",
+      "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp-servers/filesystem/index.js"
+    ],
+    "runs": 3,
+    "successful_runs": 3,
+    "spawn_ms": {
+      "mean": 1902.9021000011805,
+      "stdev": 3274.3045310782677,
+      "min": 10.629700002027676,
+      "max": 5683.742700002767
+    },
+    "total_ms": {
+      "mean": 517.9030666658946,
+      "stdev": 363.45509459116397,
+      "min": 168.75019999861252,
+      "max": 894.144599998981
+    },
+    "tools_count": 5,
+    "errors": []
+  },
+  {
+    "server": "search",
+    "command": [
+      "node",
+      "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp-servers/search/index.js"
+    ],
+    "runs": 3,
+    "successful_runs": 3,
+    "spawn_ms": {
+      "mean": 8.455200000753393,
+      "stdev": 1.4564848234510646,
+      "min": 7.611199998791562,
+      "max": 10.137000001122942
+    },
+    "total_ms": {
+      "mean": 224.5300333330912,
+      "stdev": 43.82510339099434,
+      "min": 179.05469999823254,
+      "max": 266.49360000010347
+    },
+    "tools_count": 2,
+    "errors": []
+  },
+  {
+    "server": "terminal",
+    "command": [
+      "node",
+      "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp-servers/terminal/index.js"
+    ],
+    "runs": 3,
+    "successful_runs": 3,
+    "spawn_ms": {
+      "mean": 12.630466666450957,
+      "stdev": 4.915185757279639,
+      "min": 7.475099999282975,
+      "max": 17.263800000364427
+    },
+    "total_ms": {
+      "mean": 482.0289333341255,
+      "stdev": 274.10522897154186,
+      "min": 172.61520000101882,
+      "max": 694.4509000022663
+    },
+    "tools_count": 2,
+    "errors": []
+  },
+  {
+    "server": "github",
+    "command": [
+      "node",
+      "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp-servers/github/index.js"
+    ],
+    "runs": 3,
+    "successful_runs": 3,
+    "spawn_ms": {
+      "mean": 11.687233334669145,
+      "stdev": 2.831645391007462,
+      "min": 8.44649999999092,
+      "max": 13.683700002729893
+    },
+    "total_ms": {
+      "mean": 250.67356666841079,
+      "stdev": 33.99983458935261,
+      "min": 214.70709999994142,
+      "max": 282.28760000274633
+    },
+    "tools_count": 4,
+    "errors": []
+  },
+  {
+    "server": "eco-obsidian",
+    "command": [
+      "python",
+      "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/scripts/mcp-obsidian-server.py"
+    ],
+    "runs": 3,
+    "successful_runs": 3,
+    "spawn_ms": {
+      "mean": 20.243199999337474,
+      "stdev": 25.94470909910891,
+      "min": 4.9189999990630895,
+      "max": 50.19890000039595
+    },
+    "total_ms": {
+      "mean": 354.1025000001052,
+      "stdev": 249.2992163954721,
+      "min": 209.4385999989754,
+      "max": 641.9672000010905
+    },
+    "tools_count": 4,
+    "errors": []
+  },
+  {
+    "server": "mcp-desenvolvimento",
+    "command": [
+      "python",
+      "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp/desenvolvimento/server.py"
+    ],
+    "runs": 3,
+    "successful_runs": 3,
+    "spawn_ms": {
+      "mean": 12.829366667574504,
+      "stdev": 7.856277595105312,
+      "min": 5.243899999186397,
+      "max": 20.93100000274717
+    },
+    "total_ms": {
+      "mean": 1356.2714666659303,
+      "stdev": 1881.0369345499432,
+      "min": 238.70479999823146,
+      "max": 3527.997299999697
+    },
+    "tools_count": 76,
+    "errors": []
+  },
+  {
+    "server": "mcp-android",
+    "command": [
+      "python",
+      "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp/android/server.py"
+    ],
+    "runs": 3,
+    "successful_runs": 3,
+    "spawn_ms": {
+      "mean": 14.182000000194725,
+      "stdev": 8.196073083958753,
+      "min": 6.407699998817407,
+      "max": 22.74310000211699
+    },
+    "total_ms": {
+      "mean": 458.8681666670406,
+      "stdev": 411.65835397287435,
+      "min": 218.90540000094916,
+      "max": 934.2028999999457
+    },
+    "tools_count": 10,
+    "errors": []
+  },
+  {
+    "server": "mcp-internet",
+    "command": [
+      "python",
+      "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp/internet/server.py"
+    ],
+    "runs": 3,
+    "successful_runs": 3,
+    "spawn_ms": {
+      "mean": 11.513866666064132,
+      "stdev": 11.333559569401917,
+      "min": 4.842899998038774,
+      "max": 24.599899999884656
+    },
+    "total_ms": {
+      "mean": 288.36273333339096,
+      "stdev": 92.88415841611567,
+      "min": 191.4035999980115,
+      "max": 376.5495000006922
+    },
+    "tools_count": 4,
+    "errors": []
+  },
+  {
+    "server": "mcp-memoria",
+    "command": [
+      "python",
+      "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp/memoria/server.py"
+    ],
+    "runs": 3,
+    "successful_runs": 3,
+    "spawn_ms": {
+      "mean": 9.115100000296176,
+      "stdev": 8.977250356169375,
+      "min": 3.908499998942716,
+      "max": 19.481100000120932
+    },
+    "total_ms": {
+      "mean": 312.89980000049883,
+      "stdev": 233.81992632954586,
+      "min": 172.80610000307206,
+      "max": 582.8268000004755
+    },
+    "tools_count": 2,
+    "errors": []
+  },
+  {
+    "server": "mcp-multimidia",
+    "command": [
+      "python",
+      "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp/multimidia/server.py"
+    ],
+    "runs": 3,
+    "successful_runs": 3,
+    "spawn_ms": {
+      "mean": 11.071033334398331,
+      "stdev": 8.616654903020569,
+      "min": 5.081700001028366,
+      "max": 20.946300002833595
+    },
+    "total_ms": {
+      "mean": 364.09373333420564,
+      "stdev": 172.29963482399629,
+      "min": 177.35220000031404,
+      "max": 516.9024000024365
+    },
+    "tools_count": 4,
+    "errors": []
+  },
+  {
+    "server": "mcp-comportamentais",
+    "command": [
+      "python",
+      "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp/comportamentais/server.py"
+    ],
+    "runs": 3,
+    "successful_runs": 3,
+    "spawn_ms": {
+      "mean": 11.545833333608849,
+      "stdev": 10.239983239629662,
+      "min": 5.51160000031814,
+      "max": 23.369099999399623
+    },
+    "total_ms": {
+      "mean": 281.6878333348238,
+      "stdev": 142.17295320771967,
+      "min": 193.8055999999051,
+      "max": 445.7151000024169
+    },
+    "tools_count": 4,
+    "errors": []
+  },
+  {
+    "server": "mcp-compreensao-pedidos",
+    "command": [
+      "python",
+      "C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau/mcp/nucleo/habilidades/compreensao-pedidos/server.py"
+    ],
+    "runs": 3,
+    "successful_runs": 0,
+    "spawn_ms": {
+      "mean": null,
+      "stdev": 0,
+      "min": null,
+      "max": null
+    },
+    "total_ms": {
+      "mean": null,
+      "stdev": 0,
+      "min": null,
+      "max": null
+    },
+    "tools_count": 0,
+    "errors": [
+      "No valid response",
+      "No valid response",
+      "No valid response"
+    ]
+  }
+]
