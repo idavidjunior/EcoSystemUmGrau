@@ -55,6 +55,7 @@ ATALHO_WINDOWS = ROOT / "runtime" / "jarvis_atalho.lnk"
 # --- Atalho de inicialização automática ---
 ATALHO_WINDOWS = ROOT / "runtime" / "jarvis_atalho.lnk"
 VIEW_COPY = ROOT / "docs" / "widget_controle.html"
+ICON_PATH = ROOT / "assets" / "jarvis.ico"
 DEFAULT_W, DEFAULT_H = 220, 284
 TITLE = "Jarvis Controle"
 BG = "#1e1e2e"
@@ -553,8 +554,9 @@ def main() -> int:
         frameless=True,
         easy_drag=True,
         focus=False,
-        on_top=sempre_topo,  # Manter sempre em primeiro plano por padrão
+        on_top=sempre_topo,
         background_color=BG,
+        icon=str(ICON_PATH) if ICON_PATH.exists() else None,
     )
     _janela_global = win
 
