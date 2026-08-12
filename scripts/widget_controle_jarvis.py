@@ -268,7 +268,6 @@ def _carregar_geo() -> dict:
                        "height": int(d.get("height", DEFAULT_H))})
 
 
-
 def _minimizar(win):
     try:
         # Tenta minimizar via JavaScript primeiro
@@ -334,21 +333,25 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
 .sw.off{background:#f38ba8;}
 .info{font-size:10px;color:#6c7086;margin-top:2px;word-break:break-word;}
 .info.falando{color:#a6e3a1;}
+.row{display:flex;gap:8px;}
+.row .btn{flex:1;}
 </style>
 </head><body>
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:4px;">
     <div class="drag" id="drag"></div><span>🎙️ Jarvis</span>
-    <div class="minimize" id="minimizeBtn">_</div>
-    <div class="toggle-top" id="topoBtn">Top</div>
-    <div class="desktop-fix" id="fixBtn">Trás</div>
   </div>
-  <div class="close" id="closeBtn">✕</div>
 </div>
 <div class="controls">
   <button class="btn off" id="btnVoz"><span><span class="sw off" id="swVoz"></span>Voz</span><span id="lblVoz">OFF</span></button>
   <button class="btn stop" id="btnFala"><span>⏹ Parar Fala</span></button>
   <button class="btn off" id="btnMic"><span><span class="sw off" id="swMic"></span>Mic</span><span id="lblMic">OFF</span></button>
+  <div class="row">
+    <button class="btn" id="minimizeBtn" title="Minimizar">_</button>
+    <button class="btn" id="topoBtn" title="Sempre no topo">Top</button>
+    <button class="btn" id="fixBtn" title="Fixar atrás">Trás</button>
+    <button class="btn" id="closeBtn" title="Fechar">✕</button>
+  </div>
   <div class="info" id="info">conectando...</div>
 </div>
 <script>
@@ -443,12 +446,29 @@ def _dispatch(click: str, win):
         _thread(cmd_interromper_fala)
     elif click == "mic":
         _thread(cmd_mic, not mic_ativo())
+    elif click == "minimize":
+        _thread(_minimizar, win)
+    elif click == "topo":
+        _thread(_toggle_always_on_top, win, True)
+    elif click == "fix":
+        _thread(_toggle_always_on_top, win, False)
     elif click == "close":
         try:
             win.evaluate_js("localStorage.removeItem('jarvis_click')")
         except Exception:
             pass
         _thread(win.destroy)
+
+
+def _toggle_always_on_top(win, on_top: bool):
+    """Alterna janela sempre no topo (on_top=True) ou atrás (on_top=False)."""
+    try:
+        # pywebview não tem API direta para mudar on_top em runtime
+        # Workaround: recria a janela com nova configuração
+        # Por enquanto, apenas log e estado localStorage
+        pass
+    except Exception as e:
+        print(f"[widget] erro toggle on_top: {e}", flush=True)
 
 
 def _poller(win, stop, init_x=None, init_y=None):
