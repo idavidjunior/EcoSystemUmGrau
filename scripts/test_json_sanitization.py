@@ -143,7 +143,7 @@ def main():
 
     print(f"\n{'='*50}")
     print(f"Resultados:")
-    print(f"  Total arquivos: {len(json_files)}")
+    print(f"  Total: {len(json_files)}")
     print(f"  Pass: {passes}")
     fails = [i for i in all_issues if i[0] == 'FAIL']
     warns = [i for i in all_issues if i[0] == 'WARN']

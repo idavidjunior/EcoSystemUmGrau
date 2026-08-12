@@ -80,3 +80,6 @@ connectivity/bridge/configs/bridge_config.json
 connectivity/logs/
 connectivity/status/
 connectivity/deployment/bridge_export.json
+
+# Benchmark results (generated, ephemeral)
+mcp_benchmark_results.json
