@@ -1,7 +1,7 @@
 ---
 tags: [efficiency, heuristica, infinito, loop, rede, servidor]
 aliases: [30s regra de timeout maximo]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # 30s regra de timeout maximo

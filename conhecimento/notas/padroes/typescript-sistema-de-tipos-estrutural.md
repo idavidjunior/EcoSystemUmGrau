@@ -1,7 +1,7 @@
 ---
 tags: [compatibilidade, extra, padrao, passam, sólido, typescript]
 aliases: [TypeScript: sistema de tipos estrutural]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # TypeScript: sistema de tipos estrutural

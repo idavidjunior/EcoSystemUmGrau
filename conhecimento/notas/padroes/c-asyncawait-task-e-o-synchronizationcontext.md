@@ -1,7 +1,7 @@
 ---
-tags: [asp, bloqueado, csharp, default, modernos, padrao]
+tags: [apps, asp, csharp, default, modernos, padrao]
 aliases: [C#: async/await, Task e o SynchronizationContext]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # C#: async/await, Task e o SynchronizationContext

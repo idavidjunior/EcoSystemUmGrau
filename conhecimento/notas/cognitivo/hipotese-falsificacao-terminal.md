@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, debugging, muda, obvio, sintoma, veja]
 aliases: [Hipotese-falsificacao terminal]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Hipotese-falsificacao terminal

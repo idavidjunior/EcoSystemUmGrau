@@ -1,7 +1,7 @@
 ---
 tags: [130, filtro, ganhou, opencodeopencode, orfaos, padrao]
 aliases: [Certificacao forense de processos + boot do watchdog]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Certificacao forense de processos + boot do watchdog

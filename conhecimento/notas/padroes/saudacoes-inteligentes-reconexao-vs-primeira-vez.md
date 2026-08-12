@@ -1,7 +1,7 @@
 ---
 tags: [conexao, distinguir, estado, opencodeopencode, padrao, persistente]
 aliases: [Saudacoes inteligentes: reconexao vs primeira vez]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Saudacoes inteligentes: reconexao vs primeira vez

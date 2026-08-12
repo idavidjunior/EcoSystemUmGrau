@@ -1,7 +1,7 @@
 ---
 tags: [desativa, desativar, narracao, opencode, padrao, runtime]
 aliases: [Aprendizado: Controle Eco / D Eco da narração]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Aprendizado: Controle Eco / D Eco da narração

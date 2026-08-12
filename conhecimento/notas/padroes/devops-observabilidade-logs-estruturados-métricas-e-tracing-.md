@@ -1,7 +1,7 @@
 ---
-tags: [devops, jornada, msg, padrao, sistema, todo]
+tags: [devops, honeycomb, jornada, padrao, sistema, todo]
 aliases: [DevOps: observabilidade — logs estruturados, métricas e trac]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # DevOps: observabilidade — logs estruturados, métricas e tracing (OTel)

@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, failed, general, github, ind, nome]
 aliases: [Servidores MCP Node criados e validados]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Servidores MCP Node criados e validados

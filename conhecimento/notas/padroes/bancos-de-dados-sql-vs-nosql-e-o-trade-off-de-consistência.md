@@ -1,7 +1,7 @@
 ---
 tags: [acessos, bancos-dados, obrigatória, padrao, relatórios, transacional]
 aliases: [Bancos de dados: SQL vs NoSQL e o trade-off de consistência]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Bancos de dados: SQL vs NoSQL e o trade-off de consistência

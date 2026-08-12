@@ -1,7 +1,7 @@
 ---
 tags: [bands, bug, mp3player-metadata-rescue, reset, touching, without]
 aliases: [**Preamp volume irreversible and cumulative**]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # **Preamp volume irreversible and cumulative**

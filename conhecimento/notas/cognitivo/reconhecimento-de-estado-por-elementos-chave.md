@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, state-detection, sucesso, toast, verde, vermelha]
 aliases: [Reconhecimento de estado por elementos-chave]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Reconhecimento de estado por elementos-chave

@@ -1,7 +1,7 @@
 ---
 tags: [arquitetura, compondo, composition, padrao, raiz, root]
 aliases: [Arquitetura: camadas vs hexagonal vs clean architecture — de]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Arquitetura: camadas vs hexagonal vs clean architecture — dependência de dentro para fora

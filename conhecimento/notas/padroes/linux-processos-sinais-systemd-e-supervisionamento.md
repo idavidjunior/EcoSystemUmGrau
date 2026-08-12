@@ -1,7 +1,7 @@
 ---
 tags: [custom, linux, padrao, pausar, retomar, sigusr1]
 aliases: [Linux: processos, sinais, systemd e supervisionamento]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Linux: processos, sinais, systemd e supervisionamento

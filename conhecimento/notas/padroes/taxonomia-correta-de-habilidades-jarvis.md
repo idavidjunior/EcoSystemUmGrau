@@ -1,7 +1,7 @@
 ---
 tags: [codigo, fonte, implementacao, jarvis, leraprendizado, padrao]
 aliases: [Taxonomia correta de habilidades Jarvis]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Taxonomia correta de habilidades Jarvis

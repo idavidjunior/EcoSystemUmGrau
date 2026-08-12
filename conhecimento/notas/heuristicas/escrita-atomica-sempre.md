@@ -1,7 +1,7 @@
 ---
 tags: [heuristica, parece, perde, persistence, quao, trivial]
 aliases: [Escrita atomica sempre]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Escrita atomica sempre

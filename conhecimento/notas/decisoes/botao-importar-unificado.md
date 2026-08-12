@@ -1,7 +1,7 @@
 ---
 tags: [criar, decisao, importfoldertree, opencode, pasta, reais]
 aliases: [botao importar unificado]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # botao importar unificado

@@ -1,7 +1,7 @@
 ---
 tags: [desatualizadas, geram, padrao, planos, ruins, sql]
 aliases: [SQL: índices e estratégias de acesso]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # SQL: índices e estratégias de acesso

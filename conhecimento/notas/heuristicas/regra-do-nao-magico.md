@@ -1,7 +1,7 @@
 ---
 tags: [acontecer, bugs, coding, esperando, heuristica, sao]
 aliases: [Regra do 'nao magico']
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Regra do 'nao magico'

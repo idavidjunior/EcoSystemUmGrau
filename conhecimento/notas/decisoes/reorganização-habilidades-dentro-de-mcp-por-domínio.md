@@ -1,7 +1,7 @@
 ---
 tags: [decisao, machine, opencode, state, tdd, workflow]
 aliases: [Reorganização: Habilidades dentro de MCP por domínio]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Reorganização: Habilidades dentro de MCP por domínio

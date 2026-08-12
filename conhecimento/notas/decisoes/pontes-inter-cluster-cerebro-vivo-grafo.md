@@ -1,7 +1,7 @@
 ---
 tags: [conexos, decisao, inteira, isolados, opencode, solta]
 aliases: [pontes inter cluster cerebro vivo grafo]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # pontes inter cluster cerebro vivo grafo

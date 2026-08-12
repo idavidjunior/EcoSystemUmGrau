@@ -1,7 +1,7 @@
 ---
 tags: [agents, code, cognitivo, dominio, extra, general]
 aliases: [# 2026-08-03 - Scan proativo: claude-code-extra-agents]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # # 2026-08-03 - Scan proativo: claude-code-extra-agents

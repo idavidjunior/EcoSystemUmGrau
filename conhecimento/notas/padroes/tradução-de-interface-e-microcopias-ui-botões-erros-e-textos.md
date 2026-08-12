@@ -1,7 +1,7 @@
 ---
 tags: [fixos, gênero, padrao, plurais, traducao-texto, variáveis]
 aliases: [Tradução de interface e microcopias (UI): botões, erros e te]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Tradução de interface e microcopias (UI): botões, erros e textos curtos

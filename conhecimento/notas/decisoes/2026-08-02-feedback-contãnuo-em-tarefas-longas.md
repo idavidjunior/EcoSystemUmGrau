@@ -1,7 +1,7 @@
 ---
-tags: [curtas, decisao, nico, opencode, relatã, til]
+tags: [decisao, inã, nico, opencode, relatã, til]
 aliases: [# 2026-08-02 - Feedback contÃ­nuo em tarefas longas]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # # 2026-08-02 - Feedback contÃ­nuo em tarefas longas

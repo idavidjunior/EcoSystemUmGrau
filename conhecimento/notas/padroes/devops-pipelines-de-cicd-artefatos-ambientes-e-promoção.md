@@ -1,7 +1,7 @@
 ---
 tags: [automático, blue, canary, devops, green, padrao]
 aliases: [DevOps: pipelines de CI/CD — artefatos, ambientes e promoção]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # DevOps: pipelines de CI/CD — artefatos, ambientes e promoção

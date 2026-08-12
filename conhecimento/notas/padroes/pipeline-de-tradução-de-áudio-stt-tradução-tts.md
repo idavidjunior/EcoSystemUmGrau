@@ -1,7 +1,7 @@
 ---
 tags: [padrao, perde, robótico, soa, traducao-audio, vira]
 aliases: [Pipeline de tradução de áudio: STT -> tradução -> TTS]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Pipeline de tradução de áudio: STT -> tradução -> TTS

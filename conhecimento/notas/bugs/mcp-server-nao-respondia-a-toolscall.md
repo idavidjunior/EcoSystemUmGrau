@@ -1,7 +1,7 @@
 ---
 tags: [bug, handle, mapping, nomes, providermcpserverpy, request]
 aliases: [MCP server nao respondia a tools/call]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # MCP server nao respondia a tools/call

@@ -1,7 +1,7 @@
 ---
 tags: [alta, decisao, estranha, lida, opencode, voz]
 aliases: [Estilo de Comunicação Simples e Direto]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Estilo de Comunicação Simples e Direto

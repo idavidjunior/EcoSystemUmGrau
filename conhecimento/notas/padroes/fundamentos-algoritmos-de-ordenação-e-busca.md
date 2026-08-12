@@ -1,7 +1,7 @@
 ---
 tags: [fixo, fundamentos, padrao, partes, pequenas, tamanho]
 aliases: [Fundamentos: algoritmos de ordenação e busca]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Fundamentos: algoritmos de ordenação e busca

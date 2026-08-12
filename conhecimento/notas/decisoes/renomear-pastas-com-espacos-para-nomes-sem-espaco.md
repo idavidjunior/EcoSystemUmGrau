@@ -1,7 +1,7 @@
 ---
 tags: [caminhos, decisao, escapam, fonte, nao, workspaceorganization]
 aliases: [Renomear pastas com espacos para nomes sem espaco]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Renomear pastas com espacos para nomes sem espaco

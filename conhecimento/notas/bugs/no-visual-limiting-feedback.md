@@ -1,7 +1,7 @@
 ---
 tags: [250ms, bug, every, handler, mp3player-metadata-rescue, polled]
 aliases: [**No visual limiting feedback**]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # **No visual limiting feedback**

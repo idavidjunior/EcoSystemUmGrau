@@ -1,7 +1,7 @@
 ---
 tags: [decisao, dinâmica, opencode, tocar, tratar, type]
 aliases: [Importação de pasta preservando árvore + remoção de referênc]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # Importação de pasta preservando árvore + remoção de referência

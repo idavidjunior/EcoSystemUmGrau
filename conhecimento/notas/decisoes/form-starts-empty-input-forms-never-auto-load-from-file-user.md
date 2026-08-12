@@ -1,7 +1,7 @@
 ---
 tags: [android-pure-sdk, auto, decisao, forms, load, never]
 aliases: [**Form Starts Empty** — Input forms never auto-load from fil]
-date: 2026-08-11
+date: 2026-08-12
 ---
 
 # **Form Starts Empty** — Input forms never auto-load from file; user loads explicitly via file browser
