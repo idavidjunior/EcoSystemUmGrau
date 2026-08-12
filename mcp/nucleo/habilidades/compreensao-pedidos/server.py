@@ -207,7 +207,7 @@ def _read_frame(stream):
 
 def _write_frame(stream, obj):
     data = json.dumps(obj, ensure_ascii=False).encode("utf-8")
-    stream.write(b"Content-Length: " + str(len(data)).encode("ascii") + b"\r\n\r\n" + data)
+    stream.write(data + b"\n")
     stream.flush()
 
 
