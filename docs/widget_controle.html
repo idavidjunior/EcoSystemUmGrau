@@ -79,19 +79,9 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
   });
   document.getElementById('btnFala').addEventListener('click', function(){ clickSet('fala'); });
   document.getElementById('closeBtn').addEventListener('click', function(){ clickSet('close'); });
-  document.getElementById('minimizeBtn').addEventListener('click', function(){
-    // Toggle between always-on-top and always-behind
-    var current = localStorage.getItem('jarvis_mode') || 'always';
-    var newMode = current === 'always' ? 'behind' : 'always';
-    localStorage.setItem('jarvis_mode', newMode);
-    // Atualizar classe CSS da topbar
-    var topbar = document.getElementById('topbar');
-    if(newMode === 'always') {
-      topbar.className = 'topbar always-on-top';
-    } else {
-      topbar.className = 'topbar';
-    }
-  });
+  document.getElementById('minimizeBtn').addEventListener('click', function(){ clickSet('minimize'); });
+  document.getElementById('topoBtn').addEventListener('click', function(){ clickSet('topo'); });
+  document.getElementById('fixBtn').addEventListener('click', function(){ clickSet('fix'); });
 
   // ---- drag da barra superior: JS escreve posicao -> Python faz win.move ----
   // Usa screenX/screenY absolutos com offset calculado no mousedown.

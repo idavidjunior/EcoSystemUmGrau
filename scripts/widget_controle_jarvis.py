@@ -387,19 +387,9 @@ font-size:13px;background:#313244;color:#cdd6f4;transition:.15s;}
   });
   document.getElementById('btnFala').addEventListener('click', function(){ clickSet('fala'); });
   document.getElementById('closeBtn').addEventListener('click', function(){ clickSet('close'); });
-  document.getElementById('minimizeBtn').addEventListener('click', function(){
-    // Toggle between always-on-top and always-behind
-    var current = localStorage.getItem('jarvis_mode') || 'always';
-    var newMode = current === 'always' ? 'behind' : 'always';
-    localStorage.setItem('jarvis_mode', newMode);
-    // Atualizar classe CSS da topbar
-    var topbar = document.getElementById('topbar');
-    if(newMode === 'always') {
-      topbar.className = 'topbar always-on-top';
-    } else {
-      topbar.className = 'topbar';
-    }
-  });
+  document.getElementById('minimizeBtn').addEventListener('click', function(){ clickSet('minimize'); });
+  document.getElementById('topoBtn').addEventListener('click', function(){ clickSet('topo'); });
+  document.getElementById('fixBtn').addEventListener('click', function(){ clickSet('fix'); });
 
   // ---- drag da barra superior: JS escreve posicao -> Python faz win.move ----
   // Usa screenX/screenY absolutos com offset calculado no mousedown.
@@ -461,12 +451,14 @@ def _dispatch(click: str, win):
 
 
 def _toggle_always_on_top(win, on_top: bool):
-    """Alterna janela sempre no topo (on_top=True) ou atrás (on_top=False)."""
+    """Alterna preferência de janela sempre no topo. Requer reinício do widget para aplicar."""
     try:
-        # pywebview não tem API direta para mudar on_top em runtime
-        # Workaround: recria a janela com nova configuração
-        # Por enquanto, apenas log e estado localStorage
-        pass
+        geo = _carregar_geo()
+        geo["sempre_topo"] = on_top
+        _atomic_write(GEO_FILE, geo)
+        # Feedback visual no JS
+        win.evaluate_js(f"localStorage.setItem('jarvis_mode', '{'always' if on_top else 'behind'}')")
+        win.evaluate_js(f"console.log('[widget] sempre_topo salvo: {on_top}. Reinicie o widget para aplicar.')")
     except Exception as e:
         print(f"[widget] erro toggle on_top: {e}", flush=True)
 
