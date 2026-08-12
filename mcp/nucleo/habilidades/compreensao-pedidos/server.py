@@ -154,32 +154,51 @@ def _read_frame(stream):
       - Framing MCP oficial (Content-Length: <n>\\r\\n\\r\\n<body>) — usado pelo opencode.
       - JSON por linha (sem header) — usado por preflight_check.py e servidores legados.
     """
+    # Peek first byte to detect protocol
+    peek = stream.peek(1)
+    if not peek:
+        return None
+
+    # If starts with '{', it's line-delimited JSON (most common in this ecosystem)
+    if peek.startswith(b'{'):
+        line = stream.readline()
+        if not line:
+            return None
+        line = line.rstrip(b"\r\n")
+        if not line:
+            return None
+        try:
+            return json.loads(line.decode("utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            return None
+
+    # Otherwise, try Content-Length framing
     first = stream.readline()
     if not first:
         return None
     first = first.rstrip(b"\r\n")
-    if first.startswith(b"Content-Length:"):
-        headers = {}
-        if b":" in first:
-            key, value = first.split(b":", 1)
-            headers[key.strip().lower()] = value.strip()
-        while True:
-            line = stream.readline()
-            if not line:
-                return None
-            line = line.rstrip(b"\r\n")
-            if not line:
-                break
-            if b":" in line:
-                key, value = line.split(b":", 1)
-                headers[key.strip().lower()] = value.strip()
-        length = int(headers.get(b"content-length", b"0") or b"0")
-        if length <= 0:
+    if not first.startswith(b"Content-Length:"):
+        # Not a recognized protocol
+        return None
+
+    headers = {}
+    if b":" in first:
+        key, value = first.split(b":", 1)
+        headers[key.strip().lower()] = value.strip()
+    while True:
+        line = stream.readline()
+        if not line:
             return None
-        body = stream.read(length)
-    else:
-        # protocolo por linha: a linha lida já é o JSON
-        body = first
+        line = line.rstrip(b"\r\n")
+        if not line:
+            break
+        if b":" in line:
+            key, value = line.split(b":", 1)
+            headers[key.strip().lower()] = value.strip()
+    length = int(headers.get(b"content-length", b"0") or b"0")
+    if length <= 0:
+        return None
+    body = stream.read(length)
     try:
         return json.loads(body.decode("utf-8"))
     except (json.JSONDecodeError, UnicodeDecodeError):
