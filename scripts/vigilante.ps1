@@ -14,6 +14,8 @@ $learnDir = "$ecoDir\conhecimento\aprendizados"
 $projectsDir = "$env:USERPROFILE\Documents\Default Project"
 $gitInterval = 300  # 5 min entre git sync (eco/ler)
 $projectGitInterval = 60  # 1 min entre git sync para projetos (menor = mais responsivo)
+$quietPeriod = 900  # 15 min: so commita apos silencio no working tree (agrupa trabalho em lotes)
+$maxInterval = 3600  # 1h: teto forcado - nunca ficar sem persistir, mesmo com atividade continua
 
 # Auto-descoberta de projetos Android com git remote
 # EXCLUI o proprio EcoSystemUmGrau (repo principal) e ler-runtime (sem remote)
@@ -200,10 +202,59 @@ $ecoLastSync = [datetime]::MinValue
 $lerLastSync = [datetime]::MinValue
 $lastLearnDate = (Get-Date).Date.AddDays(-1)  # roda no primeiro ciclo
 
+# Quiet period: verifica se o working tree esta queto ha $quietPeriod segundos.
+# Recebe o tempo desde a ultima sync (em segundos) para aplicar o teto forcado.
+# Retorna $true se pode commitar (silencio) ou se o teto maximo foi atingido.
+function Test-GitQuiet {
+    param([string]$Path, [double]$SinceLastSync)
+    $now = Get-Date
+
+    # Teto forcado: mesmo com atividade continua, nunca passa mais de $maxInterval
+    if ($SinceLastSync -ge $maxInterval) { return $true }
+
+    # Procura o arquivo alterado mais recente no working tree
+    $status = git -C $Path status --porcelain 2>$null
+    if (-not $status) { return $true }
+    $latestChange = [datetime]::MinValue
+    foreach ($line in $status) {
+        $file = $line.Substring(3).Trim()
+        $full = Join-Path $Path $file
+        if (Test-Path $full) {
+            $lw = (Get-Item $full -ErrorAction SilentlyContinue).LastWriteTime
+            if ($lw -gt $latestChange) { $latestChange = $lw }
+        }
+    }
+    if ($latestChange -eq [datetime]::MinValue) { return $true }
+    $idleSeconds = ($now - $latestChange).TotalSeconds
+    return $idleSeconds -ge $quietPeriod
+}
+
+# Verifica se ha pendencias reais no working tree. Sem pendencias,
+# mesmo passando os 15 minutos (ou 1h), nada e commitado.
+function Test-GitPendente {
+    param([string]$Path)
+    $status = git -C $Path status --porcelain 2>$null
+    return [bool]$status
+}
+
 function Sync-GitRepo {
     param([string]$Path, [string]$Label, [switch]$Push, [ref]$LastSync, [int]$Cooldown = $gitInterval)
     $now = Get-Date
     if (($now - $LastSync.Value).TotalSeconds -lt $Cooldown) { return $false }
+
+    # Regra: sem pendencias, nao ha o que commitar. Nao chama o gate.
+    if (-not (Test-GitPendente -Path $Path)) {
+        $LastSync.Value = $now
+        return $false
+    }
+
+    # Quiet period: so commita se o working tree estiver queto (ou teto forcado).
+    # Evita commits no meio da atividade agrupando trabalho em lotes.
+    $sinceLastSync = ($now - $LastSync.Value).TotalSeconds
+    if (-not (Test-GitQuiet -Path $Path -SinceLastSync $sinceLastSync)) {
+        Write-Log "Quiet period: repo $Label ainda em atividade, aguardando silencio."
+        return $false
+    }
 
     # PONTO UNICO DE PERSISTENCIA: todo commit/push passa pelo gate.
     # Em modo manual, o gate retem as pendencias (nada e commitado).
@@ -219,6 +270,19 @@ function Sync-ProjectRepo {
     if (-not $proj) { return }
     $now = Get-Date
     if (-not $Force -and ($now - $proj.LastSync).TotalSeconds -lt $projectGitInterval) { return }
+
+    # Regra: sem pendencias, nao ha o que commitar. Nao chama o gate.
+    if (-not (Test-GitPendente -Path $Path)) {
+        $proj.LastSync = $now
+        return
+    }
+
+    # Quiet period aplicado tambem aos projetos: agrupa salvamentos em lotes.
+    $sinceLastSync = ($now - $proj.LastSync).TotalSeconds
+    if (-not (Test-GitQuiet -Path $Path -SinceLastSync $sinceLastSync)) {
+        Write-Log "Quiet period: projeto $($proj.Name) ainda em atividade, aguardando silencio."
+        return
+    }
 
     # PONTO UNICO DE PERSISTENCIA: mesmo gate usado para projetos Android
     & "$PSScriptRoot\persistencia.ps1" run-sync -Repo $Path -Label "Android/$($proj.Name)" -Push | Out-Null
