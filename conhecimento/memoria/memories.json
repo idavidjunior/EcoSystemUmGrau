@@ -4702,5 +4702,25 @@
     "access_count": 0,
     "created_at": "2026-08-13T08:55:05.023943",
     "last_accessed": "2026-08-13T08:55:05.023943"
+  },
+  {
+    "id": 265,
+    "kind": "padrao",
+    "task": "Abordagens de diagnostico de limpeza no PC",
+    "summary": "Metodos tentados para medir pastas no Windows, podem servir em outras ocasioes: (1) Get-ChildItem -Recurse -MeasureObject Length/Sum no %TEMP% - trava quando o sistema esta com RAM/CPU altos (93% RAM, CPU 75%) e ha 4000+ itens; (2) cmd /c dir /s /a no TEMP - tambem trava no mesmo cenario; (3) adb connect 100.64.71.9:5555 pode demorar/falhar com timeout; (4) dividir comandos grandes em passos menores ajuda; (5) quando o sistema estiver menos carregado, re-tentar as mesmas abordagens. Nao descartar nenhuma abordagem tentada.",
+    "project": "",
+    "tags": [
+      "itens",
+      "4000",
+      "cpu",
+      "altos",
+      "ram",
+      "ocasioes"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-13T09:21:12.350185",
+    "last_accessed": "2026-08-13T09:21:12.350185"
   }
 ]
