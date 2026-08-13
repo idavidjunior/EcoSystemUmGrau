@@ -1,11 +1,11 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-13T16:01:24.080342
+**Exportado em:** 2026-08-13T16:45:44.720939
 **Projetos:** 4
 **Padroes Tecnicos:** 246
 **Decisoes:** 64
 **Bug Fixes:** 52
-**Padroes Cognitivos:** 57
+**Padroes Cognitivos:** 58
 **Heuristicas:** 32
 **Frameworks:** 10
 **Missoes Aprendidas:** 134
@@ -1602,6 +1602,21 @@ Linha de trabalho escolhida: corrigir o tema Padrão + sanar bugs. Fase 1 mapeou
 Fase 2 validou todos os blocos JS com node --check (principal 740KB + widget-extra.js + resize.js).
 decisao: 1) TEMAS.padrao.forca usava as chaves {grav, centra
 
+### integracao completa mcps offline placeholder
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [integracao, mcp, opencode, config, placeholder, renderizacao, deploy]
+data: 2026-08-13
+contexto: Diagnóstico de integração completa do EcoSystemUmGrau. Todos os 13 MCPs
+apareciam como "failed / Connection closed" no `opencode mcp list`, mesmo com o
+preflight passando e o opencode.jsonc definindo todos os servidores.
+decisao: A causa raiz era que o opencode.jsonc deployado em ~/.config/opencode
+continha `{{USERPROFILE}}` literal nos caminhos (o opencode não expande esse
+plac
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -1696,7 +1711,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-13T16:01:24.001713
+**Ultima atualizacao:** 2026-08-13T16:45:44.510205
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

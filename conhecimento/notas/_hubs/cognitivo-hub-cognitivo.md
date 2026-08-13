@@ -1,6 +1,6 @@
 # Padroes Cognitivos
 
-**48 notas** conectadas a este hub.
+**49 notas** conectadas a este hub.
 
 
 ## Notas
@@ -36,6 +36,7 @@
 - [[heuristica-de-densidade-de-informacao]]
 - [[hipotese-falsificacao-terminal]]
 - [[hora-na-tela-vs-hora-no-ãudio-jarvis]]
+- [[integracao-completa-mcps-offline-placeholder]]
 - [[lei-de-postel-aplicada-a-engenharia]]
 - [[mapa-mental-de-navegadores-web]]
 - [[mcp-obsidian-server-â-vault-consumido-pelo-llm]]
