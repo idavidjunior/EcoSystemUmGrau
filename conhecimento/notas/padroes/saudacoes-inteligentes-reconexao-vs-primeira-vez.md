@@ -15,6 +15,7 @@ data: 2026-08-06
 contexto: "O bridge Jarvis (jarvis_bridge.py) cumprimentava toda conexao com o mesmo molde, sem distinguir a PRIMEIRA vez da RECONEXAO. O usuario queria que a retomada de conversa foss
 ## Conexoes
 
+- [[aegis-registrado-como-projeto-irmao-rust]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]

@@ -20,6 +20,7 @@ Criado manualmente enquanto o vigilante está rodando para verificar se o pollin
 
 ## Conexoes
 
+- [[aegis-registrado-como-projeto-irmao-rust]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]

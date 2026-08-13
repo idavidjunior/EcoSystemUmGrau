@@ -1,12 +1,12 @@
 ---
-tags: [correto, ecossistema, local, opencode, padrao, registrar]
+tags: [correto, ecossistema, local, opencodeopencode, padrao, registrar]
 aliases: [Aegis registrado como projeto irmao (Rust)]
 date: 2026-08-13
 ---
 
 # Aegis registrado como projeto irmao (Rust)
 
-**Fonte:** opencode
+**Fonte:** opencode+opencode
 
 ---
 tipo: padrao
@@ -22,9 +22,8 @@ contexto: Usuario pediu para criar o repositorio git do Aegis no local correto d
 O Aegis foi movido de `D
 ## Conexoes
 
-- [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
+- [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
-- [[controle-da-tv-lg-webos-via-ssap]]
+- [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
 - [[padrao-hub-padroes]]
-- [[secrets-guard-no-preflightcheck]]
+- [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]
