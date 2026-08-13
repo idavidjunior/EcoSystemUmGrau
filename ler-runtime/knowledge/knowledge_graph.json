@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-13T10:39:21.271542",
+  "last_updated": "2026-08-13T10:41:25.372377",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -1708,12 +1708,14 @@
       "merged_at": "2026-08-13T05:59:01.465938"
     },
     {
-      "source": "opencode",
+      "source": "opencode+opencode",
       "title": "aegis barra progresso tempo real",
       "action": "Feature de barra de progresso em tempo real nas varreduras do Aegis",
       "description": "---\ntipo: padrao\ntags: [aegis, rust, progresso, cli, tokio, broadcast]\ndata: 2026-08-13\ncontexto: Feature de barra de progresso em tempo real nas varreduras do Aegis\ndecisao: EventBus reescrito com tokio::sync::broadcast (canal 256) com evento Progress { percent, message }. SDK exporta ProgressFn = ",
       "domain": "general",
-      "extracted_at": "2026-08-13T10:38:01.050722"
+      "extracted_at": "2026-08-13T10:40:47.110902",
+      "merged_count": 2,
+      "merged_at": "2026-08-13T10:41:24.287684"
     }
   ],
   "decisions": [

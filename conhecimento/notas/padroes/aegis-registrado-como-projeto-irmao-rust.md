@@ -22,6 +22,7 @@ contexto: Usuario pediu para criar o repositorio git do Aegis no local correto d
 O Aegis foi movido de `D
 ## Conexoes
 
+- [[aegis-barra-progresso-tempo-real]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]

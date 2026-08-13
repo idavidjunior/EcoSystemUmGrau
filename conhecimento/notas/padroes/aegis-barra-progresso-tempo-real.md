@@ -1,12 +1,12 @@
 ---
-tags: [message, opencode, padrao, percent, progress, varreduras]
+tags: [fonte, message, opencodeopencode, padrao, percent, varreduras]
 aliases: [aegis barra progresso tempo real]
 date: 2026-08-13
 ---
 
 # aegis barra progresso tempo real
 
-**Fonte:** opencode
+**Fonte:** opencode+opencode
 
 ---
 tipo: padrao
@@ -16,9 +16,9 @@ contexto: Feature de barra de progresso em tempo real nas varreduras do Aegis
 decisao: EventBus reescrito com tokio::sync::broadcast (canal 256) com evento Progress { percent, message }. SDK exporta ProgressFn = 
 ## Conexoes
 
-- [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
+- [[aegis-registrado-como-projeto-irmao-rust]]
+- [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
-- [[controle-da-tv-lg-webos-via-ssap]]
+- [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
 - [[padrao-hub-padroes]]
-- [[secrets-guard-no-preflightcheck]]
+- [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]
