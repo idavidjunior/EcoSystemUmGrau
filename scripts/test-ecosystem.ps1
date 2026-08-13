@@ -8,7 +8,7 @@
 
 $passed = 0
 $failed = 0
-$ecoDir = "$env:USERPROFILE\Desktop\Codigos\EcoSystemUmGrau"
+$ecoDir = Split-Path $PSScriptRoot -Parent
 $lerDir = "$ecoDir\ler-runtime"
 
 function Test-Pass { param($Name); $script:passed++; Write-Host "  [PASS] $Name" -ForegroundColor Green }
@@ -78,16 +78,16 @@ if ($ocodeVersion) {
 
 # ─── 7. Agents ─────────────────────────────────────────────
 Write-Host "[7] Agents OpenCode" -ForegroundColor White
-$agentDir = "$env:USERPROFILE\.config\opencode\agents"
-$expectedAgents = @("00-maestro", "01-estrategista", "02-cetico", "03-realista", "04-etica", "05-futuro", "06-recursos", "07-criativo", "08-revisor", "09-executor", "10-aprendizado", "11-ler-executor", "12-parallel-planner", "13-flutter-orquestrador", "99-gerador-de-agentes")
+$agentDir = "$ecoDir\config\agents"
+$expectedAgents = @("00-system-rules", "01-estrategista", "02-cetico", "03-realista", "04-etica", "05-futuro", "06-recursos", "07-criativo", "08-revisor", "10-aprendizado", "11-ler-executor", "12-parallel-planner", "13-flutter-orquestrador", "99-gerador-de-agentes")
 $foundAgents = 0
 if (Test-Path $agentDir) {
     foreach ($a in $expectedAgents) {
         if (Test-Path "$agentDir\$a.md") { $foundAgents++ }
     }
-    if ($foundAgents -eq $expectedAgents.Count) { Test-Pass "Todos $foundAgents agents encontrados" }
-    else { Test-Warn "Agents" "$foundAgents/$($expectedAgents.Count) encontrados" }
-} else { Test-Fail "Agent dir" "Nao encontrado" }
+    if ($foundAgents -eq $expectedAgents.Count) { Test-Pass "Todos $foundAgents agents encontrados (fonte: config/agents)" }
+    else { Test-Warn "Agents" "$foundAgents/$($expectedAgents.Count) encontrados em config/agents" }
+} else { Test-Warn "Agent dir" "config/agents nao encontrado" }
 
 # ─── 8. Config OpenCode ─────────────────────────────────────
 Write-Host "[8] Config OpenCode" -ForegroundColor White
@@ -159,11 +159,11 @@ if (Test-Path $learnDir) {
 
 # ─── 14. Projetos Android ────────────────────────────────────
 Write-Host "[14] Projetos Android" -ForegroundColor White
-$projectsDir = "$env:USERPROFILE\Desktop\Codigos\Android"
+$projectsDir = "$ecoDir\Projetos"
 $projectCount = 0
 $syncedCount = 0
 if (Test-Path $projectsDir) {
-    $projects = Get-ChildItem $projectsDir -Directory -ErrorAction SilentlyContinue
+    $projects = Get-ChildItem $projectsDir -Directory -ErrorAction SilentlyContinue | Where-Object { $_.FullName -ne $ecoDir -and $_.Name -ne "ler-runtime" }
     foreach ($proj in $projects) {
         if (-not (Test-Path "$($proj.FullName)\.git")) { continue }
         $projectCount++
@@ -177,7 +177,6 @@ if (Test-Path $projectsDir) {
     if ($projectCount -eq 0) { Test-Warn "Projetos Android" "Nenhum repo git encontrado em $projectsDir" }
     else { Test-Pass "$syncedCount/$projectCount projetos sincronizados" }
 } else { Test-Warn "Projetos Android" "Diretorio $projectsDir nao existe" }
-
 # ─── 15. Git remotes ────────────────────────────────────────
 Write-Host "[15] Git" -ForegroundColor White
 $remote = git -C $ecoDir remote -v 2>&1 | Select-String "fetch"
