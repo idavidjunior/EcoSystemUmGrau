@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**168 notas** do cluster ecossistema.
+**169 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -166,6 +166,7 @@
 - [[sessao-de-configuracao-do-opencode-com-failover-de-servidor-]]
 - [[sessao-focada-em-organizacao-de-workspace-unificacao-de-proj]]
 - [[stt-no-partialstreaming-results]]
+- [[triagem-scripts-legado-orgaos-movidos]]
 - [[vault-obsidian-cerebro-vivo-grafo]]
 - [[vault-obsidian-fonte-viva]]
 - [[vazamento-caracteres-tts-edge-tts-escapa-ssml]]

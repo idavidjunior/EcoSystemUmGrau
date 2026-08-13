@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**241 notas** conectadas a este hub.
+**242 notas** conectadas a este hub.
 
 
 ## Notas
@@ -233,6 +233,7 @@
 - [[tradução-literária-prosa-e-poesia-ritmo-voz-e-licença-poétic]]
 - [[tradução-para-narração-tts-em-pt-br-pontuação-entonação-e-ss]]
 - [[tradução-técnica-manuais-especificações-e-documentação-de-so]]
+- [[triagem-scripts-legado-orgaos-movidos]]
 - [[typescript-generics-e-tipos-condicionais]]
 - [[typescript-sistema-de-tipos-estrutural]]
 - [[typescript-type-narrowing-guards-e-type-assertions]]

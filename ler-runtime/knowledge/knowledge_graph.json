@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-13T16:47:00.600478",
+  "last_updated": "2026-08-13T17:56:57.421366",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -1716,6 +1716,14 @@
       "extracted_at": "2026-08-13T10:40:47.110902",
       "merged_count": 2,
       "merged_at": "2026-08-13T10:41:24.287684"
+    },
+    {
+      "source": "opencode",
+      "title": "triagem scripts legado orgaos movidos",
+      "action": "Seguindo o objetivo de evoluir organizado, o ecossistema acumulou",
+      "description": "---\ntipo: padrao\ntags: [organizacao, limpeza, scripts, orfaos, legado, manutencao, triagem]\ndata: 2026-08-13\ncontexto: Seguindo o objetivo de evoluir organizado, o ecossistema acumulou\n~30 scripts/artefatos em scripts/ sem nenhuma referência externa real. A\ntriagem revelou também 12.812 arquivos no ",
+      "domain": "general",
+      "extracted_at": "2026-08-13T17:56:14.551875"
     }
   ],
   "decisions": [
