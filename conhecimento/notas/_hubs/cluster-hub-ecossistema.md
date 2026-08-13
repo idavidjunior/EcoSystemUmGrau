@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**165 notas** do cluster ecossistema.
+**166 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -110,6 +110,7 @@
 - [[evoluãão-do-tts-jarvis-â-naturalidade-via-ssml]]
 - [[fase-a-concluída-catálogo-real-no-supabase-64-obras-via-tmdb]]
 - [[fix-favoritos-tags-e-contagem-por-capitulo]]
+- [[fix-tts-corte-final-textos-longos]]
 - [[fix-widget-grafo-desktop]]
 - [[geraraudio-blocks-until-full-tts-generation-no-streaming]]
 - [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]
