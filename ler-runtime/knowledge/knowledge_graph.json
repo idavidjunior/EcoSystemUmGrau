@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-13T17:56:57.421366",
+  "last_updated": "2026-08-13T18:14:41.876739",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -1724,6 +1724,14 @@
       "description": "---\ntipo: padrao\ntags: [organizacao, limpeza, scripts, orfaos, legado, manutencao, triagem]\ndata: 2026-08-13\ncontexto: Seguindo o objetivo de evoluir organizado, o ecossistema acumulou\n~30 scripts/artefatos em scripts/ sem nenhuma referência externa real. A\ntriagem revelou também 12.812 arquivos no ",
       "domain": "general",
       "extracted_at": "2026-08-13T17:56:14.551875"
+    },
+    {
+      "source": "opencode",
+      "title": "fase2 limpeza git artefatos rastreados",
+      "action": "Fase 2 da organização do EcoSystemUmGrau. O repositório eco tinha 1553",
+      "description": "---\ntipo: padrao\ntags: [organizacao, git, gitignore, artefatos, build, limpeza, manutencao]\ndata: 2026-08-13\ncontexto: Fase 2 da organização do EcoSystemUmGrau. O repositório eco tinha 1553\narquivos rastreados e o .git já ignorava corretamente target/build/backups/logs\n(*.log). Porém havia lixo rast",
+      "domain": "general",
+      "extracted_at": "2026-08-13T18:13:54.576889"
     }
   ],
   "decisions": [

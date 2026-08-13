@@ -1,8 +1,8 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-13T17:56:57.621040
+**Exportado em:** 2026-08-13T18:14:42.389455
 **Projetos:** 4
-**Padroes Tecnicos:** 247
+**Padroes Tecnicos:** 248
 **Decisoes:** 64
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 58
@@ -709,6 +709,7 @@ Em 11/08/2026, o usuário pediu que eu abandonasse o estilo formal com tabelas, 
 | 245 | opencode+opencode | Aegis registrado como projeto irmao (Rust) |
 | 246 | opencode+opencode | aegis barra progresso tempo real |
 | 247 | opencode | triagem scripts legado orgaos movidos |
+| 248 | opencode | fase2 limpeza git artefatos rastreados |
 
 ## Bug Fixes e Corrigidos
 
@@ -1712,7 +1713,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-13T17:56:57.421366
+**Ultima atualizacao:** 2026-08-13T18:14:41.876739
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

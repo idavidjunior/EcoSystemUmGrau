@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**242 notas** conectadas a este hub.
+**243 notas** conectadas a este hub.
 
 
 ## Notas
@@ -93,6 +93,7 @@
 - [[estrangeirismos-no-pt-br-anglicismos-aceitos-aportuguesament]]
 - [[estratégias-de-tradução-literal-semântica-adaptativa-e-quand]]
 - [[falsos-cognatos-e-armadilhas-interlíngua-inglês-português]]
+- [[fase2-limpeza-git-artefatos-rastreados]]
 - [[fidelidade-x-naturalidade-quando-priorizar-cada-um]]
 - [[filename-artist-extraction-two-strategies]]
 - [[fix-widget-grafo-desktop]]

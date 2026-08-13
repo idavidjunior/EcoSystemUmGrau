@@ -28,3 +28,8 @@ Resultado: git limpo (renames + remoções corretas), test-ecosystem 32/32 PASS,
 boot intacto. Padrão: revisar periodicamente git ls-files em busca de artefatos
 rastreados; projeto irmão deve ter .gitignore próprio para target/build.
 evidencia: git status (31 remoções), test-ecosystem.ps1 32 PASS, runtime_boot --status OK.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]
+- [[git-fluxos-de-trabalho-trunk-based-e-git-flow-e-quando-usar-]]
