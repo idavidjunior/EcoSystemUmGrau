@@ -4902,5 +4902,25 @@
     "access_count": 0,
     "created_at": "2026-08-13T20:16:36.296953",
     "last_accessed": "2026-08-13T20:16:36.296953"
+  },
+  {
+    "id": 275,
+    "kind": "decisao",
+    "task": "Ler specs sdd hook validado ponta a ponta",
+    "summary": "Ciclo completo da camada de specs do LER validado sem missao autonoma: LERKernel real + Orchestrator real + config specs dir temporario; analyze(goal) gerou spec com 12 secoes preenchidas e _persist_spec gravou arquivo .spec.md real com id spec- e sem _definir_. Decisao: nao rodar missao LER real pois auto_commit do config.json violaria o gate (persistencia.ps1). Lacuna 2 aplicada (conteudo real via domain detect, entradas/saidas, casos de borda, testes relacionados); 31 testes OK; valida_specs.py OK.",
+    "project": "",
+    "tags": [
+      "autonoma",
+      "camada",
+      "validado",
+      "relacionados",
+      "completo",
+      "ciclo"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-13T20:43:14.296428",
+    "last_accessed": "2026-08-13T20:43:14.296428"
   }
 ]

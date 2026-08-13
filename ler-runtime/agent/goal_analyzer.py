@@ -27,7 +27,9 @@ class GoalSpecification:
             "risks": self.risks,
         }
 
-    def to_spec_markdown(self, componente=".", tags=None):
+    def to_spec_markdown(self, componente=".", tags=None,
+                         entradas_saidas=None, casos_borda=None,
+                         testes_relacionados=None):
         """Gera a spec markdown do ecossistema no formato specs/template.md.
 
         Cada seção espelha um campo desta GoalSpecification (objective,
@@ -79,14 +81,14 @@ class GoalSpecification:
             f'\n## Dependências\n\n{_items(self.dependencies)}\n'
             f'\n## Premissas\n\n{_items(self.assumptions)}\n'
             '\n## Entradas e Saídas\n'
-            '\n- Entrada: _definir_ (derivado da análise de requisitos).'
-            '\n- Saída: _definir_ (derivado da análise de requisitos).'
-            '\n- Efeito colateral: _definir_.'
-            '\n\n## Casos de Borda\n\n- _definir_ (condições-limite da análise, ver princípio do teste adversarial).'
+            f'\n{_items(entradas_saidas or ["Entrada: _definir_ (derivado da análise de requisitos).", "Saída: _definir_ (derivado da análise de requisitos).", "Efeito colateral: _definir_."])}'
+            '\n\n## Casos de Borda\n'
+            f'\n{_items(casos_borda or ["_definir_ (condições-limite da análise, ver princípio do teste adversarial)."])}'
             f'\n\n## Critérios de Aceitação\n\n{_items(self.acceptance_criteria)}'
             f'\n\n## Definition of Done\n\n{dod}'
             f'\n\n## Riscos\n\n' + '\n'.join(riscos) +
-            '\n\n## Testes Relacionados\n\n- _definir_ (caminho do teste que cobre esta spec)'
+            '\n\n## Testes Relacionados\n'
+            f'\n{_items(testes_relacionados or ["_definir_ (caminho do teste que cobre esta spec)"])}'
             '\n'
         )
 
@@ -119,24 +121,31 @@ class GoalAnalyzer:
             risks=risks,
         )
 
+        domain = self._detect_domain(goal_lower)
+
         analysis = {
             "raw": raw_goal,
             "objective": spec.objective,
-            "domain": self._detect_domain(goal_lower),
+            "domain": domain,
             "task_type": self._detect_task_type(goal_lower),
             "technologies": self._detect_technologies(goal_lower),
             "requirements": requirements,
             "constraints": constraints,
             "dependencies": dependencies,
             "assumptions": assumptions,
-            "success_criteria": self._generate_success_criteria(domain=self._detect_domain(goal_lower)),
+            "success_criteria": self._generate_success_criteria(domain=domain),
             "complexity": self._estimate_complexity(goal_lower),
             "estimated_phases": [],
             "risks": risks,
             "acceptance_criteria": acceptance_criteria,
             "definition_of_done": definition_of_done,
             "goal_spec": spec.to_dict(),
-            "spec_markdown": spec.to_spec_markdown(tags=["ler", "goal-analysis"]),
+            "spec_markdown": spec.to_spec_markdown(
+                tags=["ler", "goal-analysis"],
+                entradas_saidas=self._generate_entradas_saidas(domain, constraints),
+                casos_borda=self._generate_casos_borda(domain, constraints, risks),
+                testes_relacionados=self._generate_testes_relacionados(domain),
+            ),
             "analyzed_at": datetime.now().isoformat(),
         }
 
@@ -338,3 +347,102 @@ class GoalAnalyzer:
         if any("Git" in c for c in constraints):
             dod.append("Codigo versionado no Git")
         return dod
+
+    def _generate_entradas_saidas(self, domain, constraints):
+        base = {
+            "android": [
+                "Entrada: interface do aplicativo Android (toques, formularios, eventos de sistema).",
+                "Saída: comportamento do app atualizado na tela e no dispositivo.",
+                "Efeito colateral: dados persistidos localmente no aparelho.",
+            ],
+            "web": [
+                "Entrada: requisições HTTP do navegador (parametros, corpo, cabecalhos).",
+                "Saída: resposta HTTP com status, corpo e cabecalhos apropriados.",
+                "Efeito colateral: estado atualizado no servidor e no cliente.",
+            ],
+            "python": [
+                "Entrada: argumentos de linha de comando, arquivos e dados do usuario.",
+                "Saída: saída processada em stdout, arquivos ou serviços.",
+                "Efeito colateral: arquivos alterados ou criados no sistema.",
+            ],
+            "database": [
+                "Entrada: dados a persistir e consultas de leitura/escrita.",
+                "Saída: resultados de consulta e confirmacoes de escrita.",
+                "Efeito colateral: registros alterados no banco de dados.",
+            ],
+            "devops": [
+                "Entrada: pipeline, infraestrutura e artefatos de build.",
+                "Saída: ambiente provisionado e artefatos publicados.",
+                "Efeito colateral: recursos de infraestrutura criados ou alterados.",
+            ],
+            "desktop": [
+                "Entrada: interacoes de interface de usuario e eventos do sistema.",
+                "Saída: janelas, dialogos e estado visual atualizados.",
+                "Efeito colateral: configuracoes e dados persistidos localmente.",
+            ],
+            "machine_learning": [
+                "Entrada: conjunto de dados de treinamento e avaliacao.",
+                "Saída: modelo treinado e metricas de desempenho.",
+                "Efeito colateral: artefatos de modelo e metricas persistidos.",
+            ],
+        }
+        items = base.get(domain, [
+            "Entrada: entrada fornecida pelo usuario ou pelo sistema.",
+            "Saída: resultado processado conforme o objetivo.",
+            "Efeito colateral: estado do sistema alterado.",
+        ])
+        if any("Git" in c for c in constraints):
+            items[-1] = items[-1] + " E versionado no Git."
+        return items
+
+    def _generate_casos_borda(self, domain, constraints, risks):
+        cases = []
+        for c in constraints:
+            cl = c.lower()
+            if "offline" in cl:
+                cases.append("Operação sem conectividade de rede")
+            elif "command" in cl and "line" in cl:
+                cases.append("Uso sem interface gráfica")
+        for r in risks:
+            rl = r.get("risk", "").lower()
+            if "api" in rl and ("unavailable" in rl or "rate" in rl):
+                cases.append("Serviço externo indisponível ou com rate limit (timeout/retry/fallback)")
+            elif "schema" in rl:
+                cases.append("Migração de schema com dados existentes (backup/rollback)")
+            elif "sdk" in rl:
+                cases.append("SDK/ferramentas de build ausentes ou com versão incompatível")
+            elif "ambiguous" in rl or "incomplete" in rl:
+                cases.append("Requisitos ambíguos ou incompletos")
+        cases.append("Entradas vazias ou inválidas")
+        cases.append("Execução repetida (idempotência e estado parcial)")
+        return cases
+
+    def _generate_testes_relacionados(self, domain):
+        base = {
+            "android": [
+                "Testes unitários/instrumentados do módulo do app (diretório de testes do aplicativo).",
+            ],
+            "web": [
+                "Testes de API e de contrato das rotas HTTP (suíte de testes do backend).",
+            ],
+            "python": [
+                "Testes unitários em um diretório de testes (unittest/pytest).",
+            ],
+            "database": [
+                "Testes de migração e de consultas contra o schema versionado.",
+            ],
+            "devops": [
+                "Validação de pipeline em ambiente de staging (CI).",
+            ],
+            "desktop": [
+                "Testes manuais automatizados dos fluxos de interface (smoke).",
+            ],
+            "machine_learning": [
+                "Validação de avaliação do modelo (holdout, métricas).",
+            ],
+        }
+        items = base.get(domain, [
+            "Teste funcional do fluxo principal correspondente a esta spec.",
+        ])
+        items.append("Teste de regressão: repetir o fluxo principal após alterações")
+        return items
