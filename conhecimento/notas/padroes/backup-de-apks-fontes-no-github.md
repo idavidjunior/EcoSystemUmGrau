@@ -1,7 +1,7 @@
 ---
 tags: [bagunça, ecossistema, gerar, lixo, opencode, padrao]
 aliases: [Backup de APKs + fontes no GitHub]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # Backup de APKs + fontes no GitHub

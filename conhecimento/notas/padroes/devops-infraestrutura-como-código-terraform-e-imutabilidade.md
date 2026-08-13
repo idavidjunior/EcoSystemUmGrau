@@ -1,7 +1,7 @@
 ---
 tags: [apt, artefato, criptografia, devops, padrao, troca]
 aliases: [DevOps: infraestrutura como código — Terraform e imutabilida]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # DevOps: infraestrutura como código — Terraform e imutabilidade

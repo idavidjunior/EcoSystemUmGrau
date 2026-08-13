@@ -1,7 +1,7 @@
 ---
 tags: [debugging, deu, encontrou, errado, heuristica, usou]
 aliases: [Log de fallback para diagnostico rapido]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # Log de fallback para diagnostico rapido

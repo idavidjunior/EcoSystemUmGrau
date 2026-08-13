@@ -1,7 +1,7 @@
 ---
 tags: [decisao, imediatamente, opencode, qualquer, resposta, saia]
 aliases: [idioma padrao pt br]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # idioma padrao pt br

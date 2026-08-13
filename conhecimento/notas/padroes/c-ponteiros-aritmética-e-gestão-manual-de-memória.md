@@ -1,7 +1,7 @@
 ---
-tags: [alinhamento, alocação, c, importa, layout, padrao]
+tags: [alinhamento, alocação, c, exatamente, importa, padrao]
 aliases: [C: ponteiros, aritmética e gestão manual de memória]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # C: ponteiros, aritmética e gestão manual de memória

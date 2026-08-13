@@ -1,7 +1,7 @@
 ---
 tags: [barreiras, cognitivo, modais, permissoes, planning, possiveis]
 aliases: [Pre-compilacao de estrategia de interacao]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # Pre-compilacao de estrategia de interacao

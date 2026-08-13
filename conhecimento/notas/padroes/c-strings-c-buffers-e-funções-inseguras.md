@@ -1,7 +1,7 @@
 ---
 tags: [c, cve, daí, memória, nasce, padrao]
 aliases: [C: strings C, buffers e funções inseguras]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # C: strings C, buffers e funções inseguras

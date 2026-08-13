@@ -1,7 +1,7 @@
 ---
-tags: [atual, completo, efficiency, estado, heuristica, loading]
+tags: [atual, completo, efficiency, estado, faca, heuristica]
 aliases: [Primeiro scan, depois interaja]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # Primeiro scan, depois interaja

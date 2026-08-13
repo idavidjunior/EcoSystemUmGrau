@@ -1,7 +1,7 @@
 ---
 tags: [blockingqueue, cyclicbarrier, fases, java, padrao, sincronizar]
 aliases: [Java: Concorrência com threads e locks]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # Java: Concorrência com threads e locks

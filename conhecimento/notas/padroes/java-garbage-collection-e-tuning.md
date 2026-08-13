@@ -1,7 +1,7 @@
 ---
 tags: [finalizadas, java, listeners, padrao, registrados, removidos]
 aliases: [Java: Garbage Collection e tuning]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # Java: Garbage Collection e tuning

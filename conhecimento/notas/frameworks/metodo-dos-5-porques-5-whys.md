@@ -1,7 +1,7 @@
 ---
 tags: [falta, framework, inconsistente, pos, validacao]
 aliases: [Metodo dos 5 Porques (5 Whys)]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # Metodo dos 5 Porques (5 Whys)

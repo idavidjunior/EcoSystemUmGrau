@@ -1,7 +1,7 @@
 ---
 tags: [despacho, else, estrutura, padrao, python, tipo]
 aliases: [Python: sintaxe e núcleo da linguagem]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # Python: sintaxe e núcleo da linguagem

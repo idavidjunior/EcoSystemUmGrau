@@ -1,7 +1,7 @@
 ---
 tags: [devops, escape, kernel, padrao, runc, toolchain]
 aliases: [DevOps: containers — camadas, imagens mínimas e non-root]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # DevOps: containers — camadas, imagens mínimas e non-root

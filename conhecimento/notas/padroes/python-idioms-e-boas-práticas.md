@@ -1,7 +1,7 @@
 ---
 tags: [clareza, código, intenção, lambda, padrao, python]
 aliases: [Python: idioms e boas práticas]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # Python: idioms e boas práticas

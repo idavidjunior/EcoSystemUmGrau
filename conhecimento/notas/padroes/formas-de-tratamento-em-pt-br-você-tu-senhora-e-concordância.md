@@ -1,7 +1,7 @@
 ---
 tags: [correto, cuidada, padrao, pt-br, vais, íntimo]
 aliases: [Formas de tratamento em pt-BR: você, tu, senhor/a e concordâ]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # Formas de tratamento em pt-BR: você, tu, senhor/a e concordância

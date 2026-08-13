@@ -1,7 +1,7 @@
 ---
 tags: [buscar, decisao, fonte, internet, mp3player-metadata-rescue, taps]
 aliases: [User taps "Buscar na Internet"]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # User taps "Buscar na Internet"

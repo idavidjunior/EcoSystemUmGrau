@@ -1,7 +1,7 @@
 ---
 tags: [apk, local, opencode, padrao, testar, validar]
 aliases: [Regra do usuário: build/instala/testa/valida antes de commit]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # Regra do usuário: build/instala/testa/valida antes de commitar e subir

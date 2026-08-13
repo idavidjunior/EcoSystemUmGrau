@@ -1,7 +1,7 @@
 ---
 tags: [bug, bypass, inside, mp3player-metadata-rescue, pipeline, stalls]
 aliases: [**Audio stops / EQ not audible**]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # **Audio stops / EQ not audible**

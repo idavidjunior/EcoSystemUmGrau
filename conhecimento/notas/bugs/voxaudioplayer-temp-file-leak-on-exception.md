@@ -1,7 +1,7 @@
 ---
 tags: [block, bug, catch, cleanup, ecosistema-opencode, safe]
 aliases: [VoxAudioPlayer temp file leak on exception]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # VoxAudioPlayer temp file leak on exception

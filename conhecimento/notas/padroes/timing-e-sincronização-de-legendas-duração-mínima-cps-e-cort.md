@@ -1,7 +1,7 @@
 ---
 tags: [150, leva, olho, padrao, reancorar, traducao-audio]
 aliases: [Timing e sincronização de legendas: duração mínima, cps e co]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # Timing e sincronização de legendas: duração mínima, cps e corte por shot

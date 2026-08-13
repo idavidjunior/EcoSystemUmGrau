@@ -1,7 +1,7 @@
 ---
 tags: [amplas, artist, decisao, mp3player, null, title]
 aliases: [SearchMode.NORMAL -> RELAXED auto-fallback se NORMAL retorna]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # SearchMode.NORMAL -> RELAXED auto-fallback se NORMAL retorna null.

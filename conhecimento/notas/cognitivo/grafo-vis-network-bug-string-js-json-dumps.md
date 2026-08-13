@@ -1,7 +1,7 @@
 ---
 tags: [atualiza, cognitivo, general, invalida, todo, vault]
 aliases: [grafo vis network bug string js json dumps]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # grafo vis network bug string js json dumps

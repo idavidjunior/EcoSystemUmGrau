@@ -1,7 +1,7 @@
 ---
 tags: [coupling, designpatterns, frágil, herança, padrao, profunda]
 aliases: [Design patterns: anti-patterns comuns — god object, service ]
-date: 2026-08-12
+date: 2026-08-13
 ---
 
 # Design patterns: anti-patterns comuns — god object, service locator e spaghetti
