@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**240 notas** conectadas a este hub.
+**241 notas** conectadas a este hub.
 
 
 ## Notas
@@ -9,6 +9,7 @@
 - [[2026-08-04-persistencia-da-conexao-do-jarvis]]
 - [[aapt-javac-d8-apksigner]]
 - [[adb-workflow]]
+- [[aegis-barra-progresso-tempo-real]]
 - [[aegis-registrado-como-projeto-irmao-rust]]
 - [[album-art-download-pipeline]]
 - [[android-gesture-patterns]]

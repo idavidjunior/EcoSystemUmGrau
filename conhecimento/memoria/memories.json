@@ -4722,5 +4722,25 @@
     "access_count": 0,
     "created_at": "2026-08-13T09:21:12.350185",
     "last_accessed": "2026-08-13T09:21:12.350185"
+  },
+  {
+    "id": 266,
+    "kind": "padrao",
+    "task": "Aegis: barra de progresso em tempo real implementada",
+    "summary": "Aegis ganhou barra de progresso estilo Windows nas varreduras: EventBus reescrito com tokio broadcast (evento Progress), ProgressFn exportado no SDK, scan_with_progress em host/software/network, orchestrator com percentual global por modulo, CLI com ProgressUI (thread + mpsc) e Ctrl+C com confirmacao. 11 testes passando (7 core + 4 sdk). Commit 1440126 no repo Aegis.",
+    "project": "",
+    "tags": [
+      "confirmacao",
+      "ctrl",
+      "mpsc",
+      "thread",
+      "progressui",
+      "cli"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-13T10:36:27.584262",
+    "last_accessed": "2026-08-13T10:36:27.584262"
   }
 ]
