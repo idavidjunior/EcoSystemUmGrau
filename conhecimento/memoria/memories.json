@@ -4742,5 +4742,25 @@
     "access_count": 0,
     "created_at": "2026-08-13T10:36:27.584262",
     "last_accessed": "2026-08-13T10:36:27.584262"
+  },
+  {
+    "id": 267,
+    "kind": "erro",
+    "task": "Correção: TTS truncava textos longos em 2000 caracteres",
+    "summary": "O SpeechPipeline.prepare() truncava texto em MAX_TEXT_LENGTH(2000), cortando o final da fala. Corrigido: prepare() agora preserva o texto completo e a síntese divide em chunks via SentenceChunker.chunk_by_length, concatenando o áudio. TTSValidator agora lança TextTooLongError para texto longo (sem truncar silenciosamente). Validado: áudio de texto longo cresce proporcionalmente ao texto (nada cortado no final).",
+    "project": "",
+    "tags": [
+      "fala",
+      "final",
+      "cortando",
+      "cortado",
+      "nada",
+      "sentencechunker"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-13T12:48:23.230956",
+    "last_accessed": "2026-08-13T12:48:23.230956"
   }
 ]
