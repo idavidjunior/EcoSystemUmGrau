@@ -1,5 +1,5 @@
 ---
-tags: [album, chars, match, mp3player, padrao, words]
+tags: [album, chars, mp3player, overlap, padrao, words]
 aliases: [iTunes search with scoring thresholds]
 date: 2026-08-13
 ---

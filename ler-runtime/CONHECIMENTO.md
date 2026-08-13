@@ -1,8 +1,8 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-13T00:21:30.425730
+**Exportado em:** 2026-08-13T05:56:39.217296
 **Projetos:** 4
-**Padroes Tecnicos:** 244
+**Padroes Tecnicos:** 245
 **Decisoes:** 64
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 55
@@ -706,6 +706,7 @@ Em 11/08/2026, o usuário pediu que eu abandonasse o estilo formal com tabelas, 
 | 242 | traducao-audio | Tradução de músicas e letras: adaptação rítmica x tradução literal |
 | 243 | traducao-audio | Timing e sincronização de legendas: duração mínima, cps e corte por shot |
 | 244 | traducao-audio | Palavras de preenchimento, hesitações e ruído na transcrição: quando manter ou remover |
+| 245 | opencode | Aegis registrado como projeto irmao (Rust) |
 
 ## Bug Fixes e Corrigidos
 
@@ -1667,7 +1668,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-13T00:21:30.303039
+**Ultima atualizacao:** 2026-08-13T05:56:38.589300
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

@@ -70,8 +70,30 @@
       "ecosystem_involvement": "criado com auxílio do EcoSystemUmGrau (build, arquitetura, versionamento)",
       "last_sync": "2026-08-01",
       "tags": ["android", "bible", "study", "religious", "audio"]
+    },
+    {
+      "name": "Aegis",
+      "type": "rust",
+      "description": "Motor de diagnóstico e remediação de segurança — escaneia o host, aplica correções com confirmação explícita e reversão. Workspace Cargo multi-crates.",
+      "path": "{{PROJECT_PARENT}}\\aegis",
+      "status": "funcional",
+      "version": "—",
+      "apk": "—",
+      "build_script": "cargo build --release",
+      "key_files": [
+        "Cargo.toml",
+        "README.md",
+        "crates/aegis-cli/src/main.rs",
+        "crates/aegis-cli/src/remediate.rs",
+        "crates/aegis-core/src/remediation.rs",
+        "crates/aegis-plugin-sdk/src/remediation.rs"
+      ],
+      "skills": [],
+      "ecosystem_involvement": "criado com auxílio do EcoSystemUmGrau (arquitetura, remediação de segurança, versionamento)",
+      "last_sync": "2026-08-13",
+      "tags": ["rust", "seguranca", "remediacao", "cli", "diagnostico"]
     }
   ],
-  "registry_updated": "2026-08-01",
-  "note": "Projetos irmãos do EcoSystemUmGrau — todos Android, criados/auxiliados pelo ecossistema. O ecossistema conhece a existência, localização, status e envolvimento em cada um."
+  "registry_updated": "2026-08-13",
+  "note": "Projetos irmãos do EcoSystemUmGrau — Android, Rust e outros, criados/auxiliados pelo ecossistema. O ecossistema conhece a existência, localização, status e envolvimento em cada um."
 }

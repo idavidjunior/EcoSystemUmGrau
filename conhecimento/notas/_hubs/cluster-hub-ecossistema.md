@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**163 notas** do cluster ecossistema.
+**164 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -67,6 +67,7 @@
 - [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]
 - [[2026-08-05-scan-proativo-ecosystemumgrau]]
 - [[2026-08-06-scan-proativo-ecosystemumgrau]]
+- [[aegis-registrado-como-projeto-irmao-rust]]
 - [[aprendizado-controle-eco-d-eco-da-narração]]
 - [[aprendizado-debugging-expertise-skill]]
 - [[aprendizado-jarvis-manifesta-o-que-quer-aprender]]
