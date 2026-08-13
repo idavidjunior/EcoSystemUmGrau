@@ -1,11 +1,11 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-13T13:04:45.576656
+**Exportado em:** 2026-08-13T16:01:24.080342
 **Projetos:** 4
 **Padroes Tecnicos:** 246
 **Decisoes:** 64
 **Bug Fixes:** 52
-**Padroes Cognitivos:** 56
+**Padroes Cognitivos:** 57
 **Heuristicas:** 32
 **Frameworks:** 10
 **Missoes Aprendidas:** 134
@@ -1589,6 +1589,19 @@ cortando silenciosamente todo o conteúdo restante. Corrigido movendo o split de
 para a síntese: _partes_para_sintese() divide via SentenceChunker.chunk_by_length() e a
 síntese concatena o áudio de cada p
 
+### auditoria cerebro vivo fix tema padrao e bugs
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [cerebro-vivo, grafo, widget, generate-graph-html, tema-padrao, fisica, vis-network, javascript]
+data: 2026-08-13
+contexto: Auditoria do widget "Cérebro Vivo" (docs/grafo.html, gerado por scripts/generate-graph-html.py).
+Linha de trabalho escolhida: corrigir o tema Padrão + sanar bugs. Fase 1 mapeou estados e fluxos;
+Fase 2 validou todos os blocos JS com node --check (principal 740KB + widget-extra.js + resize.js).
+decisao: 1) TEMAS.padrao.forca usava as chaves {grav, centra
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -1683,7 +1696,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-13T13:04:40.446251
+**Ultima atualizacao:** 2026-08-13T16:01:24.001713
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-13T13:04:40.446251",
+  "last_updated": "2026-08-13T16:01:24.001713",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -3022,6 +3022,15 @@
       "domain": "general",
       "body": "---\ntipo: erro\ntags: [tts, speech_pipeline, chunking, truncamento, edge-tts]\ndata: 2026-08-13\ncontexto: Textos longos narrados por voz (resumos grandes, relatórios) tinham o final cortado\ndecisao: O SpeechPipeline.prepare() truncava o texto em MAX_TEXT_LENGTH (2000) antes da síntese,\ncortando silenciosamente todo o conteúdo restante. Corrigido movendo o split de texto longo\npara a síntese: _partes_para_sintese() divide via SentenceChunker.chunk_by_length() e a\nsíntese concatena o áudio de cada p",
       "extracted_at": "2026-08-13T12:58:36.181073"
+    },
+    {
+      "source": "opencode",
+      "title": "auditoria cerebro vivo fix tema padrao e bugs",
+      "domain": "general",
+      "body": "---\ntipo: erro\ntags: [cerebro-vivo, grafo, widget, generate-graph-html, tema-padrao, fisica, vis-network, javascript]\ndata: 2026-08-13\ncontexto: Auditoria do widget \"Cérebro Vivo\" (docs/grafo.html, gerado por scripts/generate-graph-html.py).\nLinha de trabalho escolhida: corrigir o tema Padrão + sanar bugs. Fase 1 mapeou estados e fluxos;\nFase 2 validou todos os blocos JS com node --check (principal 740KB + widget-extra.js + resize.js).\ndecisao: 1) TEMAS.padrao.forca usava as chaves {grav, centra",
+      "extracted_at": "2026-08-13T16:01:01.089723",
+      "merged_count": 2,
+      "merged_at": "2026-08-13T16:01:23.795233"
     }
   ],
   "heuristics": [

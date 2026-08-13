@@ -1930,9 +1930,6 @@ arestasUp = arestasUp.map(a =>
       // Cor do destaque nos controles internos
       _corDestaque = t.respira || t.glowCor;
 
-      // Cor da barra superior
-      _headerCor = t.headerBorda || '#313244';
-
       // Aplica forcado calibrado
       _aplicarForcasTema(t);
       localStorage.setItem('temaGrafo', nome);

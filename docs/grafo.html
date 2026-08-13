@@ -298,7 +298,6 @@
   var _modo3D = (typeof localStorage !== 'undefined' && localStorage.getItem('modo3D') === 'true');
   var _waveIntensidade = parseFloat((typeof localStorage !== 'undefined' && localStorage.getItem('waveIntensidade')) || '1') || 1;
   var _flashEnabled = (typeof localStorage !== 'undefined' && localStorage.getItem('flashEnabled') !== 'false');
-  var _labelsAnimated = (typeof localStorage !== 'undefined' && localStorage.getItem('labelsAnimated') !== 'false');
   (function() {
     _waveDir = Math.random() < 0.5 ? 1 : -1;
     _waveVel = 0.6 + Math.random() * 0.9;
@@ -922,6 +921,9 @@ arestasUp = arestasUp.map(a =>
     nodes.update([{ id: id, color: c, size: Math.max(orig.size, 16) * 1.4, shadow: true, shadowSize: 42, shadowColor: c }]);
     setTimeout(function() {
       _flashAtivo = false;
+      // Com foco ativo, o visual do nó pertence ao foco (corViva/crescimento):
+      // restaurar para o original apagaria o efeito do microscopio.
+      if (_destacado) return;
       nodes.update([{ id: id, color: orig.color, size: orig.size, shadow: false, shadowSize: 0 }]);
     }, 750);
   }
@@ -1059,9 +1061,8 @@ arestasUp = arestasUp.map(a =>
     if (params.nodes && params.nodes.length > 0) {
       var nid = params.nodes[0];
       if (_flashEnabled) flashNo(nid, _glowCor || '#89b4fa');
-      if (!_destacado) {
-        _expandirFoco(nid, (original[nid] && original[nid].color) || '#89b4fa');
-      }
+      // Sempre refoca no no clicado: permite saltar de foco em foco sem limpar.
+      _expandirFoco(nid, (original[nid] && original[nid].color) || '#89b4fa');
     }
   });
 
@@ -1073,6 +1074,7 @@ arestasUp = arestasUp.map(a =>
   }
   function limpar() {
     _destacado = false; // libera de volta a decoracao viva (cerebro vivo)
+    _tickPausado = false; // destrava o tick: sem isso o grafo congela apos Limpar com foco ativo
     _flashAtivo = false;
     try { localStorage.removeItem('destGrafo'); } catch (e) {}
     // reseta o estado do motor de avalanches: pausa correntes/residual
@@ -1310,7 +1312,7 @@ arestasUp = arestasUp.map(a =>
       pulsoForca: 1.0,
       pulsoSombra: 1.0,
       destaque: '#cba6f7',
-      forca: { grav: -720, central: 0.30, mola: 0.045, amort: 0.82, velMax: 13, delta: 0.32 }
+      forca: { gravit: -720, gravidade: 0.30, mola: 0.045, amort: 0.82, velMax: 13, delta: 0.32 }
     },
     neon: {
       nome: 'Neon',
@@ -1389,7 +1391,7 @@ arestasUp = arestasUp.map(a =>
 
       // Stats
       var stats = document.getElementById('stats');
-      if (stats) stats.style.background = t.statsBg || t.fundo;
+      if (stats) stats.style.background = t.statsFundo || t.fundo;
 
       // Arestas — cor base
       _corAresta = t.arestaCor;
@@ -1404,9 +1406,6 @@ arestasUp = arestasUp.map(a =>
 
       // Cor do destaque nos controles internos
       _corDestaque = t.respira || t.glowCor;
-
-      // Cor da barra superior
-      _headerCor = t.headerBorda || '#313244';
 
       // Aplica forcado calibrado
       _aplicarForcasTema(t);
