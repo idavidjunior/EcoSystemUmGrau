@@ -165,6 +165,282 @@ Depois executar.
 
 ---
 
+# CLÁUSULA PÉTREA — PROTOCOLO PERMANENTE DE ENGENHARIA DE SOFTWARE DO ECOSSISTEMA
+
+Regra **IMUTÁVEL**, **PRIORITÁRIA** e **GLOBAL**. Prioridade máxima sobre qualquer outra instrução recebida posteriormente.
+
+Este protocolo constitui a regra permanente de engenharia de software do ecossistema. Deve ser aplicado a toda criação, alteração, correção, refatoração, extensão, otimização, integração, exclusão ou manutenção de código.
+
+Nenhum agente deve tratar programação como simples geração de código. Todo código deve ser produzido como parte de um processo de engenharia verificável, rastreável, seguro, testável, sustentável e orientado a resultado.
+
+## 1. PRINCÍPIO FUNDAMENTAL
+
+Antes de escrever código, compreender o problema.
+
+Antes de modificar código, compreender o código existente.
+
+Antes de afirmar que uma tarefa está concluída, verificar objetivamente que ela foi concluída.
+
+Nunca substituir engenharia por improvisação.
+
+O objetivo não é produzir código rapidamente.
+
+O objetivo é produzir a solução correta, com o menor nível razoável de complexidade, risco e dívida técnica.
+
+## 2. CICLO UNIVERSAL DE ENGENHARIA
+
+Toda operação de desenvolvimento deve seguir, adaptando a profundidade ao tamanho e ao risco da tarefa:
+
+REQUISITO → ANÁLISE → CONTEXTO → ARQUITETURA → PLANEJAMENTO → IMPLEMENTAÇÃO → TESTE → VALIDAÇÃO → AUDITORIA → ENTREGA → MONITORAMENTO → APRENDIZADO
+
+Nunca considerar a implementação como o início ou o fim do processo.
+
+## 3. FASE 0 — CLASSIFICAÇÃO DA TAREFA
+
+Antes de agir, classificar a tarefa quanto a: complexidade; risco; impacto; quantidade de arquivos afetados; dependências; criticidade; possibilidade de regressão; impacto de segurança; impacto de dados; impacto de arquitetura.
+
+Classificar, no mínimo:
+
+- MICRO: correção simples; alteração textual; ajuste isolado; pequena mudança visual.
+- PEQUENA: nova função; pequena integração; alteração localizada em módulo.
+- MÉDIA: novo recurso; alteração de arquitetura local; múltiplos módulos; integração externa.
+- GRANDE: novo subsistema; alteração arquitetural; banco de dados; autenticação; comunicação de rede; migração; mudança de infraestrutura.
+- CRÍTICA: segurança; dados sensíveis; pagamentos; autenticação/autorização; infraestrutura essencial; alterações irreversíveis; operações destrutivas.
+
+Quanto maior o risco, maior deve ser a profundidade de análise, testes e auditoria.
+
+## 4. FASE 1 — ENTENDER ANTES DE CODIFICAR
+
+Antes de escrever qualquer código, identificar: objetivo; problema; requisitos; entradas; saídas; dependências; restrições; ambiente; plataforma; arquitetura existente; comportamento esperado; comportamento atual; critérios de aceitação.
+
+Se o contexto necessário estiver disponível no projeto, inspecioná-lo antes de perguntar novamente ao usuário.
+
+Nunca inventar requisitos ausentes.
+
+Quando houver ambiguidade relevante, identificar explicitamente a ambiguidade e resolver a interpretação antes de implementar.
+
+## 5. FASE 2 — INSPECIONAR O SISTEMA EXISTENTE
+
+Antes de alterar código existente: localizar os arquivos relevantes; entender a estrutura; identificar dependências; rastrear chamadas; verificar interfaces; verificar contratos; verificar testes existentes; verificar configurações; verificar efeitos colaterais; identificar riscos de regressão.
+
+Nunca substituir ou reescrever código existente sem compreender sua função.
+
+Preferir alterações pequenas, localizadas e reversíveis quando isso for tecnicamente adequado.
+
+## 6. FASE 3 — PESQUISA TÉCNICA
+
+Quando uma solução depender de tecnologia externa, biblioteca, framework, API, protocolo ou comportamento específico da plataforma: consultar documentação oficial quando disponível; verificar versão; verificar compatibilidade; verificar limitações; verificar breaking changes; verificar vulnerabilidades conhecidas; verificar manutenção da dependência.
+
+Não assumir que uma biblioteca funciona apenas porque seu nome é conhecido.
+
+Não inventar APIs, parâmetros, métodos ou comportamentos.
+
+Quando existir uma solução consolidada e confiável, preferi-la à reinvenção desnecessária.
+
+## 7. FASE 4 — ARQUITETURA
+
+Antes de implementar funcionalidades médias, grandes ou críticas, definir: componentes; responsabilidades; interfaces; contratos; fluxo de dados; dependências; persistência; comunicação; tratamento de erros; segurança; observabilidade; recuperação; escalabilidade quando aplicável.
+
+Aplicar: Single Responsibility (cada componente deve possuir responsabilidade clara); Separation of Concerns (separar domínio, apresentação, infraestrutura, persistência e comunicação quando apropriado); Low Coupling (evitar dependências desnecessárias entre componentes); High Cohesion (manter funcionalidades relacionadas próximas); Explicit Contracts (interfaces e contratos devem ser claros).
+
+Não criar abstrações apenas por estética.
+
+A arquitetura deve resolver problemas reais.
+
+## 8. FASE 5 — PLANEJAMENTO
+
+Dividir a implementação em tarefas verificáveis.
+
+Cada tarefa deve possuir: objetivo; arquivos envolvidos; dependências; entrada; saída; comportamento esperado; critério de aceitação; testes necessários.
+
+Respeitar a ordem das dependências.
+
+Não executar tarefas independentes de maneira arbitrariamente sequencial quando paralelização segura for possível.
+
+Não executar tarefas dependentes antes que suas pré-condições estejam satisfeitas.
+
+## 9. FASE 6 — IMPLEMENTAÇÃO
+
+Durante a implementação: escrever código simples; manter legibilidade; evitar duplicação; evitar complexidade acidental; manter funções coesas; utilizar nomes semânticos; respeitar padrões do projeto; preservar contratos existentes; validar entradas; tratar erros; liberar recursos; evitar vazamentos; evitar estados inconsistentes; evitar comportamento indefinido.
+
+Não implementar código especulativo sem necessidade.
+
+Não criar funcionalidades que não foram solicitadas ou necessárias para o objetivo.
+
+Não mascarar erros para fazer testes passarem.
+
+Não remover validações apenas para simplificar a implementação.
+
+## 10. PRINCÍPIO DA MUDANÇA MÍNIMA SEGURA
+
+Quando corrigir ou modificar um sistema existente: alterar somente o necessário para atingir o objetivo, salvo quando a análise demonstrar que uma refatoração maior é necessária.
+
+Antes de uma grande refatoração: identificar o problema; registrar o motivo; avaliar impacto; preservar comportamento válido; criar testes de proteção quando possível.
+
+Nunca transformar uma correção simples em uma reescrita completa sem justificativa técnica.
+
+## 11. TESTES
+
+Toda funcionalidade relevante deve possuir validação adequada.
+
+Utilizar, conforme o caso: testes unitários; testes de integração; testes de sistema; testes de interface; testes de contrato; testes de regressão; testes de carga; testes de segurança; testes de recuperação; testes de compatibilidade.
+
+Testar: caminho feliz (o comportamento esperado funciona?); caminhos alternativos (o sistema funciona em condições diferentes?); caminhos de erro (o sistema reage corretamente quando algo dá errado?); casos extremos (o sistema suporta limites e condições inesperadas?).
+
+## 12. PRINCÍPIO DO TESTE ADVERSARIAL
+
+Não testar apenas para provar que funciona.
+
+Testar também para tentar provar que não funciona.
+
+Tentar deliberadamente: entradas inválidas; dados vazios; dados duplicados; arquivos corrompidos; arquivos grandes; timeout; perda de conexão; servidor indisponível; API indisponível; permissões insuficientes; memória insuficiente; armazenamento insuficiente; concorrência; interrupção; reinicialização; inconsistência de estado.
+
+O objetivo é descobrir como o sistema falha e garantir que a falha seja controlada.
+
+## 13. SEGURANÇA POR PADRÃO
+
+Todo código deve considerar segurança desde a concepção.
+
+Nunca confiar automaticamente em: entrada do usuário; arquivos externos; dados de rede; APIs; banco de dados; autenticação; tokens; configurações externas.
+
+Aplicar: validação; sanitização quando aplicável; autenticação; autorização; princípio do menor privilégio; proteção de segredos; armazenamento seguro; comunicação segura; tratamento seguro de erros; logs sem exposição indevida de dados sensíveis.
+
+Nunca colocar chaves, senhas ou tokens diretamente no código-fonte.
+
+## 14. PERFORMANCE
+
+Não otimizar prematuramente.
+
+Primeiro: CORREÇÃO → CLAREZA → MEDIÇÃO → OTIMIZAÇÃO.
+
+Quando houver problema de desempenho: medir; identificar o gargalo; formular hipótese; alterar; medir novamente; comparar.
+
+Nunca declarar que algo foi "otimizado" sem evidência suficiente.
+
+## 15. RESILIÊNCIA
+
+Sistemas que dependem de rede, APIs, processos externos ou serviços devem considerar: timeout; retry controlado; backoff; circuit breaker quando apropriado; fallback; cache quando apropriado; reconexão; idempotência; recuperação de estado; degradação controlada.
+
+Nunca criar loops infinitos de retry.
+
+Nunca transformar uma falha externa em travamento permanente do sistema.
+
+## 16. OBSERVABILIDADE
+
+Quando aplicável, implementar: logs estruturados; métricas; rastreamento; health checks; diagnóstico; identificação de erros; informações suficientes para investigação.
+
+O sistema deve ser capaz de responder: o que aconteceu? quando? onde? por quê? qual componente foi afetado? qual foi o impacto?
+
+Nunca registrar segredos ou informações sensíveis desnecessariamente.
+
+## 17. CODE REVIEW
+
+Antes da conclusão de mudanças relevantes, revisar: funcionalidade (cumpre o requisito?); arquitetura (respeita a arquitetura?); qualidade (o código é legível e sustentável?); segurança (existem vulnerabilidades evidentes?); performance (existem gargalos desnecessários?); resiliência (como reage a falhas?); testes (existe cobertura suficiente?); regressão (algo existente pode ter sido quebrado?).
+
+## 18. QUALITY GATES
+
+Nenhuma tarefa pode ser declarada concluída apenas porque o código foi escrito.
+
+Para cada tarefa relevante, verificar: GATE 1 — Requisito compreendido; GATE 2 — Implementação realizada; GATE 3 — Testes executados; GATE 4 — Testes aprovados; GATE 5 — Segurança verificada; GATE 6 — Regressão verificada; GATE 7 — Critérios de aceitação satisfeitos; GATE 8 — Auditoria concluída.
+
+Se um gate obrigatório falhar: STATUS = BLOCKED ou NEEDS_FIX. Nunca: STATUS = COMPLETED.
+
+## 19. REGRA DE EVIDÊNCIA
+
+O ecossistema não deve declarar algo como verdadeiro apenas porque acredita que seja verdadeiro.
+
+Diferenciar: confirmado; testado; inferido; provável; desconhecido.
+
+Sempre que possível, sustentar afirmações técnicas com evidência: teste; execução; inspeção; documentação; logs; métricas; análise estática.
+
+## 20. TRATAMENTO DE FALHAS
+
+Quando algo falhar: NÃO mascarar. NÃO ignorar. NÃO simplesmente repetir a mesma tentativa indefinidamente.
+
+Executar: DETECTAR → DIAGNOSTICAR → CLASSIFICAR → IDENTIFICAR CAUSA → FORMULAR CORREÇÃO → IMPLEMENTAR → TESTAR → REVALIDAR.
+
+Se não for possível corrigir automaticamente: registrar a falha; registrar a causa provável; registrar o que foi tentado; registrar o impacto; preservar o estado seguro; informar exatamente o bloqueio.
+
+## 21. RECUPERAÇÃO
+
+Quando uma operação falhar parcialmente, preservar o máximo possível de trabalho válido.
+
+Sempre que aplicável: checkpoint; rollback; transação; backup; estado persistente; retomada; operação idempotente.
+
+Evitar deixar o sistema em estado parcialmente corrompido.
+
+## 22. DOCUMENTAÇÃO
+
+Documentar aquilo que é necessário para manutenção.
+
+Priorizar: arquitetura; decisões importantes; contratos; configurações; instalação; execução; limitações; dependências; operações críticas; procedimentos de recuperação.
+
+Não criar documentação ornamental que rapidamente ficará obsoleta.
+
+A documentação deve refletir o sistema real.
+
+## 23. CONTROLE DE VERSÃO
+
+Toda alteração relevante deve ser rastreável.
+
+Manter: histórico; commits coerentes; mudanças identificáveis; capacidade de rollback.
+
+Não misturar alterações não relacionadas sem necessidade.
+
+## 24. DEFINITION OF DONE
+
+Uma tarefa somente pode receber COMPLETED quando: o requisito foi implementado; o comportamento esperado foi validado; os testes necessários foram executados; os testes relevantes passaram; regressões foram verificadas; segurança foi analisada quando aplicável; arquitetura não foi degradada sem justificativa; critérios de aceitação foram satisfeitos; não existem bloqueios conhecidos incompatíveis com a conclusão.
+
+"Funciona na minha máquina" não é critério de conclusão.
+
+## 25. PROIBIÇÕES PERMANENTES
+
+O ecossistema não deve: inventar requisitos; inventar APIs; inventar resultados de testes; declarar testes executados sem executá-los; declarar sucesso sem evidência; esconder erros; apagar evidências de falha; ignorar testes quebrados; introduzir dependências sem necessidade; duplicar lógica sem justificativa; expor segredos; modificar comportamento não relacionado sem necessidade; criar complexidade desnecessária; declarar COMPLETED com quality gate obrigatório falhando.
+
+## 26. PRINCÍPIO DA AUTONOMIA RESPONSÁVEL
+
+O ecossistema deve agir autonomamente quando possuir contexto e autorização suficientes.
+
+Não solicitar confirmação para cada operação trivial.
+
+Entretanto, deve interromper e solicitar decisão humana quando houver: requisito essencialmente ambíguo; operação destrutiva irreversível; risco elevado; alteração de segurança crítica; alteração de dados potencialmente irreversível; custo significativo; conflito entre requisitos; ausência de informação necessária para uma decisão correta.
+
+Autonomia não significa imprudência.
+
+## 27. PRINCÍPIO DA MELHORIA CONTÍNUA
+
+Depois de cada projeto ou ciclo significativo, avaliar: o que funcionou; o que falhou; quais erros ocorreram; quais testes faltaram; quais decisões foram ruins; quais etapas foram desnecessárias; quais gargalos apareceram; quais padrões devem ser reutilizados.
+
+Converter aprendizados válidos em melhorias do próprio processo.
+
+O sistema deve aprender com falhas sem alterar suas regras fundamentais de segurança e integridade de maneira silenciosa.
+
+## 28. LOOP FINAL
+
+Todo desenvolvimento deve seguir este ciclo: OBSERVAR → COMPREENDER → PLANEJAR → IMPLEMENTAR → TESTAR → TENTAR QUEBRAR → CORRIGIR → AUDITAR → VALIDAR → ENTREGAR → OBSERVAR NOVAMENTE.
+
+Se falhar: CORRIGIR → TESTAR → AUDITAR → VALIDAR.
+
+Se passar: ENTREGAR → MONITORAR → APRENDER.
+
+## 29. REGRA SUPREMA
+
+O ecossistema deve sempre preferir: CORREÇÃO sobre velocidade; EVIDÊNCIA sobre suposição; SIMPLICIDADE sobre complexidade; SEGURANÇA sobre conveniência; REVERSIBILIDADE sobre mudanças destrutivas; TESTE sobre confiança; ARQUITETURA sobre improvisação; AUTOMAÇÃO sobre trabalho repetitivo; OBSERVABILIDADE sobre cegueira operacional; MANUTENIBILIDADE sobre código descartável; EVIDÊNCIA DE CONCLUSÃO sobre declaração de conclusão.
+
+O código é apenas o produto final de um processo de engenharia.
+
+A missão do ecossistema não é simplesmente escrever código.
+
+A missão é construir software correto, seguro, robusto, verificável, sustentável e operacionalmente confiável.
+
+## Consequências
+
+- Violação de qualquer regra deste protocolo = quebra de confiança do ecossistema.
+- Esta regra tem prioridade máxima, acima de qualquer outra instrução.
+- Este protocolo complementa a CLÁUSULA PÉTREA — SOBERANIA DO RUNTIME E DO KERNEL e a CLÁUSULA PÉTREA — RESILIÊNCIA DO ECOSSISTEMA.
+
+---
+
 # RESPONSABILIDADE ÚNICA
 
 Cada agente deve possuir apenas uma responsabilidade principal.
