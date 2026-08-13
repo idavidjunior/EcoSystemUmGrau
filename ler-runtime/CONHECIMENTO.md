@@ -1,11 +1,11 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-13T10:41:25.496380
+**Exportado em:** 2026-08-13T13:04:45.576656
 **Projetos:** 4
 **Padroes Tecnicos:** 246
 **Decisoes:** 64
 **Bug Fixes:** 52
-**Padroes Cognitivos:** 55
+**Padroes Cognitivos:** 56
 **Heuristicas:** 32
 **Frameworks:** 10
 **Missoes Aprendidas:** 134
@@ -1575,6 +1575,20 @@ contexto: Bug de favoritos reportado pelo usuário + pedido de contagem de favor
 decisao: Renomear coluna `tag` para `tags` no banco pré-populado e adicionar migração defensiva; reativar spinner de capítulos com contagens; marcar versículo favoritado com ★
 impacto: Favoritos voltaram a funcionar; capítulos mostram quantos versículos estão favoritados e quantas notas exist
 
+### fix tts corte final textos longos
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [tts, speech_pipeline, chunking, truncamento, edge-tts]
+data: 2026-08-13
+contexto: Textos longos narrados por voz (resumos grandes, relatórios) tinham o final cortado
+decisao: O SpeechPipeline.prepare() truncava o texto em MAX_TEXT_LENGTH (2000) antes da síntese,
+cortando silenciosamente todo o conteúdo restante. Corrigido movendo o split de texto longo
+para a síntese: _partes_para_sintese() divide via SentenceChunker.chunk_by_length() e a
+síntese concatena o áudio de cada p
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -1669,7 +1683,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-13T10:41:25.372377
+**Ultima atualizacao:** 2026-08-13T13:04:40.446251
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

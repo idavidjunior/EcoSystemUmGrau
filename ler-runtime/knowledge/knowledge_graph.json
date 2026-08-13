@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-13T10:41:25.372377",
+  "last_updated": "2026-08-13T13:04:40.446251",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -3015,6 +3015,13 @@
       "extracted_at": "2026-08-10T23:19:48.864528",
       "merged_count": 647,
       "merged_at": "2026-08-10T23:20:05.817651"
+    },
+    {
+      "source": "opencode",
+      "title": "fix tts corte final textos longos",
+      "domain": "general",
+      "body": "---\ntipo: erro\ntags: [tts, speech_pipeline, chunking, truncamento, edge-tts]\ndata: 2026-08-13\ncontexto: Textos longos narrados por voz (resumos grandes, relatórios) tinham o final cortado\ndecisao: O SpeechPipeline.prepare() truncava o texto em MAX_TEXT_LENGTH (2000) antes da síntese,\ncortando silenciosamente todo o conteúdo restante. Corrigido movendo o split de texto longo\npara a síntese: _partes_para_sintese() divide via SentenceChunker.chunk_by_length() e a\nsíntese concatena o áudio de cada p",
+      "extracted_at": "2026-08-13T12:58:36.181073"
     }
   ],
   "heuristics": [
