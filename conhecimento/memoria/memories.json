@@ -4842,5 +4842,25 @@
     "access_count": 0,
     "created_at": "2026-08-13T18:13:54.460889",
     "last_accessed": "2026-08-13T18:13:54.460889"
+  },
+  {
+    "id": 272,
+    "kind": "padrao",
+    "task": "Fase 3 organizacao - rotina automatica de triagem criada",
+    "summary": "Criado audit_triagem.py (stdlib): detecta scripts orfaos + artefatos rastreados no git. Respeita protegidos externos (atalhos Startup/tarefas agendadas) e sub-repos incorporados. --fix move orfaos para _legado via git mv. Integrado ao vigilante.ps1 como timer diario. Licao: testes legitimos (test_vox.py, ler-runtime/tests) e ferramentas (shot_*.ps1) nao sao lixo - refinado por extensao .png e exclusao de sub-repos.",
+    "project": "",
+    "tags": [
+      "incorporados",
+      "audit",
+      "agendadas",
+      "triagem",
+      "tarefas",
+      "criado"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-13T18:36:38.646658",
+    "last_accessed": "2026-08-13T18:36:38.646658"
   }
 ]
