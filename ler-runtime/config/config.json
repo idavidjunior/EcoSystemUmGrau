@@ -33,6 +33,10 @@
     "auto_commit": true,
     "commit_prefix": "[LER]"
   },
+  "specs": {
+    "enabled": true,
+    "dir": "../specs"
+  },
   "omniroute": {
     "default_provider": "opencode",
     "fallback_providers": ["shell"]

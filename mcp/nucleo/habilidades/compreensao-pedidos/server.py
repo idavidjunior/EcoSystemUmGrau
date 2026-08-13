@@ -13,6 +13,7 @@ Tools:
   - refinar_entendimento  — compreensão + refino com a LLM do opencode (fallback NVIDIA/OpenAI/Anthropic)
   - resolver_conceitos    — resolve termos do pedido no acervo do ecossistema
   - detectar_desperdicio  — riscos de desperdício e atalhos (repetição, escopo)
+  - gerar_spec            — gera e salva a spec em specs/<slug>.spec.md
 """
 import json
 import sys
@@ -80,6 +81,18 @@ TOOLS = [
             "required": ["pedido"]
         },
     },
+    {
+        "name": "gerar_spec",
+        "description": "Gera e salva a spec (SDD) de um pedido em specs/<slug>.spec.md com escrita atômica. Usa o entendimento estruturado (objetivo, ações, critérios) e a heurística de componente (script:/skill:/projeto).\n\nTrigger keywords: gerar spec, spec, especificação, sdd, documentar requisito.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "pedido": {"type": "string", "description": "O pedido/requisito a transformar em spec", "minLength": 1},
+                "destino": {"type": "string", "description": "Opcional: caminho de destino; padrão specs/<slug>.spec.md"}
+            },
+            "required": ["pedido"]
+        },
+    },
 ]
 
 
@@ -137,6 +150,15 @@ def handle_tool(tool, args, rid):
             pedido = args.get("pedido", "")
             result = cp.detectar_desperdicio(pedido)
             result["tool"] = "detectar_desperdicio"
+        elif tool == "gerar_spec":
+            pedido = args.get("pedido", "")
+            destino = args.get("destino")
+            ent = cp.compreender(pedido)
+            if destino:
+                result = cp.salvar_spec(pedido, destino=destino, entendimento=ent)
+            else:
+                result = cp.salvar_spec(pedido, entendimento=ent)
+            result["tool"] = "gerar_spec"
         else:
             return {"jsonrpc": "2.0", "id": rid, "error": {"code": -32601, "message": f"Tool not found: {tool}"}}
     except Exception as e:

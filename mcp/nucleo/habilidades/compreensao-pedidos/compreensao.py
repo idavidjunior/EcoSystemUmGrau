@@ -20,12 +20,14 @@ import re
 import shutil
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 
 BASE = str(Path(__file__).resolve().parent.parent.parent.parent.parent)
 SCRIPTS = os.path.join(BASE, 'scripts')
 MCP_DIR = os.path.join(BASE, 'mcp')
 PROJETOS_DIR = os.path.join(BASE, 'Projetos')
+SPECS_DIR = os.path.join(BASE, 'specs')
 
 # Ações explícitas (radicais cobrem infinitivo e imperativo: explicar/explique;
 # inclui variantes c→qu da conjugação: explic/expliqu, verific/verifiqu...)
@@ -504,6 +506,127 @@ def compreender(pedido, refinar=False):
 
 
 # ---------------------------------------------------------------------------
+# Geração de spec (SDD) — formato specs/<componente>.spec.md
+# Produz só texto (markdown); quem chama decide persistir via salvar_spec().
+# ---------------------------------------------------------------------------
+def _slug(texto, max_len=60):
+    """kebab-case a partir de qualquer texto; fallback determinístico."""
+    s = texto.strip().lower()
+    s = ''.join(c for c in s if not (0x0300 <= ord(c) <= 0x036F))  # remove marcas (acentos)
+    s = re.sub(r'[^a-z0-9]+', '-', s).strip('-')
+    s = re.sub(r'-{2,}', '-', s)
+    if not s:
+        return 'componente'
+    return s[:max_len].rstrip('-')
+
+
+def _componente_para(pedido, entendimento):
+    """Heurística de componente: script:/skill:/projeto → caminho; palavra 'script' sem
+    prefixo → scripts/<slug>.py (caminho convencional do que será criado); senão slug do objetivo."""
+    baixo = pedido.lower()
+    if os.path.isdir(SCRIPTS):
+        for c in sorted(entendimento.get('conceitos', []), key=len, reverse=True):
+            if str(c).startswith('script:'):
+                nome = str(c).split(':', 1)[1]
+                caminho = os.path.join('scripts', nome + '.py')
+                if os.path.exists(os.path.join(BASE, caminho)):
+                    return caminho.replace(os.sep, '/')
+            elif str(c).startswith('skill:'):
+                nome = str(c).split(':', 1)[1]
+                for dominio in (os.listdir(MCP_DIR) if os.path.isdir(MCP_DIR) else []):
+                    caminho = os.path.join('mcp', dominio, 'habilidades', nome)
+                    if os.path.isdir(os.path.join(BASE, caminho)):
+                        return caminho.replace(os.sep, '/')
+    for nome in (os.listdir(PROJETOS_DIR) if os.path.isdir(PROJETOS_DIR) else []):
+        if nome.lower() in baixo:
+            return os.path.join('Projetos', nome).replace(os.sep, '/')
+    # Menção sem prefixo a tipo de componente conhecido → caminho convencional
+    if 'script' in baixo:
+        slug = _slug(entendimento.get('objetivo', pedido) or pedido)
+        return os.path.join('scripts', slug + '.py').replace(os.sep, '/')
+    return _slug(entendimento.get('objetivo', pedido) or pedido)
+
+
+def spec_markdown(pedido, entendimento=None):
+    """Gera o markdown de uma spec (SDD) a partir do entendimento do pedido."""
+    if entendimento is None:
+        entendimento = compreender(pedido)
+    componente = _componente_para(pedido, entendimento)
+    slug = _slug(os.path.splitext(os.path.basename(componente))[0])
+    requisitos = [f"- {a['verbo']}: {a['objeto']}" for a in entendimento.get('acoes', [])[:6]] or \
+        ["- _definir_ (ação explícita a derivar do objetivo)"]
+    dependencias = [f"- `{c}`" for c in entendimento.get('conceitos', [])
+                    if str(c).startswith(('script:', 'skill:'))] or ["- _nenhuma declarada_"]
+    premissas = []
+    if entendimento.get('julgamento'):
+        premissas.append(f"- Entendimento julgado {entendimento['julgamento']} "
+                         f"(score {entendimento.get('score_entendimento', 0)}/100)")
+    if not premissas:
+        premissas = ["- _a definir_"]
+    criterios = [f"- [ ] {c}" for c in entendimento.get('criterios_sucesso', [])] or \
+        ["- [ ] _critério observável de aceitação_"]
+    riscos = [f"- {r.get('msg', '')} — nível {r.get('nivel', 'medio')}"
+              for r in entendimento.get('riscos', [])] or ["- _nenhum risco declarado_"]
+    restricoes = [f"- {r}" for r in entendimento.get('restricoes', [])] or ["- _nenhuma declarada_"]
+    tags = ['compreensao', slug]
+    return (
+        "---\n"
+        f"id: spec-{slug}\n"
+        "versao: 0.1.0\n"
+        "status: proposta\n"
+        f"componente: {componente}\n"
+        f"tags: [{', '.join(tags)}]\n"
+        f"data: {datetime.now().strftime('%Y-%m-%d')}\n"
+        "---\n\n"
+        f"# Spec — {slug}\n\n"
+        "## Objetivo\n"
+        f"{entendimento.get('objetivo', pedido)}\n\n"
+        "## Requisitos\n"
+        + "\n".join(requisitos) + "\n\n"
+        "## Restrições\n"
+        + "\n".join(restricoes) + "\n\n"
+        "## Dependências\n"
+        + "\n".join(dependencias) + "\n\n"
+        "## Premissas\n"
+        + "\n".join(premissas) + "\n\n"
+        "## Entradas e Saídas\n"
+        "- Entrada: _definir_\n"
+        "- Saída: _definir_\n\n"
+        "## Casos de Borda\n"
+        "- _definir_ (condições-limite da análise, ver princípio do teste adversarial).\n\n"
+        "## Critérios de Aceitação\n"
+        + "\n".join(criterios) + "\n\n"
+        "## Definition of Done\n"
+        "- [ ] Requisito implementado\n"
+        "- [ ] Testes executados e passando\n"
+        "- [ ] Critérios de aceitação satisfeitos\n"
+        "- [ ] Regressão verificada\n\n"
+        "## Riscos\n"
+        + "\n".join(riscos) + "\n\n"
+        "## Testes Relacionados\n"
+        "- _definir_ (testes que validam esta spec).\n"
+    )
+
+
+def salvar_spec(pedido, destino=None, entendimento=None):
+    """Gera e persiste (escrita atômica) a spec em specs/<slug>.spec.md."""
+    texto = spec_markdown(pedido, entendimento)
+    componente = _componente_para(pedido, entendimento)
+    slug = _slug(os.path.splitext(os.path.basename(componente))[0])
+    if not destino:
+        destino = os.path.join(SPECS_DIR, slug + '.spec.md')
+    os.makedirs(os.path.dirname(destino) or SPECS_DIR, exist_ok=True)
+    tmp = destino + '.tmp'
+    with open(tmp, 'w', encoding='utf-8') as f:
+        f.write(texto)
+    os.replace(tmp, destino)
+    return {'arquivo': os.path.basename(destino),
+            'caminho': os.path.relpath(destino, BASE).replace(os.sep, '/'),
+            'escrita': True,
+            'componente': componente}
+
+
+# ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
 def main():
@@ -515,6 +638,7 @@ def main():
     parser.add_argument('pedido', nargs='*', default=[])
     parser.add_argument('--refinar', action='store_true', help='refina com a LLM disponível (fail-soft)')
     parser.add_argument('--json', action='store_true', help='saída JSON')
+    parser.add_argument('--spec', action='store_true', help='gera e salva a spec em specs/ (escrita atômica)')
     args = parser.parse_args()
     if not args.pedido:
         pedido = sys.stdin.read().strip() if not sys.stdin.isatty() else ''
@@ -524,9 +648,12 @@ def main():
         print(json.dumps({'erro': 'nenhum pedido informado'}, ensure_ascii=False))
         return 1
     out = compreender(pedido, refinar=args.refinar)
+    if args.spec:
+        out['spec'] = salvar_spec(pedido, entendimento=out)
     print(json.dumps(out, ensure_ascii=False, indent=2) if args.json else
           f"OBJETIVO: {out['objetivo']}\nSCORE: {out['score_entendimento']} ({out['julgamento']})\n"
-          f"AÇÕES: {len(out['acoes'])} | AMBIGUIDADES: {len(out['ambiguidades'])} | CONCEITOS: {len(out['conceitos'])}")
+          f"AÇÕES: {len(out['acoes'])} | AMBIGUIDADES: {len(out['ambiguidades'])} | CONCEITOS: {len(out['conceitos'])}"
+          + (f"\nSPEC: {out['spec']['caminho']}" if args.spec else ""))
     return 0
 
 

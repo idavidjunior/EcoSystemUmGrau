@@ -27,6 +27,69 @@ class GoalSpecification:
             "risks": self.risks,
         }
 
+    def to_spec_markdown(self, componente=".", tags=None):
+        """Gera a spec markdown do ecossistema no formato specs/template.md.
+
+        Cada seção espelha um campo desta GoalSpecification (objective,
+        requirements, constraints, dependencies, assumptions,
+        acceptance_criteria, definition_of_done, risks). Não grava arquivo:
+        o chamador decide onde persistir — fail-soft, 100% stdlib.
+        """
+
+        def _slug(texto):
+            t = re.sub(r'[^a-z0-9]+', '-', texto.strip().lower()).strip('-')
+            return t[:60] or 'componente'
+
+        def _items(itens, bullet='-'):
+            if not itens:
+                return f'{bullet} _nenhum declarado_'
+            return '\n'.join(f'{bullet} {i}' for i in itens)
+
+        hoje = datetime.now().strftime('%Y-%m-%d')
+        id_spec = 'spec-' + _slug(componente if componente and componente != '.' else self.objective)
+        nome = componente if componente and componente != '.' else _slug(self.objective)
+        tags_txt = '[' + ', '.join(tags or []) + ']'
+
+        riscos = []
+        for r in (self.risks or []):
+            if isinstance(r, dict):
+                riscos.append(f"- {r.get('risk', r)} — severidade {r.get('severity', 'baixa')}")
+            else:
+                riscos.append(f'- {r}')
+        if not riscos:
+            riscos = ['- _nenhum declarado_']
+
+        dod = '\n'.join(f'- [ ] {i}' for i in (self.definition_of_done or []))
+        if not dod:
+            dod = '- [ ] _nenhum declarado_'
+
+        return (
+            '---\n'
+            f'id: {id_spec}\n'
+            'versao: 0.1.0\n'
+            'status: proposta\n'
+            f'componente: {componente if componente else "."}\n'
+            f'tags: {tags_txt}\n'
+            f'data: {hoje}\n'
+            '---\n'
+            f'\n# Spec — {nome}\n'
+            f'\n## Objetivo\n\n{self.objective or "_nenhum declarado_"}\n'
+            f'\n## Requisitos\n\n{_items(self.requirements, "1.")}\n'
+            f'\n## Restrições\n\n{_items(self.constraints)}\n'
+            f'\n## Dependências\n\n{_items(self.dependencies)}\n'
+            f'\n## Premissas\n\n{_items(self.assumptions)}\n'
+            '\n## Entradas e Saídas\n'
+            '\n- Entrada: _definir_ (derivado da análise de requisitos).'
+            '\n- Saída: _definir_ (derivado da análise de requisitos).'
+            '\n- Efeito colateral: _definir_.'
+            '\n\n## Casos de Borda\n\n- _definir_ (condições-limite da análise, ver princípio do teste adversarial).'
+            f'\n\n## Critérios de Aceitação\n\n{_items(self.acceptance_criteria)}'
+            f'\n\n## Definition of Done\n\n{dod}'
+            f'\n\n## Riscos\n\n' + '\n'.join(riscos) +
+            '\n\n## Testes Relacionados\n\n- _definir_ (caminho do teste que cobre esta spec)'
+            '\n'
+        )
+
 
 class GoalAnalyzer:
     def __init__(self, session, config):
@@ -73,6 +136,7 @@ class GoalAnalyzer:
             "acceptance_criteria": acceptance_criteria,
             "definition_of_done": definition_of_done,
             "goal_spec": spec.to_dict(),
+            "spec_markdown": spec.to_spec_markdown(tags=["ler", "goal-analysis"]),
             "analyzed_at": datetime.now().isoformat(),
         }
 

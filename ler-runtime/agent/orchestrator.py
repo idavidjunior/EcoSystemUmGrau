@@ -158,6 +158,34 @@ class Orchestrator:
 
         return self._finalize("max_iterations")
 
+    def _persist_spec(self, spec_md):
+        if not spec_md:
+            return
+        cfg = self.config.get("specs", {})
+        if not cfg.get("enabled", True):
+            return
+        specs_dir = cfg.get("dir")
+        if not specs_dir:
+            specs_dir = os.path.join(self.session.base_dir, "specs")
+        elif not os.path.isabs(specs_dir):
+            specs_dir = os.path.abspath(os.path.join(self.session.base_dir, specs_dir))
+        try:
+            os.makedirs(specs_dir, exist_ok=True)
+            spec_id = "spec-tarefa"
+            for line in spec_md.splitlines()[:8]:
+                if line.startswith("id: "):
+                    spec_id = line[4:].strip()
+                    break
+            slug = spec_id[5:] if spec_id.startswith("spec-") else spec_id
+            path = os.path.join(specs_dir, slug + ".spec.md")
+            tmp = path + ".tmp"
+            with open(tmp, "w", encoding="utf-8") as f:
+                f.write(spec_md)
+            os.replace(tmp, path)
+            self.session.log(f"Spec persisted: {path}")
+        except Exception as e:
+            self.session.log(f"Spec persist failed (fail-soft): {e}")
+
     def _phase_analyze_goal(self):
         self.session.log("Phase: ANALYZING GOAL")
         self.state.transition(AgentState.ANALYZING_GOAL)
@@ -166,6 +194,7 @@ class Orchestrator:
             self.state.transition(AgentState.FAILED)
             return
         self.goal_analysis = self.goal_analyzer.analyze(goal)
+        self._persist_spec(self.goal_analysis.get("spec_markdown"))
         dod = self.goal_analysis.get("definition_of_done", [])
         ac = self.goal_analysis.get("acceptance_criteria", [])
         self.session.log(f"DoD: {len(dod)} items, Acceptance: {len(ac)} criteria")
