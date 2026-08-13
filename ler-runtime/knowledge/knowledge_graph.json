@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-13T18:14:41.876739",
+  "last_updated": "2026-08-13T18:15:49.385477",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -1726,12 +1726,14 @@
       "extracted_at": "2026-08-13T17:56:14.551875"
     },
     {
-      "source": "opencode",
+      "source": "opencode+opencode",
       "title": "fase2 limpeza git artefatos rastreados",
       "action": "Fase 2 da organização do EcoSystemUmGrau. O repositório eco tinha 1553",
       "description": "---\ntipo: padrao\ntags: [organizacao, git, gitignore, artefatos, build, limpeza, manutencao]\ndata: 2026-08-13\ncontexto: Fase 2 da organização do EcoSystemUmGrau. O repositório eco tinha 1553\narquivos rastreados e o .git já ignorava corretamente target/build/backups/logs\n(*.log). Porém havia lixo rast",
       "domain": "general",
-      "extracted_at": "2026-08-13T18:13:54.576889"
+      "extracted_at": "2026-08-13T18:15:34.293229",
+      "merged_count": 2,
+      "merged_at": "2026-08-13T18:15:48.982801"
     }
   ],
   "decisions": [
