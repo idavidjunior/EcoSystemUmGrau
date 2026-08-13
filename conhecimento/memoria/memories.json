@@ -4642,5 +4642,45 @@
     "access_count": 0,
     "created_at": "2026-08-13T05:57:05.991845",
     "last_accessed": "2026-08-13T05:57:05.991845"
+  },
+  {
+    "id": 262,
+    "kind": "padrao",
+    "task": "Regra de repeticao de relatorio",
+    "summary": "Quando o usuario pedir para repetir ou falar novamente, ou repetir o ultimo relatorio, o agente deve repetir apenas o ultimo resumo/relatorio (mesmas informacoes, outras palavras permitidas). Nada novo e adicionado.",
+    "project": "",
+    "tags": [
+      "permitidas",
+      "palavras",
+      "informacoes",
+      "mesmas",
+      "resumo",
+      "deve"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-13T08:27:42.345896",
+    "last_accessed": "2026-08-13T08:27:42.345896"
+  },
+  {
+    "id": 263,
+    "kind": "padrao",
+    "task": "Regra de repeticao: sempre em audio",
+    "summary": "Refinamento da regra de repeticao: quando o usuario pedir para repetir, falar de novo ou repetir o ultimo relatorio, o agente deve repetir via AUDIO (TTS/fala), nao reescrever o texto. Repetir apenas o ultimo relatorio/resumo, mesmas informacoes.",
+    "project": "",
+    "tags": [
+      "texto",
+      "reescrever",
+      "nao",
+      "fala",
+      "tts",
+      "deve"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-13T08:29:43.969343",
+    "last_accessed": "2026-08-13T08:29:43.969343"
   }
 ]
