@@ -33,7 +33,7 @@ import tempfile
 from pathlib import Path
 from typing import AsyncGenerator, List, Optional, Tuple, Union
 
-from .config import MIN_TEXT_LENGTH
+from .config import MIN_TEXT_LENGTH, MAX_TEXT_LENGTH
 from .content_classifier import ContentClassifier
 from .content_extractor import ContentExtractor
 from .markdown_cleaner import MarkdownCleaner
@@ -112,6 +112,33 @@ class SpeechPipeline:
             self._tts_engine = EdgeTTSEngine(**kwargs)
         return self._tts_engine
 
+    def _partes_para_sintese(self, texto: str) -> List[str]:
+        """Divide o texto em partes para síntese, preservando o texto completo.
+
+        Texto curto → uma única parte.
+        Texto longo → várias partes por sentença, nenhuma com mais de
+        MAX_TEXT_LENGTH caracteres. Evita que o final da fala seja cortado.
+        """
+        if len(texto) <= MAX_TEXT_LENGTH:
+            return [texto]
+        return self._chunker.chunk_by_length(texto, max_chars=MAX_TEXT_LENGTH)
+
+    async def _synthesize_async(self, texto: str) -> bytes:
+        """Sintetiza texto (possivelmente longo) em bytes MP3, sem cortar o final."""
+        tts = self._get_tts()
+        audio = b""
+        for parte in self._partes_para_sintese(texto):
+            audio += await tts.synthesize(parte)
+        return audio
+
+    def _synthesize_async_bytes(self, texto: str) -> bytes:
+        """Sintetiza texto (possivelmente longo) em bytes MP3 (bloqueante), sem cortar o final."""
+        tts = self._get_tts()
+        audio = b""
+        for parte in self._partes_para_sintese(texto):
+            audio += tts.synthesize_sync(parte)
+        return audio
+
     # ── API Principal ───────────────────────────────────────────────────
 
     def prepare(self, text: str) -> Tuple[str, dict]:
@@ -167,6 +194,13 @@ class SpeechPipeline:
             metadata["valid"] = False
             metadata["error"] = str(e)
             return "", metadata
+        except TextTooLongError:
+            # Texto longo: retorna completo, sem truncar. A síntese divide
+            # em chunks (SentenceChunker.chunk_by_length) e concatena o áudio.
+            metadata["valid"] = True
+            metadata["too_long"] = True
+            metadata["final_length"] = len(texto)
+            return texto, metadata
 
         metadata["final_length"] = len(texto)
         return texto, metadata
@@ -192,7 +226,8 @@ class SpeechPipeline:
             raise TextTooShortError("Texto vazio após processamento")
 
         tts = self._get_tts()
-        return await tts.synthesize_base64(texto)
+        audio = await self._synthesize_async(texto)
+        return base64.b64encode(audio).decode()
 
     async def synthesize_bytes(self, text: str) -> bytes:
         """Sintetiza texto em áudio (bytes MP3)."""
@@ -200,8 +235,7 @@ class SpeechPipeline:
         if not texto:
             raise TextTooShortError("Texto vazio após processamento")
 
-        tts = self._get_tts()
-        return await tts.synthesize(texto)
+        return await self._synthesize_async(texto)
 
     async def stream(self, text: str) -> AsyncGenerator[str, None]:
         """Gera chunks de áudio incrementalmente (streaming).
@@ -226,8 +260,7 @@ class SpeechPipeline:
         if not texto:
             raise TextTooShortError("Texto vazio após processamento")
 
-        tts = self._get_tts()
-        audio = tts.synthesize_sync(texto)
+        audio = self._synthesize_async_bytes(texto)
         import base64
         return base64.b64encode(audio).decode()
 
@@ -256,22 +289,12 @@ class SpeechPipeline:
         if not texto:
             return False
 
-        tts = self._get_tts()
-        ok = tts.save_sync(texto, path)
-        
-        if ok:
-            # Salva no cache para próximas vezes
-            import shutil
-            shutil.copy2(path, str(cache_file))
-            # Limpa cache antigo (máx 50 arquivos)
-            try:
-                arquivos = sorted(cache_dir.glob("*.mp3"), key=lambda f: f.stat().st_atime)
-                while len(arquivos) > 50:
-                    arquivos.pop(0).unlink(missing_ok=True)
-            except Exception:
-                pass
-        
-        return ok
+        audio = self._synthesize_async_bytes(texto)
+        if not audio:
+            return False
+
+        with open(path, 'wb') as f:
+            f.write(audio)
 
     def speak(self, text: str, block: bool = True) -> bool:
         """Sintetiza e toca o áudio (para uso local no PC). Com cache para baixa latência.

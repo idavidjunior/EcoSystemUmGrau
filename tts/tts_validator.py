@@ -57,19 +57,14 @@ class TTSValidator:
             # Remove caracteres proibidos
             text = ''.join(c for c in text if c not in FORBIDDEN_CHARS)
 
-        # Comprimento máximo (recorta se exceder)
+        # Comprimento máximo — NÃO corta silenciosamente. O pipeline divide
+        # textos longos em chunks (SentenceChunker.chunk_by_length) e sintetiza
+        # cada parte separadamente. Truncar aqui perdia o final da fala.
         if len(text) > self._max_length:
-            # Tenta cortar em ponto final
-            cortado = text[:self._max_length]
-            ultimo_ponto = max(
-                cortado.rfind('.'),
-                cortado.rfind('!'),
-                cortado.rfind('?'),
+            raise TextTooLongError(
+                f"Texto muito longo ({len(text)} > {self._max_length}). "
+                "Divida em chunks antes de sintetizar."
             )
-            if ultimo_ponto > self._min_length:
-                text = cortado[:ultimo_ponto + 1]
-            else:
-                text = cortado
 
         # Verificação final de comprimento
         if len(text) < self._min_length:

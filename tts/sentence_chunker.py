@@ -6,7 +6,7 @@ o texto em sentenças completas, respeitando pontuação e limite de palavras.
 import re
 from typing import List
 
-from .config import MAX_CHUNK_WORDS
+from .config import MAX_CHUNK_WORDS, MAX_TEXT_LENGTH
 
 
 class SentenceChunker:
@@ -81,6 +81,66 @@ class SentenceChunker:
 
                 if current_chunk:
                     chunks.append(current_chunk)
+
+        return chunks
+
+    def chunk_by_length(self, text: str, max_chars: int = MAX_TEXT_LENGTH) -> List[str]:
+        """Divide o texto em chunks de no máximo max_chars caracteres,
+        respeitando quebras de sentença sempre que possível.
+
+        Diferente de chunk(), usa limite de caracteres em vez de palavras.
+        Garante que NENHUM chunk exceda max_chars — evita que o validador
+        corte silenciosamente o final do texto.
+
+        Args:
+            text: Texto normalizado.
+            max_chars: Tamanho máximo por chunk.
+
+        Returns:
+            Lista de strings, cada uma com <= max_chars caracteres.
+        """
+        if not text:
+            return []
+        if len(text) <= max_chars:
+            return [text.strip()]
+
+        chunks = []
+        current = ""
+
+        for sentence in self._SENTENCE_SPLIT.split(text.strip()):
+            sentence = sentence.strip()
+            if not sentence:
+                continue
+
+            # Sentença maior que o limite: quebra dura em max_chars
+            while len(sentence) > max_chars:
+                if current:
+                    chunks.append(current)
+                    current = ""
+                corte = sentence[:max_chars]
+                # Tenta quebrar no último espaço para não cortar palavra
+                espaco = corte.rfind(" ")
+                if espaco > max_chars // 2:
+                    corte = corte[:espaco]
+                    sentence = sentence[espaco + 1:]
+                else:
+                    sentence = sentence[max_chars:]
+                if corte.strip():
+                    chunks.append(corte.strip())
+
+            if not sentence:
+                continue
+
+            if not current:
+                current = sentence
+            elif len(current) + 1 + len(sentence) <= max_chars:
+                current += " " + sentence
+            else:
+                chunks.append(current)
+                current = sentence
+
+        if current:
+            chunks.append(current)
 
         return chunks
 
