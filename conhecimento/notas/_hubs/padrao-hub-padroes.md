@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**243 notas** conectadas a este hub.
+**244 notas** conectadas a este hub.
 
 
 ## Notas
@@ -94,6 +94,7 @@
 - [[estratégias-de-tradução-literal-semântica-adaptativa-e-quand]]
 - [[falsos-cognatos-e-armadilhas-interlíngua-inglês-português]]
 - [[fase2-limpeza-git-artefatos-rastreados]]
+- [[fase3-rotina-automatica-de-tiragem-organizacional]]
 - [[fidelidade-x-naturalidade-quando-priorizar-cada-um]]
 - [[filename-artist-extraction-two-strategies]]
 - [[fix-widget-grafo-desktop]]

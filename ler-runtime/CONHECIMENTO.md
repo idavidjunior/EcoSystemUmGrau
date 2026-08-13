@@ -1,8 +1,8 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-13T18:15:49.455477
+**Exportado em:** 2026-08-13T18:37:20.532405
 **Projetos:** 4
-**Padroes Tecnicos:** 248
+**Padroes Tecnicos:** 249
 **Decisoes:** 64
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 58
@@ -710,6 +710,7 @@ Em 11/08/2026, o usuário pediu que eu abandonasse o estilo formal com tabelas, 
 | 246 | opencode+opencode | aegis barra progresso tempo real |
 | 247 | opencode | triagem scripts legado orgaos movidos |
 | 248 | opencode+opencode | fase2 limpeza git artefatos rastreados |
+| 249 | opencode | fase3 rotina automatica de tiragem organizacional |
 
 ## Bug Fixes e Corrigidos
 
@@ -1713,7 +1714,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-13T18:15:49.385477
+**Ultima atualizacao:** 2026-08-13T18:37:20.398093
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*
