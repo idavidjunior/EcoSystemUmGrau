@@ -83,3 +83,24 @@ connectivity/deployment/bridge_export.json
 
 # Benchmark results (generated, ephemeral)
 mcp_benchmark_results.json
+
+# Backup de config (nunca versionar)
+*.bak
+
+# Artefatos de teste/desenvolvimento do widget e docs (nao versionar)
+docs/test_*.html
+docs/teste_*.html
+docs/widget_log.txt
+docs/widget_drag_result.json
+docs/widget_e2e_result.json
+docs/grafo_widget_geometria.json
+docs/*.log.err
+docs/screen_full.png
+docs/shot_*.png
+
+# Logs/saidas efemeras na raiz
+debug_output.txt
+network_block.txt
+test_github_integration.txt
+widget_test_output.txt
+grafico_widget_debug.bat

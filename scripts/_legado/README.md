@@ -18,11 +18,17 @@ recuperáveis. Nada aqui é carregado pelo runtime.
 | controle.vbs | Nenhuma referência (nem controle.bat usa) |
 | start_widget.bat | Atalho real aponta para grafico_widget.bat |
 | hotkey_pause.py, hotkey_pause_win32.py | Duplicados entre si, sem uso |
-| preditor_uso.py, previsor_gargalos.py + JSONs | Duplicados entre si, sem uso real |
-| jarvis_voice_cmd.py + log | Só self-referência, sem uso |
-| scan_log.txt | Log órfão |
+| preditor_uso.py, previsor_gargalos.py | Duplicados entre si, sem uso real |
+| jarvis_voice_cmd.py | Só self-referência, sem uso |
 | rebuild_widget.py | Wrapper legado de generate-graph-html.py |
-| bridge_out.txt, serve_sync_out.txt, serve_sync_err.txt, bridge_err.txt, bridge_historico.json | Lixo de redirecionamento/runtime não rastreado |
+
+## Nota
+
+Os arquivos de lixo efêmero que haviam sido movidos para cá junto (bridge_err.txt,
+bridge_out.txt, serve_sync_*.txt, bridge_historico.json, scan_log.txt,
+jarvis_voice_cmd_log.txt, predicao_*.json) foram APAGADOS do git na fase 2
+(2026-08-13): eram logs/estado de runtime, não código órfão recuperável. O
+.gitignore agora cobre os padrões (logs, .txt efêmeros, *.bak, testes de docs).
 
 ## Regra
 

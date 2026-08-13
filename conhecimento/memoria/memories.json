@@ -4822,5 +4822,25 @@
     "access_count": 0,
     "created_at": "2026-08-13T17:58:13.530030",
     "last_accessed": "2026-08-13T17:58:13.530030"
+  },
+  {
+    "id": 271,
+    "kind": "padrao",
+    "task": "Fase 2 organizacao - lixo rastreado removido do git",
+    "summary": "31 arquivos removidos do git do eco (git rm para lixo sem uso, git rm --cached para screenshots/bak mantidos no disco). .gitignore ampliado (bak, teste html, logs err, screenshots). Projetos irmaos aegis e StreamUmGrau ja ignoram target/build nos proprios gitignores - 6.4GB de build e so disco, regeneravel. test-ecosystem 32/32 PASS.",
+    "project": "",
+    "tags": [
+      "mantidos",
+      "cached",
+      "uso",
+      "eco",
+      "git",
+      "removidos"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-13T18:13:54.460889",
+    "last_accessed": "2026-08-13T18:13:54.460889"
   }
 ]
