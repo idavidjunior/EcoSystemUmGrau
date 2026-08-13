@@ -1,9 +1,9 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-13T20:09:14.145664
+**Exportado em:** 2026-08-13T20:19:30.884168
 **Projetos:** 4
 **Padroes Tecnicos:** 249
-**Decisoes:** 65
+**Decisoes:** 66
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 58
 **Heuristicas:** 32
@@ -465,6 +465,15 @@ tags: [vigilante, git, commits, frequencia, quiet-period]
 data: 2026-08-13
 contexto: O vigilante commita a cada 5 min durante atividade contínua (FileSystemWatcher detecta mudança, git sync roda a cada 300s, regeneração do Obsidian toca mais arquivos e o ciclo se retroalimenta). Dias ativos: 34-62 commits/dia.
 decisao: Adicionar quiet period de 15 min ao git sync do vigilante: so commita se o working tree estiver quieto ha 15 min, com teto forcado de 1h (nunca ficar sem persist
+
+### ler specs sdd hook
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [ler, specs, sdd, goal-analyzer, orchestrator, persistencia]
+data: 2026-08-13
+contexto: A camada de specs (SDD) do LER existia (specs/ com README.md e template.md) mas nao tinha geracao automatica a partir da analise de objetivo. O GoalAnalyzer.analyze() produzia o goal_spec mas nenhum markdown era persistido.
+decisao: Fechar o ciclo: GoalAnalyzer.analyze() agora gera analysis['spec_markdown'] = spec.to_spec_markdown(tags=['ler','goal-analysis']) logo apos goal_spec, e o 
 
 
 ## Padroes Tecnicos
@@ -1723,7 +1732,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-13T20:09:13.581100
+**Ultima atualizacao:** 2026-08-13T20:19:30.671284
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

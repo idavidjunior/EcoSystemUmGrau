@@ -1,6 +1,6 @@
 # Decisoes
 
-**64 notas** conectadas a este hub.
+**65 notas** conectadas a este hub.
 
 
 ## Notas
@@ -32,6 +32,7 @@
 - [[if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-]]
 - [[importação-de-pasta-preservando-árvore-remoção-de-referência]]
 - [[jarvis-deve-manter-registro-de-suas-proprias-habilidades-em-]]
+- [[ler-specs-sdd-hook]]
 - [[ler-usa-python-puro-stdlib-only-zero-dependencias-externas-i]]
 - [[merge-by-name-if-name-matches-existing-item-increment-quanti]]
 - [[metadata-busca-em-multi-fontes-acoustid-itunes-br-musicbrain]]

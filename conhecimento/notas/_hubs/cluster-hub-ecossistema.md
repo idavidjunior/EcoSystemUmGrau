@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**172 notas** do cluster ecossistema.
+**173 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -131,6 +131,7 @@
 - [[integracao-completa-mcps-offline-placeholder]]
 - [[jarvis-do-celular-e-do-pc-um-sã-cãrebro-arquitetura-sincroni]]
 - [[jarvis-do-celular-e-do-pc-um-só-cérebro-arquitetura-sincroni]]
+- [[ler-specs-sdd-hook]]
 - [[loop-infinito-de-push-no-vigilante-emails-do-github-a-cada-m]]
 - [[mcp-obsidian-server-â-vault-consumido-pelo-llm]]
 - [[mcp-prompt-optimization-não-conectava-transporte-json-por-li]]
