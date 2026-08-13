@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**171 notas** do cluster ecossistema.
+**172 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -156,6 +156,7 @@
 - [[pronãncia-jãrvis-escrita-sem-acento-fala-com-acento]]
 - [[pronúncia-járvis-escrita-sem-acento-fala-com-acento]]
 - [[protocolo-higiene-repo-streamumgrau]]
+- [[quiet-period-commits-do-vigilante]]
 - [[regra-do-usuário-buildinstalatestavalida-antes-de-commitar-e]]
 - [[renomear-pastas-com-espacos-para-nomes-sem-espaco]]
 - [[reorganização-habilidades-dentro-de-mcp-por-domínio]]

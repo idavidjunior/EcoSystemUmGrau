@@ -1,6 +1,6 @@
 # Decisoes
 
-**63 notas** conectadas a este hub.
+**64 notas** conectadas a este hub.
 
 
 ## Notas
@@ -44,6 +44,7 @@
 - [[preferir-automationid-sobre-name-em-ui-automation-windows]]
 - [[priorizar-data-testid-sobre-classes-css-em-automacao-web]]
 - [[protocolo-higiene-repo-streamumgrau]]
+- [[quiet-period-commits-do-vigilante]]
 - [[renomear-pastas-com-espacos-para-nomes-sem-espaco]]
 - [[reorganização-habilidades-dentro-de-mcp-por-domínio]]
 - [[salvar-cria-novo-arquivo-timestampado-nunca-sobrescreve-exis]]

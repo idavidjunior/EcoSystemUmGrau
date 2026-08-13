@@ -1,9 +1,9 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-13T18:37:20.532405
+**Exportado em:** 2026-08-13T19:10:28.384324
 **Projetos:** 4
 **Padroes Tecnicos:** 249
-**Decisoes:** 64
+**Decisoes:** 65
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 58
 **Heuristicas:** 32
@@ -456,6 +456,15 @@ impacto: Todos os agentes agora devem falar de forma natural, como conversa com 
 # Estilo de Comunicação Simples e Direto
 
 Em 11/08/2026, o usuário pediu que eu abandonasse o estilo formal com tabelas, listas e form
+
+### quiet period commits do vigilante
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [vigilante, git, commits, frequencia, quiet-period]
+data: 2026-08-13
+contexto: O vigilante commita a cada 5 min durante atividade contínua (FileSystemWatcher detecta mudança, git sync roda a cada 300s, regeneração do Obsidian toca mais arquivos e o ciclo se retroalimenta). Dias ativos: 34-62 commits/dia.
+decisao: Adicionar quiet period de 15 min ao git sync do vigilante: so commita se o working tree estiver quieto ha 15 min, com teto forcado de 1h (nunca ficar sem persist
 
 
 ## Padroes Tecnicos
@@ -1714,7 +1723,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-13T18:37:20.398093
+**Ultima atualizacao:** 2026-08-13T19:10:28.206990
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

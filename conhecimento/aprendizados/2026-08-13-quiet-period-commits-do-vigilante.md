@@ -9,3 +9,7 @@ impacto: Trabalho contínuo vira 1 commit consolidado por sessao, em vez de comm
 - aplicado tambem aos projetos Android (Sync-ProjectRepo).
 - parâmetros no topo do vigilante.ps1: quietPeriod=900 (15 min), maxInterval=3600 (1h).
 - validado: sintaxe OK, 4 cenarios de teste (limpo, mudanca recente, silencio, teto forcado) e test-ecosystem.ps1 32 PASS / 0 FAIL.
+
+## Conexoes
+
+- [[git-fluxos-de-trabalho-trunk-based-e-git-flow-e-quando-usar-]]
