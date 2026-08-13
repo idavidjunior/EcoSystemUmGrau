@@ -45,6 +45,7 @@ from .tts_validator import TTSValidator
 from .edge_tts_engine import EdgeTTSEngine
 from .exceptions import (
     TextTooShortError,
+    TextTooLongError,
     TTSynthesisError,
     SpeechPipelineError,
 )
@@ -296,6 +297,19 @@ class SpeechPipeline:
         with open(path, 'wb') as f:
             f.write(audio)
 
+        # Salva no cache para próximas vezes
+        import shutil
+        shutil.copy2(path, str(cache_file))
+        # Limpa cache antigo (máx 50 arquivos)
+        try:
+            arquivos = sorted(cache_dir.glob("*.mp3"), key=lambda f: f.stat().st_atime)
+            while len(arquivos) > 50:
+                arquivos.pop(0).unlink(missing_ok=True)
+        except Exception:
+            pass
+
+        return True
+
     def speak(self, text: str, block: bool = True) -> bool:
         """Sintetiza e toca o áudio (para uso local no PC). Com cache para baixa latência.
 
@@ -326,8 +340,7 @@ class SpeechPipeline:
             if not texto:
                 return False
 
-            tts = self._get_tts()
-            audio = tts.synthesize_sync(texto)
+            audio = self._synthesize_async_bytes(texto)
             if not audio:
                 return False
 

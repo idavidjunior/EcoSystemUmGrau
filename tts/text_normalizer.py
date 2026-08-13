@@ -76,7 +76,7 @@ class TextNormalizer:
         # 9. Limpeza final
         t = self._final_cleanup(t)
 
-        return t[:MAX_TEXT_LENGTH]
+        return t
 
     def _normalize_hours(self, text: str) -> str:
         """Converte horas digitais para leitura natural.
