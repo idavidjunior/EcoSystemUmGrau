@@ -14,7 +14,6 @@ from .config import (
     CONECTORES_INICIAIS,
     CONECTORES_MEIO,
     RESPIRACAO,
-    MAX_TEXT_LENGTH,
 )
 
 
