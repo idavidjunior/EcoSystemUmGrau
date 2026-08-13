@@ -251,6 +251,7 @@
     261,
     262,
     263,
+    264,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -1208,6 +1209,7 @@
     "padrao",
     "erro",
     "decisao",
+    "padrao",
     "padrao",
     "padrao",
     "padrao",
@@ -2177,6 +2179,7 @@
     "aegis movido para projetos/aegis dentro do ecosystemumgrau, git inicializado com commit inicial, registry projetos-irmaos.json atualizado (tipo rust, funcional) irmaos registry inicial commit inicializado projetos padrao",
     "quando o usuario pedir para repetir ou falar novamente, ou repetir o ultimo relatorio, o agente deve repetir apenas o ultimo resumo/relatorio (mesmas informacoes, outras palavras permitidas). nada novo e adicionado. permitidas palavras informacoes mesmas resumo deve padrao",
     "refinamento da regra de repeticao: quando o usuario pedir para repetir, falar de novo ou repetir o ultimo relatorio, o agente deve repetir via audio (tts/fala), nao reescrever o texto. repetir apenas o ultimo relatorio/resumo, mesmas informacoes. texto reescrever nao fala tts deve padrao",
+    "o celular (xiaomi 2201117ti, android 13) na maioria das vezes esta conectado via tailscale. ip padrao de conexao adb por rede: 100.64.71.9:5555 (tailscale). comando: adb connect 100.64.71.9:5555. uptime 9 dias, disco /data 92% cheio, bateria 69% sem carregar, teamviewer consumindo ~97% de cpu. conectado cpu maioria consumindo android teamviewer padrao",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -6440,12 +6443,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 85964,
-  "count": 961,
-  "count_mem": 251,
+  "vocab_size": 85995,
+  "count": 962,
+  "count_mem": 252,
   "count_notas": 710,
   "fingerprint": [
-    251,
+    252,
     [
       1786611565.3,
       1786611424.9,

@@ -4682,5 +4682,25 @@
     "access_count": 0,
     "created_at": "2026-08-13T08:29:43.969343",
     "last_accessed": "2026-08-13T08:29:43.969343"
+  },
+  {
+    "id": 264,
+    "kind": "padrao",
+    "task": "Celular conecta via Tailscale para ADB",
+    "summary": "O celular (Xiaomi 2201117TI, Android 13) na maioria das vezes esta conectado via Tailscale. IP padrao de conexao ADB por rede: 100.64.71.9:5555 (tailscale). Comando: adb connect 100.64.71.9:5555. Uptime 9 dias, disco /data 92% cheio, bateria 69% sem carregar, TeamViewer consumindo ~97% de CPU.",
+    "project": "",
+    "tags": [
+      "conectado",
+      "cpu",
+      "maioria",
+      "consumindo",
+      "android",
+      "teamviewer"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-13T08:55:05.023943",
+    "last_accessed": "2026-08-13T08:55:05.023943"
   }
 ]
