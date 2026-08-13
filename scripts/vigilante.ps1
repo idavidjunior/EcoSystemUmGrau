@@ -308,5 +308,42 @@ $onRulesCheck = {
 Register-ObjectEvent $rulesTimer "Elapsed" -Action $onRulesCheck > $null
 $rulesTimer.Start()
 
+# ══════════════════════════════════════════════════════════════════════
+# TRIAGEM TIMER: auditoria de organizacao (1x/dia) - move orfaos p/ _legado
+# ══════════════════════════════════════════════════════════════════════
+$triageTimer = New-Object System.Timers.Timer
+$triageTimer.Interval = 3600000  # check a cada 1h
+$triageTimer.AutoReset = $true
+$lastTriageDate = (Get-Date).Date.AddDays(-1)  # roda no primeiro ciclo
+
+$onTriage = {
+    $today = (Get-Date).Date
+    if ($lastTriageDate -lt $today) {
+        $lastTriageDate = $today
+        Write-Log "Triagem de organizacao diaria..."
+        try {
+            $out = python "$ecoDir\scripts\audit_triagem.py" --fix 2>&1 | Out-String
+            $json = $out | ConvertFrom-Json -ErrorAction SilentlyContinue
+            if ($json) {
+                $movidos = @($json.movidos_legado)
+                $artefatos = @($json.artefatos_git)
+                if ($movidos.Count -gt 0) {
+                    Write-Log "TRIAGEM: $($movidos.Count) orfaos movidos p/ _legado: $($movidos -join ', ')"
+                } else {
+                    Write-Log "TRIAGEM: nenhum orfao novo."
+                }
+                if ($artefatos.Count -gt 0) {
+                    Write-Log "TRIAGEM: $($artefatos.Count) artefatos rastreados no git (revisar manualmente):"
+                    $artefatos | ForEach-Object { Write-Log "TRIAGEM:   $($_.arquivo) ($($_.motivo))" }
+                }
+            } else {
+                Write-Log "TRIAGEM: saida inesperada: $($out.Trim())"
+            }
+        } catch { Write-Log "Triagem ignorada: $_" }
+    }
+}
+Register-ObjectEvent $triageTimer "Elapsed" -Action $onTriage > $null
+$triageTimer.Start()
+
 # Mantem vivo
 while ($true) { Start-Sleep -Seconds 10 }
