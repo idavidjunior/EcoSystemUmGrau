@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-13T16:45:44.510205",
+  "last_updated": "2026-08-13T16:47:00.600478",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -3037,7 +3037,9 @@
       "title": "integracao completa mcps offline placeholder",
       "domain": "general",
       "body": "---\ntipo: erro\ntags: [integracao, mcp, opencode, config, placeholder, renderizacao, deploy]\ndata: 2026-08-13\ncontexto: Diagnóstico de integração completa do EcoSystemUmGrau. Todos os 13 MCPs\napareciam como \"failed / Connection closed\" no `opencode mcp list`, mesmo com o\npreflight passando e o opencode.jsonc definindo todos os servidores.\ndecisao: A causa raiz era que o opencode.jsonc deployado em ~/.config/opencode\ncontinha `{{USERPROFILE}}` literal nos caminhos (o opencode não expande esse\nplac",
-      "extracted_at": "2026-08-13T16:45:05.343417"
+      "extracted_at": "2026-08-13T16:46:35.013762",
+      "merged_count": 2,
+      "merged_at": "2026-08-13T16:47:00.424473"
     }
   ],
   "heuristics": [
