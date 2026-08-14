@@ -5062,5 +5062,25 @@
     "access_count": 0,
     "created_at": "2026-08-13T23:11:37.002391",
     "last_accessed": "2026-08-13T23:11:37.002391"
+  },
+  {
+    "id": 283,
+    "kind": "padrao",
+    "task": "CONHECIMENTO.md fora da injecao automatica de contexto",
+    "summary": "Removido ler-runtime/CONHECIMENTO.md (137KB, historico completo de tarefas antigas) da lista instructions do config/opencode.jsonc (template e deployado). Causava poluicao de contexto em toda sessao com relatorios de tarefas antigas. Ficou acessivel sob demanda via MCP de busca. state.json limpo com backup.",
+    "project": "",
+    "tags": [
+      "opencode",
+      "config",
+      "instructions",
+      "antigas",
+      "lista",
+      "relatorios"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-14T05:56:17.597193",
+    "last_accessed": "2026-08-14T05:56:17.597193"
   }
 ]
