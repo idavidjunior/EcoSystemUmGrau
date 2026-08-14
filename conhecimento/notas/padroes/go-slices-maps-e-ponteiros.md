@@ -1,5 +1,5 @@
 ---
-tags: [concurrent, golang, heap, padrao, panicar, writes]
+tags: [concurrent, golang, heap, padrao, stack, writes]
 aliases: [Go: slices, maps e ponteiros]
 date: 2026-08-14
 ---

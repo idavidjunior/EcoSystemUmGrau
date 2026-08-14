@@ -1,5 +1,5 @@
 ---
-tags: [chrome, devtools, frontend, padrao, performance, safari]
+tags: [devtools, frontend, padrao, performance, representa, safari]
 aliases: [Performance: profiling primeiro — onde o tempo realmente vai]
 date: 2026-08-14
 ---
