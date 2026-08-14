@@ -92,8 +92,12 @@ def log_session(session_id=None, task=None, project=None, outcome=None,
     return session_id
 
 def add_memory(task, summary, kind='episodio', project='', tags=None,
-               strength=1.0, metadata=None, reindex=True):
-    """Add a consolidated memory with decay metadata.
+               strength=1.0, metadata=None, reindex=True,
+               confidence=1.0, source_type='experiencia'):
+    """Add a consolidated memory with decay + epistemic metadata.
+
+    confidence: float 0-1 — confiança epistêmica (1.0 = fato, 0.3 = hipótese).
+    source_type: enum — 'experiencia', 'inferido', 'api', 'humano', 'rag'.
 
     Dispara reindexação semântica automática (TF-IDF + denso) para que a nova
     memória fique imediatamente recuperável por significado. Nunca bloqueia o add
@@ -102,6 +106,11 @@ def add_memory(task, summary, kind='episodio', project='', tags=None,
     memories = _load_memories()
     now = datetime.now()
     tags = tags or []
+    # Tag automática de confiança
+    if confidence < 0.7:
+        tags.append('baixa-confianca')
+    elif confidence >= 0.9:
+        tags.append('alta-confianca')
     if extrair_tags:
         semanticas = extrair_tags(f'{task} {summary}', max_tags=6)
         for t in semanticas:
@@ -116,6 +125,8 @@ def add_memory(task, summary, kind='episodio', project='', tags=None,
         'tags': tags,
         'metadata': metadata or {},
         'strength': strength,
+        'confidence': confidence,
+        'source_type': source_type,
         'access_count': 0,
         'created_at': now.isoformat(),
         'last_accessed': now.isoformat()
@@ -173,13 +184,19 @@ def reinforce(memory_id, delta=0.15):
             m['strength'] = min(2.0, m['strength'] + delta)
             m['access_count'] += 1
             m['last_accessed'] = datetime.now().isoformat()
+            # Confiança aumenta levemente com reforço (memória usada = mais confiável)
+            m['confidence'] = min(1.0, m.get('confidence', 1.0) + 0.02)
             _save_memories(memories)
             return True
     return False
 
 def query(project=None, tags=None, kind=None, text=None, limit=10,
-          min_score=0.05):
-    """Search memories with decay scoring and filters."""
+          min_score=0.05, min_confidence=0.0, source_type=None):
+    """Search memories with decay scoring and filters.
+    
+    min_confidence: filtra memórias com confidence >= valor (0-1)
+    source_type: filtra por tipo de fonte ('experiencia', 'inferido', 'api', 'humano', 'rag')
+    """
     memories = _load_memories()
     now = datetime.now()
     scored = []
@@ -190,6 +207,8 @@ def query(project=None, tags=None, kind=None, text=None, limit=10,
         if project and m.get('project') != project: continue
         if kind and m.get('kind') != kind: continue
         if tags and not any(t in m.get('tags', []) for t in tags): continue
+        if source_type and m.get('source_type') != source_type: continue
+        if m.get('confidence', 1.0) < min_confidence: continue
         if text:
             text_lower = text.lower()
             task_match = text_lower in m.get('task', '').lower()
@@ -221,21 +240,40 @@ def stats():
     now = datetime.now()
     total = len(memories)
     by_kind = {}
+    by_confidence = {'alta': 0, 'media': 0, 'baixa': 0}
+    by_source = {}
     active = 0
     for m in memories:
         k = m.get('kind', 'unknown')
         by_kind[k] = by_kind.get(k, 0) + 1
+        conf = m.get('confidence', 1.0)
+        if conf >= 0.9:
+            by_confidence['alta'] += 1
+        elif conf >= 0.7:
+            by_confidence['media'] += 1
+        else:
+            by_confidence['baixa'] += 1
+        src = m.get('source_type', 'desconhecido')
+        by_source[src] = by_source.get(src, 0) + 1
         if _decay_score(m, now) > 0.1: active += 1
-    return {'total': total, 'active': active, 'by_kind': by_kind}
+    return {'total': total, 'active': active, 'by_kind': by_kind,
+            'by_confidence': by_confidence, 'by_source': by_source}
 
 def decay_pass(dry_run=False):
-    """Decay pass: archive memories below threshold."""
+    """Decay pass: archive memories below threshold.
+
+    Memórias com baixa confiança (confidence < 0.3) têm meia-vida reduzida
+    pela metade — desgastam mais rápido se são hipóteses frágeis.
+    """
     memories = _load_memories()
     now = datetime.now()
     kept = []
     archived = 0
     for m in memories:
         score = _decay_score(m, now)
+        # Ajusta meia-vida para baixa confiança
+        if m.get('confidence', 1.0) < 0.3:
+            score *= 0.7  # desgaste acelerado
         if score < 0.01:
             archived += 1
             if not dry_run:
@@ -253,17 +291,26 @@ if __name__ == '__main__':
         summary = sys.argv[3] if len(sys.argv) > 3 else ''
         kind = sys.argv[4] if len(sys.argv) > 4 else 'episodio'
         no_reindex = '--no-reindex' in sys.argv
+        confidence = 1.0
+        source_type = 'experiencia'
+        for arg in sys.argv:
+            if arg.startswith('--confidence='):
+                confidence = float(arg.split('=')[1])
+            elif arg.startswith('--source='):
+                source_type = arg.split('=')[1]
         if no_reindex:
             _no_reindex_global = True
-            mid = add_memory(task, summary, kind, reindex=False)
+            mid = add_memory(task, summary, kind, reindex=False, confidence=confidence, source_type=source_type)
         else:
-            mid = add_memory(task, summary, kind)
-        print(f'[OK] Memory #{mid}: {task[:60]}')
+            mid = add_memory(task, summary, kind, confidence=confidence, source_type=source_type)
+        print(f'[OK] Memory #{mid}: {task[:60]} (conf={confidence:.2f}, src={source_type})')
     elif cmd == 'query':
         text = sys.argv[2] if len(sys.argv) > 2 else None
         results = query(text=text)
         for m in results:
-            print(f'  [{m["id"]}] {m["kind"]}: {m["task"][:70]}')
+            conf = m.get('confidence', 1.0)
+            src = m.get('source_type', '?')
+            print(f'  [{m["id"]}] {m["kind"]}: {m["task"][:60]} (conf={conf:.2f}, src={src})')
     elif cmd == 'context':
         project = sys.argv[2] if len(sys.argv) > 2 else None
         print(get_context(project=project))
@@ -286,20 +333,37 @@ if __name__ == '__main__':
         if len(sys.argv) < 3:
             print('uso: memory_engine.py semantic <query>')
             sys.exit(1)
-        query = ' '.join(sys.argv[2:])
-        results = sem_search(query, k=5)
+        query_text = ' '.join(sys.argv[2:])
+        results = sem_search(query_text, k=5)
         if not results:
             print('sem resultados (indice vazio ou nao construido)')
             print('  rode: python scripts/memory_semantic.py build')
         else:
-            print(f'Busca semantica: "{query}" -> {len(results)} resultados')
+            print(f'Busca semantica: "{query_text}" -> {len(results)} resultados')
             for r in results:
                 print(f'  [{r["score"]:.4f}] #{r["id"]} ({r["kind"]}) {r["title"][:90]}')
     elif cmd == 'decay':
         dry = '--dry-run' in sys.argv
         r = decay_pass(dry_run=dry)
         print(f'[OK] Decay pass: {r["archived"]} archived, {r["remaining"]} remaining')
+    elif cmd == 'episodio':
+        # Query específica: memórias com baixa confiança (hipóteses)
+        conf_str = sys.argv[2] if len(sys.argv) > 2 else '0.5'
+        try:
+            min_conf = float(conf_str)
+        except ValueError:
+            min_conf = 0.5
+        results = query(min_confidence=min_conf)
+        print(f'Memorias com confidence < {min_conf}: {len(results)}')
+        for m in results:
+            conf = m.get('confidence', 1.0)
+            src = m.get('source_type', '?')
+            print(f'  [{m["id"]}] {m["kind"]}: {m["task"][:60]} (conf={conf:.2f}, src={src})')
     else:  # stats
         s = stats()
         print(f'Memories: {s["total"]} total, {s["active"]} active')
         for k, v in s['by_kind'].items(): print(f'  {k}: {v}')
+        print('  by_confidence:')
+        for k, v in s.get('by_confidence', {}).items(): print(f'    {k}: {v}')
+        print('  by_source:')
+        for k, v in s.get('by_source', {}).items(): print(f'    {k}: {v}')

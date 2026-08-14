@@ -180,6 +180,38 @@ def collect_github_commits(source: Dict, cfg: Dict, state: Dict) -> List[Dict]:
     return results
 
 
+def collect_wikidata(source: Dict, cfg: Dict, state: Dict) -> List[Dict]:
+    """Consulta Wikidata via SPARQL para fatos universais relevantes."""
+    query = source.get("sparql_query")
+    if not query:
+        return []
+    max_items = source.get("max_per_run", 5)
+    url = "https://query.wikidata.org/sparql"
+    params = urllib.parse.urlencode({"query": query, "format": "json"})
+    full_url = f"{url}?{params}"
+    headers = {"User-Agent": cfg["settings"]["user_agent"], "Accept": "application/sparql-results+json"}
+
+    data = http_get(full_url, headers, cfg["settings"]["timeout_seconds"])
+    if not data or "results" not in data or "bindings" not in data["results"]:
+        return []
+
+    results = []
+    for binding in data["results"]["bindings"][:max_items]:
+        item = {
+            "source": source["id"],
+            "type": "wikidata",
+            "query_id": source["id"],
+            "bindings": {k: v.get("value") for k, v in binding.items()},
+            "url": f"https://www.wikidata.org/wiki/{binding.get('item', {}).get('value', '').split('/')[-1]}",
+            "fetched_at": datetime.now(timezone.utc).isoformat(),
+        }
+        h = content_hash(item)
+        if h in state["seen_hashes"].get(source["id"], set()):
+            continue
+        results.append(item)
+    return results
+
+
 # ─── Relevance Filter (LLM opcional via compreensão de pedidos) ──────────
 
 def filter_relevance(items: List[Dict], cfg: Dict) -> List[Dict]:
@@ -278,7 +310,8 @@ def action_collect(cfg: Dict, state: Dict) -> List[Dict]:
             items = collect_github_releases(source, cfg, state)
         elif source["type"] == "github_commits":
             items = collect_github_commits(source, cfg, state)
-        # TODO: github_trending
+        elif source["type"] == "wikidata":
+            items = collect_wikidata(source, cfg, state)
 
         if items:
             log(f"  {len(items)} itens novos")

@@ -50,6 +50,12 @@
       "repo": "anthropics/anthropic-sdk-python",
       "filter": "tool|message|beta",
       "max_per_run": 2
+    },
+    {
+      "id": "wikidata-versions",
+      "type": "wikidata",
+      "sparql_query": "SELECT ?item ?itemLabel ?version ?date WHERE { ?item wdt:P348 ?version ; wdt:P577 ?date ; rdfs:label ?itemLabel . FILTER(LANG(?itemLabel) = 'pt' || LANG(?itemLabel) = 'en') . FILTER(?date > '2024-01-01T00:00:00Z')} ORDER BY DESC(?date) LIMIT 10",
+      "max_per_run": 5
     }
   ],
   "tier2_deps": [
