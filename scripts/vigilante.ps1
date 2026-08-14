@@ -437,5 +437,22 @@ $onVozGuarda = {
 Register-ObjectEvent $vozGuardaTimer "Elapsed" -Action $onVozGuarda > $null
 $vozGuardaTimer.Start()
 
+# ���������������������������������������������������������������������������������������������������������������������������������������������
+# OPENCODE CACHE TIMER: limpeza de logs antigos/oversized (1x/h, alinhado ao maxInterval)
+# ���������������������������������������������������������������������������������������������������������������������������������������������
+$opencodeCacheTimer = New-Object System.Timers.Timer
+$opencodeCacheTimer.Interval = 3600000  # 1h = maxInterval
+$opencodeCacheTimer.AutoReset = $true
+
+$onOpencodeCache = {
+    Write-Log "OPENCODE CACHE: verificando/limpando logs..."
+    try {
+        $out = python "$ecoDir\scripts\monitor_opencode_cache.py" --clean 2>&1 | Out-String
+        $out.Trim() | ForEach-Object { Write-Log "  $_" }
+    } catch { Write-Log "OPENCODE CACHE: ignorado: $_" }
+}
+Register-ObjectEvent $opencodeCacheTimer "Elapsed" -Action $onOpencodeCache > $null
+$opencodeCacheTimer.Start()
+
 # Mantem vivo
 while ($true) { Start-Sleep -Seconds 10 }
