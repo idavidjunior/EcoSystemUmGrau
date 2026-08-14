@@ -1388,6 +1388,13 @@ def _marcar_atividade():
         TMP_ESTADO.write_text(json.dumps(estado, ensure_ascii=False, indent=2), encoding="utf-8")
     except Exception as e:
         logger.warning(f"_marcar_atividade: {e}")
+    # Também atualiza saudacao_estado para o verificador de continuidade periódica
+    try:
+        es = _carregar_saudacao_estado()
+        es["ultima_atividade_ts"] = time.time()
+        _salvar_saudacao_estado(es)
+    except Exception:
+        pass
 
 
 def _ultima_fala_usuario():
@@ -1735,6 +1742,58 @@ async def lidar(ws):
         except Exception as e:
             logger.warning(f"retomada automatica falhou: {e}")
 
+    # CONTINUIDADE ESPONTÂNEA: a cada ~12h (ou troca de dia) durante conversa ativa,
+    # envia uma frase curta de "ainda por aqui" — variada, anti-repetição, sem encher linguiça.
+    async def _continuidade_periodica():
+        INTERVALO_CHECAGEM = 1800   # 30 min
+        JANELA_CONTINUIDADE = 43200 # 12 h
+        continuidades = [
+            "Ainda por aqui, senhor.",
+            "Linha aberta. Seguimos.",
+            "Por aqui tudo certo. E aí?",
+            "Sistemas quentes. O que vem?",
+            "Na escuta. Continua quando quiser.",
+            "Presente. Sem pressa.",
+            "Aqui, firme. Manda.",
+        ]
+        while True:
+            await asyncio.sleep(INTERVALO_CHECAGEM)
+            try:
+                # Só dispara se houve atividade recente (últimos 30 min)
+                es = _carregar_saudacao_estado()
+                ts_ativ = es.get("ultima_atividade_ts")
+                if not ts_ativ:
+                    continue
+                if time.time() - float(ts_ativ) > 1800:
+                    continue  # conversa parada, não interromper
+                # Checa se passou 12h desde última continuidade (ou troca de dia)
+                ts_cont = es.get("ultima_continuidade_ts")
+                hoje = datetime.datetime.now().strftime("%Y-%m-%d")
+                if ts_cont:
+                    if (time.time() - float(ts_cont)) < JANELA_CONTINUIDADE and es.get("ultima_continuidade_dia") == hoje:
+                        continue
+                # Escolhe uma frase que não foi usada recentemente
+                usadas = es.get("continuidades_hoje", []) or []
+                candidatas = [f for f in continuidades if f not in usadas[-3:]]
+                frase = random.choice(candidatas) if candidatas else random.choice(continuidades)
+                # Envia via WebSocket (texto + áudio)
+                try:
+                    a = await gerar_audio(frase)
+                    await ws.send(json.dumps({"audio": a, "text": frase, "continuidade": True}))
+                except Exception:
+                    await ws.send(json.dumps({"text": frase, "continuidade": True}))
+                # Atualiza estado
+                es.setdefault("continuidades_hoje", []).append(frase)
+                es["continuidades_hoje"] = es["continuidades_hoje"][-5:]
+                es["ultima_continuidade_ts"] = time.time()
+                es["ultima_continuidade_dia"] = hoje
+                _salvar_saudacao_estado(es)
+                logger.info(f"continuidade enviada: {frase}")
+            except Exception as e:
+                logger.debug(f"continuidade periodica: {e}")
+
+    task_cont = asyncio.create_task(_continuidade_periodica())
+
     try:
         async for m in ws:
             img_atual = None
@@ -1849,6 +1908,12 @@ async def lidar(ws):
                 await ws.send(json.dumps({"text": r_tela, "corrigido": m}))
     except websockets.exceptions.ConnectionClosed:
         logger.info("fim")
+    finally:
+        try:
+            task_cont.cancel()
+            await task_cont
+        except Exception:
+            pass
 
 
 async def servir():

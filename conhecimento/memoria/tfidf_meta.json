@@ -274,6 +274,7 @@
     284,
     285,
     286,
+    287,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -1281,6 +1282,7 @@
     "decisao",
     "erro",
     "padrao",
+    "decisao",
     "decisao",
     "decisao",
     "decisao",
@@ -2294,6 +2296,7 @@
     "o usuario pediu que o agente avise, em uma frase curta e sem repeticao cansativa, qual habilidade/skill esta sendo chamada quando ela for usada (ex: auditoria-de-codigo). registro de preferencia de comunicacao do usuario david. chamada habilidade cansativa repeticao usada curta decisao",
     "sistema de aprendizado adaptativo pais criado em mcp/nucleo/habilidades/pais com 21 modulos: user model e epistemic model separados, anti-bajulacao, anti-alucinacao, integridade epistemica. 18 testes passando. regra de ouro: personaliza a forma, nunca a verdade. habilidades nucleo epistemica mcp criado integridade decisao",
     "duas correções no jarvis_bridge.py: (1) max_prompt 28000→80000 para system prompt de 35.788 chars caber e histórico entrar controlado; (2) _get_session agora sempre cria sessão nova (título único) evitando acúmulo de histórico antigo no servidor opencode serve que fazia o modelo recitar relatórios passados não solicitados. preflight aprovado. solicitados não recitar modelo fazia serve decisao",
+    "adicionado task assíncrona _continuidade_periodica() no lidar(ws) que a cada 30min verifica se passou 12h (ou troca de dia) desde última continuidade e se houve atividade recente (<30min). envia frase curta variada (7 opções, anti-repetição via saudacao_estado) com áudio+texto via ws. só dispara em conversa ativa. _marcar_atividade atualiza ultima_atividade_ts no saudacao_estado. task cancelada no finally ao fechar conexão. preflight aprovado. recente houve última 30min desde dia decisao",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -6701,12 +6704,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 89100,
-  "count": 1008,
-  "count_mem": 274,
+  "vocab_size": 89157,
+  "count": 1009,
+  "count_mem": 275,
   "count_notas": 734,
   "fingerprint": [
-    274,
+    275,
     [
       1786700218.8,
       1786700136.6,

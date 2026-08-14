@@ -5142,5 +5142,25 @@
     "access_count": 0,
     "created_at": "2026-08-14T07:01:46.613724",
     "last_accessed": "2026-08-14T07:01:46.613724"
+  },
+  {
+    "id": 287,
+    "kind": "decisao",
+    "task": "Jarvis: continuidade periódica espontânea a cada 12h",
+    "summary": "Adicionado task assíncrona _continuidade_periodica() no lidar(ws) que a cada 30min verifica se passou 12h (ou troca de dia) desde última continuidade e se houve atividade recente (<30min). Envia frase curta variada (7 opções, anti-repetição via saudacao_estado) com áudio+texto via WS. Só dispara em conversa ativa. _marcar_atividade atualiza ultima_atividade_ts no saudacao_estado. Task cancelada no finally ao fechar conexão. Preflight aprovado.",
+    "project": "",
+    "tags": [
+      "recente",
+      "houve",
+      "última",
+      "30min",
+      "desde",
+      "dia"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-14T07:22:14.724975",
+    "last_accessed": "2026-08-14T07:22:14.724975"
   }
 ]
