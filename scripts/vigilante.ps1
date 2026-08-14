@@ -493,5 +493,65 @@ $onEvolutionRadar = {
 Register-ObjectEvent $evolutionRadarTimer "Elapsed" -Action $onEvolutionRadar > $null
 $evolutionRadarTimer.Start()
 
+# ═══════════════════════════════════════════════════════════════════════
+# CLEANUP TIMERS: limpeza interna do ecossistema (sem afetar memória/consistência)
+# ══════════════════════════════════════════════════════════════════════
+
+# State backups: mantém últimos 10 (1x/dia)
+$stateBackupTimer = New-Object System.Timers.Timer
+$stateBackupTimer.Interval = 86400000  # 24h
+$stateBackupTimer.AutoReset = $true
+$onStateBackup = {
+    Write-Log "STATE BACKUP CLEANUP: verificando backups antigos..."
+    try {
+        $out = python "$ecoDir\scripts\cleanup_state_backups.py" --keep 10 2>&1 | Out-String
+        $out.Trim() | ForEach-Object { Write-Log "  $_" }
+    } catch { Write-Log "STATE BACKUP CLEANUP: ignorado: $_" }
+}
+Register-ObjectEvent $stateBackupTimer "Elapsed" -Action $onStateBackup > $null
+$stateBackupTimer.Start()
+
+# Knowledge graph: mantém últimos 2 (1x/dia)
+$graphCleanupTimer = New-Object System.Timers.Timer
+$graphCleanupTimer.Interval = 86400000  # 24h
+$graphCleanupTimer.AutoReset = $true
+$onGraphCleanup = {
+    Write-Log "KNOWLEDGE GRAPH CLEANUP: rotacionando grafos..."
+    try {
+        $out = python "$ecoDir\scripts\cleanup_knowledge_graph.py" --keep 2 2>&1 | Out-String
+        $out.Trim() | ForEach-Object { Write-Log "  $_" }
+    } catch { Write-Log "KNOWLEDGE GRAPH CLEANUP: ignorado: $_" }
+}
+Register-ObjectEvent $graphCleanupTimer "Elapsed" -Action $onGraphCleanup > $null
+$graphCleanupTimer.Start()
+
+# Ecosystem logs: >30 dias ou >100MB total (1x/dia)
+$ecoLogsTimer = New-Object System.Timers.Timer
+$ecoLogsTimer.Interval = 86400000  # 24h
+$ecoLogsTimer.AutoReset = $true
+$onEcoLogs = {
+    Write-Log "ECOSYSTEM LOGS CLEANUP: limpando logs antigos..."
+    try {
+        $out = python "$ecoDir\scripts\cleanup_ecosystem_logs.py" --max-age-days 30 --max-mb 100 2>&1 | Out-String
+        $out.Trim() | ForEach-Object { Write-Log "  $_" }
+    } catch { Write-Log "ECOSYSTEM LOGS CLEANUP: ignorado: $_" }
+}
+Register-ObjectEvent $ecoLogsTimer "Elapsed" -Action $onEcoLogs > $null
+$ecoLogsTimer.Start()
+
+# Evolution Radar raw: mantém últimos 5 (1x/dia)
+$radarRawTimer = New-Object System.Timers.Timer
+$radarRawTimer.Interval = 86400000  # 24h
+$radarRawTimer.AutoReset = $true
+$onRadarRaw = {
+    Write-Log "RADAR RAW CLEANUP: limpando JSONL brutos antigos..."
+    try {
+        $out = python "$ecoDir\scripts\cleanup_radar_raw.py" --keep 5 2>&1 | Out-String
+        $out.Trim() | ForEach-Object { Write-Log "  $_" }
+    } catch { Write-Log "RADAR RAW CLEANUP: ignorado: $_" }
+}
+Register-ObjectEvent $radarRawTimer "Elapsed" -Action $onRadarRaw > $null
+$radarRawTimer.Start()
+
 # Mantem vivo
 while ($true) { Start-Sleep -Seconds 10 }
