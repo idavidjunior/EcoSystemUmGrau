@@ -5082,5 +5082,25 @@
     "access_count": 0,
     "created_at": "2026-08-14T05:56:17.597193",
     "last_accessed": "2026-08-14T05:56:17.597193"
+  },
+  {
+    "id": 284,
+    "kind": "decisao",
+    "task": "Preferencia do usuario: avisar qual skill esta sendo usada",
+    "summary": "O usuario pediu que o agente avise, em uma frase curta e sem repeticao cansativa, qual habilidade/skill esta sendo chamada quando ela for usada (ex: auditoria-de-codigo). Registro de preferencia de comunicacao do usuario David.",
+    "project": "",
+    "tags": [
+      "chamada",
+      "habilidade",
+      "cansativa",
+      "repeticao",
+      "usada",
+      "curta"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-14T06:07:24.718747",
+    "last_accessed": "2026-08-14T06:07:24.718747"
   }
 ]
