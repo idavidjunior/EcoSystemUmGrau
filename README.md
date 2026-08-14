@@ -18,7 +18,7 @@ fluxo autônomo de trabalho, memória e conhecimento:
 |---|---|
 | **OpenCode** | Orquestrador principal — 16 agents com gates SDLC (G1–G5) |
 | **LER** (Loop Engineering Runtime) | Loops autônomos Python para tarefas complexas |
-| **Obsidian** | Vault inteligente — 294+ notas, hubs, grafo vivo, templates, Dataview |
+| **Obsidian** | Vault inteligente — 731 notas, hubs, grafo vivo, templates, Dataview |
 | **Ponytail** | Plugin que mantém o estado/forma de trabalho entre sessões |
 
 ## Arquitetura (3 cérebros)
@@ -77,8 +77,8 @@ Usuário → Maestro → classifica rota (A/B/C)
               ┌────────────────────────────┼────────────────────────────┐
               ▼                            ▼                            ▼
      ┌─────────────────┐          ┌─────────────────┐          ┌─────────────────┐
-     │ KNOWLEDGE GRAPH │          │  MEMORY ENGINE  │          │ SEMANTIC SEARCH │
-     │  (304 entradas) │          │  (Ebbinghaus)   │          │   (BM25 fusion) │
+      │ KNOWLEDGE GRAPH │          │  MEMORY ENGINE  │          │ SEMANTIC SEARCH │
+      │  (611 entradas) │          │  (Ebbinghaus)   │          │   (BM25 fusion) │
      │ knowledge_graph │          │  memories.json  │          │  4 fontes unif. │
      │    .json + MD   │          │  sessions JSONL │          │                 │
      └────────┬────────┘          └────────┬────────┘          └────────┬────────┘
@@ -97,7 +97,7 @@ Usuário → Maestro → classifica rota (A/B/C)
            ┌───────────────┐      ┌───────────────┐      ┌───────────────┐
            │   OBSIDIAN    │      │    GITHUB     │      │  PROJETOS     │
            │   (Vault)     │      │  EcoSystem +  │      │  ANDROID (5)  │
-           │ 263 notas, 8  │      │  12 projetos  │      │  Mp3Player,   │
+            │ 731 notas, 8  │      │  12 projetos  │      │  Mp3Player,   │
            │ MOCs, Dataview│      │ + CI/CD       │      │  CellCleaner, │
            └───────────────┘      └───────────────┘      │  Biblia,      │
                                                         │  Supermarket  │
@@ -141,6 +141,28 @@ Usuário → Maestro → classifica rota (A/B/C)
    única. `python scripts/sync_rules.py update` regenera o `AGENTS.md` automaticamente
    e valida as referências no `opencode.jsonc`. O `ecosystem sync` e o preflight executam
    isso a cada ciclo; o Vigilante avisa (1x/h) se alguma camada divergir.
+
+## Requisitos de Sistema
+
+| Software | Mínimo | Instalação |
+|---|---|---|
+| Windows | 10/11 | — |
+| PowerShell | 5.1+ (já vem no Windows) | — |
+| Git | 2.x | https://git-scm.com/ |
+| Node.js + npm | 20.x+ | https://nodejs.org/ |
+| Python | 3.12+ | https://python.org/ |
+| OpenCode | mais recente | instalado pelo `setup.bat` (`npm i -g opencode-ai`) |
+| GitHub CLI (`gh`) | — | https://cli.github.com/ (usado pelo sync e pelos MCPs) |
+
+**Opcionais** (via `pip`, ativam recursos extras):
+
+| Recurso | Dependências |
+|---|---|
+| Comandos de voz (STT/TTS) | `faster-whisper`, `SpeechRecognition`, `sounddevice`, `edge-tts` |
+| Widget do grafo desktop | `pywebview` |
+| API keys (perguntadas no setup) | `NVIDIA_API_KEY`, `OPENAI_API_KEY`, `GH_TOKEN` |
+
+O `setup.bat` valida Git, Node e Python antes de continuar — se algum faltar, ele aponta a URL de instalação e para.
 
 ## Setup — Plug & Play
 
@@ -199,8 +221,8 @@ Ctrl+C encerra. Reusa o `Cliente` do `jarvis_bridge.py` (opencode serve porta 87
 
 O conhecimento do ecossistema vira uma **teia visual interativa** no Obsidian:
 
-1. **Fontes únicas** — `ler-runtime/knowledge/knowledge_graph.json` (73 padrões, 42 decisões, 46 bugs, 27 cognitivos, 32 heurísticas, 10 frameworks) + `conhecimento/aprendizados/*.md`.
-2. **Geração** — `python scripts/generate-obsidian-notes.py` transforma o graph em **294+ notas** com **links bidirecionais** `[[...]]`, 15 notas-hub (por categoria e por cluster: android, mp3player, ler, navegação, ecossistema, cognição) e injeta a seção `## Conexões` nos aprendizados.
+1. **Fontes únicas** — `ler-runtime/knowledge/knowledge_graph.json` (249 padrões, 66 decisões, 52 bugs, 58 cognitivos, 32 heurísticas, 10 frameworks, 134 missões) + `conhecimento/aprendizados/*.md`.
+2. **Geração** — `python scripts/generate-obsidian-notes.py` transforma o graph em **731 notas** com **links bidirecionais** `[[...]]`, 16 notas-hub (por categoria e por cluster: android, mp3player, ler, navegação, ecossistema, cognição) e injeta a seção `## Conexões` nos aprendizados.
 3. **Abrir o vault** — Obsidian → *Open folder as vault* → `EcoSystemUmGrau/conhecimento/`. O grafo (force-directed) mostra a teia completa; nós muito citados viram hubs centrais.
 4. **Cores por tag** — no grafo, *Group by tag* ou plugins (Excalidraw, Juggl para 3D).
 5. **Regenerar** — após novos aprendizados, rode o script de novo (idempotente, nunca duplica seções).
@@ -279,15 +301,25 @@ EcoSystemUmGrau/
 
 ## MCP Servers
 
-5 servidores MCP locais (Node/Python puros, sem npx) em `mcp-servers/`:
+13 servidores MCP locais (Node/Python puros, sem npx) — os Node vivem em `mcp-servers/`,
+os Python vivem em `scripts/` e `mcp/<domínio>/server.py`. Todos habilitados no
+`config/opencode.jsonc`:
 
 | Servidor | Função | Status |
 |---|---|---|
 | **eco-knowledge** | Acesso ao knowledge graph (Python, `scripts/mcp-knowledge-server.py`) | ✅ ativo |
+| **eco-obsidian** | Acesso ao vault Obsidian (Python, `scripts/mcp-obsidian-server.py`) | ✅ ativo |
 | **filesystem** | Acesso ao filesystem (Node, `mcp-servers/filesystem/index.js`) | ✅ ativo |
 | **search** | Busca semântica BM25 no conhecimento (Node, `mcp-servers/search/index.js`) | ✅ ativo |
 | **terminal** | Execução de comandos PowerShell com bloqueio de destrutivos (Node, `mcp-servers/terminal/index.js`) | ✅ ativo |
 | **github** | Integração com GitHub via `gh` CLI (Node, `mcp-servers/github/index.js`) | ✅ ativo |
+| **mcp-desenvolvimento** | 30 skills de desenvolvimento (Python, `mcp/desenvolvimento/server.py`) | ✅ ativo |
+| **mcp-android** | Skills Android/Mobile (Python, `mcp/android/server.py`) | ✅ ativo |
+| **mcp-internet** | Busca-web, clima, geolocalização, navegação perita (Python, `mcp/internet/server.py`) | ✅ ativo |
+| **mcp-memoria** | Busca de conhecimento (Python, `mcp/memoria/server.py`) | ✅ ativo |
+| **mcp-multimidia** | Áudio, imagem, vídeo, streaming (Python, `mcp/multimidia/server.py`) | ✅ ativo |
+| **mcp-comportamentais** | Personalidades comportamentais (code-reviewer, conservador, pensador-crítico, ponytail) (Python, `mcp/comportamentais/server.py`) | ✅ ativo |
+| **mcp-compreensao-pedidos** | Compreensão de pedidos antes de executar (Python, `mcp/nucleo/habilidades/compreensao-pedidos/server.py`) | ✅ ativo |
 
 ## CI/CD (GitHub Actions)
 
@@ -302,9 +334,24 @@ EcoSystemUmGrau/
 | `OPENAI_API_KEY` | Provider OpenAI |
 | `VAULT_PATH` | Caminho do vault Obsidian (raiz do ecossistema) |
 
-## Runtime
+## Como Contribuir
 
-OpenCode 0.0.0-beta · Node.js 24.x · Python 3.12 · Git 2.55 · Windows (PowerShell)
+Este repo é a **fonte única** do ecossistema. Toda contribuição segue as regras da Constituição (`config/agents/00-system-rules.md`) e as Regras de Ouro.
+
+**Passos básicos:**
+
+1. **Clone e configure** — `setup.bat` instala e valida tudo (requisitos acima).
+2. **Entenda a estrutura antes de mexer** — `config/` é fonte única de config e agents; `mcp/` concentra as habilidades por domínio; `scripts/` os utilitários; `ler-runtime/` o runtime autônomo.
+3. **Teste antes de aplicar** — qualquer mudança em `config/opencode.jsonc`, `config/agents/*.md`, servidores MCP ou `mcp/*` deve passar no `python scripts/preflight_check.py`.
+4. **Nunca commite manualmente** — todo `git add/commit/push` passa pelo **gate** de persistência (`scripts/persistencia.ps1`). Se precisar commitar, use:
+   ```
+   powershell -File scripts/persistencia.ps1 commit -Repo eco -Mensagem "descrição" -Push
+   ```
+5. **Registre o aprendizado** — ao concluir uma tarefa, registre na memória (`python scripts/memory_engine.py add "<título>" "<resumo>" <tipo>`) e crie um card em `conhecimento/aprendizados/`.
+6. **Sincronize** — rode `ecosystem sync` para manter o repo e o GitHub alinhados (o GitHub é a rede de segurança).
+7. **Siga o estilo** — código limpo, documentação em pt-BR, sem emojis desnecessários, sem quebrar o que já funciona.
+
+**Mudanças grandes** (arquitetura, novos servidores MCP, banco de dados) passam antes pelo ciclo de engenharia: analisar, planejar, implementar, testar, tentar quebrar, auditar, validar.
 
 ## Repositório de Segurança
 

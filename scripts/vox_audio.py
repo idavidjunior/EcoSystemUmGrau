@@ -114,6 +114,25 @@ def _limpar_cache_tts():
         pass
 
 
+def _novo_mp3_temp(prefixo="vox_fala"):
+    """Cria caminho MP3 temporário único (evita [WinError 32]: processos
+    concorrentes escrevendo no mesmo nome fixo em %TEMP%)."""
+    fd, caminho = tempfile.mkstemp(prefix=f"{prefixo}_", suffix=".mp3")
+    os.close(fd)
+    return Path(caminho)
+
+
+def _tocar_e_limpar(mp3, parar_evento=None):
+    """Toca via MCI e remove o arquivo temporário ao final (não deixa órfãos)."""
+    try:
+        _tocar_mci(str(mp3), parar_evento=parar_evento)
+    finally:
+        try:
+            mp3.unlink(missing_ok=True)
+        except Exception:
+            pass
+
+
 def _falar(texto, parar_evento=None):
     """Gera MP3 e toca via MCI. Otimizado para baixa latência com cache."""
     if not texto or not texto.strip():
@@ -122,10 +141,11 @@ def _falar(texto, parar_evento=None):
     # Tenta usar SpeechPipeline primeiro
     if SPEECH_PIPELINE_AVAILABLE and _speech_pipeline:
         try:
-            mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
+            mp3 = _novo_mp3_temp("vox_fala")
             if _speech_pipeline.save(texto, str(mp3)):
-                _tocar_mci(str(mp3), parar_evento=parar_evento)
+                _tocar_e_limpar(mp3, parar_evento)
                 return
+            mp3.unlink(missing_ok=True)
         except Exception as e:
             print(f"[SpeechPipeline falhou: {e}]")
 
@@ -143,13 +163,15 @@ def _falar(texto, parar_evento=None):
             pass  # cache corrompido, gera de novo
     
     # Fallback: gera e toca diretamente
-    mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
+    mp3 = _novo_mp3_temp("vox_fala")
     try:
         asyncio.run(_tts_salvar(texto, str(mp3)))
     except Exception as e:
         print(f"[erro tts] {e}")
+        mp3.unlink(missing_ok=True)
         return
     if not mp3.exists():
+        mp3.unlink(missing_ok=True)
         return
     
     # Salva no cache para próximas vezes
@@ -162,9 +184,13 @@ def _falar(texto, parar_evento=None):
         pass
     
     try:
-        _tocar_mci(str(mp3), parar_evento=parar_evento)
+        _tocar_e_limpar(mp3, parar_evento)
     except Exception as e:
         print(f"[erro play] {e}")
+        try:
+            mp3.unlink(missing_ok=True)
+        except Exception:
+            pass
 
 
 async def _tts_stream_e_tocar(texto, caminho_mp3, parar_evento=None):
@@ -372,26 +398,31 @@ async def _falar_async(texto, parar_evento=None):
     # Tenta usar SpeechPipeline primeiro
     if SPEECH_PIPELINE_AVAILABLE and _speech_pipeline:
         try:
-            mp3 = Path(tempfile.gettempdir()) / "vox_fala.mp3"
+            mp3 = _novo_mp3_temp("vox_fala")
             if _speech_pipeline.save(texto, str(mp3)):
-                _tocar_mci(str(mp3), parar_evento=parar_evento)
+                _tocar_e_limpar(mp3, parar_evento)
                 return
+            mp3.unlink(missing_ok=True)
         except Exception as e:
             print(f"[SpeechPipeline falhou: {e}]")
 
     # Streaming: gera áudio em chunks e toca assim que tiver buffer suficiente
-    mp3 = Path(tempfile.gettempdir()) / "vox_fala_stream.mp3"
+    mp3 = _novo_mp3_temp("vox_fala_stream")
     try:
         await _tts_stream_e_tocar(texto, str(mp3), parar_evento)
     except Exception as e:
         print(f"[erro stream tts] {e}")
         # Fallback: método legado (batch)
-        mp3_batch = Path(tempfile.gettempdir()) / "vox_fala.mp3"
+        mp3.unlink(missing_ok=True)
+        mp3_batch = _novo_mp3_temp("vox_fala")
         try:
             await _tts_salvar(texto, str(mp3_batch))
-            _tocar_mci(str(mp3_batch), parar_evento=parar_evento)
+            _tocar_e_limpar(mp3_batch, parar_evento)
         except Exception as e2:
             print(f"[erro fallback tts] {e2}")
+            mp3_batch.unlink(missing_ok=True)
+    else:
+        mp3.unlink(missing_ok=True)
 
 
 async def cmd_falar_async(texto, interruptivel=False):

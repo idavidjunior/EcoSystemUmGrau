@@ -25,7 +25,6 @@ import os
 import re
 import subprocess
 import sys
-import tempfile
 import threading
 import time
 from pathlib import Path
@@ -36,7 +35,7 @@ import sounddevice as sd
 SCRIPTS = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPTS))
 
-from vox_audio import SAMPLE_RATE, _stt_whisper, _stt_google, _tocar_mci, _parar_mci_tudo  # noqa: E402
+from vox_audio import SAMPLE_RATE, _stt_whisper, _stt_google, _tocar_mci, _parar_mci_tudo, _novo_mp3_temp  # noqa: E402
 from jarvis_bridge import (  # noqa: E402
     Cliente,
     briefing_espontaneo,
@@ -307,12 +306,17 @@ def transcrever(audio):
 def tocar_base64(b64, parar_evento=None):
     if not b64:
         return
-    mp3 = Path(tempfile.gettempdir()) / "vox_dialogo.mp3"
-    mp3.write_bytes(base64.b64decode(b64))
+    mp3 = _novo_mp3_temp("vox_dialogo")
     try:
+        mp3.write_bytes(base64.b64decode(b64))
         _tocar_mci(str(mp3), parar_evento=parar_evento)
     except Exception as e:
         print(f"[erro play] {e}")
+    finally:
+        try:
+            mp3.unlink(missing_ok=True)
+        except Exception:
+            pass
 
 
 # --- Barge-in: interromper a fala do Jarvis ---

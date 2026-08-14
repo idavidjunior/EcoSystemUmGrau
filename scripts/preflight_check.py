@@ -343,6 +343,32 @@ def run():
     except Exception as e:
         check('JSON sanitization', False, str(e)[:200])
 
+    # 9. Voz Guarda (fixed temp audio paths regression)
+    print('\n[9] Voz Guarda (temp audio paths)')
+    try:
+        r = sp.run([sys.executable, os.path.join(BASE, 'scripts', 'voz_guarda.py'), '--check'],
+                   capture_output=True, text=True, timeout=60, cwd=BASE)
+        try:
+            data = json.loads(r.stdout)
+            ok = data.get('ok', False)
+            violacoes = data.get('violacoes', [])
+            n = len(violacoes)
+            if ok:
+                check('Voz Guarda (0 violacoes, speech_pipeline com mkstemp)', True)
+            elif n:
+                primeira = violacoes[0]
+                check('Voz Guarda', False,
+                      f'{n} violacao(es), ex: {primeira.get("arquivo")}:{primeira.get("linha")} {primeira.get("fixado")}')
+            else:
+                check('Voz Guarda', False, 'speech_pipeline sem mkstemp (correcao revertida)')
+        except Exception:
+            if r.returncode == 0:
+                check('Voz Guarda', True)
+            else:
+                check('Voz Guarda', False, f'exit code {r.returncode}')
+    except Exception as e:
+        check('Voz Guarda', False, str(e)[:200])
+
     # Summary
     print('\n========================================')
     if not ERRORS:

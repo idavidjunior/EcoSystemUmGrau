@@ -409,5 +409,33 @@ $onTriage = {
 Register-ObjectEvent $triageTimer "Elapsed" -Action $onTriage > $null
 $triageTimer.Start()
 
+# ══════════════════════════════════════════════════════════════════════
+# VOZ GUARDA TIMER: detecta regressao de paths temp fixos (audio) (2x/h)
+# ══════════════════════════════════════════════════════════════════════
+$vozGuardaTimer = New-Object System.Timers.Timer
+$vozGuardaTimer.Interval = 1800000  # check a cada 30min
+$vozGuardaTimer.AutoReset = $true
+
+$onVozGuarda = {
+    Write-Log "VOZ GUARDA: escaneando paths temp de audio..."
+    try {
+        $out = python "$ecoDir\scripts\voz_guarda.py" --check 2>&1 | Out-String
+        $json = $out | ConvertFrom-Json -ErrorAction SilentlyContinue
+        if ($json -and -not $json.ok) {
+            $n = @($json.violacoes).Count
+            if ($n -gt 0) {
+                $v = @($json.violacoes)[0]
+                Write-Log "VOZ GUARDA: VIOLACAO - $($v.arquivo):$($v.linha) $($v.fixado)"
+            } else {
+                Write-Log "VOZ GUARDA: VIOLACAO - speech_pipeline sem mkstemp"
+            }
+        } else {
+            Write-Log "VOZ GUARDA: ok ($($json.arquivos_escaneados) arquivos, $($json.orphans_pendentes.Count) orfaos pendentes)"
+        }
+    } catch { Write-Log "VOZ GUARDA: scan ignorado: $_" }
+}
+Register-ObjectEvent $vozGuardaTimer "Elapsed" -Action $onVozGuarda > $null
+$vozGuardaTimer.Start()
+
 # Mantem vivo
 while ($true) { Start-Sleep -Seconds 10 }

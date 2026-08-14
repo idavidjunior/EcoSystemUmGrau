@@ -5022,5 +5022,25 @@
     "access_count": 0,
     "created_at": "2026-08-13T22:04:05.276599",
     "last_accessed": "2026-08-13T22:04:05.276599"
+  },
+  {
+    "id": 281,
+    "kind": "decisao",
+    "task": "Fase 2 resiliencia WinError32: guardiao voz_guarda.py",
+    "summary": "Criado scripts/voz_guarda.py como guardiao de resiliencia contra regressao de paths temp fixos de audio ([WinError 32]): scan estatico (regex gettempdir/Temp + audio literal) em scripts/tts/bridge/mcp, exige mkstemp no speech_pipeline, limpa orfaos antigos do TEMP; integrado ao preflight como secao [9] e ao vigilante.ps1 como timer de 30min. Baseline 0 violacoes em 90 arquivos.",
+    "project": "",
+    "tags": [
+      "antigos",
+      "orfaos",
+      "limpa",
+      "pipeline",
+      "speech",
+      "mkstemp"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-13T22:53:45.016872",
+    "last_accessed": "2026-08-13T22:53:45.016872"
   }
 ]
