@@ -1,7 +1,7 @@
 ---
 tags: [audio, opencode, padrao, real, tempo, áudio]
 aliases: [Aprendizado: Narrador de voz do Jarvis no opencode desktop]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Aprendizado: Narrador de voz do Jarvis no opencode desktop

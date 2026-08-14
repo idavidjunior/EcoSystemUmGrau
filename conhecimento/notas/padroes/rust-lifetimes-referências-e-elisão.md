@@ -1,7 +1,7 @@
 ---
-tags: [devolve, intenção, padrao, qualquer, rust, visão]
+tags: [devolve, padrao, qualquer, rust, time, visão]
 aliases: [Rust: lifetimes, referências e elisão]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Rust: lifetimes, referências e elisão

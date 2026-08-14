@@ -1,7 +1,7 @@
 ---
-tags: [artificial, corporativos, linkar, padrao, pt-br, texto]
+tags: [artificial, linkar, padrao, produz, pt-br, texto]
 aliases: [Estrangeirismos no pt-BR: anglicismos aceitos, aportuguesame]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Estrangeirismos no pt-BR: anglicismos aceitos, aportuguesamentos e quando recusar

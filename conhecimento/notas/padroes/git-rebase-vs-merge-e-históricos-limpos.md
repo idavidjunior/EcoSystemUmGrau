@@ -1,7 +1,7 @@
 ---
 tags: [fast, forward, git, padrao, publicar, resolve]
 aliases: [Git: rebase vs merge e históricos limpos]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Git: rebase vs merge e históricos limpos

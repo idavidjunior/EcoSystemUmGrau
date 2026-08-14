@@ -1,7 +1,7 @@
 ---
 tags: [bugs, compatíveis, corrige, git, padrao, trás]
 aliases: [Git: conventional commits e versionamento semântico]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Git: conventional commits e versionamento semântico

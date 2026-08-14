@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, conhecimento, existente, ferramenta, metacognicao, skill]
 aliases: [Entender antes de criar: ontologia de habilidades]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Entender antes de criar: ontologia de habilidades

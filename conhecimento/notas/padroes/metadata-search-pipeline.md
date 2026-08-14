@@ -1,7 +1,7 @@
 ---
 tags: [fonte, metadata, mp3player, mp3player-metadata-rescuemp3player-metadata-rescue, padrao, rescue]
 aliases: [Metadata Search Pipeline]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Metadata Search Pipeline

@@ -1,7 +1,7 @@
 ---
 tags: [decisao, etc, opencode, relacionados, riscos, vazias]
 aliases: [ler specs sdd hook]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # ler specs sdd hook

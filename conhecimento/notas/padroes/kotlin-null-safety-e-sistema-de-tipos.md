@@ -1,7 +1,7 @@
 ---
 tags: [combinadas, fechadas, hierarquias, interface, kotlin, padrao]
 aliases: [Kotlin: null-safety e sistema de tipos]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Kotlin: null-safety e sistema de tipos

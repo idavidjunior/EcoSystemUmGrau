@@ -1,7 +1,7 @@
 ---
 tags: [deadline, fundamentos, lucro, maximização, padrao, várias]
 aliases: [Fundamentos: programação dinâmica e algoritmos greedy]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Fundamentos: programação dinâmica e algoritmos greedy

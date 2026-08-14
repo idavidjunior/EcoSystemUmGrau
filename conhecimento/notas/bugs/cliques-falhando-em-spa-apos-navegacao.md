@@ -1,7 +1,7 @@
 ---
 tags: [antigo, bug, elemento, permanece, referencia, treinamentonavegacao]
 aliases: [Cliques falhando em SPA apos navegacao]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Cliques falhando em SPA apos navegacao

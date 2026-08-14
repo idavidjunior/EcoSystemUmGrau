@@ -1,7 +1,7 @@
 ---
 tags: [estado, execucao, framework, global, seguranca]
 aliases: [FIRST Principles para testes]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # FIRST Principles para testes

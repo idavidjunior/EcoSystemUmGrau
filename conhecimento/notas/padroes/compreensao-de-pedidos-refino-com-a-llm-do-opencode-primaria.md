@@ -1,7 +1,7 @@
 ---
 tags: [llm opencode, opencode, opencode primaria, opencode resiliencia, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao]
 aliases: [Compreensao de pedidos: refino com a LLM do opencode (primar]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Compreensao de pedidos: refino com a LLM do opencode (primaria) + backups

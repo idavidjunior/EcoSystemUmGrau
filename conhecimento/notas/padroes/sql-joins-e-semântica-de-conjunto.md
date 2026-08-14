@@ -1,7 +1,7 @@
 ---
 tags: [except, intersect, interseção, minus, padrao, sql]
 aliases: [SQL: joins e semântica de conjunto]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # SQL: joins e semântica de conjunto

@@ -1,7 +1,7 @@
 ---
 tags: [funcs, golang, maps, nulo, padrao, slices]
 aliases: [Go: interfaces implícitas, method set e composição]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Go: interfaces implícitas, method set e composição

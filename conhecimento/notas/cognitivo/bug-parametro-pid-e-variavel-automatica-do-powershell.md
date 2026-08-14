@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, forenses, funcoes, general, processo, read]
 aliases: [Bug: parametro Pid e variavel automatica do PowerShell]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Bug: parametro Pid e variavel automatica do PowerShell

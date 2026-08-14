@@ -1,7 +1,7 @@
 ---
 tags: [cache, compilador, cpu, java, padrao, reordenações]
 aliases: [Java: JVM, bytecode e memory model]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Java: JVM, bytecode e memory model

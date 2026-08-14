@@ -1,7 +1,7 @@
 ---
-tags: [bug, mensagem, msg, pode, projeto, sessaoprovidermanager]
+tags: [bug, check, mensagem, pode, projeto, sessaoprovidermanager]
 aliases: [OpenCode Go provider crash ao processar mensagem]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # OpenCode Go provider crash ao processar mensagem

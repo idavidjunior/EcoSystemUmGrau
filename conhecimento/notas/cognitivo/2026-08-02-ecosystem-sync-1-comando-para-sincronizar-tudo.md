@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, ficar, general, inteiro, nico, parent]
 aliases: [# 2026-08-02 - ecosystem sync: 1 comando para sincronizar tu]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # # 2026-08-02 - ecosystem sync: 1 comando para sincronizar tudo

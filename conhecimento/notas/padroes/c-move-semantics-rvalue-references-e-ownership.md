@@ -1,7 +1,7 @@
 ---
 tags: [cpp, movido, padrao, seguros, será, são]
 aliases: [C++: move semantics, rvalue references e ownership]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # C++: move semantics, rvalue references e ownership

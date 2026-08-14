@@ -1,7 +1,7 @@
 ---
 tags: [cldr, localizacao, neutra, one, padrao, regra]
 aliases: [Localização de software: placeholders, plurais, gênero e esp]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Localização de software: placeholders, plurais, gênero e espaço de UI

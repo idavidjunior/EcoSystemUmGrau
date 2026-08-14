@@ -1,7 +1,7 @@
 ---
 tags: [acessibilidade, arvore, expoem, nao, padrao, treinamentonavegacao]
 aliases: [OCR fallback para elementos sem identificador]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # OCR fallback para elementos sem identificador

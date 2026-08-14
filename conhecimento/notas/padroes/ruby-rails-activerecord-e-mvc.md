@@ -1,7 +1,7 @@
 ---
 tags: [auto, bigint, padrao, ruby, timestamps, updated]
 aliases: [Ruby: Rails — ActiveRecord e MVC]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Ruby: Rails — ActiveRecord e MVC

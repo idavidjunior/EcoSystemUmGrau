@@ -1,7 +1,7 @@
 ---
-tags: [capacidades, decisao, futura, leraprendizado, referencia, system]
+tags: [capacidades, catalogando, decisao, futura, leraprendizado, referencia]
 aliases: [Jarvis deve manter registro de suas proprias habilidades em ]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Jarvis deve manter registro de suas proprias habilidades em JARVIS_SYSTEM.md

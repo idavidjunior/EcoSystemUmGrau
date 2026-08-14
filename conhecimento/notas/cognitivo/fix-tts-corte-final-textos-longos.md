@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, cortado, general, grandes, relatórios, tinham]
 aliases: [fix tts corte final textos longos]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # fix tts corte final textos longos

@@ -1,7 +1,7 @@
 ---
 tags: [direção, fundamentos, linguagem, padrao, suporta, verifique]
 aliases: [Fundamentos: recursão e técnicas de divisão-e-conquista]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Fundamentos: recursão e técnicas de divisão-e-conquista

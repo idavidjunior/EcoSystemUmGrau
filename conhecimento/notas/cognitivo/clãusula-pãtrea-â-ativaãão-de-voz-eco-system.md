@@ -1,7 +1,7 @@
 ---
 tags: [ativar, cognitivo, desativar, ecosystemumgrau, general, seguindo]
 aliases: [ClÃ¡usula PÃ©trea â€” AtivaÃ§Ã£o de Voz (Eco System)]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # ClÃ¡usula PÃ©trea â€” AtivaÃ§Ã£o de Voz (Eco System)

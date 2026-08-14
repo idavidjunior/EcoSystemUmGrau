@@ -1,7 +1,7 @@
 ---
 tags: [401, 403, 404, inválido, padrao, testes]
 aliases: [Testes: testes de contrato e testes de API]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Testes: testes de contrato e testes de API

@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, fisica, general, javascript, network, vis]
 aliases: [auditoria cerebro vivo fix tema padrao e bugs]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # auditoria cerebro vivo fix tema padrao e bugs

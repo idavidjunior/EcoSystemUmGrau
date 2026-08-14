@@ -1,7 +1,7 @@
 ---
 tags: [acentos, brasileiras, converter, padrao, pt-br, variantes]
 aliases: [Variações PT-PT x PT-BR: reescrever para o brasileiro]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Variações PT-PT x PT-BR: reescrever para o brasileiro

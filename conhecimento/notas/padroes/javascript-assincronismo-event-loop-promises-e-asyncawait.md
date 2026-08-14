@@ -1,7 +1,7 @@
 ---
 tags: [efeito, javascript, moderno, padrao, processo, repete]
 aliases: [JavaScript: assincronismo (event loop, promises e async/awai]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # JavaScript: assincronismo (event loop, promises e async/await)

@@ -1,7 +1,7 @@
 ---
 tags: [android, android-pure-sdkandroid-pure-sdk, fonte, padrao, pure, sdk]
 aliases: [Vibration Pattern]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Vibration Pattern

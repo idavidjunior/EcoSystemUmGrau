@@ -1,7 +1,7 @@
 ---
 tags: [bug, fails, itunes, mp3player-metadata-rescue, musicbrainz, projeto]
 aliases: [AcoustID always fails]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # AcoustID always fails

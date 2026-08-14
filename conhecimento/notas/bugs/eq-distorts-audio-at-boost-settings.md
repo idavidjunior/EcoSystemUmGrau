@@ -1,7 +1,7 @@
 ---
 tags: [bug, caching, exoplayer, inactive, mp3player-metadata-rescue, state]
 aliases: [**EQ distorts audio at boost settings**]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # **EQ distorts audio at boost settings**

@@ -1,7 +1,7 @@
 ---
 tags: [ergonomia, forçando, padrao, partialeq, rust, tratamento]
 aliases: [Rust: enums, pattern matching, Result e Option]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Rust: enums, pattern matching, Result e Option

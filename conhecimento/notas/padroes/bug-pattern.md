@@ -1,7 +1,7 @@
 ---
 tags: [android, android-pure-sdkandroid-pure-sdkandroid-pure-sdkandroid-pure, fonte, padrao, pure, sdk]
 aliases: [Bug pattern]
-date: 2026-08-13
+date: 2026-08-14
 ---
 
 # Bug pattern
