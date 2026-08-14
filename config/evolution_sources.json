@@ -1,0 +1,80 @@
+{
+  "tier1_critical": [
+    {
+      "id": "python-cpython",
+      "type": "github_releases",
+      "repo": "python/cpython",
+      "filter": "stdlib|deprecat|security|performance",
+      "max_per_run": 3
+    },
+    {
+      "id": "mcp-spec",
+      "type": "github_releases",
+      "repo": "modelcontextprotocol/spec",
+      "filter": "schema|transport|capability|auth",
+      "max_per_run": 3
+    },
+    {
+      "id": "opencode",
+      "type": "github_releases",
+      "repo": "opencode-ai/opencode",
+      "filter": "breaking|config|hook|mcp|agent",
+      "max_per_run": 3
+    },
+    {
+      "id": "android-platform",
+      "type": "github_commits",
+      "repo": "aosp/platform",
+      "path_filter": "sdk|ndk|build|tools",
+      "max_per_run": 5
+    }
+  ],
+  "tier1_5_ecosystem": [
+    {
+      "id": "mcp-python-sdk",
+      "type": "github_releases",
+      "repo": "modelcontextprotocol/python-sdk",
+      "filter": "server|client|transport|stdio",
+      "max_per_run": 2
+    },
+    {
+      "id": "github-mcp-server",
+      "type": "github_releases",
+      "repo": "github/github-mcp-server",
+      "filter": "tool|resource|auth",
+      "max_per_run": 2
+    },
+    {
+      "id": "anthropic-sdk-python",
+      "type": "github_releases",
+      "repo": "anthropics/anthropic-sdk-python",
+      "filter": "tool|message|beta",
+      "max_per_run": 2
+    }
+  ],
+  "tier2_deps": [
+    {
+      "id": "requests",
+      "type": "github_releases",
+      "repo": "psf/requests",
+      "max_per_run": 1
+    },
+    {
+      "id": "powershell",
+      "type": "github_releases",
+      "repo": "PowerShell/PowerShell",
+      "filter": "cmdlet|breaking|security",
+      "max_per_run": 1
+    }
+  ],
+  "settings": {
+    "interval_hours": 4,
+    "max_proposals_per_pack": 5,
+    "require_admin_permission": true,
+    "dry_run_by_default": true,
+    "cache_ttl_hours": 24,
+    "github_api_base": "https://api.github.com",
+    "timeout_seconds": 30,
+    "user_agent": "EcoSystemUmGrau-EvolutionRadar/1.0"
+  }
+}
