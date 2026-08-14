@@ -4922,5 +4922,25 @@
     "access_count": 0,
     "created_at": "2026-08-13T20:43:14.296428",
     "last_accessed": "2026-08-13T20:43:14.296428"
+  },
+  {
+    "id": 276,
+    "kind": "erro",
+    "task": "Boot runtime_boot.py: caminho relativo adb_scan.py quebrava fora do repo",
+    "summary": "runtime_boot.py chamava scripts/adb_scan.py com caminho relativo ao CWD; quando o boot rodava fora da raiz do EcoSystemUmGrau, o arquivo não era encontrado. Corrigido usando os.path.join(SCRIPTS, 'adb_scan.py') + sys.executable. Boot agora roda de qualquer diretório.",
+    "project": "",
+    "tags": [
+      "encontrado",
+      "era",
+      "não",
+      "arquivo",
+      "ecosystemumgrau",
+      "raiz"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-13T21:03:39.319952",
+    "last_accessed": "2026-08-13T21:03:39.319952"
   }
 ]

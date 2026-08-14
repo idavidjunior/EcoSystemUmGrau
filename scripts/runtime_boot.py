@@ -262,7 +262,7 @@ def main():
     code = run_boot(status_only=args.status)
     # executar escaneamento de conexões ao finalizar o boot
     import subprocess
-    subprocess.run(["python", "scripts/adb_scan.py"], check=False)
+    subprocess.run([sys.executable, os.path.join(SCRIPTS, 'adb_scan.py')], check=False)
     return code
 
 
