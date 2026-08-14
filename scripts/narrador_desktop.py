@@ -50,6 +50,7 @@ POSICAO = ROOT / "runtime" / "narrador_posicao.json"
 CONTROLE = ROOT / "runtime" / "narracao_estado.json"
 VOX = ROOT / "scripts" / "vox_audio.py"
 LOG = ROOT / "scripts" / "narrador_desktop_log.txt"
+PARAR_FALA = ROOT / "runtime" / "parar_fala.flag"
 EXCLUIR_PADRAO = ["watchdog-health"]
 DEBOUNCE_S = 0.5
 FALAR_TIMEOUT = 90
@@ -201,7 +202,7 @@ class Narrador:
                 # Tenta usar SpeechPipeline primeiro
                 if SPEECH_PIPELINE_AVAILABLE and _speech_pipeline:
                     try:
-                        _speech_pipeline.speak(texto, block=True)
+                        _speech_pipeline.speak(texto, block=True, stop_flag=PARAR_FALA)
                         return
                     except Exception as e:
                         log(f"SpeechPipeline falhou: {e}")

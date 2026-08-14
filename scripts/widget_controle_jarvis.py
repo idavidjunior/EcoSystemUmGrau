@@ -22,10 +22,12 @@ Uso:
   $ controle  (via opencode.jsonc -> scripts/controle.bat -> pythonw)
 """
 import json
+import re
 import subprocess
 import sys
 import threading
 import time
+from datetime import datetime
 from pathlib import Path
 
 _NO_CONSOLE = getattr(subprocess, "CREATE_NO_WINDOW", 0)
@@ -38,6 +40,7 @@ CONTROLE = ROOT / "runtime" / "narracao_estado.json"     # voz: {ativo, pausado}
 NARRADOR_PID = ROOT / "runtime" / "narrador.pid"
 NARRADOR = SCRIPTS / "narrador_desktop.py"
 JARVIS_AUDIO = SCRIPTS / "jarvis_audio.py"               # CLI de controle existente
+VOX = SCRIPTS / "vox_audio.py"                            # fallback de fala direta
 
 # --- Estado de microfone (conveno runtime/*.json) ---
 MIC_ESTADO = ROOT / "runtime" / "mic_estado.json"
@@ -45,12 +48,10 @@ MIC_PID = ROOT / "runtime" / "mic.pid"
 DIALOGO = SCRIPTS / "dialogo.py"
 
 LOG_NARRADOR = SCRIPTS / "narrador_desktop_log.txt"      # para texto corrente da fala
+PARAR_FALA = ROOT / "runtime" / "parar_fala.flag"        # interrupção de fala (polling no TTS)
 
 # --- Geometria da janela ---
 GEO_FILE = ROOT / "runtime" / "widget_controle_geometria.json"
-
-# --- Atalho de inicialização automática ---
-ATALHO_WINDOWS = ROOT / "runtime" / "jarvis_atalho.lnk"
 
 # --- Atalho de inicialização automática ---
 ATALHO_WINDOWS = ROOT / "runtime" / "jarvis_atalho.lnk"
@@ -108,18 +109,44 @@ def narrador_rodando():
     return processo_vivo(NARRADOR_PID)
 
 
-def tts_ativo():
-    """True se houver processo vox_audio.py falar em execucao."""
+def _linhas_log():
     try:
-        out = subprocess.run(
-            ["tasklist", "/FI", "IMAGENAME eq python.exe", "/NH"],
-            capture_output=True, creationflags=_NO_CONSOLE, text=True, timeout=15).stdout
-        for linha in out.splitlines():
-            if "vox_audio.py" in linha and "falar" in linha:
-                return True
+        if LOG_NARRADOR.exists():
+            return LOG_NARRADOR.read_text(encoding="utf-8", errors="replace").splitlines()
     except Exception:
         pass
-    return False
+    return []
+
+
+def _ts_log(linha):
+    m = re.match(r"\[([\dT:.+-]+)\]\s*(.*)", linha)
+    if not m:
+        return None, linha
+    try:
+        return datetime.fromisoformat(m.group(1)), m.group(2)
+    except ValueError:
+        return None, linha
+
+
+def tts_ativo():
+    """True se o narrador estiver falando agora (ultima 'falando' sem falha apos, janela ~120s)."""
+    agora = datetime.now()
+    ultimo_falando = None
+    falha_depois = False
+    for linha in _linhas_log():
+        ts, resto = _ts_log(linha)
+        if ts is None:
+            continue
+        rk = resto.lower()
+        if "falando (" in rk:
+            ultimo_falando = ts
+            falha_depois = False
+        elif "speechpipeline falhou" in rk or "falha de voz" in rk:
+            if ultimo_falando is not None and ts > ultimo_falando:
+                falha_depois = True
+    if ultimo_falando is None or falha_depois:
+        return False
+    return (agora - ultimo_falando).total_seconds() <= 120
 
 
 def mic_ativo():
@@ -174,11 +201,45 @@ def _thread(target, *args):
     threading.Thread(target=target, args=args, daemon=True).start()
 
 
+# Speech Pipeline — fala direta (feedback de voz do próprio widget)
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+_WIDGET_SPEECH = None
+WIDGET_SPEECH_AVAILABLE = False
+try:
+    from tts import SpeechPipeline
+    _WIDGET_SPEECH = SpeechPipeline()
+    WIDGET_SPEECH_AVAILABLE = True
+except ImportError as e:
+    print(f"[widget] SpeechPipeline não disponível: {e}", flush=True)
+
+
+def _falar_direto_worker(texto: str):
+    try:
+        if WIDGET_SPEECH_AVAILABLE and _WIDGET_SPEECH:
+            try:
+                _WIDGET_SPEECH.speak(texto, block=True)
+                return
+            except Exception as e:
+                print(f"[widget] SpeechPipeline falhou: {e}", flush=True)
+        subprocess.run([sys.executable, str(VOX), "falar", texto],
+                       cwd=str(ROOT), timeout=90, check=False,
+                       creationflags=_NO_CONSOLE)
+    except Exception as e:
+        print(f"[widget] falha de voz direta: {e}", flush=True)
+
+
+def falar_direto(texto: str):
+    _thread(_falar_direto_worker, texto)
+
+
 def cmd_voz(ativar: bool):
     try:
         if ativar:
             subprocess.run([sys.executable, str(JARVIS_AUDIO), "on"],
                            cwd=str(ROOT), capture_output=True, creationflags=_NO_CONSOLE, timeout=35)
+            falar_direto("Voz ativada")
         else:
             subprocess.run([sys.executable, str(JARVIS_AUDIO), "stop"],
                            cwd=str(ROOT), capture_output=True, creationflags=_NO_CONSOLE, timeout=20)
@@ -190,10 +251,19 @@ def cmd_voz(ativar: bool):
 
 def cmd_interromper_fala():
     try:
+        PARAR_FALA.write_text(str(int(time.time())), encoding="utf-8")
+    except Exception as e:
+        print(f"[widget] erro parar_fala.flag: {e}", flush=True)
+    try:
         subprocess.run([sys.executable, str(JARVIS_AUDIO), "stop"],
                        cwd=str(ROOT), capture_output=True, creationflags=_NO_CONSOLE, timeout=20)
     except Exception as e:
         print(f"[widget] erro stop: {e}", flush=True)
+    try:
+        PARAR_FALA.unlink(missing_ok=True)
+    except Exception as e:
+        print(f"[widget] erro limpar flag: {e}", flush=True)
+    falar_direto("Voz desativada")
 
 
 def cmd_mic(ativar: bool):
@@ -224,6 +294,18 @@ def cmd_mic(ativar: bool):
         except Exception:
             pass
         _atomic_write(MIC_ESTADO, {"ativo": False, "timestamp": int(time.time())})
+
+
+def _reconciliar_mic():
+    """Limpa estado órfão de microfone (ativo sem processo vivo)."""
+    if MIC_ESTADO.exists():
+        try:
+            d = json.loads(MIC_ESTADO.read_text(encoding="utf-8"))
+            if d.get("ativo", False) and not mic_ativo():
+                _atomic_write(MIC_ESTADO, {"ativo": False, "timestamp": int(time.time())})
+                MIC_PID.unlink(missing_ok=True)
+        except Exception:
+            pass
 
 
 # ============================================================
@@ -326,7 +408,12 @@ def _carregar_geo() -> dict:
 
 
 def _minimizar(win):
-    """Minimiza a janela. Tenta via pywebview, fallback para hide/show com estado persistido."""
+    """Minimiza a janela. Tenta win.minimize() nativo, depois JS; fallback hide com estado."""
+    try:
+        win.minimize()
+        return
+    except Exception:
+        pass
     try:
         # Tenta minimizar via JavaScript (pywebview API)
         win.evaluate_js("window.pywebview.minimize()")
@@ -360,7 +447,6 @@ def _guardar_geo(win):
         win.evaluate_js("""
           (function(){
             var x=window.screenX||0,y=window.screenY||0,w=window.innerWidth||0,h=window.innerHeight||0;
-            window.pywebview=null;  /* noop de compat */
             var st=window.__sempre_topo||True;
             localStorage.setItem('jarvis_geo', JSON.stringify({x:x,y:y,width:w,height:h,sempre_topo:st}));
           })();
@@ -595,6 +681,7 @@ def main() -> int:
     global _janela_global
     import webview
 
+    _reconciliar_mic()
     view = _build_view()
     geo = _carregar_geo()
     w = int(geo.get("width", DEFAULT_W))

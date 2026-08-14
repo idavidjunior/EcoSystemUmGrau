@@ -118,17 +118,22 @@ class EdgeTTSEngine:
         Útil para contexts não-async (como vox_audio.py).
         """
         try:
-            loop = asyncio.get_event_loop()
-            if loop.is_running():
-                # Já estamos num event loop — usa run_in_executor
+            try:
+                loop = asyncio.get_running_loop()
+            except RuntimeError:
+                loop = None
+
+            if loop is not None:
+                # Já estamos dentro de um event loop — roda num executor
+                # para não bloquear o loop (get_event_loop em thread sem
+                # loop lança "no current event loop" no Python 3.12).
                 import concurrent.futures
-                with concurrent.futures.ThreadPoolExecutor() as pool:
-                    future = pool.submit(
-                        asyncio.run, self.synthesize(text)
-                    )
+                with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
+                    future = pool.submit(asyncio.run, self.synthesize(text))
                     return future.result(timeout=TTS_TIMEOUT_SECONDS)
             else:
-                return loop.run_until_complete(self.synthesize(text))
+                # Sem loop na thread atual — asyncio.run cria e fecha um loop novo.
+                return asyncio.run(self.synthesize(text))
         except Exception as e:
             raise TTSynthesisError(f"Falha síncrona TTS: {e}")
 

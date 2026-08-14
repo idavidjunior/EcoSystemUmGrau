@@ -28,8 +28,12 @@ Fluxo:
     Áudio (bytes ou base64)
 """
 import asyncio
+import base64
+import ctypes
 import logging
+import os
 import tempfile
+import time
 from pathlib import Path
 from typing import AsyncGenerator, List, Optional, Tuple, Union
 
@@ -262,7 +266,6 @@ class SpeechPipeline:
             raise TextTooShortError("Texto vazio após processamento")
 
         audio = self._synthesize_async_bytes(texto)
-        import base64
         return base64.b64encode(audio).decode()
 
     def save(self, text: str, path: str) -> bool:
@@ -310,12 +313,15 @@ class SpeechPipeline:
 
         return True
 
-    def speak(self, text: str, block: bool = True) -> bool:
+    def speak(self, text: str, block: bool = True, stop_flag: Optional[Path] = None) -> bool:
         """Sintetiza e toca o áudio (para uso local no PC). Com cache para baixa latência.
 
         Args:
             text: Texto a ser falado.
             block: Se True, bloqueia até terminar de falar.
+            stop_flag: Caminho de arquivo-flag. Se existir durante a fala, interrompe
+                a reprodução imediatamente (fecha o alias MCI) e retorna False.
+                O flag é consumido (removido) pelo pipeline ao detectar.
 
         Returns:
             True se reproduziu com sucesso.
@@ -328,7 +334,12 @@ class SpeechPipeline:
         cache_dir.mkdir(parents=True, exist_ok=True)
         cache_file = cache_dir / f"{cache_key}.mp3"
         
-        mp3_path = Path(tempfile.gettempdir()) / "speech_pipeline_fala.mp3"
+        # Arquivo temporário ÚNICO por chamada — evita [WinError 32] quando
+        # dois processos (ex.: narrador + widget) falam ao mesmo tempo no
+        # mesmo caminho fixo %TEMP%\speech_pipeline_fala.mp3.
+        _fd, _tmp = tempfile.mkstemp(suffix=".mp3", prefix="speech_pipeline_")
+        os.close(_fd)
+        mp3_path = Path(_tmp)
         
         if cache_file.exists():
             # Cache hit — copia direto
@@ -362,6 +373,10 @@ class SpeechPipeline:
         alias = f"sp{int(time.time() * 1000)}"
         r = mci(f'open "{mp3_path}" type mpegvideo alias {alias}', None, 0, 0)
         if r != 0:
+            try:
+                mp3_path.unlink(missing_ok=True)
+            except Exception:
+                pass
             return False
 
         mci(f'play {alias}', None, 0, 0)
@@ -373,10 +388,39 @@ class SpeechPipeline:
                 duracao_ms = int(buf.value)
             except ValueError:
                 duracao_ms = 0
-            time.sleep(duracao_ms / 1000 + 0.3 if duracao_ms > 0 else 1.0)
+            if stop_flag is None:
+                time.sleep(duracao_ms / 1000 + 0.3 if duracao_ms > 0 else 1.0)
+            else:
+                total_s = (duracao_ms / 1000 + 0.3) if duracao_ms > 0 else 1.0
+                final = time.monotonic() + total_s
+                while time.monotonic() < final:
+                    if stop_flag.exists():
+                        try:
+                            stop_flag.unlink(missing_ok=True)
+                        except Exception:
+                            pass
+                        try:
+                            mci(f'stop {alias}', None, 0, 0)
+                        except Exception:
+                            pass
+                        try:
+                            mci(f'close {alias}', None, 0, 0)
+                        except Exception:
+                            pass
+                        try:
+                            mp3_path.unlink(missing_ok=True)
+                        except Exception:
+                            pass
+                        return False
+                    time.sleep(0.05)
 
         try:
             mci(f'close {alias}', None, 0, 0)
+        except Exception:
+            pass
+
+        try:
+            mp3_path.unlink(missing_ok=True)
         except Exception:
             pass
 

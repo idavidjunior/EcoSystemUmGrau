@@ -264,6 +264,8 @@
     274,
     275,
     276,
+    277,
+    278,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -1258,6 +1260,8 @@
     "decisao",
     "decisao",
     "decisao",
+    "erro",
+    "erro",
     "erro",
     "nota",
     "nota",
@@ -2254,6 +2258,8 @@
     "gancho ler fechado: goalanalyzer.analyze() gera analysis['spec_markdown'] via to_spec_markdown(tags=['ler','goal-analysis']); orchestrator._persist_spec persiste em ecosystemumgrau/specs/ via config['specs']={'enabled':true,'dir':'../specs'} com fallback base_dir/specs e escrita atomica. validado com 31 testes unittest + valida_specs.py exit 0. commit f7b3c418. goal tags analysis enabled fechado markdown decisao",
     "ciclo completo da camada de specs do ler validado sem missao autonoma: lerkernel real + orchestrator real + config specs dir temporario; analyze(goal) gerou spec com 12 secoes preenchidas e _persist_spec gravou arquivo .spec.md real com id spec- e sem _definir_. decisao: nao rodar missao ler real pois auto_commit do config.json violaria o gate (persistencia.ps1). lacuna 2 aplicada (conteudo real via domain detect, entradas/saidas, casos de borda, testes relacionados); 31 testes ok; valida_specs.py ok. autonoma camada validado relacionados completo ciclo decisao",
     "runtime_boot.py chamava scripts/adb_scan.py com caminho relativo ao cwd; quando o boot rodava fora da raiz do ecosystemumgrau, o arquivo não era encontrado. corrigido usando os.path.join(scripts, 'adb_scan.py') + sys.executable. boot agora roda de qualquer diretório. encontrado era não arquivo ecosystemumgrau raiz erro",
+    "o profile.ps1 em documents\\windowspowershell tinha start-process com argumentlist com aspas duplas aninhadas sem escape, quebrando o comando em runtime e disparando aviso toda vez que o powershell abria. corrigido escapando as aspas internas: -argumentlist \"-noprofile -executionpolicy bypass -file `\"$script`\"\". parsing validado ok. abria toda disparando runtime comando quebrando erro",
+    "causa raiz tripla do tts corrigida e validada: (1) tts/edge_tts_engine.py synthesize_sync usava asyncio.get_event_loop() em loop sem running (fix: get_running_loop + threadpoolexecutor); (2) faltava import ctypes em speech_pipeline.py; (3) faltava import time. \"parar fala\" implementado via flag file runtime/parar_fala.flag + polling em speak() (mci é por processo, stop all do widget não para devices do narrador). widget corrigido: dup atalho_windows removida, tts_ativo() agora parseia log em vez de sempre false, minimize nativo, reconciliação de mic no startup. órfão mic_estado.json limpo. py_compile ok nos 3 arquivos. startup reconciliação nativo validada minimize false erro",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -6631,12 +6637,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 88311,
-  "count": 993,
-  "count_mem": 264,
+  "vocab_size": 88427,
+  "count": 995,
+  "count_mem": 266,
   "count_notas": 729,
   "fingerprint": [
-    264,
+    266,
     [
       1786664682.3,
       1786664630.3,
