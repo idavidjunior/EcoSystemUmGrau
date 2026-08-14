@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-13T20:44:28.413624",
+  "last_updated": "2026-08-13T23:13:00.128382",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -3082,6 +3082,13 @@
       "extracted_at": "2026-08-13T16:46:35.013762",
       "merged_count": 2,
       "merged_at": "2026-08-13T16:47:00.424473"
+    },
+    {
+      "source": "opencode",
+      "title": "Parar Fala — corrida da flag parar_fala.flag",
+      "domain": "general",
+      "body": "---\ntipo: erro\ntags: [widget, narrador, parar-fala, flag, corrida, tts, jarvis, speech-pipeline]\ndata: 2026-08-13\ncontexto: Botão \"Parar Fala\" do widget Jarvis não parava a narração; usuário relatou que Jarvis continuava falando após acionar o botão.\ndecisao: cmd_interromper_fala (scripts/widget_controle_jarvis.py) passou a manter a flag runtime/parar_fala.flag por 1.5s antes de apagá-la, e removeu o feedback de áudio \"Voz desativada\" que era falado logo após a parada.\nimpacto: Narrador em proce",
+      "extracted_at": "2026-08-13T23:12:25.757115"
     }
   ],
   "heuristics": [

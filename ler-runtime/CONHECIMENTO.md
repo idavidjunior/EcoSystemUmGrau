@@ -1,11 +1,11 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-13T20:44:28.765076
+**Exportado em:** 2026-08-13T23:13:00.852891
 **Projetos:** 4
 **Padroes Tecnicos:** 249
 **Decisoes:** 66
 **Bug Fixes:** 52
-**Padroes Cognitivos:** 58
+**Padroes Cognitivos:** 59
 **Heuristicas:** 32
 **Frameworks:** 10
 **Missoes Aprendidas:** 134
@@ -1638,6 +1638,18 @@ decisao: A causa raiz era que o opencode.jsonc deployado em ~/.config/opencode
 continha `{{USERPROFILE}}` literal nos caminhos (o opencode não expande esse
 plac
 
+### Parar Fala — corrida da flag parar_fala.flag
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [widget, narrador, parar-fala, flag, corrida, tts, jarvis, speech-pipeline]
+data: 2026-08-13
+contexto: Botão "Parar Fala" do widget Jarvis não parava a narração; usuário relatou que Jarvis continuava falando após acionar o botão.
+decisao: cmd_interromper_fala (scripts/widget_controle_jarvis.py) passou a manter a flag runtime/parar_fala.flag por 1.5s antes de apagá-la, e removeu o feedback de áudio "Voz desativada" que era falado logo após a parada.
+impacto: Narrador em proce
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -1732,7 +1744,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-13T20:44:28.413624
+**Ultima atualizacao:** 2026-08-13T23:13:00.128382
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

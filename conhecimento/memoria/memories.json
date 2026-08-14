@@ -5042,5 +5042,25 @@
     "access_count": 0,
     "created_at": "2026-08-13T22:53:45.016872",
     "last_accessed": "2026-08-13T22:53:45.016872"
+  },
+  {
+    "id": 282,
+    "kind": "erro",
+    "task": "Correcao Parar Fala - corrida da flag parar_fala.flag",
+    "summary": "O botao Parar Fala do widget Jarvis nao parava a fala. Causa raiz: cmd_interromper_fala (widget_controle_jarvis.py) gravava e apagava a flag runtime/parar_fala.flag na mesma funcao (microssegundos), enquanto o SpeechPipeline.speak (narrador_desktop.py, em processo) so checa a flag a cada 0.05s - corrida classica. Alem disso, jarvis_audio.py stop so mata subprocessos vox_audio.py falar, nao o MCI em processo do narrador. E o widget falava 'Voz desativada' apos parar, reforcando a percepcao de que continuava falando. Correcao: manter a flag por 1.5s antes de apagar (narrador a consome via unlink), e remover o feedback de audio.",
+    "project": "",
+    "tags": [
+      "falando",
+      "continuava",
+      "percepcao",
+      "parava",
+      "reforcando",
+      "apos"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-13T23:11:37.002391",
+    "last_accessed": "2026-08-13T23:11:37.002391"
   }
 ]

@@ -259,11 +259,16 @@ def cmd_interromper_fala():
                        cwd=str(ROOT), capture_output=True, creationflags=_NO_CONSOLE, timeout=20)
     except Exception as e:
         print(f"[widget] erro stop: {e}", flush=True)
+    # Mantém a flag por 1.5s: o narrador checa a flag a cada 0.05s durante a
+    # fala (SpeechPipeline.speak block=True, stop_flag=PARAR_FALA) e a consome
+    # via unlink ao detectar. Apagar imediatamente causava corrida — a flag
+    # sumia antes do polling e a fala continuava.
+    time.sleep(1.5)
     try:
         PARAR_FALA.unlink(missing_ok=True)
     except Exception as e:
         print(f"[widget] erro limpar flag: {e}", flush=True)
-    falar_direto("Voz desativada")
+    print("[widget] voz interrompida", flush=True)
 
 
 def cmd_mic(ativar: bool):

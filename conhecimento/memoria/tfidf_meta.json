@@ -269,6 +269,7 @@
     279,
     280,
     281,
+    282,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -1269,6 +1270,7 @@
     "erro",
     "episodio",
     "decisao",
+    "erro",
     "nota",
     "nota",
     "nota",
@@ -2269,6 +2271,7 @@
     "corrigido [winerror 32] (arquivo em uso) no speechpipeline.speak(): usava caminho fixo speech_pipeline_fala.mp3 em tempdir, compartilhado por tts concorrente (widget + narrador + vox_audio), causando colisao. fix: mkstemp unico + unlink(missing_ok=true) nos 3 pontos de saida. validado: 2 processos paralelos imprimem speak: true sem stderr; gatilhos reais do widget (voz ativada / voz desativada) ok via harness isolado; estado de narracao restaurado; widget reiniciado pid 4236 com logs de startup limpos. colisao causando audio vox narrador isolado erro",
     "instalado o mimocode v0.1.12 (assistente de ia de terminal da xiaomi, fork do opencode) via install.ps1 oficial em %userprofile%\\.mimocode\\bin, path do usuário atualizado. repo: xiaomimimo/mimo-code. install opencode fork atualizado usuário xiaomi episodio",
     "criado scripts/voz_guarda.py como guardiao de resiliencia contra regressao de paths temp fixos de audio ([winerror 32]): scan estatico (regex gettempdir/temp + audio literal) em scripts/tts/bridge/mcp, exige mkstemp no speech_pipeline, limpa orfaos antigos do temp; integrado ao preflight como secao [9] e ao vigilante.ps1 como timer de 30min. baseline 0 violacoes em 90 arquivos. antigos orfaos limpa pipeline speech mkstemp decisao",
+    "o botao parar fala do widget jarvis nao parava a fala. causa raiz: cmd_interromper_fala (widget_controle_jarvis.py) gravava e apagava a flag runtime/parar_fala.flag na mesma funcao (microssegundos), enquanto o speechpipeline.speak (narrador_desktop.py, em processo) so checa a flag a cada 0.05s - corrida classica. alem disso, jarvis_audio.py stop so mata subprocessos vox_audio.py falar, nao o mci em processo do narrador. e o widget falava 'voz desativada' apos parar, reforcando a percepcao de que continuava falando. correcao: manter a flag por 1.5s antes de apagar (narrador a consome via unlink), e remover o feedback de audio. falando continuava percepcao parava reforcando apos erro",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -6646,12 +6649,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 88573,
-  "count": 998,
-  "count_mem": 269,
+  "vocab_size": 88642,
+  "count": 999,
+  "count_mem": 270,
   "count_notas": 729,
   "fingerprint": [
-    269,
+    270,
     [
       1786664682.3,
       1786664630.3,
