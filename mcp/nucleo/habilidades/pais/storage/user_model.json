@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "facts": {},
+  "preferences": {
+    "respostas_diretas": 0.5,
+    "explicacoes_tecnicas": 0.55,
+    "preferencia_arquitetura": 0.5,
+    "preferencia_exemplos": 0.5,
+    "preferencia_antecipar_problemas": 0.5,
+    "preferencia_solucoes_praticas": 0.5,
+    "preferencia_aprofundamento": 0.5,
+    "preferencia_formatos_estruturados": 0.5,
+    "tolerancia_explicacoes": 0.5,
+    "profundidade_desejada": 0.5
+  },
+  "patterns": {
+    "padrao.imperativo": {
+      "key": "padrao.imperativo",
+      "value": "prefere pedidos de acao",
+      "confidence": "LOW_CONFIDENCE",
+      "status": "UNCONFIRMED",
+      "source": "interaction",
+      "created_at": "2026-08-14T09:34:11+00:00",
+      "updated_at": "2026-08-14T09:34:11+00:00",
+      "frequency": 1,
+      "evidence_count": 1,
+      "last_confirmed": "",
+      "expiration_policy": "adaptive"
+    },
+    "padrao.pede_esclarecimento": {
+      "key": "padrao.pede_esclarecimento",
+      "value": "pergunta para entender",
+      "confidence": "LOW_CONFIDENCE",
+      "status": "UNCONFIRMED",
+      "source": "interaction",
+      "created_at": "2026-08-14T09:34:11+00:00",
+      "updated_at": "2026-08-14T09:34:11+00:00",
+      "frequency": 1,
+      "evidence_count": 1,
+      "last_confirmed": "",
+      "expiration_policy": "adaptive"
+    }
+  },
+  "projects": {},
+  "goals": {},
+  "habits": {},
+  "inferences": {},
+  "predictions": {},
+  "linguistic_profile": {
+    "avg_message_length": 82,
+    "avg_word_count": 14,
+    "sample_count": 1,
+    "abbreviation_count": 0,
+    "technical_word_count": 0,
+    "formality": 0.52,
+    "uses_abbreviations": false,
+    "technical_level": "unknown",
+    "last_sample": "Deivid, crie a funcionalidade X e depois me explique como funciona, de forma curta"
+  },
+  "reasoning_profile": {
+    "decomposes": 1,
+    "seeks_confirmation": 0,
+    "asks_factual": 1,
+    "asks_viability": 0,
+    "asks_decision": 0,
+    "gives_correction": 0,
+    "gives_acceptance": 0,
+    "explores_hypotheses": 0,
+    "seeks_examples": 0,
+    "sample_count": 1,
+    "style": {
+      "decomposes_problems": 1.0,
+      "seeks_confirmation": 0.0,
+      "asks_factual": 1.0,
+      "asks_viability": 0.0,
+      "asks_decision": 0.0,
+      "corrects_frequently": 0.0,
+      "accepts_quickly": 0.0,
+      "explores_hypotheses": 0.0,
+      "seeks_examples": 0.0
+    }
+  },
+  "response_preferences": {},
+  "last_interaction": "2026-08-14T09:34:11+00:00",
+  "interactions": [
+    {
+      "ts": "2026-08-14T09:34:11+00:00",
+      "text": "Deivid, crie a funcionalidade X e depois me explique como funciona, de forma curta",
+      "intent": "solicitar_implementacao",
+      "length": 82,
+      "word_count": 14
+    }
+  ],
+  "topic_frequency": {}
+}

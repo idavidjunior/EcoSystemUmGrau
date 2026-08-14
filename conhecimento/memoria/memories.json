@@ -5102,5 +5102,25 @@
     "access_count": 0,
     "created_at": "2026-08-14T06:07:24.718747",
     "last_accessed": "2026-08-14T06:07:24.718747"
+  },
+  {
+    "id": 285,
+    "kind": "decisao",
+    "task": "PAIS implementado (21 modulos)",
+    "summary": "Sistema de aprendizado adaptativo PAIS criado em mcp/nucleo/habilidades/pais com 21 modulos: user model e epistemic model separados, anti-bajulacao, anti-alucinacao, integridade epistemica. 18 testes passando. Regra de ouro: personaliza a forma, nunca a verdade.",
+    "project": "",
+    "tags": [
+      "habilidades",
+      "nucleo",
+      "epistemica",
+      "mcp",
+      "criado",
+      "integridade"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-14T06:35:12.521150",
+    "last_accessed": "2026-08-14T06:35:12.521150"
   }
 ]

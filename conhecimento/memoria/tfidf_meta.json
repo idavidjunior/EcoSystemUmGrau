@@ -272,6 +272,7 @@
     282,
     283,
     284,
+    285,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -1277,6 +1278,7 @@
     "decisao",
     "erro",
     "padrao",
+    "decisao",
     "decisao",
     "nota",
     "nota",
@@ -2284,6 +2286,7 @@
     "o botao parar fala do widget jarvis nao parava a fala. causa raiz: cmd_interromper_fala (widget_controle_jarvis.py) gravava e apagava a flag runtime/parar_fala.flag na mesma funcao (microssegundos), enquanto o speechpipeline.speak (narrador_desktop.py, em processo) so checa a flag a cada 0.05s - corrida classica. alem disso, jarvis_audio.py stop so mata subprocessos vox_audio.py falar, nao o mci em processo do narrador. e o widget falava 'voz desativada' apos parar, reforcando a percepcao de que continuava falando. correcao: manter a flag por 1.5s antes de apagar (narrador a consome via unlink), e remover o feedback de audio. falando continuava percepcao parava reforcando apos erro",
     "removido ler-runtime/conhecimento.md (137kb, historico completo de tarefas antigas) da lista instructions do config/opencode.jsonc (template e deployado). causava poluicao de contexto em toda sessao com relatorios de tarefas antigas. ficou acessivel sob demanda via mcp de busca. state.json limpo com backup. opencode config instructions antigas lista relatorios padrao",
     "o usuario pediu que o agente avise, em uma frase curta e sem repeticao cansativa, qual habilidade/skill esta sendo chamada quando ela for usada (ex: auditoria-de-codigo). registro de preferencia de comunicacao do usuario david. chamada habilidade cansativa repeticao usada curta decisao",
+    "sistema de aprendizado adaptativo pais criado em mcp/nucleo/habilidades/pais com 21 modulos: user model e epistemic model separados, anti-bajulacao, anti-alucinacao, integridade epistemica. 18 testes passando. regra de ouro: personaliza a forma, nunca a verdade. habilidades nucleo epistemica mcp criado integridade decisao",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -6679,12 +6682,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 88850,
-  "count": 1004,
-  "count_mem": 272,
+  "vocab_size": 88888,
+  "count": 1005,
+  "count_mem": 273,
   "count_notas": 732,
   "fingerprint": [
-    272,
+    273,
     [
       1786677051.6,
       1786676948.7,
