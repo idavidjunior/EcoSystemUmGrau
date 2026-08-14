@@ -718,34 +718,58 @@ async def _http_async(method, path, data=None, timeout=120):
 
 async def _ensure_serve_global():
     """Versão no nível do módulo de Cliente._ensure_serve: garante um
-    `opencode serve` saudável na porta configurada (com failover para a reserva)."""
+    `opencode serve` saudável na porta configurada (com failover para a reserva).
+    Verifica saúde real via request HTTP, não apenas porta aberta."""
     for porta in (PORTA_SERVE, PORTA_SERVE_RESERVA):
+        # Tenta conectar na porta
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.settimeout(1)
             r = s.connect_ex(("127.0.0.1", porta))
             s.close()
             if r == 0:
-                return True
+                # Porta aberta - verifica saúde real com request HTTP
+                if await _check_serve_health(porta):
+                    return True
+                logger.warning(f"porta {porta} aberta mas serve não saudável")
         except Exception:
             pass
+        # Inicia serve se não respondeu
+        logger.info(f"iniciando serve na porta {porta}...")
         proc = await asyncio.create_subprocess_exec(
             BIN, "serve", "--port", str(porta),
             cwd=WORKDIR,
-            env={**os.environ},
+            env={**os.environ, "OPENCODE_SERVER_PASSWORD": SERVER_PASS},
             stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.DEVNULL)
-        for _ in range(15):
+        # Aguarda serve ficar saudável (health check real)
+        for _ in range(30):
             await asyncio.sleep(1)
-            try:
-                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                s.settimeout(1)
-                r = s.connect_ex(("127.0.0.1", porta))
-                s.close()
-                if r == 0:
-                    return True
-            except Exception:
-                pass
+            if await _check_serve_health(porta):
+                logger.info(f"serve na porta {porta} saudável")
+                return True
+        logger.warning(f"serve na porta {porta} não ficou saudável a tempo")
     return False
+
+
+async def _check_serve_health(porta: int) -> bool:
+    """Verifica se o serve está realmente saudável fazendo request HTTP real."""
+    try:
+        import urllib.request
+        creds = base64.b64encode(f"{SERVER_USER}:{SERVER_PASS}".encode()).decode()
+        url = f"http://127.0.0.1:{porta}/api/health"
+        req = urllib.request.Request(url, headers={"Authorization": f"Basic {creds}"})
+        with urllib.request.urlopen(req, timeout=3) as resp:
+            return resp.getcode() == 200
+    except Exception:
+        try:
+            # Fallback: tenta endpoint /session se /api/health não existir
+            creds = base64.b64encode(f"{SERVER_USER}:{SERVER_PASS}".encode()).decode()
+            url = f"http://127.0.0.1:{porta}/session"
+            req = urllib.request.Request(url, headers={"Authorization": f"Basic {creds}"})
+            with urllib.request.urlopen(req, timeout=3) as resp:
+                return resp.getcode() == 200
+        except Exception:
+            return False
 
 
 MAX_PROMPT = 80000
@@ -817,9 +841,10 @@ class Cliente:
             proc = await asyncio.create_subprocess_exec(
                 BIN, "serve", "--port", str(porta),
                 cwd=WORKDIR,
-                env={**os.environ},
+                env={**os.environ, "OPENCODE_SERVER_PASSWORD": SERVER_PASS},
                 stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.DEVNULL)
-            for _ in range(15):
+            # Aguarda serve ficar saudável (health check real)
+            for _ in range(30):
                 await asyncio.sleep(1)
                 if await self._serve_ok(porta):
                     logger.info(f"serve started on {porta}")
@@ -828,19 +853,19 @@ class Cliente:
         return False
 
     async def _serve_ok(self, porta):
-        """True se a porta responde (servidor de pé)."""
+        """True se o serve está saudável (health check real), não apenas porta aberta."""
+        # Primeiro verifica se a porta está aberta
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.settimeout(1)
             r = s.connect_ex(("127.0.0.1", porta))
             s.close()
-            return r == 0
+            if r != 0:
+                return False
         except Exception:
-            try:
-                s.close()
-            except Exception:
-                pass
             return False
+        # Porta aberta - verifica saúde real via HTTP
+        return await _check_serve_health(porta)
 
     async def _limpar_zumbi(self, porta):
         """Detecta socket órfão (porta LISTENING sem processo dono vivo) e tenta
@@ -1944,29 +1969,47 @@ async def servir():
         # Warm-up automatico do LLM em background (usa _http_async/urllib,
         # mesmo cliente da cadeia principal — sem dependencia de aiohttp)
         async def warmup():
-            try:
-                logger.info("warm-up: iniciando requisicao para aquecer modelo...")
-                if not await _ensure_serve_global():
-                    logger.warning("warm-up: serve indisponivel")
+            max_tentativas = 3
+            for tentativa in range(1, max_tentativas + 1):
+                try:
+                    logger.info(f"warm-up: tentativa {tentativa}/{max_tentativas} para aquecer modelo...")
+                    if not await _ensure_serve_global():
+                        logger.warning("warm-up: serve indisponivel")
+                        if tentativa < max_tentativas:
+                            await asyncio.sleep(5 * tentativa)  # backoff
+                            continue
+                        return
+                    sess = await _http_async("POST", "/session", {"title": "warmup"}, timeout=30)
+                    if not sess:
+                        logger.warning("warm-up: falha ao criar sessao")
+                        if tentativa < max_tentativas:
+                            await asyncio.sleep(5 * tentativa)
+                            continue
+                        return
+                    sid = sess.get("id")
+                    if not sid:
+                        logger.warning("warm-up: sessao sem id")
+                        if tentativa < max_tentativas:
+                            await asyncio.sleep(5 * tentativa)
+                            continue
+                        return
+                    body = {"parts": [{"type": "text", "text": "Ola, apenas confirme que esta online em uma linha."}]}
+                    result = await _http_async("POST", f"/session/{sid}/message", body, timeout=120)
+                    if result:
+                        logger.info("warm-up: modelo aquecido com sucesso")
+                        return
+                    else:
+                        logger.warning("warm-up: resposta inesperada do serve")
+                        if tentativa < max_tentativas:
+                            await asyncio.sleep(5 * tentativa)
+                            continue
+                except asyncio.CancelledError:
                     return
-                sess = await _http_async("POST", "/session", {"title": "warmup"}, timeout=20)
-                if not sess:
-                    logger.warning("warm-up: falha ao criar sessao")
-                    return
-                sid = sess.get("id")
-                if not sid:
-                    logger.warning("warm-up: sessao sem id")
-                    return
-                body = {"parts": [{"type": "text", "text": "Ola, apenas confirme que esta online em uma linha."}]}
-                result = await _http_async("POST", f"/session/{sid}/message", body, timeout=90)
-                if result:
-                    logger.info("warm-up: modelo aquecido com sucesso")
-                else:
-                    logger.warning("warm-up: resposta inesperada do serve")
-            except asyncio.CancelledError:
-                pass
-            except Exception as e:
-                logger.warning(f"warm-up: erro (modelo pode estar frio): {e}")
+                except Exception as e:
+                    logger.warning(f"warm-up: erro na tentativa {tentativa}: {e}")
+                    if tentativa < max_tentativas:
+                        await asyncio.sleep(5 * tentativa)
+            logger.warning("warm-up: todas as tentativas falharam (modelo pode estar frio)")
 
         asyncio.create_task(warmup())
         await asyncio.Future()
