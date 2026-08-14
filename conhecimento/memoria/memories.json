@@ -5122,5 +5122,25 @@
     "access_count": 0,
     "created_at": "2026-08-14T06:35:12.521150",
     "last_accessed": "2026-08-14T06:35:12.521150"
+  },
+  {
+    "id": 286,
+    "kind": "decisao",
+    "task": "Jarvis: corrigido recitação de relatórios passados",
+    "summary": "Duas correções no jarvis_bridge.py: (1) MAX_PROMPT 28000→80000 para system prompt de 35.788 chars caber e histórico entrar controlado; (2) _get_session agora sempre cria sessão nova (título único) evitando acúmulo de histórico antigo no servidor opencode serve que fazia o modelo recitar relatórios passados não solicitados. Preflight aprovado.",
+    "project": "",
+    "tags": [
+      "solicitados",
+      "não",
+      "recitar",
+      "modelo",
+      "fazia",
+      "serve"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "access_count": 0,
+    "created_at": "2026-08-14T07:01:46.613724",
+    "last_accessed": "2026-08-14T07:01:46.613724"
   }
 ]

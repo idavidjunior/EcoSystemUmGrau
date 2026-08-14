@@ -1,9 +1,9 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-14T00:10:43.734730
+**Exportado em:** 2026-08-14T06:36:50.469544
 **Projetos:** 4
 **Padroes Tecnicos:** 249
-**Decisoes:** 66
+**Decisoes:** 67
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 59
 **Heuristicas:** 32
@@ -474,6 +474,15 @@ tags: [ler, specs, sdd, goal-analyzer, orchestrator, persistencia]
 data: 2026-08-13
 contexto: A camada de specs (SDD) do LER existia (specs/ com README.md e template.md) mas nao tinha geracao automatica a partir da analise de objetivo. O GoalAnalyzer.analyze() produzia o goal_spec mas nenhum markdown era persistido.
 decisao: Fechar o ciclo: GoalAnalyzer.analyze() agora gera analysis['spec_markdown'] = spec.to_spec_markdown(tags=['ler','goal-analysis']) logo apos goal_spec, e o 
+
+### pais
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [pais, adaptativo, integridade-epistemica, nucleo]
+data: 2026-08-14
+contexto: Implementacao do PAIS (Personal Adaptive Intelligence System) no nucleo do ecossistema, com 21 modulos de aprendizado adaptativo do usuario.
+decisao: Criar habilidade em mcp/nucleo/habilidades/pais com user model e epistemic model estritamente separados (storage/user_model.json vs storage/epistemic_model.json). Codigo heuristico determinístico em Python stdlib, sem LLM, fail-soft. Guardas anti-b
 
 
 ## Padroes Tecnicos
@@ -1744,7 +1753,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-14T00:10:43.635567
+**Ultima atualizacao:** 2026-08-14T06:36:50.346304
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

@@ -1,6 +1,6 @@
 # Decisoes
 
-**65 notas** conectadas a este hub.
+**66 notas** conectadas a este hub.
 
 
 ## Notas
@@ -39,6 +39,7 @@
 - [[motor-de-criticalidade-auto-organizada-e-avalanches-neurais]]
 - [[mudar-config-mcp-de-objeto-para-array-no-opencodejson]]
 - [[organizar-desktopcodigos-como-raiz-unica-de-projetos]]
+- [[pais]]
 - [[pontes-inter-cluster-cerebro-vivo-grafo]]
 - [[ponto-único-de-persistência-gate]]
 - [[pontuacao-ponderada-com-6-categorias-req-30-func-30-testes-1]]
