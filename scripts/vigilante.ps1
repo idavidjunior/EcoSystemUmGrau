@@ -454,5 +454,44 @@ $onOpencodeCache = {
 Register-ObjectEvent $opencodeCacheTimer "Elapsed" -Action $onOpencodeCache > $null
 $opencodeCacheTimer.Start()
 
+# ══════════════════════════════════════════════════════════════════════
+# EVOLUTION RADAR TIMER: auto-evolução curada (4h, permissão admin, pacotes)
+# ══════════════════════════════════════════════════════════════════════
+$evolutionRadarInterval = 14400000  # 4h (configurável)
+$evolutionRadarTimer = New-Object System.Timers.Timer
+$evolutionRadarTimer.Interval = $evolutionRadarInterval
+$evolutionRadarTimer.AutoReset = $true
+
+$onEvolutionRadar = {
+    # Permissão de administrador obrigatória
+    if (-not (Test-Path "$ecoDir\.evolution_admin_ok") -and $env:EVOLUTION_RADAR_ADMIN -ne "1") {
+        Write-Log "EVOLUTION RADAR: sem permissão admin (EVOLUTION_RADAR_ADMIN=1 ou .evolution_admin_ok), pulando."
+        return
+    }
+    Write-Log "EVOLUTION RADAR: iniciando ciclo (collect -> filter -> package)..."
+    try {
+        $out = python "$ecoDir\scripts\evolution_radar_collect.py" --full 2>&1 | Out-String
+        $out.Trim() | ForEach-Object { Write-Log "  $_" }
+
+        # Verifica se gerou pacote e notifica admin
+        $packDir = "$ecoDir\conhecimento\evolution-radar\pacotes"
+        if (Test-Path $packDir) {
+            $pack = Get-ChildItem $packDir -Filter "evolution-pack-*.json" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+            if ($pack) {
+                $packData = Get-Content $pack.FullName -Raw | ConvertFrom-Json -ErrorAction SilentlyContinue
+                if ($packData -and $packData.proposals) {
+                    $count = $packData.proposals.Count
+                    $msg = "Evolution Radar: pacote $($pack.BaseName) pronto com $count proposta(s). Aplicar?"
+                    Write-Log "EVOLUTION RADAR: $msg"
+                    # Notifica via bridge (TTS/texto)
+                    python "$ecoDir\scripts\jarvis_bridge.py" notify "$msg" 2>$null
+                }
+            }
+        }
+    } catch { Write-Log "EVOLUTION RADAR: erro: $_" }
+}
+Register-ObjectEvent $evolutionRadarTimer "Elapsed" -Action $onEvolutionRadar > $null
+$evolutionRadarTimer.Start()
+
 # Mantem vivo
 while ($true) { Start-Sleep -Seconds 10 }
