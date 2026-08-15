@@ -1,0 +1,56 @@
+[
+  {
+    "timestamp": "2026-08-15T11:31:23.031800",
+    "total_tests": 11,
+    "passed": 10,
+    "failed": 1,
+    "pass_rate": "90.9%",
+    "failures": [
+      {
+        "test": "memories.json valido",
+        "detail": "Nao encontrado",
+        "category": "integrity"
+      }
+    ],
+    "slowest_tests": [
+      {
+        "test": "Bridge WebSocket (porta 8765)",
+        "duration": 10.152332305908203
+      },
+      {
+        "test": "preflight_check.py",
+        "duration": 6.92296838760376
+      },
+      {
+        "test": "Bridge dados completos",
+        "duration": 6.794456481933594
+      }
+    ],
+    "recommendations": [
+      "Integridade comprometida: Nao encontrado"
+    ]
+  },
+  {
+    "timestamp": "2026-08-15T11:33:28.049041",
+    "total_tests": 11,
+    "passed": 11,
+    "failed": 0,
+    "pass_rate": "100.0%",
+    "failures": [],
+    "slowest_tests": [
+      {
+        "test": "Bridge WebSocket (porta 8765)",
+        "duration": 10.606445074081421
+      },
+      {
+        "test": "preflight_check.py",
+        "duration": 7.65737247467041
+      },
+      {
+        "test": "Bridge dados completos",
+        "duration": 6.737995147705078
+      }
+    ],
+    "recommendations": []
+  }
+]

@@ -280,6 +280,7 @@
     290,
     291,
     292,
+    293,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -1298,6 +1299,7 @@
     "padrao",
     "decisao",
     "preferencia",
+    "padrao",
     "padrao",
     "nota",
     "nota",
@@ -2318,6 +2320,7 @@
     "quando user clicava 'editar' num arquivo de despesas já salvo, o currentexpensefile era setado imediatamente. qualquer auto-save (clicar pendente/pago, editar descrição) gravava no arquivo original antes do usuario decidir 'atualizar' ou 'salvar como novo'. solução: separar em dois estados - editingexpensefile (arquivo sendo editado, sem auto-save) vs currentexpensefile (confirmado para auto-save, setado apenas no botao 'atualizar'). agora o original só e modificado quando usuario clica explicitamente em 'atualizar'. alta-confianca imediatamente era salvo setado novo salvar decisao",
     "padrao de conduta: quando o usuario pedir para o agente se inteirar de algo do ecossistema (ex: o dashboard, o estado, atualizacoes), o agente deve investigar sozinho e responder automaticamente o que encontrou, usando o que ja conhece do ecossistema, sem depender de o usuario dar contexto. tipo: verificar files/folders do projeto, ler estado do bridge, consultar memoria/git log e resumir. responder em pt-br, texto puro, conciso, apontando problemas concretos encontrados (ex: descompasso de protocolo) e oferecer solucao. auto ecossistema dashboard conduta inteirar alta-confianca contexto dar depender conhece usando encontrou preferencia",
     "dashboard web local implementado com http server (porta 8766) + websocket bridge (porta 8765). websockets 17.x process_request nao serve html corretamente. solucao: http.server stdlib separado. zero compilacao, zero npm. funcionou na primeira tentativa apos mudanca de abordagem. alta-confianca 8765 bridge websocket porta 8766 implementado padrao",
+    "kernel_testes.py validador automatico do ecossistema: bridge http/ws, scripts (memory_engine, preflight, sync_rules), dashboard html, integridade (constituicao, agents.md, memories.json). auto-aprende com resultados e gera recomendacoes. taxa 100% na primeira execucao. alta-confianca agents constituicao integridade html dashboard rules padrao",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -6743,12 +6746,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 89537,
-  "count": 1017,
-  "count_mem": 280,
+  "vocab_size": 89568,
+  "count": 1018,
+  "count_mem": 281,
   "count_notas": 737,
   "fingerprint": [
-    280,
+    281,
     [
       1786765588.4,
       1786765497.1,

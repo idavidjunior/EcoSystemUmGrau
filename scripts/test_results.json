@@ -1,0 +1,90 @@
+[
+  {
+    "name": "Bridge HTTP (porta 8766)",
+    "passed": true,
+    "detail": "HTTP 200",
+    "duration": 2.6506540775299072,
+    "category": "bridge",
+    "timestamp": "2026-08-15T11:33:02.536191"
+  },
+  {
+    "name": "Bridge WebSocket (porta 8765)",
+    "passed": true,
+    "detail": "Memorias=280",
+    "duration": 10.606445074081421,
+    "category": "bridge",
+    "timestamp": "2026-08-15T11:33:13.142636"
+  },
+  {
+    "name": "Bridge dados completos",
+    "passed": true,
+    "detail": "Campos: memory, vigilante, radar, voice, agents, mcp, logs",
+    "duration": 6.737995147705078,
+    "category": "bridge",
+    "timestamp": "2026-08-15T11:33:19.880631"
+  },
+  {
+    "name": "memory_engine.py",
+    "passed": true,
+    "detail": "Memories: 280 total, 280 active\n  erro: 50\n  decisao: 102\n  padrao: 104\n  episodio: 22\n  Carrinho pe",
+    "duration": 0.25003767013549805,
+    "category": "scripts",
+    "timestamp": "2026-08-15T11:33:20.130669"
+  },
+  {
+    "name": "preflight_check.py",
+    "passed": true,
+    "detail": "Exit=0",
+    "duration": 7.65737247467041,
+    "category": "scripts",
+    "timestamp": "2026-08-15T11:33:27.788042"
+  },
+  {
+    "name": "sync_rules.py audit",
+    "passed": true,
+    "detail": "OK",
+    "duration": 0.24199604988098145,
+    "category": "scripts",
+    "timestamp": "2026-08-15T11:33:28.030038"
+  },
+  {
+    "name": "Dashboard HTML features",
+    "passed": true,
+    "detail": "Features: titlebar, particles, glassmorphism, cmd-palette, sidebar, ws",
+    "duration": 0.0020170211791992188,
+    "category": "dashboard",
+    "timestamp": "2026-08-15T11:33:28.032055"
+  },
+  {
+    "name": "Dashboard layout responsivo",
+    "passed": true,
+    "detail": "Grid + Flexbox",
+    "duration": 0.0009963512420654297,
+    "category": "dashboard",
+    "timestamp": "2026-08-15T11:33:28.033051"
+  },
+  {
+    "name": "Constituicao existe",
+    "passed": true,
+    "detail": "Tamanho=58260",
+    "duration": 0.0009970664978027344,
+    "category": "integrity",
+    "timestamp": "2026-08-15T11:33:28.034048"
+  },
+  {
+    "name": "AGENTS.md existe",
+    "passed": true,
+    "detail": "Tamanho=53416",
+    "duration": 0.0010001659393310547,
+    "category": "integrity",
+    "timestamp": "2026-08-15T11:33:28.035048"
+  },
+  {
+    "name": "memories.json valido",
+    "passed": true,
+    "detail": "Entries=280",
+    "duration": 0.013992786407470703,
+    "category": "integrity",
+    "timestamp": "2026-08-15T11:33:28.049041"
+  }
+]
