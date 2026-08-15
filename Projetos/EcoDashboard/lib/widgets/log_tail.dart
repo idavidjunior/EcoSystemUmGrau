@@ -1,4 +1,5 @@
 // LogTail — Tail -f visual com auto-scroll, cores por nível, filtros
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../models/ecosystem_state.dart';
 import '../../theme/eco_theme.dart';
@@ -347,19 +348,15 @@ class _FilterChipSet extends StatelessWidget {
           child: Text('Filtrar $label', style: Theme.of(context).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600)),
         ),
         const PopupMenuDivider(),
-        ...options.map((opt) => CheckedPopupMenuItem<String>(
-          value: opt,
-          checked: selected.contains(opt),
-          child: Text(opt),
-          onTap: () {
-            final newSet = Set<String>.from(selected);
-            if (newSet.contains(opt)) {
-              newSet.remove(opt);
-            } else {
-              newSet.add(opt);
-            }
-            onChanged(newSet);
-          },
+        ...options.map((opt) => PopupMenuItem<Set<String>>(
+          value: selected.contains(opt) ? (selected..remove(opt)) : (selected..add(opt)),
+          child: Row(
+            children: [
+              if (selected.contains(opt)) const Icon(Icons.check, size: 18, color: EcoColors.primary),
+              const SizedBox(width: 8),
+              Text(opt),
+            ],
+          ),
         )),
       ],
     );

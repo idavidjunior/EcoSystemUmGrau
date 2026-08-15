@@ -50,7 +50,7 @@ class MemoryBar extends StatelessWidget {
             ),
           ),
         AnimatedContainer(
-          duration: widget.animate ? animationDuration : Duration.zero,
+          duration: animate ? animationDuration : Duration.zero,
           curve: Curves.easeOutCubic,
           height: height,
           decoration: BoxDecoration(
@@ -69,7 +69,7 @@ class MemoryBar extends StatelessWidget {
                 ),
                 // Confidence fill with gradient
                 AnimatedFractionallySizedBox(
-                  duration: widget.animate ? animationDuration : Duration.zero,
+                  duration: animate ? animationDuration : Duration.zero,
                   curve: Curves.easeOutCubic,
                   widthFactor: clampedConfidence,
                   child: Container(

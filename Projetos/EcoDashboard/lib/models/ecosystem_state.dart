@@ -2,6 +2,7 @@
 // Serialização JSON compatível com bridge/memory_engine
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 /// Estado geral do ecossistema (snapshot único do bridge)
 class EcosystemState {
@@ -209,10 +210,12 @@ class TimerStatus {
 
 enum ColorStatus { success, warning, error, info }
 
+enum RadarPhase { idle, collect, filter, package, apply, completed, error }
+
 /// Evolution Radar
 class RadarState {
   final bool adminEnabled;
-  final String phase; // 'idle', 'collect', 'filter', 'package', 'apply'
+  final RadarPhase phase;
   final int proposalsFound;
   final int proposalsValidated;
   final int packagesReady;
@@ -231,7 +234,10 @@ class RadarState {
 
   factory RadarState.fromJson(Map<String, dynamic> json) => RadarState(
     adminEnabled: json['admin_enabled'] ?? false,
-    phase: json['phase'] ?? 'idle',
+    phase: RadarPhase.values.firstWhere(
+      (e) => e.name == json['phase'],
+      orElse: () => RadarPhase.idle,
+    ),
     proposalsFound: json['proposals_found'] ?? 0,
     proposalsValidated: json['proposals_validated'] ?? 0,
     packagesReady: json['packages_ready'] ?? 0,
@@ -243,7 +249,7 @@ class RadarState {
 
   Map<String, dynamic> toJson() => {
     'admin_enabled': adminEnabled,
-    'phase': phase,
+    'phase': phase.name,
     'proposals_found': proposalsFound,
     'proposals_validated': proposalsValidated,
     'packages_ready': packagesReady,
@@ -486,11 +492,11 @@ class LogEntry {
 }
 
 /// Estado vazio/default para inicialização
-extension EcosystemStateDefaults on EcosystemState {
+class EcosystemStateDefaults {
   static EcosystemState empty() => EcosystemState(
     memory: const MemoryState(total: 0, active: 0, byKind: {}, byConfidence: {}, bySource: {}),
-    vigilante: const VigilanteState(running: false, pid: 0, timers: {}, lastSync: DateTime.now()),
-    radar: const RadarState(adminEnabled: false, phase: 'idle', proposalsFound: 0, proposalsValidated: 0, packagesReady: 0, nextRun: '', recentProposals: []),
+    vigilante: VigilanteState(running: false, pid: 0, timers: {}, lastSync: DateTime.now()),
+    radar: const RadarState(adminEnabled: false, phase: RadarPhase.idle, proposalsFound: 0, proposalsValidated: 0, packagesReady: 0, nextRun: '', recentProposals: []),
     voice: const VoiceState(sttActive: false, ttsPlaying: false, vadActive: false, inputLevel: 0, currentText: '', lastSpoken: ''),
     agents: [],
     projects: [],

@@ -273,8 +273,6 @@ class EcoTheme {
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         titleTextStyle: textTheme.bodyLarge?.copyWith(color: EcoColors.onSurface),
         subtitleTextStyle: textTheme.bodySmall?.copyWith(color: EcoColors.onSurfaceVariant),
-        leadingIconTheme: const IconThemeData(color: EcoColors.onSurfaceVariant),
-        trailingIconTheme: const IconThemeData(color: EcoColors.onSurfaceVariant),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
 
@@ -552,6 +550,7 @@ class EcoTheme {
       // Usar via: style: EcoTheme.monoStyle
       // bodyMedium.copyWith(fontFamily: fontFamilyMono, fontFeatures: [FontFeature.tabularFigures()])
     );
+  }
 
   /// Estilo monoespaçado para logs, IDs, código
   static TextStyle monoStyle({Color? color, double? fontSize}) => TextStyle(

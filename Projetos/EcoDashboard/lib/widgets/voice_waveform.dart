@@ -1,6 +1,7 @@
 // VoiceWaveform — Visualizador de áudio em tempo real (STT/TTS/VAD)
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import '../../models/ecosystem_state.dart';
 import '../../theme/eco_theme.dart';
 
 class VoiceWaveform extends StatefulWidget {

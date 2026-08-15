@@ -3,6 +3,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as ws_status;
 import '../models/ecosystem_state.dart';
@@ -45,7 +46,12 @@ class BridgeClient {
     _connectCompleter = Completer<void>();
     _disposed = false;
     _scheduleConnect();
-    return _connectCompleter!.future;
+    try {
+      return await _connectCompleter!.future;
+    } catch (e) {
+      _connectCompleter = null;
+      rethrow;
+    }
   }
 
   void _scheduleConnect() {
@@ -62,7 +68,8 @@ class BridgeClient {
     final uri = Uri.parse('ws://$host:$port/ws');
     try {
       _channel = WebSocketChannel.connect(uri);
-      _channel!.stream.listen(
+      final stream = _channel!.stream;
+      stream.listen(
         _onMessage,
         onError: _onError,
         onDone: _onDone,
@@ -74,6 +81,8 @@ class BridgeClient {
       _connectCompleter = null;
     } catch (e) {
       _onError(e);
+      _connectCompleter?.completeError(e);
+      _connectCompleter = null;
     }
   }
 
@@ -203,7 +212,11 @@ class BridgeClientProvider extends ChangeNotifier {
     _client.connectionStream.listen(_onConnection);
     _client.logStream.listen(_onLog);
     _client.errorStream.listen(_onError);
-    _client.connect();
+    // Connect asynchronously to avoid blocking constructor
+    _client.connect().catchError((e) {
+      // Connection failed silently, UI will show disconnected status
+      debugPrint('Bridge connection failed: $e');
+    });
   }
 
   void _onState(EcosystemState state) {

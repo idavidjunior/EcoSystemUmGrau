@@ -1,13 +1,11 @@
 {
-  "conexoes": 5,
-  "hoje": "2026-08-10",
+  "conexoes": 2,
+  "hoje": "2026-08-14",
   "saudacoes_hoje": [
-    "Bom dia, senhor. São cinco e trinta e três da manhã de segunda-feira, céu nublado e quatorze graus lá fora. Sistemas online e prontos para começarmos a semana.",
-    "De volta, Deivid. Voz reconectada, tudo continua do ponto onde paramos.",
-    "Voltou. Sistemas seguem quentes, é só falar.",
-    "De volta, senhor. A linha continua aberta.",
-    "Boa noite! Data e hora de agora: hoje em São Paulo/SP, na Capital, segunda-feira, 10 de agosto de 2026, 22:21. Clima atual: nublado, 13°C, umidade de 91%. Previsão para amanhã (terça-feira, 11/08): mínima de 13°C e máxima de 17°C, nublado. Estou online, com minha ponte de voz e o meu cérebro ativos. O que vamos fazer?"
+    "Boa noite, senhor! Data e hora de agora: hoje em São Paulo/SP, na Capital, sexta-feira, 14 de agosto de 2026, 23:01. Clima atual: nublado, 18°C, umidade de 91%. Previsão para amanhã (sábado, 15/08): mínima de 17°C e máxima de 27°C, garoa leve, chance de chuva de 52%. Saúde do sistema: celular com bateria em 66%, PC com memória em 94%, PC com disco C: em 92% de uso. Estou online, com minha ponte de voz e o meu cérebro ativos. Diga o que você precisa.",
+    "Conexão restabelecida. Estava aqui esperando."
   ],
-  "ultima_saudacao": "Boa noite! Data e hora de agora: hoje em São Paulo/SP, na Capital, segunda-feira, 10 de agosto de 2026, 22:21. Clima atual: nublado, 13°C, umidade de 91%. Previsão para amanhã (terça-feira, 11/08): mínima de 13°C e máxima de 17°C, nublado. Estou online, com minha ponte de voz e o meu cérebro ativos. O que vamos fazer?",
-  "ultima_saudacao_ts": 1786411280.4270787
+  "ultima_saudacao": "Conexão restabelecida. Estava aqui esperando.",
+  "ultima_saudacao_ts": 1786759534.0967479,
+  "ultima_atividade_ts": 1786759548.8098786
 }

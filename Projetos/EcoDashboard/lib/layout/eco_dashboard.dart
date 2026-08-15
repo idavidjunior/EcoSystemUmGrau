@@ -41,7 +41,6 @@ class _EcoDashboardState extends State<EcoDashboard> {
             selectedIndex: _selectedNavIndex,
             onDestinationSelected: (i) => setState(() => _selectedNavIndex = i),
             labelType: NavigationRailLabelType.all,
-            extended: true,
             minExtendedWidth: 200,
             leading: Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
@@ -138,7 +137,7 @@ class _DashboardView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<BridgeClientProvider>(
       builder: (context, provider, _) {
-        final state = provider.currentState ?? EcosystemState.empty();
+        final state = provider.currentState ?? EcosystemStateDefaults.empty();
         return LayoutBuilder(
           builder: (context, constraints) {
             final isWide = constraints.maxWidth > 1300;
@@ -441,37 +440,37 @@ class _TimerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final row = Row(
+      children: [
+        StatusDot(status: status.colorStatus, size: 8, pulse: status.active),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(name, style: theme.textTheme.labelMedium),
+              Text(
+                '${status.interval} • Próximo: ${status.nextRun}',
+                style: theme.textTheme.labelSmall?.copyWith(color: EcoColors.onSurfaceVariant),
+              ),
+            ],
+          ),
+        ),
+        Text(
+          status.lastRun,
+          style: theme.textTheme.labelSmall?.copyWith(
+            color: EcoColors.onSurfaceDisabled,
+            fontFamily: 'JetBrainsMono',
+          ),
+        ),
+      ],
+    );
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          StatusDot(status: status.colorStatus, size: 8, pulse: status.active),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(name, style: theme.textTheme.labelMedium),
-                Text(
-                  '${status.interval} • Próximo: ${status.nextRun}',
-                  style: theme.textTheme.labelSmall?.copyWith(color: EcoColors.onSurfaceVariant),
-                ),
-              ],
-            ),
-          ),
-          Text(
-            status.lastRun,
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: EcoColors.onSurfaceDisabled,
-              fontFamily: 'JetBrainsMono',
-            ),
-          ),
-        ],
-      );
-    }
+      child: row,
+    );
   }
 }
-
 class _RadarColumn extends StatelessWidget {
   final EcosystemState state;
   const _RadarColumn({required this.state});

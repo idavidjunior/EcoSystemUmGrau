@@ -1,5 +1,6 @@
 // StatusDot — Ponto de status animado (pulsante, cores semânticas)
 import 'package:flutter/material.dart';
+import '../../models/ecosystem_state.dart';
 import '../../theme/eco_theme.dart';
 
 class StatusDot extends StatefulWidget {

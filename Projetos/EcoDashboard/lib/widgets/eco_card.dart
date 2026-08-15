@@ -68,9 +68,7 @@ class _EcoCardState extends State<EcoCard> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final bgColor = widget.backgroundColor ?? theme.cardTheme.color ?? EcoColors.surfaceContainer;
-    final borderCol = widget.borderColor ?? theme.cardTheme.shape is RoundedRectangleBorder
-        ? (theme.cardTheme.shape as RoundedRectangleBorder).side.color
-        : EcoColors.outline;
+    final borderCol = widget.borderColor ?? EcoColors.outline;
 
     Widget card = AnimatedBuilder(
       animation: _controller,

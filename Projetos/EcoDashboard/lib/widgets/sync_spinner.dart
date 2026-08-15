@@ -1,5 +1,7 @@
 // SyncSpinner + RadarProgress — Indicadores animados para sincronização e radar
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import '../../models/ecosystem_state.dart';
 import '../../theme/eco_theme.dart';
 
 /// SyncSpinner — Spinner de sincronização com estados
@@ -218,8 +220,6 @@ class _SyncSpinnerPainter extends CustomPainter {
   }
 }
 
-import 'dart:math' as math;
-
 /// RadarProgress — Progresso do Evolution Radar (collect → filter → package)
 class RadarProgress extends StatelessWidget {
   final RadarPhase phase;
@@ -374,8 +374,6 @@ class RadarProgress extends StatelessWidget {
     return index < labels.length ? labels[index] : 'Etapa ${index + 1}';
   }
 }
-
-enum RadarPhase { idle, collect, filter, package, apply, completed, error }
 
 class _PhaseConfig {
   final Color color;
