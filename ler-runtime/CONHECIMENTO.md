@@ -1,9 +1,9 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-14T17:48:58.440329
+**Exportado em:** 2026-08-14T23:34:46.421025
 **Projetos:** 4
 **Padroes Tecnicos:** 249
-**Decisoes:** 67
+**Decisoes:** 68
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 59
 **Heuristicas:** 32
@@ -483,6 +483,15 @@ tags: [pais, adaptativo, integridade-epistemica, nucleo]
 data: 2026-08-14
 contexto: Implementacao do PAIS (Personal Adaptive Intelligence System) no nucleo do ecossistema, com 21 modulos de aprendizado adaptativo do usuario.
 decisao: Criar habilidade em mcp/nucleo/habilidades/pais com user model e epistemic model estritamente separados (storage/user_model.json vs storage/epistemic_model.json). Codigo heuristico determinístico em Python stdlib, sem LLM, fail-soft. Guardas anti-b
+
+### Separação de estados: Editar vs Salvar despesas
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [android, supermarket-calculator, despesas, persistencia, bug-fix, editing-state]
+data: 2026-08-14
+contexto: SupermarketCalculator - Bug: auto-save de despesas sobrescrevia arquivo original durante edição
+contexto_detalhado: Quando usuário clicava "Editar" num arquivo de despesas já salvo na aba Finance, o `currentExpenseFile` era setado imediatamente. Isso fazia com que qualquer auto-save (clicar em "Pendente"/"Pago", editar descrição) já gravasse no arquivo original ant
 
 
 ## Padroes Tecnicos
@@ -1753,7 +1762,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-14T17:48:58.259534
+**Ultima atualizacao:** 2026-08-14T23:34:46.327272
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

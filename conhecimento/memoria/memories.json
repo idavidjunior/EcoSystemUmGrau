@@ -5182,5 +5182,51 @@
     "access_count": 0,
     "created_at": "2026-08-14T14:14:29.874853",
     "last_accessed": "2026-08-14T14:14:29.874853"
+  },
+  {
+    "id": 289,
+    "kind": "padrao",
+    "task": "SupermarketCalculator: Editar vs Atualizar despesas - separação de editingExpenseFile e currentExpenseFile",
+    "summary": "Corrigido bug onde clicar 'Editar' em arquivo salvo setava currentExpenseFile imediatamente, fazendo auto-saves (Pendente/Pago, edição) gravarem no original antes da confirmação. Solução: novo campo editingExpenseFile rastreia arquivo em edição; currentExpenseFile só é setado ao clicar 'Atualizar'. Auto-saves usam currentExpenseFile (ou despesas.json padrão). 'Salvar como novo' limpa editingExpenseFile. clearCart/clearCartAfterFinish limpam ambos.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "confirmação",
+      "original",
+      "gravarem",
+      "pago",
+      "pendente",
+      "fazendo"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-14T23:29:16.250611",
+    "last_accessed": "2026-08-14T23:29:16.250611"
+  },
+  {
+    "id": 290,
+    "kind": "decisao",
+    "task": "Bug: auto-save de despesas sobrescrevia arquivo original durante edição",
+    "summary": "Quando user clicava 'Editar' num arquivo de despesas já salvo, o currentExpenseFile era setado imediatamente. Qualquer auto-save (clicar Pendente/Pago, editar descrição) gravava no arquivo original antes do usuario decidir 'Atualizar' ou 'Salvar como novo'. Solução: separar em dois estados - editingExpenseFile (arquivo sendo editado, sem auto-save) vs currentExpenseFile (confirmado para auto-save, setado apenas no botao 'Atualizar'). Agora o original só e modificado quando usuario clica explicitamente em 'Atualizar'.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "imediatamente",
+      "era",
+      "salvo",
+      "setado",
+      "novo",
+      "salvar"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-14T23:29:56.289756",
+    "last_accessed": "2026-08-14T23:29:56.289756"
   }
 ]

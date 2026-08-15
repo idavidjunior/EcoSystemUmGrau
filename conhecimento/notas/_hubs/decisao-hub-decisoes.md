@@ -1,6 +1,6 @@
 # Decisoes
 
-**66 notas** conectadas a este hub.
+**67 notas** conectadas a este hub.
 
 
 ## Notas
@@ -54,6 +54,7 @@
 - [[salvar-rustdesk-password-e-id-em-local-permanente-nao-gerar-]]
 - [[searchmodenormal-relaxed-auto-fallback-se-normal-retorna-nul]]
 - [[sempre-fechar-teclado-virtual-android-antes-do-proximo-cliqu]]
+- [[separação-de-estados-editar-vs-salvar-despesas]]
 - [[server-health-check-via-http-ping-localhostporta-em-vez-de-s]]
 - [[single-activity-com-framelayout-visibilidade-setvisibility-s]]
 - [[step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo]]
