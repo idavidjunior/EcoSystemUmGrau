@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, concorrencia, corrompido, estado, inconsistente, testing]
 aliases: [Validacao contra-intuitiva: teste o erro, nao o acerto]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # Validacao contra-intuitiva: teste o erro, nao o acerto

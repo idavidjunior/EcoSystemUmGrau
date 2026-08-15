@@ -1,7 +1,7 @@
 ---
 tags: [criptografada, dek, gestão, kek, padrao, seguranca]
 aliases: [Segurança: criptografia — hashing, cifras, TLS e segredos]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # Segurança: criptografia — hashing, cifras, TLS e segredos

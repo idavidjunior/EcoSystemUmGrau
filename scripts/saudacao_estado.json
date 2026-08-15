@@ -1,10 +1,14 @@
 {
-  "conexoes": 1,
+  "conexoes": 5,
   "hoje": "2026-08-15",
   "saudacoes_hoje": [
-    "Que dia é hoje a esta hora! Data e hora de agora: hoje em São Paulo/SP, na Capital, sábado, 15 de agosto de 2026, 00:05. Clima atual: nublado, 18°C, umidade de 91%. Previsão para amanhã (domingo, 16/08): mínima de 17°C e máxima de 28°C, garoa leve, chance de chuva de 6%. Estou online, com minha ponte de voz e o meu cérebro ativos. Diga o que você precisa."
+    "Que dia é hoje a esta hora! Data e hora de agora: hoje em São Paulo/SP, na Capital, sábado, 15 de agosto de 2026, 00:05. Clima atual: nublado, 18°C, umidade de 91%. Previsão para amanhã (domingo, 16/08): mínima de 17°C e máxima de 28°C, garoa leve, chance de chuva de 6%. Estou online, com minha ponte de voz e o meu cérebro ativos. Diga o que você precisa.",
+    "Aí de novo, senhor. Onde paramos?",
+    "Reconectado. Continue de onde estava.",
+    "Conexão restabelecida. Estava aqui esperando.",
+    "Reconectado. Continue de onde estava."
   ],
-  "ultima_saudacao": "Que dia é hoje a esta hora! Data e hora de agora: hoje em São Paulo/SP, na Capital, sábado, 15 de agosto de 2026, 00:05. Clima atual: nublado, 18°C, umidade de 91%. Previsão para amanhã (domingo, 16/08): mínima de 17°C e máxima de 28°C, garoa leve, chance de chuva de 6%. Estou online, com minha ponte de voz e o meu cérebro ativos. Diga o que você precisa.",
-  "ultima_saudacao_ts": 1786763136.4266374,
-  "ultima_atividade_ts": 1786763142.2640762
+  "ultima_saudacao": "Reconectado. Continue de onde estava.",
+  "ultima_saudacao_ts": 1786765018.0845942,
+  "ultima_atividade_ts": 1786764488.3273993
 }

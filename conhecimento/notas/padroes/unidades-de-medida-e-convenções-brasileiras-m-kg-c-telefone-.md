@@ -1,7 +1,7 @@
 ---
 tags: [localizacao, miles, padrao, parênteses, rejeitam, rígidas]
 aliases: [Unidades de medida e convenções brasileiras (m, kg, °C, tele]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # Unidades de medida e convenções brasileiras (m, kg, °C, telefone, endereço)

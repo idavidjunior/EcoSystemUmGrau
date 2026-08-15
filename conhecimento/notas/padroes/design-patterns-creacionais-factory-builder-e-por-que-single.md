@@ -1,7 +1,7 @@
 ---
 tags: [argumentos, designpatterns, nomeados, padrao, parciais, states]
 aliases: [Design patterns: creacionais — factory, builder e por que si]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # Design patterns: creacionais — factory, builder e por que singleton é code smell

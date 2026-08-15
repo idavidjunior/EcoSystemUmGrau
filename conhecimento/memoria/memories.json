@@ -5228,5 +5228,33 @@
     "access_count": 0,
     "created_at": "2026-08-14T23:29:56.289756",
     "last_accessed": "2026-08-14T23:29:56.289756"
+  },
+  {
+    "id": 291,
+    "kind": "preferencia",
+    "task": "Pedidos de inteirar-se / estar a par do ecossistema (dashboard, estado, atualizacoes)",
+    "summary": "PADRAO DE CONDUTA: quando o usuario pedir para o agente se inteirar de algo do ecossistema (ex: o dashboard, o estado, atualizacoes), o agente deve investigar sozinho e responder automaticamente o que encontrou, usando o que ja conhece do ecossistema, sem depender de o usuario dar contexto. Tipo: verificar files/folders do projeto, ler estado do bridge, consultar memoria/git log e resumir. Responder em pt-BR, texto puro, conciso, apontando problemas concretos encontrados (ex: descompasso de protocolo) e oferecer solucao.",
+    "project": "EcoSystemUmGrau",
+    "tags": [
+      "auto",
+      "ecossistema",
+      "dashboard",
+      "conduta",
+      "inteirar",
+      "alta-confianca",
+      "contexto",
+      "dar",
+      "depender",
+      "conhece",
+      "usando",
+      "encontrou"
+    ],
+    "metadata": {},
+    "strength": 1.2,
+    "confidence": 1.0,
+    "source_type": "humano",
+    "access_count": 0,
+    "created_at": "2026-08-15T00:21:52.314600",
+    "last_accessed": "2026-08-15T00:21:52.314600"
   }
 ]

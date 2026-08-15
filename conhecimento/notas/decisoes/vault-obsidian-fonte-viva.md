@@ -1,7 +1,7 @@
 ---
 tags: [automaticamente, decisao, espelho, opencode, reflete, vivo]
 aliases: [vault obsidian fonte viva]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # vault obsidian fonte viva

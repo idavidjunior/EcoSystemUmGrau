@@ -1,7 +1,7 @@
 ---
 tags: [androidpuresdk, arquivo, decisao, existente, sobrescreve, timestampado]
 aliases: [Salvar cria novo arquivo timestampado, nunca sobrescreve exi]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # Salvar cria novo arquivo timestampado, nunca sobrescreve existente.

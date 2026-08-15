@@ -1,7 +1,7 @@
 ---
 tags: [50ut8050psa, nativo, opencode, padrao, ssap wss, wss]
 aliases: [Controle da TV LG webOS via SSAP]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # Controle da TV LG webOS via SSAP

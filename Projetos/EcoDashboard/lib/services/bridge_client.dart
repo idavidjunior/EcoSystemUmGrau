@@ -79,6 +79,7 @@ class BridgeClient {
       _updateConnectionStatus(ConnectionStatus.connected);
       _connectCompleter?.complete();
       _connectCompleter = null;
+      requestState();
     } catch (e) {
       _onError(e);
       _connectCompleter?.completeError(e);
@@ -91,6 +92,7 @@ class BridgeClient {
     _pingTimer = Timer.periodic(pingInterval, (_) {
       if (_channel != null && _connectionStatus == ConnectionStatus.connected) {
         _send({'type': 'ping', 'timestamp': DateTime.now().toIso8601String()});
+        requestState();
       }
     });
   }

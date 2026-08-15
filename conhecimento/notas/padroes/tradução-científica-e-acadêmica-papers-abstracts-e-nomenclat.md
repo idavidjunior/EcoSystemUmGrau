@@ -1,7 +1,7 @@
 ---
 tags: [culta, desnecessários, equações, padrao, referências, traducao-texto]
 aliases: [Tradução científica e acadêmica: papers, abstracts e nomencl]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # Tradução científica e acadêmica: papers, abstracts e nomenclatura

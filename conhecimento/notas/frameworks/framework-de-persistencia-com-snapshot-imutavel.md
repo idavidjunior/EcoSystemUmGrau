@@ -1,7 +1,7 @@
 ---
 tags: [framework, overwrite, sessao, timestampado, usuario]
 aliases: [Framework de Persistencia com Snapshot Imutavel]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # Framework de Persistencia com Snapshot Imutavel

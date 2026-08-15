@@ -1,7 +1,7 @@
 ---
 tags: [class, padrao, text, tipo, treinamentonavegacao, visivel]
 aliases: [Android View hierarchy scanning]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # Android View hierarchy scanning

@@ -1,7 +1,7 @@
 ---
 tags: [identity, integer, padrao, primary, sql, suporta]
 aliases: [SQL: transações, ACID e dialetos]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # SQL: transações, ACID e dialetos

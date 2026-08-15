@@ -1,7 +1,7 @@
 ---
 tags: [bug, done, ecosistema-opencode, messages, playback, progressive]
 aliases: [gerar_audio() blocks until full TTS generation, no streaming]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # gerar_audio() blocks until full TTS generation, no streaming

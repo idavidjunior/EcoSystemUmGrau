@@ -1,7 +1,7 @@
 ---
 tags: [decisao, depends, files, flag, opencode, task]
 aliases: [context-engine + manifesto + domínios multimídia/comportamen]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # context-engine + manifesto + domínios multimídia/comportamentais

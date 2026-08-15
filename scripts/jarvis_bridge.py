@@ -334,6 +334,210 @@ def _estado_cacheado():
     return _estado_cache["txt"]
 
 
+# ============================================================
+# Dashboard (EcoDashboard) — snapshot estruturado do ecossistema
+# Protocolo: {"type":"get_state"} -> {"type":"state","payload":{...}}
+#            {"type":"ping"}       -> {"type":"pong"}
+# Mantém o protocolo legado (tipo/mensagem/quota) intacto p/ o app Android.
+# ============================================================
+
+def _processo_vivo_pid(pid):
+    if not pid or pid <= 0:
+        return False
+    try:
+        out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"],
+                             capture_output=True, creationflags=0, text=True, timeout=10).stdout
+        return str(pid) in out
+    except Exception:
+        return False
+
+
+def _ler_pid(path):
+    try:
+        if Path(path).exists():
+            return int(Path(path).read_text(encoding="utf-8-sig").strip())
+    except Exception:
+        pass
+    return 0
+
+
+def _snapshot_estado_ecossistema():
+    """Snapshot estruturado do estado vivo do ecossistema para o EcoDashboard.
+
+    Formato compatível com lib/models/ecosystem_state.dart. Nunca lança:
+    qualquer fonte indisponível entra como valor default/seguro.
+    """
+    now_iso = datetime.datetime.now().isoformat()
+
+    # --- memória ---
+    mem = {"total": 0, "active": 0, "by_kind": {}, "by_confidence": {"alta": 0, "media": 0, "baixa": 0}, "by_source": {}}
+    try:
+        from memory_engine import stats
+        mem = stats()
+    except Exception:
+        pass
+
+    # --- vigilante (timers do vigilante.ps1) ---
+    vig_pid = _ler_pid(str(Path.home() / ".vigilante.pid"))
+    vig_running = _processo_vivo_pid(vig_pid)
+    agora = datetime.datetime.now()
+    timers = {}
+    defs = [
+        ("git sync eco", "5 min", 300, "sincroniza repositorio principal"),
+        ("git sync projetos", "1 min", 60, "sincroniza repos Android"),
+        ("learn diario", "24 h", 86400, "varredura proativa de aprendizado"),
+        ("rules check", "1 h", 3600, "consistencia das 3 camadas de regras"),
+        ("triagem orfaos", "24 h", 86400, "auditoria de organizacao"),
+        ("voz guarda", "30 min", 1800, "regressao de paths temp de audio"),
+        ("opencode cache", "1 h", 3600, "limpeza de logs antigos"),
+        ("evolution radar", "4 h", 14400, "auto-evolucao curada"),
+    ]
+    for nome, intervalo, segs, desc in defs:
+        timers[nome] = {
+            "name": nome,
+            "active": vig_running,
+            "interval": intervalo,
+            "last_run": "",
+            "next_run": (agora + datetime.timedelta(seconds=segs)).strftime("%H:%M"),
+            "status": "ok" if vig_running else "error",
+        }
+
+    # --- radar (evolution-radar) ---
+    radar_dir = ECOSSISTEMA_DIR / "conhecimento" / "evolution-radar"
+    admin_ok = (ECOSSISTEMA_DIR / ".evolution_admin_ok").exists()
+    def _count(sub):
+        try:
+            d = radar_dir / sub
+            return len([f for f in d.iterdir() if f.is_file()]) if d.exists() else 0
+        except Exception:
+            return 0
+    radar = {
+        "admin_enabled": admin_ok,
+        "phase": "idle",
+        "proposals_found": _count("bruto"),
+        "proposals_validated": _count("filtrado"),
+        "packages_ready": _count("pacotes"),
+        "next_run": "",
+        "recent_proposals": [],
+    }
+    try:
+        if (radar_dir / "pacotes").exists():
+            packs = sorted((radar_dir / "pacotes").glob("evolution-pack-*.json"),
+                           key=lambda p: p.stat().st_mtime, reverse=True)
+            if packs:
+                d = json.loads(packs[0].read_text(encoding="utf-8"))
+                props = d.get("proposals", []) if isinstance(d, dict) else []
+                radar["recent_proposals"] = [{
+                    "id": p.get("id", ""),
+                    "source": p.get("source", ""),
+                    "title": p.get("title", ""),
+                    "status": p.get("status", "raw"),
+                    "relevance_score": float(p.get("relevance_score", 0)),
+                    "detected_at": p.get("detected_at", now_iso),
+                } for p in props[:10]]
+    except Exception:
+        pass
+
+    # --- voz / audio (runtime/*.json) ---
+    voice = {"stt_active": False, "tts_playing": False, "vad_active": False,
+             "input_level": 0.0, "current_text": "", "last_spoken": ""}
+    try:
+        narr = json.loads((ECOSSISTEMA_DIR / "runtime" / "narracao_estado.json").read_text(encoding="utf-8"))
+        voice["tts_playing"] = bool(narr.get("ativo", False)) and not bool(narr.get("pausado", False))
+    except Exception:
+        pass
+    try:
+        mic = json.loads((ECOSSISTEMA_DIR / "runtime" / "mic_estado.json").read_text(encoding="utf-8"))
+        mic_pid = _ler_pid(ECOSSISTEMA_DIR / "runtime" / "mic.pid")
+        voice["vad_active"] = bool(mic.get("ativo", False)) and _processo_vivo_pid(mic_pid)
+    except Exception:
+        pass
+    try:
+        from widget_controle_jarvis import ultima_fala
+        fala = ultima_fala()
+        if fala:
+            voice["last_spoken"] = fala
+            voice["current_text"] = fala
+    except Exception:
+        pass
+
+    # --- agentes (LER runtime) ---
+    agents = []
+    try:
+        roles = {"orchestrator": "maestro", "supervisor": "revisor", "validator": "revisor",
+                 "final_auditor": "revisor", "executor": "executor", "planner": "especialista",
+                 "strategy_engine": "especialista", "goal_analyzer": "especialista"}
+        for f in sorted((LER_DIR / "agent").glob("*.py")):
+            nome = f.stem
+            agents.append({
+                "id": nome,
+                "name": nome.replace("_", " ").title(),
+                "icon": "🤖",
+                "role": roles.get(nome, "executor"),
+                "status": "idle",
+                "current_task": None,
+            })
+    except Exception:
+        pass
+
+    # --- MCP servers (config/opencode.jsonc) ---
+    mcp_servers = []
+    try:
+        cfg = json.loads((ECOSSISTEMA_DIR / "config" / "opencode.jsonc").read_text(encoding="utf-8"))
+        mcp_cfg = cfg.get("mcp") or {}
+        for nome, v in mcp_cfg.items():
+            if not isinstance(v, dict):
+                continue
+            mcp_servers.append({
+                "name": nome,
+                "transport": "local" if v.get("type") == "local" else "stdio",
+                "status": "online",
+                "tools_count": 0,
+                "error": None,
+            })
+    except Exception:
+        pass
+
+    # --- logs recentes (bridge_log.txt tail) ---
+    recent_logs = []
+    try:
+        import re as _re
+        logpath = SCRIPTS_DIR / "bridge_log.txt"
+        if logpath.exists():
+            linhas = logpath.read_text(encoding="utf-8", errors="replace").splitlines()[-200:]
+            pat = _re.compile(r"^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}),\d+\s+(\w+):(?:[\w.]+):(.*)$")
+            for ln in linhas:
+                m = pat.match(ln)
+                if m:
+                    ts, lvl, msg = m.group(1), m.group(2).lower(), m.group(3).strip()
+                    lvl = "warn" if lvl == "warning" else lvl
+                    recent_logs.append({
+                        "timestamp": ts.replace(" ", "T"),
+                        "level": lvl if lvl in ("info", "warn", "error", "debug") else "info",
+                        "source": "bridge",
+                        "message": msg[:300],
+                    })
+    except Exception:
+        pass
+
+    return {
+        "memory": mem,
+        "vigilante": {
+            "running": vig_running,
+            "pid": vig_pid,
+            "timers": timers,
+            "last_sync": now_iso,
+        },
+        "radar": radar,
+        "voice": voice,
+        "agents": agents,
+        "projects": [],
+        "mcp_servers": mcp_servers,
+        "recent_logs": recent_logs[-100:],
+        "timestamp": now_iso,
+    }
+
+
 def sanitizar(t):
     """Sanitiza texto para TTS. Usa SpeechPipeline quando disponível."""
     if not t: return ""
@@ -1657,14 +1861,28 @@ async def lidar(ws):
         extra = ""
     # Health-check (universal_bridge) se identifica na primeira mensagem:
     # responde o pong e encerra SEM gerar saudacao LLM nem poluir o historico.
+    # EcoDashboard se identifica por {"type": ...}: responde, pula a saudacao
+    # e entra direto no modo snapshot periodico.
+    eh_dashboard = False
     try:
         prim = await asyncio.wait_for(ws.recv(), timeout=3)
         try:
             obj0 = json.loads(prim)
-            if isinstance(obj0, dict) and obj0.get("tipo") == "ping" and obj0.get("origem") == "health-check":
-                await ws.send(json.dumps({"tipo": "pong", "origem": "bridge", "eco": obj0}))
-                logger.info("health-check atendido (sem saudacao LLM)")
-                return
+            if isinstance(obj0, dict):
+                if obj0.get("tipo") == "ping" and obj0.get("origem") == "health-check":
+                    await ws.send(json.dumps({"tipo": "pong", "origem": "bridge", "eco": obj0}))
+                    logger.info("health-check atendido (sem saudacao LLM)")
+                    return
+                if obj0.get("type") in ("ping", "pong", "get_state", "command"):
+                    eh_dashboard = True
+                    if obj0.get("type") == "ping":
+                        await ws.send(json.dumps({"type": "pong", "origem": "bridge", "eco": obj0}))
+                    elif obj0.get("type") == "get_state":
+                        payload = await asyncio.to_thread(_snapshot_estado_ecossistema)
+                        await ws.send(json.dumps({"type": "state", "payload": payload}))
+                    elif obj0.get("type") == "command" and obj0.get("command") in ("get_state", "state"):
+                        payload = await asyncio.to_thread(_snapshot_estado_ecossistema)
+                        await ws.send(json.dumps({"type": "state", "payload": payload}))
         except json.JSONDecodeError:
             pass
     except asyncio.TimeoutError:
@@ -1672,100 +1890,107 @@ async def lidar(ws):
     except websockets.exceptions.ConnectionClosed:
         logger.info("cliente fechou antes da saudacao")
         return
-    # Classifica a conexão: primeira do dia vs reconexão de conversa ativa.
-    cx = _classificar_conexao()
-    estado_saud = _carregar_saudacao_estado()
-    hoje = datetime.datetime.now().strftime("%Y-%m-%d")
-    if estado_saud.get("hoje") != hoje:
-        # Novo dia: zera o acumulado de saudações do dia.
-        estado_saud = {"conexoes": 0, "hoje": hoje, "saudacoes_hoje": [], "ultima_saudacao": ""}
-    estado_saud["conexoes"] = estado_saud.get("conexoes", 0) + 1
-    if cx["eh_reconexao"]:
-        logger.info(
-            f"RECONEXAO (atividade ha {cx['minutos_desde_atividade']:.1f}min, "
-            f"{cx['hist_tamanho']} pares) — saudacao de retomada"
-        )
-        try:
-            saudacao = await c.saudar(
-                extra, status,
-                contexto={
-                    "eh_reconexao": True,
-                    "minutos_desde_atividade": cx["minutos_desde_atividade"],
-                    "ultimas_saudacoes": estado_saud.get("saudacoes_hoje", []),
-                },
-            )
-        except Exception as e:
-            logger.warning(f"saudar reconexao: {e}")
-            saudacao = ""
-        if not saudacao:
-            retomadas = [
-                "De volta, senhor. A linha continua aberta.",
-                "Conexão restabelecida. Estava aqui esperando.",
-                "Aí de novo, senhor. Onde paramos?",
-                "Voltou. Sistemas seguem quentes, é só falar.",
-                "Reconectado. Continue de onde estava.",
-                "E a conexão voltou. Estou por aqui.",
-            ]
-            saudacao = random.choice(retomadas)
+    if eh_dashboard:
+        logger.info("dashboard conectado — modo snapshot ativo")
+        # Pula saudacao/retomada e vai direto ao loop de mensagens.
+        cx = {"eh_reconexao": False, "minutos_desde_atividade": 0, "hist_tamanho": 0}
+        estado_saud = _carregar_saudacao_estado()
     else:
-        try:
-            saudacao = await c.saudar(
-                extra, status,
-                contexto={
-                    "eh_reconexao": False,
-                    "ultimas_saudacoes": estado_saud.get("saudacoes_hoje", []),
-                },
+        # Classifica a conexão: primeira do dia vs reconexão de conversa ativa.
+        cx = _classificar_conexao()
+        estado_saud = _carregar_saudacao_estado()
+    if not eh_dashboard:
+        hoje = datetime.datetime.now().strftime("%Y-%m-%d")
+        if estado_saud.get("hoje") != hoje:
+            # Novo dia: zera o acumulado de saudações do dia.
+            estado_saud = {"conexoes": 0, "hoje": hoje, "saudacoes_hoje": [], "ultima_saudacao": ""}
+        estado_saud["conexoes"] = estado_saud.get("conexoes", 0) + 1
+        if cx["eh_reconexao"]:
+            logger.info(
+                f"RECONEXAO (atividade ha {cx['minutos_desde_atividade']:.1f}min, "
+                f"{cx['hist_tamanho']} pares) — saudacao de retomada"
             )
-        except Exception as e:
-            logger.warning(f"saudar: {e}")
-            saudacao = ""
-        if not saudacao:
-            hora = datetime.datetime.now().hour
-            if 5 <= hora < 12:
-                abridores = ["Bom dia", "Bom dia, senhor", "Bons dias"]
-            elif 12 <= hora < 18:
-                abridores = ["Boa tarde", "Boa tarde, senhor", "Boa tarde por aqui"]
-            elif 18 <= hora < 24:
-                abridores = ["Boa noite", "Boa noite, senhor", "Noite agradável, não é?"]
-            else:
-                abridores = ["Que dia é hoje a esta hora", "Madrugada firme por aqui", "Boa madrugada"]
-            fechos = [
-                "O que vamos fazer?", "O que precisa?", "Diga o que você precisa.",
-                "Pronto para começar?", "Estou aqui. Só chamar."
-            ]
-            saudacao = f"{random.choice(abridores)}! {extra}{status}{random.choice(fechos)}"
-    if saudacao:
-        logger.info(f"saudacao: {saudacao[:120]}")
-        saudacao_tela = normalizar_hora_display(saudacao)
-        # Registra no estado (evita repetir a mesma saudação na próxima reconexão).
-        estado_saud.setdefault("saudacoes_hoje", []).append(saudacao_tela)
-        estado_saud["saudacoes_hoje"] = estado_saud["saudacoes_hoje"][-10:]
-        estado_saud["ultima_saudacao"] = saudacao_tela
-        estado_saud["ultima_saudacao_ts"] = time.time()
-        _salvar_saudacao_estado(estado_saud)
-        try:
-            a = await gerar_audio(saudacao_tela)
-        except Exception as e:
-            logger.warning(f"tts startup: {e}")
-            a = ""
-        try:
-            await ws.send(json.dumps({"audio": a, "text": saudacao_tela}))
-        except websockets.exceptions.ConnectionClosed:
-            logger.info("cliente desconectou durante a saudacao")
-            return
-    else:
-        logger.info("sem saudacao (conversa ativa) — aguardando próxima fala do usuário")
+            try:
+                saudacao = await c.saudar(
+                    extra, status,
+                    contexto={
+                        "eh_reconexao": True,
+                        "minutos_desde_atividade": cx["minutos_desde_atividade"],
+                        "ultimas_saudacoes": estado_saud.get("saudacoes_hoje", []),
+                    },
+                )
+            except Exception as e:
+                logger.warning(f"saudar reconexao: {e}")
+                saudacao = ""
+            if not saudacao:
+                retomadas = [
+                    "De volta, senhor. A linha continua aberta.",
+                    "Conexão restabelecida. Estava aqui esperando.",
+                    "Aí de novo, senhor. Onde paramos?",
+                    "Voltou. Sistemas seguem quentes, é só falar.",
+                    "Reconectado. Continue de onde estava.",
+                    "E a conexão voltou. Estou por aqui.",
+                ]
+                saudacao = random.choice(retomadas)
+        else:
+            try:
+                saudacao = await c.saudar(
+                    extra, status,
+                    contexto={
+                        "eh_reconexao": False,
+                        "ultimas_saudacoes": estado_saud.get("saudacoes_hoje", []),
+                    },
+                )
+            except Exception as e:
+                logger.warning(f"saudar: {e}")
+                saudacao = ""
+            if not saudacao:
+                hora = datetime.datetime.now().hour
+                if 5 <= hora < 12:
+                    abridores = ["Bom dia", "Bom dia, senhor", "Bons dias"]
+                elif 12 <= hora < 18:
+                    abridores = ["Boa tarde", "Boa tarde, senhor", "Boa tarde por aqui"]
+                elif 18 <= hora < 24:
+                    abridores = ["Boa noite", "Boa noite, senhor", "Noite agradável, não é?"]
+                else:
+                    abridores = ["Que dia é hoje a esta hora", "Madrugada firme por aqui", "Boa madrugada"]
+                fechos = [
+                    "O que vamos fazer?", "O que precisa?", "Diga o que você precisa.",
+                    "Pronto para começar?", "Estou aqui. Só chamar."
+                ]
+                saudacao = f"{random.choice(abridores)}! {extra}{status}{random.choice(fechos)}"
+        if saudacao:
+            logger.info(f"saudacao: {saudacao[:120]}")
+            saudacao_tela = normalizar_hora_display(saudacao)
+            # Registra no estado (evita repetir a mesma saudação na próxima reconexão).
+            estado_saud.setdefault("saudacoes_hoje", []).append(saudacao_tela)
+            estado_saud["saudacoes_hoje"] = estado_saud["saudacoes_hoje"][-10:]
+            estado_saud["ultima_saudacao"] = saudacao_tela
+            estado_saud["ultima_saudacao_ts"] = time.time()
+            _salvar_saudacao_estado(estado_saud)
+            try:
+                a = await gerar_audio(saudacao_tela)
+            except Exception as e:
+                logger.warning(f"tts startup: {e}")
+                a = ""
+            try:
+                await ws.send(json.dumps({"audio": a, "text": saudacao_tela}))
+            except websockets.exceptions.ConnectionClosed:
+                logger.info("cliente desconectou durante a saudacao")
+                return
+        else:
+            logger.info("sem saudacao (conversa ativa) — aguardando próxima fala do usuário")
 
-    # RETOMADA AUTOMÁTICA: verifica se a última mensagem do usuário ficou sem
-    # resposta (conexão caiu antes do Jarvis responder) e reenvia automaticamente.
-    # Isso acontece SEMPRE que a conexão é restabelecida — o usuário não precisa pedir.
-    if cx.get("eh_reconexao", False):
-        try:
-            retomou = await _retomar_ultima_tarefa(ws, c)
-            if retomou:
-                logger.info("retomada automatica concluida — aguardando proxima fala")
-        except Exception as e:
-            logger.warning(f"retomada automatica falhou: {e}")
+        # RETOMADA AUTOMÁTICA: verifica se a última mensagem do usuário ficou sem
+        # resposta (conexão caiu antes do Jarvis responder) e reenvia automaticamente.
+        # Isso acontece SEMPRE que a conexão é restabelecida — o usuário não precisa pedir.
+        if cx.get("eh_reconexao", False):
+            try:
+                retomou = await _retomar_ultima_tarefa(ws, c)
+                if retomou:
+                    logger.info("retomada automatica concluida — aguardando proxima fala")
+            except Exception as e:
+                logger.warning(f"retomada automatica falhou: {e}")
 
     # CONTINUIDADE ESPONTÂNEA: a cada ~12h (ou troca de dia) durante conversa ativa,
     # envia uma frase curta de "ainda por aqui" — variada, anti-repetição, sem encher linguiça.
@@ -1819,6 +2044,22 @@ async def lidar(ws):
 
     task_cont = asyncio.create_task(_continuidade_periodica())
 
+    # EcoDashboard: empurra snapshot estruturado periodicamente para quem pediu get_state.
+    _dash_lock = asyncio.Lock()
+
+    async def _dash_state_pusher():
+        while True:
+            await asyncio.sleep(10)
+            if not eh_dashboard:
+                continue
+            try:
+                payload = await asyncio.to_thread(_snapshot_estado_ecossistema)
+                await ws.send(json.dumps({"type": "state", "payload": payload}))
+            except Exception as e:
+                logger.debug(f"dash state push: {e}")
+
+    task_dash = asyncio.create_task(_dash_state_pusher())
+
     try:
         async for m in ws:
             img_atual = None
@@ -1826,6 +2067,31 @@ async def lidar(ws):
             try:
                 obj = json.loads(m)
                 if isinstance(obj, dict):
+                    # ---- Protocolo EcoDashboard (type) ----
+                    if obj.get("type") in ("ping", "pong"):
+                        if obj.get("type") == "ping":
+                            await ws.send(json.dumps({"type": "pong", "origem": "bridge", "eco": obj}))
+                        continue
+                    if obj.get("type") == "get_state":
+                        eh_dashboard = True
+                        try:
+                            payload = await asyncio.to_thread(_snapshot_estado_ecossistema)
+                            await ws.send(json.dumps({"type": "state", "payload": payload}))
+                            logger.info("dashboard: snapshot de estado enviado")
+                        except Exception as e:
+                            logger.warning(f"dashboard: get_state falhou: {e}")
+                        continue
+                    if obj.get("type") == "command":
+                        cmd = obj.get("command", "")
+                        if cmd in ("get_state", "state"):
+                            eh_dashboard = True
+                            try:
+                                payload = await asyncio.to_thread(_snapshot_estado_ecossistema)
+                                await ws.send(json.dumps({"type": "state", "payload": payload}))
+                            except Exception as e:
+                                logger.warning(f"dashboard: command get_state falhou: {e}")
+                        continue
+                    # ---- Protocolo legado (tipo) — app Android ----
                     if obj.get("tipo") == "ping":
                         await ws.send(json.dumps({"tipo": "pong", "origem": "bridge", "eco": obj}))
                         logger.info(f"ping-pong de {obj.get('origem','desconhecido')}")

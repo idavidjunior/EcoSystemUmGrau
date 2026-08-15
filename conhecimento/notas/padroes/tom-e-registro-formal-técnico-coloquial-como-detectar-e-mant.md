@@ -1,7 +1,7 @@
 ---
 tags: [gírias, humor, padrao, público, quem, traducao]
 aliases: [Tom e registro: formal, técnico, coloquial — como detectar e]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # Tom e registro: formal, técnico, coloquial — como detectar e manter

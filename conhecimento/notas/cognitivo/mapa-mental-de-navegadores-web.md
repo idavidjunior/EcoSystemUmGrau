@@ -1,7 +1,7 @@
 ---
 tags: [browser-architecture, cognitivo, composicao, dom, dominio, gpu]
 aliases: [Mapa mental de navegadores web]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # Mapa mental de navegadores web

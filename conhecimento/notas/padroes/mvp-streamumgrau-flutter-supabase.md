@@ -1,7 +1,7 @@
 ---
 tags: [core, models, opencode, padrao, views, widgets]
 aliases: [mvp streamumgrau flutter supabase]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # mvp streamumgrau flutter supabase

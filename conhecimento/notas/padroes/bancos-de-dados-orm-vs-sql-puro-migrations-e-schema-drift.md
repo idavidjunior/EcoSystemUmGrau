@@ -1,7 +1,7 @@
 ---
 tags: [bancos-dados, boilerplate, models, padrao, portabilidade, sgbds]
 aliases: [Bancos de dados: ORM vs SQL puro, migrations e schema drift]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # Bancos de dados: ORM vs SQL puro, migrations e schema drift

@@ -1,7 +1,7 @@
 ---
 tags: [acumular, lixo, memory, opencode, padrao, redundância]
 aliases: [Aprendizado: Skill auditoria-de-codigo viva com evolução gat]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # Aprendizado: Skill auditoria-de-codigo viva com evolução gated

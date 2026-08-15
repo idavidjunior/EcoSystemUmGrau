@@ -1,7 +1,7 @@
 ---
 tags: [caminho, cognitivo, conexao, debugging, entrada, inverso]
 aliases: [Debugging em cascata reversa]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # Debugging em cascata reversa

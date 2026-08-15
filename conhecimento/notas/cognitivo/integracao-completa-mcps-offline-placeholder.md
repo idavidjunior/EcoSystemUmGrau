@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, deploy, expande, general, list, não]
 aliases: [integracao completa mcps offline placeholder]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # integracao completa mcps offline placeholder

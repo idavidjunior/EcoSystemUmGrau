@@ -1,7 +1,7 @@
 ---
 tags: [architecture, combinacao, heuristica, multiplos, nao, sinais]
 aliases: [State deve ser explícito, nunca implícito]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # State deve ser explícito, nunca implícito

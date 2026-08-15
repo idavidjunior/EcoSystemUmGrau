@@ -1,7 +1,7 @@
 ---
 tags: [engenharia, features, menor, novas, padrao, terreno]
 aliases: [Engenharia: refactoring seguro]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # Engenharia: refactoring seguro

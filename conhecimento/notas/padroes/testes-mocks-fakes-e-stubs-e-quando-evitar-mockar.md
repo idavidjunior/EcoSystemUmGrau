@@ -1,7 +1,7 @@
 ---
 tags: [asserções, chamado, padrao, posteriores, testes, valida]
 aliases: [Testes: mocks, fakes e stubs (e quando evitar mockar)]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # Testes: mocks, fakes e stubs (e quando evitar mockar)

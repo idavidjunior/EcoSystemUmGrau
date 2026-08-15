@@ -1,7 +1,7 @@
 ---
-tags: [automaticamente, nada, padrao, pato, proxies, ruby]
+tags: [automaticamente, nada, padrao, pato, quack, ruby]
 aliases: [Ruby: tudo é objeto e duck typing]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # Ruby: tudo é objeto e duck typing

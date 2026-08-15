@@ -1,7 +1,7 @@
 ---
 tags: [android, android-pure-sdkandroid-pure-sdk, fonte, padrao, pure, sdk]
 aliases: [ListView + BaseAdapter Pattern]
-date: 2026-08-14
+date: 2026-08-15
 ---
 
 # ListView + BaseAdapter Pattern
