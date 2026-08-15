@@ -66,6 +66,7 @@ class BridgeClient {
 
   Future<void> _connect() async {
     final uri = Uri.parse('ws://$host:$port/ws');
+    debugPrint('[BridgeClient] conectando $uri');
     try {
       _channel = WebSocketChannel.connect(uri);
       final stream = _channel!.stream;
@@ -80,7 +81,9 @@ class BridgeClient {
       _connectCompleter?.complete();
       _connectCompleter = null;
       requestState();
+      debugPrint('[BridgeClient] conectado');
     } catch (e) {
+      debugPrint('[BridgeClient] connect erro: $e');
       _onError(e);
       _connectCompleter?.completeError(e);
       _connectCompleter = null;
@@ -100,8 +103,10 @@ class BridgeClient {
   void _onMessage(dynamic message) {
     try {
       final data = jsonDecode(message as String);
+      debugPrint('[BridgeClient] RX: type=${data['type']} keys=${data.keys.toList()}');
       _parseMessage(data);
     } catch (e) {
+      debugPrint('[BridgeClient] Parse error: $e');
       _errorController.add('Parse error: $e');
     }
   }
@@ -110,25 +115,32 @@ class BridgeClient {
     final type = data['type'] as String?;
     switch (type) {
       case 'state':
-        final state = EcosystemState.fromJson(data['payload'] ?? {});
+        final payload = (data['payload'] ?? {}) as Map<String, dynamic>;
+        debugPrint('[BridgeClient] STATE payload keys=${payload.keys.toList()} '
+            'memory=${payload['memory']?.runtimeType} '
+            'agents=${(payload['agents'] as List?)?.length} '
+            'mcp=${(payload['mcp_servers'] as List?)?.length}');
+        final state = EcosystemState.fromJson(payload);
         _stateController.add(state);
         break;
       case 'log':
-        final log = LogEntry.fromJson(data['payload'] ?? {});
+        final log = LogEntry.fromJson((data['payload'] ?? {}) as Map<String, dynamic>);
         _logController.add(log);
         break;
       case 'pong':
-        // Keep alive response
+        debugPrint('[BridgeClient] pong');
         break;
       case 'error':
         _errorController.add(data['message'] ?? 'Bridge error');
         break;
       default:
+        debugPrint('[BridgeClient] unknown type=$type data=${data.toString().substring(0, data.toString().length > 200 ? 200 : data.toString().length)}');
         _errorController.add('Unknown message type: $type');
     }
   }
 
   void _onError(Object error) {
+    debugPrint('[BridgeClient] onError: $error');
     if (_disposed) return;
     _errorController.add(error);
     _updateConnectionStatus(ConnectionStatus.error);
@@ -136,6 +148,7 @@ class BridgeClient {
   }
 
   void _onDone() {
+    debugPrint('[BridgeClient] onDone (conexao fechada pelo servidor)');
     if (_disposed) return;
     _updateConnectionStatus(ConnectionStatus.disconnected);
     _scheduleReconnect();
@@ -159,7 +172,9 @@ class BridgeClient {
     if (_channel != null && _connectionStatus == ConnectionStatus.connected) {
       try {
         _channel!.sink.add(jsonEncode(message));
+        debugPrint('[BridgeClient] TX: ${message['type']}');
       } catch (e) {
+        debugPrint('[BridgeClient] send erro: $e');
         _errorController.add('Send error: $e');
       }
     }
@@ -223,6 +238,9 @@ class BridgeClientProvider extends ChangeNotifier {
 
   void _onState(EcosystemState state) {
     _currentState = state;
+    debugPrint('[BridgeProvider] estado recebido: memory=${state.memory.total} '
+        'vig=${state.vigilante.running} agents=${state.agents.length} '
+        'mcp=${state.mcpServers.length} logs=${state.recentLogs.length}');
     notifyListeners();
   }
 
