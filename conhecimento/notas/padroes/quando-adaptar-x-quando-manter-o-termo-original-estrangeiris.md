@@ -1,5 +1,5 @@
 ---
-tags: [fonte, mantido, menção, nacional, padrao, traducao]
+tags: [fonte, mantido, menção, padrao, traducao, whatsapp]
 aliases: [Quando adaptar x quando manter o termo original (estrangeiri]
 date: 2026-08-15
 ---
