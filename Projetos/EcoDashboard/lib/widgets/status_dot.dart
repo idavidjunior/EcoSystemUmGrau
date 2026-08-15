@@ -282,8 +282,8 @@ class _StatusRingPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return oldDelegate is _StatusRingPainter &&
-        oldDelegate.color != color &&
-        oldDelegate.progress != progress &&
-        oldDelegate.rotation != rotation;
+        (oldDelegate.color != color ||
+         oldDelegate.progress != progress ||
+         oldDelegate.rotation != rotation);
   }
 }

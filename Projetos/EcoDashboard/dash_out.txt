@@ -5237,3 +5237,1622 @@ Bridge connection failed: Null check operator used on a null value
 [BridgeClient] RX: type=state keys=[type, payload]
 [BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
 [BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100
+[BridgeClient] TX: ping
+[BridgeClient] TX: get_state
+[BridgeClient] RX: type=pong keys=[type, origem, eco]
+[BridgeClient] pong
+[BridgeClient] RX: type=state keys=[type, payload]
+[BridgeClient] STATE payload keys=[memory, vigilante, radar, voice, agents, projects, mcp_servers, recent_logs, timestamp] memory=_Map<String, dynamic> agents=17 mcp=13
+[BridgeProvider] estado recebido: memory=279 vig=true agents=17 mcp=13 logs=100

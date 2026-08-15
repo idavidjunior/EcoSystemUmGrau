@@ -54,8 +54,10 @@ class _LogTailState extends State<LogTail> {
   }
 
   void _onScroll() {
-    _userScrolled = _scrollController.position.pixels <
-        _scrollController.position.maxScrollExtent - 50;
+    if (_scrollController.hasClients) {
+      _userScrolled = _scrollController.position.pixels <
+          _scrollController.position.maxScrollExtent - 50;
+    }
   }
 
   void _scrollToBottom() {

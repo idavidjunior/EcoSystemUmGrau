@@ -215,8 +215,8 @@ class _SyncSpinnerPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return oldDelegate is _SyncSpinnerPainter &&
-        oldDelegate.progress != progress &&
-        oldDelegate.phase != phase;
+        (oldDelegate.progress != progress ||
+         oldDelegate.phase != phase);
   }
 }
 
