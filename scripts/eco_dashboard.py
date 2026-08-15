@@ -2,9 +2,10 @@
 EcoDashboard — janela nativa sem navegador.
 Abre o dashboard como programa nativo via pywebview.
 """
-import webview, sys, time, urllib.request
+import webview, sys, time, urllib.request, subprocess, os
 
 DASHBOARD_URL = "http://localhost:8766/dashboard"
+SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def verificar_servidor():
     for _ in range(5):
@@ -17,15 +18,14 @@ def verificar_servidor():
     return False
 
 def main():
-    print("Verificando servidor...")
     if not verificar_servidor():
-        print("Servidor HTTP offline. Iniciando...")
-        import subprocess, os
-        script = os.path.join(os.path.dirname(__file__), "dashboard_http.py")
-        subprocess.Popen([sys.executable, script], cwd=os.path.dirname(__file__))
+        pythonw = sys.executable.replace("python.exe", "pythonw.exe")
+        if not os.path.exists(pythonw):
+            pythonw = sys.executable
+        subprocess.Popen([pythonw, os.path.join(SCRIPTS_DIR, "dashboard_http.py")],
+                         cwd=SCRIPTS_DIR, creationflags=subprocess.CREATE_NO_WINDOW)
         time.sleep(2)
 
-    print("Abrindo EcoDashboard...")
     window = webview.create_window(
         "EcoSystemUmGrau",
         DASHBOARD_URL,
