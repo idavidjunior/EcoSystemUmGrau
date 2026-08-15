@@ -4311,3 +4311,35 @@
 #4      _Timer._handleMessage (dart:isolate-patch/timer_impl.dart:454:5)
 #5      _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:192:12)
 
+[ERROR:flutter/runtime/dart_vm_initializer.cc(40)] Unhandled Exception: Null check operator used on a null value
+#0      ScrollPosition.maxScrollExtent (package:flutter/src/widgets/scroll_position.dart:239:49)
+#1      _LogTailState._scrollToBottom.<anonymous closure> (package:eco_dashboard/widgets/log_tail.dart:66:38)
+#2      Timer._createTimer.<anonymous closure> (dart:async-patch/timer_patch.dart:18:15)
+#3      _Timer._runTimers (dart:isolate-patch/timer_impl.dart:423:19)
+#4      _Timer._handleMessage (dart:isolate-patch/timer_impl.dart:454:5)
+#5      _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:192:12)
+
+[ERROR:flutter/runtime/dart_vm_initializer.cc(40)] Unhandled Exception: Null check operator used on a null value
+#0      ScrollPosition.maxScrollExtent (package:flutter/src/widgets/scroll_position.dart:239:49)
+#1      _LogTailState._scrollToBottom.<anonymous closure> (package:eco_dashboard/widgets/log_tail.dart:66:38)
+#2      Timer._createTimer.<anonymous closure> (dart:async-patch/timer_patch.dart:18:15)
+#3      _Timer._runTimers (dart:isolate-patch/timer_impl.dart:423:19)
+#4      _Timer._handleMessage (dart:isolate-patch/timer_impl.dart:454:5)
+#5      _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:192:12)
+
+[ERROR:flutter/runtime/dart_vm_initializer.cc(40)] Unhandled Exception: Null check operator used on a null value
+#0      ScrollPosition.maxScrollExtent (package:flutter/src/widgets/scroll_position.dart:239:49)
+#1      _LogTailState._scrollToBottom.<anonymous closure> (package:eco_dashboard/widgets/log_tail.dart:66:38)
+#2      Timer._createTimer.<anonymous closure> (dart:async-patch/timer_patch.dart:18:15)
+#3      _Timer._runTimers (dart:isolate-patch/timer_impl.dart:423:19)
+#4      _Timer._handleMessage (dart:isolate-patch/timer_impl.dart:454:5)
+#5      _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:192:12)
+
+[ERROR:flutter/runtime/dart_vm_initializer.cc(40)] Unhandled Exception: Null check operator used on a null value
+#0      ScrollPosition.maxScrollExtent (package:flutter/src/widgets/scroll_position.dart:239:49)
+#1      _LogTailState._scrollToBottom.<anonymous closure> (package:eco_dashboard/widgets/log_tail.dart:66:38)
+#2      Timer._createTimer.<anonymous closure> (dart:async-patch/timer_patch.dart:18:15)
+#3      _Timer._runTimers (dart:isolate-patch/timer_impl.dart:423:19)
+#4      _Timer._handleMessage (dart:isolate-patch/timer_impl.dart:454:5)
+#5      _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:192:12)
+
