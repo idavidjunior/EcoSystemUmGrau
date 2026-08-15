@@ -2208,3 +2208,34 @@ INFO:vox:dashboard: snapshot de estado enviado
 INFO:vox:dashboard: snapshot de estado enviado
 INFO:websockets.server:connection closed
 INFO:vox:fim
+INFO:websockets.server:connection open
+INFO:vox:conectado de 127.0.0.1 hist=198
+INFO:websockets.server:connection closed
+INFO:vox:dashboard conectado — modo snapshot ativo
+INFO:websockets.server:connection closed
+INFO:vox:fim
+INFO:websockets.server:connection open
+INFO:vox:conectado de 127.0.0.1 hist=198
+INFO:websockets.server:connection closed
+INFO:vox:dashboard conectado — modo snapshot ativo
+INFO:websockets.server:connection closed
+INFO:vox:fim
+INFO:websockets.server:connection rejected (426 Upgrade Required)
+INFO:websockets.server:connection closed
+INFO:websockets.server:connection open
+INFO:vox:conectado de 127.0.0.1 hist=198
+INFO:websockets.server:connection closed
+INFO:vox:dashboard conectado — modo snapshot ativo
+INFO:websockets.server:connection closed
+INFO:vox:fim
+INFO:websockets.server:connection rejected (426 Upgrade Required)
+INFO:websockets.server:connection closed
+INFO:websockets.server:connection open
+INFO:vox:conectado de 127.0.0.1 hist=198
+INFO:websockets.server:connection closed
+INFO:vox:dashboard conectado — modo snapshot ativo
+INFO:websockets.server:connection closed
+INFO:websockets.server:connection open
+INFO:vox:conectado de 127.0.0.1 hist=198
+INFO:websockets.server:connection closed
+INFO:vox:dashboard conectado — modo snapshot ativo

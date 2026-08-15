@@ -5256,5 +5256,28 @@
     "access_count": 0,
     "created_at": "2026-08-15T00:21:52.314600",
     "last_accessed": "2026-08-15T00:21:52.314600"
+  },
+  {
+    "id": 292,
+    "kind": "padrao",
+    "task": "Dashboard HTML puro funciona",
+    "summary": "Dashboard web local implementado com HTTP server (porta 8766) + WebSocket bridge (porta 8765). websockets 17.x process_request nao serve HTML corretamente. Solucao: http.server stdlib separado. zero compilacao, zero npm. Funcionou na primeira tentativa apos mudanca de abordagem.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "8765",
+      "bridge",
+      "websocket",
+      "porta",
+      "8766",
+      "implementado"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-15T11:10:45.725376",
+    "last_accessed": "2026-08-15T11:10:45.725376"
   }
 ]

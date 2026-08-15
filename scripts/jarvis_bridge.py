@@ -2209,9 +2209,10 @@ async def lidar(ws):
 
 async def servir():
     logger.info("="*50)
-    logger.info("  Vox UmGrau Bridge v6 (serve HTTP API)")
+    logger.info("  Vox UmGrau Bridge v6 (serve HTTP API + Dashboard)")
     logger.info(f"  modelo: deepseek-v4-flash-free")
     logger.info(f"  ws://0.0.0.0:8765")
+    logger.info(f"  http://localhost:8766/dashboard")
     logger.info(f"  serve: {SERVE_URL}")
     logger.info(f"  sistema: {len(SISTEMA)} chars")
     logger.info(f"  estado: atualizado por request")

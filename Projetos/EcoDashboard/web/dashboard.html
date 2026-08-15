@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoSystemUmGrau Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0D1117;--surface:#161B22;--surface2:#21262D;--surface3:#30363D;
+  --primary:#00E5A0;--secondary:#00B8D4;--tertiary:#FFB300;
+  --success:#3FB950;--warning:#FFB300;--error:#F85149;--info:#58A6FF;
+  --text:#F0F6FC;--text2:#8B949E;--text3:#484F58;
+  --conf-high:#3FB950;--conf-med:#A371F7;--conf-low:#FFB300;
+}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.mono{font-family:'Cascadia Mono','Fira Code','Consolas',monospace}
+
+/* HEADER */
+.header{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--surface3);background:var(--surface)}
+.header h1{font-size:20px;font-weight:600;display:flex;align-items:center;gap:10px}
+.header h1 .eco{color:var(--primary);font-size:24px}
+.conn-badge{display:flex;align-items:center;gap:8px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600}
+.conn-badge.ok{background:rgba(63,185,80,.15);color:var(--success);border:1px solid var(--success)}
+.conn-badge.err{background:rgba(248,81,73,.15);color:var(--error);border:1px solid var(--error)}
+.conn-badge.connecting{background:rgba(88,166,255,.15);color:var(--info);border:1px solid var(--info)}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.dot.ok{background:var(--success);box-shadow:0 0 6px var(--success);animation:pulse 1.5s infinite}
+.dot.err{background:var(--error);box-shadow:0 0 6px var(--error)}
+.dot.connecting{background:var(--info);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;padding:20px 24px}
+@media(max-width:1200px){.grid{grid-template-columns:1fr 1fr}}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--surface3);border-radius:12px;padding:16px;transition:border-color .2s}
+.card:hover{border-color:var(--primary)}
+.card-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.card-header .icon{font-size:18px;color:var(--primary)}
+.card-header h2{font-size:14px;font-weight:600;flex:1}
+.card-header .badge{font-size:11px;padding:3px 10px;border-radius:12px;font-weight:500}
+.badge.ok{background:rgba(63,185,80,.15);color:var(--success)}
+.badge.warn{background:rgba(255,179,0,.15);color:var(--warning)}
+.badge.err{background:rgba(248,81,73,.15);color:var(--error)}
+.badge.info{background:rgba(88,166,255,.15);color:var(--info)}
+
+/* STAT */
+.stat{text-align:center;padding:8px}
+.stat .value{font-size:28px;font-weight:700;color:var(--primary)}
+.stat .label{font-size:11px;color:var(--text2);margin-top:2px}
+.stats-row{display:flex;justify-content:space-around;margin:10px 0}
+
+/* BAR */
+.bar-track{height:10px;background:var(--surface2);border-radius:5px;overflow:hidden;margin:6px 0}
+.bar-fill{height:100%;border-radius:5px;transition:width .6s ease}
+.bar-seg{display:flex;height:10px;border-radius:5px;overflow:hidden}
+.bar-seg div{height:100%;transition:width .6s ease}
+
+/* TIMER */
+.timer{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--surface2)}
+.timer:last-child{border:none}
+.timer .name{flex:1;font-size:12px}
+.timer .interval{font-size:11px;color:var(--text3)}
+.timer .next{font-size:11px;color:var(--text3)}
+.timer .dot{width:6px;height:6px;flex-shrink:0}
+
+/* LEGEND */
+.legend{display:flex;gap:14px;margin-top:8px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
+.legend-dot{width:10px;height:10px;border-radius:2px}
+
+/* LOG */
+.log-container{max-height:200px;overflow-y:auto;font-size:11px;line-height:1.6;background:var(--bg);border-radius:6px;padding:8px;margin-top:8px}
+.log-container::-webkit-scrollbar{width:6px}
+.log-container::-webkit-scrollbar-track{background:var(--surface)}
+.log-container::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+.log-entry{padding:2px 0;border-bottom:1px solid rgba(48,54,61,.3)}
+.log-time{color:var(--text3)}
+.log-src{padding:1px 5px;border-radius:3px;margin:0 4px;font-size:10px;font-weight:500}
+.log-msg{color:var(--text)}
+.log-lvl-error .log-msg{color:var(--error)}
+.log-lvl-warn .log-msg{color:var(--warning)}
+.log-lvl-debug .log-msg{color:var(--info)}
+
+/* SYNC BADGE */
+.sync-badge{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;background:var(--surface);border:1px solid var(--surface3);font-size:11px;color:var(--text2)}
+
+/* VOICE */
+.voice-wave{display:flex;align-items:end;justify-content:center;height:60px;gap:2px}
+.voice-bar{width:4px;border-radius:2px;transition:height .1s;background:var(--primary)}
+.voice-indicators{display:flex;gap:14px;margin-top:10px;justify-content:center}
+.v-ind{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text2)}
+.v-dot{width:6px;height:6px;border-radius:50%}
+
+/* RADAR */
+.radar-steps{display:flex;justify-content:space-around;margin:10px 0}
+.radar-step{text-align:center}
+.radar-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;font-size:12px;font-weight:600}
+.radar-dot.active{background:var(--primary);color:var(--bg)}
+.radar-dot.inactive{background:var(--surface3);color:var(--text3)}
+.radar-label{font-size:10px;color:var(--text2)}
+
+/* CHIP */
+.chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:16px;font-size:11px;background:var(--surface2);border:1px solid var(--surface3);margin:2px}
+
+/* EMPTY */
+.empty{text-align:center;padding:30px;color:var(--text3);font-size:13px}
+
+/* FULL WIDTH */
+.full{grid-column:1/-1}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1><span class="eco">🌿</span> EcoSystemUmGrau</h1>
+  <div style="display:flex;gap:12px;align-items:center">
+    <div class="sync-badge">
+      <span>🔄</span>
+      <span id="sync-time">--</span>
+    </div>
+    <div class="conn-badge connecting" id="conn-badge">
+      <span class="dot connecting" id="conn-dot"></span>
+      <span id="conn-text">Conectando...</span>
+    </div>
+  </div>
+</div>
+
+<div class="grid">
+  <!-- MEMORIA -->
+  <div class="card" id="card-memoria">
+    <div class="card-header">
+      <span class="icon">🧠</span>
+      <h2>Memória Episódica</h2>
+      <span class="badge info" id="mem-total">0 total</span>
+    </div>
+    <div class="stats-row" id="mem-stats">
+      <div class="stat"><div class="value" id="mem-active">0</div><div class="label">Ativos</div></div>
+      <div class="stat"><div class="value" id="mem-alta">0</div><div class="label">Alta</div></div>
+      <div class="stat"><div class="value" id="mem-media">0</div><div class="label">Média</div></div>
+      <div class="stat"><div class="value" id="mem-baixa">0</div><div class="label">Baixa</div></div>
+    </div>
+    <div style="font-size:11px;color:var(--text2);margin-bottom:4px">Confiança</div>
+    <div class="bar-seg" id="conf-bar">
+      <div style="width:100%;background:var(--conf-high)"></div>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--conf-high)"></div>Fato (≥0.9)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--conf-med)"></div>Provável (0.7-0.9)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--conf-low)"></div>Hipótese (&lt;0.7)</div>
+    </div>
+    <div style="margin-top:10px" id="mem-kinds"></div>
+  </div>
+
+  <!-- VIGILANTE -->
+  <div class="card" id="card-vigilante">
+    <div class="card-header">
+      <span class="icon">🛡️</span>
+      <h2>Vigilante</h2>
+      <span class="badge err" id="vig-badge">Offline</span>
+    </div>
+    <div id="vig-pid" class="mono" style="font-size:11px;color:var(--text3);margin-bottom:8px"></div>
+    <div id="vig-timers"></div>
+  </div>
+
+  <!-- RADAR -->
+  <div class="card" id="card-radar">
+    <div class="card-header">
+      <span class="icon">📡</span>
+      <h2>Evolution Radar</h2>
+      <span class="badge info" id="radar-badge">Idle</span>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="value" id="radar-found">0</div><div class="label">Encontrados</div></div>
+      <div class="stat"><div class="value" id="radar-validated">0</div><div class="label">Validados</div></div>
+      <div class="stat"><div class="value" id="radar-packages">0</div><div class="label">Pacotes</div></div>
+    </div>
+    <div class="radar-steps">
+      <div class="radar-step"><div class="radar-dot inactive" id="rstep-0">1</div><div class="radar-label">Coletar</div></div>
+      <div class="radar-step"><div class="radar-dot inactive" id="rstep-1">2</div><div class="radar-label">Filtrar</div></div>
+      <div class="radar-step"><div class="radar-dot inactive" id="rstep-2">3</div><div class="radar-label">Empacotar</div></div>
+    </div>
+    <div id="radar-admin" style="font-size:11px;color:var(--text3);text-align:center"></div>
+  </div>
+
+  <!-- VOZ -->
+  <div class="card" id="card-voice">
+    <div class="card-header">
+      <span class="icon">🎙️</span>
+      <h2>Voz / Áudio</h2>
+      <span class="badge info" id="voice-badge">Em espera</span>
+    </div>
+    <div class="voice-wave" id="voice-wave"></div>
+    <div class="voice-indicators">
+      <div class="v-ind"><div class="v-dot" id="vad-dot" style="background:var(--surface3)"></div><span>VAD</span></div>
+      <div class="v-ind" id="voice-level">0%</div>
+      <div class="v-ind" id="voice-text" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Aguardando</div>
+    </div>
+  </div>
+
+  <!-- AGENTES -->
+  <div class="card" id="card-agents">
+    <div class="card-header">
+      <span class="icon">🤖</span>
+      <h2>Agentes</h2>
+      <span class="badge info" id="agents-count">0</span>
+    </div>
+    <div id="agents-list" style="display:flex;flex-wrap:wrap;gap:4px"></div>
+  </div>
+
+  <!-- MCP -->
+  <div class="card" id="card-mcp">
+    <div class="card-header">
+      <span class="icon">🔌</span>
+      <h2>MCP Servers</h2>
+      <span class="badge ok" id="mcp-count">0 online</span>
+    </div>
+    <div id="mcp-list" style="display:flex;flex-wrap:wrap;gap:4px"></div>
+  </div>
+
+  <!-- LOGS -->
+  <div class="card full" id="card-logs">
+    <div class="card-header">
+      <span class="icon">📋</span>
+      <h2>Logs Recentes</h2>
+      <span class="badge info" id="logs-count">0</span>
+    </div>
+    <div class="log-container" id="logs-container"></div>
+  </div>
+</div>
+
+<script>
+const WS_URL = 'ws://localhost:8765';
+let ws = null;
+let state = null;
+let reconnectTimer = null;
+let voiceBars = [];
+
+// Init voice bars
+(function(){
+  const wave = document.getElementById('voice-wave');
+  for(let i=0;i<32;i++){
+    const bar = document.createElement('div');
+    bar.className='voice-bar';
+    bar.style.height='2px';
+    wave.appendChild(bar);
+    voiceBars.push(bar);
+  }
+})();
+
+function connect(){
+  if(ws && (ws.readyState===0||ws.readyState===1)) return;
+  updateConn('connecting','Conectando...');
+  try{
+    ws = new WebSocket(WS_URL);
+  }catch(e){
+    updateConn('err','Erro: '+e.message);
+    scheduleReconnect();
+    return;
+  }
+  ws.onopen = ()=>{
+    updateConn('ok','Conectado');
+    ws.send(JSON.stringify({type:'get_state'}));
+  };
+  ws.onmessage = (evt)=>{
+    try{
+      const msg = JSON.parse(evt.data);
+      if(msg.type==='state' && msg.payload){
+        state = msg.payload;
+        render(state);
+      }
+    }catch(e){}
+  };
+  ws.onerror = ()=>{
+    updateConn('err','Erro de conexão');
+  };
+  ws.onclose = ()=>{
+    updateConn('err','Desconectado');
+    scheduleReconnect();
+  };
+}
+
+function scheduleReconnect(){
+  if(reconnectTimer) return;
+  reconnectTimer = setInterval(()=>{
+    reconnectTimer=null;
+    connect();
+  },3000);
+}
+
+function updateConn(cls,text){
+  const badge = document.getElementById('conn-badge');
+  const dot = document.getElementById('conn-dot');
+  const txt = document.getElementById('conn-text');
+  badge.className='conn-badge '+cls;
+  dot.className='dot '+cls;
+  txt.textContent=text;
+}
+
+function render(s){
+  renderMemory(s.memory);
+  renderVigilante(s.vigilante);
+  renderRadar(s.radar);
+  renderVoice(s.voice);
+  renderAgents(s.agents);
+  renderMCP(s.mcp_servers);
+  renderLogs(s.recent_logs);
+  if(s.timestamp){
+    const d=new Date(s.timestamp);
+    document.getElementById('sync-time').textContent=
+      d.getHours().toString().padStart(2,'0')+':'+
+      d.getMinutes().toString().padStart(2,'0')+':'+
+      d.getSeconds().toString().padStart(2,'0');
+  }
+}
+
+function renderMemory(m){
+  if(!m) return;
+  document.getElementById('mem-total').textContent=m.total+' total';
+  document.getElementById('mem-active').textContent=m.active||0;
+  const c=m.by_confidence||{};
+  document.getElementById('mem-alta').textContent=c.alta||0;
+  document.getElementById('mem-media').textContent=c.media||0;
+  document.getElementById('mem-baixa').textContent=c.baixa||0;
+  const total=m.total||1;
+  const alta=c.alta||0, media=c.media||0, baixa=c.baixa||0;
+  const bar=document.getElementById('conf-bar');
+  bar.innerHTML=
+    '<div style="width:'+(alta/total*100)+'%;background:var(--conf-high)"></div>'+
+    '<div style="width:'+(media/total*100)+'%;background:var(--conf-med)"></div>'+
+    '<div style="width:'+(baixa/total*100)+'%;background:var(--conf-low)"></div>';
+  const kinds=m.by_kind||{};
+  const kindEl=document.getElementById('mem-kinds');
+  let html='<div style="font-size:11px;color:var(--text2);margin-bottom:4px">Por tipo</div>';
+  for(const [k,v] of Object.entries(kinds)){
+    html+='<span class="chip">'+k+': '+v+'</span>';
+  }
+  kindEl.innerHTML=html;
+}
+
+function renderVigilante(v){
+  if(!v) return;
+  const badge=document.getElementById('vig-badge');
+  const pid=document.getElementById('vig-pid');
+  if(v.running){
+    badge.className='badge ok';badge.textContent='Online';
+    pid.textContent='PID '+v.pid;
+  }else{
+    badge.className='badge err';badge.textContent='Offline';
+    pid.textContent='';
+  }
+  const el=document.getElementById('vig-timers');
+  const timers=v.timers||{};
+  let html='';
+  for(const [name,t] of Object.entries(timers)){
+    const cls=t.active?'ok':(t.status==='error'?'err':'warn');
+    html+='<div class="timer">'+
+      '<span class="dot '+cls+'"></span>'+
+      '<span class="name">'+t.name+'</span>'+
+      '<span class="interval">'+t.interval+'</span>'+
+      '<span class="next">'+t.next_run+'</span>'+
+    '</div>';
+  }
+  el.innerHTML=html;
+}
+
+function renderRadar(r){
+  if(!r) return;
+  document.getElementById('radar-found').textContent=r.proposals_found||0;
+  document.getElementById('radar-validated').textContent=r.proposals_validated||0;
+  document.getElementById('radar-packages').textContent=r.packages_ready||0;
+  const badge=document.getElementById('radar-badge');
+  badge.textContent=r.phase||'idle';
+  badge.className='badge '+(r.admin_enabled?'ok':'warn');
+  document.getElementById('radar-admin').textContent=r.admin_enabled?'Admin OK':'Sem permissão admin';
+  const phases=['idle','collect','filter','package','apply','completed'];
+  const idx=phases.indexOf(r.phase)||0;
+  for(let i=0;i<3;i++){
+    const el=document.getElementById('rstep-'+i);
+    if(i<=idx-1 && r.phase!=='idle'){
+      el.className='radar-dot active';
+    }else{
+      el.className='radar-dot inactive';
+    }
+  }
+}
+
+function renderVoice(v){
+  if(!v) return;
+  const badge=document.getElementById('voice-badge');
+  const vadDot=document.getElementById('vad-dot');
+  const level=document.getElementById('voice-level');
+  const text=document.getElementById('voice-text');
+  if(v.tts_playing){badge.textContent='Falando';badge.className='badge ok'}
+  else if(v.stt_active){badge.textContent='Ouvindo';badge.className='badge info'}
+  else if(v.vad_active){badge.textContent='VAD ativo';badge.className='badge warn'}
+  else{badge.textContent='Em espera';badge.className='badge info'}
+  vadDot.style.background=v.vad_active?'var(--primary)':'var(--surface3)';
+  level.textContent=Math.round((v.input_level||0)*100)+'%';
+  text.textContent=v.current_text||v.last_spoken||'Aguardando';
+  // Animate bars
+  const active=v.stt_active||v.tts_playing;
+  const lvl=v.input_level||0;
+  for(let i=0;i<voiceBars.length;i++){
+    const center=voiceBars.length/2;
+    const dist=Math.abs(i-center)/center;
+    const envelope=1-dist*0.7;
+    const h=active?Math.max(2,(60-4)*envelope*lvl*(0.7+Math.random()*0.3)):2;
+    voiceBars[i].style.height=h+'px';
+    if(v.stt_active) voiceBars[i].style.background='var(--success)';
+    else if(v.tts_playing) voiceBars[i].style.background='var(--primary)';
+    else voiceBars[i].style.background='var(--surface3)';
+  }
+}
+
+function renderAgents(agents){
+  if(!agents) return;
+  document.getElementById('agents-count').textContent=agents.length;
+  const el=document.getElementById('agents-list');
+  let html='';
+  for(const a of agents){
+    const statusColor=a.status==='working'?'var(--primary)':a.status==='error'?'var(--error)':'var(--text3)';
+    html+='<span class="chip" title="'+a.role+'">'+a.icon+' '+a.name+'</span>';
+  }
+  el.innerHTML=html;
+}
+
+function renderMCP(servers){
+  if(!servers) return;
+  const online=servers.filter(s=>s.status==='online').length;
+  document.getElementById('mcp-count').textContent=online+'/'+servers.length+' online';
+  const el=document.getElementById('mcp-list');
+  let html='';
+  for(const s of servers){
+    const cls=s.status==='online'?'ok':'err';
+    html+='<span class="chip"><span class="dot '+cls+'" style="width:5px;height:5px"></span>'+s.name+'</span>';
+  }
+  el.innerHTML=html;
+}
+
+function renderLogs(logs){
+  if(!logs) return;
+  document.getElementById('logs-count').textContent=logs.length;
+  const el=document.getElementById('logs-container');
+  let html='';
+  const show=logs.slice(-100).reverse();
+  for(const l of show){
+    const t=new Date(l.timestamp);
+    const ts=t.getHours().toString().padStart(2,'0')+':'+t.getMinutes().toString().padStart(2,'0')+':'+t.getSeconds().toString().padStart(2,'0');
+    const lvlCls=l.level==='error'?'error':l.level==='warn'?'warn':l.level==='debug'?'debug':'';
+    html+='<div class="log-entry log-lvl-'+lvlCls+'">'+
+      '<span class="log-time">'+ts+'</span>'+
+      '<span class="log-src" style="background:var(--surface2);color:var(--text2)">['+l.source+']</span>'+
+      '<span class="log-msg">'+escapeHtml(l.message)+'</span>'+
+    '</div>';
+  }
+  el.innerHTML=html;
+}
+
+function escapeHtml(t){
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// Animate voice bars when idle
+setInterval(()=>{
+  if(!state||!state.voice) return;
+  const v=state.voice;
+  if(!v.stt_active&&!v.tts_playing){
+    for(let i=0;i<voiceBars.length;i++){
+      const h=2+Math.random()*3;
+      voiceBars[i].style.height=h+'px';
+      voiceBars[i].style.background='var(--surface3)';
+    }
+  }
+},100);
+
+connect();
+</script>
+</body>
+</html>

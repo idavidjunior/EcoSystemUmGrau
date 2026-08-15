@@ -10,18 +10,17 @@ import '../models/ecosystem_state.dart';
 class BridgeClient {
   static const String defaultHost = 'localhost';
   static const int defaultPort = 8765;
-  static const Duration reconnectDelay = Duration(seconds: 3);
+  static const Duration reconnectDelay = Duration(seconds: 5);
   static const Duration pingInterval = Duration(seconds: 15);
 
   WebSocketChannel? _channel;
+  StreamSubscription? _sub;
   final String host;
   final int port;
   bool _disposed = false;
   Timer? _reconnectTimer;
   Timer? _pingTimer;
-  StreamSubscription? _sub;
 
-  // Streams de saída
   final _stateController = StreamController<EcosystemState>.broadcast();
   final _connectionController = StreamController<ConnectionStatus>.broadcast();
   final _logController = StreamController<LogEntry>.broadcast();
@@ -45,30 +44,38 @@ class BridgeClient {
   void _scheduleConnect() {
     if (_disposed) return;
     _updateConnectionStatus(ConnectionStatus.connecting);
-    _connect();
+    _tryConnect();
   }
 
-  Future<void> _connect() async {
+  void _tryConnect() {
+    if (_disposed) return;
     final uri = Uri.parse('ws://$host:$port');
     debugPrint('[BridgeClient] conectando $uri');
     try {
       _channel = WebSocketChannel.connect(uri);
-      // Aguarda handshake completar
-      await _channel!.ready;
-      debugPrint('[BridgeClient] handshake OK');
-      _updateConnectionStatus(ConnectionStatus.connected);
-
-      // Escuta mensagens
+      // Não await ready — em Windows desktop pode travar
+      // Escuta o stream direto
       _sub = _channel!.stream.listen(
         _onMessage,
-        onError: _onError,
-        onDone: _onDone,
+        onError: (Object e) {
+          debugPrint('[BridgeClient] stream error: $e');
+          _onError(e);
+        },
+        onDone: () {
+          debugPrint('[BridgeClient] stream done');
+          _onDone();
+        },
       );
-
+      // Marca como conectado e pede estado
+      _updateConnectionStatus(ConnectionStatus.connected);
       _startPing();
-      // Pede estado imediatamente
-      requestState();
-      debugPrint('[BridgeClient] conectado e ouvindo');
+      // Envia get_state após breve delay para garantir handshake
+      Timer(const Duration(milliseconds: 500), () {
+        if (!_disposed && _connectionStatus == ConnectionStatus.connected) {
+          requestState();
+        }
+      });
+      debugPrint('[BridgeClient] listeners instalados');
     } catch (e) {
       debugPrint('[BridgeClient] connect erro: $e');
       _updateConnectionStatus(ConnectionStatus.error);
@@ -104,7 +111,6 @@ class BridgeClient {
           _stateController.add(state);
         } catch (e) {
           debugPrint('[BridgeClient] state parse error: $e');
-          _errorController.add('State parse error: $e');
         }
         break;
       case 'log':
@@ -114,25 +120,21 @@ class BridgeClient {
         } catch (_) {}
         break;
       case 'pong':
+        debugPrint('[BridgeClient] pong');
         break;
       case 'error':
         _errorController.add(data['message'] ?? 'Bridge error');
-        break;
-      default:
         break;
     }
   }
 
   void _onError(Object error) {
-    debugPrint('[BridgeClient] onError: $error');
     if (_disposed) return;
-    _errorController.add(error);
     _updateConnectionStatus(ConnectionStatus.error);
     _scheduleReconnect();
   }
 
   void _onDone() {
-    debugPrint('[BridgeClient] onDone');
     if (_disposed) return;
     _updateConnectionStatus(ConnectionStatus.disconnected);
     _scheduleReconnect();
@@ -157,7 +159,7 @@ class BridgeClient {
       try {
         _channel!.sink.add(jsonEncode(message));
       } catch (e) {
-        debugPrint('[BridgeClient] send erro: $e');
+        debugPrint('[BridgeClient] send error: $e');
       }
     }
   }
@@ -191,7 +193,6 @@ class BridgeClient {
 
 enum ConnectionStatus { disconnected, connecting, connected, error }
 
-/// Provider para injeção de dependência
 class BridgeClientProvider extends ChangeNotifier {
   late final BridgeClient _client;
   BridgeClient get client => _client;
@@ -227,9 +228,7 @@ class BridgeClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _onError(Object error) {
-    debugPrint('[BridgeProvider] error: $error');
-  }
+  void _onError(Object error) {}
 
   void requestState() => _client.requestState();
   void sendCommand(String cmd, [Map<String, dynamic>? args]) => _client.sendCommand(cmd, args);
