@@ -1,7 +1,7 @@
 ---
 tags: [act, cognitivo, decision-making, escolha, execute, metodo]
 aliases: [Ciclo OODA aplicado a navegacao]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # Ciclo OODA aplicado a navegacao

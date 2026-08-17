@@ -79,8 +79,8 @@ class CodeFilter:
         return bool(CodeFilter.URL.search(text))
 
     def remove_code_blocks(self, text: str) -> str:
-        """Remove blocos de código e substitui por placeholder."""
-        return self.CODE_BLOCK.sub(' trecho de código ', text)
+        """Remove blocos de código e substitui por pausa curta."""
+        return self.CODE_BLOCK.sub(' ', text)
 
     def remove_inline_code(self, text: str) -> str:
         """Remove código inline e mantém o conteúdo."""
@@ -88,8 +88,8 @@ class CodeFilter:
 
     def remove_json(self, text: str) -> str:
         """Remove blocos JSON."""
-        text = self.JSON_OBJECT.sub(' trecho de código ', text)
-        text = self.JSON_ARRAY.sub(' trecho de código ', text)
+        text = self.JSON_OBJECT.sub(' ', text)
+        text = self.JSON_ARRAY.sub(' ', text)
         return text
 
     def remove_xml(self, text: str) -> str:
@@ -97,16 +97,16 @@ class CodeFilter:
         return self.XML_TAG.sub(' ', text)
 
     def remove_urls(self, text: str) -> str:
-        """Remove URLs e substitui por placeholder."""
-        return self.URL.sub(' link ', text)
+        """Remove URLs."""
+        return self.URL.sub(' ', text)
 
     def remove_file_paths(self, text: str) -> str:
         """Remove paths de arquivo."""
-        return self.FILE_PATH.sub(' arquivo ', text)
+        return self.FILE_PATH.sub(' ', text)
 
     def remove_tracebacks(self, text: str) -> str:
         """Remove tracebacks e logs."""
-        return self.TRACEBACK.sub(' erro de sistema ', text)
+        return self.TRACEBACK.sub(' ', text)
 
     def filter_all(self, text: str) -> str:
         """Aplica todos os filtros de código de uma vez."""

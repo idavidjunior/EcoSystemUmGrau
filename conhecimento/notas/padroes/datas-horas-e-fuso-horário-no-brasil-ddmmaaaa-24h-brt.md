@@ -1,7 +1,7 @@
 ---
 tags: [brst, localizacao, obsoleto, padrao, tarde, usar]
 aliases: [Datas, horas e fuso horário no Brasil (dd/mm/aaaa, 24h, BRT)]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # Datas, horas e fuso horário no Brasil (dd/mm/aaaa, 24h, BRT)

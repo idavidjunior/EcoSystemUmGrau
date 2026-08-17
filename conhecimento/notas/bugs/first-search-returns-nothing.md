@@ -1,7 +1,7 @@
 ---
 tags: [bug, filename, mp3player-metadata-rescue, noisy, projeto, queries]
 aliases: [First search returns nothing]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # First search returns nothing

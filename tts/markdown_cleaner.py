@@ -26,7 +26,7 @@ class MarkdownCleaner:
         # Horizontal rules
         (re.compile(r'^[-*_]{3,}\s*$', re.MULTILINE), ''),
         # Code blocks residuais (já removidos pelo classifier, mas por segurança)
-        (re.compile(r'```[\s\S]*?```', re.DOTALL), ' trecho de código '),
+        (re.compile(r'```[\s\S]*?```', re.DOTALL), ' '),
         # Inline code residual
         (re.compile(r'`([^`]+)`'), r'\1'),
         # Links residuais

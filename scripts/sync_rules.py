@@ -9,12 +9,14 @@ Uso:
   python scripts/sync_rules.py check    # verifica consistencia das 3 camadas
   python scripts/sync_rules.py update   # regenera blocos do AGENTS.md a partir da Constituicao
   python scripts/sync_rules.py audit    # check + update + report
+  python scripts/sync_rules.py adherence # auditoria de aderência à Constituição
 
 Exit: 0 = consistente, 1 = divergencia encontrada (check).
 """
 import os
 import re
 import sys
+import subprocess
 from pathlib import Path
 
 BASE = str(Path(__file__).resolve().parent.parent)
@@ -29,12 +31,22 @@ RULES_END = '<!-- RULES:END -->'
 SOURCES_START = '<!-- SOURCES:START -->'
 SOURCES_END = '<!-- SOURCES:END -->'
 
+def run_cmd(cmd: list[str], cwd: str = BASE) -> tuple[int, str, str]:
+    try:
+        result = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, timeout=60, encoding='utf-8', errors='replace')
+        return result.returncode, result.stdout, result.stderr
+    except subprocess.TimeoutExpired:
+        return -1, '', 'timeout'
+    except Exception as e:
+        return -1, '', str(e)
+
 # Titulos que contam como "regra obrigatoria" na Constituicao
+# Aceita com ou sem prefixo '# ' (compatível com v1.2 markdown e v1.3 texto plano)
 RULE_HEADING_PATTERNS = [
-    re.compile(r'^#\s+CLÁUSULA PÉTREA\b', re.IGNORECASE),
-    re.compile(r'^#\s+CLÁUSULA PETREA\b', re.IGNORECASE),
-    re.compile(r'^#\s+REGRA DE OURO\b', re.IGNORECASE),
-    re.compile(r'^#\s+REGRAS DE OURO\b', re.IGNORECASE),
+    re.compile(r'^(?:#\s+)?CLÁUSULA PÉTREA\b', re.IGNORECASE),
+    re.compile(r'^(?:#\s+)?CLÁUSULA PETREA\b', re.IGNORECASE),
+    re.compile(r'^(?:#\s+)?REGRA DE OURO\b', re.IGNORECASE),
+    re.compile(r'^(?:#\s+)?REGRAS DE OURO\b', re.IGNORECASE),
 ]
 
 
@@ -48,8 +60,8 @@ def extract_rules_from_constitution():
     with open(CONSTITUICAO, encoding='utf-8') as f:
         lines = f.readlines()
 
-    # Indices de todos os headings de nivel 1 (# titulo)
-    h1_idx = [i for i, line in enumerate(lines) if re.match(r'^#\s+\S', line.strip())]
+    # Indices de todos os headings de nivel 1 (# titulo) OU titulos de regra em texto plano
+    h1_idx = [i for i, line in enumerate(lines) if re.match(r'^(?:#\s+\S|CLÁUSULA PÉTREA\b|CLÁUSULA PETREA\b|REGRA DE OURO\b|REGRAS DE OURO\b)', line.strip(), re.IGNORECASE)]
 
     if not h1_idx:
         return []
@@ -222,6 +234,19 @@ def cmd_update():
     return 0
 
 
+def cmd_adherence():
+    """Executa auditoria de aderência à Constituição."""
+    try:
+        rc, out, err = run_cmd([sys.executable, 'scripts/adherence_audit.py', '7'])
+        print(out)
+        if err:
+            print(err, file=sys.stderr)
+        return rc
+    except Exception as e:
+        print(f'[FAIL] Erro ao executar auditoria de aderência: {e}')
+        return 1
+
+
 def cmd_audit():
     rc = cmd_check()
     if rc != 0:
@@ -230,10 +255,15 @@ def cmd_audit():
         rc = 0 if rc2 == 0 else 1
         if rc == 0:
             rc = cmd_check()
+    # Executa também auditoria de aderência
+    print('\n--- Auditorias de Aderência ---')
+    rc_ad = cmd_adherence()
+    if rc_ad != 0 and rc == 0:
+        rc = 1
     return rc
 
 
 if __name__ == '__main__':
     cmd = sys.argv[1] if len(sys.argv) > 1 else 'check'
-    rc = {'check': cmd_check, 'update': cmd_update, 'audit': cmd_audit}.get(cmd, cmd_check)()
+    rc = {'check': cmd_check, 'update': cmd_update, 'audit': cmd_audit, 'adherence': cmd_adherence}.get(cmd, cmd_check)()
     sys.exit(rc)

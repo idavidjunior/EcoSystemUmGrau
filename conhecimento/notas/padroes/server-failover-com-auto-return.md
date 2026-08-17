@@ -1,7 +1,7 @@
 ---
-tags: [120s, automatico, fonte, padrao, return, sessaoprovidermanager]
+tags: [120s, automatico, fonte, padrao, primary, sessaoprovidermanager]
 aliases: [Server failover com auto-return]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # Server failover com auto-return

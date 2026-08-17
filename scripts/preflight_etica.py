@@ -24,6 +24,7 @@ import os
 import re
 import sys
 from pathlib import Path
+from datetime import datetime
 
 BASE = str(Path(__file__).resolve().parent.parent)
 REPORT_DIR = os.path.join(BASE, 'conhecimento', 'etica')
@@ -31,6 +32,23 @@ os.makedirs(REPORT_DIR, exist_ok=True)
 
 ERRORS = []
 WARNS = []
+
+PREFLIGHT_LOG = Path(__file__).resolve().parent.parent / 'runtime' / 'preflight_executions.log'
+
+def log_preflight_execution(tipo: str, success: bool, erros_count: int = 0):
+    """Registra execução do preflight para métricas de aderência."""
+    try:
+        PREFLIGHT_LOG.parent.mkdir(parents=True, exist_ok=True)
+        entry = {
+            'timestamp': datetime.now().isoformat(),
+            'tipo': tipo,  # 'tecnico' ou 'etico'
+            'success': success,
+            'erros_count': erros_count
+        }
+        with open(PREFLIGHT_LOG, 'a', encoding='utf-8') as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + '\n')
+    except Exception:
+        pass  # Fail silently - não bloqueia o preflight
 
 # Nivel etico atual (default: desativado)
 NIVEIS_FILE = os.path.join(REPORT_DIR, 'niveis_etica.json')
@@ -226,9 +244,11 @@ def registrar_avaliacao(resultado, motivo):
 def main():
     if '--scan-repo' in sys.argv:
         scan_repo()
+        log_preflight_execution('etico', not ERRORS, len(ERRORS))
         return 0 if not ERRORS else 1
     if '--data-inventory' in sys.argv:
         data_inventory()
+        log_preflight_execution('etico', True, 0)
         return 0
 
     target = None
@@ -244,6 +264,7 @@ def main():
     if NIVEL == 'desativado':
         print('\n=== RESULTADO ===')
         print('DESATIVADO: preflight etico sem avisos e sem bloqueios (modo administrador).')
+        log_preflight_execution('etico', True, 0)
         return 0
 
     if target:
@@ -305,15 +326,18 @@ def main():
         for e in ERRORS:
             print(f'  [BLOQUEIO] {e}')
         registrar_avaliacao('bloqueado', f'entrega bloqueada no nivel {NIVEL}')
+        log_preflight_execution('etico', False, len(ERRORS))
         return 1
 
     if NIVEL == 'minimo':
         print(f'APROVADO (nível {NIVEL}): tecnicamente viavel, {len(WARNS)} aviso(s) de revisao.')
         registrar_avaliacao('aprovado', f'entrega aprovada no nivel {NIVEL}')
+        log_preflight_execution('etico', True, 0)
         return 0
 
     print(f'APROVADO com {len(WARNS)} alerta(s) de revisao.')
     registrar_avaliacao('aprovado', f'entrega aprovada no nivel {NIVEL}')
+    log_preflight_execution('etico', True, 0)
     return 0
 
 

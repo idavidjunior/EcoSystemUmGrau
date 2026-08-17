@@ -1,0 +1,977 @@
+{
+  "versao": "1.0",
+  "atualizado_em": "2026-08-17T00:02:47.772333",
+  "descricao": "Inventário oficial de estruturas ativas do EcoSystemUmGrau. Consulte antes de criar qualquer estrutura nova (cláusula anti-duplicação).",
+  "agentes": [
+    {
+      "id": "00-agent-template",
+      "arquivo": "config/agents/00-agent-template.md",
+      "tipo": "template",
+      "responsabilidade": "Template base para criação de novos agentes"
+    },
+    {
+      "id": "00-maestro",
+      "arquivo": "config/agents/00-maestro.md",
+      "tipo": "coordenacao",
+      "responsabilidade": "Coordenação geral do Conselho Permanente"
+    },
+    {
+      "id": "00-system-rules",
+      "arquivo": "config/agents/00-system-rules.md",
+      "tipo": "constitucional",
+      "responsabilidade": "Constituição oficial do ecossistema (fonte única)"
+    },
+    {
+      "id": "01-estrategista",
+      "arquivo": "config/agents/01-estrategista.md",
+      "tipo": "especialista",
+      "responsabilidade": "Define direção, objetivos e estratégia de alto nível"
+    },
+    {
+      "id": "02-cetico",
+      "arquivo": "config/agents/02-cetico.md",
+      "tipo": "especialista",
+      "responsabilidade": "Desafia hipóteses, identifica riscos"
+    },
+    {
+      "id": "03-realista",
+      "arquivo": "config/agents/03-realista.md",
+      "tipo": "especialista",
+      "responsabilidade": "Avalia viabilidade prática, prazos e custos"
+    },
+    {
+      "id": "04-etica",
+      "arquivo": "config/agents/04-etica.md",
+      "tipo": "especialista",
+      "responsabilidade": "Avalia impactos éticos, legais, privacidade, conformidade"
+    },
+    {
+      "id": "05-futuro",
+      "arquivo": "config/agents/05-futuro.md",
+      "tipo": "especialista",
+      "responsabilidade": "Antecipa tendências, evolução tecnológica, escalabilidade"
+    },
+    {
+      "id": "06-recursos",
+      "arquivo": "config/agents/06-recursos.md",
+      "tipo": "especialista",
+      "responsabilidade": "Mapeia recursos internos, bibliotecas, ferramentas reutilizáveis"
+    },
+    {
+      "id": "07-criativo",
+      "arquivo": "config/agents/07-criativo.md",
+      "tipo": "especialista",
+      "responsabilidade": "Propõe soluções inovadoras, alternativas não óbvias"
+    },
+    {
+      "id": "08-revisor",
+      "arquivo": "config/agents/08-revisor.md",
+      "tipo": "especialista",
+      "responsabilidade": "Revisa código, arquitetura, documentação, consistência"
+    },
+    {
+      "id": "09-executor",
+      "arquivo": "config/agents/09-executor.md",
+      "tipo": "executor",
+      "responsabilidade": "Executa tarefas operacionais delegadas"
+    },
+    {
+      "id": "10-aprendizado",
+      "arquivo": "config/agents/10-aprendizado.md",
+      "tipo": "transversal",
+      "responsabilidade": "Extrai e persiste conhecimento ao final de cada tarefa"
+    },
+    {
+      "id": "11-ler-executor",
+      "arquivo": "config/agents/11-ler-executor.md",
+      "tipo": "executor",
+      "responsabilidade": "Delega tarefas complexas ao LER"
+    },
+    {
+      "id": "12-parallel-planner",
+      "arquivo": "config/agents/12-parallel-planner.md",
+      "tipo": "planejamento",
+      "responsabilidade": "Divide tarefas grandes em subtarefas paralelas"
+    },
+    {
+      "id": "13-flutter-orquestrador",
+      "arquivo": "config/agents/13-flutter-orquestrador.md",
+      "tipo": "especialista",
+      "responsabilidade": "Compila, empacota e instala apps Flutter (APK)"
+    },
+    {
+      "id": "99-gerador-de-agentes",
+      "arquivo": "config/agents/99-gerador-de-agentes.md",
+      "tipo": "meta",
+      "responsabilidade": "Especialista em criar agentes profissionais"
+    },
+    {
+      "id": "compreender",
+      "arquivo": "config/agents/compreender.md",
+      "tipo": "habilidade",
+      "responsabilidade": "Analisa pedido do usuário antes de executar (MCP compreensão)"
+    },
+    {
+      "id": "eco",
+      "arquivo": "config/agents/eco.md",
+      "tipo": "habilidade",
+      "responsabilidade": "Ativa/verifica EcoSystemUmGrau (boot, integridade, diagnóstico)"
+    },
+    {
+      "id": "sync",
+      "arquivo": "config/agents/sync.md",
+      "tipo": "habilidade",
+      "responsabilidade": "Protocolo de sincronização completo Local ↔ GitHub"
+    },
+    {
+      "id": "ecocell",
+      "arquivo": "config/agents/ecocell.md",
+      "tipo": "habilidade",
+      "responsabilidade": "Espelho de tela do celular via scrcpy"
+    },
+    {
+      "id": "ecomodelo",
+      "arquivo": "config/agents/ecomodelo.md",
+      "tipo": "habilidade",
+      "responsabilidade": "Gerenciamento inteligente de modelos (monitor, troca, config)"
+    }
+  ],
+  "skills_opencode": [
+    {
+      "id": "auditoria-de-codigo",
+      "diretorio": "~/.config/opencode/skill/auditoria-de-codigo",
+      "responsabilidade": "Auditoria sistemática de código para encontrar e corrigir bugs",
+      "status": "externo_opencode"
+    },
+    {
+      "id": "customize-opencode",
+      "diretorio": "~/.config/opencode/skill/customize-opencode",
+      "responsabilidade": "Configuração do próprio opencode (agents, subagents, skills, plugins, MCP)",
+      "status": "externo_opencode"
+    }
+  ],
+  "mcp_servidores": [
+    {
+      "id": "mcp-knowledge-server",
+      "arquivo": "scripts/mcp-knowledge-server.py",
+      "tipo": "python",
+      "status": "ativo"
+    },
+    {
+      "id": "mcp-obsidian-server",
+      "arquivo": "scripts/mcp-obsidian-server.py",
+      "tipo": "python",
+      "status": "ativo"
+    }
+  ],
+  "mcp_habilidades": {
+    "android": [
+      "adb-expert",
+      "adb-perito",
+      "android-diagnostics",
+      "android-pure-sdk",
+      "expo",
+      "flutter",
+      "ios",
+      "mobile-specific-patterns",
+      "mp3player-metadata-rescue",
+      "react-native"
+    ],
+    "comportamentais": [
+      "code-reviewer",
+      "conservador",
+      "pensador-critico",
+      "ponytail"
+    ],
+    "desenvolvimento": [
+      "accessibility",
+      "adr",
+      "agent-orchestration",
+      "api-design",
+      "api-documentation",
+      "auditoria-de-codigo",
+      "authz-authn-matrix",
+      "autonomous-loops",
+      "backend-patterns",
+      "cache-strategy-selector",
+      "ci-cd-pipeline",
+      "code-review",
+      "compliance-audit",
+      "concurrent-computation-patterns",
+      "contract-testing",
+      "cost-aware-llm-pipeline",
+      "cqrs",
+      "css-architecture",
+      "data-pipeline",
+      "data-privacy-by-design",
+      "database-design",
+      "database-migrations",
+      "debugging-expertise",
+      "deployment-patterns",
+      "developer-experience-dx",
+      "docker-patterns",
+      "domain-driven-design",
+      "e2e-testing",
+      "edge-compute-patterns",
+      "error-message-design",
+      "eval-testing",
+      "event-driven-architecture",
+      "event-sourcing",
+      "feature-engineering",
+      "fine-tuning",
+      "frontend-patterns",
+      "golang-patterns",
+      "graphify",
+      "graphql",
+      "grpc",
+      "infrastructure-as-code",
+      "kubernetes",
+      "legacy-modernization",
+      "ler",
+      "local-first-architecture",
+      "message-queues",
+      "microservices-patterns",
+      "migration-playbooks",
+      "mlops",
+      "model-training",
+      "monitoring-alerting",
+      "multi-modal-ai",
+      "nosql-patterns",
+      "observability-stack",
+      "performance-testing",
+      "prompt-engineering",
+      "rag-implementation",
+      "react-vue-svelte-patterns",
+      "refactoring-patterns",
+      "resilience-engineering",
+      "runbooks",
+      "search-first",
+      "secure-coding",
+      "security-review",
+      "semantic-release-automation",
+      "service-mesh",
+      "state-machine-patterns",
+      "tdd-workflow",
+      "technical-debt",
+      "technical-writing",
+      "terraform",
+      "threat-modeling",
+      "vector-databases",
+      "vulnerability-scanning",
+      "python-patterns",
+      "state-management",
+      "evolucao"
+    ],
+    "internet": [
+      "busca-web",
+      "clima-api",
+      "endereco-geo",
+      "navegacao-perita"
+    ],
+    "memoria": [
+      "busca-conhecimento",
+      "context-engine"
+    ],
+    "multimidia": [
+      "audio-processing",
+      "image-processing",
+      "streaming",
+      "video-processing"
+    ],
+    "nucleo": [
+      "compreensao-pedidos",
+      "epistemico-cruzamento",
+      "pais",
+      "epistemico",
+      "cli",
+      "adaptation",
+      "pais"
+    ],
+    "os": [
+      "os-automation"
+    ]
+  },
+  "scripts_core": [
+    {
+      "id": "runtime_boot",
+      "arquivo": "scripts/runtime_boot.py",
+      "funcao": "Bootloader obrigatório — verifica integridade, restaura estado, carrega memória"
+    },
+    {
+      "id": "runtime_kernel",
+      "arquivo": "scripts/runtime_kernel.py",
+      "funcao": "Kernel permanente — checa regras, prioridades, validações (pipeline 9 etapas)"
+    },
+    {
+      "id": "runtime_context",
+      "arquivo": "scripts/runtime_context.py",
+      "funcao": "Carregamento de contexto semântico (BM25)"
+    },
+    {
+      "id": "runtime_auditor",
+      "arquivo": "scripts/runtime_auditor.py",
+      "funcao": "Auditoria de respostas — classifica criticidade, reprova se necessário"
+    },
+    {
+      "id": "runtime_state",
+      "arquivo": "scripts/runtime_state.py",
+      "funcao": "Gerencia estado persistente (checkpoints, last_task, notas)"
+    },
+    {
+      "id": "memory_engine",
+      "arquivo": "scripts/memory_engine.py",
+      "funcao": "Memória episódica — add, search, stats, reindexação semântica"
+    },
+    {
+      "id": "sync_rules",
+      "arquivo": "scripts/sync_rules.py",
+      "funcao": "Sincroniza 3 camadas de regras (Constituição ↔ AGENTS.md ↔ Deployed)"
+    },
+    {
+      "id": "persistencia",
+      "arquivo": "scripts/persistencia.ps1",
+      "funcao": "Ponto único de persistência (gate) — git add/commit/push centralizado"
+    },
+    {
+      "id": "preflight_check",
+      "arquivo": "scripts/preflight_check.py",
+      "funcao": "Preflight técnico — valida MCPs, secrets, agents, config"
+    },
+    {
+      "id": "preflight_etica",
+      "arquivo": "scripts/preflight_etica.py",
+      "funcao": "Preflight ético — valida deveres externos, privacidade, acessibilidade"
+    },
+    {
+      "id": "jarvis_bridge",
+      "arquivo": "scripts/jarvis_bridge.py",
+      "funcao": "Bridge TTS/STT (porta 8765) — base64 MP3 para comunicação em áudio"
+    },
+    {
+      "id": "dialogo",
+      "arquivo": "scripts/dialogo.py",
+      "funcao": "Modo hands-free VAD para comunicação contínua em áudio"
+    },
+    {
+      "id": "ecosystem",
+      "arquivo": "scripts/ecosystem.ps1",
+      "funcao": "Orquestrador principal do ecossistema (sync, boot, deploy, status)"
+    },
+    {
+      "id": "vigilante",
+      "arquivo": "scripts/vigilante.ps1",
+      "funcao": "Monitoramento contínuo, alertas, auto-correção"
+    },
+    {
+      "id": "watchdog",
+      "arquivo": "scripts/watchdog.ps1",
+      "funcao": "Protege OpenCode desktop, limpa processos órfãos CLI"
+    },
+    {
+      "id": "audit_triagem",
+      "arquivo": "scripts/audit_triagem.py",
+      "funcao": "Triagem automática de auditorias de código"
+    },
+    {
+      "id": "adb-redmi",
+      "arquivo": "scripts/adb-redmi.ps1",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "adb_scan",
+      "arquivo": "scripts/adb_scan.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "android_diagnostico",
+      "arquivo": "scripts/android_diagnostico.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "android_diagnostics",
+      "arquivo": "scripts/android_diagnostics.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "android_limpeza",
+      "arquivo": "scripts/android_limpeza.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "android_manutencao",
+      "arquivo": "scripts/android_manutencao.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "bootstrap",
+      "arquivo": "scripts/bootstrap.ps1",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "cleanup_ecosystem_logs",
+      "arquivo": "scripts/cleanup_ecosystem_logs.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "cleanup_knowledge_graph",
+      "arquivo": "scripts/cleanup_knowledge_graph.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "cleanup_radar_raw",
+      "arquivo": "scripts/cleanup_radar_raw.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "cleanup_state_backups",
+      "arquivo": "scripts/cleanup_state_backups.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "cluster_mapper",
+      "arquivo": "scripts/cluster_mapper.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "dashboard_http",
+      "arquivo": "scripts/dashboard_http.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "debug",
+      "arquivo": "scripts/debug.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "debug_health_check",
+      "arquivo": "scripts/debug_health_check.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "debug_mcp",
+      "arquivo": "scripts/debug_mcp.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "deploy-config",
+      "arquivo": "scripts/deploy-config.ps1",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "desejos_loop",
+      "arquivo": "scripts/desejos_loop.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "desejo_aprendizado",
+      "arquivo": "scripts/desejo_aprendizado.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "detect_smells",
+      "arquivo": "scripts/detect_smells.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "device_probe",
+      "arquivo": "scripts/device_probe.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "evolution_radar_collect",
+      "arquivo": "scripts/evolution_radar_collect.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "generate-graph-html",
+      "arquivo": "scripts/generate-graph-html.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "generate-manifesto",
+      "arquivo": "scripts/generate-manifesto.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "generate-obsidian-notes",
+      "arquivo": "scripts/generate-obsidian-notes.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "guardian_manager",
+      "arquivo": "scripts/guardian_manager.ps1",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "inventory_manager",
+      "arquivo": "scripts/inventory_manager.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "jarvis_audio",
+      "arquivo": "scripts/jarvis_audio.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "kernel_testes",
+      "arquivo": "scripts/kernel_testes.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "lg_pair_tv",
+      "arquivo": "scripts/lg_pair_tv.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "llm-wizard",
+      "arquivo": "scripts/llm-wizard.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "llm_feedback",
+      "arquivo": "scripts/llm_feedback.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "mcp-knowledge-server",
+      "arquivo": "scripts/mcp-knowledge-server.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "mcp-obsidian-server",
+      "arquivo": "scripts/mcp-obsidian-server.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "memory_leak_hunter",
+      "arquivo": "scripts/memory_leak_hunter.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "memory_semantic",
+      "arquivo": "scripts/memory_semantic.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "model_monitor",
+      "arquivo": "scripts/model_monitor.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "monitor_opencode_cache",
+      "arquivo": "scripts/monitor_opencode_cache.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "narrador_desktop",
+      "arquivo": "scripts/narrador_desktop.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "niveis_etica",
+      "arquivo": "scripts/niveis_etica.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "nvidia_quota_monitor",
+      "arquivo": "scripts/nvidia_quota_monitor.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "opencode_desktop_guardian",
+      "arquivo": "scripts/opencode_desktop_guardian.ps1",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "opencode_wrapper",
+      "arquivo": "scripts/opencode_wrapper.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "parallel_dispatcher",
+      "arquivo": "scripts/parallel_dispatcher.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "pronunciar_termos",
+      "arquivo": "scripts/pronunciar_termos.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "race_stress",
+      "arquivo": "scripts/race_stress.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "rotacao_dados",
+      "arquivo": "scripts/rotacao_dados.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "run_bridge",
+      "arquivo": "scripts/run_bridge.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "run_dashboard",
+      "arquivo": "scripts/run_dashboard.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "run_serve",
+      "arquivo": "scripts/run_serve.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "semantic_tags",
+      "arquivo": "scripts/semantic_tags.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "shot_clean",
+      "arquivo": "scripts/shot_clean.ps1",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "shot_colors",
+      "arquivo": "scripts/shot_colors.ps1",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "shot_full",
+      "arquivo": "scripts/shot_full.ps1",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "system_guardian",
+      "arquivo": "scripts/system_guardian.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "test-ecosystem",
+      "arquivo": "scripts/test-ecosystem.ps1",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "test_acento",
+      "arquivo": "scripts/test_acento.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "test_cache",
+      "arquivo": "scripts/test_cache.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "test_json_sanitization",
+      "arquivo": "scripts/test_json_sanitization.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "test_vox",
+      "arquivo": "scripts/test_vox.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "test_widget_live",
+      "arquivo": "scripts/test_widget_live.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "tv_control",
+      "arquivo": "scripts/tv_control.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "tv_pair_prompt",
+      "arquivo": "scripts/tv_pair_prompt.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "validar_idioma",
+      "arquivo": "scripts/validar_idioma.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "valida_specs",
+      "arquivo": "scripts/valida_specs.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "vox_audio",
+      "arquivo": "scripts/vox_audio.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "voz_guarda",
+      "arquivo": "scripts/voz_guarda.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "widget_controle_jarvis",
+      "arquivo": "scripts/widget_controle_jarvis.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "widget_grafo",
+      "arquivo": "scripts/widget_grafo.py",
+      "funcao": "Widget desktop frameless que exibe grafo interativo do conhecimento (534+ notas, vis-network, pseudo-3D, temas, persistência)"
+    },
+    {
+      "id": "adherence_audit",
+      "arquivo": "scripts/adherence_audit.py",
+      "funcao": "PENDENTE: descrever função"
+    }
+  ],
+  "scripts_android": [
+    "android_diagnostico.py",
+    "android_diagnostics.py",
+    "android_limpeza.py",
+    "android_manutencao.py",
+    "adb_scan.py",
+    "adb-redmi.ps1",
+    "device_probe.py",
+    "tv_control.py",
+    "tv_pair_prompt.py",
+    "lg_pair_tv.py"
+  ],
+  "scripts_flutter": [
+    "rename_flutter_package.sh",
+    {
+      "id": "rename_flutter_package",
+      "arquivo": "scripts/rename_flutter_package.sh",
+      "funcao": "Renomear pacote Flutter"
+    }
+  ],
+  "scripts_monitoramento": [
+    "model_monitor.py",
+    "nvidia_quota_monitor.py",
+    "monitor_opencode_cache.py",
+    "debug_health_check.py",
+    "debug_mcp.py",
+    "debug.py",
+    "architecture_integrity_monitor.py"
+  ],
+  "scripts_memoria_conhecimento": [
+    "memory_semantic.py",
+    "semantic_tags.py",
+    "cluster_mapper.py",
+    "generate-graph-html.py",
+    "generate-obsidian-notes.py",
+    "generate-manifesto.py",
+    "evolution_radar_collect.py",
+    "cleanup_knowledge_graph.py",
+    "cleanup_radar_raw.py",
+    "cleanup_state_backups.py",
+    "cleanup_ecosystem_logs.py",
+    "rotacao_dados.py",
+    "retag_memories.py"
+  ],
+  "scripts_audio_voz": [
+    "jarvis_audio.py",
+    "vox_audio.py",
+    "vox_guarda.py",
+    "test_vox.py",
+    "pronunciar_termos.py",
+    "validar_idioma.py"
+  ],
+  "scripts_teste_validacao": [
+    "kernel_testes.py",
+    "test-ecosystem.ps1",
+    "test_json_sanitization.py",
+    "test_cache.py",
+    "test_acento.py",
+    "test_widget_live.py",
+    "race_stress.py",
+    "valida_specs.py"
+  ],
+  "scripts_utilitarios": [
+    "bootstrap.ps1",
+    "deploy-config.ps1",
+    "guardian_manager.ps1",
+    "opencode_desktop_guardian.ps1",
+    "opencode_wrapper.py",
+    "parallel_dispatcher.py",
+    "run_bridge.py",
+    "run_dashboard.py",
+    "run_serve.py",
+    "serve_watchdog.py",
+    "shot_clean.ps1",
+    "shot_colors.ps1",
+    "shot_full.ps1",
+    "controle.bat",
+    "desejos_loop.py",
+    "desejo_aprendizado.py",
+    "desejos_start.bat",
+    "llm-wizard.py",
+    "llm_feedback.py",
+    "niveis_etica.py",
+    "openapi_spec.json",
+    "opencode-serve.jsonc",
+    "bridge_estado.json",
+    "saudacao_estado.json",
+    "pronuncias.json",
+    {
+      "id": "clean_sessions",
+      "funcao": "Limpeza de sessões antigas",
+      "arquivo": "scripts/clean_sessions.py"
+    },
+    {
+      "id": "desejos_start",
+      "arquivo": "scripts/desejos_start.bat",
+      "funcao": "Inicialização de desejos (bat)"
+    },
+    {
+      "id": "narrador_start",
+      "arquivo": "scripts/narrador_start.bat",
+      "funcao": "Inicialização do narrador (bat)"
+    }
+  ],
+  "configuracoes": [
+    {
+      "id": "opencode_jsonc",
+      "arquivo": "config/opencode.jsonc",
+      "descricao": "Configuração principal do opencode (template)"
+    },
+    {
+      "id": "opencode_model_fallback",
+      "arquivo": "config/opencode-model-fallback.jsonc",
+      "descricao": "Fallback de modelos LLM"
+    },
+    {
+      "id": "persistencia_json",
+      "arquivo": "config/persistencia.json",
+      "descricao": "Configuração do gate de persistência (modo AUTO/MANUAL, paths excluídos)"
+    },
+    {
+      "id": "glossario_tecnico",
+      "arquivo": "config/glossario_tecnico.json",
+      "descricao": "Glossário de termos técnicos para pronúncia e tradução"
+    },
+    {
+      "id": "evolution_sources",
+      "arquivo": "config/evolution_sources.json",
+      "descricao": "Fontes de evolução do ecossistema"
+    },
+    {
+      "id": "llm_choice",
+      "arquivo": "config/.llm-choice.json",
+      "descricao": "Escolha de modelo LLM ativo"
+    }
+  ],
+  "memoria_persistente": [
+    {
+      "id": "memories_json",
+      "arquivo": "conhecimento/memoria/memories.json",
+      "descricao": "Memória episódica consolidada (memórias de longo prazo)"
+    },
+    {
+      "id": "aprendizados_dir",
+      "diretorio": "conhecimento/aprendizados/",
+      "descricao": "Arquivos de aprendizado por tarefa (YYYY-MM-DD-titulo.md)"
+    }
+  ],
+  "runtime_estado": [
+    {
+      "id": "state_json",
+      "arquivo": "runtime/state.json",
+      "descricao": "Estado persistente do runtime (projeto ativo, objetivo, última tarefa, pendências)"
+    },
+    {
+      "id": "checkpoints_dir",
+      "diretorio": "runtime/checkpoints/",
+      "descricao": "Checkpoints de recuperação de estado"
+    }
+  ],
+  "documentacao": [
+    {
+      "id": "agents_md",
+      "arquivo": "AGENTS.md",
+      "descricao": "Regras carregadas pelo opencode (derivado da Constituição via sync_rules.py)"
+    },
+    {
+      "id": "readme",
+      "arquivo": "README.md",
+      "descricao": "Documentação principal do projeto"
+    },
+    {
+      "id": "specs",
+      "diretorio": "specs/",
+      "descricao": "Especificações técnicas de projetos"
+    },
+    {
+      "id": "docs",
+      "diretorio": "docs/",
+      "descricao": "Documentação geral"
+    }
+  ],
+  "projetos_externos": {
+    "ler-runtime": {
+      "diretorio": "ler-runtime/",
+      "config": "ler-runtime/config/agent_rules.json",
+      "descricao": "Runtime LER (Learning, Execution, Reasoning) — regras próprias"
+    },
+    "projetos_android": {
+      "diretorio": "Projetos/",
+      "descricao": "Projetos Android gerenciados pelo ecossistema"
+    }
+  },
+  "padroes_fluxos": [
+    {
+      "id": "ciclo_universal_engenharia",
+      "descricao": "REQUISITO → ANÁLISE → CONTEXTO → ARQUITETURA → PLANEJAMENTO → IMPLEMENTAÇÃO → TESTE → VALIDAÇÃO → AUDITORIA → ENTREGA → MONITORAMENTO → APRENDIZADO"
+    },
+    {
+      "id": "pipeline_compreensao_pedidos",
+      "descricao": "Receber → Compreender (estático + LLM opcional) → Resolver conceitos → Detectar desperdício → Esclarecer se score<60 → Executar → Validar"
+    },
+    {
+      "id": "protocolo_sync",
+      "descricao": "Bootloader → Constituição (sync_rules audit) → Deploy config → Preflight técnico → Preflight ético → Git status → Git pull/push (via gate) → Memory sync → Checkpoint"
+    },
+    {
+      "id": "gate_persistencia",
+      "descricao": "Todo git add/commit/push via persistencia.ps1 (run-sync, commit, sync, status, manual, auto)"
+    },
+    {
+      "id": "ativacao_voz_eco",
+      "descricao": "@eco (verifica/ativa) → Eco (palavra única = modo voz TTS/STT) → Desativar Eco (volta texto)"
+    },
+    {
+      "id": "aprendizado_automatico",
+      "descricao": "Ao concluir tarefa: memory_engine.py add → cria arquivo em conhecimento/aprendizados/ → persistencia.ps1 run-sync"
+    }
+  ],
+  "indices_referencia": [
+    {
+      "id": "runtime_state_json",
+      "arquivo": "runtime/state.json",
+      "tipo": "estado",
+      "chave_primaria": "projeto_ativo"
+    },
+    {
+      "id": "memories_json",
+      "arquivo": "conhecimento/memoria/memories.json",
+      "tipo": "memoria_episodica",
+      "chave_primaria": "id_memoria"
+    },
+    {
+      "id": "glossario_tecnico_json",
+      "arquivo": "config/glossario_tecnico.json",
+      "tipo": "glossario",
+      "chave_primaria": "termo"
+    },
+    {
+      "id": "persistencia_json",
+      "arquivo": "config/persistencia.json",
+      "tipo": "config_gate",
+      "chave_primaria": "modo"
+    },
+    {
+      "id": "evolution_sources_json",
+      "arquivo": "config/evolution_sources.json",
+      "tipo": "fontes_evolucao",
+      "chave_primaria": "fonte"
+    }
+  ]
+}

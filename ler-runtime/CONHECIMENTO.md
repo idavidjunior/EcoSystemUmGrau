@@ -1,8 +1,8 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-15T00:46:21.598818
+**Exportado em:** 2026-08-17T17:10:32.422272
 **Projetos:** 4
-**Padroes Tecnicos:** 249
+**Padroes Tecnicos:** 254
 **Decisoes:** 68
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 59
@@ -747,6 +747,11 @@ contexto_detalhado: Quando usuário clicava "Editar" num arquivo de despesas já
 | 247 | opencode | triagem scripts legado orgaos movidos |
 | 248 | opencode+opencode | fase2 limpeza git artefatos rastreados |
 | 249 | opencode | fase3 rotina automatica de tiragem organizacional |
+| 250 | opencode+opencode | Fix ativação de voz + Sistema de frases unificado |
+| 251 | opencode+opencode | 2026-08-16: Detecção automática de inglês no TTS |
+| 252 | opencode+opencode | padrao organizacao comandos |
+| 253 | opencode+opencode | 2026-08-17: Organograma agrupado por livro + técnicas de validação visual via adb |
+| 254 | opencode+opencode | 2026-08-17: CAR-BT — controle total via adb (Bluetooth automotivo) |
 
 ## Bug Fixes e Corrigidos
 
@@ -1762,7 +1767,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-15T00:46:21.442570
+**Ultima atualizacao:** 2026-08-17T17:10:32.322268
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

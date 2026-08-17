@@ -1,7 +1,7 @@
 ---
 tags: [assume, fallback, heuristica, secundario, testing, verificar]
 aliases: [Testar failover ativamente]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # Testar failover ativamente

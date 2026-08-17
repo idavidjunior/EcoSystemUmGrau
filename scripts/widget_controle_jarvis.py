@@ -22,6 +22,7 @@ Uso:
   $ controle  (via opencode.jsonc -> scripts/controle.bat -> pythonw)
 """
 import json
+import random
 import re
 import subprocess
 import sys
@@ -38,6 +39,7 @@ SCRIPTS = ROOT / "scripts"
 # --- Arquivos de estado do ecossistema (fonte unica) ---
 CONTROLE = ROOT / "runtime" / "narracao_estado.json"     # voz: {ativo, pausado}
 NARRADOR_PID = ROOT / "runtime" / "narrador.pid"
+NARRADOR_POS = ROOT / "runtime" / "narrador_posicao.json"
 NARRADOR = SCRIPTS / "narrador_desktop.py"
 JARVIS_AUDIO = SCRIPTS / "jarvis_audio.py"               # CLI de controle existente
 VOX = SCRIPTS / "vox_audio.py"                            # fallback de fala direta
@@ -75,6 +77,88 @@ def _atomic_write(path: Path, data: dict):
     except OSError:
         import os
         os.replace(tmp, path)
+
+
+# ============================================================
+# Frases — usa módulo unificado frases_manager
+# ============================================================
+
+from frases_manager import (
+    frases_ativacao,
+    frases_desativacao,
+    frases_mic_on,
+    frases_mic_off,
+    frases_interromper,
+    frases_minimizar,
+    frases_topo,
+    frases_tras,
+    registrar_saudacao,
+    classificar_conexao,
+    obter_saudacoes_hoje,
+    marcar_atividade,
+)
+
+# Aliases para compatibilidade com código existente
+def _escolher_frase_ativacao() -> str:
+    return frases_ativacao.escolher()
+
+
+def _aprender_frase_ativacao(nova: str):
+    frases_ativacao.aprender(nova)
+
+
+def _escolher_frase_desativacao() -> str:
+    return frases_desativacao.escolher()
+
+
+def _aprender_frase_desativacao(nova: str):
+    frases_desativacao.aprender(nova)
+
+
+def _escolher_frase_acao(acao: str) -> str:
+    manager = {
+        "mic_on": frases_mic_on,
+        "mic_off": frases_mic_off,
+        "interromper": frases_interromper,
+        "minimizar": frases_minimizar,
+        "topo": frases_topo,
+        "tras": frases_tras,
+    }.get(acao)
+    return manager.escolher() if manager else ""
+
+
+def _aprender_frase_acao(acao: str, nova: str):
+    manager = {
+        "mic_on": frases_mic_on,
+        "mic_off": frases_mic_off,
+        "interromper": frases_interromper,
+        "minimizar": frases_minimizar,
+        "topo": frases_topo,
+        "tras": frases_tras,
+    }.get(acao)
+    if manager:
+        manager.aprender(nova)
+
+
+def _falar_acao(acao: str):
+    """Fala frase variada para a ação, se voz estiver ativa."""
+    try:
+        at, pa = ler_estado_voz()
+        if at and not pa:
+            frase = _escolher_frase_acao(acao)
+            if frase:
+                falar_direto(frase)
+    except Exception as e:
+        print(f"[widget] erro falar_acao({acao}): {e}", flush=True)
+
+
+def _resetar_posicao_narrador():
+    """Atualiza narrador_posicao.json para timestamp atual — evita narrar backlog."""
+    try:
+        agora = int(time.time() * 1000)  # timestamp em ms como o narrador usa
+        _atomic_write(NARRADOR_POS, {"ultimo_ts": agora})
+    except Exception as e:
+        print(f"[widget] erro reset posicao narrador: {e}", flush=True)
 
 
 # ============================================================
@@ -214,9 +298,26 @@ try:
 except ImportError as e:
     print(f"[widget] SpeechPipeline não disponível: {e}", flush=True)
 
+# Perfil do usuário para formatação
+try:
+    from scripts.profile_hook import format_response_for_profile, get_response_config
+    _widget_profile_config = get_response_config()
+    WIDGET_PROFILE_AVAILABLE = True
+except ImportError as e:
+    print(f"[widget] profile_hook não disponível: {e}", flush=True)
+    _widget_profile_config = {}
+    WIDGET_PROFILE_AVAILABLE = False
+    def format_response_for_profile(texto, config):
+        return texto
+    def get_response_config():
+        return {}
+
 
 def _falar_direto_worker(texto: str):
     try:
+        # Aplica preferências do perfil do usuário
+        if WIDGET_PROFILE_AVAILABLE:
+            texto = format_response_for_profile(texto, _widget_profile_config)
         if WIDGET_SPEECH_AVAILABLE and _WIDGET_SPEECH:
             try:
                 _WIDGET_SPEECH.speak(texto, block=True)
@@ -237,10 +338,14 @@ def falar_direto(texto: str):
 def cmd_voz(ativar: bool):
     try:
         if ativar:
+            _resetar_posicao_narrador()
             subprocess.run([sys.executable, str(JARVIS_AUDIO), "on"],
                            cwd=str(ROOT), capture_output=True, creationflags=_NO_CONSOLE, timeout=35)
-            falar_direto("Voz ativada")
+            frase = _escolher_frase_ativacao()
+            falar_direto(frase)
         else:
+            frase = _escolher_frase_desativacao()
+            falar_direto(frase)
             subprocess.run([sys.executable, str(JARVIS_AUDIO), "stop"],
                            cwd=str(ROOT), capture_output=True, creationflags=_NO_CONSOLE, timeout=20)
             subprocess.run([sys.executable, str(JARVIS_AUDIO), "off"],
@@ -250,6 +355,7 @@ def cmd_voz(ativar: bool):
 
 
 def cmd_interromper_fala():
+    _falar_acao("interromper")
     try:
         PARAR_FALA.write_text(str(int(time.time())), encoding="utf-8")
     except Exception as e:
@@ -282,7 +388,13 @@ def cmd_mic(ativar: bool):
                 close_fds=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
             )
             MIC_PID.write_text(str(proc.pid), encoding="utf-8")
-            _atomic_write(MIC_ESTADO, {"ativo": True, "timestamp": int(time.time())})
+            _atomic_write(MIC_ESTADO, {
+                "ativo": True,
+                "status": "listening",
+                "modo": "vad",
+                "timestamp": int(time.time()),
+            })
+            _falar_acao("mic_on")
         except Exception as e:
             print(f"[widget] erro mic on: {e}", flush=True)
     else:
@@ -298,7 +410,8 @@ def cmd_mic(ativar: bool):
             MIC_PID.unlink(missing_ok=True)
         except Exception:
             pass
-        _atomic_write(MIC_ESTADO, {"ativo": False, "timestamp": int(time.time())})
+        _atomic_write(MIC_ESTADO, {"ativo": False, "status": "off", "timestamp": int(time.time())})
+        _falar_acao("mic_off")
 
 
 def _reconciliar_mic():
@@ -307,7 +420,7 @@ def _reconciliar_mic():
         try:
             d = json.loads(MIC_ESTADO.read_text(encoding="utf-8"))
             if d.get("ativo", False) and not mic_ativo():
-                _atomic_write(MIC_ESTADO, {"ativo": False, "timestamp": int(time.time())})
+                _atomic_write(MIC_ESTADO, {"ativo": False, "status": "off", "timestamp": int(time.time())})
                 MIC_PID.unlink(missing_ok=True)
         except Exception:
             pass
@@ -320,11 +433,13 @@ def _reconciliar_mic():
 def _enviar_para_tras(win):
     """Envia a janela para trás de todas as outras janelas (Z-order bottom)."""
     _set_window_zorder(win, topmost=False)
+    _falar_acao("tras")
 
 
 def _fixar_no_topo(win):
     """Fixar janela no topo de todas as outras (HWND_TOPMOST)."""
     _set_window_zorder(win, topmost=True)
+    _falar_acao("topo")
 
 
 def _set_window_zorder(win, topmost: bool):
@@ -414,6 +529,7 @@ def _carregar_geo() -> dict:
 
 def _minimizar(win):
     """Minimiza a janela. Tenta win.minimize() nativo, depois JS; fallback hide com estado."""
+    _falar_acao("minimizar")
     try:
         win.minimize()
         return
@@ -604,6 +720,23 @@ def _dispatch(click: str, win):
     elif click == "close":
         try:
             win.evaluate_js("localStorage.removeItem('jarvis_click')")
+        except Exception:
+            pass
+        # Para TTS do widget e narrador antes de fechar
+        try:
+            if WIDGET_SPEECH_AVAILABLE and _WIDGET_SPEECH:
+                _WIDGET_SPEECH.stop()
+        except Exception:
+            pass
+        # Sinaliza narrador para parar
+        try:
+            PARAR_FALA.write_text(str(int(time.time())), encoding="utf-8")
+        except Exception:
+            pass
+        # Para vox_audio se estiver rodando
+        try:
+            subprocess.run([sys.executable, str(JARVIS_AUDIO), "stop"],
+                           cwd=str(ROOT), capture_output=True, creationflags=_NO_CONSOLE, timeout=5)
         except Exception:
             pass
         _thread(win.destroy)

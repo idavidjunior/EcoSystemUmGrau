@@ -1,7 +1,7 @@
 ---
 tags: [decisao, filha, opencode, proprias, reparent, resistem]
 aliases: [widget desktop frameless persistente]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # widget desktop frameless persistente

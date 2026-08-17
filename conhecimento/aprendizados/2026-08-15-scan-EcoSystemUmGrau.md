@@ -67,6 +67,7 @@
 - evolution_radar_collect.py: 2 marcadores
 - llm-wizard.py: 1 marcadores
 - memory_semantic.py: 1 marcadores
+- model_monitor.py: 1 marcadores
 - monitor_opencode_cache.py: 1 marcadores
 - persistencia.ps1: 2 marcadores
 - preflight_etica.py: 1 marcadores

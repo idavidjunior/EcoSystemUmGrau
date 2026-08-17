@@ -19,9 +19,9 @@ class ContentExtractor:
     # Substituições para quando queremos mencionar que algo existe
     # mas sem ler o conteúdo
     _BLOCK_LABELS = {
-        ContentType.CODE_BLOCK: " trecho de código ",
-        ContentType.JSON: " trecho de código ",
-        ContentType.XML: " trecho de código ",
+        ContentType.CODE_BLOCK: " ",
+        ContentType.JSON: " ",
+        ContentType.XML: " ",
         ContentType.TABLE: " tabela ",
         ContentType.LOG: " log de sistema ",
     }
@@ -54,7 +54,7 @@ class ContentExtractor:
         """Versão mais elaborada: preserva contexto para o falante.
 
         Exemplo: se o texto tem "Veja o código: ```...```", retorna
-        "Veja o código, trecho de código." ao invés de apenas "Veja o código."
+        "Veja o código." ao invés de apenas "Veja o código."
         """
         parts = []
         prev_type = None

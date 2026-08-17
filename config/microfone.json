@@ -1,0 +1,114 @@
+{
+  "device_selection": {
+    "auto_benchmark": true,
+    "preferred_device": null,
+    "fallback_order": ["WASAPI", "DirectSound", "MME"],
+    "benchmark_duration_sec": 3,
+    "benchmark_metrics": ["latency", "snr", "clipping_rate"],
+    "min_snr_db": 15,
+    "max_latency_ms": 20
+  },
+  "vad": {
+    "engine": "silero",
+    "silero_threshold": 0.5,
+    "min_silence_ms": 800,
+    "speech_pad_ms": 30,
+    "min_speech_ms": 250,
+    "fallback_rms_threshold": 0.02,
+    "fallback_silence_sec": 1.2,
+    "fallback_max_speech_sec": 15
+  },
+  "wake_word": {
+    "enabled": true,
+    "engine": "porcupine",
+    "keywords": ["jarvis"],
+    "sensitivities": [0.6],
+    "access_key_env": "PORCUPINE_ACCESS_KEY",
+    "audio_gain_db": 0
+  },
+  "stt": {
+    "engine": "faster_whisper",
+    "model": "base",
+    "device": "cpu",
+    "compute_type": "int8",
+    "language": "pt",
+    "beam_size": 5,
+    "vad_filter": true,
+    "vad_parameters": {
+      "threshold": 0.5,
+      "min_speech_duration_ms": 250,
+      "max_speech_duration_s": 30,
+      "min_silence_duration_ms": 800
+    },
+    "streaming": {
+      "enabled": true,
+      "chunk_duration_sec": 0.5,
+      "partial_callback_interval_ms": 200
+    },
+    "fallback_google": {
+      "enabled": true,
+      "language": "pt-BR"
+    },
+    "hallucination_detection": {
+      "enabled": true,
+      "repetition_threshold": 3,
+      "min_words": 2
+    }
+  },
+  "audio_enhancement": {
+    "noise_gate": {
+      "enabled": true,
+      "threshold_db": -40,
+      "ratio": 10,
+      "attack_ms": 10,
+      "release_ms": 100
+    },
+    "auto_gain_control": {
+      "enabled": true,
+      "target_level_db": -20,
+      "max_gain_db": 20,
+      "adaptation_speed": 0.1
+    },
+    "windows_apo": {
+      "enabled": true,
+      "use_system_effects": true
+    },
+    "rnnoise": {
+      "enabled": false,
+      "reason": "no_windows_wheel"
+    }
+  },
+  "barge_in": {
+    "enabled": true,
+    "keyboard_keys": ["ESC", "ENTER"],
+    "voice_rms_threshold": 0.03,
+    "voice_consecutive_frames": 2,
+    "stabilization_delay_sec": 0.2
+  },
+  "bridge_integration": {
+    "enabled": true,
+    "sync_file": "runtime/mic_estado.json",
+    "websocket_events": true,
+    "pause_during_tts": true,
+    "resume_after_tts": true
+  },
+  "health_check": {
+    "enabled": true,
+    "interval_sec": 10,
+    "max_restarts": 3,
+    "restart_cooldown_sec": 30,
+    "watchdog_timeout_sec": 60
+  },
+  "hotplug": {
+    "enabled": true,
+    "poll_interval_sec": 2,
+    "auto_switch_on_disconnect": true,
+    "prefer_same_hostapi": true
+  },
+  "logging": {
+    "level": "INFO",
+    "log_audio_levels": false,
+    "log_vad_decisions": true,
+    "log_stt_results": true
+  }
+}

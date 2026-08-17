@@ -1,12 +1,15 @@
 # Padroes Tecnicos
 
-**244 notas** conectadas a este hub.
+**249 notas** conectadas a este hub.
 
 
 ## Notas
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
 - [[2026-08-03-adb-remoto-via-tailscale-script-automatico-de-rot]]
 - [[2026-08-04-persistencia-da-conexao-do-jarvis]]
+- [[2026-08-16-detecção-automática-de-inglês-no-tts]]
+- [[2026-08-17-car-bt-controle-total-via-adb-bluetooth-automotiv]]
+- [[2026-08-17-organograma-agrupado-por-livro-técnicas-de-valida]]
 - [[aapt-javac-d8-apksigner]]
 - [[adb-workflow]]
 - [[aegis-barra-progresso-tempo-real]]
@@ -97,6 +100,7 @@
 - [[fase3-rotina-automatica-de-tiragem-organizacional]]
 - [[fidelidade-x-naturalidade-quando-priorizar-cada-um]]
 - [[filename-artist-extraction-two-strategies]]
+- [[fix-ativação-de-voz-sistema-de-frases-unificado]]
 - [[fix-widget-grafo-desktop]]
 - [[form-starts-empty-pattern]]
 - [[formas-de-tratamento-em-pt-br-você-tu-senhora-e-concordância]]
@@ -158,6 +162,7 @@
 - [[opencode-mcp-config-format]]
 - [[otimização-do-reindex-semântico-do-memory-engine]]
 - [[packageactivity-launch-pattern]]
+- [[padrao-organizacao-comandos]]
 - [[palavras-de-preenchimento-hesitações-e-ruído-na-transcrição-]]
 - [[performance-caching-em-camadas-e-invalidação]]
 - [[performance-complexidade-assintótica-vs-custo-real]]

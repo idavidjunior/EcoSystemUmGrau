@@ -43,6 +43,37 @@ try:
 except ImportError:
     pass
 
+# Frases manager unificado (saudacoes, classificacao conexao, anti-repeticao)
+try:
+    from frases_manager import (
+        _carregar_saudacao_estado,
+        _salvar_saudacao_estado,
+        classificar_conexao,
+        registrar_saudacao,
+        obter_saudacoes_hoje,
+        marcar_atividade,
+    )
+
+    def _classificar_conexao():
+        """Traduz o retorno (str) do frases_manager p/ o dict esperado pela bridge."""
+        tipo = classificar_conexao()
+        return {
+            "eh_reconexao": tipo == "reconexao",
+            "minutos_desde_atividade": 0,
+            "hist_tamanho": 0,
+        }
+except ImportError as e:
+    logging.warning(f"frases_manager não disponível: {e}")
+    # Fallbacks locais mínimos
+    def _carregar_saudacao_estado():
+        return {"conexoes": 0, "hoje": "", "saudacoes_hoje": [], "ultima_saudacao": "", "ultima_saudacao_ts": 0, "ultima_atividade_ts": 0}
+    def _salvar_saudacao_estado(d): pass
+    def _classificar_conexao():
+        return {"eh_reconexao": False, "minutos_desde_atividade": 0, "hist_tamanho": 0}
+    def registrar_saudacao(texto): pass
+    def obter_saudacoes_hoje(): return []
+    def marcar_atividade(): pass
+
 logging.basicConfig(level=logging.INFO)
 file_handler = logging.FileHandler(Path(__file__).parent / "bridge_log.txt", mode="a", encoding="utf-8")
 file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s:%(name)s:%(message)s"))
@@ -450,6 +481,9 @@ def _snapshot_estado_ecossistema():
         mic = json.loads((ECOSSISTEMA_DIR / "runtime" / "mic_estado.json").read_text(encoding="utf-8"))
         mic_pid = _ler_pid(ECOSSISTEMA_DIR / "runtime" / "mic.pid")
         voice["vad_active"] = bool(mic.get("ativo", False)) and _processo_vivo_pid(mic_pid)
+        voice["mic_status"] = mic.get("status", "off")
+        voice["mic_mode"] = mic.get("modo", "vad")
+        voice["mic_paused_tts"] = mic.get("status") == "paused_tts"
     except Exception:
         pass
     try:
@@ -547,7 +581,13 @@ def sanitizar(t):
             return texto
         except Exception:
             pass
-    # Fallback: sanitização legada
+    # Fallback: camada V2 do normalizador (TTS Text Normalizer)
+    try:
+        from tts.text_normalizer import normalize_for_tts
+        return normalize_for_tts(t)
+    except Exception:
+        pass
+    # Fallback legado: sanitização mínima
     for p in [r'```[\s\S]*?```', r'`[^`]+`', r'[*_~#]', r'\[([^\]]+)\]\([^)]+\)', r'[<>{}()\[\]]']:
         t = re.sub(p, '', t)
     t = t.replace('"','').replace("'",'').replace('`','')
@@ -1618,12 +1658,7 @@ def _marcar_atividade():
     except Exception as e:
         logger.warning(f"_marcar_atividade: {e}")
     # Também atualiza saudacao_estado para o verificador de continuidade periódica
-    try:
-        es = _carregar_saudacao_estado()
-        es["ultima_atividade_ts"] = time.time()
-        _salvar_saudacao_estado(es)
-    except Exception:
-        pass
+    marcar_atividade()
 
 
 def _ultima_fala_usuario():
@@ -1750,81 +1785,6 @@ async def _retomar_ultima_tarefa(ws, c):
 
     _marcar_atividade()
     return True
-
-
-def _carregar_saudacao_estado():
-    """Carrega o estado persistente de saudações (reconexões, últimas saudações)."""
-    try:
-        if SAUDACAO_ESTADO.exists():
-            d = json.loads(SAUDACAO_ESTADO.read_text(encoding="utf-8"))
-            if isinstance(d, dict):
-                return d
-    except Exception as e:
-        logger.warning(f"saudacao_estado load: {e}")
-    return {"conexoes": 0, "hoje": "", "saudacoes_hoje": [], "ultima_saudacao": ""}
-
-
-def _salvar_saudacao_estado(d):
-    try:
-        SAUDACAO_ESTADO.write_text(json.dumps(d, ensure_ascii=False, indent=2), encoding="utf-8")
-    except Exception as e:
-        logger.warning(f"saudacao_estado save: {e}")
-
-
-def _classificar_conexao():
-    """Classifica a conexão como PRIMEIRA (sem atividade recente) ou RECONEXÃO
-    (atividade recente). Fontes de verdade, em ordem:
-      1. Estado de saudações: se já saudou hoje, a próxima conexão é reconexão
-         (a menos que a última saudação seja de muito tempo atrás).
-      2. Ponte: timestamp de atividade persistido (atualizado a cada mensagem).
-      3. Histórico: mtime do conversa_unica.json."""
-    agora = time.time()
-    # 1) Estado de saudações — a fonte mais confiável para "já conversamos hoje".
-    try:
-        es = _carregar_saudacao_estado()
-        if es.get("hoje") == datetime.datetime.now().strftime("%Y-%m-%d") and es.get("saudacoes_hoje"):
-            ts_ultima_saud = es.get("ultima_saudacao_ts")
-            if ts_ultima_saud and (agora - float(ts_ultima_saud)) / 3600.0 < 6:
-                return {
-                    "eh_reconexao": True,
-                    "minutos_desde_atividade": (agora - float(ts_ultima_saud)) / 60.0,
-                    "hist_tamanho": 0,
-                }
-    except Exception as e:
-        logger.warning(f"_classificar_conexao estado_saud: {e}")
-    # 2) Atividade persistida pela ponte
-    try:
-        if TMP_ESTADO.exists():
-            d = json.loads(TMP_ESTADO.read_text(encoding="utf-8"))
-            ts = d.get("ultima_atividade")
-            if ts and (agora - float(ts)) / 60.0 < JANELA_CONVERSA_MIN:
-                return {
-                    "eh_reconexao": True,
-                    "minutos_desde_atividade": (agora - float(ts)) / 60.0,
-                    "hist_tamanho": 0,
-                }
-    except Exception:
-        pass
-    # 3) mtime do histórico
-    minutos_ultima = _ultima_atividade_minutos()
-    hist_tamanho = 0
-    try:
-        if HIST_PATH.exists():
-            d = json.loads(HIST_PATH.read_text(encoding="utf-8-sig"))
-            if isinstance(d, list):
-                hist_tamanho = len(d) // 2
-    except Exception:
-        pass
-    eh_reconexao = (
-        minutos_ultima is not None
-        and minutos_ultima < JANELA_CONVERSA_MIN
-        and hist_tamanho > 0
-    )
-    return {
-        "eh_reconexao": eh_reconexao,
-        "minutos_desde_atividade": minutos_ultima,
-        "hist_tamanho": hist_tamanho,
-    }
 
 
 async def _enviar_progresso(ws, etapa: str):

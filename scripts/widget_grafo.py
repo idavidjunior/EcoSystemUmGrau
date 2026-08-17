@@ -179,7 +179,6 @@ def _carregar_geo() -> dict:
 WIDGET_CSS_FILE = BASE / 'docs' / 'widget.css'
 WIDGET_JS_FILE = BASE / 'docs' / 'widget.js'
 WIDGET_EXTRA_JS_FILE = BASE / 'docs' / 'widget-extra.js'
-RESIZE_JS_FILE = BASE / 'docs' / 'resize.js'
 
 def _read_asset(path: Path) -> str:
     """Read asset file, return empty string if not found."""
@@ -192,7 +191,6 @@ def _read_asset(path: Path) -> str:
 WIDGET_CSS = _read_asset(WIDGET_CSS_FILE)
 WIDGET_JS = _read_asset(WIDGET_JS_FILE)
 WIDGET_JS_EXTRA = _read_asset(WIDGET_EXTRA_JS_FILE)
-RESIZE_JS = _read_asset(RESIZE_JS_FILE)
 
 
 def _persistir_saida(win) -> None:
@@ -286,9 +284,6 @@ def _build_view() -> Path | None:
 
     # Extra widget UI - external file
     src = _inject_into_body(src, '<script src="widget-extra.js"></script>')
-
-    # Handles de mover/redimensionar - external file (apos o DOM estar pronto)
-    src = _inject_into_body(src, RESIZE_JS)
 
     VIEW_COPY.write_text(src, encoding='utf-8')
     return VIEW_COPY

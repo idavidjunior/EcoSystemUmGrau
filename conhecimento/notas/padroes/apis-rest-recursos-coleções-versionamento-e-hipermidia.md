@@ -1,7 +1,7 @@
 ---
 tags: [apis-web, estados, estáveis, ids, padrao, sejam]
 aliases: [APIs: REST, recursos, coleções, versionamento e hipermidia]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # APIs: REST, recursos, coleções, versionamento e hipermidia

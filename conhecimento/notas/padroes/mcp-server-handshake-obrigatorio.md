@@ -1,7 +1,7 @@
 ---
 tags: [comando, fonte, initialize, padrao, qualquer, sessaoprovidermanager]
 aliases: [MCP server handshake obrigatorio]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # MCP server handshake obrigatorio

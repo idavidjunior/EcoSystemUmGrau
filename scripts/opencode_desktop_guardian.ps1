@@ -10,9 +10,26 @@ param(
 # Age ANTES que o app feche por pressao, e renicia com flags de GPU desabilitadas se cair.
 
 $ErrorActionPreference = "SilentlyContinue"
-$log = [System.IO.StreamWriter]::new($LogPath, $true)
-$log.AutoFlush = $true
-function Write-Log { param($Msg) $log.WriteLine("[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] $Msg") }
+$script:log = [System.IO.StreamWriter]::new($LogPath, $true)
+$script:log.AutoFlush = $true
+function Write-Log { param($Msg) $script:log.WriteLine("[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] $Msg") }
+
+function Rotate-Log {
+    param([string]$Path, [int]$MaxBytes = 2MB)
+    try {
+        $fi = [System.IO.FileInfo]::new($Path)
+        if ($fi.Exists -and $fi.Length -gt $MaxBytes) {
+            $script:log.Close()
+            $lines = [System.IO.File]::ReadAllLines($Path)
+            $half = [math]::Floor($lines.Length / 2)
+            $tail = $lines[$half..($lines.Length-1)]
+            [System.IO.File]::WriteAllLines($Path, $tail)
+            $script:log = [System.IO.StreamWriter]::new($Path, $true)
+            $script:log.AutoFlush = $true
+            $script:log.WriteLine("[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] Log rotacionado: $($lines.Length) → $($tail.Length) linhas")
+        }
+    } catch {}
+}
 
 $EXE = "C:\Users\David Jr\AppData\Local\Programs\@opencode-aidesktop\OpenCode.exe"
 $GPU_FLAGS = "--disable-gpu --disable-gpu-compositing --in-process-gpu --no-sandbox"
@@ -113,6 +130,8 @@ function Relieve-Memory {
 
 Write-Log "Guardiao OpenCode Desktop iniciado (intervalo ${Interval}s, RAM critica ${RamCriticalMB}MB)"
 
+$cycleCount = 0
+
 # No boot: revalida atalhos e, se desktop nao estiver rodando, sobe com flags
 Ensure-ShortcutFlags
 if (-not (Test-DesktopRunning)) { Write-Log "Desktop ausente no start do guardiao - subindo"; Start-DesktopWithFlags; Start-Sleep -Seconds 25 }
@@ -156,6 +175,8 @@ while ($true) {
     }
 
     Start-Sleep -Seconds $Interval
+    $cycleCount++
+    if ($cycleCount % 1000 -eq 0) { Rotate-Log -Path $LogPath }
 }
 
-$log.Close()
+$script:log.Close()

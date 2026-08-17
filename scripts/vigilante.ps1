@@ -351,6 +351,29 @@ Register-ObjectEvent $learnTimer "Elapsed" -Action $onLearn > $null
 $learnTimer.Start()
 
 # ══════════════════════════════════════════════════════════════════════
+# PREFERENCE DETECTOR: detecção automática de preferências do usuário (1x/h)
+# ─────────────────────────────────────────────────────────────────────
+# 3 abordagens: frase natural ("minha preferência é X"), repetição de uso, preditor de uso
+$prefDetectTimer = New-Object System.Timers.Timer
+$prefDetectTimer.Interval = 3600000  # check a cada 1h
+$prefDetectTimer.AutoReset = $true
+$lastPrefDetectDate = (Get-Date).Date.AddDays(-1)
+
+$onPrefDetect = {
+    $today = (Get-Date).Date
+    if ($lastPrefDetectDate -lt $today) {
+        $lastPrefDetectDate = $today
+        Write-Log "PREF DETECTOR: varredura diária de preferências..."
+        try {
+            $result = python "$ecoDir\scripts\preference_detector.py" --run 2>&1 | Out-String
+            Write-Log "PREF DETECTOR: $($result.Trim())"
+        } catch { Write-Log "PREF DETECTOR: ignorado: $_" }
+    }
+}
+Register-ObjectEvent $prefDetectTimer "Elapsed" -Action $onPrefDetect > $null
+$prefDetectTimer.Start()
+
+# ══════════════════════════════════════════════════════════════════════
 # RULES TIMER: verifica consistencia das 3 camadas de regras (1x/h)
 # ══════════════════════════════════════════════════════════════════════
 $rulesTimer = New-Object System.Timers.Timer
@@ -436,6 +459,42 @@ $onVozGuarda = {
 }
 Register-ObjectEvent $vozGuardaTimer "Elapsed" -Action $onVozGuarda > $null
 $vozGuardaTimer.Start()
+
+# BRIDGE HEALTH TIMER: verifica health da bridge a cada 2h, registra status
+$bridgeHealthDir = "$ecoDir\connectivity\bridge\health"
+$onBridgeHealth = {
+    $bridgeHealthDir = "$ecoDir\connectivity\bridge\health"
+    if (-not (Test-Path $bridgeHealthDir)) { New-Item -ItemType Directory -Path $bridgeHealthDir -Force | Out-Null }
+    $ts = Get-Date -Format "yyyyMMdd_HHmmss"
+    $bridgeOk = $false
+    $serveOk = $false
+    try {
+        $b = Get-NetTCPConnection -LocalPort 8765 -State Listen -ErrorAction Stop
+        $bridgeOk = $true
+    } catch {}
+    try {
+        $s = Get-NetTCPConnection -LocalPort 8767 -State Listen -ErrorAction Stop
+        $serveOk = $true
+    } catch {}
+    $health = @{
+        timestamp = (Get-Date).ToString("o")
+        bridge_ok = $bridgeOk
+        serve_ok = $serveOk
+        all_healthy = ($bridgeOk -and $serveOk)
+    } | ConvertTo-Json -Compress
+    $healthFile = "$bridgeHealthDir\health_$ts.json"
+    Set-Content -Path $healthFile -Value $health -Encoding UTF8
+    # Cleanup: mantem apenas os 20 mais recentes
+    $files = Get-ChildItem "$bridgeHealthDir\health_*.json" | Sort-Object Name -Descending
+    if ($files.Count -gt 20) { $files | Select-Object -Skip 20 | Remove-Item -Force }
+    if (-not $bridgeOk) { Write-Log "BRIDGE HEALTH: bridge (8765) DOWN" }
+    if (-not $serveOk) { Write-Log "BRIDGE HEALTH: serve (8767) DOWN" }
+}
+$bridgeHealthTimer = New-Object System.Timers.Timer
+$bridgeHealthTimer.Interval = 7200000  # 2h
+$bridgeHealthTimer.AutoReset = $true
+Register-ObjectEvent $bridgeHealthTimer "Elapsed" -Action $onBridgeHealth > $null
+$bridgeHealthTimer.Start()
 
 # ���������������������������������������������������������������������������������������������������������������������������������������������
 # OPENCODE CACHE TIMER: limpeza de logs antigos/oversized (1x/h, alinhado ao maxInterval)
@@ -552,6 +611,73 @@ $onRadarRaw = {
 }
 Register-ObjectEvent $radarRawTimer "Elapsed" -Action $onRadarRaw > $null
 $radarRawTimer.Start()
+
+# SYSTEM GUARDIAN TIMER: garante que system_guardian.py esta rodando (check a cada 5min)
+$guardianPidFile = "$PSScriptRoot\guardian.pid"
+$guardianScript = "$PSScriptRoot\system_guardian.py"
+$onGuardianCheck = {
+    $guardianPidFile = "$PSScriptRoot\guardian.pid"
+    $running = $false
+    if (Test-Path $guardianPidFile) {
+        $gpid = Get-Content $guardianPidFile -ErrorAction SilentlyContinue
+        if ($gpid -and (Get-Process -Id $gpid -ErrorAction SilentlyContinue)) { $running = $true }
+    }
+    if (-not $running) {
+        $procs = Get-Process -Name python -ErrorAction SilentlyContinue | Where-Object {
+            (Get-CimInstance Win32_Process -Filter "ProcessId=$($_.Id)").CommandLine -like "*system_guardian*"
+        }
+        if ($procs) { $running = $true }
+    }
+    if (-not $running) {
+        try {
+            Start-Process python -ArgumentList "`"$PSScriptRoot\system_guardian.py`"" -WindowStyle Hidden
+            Write-Host "[$(Get-Date -Format 'HH:mm:ss')] System Guardian iniciado pelo vigilantе"
+        } catch {
+            Write-Host "[$(Get-Date -Format 'HH:mm:ss')] ERRO ao iniciar System Guardian: $($_.Exception.Message)"
+        }
+    }
+}
+$guardianTimer = New-Object System.Timers.Timer
+$guardianTimer.Interval = 300000  # 5min
+$guardianTimer.AutoReset = $true
+Register-ObjectEvent $guardianTimer "Elapsed" -Action $onGuardianCheck > $null
+$guardianTimer.Start()
+# Start guardian immediately on vigilante boot
+try {
+    if (-not (Test-Path $guardianPidFile)) {
+        Start-Process python -ArgumentList "`"$guardianScript`"" -WindowStyle Hidden
+        Write-Host "[$(Get-Date -Format 'HH:mm:ss')] System Guardian iniciado no boot do vigilantе"
+    }
+} catch {}
+
+# ARCHITECTURE INTEGRITY TIMER: verifica saude estrutural completa do ecossistema (1x/4h)
+$onArchIntegrity = {
+    Write-Log "ARCH INTEGRITY: rodando monitor de integridade arquitetural..."
+    try {
+        $out = python "$ecoDir\scripts\architecture_integrity_monitor.py" --json 2>&1 | Out-String
+        $result = $out | ConvertFrom-Json -ErrorAction SilentlyContinue
+        if ($result) {
+            $s = $result.summary
+            Write-Log "ARCH INTEGRITY: $($s.total) checks - PASS:$($s.pass) WARN:$($s.warn) FAIL:$($s.fail)"
+            if ($s.fail -gt 0) {
+                $fails = $result.checks | Where-Object { $_.status -eq "FAIL" }
+                foreach ($f in $fails) {
+                    Write-Log "ARCH INTEGRITY FAIL: $($f.name) - $($f.detail)"
+                }
+            }
+            if ($result.fixes.Count -gt 0) {
+                foreach ($fx in $result.fixes) {
+                    Write-Log "ARCH INTEGRITY FIX: $fx"
+                }
+            }
+        }
+    } catch { Write-Log "ARCH INTEGRITY: erro: $_" }
+}
+$archIntegrityTimer = New-Object System.Timers.Timer
+$archIntegrityTimer.Interval = 14400000  # 4h
+$archIntegrityTimer.AutoReset = $true
+Register-ObjectEvent $archIntegrityTimer "Elapsed" -Action $onArchIntegrity > $null
+$archIntegrityTimer.Start()
 
 # Mantem vivo
 while ($true) { Start-Sleep -Seconds 10 }

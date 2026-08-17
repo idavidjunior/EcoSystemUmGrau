@@ -42,7 +42,7 @@ from .content_classifier import ContentClassifier
 from .content_extractor import ContentExtractor
 from .markdown_cleaner import MarkdownCleaner
 from .code_filter import CodeFilter
-from .text_normalizer import TextNormalizer
+from .text_normalizer import TextNormalizer, TTSTextNormalizer, normalize_for_tts
 from .pronunciation import PronunciationEngine
 from .sentence_chunker import SentenceChunker
 from .tts_validator import TTSValidator
@@ -94,6 +94,9 @@ class SpeechPipeline:
         self._cleaner = MarkdownCleaner()
         self._code_filter = CodeFilter()
         self._normalizer = TextNormalizer()
+        # Camada estrutural V2 (TTS Text Normalizer) — orquestra code/markdown/
+        # metadados/símbolos/emojis/caminhos/URLs antes da normalização clássica.
+        self._tts_normalizer = TTSTextNormalizer()
         self._pronunciation = PronunciationEngine(pron_path)
         self._chunker = SentenceChunker()
         self._validator = TTSValidator()
@@ -171,23 +174,17 @@ class SpeechPipeline:
             "had_traceback": self._code_filter.has_traceback(text),
         }
 
-        # 1. Classificar
+        # 1. Classificar (para diagnóstico de segmentos)
         segments = self._classifier.classify(text)
         metadata["segments"] = len(segments)
 
-        # 2. Extrair texto falável
-        texto = self._extractor.extract(segments)
+        # 2. Normalização estrutural V2 (TTS Text Normalizer)
+        # Orquestra em ordem determinística: metadados -> código -> markdown ->
+        # tabelas -> links/URLs -> caminhos -> extensões -> símbolos -> emojis ->
+        # JSON/XML -> Unicode -> espaços -> pontuação -> validação.
+        texto = self._tts_normalizer.normalize(text)
 
-        # 3. Limpar markdown residual
-        texto = self._cleaner.clean(texto)
-
-        # 4. Filtrar código residual
-        texto = self._code_filter.filter_all(texto)
-
-        # 5. Normalizar para fala
-        texto = self._normalizer.normalize(texto)
-
-        # 6. Aplicar pronúncias
+        # 3. Aplicar pronúncias
         texto, pronunciado = self._pronunciation.apply(texto)
         metadata["pronunciation_applied"] = pronunciado
 

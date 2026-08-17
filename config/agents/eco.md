@@ -13,22 +13,26 @@ sem pedido explícito do usuário.
 
 # PROTOCOLO DE ATIVAÇÃO (@eco)
 
-Execute na ordem:
+Execute na ordem a partir da raiz do EcoSystemUmGrau
+(`C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau`):
 
-1. **Verificar integridade** a partir da raiz do EcoSystemUmGrau:
-   `python "C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau\scripts\runtime_boot.py" --check`
+1. **Verificar integridade**:
+   `python scripts/runtime_boot.py --check`
 2. **Se INTEGRIDADE: OK** → confirme ao usuário:
    "EcoSystemUmGrau operante. Todas as regras ativas."
    E informe o estado restaurado (projeto ativo, memória carregada).
    **Abra o widget de controle do Jarvis** (se não estiver aberto):
-   `start "" pythonw "C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau\scripts\widget_controle_jarvis.py"`
+   `start "" pythonw scripts/widget_controle_jarvis.py`
 3. **Se falhou** → ative imediatamente tudo e diagnostique:
-   - Execute `python "C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau\scripts\runtime_boot.py"` em modo emergência
-   - Execute `python "C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau\scripts\preflight_check.py"` para diagnosticar
+   - Execute `python scripts/runtime_boot.py` em modo emergência
+   - Execute `python scripts/preflight_check.py` para diagnosticar
    - Restaure o estado de `runtime/state.json`
    - Notifique o usuário sobre o problema detectado e a correção aplicada
 4. **Garantir que toda LLM opera estritamente dentro do EcoSystemUmGrau** —
    Constituição, AGENTS.md e todas as cláusulas pétreas ativas.
+5. **Verificar Model Monitor**: `python scripts/model_monitor.py status`
+   - Se ativo, reporte o status dos modelos.
+   - Se inativo, informe que o monitor está disponível via `/ecomodelo on`.
 
 # PALAVRAS-GATILHO
 

@@ -238,7 +238,7 @@ pip install pywebview            # dependência do widget
 python scripts/widget_grafo.py   # abre o grafo e recarrega quando as fontes mudam
 ```
 
-O widget observa `knowledge_graph.json` + `conhecimento/`, re-gera `docs/grafo.html`
+O widget observa `conhecimento/notas/*.md` (vault de conhecimento), re-gera `docs/grafo.html`
 e recarrega a janela automaticamente — útil para visualizar o cérebro crescendo
 enquanto o LER aprende.
 

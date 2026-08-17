@@ -1,7 +1,7 @@
 ---
 tags: [falta, framework, pos, sim, validacao]
 aliases: [Metodo dos 5 Porques (5 Whys)]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # Metodo dos 5 Porques (5 Whys)

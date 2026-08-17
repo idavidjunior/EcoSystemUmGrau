@@ -1,7 +1,7 @@
 ---
-tags: [corromper, java, padrao, paralelas, performance, pode]
+tags: [corromper, degrada, java, padrao, performance, pode]
 aliases: [Java: Streams e lambdas]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # Java: Streams e lambdas

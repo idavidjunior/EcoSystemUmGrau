@@ -1,7 +1,7 @@
 ---
 tags: [base, descobertas, experiências, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao]
 aliases: [Aprendizado: Jarvis manifesta o que quer aprender]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # Aprendizado: Jarvis manifesta o que quer aprender

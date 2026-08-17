@@ -87,7 +87,7 @@
   "command": {
     "ouvir": {
       "description": "Ouvir: captura sua voz (STT) e usa como prompt",
-      "template": "O usuario falou via microfone. Segue a transcricao:\n\n!`python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/vox_audio.py\" ouvir`\n\nAgora execute o que foi pedido na fala."
+      "template": "O usuario falou via microfone. Segue a transcricao:\n\n!`python scripts/vox_audio.py ouvir`\n\nAgora execute o que foi pedido na fala."
     },
     "falar": {
       "description": "Falar: abre o modo de voz (TTS)",
@@ -95,7 +95,7 @@
     },
     "dialogo": {
       "description": "Dialogo por voz: inicia o modo conversa (fala, ele ouve/responde/executa)",
-      "template": "O usuario quer iniciar o modo dialogo por voz no PC. Execute em background (nao bloqueie esta sessao):\n\n!`python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/dialogo.py\" --modo $ARGUMENTS`\n\nModos validos: vad (maos-livres), push (segure espaco), ativacao (diga Jarvis). Se $ARGUMENTS estiver vazio, use vad. Explique como voltar (Ctrl+C)."
+      "template": "O usuario quer iniciar o modo dialogo por voz no PC. Execute em background (nao bloqueie esta sessao):\n\n!`python scripts/dialogo.py --modo $ARGUMENTS`\n\nModos validos: vad (maos-livres), push (segure espaco), ativacao (diga Jarvis). Se $ARGUMENTS estiver vazio, use vad. Explique como voltar (Ctrl+C)."
     },
     "compreender": {
       "description": "Compreender pedido: analisa o que o usuario quer (objetivo, acoes, conceitos, restricoes, ambiguidades, desperdicio) antes de executar",
@@ -105,20 +105,38 @@
     "eco": {
       "description": "Ativar/verificar EcoSystemUmGrau: confirma se o runtime esta operante ou ativa tudo + diagnostica problemas",
       "agent": "eco",
-      "template": "Ative ou verifique o EcoSystemUmGrau seguindo o protocolo do agente eco (responda sempre em pt-BR).\n\n1. Verifique a integridade: `python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/runtime_boot.py\" --check`\n2. Se INTEGRIDADE: OK -> confirme ao usuario: 'EcoSystemUmGrau operante. Todas as regras ativas.'\n3. Se falhar -> execute `python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/runtime_boot.py\"` em modo emergencia\n4. Se ainda falhar -> execute `python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/preflight_check.py\"` para diagnosticar\n5. Restaure o estado de runtime/state.json e reporte os problemas detectados e corrigidos.\n6. Verifique o Model Monitor: `python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/model_monitor.py\" status`\n7. Se ativo, reporte o status dos modelos. Se inativo, informe que o monitor esta disponivel via /ecomodelo on.\n\nComando recebido: $ARGUMENTS"
+      "template": "Ative ou verifique o EcoSystemUmGrau seguindo o protocolo do agente eco (responda sempre em pt-BR).\n\n1. Verifique a integridade: `python scripts/runtime_boot.py --check`\n2. Se INTEGRIDADE: OK -> confirme ao usuario: 'EcoSystemUmGrau operante. Todas as regras ativas.'\n3. Se falhar -> execute `python scripts/runtime_boot.py` em modo emergencia\n4. Se ainda falhar -> execute `python scripts/preflight_check.py` para diagnosticar\n5. Restaure o estado de runtime/state.json e reporte os problemas detectados e corrigidos.\n6. Verifique o Model Monitor: `python scripts/model_monitor.py status`\n7. Se ativo, reporte o status dos modelos. Se inativo, informe que o monitor esta disponivel via /ecomodelo on.\n\nComando recebido: $ARGUMENTS"
     },
     "sync": {
       "description": "Sincronizar EcoSystemUmGrau: Local PC + GitHub, 3 camadas, MCPs, secrets, memória e runtime. Corrige e commite automaticamente.",
       "agent": "sync",
-      "template": "Execute o protocolo de sincronizacao @sync completo seguindo o agente sync (responda sempre em pt-BR). Use os scripts a partir da raiz do EcoSystemUmGrau:\n\n1. `python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/runtime_boot.py\"` — boot e integridade\n2. `python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/sync_rules.py\" audit` — verifica e corrige 3 camadas (Constituicao, AGENTS.md, Deployed)\n3. Deploy config: sync config/opencode.jsonc -> ~/.config/opencode/ (com backup .bak)\n4. `python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/preflight_check.py\"` — valida MCPs, secrets, agents\n5. `git pull --ff-only origin` — puxa alteracoes do GitHub\n6. `git status --short` — verifica arquivos pendentes\n7. `python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/memory_engine.py\" stats` — integridade da memoria\n8. Se tudo OK: `git add -A && git commit -m \"[ecosystem sync]\" && git push`\n9. `python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/runtime_state.py\" checkpoint \"@sync\"` — salva checkpoint\n10. Reporte relatorio objetivo: Local PC OK/WARN/ERROR, GitHub OK/WARN/ERROR, 3 camadas consistentes, MCPs online, secrets guard, memory integrity, runtime state, preflight, arquivos pendentes, conflitos, acao tomada.\n\nSe detectar inconsistencias: corrija, notifique, revalide e commite.\n\nComando: $ARGUMENTS"
+      "template": "Execute o protocolo de sincronização @sync completo seguindo o agente sync (responda sempre em pt-BR). Etapas obrigatórias a partir da raiz do EcoSystemUmGrau:\n\n1. `python scripts/runtime_boot.py` — bootloader e integridade\n2. `python scripts/sync_rules.py audit` — verifica e corrige 3 camadas (Constituição ↔ AGENTS.md ↔ Deployed)\n3. Deploy config: sincroniza config/opencode.jsonc para ~/.config/opencode/ (com backup .bak)\n4. `python scripts/preflight_check.py` — valida MCPs, secrets, agents\n5. `python scripts/preflight_etica.py` — valida deveres externos, privacidade, acessibilidade\n6. `git status --short` via gate scripts/persistencia.ps1 status\n7. `scripts/persistencia.ps1 sync` — git pull + push (nunca git direto)\n8. `python scripts/memory_engine.py stats` — integridade da memória\n9. `python scripts/runtime_state.py checkpoint \"@sync\"` — salva checkpoint\n\nSe tudo OK: reporte relatório objetivo. Se detectar inconsistências: corrija, notifique, revalide e commite via gate.\n\nComando: $ARGUMENTS"
     },
     "controle": {
       "description": "Controle: abre janela flutuante visual do Jarvis (voz ON/OFF, parar fala, microfone ON/OFF)",
-      "template": "!`\"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau\\scripts\\controle.bat\"` (abre janela flutuante de controle da voz: voz ON/OFF, parar fala, microfone)"
+      "template": "!`\"scripts/controle.bat\"` (abre janela flutuante de controle da voz: voz ON/OFF, parar fala, microfone)"
+    },
+    "ecocell": {
+      "description": "EcoCell: abre espelho de tela do celular via scrcpy",
+      "agent": "ecocell",
+      "template": "Abra o espelho de tela do celular via scrcpy seguindo o protocolo do agente ecocell (responda sempre em pt-BR).\n\n1. Execute em background: `Start-Process python -ArgumentList \"\\\"scripts/scrcpy/scrcpy_daemon.py\\\"\",\"--once\" -WindowStyle Hidden`\n2. Aguarde 3 segundos e verifique o log: `Start-Sleep 3; Get-Content \"$env:TEMP\\scrcpy_daemon.log\" -Tail 3`\n3. Se o log mostrar 'Device alvo' sem erro subsequente, confirme: 'EcoCell aberto. Tela do celular espelhada.'\n4. Se houver erro, reporte o problema.\n\nComando recebido: $ARGUMENTS"
     },
     "ecomodelo": {
       "description": "Gerenciamento inteligente de modelos: monitora performance, limites e troca automática. Use /ecomodelo status, /ecomodelo on, /ecomodelo off, /ecomodelo trocar <modelo>, /ecomodelo config",
-      "template": "Execute o Model Monitor do EcoSystemUmGrau (responda sempre em pt-BR).\n\n1. Analise o argumento: \"$ARGUMENTS\"\n2. Se vazio ou 'status': execute `python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/model_monitor.py\" status`\n3. Se 'on': execute `python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/model_monitor.py\" on`\n4. Se 'off': execute `python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/model_monitor.py\" off`\n5. Se 'trocar <modelo>': execute `python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/model_monitor.py\" trocar <modelo>`\n6. Se 'config': execute `python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/model_monitor.py\" config`\n7. Se 'config --limite-custo <valor>': execute com o argumento\n8. Se 'rankings': execute `python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/model_monitor.py\" rankings`\n9. Se 'registrar <modelo> <latencia_ms> <sucesso>': execute com os argumentos\n10. Se 'reset': execute `python \"{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/model_monitor.py\" reset`\n11. Reporte o resultado de forma clara e objetiva.\n\nComando: $ARGUMENTS"
+      "agent": "ecomodelo",
+      "template": "Execute o Model Monitor do EcoSystemUmGrau seguindo o protocolo do agente ecomodelo (responda sempre em pt-BR).\n\n1. Analise o argumento: \"$ARGUMENTS\"\n2. Se vazio ou 'status': execute `python scripts/model_monitor.py status`\n3. Se 'on': execute `python scripts/model_monitor.py on`\n4. Se 'off': execute `python scripts/model_monitor.py off`\n5. Se 'trocar <modelo>': execute `python scripts/model_monitor.py trocar <modelo>`\n6. Se 'config': execute `python scripts/model_monitor.py config`\n7. Se 'config --limite-custo <valor>': execute com o argumento\n8. Se 'rankings': execute `python scripts/model_monitor.py rankings`\n9. Se 'registrar <modelo> <latencia_ms> <sucesso>': execute com os argumentos\n10. Se 'reset': execute `python scripts/model_monitor.py reset`\n11. Reporte o resultado de forma clara e objetiva.\n\nComando: $ARGUMENTS"
+    },
+    "reiniciarjarvis": {
+      "description": "Reinicia narrador, widget e bridge do Jarvis: mata processos, para TTS ativo, reinicia narrador e widget sem console",
+      "template": "!`\"scripts/reiniciarjarvis.bat\"`"
+    },
+    "perfil": {
+      "description": "Perfil adaptativo do usuário: stats, config, correções (ex: /perfil stats, /perfil config, /perfil correct no_markdown)",
+      "template": "!`python scripts/user_profile.py $ARGUMENTS`"
+    },
+    "bootstrap": {
+      "description": "Bootstrap completo do agente: carrega runtime, contexto, perfil do usuário",
+      "template": "!`python scripts/agent_bootstrap.py bootstrap $ARGUMENTS`"
     }
   },
   "agent": {

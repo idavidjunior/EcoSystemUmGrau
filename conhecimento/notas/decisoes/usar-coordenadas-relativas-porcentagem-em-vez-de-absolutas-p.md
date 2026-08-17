@@ -1,7 +1,7 @@
 ---
 tags: [absolutas, decisao, fonte, gestos, mobile, treinamentonavegacao]
 aliases: [Usar coordenadas relativas (porcentagem) em vez de absolutas]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # Usar coordenadas relativas (porcentagem) em vez de absolutas para gestos mobile

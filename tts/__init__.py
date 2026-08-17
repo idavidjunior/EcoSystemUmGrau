@@ -29,7 +29,7 @@ from .content_classifier import ContentClassifier, ContentType
 from .content_extractor import ContentExtractor
 from .markdown_cleaner import MarkdownCleaner
 from .code_filter import CodeFilter
-from .text_normalizer import TextNormalizer
+from .text_normalizer import TextNormalizer, TTSTextNormalizer, normalize_for_tts
 from .pronunciation import PronunciationEngine
 from .sentence_chunker import SentenceChunker
 from .tts_validator import TTSValidator
@@ -63,6 +63,8 @@ __all__ = [
     "MarkdownCleaner",
     "CodeFilter",
     "TextNormalizer",
+    "TTSTextNormalizer",
+    "normalize_for_tts",
     "PronunciationEngine",
     "SentenceChunker",
     "TTSValidator",

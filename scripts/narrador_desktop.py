@@ -45,6 +45,30 @@ except ImportError as e:
     SPEECH_PIPELINE_AVAILABLE = False
     _speech_pipeline = None
 
+# Detecção automática de palavras em inglês para pronúncia correta
+try:
+    from detect_english_words import pipeline_completo_tts
+    ENGLISH_DETECT_AVAILABLE = True
+except ImportError as e:
+    print(f"[warning] detect_english_words não disponível: {e}")
+    ENGLISH_DETECT_AVAILABLE = False
+    def pipeline_completo_tts(texto):
+        return texto
+
+# Perfil do usuário para formatação de resposta
+try:
+    from scripts.profile_hook import format_response_for_profile, get_response_config
+    _profile_config = get_response_config()
+    PROFILE_HOOK_AVAILABLE = True
+except ImportError as e:
+    print(f"[warning] profile_hook não disponível: {e}")
+    _profile_config = {}
+    PROFILE_HOOK_AVAILABLE = False
+    def format_response_for_profile(texto, config):
+        return texto
+    def get_response_config():
+        return {}
+
 DB = Path(os.environ.get("OPENCODE_DB", r"C:\Users\David Jr\.local\share\opencode\opencode.db"))
 POSICAO = ROOT / "runtime" / "narrador_posicao.json"
 CONTROLE = ROOT / "runtime" / "narracao_estado.json"
@@ -194,6 +218,11 @@ class Narrador:
         self.timer = None
         texto = " ".join(textos).strip()
         texto = limpar_texto(texto)
+        # Pré-processa: detecta palavras em inglês e aplica SSML para pronúncia correta
+        texto = pipeline_completo_tts(texto)
+        # Aplica preferências do perfil do usuário (remove markdown, tabelas, etc.)
+        if PROFILE_HOOK_AVAILABLE:
+            texto = format_response_for_profile(texto, _profile_config)
         if len(texto) < 15:
             return
         with self.falando:
@@ -222,6 +251,11 @@ class Narrador:
 def teste_audio():
     log("teste de audio")
     texto_teste = "Teste de voz do Jarvis. Estou ouvindo."
+    # Aplica pipeline de pronúncia no teste também
+    texto_teste = pipeline_completo_tts(texto_teste)
+    # Aplica preferências do perfil
+    if PROFILE_HOOK_AVAILABLE:
+        texto_teste = format_response_for_profile(texto_teste, _profile_config)
     try:
         # Tenta usar SpeechPipeline primeiro
         if SPEECH_PIPELINE_AVAILABLE and _speech_pipeline:

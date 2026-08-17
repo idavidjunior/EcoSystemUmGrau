@@ -18,6 +18,7 @@ import argparse
 import io
 import json
 import os
+import re
 import subprocess
 import sys
 
@@ -80,11 +81,23 @@ GIT_SUSPEITO_PATTERNS = [
 
 
 def collect_reference_map():
-    """Mapeia scripts -> arquivos que os referenciam (excluindo logs/auto)."""
+    """Mapeia scripts -> arquivos que os referenciam (excluindo logs/auto).
+
+    Detecta tanto o nome completo (microfone_manager.py) quanto o nome de
+    módulo importável (microfone_manager, usado em 'from microfone_manager
+    import ...' e 'import microfone_manager')."""
     script_names = [
         f for f in sorted(os.listdir(SCRIPTS))
         if os.path.isfile(os.path.join(SCRIPTS, f)) and f != "_legado"
     ]
+    # Nome de módulo (sem extensão) por script, p/ casar imports.
+    mod_por_script = {
+        os.path.splitext(s)[0]: s
+        for s in script_names
+        if os.path.splitext(s)[1] == ".py" and len(os.path.splitext(s)[0]) >= 4
+    }
+    # Captura qualquer módulo importado em UMA passada por arquivo.
+    IMPORT_RX = re.compile(r"(?:^|\n)\s*(?:from|import)\s+([A-Za-z_][\w.]*)")
     refs = {s: [] for s in script_names}
     for dirpath, dirnames, filenames in os.walk(BASE):
         dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
@@ -103,9 +116,16 @@ def collect_reference_map():
             except Exception:
                 continue
             base = os.path.basename(fp)
+            rel = os.path.relpath(fp, BASE)
             for s in script_names:
                 if s in txt and base != s:
-                    refs[s].append(os.path.relpath(fp, BASE))
+                    refs[s].append(rel)
+            # Imports de módulos do próprio scripts/ (uma passada por arquivo).
+            if mod_por_script:
+                for mod in IMPORT_RX.findall(txt):
+                    s = mod_por_script.get(mod)
+                    if s is not None and base != s and rel not in refs[s]:
+                        refs[s].append(rel)
     return script_names, refs
 
 

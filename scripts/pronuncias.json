@@ -1,17 +1,37 @@
 {
-  "david": {
-    "fala": "Deivid"
+  "adb": {
+    "fala": "a d b",
+    "ssml": "<speak><say-as interpret-as=\"characters\">adb</say-as></speak>",
+    "nota": "Use <say-as interpret-as=\"characters\"> para ler letras separadas"
   },
-  "jarvis": {
-    "fala": "Járvis"
+  "david": {
+    "fala": "Deivid",
+    "ssml": "<speak xml:lang=\"pt-BR\">Deivid</speak>",
+    "nota": "Pronúncia em português (pt-BR)"
   },
   "github": {
-    "fala": "Guitirrãbi"
+    "fala": "Guitirrãbi",
+    "ssml": "<speak xml:lang=\"en-US\"><phoneme alphabet=\"ipa\" ph=\"ˈɡɪt.hʌb\">github</phoneme></speak>",
+    "nota": "Sugestão IPA (en-US) para pronúncia inglesa; revise conforme motor TTS"
+  },
+  "jarvis": {
+    "fala": "Járvis",
+    "ssml": "<speak xml:lang=\"pt-BR\">Járvis</speak>",
+    "nota": "Pronúncia em português (pt-BR)"
+  },
+  "json": {
+    "fala": "jeison",
+    "ssml": "<speak xml:lang=\"en-US\"><phoneme alphabet=\"ipa\" ph=\"ˈdʒeɪsən\">json</phoneme></speak>",
+    "nota": "Sugestão IPA (en-US) para 'JSON' → 'Jason' em inglês; ajuste se preferir leitura em pt-BR"
   },
   "nvidia": {
-    "fala": "enivídia"
+    "fala": "enivídia",
+    "ssml": "<speak xml:lang=\"en-US\"><phoneme alphabet=\"ipa\" ph=\"ɛnˈvɪdiə\">nvidia</phoneme></speak>",
+    "nota": "Sugestão IPA (en-US); mantém leitura próxima ao uso comum"
   },
   "widget": {
-    "fala": "uáidiguéti"
+    "fala": "uáidiguéti",
+    "ssml": "<speak xml:lang=\"pt-BR\">uáidiguéti</speak>",
+    "nota": "Pronúncia em português (pt-BR)"
   }
 }

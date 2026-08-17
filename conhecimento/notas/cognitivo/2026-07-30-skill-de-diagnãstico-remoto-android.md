@@ -1,7 +1,7 @@
 ---
-tags: [cognitivo, dominio, general, horã, ria, rio]
+tags: [cognitivo, dominio, fuso, general, horã, rio]
 aliases: [# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # # 2026-07-30 - Skill de DiagnÃ³stico Remoto Android

@@ -46,12 +46,16 @@ from jarvis_bridge import (  # noqa: E402
     melhorar_fala,
     normalizar_hora_display,
 )
+from microfone_manager import MicrofoneManager, SAMPLE_RATE as MM_SAMPLE_RATE  # noqa: E402
+
+# Gestor simbiótico de microfone (device persistente, hot-plug, enhancement,
+# wake word, bridge sync e health check) — módulo autoritativo do ecossistema.
+manager = MicrofoneManager()
 
 THRESHOLD = float(os.environ.get("VOX_THRESHOLD", "0.5"))
 SILENCIO = float(os.environ.get("VOX_SILENCIO", "0.8"))
 MAX_FALA = float(os.environ.get("VOX_MAX_FALA", "15"))
 VAD_MIN_SILENCE_MS = int(os.environ.get("VOX_VAD_MIN_SILENCE_MS", str(int(SILENCIO * 1000))))
-BLOCK = int(SAMPLE_RATE * 0.1)
 
 FALAR_COLOR = "\033[92m"
 VOZ_COLOR = "\033[96m"
@@ -79,6 +83,41 @@ def _beep():
 
 def _rms(x):
     return float(np.sqrt(np.mean(x * x)))
+
+
+# --- Seleção dinâmica de device (via MicrofoneManager) ---
+
+def _device_entrada():
+    """Devolve o device de entrada escolhido pelo MicrofoneManager (benchmark
+    real de abertura + persistência + hot-plug). Fallback: 1 (legado)."""
+    try:
+        dev = manager.device.selecionar()
+        if dev is not None:
+            return dev
+    except Exception:
+        pass
+    return 1
+
+
+def _taxa_nativa(device_id):
+    """Taxa nativa do device (o WDM-KS só aceita a taxa nativa; o VAD faz
+    resample para 16kHz depois)."""
+    try:
+        import sounddevice as sd
+        return int(sd.query_devices(device_id)["default_samplerate"])
+    except Exception:
+        return SAMPLE_RATE
+
+
+def _resample_para_16k(x, sr):
+    """Downsample de `sr` para 16kHz via decimação linear (barata, suficiente
+    para VAD/STT). Se já for 16k, devolve intacto."""
+    if sr == SAMPLE_RATE or x.size == 0:
+        return x
+    step = sr / SAMPLE_RATE
+    idx = np.arange(0, len(x), step).astype(int)
+    idx = idx[idx < len(x)]
+    return x[idx]
 
 
 # --- Silero VAD streaming (oficial: silero-vad + VADIterator) ---
@@ -153,34 +192,86 @@ class VadSileroStream:
         return None
 
 
-def capturar_vad():
-    """Escuta o microfone e devolve um turno de fala completo usando o Silero VAD
-    oficial (VADIterator). Usa InputStream continuo (sem gaps) no microfone
-    Realtek [1], que e o que melhor capta voz nesta maquina."""
-    model, ok = _carregar_silero()
-    if not ok:
-        return _capturar_vad_fallback()
-    vad = VadSileroStream(model, threshold=THRESHOLD, min_silence_ms=VAD_MIN_SILENCE_MS)
-    print(f"{VOZ_COLOR}[escutando] fale naturalmente (Ctrl+C p/ sair){RESET}", flush=True)
-    _beep()
-    sd.default.device = (1, None)  # Microfone (Realtek High Definit)
-    CHUNK = 512
-    buf = np.zeros(0, dtype="float32")
-    result = {"turno": None, "n": 0}
-    estado = {"mostrando": False}
+def _rec_bloco_f32(dev, taxa, bloco):
+    """Captura um bloco via sd.rec e devolve float32 mono 16kHz.
 
-    def callback(indata, frames, time_info, status):
-        nonlocal buf, result, estado
-        if result["turno"] is not None:
-            return
-        x = indata[:, 0]
+    Usa int16 (formato nativo estável do WDM-KS) e converte para float32,
+    evitando corrupção observada com float32 no driver Realtek."""
+    try:
+        rec = sd.rec(bloco, samplerate=taxa, channels=1, dtype="int16", device=dev)
+        sd.wait()
+        x = rec.flatten().astype("float32") / 32768.0
+        return _resample_para_16k(x, taxa)
+    except Exception:
+        try:
+            rec = sd.rec(bloco, samplerate=taxa, channels=1, dtype="float32", device=dev)
+            sd.wait()
+            return _resample_para_16k(rec.flatten(), taxa)
+        except Exception:
+            return np.zeros(0, dtype="float32")
+
+
+def _alimentar_vad_bloqueante(vad, taxa, dev, estado):
+    """Captura por blocos bloqueantes (sd.rec int16) e alimenta o Silero VAD.
+
+    Usado quando o device (ex.: WDM-KS) abre mas nao dispara callbacks de
+    streaming. Captura blocos grandes (~1s) para amortizar o overhead de
+    inicializacao do driver WDM-KS e processa em chunks de 512 (32ms).
+    Retorna o turno de fala completo quando detectado."""
+    CHUNK = 512
+    bloco = max(int(taxa * 1.0), 44100)  # ~1s de áudio por captura
+    buf = np.zeros(0, dtype="float32")
+    while True:
+        x = _rec_bloco_f32(dev, taxa, bloco)
+        if x.size == 0:
+            continue
         buf = np.concatenate([buf, x])
         while len(buf) >= CHUNK:
             chunk = buf[:CHUNK]
             buf = buf[CHUNK:]
             turno = vad.push(chunk)
             prob = vad.ultima_prob
-            # feedback visual em tempo real
+            if prob >= 0.5 and not estado["mostrando"]:
+                print(f"{VOZ_COLOR}[ouvindo...]{RESET}", flush=True)
+                estado["mostrando"] = True
+            elif prob < 0.5 and estado["mostrando"]:
+                estado["mostrando"] = False
+            if turno is not None:
+                return turno
+
+
+def capturar_vad():
+    """Escuta o microfone e devolve um turno de fala completo usando o Silero VAD
+    oficial (VADIterator). Tenta streaming com callback (rápido); se o device
+    nao entregar callbacks (ex.: WDM-KS), cai para captura bloqueante por blocos
+    com sd.rec int16 (estável no driver Realtek)."""
+    model, ok = _carregar_silero()
+    if not ok:
+        return _capturar_vad_fallback()
+    dev = _device_entrada()
+    taxa = _taxa_nativa(dev)
+    print(f"{VOZ_COLOR}[escutando] fale naturalmente (Ctrl+C p/ sair){RESET}", flush=True)
+    _beep()
+    CHUNK = 512  # amostras a 16kHz exigidas pelo Silero
+    result = {"turno": None, "n": 0}
+    estado = {"mostrando": False}
+
+    def callback(indata, frames, time_info, status):
+        nonlocal result, estado
+        if result["turno"] is not None:
+            return
+        result["n_callbacks"] += 1
+        x = indata[:, 0]
+        if x.dtype == np.int16:
+            x = x.astype("float32") / 32768.0
+        if taxa != SAMPLE_RATE:
+            x = _resample_para_16k(x, taxa)
+        result["buf"] = np.concatenate([result.get("buf", np.zeros(0, dtype="float32")), x])
+        while len(result["buf"]) >= CHUNK:
+            chunk = result["buf"][:CHUNK]
+            result["buf"] = result["buf"][CHUNK:]
+            turno = result["vad"].push(chunk)
+            prob = result["vad"].ultima_prob
             if prob >= 0.5 and not estado["mostrando"]:
                 print(f"{VOZ_COLOR}[ouvindo...]{RESET}", flush=True)
                 estado["mostrando"] = True
@@ -190,16 +281,36 @@ def capturar_vad():
                 result["turno"] = turno
                 return
 
-    stream = sd.InputStream(
-        samplerate=SAMPLE_RATE, channels=1, dtype="float32", callback=callback
-    )
+    vad = VadSileroStream(model, threshold=THRESHOLD, min_silence_ms=VAD_MIN_SILENCE_MS)
+    result["vad"] = vad
+    result["buf"] = np.zeros(0, dtype="float32")
+    result["n_callbacks"] = 0
+
     try:
+        # Modo 1: streaming com callback (rápido, baixa latência)
+        # Se o device nao disparar callbacks em ~1s, cai para o modo bloqueante.
+        stream = sd.InputStream(
+            samplerate=taxa, channels=1, dtype="int16", callback=callback, device=dev
+        )
         with stream:
+            inicio = time.time()
             while result["turno"] is None:
                 time.sleep(0.05)
-        return result["turno"]
+                # sem nenhum callback em 1.2s => WDM-KS/streaming sem dados
+                if result["n_callbacks"] == 0 and (time.time() - inicio) > 1.2:
+                    break
+        if result["turno"] is not None:
+            return result["turno"]
+        # streaming nao entregou dados -> modo bloqueante
+        return _alimentar_vad_bloqueante(vad, taxa, dev, estado)
     except KeyboardInterrupt:
         return np.zeros(0, dtype="float32")
+    except Exception:
+        # Modo 2: bloqueante por blocos (resiliente p/ WDM-KS sem callback)
+        try:
+            return _alimentar_vad_bloqueante(vad, taxa, dev, estado)
+        except KeyboardInterrupt:
+            return np.zeros(0, dtype="float32")
 
 
 def _capturar_vad_fallback():
@@ -211,10 +322,13 @@ def _capturar_vad_fallback():
     silencio = 0.0
     frames = []
     total = 0.0
+    dev = _device_entrada()
+    taxa = _taxa_nativa(dev)
+    bloco = int(taxa * 0.1)
     while True:
-        rec = sd.rec(BLOCK, samplerate=SAMPLE_RATE, channels=1, dtype="float32")
-        sd.wait()
-        x = rec.flatten()
+        x = _rec_bloco_f32(dev, taxa, bloco)
+        if x.size == 0:
+            continue
         rms = _rms(x)
         voz = rms > limiar
         if not falando:
@@ -248,11 +362,15 @@ def capturar_push():
         import time
         time.sleep(0.05)
     _beep()
+    dev = _device_entrada()
+    taxa = _taxa_nativa(dev)
+    bloco = int(taxa * 0.1)
     frames = []
     while _ctrl_pressionado():
-        rec = sd.rec(BLOCK, samplerate=SAMPLE_RATE, channels=1, dtype="float32")
-        sd.wait()
-        frames.append(rec.flatten())
+        x = _rec_bloco_f32(dev, taxa, bloco)
+        if x.size == 0:
+            continue
+        frames.append(x)
     _beep()
     return np.concatenate(frames) if frames else np.zeros(0, dtype="float32")
 
@@ -284,6 +402,11 @@ def transcrever(audio):
     if audio.size < SAMPLE_RATE // 5:
         print(f"{VOZ_COLOR}[segmento curto {audio.size} ignorado]{RESET}", flush=True)
         return ""
+    # Audio enhancement (noise gate + AGC) antes do STT
+    try:
+        audio = manager.enhancer.processar(audio)
+    except Exception:
+        pass
     texto, fonte = "", ""
     try:
         texto, fonte = _stt_whisper(audio)
@@ -344,14 +467,16 @@ def _monitorar_microfone(parar_evento, limiar_rms=None):
     a fala do Jarvis, dispara a parada (barge-in por voz)."""
     if limiar_rms is None:
         limiar_rms = float(os.environ.get("VOX_BARGEIN_RMS", "0.03"))
-    sd.default.device = (1, None)  # Microfone (Realtek High Definit)
-    BLOCK = int(SAMPLE_RATE * 0.1)
+    dev = _device_entrada()
+    taxa = _taxa_nativa(dev)
+    bloco = int(taxa * 0.1)
     consec = 0
     while not parar_evento.is_set():
         try:
-            rec = sd.rec(BLOCK, samplerate=SAMPLE_RATE, channels=1, dtype="float32")
-            sd.wait()
-            rms = _rms(rec.flatten())
+            x = _rec_bloco_f32(dev, taxa, bloco)
+            if x.size == 0:
+                continue
+            rms = _rms(x)
             if rms > limiar_rms:
                 consec += 1
                 if consec >= 2:  # ~200ms de fala continua = barge-in
@@ -421,26 +546,112 @@ def _separar_jarvis(texto):
 
 async def loop_vad(cliente):
     while True:
+        manager.marcar_listening()
         audio = capturar_vad()
+        if audio.size == 0:
+            continue
+        manager.marcar_processing()
+        manager.marcar_atividade()
         texto = transcrever(audio)
         if not texto:
             continue
+        # pausa o mic enquanto o Jarvis responde (evita eco)
+        try:
+            manager.marcar_paused_tts()
+        except Exception:
+            pass
         await responder(cliente, texto)
+        manager.marcar_atividade()
+        try:
+            manager.marcar_listening()
+        except Exception:
+            pass
 
 
 async def loop_push(cliente):
     while True:
+        manager.marcar_listening()
         audio = capturar_push()
+        if audio.size == 0:
+            continue
+        manager.marcar_processing()
+        manager.marcar_atividade()
         texto = transcrever(audio)
         if not texto:
             continue
+        try:
+            manager.marcar_paused_tts()
+        except Exception:
+            pass
         await responder(cliente, texto)
+        manager.marcar_atividade()
+        try:
+            manager.marcar_listening()
+        except Exception:
+            pass
+
+
+def _capturar_com_wake_word():
+    """Escuta continuamente por wake word real (Porcupine). Quando detecta,
+    beep e retorna True. Fallback interno: se o Porcupine nao estiver
+    disponivel, retorna False (o loop usa VAD+regex)."""
+    if not manager.wake.disponivel:
+        return False
+    try:
+        import sounddevice as sd
+        import numpy as np
+        dev = _device_entrada()
+        taxa = _taxa_nativa(dev)
+        frame_len = manager.wake._porcupine.frame_length
+        detectado = {"v": False}
+        buf_holder = [np.zeros(0, dtype="float32")]
+
+        def callback(indata, frames, time_info, status):
+            if detectado["v"]:
+                return
+            x = indata[:, 0]
+            if taxa != SAMPLE_RATE:
+                x = _resample_para_16k(x, taxa)
+            acc = buf_holder[0]
+            acc = np.concatenate([acc, x])
+            while len(acc) >= frame_len:
+                chunk = acc[:frame_len]
+                acc = acc[frame_len:]
+                pcm = (chunk * 32767).astype(np.int16)
+                if manager.wake.detectar(pcm):
+                    detectado["v"] = True
+                    return
+            buf_holder[0] = acc
+
+        with sd.InputStream(
+            samplerate=taxa, channels=1, dtype="float32",
+            callback=callback, device=dev,
+        ):
+            while not detectado["v"]:
+                time.sleep(0.05)
+        _beep()
+        return True
+    except Exception as e:
+        print(f"[wake] captura falhou ({e}); usando VAD+regex")
+        return False
 
 
 async def loop_ativacao(cliente):
     acordado = False
     while True:
+        manager.marcar_listening()
+        # Se houver wake word real (Porcupine), acorda direto pela palavra
+        if not acordado and manager.wake.disponivel:
+            if _capturar_com_wake_word():
+                acordado = True
+                print(f"{FALAR_COLOR}[jarvis]{RESET} Sim, senhor?", flush=True)
+                falar_com_bargein(await gerar_audio("Sim, senhor?"))
+                continue
         audio = capturar_vad()
+        if audio.size == 0:
+            continue
+        manager.marcar_processing()
+        manager.marcar_atividade()
         texto = transcrever(audio)
         if not texto:
             continue
@@ -450,6 +661,10 @@ async def loop_ativacao(cliente):
                 comando = _separar_jarvis(texto)
                 if comando:
                     acordado = True
+                    try:
+                        manager.marcar_paused_tts()
+                    except Exception:
+                        pass
                     await responder(cliente, comando)
                 else:
                     acordado = True
@@ -461,6 +676,10 @@ async def loop_ativacao(cliente):
             print(f"{FALAR_COLOR}[jarvis]{RESET} Até logo.", flush=True)
             falar_com_bargein(await gerar_audio("Até logo."))
             continue
+        try:
+            manager.marcar_paused_tts()
+        except Exception:
+            pass
         await responder(cliente, texto)
 
 
@@ -518,6 +737,12 @@ async def main():
         await responder(cliente, args.texto)
         return
 
+    # Inicia monitor de hot-plug do MicrofoneManager (device robusto)
+    try:
+        manager.device.iniciar_monitor()
+    except Exception as e:
+        print(f"[microfone] monitor hot-plug falhou: {e}")
+
     print(f"Modo dialogo ativo ({args.modo}). Ctrl+C para encerrar.", flush=True)
     try:
         await saudar_inicio(cliente)
@@ -529,6 +754,15 @@ async def main():
         await loop(cliente)
     except KeyboardInterrupt:
         print("\nEncerrado.")
+    finally:
+        try:
+            manager.device.parar_monitor()
+        except Exception:
+            pass
+        try:
+            manager.marcar_off()
+        except Exception:
+            pass
 
 
 if __name__ == "__main__":

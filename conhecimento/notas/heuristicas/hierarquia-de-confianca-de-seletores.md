@@ -1,7 +1,7 @@
 ---
 tags: [coordenadas, desc, element-detection, heuristica, relativas, text]
 aliases: [Hierarquia de confianca de seletores]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # Hierarquia de confianca de seletores

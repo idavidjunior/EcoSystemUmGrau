@@ -1,7 +1,7 @@
 ---
 tags: [emojis, joão, padrao, remova, símbolos, traducao-audio]
 aliases: [Tradução para narração TTS em pt-BR: pontuação, entonação e ]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # Tradução para narração TTS em pt-BR: pontuação, entonação e SSML

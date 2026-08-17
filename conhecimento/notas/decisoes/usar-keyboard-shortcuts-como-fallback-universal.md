@@ -1,7 +1,7 @@
 ---
 tags: [decisao, layout, resolucao, tema, treinamentonavegacao, zoom]
 aliases: [Usar keyboard shortcuts como fallback universal]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # Usar keyboard shortcuts como fallback universal

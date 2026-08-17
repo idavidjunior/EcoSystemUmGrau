@@ -1,7 +1,7 @@
 ---
 tags: [causando, decisao, escrita, genéricos, indiscriminada, opencode]
 aliases: [Ponto único de persistência (gate)]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # Ponto único de persistência (gate)

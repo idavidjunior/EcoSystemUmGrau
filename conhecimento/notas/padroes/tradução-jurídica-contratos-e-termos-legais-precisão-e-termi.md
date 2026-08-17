@@ -1,7 +1,7 @@
 ---
 tags: [actual, atual, funcional, padrao, real, traducao-texto]
 aliases: [Tradução jurídica: contratos e termos legais — precisão e te]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # Tradução jurídica: contratos e termos legais — precisão e terminologia

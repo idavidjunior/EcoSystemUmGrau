@@ -3,6 +3,7 @@ Clausula Petrea: se falhar, NAO aplica a alteracao."""
 import json, os, sys, subprocess, traceback
 import re
 from pathlib import Path
+from datetime import datetime
 
 USERPROFILE = str(Path.home())
 BASE = str(Path(__file__).resolve().parent.parent)
@@ -19,6 +20,23 @@ NVAPI_DONO_LEGITIMO = 'nvidia'
 
 ERRORS = []
 WARNS = []
+
+PREFLIGHT_LOG = Path(__file__).resolve().parent.parent / 'runtime' / 'preflight_executions.log'
+
+def log_preflight_execution(tipo: str, success: bool, erros_count: int = 0):
+    """Registra execução do preflight para métricas de aderência."""
+    try:
+        PREFLIGHT_LOG.parent.mkdir(parents=True, exist_ok=True)
+        entry = {
+            'timestamp': datetime.now().isoformat(),
+            'tipo': tipo,  # 'tecnico' ou 'etico'
+            'success': success,
+            'erros_count': erros_count
+        }
+        with open(PREFLIGHT_LOG, 'a', encoding='utf-8') as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + '\n')
+    except Exception:
+        pass  # Fail silently - não bloqueia o preflight
 
 def check(label, condition, detail=''):
     if condition:
@@ -380,6 +398,10 @@ def run():
             print(f'    [ERR] {e}')
         print('  ALTERACAO BLOQUEADA. Corrija os erros antes de aplicar.')
     print('========================================')
+    
+    # Log execução para métricas de aderência
+    log_preflight_execution('tecnico', len(ERRORS) == 0, len(ERRORS))
+    
     return len(ERRORS) == 0
 
 if __name__ == '__main__':

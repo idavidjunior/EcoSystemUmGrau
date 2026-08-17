@@ -1,7 +1,7 @@
 ---
 tags: [account, conta, humor, levar, padrao, traducao]
 aliases: [Estratégias de tradução: literal, semântica, adaptativa e qu]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # Estratégias de tradução: literal, semântica, adaptativa e quando usar cada uma

@@ -1,7 +1,7 @@
 ---
-tags: [cognitivo, desugardebugfiledependencies, etapa, general, minutos, slowness]
+tags: [cognitivo, config, desugardebugfiledependencies, etapa, general, unificada]
 aliases: [# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU +]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # # 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria
@@ -59,6 +59,15 @@ impacto: Painel de controles voltou a funcionar (tema, velocidade, orb
 ## O que foi feito
 
 InvestigaÃ§Ã£o exaustiva do ciclo 
+
+# 2026-08-16: MicrofoneManager — device WDM-KS int16 e referências por import
+
+**Categoria:** erro
+**Contexto:** Implementação dos 8 passos de evolução do microfone do JARVIS (device persistente, hot-plug, wake word, streaming STT, enhancement, bridge, health check, config unificada) no EcoSystemUmGrau.
+
+## Problema 1: float32 corrompe no driver WDM-KS
+
+O device 11 (Microfone Realtek HD Audio Mic input, hostapi WDM-KS) entrega dados corrompidos (RMS ~1e18, NaN) quando capturado com dtype float32
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]

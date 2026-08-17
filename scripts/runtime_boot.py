@@ -260,9 +260,9 @@ def main():
         return 0 if ok else 1
 
     code = run_boot(status_only=args.status)
-    # executar escaneamento de conexões ao finalizar o boot
+    # auto-conectar ADB ao celular via Tailscale se necessário
     import subprocess
-    subprocess.run([sys.executable, os.path.join(SCRIPTS, 'adb_scan.py')], check=False)
+    subprocess.run([sys.executable, os.path.join(SCRIPTS, 'adb_auto_connect.py')], check=False)
     return code
 
 

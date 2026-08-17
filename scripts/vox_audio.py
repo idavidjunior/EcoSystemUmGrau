@@ -122,6 +122,19 @@ def _novo_mp3_temp(prefixo="vox_fala"):
     return Path(caminho)
 
 
+def _normalizar_fallback_tts(texto):
+    """Aplica a camada V2 (TTS Text Normalizer) no texto quando o
+    SpeechPipeline não está disponível. Nunca falha: retorna o texto
+    original se a normalização não puder ser aplicada."""
+    if not texto or not texto.strip():
+        return texto
+    try:
+        from tts.text_normalizer import normalize_for_tts
+        return normalize_for_tts(texto)
+    except Exception:
+        return texto
+
+
 def _tocar_e_limpar(mp3, parar_evento=None):
     """Toca via MCI e remove o arquivo temporário ao final (não deixa órfãos)."""
     try:
@@ -201,6 +214,9 @@ async def _tts_stream_e_tocar(texto, caminho_mp3, parar_evento=None):
     """
     import edge_tts
 
+    # Prepara texto: normaliza via camada V2 quando disponível
+    texto = _normalizar_fallback_tts(texto)
+
     # Prepara communicate
     try:
         from pronunciar_termos import marcar_para_tts
@@ -261,6 +277,8 @@ async def _tts_stream_e_tocar(texto, caminho_mp3, parar_evento=None):
 
 async def _tts_salvar(texto, caminho):
     import edge_tts
+    # Normaliza via camada V2 quando disponível
+    texto = _normalizar_fallback_tts(texto)
     # Marcar termos técnicos em inglês para pronúncia correta via SSML
     try:
         from pronunciar_termos import marcar_para_tts
@@ -282,7 +300,8 @@ async def _tts_salvar(texto, caminho):
 
 def _gravar_audio(seconds=RECORD_SECONDS):
     """Grava microfone e retorna ndarray float32 mono 16kHz.
-    Usa device 11 (WDM-KS) a 44100Hz e faz downsample para 16kHz."""
+    Usa o device escolhido pelo MicrofoneManager (benchmark real + hot-plug),
+    capturando na taxa nativa quando necessário e fazendo downsample p/ 16kHz."""
     import sounddevice as sd
     import numpy as np
     try:
@@ -290,19 +309,31 @@ def _gravar_audio(seconds=RECORD_SECONDS):
         HAVE_SCIPY = True
     except ImportError:
         HAVE_SCIPY = False
-    
-    # Device 11 funciona a 44100Hz
-    DEVICE_ID = 11
-    RECORD_SR = 44100
-    
+
+    # Device selecionado dinamicamente (WDM-KS costuma só aceitar taxa nativa)
+    try:
+        from microfone_manager import MicrofoneManager
+        mm = MicrofoneManager()
+        DEVICE_ID = mm.device.selecionar()
+        if DEVICE_ID is None:
+            DEVICE_ID = 11
+    except Exception:
+        DEVICE_ID = 11
+
+    try:
+        import sounddevice as _sd
+        RECORD_SR = int(_sd.query_devices(DEVICE_ID)["default_samplerate"])
+    except Exception:
+        RECORD_SR = 44100
+
     print(f"Ouvindo... (fale agora, {seconds:.0f}s)")
     try:
         n_samples = int(seconds * RECORD_SR)
         rec = sd.rec(n_samples, samplerate=RECORD_SR, channels=1, dtype="float32", device=DEVICE_ID)
         sd.wait()
         audio = rec.flatten()
-        
-        # Downsample 44100 -> 16000
+
+        # Downsample RECORD_SR -> 16000
         if HAVE_SCIPY:
             audio = scipy.signal.resample(audio, int(len(audio) * SAMPLE_RATE / RECORD_SR))
         else:
@@ -311,10 +342,10 @@ def _gravar_audio(seconds=RECORD_SECONDS):
             idx = np.arange(0, len(audio), step).astype(int)
             idx = idx[idx < len(audio)]
             audio = audio[idx]
-        
+
         return audio
     except Exception as e:
-        print(f"[erro gravacao device 11: {e}] - tentando default")
+        print(f"[erro gravacao device {DEVICE_ID}: {e}] - tentando default")
         # Fallback: device default
         rec = sd.rec(int(seconds * SAMPLE_RATE), samplerate=SAMPLE_RATE, channels=1, dtype="float32")
         sd.wait()
@@ -339,6 +370,12 @@ def _stt_whisper(audio, partial_callback=None):
         condition_on_previous_text=False,
         no_speech_threshold=0.6,
         log_prob_threshold=-1.0,
+        vad_filter=True,
+        vad_parameters={
+            "min_silence_duration_ms": 800,
+            "threshold": 0.5,
+            "min_speech_duration_ms": 250,
+        },
     )
     texto = ""
     for s in segments:

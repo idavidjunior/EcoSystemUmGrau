@@ -1,7 +1,7 @@
 ---
-tags: [borda, csharp, padrao, resposta, simples, view]
+tags: [borda, consumo, csharp, padrao, resposta, view]
 aliases: [C#: LINQ, execução diferida e IQueryable vs IEnumerable]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # C#: LINQ, execução diferida e IQueryable vs IEnumerable

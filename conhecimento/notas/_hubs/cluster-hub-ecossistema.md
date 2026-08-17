@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**176 notas** do cluster ecossistema.
+**181 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -67,6 +67,9 @@
 - [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]
 - [[2026-08-05-scan-proativo-ecosystemumgrau]]
 - [[2026-08-06-scan-proativo-ecosystemumgrau]]
+- [[2026-08-16-detecção-automática-de-inglês-no-tts]]
+- [[2026-08-17-car-bt-controle-total-via-adb-bluetooth-automotiv]]
+- [[2026-08-17-organograma-agrupado-por-livro-técnicas-de-valida]]
 - [[aegis-barra-progresso-tempo-real]]
 - [[aegis-registrado-como-projeto-irmao-rust]]
 - [[aprendizado-controle-eco-d-eco-da-narração]]
@@ -112,6 +115,7 @@
 - [[fase-a-concluída-catálogo-real-no-supabase-64-obras-via-tmdb]]
 - [[fase2-limpeza-git-artefatos-rastreados]]
 - [[fase3-rotina-automatica-de-tiragem-organizacional]]
+- [[fix-ativação-de-voz-sistema-de-frases-unificado]]
 - [[fix-favoritos-tags-e-contagem-por-capitulo]]
 - [[fix-tts-corte-final-textos-longos]]
 - [[fix-widget-grafo-desktop]]
@@ -146,6 +150,7 @@
 - [[opencode-go-provider-crash-ao-processar-mensagem]]
 - [[organizar-desktopcodigos-como-raiz-unica-de-projetos]]
 - [[otimização-do-reindex-semântico-do-memory-engine]]
+- [[padrao-organizacao-comandos]]
 - [[pais]]
 - [[parar-fala-corrida-da-flag-pararfalaflag]]
 - [[persistencia-completa-widget-grafo]]

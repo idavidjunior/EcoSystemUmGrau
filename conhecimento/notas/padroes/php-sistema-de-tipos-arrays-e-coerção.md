@@ -1,7 +1,7 @@
 ---
 tags: [argumento, casar, coleções, padrao, php, transformar]
 aliases: [PHP: sistema de tipos, arrays e coerção]
-date: 2026-08-15
+date: 2026-08-17
 ---
 
 # PHP: sistema de tipos, arrays e coerção
