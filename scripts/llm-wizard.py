@@ -230,7 +230,7 @@ def run_interactive():
         "config", ".llm-choice.json"
     )
     with open(choices_file, "w", encoding="utf-8") as f:
-        json.dump({"model": selected["model"], "name": selected["name"]}, f, indent=2)
+        json.dump({"model": selected["model"], "name": selected["name"]}, f, indent=2, ensure_ascii=False)
     print(f"\n✓ Salvo em: config/.llm-choice.json")
     print("  O setup usará este modelo ao renderizar config/opencode.jsonc")
     print()

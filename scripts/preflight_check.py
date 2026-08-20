@@ -263,6 +263,15 @@ def run():
             with open(DEPLOYED, encoding='utf-8-sig') as f:
                 content = f.read()
             check('Deployed sem npx', 'npx' not in content, 'npx encontrado!')
+            # Anti-regressao: template var {{USERPROFILE}} nao renderizada no
+            # deployed = todos os MCP servers falham no boot do OpenCode
+            # (server unavailable) e instructions apontam para caminho inexistente.
+            if '{{USERPROFILE}}' in content:
+                check('Deployed renderizado', False,
+                      '{{USERPROFILE}} nao expandido! Rode ecosystem.ps1 deploy ou substitua '
+                      f'por {USERPROFILE.replace(os.sep, "/")}')
+            else:
+                check('Deployed renderizado', True)
             check_mcp_servers(cfg2, 'Deployed', test_servers=True)
     else:
         check('Deployed config existe', False, f'{DEPLOYED} nao encontrado')
@@ -386,6 +395,21 @@ def run():
                 check('Voz Guarda', False, f'exit code {r.returncode}')
     except Exception as e:
         check('Voz Guarda', False, str(e)[:200])
+
+    # 10. Integridade de dados (mojibake/truncamento em JSON de conhecimento)
+    print('\n[10] Integridade de dados (mojibake/truncamento)')
+    try:
+        r = sp.run([sys.executable, os.path.join(BASE, 'scripts', 'integrity_guard.py'), '--check'],
+                   capture_output=True, text=True, timeout=60, cwd=BASE)
+        out = (r.stdout + r.stderr).strip()
+        if r.returncode == 0:
+            check('Integridade de dados (0 corrupções)', True)
+        else:
+            corrompidos = [l.split()[1] for l in out.splitlines() if l.strip().startswith('[')]
+            check('Integridade de dados', False,
+                  f'{len(corrompidos)} arquivo(s): {", ".join(corrompidos)} (use --fix)')
+    except Exception as e:
+        check('Integridade de dados', False, str(e)[:200])
 
     # Summary
     print('\n========================================')

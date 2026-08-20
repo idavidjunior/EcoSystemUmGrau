@@ -39,7 +39,16 @@ def find_adb():
             return res.stdout.splitlines()[0].strip()
     except Exception:
         pass
-    return os.path.join(os.environ.get('LOCALAPPDATA', ''), 'Android', 'Sdk', 'platform-tools', 'adb.exe')
+    # Tenta múltiplos caminhos conhecidos no Windows
+    candidates = [
+        os.path.join(os.environ.get('LOCALAPPDATA', ''), 'Android', 'platform-tools', 'platform-tools', 'adb.exe'),
+        os.path.join(os.environ.get('LOCALAPPDATA', ''), 'Android', 'Sdk', 'platform-tools', 'adb.exe'),
+        os.path.join(os.environ.get('PROGRAMFILES', ''), 'Android', 'platform-tools', 'adb.exe'),
+    ]
+    for path in candidates:
+        if os.path.exists(path):
+            return path
+    return candidates[0]
 
 
 def scan_devices(adb_path):

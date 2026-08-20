@@ -1,7 +1,7 @@
 ---
 tags: [fonte, gitignore, manutencao, opencode, orfaos, padrao]
 aliases: [fase3 rotina automatica de tiragem organizacional]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # fase3 rotina automatica de tiragem organizacional

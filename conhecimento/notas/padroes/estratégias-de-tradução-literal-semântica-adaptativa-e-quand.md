@@ -1,7 +1,7 @@
 ---
 tags: [account, conta, humor, levar, padrao, traducao]
 aliases: [Estratégias de tradução: literal, semântica, adaptativa e qu]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Estratégias de tradução: literal, semântica, adaptativa e quando usar cada uma
@@ -12,7 +12,7 @@ Três grandes estratégias cobrem a maioria das decisões tradutórias: literal,
 
 TRADUÇÃO LITERAL: alinha-se à estrutura e aos itens lexicais do original, preservando forma e ordem. Adequada quando o texto é técnico e o termo já tem correspondência canônica: "network firewall" → "firewall de rede", "database" → "banco de dados". Também útil em textos em que a forma é parte do conteúdo, como manuais de instrução e cláusulas contratuais.
 
-TRADUÇÃO SEMÂNTICA: preserva o significado e o tom, mas ajusta a forma para soar natural na língua de chegada. É a estratégia padrão da maioria dos textos: "a common mistake" → "um erro comum" (e não "um engano comum"), "take into account" → "levar em conta". Quebra frases longas, converte voz passiva em ativa quando conveniente.
+TRADUÇÃO SEMNTICA: preserva o significado e o tom, mas ajusta a forma para soar natural na língua de chegada. É a estratégia padrão da maioria dos textos: "a common mistake" → "um erro comum" (e não "um engano comum"), "take into account" → "levar em conta". Quebra frases longas, converte voz passiva em ativa quando conveniente.
 
 TRADUÇÃO ADAPTATIVA (TRANSCREATION): recria livremente o conteúdo para produzir o mesmo efeito — usado em slogans, campanhas, poesia, humor. "I'm lovin' it" não é traduzido literalmente; é adaptado para "Amo muito tudo isso".
 

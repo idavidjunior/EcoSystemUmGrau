@@ -243,18 +243,23 @@ while ($true) {
                 Start-Sleep -Seconds 3
             }
         }
-        Write-Log "Bridge MORTO na porta $BridgePort - reiniciando..."
-        if (Test-Path $PYTHON) {
-            $psi = New-Object System.Diagnostics.ProcessStartInfo
-            $psi.FileName = $PYTHON
-            $psi.Arguments = "-u `"$SCRIPTS\jarvis_bridge.py`""
-            $psi.WorkingDirectory = $SCRIPTS
-            $psi.UseShellExecute = $false
-            $psi.CreateNoWindow = $true
-            $p = [System.Diagnostics.Process]::Start($psi)
-            Write-Log "Bridge reiniciado (PID: $($p.Id))"
+        $bridgeFlagPath = Join-Path $SCRIPTS "..\runtime\bridge_enabled.flag"
+        if (Test-Path $bridgeFlagPath) {
+            Write-Log "Bridge MORTO na porta $BridgePort - reiniciando (flag ativo)..."
+            if (Test-Path $PYTHON) {
+                $psi = New-Object System.Diagnostics.ProcessStartInfo
+                $psi.FileName = $PYTHON
+                $psi.Arguments = "-u `"$SCRIPTS\jarvis_bridge.py`""
+                $psi.WorkingDirectory = $SCRIPTS
+                $psi.UseShellExecute = $false
+                $psi.CreateNoWindow = $true
+                $p = [System.Diagnostics.Process]::Start($psi)
+                Write-Log "Bridge reiniciado (PID: $($p.Id))"
+            } else {
+                Write-Log "Python nao encontrado em $PYTHON"
+            }
         } else {
-            Write-Log "Python nao encontrado em $PYTHON"
+            Write-Log "Bridge MORTO na porta $BridgePort - desativado (sem flag). Crie runtime\bridge_enabled.flag para ativar."
         }
     }
 
@@ -327,6 +332,45 @@ while ($true) {
     }
     if ($candidatos -and ($mortos -gt 0 -or $bloqueados -gt 0)) {
         Write-Log "Orfaos CLI: $mortos mortos, $bloqueados preservados. Desktop intocado."
+    }
+
+    # ============ WIDGET JARVIS UNICO ============
+    # Regra canônica: unified_bridge.py é a ponte única (narrador + TTS + widget).
+    # widget_controle_jarvis.py é o widget antigo que NÃO deve rodar separado.
+    # Se aparecer duplicata, o watchdog corrige sozinho:
+    #   A) unified_bridge ativo + widget antigo ativo -> mata o widget antigo.
+    #   B) unified_bridge inativo + 2+ widgets antigos -> mantém o mais antigo.
+    $widgetAntigos = @()
+    $bridgeAtivo = $false
+    try {
+        $procs = Get-CimInstance Win32_Process -Filter "Name='python.exe' OR Name='pythonw.exe'" -ErrorAction SilentlyContinue
+        foreach ($p in $procs) {
+            $cmd = $p.CommandLine
+            if (-not $cmd) { continue }
+            if ($cmd -match "widget_controle_jarvis\.py") {
+                $widgetAntigos += $p
+            } elseif ($cmd -match "unified_bridge\.py") {
+                $bridgeAtivo = $true
+            }
+        }
+    } catch { }
+    if ($widgetAntigos) {
+        if ($bridgeAtivo) {
+            # Caso A: o canônico já cuida do widget; qualquer widget antigo é sobra.
+            foreach ($w in $widgetAntigos) {
+                Stop-Process -Id $w.ProcessId -Force -ErrorAction SilentlyContinue
+                Write-Log "WIDGET UNICO: widget antigo (PID $($w.ProcessId)) encerrado porque unified_bridge já ativo"
+            }
+        } elseif ($widgetAntigos.Count -gt 1) {
+            # Caso B: sem bridge, mantém o mais antigo e encerra as demais cópias.
+            $maisAntigo = $widgetAntigos | Sort-Object CreationDate | Select-Object -First 1
+            foreach ($w in $widgetAntigos) {
+                if ($w.ProcessId -ne $maisAntigo.ProcessId) {
+                    Stop-Process -Id $w.ProcessId -Force -ErrorAction SilentlyContinue
+                    Write-Log "WIDGET UNICO: duplicata (PID $($w.ProcessId)) encerrada; mantida PID $($maisAntigo.ProcessId)"
+                }
+            }
+        }
     }
 
     Start-Sleep -Seconds $Interval

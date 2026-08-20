@@ -496,6 +496,33 @@ $bridgeHealthTimer.AutoReset = $true
 Register-ObjectEvent $bridgeHealthTimer "Elapsed" -Action $onBridgeHealth > $null
 $bridgeHealthTimer.Start()
 
+# INTEGRITY GUARD TIMER: verifica e corrige mojibake/truncamento em JSON (1x/h)
+$integrityTimer = New-Object System.Timers.Timer
+$integrityTimer.Interval = 3600000  # 1h
+$integrityTimer.AutoReset = $true
+
+$onIntegrity = {
+    Write-Log "INTEGRITY: verificando dados (mojibake/truncamento)..."
+    try {
+        $out = python "$ecoDir\scripts\integrity_guard.py" --fix 2>&1 | Out-String
+        if ($out -match 'RESULTADO: 0 arquivo') {
+            Write-Log "INTEGRITY: ok (nenhuma corrupção)"
+        } else {
+            $m = [regex]::Match($out, 'RESULTADO: (\d+) string')
+            if ($m.Success) {
+                $n = $m.Groups[1].Value
+                $arqs = ([regex]::Matches($out, 'CORRIGIDO')).Count
+                Write-Log "INTEGRITY: $n string(s) corrigida(s) em $arqs arquivo(s) (backup em runtime\backups\integrity_guard)"
+                python "$ecoDir\scripts\memory_engine.py" log "integrity-guard: $n strings de mojibake corrigidas automaticamente" 2>$null
+            } else {
+                Write-Log "INTEGRITY: $($out.Trim())"
+            }
+        }
+    } catch { Write-Log "INTEGRITY: scan ignorado: $_" }
+}
+Register-ObjectEvent $integrityTimer "Elapsed" -Action $onIntegrity > $null
+$integrityTimer.Start()
+
 # ���������������������������������������������������������������������������������������������������������������������������������������������
 # OPENCODE CACHE TIMER: limpeza de logs antigos/oversized (1x/h, alinhado ao maxInterval)
 # ���������������������������������������������������������������������������������������������������������������������������������������������

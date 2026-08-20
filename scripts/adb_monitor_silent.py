@@ -167,7 +167,7 @@ def _acquire_lock() -> bool:
         except (ValueError, OSError, ProcessLookupError):
             pass  # PID inválido ou processo morto, pode continuar
     
-    PID_FILE.write_text(str(os.getpid()))
+    PID_FILE.write_text(str(os.getpid()), encoding="utf-8")
     return True
 
 

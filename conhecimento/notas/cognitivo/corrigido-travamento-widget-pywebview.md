@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, general, infinita, loop, processing, regenerar]
 aliases: [corrigido travamento widget pywebview]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # corrigido travamento widget pywebview
@@ -28,6 +28,19 @@ contexto: >
 decisao: >
   (1) Crash do NaN: o tick handler fazia `x: n.x + orb.dx` usando n.x do
   DATASET, 
+
+---
+tipo: erro
+tags: [widget, unified-bridge, auditeria, bugs, pywebview]
+data: 2026-08-18
+contexto: >
+  Auditoria do widget Jarvis Controle (unified_bridge.py) identificou 7 bugs.
+  Bug critico: ler_estado_voz() chamada mas nunca definida/importada.
+  Causava NameError silencioso capturado por except:pass.
+  UI nunca atualizava estado, botoes nao funcionavam.
+decisao: >
+  (1) Definir ler_estado_voz() lendo CONTROLE (narracao_estado.json).
+  (2) Refatorar estado_ativo() para usar ler_estado_voz(
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]

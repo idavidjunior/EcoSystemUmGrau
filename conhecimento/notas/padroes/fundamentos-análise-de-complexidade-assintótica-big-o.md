@@ -1,7 +1,7 @@
 ---
 tags: [fundamentos, ignorando, menor, ordem, padrao, termos]
 aliases: [Fundamentos: análise de complexidade assintótica (Big-O)]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Fundamentos: análise de complexidade assintótica (Big-O)

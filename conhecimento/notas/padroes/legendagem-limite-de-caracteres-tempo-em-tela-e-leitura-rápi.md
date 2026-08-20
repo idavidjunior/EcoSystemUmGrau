@@ -1,7 +1,7 @@
 ---
 tags: [150, padrao, reancorar, sentido, traducao-audio, velocidade]
 aliases: [Legendagem: limite de caracteres, tempo em tela e leitura rá]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Legendagem: limite de caracteres, tempo em tela e leitura rápida

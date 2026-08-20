@@ -1,14 +1,14 @@
 ---
 tags: [arquitetura, cérebro, geral, missao, opencode, sincronizada, status]
-aliases: [Jarvis do celular e do PC: um só cérebro (arquitetura sincro]
-date: 2026-08-01
+aliases: [# Jarvis do celular e do PC: um só cérebro (arquitetura sinc]
+date: 2026-08-04
 ---
 
-# Jarvis do celular e do PC: um só cérebro (arquitetura sincronizada) — 
+# # Jarvis do celular e do PC: um só cérebro (arquitetura sincronizada) — 
 
 **Status:** session_learning
 
-**Objetivo:** Jarvis do celular e do PC: um só cérebro (arquitetura sincronizada) — 
+**Objetivo:** # Jarvis do celular e do PC: um só cérebro (arquitetura sincronizada) — 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

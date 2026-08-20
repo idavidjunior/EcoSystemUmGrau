@@ -1,7 +1,7 @@
 ---
 tags: [desfaz, explicação, literal, padrao, sentidos, traducao]
 aliases: [Elementos culturalmente intraduzíveis: humor, trocadilhos, p]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Elementos culturalmente intraduzíveis: humor, trocadilhos, provérbios e onomatopeias

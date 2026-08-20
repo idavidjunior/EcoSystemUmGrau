@@ -129,6 +129,17 @@ class Bridge:
                 pass
         return {'width': int(width), 'height': int(height)}
 
+    def ler_tema_sincronizado(self):
+        """ Lê tema de runtime/widget_state.json (escrito pelo Jarvis). """
+        try:
+            state_file = BASE / 'runtime' / 'widget_state.json'
+            if state_file.exists():
+                d = json.loads(state_file.read_text(encoding='utf-8'))
+                return d.get('theme', 'dark')
+        except Exception:
+            pass
+        return None
+
 
 def _screen_area():
     """Dimensoes da area de trabalho (monitor principal) em pixels, ou None."""

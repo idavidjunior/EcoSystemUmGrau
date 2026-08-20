@@ -94,7 +94,7 @@ class TvSap:
                     self.client_key = new_key
                     store = {**json.load(open(KEY_FILE, encoding="utf-8")),
                              "client_key": new_key}
-                    json.dump(store, open(KEY_FILE, "w", encoding="utf-8"), indent=2)
+                    json.dump(store, open(KEY_FILE, "w", encoding="utf-8"), indent=2, ensure_ascii=False)
                 return True
             if resp.get("payload", {}).get("pairingType") == "PROMPT":
                 print("TV pediu pareamento — aceite na tela.")

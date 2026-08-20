@@ -27,6 +27,12 @@ sys.path.insert(0, SCRIPTS)
 
 CONSTITUICAO = os.path.join(BASE, 'config', 'agents', '00-system-rules.md')
 
+try:
+    from llm_router import router as llm_router
+    LLM_ROUTER_AVAILABLE = True
+except ImportError:
+    LLM_ROUTER_AVAILABLE = False
+
 # Sequência obrigatória de execução (nenhuma etapa pode ser pulada)
 PIPELINE = [
     'Bootloader (restaura estado + verifica integridade)',
@@ -167,6 +173,96 @@ class Kernel:
         return '\n'.join(lines)
 
 
+
+    def selecionar_modelo(self, objetivo, contexto='', prioridade='balanced', capacidades_requeridas=None):
+        """Selecionar modelo adequado usando o LLM Router.
+
+        Este método usa o LLM Router para determinar o melhor modelo para a tarefa,
+        seguindo as regras de task_type, priority, capabilities e fallback.
+        Se o LLM Router não estiver disponível, retorna um resultado padrão.
+
+        Returns: dicionário com a decisão do roteador
+        """
+        if not LLM_ROUTER_AVAILABLE:
+            return {
+                'modelo': 'opencode/big-pickle',
+                'confianca': 0.5,
+                'razao': 'LLM Router não disponível, usando modelo padrão',
+                'alternativas': []
+            }
+
+        # Construir request de roteamento baseado nos parâmetros
+        # Os tipos de tarefa mais comuns mapeados para o LLM Router
+        task_type_map = {
+            'coding': 'coding',
+            'reasoning': 'reasoning',
+            'creative': 'creative',
+            'analysis': 'analysis',
+            'chat': 'chat',
+            'planning': 'planning',
+            'debugging': 'debugging',
+            'architecture': 'architecture',
+        }
+
+        # Detectar type da tarefa baseado no objetivo (heurística simples)
+        tipo_detectado = 'chat'  # default
+        objetivo_lower = objetivo.lower()
+        for key, value in task_type_map.items():
+            if key in objetivo_lower:
+                tipo_detectado = value
+                break
+
+        # Chamar o roteador via subprocess para usar o CLI do router
+        import subprocess
+        try:
+            result = subprocess.run(
+                ['python', 'scripts/llm_router.py', 'route', tipo_detectado,
+                 '--priority', prioridade,
+                 '--min-context', '4000'],
+                capture_output=True, text=True, cwd='C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau'
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                # Parsear o resultado do roteador
+                lines = result.stdout.strip().split('\\n')
+                selecao = {}
+                for line in lines:
+                    if line.startswith('Selected:'):
+                        selecao['modelo'] = line.split('Selected:')[1].strip()
+                    elif line.startswith('Confidence:'):
+                        selecao['confianca'] = float(line.split('Confidence:')[1].strip())
+                    elif line.startswith('Reasoning:'):
+                        selecao['razao'] = line.split('Reasoning:')[1].strip()
+
+                # Alternativas
+                alternativas = []
+                # Parsear linhas de alternativas (formato: "modelo (score: X.XX)")
+                for line in lines[4:]:  # Pular as 4 linhas iniciais
+                    if '(' in line and 'score:' in line:
+                        try:
+                            modelo_part, score_part = line.split('(', 1)
+                            modelo = modelo_part.strip()
+                            score = float(score_part.split(')')[0].strip())
+                            alternativas.append({'modelo': modelo, 'score': score})
+                        except:
+                            pass
+
+                selecao['alternativas'] = alternativas
+                return selecao
+            else:
+                return {
+                    'modelo': 'opencode/big-pickle',
+                    'confianca': 0.3,
+                    'razao': 'Falha ao rotear, usando modelo padrão',
+                    'alternativas': []
+                }
+        except Exception as e:
+            return {
+                'modelo': 'opencode/big-pickle',
+                'confianca': 0.3,
+                'razao': f'Erro ao rotear: {str(e)}',
+                'alternativas': []
+            }
+
 def main():
     parser = argparse.ArgumentParser(description='Kernel Permanente do Ecossistema')
     sub = parser.add_subparsers(dest='cmd')
@@ -225,3 +321,4 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
+

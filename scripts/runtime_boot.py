@@ -17,6 +17,7 @@ Fluxo (usuário -> Bootloader):
 import argparse
 import json
 import os
+import subprocess
 import sys
 import importlib.util
 
@@ -101,6 +102,25 @@ def check_language_integrity():
     return all_ok, details
 
 
+def check_data_integrity():
+    """Verifica integridade dos dados JSON (mojibake/truncamento) via integrity_guard.
+    Retorna (ok, detalhes).
+    """
+    try:
+        r = subprocess.run(
+            [sys.executable, os.path.join(SCRIPTS, 'integrity_guard.py'), '--check'],
+            capture_output=True, text=True, timeout=60, cwd=BASE)
+        out = (r.stdout + r.stderr).strip()
+        if r.returncode == 0:
+            return True, [('Integridade de dados', True, 'nenhuma corrupção')]
+        # extrai os arquivos corrompidos do relatório
+        corrompidos = [l.split()[1] for l in out.splitlines() if l.strip().startswith('[')]
+        return False, [('Integridade de dados', False,
+                       f'{len(corrompidos)} arquivo(s) com corrupção: {", ".join(corrompidos)}')]
+    except Exception as e:
+        return False, [('Integridade de dados', False, f'ERRO: {e}')]
+
+
 def check_integrity():
     """Verifica integridade do ecossistema. Retorna (ok, detalhes)."""
     details = []
@@ -113,6 +133,10 @@ def check_integrity():
     lang_ok, lang_details = check_language_integrity()
     all_ok = all_ok and lang_ok
     details.extend(lang_details)
+    # Verificação de integridade dos dados (mojibake/truncamento)
+    data_ok, data_details = check_data_integrity()
+    all_ok = all_ok and data_ok
+    details.extend(data_details)
     # runtime_state importável?
     try:
         from runtime_state import load_state
@@ -129,7 +153,7 @@ def check_integrity():
         all_ok = False
         details.append(('Memory Engine (módulo)', False, f'ERRO: {e}'))
     # módulos da camada 3?
-    for mod in ('runtime_kernel', 'runtime_context', 'runtime_auditor'):
+    for mod in ('runtime_kernel', 'runtime_context', 'runtime_auditor', 'tool_orchestrator', 'llm_router', 'knowledge_graph', 'agent_council', 'mission_planner', 'security_engine', 'audit_engine', 'learning_engine'):
         try:
             __import__(mod)
             details.append((f'{mod} (módulo)', True, f'scripts/{mod}.py'))

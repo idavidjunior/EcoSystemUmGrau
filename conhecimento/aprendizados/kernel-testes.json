@@ -52,5 +52,42 @@
       }
     ],
     "recommendations": []
+  },
+  {
+    "timestamp": "2026-08-17T22:03:01.772841",
+    "total_tests": 11,
+    "passed": 9,
+    "failed": 2,
+    "pass_rate": "81.8%",
+    "failures": [
+      {
+        "test": "Bridge HTTP (porta 8766)",
+        "detail": "<urlopen error [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente>",
+        "category": "bridge"
+      },
+      {
+        "test": "sync_rules.py audit",
+        "detail": "OK",
+        "category": "scripts"
+      }
+    ],
+    "slowest_tests": [
+      {
+        "test": "preflight_check.py",
+        "duration": 12.767459869384766
+      },
+      {
+        "test": "Bridge WebSocket (porta 8765)",
+        "duration": 11.601392984390259
+      },
+      {
+        "test": "Bridge dados completos",
+        "duration": 7.845348358154297
+      }
+    ],
+    "recommendations": [
+      "Verificar se jarvis_bridge.py esta rodando: <urlopen error [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente>",
+      "Rever script sync_rules.py audit: OK"
+    ]
   }
 ]

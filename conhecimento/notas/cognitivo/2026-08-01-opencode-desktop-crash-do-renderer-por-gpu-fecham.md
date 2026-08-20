@@ -1,14 +1,14 @@
 ---
 tags: [cognitivo, config, desugardebugfiledependencies, etapa, general, unificada]
 aliases: [# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU +]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
-# # 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria
+# # 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memória
 
 **Dominio:** general
 
-# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria
+# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memória
 
 **Categoria:** aprendizado
 **Contexto:** OpenCode Desktop v1.18.10 (Electron 42.3.3) em notebook com Intel HD Graphics 5500 (driver 10.18.15.4248, 2015) e 3,9 GB RAM. A interface abria e fechava logo em seguida, sem mensagem de erro.
@@ -17,7 +17,7 @@ date: 2026-08-17
 
 ## O que foi feito
 
-InvestigaÃ§Ã£o exaustiva do ciclo 
+Investigação exaustiva do ciclo 
 
 ---
 tipo: erro
@@ -49,7 +49,7 @@ contexto: Varredura + correção um-a-um de todos os bugs do widget grafo deskto
 decisao: Corrigir 8 bugs e validar com harness Node que executa os blocos JS reais do HTML gerado (stubs de DOM/vis/localStorage/bridge), mais subprocesso do widget real.
 impacto: Painel de controles voltou a funcionar (tema, velocidade, orb
 
-﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria
+﻿# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memória
 
 **Categoria:** aprendizado
 **Contexto:** OpenCode Desktop v1.18.10 (Electron 42.3.3) em notebook com Intel HD Graphics 5500 (driver 10.18.15.4248, 2015) e 3,9 GB RAM. A interface abria e fechava logo em seguida, sem mensagem de erro.
@@ -58,7 +58,7 @@ impacto: Painel de controles voltou a funcionar (tema, velocidade, orb
 
 ## O que foi feito
 
-InvestigaÃ§Ã£o exaustiva do ciclo 
+Investigação exaustiva do ciclo 
 
 # 2026-08-16: MicrofoneManager — device WDM-KS int16 e referências por import
 

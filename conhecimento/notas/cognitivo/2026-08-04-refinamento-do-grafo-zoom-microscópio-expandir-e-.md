@@ -1,7 +1,7 @@
 ---
 tags: [clicar, clique, cognitivo, general, persistencia, sumiram]
 aliases: [2026-08-04: Refinamento do grafo — zoom microscópio, expandi]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # 2026-08-04: Refinamento do grafo — zoom microscópio, expandir e cognição viva

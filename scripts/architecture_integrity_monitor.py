@@ -241,9 +241,13 @@ def check_sync() -> list[Check]:
 def check_services() -> list[Check]:
     checks = []
 
-    # Bridge (port 8765)
-    bridge_up = _check_port(8765)
-    checks.append(Check("servicos", "Bridge Jarvis (8765)", "PASS" if bridge_up else "WARN", "Online" if bridge_up else "Offline"))
+    # Bridge (port 8765) — desativado por padrão; só relevante quando flag existe
+    bridge_flag = Path(__file__).resolve().parent.parent / "runtime" / "bridge_enabled.flag"
+    if bridge_flag.exists():
+        bridge_up = _check_port(8765)
+        checks.append(Check("servicos", "Bridge Jarvis (8765)", "PASS" if bridge_up else "WARN", "Online" if bridge_up else "Offline"))
+    else:
+        checks.append(Check("servicos", "Bridge Jarvis (8765)", "INFO", "Desativado (sem flag)"))
 
     # Serve (port 8767)
     serve_up = _check_port(8767)

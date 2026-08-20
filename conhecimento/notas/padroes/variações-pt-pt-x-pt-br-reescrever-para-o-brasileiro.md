@@ -1,7 +1,7 @@
 ---
-tags: [acentos, brasileiras, duas, padrao, pt-br, variantes]
+tags: [acentos, brasileiras, fontes, padrao, pt-br, variantes]
 aliases: [Variações PT-PT x PT-BR: reescrever para o brasileiro]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Variações PT-PT x PT-BR: reescrever para o brasileiro

@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**249 notas** conectadas a este hub.
+**266 notas** conectadas a este hub.
 
 
 ## Notas
@@ -59,6 +59,7 @@
 - [[c-templates-sfinae-constexpr-e-o-custo-zero]]
 - [[cadeia-de-provedores-com-failover-inteligente]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
+- [[como-adicionar-uma-nova-versão-da-bíblia-ao-bibliaestudocomp]]
 - [[complete-build-pipeline-intelligence]]
 - [[compreensao-de-pedidos-refino-com-a-llm-do-opencode-primaria]]
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
@@ -68,6 +69,7 @@
 - [[config-opencode-v11714-schema]]
 - [[contagem-subpastas-arquivos-pastas]]
 - [[controle-da-tv-lg-webos-via-ssap]]
+- [[correção-de-mojibake-no-knowledgegraphjson-utf-8-lido-como-c]]
 - [[css-selector-priority-ladder]]
 - [[custom-numpad-pattern]]
 - [[datas-horas-e-fuso-horário-no-brasil-ddmmaaaa-24h-brt]]
@@ -95,6 +97,11 @@
 - [[engenharia-requisitos-e-definição-de-escopo]]
 - [[estrangeirismos-no-pt-br-anglicismos-aceitos-aportuguesament]]
 - [[estratégias-de-tradução-literal-semântica-adaptativa-e-quand]]
+- [[etapa19-tool-permission-runtime]]
+- [[etapa21-memory-learning-consolidation]]
+- [[etapa22-self-assessment-self-improvement]]
+- [[etapa23-observability-reliability]]
+- [[etapa24-interface-jarvis]]
 - [[falsos-cognatos-e-armadilhas-interlíngua-inglês-português]]
 - [[fase2-limpeza-git-artefatos-rastreados]]
 - [[fase3-rotina-automatica-de-tiragem-organizacional]]
@@ -120,6 +127,7 @@
 - [[iframecontenteditable-text-entry]]
 - [[ilhas-no-grafo-notas-com-grau-0-e-como-conecta-las]]
 - [[inline-editing-pattern]]
+- [[integrity-guard-vigilante-dados]]
 - [[itunes-search-with-scoring-thresholds]]
 - [[java-concorrência-com-threads-e-locks]]
 - [[java-garbage-collection-e-tuning]]
@@ -172,6 +180,7 @@
 - [[php-modelo-de-execução-e-sapi]]
 - [[php-psrs-autoload-e-composer]]
 - [[php-sistema-de-tipos-arrays-e-coerção]]
+- [[pipeline-de-release-e-padrão-de-toolbar-com-menu]]
 - [[pipeline-de-tradução-de-qualidade-análise-rascunho-revisão-e]]
 - [[pipeline-de-tradução-de-áudio-stt-tradução-tts]]
 - [[ponte-web-video-cast]]
@@ -179,6 +188,7 @@
 - [[process-hierarchy-for-multi-window-apps]]
 - [[projetos-irmaos-do-ecosystemumgrau]]
 - [[pronuncia-do-nome-do-usuario-david-deivid]]
+- [[pronuncia-python-ptbr]]
 - [[python-decoradores-e-metaprogramação]]
 - [[python-gil-e-concorrência]]
 - [[python-idioms-e-boas-práticas]]
@@ -188,6 +198,8 @@
 - [[registro-de-habilidades-de-jarvis]]
 - [[regra-do-usuário-buildinstalatestavalida-antes-de-commitar-e]]
 - [[renderersfactory-for-custom-audioprocessor]]
+- [[resiliencia-widget-duplicado]]
+- [[restauracao-unified-bridge]]
 - [[retry-com-backoff-exponencial]]
 - [[ruby-blocks-procs-e-lambdas]]
 - [[ruby-rails-activerecord-e-mvc]]
@@ -196,6 +208,10 @@
 - [[rust-lifetimes-referências-e-elisão]]
 - [[rust-ownership-borrow-checker-e-o-modelo-de-memória]]
 - [[rust-traits-generics-e-trait-objects]]
+- [[saudacao-auto-evolutiva-jarvis]]
+- [[saudacao-dinamica-jarvis]]
+- [[saudacao-jarvis-estilo-filme]]
+- [[saudacao-llm-nvidia-api]]
 - [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]
 - [[saveload-pattern]]
 - [[secrets-guard-no-preflightcheck]]
@@ -249,6 +265,7 @@
 - [[vibration-pattern]]
 - [[wait-strategy-adaptive]]
 - [[widget-desktop-grafo-tempo-real]]
+- [[widget-jarvis-8-features-implementadas]]
 - [[win32-control-pattern-recognition]]
 - [[windows-notificationballoon-dismissal]]
 - [[windows-ui-element-tree-traversal]]

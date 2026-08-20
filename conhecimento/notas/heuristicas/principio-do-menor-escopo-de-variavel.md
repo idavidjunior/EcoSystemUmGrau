@@ -1,7 +1,7 @@
 ---
 tags: [coding, estado, funcao, heuristica, inicio, reuse]
 aliases: [Principio do menor escopo de variavel]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Principio do menor escopo de variavel

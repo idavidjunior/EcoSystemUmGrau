@@ -1,7 +1,7 @@
 ---
 tags: [correto, cuidada, padrao, pt-br, vais, íntimo]
 aliases: [Formas de tratamento em pt-BR: você, tu, senhor/a e concordâ]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Formas de tratamento em pt-BR: você, tu, senhor/a e concordância
@@ -16,7 +16,7 @@ TU: usado com familiaridade no Sul, em partes do Norte/Nordeste e em contextos i
 
 SENHOR/SENHORA: usado com desconhecidos mais velhos, autoridades e em atendimento formal. Requer verbos na terceira pessoa: "O senhor poderia aguardar?". Em documentos e comunicação corporativa formal, "Vossa Senhoria" ou o nome do destinatário são preferíveis a "Sr.".
 
-CONCORDÂNCIA: a maior fonte de erros. O verbo concorda com o sujeito ("você está"), os pronomes possessivos e oblíquos seguem o tratamento ("o senhor e sua"). "Vossa Senhoria" pede verbo na terceira pessoa do singular: "Vossa Senhoria receberá".
+CONCORDNCIA: a maior fonte de erros. O verbo concorda com o sujeito ("você está"), os pronomes possessivos e oblíquos seguem o tratamento ("o senhor e sua"). "Vossa Senhoria" pede verbo na terceira pessoa do singular: "Vossa Senhoria receberá".
 
 ARMADILHA: traduzir o "you" inglês mantendo um único tratamento para todo o texto. O "you" formal e o informal precisam ser decididos por contexto, senão o texto brasileiro soa frio demais ou íntimo demais.
 ## Conexoes

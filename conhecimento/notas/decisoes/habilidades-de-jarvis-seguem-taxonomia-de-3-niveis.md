@@ -1,7 +1,7 @@
 ---
 tags: [capacidades, decisao, ecossistema, fonte, leraprendizado, niveis]
 aliases: [Habilidades de Jarvis seguem taxonomia de 3 niveis]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Habilidades de Jarvis seguem taxonomia de 3 niveis

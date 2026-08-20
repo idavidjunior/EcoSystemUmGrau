@@ -1,7 +1,7 @@
 ---
-tags: [estranhos, oms, padrao, produzir, pt-br, textos]
+tags: [estranhos, las, padrao, produzir, pt-br, textos]
 aliases: [Siglas, acrônimos e nomes próprios: manter, traduzir ou adap]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Siglas, acrônimos e nomes próprios: manter, traduzir ou adaptar
@@ -16,7 +16,7 @@ SIGLAS E ACRÔNIMOS: quando existir sigla brasileira oficial, use-a: "NATO" → 
 
 ADAPTAÇÃO ESTRUTURAL: no pt-BR, siglas se escrevem em caixa alta e, após o Acordo Ortográfico, perdem pontos e espaços: "ONU", "IBGE". Quando pronunciadas como palavra, viram acrônimos e podem receber plural "os ONGs" é incorreto; o correto é "as ONGs".
 
-GÊNERO E CONCORDÂNCIA: a sigla herda o gênero do núcleo expandido: "a ONU" (Organização), "o IBGE" (Instituto). Mantenha a primeira menção com a extensão entre parênteses quando a sigla não for óbvia para o leitor: "o Sistema Único de Saúde (SUS)".
+GÊNERO E CONCORDNCIA: a sigla herda o gênero do núcleo expandido: "a ONU" (Organização), "o IBGE" (Instituto). Mantenha a primeira menção com a extensão entre parênteses quando a sigla não for óbvia para o leitor: "o Sistema Único de Saúde (SUS)".
 ## Conexoes
 
 - [[cluster-hub-traducao]]

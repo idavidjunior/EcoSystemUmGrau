@@ -1,7 +1,7 @@
 ---
 tags: [bash, falha, falhar, padrao, parte, pipe]
 aliases: [Bash: expansão, aspas e globbing]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Bash: expansão, aspas e globbing

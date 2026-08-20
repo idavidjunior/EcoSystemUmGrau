@@ -1,7 +1,7 @@
 ---
 tags: [android, android-pure-sdkandroid-pure-sdk, fonte, padrao, pure, sdk]
 aliases: [Tab Navigation Pattern]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Tab Navigation Pattern

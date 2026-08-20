@@ -310,7 +310,7 @@ class SpeechPipeline:
 
         return True
 
-    def speak(self, text: str, block: bool = True, stop_flag: Optional[Path] = None) -> bool:
+    def speak(self, text: str, block: bool = True, stop_flag: Optional[Path] = None, volume: int = -1) -> bool:
         """Sintetiza e toca o áudio (para uso local no PC). Com cache para baixa latência.
 
         Args:
@@ -319,6 +319,7 @@ class SpeechPipeline:
             stop_flag: Caminho de arquivo-flag. Se existir durante a fala, interrompe
                 a reprodução imediatamente (fecha o alias MCI) e retorna False.
                 O flag é consumido (removido) pelo pipeline ao detectar.
+            volume: Volume 0-100. Se -1, usa volume do sistema.
 
         Returns:
             True se reproduziu com sucesso.
@@ -375,6 +376,11 @@ class SpeechPipeline:
             except Exception:
                 pass
             return False
+
+        # Volume: 0-100 do widget -> 0-1000 do MCI
+        if 0 <= volume <= 100:
+            mci_volume = int(volume * 10)
+            mci(f'setaudio {alias} volume to {mci_volume}', None, 0, 0)
 
         mci(f'play {alias}', None, 0, 0)
 

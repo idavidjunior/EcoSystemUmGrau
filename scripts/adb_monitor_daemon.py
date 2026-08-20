@@ -80,7 +80,7 @@ def start_daemon(interval=30):
             start_new_session=True
         )
     
-    PID_FILE.write_text(str(proc.pid))
+    PID_FILE.write_text(str(proc.pid), encoding="utf-8")
     print(f"[OK] Monitor iniciado (PID: {proc.pid}, interval: {interval}s)")
     print(f"Logs: {LOG_FILE}")
     return True

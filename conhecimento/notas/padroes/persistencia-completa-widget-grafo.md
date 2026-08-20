@@ -1,7 +1,7 @@
 ---
 tags: [execucoes, opencode, padrao, pane, persistam, zoom]
 aliases: [persistencia completa widget grafo]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # persistencia completa widget grafo

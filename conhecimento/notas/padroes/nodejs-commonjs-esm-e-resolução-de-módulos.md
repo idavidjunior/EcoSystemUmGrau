@@ -1,7 +1,7 @@
 ---
 tags: [binding, inicialização, mesmos, node, padrao, tdz]
 aliases: [Node.js: CommonJS, ESM e resolução de módulos]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Node.js: CommonJS, ESM e resolução de módulos

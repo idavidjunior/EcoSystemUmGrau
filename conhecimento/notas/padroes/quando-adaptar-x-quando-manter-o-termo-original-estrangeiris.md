@@ -1,7 +1,7 @@
 ---
 tags: [mantido, menção, nacional, padrao, traducao, whatsapp]
 aliases: [Quando adaptar x quando manter o termo original (estrangeiri]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Quando adaptar x quando manter o termo original (estrangeirismos e termos técnicos)

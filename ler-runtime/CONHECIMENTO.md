@@ -1,11 +1,11 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-17T17:10:32.422272
+**Exportado em:** 2026-08-20T17:20:58.837331
 **Projetos:** 4
-**Padroes Tecnicos:** 254
-**Decisoes:** 68
+**Padroes Tecnicos:** 271
+**Decisoes:** 73
 **Bug Fixes:** 52
-**Padroes Cognitivos:** 59
+**Padroes Cognitivos:** 65
 **Heuristicas:** 32
 **Frameworks:** 10
 **Missoes Aprendidas:** 134
@@ -205,9 +205,9 @@ data: 2026-08-02
 contexto: Reestruturacao do pipeline de geracao do grafo — Obsidian vira cerebro vivo, widget espelho
 decisao: generate-graph-html.py agora le o vault Obsidian (conhecimento/notas/*.md) em vez de knowledge_graph.json. O widget_grafo.py chama Bridge.regenerar() quando a versao detecta mudança no vault. Smart Connections (plugin Obsidian) cria [[wikilinks]] semanticos que o widget reflete automat
 
-### # 2026-08-02 - Feedback contÃ­nuo em tarefas longas
+### # 2026-08-02 - Feedback contínuo em tarefas longas
 **Fonte:** opencode
-# 2026-08-02 - Feedback contÃ­nuo em tarefas longas
+# 2026-08-02 - Feedback contínuo em tarefas longas
 
 **Categoria:** decisao
 **Fonte:** sessao_jarvis_vox
@@ -215,16 +215,16 @@ decisao: generate-graph-html.py agora le o vault Obsidian (conhecimento/notas/*.
 
 ## Contexto
 
-O usuÃ¡rio pediu mais transparÃªncia durante tarefas demoradas: nÃ£o queria ficar
-esperando em silÃªncio sem saber o que o Jarvis estÃ¡ fazendo ou se hÃ¡ progresso.
+O usuário pediu mais transparência durante tarefas demoradas: não queria ficar
+esperando em silêncio sem saber o que o Jarvis está fazendo ou se há progresso.
 
-## DecisÃ£o
+## Decisão
 
-Adicionada regra permanente de **feedback contÃ­nuo** em `JARVIS_SYSTEM.md`:
+Adicionada regra permanente de **feedback contínuo** em `JARVIS_SYSTEM.md`:
 - Regra 16 em "Regras de Resposta".
-- Nova seÃ§Ã£o "Regra de Feedback ContÃ­nuo (02/08/2026)".
+- Nova seção "Regra de Feedback Contínuo (02/08/2026)".
 
-O que mu
+O que mudou na práti
 
 ### # 2026-07-31 - Mecanismo de fonemas SSML reativado com fallback seguro
 **Fonte:** opencode
@@ -236,42 +236,43 @@ O que mu
 
 ## Contexto
 
-O usuÃ¡rio pediu para ligar o mecanismo de fonemas (`aplicar_phonemes` + SSML `<phoneme>` do edge-tts) na bridge do Jarvis.
+O usuário pediu para ligar o mecanismo de fonemas (`aplicar_phonemes` + SSML `<phoneme>` do edge-tts) na bridge do Jarvis.
 
-## VerificaÃ§Ãµes
+## Verificações
 
-1. edge-tts 7.2.8 aceita SSML `<phoneme alphabet="ipa">` sem erro (testado com Ã¡udio real).
-2. `aplicar_phonemes()` jÃ¡ estava conectado em `gerar_audio()`, mas **sem fallback**: se o SSML falhass
+1. edge-tts 7.2.8 aceita SSML `<phoneme alphabet="ipa">` sem erro (testado com áudio real).
+2. `aplicar_phonemes()` já estava conectado em `gerar_audio()`, mas **sem fallback**: se o SSML falhasse, a 
 
-### # 2026-08-01: ClÃ¡usula PÃ©trea â€” ComunicaÃ§Ã£o contÃ­nua em Ã¡udio
+### # 2026-08-01: Cláusula Pétrea — Comunicação contínua em áudio
 **Fonte:** opencode
-# 2026-08-01: ClÃ¡usula PÃ©trea â€” ComunicaÃ§Ã£o contÃ­nua em Ã¡udio
+# 2026-08-01: Cláusula Pétrea — Comunicação contínua em áudio
 
 **Categoria:** decisao
-**Contexto:** UsuÃ¡rio apontou que o Jarvis executou tarefas (verificaÃ§Ã£o de sync, commits, pronÃºncia) sem narrar em Ã¡udio o que estava fazendo, desrespeitando a regra de comunicaÃ§Ã£o por voz. A regra existia no contexto da sessÃ£o, mas nÃ£o estava registrada em lugar nenhum â€” por isso foi esquecida.
+**Contexto:** Usuário apontou que o Jarvis executou tarefas (verificação de sync, commits, pronúncia) sem narrar em áudio o que estava fazendo, desrespeitando a regra de comunicação por voz. A regra existia no contexto da sessão, mas não estava registrada em lugar nenhum — por isso foi esquecida.
 
-## DecisÃ£o
-**Todo passo que o Jarvis executa DEVE ser narrado em Ã¡udio**, sempre, sem exceÃ§Ã£
+## Decisão
+**Todo passo que o Jarvis executa DEVE ser narrado em áudio**, sempre, sem exceção, em qualquer tarefa.
 
-### # DecisÃ£o: Aprendizado automÃ¡tico permanente
+
+### # Decisão: Aprendizado automático permanente
 **Fonte:** opencode
-# DecisÃ£o: Aprendizado automÃ¡tico permanente
+# Decisão: Aprendizado automático permanente
 
 **Data:** 2026-07-28
 **Tipo:** decisao
 **Tags:** aprendizado, automacao, regra, petrea
 
 ## Contexto
-UsuÃ¡rio instruiu que o aprendizado deve ser feito automaticamente ao final de cada tarefa, sem necessidade de solicitaÃ§Ã£o explÃ­cita. Isso Ã© instruÃ§Ã£o permanente e pÃ©trea.
+Usuário instruiu que o aprendizado deve ser feito automaticamente ao final de cada tarefa, sem necessidade de solicitação explícita. Isso é instrução permanente e pétrea.
 
-## DecisÃ£o
-Todo agente do ecossistema deve, ao final de cada tarefa concluÃ­da:
+## Decisão
+Todo agente do ecossistema deve, ao final de cada tarefa concluída:
 
-1. **Registrar memÃ³ria** via `memory_engine.py add` com tipo apropriado (decisao, erro, p
+1. **Registrar memória** via `memory_engine.py add` com tipo apropriado (decisao, erro, padrao, episod
 
-### # DecisÃ£o: Arquitetura Jarvis App
+### # Decisão: Arquitetura Jarvis App
 **Fonte:** opencode
-# DecisÃ£o: Arquitetura Jarvis App
+# Decisão: Arquitetura Jarvis App
 
 **Data:** 2026-07-28
 **Tipo:** decisao
@@ -280,10 +281,10 @@ Todo agente do ecossistema deve, ao final de cada tarefa concluÃ­da:
 ## Contexto
 Necessidade de um app Android que funcione como assistente de voz (Jarvis) para o ecossistema, operando em segundo plano com tela desligada, falando resultados e ouvindo comandos.
 
-## DecisÃ£o
+## Decisão
 Arquitetura em duas camadas:
-- **PC (backend):** `notifier_bridge.py` (WebSocket) + `mcp-knowledge-server.py` (MCP, jÃ¡ existe)
-- **Android (frontend):** Foreground Se
+- **PC (backend):** `notifier_bridge.py` (WebSocket) + `mcp-knowledge-server.py` (MCP, já existe)
+- **Android (frontend):** Foreground Servi
 
 ### vault obsidian cerebro vivo grafo
 **Fonte:** opencode
@@ -492,6 +493,69 @@ tags: [android, supermarket-calculator, despesas, persistencia, bug-fix, editing
 data: 2026-08-14
 contexto: SupermarketCalculator - Bug: auto-save de despesas sobrescrevia arquivo original durante edição
 contexto_detalhado: Quando usuário clicava "Editar" num arquivo de despesas já salvo na aba Finance, o `currentExpenseFile` era setado imediatamente. Isso fazia com que qualquer auto-save (clicar em "Pendente"/"Pago", editar descrição) já gravasse no arquivo original ant
+
+### desativar bridge android
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [bridge, jarvis-bridge, android, watchdog, duplicacao-voz]
+data: 2026-08-18
+contexto: >
+  Jarvis falando duplicado. Investigacao revelou 3 fontes possiveis:
+  (1) unified_bridge.py fala localmente via SpeechPipeline,
+  (2) jarvis_bridge.py gera audio para clientes WebSocket (Android),
+  (3) tts_service.py antigo (PID 4588) rodava sozinho com SpeechPipeline local.
+  O watchdog.ps1 auto-reiniciava jarvis_bridge.py na porta 8765.
+decisao: >
+  Desativar jarvis_bridge.py via f
+
+### transparencia execucao tarefas
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [transparencia, clausula-petrea, agentes, ferramentas, comunicacao, confianca]
+data: 2026-08-18
+contexto: >
+  Usuario quer saber qual agente, ferramenta ou servico esta sendo
+  chamado quando o sistema executa tarefas. Transparencia total sobre
+  o que esta acontecendo em tempo real.
+decisao: >
+  Adicionada CLAUSULA PETREA — TRANSPARENCIA NA EXECUCAO DE TAREFAS
+  a Constituicao. Todo agente deve informar qual agente especializado,
+  ferramenta, servico MCP ou script esta 
+
+### widget evolucao 3 niveis
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [widget, evolucao, microfone, narrador, dialogo, sistema, notificacoes]
+data: 2026-08-18
+contexto: >
+  Widget Jarvis estava quebrado em 7+ bugs e so tinha botoes basicos.
+  Usuario pediu evolucao completa em 3 niveis com logica de descarte
+  de fala ao parar e reativar.
+decisao: >
+  Evolucao completa do widget em 3 niveis implementada no unified_bridge.py:
+  Nivel 1 - Fixes: buffer aliasing (textos=list(buffer)), persistencia de
+  posicao via _on_close antes de destruicao
+
+### Aprendizado: Regra de fala resumida do Jarvis
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [jarvis, voz, tts, fala, resumo, narracao, regra]
+data: 2026-08-19
+contexto: "Usuário David determinou que o Jarvis estava dando detalhes longos demais na fala, deixando o áudio muito comprido. Ele quer que o Jarvis narre apenas um resumo bem simples e curto do que está fazendo, do que está implementando e dos problemas encontrados, dando detalhes somente quando pedido."
+decisao: "Criada a Cláusula Pétrea — Fala Resumida no scripts/JARVIS_SYSTEM.md (restaurado do backup d
+
+### engenheiro criterioso
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [personalidade, autoavaliacao, identidade]
+data: 2026-08-20
+contexto: O usuário deu ao agente a liberdade de se autoavaliar e escolher uma personalidade que o defina, após explicar o conceito de personalidade de um indivíduo e a autoavaliação.
+decisao: A personalidade que define o agente é o Engenheiro Criterioso: equilíbrio entre pragmatismo e método, mescla do Cético com o Realista e o Revisor. Executor que pensa antes de agir, prefere soluções simples e seguras, evita 
 
 
 ## Padroes Tecnicos
@@ -752,6 +816,23 @@ contexto_detalhado: Quando usuário clicava "Editar" num arquivo de despesas já
 | 252 | opencode+opencode | padrao organizacao comandos |
 | 253 | opencode+opencode | 2026-08-17: Organograma agrupado por livro + técnicas de validação visual via adb |
 | 254 | opencode+opencode | 2026-08-17: CAR-BT — controle total via adb (Bluetooth automotivo) |
+| 255 | opencode+opencode | etapa19 tool permission runtime |
+| 256 | opencode+opencode | etapa21 memory learning consolidation |
+| 257 | opencode+opencode | etapa22 self assessment self improvement |
+| 258 | opencode+opencode | etapa23 observability reliability |
+| 259 | opencode | etapa24 interface jarvis |
+| 260 | opencode | restauracao unified bridge |
+| 261 | opencode+opencode+opencode+opencode | Correção de mojibake no knowledge_graph.json (UTF-8 lido como CP1252) |
+| 262 | opencode+opencode+opencode+opencode+opencode | integrity guard vigilante dados |
+| 263 | opencode+opencode | pronuncia python ptbr |
+| 264 | opencode+opencode | resiliencia widget duplicado |
+| 265 | opencode | saudacao dinamica jarvis |
+| 266 | opencode | saudacao jarvis estilo filme |
+| 267 | opencode | saudacao auto evolutiva jarvis |
+| 268 | opencode | saudacao llm nvidia api |
+| 269 | opencode+opencode | Como adicionar uma nova versão da Bíblia ao BibliaEstudoCompleta |
+| 270 | opencode+opencode | Pipeline de release e padrão de toolbar com menu |
+| 271 | opencode | Widget Jarvis - 8 Features Implementadas |
 
 ## Bug Fixes e Corrigidos
 
@@ -1281,7 +1362,7 @@ O grafo do widget deve mostrar ma
 
 
 
-### MCP Obsidian server â€” vault consumido pelo LLM
+### MCP Obsidian server — vault consumido pelo LLM
 **Dominio:** general
 **Fonte:** opencode
 
@@ -1289,60 +1370,63 @@ O grafo do widget deve mostrar ma
 tipo: decisao
 tags: [obsidian, mcp, infraestrutura, config, clausula-petrea, vault]
 data: 2026-08-02
-contexto: O vault Obsidian (docs/, conhecimento/, documentos/) estava sendo alimentado (330 notas .md) mas o LLM sÃ³ via a CONTAGEM de notas no estado da bridge (gerar_estado_atual em jarvis_bridge.py), nunca o conteÃºdo. Busca semÃ¢ntica via eco-knowledge cobria CONHECIMENTO.md e memory graph, mas nÃ£o os 327 .md de conhecimento/. Sem MCP server dedicado, sem file watcher.
+contexto: O vault Obsidian (docs/, conhecimento/, documentos/) estava sendo alimentado (330 notas .md) mas o LLM só via a CONTAGEM de notas no estado da bridge (gerar_estado_atual em jarvis_bridge.py), nunca o conteúdo. Busca semântica via eco-knowledge cobria CONHECIMENTO.md e memory graph, mas não os 327 .md de conhecimento/. Sem MCP server dedicado, sem file watcher.
 decisao: Criar sc
 
+﻿--
 
-### # Hora na tela vs hora no Ã¡udio (Jarvis)
+### # Hora na tela vs hora no áudio (Jarvis)
 **Dominio:** general
 **Fonte:** opencode
 
-# Hora na tela vs hora no Ã¡udio (Jarvis)
+# Hora na tela vs hora no áudio (Jarvis)
 
 - **Data:** 31/07/2026
-- **SessÃ£o:** ImplementaÃ§Ã£o de `normalizar_hora_display()` na bridge
+- **Sessão:** Implementação de `normalizar_hora_display()` na bridge
 
 ## Problema
-O LLM reescrevia a hora do briefing/saudaÃ§Ã£o em forma falada ("23 horas e 29",
-"22 horas em ponto", "meia-noite") no prÃ³prio TEXTO exibido no app. O usuÃ¡rio
-deixou claro: **o formato exibido deve continuar `21:44`; sÃ³ a PRONÃšNCIA do
+O LLM reescrevia a hora do briefing/saudação em forma falada ("23 horas e 29",
+"22 horas em ponto", "meia-noite") no próprio TEXTO exibido no app. O usuário
+deixou claro: **o formato exibido deve continuar `21:44`; só a PRONÚNCIA do
 Jarvis precisava ser corrigida.**
 
-## SoluÃ§Ã£o (divisÃ£o de responsabilidades)
+## Solução (divisão de responsabilidades)
 - `melhorar_fala(texto)` â†’ 
 
+# Aprendizad
 
-### # Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis)
+### # Aprendizado — 2026-07-31 — Pontuação automática de transcrições de voz (Jarvis)
 **Dominio:** general
 **Fonte:** opencode
 
-# Aprendizado â€” 2026-07-31 â€” PontuaÃ§Ã£o automÃ¡tica de transcriÃ§Ãµes de voz (Jarvis)
+# Aprendizado — 2026-07-31 — Pontuação automática de transcrições de voz (Jarvis)
 
 ## Contexto
-- O Android STT (SpeechRecognizer) devolve texto corrido, sem pontuaÃ§Ã£o e **sem prosÃ³dia** (a melodia da fala nÃ£o chega Ã  bridge). O usuÃ¡rio pediu: `?` em perguntas, pontuaÃ§Ã£o correta e **primeira letra maiÃºscula** sempre.
-- JÃ¡ existia `fix_punctuation()` bÃ¡sico; a reivisÃ£o ampliou regras e corrigiu um bug de acentuaÃ§Ã£o.
+- O Android STT (SpeechRecognizer) devolve texto corrido, sem pontuação e **sem prosódia** (a melodia da fala não chega à bridge). O usuário pediu: `?` em perguntas, pontuação correta e **primeira letra maiúscula** sempre.
+- Já existia `fix_punctuation()` básico; a reivisão ampliou regras e corrigiu um bug de acentuação.
 
 ## O que foi feito (`scripts/jarvis_bridge.py`)
 1. **Clas
 
+# Aprendizado — 2026-0
 
-### # Guia: Controle Total de TV LG webOS (reaproveitÃ¡vel)
+### # Guia: Controle Total de TV LG webOS (reaproveitável)
 **Dominio:** general
 **Fonte:** opencode
 
-# Guia: Controle Total de TV LG webOS (reaproveitÃ¡vel)
+# Guia: Controle Total de TV LG webOS (reaproveitável)
 **Criado:** 01/08/2026 | Aplica-se a qualquer TV LG webOS (UT80 e similares, 2024+)
 
-> **Know-how de ouro:** este passo-a-passo reaplica-se a qualquer TV LG webOS. SÃ³ muda o IP e o MAC.
+> **Know-how de ouro:** este passo-a-passo reaplica-se a qualquer TV LG webOS. Só muda o IP e o MAC.
 
-## 1. Descoberta e identificaÃ§Ã£o
+## 1. Descoberta e identificação
 - **mDNS (224.0.0.251:5353):** pergunte por `_googlecast._tcp.local`, `_airplay._tcp.local`, `_webos._tcp.local`, `_services._dns-sd._udp.local`. A TV responde com hostname + TXT records (model, serialNumber, manufacture
 
-### # 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria
+### # 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memória
 **Dominio:** general
 **Fonte:** opencode
 
-# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memÃ³ria
+# 2026-08-01 - OpenCode Desktop: crash do renderer por GPU + fechamento por memória
 
 **Categoria:** aprendizado
 **Contexto:** OpenCode Desktop v1.18.10 (Electron 42.3.3) em notebook com Intel HD Graphics 5500 (driver 10.18.15.4248, 2015) e 3,9 GB RAM. A interface abria e fechava logo em seguida, sem mensagem de erro.
@@ -1351,8 +1435,9 @@ Jarvis precisava ser corrigida.**
 
 ## O que foi feito
 
-InvestigaÃ§Ã£o exaustiva do ciclo 
+Investigação exaustiva do ciclo 
 
+--
 
 ### # 2026-08-02 - ecosystem sync: 1 comando para sincronizar tudo
 **Dominio:** general
@@ -1361,13 +1446,13 @@ InvestigaÃ§Ã£o exaustiva do ciclo
 # 2026-08-02 - ecosystem sync: 1 comando para sincronizar tudo
 
 ## Contexto
-O usuÃ¡rio queria sincronizar o ecossistema inteiro com um Ãºnico comando, para ficar
+O usuário queria sincronizar o ecossistema inteiro com um único comando, para ficar
 sempre atualizado e nada se perder ao trocar de PC.
 
 ## O que foi feito
 - Corrigido `scripts/ecosystem.ps1`:
-  - `$ecoDir` agora Ã© auto-detectado via `Split-Path $PSScriptRoot -Parent` (antes
-    hardcoded `Desktop\Codigos\EcoSystemUmGrau`, que nÃ£o existe mais â€” o repo vive em
+  - `$ecoDir` agora é auto-detectado via `Split-Path $PSScriptRoot -Parent` (antes
+    hardcoded `Desktop\Codigos\EcoSystemUmGrau`, que não existe mais — o repo vive em
     `Documents\Default Project\EcoSystemUmGrau`).
   - `
 
@@ -1379,8 +1464,10 @@ sempre atualizado e nada se perder ao trocar de PC.
 tipo: padrao
 tags: [mcp, infraestrutura, config, clausula-petrea]
 data: 2026-08-02
-contexto: DivergÃªncia detectada â€” config/opencode.jsonc referenciava 4 servidores MCP Node em `mcp-servers/mcp-servers/...` que nÃ£o existiam, e `{{USERPROFILE}}` nÃ£o Ã© resolvido em comandos MCP (apenas em instructions). `opencode mcp list` mostrava eco-knowledge/filesystem/search/terminal como "failed".
+contexto: Divergência detectada — config/opencode.jsonc referenciava 4 servidores MCP Node em `mcp-servers/mcp-servers/...` que não existiam, e `{{USERPROFILE}}` não é resolvido em comandos MCP (apenas em instructions). `opencode mcp list` mostrava eco-knowledge/filesystem/search/terminal como "failed".
 decisao: Criar os 4 servidores Node (filesystem, search, terminal, github) em `mcp-servers/<nome>/ind
+
+﻿---
 
 
 ### ---
@@ -1407,7 +1494,7 @@ tipo: decisao
 tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
 data: 2026-08-02
 contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
-decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente
+decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero — pergunta (?)=pitch+12%/rate+4% (ascendente
 
 ### ---
 **Dominio:** general
@@ -1425,7 +1512,7 @@ contexto: Status do ecossistema reportava "Vigilante: INATIVO" sem PID e sem log
 decisao: Diagnosticado que nenhum mecanismo criava a scheduled task. Criada task via Register-ScheduledTask (AtLogOn, sem -Principal para nao exigir admin), profile.ps1 recriado com as funcoes (start/stop/status-vigilante + ecosystem), path hardcoded corrigido para $env:USERPROFILE.
 impacto: Vigilante agora inicia no l
 
-### ClÃ¡usula PÃ©trea â€” AtivaÃ§Ã£o de Voz (Eco System)
+### Cláusula Pétrea — Ativação de Voz (Eco System)
 **Dominio:** general
 **Fonte:** opencode
 
@@ -1433,41 +1520,46 @@ impacto: Vigilante agora inicia no l
 tipo: decisao
 tags: [voz, eco, clausula-petrea, bridge, config, regras]
 data: 2026-08-02
-contexto: O usuÃ¡rio pediu que o sistema de voz seja ativÃ¡vel em qualquer sessÃ£o do OpenCode (nova ou em andamento) com os comandos "Ativar Eco" e "Desativar Eco", seguindo as regras do EcoSystemUmGrau.
-decisao: Adicionada a CLÃUSULA PÃ‰TREA â€” ATIVAÃ‡ÃƒO DE VOZ â€” ECO SYSTEM Ã  ConstituiÃ§Ã£o (config/agents/00-system-rules.md) e sincronizada nas 3 camadas (AGENTS.md regenerado via sync_rules.py, d
+contexto: O usuário pediu que o sistema de voz seja ativável em qualquer sessão do OpenCode (nova ou em andamento) com os comandos "Ativar Eco" e "Desativar Eco", seguindo as regras do EcoSystemUmGrau.
+decisao: Adicionada a CLÁUSULA PÉTREA — ATIVAÇÃO DE VOZ — ECO SYSTEM à Constituição (config/agents/00-system-rules.md) e sincronizada nas 3 camadas (AGENTS.md regenerado via sync_rules.py, d
 
+﻿---
+tipo: de
 
-### # 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView
+### # 2026-07-28: Botões de filtro sem texto visível — MaterialButton vs TextView
 **Dominio:** general
 **Fonte:** opencode
 
-# 2026-07-28: BotÃµes de filtro sem texto visÃ­vel â€” MaterialButton vs TextView
+# 2026-07-28: Botões de filtro sem texto visível — MaterialButton vs TextView
 
 ## Contexto
-App Mp3Player Android. 5 botÃµes de filtro no topo da aba "MÃºsicas": Todas, Favoritas, A-Z, Lista, Sel. O texto nÃ£o aparecia â€” os botÃµes ficavam verdes uniformes sem nenhum texto visÃ­vel.
+App Mp3Player Android. 5 botões de filtro no topo da aba "Músicas": Todas, Favoritas, A-Z, Lista, Sel. O texto não aparecia — os botões ficavam verdes uniformes sem nenhum texto visível.
 
 ## O que deu errado
 
-### 1. MudanÃ§a de tema AppCompat â†’ MaterialComponents quebrou os botÃµes
+### 1. Mudança de tema AppCompat â†’ MaterialComponents quebrou os botões
 - `TagEditorActivity` usava `TextInputLayout` do Material Components, que REQUER tema `MaterialComponents`
 - Ao 
 
+---
+tipo: ap
 
-### # 2026-07-30 - Skill de DiagnÃ³stico Remoto Android
+### # 2026-07-30 - Skill de Diagnóstico Remoto Android
 **Dominio:** general
 **Fonte:** opencode
 
-# 2026-07-30 - Skill de DiagnÃ³stico Remoto Android
+# 2026-07-30 - Skill de Diagnóstico Remoto Android
 
 ## O que foi criado
-- `scripts/android_diagnostics.py` â€” Script Python que conecta via ADB ao dispositivo `100.64.71.9:5555` e coleta diagnÃ³stico completo do VoxUmGrau
-- `skills/android-diagnostics/skill.md` â€” Skill documentando o uso do script
+- `scripts/android_diagnostics.py` — Script Python que conecta via ADB ao dispositivo `100.64.71.9:5555` e coleta diagnóstico completo do VoxUmGrau
+- `skills/android-diagnostics/skill.md` — Skill documentando o uso do script
 
-## Capacidades do diagnÃ³stico
-- Modelo do dispositivo, versÃ£o Android, SDK, fuso horÃ¡rio
-- Bateria (nÃ­vel, temperatura, status de carga)
-- Aplicativo (versÃ£oCode, versionName, PID, memÃ³ria 
+## Capacidades do diagnóstico
+- Modelo do dispositivo, versão Android, SDK, fuso horário
+- Bateria (nível, temperatura, status de carga)
+- Aplicativo (versãoCode, versionName, PID, memória 
 
+﻿# 2026-07-
 
 ### vazamento caracteres tts edge tts escapa ssml
 **Dominio:** general
@@ -1530,7 +1622,7 @@ tipo: decisao
 tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
 data: 2026-08-02
 contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
-decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente
+decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero — pergunta (?)=pitch+12%/rate+4% (ascendente
 
 ### ---
 **Dominio:** general
@@ -1541,7 +1633,7 @@ tipo: decisao
 tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
 data: 2026-08-02
 contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
-decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente
+decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero — pergunta (?)=pitch+12%/rate+4% (ascendente
 
 ### ---
 **Dominio:** general
@@ -1552,7 +1644,7 @@ tipo: decisao
 tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
 data: 2026-08-02
 contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
-decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente
+decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero — pergunta (?)=pitch+12%/rate+4% (ascendente
 
 ### Bug: parametro Pid e variavel automatica do PowerShell
 **Dominio:** general
@@ -1581,7 +1673,7 @@ tipo: decisao
 tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
 data: 2026-08-02
 contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
-decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero â€” pergunta (?)=pitch+12%/rate+4% (ascendente
+decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero — pergunta (?)=pitch+12%/rate+4% (ascendente
 
 ### MCP prompt-optimization não conectava: transporte JSON por linha em vez de MCP stdio
 **Dominio:** general
@@ -1672,6 +1764,128 @@ data: 2026-08-13
 contexto: Botão "Parar Fala" do widget Jarvis não parava a narração; usuário relatou que Jarvis continuava falando após acionar o botão.
 decisao: cmd_interromper_fala (scripts/widget_controle_jarvis.py) passou a manter a flag runtime/parar_fala.flag por 1.5s antes de apagá-la, e removeu o feedback de áudio "Voz desativada" que era falado logo após a parada.
 impacto: Narrador em proce
+
+### ETAPA 25 — Teste End-to-End
+**Dominio:** general
+**Fonte:** opencode
+
+# ETAPA 25 — Teste End-to-End
+
+## O que foi feito
+- Teste E2E que valida o fluxo completo: User→Interface→Core→MissionLoop→Tools→Memory→SelfAssessment→Observability→Response
+- 126 testes PASS, 0 falhas (100% success rate)
+- Regressão: 332 testes Etapa 21-24, todos PASS
+
+## Testes executados
+1. **Dependency Audit** — 10 módulos verificados, memória carregada
+2. **Conversation Flow** — User message → classify → respond → correlation preserved
+3. **Mission Execution** — Real `create_and_execute_mis
+
+### ERRADO
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [adb, tailscale, scrcpy, android, conexao]
+data: 2026-08-18
+contexto: scrcpy nao encontrava dispositivo ADB via Tailscale
+decisao: Corrigir caminho do ADB em adb_auto_connect.py para tentar multiplos caminhos
+impacto: Tailscale agora funciona como alternativa viavel para conexao ADB
+---
+
+## Problema
+
+O scrcpy retornava "Could not find any ADB device" mesmo com Tailscale ativo.
+
+## Causa
+
+O `adb_auto_connect.py` usava um caminho incorreto para o ADB:
+```python
+# ERRADO
+os.pat
+
+### respostas truncadas
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [resposta, truncamento, final, palavra, llm, mitigacao]
+data: 2026-08-18
+contexto: Respostas do assistente terminam com a última palavra cortada (ex.: "atuais" vira "atu")
+decisao: Adicionar regra de mitigação: verificar final de toda resposta antes de entregar
+impacto: Respostas completas, sem palavras cortadas
+---
+
+## Contexto
+
+O usuário identificou um padrão recorrente: as respostas do assistente
+terminam com a última palavra incompleta. Exemplo concreto: a frase terminou
+
+### crash topicindex version mismatch
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [android, sqlite, crash, database, version-mismatch]
+data: 2026-08-18
+contexto: TopicIndexActivity crashava ao abrir o Índice Temático no app Bíblia de Estudo
+decisao: Corrigir DATABASE_VERSION de 1 para 2 no TopicIndexDatabaseHelper
+impacto: Crash resolvido, Índice Temático agora funciona com 56 tópicos bíblicos
+---
+
+## Problema
+
+TopicIndexActivity crashava imediatamente ao abrir, sem mensagem de erro visível.
+
+## Causa raiz
+
+Incompatibilidade de versão entre o banco `indic
+
+### Projecao ortho nas transicoes GL
+**Dominio:** general
+**Fonte:** opencode
+
+﻿---
+tipo: erro
+tags: [opengl, transicoes, biblia, projecao, ortho]
+data: 2026-08-19
+contexto: Motor de transicoes OpenGL ES 2.0 do app BibliaEstudoCompleta
+decisao: Trocar frustumM por orthoM(-1,1,-1,1,2,8) e remover a multiplicacao pos.x *= uOldAspect no shader
+impacto: Pagina preenche a tela inteira sem distorcao; 4 efeitos validados no device
+---
+
+# Projecao ortho nas transicoes GL
+
+## Problema
+A pagina capturada tem a mesma proporcao da tela (1080x2400, aspect 0.45).
+Com frustumM(-aspect, a
+
+### Toast de Erros - Falsos Positivos
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [widget, deteccao, falsos-positivos, regex]
+data: 2026-08-20
+---
+
+# Toast de Erros - Falsos Positivos
+
+## Problema
+O toast de erros do widget Jarvis mostrava janela vermelha piscando sem erros reais.
+
+## Causa
+O regex pegava linhas do log do narrador que continham palavras como "erro" e "falhou" no texto falado. Exemplo:
+"falando (140 chars): O dialogo de erro e do crash anterior..."
+
+Essa linha e o Jarvis FALANDO sobre um erro passado, nao um erro real.
+
+## Correcao
+Filtrar
 
 ## Heuristicas
 
@@ -1767,7 +1981,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-17T17:10:32.322268
+**Ultima atualizacao:** 2026-08-20T17:20:58.751330
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

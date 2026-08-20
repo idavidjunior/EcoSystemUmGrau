@@ -1,7 +1,7 @@
 ---
 tags: [chain, golang, modere, padrao, privado, string]
 aliases: [Go: context, cancelamento e timeouts]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Go: context, cancelamento e timeouts

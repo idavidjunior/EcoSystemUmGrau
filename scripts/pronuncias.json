@@ -29,9 +29,19 @@
     "ssml": "<speak xml:lang=\"en-US\"><phoneme alphabet=\"ipa\" ph=\"ɛnˈvɪdiə\">nvidia</phoneme></speak>",
     "nota": "Sugestão IPA (en-US); mantém leitura próxima ao uso comum"
   },
+  "python": {
+    "fala": "páiton",
+    "ssml": "<speak xml:lang=\"pt-BR\">páiton</speak>",
+    "nota": "Pronúncia em português (pt-BR), não em inglês"
+  },
   "widget": {
     "fala": "uáidiguéti",
     "ssml": "<speak xml:lang=\"pt-BR\">uáidiguéti</speak>",
     "nota": "Pronúncia em português (pt-BR)"
+  },
+  "py": {
+    "fala": "pai",
+    "ssml": "<speak xml:lang=\"pt-BR\">pai</speak>",
+    "nota": "Pronúncia em português (pt-BR), extensão .py"
   }
 }

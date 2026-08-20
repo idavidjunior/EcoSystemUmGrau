@@ -1,16 +1,14 @@
 # Decisoes
 
-**67 notas** conectadas a este hub.
+**69 notas** conectadas a este hub.
 
 
 ## Notas
-- [[2026-07-27-fallback-automático-de-modelo-llm-com-bun-razrooo]]
-- [[2026-07-27-sistema-automático-de-captura-de-conhecimento-do-]]
-- [[2026-07-28-cláusula-pétrea-toda-alteração-no-ecossistema-dev]]
 - [[2026-07-31-mecanismo-de-fonemas-ssml-reativado-com-fallback-]]
-- [[2026-08-01-clãusula-pãtrea-â-comunicaãão-contãnua-em-ãudio]]
-- [[2026-08-02-feedback-contãnuo-em-tarefas-longas]]
+- [[2026-08-01-cláusula-pétrea-comunicação-contínua-em-áudio]]
+- [[2026-08-02-feedback-contínuo-em-tarefas-longas]]
 - [[album-art-download-com-redirect-loop-manual-instancefollowre]]
+- [[aprendizado-regra-de-fala-resumida-do-jarvis]]
 - [[atualização-ecosystemumgrau-auto-carregamento-gatilho-único-]]
 - [[botao-importar-unificado]]
 - [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
@@ -18,9 +16,11 @@
 - [[checkpoints-salvos-antes-de-cada-iteracao-sobrevive-a-crash-]]
 - [[clausula-petrea-protecao-do-opencode-desktop-resiliencia-da-]]
 - [[context-engine-manifesto-domínios-multimídiacomportamentais]]
-- [[decisão-aprendizado-automãtico-permanente]]
+- [[decisão-aprendizado-automático-permanente]]
 - [[decisão-arquitetura-jarvis-app]]
+- [[desativar-bridge-android]]
 - [[encoding-utf-8-in-javac-required-on-windows-to-prevent-corru]]
+- [[engenheiro-criterioso]]
 - [[estado-persiste-em-json-nao-sqlite-legivel-editavel-fora-do-]]
 - [[estilo-de-comunicação-simples-e-direto]]
 - [[estrategia-selecionada-por-ranking-cost-risk-time-complexity]]
@@ -61,6 +61,7 @@
 - [[stringbuilder-for-price-fine-grained-control-over-display-fo]]
 - [[supervisor-monitora-todos-os-modulos-individualmente-nunca-r]]
 - [[the-issue-description-and-root-cause]]
+- [[transparencia-execucao-tarefas]]
 - [[usar-coordenadas-relativas-porcentagem-em-vez-de-absolutas-p]]
 - [[usar-keyboard-shortcuts-como-fallback-universal]]
 - [[usar-ocr-como-fallback-final-nao-primario]]
@@ -71,3 +72,4 @@
 - [[why-d8-doesnt-accept-directory-trees-of-class-files-it-needs]]
 - [[why-user-expects-a-blank-slate-when-entering-a-form-tab-cons]]
 - [[widget-desktop-frameless-persistente]]
+- [[widget-evolucao-3-niveis]]

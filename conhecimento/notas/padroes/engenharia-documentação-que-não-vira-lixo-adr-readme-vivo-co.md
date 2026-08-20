@@ -1,7 +1,7 @@
 ---
 tags: [ativo, engenharia, padrao, rediscutir, review, time]
 aliases: [Engenharia: documentação que não vira lixo (ADR, README vivo]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Engenharia: documentação que não vira lixo (ADR, README vivo, comentários que explicam o porquê)

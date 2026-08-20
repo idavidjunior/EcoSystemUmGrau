@@ -1,7 +1,7 @@
 ---
 tags: [declaração, javascript, lança, padrao, referenceerror, stack]
 aliases: [JavaScript: closures, escopo e hoisting]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # JavaScript: closures, escopo e hoisting

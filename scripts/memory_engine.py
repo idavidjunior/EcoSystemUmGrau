@@ -93,11 +93,14 @@ def log_session(session_id=None, task=None, project=None, outcome=None,
 
 def add_memory(task, summary, kind='episodio', project='', tags=None,
                strength=1.0, metadata=None, reindex=True,
-               confidence=1.0, source_type='experiencia'):
+               confidence=1.0, source_type='experiencia',
+               solucao_aplicada=None):
     """Add a consolidated memory with decay + epistemic metadata.
 
     confidence: float 0-1 — confiança epistêmica (1.0 = fato, 0.3 = hipótese).
     source_type: enum — 'experiencia', 'inferido', 'api', 'humano', 'rag'.
+    solucao_aplicada: dict ou None — para memórias de tipo 'erro', armazena a
+        solução aplicada: {desc, script, data, tags, validado}.
 
     Dispara reindexação semântica automática (TF-IDF + denso) para que a nova
     memória fique imediatamente recuperável por significado. Nunca bloqueia o add
@@ -131,6 +134,8 @@ def add_memory(task, summary, kind='episodio', project='', tags=None,
         'created_at': now.isoformat(),
         'last_accessed': now.isoformat()
     }
+    if solucao_aplicada and kind == 'erro':
+        memory['solucao_aplicada'] = solucao_aplicada
     memories.append(memory)
     _save_memories(memories)
     if reindex:
@@ -189,6 +194,74 @@ def reinforce(memory_id, delta=0.15):
             _save_memories(memories)
             return True
     return False
+
+def link_solution(memory_id, solucao_desc, script=None, validado=True, tags=None):
+    """Vincula uma solução a uma memória de erro existente.
+
+    memory_id: ID da memória de erro
+    solucao_desc: descrição da solução aplicada
+    script: script que implementa a solução (opcional)
+    validado: se a solução foi validada (default True)
+    tags: tags da solução (opcional)
+    """
+    memories = _load_memories()
+    for m in memories:
+        if m['id'] == memory_id and m.get('kind') == 'erro':
+            m['solucao_aplicada'] = {
+                'desc': solucao_desc,
+                'script': script,
+                'data': datetime.now().isoformat(),
+                'validado': validado,
+                'tags': tags or []
+            }
+            _save_memories(memories)
+            return True
+    return False
+
+def get_unsolved_errors():
+    """Retorna memórias de erro sem solução vinculada."""
+    memories = _load_memories()
+    return [m for m in memories if m.get('kind') == 'erro' and not m.get('solucao_aplicada')]
+
+def get_solved_errors():
+    """Retorna memórias de erro com solução vinculada."""
+    memories = _load_memories()
+    return [m for m in memories if m.get('kind') == 'erro' and m.get('solucao_aplicada')]
+
+def build_solution_index():
+    """Constrói índice cruzado problema→solução a partir das memórias."""
+    memories = _load_memories()
+    index = {
+        'problemas': [],
+        'solucoes': [],
+        'cruzamento': []
+    }
+    for m in memories:
+        if m.get('kind') == 'erro':
+            entry = {
+                'id': m['id'],
+                'task': m['task'],
+                'summary': m['summary'][:200],
+                'tags': m.get('tags', []),
+                'tem_solucao': bool(m.get('solucao_aplicada'))
+            }
+            index['problemas'].append(entry)
+            if m.get('solucao_aplicada'):
+                sol = m['solucao_aplicada']
+                index['solucoes'].append({
+                    'erro_id': m['id'],
+                    'desc': sol.get('desc', ''),
+                    'script': sol.get('script'),
+                    'validado': sol.get('validado', False),
+                    'data': sol.get('data', '')
+                })
+                index['cruzamento'].append({
+                    'erro_id': m['id'],
+                    'erro_task': m['task'][:100],
+                    'solucao_desc': sol.get('desc', '')[:200],
+                    'tags': list(set(m.get('tags', []) + sol.get('tags', [])))
+                })
+    return index
 
 def query(project=None, tags=None, kind=None, text=None, limit=10,
           min_score=0.05, min_confidence=0.0, source_type=None):

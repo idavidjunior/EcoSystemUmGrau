@@ -1,4 +1,4 @@
-﻿# 2026-08-02 - Feedback contÃ­nuo em tarefas longas
+﻿# 2026-08-02 - Feedback contínuo em tarefas longas
 
 **Categoria:** decisao
 **Fonte:** sessao_jarvis_vox
@@ -6,22 +6,22 @@
 
 ## Contexto
 
-O usuÃ¡rio pediu mais transparÃªncia durante tarefas demoradas: nÃ£o queria ficar
-esperando em silÃªncio sem saber o que o Jarvis estÃ¡ fazendo ou se hÃ¡ progresso.
+O usuário pediu mais transparência durante tarefas demoradas: não queria ficar
+esperando em silêncio sem saber o que o Jarvis está fazendo ou se há progresso.
 
-## DecisÃ£o
+## Decisão
 
-Adicionada regra permanente de **feedback contÃ­nuo** em `JARVIS_SYSTEM.md`:
+Adicionada regra permanente de **feedback contínuo** em `JARVIS_SYSTEM.md`:
 - Regra 16 em "Regras de Resposta".
-- Nova seÃ§Ã£o "Regra de Feedback ContÃ­nuo (02/08/2026)".
+- Nova seção "Regra de Feedback Contínuo (02/08/2026)".
 
-O que mudou na prÃ¡tica:
+O que mudou na prática:
 - Antes de agir: avisar o plano.
-- Durante: relatar descobertas, bloqueios e decisÃµes em voz.
-- Em esperas longas (LLM 20-30s, builds, testes): enviar status intermediÃ¡rio.
+- Durante: relatar descobertas, bloqueios e decisões em voz.
+- Em esperas longas (LLM 20-30s, builds, testes): enviar status intermediário.
 - Ao concluir: resumir resultado.
 
-## LiÃ§Ã£o
+## Lição
 
-O usuÃ¡rio prefere receber atualizaÃ§Ãµes frequentes e curtas a um Ãºnico relatÃ³rio
-final longo. TransparÃªncia durante a execuÃ§Ã£o reduz a sensaÃ§Ã£o de espera inÃºtil.
+O usuário prefere receber atualizações frequentes e curtas a um único relatório
+final longo. Transparência durante a execução reduz a sensação de espera inútil.

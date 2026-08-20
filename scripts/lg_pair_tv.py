@@ -38,7 +38,7 @@ def load_store():
 def save_store(store):
     os.makedirs(os.path.dirname(KEY_FILE), exist_ok=True)
     with open(KEY_FILE, "w", encoding="utf-8") as f:
-        json.dump(store, f, indent=2)
+        json.dump(store, f, indent=2, ensure_ascii=False)
 
 
 async def main():

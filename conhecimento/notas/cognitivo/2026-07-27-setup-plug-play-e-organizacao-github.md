@@ -1,7 +1,7 @@
 ---
-tags: [cognitivo, fazendo, general, narrar, pede, ticos]
+tags: [cognitivo, está, fazendo, general, narrar, pede]
 aliases: [# 2026-07-27 - Setup Plug & Play e organizacao GitHub]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # # 2026-07-27 - Setup Plug & Play e organizacao GitHub
@@ -267,22 +267,22 @@ date: 2026-08-17
 - Hostname mDNS: `[LG] webOS TV UT8050PSA`
 - IP local: `192.168.15.6` (MAC `00:a1:59:82:bb:08`, LG Electronics)
 - Serial: `412AZAL87976`
-- ServiÃ§os: SSAP (wss://3001), Google Cast (8009), AirPlay 2 (7000)
+- Serviços: SSAP (wss://3001), Google Cast (8009), AirPlay 2 (7000)
 
 ## Controle nativo (total)
 - Biblioteca: `pywebostv` + CLI `lgtvremote-cli` (porta 3001 wss, secure).
-- Pareamento: PROMPT (confirmaÃ§Ã£o na tela) ou WoL para ligar.
+- Pareamento: PROMPT (confirmação na tela) ou WoL para ligar.
 - Client-
 
-# ConfirmaÃ§Ã£o em Ãudio â€” Regra Permanente (01/08/2026)
+# Confirmação em Áudio — Regra Permanente (01/08/2026)
 
 ## Contexto
-O usuÃ¡rio deu uma **instruÃ§Ã£o global, imediata e permanente**: ao receber QUALQUER comando, o Jarvis deve confirmar em Ã¡udio se entendeu, dizer o que vai fazer, e narrar o que estÃ¡ fazendo. Complementa e reforÃ§a a clÃ¡usula pÃ©trea de comunicaÃ§Ã£o em Ã¡udio.
+O usuário deu uma **instrução global, imediata e permanente**: ao receber QUALQUER comando, o Jarvis deve confirmar em áudio se entendeu, dizer o que vai fazer, e narrar o que está fazendo. Complementa e reforça a cláusula pétrea de comunicação em áudio.
 
 ## Regra (ordem exata)
-1. Confirmar em Ã¡udio que ENTENDEU o comando.
-2. Dizer em Ã¡udio o que VAI fazer.
-3. Dizer em Ã¡udio o que ESTÃ fazendo no momento.
+1. Confirmar em áudio que ENTENDEU o comando.
+2. Dizer em áudio o que VAI fazer.
+3. Dizer em áudio o que ESTÁ fazendo no momento.
 
 #
 
@@ -338,28 +338,28 @@ O usuÃ¡rio deu uma **instruÃ§Ã£o global, imediata e permanente**: ao receb
 
 - [[cluster-hub-mp3player]]
 
-# 2026-07-29 â€” IntegraÃ§Ã£o de clima via OpenWeatherMap
+# 2026-07-29 — Integração de clima via OpenWeatherMap
 
 ## Habilidade adicionada ao Jarvis
 - Nova skill: `skills/clima-api/skill.md`
 - Script: `scripts/clima_api.py`
-- DicionÃ¡rio de pronÃºncia atualizado com termos climÃ¡ticos (20 palavras)
+- Dicionário de pronúncia atualizado com termos climáticos (20 palavras)
 
 ## Como funciona
 - Jarvis usa `python clima_api.py "<cidade>"` para obter clima em tempo real
-- Dados: descriÃ§Ã£o, temperatura, sensaÃ§Ã£o tÃ©rmica, umidade
-- Idioma: portuguÃªs brasileiro, unidades mÃ©tricas
+- Dados: descrição, temperatura, sensação térmica, umidade
+- Idioma: português brasileiro, unidades métricas
 - Chave da API deve estar em `scripts/.env`
 
-# 2026-07-29 â€” MCP Integration
+# 2026-07-29 — MCP Integration
 
 ## Learning
 Integrated 5 MCP servers from `opencode-agents-mcp` repo into EcoSystemUmGrau:
-- **eco-knowledge** (Python) â€” knowledge server for semantic search
-- **filesystem** (Node.js) â€” file operations
-- **search** (Node.js) â€” web search
-- **terminal** (Node.js) â€” command execution
-- **github** (Node.js, disabled) â€” GitHub API; needs GH_TOKEN env var
+- **eco-knowledge** (Python) — knowledge server for semantic search
+- **filesystem** (Node.js) — file operations
+- **search** (Node.js) — web search
+- **terminal** (Node.js) — command execution
+- **github** (Node.js, disabled) — GitHub API; needs GH_TOKEN env var
 
 ## Config Schema (opencode v1.18.9)
 - `mcp` is a plain object: keys = server names, values = server
@@ -654,6 +654,51 @@ Rodou `python tests/test_integration.py` no `ler-runtime/`.
 - consolidate_build_pipeline.py: 9 marcadores
 
 ﻿# 2026-08-17 - Scan proativo: EcoSystemUmGrau
+## Marcadores encontrados
+- adapt_agent_prompts.py: 2 marcadores
+- generate_sample_results.py: 6 marcadores
+- install.ps1: 2 marcadores
+- app.py: 12 marcadores
+- checklist.py: 6 marcadores
+- knowledge_base.py: 6 marcadores
+- __init__.py: 3 marcadores
+- fix_encoding_and_build.py: 18 marcadores
+- patch_flutter_orchestrator_final.py: 3 marcadores
+- test_imports.py: 3 marcadores
+- test_smoke.py: 3 marcadores
+- consolidate_build_pipeline.py: 9 marcadores
+
+﻿# 2026-08-18 - Scan proativo: EcoSystemUmGrau
+## Marcadores encontrados
+- adapt_agent_prompts.py: 2 marcadores
+- generate_sample_results.py: 6 marcadores
+- install.ps1: 2 marcadores
+- app.py: 12 marcadores
+- checklist.py: 6 marcadores
+- knowledge_base.py: 6 marcadores
+- __init__.py: 3 marcadores
+- fix_encoding_and_build.py: 18 marcadores
+- patch_flutter_orchestrator_final.py: 3 marcadores
+- test_imports.py: 3 marcadores
+- test_smoke.py: 3 marcadores
+- consolidate_build_pipeline.py: 9 marcadores
+
+﻿# 2026-08-19 - Scan proativo: EcoSystemUmGrau
+## Marcadores encontrados
+- adapt_agent_prompts.py: 2 marcadores
+- generate_sample_results.py: 6 marcadores
+- install.ps1: 2 marcadores
+- app.py: 12 marcadores
+- checklist.py: 6 marcadores
+- knowledge_base.py: 6 marcadores
+- __init__.py: 3 marcadores
+- fix_encoding_and_build.py: 18 marcadores
+- patch_flutter_orchestrator_final.py: 3 marcadores
+- test_imports.py: 3 marcadores
+- test_smoke.py: 3 marcadores
+- consolidate_build_pipeline.py: 9 marcadores
+
+﻿# 2026-08-20 - Scan proativo: EcoSystemUmGrau
 ## Marcadores encontrados
 - adapt_agent_prompts.py: 2 marcadores
 - generate_sample_results.py: 6 marcadores

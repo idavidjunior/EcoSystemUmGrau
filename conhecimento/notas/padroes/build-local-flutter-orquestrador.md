@@ -1,7 +1,7 @@
 ---
 tags: [actions, opencode, padrao, primário, rede, segurança]
 aliases: [Build local Flutter + Orquestrador]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Build local Flutter + Orquestrador

@@ -58,7 +58,7 @@ async def main():
                     os.makedirs(os.path.dirname(KEY_FILE), exist_ok=True)
                     data = {"ip": "192.168.15.6", "model": "50UT8050PSA.BWZJLJZ", "client_key": key}
                     with open(KEY_FILE, "w", encoding="utf-8") as f:
-                        json.dump(data, f, indent=2)
+                        json.dump(data, f, indent=2, ensure_ascii=False)
                     print("PAREADO! client-key salvo em", KEY_FILE)
                     return key
             elif payload.get("pairingType") == "PROMPT":

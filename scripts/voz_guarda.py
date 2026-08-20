@@ -191,7 +191,7 @@ def run_guard():
             return
         except (OSError, ValueError):
             pass
-    PID_FILE.write_text(str(os.getpid()))
+    PID_FILE.write_text(str(os.getpid()), encoding="utf-8")
 
     logging.basicConfig(
         level=logging.INFO,

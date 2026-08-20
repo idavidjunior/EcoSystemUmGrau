@@ -1,7 +1,7 @@
 ---
 tags: [c, duplicado, estouro, free, padrao, size]
 aliases: [C: comportamento indefinido e o modelo de memória]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # C: comportamento indefinido e o modelo de memória

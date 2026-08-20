@@ -1,7 +1,7 @@
 ---
 tags: [antigas, bug, entradas, estourar, lerauditoria, remover]
 aliases: [Executor.results sem limite — memoria crescia indefinidament]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Executor.results sem limite — memoria crescia indefinidamente

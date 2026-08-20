@@ -586,7 +586,7 @@ def build_dense(verbose: bool = False) -> dict:
             print('[semantic] dense: rebuild ja em andamento (lock)')
         return {'ok': False, 'erro': 'rebuild denso ja em andamento'}
     try:
-        open(DENSE_LOCK_FILE, 'w').close()
+        open(DENSE_LOCK_FILE, 'w', encoding="utf-8").close()
     except Exception:
         pass
     try:

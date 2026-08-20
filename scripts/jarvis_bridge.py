@@ -110,6 +110,19 @@ SYS_PATH = str(Path(__file__).parent / "JARVIS_SYSTEM.md")
 PRON_PATH = str(Path(__file__).parent / "pronuncias.json")  # ipa metadata apenas
 
 MAX_HIST = 1000
+
+# Volume do widget (lido de runtime/widget_state.json)
+WIDGET_STATE = ECOSSISTEMA_DIR / "runtime" / "widget_state.json"
+
+def _ler_volume_widget() -> int:
+    """Lê volume (0-100) do widget. Retorna 80 se não disponível."""
+    try:
+        if WIDGET_STATE.exists():
+            d = json.loads(WIDGET_STATE.read_text(encoding="utf-8"))
+            return max(0, min(100, int(d.get("volume", 80))))
+    except Exception:
+        pass
+    return 80
 # Janela de conversa ativa: se a última fala no histórico foi há menos de
 # JANELA_CONVERSA_MIN minutos, NÃO repetir saudação inicial — a conversa
 # continua fluindo (evita o "recomeço" a cada reconexão dentro da mesma sessão).
@@ -1181,6 +1194,10 @@ class Cliente:
         return self._session_id
 
     async def perguntar(self, msg, img_base64=None, img_mime="image/jpeg", tentativa=1):
+        # Comandos Eco globais (@eco, /eco, Eco, Desativar Eco) - funcionam em qualquer lugar
+        if await self._processar_comando_eco(msg):
+            return ""  # Comando processado, não envia para LLM
+
         prompt = self._montar(msg)
         logger.info(f"hist={len(self._hist)//2} prompt={len(prompt)}b tentativa={tentativa}: {msg[:80]}")
 
@@ -1220,6 +1237,34 @@ class Cliente:
         self._hist.append(f"Jarvis: {resp}")
         self._salvar()
         return resp
+
+    async def _processar_comando_eco(self, msg: str) -> bool:
+        """Processa comandos Eco globais (@eco, /eco, Eco, Desativar Eco).
+        Retorna True se foi comando Eco processado (não enviar para LLM)."""
+        txt = msg.strip()
+        low = txt.lower()
+
+        # Ativação: @eco, /eco, Eco (palavra única)
+        if low in ("@eco", "/eco", "eco"):
+            try:
+                from eco_widget import activate as eco_activate
+                res = eco_activate()
+                logger.info(f"Eco ativado via comando global: {res.get('mensagem', 'OK')}")
+            except Exception as e:
+                logger.error(f"Erro ao ativar Eco: {e}")
+            return True
+
+        # Desativação: Desativar Eco (variações)
+        if low in ("desativar eco", "desative eco", "desliga eco", "para eco", "pare eco", "eco off", "eco desligar"):
+            try:
+                from eco_widget import deactivate as eco_deactivate
+                res = eco_deactivate()
+                logger.info(f"Eco desativado via comando global: {res.get('mensagem', 'OK')}")
+            except Exception as e:
+                logger.error(f"Erro ao desativar Eco: {e}")
+            return True
+
+        return False
 
     async def saudar(self, briefing, status, contexto=None):
         """Gera saudação criativa via LLM em sessão dedicada, sem gravar no histórico.
@@ -1757,7 +1802,7 @@ async def _retomar_ultima_tarefa(ws, c):
     aviso = f"Conexão restabelecida. Retomando automaticamente: {msg[:50]}{'...' if len(msg) > 50 else ''}"
     try:
         a = await gerar_audio(aviso)
-        await ws.send(json.dumps({"audio": a, "text": aviso, "retomada": True}))
+        await ws.send(json.dumps({"audio": a, "text": aviso, "retomada": True, "volume": _ler_volume_widget()}))
     except Exception as e:
         logger.warning(f"aviso retomada: {e}")
         await ws.send(json.dumps({"text": aviso, "retomada": True}))
@@ -1770,7 +1815,7 @@ async def _retomar_ultima_tarefa(ws, c):
             try:
                 a = await gerar_audio(r_tela)
                 if a:
-                    await ws.send(json.dumps({"text": r_tela, "audio": a, "retomada": True}))
+                    await ws.send(json.dumps({"text": r_tela, "audio": a, "retomada": True, "volume": _ler_volume_widget()}))
                     logger.info(f"retomada resp: {len(r_tela)}c / audio {len(a)}c")
                 else:
                     await ws.send(json.dumps({"text": r_tela, "retomada": True}))
@@ -1934,7 +1979,7 @@ async def lidar(ws):
                 logger.warning(f"tts startup: {e}")
                 a = ""
             try:
-                await ws.send(json.dumps({"audio": a, "text": saudacao_tela}))
+                await ws.send(json.dumps({"audio": a, "text": saudacao_tela, "volume": _ler_volume_widget()}))
             except websockets.exceptions.ConnectionClosed:
                 logger.info("cliente desconectou durante a saudacao")
                 return
@@ -1989,7 +2034,7 @@ async def lidar(ws):
                 # Envia via WebSocket (texto + áudio)
                 try:
                     a = await gerar_audio(frase)
-                    await ws.send(json.dumps({"audio": a, "text": frase, "continuidade": True}))
+                    await ws.send(json.dumps({"audio": a, "text": frase, "continuidade": True, "volume": _ler_volume_widget()}))
                 except Exception:
                     await ws.send(json.dumps({"text": frase, "continuidade": True}))
                 # Atualiza estado
@@ -2100,7 +2145,7 @@ async def lidar(ws):
                 r = "Interrompido. Pode falar quando quiser."
                 try:
                     a = await gerar_audio(r)
-                    await ws.send(json.dumps({"text": r, "audio": a, "corrigido": m}) if a else {"text": r, "corrigido": m})
+                    await ws.send(json.dumps({"text": r, "audio": a, "corrigido": m, "volume": _ler_volume_widget()}) if a else {"text": r, "corrigido": m})
                 except:
                     await ws.send(json.dumps({"text": r, "corrigido": m}))
                 continue
@@ -2146,7 +2191,7 @@ async def lidar(ws):
             r_tela = normalizar_hora_display(r)
             try:
                 await _enviar_progresso(ws, "Criando sua resposta em áudio")
-                await ws.send(json.dumps({"text": r_tela, "corrigido": m, "audio_streaming": True}))
+                await ws.send(json.dumps({"text": r_tela, "corrigido": m, "audio_streaming": True, "volume": _ler_volume_widget()}))
                 logger.info(f"resp inicio: {len(r_tela)}c (streaming)")
                 bytes_enviados = 0
                 async for chunk_b64 in gerar_audio_stream(r_tela):

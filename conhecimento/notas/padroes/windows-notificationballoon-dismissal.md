@@ -1,7 +1,7 @@
 ---
 tags: [consomem, elementos, foco, padrao, teclado, treinamentonavegacao]
 aliases: [Windows notification/balloon dismissal]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Windows notification/balloon dismissal

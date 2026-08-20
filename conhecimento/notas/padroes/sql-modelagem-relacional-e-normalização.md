@@ -1,7 +1,7 @@
 ---
 tags: [automaticamente, cria, padrao, pelo, sql, time]
 aliases: [SQL: modelagem relacional e normalização]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # SQL: modelagem relacional e normalização

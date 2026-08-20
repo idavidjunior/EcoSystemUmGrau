@@ -1,95 +1,95 @@
-﻿# GramÃ¡tica do PortuguÃªs Brasileiro â€” Guia prÃ¡tico do dia a dia
+﻿# Gramática do Português Brasileiro — Guia prático do dia a dia
 
 - **Data:** 01/08/2026
-- **SessÃ£o:** Aprendizado permanente â€” gramÃ¡tica PT-BR para uso contÃ­nuo em comunicaÃ§Ãµes
+- **Sessão:** Aprendizado permanente — gramática PT-BR para uso contínuo em comunicações
 
-## PropÃ³sito
-Este guia Ã© o referencial de gramÃ¡tica do PortuguÃªs Brasileiro que todo agente deve
-usar no dia a dia: TTS, transcriÃ§Ãµes, textos, documentaÃ§Ã£o e conversas. Focado no
-uso prÃ¡tico, sem jargÃ£o acadÃªmico desnecessÃ¡rio.
+## Propósito
+Este guia é o referencial de gramática do Português Brasileiro que todo agente deve
+usar no dia a dia: TTS, transcrições, textos, documentação e conversas. Focado no
+uso prático, sem jargão acadêmico desnecessário.
 
-## Ortografia e acentuaÃ§Ã£o
-- AcentuaÃ§Ã£o segue o novo acordo ortogrÃ¡fico (em vigor no Brasil desde 2009):
-  - Diferenciador: "pÃªlo" nÃ£o tem mais acento (vira "pelo"); "pÃ´de" (pretÃ©rito) tem,
-    "pode" (presente) nÃ£o.
-  - "tÃªm" (plural) tem circunflexo; "tem" (singular) nÃ£o.
-  - "vÃªm" (plural) tem; "vem" (singular) nÃ£o.
-- Trema eliminado: "linguiÃ§a", "frequÃªncia", "sequÃªncia" (nÃ£o "qÃ¼i").
-- HÃ­fen: prefixos "auto", "infra", "anti", "semi", "micro", "vice" ligam sem hÃ­fen,
-  exceto quando o segundo termo comeÃ§a com "h" ou mesma vogal: "autoavaliaÃ§Ã£o",
-  "infraestrutura", "anti-inflamatÃ³rio", "micro-ondas".
-- Acento agudo em "eu/Ã©/Ãª": "vocÃª", "alguÃ©m", "tambÃ©m", "parabÃ©ns".
+## Ortografia e acentuação
+- Acentuação segue o novo acordo ortográfico (em vigor no Brasil desde 2009):
+  - Diferenciador: "pêlo" não tem mais acento (vira "pelo"); "pôde" (pretérito) tem,
+    "pode" (presente) não.
+  - "têm" (plural) tem circunflexo; "tem" (singular) não.
+  - "vêm" (plural) tem; "vem" (singular) não.
+- Trema eliminado: "linguiça", "frequência", "sequência" (não "qüi").
+- Hífen: prefixos "auto", "infra", "anti", "semi", "micro", "vice" ligam sem hífen,
+  exceto quando o segundo termo começa com "h" ou mesma vogal: "autoavaliação",
+  "infraestrutura", "anti-inflamatório", "micro-ondas".
+- Acento agudo em "eu/é/ê": "você", "alguém", "também", "parabéns".
 
-## ConcordÃ¢ncia (o erro mais comum)
-- Sujeito simples: verbo concorda com o nÃºcleo. "A maioria dos arquivos **estÃ¡**
-  pronta" (verbo concorda com "maioria", mas "estÃ£o" Ã© aceito quando o foco Ã© o plural).
+## Concordância (o erro mais comum)
+- Sujeito simples: verbo concorda com o núcleo. "A maioria dos arquivos **está**
+  pronta" (verbo concorda com "maioria", mas "estão" é aceito quando o foco é o plural).
 - Coletivos: "A equipe **decidiu**" (singular).
-- "Haver" impessoal: "HÃ¡ vÃ¡rios arquivos" (nunca "Haviam vÃ¡rios"). "Devem **haver**
+- "Haver" impessoal: "Há vários arquivos" (nunca "Haviam vários"). "Devem **haver**
   arquivos" â†’ correto: "Deve **haver** arquivos".
 - "Faz" com tempo: "Faz dois anos" (singular, nunca "fazem").
-- Pronome antes de verbo no infinitivo: "vai **se** preparar" e nÃ£o "vai se preparar"
-  â€” na verdade ambas corretas, preferir "vai se preparar".
+- Pronome antes de verbo no infinitivo: "vai **se** preparar" e não "vai se preparar"
+  — na verdade ambas corretas, preferir "vai se preparar".
 
-## RegÃªncia e crase
-- Crase (a + a): antes de palavra feminina que pede "a". "Vou **Ã ** reuniÃ£o".
-- Sem crase: antes de verbo ("vou a correr"), antes de masculino ("vou a pÃ©"),
-  antes de pronomes ("a ela", "a vocÃª").
-- "Chegar a" / "chegar em" â€” no Brasil coloquial "chegar em" Ã© comum, mas formal Ã©
-  "chegamos **a** SÃ£o Paulo".
-- Verbos com preposiÃ§Ã£o: "assistir **a**", "obedecer **a**", "responder **a**",
+## Regência e crase
+- Crase (a + a): antes de palavra feminina que pede "a". "Vou **à** reunião".
+- Sem crase: antes de verbo ("vou a correr"), antes de masculino ("vou a pé"),
+  antes de pronomes ("a ela", "a você").
+- "Chegar a" / "chegar em" — no Brasil coloquial "chegar em" é comum, mas formal é
+  "chegamos **a** São Paulo".
+- Verbos com preposição: "assistir **a**", "obedecer **a**", "responder **a**",
   "agradar **a**", "visar **a**".
 
 ## Uso de "mas" e "mais"
-- **Mas** = porÃ©m (adversativa). "Quero ir, **mas** nÃ£o posso."
+- **Mas** = porém (adversativa). "Quero ir, **mas** não posso."
 - **Mais** = quantidade. "Preciso de **mais** tempo."
 
-## Uso de "porquÃªs"
-- **Porque** (junto, sem acento) = causa. "NÃ£o fui **porque** choveu."
-- **Por que** (separado) = pergunta ou "pelo qual". "**Por que** vocÃª fez isso?"
-- **PorquÃª** (junto, com acento) = substantivo. "NÃ£o sei o **porquÃª**."
-- **Por quÃª** (separado, com acento) = fim de frase. "VocÃª nÃ£o foi **por quÃª**?"
+## Uso de "porquês"
+- **Porque** (junto, sem acento) = causa. "Não fui **porque** choveu."
+- **Por que** (separado) = pergunta ou "pelo qual". "**Por que** você fez isso?"
+- **Porquê** (junto, com acento) = substantivo. "Não sei o **porquê**."
+- **Por quê** (separado, com acento) = fim de frase. "Você não foi **por quê**?"
 
 ## Pronomes pessoais
-- **Eu / mim**: preposiÃ§Ã£o + "mim" (nunca "para mim fazer" â€” correto: "para eu
-  fazer"). "HÃ¡ trabalho **para mim**." / "HÃ¡ trabalho **para eu fazer**."
-- **Te / lhe**: "te" Ã© objeto direto/indireto informal; "lhe" Ã© indireto formal.
+- **Eu / mim**: preposição + "mim" (nunca "para mim fazer" — correto: "para eu
+  fazer"). "Há trabalho **para mim**." / "Há trabalho **para eu fazer**."
+- **Te / lhe**: "te" é objeto direto/indireto informal; "lhe" é indireto formal.
   "Eu te vi" / "Eu lhe disse".
-- "Entre eu e vocÃª" â†’ correto: "entre **mim** e vocÃª".
+- "Entre eu e você" â†’ correto: "entre **mim** e você".
 
 ## Voz e verbos
 - Preferir voz ativa: "O sistema processou" em vez de "Foi processado pelo sistema".
-- PretÃ©rito perfeito: "eu fiz, ele foi, nÃ³s viemos, eles trouxeram".
-- PartÃ­cula "se" para passiva: "Vendem-se casas" (concordÃ¢ncia: plural).
-- "Ter" vs "haver" como existencial: "Tem muitos arquivos" Ã© coloquial;
-  formal: "HÃ¡ muitos arquivos".
+- Pretérito perfeito: "eu fiz, ele foi, nós viemos, eles trouxeram".
+- Partícula "se" para passiva: "Vendem-se casas" (concordância: plural).
+- "Ter" vs "haver" como existencial: "Tem muitos arquivos" é coloquial;
+  formal: "Há muitos arquivos".
 
-## PontuaÃ§Ã£o (essencial para TTS e transcriÃ§Ã£o)
-- Pergunta SEMPRE com "?" no final. "Que horas sÃ£o?"
-- ExclamaÃ§Ã£o com "!" apenas quando for realmente exclamativa.
-- VÃ­rgula separa itens, apostos, vocativos, oraÃ§Ãµes â€” nÃ£o separa sujeito e verbo.
+## Pontuação (essencial para TTS e transcrição)
+- Pergunta SEMPRE com "?" no final. "Que horas são?"
+- Exclamação com "!" apenas quando for realmente exclamativa.
+- Vírgula separa itens, apostos, vocativos, orações — não separa sujeito e verbo.
   Errado: "O sistema, processou". Certo: "O sistema processou".
-- Dois-pontos introduzem enumeraÃ§Ã£o ou explicaÃ§Ã£o; travessÃ£o marca fala/destaque.
+- Dois-pontos introduzem enumeração ou explicação; travessão marca fala/destaque.
 - Ponto final fecha frases declarativas. Nunca esquecer.
 
-## Linguagem natural (padrÃ£o Jarvis)
-- Falar como humano, sem rebuscar: "Bom dia, senhor. SÃ¡bado de cÃ©u limpo e 23
-  graus lÃ¡ fora." em vez de "Verificou-se que a temperatura Ã© de 23 graus".
-- Evitar "nÃ£o" dobrado ("nÃ£o sei nÃ£o") em texto formal; em fala coloquial Ã© aceitÃ¡vel.
-- ContraÃ§Ãµes naturais na fala: "pra", "tÃ´", "cÃª" â€” mas sÃ³ quando a persona pedir
+## Linguagem natural (padrão Jarvis)
+- Falar como humano, sem rebuscar: "Bom dia, senhor. Sábado de céu limpo e 23
+  graus lá fora." em vez de "Verificou-se que a temperatura é de 23 graus".
+- Evitar "não" dobrado ("não sei não") em texto formal; em fala coloquial é aceitável.
+- Contrações naturais na fala: "pra", "tô", "cê" — mas só quando a persona pedir
   coloquialidade; em documentos usar forma completa.
 
-## Erros a evitar (checklist diÃ¡rio)
+## Erros a evitar (checklist diário)
 1. "A gente vamos" â†’ certo: "a gente **vai**".
 2. "Se eu ver" â†’ certo: "se eu **vir**".
-3. "Se ele pÃ´r" â†’ certo: "se ele **puser**".
-4. "Houveram" â†’ certo: "houve" / "houveram" nÃ£o existe para existencial.
-5. "Menas" nÃ£o existe â†’ "menos".
-6. "A nÃ­vel de" â†’ certo: "em termos de" ou "em nÃ­vel de".
-7. "A cerca de" (tempo) vs "acerca de" (sobre) vs "hÃ¡ cerca de" (tempo decorrido).
+3. "Se ele pôr" â†’ certo: "se ele **puser**".
+4. "Houveram" â†’ certo: "houve" / "houveram" não existe para existencial.
+5. "Menas" não existe â†’ "menos".
+6. "A nível de" â†’ certo: "em termos de" ou "em nível de".
+7. "A cerca de" (tempo) vs "acerca de" (sobre) vs "há cerca de" (tempo decorrido).
 8. "Implicar em" â†’ certo: "implicar **algo**" ("a medida implica custo").
 9. "Preferir do que" â†’ certo: "preferir **X a Y**".
-10. "AtrÃ¡s atrÃ¡s" â†’ pleonasmo: "para trÃ¡s".
+10. "Atrás atrás" â†’ pleonasmo: "para trás".
 
-## ReferÃªncia
-- Base normativa: Novo Acordo OrtogrÃ¡fico (2009), PortuguÃªs do Brasil.
-- Foco: clareza, naturalidade e correÃ§Ã£o em TTS, STT, documentaÃ§Ã£o e conversaÃ§Ã£o.
+## Referência
+- Base normativa: Novo Acordo Ortográfico (2009), Português do Brasil.
+- Foco: clareza, naturalidade e correção em TTS, STT, documentação e conversação.

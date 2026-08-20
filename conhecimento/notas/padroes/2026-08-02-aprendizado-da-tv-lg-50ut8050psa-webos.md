@@ -1,7 +1,7 @@
 ---
 tags: [nativo, opencode, padrao, ssap, voz, wss]
 aliases: [# 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS)]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # # 2026-08-02 - Aprendizado da TV LG 50UT8050PSA (webOS)
@@ -16,8 +16,8 @@ date: 2026-08-17
 
 ## Contexto
 
-MissÃ£o de aprendizado do controle nativo da TV LG via SSAP (wss://192.168.15.6:3001),
-para habilitaÃ§Ã£o do Jarvis como controle remoto de voz.
+Missão de aprendizado do controle nativo da TV LG via SSAP (wss://192.168.15.6:3001),
+para habilitação do Jarvis como controle remoto de voz.
 
 ## O q
 ## Conexoes

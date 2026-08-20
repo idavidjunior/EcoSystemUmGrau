@@ -1,7 +1,7 @@
 ---
 tags: [aceito, decisao, fallback, mp3player, musicbrainz, natural]
 aliases: [Metadata busca em multi-fontes: AcoustID -> iTunes BR -> Mus]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Metadata busca em multi-fontes: AcoustID -> iTunes BR -> MusicBrainz -> iTunes US fallback.

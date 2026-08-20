@@ -1,7 +1,7 @@
 ---
-tags: [algorithm, baixo, cognitivo, errada, informacao, lexical]
+tags: [algorithm, baixo, cognitivo, errada, informacao, retornar]
 aliases: [Modelo de scoring para busca multi-resultado]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Modelo de scoring para busca multi-resultado

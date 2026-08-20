@@ -17,6 +17,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 DATA_FILES = {
     'conhecimento/memoria/memories.json',
     'conhecimento/memoria/index.json',
+    'conhecimento/memoria/solution_index.json',
     'conhecimento/memoria/tfidf_acesso.json',
     'conhecimento/memoria/tfidf_meta.json',
     'ler-runtime/knowledge/knowledge_graph.json',

@@ -1,7 +1,7 @@
 ---
-tags: [acumulou, externa, manutencao, opencode, padrao, real]
+tags: [externa, manutencao, opencode, padrao, real, referência]
 aliases: [triagem scripts legado orgaos movidos]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # triagem scripts legado orgaos movidos

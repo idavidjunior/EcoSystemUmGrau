@@ -1,7 +1,7 @@
 ---
 tags: [block, bug, catch, cleanup, ecosistema-opencode, safe]
 aliases: [VoxAudioPlayer temp file leak on exception]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # VoxAudioPlayer temp file leak on exception
@@ -15,9 +15,9 @@ tempFile variable was scoped inside try block; if exception before MediaPlayer s
 Promoted tempFile to function scope with null-safe cleanup in catch block; VoxAudioPlayer.kt now uses var tempFile: File? = null and deletes in all error paths
 ## Conexoes
 
-- [[2026-07-27-fallback-automático-de-modelo-llm-com-bun-razrooo]]
-- [[2026-07-27-sistema-automático-de-captura-de-conhecimento-do-]]
 - [[bug-hub-bugs]]
 - [[cluster-hub-ecossistema]]
+- [[ensureserve-spawns-opencode-serve-without-passing-env-contex]]
+- [[geraraudio-blocks-until-full-tts-generation-no-streaming]]
 - [[http-401-unauthorized-on-session-and-globalsessions]]
 - [[pronuncia-do-nome-do-usuario-david-deivid]]

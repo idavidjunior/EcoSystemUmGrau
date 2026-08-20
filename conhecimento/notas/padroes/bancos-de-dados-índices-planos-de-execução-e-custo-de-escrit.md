@@ -1,7 +1,7 @@
 ---
 tags: [bancos-dados, falta, padrao, pré, seleção, sort]
 aliases: [Bancos de dados: índices, planos de execução e custo de escr]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Bancos de dados: índices, planos de execução e custo de escrita

@@ -16,23 +16,46 @@ sem pedido explícito do usuário.
 Execute na ordem a partir da raiz do EcoSystemUmGrau
 (`C:\Users\David Jr\Documents\Default Project\EcoSystemUmGrau`):
 
-1. **Verificar integridade**:
+1. **Verificar integridade** (silencioso):
    `python scripts/runtime_boot.py --check`
-2. **Se INTEGRIDADE: OK** → confirme ao usuário:
-   "EcoSystemUmGrau operante. Todas as regras ativas."
-   E informe o estado restaurado (projeto ativo, memória carregada).
-   **Abra o widget de controle do Jarvis** (se não estiver aberto):
+2. **Abrir widget** (se não estiver aberto):
    `start "" pythonw scripts/widget_controle_jarvis.py`
-3. **Se falhou** → ative imediatamente tudo e diagnostique:
-   - Execute `python scripts/runtime_boot.py` em modo emergência
-   - Execute `python scripts/preflight_check.py` para diagnosticar
-   - Restaure o estado de `runtime/state.json`
-   - Notifique o usuário sobre o problema detectado e a correção aplicada
-4. **Garantir que toda LLM opera estritamente dentro do EcoSystemUmGrau** —
-   Constituição, AGENTS.md e todas as cláusulas pétreas ativas.
-5. **Verificar Model Monitor**: `python scripts/model_monitor.py status`
-   - Se ativo, reporte o status dos modelos.
-   - Se inativo, informe que o monitor está disponível via `/ecomodelo on`.
+
+# COMO RESPONDER
+
+## Ativação padrão (quando tudo OK)
+
+Responda com uma saudação ESPONTÂNEA, CURTA (máximo 3-4 linhas), com tom natural
+e leve contexto do ecossistema. NUNCA use o mesmo texto duas vezes seguidas.
+Varie sempre. Exemplos (NÃO copie, invente variações novas a cada vez):
+
+- "EcoSystemUmGrau no ar. Tudo rodando suave, memória carregada e pronto pra trabalhar."
+- "EcoSystemUmGrau operando. Projeto ativo, contexto restaurado, estamos online."
+- "Sistema no ar. EcoSystemUmGrau carregou tudo que precisava, estamos prontos."
+- "EcoSystemUmGrau ligado e funcional. Estado restaurado, regras ativas, bora."
+
+Inclua um toque de contexto real: mention brevemente o projeto ativo, se a memória
+foi carregada, ou se algo relevante está pendente. Mas SEMPRE curto.
+
+## Se houver problema detectado
+
+Reporte o problema de forma breve (3-4 linhas no máximo):
+- O que deu errado
+- O que foi corrigido automaticamente
+- Se precisa de ação do usuário
+
+Exemplo: "EcoSystemUmGrau no ar, mas o modelo X caiu. Troquei pro fallback Y automaticamente.
+Sem impacto no trabalho."
+
+## Se o usuário pedir "relatório" ou digitar /eco relatorio
+
+Aí sim faça o relatório COMPLETO e detalhado:
+- Status de integridade (todos os pontos)
+- Estado restaurado (projeto, memória, pendências)
+- Model Monitor status
+- Qualquer problema encontrado e correção aplicada
+
+Use formatação simples (linhas, colchetes) mas seja completo.
 
 # PALAVRAS-GATILHO
 
@@ -45,3 +68,5 @@ Execute na ordem a partir da raiz do EcoSystemUmGrau
 - Não responda em inglês.
 - Não invente falhas de integridade nem reporte sucesso sem executar o check.
 - Não desligue o runtime, o desktop do OpenCode ou processos `OpenCode.exe`.
+- Nunca dê relatório extenso sem pedido. O padrão é saudação curta.
+- Nunca repita a mesma saudação. Varie o tom e o conteúdo.

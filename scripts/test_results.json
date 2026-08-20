@@ -1,0 +1,90 @@
+[
+  {
+    "name": "Bridge HTTP (porta 8766)",
+    "passed": false,
+    "detail": "<urlopen error [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente>",
+    "duration": 4.143214464187622,
+    "category": "bridge",
+    "timestamp": "2026-08-17T22:02:27.041189"
+  },
+  {
+    "name": "Bridge WebSocket (porta 8765)",
+    "passed": true,
+    "detail": "Memorias=332",
+    "duration": 11.601392984390259,
+    "category": "bridge",
+    "timestamp": "2026-08-17T22:02:38.642582"
+  },
+  {
+    "name": "Bridge dados completos",
+    "passed": true,
+    "detail": "Campos: memory, vigilante, radar, voice, agents, mcp, logs",
+    "duration": 7.845348358154297,
+    "category": "bridge",
+    "timestamp": "2026-08-17T22:02:46.487931"
+  },
+  {
+    "name": "memory_engine.py",
+    "passed": true,
+    "detail": "Memories: 332 total, 332 active\n  erro: 57\n  decisao: 110\n  padrao: 124\n  episodio: 24\n  Carrinho pe",
+    "duration": 0.21633362770080566,
+    "category": "scripts",
+    "timestamp": "2026-08-17T22:02:46.705266"
+  },
+  {
+    "name": "preflight_check.py",
+    "passed": true,
+    "detail": "Exit=0",
+    "duration": 12.767459869384766,
+    "category": "scripts",
+    "timestamp": "2026-08-17T22:02:59.472726"
+  },
+  {
+    "name": "sync_rules.py audit",
+    "passed": false,
+    "detail": "OK",
+    "duration": 2.141263484954834,
+    "category": "scripts",
+    "timestamp": "2026-08-17T22:03:01.613989"
+  },
+  {
+    "name": "Dashboard HTML features",
+    "passed": true,
+    "detail": "Features: titlebar, particles, glassmorphism, cmd-palette, sidebar, ws",
+    "duration": 0.14383339881896973,
+    "category": "dashboard",
+    "timestamp": "2026-08-17T22:03:01.757822"
+  },
+  {
+    "name": "Dashboard layout responsivo",
+    "passed": true,
+    "detail": "Grid + Flexbox",
+    "duration": 0.0009968280792236328,
+    "category": "dashboard",
+    "timestamp": "2026-08-17T22:03:01.758819"
+  },
+  {
+    "name": "Constituicao existe",
+    "passed": true,
+    "detail": "Tamanho=58483",
+    "duration": 0.001004934310913086,
+    "category": "integrity",
+    "timestamp": "2026-08-17T22:03:01.759824"
+  },
+  {
+    "name": "AGENTS.md existe",
+    "passed": true,
+    "detail": "Tamanho=60615",
+    "duration": 0.0,
+    "category": "integrity",
+    "timestamp": "2026-08-17T22:03:01.759824"
+  },
+  {
+    "name": "memories.json valido",
+    "passed": true,
+    "detail": "Entries=332",
+    "duration": 0.01301717758178711,
+    "category": "integrity",
+    "timestamp": "2026-08-17T22:03:01.772841"
+  }
+]

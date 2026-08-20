@@ -335,6 +335,32 @@
     setLabelVisibility(localStorage.getItem('labelsOcultos') === 'false');
     if (typeof _aplicarVelocidade === 'function') _aplicarVelocidade(parseFloat(speed.value));
     if (typeof _aplicarOrbita === 'function') _aplicarOrbita(parseFloat(orbit.value));
+
+    // === SYNC DE TEMA COM JARVIS ===
+    // Mapeia temas do Jarvis para temas do Cerebro Vivo
+    var themeMap = { dark: 'padrao', neon: 'neon', calm: 'calm' };
+    var _lastSyncedTheme = null;
+    function syncThemeFromJarvis() {
+      try {
+        if (!window.pywebview || !window.pywebview.api || !window.pywebview.api.ler_tema_sincronizado) return;
+        window.pywebview.api.ler_tema_sincronizado().then(function(jarvisTheme) {
+          if (!jarvisTheme || jarvisTheme === _lastSyncedTheme) return;
+          _lastSyncedTheme = jarvisTheme;
+          var mapped = themeMap[jarvisTheme] || 'padrao';
+          // Só aplica se o usuário não mudou manualmente há menos de 5s
+          if (!window.__mkManualThemeTs || (Date.now() - window.__mkManualThemeTs) > 5000) {
+            topTheme.value = mapped;
+            applyTheme(mapped);
+          }
+        });
+      } catch (e) {}
+    }
+    // Poll a cada 3s (leve,pywebview bridge é rápido)
+    setInterval(syncThemeFromJarvis, 3000);
+    // Marca quando usuário muda manualmente
+    topTheme.addEventListener('change', function(){
+      window.__mkManualThemeTs = Date.now();
+    });
   }
 
   // DOM already loaded when this script runs at end of body

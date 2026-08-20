@@ -1,22 +1,22 @@
-﻿# 2026-08-01: ClÃ¡usula PÃ©trea â€” ComunicaÃ§Ã£o contÃ­nua em Ã¡udio
+﻿# 2026-08-01: Cláusula Pétrea — Comunicação contínua em áudio
 
 **Categoria:** decisao
-**Contexto:** UsuÃ¡rio apontou que o Jarvis executou tarefas (verificaÃ§Ã£o de sync, commits, pronÃºncia) sem narrar em Ã¡udio o que estava fazendo, desrespeitando a regra de comunicaÃ§Ã£o por voz. A regra existia no contexto da sessÃ£o, mas nÃ£o estava registrada em lugar nenhum â€” por isso foi esquecida.
+**Contexto:** Usuário apontou que o Jarvis executou tarefas (verificação de sync, commits, pronúncia) sem narrar em áudio o que estava fazendo, desrespeitando a regra de comunicação por voz. A regra existia no contexto da sessão, mas não estava registrada em lugar nenhum — por isso foi esquecida.
 
-## DecisÃ£o
-**Todo passo que o Jarvis executa DEVE ser narrado em Ã¡udio**, sempre, sem exceÃ§Ã£o, em qualquer tarefa.
+## Decisão
+**Todo passo que o Jarvis executa DEVE ser narrado em áudio**, sempre, sem exceção, em qualquer tarefa.
 
 ## Regras permanentes (registradas em scripts/JARVIS_SYSTEM.md)
-1. Antes de agir, fale o que vai fazer ("Vou verificar o git...", "Vou commitar...", "Vou testar a pronÃºncia...").
-2. Durante a execuÃ§Ã£o, acompanhe em voz ("Encontrei...", "Estou ajustando...", "Agora vou sincronizar...").
-3. Ao terminar, resuma em Ã¡udio o que foi feito e o resultado ("Pronto, tudo sincronizado.").
+1. Antes de agir, fale o que vai fazer ("Vou verificar o git...", "Vou commitar...", "Vou testar a pronúncia...").
+2. Durante a execução, acompanhe em voz ("Encontrei...", "Estou ajustando...", "Agora vou sincronizar...").
+3. Ao terminar, resuma em áudio o que foi feito e o resultado ("Pronto, tudo sincronizado.").
 4. Usar o TTS da bridge (`gerar_audio` / `vox_audio.py falar`) para falar.
-5. Vale para TODA sessÃ£o e TODA tarefa â€” Ã© clÃ¡usula pÃ©trea, nÃ£o pode ser esquecida.
+5. Vale para TODA sessão e TODA tarefa — é cláusula pétrea, não pode ser esquecida.
 
-## ImplementaÃ§Ã£o
-- `scripts/JARVIS_SYSTEM.md`: seÃ§Ã£o "ClÃ¡usula PÃ©trea â€” ComunicaÃ§Ã£o em Ãudio" adicionada logo apÃ³s a Identidade.
-- O `JARVIS_SYSTEM.md` Ã© injetado pela bridge no prompt de todo agente â€” a regra vale para qualquer sessÃ£o.
+## Implementação
+- `scripts/JARVIS_SYSTEM.md`: seção "Cláusula Pétrea — Comunicação em Ãudio" adicionada logo após a Identidade.
+- O `JARVIS_SYSTEM.md` é injetado pela bridge no prompt de todo agente — a regra vale para qualquer sessão.
 
-## ValidaÃ§Ã£o
-- Regra adicionada ao system prompt (lido a cada conexÃ£o) âœ“
-- Ãudio de confirmaÃ§Ã£o gerado e tocado âœ“
+## Validação
+- Regra adicionada ao system prompt (lido a cada conexão) âœ“
+- Ãudio de confirmação gerado e tocado âœ“

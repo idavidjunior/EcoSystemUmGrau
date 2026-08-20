@@ -1,7 +1,7 @@
 ---
 tags: [corretamente, meio, opencodeopencode, padrao, pronunciar, texto]
 aliases: [2026-08-16: Detecção automática de inglês no TTS]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # 2026-08-16: Detecção automática de inglês no TTS

@@ -31,6 +31,12 @@ SCRIPTS = os.path.join(BASE, 'scripts')
 sys.path.insert(0, SCRIPTS)
 
 try:
+    from knowledge_graph import kg, NodeType, EdgeType
+    KG_AVAILABLE = True
+except ImportError:
+    KG_AVAILABLE = False
+
+try:
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 except Exception:
     pass
@@ -201,6 +207,39 @@ def _carregar_docs_projeto(projeto_ativo, limite=5):
     return out
 
 
+def _carregar_knowledge_graph(assunto, tags, limite, projeto_ativo=''):
+    """Carrega nodes e edges relevantes do Knowledge Graph."""
+    if not KG_AVAILABLE:
+        return {'nodes': [], 'edges': [], 'query_used': ''}
+    try:
+        # Buscar no KG usando busca semântica
+        result = kg.search(assunto, limit=limite)
+        nodes_out = []
+        for n in result.nodes:
+            nodes_out.append({
+                'id': n.id,
+                'tipo': n.type.value if hasattr(n.type, 'value') else n.type,
+                'nome': n.name,
+                'tags': n.tags,
+                'resumo': n.properties.get('summary', '')[:160],
+            })
+        edges_out = []
+        for e in result.edges:
+            edges_out.append({
+                'origem': e.source_id,
+                'destino': e.target_id,
+                'tipo': e.type.value if hasattr(e.type, 'value') else e.type,
+                'peso': e.weight,
+            })
+        return {
+            'nodes': nodes_out,
+            'edges': edges_out,
+            'query_used': assunto,
+        }
+    except Exception:
+        return {'nodes': [], 'edges': [], 'query_used': assunto}
+
+
 def _carregar_pendencias_runtime():
     try:
         from runtime_state import load_state
@@ -234,6 +273,7 @@ def carregar_contexto(assunto, projeto='', limite=5, incluir_pendencias=True,
         'conhecimento': _carregar_conhecimento(assunto, tags, limite),
         'decisoes': _carregar_decisoes(assunto, tags, max(2, limite // 2)),
         'docs_projeto': _carregar_docs_projeto(projeto_ativo),
+        'knowledge_graph': _carregar_knowledge_graph(assunto, tags, limite, projeto_ativo),
         'agentes_sugeridos': _sugerir_agentes(criticidade),
         'pendencias': _carregar_pendencias_runtime() if incluir_pendencias else [],
     }
@@ -283,6 +323,18 @@ def render(contexto):
         lines.append('Documentos do projeto:')
         for d in contexto['docs_projeto']:
             lines.append(f"  - {d['arquivo']}: {d['resumo'][:90]}")
+    if contexto.get('knowledge_graph', {}).get('nodes'):
+        lines.append('')
+        lines.append('Knowledge Graph relevante:')
+        for n in contexto['knowledge_graph']['nodes'][:5]:
+            lines.append(f"  - [{n['tipo']}] {n['nome']} (tags: {', '.join(n['tags'][:3])})")
+            if n['resumo']:
+                lines.append(f"    {n['resumo']}")
+        if contexto['knowledge_graph']['edges']:
+            lines.append('')
+            lines.append('  Relações:')
+            for e in contexto['knowledge_graph']['edges'][:5]:
+                lines.append(f"    {e['origem']} -[{e['tipo']}]-> {e['destino']}")
     if contexto['agentes_sugeridos']:
         lines.append('')
         lines.append(f"Agentes sugeridos ({contexto['criticidade']}): "

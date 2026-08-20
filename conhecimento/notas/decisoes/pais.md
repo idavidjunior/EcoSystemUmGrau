@@ -1,7 +1,7 @@
 ---
 tags: [criterios, decisao, estritamente, evidencias, opencode, separados]
 aliases: [pais]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # pais

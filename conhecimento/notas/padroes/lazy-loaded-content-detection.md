@@ -1,7 +1,7 @@
 ---
 tags: [conteudo, oculto, onipresentes, padrao, sao, treinamentonavegacao]
 aliases: [Lazy-loaded content detection]
-date: 2026-08-17
+date: 2026-08-20
 ---
 
 # Lazy-loaded content detection
