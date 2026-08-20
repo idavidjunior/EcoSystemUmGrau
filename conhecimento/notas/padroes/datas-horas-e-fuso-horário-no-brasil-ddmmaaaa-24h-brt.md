@@ -1,5 +1,5 @@
 ---
-tags: [6h30, localizacao, obsoleto, padrao, tarde, usar]
+tags: [brst, localizacao, obsoleto, padrao, tarde, usar]
 aliases: [Datas, horas e fuso horário no Brasil (dd/mm/aaaa, 24h, BRT)]
 date: 2026-08-20
 ---

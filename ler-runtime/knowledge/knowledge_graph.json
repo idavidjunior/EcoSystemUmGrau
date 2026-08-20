@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-20T17:20:58.751330",
+  "last_updated": "2026-08-20T19:17:02.967097",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -3220,8 +3220,10 @@
       "source": "opencode",
       "title": "vazamento caracteres tts edge tts escapa ssml",
       "domain": "general",
-      "body": "---\ntipo: erro\ntags: [tts, edge-tts, ssml, ponte-de-voz, jarvis-bridge]\ndata: 2026-08-02\ncontexto: Usuário reportou que, no início das conversas, antes de falar \"David\", o Jarvis pronunciava caracteres que não deveriam. Investigação da saudação revelou causa na camada de TTS.\ndecisao: edge-tts >= 7.x removeu suporte a SSML custom. O __init__ do Communicate() aplica escape() em todo o texto, convertendo < e > em &lt; e &gt;. Assim, tags <break>, <phoneme>, <say-as> e <prosody> nunca são interpret",
-      "extracted_at": "2026-08-04T03:45:41.258979"
+      "body": "---\ntipo: erro\ntags: [tts, edge-tts, ssml, ponte-de-voz, jarvis-bridge]\ndata: 2026-08-02\ncontexto: Usuário reportou que, no início das conversas, antes de falar \"David\", o Jarvis pronunciava caracteres que não deveriam. Investigação da saudação revelou causa na camada de TTS.\ndecisao: edge-tts >= 7.x removeu suporte a SSML custom. O __init__ do Communicate() aplica escape() em todo o texto, convertendo < e > em &lt; e &gt;. Assim, tags <break>, <phoneme>, <say-as> e <prosody> nunca são interpret\n\n---\ntipo: erro\ntags: [tts, winerror, lock, escrita-atomica, voz]\ndata: 2026-08-20\ncontexto: O usuário reportou uma mensagem de erro no widget em quadro vermelho mostrando \"falha de voz: [WinError 5] Acesso negado\" na renomeação de runtime/tts_cmd.tmp para runtime/tts_cmd.json. O quadro vermelho do widget exibe erros reais lidos dos logs (função _ler_recent_errors).\ndecisao: Adicionar retry na escrita atômica do tts_cmd.json nos três pontos que escrevem: _enviar_tts_cmd (novo helper) em narrador_",
+      "extracted_at": "2026-08-20T19:16:46.485634",
+      "merged_count": 3,
+      "merged_at": "2026-08-20T19:17:02.775097"
     },
     {
       "source": "opencode",
