@@ -10550,5 +10550,28 @@
     "access_count": 0,
     "created_at": "2026-08-20T17:19:04.770772",
     "last_accessed": "2026-08-20T17:19:04.770772"
+  },
+  {
+    "id": 409,
+    "kind": "erro",
+    "task": "Commit do gate falhava silenciosamente por hook pre-commit quebrado",
+    "summary": "Causa raiz: arquivo .git/hooks/pre-commit sem extensao era um batch disfarcado que o git nao conseguia spawnar (cannot spawn .git/hooks/pre-commit). Todo commit via gate falhava silenciosamente porque persistencia.ps1 engole a saida do git commit e registra o HEAD antigo como se fosse commit novo. Correcao: remover o hook quebrado, mantendo pre-commit.cmd + pre-commit.py validos. Commit 1c8b0921 criado com sucesso incluindo 2026-08-20-engenheiro-criterioso.md e memories.json.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "spawn",
+      "spawnar",
+      "conseguia",
+      "nao",
+      "disfarcado",
+      "batch"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-20T17:35:37.242544",
+    "last_accessed": "2026-08-20T17:35:37.242544"
   }
 ]
