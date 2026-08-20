@@ -192,6 +192,12 @@ def _log(msg):
 def _atomic_write(path: Path, data: dict):
     tmp = path.with_suffix(".tmp")
     tmp.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    for _ in range(6):
+        try:
+            tmp.replace(path)
+            return
+        except OSError:
+            time.sleep(0.1)
     try:
         tmp.replace(path)
     except OSError:

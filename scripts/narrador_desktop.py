@@ -92,6 +92,23 @@ def log(msg):
         pass
 
 
+def _enviar_tts_cmd(cmd: dict):
+    """Envia comando de voz ao tts_service com escrita atômica resiliente a lock (WinError 5)."""
+    TTS_CMD.parent.mkdir(parents=True, exist_ok=True)
+    tmp = TTS_CMD.with_suffix(".tmp")
+    tmp.write_text(json.dumps(cmd, ensure_ascii=False), encoding="utf-8")
+    for _ in range(6):
+        try:
+            tmp.replace(TTS_CMD)
+            return
+        except OSError:
+            time.sleep(0.15)
+    try:
+        tmp.replace(TTS_CMD)
+    except OSError as e:
+        log(f"falha de voz: {e}")
+
+
 def conectar():
     c = sqlite3.connect(f"file:{DB}?mode=ro", uri=True, timeout=10)
     c.execute("PRAGMA query_only=ON")
@@ -269,10 +286,7 @@ class Narrador:
                 # Envia para tts_service.py (único processo de TTS)
                 req_id = str(uuid.uuid4())[:8]
                 cmd = {"cmd": "speak", "texto": texto, "request_id": req_id, "priority": 0}
-                TTS_CMD.parent.mkdir(parents=True, exist_ok=True)
-                tmp = TTS_CMD.with_suffix(".tmp")
-                tmp.write_text(json.dumps(cmd, ensure_ascii=False), encoding="utf-8")
-                tmp.replace(TTS_CMD)
+                _enviar_tts_cmd(cmd)
                 # Aguarda resposta (polling simples) — checa parar_fala a cada tick
                 resp_file = ROOT / "runtime" / f"tts_resp_{req_id}.json"
                 for _ in range(1800):  # timeout ~90s
@@ -307,10 +321,7 @@ def teste_audio():
         # Envia para tts_service.py
         req_id = "teste"
         cmd = {"cmd": "speak", "texto": texto_teste, "request_id": req_id, "priority": 0}
-        TTS_CMD.parent.mkdir(parents=True, exist_ok=True)
-        tmp = TTS_CMD.with_suffix(".tmp")
-        tmp.write_text(json.dumps(cmd, ensure_ascii=False), encoding="utf-8")
-        tmp.replace(TTS_CMD)
+        _enviar_tts_cmd(cmd)
         # Aguarda resposta
         resp_file = ROOT / "runtime" / f"tts_resp_{req_id}.json"
         for _ in range(1800):

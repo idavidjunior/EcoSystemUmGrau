@@ -397,6 +397,7 @@
     407,
     408,
     409,
+    410,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -1613,6 +1614,7 @@
     "erro",
     "decisao",
     "decisao",
+    "erro",
     "erro",
     "nota",
     "nota",
@@ -2831,6 +2833,7 @@
     "adicionada na constituicao a clausula petrea autoapresentacao automatica na primeira mensagem de cada session: na primeira mensagem de cada nova sessao (novo chat/abrir opencode) o agente roda python scripts/runtime_boot.py --check silenciosamente e confirma em 3-4 linhas curtas que o ecosystemumgrau esta ativo e operante, sem depender de comando eco/@eco. sync_rules propagou as 3 camadas (23 regras). falso positivo do sanitizador corrigido: solution_index.json (indice semantico derivado das memorias, contem texto com {{userprofile}}) adicionado a data_files em test_json_sanitization.py. preflight: todos testes passaram. alta-confianca sanitization session boot test runtime files decisao",
     "autoavaliacao definiu a personalidade engenheiro criterioso como a que define o agente: equilibrio entre pragmatismo e metodo, mescla de cetico, realista e revisor, executor que pensa antes de agir, prefere solucoes simples e seguras, evita retrabalho, e e direto quando algo esta errado. alta-confianca errado algo direto retrabalho evita seguras decisao",
     "causa raiz: arquivo .git/hooks/pre-commit sem extensao era um batch disfarcado que o git nao conseguia spawnar (cannot spawn .git/hooks/pre-commit). todo commit via gate falhava silenciosamente porque persistencia.ps1 engole a saida do git commit e registra o head antigo como se fosse commit novo. correcao: remover o hook quebrado, mantendo pre-commit.cmd + pre-commit.py validos. commit 1c8b0921 criado com sucesso incluindo 2026-08-20-engenheiro-criterioso.md e memories.json. alta-confianca spawn spawnar conseguia nao disfarcado batch erro",
+    "narrador, widget e bridge escreviam runtime/tts_cmd.json com tmp.replace sem retry; no windows renomear por cima de arquivo aberto por outro processo falha com winerror 5. adicionado retry (6x, 0.1-0.15s) na escrita atomica nos tres pontos: _enviar_tts_cmd em narrador_desktop.py e widget_controle_jarvis.py, e retry no _atomic_write de unified_bridge.py. py_compile ok nos tres. alta-confianca runtime escreviam falha processo winerror aberto erro",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -7742,12 +7745,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 98559,
-  "count": 1215,
-  "count_mem": 397,
+  "vocab_size": 98602,
+  "count": 1216,
+  "count_mem": 398,
   "count_notas": 818,
   "fingerprint": [
-    397,
+    398,
     [
       1787257262.2,
       1787257216.7,

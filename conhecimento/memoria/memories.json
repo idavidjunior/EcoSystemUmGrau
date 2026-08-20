@@ -10573,5 +10573,28 @@
     "access_count": 0,
     "created_at": "2026-08-20T17:35:37.242544",
     "last_accessed": "2026-08-20T17:35:37.242544"
+  },
+  {
+    "id": 410,
+    "kind": "erro",
+    "task": "Fix escrita concorrente tts_cmd.json (WinError 5)",
+    "summary": "Narrador, widget e bridge escreviam runtime/tts_cmd.json com tmp.replace sem retry; no Windows renomear por cima de arquivo aberto por outro processo falha com WinError 5. Adicionado retry (6x, 0.1-0.15s) na escrita atomica nos tres pontos: _enviar_tts_cmd em narrador_desktop.py e widget_controle_jarvis.py, e retry no _atomic_write de unified_bridge.py. py_compile OK nos tres.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "runtime",
+      "escreviam",
+      "falha",
+      "processo",
+      "winerror",
+      "aberto"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-20T19:15:21.871598",
+    "last_accessed": "2026-08-20T19:15:21.871598"
   }
 ]

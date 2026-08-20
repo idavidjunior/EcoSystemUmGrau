@@ -489,6 +489,23 @@ import uuid
 TTS_CMD = ROOT / "runtime" / "tts_cmd.json"
 PARAR_FALA = ROOT / "runtime" / "parar_fala.flag"
 
+
+def _enviar_tts_cmd(cmd: dict):
+    """Envia comando de voz ao tts_service com escrita atômica resiliente a lock (WinError 5)."""
+    TTS_CMD.parent.mkdir(parents=True, exist_ok=True)
+    tmp = TTS_CMD.with_suffix(".tmp")
+    tmp.write_text(json.dumps(cmd, ensure_ascii=False), encoding="utf-8")
+    for _ in range(6):
+        try:
+            tmp.replace(TTS_CMD)
+            return
+        except OSError:
+            time.sleep(0.15)
+    try:
+        tmp.replace(TTS_CMD)
+    except OSError as e:
+        print(f"[widget] falha de voz: {e}", flush=True)
+
 # Perfil do usuário para formatação
 try:
     from scripts.profile_hook import format_response_for_profile, get_response_config
@@ -516,10 +533,7 @@ def _falar_direto_worker(texto: str):
             texto = format_response_for_profile(texto, _widget_profile_config)
         req_id = str(uuid.uuid4())[:8]
         cmd = {"cmd": "speak", "texto": texto, "request_id": req_id, "priority": 1}
-        TTS_CMD.parent.mkdir(parents=True, exist_ok=True)
-        tmp = TTS_CMD.with_suffix(".tmp")
-        tmp.write_text(json.dumps(cmd, ensure_ascii=False), encoding="utf-8")
-        tmp.replace(TTS_CMD)
+        _enviar_tts_cmd(cmd)
         # Não aguarda resposta (fire-and-forget para feedbacks rápidos)
     except Exception as e:
         print(f"[widget] falha de voz direta: {e}", flush=True)
