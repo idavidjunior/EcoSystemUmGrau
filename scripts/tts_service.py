@@ -83,6 +83,21 @@ def _clear_cmd():
         pass
 
 
+def _cleanup_old_responses(max_age_sec: int = 600):
+    """Remove arquivos tts_resp_*.json mais velhos que max_age_sec (padrão 10 min)."""
+    try:
+        now = time.time()
+        for f in RUNTIME.glob("tts_resp_*.json"):
+            try:
+                age = now - f.stat().st_mtime
+                if age > max_age_sec:
+                    f.unlink(missing_ok=True)
+            except Exception:
+                pass
+    except Exception:
+        pass
+
+
 def _write_resp(req_id, status, msg=""):
     resp_file = RUNTIME / f"tts_resp_{req_id}.json"
     _atomic_write(resp_file, {"status": status, "request_id": req_id, "msg": msg})
@@ -180,7 +195,6 @@ def main():
                             _log("RESUMIDO")
                             _write_resp(req_id, "ok")
 
-            # Limpa flag de parada após 2s se não consumida
             if STOP_FLAG.exists():
                 try:
                     ts = float(STOP_FLAG.read_text(encoding="utf-8").strip())
@@ -188,6 +202,10 @@ def main():
                         STOP_FLAG.unlink(missing_ok=True)
                 except Exception:
                     pass
+
+            # Limpeza periódica de respostas TTS antigas (a cada ~60 iterações = ~3s)
+            if int(time.time()) % 3 == 0:
+                _cleanup_old_responses()
 
             time.sleep(0.05)
         except KeyboardInterrupt:

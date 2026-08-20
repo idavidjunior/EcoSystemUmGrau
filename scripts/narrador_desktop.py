@@ -289,18 +289,19 @@ class Narrador:
                 _enviar_tts_cmd(cmd)
                 # Aguarda resposta (polling simples) — checa parar_fala a cada tick
                 resp_file = ROOT / "runtime" / f"tts_resp_{req_id}.json"
-                for _ in range(1800):  # timeout ~90s
-                    if PARAR_FALA.exists():
-                        log("interrompido (parar_fala.flag detectado durante fala)")
-                        resp_file.unlink(missing_ok=True)
-                        break
-                    if resp_file.exists():
-                        resp = json.loads(resp_file.read_text(encoding="utf-8"))
-                        resp_file.unlink(missing_ok=True)
-                        if resp.get("status") != "ok":
-                            log(f"TTS service erro: {resp.get('msg')}")
-                        break
-                    time.sleep(0.05)
+                try:
+                    for _ in range(1800):  # timeout ~90s
+                        if PARAR_FALA.exists():
+                            log("interrompido (parar_fala.flag detectado durante fala)")
+                            break
+                        if resp_file.exists():
+                            resp = json.loads(resp_file.read_text(encoding="utf-8"))
+                            if resp.get("status") != "ok":
+                                log(f"TTS service erro: {resp.get('msg')}")
+                            break
+                        time.sleep(0.05)
+                finally:
+                    resp_file.unlink(missing_ok=True)
             except Exception as e:
                 log(f"falha de voz: {e}")
 
@@ -324,17 +325,19 @@ def teste_audio():
         _enviar_tts_cmd(cmd)
         # Aguarda resposta
         resp_file = ROOT / "runtime" / f"tts_resp_{req_id}.json"
-        for _ in range(1800):
-            if resp_file.exists():
-                resp = json.loads(resp_file.read_text(encoding="utf-8"))
-                resp_file.unlink(missing_ok=True)
-                if resp.get("status") == "ok":
-                    print("OK: audio reproduzido via TTS Service.")
-                else:
-                    print(f"ERRO: {resp.get('msg')}")
-                return 0
-            time.sleep(0.05)
-        print("TIMEOUT: TTS Service não respondeu")
+        try:
+            for _ in range(1800):
+                if resp_file.exists():
+                    resp = json.loads(resp_file.read_text(encoding="utf-8"))
+                    if resp.get("status") == "ok":
+                        print("OK: audio reproduzido via TTS Service.")
+                    else:
+                        print(f"ERRO: {resp.get('msg')}")
+                    return 0
+                time.sleep(0.05)
+            print("TIMEOUT: TTS Service não respondeu")
+        finally:
+            resp_file.unlink(missing_ok=True)
     except Exception as e:
         print(f"ERRO no teste de audio: {e}")
     return 0
