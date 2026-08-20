@@ -10596,5 +10596,28 @@
     "access_count": 0,
     "created_at": "2026-08-20T19:15:21.871598",
     "last_accessed": "2026-08-20T19:15:21.871598"
+  },
+  {
+    "id": 411,
+    "kind": "decisao",
+    "task": "Limpeza de lixo no ecossistema",
+    "summary": "Varredura identificou e removeu lixo: 92 tts_resp_*.json em runtime, 25 pastas __pycache__, backup antigo backup_20260803_212542 com node_modules duplicado (103MB). Mantidos: scripts/_legado (arquivo morto oficial da triagem de orfaos via audit_triagem.py) e backup pre_reorg_mcp (rollback de config). Historico git tem 288MB inflados por binarios removidos (WindowGUI) e multiplas versoes de ler-runtime/knowledge_graph.json; reescrita exigiria force push e foi descartada por risco. git fsck OK.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "graph",
+      "knowledge",
+      "103mb",
+      "duplicado",
+      "ler",
+      "modules"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-20T19:34:33.432463",
+    "last_accessed": "2026-08-20T19:34:33.432463"
   }
 ]
