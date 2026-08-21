@@ -1,5 +1,5 @@
 ---
-tags: [mutation, padrao, provam, testes, testing, use]
+tags: [badge, mutation, padrao, provam, testes, testing]
 aliases: [Testes: cobertura de código como métrica — o que ela mostra ]
 date: 2026-08-21
 ---
