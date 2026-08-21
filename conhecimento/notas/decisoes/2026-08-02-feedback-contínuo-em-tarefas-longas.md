@@ -1,5 +1,5 @@
 ---
-tags: [curtas, decisao, inútil, opencode, relatório, único]
+tags: [curtas, decisao, opencode, relatório, system, único]
 aliases: [# 2026-08-02 - Feedback contínuo em tarefas longas]
 date: 2026-08-20
 ---

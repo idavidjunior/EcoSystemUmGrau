@@ -1,5 +1,5 @@
 ---
-tags: [conhecimento, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, registrados, tres]
+tags: [bibliaestudocompleta, conhecimento, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, registrados]
 aliases: [Projetos irmaos do EcoSystemUmGrau]
 date: 2026-08-20
 ---

@@ -1,5 +1,5 @@
 ---
-tags: [decisao, erro, opencode, podia, revelaram, robustez]
+tags: [90s, decisao, erro, opencode, podia, robustez]
 aliases: [Clausula Petrea: protecao do OpenCode desktop + resiliencia ]
 date: 2026-08-20
 ---

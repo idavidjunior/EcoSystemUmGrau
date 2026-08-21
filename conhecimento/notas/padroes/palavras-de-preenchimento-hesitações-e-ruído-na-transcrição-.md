@@ -1,5 +1,5 @@
 ---
-tags: [conteúdo, obrigatório, padrao, texto, traducao-audio, tratar]
+tags: [conteúdo, obrigatório, padrao, reflete, texto, traducao-audio]
 aliases: [Palavras de preenchimento, hesitações e ruído na transcrição]
 date: 2026-08-20
 ---
