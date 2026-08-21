@@ -101,7 +101,13 @@ Base teórica e prática para entender como computadores funcionam no nível mai
 - Agner Fog — optimization manuals, instruction tables
 
 ## Integração com ecossistema
-- Skills que se beneficiam: `debugging-expertise`, `performance-testing`, `resilience-engineering`, `backend-patterns`, `golang-patterns`, `python-patterns`, `rust-patterns` (quando existir), `compiladores` (futuro)
+- Skills que se beneficiam (carregam `fundamentos-computacao` como pré-requisito):
+  - `debugging-expertise` — crash analysis, memory leaks, race conditions, performance debugging
+  - `performance-testing` — ISA latência/throughput, cache hierarchy, memory model, SIMD, branch prediction
+  - `resilience-engineering` — kernel interface, memory hierarchy, CPU scheduling, hardware faults
+  - `backend-patterns` — syscalls, network stack, file I/O, process model, virtual memory, ELF linking
+  - `golang-patterns` — ABI, stack frames, goroutine scheduling, memory allocator, channels, escape analysis
+  - `python-patterns` — CPython internals, GIL, bytecode, memory allocator, async, C extensions, profiling
 - Agentes: `03-realista` (viabilidade hardware), `05-futuro` (tendências ISA), `08-revisor` (baixo nível)
 - Scripts: `architecture_integrity_monitor.py`, `observability_reliability.py`
 

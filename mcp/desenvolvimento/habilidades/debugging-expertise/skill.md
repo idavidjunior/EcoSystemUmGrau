@@ -480,6 +480,7 @@ python scripts/debug.py . --categoria dup --min-lines 10
 | `secure-coding` | Sanitizers para bugs de segurança |
 | `performance-testing` | Baseline e validação de perf fixes |
 | `legacy-modernization` | Debug em código legado |
+| `fundamentos-computacao` | **Base obrigatória**: ISA reference (latência/throughput), ELF parsing, IEEE 754, stack frames, calling convention, bitwise ops — essenciais para crash analysis, memory leaks, race conditions, performance debugging |
 
 ---
 

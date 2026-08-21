@@ -1,49 +1,52 @@
 ---
 name: python-patterns
 description: |
-  Padrıes Python para cÛdigo limpo, tipado, test·vel e pronto para produÁ„o.
+  Padr√µes Python para c√≥digo limpo, tipado, test√°vel e pronto para produ√ß√£o.
   Trigger phrases: "python best practices", "python architecture", "type hints", "python patterns"
 allowed-tools: Read, Grep, Bash
 version: 1.1.0
 ---
 
-# Python Patterns ó Simples, Tipado e MantÌvel
+# Python Patterns ‚Äî Simples, Tipado e Mant√≠vel
 
 ## Objetivo
-Produzir cÛdigo Python legÌvel e robusto, com baixo custo de manutenÁ„o.
+Produzir c√≥digo Python leg√≠vel e robusto, com baixo custo de manuten√ß√£o.
 
-## PrincÌpios
-- FunÁıes pequenas e coesas
+## Pr√©-requisitos (carregar antes)
+- `fundamentos-computacao` ‚Äî CPython internals (GIL, bytecode, frame objects), memory allocator (pymalloc, arenas), calling convention (C stack, PyObject*), async implementation (coroutines, event loop), C extensions (C API, CFFI, pybind11), profiling (cProfile, perf, py-spy) ‚Äî base para performance, debugging, tipagem, async, C extensions
+
+## Princ√≠pios
+- Fun√ß√µes pequenas e coesas
 - Tipagem progressiva (`typing`) nas fronteiras
-- Separar lÛgica de domÌnio de infraestrutura
-- Preferir clareza a metaprogramaÁ„o avanÁada
+- Separar l√≥gica de dom√≠nio de infraestrutura
+- Preferir clareza a metaprograma√ß√£o avan√ßada
 
 ## Estrutura recomendada
-- MÛdulos por domÌnio, n„o por tipo genÈrico
+- M√≥dulos por dom√≠nio, n√£o por tipo gen√©rico
 - `services/`, `repositories/`, `schemas/` quando fizer sentido
 - Config centralizada e validada
-- Erros de domÌnio explÌcitos
+- Erros de dom√≠nio expl√≠citos
 
 ## Qualidade
 - Lint + format no CI
-- Testes unit·rios para regras crÌticas
-- Testes de integraÁ„o para I/O
+- Testes unit√°rios para regras cr√≠ticas
+- Testes de integra√ß√£o para I/O
 - Cobertura de casos de erro e borda
 
-## Performance pragm·tica
+## Performance pragm√°tica
 - Medir antes de otimizar
 - Evitar N+1 e loops custosos em dados grandes
 - Usar async apenas quando I/O-bound justificar
-- Cache com polÌtica de invalidaÁ„o clara
+- Cache com pol√≠tica de invalida√ß√£o clara
 
 ## Anti-patterns
-- Script monolÌtico sem fronteiras
+- Script monol√≠tico sem fronteiras
 - `except Exception` sem contexto
-- Estado global mut·vel sem controle
-- OtimizaÁ„o prematura sem profiling
+- Estado global mut√°vel sem controle
+- Otimiza√ß√£o prematura sem profiling
 
-## SaÌda esperada do agente
-- RefatoraÁıes orientadas a legibilidade
-- EstratÈgia de tipagem e testes
-- Padrıes de erro e logging
-- Backlog tÈcnico priorizado
+## Sa√≠da esperada do agente
+- Refatora√ß√µes orientadas a legibilidade
+- Estrat√©gia de tipagem e testes
+- Padr√µes de erro e logging
+- Backlog t√©cnico priorizado

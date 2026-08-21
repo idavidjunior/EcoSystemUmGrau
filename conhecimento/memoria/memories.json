@@ -10718,5 +10718,28 @@
     "access_count": 0,
     "created_at": "2026-08-20T22:52:16.834375",
     "last_accessed": "2026-08-20T22:52:16.834375"
+  },
+  {
+    "id": 415,
+    "kind": "decisao",
+    "task": "fundamentos-integracao",
+    "summary": "Integrado fundamentos-computacao como pré-requisito em: debugging-expertise, performance-testing, resilience-engineering, backend-patterns, golang-patterns, python-patterns. Skills agora carregam a base automaticamente quando ativadas.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "python",
+      "patterns",
+      "golang",
+      "backend",
+      "engineering",
+      "resilience"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-20T23:01:35.814340",
+    "last_accessed": "2026-08-20T23:01:35.814340"
   }
 ]

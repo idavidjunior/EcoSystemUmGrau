@@ -1,50 +1,53 @@
 ---
 name: backend-patterns
 description: |
-  Padrões backend para serviços resilientes: contratos claros, separação de camadas, observabilidade e confiabilidade.
+  Padrï¿½es backend para serviï¿½os resilientes: contratos claros, separaï¿½ï¿½o de camadas, observabilidade e confiabilidade.
   Trigger phrases: "backend architecture", "service layer", "repository pattern", "API backend"
 allowed-tools: Read, Grep, Bash
 version: 1.1.0
 ---
 
-# Backend Patterns — Serviços Confiáveis
+# Backend Patterns ï¿½ Serviï¿½os Confiï¿½veis
 
 ## Objetivo
-Projetar serviços legíveis e resilientes com baixo acoplamento e alta testabilidade.
+Projetar serviï¿½os legï¿½veis e resilientes com baixo acoplamento e alta testabilidade.
+
+## PrÃ©-requisitos (carregar antes)
+- `fundamentos-computacao` â€” Syscalls, memory model, network stack (TCP/IP, sockets, epoll/io_uring), file I/O (mmap, sendfile, splice), process/thread model, virtual memory, ELF linking â€” base para arquitetura de camadas, observabilidade, contratos, deployment
 
 ## Estrutura sugerida
-- Camada de apresentação (HTTP/transport)
-- Camada de aplicação (casos de uso)
-- Camada de domínio (regras centrais)
+- Camada de apresentaï¿½ï¿½o (HTTP/transport)
+- Camada de aplicaï¿½ï¿½o (casos de uso)
+- Camada de domï¿½nio (regras centrais)
 - Camada de infraestrutura (DB, filas, APIs externas)
 
-## Pilares técnicos
-- Contratos explícitos (DTOs, schemas, versionamento)
-- Idempotência em operações críticas
-- Controle de concorrência e retry seguro
-- Observabilidade por default (logs, métricas, traces)
+## Pilares tï¿½cnicos
+- Contratos explï¿½citos (DTOs, schemas, versionamento)
+- Idempotï¿½ncia em operaï¿½ï¿½es crï¿½ticas
+- Controle de concorrï¿½ncia e retry seguro
+- Observabilidade por default (logs, mï¿½tricas, traces)
 
 ## Checklist operacional
 - Timeouts e circuit breaker definidos?
-- Erros mapeados para códigos coerentes?
-- Queries críticas indexadas e paginadas?
-- Segredos fora do código?
-- Runbook de incidente disponível?
+- Erros mapeados para cï¿½digos coerentes?
+- Queries crï¿½ticas indexadas e paginadas?
+- Segredos fora do cï¿½digo?
+- Runbook de incidente disponï¿½vel?
 
 ## Testes essenciais
-- Unit para regras de domínio
+- Unit para regras de domï¿½nio
 - Integration para DB/externos
-- Contract tests entre serviços
-- Testes de carga básicos em endpoints críticos
+- Contract tests entre serviï¿½os
+- Testes de carga bï¿½sicos em endpoints crï¿½ticos
 
 ## Anti-patterns
-- Lógica de negócio no controller
-- Dependência circular entre módulos
+- Lï¿½gica de negï¿½cio no controller
+- Dependï¿½ncia circular entre mï¿½dulos
 - Retries sem limite e sem jitter
-- Erros genéricos sem contexto
+- Erros genï¿½ricos sem contexto
 
-## Saída esperada do agente
+## Saï¿½da esperada do agente
 - Diagrama de camadas e responsabilidades
-- Padrão de erro e observabilidade
-- Matriz de riscos técnicos
+- Padrï¿½o de erro e observabilidade
+- Matriz de riscos tï¿½cnicos
 - Plano de testes por camada

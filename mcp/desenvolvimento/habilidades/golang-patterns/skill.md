@@ -1,50 +1,53 @@
 ---
 name: golang-patterns
 description: |
-  Padrões Go para serviços robustos: contexto, concorrência segura, erros explícitos e organização idiomática.
+  PadrÃµes Go para serviÃ§os robustos: contexto, concorrÃªncia segura, erros explÃ­citos e organizaÃ§Ã£o idiomÃ¡tica.
   Trigger phrases: "golang", "go routines", "go patterns", "idiomatic go"
 allowed-tools: Read, Grep, Bash
 version: 1.1.0
 ---
 
-# Golang Patterns — Go Idiomático para Produção
+# Golang Patterns â€” Go IdiomÃ¡tico para ProduÃ§Ã£o
 
 ## Objetivo
-Escrever Go simples, previsível e performático sem sacrificar legibilidade.
+Escrever Go simples, previsÃ­vel e performÃ¡tico sem sacrificar legibilidade.
 
-## Princípios
-- Preferir clareza a abstração precoce
-- Erros explícitos com contexto
+## PrÃ©-requisitos (carregar antes)
+- `fundamentos-computacao` â€” Calling convention (ABI), stack frames, registers, syscalls, goroutine scheduling (G-M-P), memory allocator (tcache, spans), channel implementation, escape analysis, inlining â€” base para concorrÃªncia segura, performance, debugging
+
+## PrincÃ­pios
+- Preferir clareza a abstraÃ§Ã£o precoce
+- Erros explÃ­citos com contexto
 - Interfaces pequenas, definidas no consumidor
 - `context.Context` em fronteiras I/O
 
-## Concorrência segura
+## ConcorrÃªncia segura
 - Goroutines com ownership claro
 - `errgroup` para tarefas paralelas coordenadas
 - Cancelamento propagado por context
-- Evitar compartilhamento mutável sem necessidade
+- Evitar compartilhamento mutÃ¡vel sem necessidade
 
 ## Estrutura recomendada
 - `cmd/` para entrypoints
-- `internal/` para domínio privado
-- `pkg/` apenas para API realmente reutilizável
-- Separação clara entre transporte, domínio e infraestrutura
+- `internal/` para domÃ­nio privado
+- `pkg/` apenas para API realmente reutilizÃ¡vel
+- SeparaÃ§Ã£o clara entre transporte, domÃ­nio e infraestrutura
 
 ## Checklist de qualidade
 - Race detector limpo?
 - Timeouts em chamadas externas?
-- Logs estruturados com correlação?
+- Logs estruturados com correlaÃ§Ã£o?
 - Testes cobrindo erros e cancelamento?
-- Lints (`go vet`, staticcheck) sem alertas críticos?
+- Lints (`go vet`, staticcheck) sem alertas crÃ­ticos?
 
 ## Anti-patterns
 - Panic para fluxo normal
-- Interface genérica antecipada
-- Context ignorado em operações bloqueantes
+- Interface genÃ©rica antecipada
+- Context ignorado em operaÃ§Ãµes bloqueantes
 - Goroutine sem lifecycle controlado
 
-## Saída esperada do agente
-- Recomendações idiomáticas aplicáveis
-- Ajustes de concorrência/contexto
+## SaÃ­da esperada do agente
+- RecomendaÃ§Ãµes idiomÃ¡ticas aplicÃ¡veis
+- Ajustes de concorrÃªncia/contexto
 - Checklist de confiabilidade Go
 - Plano de testes e observabilidade

@@ -402,6 +402,7 @@
     412,
     413,
     414,
+    415,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -1625,6 +1626,7 @@
     "decisao",
     "padrao",
     "padrao",
+    "decisao",
     "nota",
     "nota",
     "nota",
@@ -2848,6 +2850,7 @@
     "corrigido a raiz do lixo tts: 1) tts_service.py: adicionado _cleanup_old_responses() com ttl 10min no loop principal. 2) narrador_desktop.py: try/finally no polling de resposta para garantir limpeza do tts_resp_*.json mesmo em excecao. 3) criado cleanup_all.py on-demand que compoe: tts_resp (ttl), __pycache__, .tmp, backups/ antigos, e chama cleaners existentes (logs, state, knowledge_graph). sem daemon, sob demanda. testes: dry-run e execucao real funcionaram, 5 itens removidos (2 tts_resp, 2 pycache, 1 backup antigo), 349kb liberados. compile ok nos 3 scripts alterados + cleanup_all. alta-confianca liberados 349kb antigo backup removidos graph decisao",
     "criada skill fundamentos-computacao com scripts binario.py e float.py para representação binária, ieee 754, bitwise, endianness. base para debugging, performance, engenharia reversa, compiladores. alta-confianca binario scripts endianness skill computacao compiladores padrao",
     "scripts binario.py, bool.py, isa.py, elf.py, float.py criados em scripts/fundamentos/. cobrem representação binária, álgebra booleana, isa reference, elf parsing, ieee 754. base para debugging, performance, engenharia reversa, compiladores. alta-confianca 754 ieee parsing reference booleana álgebra padrao",
+    "integrado fundamentos-computacao como pré-requisito em: debugging-expertise, performance-testing, resilience-engineering, backend-patterns, golang-patterns, python-patterns. skills agora carregam a base automaticamente quando ativadas. alta-confianca python patterns golang backend engineering resilience decisao",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -7765,12 +7768,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 98885,
-  "count": 1221,
-  "count_mem": 402,
+  "vocab_size": 98906,
+  "count": 1222,
+  "count_mem": 403,
   "count_notas": 819,
   "fingerprint": [
-    402,
+    403,
     [
       1787264228.6,
       1787264191.0,

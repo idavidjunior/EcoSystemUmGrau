@@ -14,6 +14,9 @@ Teste de performance: load, stress, endurance, pico, metricas e otimizacao.
 - Siga esta skill como referencia declarativa; combine com outras skills e com o
   contexto do `context-engine` (memoria/impacto) quando precisar.
 
+## Pré-requisitos (carregar antes)
+- `fundamentos-computacao` — ISA reference (latência, throughput, pipeline), cache hierarchy, memory model, branch prediction, SIMD/AVX/SVE, floating-point behavior — base para interpretar profilers, escolher workloads, entender bottlenecks de CPU/memória
+
 ## Regras de ouro
 - Consulte o contexto antes de decidir (context-engine `--buscar`).
 - Prefira simplicidade e stdlib antes de dependencias novas.

@@ -1,49 +1,52 @@
 ---
 name: resilience-engineering
 description: |
-  Engenharia de resiliência para falhar com segurança: retries, circuit breakers, bulkheads, timeouts e chaos testing.
+  Engenharia de resiliÃªncia para falhar com seguranÃ§a: retries, circuit breakers, bulkheads, timeouts e chaos testing.
   Trigger phrases: "resilience", "circuit breaker", "chaos engineering", "fault tolerance"
 allowed-tools: Read, Grep, Bash
 version: 1.1.0
 ---
 
-# Resilience Engineering — Falhar Bem para Continuar Operando
+# Resilience Engineering â€” Falhar Bem para Continuar Operando
 
 ## Objetivo
-Manter serviço útil sob falhas parciais, picos e degradação de dependências.
+Manter serviÃ§o Ãºtil sob falhas parciais, picos e degradaÃ§Ã£o de dependÃªncias.
+
+## PrÃ©-requisitos (carregar antes)
+- `fundamentos-computacao` â€” Kernel interface (syscalls, signals, namespaces, cgroups, eBPF), memory hierarchy (OOM killer, page cache), CPU scheduling (CFS, rt, deadline), interrupt handling, hardware faults (ECC, MCE) â€” base para entender limites do runtime, timeouts realistas, chaos targets
 
 ## Mecanismos fundamentais
-- Timeout explícito por chamada
+- Timeout explÃ­cito por chamada
 - Retry com limite + backoff + jitter
-- Circuit breaker para dependência instável
+- Circuit breaker para dependÃªncia instÃ¡vel
 - Bulkhead para evitar falha em cascata
 
-## Estratégias de degradação
-- Fallback funcional mínimo
+## EstratÃ©gias de degradaÃ§Ã£o
+- Fallback funcional mÃ­nimo
 - Feature shedding por criticidade
-- Read-only mode temporário
+- Read-only mode temporÃ¡rio
 - Filas para absorver picos
 
 ## Checklist
-- Dependências externas têm budget de tempo?
-- Retries são idempotentes?
-- Há proteção contra thundering herd?
-- Degradação preserva jornada crítica?
+- DependÃªncias externas tÃªm budget de tempo?
+- Retries sÃ£o idempotentes?
+- HÃ¡ proteÃ§Ã£o contra thundering herd?
+- DegradaÃ§Ã£o preserva jornada crÃ­tica?
 
-## Validação
+## ValidaÃ§Ã£o
 - Testes de falha injetada (chaos)
-- Simulação de latência e timeout
-- Runbooks de recuperação
-- Métricas de saturação e erro por dependência
+- SimulaÃ§Ã£o de latÃªncia e timeout
+- Runbooks de recuperaÃ§Ã£o
+- MÃ©tricas de saturaÃ§Ã£o e erro por dependÃªncia
 
 ## Anti-patterns
 - Retry infinito sem jitter
-- Timeout implícito default
+- Timeout implÃ­cito default
 - Fallback sem monitoramento
 - Falha silenciosa sem telemetria
 
-## Saída esperada do agente
-- Mapa de dependências e riscos
-- Políticas de timeout/retry/circuit
+## SaÃ­da esperada do agente
+- Mapa de dependÃªncias e riscos
+- PolÃ­ticas de timeout/retry/circuit
 - Plano de chaos tests
-- Critérios de degradação aceitável
+- CritÃ©rios de degradaÃ§Ã£o aceitÃ¡vel
