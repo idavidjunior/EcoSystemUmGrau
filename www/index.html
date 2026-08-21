@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="icon" href="edge.ico" type="image/x-icon">
+<style>
+:root{
+  --bg:#1e1e2e;--sb:#313244;--in:#181825;--tx:#cdd6f4;--tx2:#a6adc8;--tx3:#6c7086;
+  --on:#a6e3a1;--off:#f38ba8;--acc:#89b4fa;--bdr:#45475a;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{overflow:hidden;font-family:'Segoe UI',system-ui,sans-serif;
+background:var(--bg);color:var(--tx);width:100%;height:100;}
+.topbar{background:var(--sb);padding:8px 12px;display:flex;align-items:center;gap:8px;}
+.logo{font-size:12px;font-weight:bold;color:var(--on);}
+.dots{display:flex;gap:4px;}
+.dot{width:12px;height:12px;border-radius:6px;background:var(--off);transition:background .2s;}
+.dot.on{background:var(--on);}
+.controls{padding:8px 0;border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);}
+.row{display:flex;align-items:center;gap:6px;margin:2px 0;}
+.label{font-size:9px;color:var(--tx3);white-space:nowrap;}
+.select{font-size:9px;background:var(--in);color:var(--tx);border:1px solid var(--bdr);padding:2px 4px;border-radius:2px;}
+.btn{font-size:9px;padding:3px 6px;border:1px solid var(--bdr);background:var(--bg);color:var(--tx);border-radius:3px;cursor:pointer;}
+.btn:focus{outline:2px solid var(--acc);}
+</style></head><body>
+<div class="topbar">
+  <div class="logo">Edge - EcoSystemUmGrau</div>
+  <div class="dots">
+    <div class="dot" id="dotNarr"></div>
+    <div class="dot" id="dotTTS"></div>
+    <div class="dot" id="dotBridge"></div>
+  </div>
+</div>
+<div class="controls">
+  <div class="row">
+    <span class="label">Volume TTS:</span>
+    <select class="select" id="volSlider">
+      <option value="0">0%</option>
+      <option value="30">30%</option>
+      <option value="50" selected>50%</option>
+      <option value="70">70%</option>
+      <option value="100">100%</option>
+    </select>
+  </div>
+  <div class="row">
+    <span class="label">Timer sono (min):</span>
+    <select class="select" id="sleepTimer">
+      <option value="0">Desativado</option>
+      <option value="5">5 min</option>
+      <option value="15">15 min</option>
+      <option value="30">30 min</option>
+      <option value="60">60 min</option>
+    </select>
+  </div>
+  <div class="row">
+    <button class="btn" id="btnVoz">Ligar Voz</button>
+    <button class="btn" id="btnMic">Mic</button>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize dots
+  const dots = { narr: false, tts: false, bridge: false };
+  function updateDot(id, state) {
+    const el = document.getElementById('dot' + id);
+    if(el) { el.classList.toggle('on', state); dots[id] = state; }
+  }
+  // Simulated init - will be updated by Python
+  updateDot('narr', false);
+  updateDot('tts', false);
+  updateDot('bridge', false);
+  
+  // Volume control
+  const volSelect = document.getElementById('volSlider');
+  volSelect.addEventListener('change', function() {
+    window.pywebbridge.setVolume(parseInt(this.value));
+  });
+  
+  // Sleep timer
+  const sleepSelect = document.getElementById('sleepTimer');
+  sleepSelect.addEventListener('change', function() {
+    window.pywebbridge.setSleep(parseInt(this.value));
+  });
+  
+  // Voice button
+  const btnVoz = document.getElementById('btnVoz');
+  btnVoz.addEventListener('click', function() {
+    this.classList.toggle('on');
+    window.pywebbridge.voiceToggle();
+  });
+  
+  // Bridge communication (simulated)
+  setInterval(function() {
+    // Update dots every 2 seconds (will be updated by Python)
+    updateDot('narr', dots.narr);
+    updateDot('tts', dots.tts);
+    updateDot('bridge', dots.bridge);
+  }, 2000);
+});
+</script>
+</body></html>
