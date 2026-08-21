@@ -2,7 +2,7 @@
 
 Uso: import profile_hook; profile_hook.apply_preferences(response_config)
 """
-from scripts.user_profile import get_profile
+from user_profile import get_profile
 
 
 def get_response_config() -> dict:

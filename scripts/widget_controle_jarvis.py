@@ -508,11 +508,11 @@ def _enviar_tts_cmd(cmd: dict):
 
 # Perfil do usuário para formatação
 try:
-    from scripts.profile_hook import format_response_for_profile, get_response_config
-    _widget_profile_config = get_response_config()
+    from user_profile import get_profile
+    _widget_profile_config = get_profile().get_response_config()
     WIDGET_PROFILE_AVAILABLE = True
 except ImportError as e:
-    print(f"[widget] profile_hook não disponível: {e}", flush=True)
+    print(f"[widget] user_profile não disponível: {e}", flush=True)
     _widget_profile_config = {}
     WIDGET_PROFILE_AVAILABLE = False
     def format_response_for_profile(texto, config):
