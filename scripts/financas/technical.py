@@ -56,7 +56,7 @@ def rsi(series: "pd.Series", period: int = 14) -> "pd.Series":
     return 100 - (100 / (1 + rs))
 
 
-def macd(series: "pd.Series", fast: int = 12, slow: int = 26, signal: int = 9) -> Dict["pd.Series"]:
+def macd(series: "pd.Series", fast: int = 12, slow: int = 26, signal: int = 9) -> Dict[str, "pd.Series"]:
     """MACD line, signal line, histogram."""
     ema_fast = series.ewm(span=fast, adjust=False).mean()
     ema_slow = series.ewm(span=slow, adjust=False).mean()
@@ -66,7 +66,7 @@ def macd(series: "pd.Series", fast: int = 12, slow: int = 26, signal: int = 9) -
     return {"macd": macd_line, "signal": signal_line, "histogram": histogram}
 
 
-def bollinger_bands(series: "pd.Series", period: int = 20, std_dev: float = 2.0) -> Dict["pd.Series"]:
+def bollinger_bands(series: "pd.Series", period: int = 20, std_dev: float = 2.0) -> Dict[str, "pd.Series"]:
     """Bollinger Bands: upper, middle (SMA), lower."""
     sma = series.rolling(period).mean()
     std = series.rolling(period).std()
@@ -100,7 +100,7 @@ def atr(high: "pd.Series", low: "pd.Series", close: "pd.Series", period: int = 1
     return tr.rolling(period).mean()
 
 
-def adx(high: "pd.Series", low: "pd.Series", close: "pd.Series", period: int = 14) -> Dict["pd.Series"]:
+def adx(high: "pd.Series", low: "pd.Series", close: "pd.Series", period: int = 14) -> Dict[str, "pd.Series"]:
     """Average Directional Index."""
     plus_dm = high.diff()
     minus_dm = low.diff().mul(-1)

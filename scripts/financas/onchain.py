@@ -90,10 +90,19 @@ def get_defillama_protocol(slug: str) -> Dict:
     r = requests.get(url, timeout=15)
     r.raise_for_status()
     data = r.json()
+    # API retorna tvl como série histórica [{date, totalLiquidityUSD}, ...]
+    tvl_series = data.get("tvl") or []
+    current_tvl = None
+    if isinstance(tvl_series, list) and tvl_series:
+        last_point = tvl_series[-1]
+        if isinstance(last_point, dict):
+            current_tvl = last_point.get("totalLiquidityUSD")
+        elif isinstance(last_point, (int, float)):
+            current_tvl = last_point
     result = {
         "name": data.get("name"),
         "slug": data.get("slug"),
-        "tvl": data.get("tvl"),
+        "tvl": current_tvl,
         "chain_tvls": data.get("chainTvls"),
         "category": data.get("category"),
         "chains": data.get("chains"),

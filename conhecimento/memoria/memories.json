@@ -10741,5 +10741,28 @@
     "access_count": 0,
     "created_at": "2026-08-20T23:01:35.814340",
     "last_accessed": "2026-08-20T23:01:35.814340"
+  },
+  {
+    "id": 416,
+    "kind": "padrao",
+    "task": "Sistema analise-financeira completo",
+    "summary": "Criados 10 scripts em scripts/financas/ (market_data, onchain, fundamental, technical, risk, portfolio, alerts, crypto_screener, macro, income_strategies) + skill mcp/desenvolvimento/habilidades/analise-financeira/skill.md. Todos com selftest passando. Bugs corrigidos: DefiLlama tvl retorna serie historica (extrair ultimo ponto), Dict['pd.Series'] precisa 2 args de tipo, teste rebalance com drift exatamente no threshold nao dispara com >. Deps instaladas: pandas 3.0.5, yfinance 1.6.0. Dados reais validados: Selic 14%, IPCA 4.44%, VIX 15.9, BTC ~77k.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "habilidades",
+      "skill",
+      "desenvolvimento",
+      "mcp",
+      "strategies",
+      "income"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-21T05:33:35.123526",
+    "last_accessed": "2026-08-21T05:33:35.123526"
   }
 ]

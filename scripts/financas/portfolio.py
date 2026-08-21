@@ -255,7 +255,7 @@ def selftest() -> bool:
         print(f"  HRP: FALHOU - {e}")
         ok = False
     # Rebalance
-    cur = {"A": 0.3, "B": 0.3, "C": 0.2, "D": 0.2}
+    cur = {"A": 0.4, "B": 0.2, "C": 0.2, "D": 0.2}
     tgt = {"A": 0.25, "B": 0.25, "C": 0.25, "D": 0.25}
     rb = rebalance_needed(cur, tgt, 0.05)
     assert rb["rebalance_needed"] == True
