@@ -517,7 +517,7 @@ def run_audit_periodico():
             [sys.executable, str(audit_script), "--json"],
             capture_output=True, text=True, encoding="utf-8", timeout=30, cwd=str(BASE)
         )
-        if r.returncode == 0 and r.stdout:
+        if r.returncode == 0 and r.stdout and r.stdout.strip():
             try:
                 data = json.loads(r.stdout)
                 score = data.get("score", 0)
@@ -527,7 +527,7 @@ def run_audit_periodico():
                     log.warning(f"AUDIT: score={score}/100, {errors} erros, {warns} warnings")
                 else:
                     log.info(f"AUDIT: score={score}/100, tudo OK")
-            except json.JSONDecodeError as e:
+            except (json.JSONDecodeError, TypeError) as e:
                 log.error(f"AUDIT: JSON inválido - {e}")
         else:
             log.error(f"AUDIT falhou: {r.stderr[:200] if r.stderr else 'sem output'}")
