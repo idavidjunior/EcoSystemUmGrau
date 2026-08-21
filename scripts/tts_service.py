@@ -144,6 +144,11 @@ def _speak_text(texto: str, stop_flag: Path, req_id: str) -> bool:
 
 def main():
     global _paused
+    # Escreve PID file para proteção contra RAM cleanup
+    PID_FILE = RUNTIME / "tts_service.pid"
+    PID_FILE.parent.mkdir(parents=True, exist_ok=True)
+    PID_FILE.write_text(str(os.getpid()))
+    
     _log("TTS Service iniciado (singleton SpeechPipeline)")
     _log(f"  SpeechPipeline: {'OK' if SPEECH_AVAILABLE else 'fallback vox_audio'}")
     _log(f"  Comando: {CMD_FILE}")

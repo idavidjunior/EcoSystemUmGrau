@@ -90,23 +90,23 @@ def is_narrador_up():
         except (psutil.NoSuchProcess, psutil.AccessDenied):
             pass
     return False
-
 def is_tts_service_up():
     """Verifica se tts_service.py está rodando."""
-    for p in psutil.process_iter(["pid", "name", "cmdline"]):
+    for p in psutil.process_iter(["pid", "name"]):
         try:
-            cmd = " ".join(p.info["cmdline"] or []).lower()
+            cmd = " ".join(p.cmdline() or []).lower()
             if "tts_service" in cmd:
                 return True
         except (psutil.NoSuchProcess, psutil.AccessDenied):
             pass
     return False
 
+
 def is_widget_up():
     """Verifica se widget_controle_jarvis.py está rodando."""
-    for p in psutil.process_iter(["pid", "name", "cmdline"]):
+    for p in psutil.process_iter(["pid", "name"]):
         try:
-            cmd = " ".join(p.info["cmdline"] or []).lower()
+            cmd = " ".join(p.cmdline() or []).lower()
             if "widget_controle_jarvis" in cmd:
                 return True
         except (psutil.NoSuchProcess, psutil.AccessDenied):
@@ -118,7 +118,11 @@ def start_widget():
     try:
         py = "C:/Users/David Jr/AppData/Local/Programs/Python/Python312/pythonw.exe"
         script = str(BASE / "scripts" / "widget_controle_jarvis.py")
-        subprocess.Popen([py, script], cwd=str(BASE), creationflags=subprocess.CREATE_NO_WINDOW)
+        proc = subprocess.Popen([py, script], cwd=str(BASE), creationflags=subprocess.CREATE_NO_WINDOW)
+        # Escreve PID file para proteção contra RAM cleanup
+        pid_file = BASE / "runtime" / "widget.pid"
+        pid_file.parent.mkdir(parents=True, exist_ok=True)
+        pid_file.write_text(str(proc.pid))
         log.warning("Widget reiniciado")
         return True
     except Exception as e:
@@ -128,16 +132,16 @@ def start_widget():
 def kill_widget():
     """Mata todas as instâncias do widget_controle_jarvis.py."""
     killed = False
-    for p in psutil.process_iter(["pid", "name", "cmdline"]):
+    for p in psutil.process_iter(["pid", "name"]):
         try:
-            cmd = " ".join(p.info["cmdline"] or []).lower()
+            cmd = " ".join(p.cmdline() or []).lower()
             if "widget_controle_jarvis" in cmd:
                 p.terminate()
                 try:
                     p.wait(timeout=3)
                 except psutil.TimeoutExpired:
                     p.kill()
-                log.warning(f"Widget morto PID {p.info['pid']}")
+                log.warning(f"Widget morto PID {p.pid}")
                 killed = True
         except (psutil.NoSuchProcess, psutil.AccessDenied):
             pass
@@ -148,23 +152,31 @@ def restart_widget():
     kill_widget()
     time.sleep(1)
     return start_widget()
-
 def start_narrador():
     try:
         py = "C:/Users/David Jr/AppData/Local/Programs/Python/Python312/pythonw.exe"
         script = str(BASE / "scripts" / "narrador_desktop.py")
-        subprocess.Popen([py, script], cwd=str(BASE), creationflags=subprocess.CREATE_NO_WINDOW)
+        proc = subprocess.Popen([py, script], cwd=str(BASE), creationflags=subprocess.CREATE_NO_WINDOW)
+        # PID file imediato para proteção contra RAM cleanup
+        pid_file = BASE / "runtime" / "narrador.pid"
+        pid_file.parent.mkdir(parents=True, exist_ok=True)
+        pid_file.write_text(str(proc.pid))
         log.warning("Narrador reiniciado")
         return True
     except Exception as e:
         log.error(f"Falha ao iniciar narrador: {e}")
     return False
 
+
 def start_tts_service():
     try:
         py = "C:/Users/David Jr/AppData/Local/Programs/Python/Python312/pythonw.exe"
         script = str(BASE / "scripts" / "tts_service.py")
-        subprocess.Popen([py, script], cwd=str(BASE), creationflags=subprocess.CREATE_NO_WINDOW)
+        proc = subprocess.Popen([py, script], cwd=str(BASE), creationflags=subprocess.CREATE_NO_WINDOW)
+        # PID file imediato para proteção contra RAM cleanup
+        pid_file = BASE / "runtime" / "tts_service.pid"
+        pid_file.parent.mkdir(parents=True, exist_ok=True)
+        pid_file.write_text(str(proc.pid))
         log.warning("TTS Service reiniciado")
         return True
     except Exception as e:
@@ -264,13 +276,36 @@ def is_eco_active() -> bool:
 
 
 def is_widget_pid(pid: int) -> bool:
-    """Verifica se PID é do widget_controle_jarvis.py."""
+    """Verifica se PID é do widget_controle_jarvis.py via PID file."""
     try:
-        p = psutil.Process(pid)
-        cmd = " ".join(p.cmdline()).lower()
-        return "widget_controle_jarvis.py" in cmd
+        pid_file = BASE / "runtime" / "widget.pid"
+        if pid_file.exists():
+            return int(pid_file.read_text().strip()) == pid
     except Exception:
-        return False
+        pass
+    return False
+
+
+def is_narrador_pid(pid: int) -> bool:
+    """Verifica se PID é do narrador_desktop.py (serviço Eco protegido) via PID file."""
+    try:
+        pid_file = BASE / "runtime" / "narrador.pid"
+        if pid_file.exists():
+            return int(pid_file.read_text().strip()) == pid
+    except Exception:
+        pass
+    return False
+
+
+def is_tts_service_pid(pid: int) -> bool:
+    """Verifica se PID é do tts_service.py (serviço Eco protegido) via PID file."""
+    try:
+        pid_file = BASE / "runtime" / "tts_service.pid"
+        if pid_file.exists():
+            return int(pid_file.read_text().strip()) == pid
+    except Exception:
+        pass
+    return False
 
 
 def is_desktop_opencode(pid: int) -> bool:
@@ -310,8 +345,8 @@ def get_kill_candidates():
                 continue
             if is_bridge(pid) or is_serve(pid) or is_tailscale(pid):
                 continue
-            # Protege widget/narrador se Eco ativo
-            if eco_on and is_widget_pid(pid):
+            # Protege widget/narrador/tts_service se Eco ativo
+            if eco_on and (is_widget_pid(pid) or is_narrador_pid(pid) or is_tts_service_pid(pid)):
                 continue
             # CLÁUSULA PÉTREA: desktop OpenCode (@opencode-aidesktop) é intocável
             if is_desktop_opencode(pid):
