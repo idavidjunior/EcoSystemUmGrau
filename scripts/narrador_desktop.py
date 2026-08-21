@@ -265,7 +265,7 @@ class Narrador:
         texto = limpar_texto(texto)
         # Bloqueia texto em inglês — narrador só fala português
         if IDIOMA_AVAILABLE and len(texto) > 30:
-            resultado = validar_idioma(texto, threshold=10.0)
+            resultado = validar_idioma(texto, threshold=5.0)
             if not resultado["ok"]:
                 log(f"BLOQUEADO (idioma={resultado['idioma']}, score={resultado['score']}): {texto[:60]}...")
                 return

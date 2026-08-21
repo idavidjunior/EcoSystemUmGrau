@@ -10672,5 +10672,51 @@
     "access_count": 0,
     "created_at": "2026-08-20T20:22:22.229229",
     "last_accessed": "2026-08-20T20:22:22.229229"
+  },
+  {
+    "id": 413,
+    "kind": "padrao",
+    "task": "fundamentos-computacao",
+    "summary": "Criada skill fundamentos-computacao com scripts binario.py e float.py para representação binária, IEEE 754, bitwise, endianness. Base para debugging, performance, engenharia reversa, compiladores.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "binario",
+      "scripts",
+      "endianness",
+      "skill",
+      "computacao",
+      "compiladores"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-20T22:44:51.462966",
+    "last_accessed": "2026-08-20T22:44:51.462966"
+  },
+  {
+    "id": 414,
+    "kind": "padrao",
+    "task": "fundamentos-computacao-scripts",
+    "summary": "Scripts binario.py, bool.py, isa.py, elf.py, float.py criados em scripts/fundamentos/. Cobrem representação binária, álgebra booleana, ISA reference, ELF parsing, IEEE 754. Base para debugging, performance, engenharia reversa, compiladores.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "754",
+      "ieee",
+      "parsing",
+      "reference",
+      "booleana",
+      "álgebra"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-20T22:52:16.834375",
+    "last_accessed": "2026-08-20T22:52:16.834375"
   }
 ]
