@@ -10833,5 +10833,28 @@
     "access_count": 0,
     "created_at": "2026-08-21T17:16:31.863734",
     "last_accessed": "2026-08-21T17:16:31.863734"
+  },
+  {
+    "id": 420,
+    "kind": "padrao",
+    "task": "Plugin falar-respostas: respostas do OpenCode em voz",
+    "summary": "Plugin opencode config/opencode-plugin/falar-respostas.js captura message.updated do assistente, limpa markdown, grava runtime/tts_cmd.json (protocolo oficial tts_service). Referenciado por file:// com caminho curto 8.3 no plugin array dos configs fonte e deployed. Mudo geral = botao de voz do Widget Edge via narracao_estado.json ativo=false. Requer reinicio do OpenCode para carregar.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "config",
+      "estado",
+      "cmd",
+      "narracao",
+      "runtime",
+      "edge"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-21T17:52:12.508433",
+    "last_accessed": "2026-08-21T17:52:12.508433"
   }
 ]
