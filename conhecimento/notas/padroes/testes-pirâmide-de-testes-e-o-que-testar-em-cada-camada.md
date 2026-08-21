@@ -1,5 +1,5 @@
 ---
-tags: [funções, não, padrao, puras, testes, transformações]
+tags: [esperado, funções, não, padrao, puras, testes]
 aliases: [Testes: pirâmide de testes e o que testar em cada camada]
 date: 2026-08-20
 ---
