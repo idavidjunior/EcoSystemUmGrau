@@ -29,7 +29,7 @@ def _cleanup_duplicate_processes():
     """Mata processos duplicados do unified_bridge.py apenas.
 
     O unified_bridge.py é a ponte única canônica (TTS service).
-    NÃO mata widget_controle_jarvis.py (é o widget/narrador oficial).
+    NÃO mata widget_edge.py (é o widget/narrador oficial).
     """
     current_pid = os.getpid()
     killed = 0

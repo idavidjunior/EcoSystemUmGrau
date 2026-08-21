@@ -123,7 +123,7 @@ def check_services(report: AuditReport):
         "jarvis_bridge.py": "Bridge WebSocket (porta 8765)",
         "narrador_desktop.py": "Narrador (SQLite → TTS)",
         "tts_service.py": "TTS Service (SpeechPipeline)",
-        "widget_controle_jarvis.py": "Widget Jarvis (pywebview)",
+        "widget_edge.py": "Widget Jarvis (pywebview)",
         "system_guardian.py": "System Guardian (watchdog)",
     }
     for script, desc in services.items():
@@ -195,10 +195,10 @@ def check_services(report: AuditReport):
 
 def check_widget_features(report: AuditReport):
     """Verifica se as 8 features do widget estão implementadas."""
-    widget_file = SCRIPTS / "widget_controle_jarvis.py"
+    widget_file = SCRIPTS / "widget_edge.py"
     if not _file_exists(widget_file):
         report.add("Widget", "Arquivo principal", Severity.ERROR,
-                    "widget_controle_jarvis.py não encontrado")
+                    "widget_edge.py não encontrado")
         return
 
     content = widget_file.read_text(encoding="utf-8")
@@ -224,7 +224,7 @@ def check_widget_features(report: AuditReport):
         else:
             report.add("Widget Features", desc, Severity.WARN,
                         f"{desc} não encontrado no widget",
-                        fix=f"Implementar {desc} em widget_controle_jarvis.py")
+                        fix=f"Implementar {desc} em widget_edge.py")
 
 
 def check_widget_error_filter(report: AuditReport):
@@ -237,10 +237,10 @@ def check_widget_error_filter(report: AuditReport):
     import re as _re
     from datetime import datetime as _dt
 
-    widget_file = SCRIPTS / "widget_controle_jarvis.py"
+    widget_file = SCRIPTS / "widget_edge.py"
     if not _file_exists(widget_file):
         report.add("Widget Error Filter", "Widget existe", Severity.ERROR,
-                    "widget_controle_jarvis.py não encontrado")
+                    "widget_edge.py não encontrado")
         return
 
     content = widget_file.read_text(encoding="utf-8")
@@ -261,7 +261,7 @@ def check_widget_error_filter(report: AuditReport):
         else:
             report.add("Widget Error Filter", f"Timestamp {desc}", Severity.ERROR,
                         f"Regex timestamp não casa com '{sample[:40]}' (esperado: {should_match})",
-                        fix="Atualizar regex _ler_recent_errors() em widget_controle_jarvis.py")
+                        fix="Atualizar regex _ler_recent_errors() em widget_edge.py")
 
     if ts_ok == len(test_cases):
         report.add("Widget Error Filter", "Regex timestamp", Severity.OK,
@@ -310,7 +310,7 @@ def check_widget_error_filter(report: AuditReport):
     if not widget_patterns:
         report.add("Widget Error Filter", "Padrões detectados", Severity.WARN,
                     "Não foi possível extrair padrões de erro do widget",
-                    fix="Verificar formato de is_real_error em widget_controle_jarvis.py")
+                    fix="Verificar formato de is_real_error em widget_edge.py")
         return
 
     # Testa cada linha real contra os padrões do widget
@@ -486,7 +486,7 @@ def check_guardian_coverage(report: AuditReport):
         "narrador_desktop": "Narrador",
         "tts_service": "TTS Service",
         "jarvis_bridge": "Bridge",
-        "widget_controle_jarvis": "Widget",
+        "widget_edge": "Widget",
     }
     for script, desc in monitored.items():
         if script in content:
@@ -538,7 +538,7 @@ def check_guardian_desktop_protection(report: AuditReport):
 
 def check_theme_sync(report: AuditReport):
     """Verifica sincronização de tema entre Jarvis e Cerebro Vivo."""
-    widget_file = SCRIPTS / "widget_controle_jarvis.py"
+    widget_file = SCRIPTS / "widget_edge.py"
     grafo_file = SCRIPTS / "widget_grafo.py"
     extra_js = DOCS / "widget-extra.js"
 
@@ -665,7 +665,7 @@ def check_skills(report: AuditReport):
 def check_python_syntax(report: AuditReport):
     """Verifica sintaxe de todos os scripts Python principais."""
     critical_scripts = [
-        "widget_controle_jarvis.py", "jarvis_bridge.py", "narrador_desktop.py",
+        "widget_edge.py", "jarvis_bridge.py", "narrador_desktop.py",
         "tts_service.py", "system_guardian.py", "frases_manager.py",
         "llm_feedback.py", "model_monitor.py",
     ]
@@ -750,7 +750,7 @@ def check_integration_volume(report: AuditReport):
 def check_integration_theme(report: AuditReport):
     """Verifica se tema flui Jarvis → widget_state → Cerebro Vivo."""
     # Jarvis escreve tema?
-    widget_file = SCRIPTS / "widget_controle_jarvis.py"
+    widget_file = SCRIPTS / "widget_edge.py"
     if _file_exists(widget_file):
         content = widget_file.read_text(encoding="utf-8")
         if "_ler_tema" in content and "theme" in content:
@@ -813,7 +813,7 @@ def check_integration_narrator(report: AuditReport):
                     fix="Widget deve criar ao iniciar")
 
     # Widget reset.position no startup?
-    widget_file = SCRIPTS / "widget_controle_jarvis.py"
+    widget_file = SCRIPTS / "widget_edge.py"
     if _file_exists(widget_file):
         content = widget_file.read_text(encoding="utf-8")
         if "_resetar_posicao_narrador" in content and "def main" in content:
@@ -844,7 +844,7 @@ def check_integration_model_monitor(report: AuditReport):
                         f"{total_models} modelos, {total_requests} requests, latência média {avg_lat}ms")
 
             # Verifica se widget lê llm_feedback
-            widget_file = SCRIPTS / "widget_controle_jarvis.py"
+            widget_file = SCRIPTS / "widget_edge.py"
             if _file_exists(widget_file):
                 content = widget_file.read_text(encoding="utf-8")
                 if "llm_feedback" in content:
@@ -887,7 +887,7 @@ def check_architecture(report: AuditReport):
 
     # Arquivos essenciais
     essential_files = {
-        SCRIPTS / "widget_controle_jarvis.py": "Widget principal",
+        SCRIPTS / "widget_edge.py": "Widget principal",
         SCRIPTS / "jarvis_bridge.py": "Bridge WebSocket",
         SCRIPTS / "narrador_desktop.py": "Narrador",
         SCRIPTS / "tts_service.py": "TTS Service",
@@ -912,7 +912,7 @@ def check_architecture(report: AuditReport):
         names = [f.name for f in widget_files]
         report.add("Arquitetura", "Duplicação de widgets", Severity.WARN,
                     f"Múltiplos arquivos de widget: {', '.join(names)}",
-                    fix="Consolidar widgets em widget_controle_jarvis.py")
+                    fix="Consolidar widgets em widget_edge.py")
     else:
         report.add("Arquitetura", "Duplicação de widgets", Severity.OK,
                     "Sem duplicação de widgets")
@@ -960,7 +960,7 @@ def check_architecture_processes(report: AuditReport):
         for p in processes:
             cmd = p.get("cmd", "").lower()
             for script in ["jarvis_bridge", "narrador_desktop", "tts_service",
-                           "widget_controle_jarvis", "system_guardian"]:
+                           "widget_edge", "system_guardian"]:
                 if script in cmd:
                     script_counts[script] = script_counts.get(script, 0) + 1
 

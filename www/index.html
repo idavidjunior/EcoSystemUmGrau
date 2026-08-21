@@ -1,99 +1,92 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8">
-<link rel="icon" href="edge.ico" type="image/x-icon">
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
 <style>
 :root{
-  --bg:#1e1e2e;--sb:#313244;--in:#181825;--tx:#cdd6f4;--tx2:#a6adc8;--tx3:#6c7086;
-  --on:#a6e3a1;--off:#f38ba8;--acc:#89b4fa;--bdr:#45475a;
+  --bg:#1e1e2e;--sb:#313244;--in:#181825;--tx:#cdd6f4;--tx3:#6c7086;
+  --on:#a6e3a1;--off:#45475a;--acc:#89b4fa;--bdr:#45475a;
 }
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{overflow:hidden;font-family:'Segoe UI',system-ui,sans-serif;
-background:var(--bg);color:var(--tx);width:100%;height:100;}
-.topbar{background:var(--sb);padding:8px 12px;display:flex;align-items:center;gap:8px;}
-.logo{font-size:12px;font-weight:bold;color:var(--on);}
-.dots{display:flex;gap:4px;}
-.dot{width:12px;height:12px;border-radius:6px;background:var(--off);transition:background .2s;}
-.dot.on{background:var(--on);}
-.controls{padding:8px 0;border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);}
-.row{display:flex;align-items:center;gap:6px;margin:2px 0;}
-.label{font-size:9px;color:var(--tx3);white-space:nowrap;}
-.select{font-size:9px;background:var(--in);color:var(--tx);border:1px solid var(--bdr);padding:2px 4px;border-radius:2px;}
-.btn{font-size:9px;padding:3px 6px;border:1px solid var(--bdr);background:var(--bg);color:var(--tx);border-radius:3px;cursor:pointer;}
-.btn:focus{outline:2px solid var(--acc);}
-</style></head><body>
-<div class="topbar">
-  <div class="logo">Edge - EcoSystemUmGrau</div>
-  <div class="dots">
-    <div class="dot" id="dotNarr"></div>
-    <div class="dot" id="dotTTS"></div>
-    <div class="dot" id="dotBridge"></div>
-  </div>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none;user-select:none;}
+html,body{overflow:hidden;font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);width:100%;height:100%;}
+.barra{background:var(--sb);padding:8px 10px;display:flex;align-items:center;gap:8px;cursor:move;}
+.titulo{font-size:12px;font-weight:600;color:var(--tx);flex:1;}
+.pontos{display:flex;gap:5px;margin-right:4px;}
+.pt{width:11px;height:11px;border-radius:50%;background:var(--off);transition:background .25s;display:inline-block;}
+.pt.on{background:var(--on);box-shadow:0 0 5px rgba(166,227,161,.55);}
+.mini{font-size:11px;line-height:1;padding:3px 7px;border:1px solid var(--bdr);border-radius:3px;
+  background:transparent;color:var(--tx3);cursor:pointer;}
+.mini:hover{color:var(--tx);}
+.corpo{padding:12px 14px;display:flex;flex-direction:column;gap:10px;}
+.linha{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--tx3);}
+.rotulo{width:78px;}
+select{flex:1;font-size:11px;background:var(--in);color:var(--tx);border:1px solid var(--bdr);
+  border-radius:3px;padding:3px 6px;outline:none;}
+select:focus{border-color:var(--acc);}
+button#btnVoz{font-size:11px;padding:5px 10px;border:1px solid var(--bdr);border-radius:4px;
+  background:var(--in);color:var(--tx);cursor:pointer;width:110px;}
+button#btnVoz.on{background:#1d3a26;border-color:var(--on);color:var(--on);}
+</style>
+</head>
+<body>
+<div class="barra">
+  <span class="titulo">Edge</span>
+  <span class="pontos">
+    <i class="pt" id="ptNarr" title="Narrador"></i>
+    <i class="pt" id="ptTts" title="TTS"></i>
+    <i class="pt" id="ptBridge" title="Bridge"></i>
+  </span>
+  <button class="mini" onclick="pywebview.api.minimize()">&#8211;</button>
+  <button class="mini" onclick="pywebview.api.close()">&#10005;</button>
 </div>
-<div class="controls">
-  <div class="row">
-    <span class="label">Volume TTS:</span>
-    <select class="select" id="volSlider">
-      <option value="0">0%</option>
-      <option value="30">30%</option>
-      <option value="50" selected>50%</option>
-      <option value="70">70%</option>
-      <option value="100">100%</option>
+<div class="corpo">
+  <div class="linha">
+    <span class="rotulo">Volume TTS</span>
+    <select id="volume">
+      <option value="0">0%</option><option value="30">30%</option>
+      <option value="50">50%</option><option value="70">70%</option>
+      <option value="80">80%</option><option value="100">100%</option>
     </select>
   </div>
-  <div class="row">
-    <span class="label">Timer sono (min):</span>
-    <select class="select" id="sleepTimer">
-      <option value="0">Desativado</option>
-      <option value="5">5 min</option>
-      <option value="15">15 min</option>
-      <option value="30">30 min</option>
+  <div class="linha">
+    <span class="rotulo">Timer sono</span>
+    <select id="sleep">
+      <option value="0">Desativado</option><option value="5">5 min</option>
+      <option value="15">15 min</option><option value="30">30 min</option>
       <option value="60">60 min</option>
     </select>
   </div>
-  <div class="row">
-    <button class="btn" id="btnVoz">Ligar Voz</button>
-    <button class="btn" id="btnMic">Mic</button>
-  </div>
+  <button id="btnVoz">Ligar voz</button>
 </div>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize dots
-  const dots = { narr: false, tts: false, bridge: false };
-  function updateDot(id, state) {
-    const el = document.getElementById('dot' + id);
-    if(el) { el.classList.toggle('on', state); dots[id] = state; }
-  }
-  // Simulated init - will be updated by Python
-  updateDot('narr', false);
-  updateDot('tts', false);
-  updateDot('bridge', false);
-  
-  // Volume control
-  const volSelect = document.getElementById('volSlider');
-  volSelect.addEventListener('change', function() {
-    window.pywebbridge.setVolume(parseInt(this.value));
+function edgeAtualizar(st){
+  document.getElementById('ptNarr').classList.toggle('on', !!st.narr);
+  document.getElementById('ptTts').classList.toggle('on', !!st.tts);
+  document.getElementById('ptBridge').classList.toggle('on', !!st.bridge);
+  var b = document.getElementById('btnVoz');
+  b.classList.toggle('on', !!st.voz);
+  b.textContent = st.voz ? 'Desligar voz' : 'Ligar voz';
+}
+window.addEventListener('pywebviewready', async function(){
+  try{
+    var st = await window.pywebview.api.status();
+    edgeAtualizar(st);
+    document.getElementById('volume').value = st.volume;
+    document.getElementById('sleep').value = st.sleep;
+  }catch(e){}
+  document.getElementById('volume').addEventListener('change', function(e){
+    window.pywebview.api.set_volume(e.target.value);
   });
-  
-  // Sleep timer
-  const sleepSelect = document.getElementById('sleepTimer');
-  sleepSelect.addEventListener('change', function() {
-    window.pywebbridge.setSleep(parseInt(this.value));
+  document.getElementById('sleep').addEventListener('change', function(e){
+    window.pywebview.api.set_sleep(e.target.value);
   });
-  
-  // Voice button
-  const btnVoz = document.getElementById('btnVoz');
-  btnVoz.addEventListener('click', function() {
-    this.classList.toggle('on');
-    window.pywebbridge.voiceToggle();
+  document.getElementById('btnVoz').addEventListener('click', async function(){
+    try{
+      var r = await window.pywebview.api.voice_toggle();
+      edgeAtualizar({voz: r.voz});
+    }catch(e){}
   });
-  
-  // Bridge communication (simulated)
-  setInterval(function() {
-    // Update dots every 2 seconds (will be updated by Python)
-    updateDot('narr', dots.narr);
-    updateDot('tts', dots.tts);
-    updateDot('bridge', dots.bridge);
-  }, 2000);
 });
 </script>
-</body></html>
+</body>
+</html>

@@ -29,7 +29,7 @@ def update_protected_eco_pids():
     for pid_file, script_name in [
         (BASE / "runtime" / "narrador.pid", "narrador_desktop"),
         (BASE / "runtime" / "tts_service.pid", "tts_service"),
-        (BASE / "runtime" / "widget.pid", "widget_controle_jarvis"),
+        (BASE / "runtime" / "widget.pid", "widget_edge"),
     ]:
         try:
             if pid_file.exists():
@@ -160,12 +160,12 @@ def is_tts_service_up():
 
 
 def is_widget_up():
-    """Verifica se widget_controle_jarvis.py está rodando."""
+    """Verifica se widget_edge.py está rodando."""
     # Primeiro tenta via cmdline
     for p in psutil.process_iter(["pid", "name", "cmdline"]):
         try:
             cmd = " ".join(p.info["cmdline"] or []).lower()
-            if "widget_controle_jarvis" in cmd:
+            if "widget_edge" in cmd:
                 return True
         except (psutil.NoSuchProcess, psutil.AccessDenied):
             pass
@@ -177,51 +177,57 @@ def is_widget_up():
             if psutil.pid_exists(pid):
                 p = psutil.Process(pid)
                 cmd = " ".join(p.cmdline() or []).lower()
-                if "widget_controle_jarvis" in cmd:
+                if "widget_edge" in cmd:
                     return True
     except Exception:
         pass
     return False
 
-def start_widget():
-    """Inicia o widget_controle_jarvis.py."""
+def _pid_roda_script(pid, script_py):
+    """Verdadeiro se a cmdline do PID termina com SCRIPT_PY.
+    Existe desde o primeiro instante do processo (independe de pid file)."""
     try:
-        # Mata instâncias existentes primeiro
-        kill_widget()
-        time.sleep(0.5)
-        
+        return any(
+            (t or "").lower().strip('"').endswith(script_py)
+            for t in psutil.Process(pid).cmdline()
+        )
+    except Exception:
+        return False
+
+def start_widget():
+    """Inicia o widget_edge.py."""
+    try:
+        # Edge tem trava própria (O_EXCL em runtime/widget.pid):
+        # se já há instância viva, ela continua; nunca matar antes de gerar.
         py = "C:/Users/David Jr/AppData/Local/Programs/Python/Python312/pythonw.exe"
-        script = str(BASE / "scripts" / "widget_controle_jarvis.py")
+        script = str(BASE / "scripts" / "widget_edge.py")
         proc = subprocess.Popen([py, script], cwd=str(BASE), creationflags=subprocess.CREATE_NO_WINDOW)
-        # Aguarda um pouco para o processo estabilizar
-        time.sleep(1)
-        # Verifica se o processo ainda está vivo
-        if not psutil.pid_exists(proc.pid) or not psutil.Process(proc.pid).is_running():
-            log.error(f"Widget morreu logo após iniciar (PID {proc.pid})")
-            return False
+        # Grava PID imediatamente: minimiza janela sem proteção contra o matador de RAM
+        pid_file = BASE / "runtime" / "widget.pid"
+        try:
+            pid_file.parent.mkdir(parents=True, exist_ok=True)
+            pid_file.write_text(str(proc.pid))
+        except Exception:
+            pass
         # Aguarda e verifica se widget realmente subiu
         for _ in range(10):
             time.sleep(0.5)
-            if psutil.pid_exists(proc.pid) and psutil.Process(proc.pid).is_running():
-                # Escreve PID file para proteção contra RAM cleanup
-                pid_file = BASE / "runtime" / "widget.pid"
-                pid_file.parent.mkdir(parents=True, exist_ok=True)
-                pid_file.write_text(str(proc.pid))
-                log.warning("Widget reiniciado e confirmado rodando")
-                return True
-        log.error(f"Widget morreu logo após iniciar (PID {proc.pid})")
-        return False
+            if not (psutil.pid_exists(proc.pid) and psutil.Process(proc.pid).is_running()):
+                log.error(f"Widget morreu logo após iniciar (PID {proc.pid})")
+                return False
+        log.warning("Widget iniciado e confirmado rodando")
+        return True
     except Exception as e:
         log.error(f"Falha ao iniciar widget: {e}")
     return False
 
 def kill_widget():
-    """Mata todas as instâncias do widget_controle_jarvis.py."""
+    """Mata todas as instâncias do widget_edge.py."""
     killed = False
     for p in psutil.process_iter(["pid", "name"]):
         try:
             cmd = " ".join(p.cmdline() or []).lower()
-            if "widget_controle_jarvis" in cmd:
+            if "widget_edge" in cmd:
                 p.terminate()
                 try:
                     p.wait(timeout=3)
@@ -383,7 +389,7 @@ def is_eco_active() -> bool:
 
 
 def is_widget_pid(pid: int) -> bool:
-    """Verifica se PID é do widget_controle_jarvis.py via PID file."""
+    """Verifica se PID é do widget_edge.py via PID file."""
     try:
         pid_file = BASE / "runtime" / "widget.pid"
         if pid_file.exists():
@@ -480,8 +486,11 @@ def get_kill_candidates():
     return candidates
 def kill_process(pid, name, reason):
     # CLÁUSULA PÉTREA: nunca matar serviços Eco (narrador, tts_service, widget)
-    # Proteção incondicional - não depende de is_eco_active()
-    if is_narrador_pid(pid) or is_tts_service_pid(pid) or is_widget_pid(pid):
+    # Proteção dupla: pid file E cmdline (imune a corrida de gravação)
+    if (_pid_roda_script(pid, "narrador_desktop.py")
+            or _pid_roda_script(pid, "tts_service.py")
+            or _pid_roda_script(pid, "widget_edge.py")
+            or is_narrador_pid(pid) or is_tts_service_pid(pid) or is_widget_pid(pid)):
         log.warning(f"Kill bloqueado para serviço Eco PID {pid} ({name}): {reason}")
         return False
     try:

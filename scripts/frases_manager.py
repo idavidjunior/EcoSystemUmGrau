@@ -212,7 +212,7 @@ frases_sleep = FraseManager("sleep", [
 def falar_acao(acao: str, funcao_falar):
     """Fala frase da ação se voz ativa."""
     try:
-        from widget_controle_jarvis import ler_estado_voz
+        from widget_edge import ler_estado_voz
         at, pa = ler_estado_voz()
         if at and not pa:
             manager = {

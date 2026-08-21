@@ -500,7 +500,7 @@ def _snapshot_estado_ecossistema():
     except Exception:
         pass
     try:
-        from widget_controle_jarvis import ultima_fala
+        from widget_edge import ultima_fala
         fala = ultima_fala()
         if fala:
             voice["last_spoken"] = fala
