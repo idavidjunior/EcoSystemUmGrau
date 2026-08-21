@@ -295,9 +295,14 @@ class Narrador:
                             log("interrompido (parar_fala.flag detectado durante fala)")
                             break
                         if resp_file.exists():
-                            resp = json.loads(resp_file.read_text(encoding="utf-8"))
-                            if resp.get("status") != "ok":
-                                log(f"TTS service erro: {resp.get('msg')}")
+                            content = resp_file.read_text(encoding="utf-8")
+                            if content and content.strip():
+                                try:
+                                    resp = json.loads(content)
+                                    if resp.get("status") != "ok":
+                                        log(f"TTS service erro: {resp.get('msg')}")
+                                except (json.JSONDecodeError, TypeError):
+                                    pass
                             break
                         time.sleep(0.05)
                 finally:
@@ -328,11 +333,16 @@ def teste_audio():
         try:
             for _ in range(1800):
                 if resp_file.exists():
-                    resp = json.loads(resp_file.read_text(encoding="utf-8"))
-                    if resp.get("status") == "ok":
-                        print("OK: audio reproduzido via TTS Service.")
-                    else:
-                        print(f"ERRO: {resp.get('msg')}")
+                    content = resp_file.read_text(encoding="utf-8")
+                    if content and content.strip():
+                        try:
+                            resp = json.loads(content)
+                            if resp.get("status") == "ok":
+                                print("OK: audio reproduzido via TTS Service.")
+                            else:
+                                print(f"ERRO: {resp.get('msg')}")
+                        except (json.JSONDecodeError, TypeError):
+                            pass
                     return 0
                 time.sleep(0.05)
             print("TIMEOUT: TTS Service não respondeu")
