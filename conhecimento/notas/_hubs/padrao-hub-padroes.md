@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**267 notas** conectadas a este hub.
+**268 notas** conectadas a este hub.
 
 
 ## Notas
@@ -266,6 +266,7 @@
 - [[vibration-pattern]]
 - [[wait-strategy-adaptive]]
 - [[widget-desktop-grafo-tempo-real]]
+- [[widget-edge-estabilizado-fonte-unica-processos]]
 - [[widget-jarvis-8-features-implementadas]]
 - [[win32-control-pattern-recognition]]
 - [[windows-notificationballoon-dismissal]]

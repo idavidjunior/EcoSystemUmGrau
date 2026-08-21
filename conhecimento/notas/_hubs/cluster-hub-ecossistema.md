@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**202 notas** do cluster ecossistema.
+**203 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -204,5 +204,6 @@
 - [[voxaudioplayer-temp-file-leak-on-exception]]
 - [[widget-desktop-frameless-persistente]]
 - [[widget-desktop-grafo-tempo-real]]
+- [[widget-edge-estabilizado-fonte-unica-processos]]
 - [[widget-evolucao-3-niveis]]
 - [[widget-jarvis-8-features-implementadas]]

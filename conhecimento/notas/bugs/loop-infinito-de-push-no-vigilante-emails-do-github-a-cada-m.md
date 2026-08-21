@@ -1,5 +1,5 @@
 ---
-tags: [auto, bug, constantemente, descoberta, opencode, projetos]
+tags: [automacao, bug, constantemente, descoberta, opencode, projetos]
 aliases: [Loop infinito de push no Vigilante (emails do GitHub a cada ]
 date: 2026-08-21
 ---

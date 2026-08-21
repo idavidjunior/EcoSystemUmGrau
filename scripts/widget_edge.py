@@ -198,6 +198,21 @@ def instancia_unica():
     for _ in range(2):
         try:
             fd = os.open(PID_FILE, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            # Defesa extra: se outro widget_edge VIVO existe mesmo sem arquivo
+            # (trava apagada por agente externo), não somos o dono verdadeiro.
+            try:
+                for p in psutil.process_iter(["pid", "cmdline"]):
+                    if p.info["pid"] == os.getpid():
+                        continue
+                    if any(
+                        t.lower().strip('"').endswith("widget_edge.py")
+                        for t in (p.info["cmdline"] or [])
+                    ):
+                        os.close(fd)
+                        PID_FILE.unlink()
+                        return False
+            except Exception:
+                pass
             os.write(fd, me.encode())
             os.close(fd)
             return True

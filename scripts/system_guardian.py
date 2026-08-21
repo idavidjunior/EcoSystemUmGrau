@@ -20,34 +20,35 @@ CPU_HISTORY = {}
 # PIDs dos serviços Eco protegidos - atualizado a cada ciclo
 PROTECTED_ECO_PIDS = set()
 
+# Fonte única de verdade dos serviços Eco: a própria tabela de processos.
+# Correspondência por token terminando em "<script>.py" (imune a falsos
+# positivos de wrappers powershell/python -c que só CONTÊM a string).
+SERVICOS_ECO_SCRIPTS = ("narrador_desktop.py", "tts_service.py", "widget_edge.py")
+
+def _token_e_script(token, script):
+    return ((token or "").lower().strip('"').endswith(script))
+
+def _pids_servicos_eco():
+    """Retorna {script_py: pid} do primeiro processo vivo de cada serviço Eco."""
+    achados = {}
+    for p in psutil.process_iter(["pid", "cmdline"]):
+        try:
+            for t in (p.info["cmdline"] or []):
+                for script in SERVICOS_ECO_SCRIPTS:
+                    if script not in achados and _token_e_script(t, script):
+                        achados[script] = p.info["pid"]
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            pass
+    return achados
+
 def update_protected_eco_pids():
     """Atualiza conjunto de PIDs dos serviços Eco que nunca devem ser mortos.
-    Verifica se o processo está realmente rodando e é o script correto.
+
+    Varredura direta da tabela de processos: não lê nem apaga arquivos de
+    PID (a trava runtime/widget.pid pertence exclusivamente ao widget).
     """
     global PROTECTED_ECO_PIDS
-    PROTECTED_ECO_PIDS.clear()
-    for pid_file, script_name in [
-        (BASE / "runtime" / "narrador.pid", "narrador_desktop"),
-        (BASE / "runtime" / "tts_service.pid", "tts_service"),
-        (BASE / "runtime" / "widget.pid", "widget_edge"),
-    ]:
-        try:
-            if pid_file.exists():
-                pid = int(pid_file.read_text().strip())
-                if pid > 0 and psutil.pid_exists(pid):
-                    p = psutil.Process(pid)
-                    cmd = " ".join(p.cmdline() or []).lower()
-                    if script_name in cmd:
-                        PROTECTED_ECO_PIDS.add(pid)
-                    else:
-                        # PID file stale - processo diferente rodando nesse PID
-                        log.warning(f"PID file {pid_file.name} stale: PID {pid} não é {script_name}")
-                        pid_file.unlink(missing_ok=True)
-                else:
-                    # PID file stale - processo não existe mais
-                    pid_file.unlink(missing_ok=True)
-        except Exception:
-            pass
+    PROTECTED_ECO_PIDS = set(_pids_servicos_eco().values())
 
 logging.basicConfig(
     level=logging.INFO,
@@ -113,75 +114,16 @@ def start_serve():
     return False
 
 def is_narrador_up():
-    """Verifica se narrador_desktop.py está rodando."""
-    # Primeiro tenta via cmdline
-    for p in psutil.process_iter(["pid", "name", "cmdline"]):
-        try:
-            cmd = " ".join(p.info["cmdline"] or []).lower()
-            if "narrador_desktop" in cmd:
-                return True
-        except (psutil.NoSuchProcess, psutil.AccessDenied):
-            pass
-    # Fallback: verifica PID file
-        try:
-            pid_file = BASE / "runtime" / "narrador.pid"
-            if pid_file.exists():
-                pid = int(pid_file.read_text().strip())
-                if psutil.pid_exists(pid):
-                    p = psutil.Process(pid)
-                    cmd = " ".join(p.cmdline() or []).lower()
-                    if "narrador_desktop" in cmd:
-                        return True
-        except Exception:
-            pass
-    return False
-def is_tts_service_up():
-    """Verifica se tts_service.py está rodando."""
-    for p in psutil.process_iter(["pid", "name", "cmdline"]):
-        try:
-            cmd = " ".join(p.info["cmdline"] or []).lower()
-            if "tts_service" in cmd:
-                return True
-        except (psutil.NoSuchProcess, psutil.AccessDenied):
-            pass
-    # Fallback: verifica PID file
-        try:
-            pid_file = BASE / "runtime" / "tts_service.pid"
-            if pid_file.exists():
-                pid = int(pid_file.read_text().strip())
-                if psutil.pid_exists(pid):
-                    p = psutil.Process(pid)
-                    cmd = " ".join(p.cmdline() or []).lower()
-                    if "tts_service" in cmd:
-                        return True
-        except Exception:
-            pass
-    return False
+    """Narrador vivo? Fonte única: varredura de cmdline por token."""
+    return "narrador_desktop.py" in _pids_servicos_eco()
 
+def is_tts_service_up():
+    """TTS Service vivo? Fonte única: varredura de cmdline por token."""
+    return "tts_service.py" in _pids_servicos_eco()
 
 def is_widget_up():
-    """Verifica se widget_edge.py está rodando."""
-    # Primeiro tenta via cmdline
-    for p in psutil.process_iter(["pid", "name", "cmdline"]):
-        try:
-            cmd = " ".join(p.info["cmdline"] or []).lower()
-            if "widget_edge" in cmd:
-                return True
-        except (psutil.NoSuchProcess, psutil.AccessDenied):
-            pass
-    # Fallback: verifica PID file
-    try:
-        pid_file = BASE / "runtime" / "widget.pid"
-        if pid_file.exists():
-            pid = int(pid_file.read_text().strip())
-            if psutil.pid_exists(pid):
-                p = psutil.Process(pid)
-                cmd = " ".join(p.cmdline() or []).lower()
-                if "widget_edge" in cmd:
-                    return True
-    except Exception:
-        pass
-    return False
+    """Widget Edge vivo? Fonte única: varredura de cmdline por token."""
+    return "widget_edge.py" in _pids_servicos_eco()
 
 def _pid_roda_script(pid, script_py):
     """Verdadeiro se a cmdline do PID termina com SCRIPT_PY.
@@ -202,13 +144,8 @@ def start_widget():
         py = "C:/Users/David Jr/AppData/Local/Programs/Python/Python312/pythonw.exe"
         script = str(BASE / "scripts" / "widget_edge.py")
         proc = subprocess.Popen([py, script], cwd=str(BASE), creationflags=subprocess.CREATE_NO_WINDOW)
-        # Grava PID imediatamente: minimiza janela sem proteção contra o matador de RAM
-        pid_file = BASE / "runtime" / "widget.pid"
-        try:
-            pid_file.parent.mkdir(parents=True, exist_ok=True)
-            pid_file.write_text(str(proc.pid))
-        except Exception:
-            pass
+        # NÃO escreve runtime/widget.pid: essa trava pertence ao widget (O_EXCL).
+        # Guardian é apenas observador via tabela de processos.
         # Aguarda e verifica se widget realmente subiu
         for _ in range(10):
             time.sleep(0.5)

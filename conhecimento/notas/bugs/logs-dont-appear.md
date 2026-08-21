@@ -1,5 +1,5 @@
 ---
-tags: [bug, feedback, filtering, messages, mp3player-metadata-rescue, visual]
+tags: [bug, feedback, messages, mp3player-metadata-rescue, projeto, visual]
 aliases: [Logs don't appear]
 date: 2026-08-21
 ---

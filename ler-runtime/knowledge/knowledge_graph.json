@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-21T15:19:05.547823",
+  "last_updated": "2026-08-21T17:18:00.757514",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -1956,6 +1956,14 @@
       "description": "---\ntipo: padrao\ntags: [financas, analise-financeira, quant, crypto, risco]\ndata: 2026-08-21\ncontexto: Sistema completo de análise financeira do ecossistema (/finanças e @finanças)\ndecisao: |\n  Criado sistema de análise financeira em 10 módulos independentes em scripts/financas/,\n  cada um com CLI a",
       "domain": "general",
       "extracted_at": "2026-08-21T05:34:34.258224"
+    },
+    {
+      "source": "opencode",
+      "title": "widget edge estabilizado fonte unica processos",
+      "action": "Widget flutuante widget_edge.py (pywebview) morria silenciosamente em segundos ao rodar em background; loop eterno de reinicio do guardian a cada ~21s no guardian_log.txt.",
+      "description": "---\ntipo: padrao\ntags: [widget, guardian, o-excl, psutil, corrida, ram-killer, fonte-unica]\ndata: 2026-08-21\ncontexto: Widget flutuante widget_edge.py (pywebview) morria silenciosamente em segundos ao rodar em background; loop eterno de reinicio do guardian a cada ~21s no guardian_log.txt.\ndecisao: ",
+      "domain": "general",
+      "extracted_at": "2026-08-21T17:17:43.021317"
     }
   ],
   "decisions": [
