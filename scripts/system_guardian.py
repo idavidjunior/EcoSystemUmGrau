@@ -266,7 +266,7 @@ def is_tailscale(pid):
 def is_eco_active() -> bool:
     """Verifica se Eco está ativo via narracao_estado.json."""
     try:
-        ctrl = ROOT / "runtime" / "narracao_estado.json"
+        ctrl = BASE / "runtime" / "narracao_estado.json"
         if ctrl.exists():
             d = json.loads(ctrl.read_text(encoding="utf-8"))
             return bool(d.get("ativo", False)) and not bool(d.get("pausado", False))
@@ -370,6 +370,10 @@ def get_kill_candidates():
     return candidates
 
 def kill_process(pid, name, reason):
+    # CLÁUSULA PÉTREA: nunca matar serviços Eco (narrador, tts_service, widget)
+    if is_eco_active() and (is_narrador_pid(pid) or is_tts_service_pid(pid) or is_widget_pid(pid)):
+        log.warning(f"Kill bloqueado para serviço Eco PID {pid} ({name}): {reason}")
+        return False
     try:
         p = psutil.Process(pid)
         mem_mb = p.memory_info().rss / 1024 / 1024
@@ -454,6 +458,11 @@ def check_and_act():
                 name = info["name"]
                 cpu_avg = sum(c for _, c in info["samples"]) / len(info["samples"])
                 log.warning(f"CPU runaway detectado: PID {pid} ({name}) média {cpu_avg:.1f}% por {CPU_RUNAWAY_SECONDS}s")
+                # Protege serviços Eco do CPU runaway kill
+                if is_eco_active() and (is_narrador_pid(pid) or is_tts_service_pid(pid) or is_widget_pid(pid)):
+                    log.warning(f"CPU runaway em serviço Eco PID {pid} - protegido, não matar")
+                    CPU_HISTORY.pop(pid, None)
+                    continue
                 if kill_process(pid, name, f"CPU runaway {cpu_avg:.1f}% por {CPU_RUNAWAY_SECONDS}s"):
                     state["actions"].append({"action": "kill_cpu_runaway", "pid": pid, "name": name, "cpu_avg": round(cpu_avg, 1)})
                     if name.lower() == "python" and ram_mb < RAM_WARN_MB:
@@ -506,19 +515,22 @@ def run_audit_periodico():
             return
         r = subprocess.run(
             [sys.executable, str(audit_script), "--json"],
-            capture_output=True, text=True, timeout=30, cwd=str(BASE)
+            capture_output=True, text=True, encoding="utf-8", timeout=30, cwd=str(BASE)
         )
-        if r.returncode == 0:
-            data = json.loads(r.stdout)
-            score = data.get("score", 0)
-            errors = sum(1 for f in data.get("findings", []) if f.get("severity") == "error")
-            warns = sum(1 for f in data.get("findings", []) if f.get("severity") == "warn")
-            if errors > 0 or warns > 0:
-                log.warning(f"AUDIT: score={score}/100, {errors} erros, {warns} warnings")
-            else:
-                log.info(f"AUDIT: score={score}/100, tudo OK")
+        if r.returncode == 0 and r.stdout:
+            try:
+                data = json.loads(r.stdout)
+                score = data.get("score", 0)
+                errors = sum(1 for f in data.get("findings", []) if f.get("severity") == "error")
+                warns = sum(1 for f in data.get("findings", []) if f.get("severity") == "warn")
+                if errors > 0 or warns > 0:
+                    log.warning(f"AUDIT: score={score}/100, {errors} erros, {warns} warnings")
+                else:
+                    log.info(f"AUDIT: score={score}/100, tudo OK")
+            except json.JSONDecodeError as e:
+                log.error(f"AUDIT: JSON inválido - {e}")
         else:
-            log.error(f"AUDIT falhou: {r.stderr[:200]}")
+            log.error(f"AUDIT falhou: {r.stderr[:200] if r.stderr else 'sem output'}")
     except Exception as e:
         log.error(f"AUDIT erro: {e}")
 

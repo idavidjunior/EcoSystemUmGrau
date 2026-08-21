@@ -721,7 +721,12 @@ def _clamp_geo(data: dict) -> dict:
 
 def _carregar_geo() -> dict:
     if not GEO_FILE.exists():
-        return {"x": None, "y": None, "width": DEFAULT_W, "height": DEFAULT_H}
+        # Padrão: canto inferior esquerdo
+        area = _screen_area()
+        if area:
+            sw, sh = area
+            return {"x": 0, "y": max(0, sh - DEFAULT_H), "width": DEFAULT_W, "height": DEFAULT_H}
+        return {"x": 0, "y": None, "width": DEFAULT_W, "height": DEFAULT_H}
     try:
         raw = GEO_FILE.read_text(encoding="utf-8")
         d = json.loads(raw) if raw.strip() else {}

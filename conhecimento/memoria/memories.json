@@ -10411,7 +10411,22 @@
     "source_type": "experiencia",
     "access_count": 0,
     "created_at": "2026-08-20T11:51:45.798518",
-    "last_accessed": "2026-08-20T11:51:45.798518"
+    "last_accessed": "2026-08-20T11:51:45.798518",
+    "solucao_aplicada": {
+      "desc": "Causa raiz: duas instâncias do narrador_desktop.py competindo pelo mesmo arquivo narrador_posicao.json. Correções: 1) Adicionado PID file check para prevenir instâncias múltiplas, 2) Adicionado retry com 3 tentativas no salvar_posicao para PermissionError, 3) PID file limpo no finally. 45 erros resolvidos de 64 (70.3%).",
+      "script": null,
+      "data": "2026-08-20T11:51:45.798518",
+      "validado": false,
+      "tags": [
+        "alta-confianca",
+        "finally",
+        "limpo",
+        "permissionerror",
+        "salvar",
+        "tentativas",
+        "retry"
+      ]
+    }
   },
   {
     "id": 403,
@@ -10572,7 +10587,22 @@
     "source_type": "experiencia",
     "access_count": 0,
     "created_at": "2026-08-20T17:35:37.242544",
-    "last_accessed": "2026-08-20T17:35:37.242544"
+    "last_accessed": "2026-08-20T17:35:37.242544",
+    "solucao_aplicada": {
+      "desc": "Causa raiz: arquivo .git/hooks/pre-commit sem extensao era um batch disfarcado que o git nao conseguia spawnar (cannot spawn .git/hooks/pre-commit). Todo commit via gate falhava silenciosamente porque persistencia.ps1 engole a saida do git commit e registra o HEAD antigo como se fosse commit novo. Correcao: remover o hook quebrado, mantendo pre-commit.cmd + pre-commit.py validos. Commit 1c8b0921 criado com sucesso incluindo 2026-08-20-engenheiro-criterioso.md e memories.json.",
+      "script": null,
+      "data": "2026-08-20T17:35:37.242544",
+      "validado": false,
+      "tags": [
+        "alta-confianca",
+        "spawn",
+        "spawnar",
+        "conseguia",
+        "nao",
+        "disfarcado",
+        "batch"
+      ]
+    }
   },
   {
     "id": 410,
