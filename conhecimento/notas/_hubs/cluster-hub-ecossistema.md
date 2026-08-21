@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**201 notas** do cluster ecossistema.
+**202 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -193,6 +193,7 @@
 - [[servidores-mcp-node-criados-e-validados]]
 - [[sessao-de-configuracao-do-opencode-com-failover-de-servidor-]]
 - [[sessao-focada-em-organizacao-de-workspace-unificacao-de-proj]]
+- [[sistema-de-análise-financeira]]
 - [[stt-no-partialstreaming-results]]
 - [[toast-de-erros-falsos-positivos]]
 - [[transparencia-execucao-tarefas]]

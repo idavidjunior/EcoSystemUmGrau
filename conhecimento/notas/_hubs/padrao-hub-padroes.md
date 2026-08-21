@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**266 notas** conectadas a este hub.
+**267 notas** conectadas a este hub.
 
 
 ## Notas
@@ -224,6 +224,7 @@
 - [[shadow-dom-penetration]]
 - [[sharedpreferences-pattern-immediate-save]]
 - [[siglas-acrônimos-e-nomes-próprios-manter-traduzir-ou-adaptar]]
+- [[sistema-de-análise-financeira]]
 - [[sotaques-e-variantes-do-português-falado-transcrever-sem-dis]]
 - [[spa-navigation-detection]]
 - [[sql-joins-e-semântica-de-conjunto]]

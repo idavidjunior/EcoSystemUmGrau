@@ -10764,5 +10764,28 @@
     "access_count": 0,
     "created_at": "2026-08-21T05:33:35.123526",
     "last_accessed": "2026-08-21T05:33:35.123526"
+  },
+  {
+    "id": 417,
+    "kind": "padrao",
+    "task": "Widget Financas integrado ao EcoDashboard com dados reais",
+    "summary": "Snapshot Python (scripts/financas/snapshot.py) busca Selic/IPCA/CDI do BCB SGS, USD/BRL AwesomeAPI, BTC/ETH CoinGecko e tabela Tesouro Direto ao vivo (espelho Investidor10 da B3; API oficial morta com 410/Cloudflare). Escrita atomica em runtime/financas_snapshot.json. Flutter: modelo financas_state.dart, FinancasService com refresh 5min, view Financas com nav item no eco_dashboard.dart (cards Macro/Mercado/Tesouro/Projecao). Regra descoberta: fracao minima Tesouro = 1% do preco unitario, logo Selic 2031 (R.647) tem fracao de R acessivel com R. 4 testes Flutter passando; flutter analyze sem erros no codigo novo. Teste antigo widget_test.dart referenciava MyApp inexistente (template nunca adaptado) — reescrito como testes unitarios do modelo; app completo nao monta em teste por BridgeClient/WebSocket (limitacao pre-existente registrada).",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "investidor10",
+      "espelho",
+      "vivo",
+      "direto",
+      "tabela",
+      "coingecko"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-21T07:55:14.960069",
+    "last_accessed": "2026-08-21T07:55:14.960069"
   }
 ]

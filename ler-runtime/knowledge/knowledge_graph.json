@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-21T00:56:55.104896",
+  "last_updated": "2026-08-21T05:34:49.632217",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -1948,6 +1948,14 @@
       "description": "---\ntipo: padrao\ntags: [widget, jarvis, ui, features]\ndata: 2026-08-20\n---\n\n# Widget Jarvis - 8 Features Implementadas\n\n## Decisao\nAdicionar 8 funcionalidades ao widget flutuante Jarvis para aumentar visibilidade e controle.\n\n## Features\n1. **Indicador de conexao** - 3 dots (Narrador, TTS, Bridge) c",
       "domain": "general",
       "extracted_at": "2026-08-20T06:28:26.220777"
+    },
+    {
+      "source": "opencode",
+      "title": "Sistema de Análise Financeira",
+      "action": "Sistema completo de análise financeira do ecossistema (/finanças e @finanças)",
+      "description": "---\ntipo: padrao\ntags: [financas, analise-financeira, quant, crypto, risco]\ndata: 2026-08-21\ncontexto: Sistema completo de análise financeira do ecossistema (/finanças e @finanças)\ndecisao: |\n  Criado sistema de análise financeira em 10 módulos independentes em scripts/financas/,\n  cada um com CLI a",
+      "domain": "general",
+      "extracted_at": "2026-08-21T05:34:34.258224"
     }
   ],
   "decisions": [
