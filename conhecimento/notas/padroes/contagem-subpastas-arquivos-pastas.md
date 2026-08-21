@@ -1,7 +1,7 @@
 ---
 tags: [dentro, opencode, padrao, pastas, quantidade, tela]
 aliases: [contagem subpastas arquivos pastas]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # contagem subpastas arquivos pastas

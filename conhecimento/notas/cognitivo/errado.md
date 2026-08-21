@@ -1,7 +1,7 @@
 ---
-tags: [ativo, cognitivo, conexao, device, find, general]
+tags: [ativo, cognitivo, conexao, device, general, viavel]
 aliases: [ERRADO]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # ERRADO

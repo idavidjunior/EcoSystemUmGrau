@@ -1,7 +1,7 @@
 ---
 tags: [androidpuresdk, comma, grid, insert, len, padrao]
 aliases: [Numpad with StringBuilder buffer]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # Numpad with StringBuilder buffer

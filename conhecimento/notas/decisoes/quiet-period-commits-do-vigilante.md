@@ -1,7 +1,7 @@
 ---
 tags: [arquivos, ciclo, decisao, opencode, passando, retroalimenta]
 aliases: [quiet period commits do vigilante]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # quiet period commits do vigilante

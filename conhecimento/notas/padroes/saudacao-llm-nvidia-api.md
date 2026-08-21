@@ -1,7 +1,7 @@
 ---
 tags: [contribuicao, evolucao, opencode, padrao, precisava, secundario]
 aliases: [saudacao llm nvidia api]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # saudacao llm nvidia api

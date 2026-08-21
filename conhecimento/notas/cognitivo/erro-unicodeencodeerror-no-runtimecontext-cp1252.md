@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, compreensão, general, módulo, pedido, pedidos]
 aliases: [Erro: UnicodeEncodeError no runtime_context (cp1252)]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # Erro: UnicodeEncodeError no runtime_context (cp1252)

@@ -1,7 +1,7 @@
 ---
 tags: [formal, padrao, pontuação, pt-br, regional, vocabulário]
 aliases: [Norma culta x coloquial no pt-BR: quando usar cada registro ]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # Norma culta x coloquial no pt-BR: quando usar cada registro na tradução

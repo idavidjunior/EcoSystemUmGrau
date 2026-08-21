@@ -1,7 +1,7 @@
 ---
-tags: [agentes, dessincronizados, fontes, opencodeopencode, padrao, sync]
+tags: [dessincronizados, fontes, opencodeopencode, padrao, protocolos, sync]
 aliases: [padrao organizacao comandos]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # padrao organizacao comandos

@@ -1,7 +1,7 @@
 ---
 tags: [autoavaliação, decisao, errado, está, indivíduo, opencode]
 aliases: [engenheiro criterioso]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # engenheiro criterioso

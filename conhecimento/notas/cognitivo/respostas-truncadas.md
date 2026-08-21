@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, cortada, entregar, general, llm, mitigacao]
 aliases: [respostas truncadas]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # respostas truncadas

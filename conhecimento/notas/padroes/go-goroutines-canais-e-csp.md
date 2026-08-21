@@ -1,7 +1,7 @@
 ---
 tags: [consumidores, demanda, fatal, golang, padrao, pelo]
 aliases: [Go: goroutines, canais e CSP]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # Go: goroutines, canais e CSP

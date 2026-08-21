@@ -1,7 +1,7 @@
 ---
-tags: [message, opencodeopencode, padrao, percent, progress, varreduras]
+tags: [fonte, message, opencodeopencode, padrao, percent, varreduras]
 aliases: [aegis barra progresso tempo real]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # aegis barra progresso tempo real

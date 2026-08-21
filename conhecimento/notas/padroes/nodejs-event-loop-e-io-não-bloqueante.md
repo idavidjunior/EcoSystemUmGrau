@@ -1,7 +1,7 @@
 ---
 tags: [blocking, delegado, interface, node, non, padrao]
 aliases: [Node.js: event loop e I/O não bloqueante]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # Node.js: event loop e I/O não bloqueante

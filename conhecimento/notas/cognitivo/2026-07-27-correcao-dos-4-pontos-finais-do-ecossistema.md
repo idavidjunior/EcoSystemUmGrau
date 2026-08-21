@@ -1,7 +1,7 @@
 ---
 tags: [agentes, cognitivo, general, graph, python, tem]
 aliases: [# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # # 2026-07-27 - Correcao dos 4 pontos finais do ecossistema

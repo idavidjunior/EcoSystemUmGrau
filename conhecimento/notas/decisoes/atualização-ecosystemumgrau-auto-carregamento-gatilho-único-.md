@@ -1,7 +1,7 @@
 ---
 tags: [boota, decisao, isolada, nele, opencode, tenha]
 aliases: [Atualização: EcoSystemUmGrau Auto-Carregamento + Gatilho Úni]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # Atualização: EcoSystemUmGrau Auto-Carregamento + Gatilho Único "Eco"

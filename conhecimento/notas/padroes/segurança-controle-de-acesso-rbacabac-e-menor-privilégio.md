@@ -1,7 +1,7 @@
 ---
 tags: [delete, específicos, padrao, schemas, seguranca, update]
 aliases: [Segurança: controle de acesso — RBAC/ABAC e menor privilégio]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # Segurança: controle de acesso — RBAC/ABAC e menor privilégio

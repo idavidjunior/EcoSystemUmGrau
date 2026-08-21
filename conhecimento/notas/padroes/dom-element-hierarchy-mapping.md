@@ -1,7 +1,7 @@
 ---
 tags: [filho, instavel, mudam, padrao, posicao, treinamentonavegacao]
 aliases: [DOM element hierarchy mapping]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # DOM element hierarchy mapping

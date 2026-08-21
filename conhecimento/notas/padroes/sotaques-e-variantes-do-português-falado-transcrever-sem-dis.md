@@ -1,7 +1,7 @@
 ---
-tags: [alvo, asiático, padrao, peixe, público, traducao-audio]
+tags: [alvo, culturais, errada, padrao, público, traducao-audio]
 aliases: [Sotaques e variantes do português falado: transcrever sem di]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # Sotaques e variantes do português falado: transcrever sem distorcer o sentido

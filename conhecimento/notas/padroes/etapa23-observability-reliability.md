@@ -1,7 +1,7 @@
 ---
 tags: [incidents, mode, opencodeopencode, padrao, security, watchdog]
 aliases: [etapa23 observability reliability]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # etapa23 observability reliability

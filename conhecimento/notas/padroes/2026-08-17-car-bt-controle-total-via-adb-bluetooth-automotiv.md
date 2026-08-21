@@ -1,7 +1,7 @@
 ---
 tags: [android, celular, conectado, opencodeopencode, padrao, xiaomi]
 aliases: [2026-08-17: CAR-BT — controle total via adb (Bluetooth autom]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # 2026-08-17: CAR-BT — controle total via adb (Bluetooth automotivo)

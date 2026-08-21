@@ -1,7 +1,7 @@
 ---
 tags: [opencodeopencode, padrao, portugues, pronunciado, páiton, termo]
 aliases: [pronuncia python ptbr]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # pronuncia python ptbr

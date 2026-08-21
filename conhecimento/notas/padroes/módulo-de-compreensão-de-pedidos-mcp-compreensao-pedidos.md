@@ -1,7 +1,7 @@
 ---
 tags: [ação, converte, entende, opencode, padrao, quer]
 aliases: [Módulo de Compreensão de Pedidos (mcp-compreensao-pedidos)]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # Módulo de Compreensão de Pedidos (mcp-compreensao-pedidos)

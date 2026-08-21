@@ -1,7 +1,7 @@
 ---
 tags: [autoevolutivo, bridge, bug, opencodeopencode, padrao, unificacao]
 aliases: [Fix ativação de voz + Sistema de frases unificado]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # Fix ativação de voz + Sistema de frases unificado

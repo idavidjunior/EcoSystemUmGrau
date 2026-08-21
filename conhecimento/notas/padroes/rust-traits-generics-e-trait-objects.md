@@ -1,7 +1,7 @@
 ---
 tags: [dry, padrao, retornado, rust, safe, útil]
 aliases: [Rust: traits, generics e trait objects]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # Rust: traits, generics e trait objects

@@ -1,7 +1,7 @@
 ---
 tags: [bug, feedback, filtering, messages, mp3player-metadata-rescue, visual]
 aliases: [Logs don't appear]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # Logs don't appear

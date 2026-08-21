@@ -1,7 +1,7 @@
 ---
 tags: [algumas, decisao, marcações, opencode, versões, vozes]
 aliases: [# 2026-07-31 - Mecanismo de fonemas SSML reativado com fallb]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # # 2026-07-31 - Mecanismo de fonemas SSML reativado com fallback seguro

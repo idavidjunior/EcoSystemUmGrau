@@ -1,7 +1,7 @@
 ---
 tags: [custo, erros, localizacao, padrao, parametrizados, qualidade]
 aliases: [Localização (l10n) vs internacionalização (i18n) vs transcre]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # Localização (l10n) vs internacionalização (i18n) vs transcreation

@@ -1,7 +1,7 @@
 ---
 tags: [definidos, devem, hash, juntos, padrao, python]
 aliases: [Python: decoradores e metaprogramação]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # Python: decoradores e metaprogramação

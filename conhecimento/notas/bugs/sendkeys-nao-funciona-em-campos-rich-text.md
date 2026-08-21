@@ -1,7 +1,7 @@
 ---
 tags: [bug, input, inputevent, projeto, treinamentonavegacao, visivel]
 aliases: [send_keys nao funciona em campos rich-text]
-date: 2026-08-20
+date: 2026-08-21
 ---
 
 # send_keys nao funciona em campos rich-text
