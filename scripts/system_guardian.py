@@ -17,6 +17,38 @@ CHECK_INTERVAL = 20
 
 CPU_HISTORY = {}
 
+# PIDs dos serviços Eco protegidos - atualizado a cada ciclo
+PROTECTED_ECO_PIDS = set()
+
+def update_protected_eco_pids():
+    """Atualiza conjunto de PIDs dos serviços Eco que nunca devem ser mortos.
+    Verifica se o processo está realmente rodando e é o script correto.
+    """
+    global PROTECTED_ECO_PIDS
+    PROTECTED_ECO_PIDS.clear()
+    for pid_file, script_name in [
+        (BASE / "runtime" / "narrador.pid", "narrador_desktop"),
+        (BASE / "runtime" / "tts_service.pid", "tts_service"),
+        (BASE / "runtime" / "widget.pid", "widget_controle_jarvis"),
+    ]:
+        try:
+            if pid_file.exists():
+                pid = int(pid_file.read_text().strip())
+                if pid > 0 and psutil.pid_exists(pid):
+                    p = psutil.Process(pid)
+                    cmd = " ".join(p.cmdline() or []).lower()
+                    if script_name in cmd:
+                        PROTECTED_ECO_PIDS.add(pid)
+                    else:
+                        # PID file stale - processo diferente rodando nesse PID
+                        log.warning(f"PID file {pid_file.name} stale: PID {pid} não é {script_name}")
+                        pid_file.unlink(missing_ok=True)
+                else:
+                    # PID file stale - processo não existe mais
+                    pid_file.unlink(missing_ok=True)
+        except Exception:
+            pass
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -82,6 +114,7 @@ def start_serve():
 
 def is_narrador_up():
     """Verifica se narrador_desktop.py está rodando."""
+    # Primeiro tenta via cmdline
     for p in psutil.process_iter(["pid", "name", "cmdline"]):
         try:
             cmd = " ".join(p.info["cmdline"] or []).lower()
@@ -89,42 +122,95 @@ def is_narrador_up():
                 return True
         except (psutil.NoSuchProcess, psutil.AccessDenied):
             pass
+    # Fallback: verifica PID file
+        try:
+            pid_file = BASE / "runtime" / "narrador.pid"
+            if pid_file.exists():
+                pid = int(pid_file.read_text().strip())
+                if psutil.pid_exists(pid):
+                    p = psutil.Process(pid)
+                    cmd = " ".join(p.cmdline() or []).lower()
+                    if "narrador_desktop" in cmd:
+                        return True
+        except Exception:
+            pass
     return False
 def is_tts_service_up():
     """Verifica se tts_service.py está rodando."""
-    for p in psutil.process_iter(["pid", "name"]):
+    for p in psutil.process_iter(["pid", "name", "cmdline"]):
         try:
-            cmd = " ".join(p.cmdline() or []).lower()
+            cmd = " ".join(p.info["cmdline"] or []).lower()
             if "tts_service" in cmd:
                 return True
         except (psutil.NoSuchProcess, psutil.AccessDenied):
+            pass
+    # Fallback: verifica PID file
+        try:
+            pid_file = BASE / "runtime" / "tts_service.pid"
+            if pid_file.exists():
+                pid = int(pid_file.read_text().strip())
+                if psutil.pid_exists(pid):
+                    p = psutil.Process(pid)
+                    cmd = " ".join(p.cmdline() or []).lower()
+                    if "tts_service" in cmd:
+                        return True
+        except Exception:
             pass
     return False
 
 
 def is_widget_up():
     """Verifica se widget_controle_jarvis.py está rodando."""
-    for p in psutil.process_iter(["pid", "name"]):
+    # Primeiro tenta via cmdline
+    for p in psutil.process_iter(["pid", "name", "cmdline"]):
         try:
-            cmd = " ".join(p.cmdline() or []).lower()
+            cmd = " ".join(p.info["cmdline"] or []).lower()
             if "widget_controle_jarvis" in cmd:
                 return True
         except (psutil.NoSuchProcess, psutil.AccessDenied):
             pass
+    # Fallback: verifica PID file
+    try:
+        pid_file = BASE / "runtime" / "widget.pid"
+        if pid_file.exists():
+            pid = int(pid_file.read_text().strip())
+            if psutil.pid_exists(pid):
+                p = psutil.Process(pid)
+                cmd = " ".join(p.cmdline() or []).lower()
+                if "widget_controle_jarvis" in cmd:
+                    return True
+    except Exception:
+        pass
     return False
 
 def start_widget():
     """Inicia o widget_controle_jarvis.py."""
     try:
+        # Mata instâncias existentes primeiro
+        kill_widget()
+        time.sleep(0.5)
+        
         py = "C:/Users/David Jr/AppData/Local/Programs/Python/Python312/pythonw.exe"
         script = str(BASE / "scripts" / "widget_controle_jarvis.py")
         proc = subprocess.Popen([py, script], cwd=str(BASE), creationflags=subprocess.CREATE_NO_WINDOW)
-        # Escreve PID file para proteção contra RAM cleanup
-        pid_file = BASE / "runtime" / "widget.pid"
-        pid_file.parent.mkdir(parents=True, exist_ok=True)
-        pid_file.write_text(str(proc.pid))
-        log.warning("Widget reiniciado")
-        return True
+        # Aguarda um pouco para o processo estabilizar
+        time.sleep(1)
+        # Verifica se o processo ainda está vivo
+        if not psutil.pid_exists(proc.pid) or not psutil.Process(proc.pid).is_running():
+            log.error(f"Widget morreu logo após iniciar (PID {proc.pid})")
+            return False
+        # Aguarda e verifica se widget realmente subiu
+        for _ in range(10):
+            time.sleep(0.5)
+            if psutil.pid_exists(proc.pid) and psutil.Process(proc.pid).is_running():
+                # Escreve PID file para proteção contra RAM cleanup
+                pid_file = BASE / "runtime" / "widget.pid"
+                pid_file.parent.mkdir(parents=True, exist_ok=True)
+                pid_file.write_text(str(proc.pid))
+                log.warning("Widget reiniciado e confirmado rodando")
+                return True
+        log.error(f"Widget morreu logo após iniciar (PID {proc.pid})")
+        return False
     except Exception as e:
         log.error(f"Falha ao iniciar widget: {e}")
     return False
@@ -161,8 +247,14 @@ def start_narrador():
         pid_file = BASE / "runtime" / "narrador.pid"
         pid_file.parent.mkdir(parents=True, exist_ok=True)
         pid_file.write_text(str(proc.pid))
-        log.warning("Narrador reiniciado")
-        return True
+        # Aguarda e verifica se narrador realmente subiu
+        for _ in range(10):
+            time.sleep(0.5)
+            if psutil.pid_exists(proc.pid) and psutil.Process(proc.pid).is_running():
+                log.warning("Narrador reiniciado e confirmado rodando")
+                return True
+        log.error(f"Narrador morreu logo após iniciar (PID {proc.pid})")
+        return False
     except Exception as e:
         log.error(f"Falha ao iniciar narrador: {e}")
     return False
@@ -177,8 +269,14 @@ def start_tts_service():
         pid_file = BASE / "runtime" / "tts_service.pid"
         pid_file.parent.mkdir(parents=True, exist_ok=True)
         pid_file.write_text(str(proc.pid))
-        log.warning("TTS Service reiniciado")
-        return True
+        # Aguarda e verifica se tts_service realmente subiu
+        for _ in range(10):
+            time.sleep(0.5)
+            if psutil.pid_exists(proc.pid) and psutil.Process(proc.pid).is_running():
+                log.warning("TTS Service reiniciado e confirmado rodando")
+                return True
+        log.error(f"TTS Service morreu logo após iniciar (PID {proc.pid})")
+        return False
     except Exception as e:
         log.error(f"Falha ao iniciar tts_service: {e}")
     return False
@@ -231,6 +329,15 @@ def get_essential_pids():
                 pass
     except Exception:
         pass
+    # Protege serviços Eco (narrador, tts_service, widget) - nunca matar
+    for pid_file in [BASE / "runtime" / "narrador.pid", 
+                     BASE / "runtime" / "tts_service.pid", 
+                     BASE / "runtime" / "widget.pid"]:
+        try:
+            if pid_file.exists():
+                pids.add(int(pid_file.read_text().strip()))
+        except Exception:
+            pass
     return pids
 
 def is_bridge(pid):
@@ -343,9 +450,12 @@ def get_kill_candidates():
                 continue
             if pid in ESSENTIAL_PIDS:
                 continue
+            # Proteção incondicional dos serviços Eco
+            if pid in PROTECTED_ECO_PIDS:
+                continue
             if is_bridge(pid) or is_serve(pid) or is_tailscale(pid):
                 continue
-            # Protege widget/narrador/tts_service se Eco ativo
+            # Protege widget/narrador/tts_service se Eco ativo (fallback)
             if eco_on and (is_widget_pid(pid) or is_narrador_pid(pid) or is_tts_service_pid(pid)):
                 continue
             # CLÁUSULA PÉTREA: desktop OpenCode (@opencode-aidesktop) é intocável
@@ -368,10 +478,10 @@ def get_kill_candidates():
 
     candidates.sort(key=lambda x: (x[2], -x[1]))
     return candidates
-
 def kill_process(pid, name, reason):
     # CLÁUSULA PÉTREA: nunca matar serviços Eco (narrador, tts_service, widget)
-    if is_eco_active() and (is_narrador_pid(pid) or is_tts_service_pid(pid) or is_widget_pid(pid)):
+    # Proteção incondicional - não depende de is_eco_active()
+    if is_narrador_pid(pid) or is_tts_service_pid(pid) or is_widget_pid(pid):
         log.warning(f"Kill bloqueado para serviço Eco PID {pid} ({name}): {reason}")
         return False
     try:
@@ -425,7 +535,7 @@ def check_and_act():
         log.warning("Serve 8767 fora do ar - reiniciando")
         if start_serve():
             state["actions"].append({"action": "restart_serve", "port": 8767})
-    # Monitora serviços Eco (narrador, tts_service, widget)
+    # Monitora serviços Eco (narrador, tts_service, widget) - INICIA PRIMEIRO
     if not is_narrador_up():
         log.warning("Narrador fora do ar - reiniciando")
         if start_narrador():
@@ -438,7 +548,22 @@ def check_and_act():
         log.warning("Widget fora do ar - reiniciando")
         if start_widget():
             state["actions"].append({"action": "restart_widget"})
+    # Atualiza PIDs protegidos dos serviços Eco APÓS iniciar serviços
+    update_protected_eco_pids()
+    # Atualiza ESSENTIAL_PIDS com novos PIDs
+    ESSENTIAL_PIDS = get_essential_pids()
 
+    ram_mb = get_ram_mb()
+    disk_gb = get_disk_free_gb()
+    ram_pct = psutil.virtual_memory().percent
+
+    state = {
+        "timestamp": datetime.now().isoformat(),
+        "ram_mb": round(ram_mb, 1),
+        "ram_pct": round(ram_pct, 1),
+        "disk_gb": round(disk_gb, 1),
+        "actions": [],
+    }
     for pid, name in list(CPU_HISTORY.items()):
         try:
             p = psutil.Process(pid)
@@ -453,16 +578,16 @@ def check_and_act():
                 log.warning(f"CPU runaway no desktop OpenCode (PID {pid}) - protegido, nao matar")
                 CPU_HISTORY.pop(pid, None)
                 continue
+            # Proteção incondicional dos serviços Eco
+            if pid in PROTECTED_ECO_PIDS:
+                log.warning(f"CPU runaway em serviço Eco PID {pid} - protegido, não matar")
+                CPU_HISTORY.pop(pid, None)
+                continue
             try:
                 p = psutil.Process(pid)
                 name = info["name"]
                 cpu_avg = sum(c for _, c in info["samples"]) / len(info["samples"])
                 log.warning(f"CPU runaway detectado: PID {pid} ({name}) média {cpu_avg:.1f}% por {CPU_RUNAWAY_SECONDS}s")
-                # Protege serviços Eco do CPU runaway kill
-                if is_eco_active() and (is_narrador_pid(pid) or is_tts_service_pid(pid) or is_widget_pid(pid)):
-                    log.warning(f"CPU runaway em serviço Eco PID {pid} - protegido, não matar")
-                    CPU_HISTORY.pop(pid, None)
-                    continue
                 if kill_process(pid, name, f"CPU runaway {cpu_avg:.1f}% por {CPU_RUNAWAY_SECONDS}s"):
                     state["actions"].append({"action": "kill_cpu_runaway", "pid": pid, "name": name, "cpu_avg": round(cpu_avg, 1)})
                     if name.lower() == "python" and ram_mb < RAM_WARN_MB:
@@ -508,29 +633,44 @@ def check_and_act():
     save_state(state)
 
 def run_audit_periodico():
-    """Roda audit_eco.py e registra resultado."""
+    """Lê resultado da auditoria do arquivo atômico (escrito por audit_runner.py)."""
     try:
-        audit_script = BASE / "scripts" / "audit_eco.py"
-        if not audit_script.exists():
+        result_file = BASE / "runtime" / "audit_result.json"
+        if not result_file.exists():
+            log.warning("AUDIT: arquivo de resultado não encontrado")
             return
-        r = subprocess.run(
-            [sys.executable, str(audit_script), "--json"],
-            capture_output=True, text=True, encoding="utf-8", timeout=30, cwd=str(BASE)
-        )
-        if r.returncode == 0 and r.stdout and r.stdout.strip():
-            try:
-                data = json.loads(r.stdout)
-                score = data.get("score", 0)
-                errors = sum(1 for f in data.get("findings", []) if f.get("severity") == "error")
-                warns = sum(1 for f in data.get("findings", []) if f.get("severity") == "warn")
-                if errors > 0 or warns > 0:
-                    log.warning(f"AUDIT: score={score}/100, {errors} erros, {warns} warnings")
-                else:
-                    log.info(f"AUDIT: score={score}/100, tudo OK")
-            except (json.JSONDecodeError, TypeError) as e:
-                log.error(f"AUDIT: JSON inválido - {e}")
+        
+        content = result_file.read_text(encoding="utf-8")
+        if not content or not content.strip():
+            log.warning("AUDIT: arquivo de resultado vazio")
+            return
+        
+        try:
+            data = json.loads(content)
+        except (json.JSONDecodeError, TypeError) as e:
+            log.error(f"AUDIT: JSON inválido - {e}")
+            return
+        
+        # Verifica se resultado não é muito antigo (max 45 min = 2700s)
+        age = time.time() - data.get("timestamp", 0)
+        if age > 2700:
+            log.warning(f"AUDIT: resultado antigo ({age:.0f}s), aguardando novo")
+            return
+        
+        if "error" in data:
+            log.error(f"AUDIT erro na execução: {data['error']}")
+            return
+        
+        score = data.get("score", 0)
+        findings = data.get("findings", [])
+        errors = sum(1 for f in findings if f.get("severity") == "error")
+        warns = sum(1 for f in findings if f.get("severity") == "warn")
+        
+        if errors > 0 or warns > 0:
+            log.warning(f"AUDIT: score={score}/100, {errors} erros, {warns} warnings")
         else:
-            log.error(f"AUDIT falhou: {r.stderr[:200] if r.stderr else 'sem output'}")
+            log.info(f"AUDIT: score={score}/100, tudo OK")
+            
     except Exception as e:
         log.error(f"AUDIT erro: {e}")
 
@@ -578,6 +718,18 @@ def run_forever():
             ciclos += 1
             if ciclos >= AUDIT_INTERVALO:
                 ciclos = 0
+                # Executa audit_runner.py em processo separado (protegido do RAM cleanup)
+                try:
+                    subprocess.run(
+                        [sys.executable, str(BASE / "scripts" / "audit_runner.py")],
+                        cwd=str(BASE), timeout=60,
+                        creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+                    )
+                except subprocess.TimeoutExpired:
+                    log.warning("AUDIT: timeout executando audit_runner")
+                except Exception as e:
+                    log.error(f"AUDIT erro ao executar runner: {e}")
+                # Depois lê o resultado (run_audit_periodico agora lê do arquivo)
                 run_audit_periodico()
             if ciclos % OPENCODE_RESILIENCE_INTERVALO == 0:
                 run_opencode_resilience()

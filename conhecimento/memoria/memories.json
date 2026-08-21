@@ -10787,5 +10787,28 @@
     "access_count": 0,
     "created_at": "2026-08-21T07:55:14.960069",
     "last_accessed": "2026-08-21T07:55:14.960069"
+  },
+  {
+    "id": 418,
+    "kind": "erro",
+    "task": "Bug parser Tesouro: classificacao por celula era fragil",
+    "summary": "O espelho Investidor10 altera o formato da celula de rentabilidade (as vezes spread IPCA+ 7,54%, as vezes taxa nominal total 12,02%), o que quebrava a classificacao tipo_taxa baseada no conteudo da celula. Correcao: classificar pelo NOME do titulo (IPCA+/Selic/Prefixado), que e estavel, e extrair valor numerico quando possivel. Licao: em parsers de HTML de terceiros, ancorar em campos estaveis (nome/id) e nunca em formato de celula mutavel.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "conteudo",
+      "baseada",
+      "tipo",
+      "quebrava",
+      "taxa",
+      "total"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-21T09:04:02.564686",
+    "last_accessed": "2026-08-21T09:04:02.564686"
   }
 ]

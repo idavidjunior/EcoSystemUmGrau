@@ -362,11 +362,15 @@ def main():
             old_pid = int(pid_file.read_text().strip())
             import psutil
             if psutil.pid_exists(old_pid):
-                p = psutil.Process(old_pid)
-                cmd = " ".join(p.cmdline()).lower()
-                if "narrador_desktop" in cmd:
-                    log(f"instância duplicada detectada (PID {old_pid}) - saindo")
-                    return
+                # Não sair se for o próprio PID (race condition guardian -> narrador)
+                if old_pid == os.getpid():
+                    log(f"PID file já contém nosso PID ({old_pid}) - continuando")
+                else:
+                    p = psutil.Process(old_pid)
+                    cmd = " ".join(p.cmdline()).lower()
+                    if "narrador_desktop" in cmd:
+                        log(f"instância duplicada detectada (PID {old_pid}) - saindo")
+                        return
         except (ValueError, psutil.NoSuchProcess, psutil.AccessDenied):
             pass
     pid_file.write_text(str(os.getpid()))

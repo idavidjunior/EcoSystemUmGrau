@@ -405,6 +405,7 @@
     415,
     416,
     417,
+    418,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -1634,6 +1635,7 @@
     "decisao",
     "padrao",
     "padrao",
+    "erro",
     "nota",
     "nota",
     "nota",
@@ -2863,6 +2865,7 @@
     "integrado fundamentos-computacao como pré-requisito em: debugging-expertise, performance-testing, resilience-engineering, backend-patterns, golang-patterns, python-patterns. skills agora carregam a base automaticamente quando ativadas. alta-confianca python patterns golang backend engineering resilience decisao",
     "criados 10 scripts em scripts/financas/ (market_data, onchain, fundamental, technical, risk, portfolio, alerts, crypto_screener, macro, income_strategies) + skill mcp/desenvolvimento/habilidades/analise-financeira/skill.md. todos com selftest passando. bugs corrigidos: defillama tvl retorna serie historica (extrair ultimo ponto), dict['pd.series'] precisa 2 args de tipo, teste rebalance com drift exatamente no threshold nao dispara com >. deps instaladas: pandas 3.0.5, yfinance 1.6.0. dados reais validados: selic 14%, ipca 4.44%, vix 15.9, btc ~77k. alta-confianca habilidades skill desenvolvimento mcp strategies income padrao",
     "snapshot python (scripts/financas/snapshot.py) busca selic/ipca/cdi do bcb sgs, usd/brl awesomeapi, btc/eth coingecko e tabela tesouro direto ao vivo (espelho investidor10 da b3; api oficial morta com 410/cloudflare). escrita atomica em runtime/financas_snapshot.json. flutter: modelo financas_state.dart, financasservice com refresh 5min, view financas com nav item no eco_dashboard.dart (cards macro/mercado/tesouro/projecao). regra descoberta: fracao minima tesouro = 1% do preco unitario, logo selic 2031 (r.647) tem fracao de r acessivel com r. 4 testes flutter passando; flutter analyze sem erros no codigo novo. teste antigo widget_test.dart referenciava myapp inexistente (template nunca adaptado) — reescrito como testes unitarios do modelo; app completo nao monta em teste por bridgeclient/websocket (limitacao pre-existente registrada). alta-confianca investidor10 espelho vivo direto tabela coingecko padrao",
+    "o espelho investidor10 altera o formato da celula de rentabilidade (as vezes spread ipca+ 7,54%, as vezes taxa nominal total 12,02%), o que quebrava a classificacao tipo_taxa baseada no conteudo da celula. correcao: classificar pelo nome do titulo (ipca+/selic/prefixado), que e estavel, e extrair valor numerico quando possivel. licao: em parsers de html de terceiros, ancorar em campos estaveis (nome/id) e nunca em formato de celula mutavel. alta-confianca conteudo baseada tipo quebrava taxa total erro",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -7798,12 +7801,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 99447,
-  "count": 1227,
-  "count_mem": 405,
+  "vocab_size": 99515,
+  "count": 1228,
+  "count_mem": 406,
   "count_notas": 822,
   "fingerprint": [
-    405,
+    406,
     [
       1787301296.6,
       1787301252.2,

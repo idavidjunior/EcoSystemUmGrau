@@ -134,17 +134,23 @@ def fetch_tesouro() -> Dict:
                 continue
             taxa_clean = taxa.strip()
             rate_value = None
-            rate_kind = "selic"
-            if "%" in taxa_clean:
-                rate_value = _parse_brl_float(taxa_clean.replace("%", ""))
-                rate_kind = "prefixado"
-            elif "+" in taxa_clean:
-                parts = taxa_clean.split("+")
-                rate_value = _parse_brl_float(parts[1].replace("%", ""))
+            # Classificação pelo NOME do título (estável), não pela célula de taxa
+            # (o espelho às vezes mostra spread IPCA+, às vezes taxa nominal total)
+            nome_u = nome.upper()
+            if "IPCA+" in nome_u or "IPCA +" in nome_u:
                 rate_kind = "ipca"
-            elif "SELIC" in taxa_clean.upper() and "+" in taxa_clean:
-                rate_value = _parse_brl_float(taxa_clean.split("+")[1])
-                rate_kind = "selic_spread"
+                if "+" in taxa_clean and "%" in taxa_clean:
+                    rate_value = _parse_brl_float(taxa_clean.split("+")[1].replace("%", ""))
+                elif "%" in taxa_clean:
+                    rate_value = _parse_brl_float(taxa_clean.replace("%", ""))
+            elif "SELIC" in nome_u:
+                rate_kind = "selic"
+                if "+" in taxa_clean:
+                    rate_value = _parse_brl_float(taxa_clean.split("+")[1].replace("%", ""))
+            else:
+                rate_kind = "prefixado"
+                if "%" in taxa_clean:
+                    rate_value = _parse_brl_float(taxa_clean.replace("%", ""))
             bonds.append({
                 "nome": nome.strip(),
                 "indexador": idx.strip(),
