@@ -1,7 +1,7 @@
 ---
-tags: [chamadas, inicialização, kotlin, lazy, padrao, segura]
+tags: [inicialização, kotlin, lazy, mapas, padrao, segura]
 aliases: [Kotlin: funções, propriedades e data classes]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # Kotlin: funções, propriedades e data classes

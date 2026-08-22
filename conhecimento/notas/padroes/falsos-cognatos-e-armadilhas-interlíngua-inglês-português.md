@@ -1,7 +1,7 @@
 ---
 tags: [argument, argumento, briga, mudam, padrao, traducao]
 aliases: [Falsos cognatos e armadilhas interlíngua (inglês-português)]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # Falsos cognatos e armadilhas interlíngua (inglês-português)

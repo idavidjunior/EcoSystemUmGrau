@@ -21,6 +21,7 @@ import argparse
 import asyncio
 import base64
 import ctypes
+import json
 import os
 import re
 import subprocess
@@ -94,6 +95,47 @@ def _beep():
 
 def _rms(x):
     return float(np.sqrt(np.mean(x * x)))
+
+
+# --- Retrato vivo: estado do diálogo p/ o widget Edge ler em tempo real ---
+
+RETRATO = SCRIPTS.parent / "runtime" / "dialogo_vivo.json"
+VIVO = {"estado": "iniciando", "voce": "", "erro": "", "quando": 0.0}
+RMS_ATUAL = [0.0]
+
+
+def _retrato_gravar():
+    d = dict(VIVO)
+    d["rms"] = round(RMS_ATUAL[0], 3)
+    try:
+        tmp = RETRATO.with_suffix(".tmp")
+        tmp.write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
+        os.replace(tmp, RETRATO)
+    except Exception:
+        pass
+
+
+def _retrato_estado(estado=None, voce=None, erro=None):
+    """Transição de estado: atualiza e grava na hora (eventos raros)."""
+    if estado is not None:
+        VIVO["estado"] = estado
+    if voce is not None:
+        VIVO["voce"] = str(voce)[:200]
+    if erro is not None:
+        VIVO["erro"] = str(erro)[:300]
+    VIVO["quando"] = time.time()
+    _retrato_gravar()
+
+
+def _retrato_rms(valor):
+    """Nível do mic em 0..1 (só memória; o I/O fica no loop de fundo)."""
+    RMS_ATUAL[0] = max(0.0, min(1.0, float(valor)))
+
+
+def _retrato_loop():
+    while True:
+        _retrato_gravar()
+        time.sleep(0.4)
 
 
 # --- Seleção dinâmica de device (via MicrofoneManager) ---
@@ -242,6 +284,7 @@ def _alimentar_vad_bloqueante(vad, taxa, dev, estado):
             buf = buf[CHUNK:]
             turno = vad.push(chunk)
             prob = vad.ultima_prob
+            _retrato_rms(prob)
             if prob >= 0.5 and not estado["mostrando"]:
                 print(f"{VOZ_COLOR}[ouvindo...]{RESET}", flush=True)
                 estado["mostrando"] = True
@@ -283,6 +326,7 @@ def capturar_vad():
             result["buf"] = result["buf"][CHUNK:]
             turno = result["vad"].push(chunk)
             prob = result["vad"].ultima_prob
+            _retrato_rms(prob)
             if prob >= 0.5 and not estado["mostrando"]:
                 print(f"{VOZ_COLOR}[ouvindo...]{RESET}", flush=True)
                 estado["mostrando"] = True
@@ -341,6 +385,7 @@ def _capturar_vad_fallback():
         if x.size == 0:
             continue
         rms = _rms(x)
+        _retrato_rms(rms / 0.08)
         voz = rms > limiar
         if not falando:
             if voz:
@@ -381,6 +426,7 @@ def capturar_push():
         x = _rec_bloco_f32(dev, taxa, bloco)
         if x.size == 0:
             continue
+        _retrato_rms(_rms(x) / 0.08)
         frames.append(x)
     _beep()
     return np.concatenate(frames) if frames else np.zeros(0, dtype="float32")
@@ -521,6 +567,7 @@ def falar_com_bargein(b64):
     interrupcao, corta o audio imediatamente e devolve True (usuario quer falar)."""
     if not b64:
         return False
+    _retrato_estado("falando")
     parar_evento = threading.Event()
     threads = [
         threading.Thread(target=_monitorar_teclado, args=(parar_evento,), daemon=True),
@@ -533,6 +580,7 @@ def falar_com_bargein(b64):
     interrompido = parar_evento.is_set()
     if interrompido:
         time.sleep(0.2)  # deixa o microfone estabilizar apos cortar
+    _retrato_estado("ouvindo", erro="")
     return interrompido
 
 
@@ -546,6 +594,7 @@ async def responder(cliente, texto, interrompivel=True):
         try:
             r = await cliente.perguntar(texto)
         except Exception as e:
+            _retrato_estado(erro=f"processamento: {e}")
             r = f"Erro no processamento: {e}"
     if not r:
         r = "Não consegui gerar uma resposta."
@@ -555,11 +604,14 @@ async def responder(cliente, texto, interrompivel=True):
         audio = await gerar_audio(r_tela)
     except Exception as e:
         print(f"[tts: {e}]")
+        _retrato_estado(erro=f"tts: {e}")
         audio = ""
+    _retrato_estado("falando")
     if interrompivel:
         falar_com_bargein(audio)
     else:
         tocar_base64(audio)
+    _retrato_estado("ouvindo", erro="")
 
 
 def _separar_jarvis(texto):
@@ -574,14 +626,25 @@ def _separar_jarvis(texto):
 async def loop_vad(cliente):
     while True:
         manager.marcar_listening()
-        audio = capturar_vad()
+        _retrato_estado("ouvindo")
+        try:
+            audio = capturar_vad()
+        except KeyboardInterrupt:
+            raise
+        except Exception as e:
+            # mic ausente/morto: mostra o motivo no Edge em vez de morrer calado
+            _retrato_estado("erro", erro=f"{type(e).__name__}: {e}")
+            await asyncio.sleep(3)
+            continue
         if audio.size == 0:
             continue
         manager.marcar_processing()
         manager.marcar_atividade()
+        _retrato_estado("pensando")
         texto = transcrever(audio)
         if not texto:
             continue
+        _retrato_estado(voce=texto)
         # pausa o mic enquanto o Jarvis responde (evita eco)
         try:
             manager.marcar_paused_tts()
@@ -712,6 +775,7 @@ async def loop_ativacao(cliente):
 
 async def saudar_inicio(cliente):
     """Saudação criativa via LLM — mesmo núcleo do app de celular (jarvis_bridge.saudar)."""
+    _retrato_estado("pensando")
     status = gerar_status_natural()
     try:
         extra = briefing_espontaneo()
@@ -771,6 +835,8 @@ async def main():
         print(f"[microfone] monitor hot-plug falhou: {e}")
 
     print(f"Modo dialogo ativo ({args.modo}). Ctrl+C para encerrar.", flush=True)
+    threading.Thread(target=_retrato_loop, daemon=True).start()
+    _retrato_estado("iniciando", voce="", erro="")
     try:
         await saudar_inicio(cliente)
     except Exception as e:
@@ -790,6 +856,7 @@ async def main():
             manager.marcar_off()
         except Exception:
             pass
+        _retrato_estado("parado")
 
 
 if __name__ == "__main__":

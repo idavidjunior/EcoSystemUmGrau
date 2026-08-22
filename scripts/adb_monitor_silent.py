@@ -226,7 +226,7 @@ def main():
     
     if args.action == 'logs':
         if LOG_FILE.exists():
-            lines = LOG_FILE.read_text(encoding='utf-8').strip().splitlines()
+            lines = LOG_FILE.read_text(encoding='utf-8', errors='replace').strip().splitlines()
             for line in lines[-20:]:
                 try:
                     print(json.loads(line))

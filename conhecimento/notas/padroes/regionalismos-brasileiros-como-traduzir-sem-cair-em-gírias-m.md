@@ -1,7 +1,7 @@
 ---
 tags: [inverossímil, padrao, parágrafo, pt-br, região, resultado]
 aliases: [Regionalismos brasileiros: como traduzir sem cair em gírias ]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # Regionalismos brasileiros: como traduzir sem cair em gírias muito locais

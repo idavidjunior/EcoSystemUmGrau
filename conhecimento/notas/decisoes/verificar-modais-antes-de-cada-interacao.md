@@ -1,7 +1,7 @@
 ---
 tags: [causam, cliques, decisao, desnecessarios, elementclickinterceptedexception, treinamentonavegacao]
 aliases: [Verificar modais antes de cada interacao]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # Verificar modais antes de cada interacao

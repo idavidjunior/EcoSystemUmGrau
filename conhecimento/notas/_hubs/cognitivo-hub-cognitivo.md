@@ -1,6 +1,6 @@
 # Padroes Cognitivos
 
-**53 notas** conectadas a este hub.
+**55 notas** conectadas a este hub.
 
 
 ## Notas
@@ -44,6 +44,7 @@
 - [[mcp-prompt-optimization-não-conectava-transporte-json-por-li]]
 - [[modelo-de-scoring-para-busca-multi-resultado]]
 - [[modelo-mental-de-dom-virtual]]
+- [[narrador-morto-por-bloco-duplicado-falso-positivo-de-encodin]]
 - [[padrao-de-escrita-atomica-para-persistencia]]
 - [[parar-fala-corrida-da-flag-pararfalaflag]]
 - [[pattern-matching-por-estrutura-de-ui]]
@@ -54,6 +55,7 @@
 - [[reconhecimento-instantaneo-de-framework]]
 - [[respostas-truncadas]]
 - [[servidores-mcp-node-criados-e-validados]]
+- [[snapshots-corrompidos-do-opencode-referência-no-banco-decide]]
 - [[toast-de-erros-falsos-positivos]]
 - [[validacao-contra-intuitiva-teste-o-erro-nao-o-acerto]]
 - [[vazamento-caracteres-tts-edge-tts-escapa-ssml]]

@@ -642,7 +642,8 @@ def run_opencode_resilience():
             if r_clean.returncode == 0:
                 log.info(f"OpenCode cache limpo: {r_clean.stdout.strip()}")
             else:
-                log.error(f"OpenCode resilience falhou: {r_clean.stderr[:200]}")
+                detalhe = (r_clean.stderr.strip() or r_clean.stdout.strip() or "sem mensagem")
+                log.error(f"OpenCode resilience falhou (exit {r_clean.returncode}): {detalhe[:200]}")
         else:
             log.info(f"OpenCode resilience: {r.stdout.strip()}")
     except Exception as e:

@@ -1,7 +1,7 @@
 ---
 tags: [aceitando, fidelidade, impacto, literal, padrao, traducao-texto]
 aliases: [Tradução literária: prosa e poesia — ritmo, voz e licença po]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # Tradução literária: prosa e poesia — ritmo, voz e licença poética

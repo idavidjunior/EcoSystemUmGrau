@@ -102,6 +102,17 @@ def ler_tts_estado():
         return False, ""
 
 
+def ler_retrato():
+    """Retrato vivo do diálogo ({estado, voce, rms, erro, quando}).
+    Voz desligada ou retrato velho (>12s) = parado."""
+    try:
+        return json.loads(
+            (RUNTIME / "dialogo_vivo.json").read_text(encoding="utf-8")
+        )
+    except Exception:
+        return {}
+
+
 class EdgeApi:
     """API exposta ao JavaScript via pywebview (window.pywebview.api)."""
 
@@ -110,11 +121,20 @@ class EdgeApi:
         self._sono_timer = None
         self._lock = threading.Lock()
 
+    def voz_ligada(self):
+        with self._lock:
+            return self._voz_proc is not None and self._voz_proc.poll() is None
+
     def status(self):
         with self._lock:
             voz = self._voz_proc is not None and self._voz_proc.poll() is None
         est = ler_estado()
         falando, texto = ler_tts_estado()
+        vivo = ler_retrato()
+        if not voz or (time.time() - float(vivo.get("quando", 0)) > 12):
+            vivo = {"estado": "parado"}
+        else:
+            vivo.pop("quando", None)
         return {
             "narr": servico_no_ar("narrador_desktop"),
             "tts": servico_no_ar("tts_service"),
@@ -125,6 +145,7 @@ class EdgeApi:
             "falando": falando,
             "texto": texto,
             "ultima_fala": est.get("ultima_fala") or "",
+            "vivo": vivo,
         }
 
     def parar(self):
@@ -268,7 +289,8 @@ def poller(api):
 
     ultima = None
     while True:
-        time.sleep(2)
+        # voz ligada pede ritmo maior (barra de mic e estados ao vivo)
+        time.sleep(1 if api.voz_ligada() else 2)
         try:
             st = api.status()
             chave = json.dumps(st, sort_keys=True)
@@ -329,7 +351,7 @@ def main():
     import webview
 
     api = EdgeApi()
-    px, py = _posicao_inferior_esquerda(360, 220)
+    px, py = _posicao_inferior_esquerda(360, 300)
     print(f"posicao inicial: {px},{py}", flush=True)
     webview.create_window(
         "Edge",
@@ -338,7 +360,7 @@ def main():
         x=px,
         y=py,
         width=360,
-        height=220,
+        height=300,
         frameless=True,
         easy_drag=True,
         on_top=True,

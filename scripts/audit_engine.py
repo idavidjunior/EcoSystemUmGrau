@@ -141,12 +141,12 @@ class AuditEngine:
                 for item in data:
                     self.decisions[item['id']] = Decision(**item)
             if os.path.exists(paths['evidence']):
-                with open(paths['evidence'], encoding='utf-8') as f:
+                with open(paths['evidence'], encoding='utf-8', errors='replace') as f:
                     data = json.load(f)
                 for item in data:
                     self.evidence[item['id']] = Evidence(**item)
             if os.path.exists(paths['audit_log']):
-                with open(paths['audit_log'], encoding='utf-8') as f:
+                with open(paths['audit_log'], encoding='utf-8', errors='replace') as f:
                     data = json.load(f)
                 self.audit_log = data
                 if self.audit_log:

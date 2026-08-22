@@ -1,7 +1,7 @@
 ---
 tags: [330, atual, bridge, cognitivo, general, jarvis]
 aliases: [MCP Obsidian server — vault consumido pelo LLM]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # MCP Obsidian server — vault consumido pelo LLM

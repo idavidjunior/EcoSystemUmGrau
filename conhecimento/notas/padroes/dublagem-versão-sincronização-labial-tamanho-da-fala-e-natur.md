@@ -1,7 +1,7 @@
 ---
 tags: [cabem, linguagem, literal, padrao, real, traducao-audio]
 aliases: [Dublagem (versão): sincronização labial, tamanho da fala e n]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # Dublagem (versão): sincronização labial, tamanho da fala e naturalidade

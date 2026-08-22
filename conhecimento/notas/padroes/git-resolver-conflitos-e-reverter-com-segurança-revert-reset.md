@@ -1,7 +1,7 @@
 ---
 tags: [git, head, padrao, perdido, reaplicar, release]
 aliases: [Git: resolver conflitos e reverter com segurança (revert, re]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # Git: resolver conflitos e reverter com segurança (revert, reset, cherry-pick)

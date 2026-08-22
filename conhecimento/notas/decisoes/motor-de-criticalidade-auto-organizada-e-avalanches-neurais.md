@@ -1,7 +1,7 @@
 ---
-tags: [balanceadas, colar, decisao, espontanea, opencode, tinta]
+tags: [650ms, balanceadas, colar, decisao, opencode, tinta]
 aliases: [Motor de Criticalidade Auto-Organizada e Avalanches Neurais]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # Motor de Criticalidade Auto-Organizada e Avalanches Neurais

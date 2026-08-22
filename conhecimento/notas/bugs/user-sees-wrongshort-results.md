@@ -1,7 +1,7 @@
 ---
 tags: [bug, lower, mode, mp3player-metadata-rescue, relaxed, thresholds]
 aliases: [User sees wrong/short results]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # User sees wrong/short results

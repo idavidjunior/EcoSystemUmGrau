@@ -1,7 +1,7 @@
 ---
 tags: [baseados, designpatterns, editar, existente, padrao, passos]
 aliases: [Design patterns: SOLID e como os padrões GoF derivam dele]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # Design patterns: SOLID e como os padrões GoF derivam dele

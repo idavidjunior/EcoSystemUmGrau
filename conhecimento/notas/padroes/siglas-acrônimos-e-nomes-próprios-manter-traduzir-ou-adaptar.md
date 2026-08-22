@@ -1,7 +1,7 @@
 ---
 tags: [estranhos, las, padrao, produzir, pt-br, textos]
 aliases: [Siglas, acrônimos e nomes próprios: manter, traduzir ou adap]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # Siglas, acrônimos e nomes próprios: manter, traduzir ou adaptar

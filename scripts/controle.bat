@@ -1,19 +1,19 @@
 @echo off
 REM ============================================================
-REM  controle.bat - Janela flutuante de controle da voz Jarvis
-REM  Abre COM janela de console (usa python.exe, modo console).
-REM  Materializa a voz do opencode-desktop: controla a narracao
-REM  (voz ON/OFF), interrompe a fala (STOP) e liga/desliga o
-REM  microfone (dialogo.py --modo vad).
-REM  Tecle o widget para mover/redimensionar.
+REM  controle.bat - Abre o widget oficial Edge
+REM  Unico widget do ecossistema: scripts/widget_edge.py
 REM ============================================================
 setlocal
 set "ROOT=%~dp0.."
-where python >nul 2>&1
+where pythonw >nul 2>&1
 if %errorlevel% equ 0 (
-  python "%ROOT%\scripts\widget_controle_jarvis.py"
+  start "" pythonw "%ROOT%\scripts\widget_edge.py"
 ) else (
-  REM fallback: Python via Microsoft Store
-  python "%ROOT%\scripts\widget_controle_jarvis.py"
+  where python >nul 2>&1
+  if %errorlevel% equ 0 (
+    start "" python "%ROOT%\scripts\widget_edge.py"
+  ) else (
+    echo Python nao encontrado no PATH.
+  )
 )
 endlocal

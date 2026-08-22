@@ -1,7 +1,7 @@
 ---
 tags: [caixa, decisao, errado, especializado, opencode, preta]
 aliases: [transparencia execucao tarefas]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # transparencia execucao tarefas

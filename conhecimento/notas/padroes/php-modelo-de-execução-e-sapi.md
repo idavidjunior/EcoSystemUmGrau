@@ -1,7 +1,7 @@
 ---
-tags: [ambiente, desenvolvimento, justa, padrao, php, tolerante]
+tags: [banco, desenvolvimento, justa, padrao, php, tolerante]
 aliases: [PHP: modelo de execução e SAPI]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # PHP: modelo de execução e SAPI

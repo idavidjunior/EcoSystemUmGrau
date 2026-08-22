@@ -138,7 +138,7 @@ def show_logs(tail=50, follow=False):
     
     if follow:
         # tail -f estilo
-        with open(LOG_FILE, 'r', encoding='utf-8') as f:
+        with open(LOG_FILE, 'r', encoding='utf-8', errors='replace') as f:
             f.seek(0, 2)  # fim do arquivo
             while True:
                 line = f.readline()
@@ -147,7 +147,7 @@ def show_logs(tail=50, follow=False):
                 else:
                     time.sleep(0.5)
     else:
-        lines = LOG_FILE.read_text(encoding='utf-8').splitlines()
+        lines = LOG_FILE.read_text(encoding='utf-8', errors='replace').splitlines()
         for line in lines[-tail:]:
             print(line)
 

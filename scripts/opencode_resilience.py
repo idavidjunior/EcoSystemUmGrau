@@ -27,6 +27,37 @@ MAX_LOG_AGE_HOURS = 24
 MAX_WAL_SIZE_MB = 100  # WAL file máximo antes de limpar
 FETCH_ERROR_PATTERN = re.compile(r"Failed to fetch|fetch failed|ENOTFOUND|ECONNREFUSED", re.IGNORECASE)
 
+# Raiz de snapshot válida tem nome hex (hash do opencode). Nomes como
+# objects/refs/hooks/info/pack são internals de git, nunca raiz.
+HEX_NAME = re.compile(r"^[0-9a-f]{32,64}$", re.IGNORECASE)
+
+
+def snapshot_referenciado(hash40: str) -> bool:
+    """True se part/message do banco citam o hash do snapshot.
+
+    Snapshot citado no banco pertence ao histórico/sessão viva: nunca mexer,
+    mesmo parecendo corrompido (estrutura parcial é estado normal de snapshot
+    em uso). Falha ao consultar = conservador: assume referenciado.
+    """
+    import sqlite3
+    try:
+        con = sqlite3.connect(f"file:{OPENCODE_DB}?mode=ro", uri=True, timeout=10)
+        cur = con.cursor()
+        pref = hash40[:24]
+        ref = False
+        for tab in ("part", "message"):
+            try:
+                cur.execute(f"SELECT 1 FROM {tab} WHERE data LIKE ? LIMIT 1", (f"%{pref}%",))
+                if cur.fetchone():
+                    ref = True
+                    break
+            except sqlite3.OperationalError:
+                continue
+        con.close()
+        return ref
+    except Exception:
+        return True
+
 
 def get_log_errors(hours: int = MAX_LOG_AGE_HOURS) -> list:
     """Lê erros recentes do log do OpenCode (somente dentro da janela de horas)."""
@@ -89,10 +120,16 @@ def find_corrupted_snapshots() -> list:
     if not snap_root.exists():
         return corrupted
 
-    for repo_dir in snap_root.rglob("*"):
+    for repo_dir in sorted(snap_root.rglob("*")):
         if not repo_dir.is_dir():
             continue
-        # Um snapshot válido tem .git dentro OU é o próprio repo (com HEAD)
+        # Ignora internals de git (objects/refs/hooks/info/pack) e qualquer
+        # diretório aninhado sob um snapshot já reportado.
+        if not HEX_NAME.match(repo_dir.name):
+            continue
+        if any(str(repo_dir).startswith(str(c) + os.sep) for c in corrupted):
+            continue
+        # Um snapshot válido tem .git dentro OU é repo bare (com HEAD+objects)
         has_git = (repo_dir / ".git").exists()
         has_head = (repo_dir / "HEAD").exists()
         has_objects = (repo_dir / "objects").exists()
@@ -266,22 +303,35 @@ def main():
         "corrupted_snapshots": len(corrupted_snapshots),
     }
 
-    # Snapshot corrompido é correção crítica: limpa mesmo em --check.
-    # Porém NUNCA enquanto o desktop estiver ativo (arquivos em uso pela
-    # sessão atual — deletar quebraria a sessão). Adia até o desktop fechar.
+    # Snapshot corrompido é correção crítica — MAS só se for órfão real.
+    # Referenciado no banco (part/message) = histórico/sessão viva: nunca tocar.
+    # Órfãos limpam com desktop fechado; com desktop ativo, adiam.
+    orfaos_restantes = []
     if corrupted_snapshots:
-        if is_desktop_running():
-            print(f"[SNAP] {len(corrupted_snapshots)} snapshot(s) corrompido(s) - limpeza adiada (desktop ativo)")
-            result["cleaned"]["snapshot_corrompido"] = "adiado (desktop ativo)"
-            result["corrupted_snapshots"] = len(corrupted_snapshots)
-            result["deferred_clean"] = True
-        else:
-            print(f"[SNAP] {len(corrupted_snapshots)} snapshot(s) corrompido(s) detectado(s)")
-            if not check_only:
-                result["cleaned"]["snapshot_corrompido"] = clean_snapshots(corrupted_snapshots)
-                print(f"[SNAP] Limpeza: {result['cleaned']['snapshot_corrompido']}")
+        protegidos, orfaos = [], []
+        for s in corrupted_snapshots:
+            if snapshot_referenciado(Path(s).name):
+                protegidos.append(s)
             else:
-                print("[SNAP] Limpeza recomendada (--clean para limpar)")
+                orfaos.append(s)
+        if protegidos:
+            print(f"[SNAP] {len(protegidos)} snapshot(s) referenciado(s) pelo historico - nao tocar")
+            result["cleaned"]["snapshot_protegido"] = len(protegidos)
+            result["corrupted_snapshots"] = len(corrupted_snapshots)
+        if orfaos:
+            if is_desktop_running():
+                print(f"[SNAP] {len(orfaos)} snapshot(s) órfão(s) - limpeza adiada (desktop ativo)")
+                result["cleaned"]["snapshot_orfao"] = "adiado (desktop ativo)"
+                result["deferred_clean"] = True
+                orfaos_restantes.extend(orfaos)
+            elif not check_only:
+                print(f"[SNAP] {len(orfaos)} snapshot(s) órfão(s) - limpando")
+                resultado_limpeza = clean_snapshots(orfaos)
+                result["cleaned"]["snapshot_orfao"] = resultado_limpeza
+                print(f"[SNAP] Limpeza: {resultado_limpeza}")
+            else:
+                print(f"[SNAP] {len(orfaos)} snapshot(s) órfão(s) - --clean para limpar")
+                orfaos_restantes.extend(orfaos)
 
     if needs_clean and not check_only:
         result["cleaned"] = clean_cache(keep_logs=True)
@@ -304,12 +354,11 @@ def main():
             "last_cache_mb": total_cache,
         })
 
-    # Só retorna 1 se houver limpeza REAL pendente (não quando apenas adiada
-    # porque o desktop está ativo — nesse caso a limpeza rodará no próximo ciclo).
-    actionable = needs_clean
-    if corrupted_snapshots and not result.get("deferred_clean"):
-        actionable = True
-    return 0 if not actionable else 1
+    # Exit 1 apenas quando sobrou pendência REAL sem solução neste ciclo:
+    # órfãos adiados pelo desktop ativo (ou aguardando --check). Snapshot
+    # referenciado pelo histórico é estado normal, não pendência. Limpeza de
+    # cache executada com sucesso também não é falha.
+    return 1 if orfaos_restantes else 0
 
 
 if __name__ == "__main__":

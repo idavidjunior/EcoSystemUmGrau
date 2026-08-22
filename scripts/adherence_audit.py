@@ -210,7 +210,7 @@ def get_preflight_executions(days: int) -> Dict[str, List[datetime]]:
     execucoes = {'tecnico': [], 'etico': []}
     if PREFLIGHT_LOG.exists():
         cutoff = datetime.now() - timedelta(days=days)
-        with open(PREFLIGHT_LOG, encoding='utf-8') as f:
+        with open(PREFLIGHT_LOG, encoding='utf-8', errors='replace') as f:
             for line in f:
                 try:
                     entry = json.loads(line.strip())

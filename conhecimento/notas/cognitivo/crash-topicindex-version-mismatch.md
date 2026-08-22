@@ -1,7 +1,7 @@
 ---
-tags: [app, bíblia, bíblicos, cognitivo, estudo, general]
+tags: [app, bíblia, cognitivo, estudo, general, visível]
 aliases: [crash topicindex version mismatch]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # crash topicindex version mismatch

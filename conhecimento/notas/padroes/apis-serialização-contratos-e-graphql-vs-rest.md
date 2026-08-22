@@ -1,7 +1,7 @@
 ---
 tags: [agregados, apis-web, fontes, frontends, padrao, várias]
 aliases: [APIs: serialização, contratos e GraphQL vs REST]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # APIs: serialização, contratos e GraphQL vs REST

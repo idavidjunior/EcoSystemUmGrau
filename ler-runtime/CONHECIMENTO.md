@@ -1,11 +1,11 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-21T21:29:29.336028
+**Exportado em:** 2026-08-22T00:28:20.187662
 **Projetos:** 4
-**Padroes Tecnicos:** 273
+**Padroes Tecnicos:** 277
 **Decisoes:** 73
 **Bug Fixes:** 52
-**Padroes Cognitivos:** 65
+**Padroes Cognitivos:** 67
 **Heuristicas:** 32
 **Frameworks:** 10
 **Missoes Aprendidas:** 134
@@ -835,6 +835,10 @@ decisao: A personalidade que define o agente é o Engenheiro Criterioso: equilí
 | 271 | opencode | Widget Jarvis - 8 Features Implementadas |
 | 272 | opencode | Sistema de Análise Financeira |
 | 273 | opencode | widget edge estabilizado fonte unica processos |
+| 274 | opencode | TradingAgents integrado ao ecossistema |
+| 275 | opencode | Resiliência de logs: encoding detectado na leitura, não presumido |
+| 276 | opencode | Compressão Semântica Hierárquica — lições da implementação |
+| 277 | opencode | Relatório Eco estático — lições |
 
 ## Bug Fixes e Corrigidos
 
@@ -1889,6 +1893,46 @@ Essa linha e o Jarvis FALANDO sobre um erro passado, nao um erro real.
 ## Correcao
 Filtrar
 
+### Narrador morto por bloco duplicado; falso-positivo de encoding no log
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [narrador, system-guardian, syntax-error, encoding, git]
+data: 2026-08-21
+---
+
+# Narrador morto por bloco duplicado; falso-positivo de encoding no log
+
+## Contexto
+Investigação pedida pelo usuário sobre duas anomalias no log do system_guardian:
+texto corrompido ("ap��s") e o narrador morrendo logo após iniciar em loop.
+
+## Causa raiz 1 — narrador (real)
+Entre os commits a2d996c4 (14:18) e adcfb195 (16:08) de 21/08/2026, um enxerto de
+286 linhas duplicadas do próprio módulo e
+
+### Snapshots "corrompidos" do opencode: referência no banco decide, não heurística
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [opencode-resilience, snapshots, falso-positivo, seguranca-de-dados]
+data: 2026-08-21
+---
+
+# Snapshots "corrompidos" do opencode: referência no banco decide, não heurística
+
+## Contexto
+Usuário apontou a mensagem recorrente "[SNAP] 2 snapshot(s) corrompido(s) - limpeza
+adiada (desktop ativo)" no log do guardian. Investigação revelou três camadas.
+
+## Causas encontradas
+1. Falso positivo estrutural: o detector marcava o subdiretório `objects` interno
+   do próprio git (por co
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -1983,7 +2027,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-21T21:29:28.558821
+**Ultima atualizacao:** 2026-08-22T00:28:19.379168
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**268 notas** conectadas a este hub.
+**272 notas** conectadas a este hub.
 
 
 ## Notas
@@ -62,6 +62,7 @@
 - [[como-adicionar-uma-nova-versão-da-bíblia-ao-bibliaestudocomp]]
 - [[complete-build-pipeline-intelligence]]
 - [[compreensao-de-pedidos-refino-com-a-llm-do-opencode-primaria]]
+- [[compressão-semântica-hierárquica-lições-da-implementação]]
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
 - [[config-2026-07-27-teste-do-vigilante-automático]]
@@ -197,8 +198,10 @@
 - [[regionalismos-brasileiros-como-traduzir-sem-cair-em-gírias-m]]
 - [[registro-de-habilidades-de-jarvis]]
 - [[regra-do-usuário-buildinstalatestavalida-antes-de-commitar-e]]
+- [[relatório-eco-estático-lições]]
 - [[renderersfactory-for-custom-audioprocessor]]
 - [[resiliencia-widget-duplicado]]
+- [[resiliência-de-logs-encoding-detectado-na-leitura-não-presum]]
 - [[restauracao-unified-bridge]]
 - [[retry-com-backoff-exponencial]]
 - [[ruby-blocks-procs-e-lambdas]]
@@ -246,6 +249,7 @@
 - [[theme-system-pattern]]
 - [[timing-e-sincronização-de-legendas-duração-mínima-cps-e-cort]]
 - [[tom-e-registro-formal-técnico-coloquial-como-detectar-e-mant]]
+- [[tradingagents-integrado-ao-ecossistema]]
 - [[tradução-adaptativa-transcreation-para-marketing-e-publicida]]
 - [[tradução-científica-e-acadêmica-papers-abstracts-e-nomenclat]]
 - [[tradução-de-fala-coloquial-e-falas-sobrepostas-em-podcasts-e]]

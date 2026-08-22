@@ -1,7 +1,7 @@
 ---
 tags: [correto, ecossistema, local, opencodeopencode, padrao, registrar]
 aliases: [Aegis registrado como projeto irmao (Rust)]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # Aegis registrado como projeto irmao (Rust)

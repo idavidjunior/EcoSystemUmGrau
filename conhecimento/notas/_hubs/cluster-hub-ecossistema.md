@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**203 notas** do cluster ecossistema.
+**209 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -92,6 +92,7 @@
 - [[cláusula-pétrea-ativação-de-voz-eco-system]]
 - [[como-adicionar-uma-nova-versão-da-bíblia-ao-bibliaestudocomp]]
 - [[compreensao-de-pedidos-refino-com-a-llm-do-opencode-primaria]]
+- [[compressão-semântica-hierárquica-lições-da-implementação]]
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
 - [[config-2026-07-27-teste-do-vigilante-automático]]
@@ -154,6 +155,7 @@
 - [[mudar-config-mcp-de-objeto-para-array-no-opencodejson]]
 - [[mvp-streamumgrau-flutter-supabase]]
 - [[módulo-de-compreensão-de-pedidos-mcp-compreensao-pedidos]]
+- [[narrador-morto-por-bloco-duplicado-falso-positivo-de-encodin]]
 - [[opencode-go-provider-crash-ao-processar-mensagem]]
 - [[organizar-desktopcodigos-como-raiz-unica-de-projetos]]
 - [[otimização-do-reindex-semântico-do-memory-engine]]
@@ -175,9 +177,11 @@
 - [[protocolo-higiene-repo-streamumgrau]]
 - [[quiet-period-commits-do-vigilante]]
 - [[regra-do-usuário-buildinstalatestavalida-antes-de-commitar-e]]
+- [[relatório-eco-estático-lições]]
 - [[renomear-pastas-com-espacos-para-nomes-sem-espaco]]
 - [[reorganização-habilidades-dentro-de-mcp-por-domínio]]
 - [[resiliencia-widget-duplicado]]
+- [[resiliência-de-logs-encoding-detectado-na-leitura-não-presum]]
 - [[respostas-truncadas]]
 - [[restauracao-unified-bridge]]
 - [[salvar-rustdesk-password-e-id-em-local-permanente-nao-gerar-]]
@@ -194,8 +198,10 @@
 - [[sessao-de-configuracao-do-opencode-com-failover-de-servidor-]]
 - [[sessao-focada-em-organizacao-de-workspace-unificacao-de-proj]]
 - [[sistema-de-análise-financeira]]
+- [[snapshots-corrompidos-do-opencode-referência-no-banco-decide]]
 - [[stt-no-partialstreaming-results]]
 - [[toast-de-erros-falsos-positivos]]
+- [[tradingagents-integrado-ao-ecossistema]]
 - [[transparencia-execucao-tarefas]]
 - [[triagem-scripts-legado-orgaos-movidos]]
 - [[vault-obsidian-cerebro-vivo-grafo]]

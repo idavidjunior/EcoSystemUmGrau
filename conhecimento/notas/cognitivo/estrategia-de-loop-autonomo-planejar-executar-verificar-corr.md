@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, estagnacao, iteracoes, nenhum, progresso, systemdesign]
 aliases: [Estrategia de loop autonomo: planejar-executar-verificar-cor]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # Estrategia de loop autonomo: planejar-executar-verificar-corrigir

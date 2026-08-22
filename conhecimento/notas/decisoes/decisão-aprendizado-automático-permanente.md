@@ -1,7 +1,7 @@
 ---
 tags: [decisao, explícita, necessidade, opencode, refinamen, solicitação]
 aliases: [# Decisão: Aprendizado automático permanente]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # # Decisão: Aprendizado automático permanente

@@ -1,7 +1,7 @@
 ---
 tags: [criação, inúteis, name, padrao, processes, python]
 aliases: [Python: GIL e concorrência]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # Python: GIL e concorrência

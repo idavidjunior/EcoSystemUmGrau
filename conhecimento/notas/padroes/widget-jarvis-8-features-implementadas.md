@@ -1,7 +1,7 @@
 ---
-tags: [aumentar, controle, flutuante, opencode, padrao, visibilidade]
+tags: [aumentar, bridge, controle, opencode, padrao, visibilidade]
 aliases: [Widget Jarvis - 8 Features Implementadas]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # Widget Jarvis - 8 Features Implementadas

@@ -1,7 +1,7 @@
 ---
 tags: [basicos, botoes, decisao, info, opencode, real]
 aliases: [widget evolucao 3 niveis]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # widget evolucao 3 niveis

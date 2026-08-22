@@ -1435,13 +1435,13 @@ def main():
     bridge_thread = threading.Thread(target=_bridge_loop, daemon=True)
     bridge_thread.start()
 
-    # Roda widget na thread principal (webview.start bloqueia)
+    # Widget removido: Edge (widget_edge.py) é o único widget oficial.
+    # Mantém o processo vivo para sustentar a thread de narrador/TTS.
     try:
-        _run_widget()
-    except Exception as e:
-        _log(f"main erro: {e}")
-        import traceback
-        traceback.print_exc()
+        while True:
+            time.sleep(60)
+    except KeyboardInterrupt:
+        pass
     return 0
 
 

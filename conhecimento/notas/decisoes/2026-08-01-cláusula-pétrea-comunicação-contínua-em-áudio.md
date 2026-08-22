@@ -1,7 +1,7 @@
 ---
 tags: [commits, decisao, desrespeitando, fazendo, narrar, opencode]
 aliases: [# 2026-08-01: Cláusula Pétrea — Comunicação contínua em áudi]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # # 2026-08-01: Cláusula Pétrea — Comunicação contínua em áudio

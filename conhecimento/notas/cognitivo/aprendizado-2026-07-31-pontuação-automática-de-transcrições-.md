@@ -1,7 +1,7 @@
 ---
 tags: [chega, cognitivo, fala, general, melodia, vivo]
 aliases: [# Aprendizado — 2026-07-31 — Pontuação automática de transcr]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # # Aprendizado — 2026-07-31 — Pontuação automática de transcrições de voz (Jarvis)

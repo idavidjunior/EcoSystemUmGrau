@@ -1,7 +1,7 @@
 ---
-tags: [decisao, duplicacao, etc, inicia, local, opencode]
+tags: [decisao, duplicacao, etc, local, opencode, vigilante]
 aliases: [desativar bridge android]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # desativar bridge android

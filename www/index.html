@@ -34,6 +34,20 @@ button#btnParar.falando{background:#3a1d1d;border-color:#f38ba8;color:#f38ba8;
 .fala{font-size:10px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   max-height:14px;line-height:14px;}
 .fala.ativa{color:var(--acc);}
+.pill{font-size:10px;line-height:1;padding:4px 9px;border-radius:9px;border:1px solid var(--bdr);
+  color:var(--tx3);min-width:64px;text-align:center;}
+.pill.ouvindo{color:var(--on);border-color:var(--on);}
+.pill.pensando{color:#f9e2af;border-color:#f9e2af;}
+.pill.falando{color:var(--acc);border-color:var(--acc);}
+.pill.erro{color:#f38ba8;border-color:#f38ba8;}
+.barraMic{flex:1;height:6px;background:var(--in);border-radius:3px;overflow:hidden;
+  border:1px solid var(--bdr);}
+#nivel{height:100%;width:0%;background:linear-gradient(90deg,var(--on),var(--acc));
+  transition:width .18s linear;}
+.voce{font-size:10px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-height:14px;line-height:14px;}
+.erroVivo{font-size:10px;color:#f38ba8;background:rgba(243,139,168,.08);
+  border:1px solid rgba(243,139,168,.5);border-radius:4px;padding:4px 8px;display:none;}
 </style>
 </head>
 <body>
@@ -68,7 +82,15 @@ button#btnParar.falando{background:#3a1d1d;border-color:#f38ba8;color:#f38ba8;
     <button id="btnVoz">Ligar voz</button>
     <button id="btnParar" title="Interromper fala">&#9632; Parar</button>
   </div>
+  <div class="linha">
+    <span class="rotulo">Estado</span>
+    <span class="pill" id="pillEstado">parado</span>
+    <span class="rotulo" style="width:28px;">Mic</span>
+    <div class="barraMic"><div id="nivel"></div></div>
+  </div>
+  <div class="voce" id="linhaVoce"></div>
   <div class="fala" id="linhaFala"></div>
+  <div class="erroVivo" id="linhaErro"></div>
 </div>
 <script>
 function edgeAtualizar(st){
@@ -77,9 +99,22 @@ function edgeAtualizar(st){
   document.getElementById('ptBridge').classList.toggle('on', !!st.bridge);
   var b = document.getElementById('btnVoz');
   b.classList.toggle('on', !!st.voz);
-  b.textContent = st.voz ? '\u25CF Ouvindo' : 'Ligar voz';
+  b.textContent = st.voz ? '\u25CF Voz ligada' : 'Ligar voz';
   var p = document.getElementById('btnParar');
   p.classList.toggle('falando', !!st.falando);
+  var v = st.vivo || {};
+  var nomes = {ouvindo:'Ouvindo', pensando:'Pensando', falando:'Falando',
+               erro:'Erro', iniciando:'Iniciando'};
+  var pe = document.getElementById('pillEstado');
+  pe.textContent = nomes[v.estado] || 'Parado';
+  pe.className = 'pill ' + (v.estado || 'parado');
+  document.getElementById('nivel').style.width =
+    Math.round(Math.min(1, v.rms || 0) * 100) + '%';
+  var lv = document.getElementById('linhaVoce');
+  lv.textContent = v.voce ? 'Voc\u00ea: ' + v.voce : '';
+  var le = document.getElementById('linhaErro');
+  if (v.erro){ le.textContent = v.erro; le.style.display = 'block'; }
+  else { le.style.display = 'none'; }
   var f = document.getElementById('linhaFala');
   if (st.falando && st.texto){
     f.textContent = '\u25B6 ' + st.texto;

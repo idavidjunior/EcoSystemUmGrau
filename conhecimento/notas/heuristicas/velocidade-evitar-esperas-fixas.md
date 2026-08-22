@@ -1,7 +1,7 @@
 ---
 tags: [10s, custa, efficiency, heuristica, operacao, timeout]
 aliases: [Velocidade = evitar esperas fixas]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # Velocidade = evitar esperas fixas

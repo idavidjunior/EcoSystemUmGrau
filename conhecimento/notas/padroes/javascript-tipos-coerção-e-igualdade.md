@@ -1,7 +1,7 @@
 ---
-tags: [dados, empty, javascript, padrao, symbol, truthy]
+tags: [empty, javascript, note, padrao, symbol, truthy]
 aliases: [JavaScript: tipos, coerção e igualdade]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # JavaScript: tipos, coerção e igualdade

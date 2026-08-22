@@ -708,11 +708,6 @@
       "funcao": "PENDENTE: descrever função"
     },
     {
-      "id": "widget_controle_jarvis",
-      "arquivo": "scripts/widget_controle_jarvis.py",
-      "funcao": "PENDENTE: descrever função"
-    },
-    {
       "id": "widget_grafo",
       "arquivo": "scripts/widget_grafo.py",
       "funcao": "Widget desktop frameless que exibe grafo interativo do conhecimento (534+ notas, vis-network, pseudo-3D, temas, persistência)"

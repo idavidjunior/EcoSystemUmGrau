@@ -1,7 +1,7 @@
 ---
 tags: [artisan, comandos, instalação, migrate, padrao, php]
 aliases: [PHP: PSRs, autoload e Composer]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # PHP: PSRs, autoload e Composer

@@ -1,7 +1,7 @@
 ---
 tags: [coordenar, duração, editor, padrao, posição, traducao-texto]
 aliases: [Tradução de legendas embutidas (burned-in) e placas de cena]
-date: 2026-08-21
+date: 2026-08-22
 ---
 
 # Tradução de legendas embutidas (burned-in) e placas de cena

@@ -19,7 +19,7 @@ Execute na ordem a partir da raiz do EcoSystemUmGrau
 1. **Verificar integridade** (silencioso):
    `python scripts/runtime_boot.py --check`
 2. **Abrir widget** (se não estiver aberto):
-   `start "" pythonw scripts/widget_controle_jarvis.py`
+   `start "" pythonw scripts/widget_edge.py`
 
 # COMO RESPONDER
 
