@@ -26,6 +26,14 @@ select:focus{border-color:var(--acc);}
 button#btnVoz{font-size:11px;padding:5px 10px;border:1px solid var(--bdr);border-radius:4px;
   background:var(--in);color:var(--tx);cursor:pointer;width:110px;}
 button#btnVoz.on{background:#1d3a26;border-color:var(--on);color:var(--on);}
+.linhaBotoes{display:flex;gap:8px;align-items:center;}
+button#btnParar{font-size:11px;padding:5px 10px;border:1px solid var(--bdr);border-radius:4px;
+  background:transparent;color:var(--tx3);cursor:pointer;width:110px;}
+button#btnParar.falando{background:#3a1d1d;border-color:#f38ba8;color:#f38ba8;
+  box-shadow:0 0 6px rgba(243,139,168,.4);}
+.fala{font-size:10px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-height:14px;line-height:14px;}
+.fala.ativa{color:var(--acc);}
 </style>
 </head>
 <body>
@@ -56,7 +64,11 @@ button#btnVoz.on{background:#1d3a26;border-color:var(--on);color:var(--on);}
       <option value="60">60 min</option>
     </select>
   </div>
-  <button id="btnVoz">Ligar voz</button>
+  <div class="linhaBotoes">
+    <button id="btnVoz">Ligar voz</button>
+    <button id="btnParar" title="Interromper fala">&#9632; Parar</button>
+  </div>
+  <div class="fala" id="linhaFala"></div>
 </div>
 <script>
 function edgeAtualizar(st){
@@ -65,7 +77,17 @@ function edgeAtualizar(st){
   document.getElementById('ptBridge').classList.toggle('on', !!st.bridge);
   var b = document.getElementById('btnVoz');
   b.classList.toggle('on', !!st.voz);
-  b.textContent = st.voz ? 'Desligar voz' : 'Ligar voz';
+  b.textContent = st.voz ? '\u25CF Ouvindo' : 'Ligar voz';
+  var p = document.getElementById('btnParar');
+  p.classList.toggle('falando', !!st.falando);
+  var f = document.getElementById('linhaFala');
+  if (st.falando && st.texto){
+    f.textContent = '\u25B6 ' + st.texto;
+    f.classList.add('ativa');
+  } else {
+    f.textContent = st.ultima_fala || '';
+    f.classList.remove('ativa');
+  }
 }
 window.addEventListener('pywebviewready', async function(){
   try{
@@ -85,6 +107,9 @@ window.addEventListener('pywebviewready', async function(){
       var r = await window.pywebview.api.voice_toggle();
       edgeAtualizar({voz: r.voz});
     }catch(e){}
+  });
+  document.getElementById('btnParar').addEventListener('click', function(){
+    try{ window.pywebview.api.parar(); }catch(e){}
   });
 });
 </script>

@@ -744,6 +744,22 @@ Rodou `python tests/test_integration.py` no `ler-runtime/`.
 - test_smoke.py: 2 marcadores
 - consolidate_build_pipeline.py: 6 marcadores
 - flutter_o
+
+﻿# 2026-08-21 - Scan proativo: EcoSystemUmGrau
+## Marcadores encontrados
+- core.py: 41 marcadores
+- universal_bridge.py: 3 marcadores
+- bridge_resiliencia.py: 11 marcadores
+- app.py: 8 marcadores
+- checklist.py: 4 marcadores
+- knowledge_base.py: 4 marcadores
+- __init__.py: 72 marcadores
+- fix_encoding_and_build.py: 12 marcadores
+- patch_flutter_orchestrator_final.py: 2 marcadores
+- test_imports.py: 2 marcadores
+- test_smoke.py: 2 marcadores
+- consolidate_build_pipeline.py: 6 marcadores
+- flutter
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]

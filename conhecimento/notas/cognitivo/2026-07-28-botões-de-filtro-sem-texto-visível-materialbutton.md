@@ -1,5 +1,5 @@
 ---
-tags: [cognitivo, fisica, general, labels, vivo, zoom]
+tags: [cerebro, cognitivo, general, labels, vivo, zoom]
 aliases: [# 2026-07-28: Botões de filtro sem texto visível — MaterialB]
 date: 2026-08-21
 ---

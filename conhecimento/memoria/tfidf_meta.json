@@ -408,6 +408,8 @@
     418,
     419,
     420,
+    421,
+    422,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -1636,6 +1638,8 @@
     "erro",
     "padrao",
     "padrao",
+    "erro",
+    "erro",
     "nota",
     "nota",
     "nota",
@@ -2864,6 +2868,8 @@
     "o espelho investidor10 altera o formato da celula de rentabilidade (as vezes spread ipca+ 7,54%, as vezes taxa nominal total 12,02%), o que quebrava a classificacao tipo_taxa baseada no conteudo da celula. correcao: classificar pelo nome do titulo (ipca+/selic/prefixado), que e estavel, e extrair valor numerico quando possivel. licao: em parsers de html de terceiros, ancorar em campos estaveis (nome/id) e nunca em formato de celula mutavel. alta-confianca conteudo baseada tipo quebrava taxa total erro",
     "mortes silenciosas do widget eram o guardian: matador de ram executava pythonw sem protecao de cmdline e update_protected_eco_pids apagava widget.pid julgado stale enquanto o dono vivia, permitindo roubo de trava o_excl. correcao: guardian virou observador puro via varredura token-endswith (<script>.py) em servicos_eco_scripts; protecao kill_process por cmdline; widget confere tabela de processos mesmo apos criar trava; proibido guardian escrever/apagar runtime/widget.pid. alta-confianca apagava pids excl protected update roubo padrao",
     "plugin opencode config/opencode-plugin/falar-respostas.js captura message.updated do assistente, limpa markdown, grava runtime/tts_cmd.json (protocolo oficial tts_service). referenciado por file:// com caminho curto 8.3 no plugin array dos configs fonte e deployed. mudo geral = botao de voz do widget edge via narracao_estado.json ativo=false. requer reinicio do opencode para carregar. alta-confianca config estado cmd narracao runtime edge padrao",
+    "diagnostico fechado apos exaustao completa: mme/directsound/wasapi falham abertura do microfone interno (unanticipated host error / invalid device) mesmo apos restart de servicos, ciclo pnp, remocao+reinstall de driver e reboot completo. unico canal abrivel e wdm-ks dev mic input (tomada externa combo), que entrega buffers frescos mas e acusticamente surdo: teste de laco acustico provou que nem tts da propria maquina a 100% de volume aparece no sinal (razao 0.9x, silero prob 0.010). nao existe intel sst/dmic no pnp. veredito: caminho fisico do mic interno inoperante (hardware ou firmware). solucao pratica: fone de celular p2 na tomada combo torna dev mic input o canal de voz valido; pilha dialogo (captura bloqueante + silero + anti-eco) ja validada nesse canal. alta-confianca completo reboot driver reinstall remocao ciclo erro",
+    "diagnostico exaustivo provou que o microfone interno do acer aspire e5-571 esta morto no nivel de hardware. testado: privacidade allow, servicos de audio, ciclo pnp, pnputil remove-device com reboot, instalacao do motorista oficial realtek 6.0.1.7589 assinado extraido do pacote audio_realtek_6.0.1.7910 salvo no archive.org (item audio-realtek-6.0.1.7910-w-10x-64-a). apos motorista correto e reboot: endpoints mme/directsound/wasapi continuam falhando (unanticipated host error / invalid device -9996); unico canal aberto e wdm-ks mic input, acusticamente surdo (teste de laco acustico com tts em volume maximo nao registrou correlacao; escuta apenas ruido eletrico de jack vazio). nao existe controlador intel sst/dmic no pnp. codec alc283, subsys_10250940. solucao pratica validada: fone com microfone p2 na entrada combo jack ou microfone usb, o canal wdm-ks fica vivo ao plugar. gerenciador microfone_manager reelege corretamente por nome apos shift de indices. alta-confianca correlacao registrou nivel maximo aspire volume erro",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -7775,12 +7781,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 99575,
-  "count": 1226,
-  "count_mem": 408,
+  "vocab_size": 99820,
+  "count": 1228,
+  "count_mem": 410,
   "count_notas": 818,
   "fingerprint": [
-    408,
+    410,
     [
       1787343486.9,
       1787343447.5,

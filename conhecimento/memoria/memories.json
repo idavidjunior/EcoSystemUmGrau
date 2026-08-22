@@ -10856,5 +10856,51 @@
     "access_count": 0,
     "created_at": "2026-08-21T17:52:12.508433",
     "last_accessed": "2026-08-21T17:52:12.508433"
+  },
+  {
+    "id": 421,
+    "kind": "erro",
+    "task": "Microfone interno do notebook Acer morto no nivel OS",
+    "summary": "Diagnostico fechado apos exaustao completa: MME/DirectSound/WASAPI falham abertura do microfone interno (Unanticipated host error / Invalid device) mesmo apos restart de servicos, ciclo PnP, remocao+reinstall de driver e REBOOT completo. Unico canal abrivel e WDM-KS dev Mic input (tomada externa combo), que entrega buffers frescos mas e ACUSTICAMENTE SURDO: teste de laco acustico provou que nem TTS da propria maquina a 100% de volume aparece no sinal (razao 0.9x, Silero prob 0.010). Nao existe Intel SST/DMIC no PnP. Veredito: caminho fisico do mic interno inoperante (hardware ou firmware). Solucao pratica: fone de celular P2 na tomada combo torna dev Mic input o canal de voz valido; pilha dialogo (captura bloqueante + Silero + anti-eco) ja validada nesse canal.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "completo",
+      "reboot",
+      "driver",
+      "reinstall",
+      "remocao",
+      "ciclo"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-21T19:50:26.726202",
+    "last_accessed": "2026-08-21T19:50:26.726202"
+  },
+  {
+    "id": 422,
+    "kind": "erro",
+    "task": "Microfone interno Acer E5-571 morto em hardware",
+    "summary": "Diagnostico exaustivo provou que o microfone interno do Acer Aspire E5-571 esta morto no nivel de hardware. Testado: privacidade Allow, servicos de audio, ciclo PnP, pnputil remove-device com reboot, instalacao do motorista oficial Realtek 6.0.1.7589 assinado extraido do pacote Audio_Realtek_6.0.1.7910 salvo no archive.org (item audio-realtek-6.0.1.7910-w-10x-64-a). Apos motorista correto e reboot: endpoints MME/DirectSound/WASAPI continuam falhando (Unanticipated host error / Invalid device -9996); unico canal aberto e WDM-KS Mic input, acusticamente surdo (teste de laco acustico com TTS em volume maximo nao registrou correlacao; escuta apenas ruido eletrico de jack vazio). Nao existe controlador Intel SST/DMIC no PnP. Codec ALC283, SUBSYS_10250940. Solucao pratica validada: fone com microfone P2 na entrada combo jack ou microfone USB, o canal WDM-KS fica vivo ao plugar. Gerenciador microfone_manager reelege corretamente por nome apos shift de indices.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "correlacao",
+      "registrou",
+      "nivel",
+      "maximo",
+      "aspire",
+      "volume"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-21T20:25:45.844350",
+    "last_accessed": "2026-08-21T20:25:45.844350"
   }
 ]

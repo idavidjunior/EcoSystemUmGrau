@@ -30,6 +30,7 @@ ROOT = Path(__file__).resolve().parent.parent
 RUNTIME = ROOT / "runtime"
 CMD_FILE = RUNTIME / "tts_cmd.json"
 STOP_FLAG = RUNTIME / "parar_fala.flag"
+ESTADO_FILE = RUNTIME / "tts_estado.json"
 
 RUNTIME.mkdir(parents=True, exist_ok=True)
 
@@ -115,6 +116,34 @@ def _ler_volume() -> int:
     return 80
 
 
+def _escrever_estado(falando: bool, texto_atual: str = ""):
+    """Publica estado de fala (tts_estado.json) e registra a última frase
+    no contrato do widget (widget_state.json['ultima_fala'])."""
+    try:
+        _atomic_write(
+            ESTADO_FILE,
+            {
+                "falando": bool(falando),
+                "texto_atual": (texto_atual or "")[:300],
+                "quando": time.time(),
+            },
+        )
+    except Exception:
+        pass
+    if texto_atual:
+        try:
+            ws = RUNTIME / "widget_state.json"
+            est = {}
+            if ws.exists():
+                est = json.loads(ws.read_text(encoding="utf-8"))
+            est["ultima_fala"] = texto_atual[:500]
+            tmp = ws.with_suffix(".tmp")
+            tmp.write_text(json.dumps(est, ensure_ascii=False), encoding="utf-8")
+            os.replace(tmp, ws)
+        except Exception:
+            pass
+
+
 def _speak_text(texto: str, stop_flag: Path, req_id: str) -> bool:
     global _current_req_id, _processing
     _current_req_id = req_id
@@ -153,6 +182,7 @@ def main():
     _log(f"  SpeechPipeline: {'OK' if SPEECH_AVAILABLE else 'fallback vox_audio'}")
     _log(f"  Comando: {CMD_FILE}")
     _log(f"  Stop flag: {STOP_FLAG}")
+    _escrever_estado(False)
 
     last_mtime = 0
     while True:
@@ -175,7 +205,11 @@ def main():
                             texto = cmd.get("texto", "").strip()
                             if texto and not _paused:
                                 _log(f"fala req={req_id}: {texto[:60]}...")
-                                ok = _speak_text(texto, STOP_FLAG, req_id)
+                                _escrever_estado(True, texto)
+                                try:
+                                    ok = _speak_text(texto, STOP_FLAG, req_id)
+                                finally:
+                                    _escrever_estado(False)
                                 _write_resp(req_id, "ok" if ok else "error")
                             elif _paused:
                                 _write_resp(req_id, "ignored", "pausado")

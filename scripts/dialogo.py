@@ -52,6 +52,17 @@ from microfone_manager import MicrofoneManager, SAMPLE_RATE as MM_SAMPLE_RATE  #
 # wake word, bridge sync e health check) — módulo autoritativo do ecossistema.
 manager = MicrofoneManager()
 
+# Autopsia: falhas nativas (access violation em PortAudio/torch) matam o
+# processo sem traceback Python; o faulthandler registra pilha crua.
+try:
+    import faulthandler as _faulthandler
+
+    _crash_log = open(SCRIPTS.parent / "runtime" / "dialogo_crash.log", "a",
+                      buffering=1, encoding="utf-8")
+    _faulthandler.enable(file=_crash_log)
+except Exception:
+    pass
+
 THRESHOLD = float(os.environ.get("VOX_THRESHOLD", "0.5"))
 SILENCIO = float(os.environ.get("VOX_SILENCIO", "0.8"))
 MAX_FALA = float(os.environ.get("VOX_MAX_FALA", "15"))
@@ -464,12 +475,28 @@ def _monitorar_teclado(parar_evento):
 
 def _monitorar_microfone(parar_evento, limiar_rms=None):
     """Fica em thread: se detectar fala do usuario (RMS acima do limiar) durante
-    a fala do Jarvis, dispara a parada (barge-in por voz)."""
+    a fala do Jarvis, dispara a parada (barge-in por voz).
+
+    Anti-eco: os ~0.8s iniciais calibram o nivel do proprio audio dos
+    alto-falantes vazando no microfone; o limiar efetivo passa a ser esse
+    eco ampliado, ou a voz ficaria sempre abaixo do corte."""
     if limiar_rms is None:
-        limiar_rms = float(os.environ.get("VOX_BARGEIN_RMS", "0.03"))
+        limiar_rms = float(os.environ.get("VOX_BARGEIN_RMS", "0.07"))
     dev = _device_entrada()
     taxa = _taxa_nativa(dev)
     bloco = int(taxa * 0.1)
+    amostras_eco = []
+    for _ in range(8):  # calibracao ~0.8s (tambem funciona como carencia inicial)
+        if parar_evento.is_set():
+            return
+        try:
+            x = _rec_bloco_f32(dev, taxa, bloco)
+            if x.size:
+                amostras_eco.append(_rms(x))
+        except Exception:
+            pass
+    eco = min(amostras_eco) if amostras_eco else 0.0
+    limiar = max(limiar_rms, eco * 2.5 + 0.01)
     consec = 0
     while not parar_evento.is_set():
         try:
@@ -477,9 +504,9 @@ def _monitorar_microfone(parar_evento, limiar_rms=None):
             if x.size == 0:
                 continue
             rms = _rms(x)
-            if rms > limiar_rms:
+            if rms > limiar:
                 consec += 1
-                if consec >= 2:  # ~200ms de fala continua = barge-in
+                if consec >= 3:  # ~300ms de fala continua = barge-in
                     print(f"{VOZ_COLOR}[interrompido pela voz]{RESET}", flush=True)
                     parar_evento.set()
                     return

@@ -229,6 +229,18 @@ class DeviceSelector:
                 time.sleep(duracao)
             return True
         except Exception:
+            pass
+        # Fallback: abertura bloqueante via sd.rec — e o caminho que o dialogo
+        # realmente usa quando o stream nao entrega callbacks (ex.: WDM-KS).
+        try:
+            import sounddevice as sd
+
+            n = max(1, int(samplerate * min(duracao, 0.2)))
+            rec = sd.rec(n, samplerate=samplerate, channels=1,
+                         dtype="float32", device=device_id)
+            sd.wait()
+            return rec.size > 0
+        except Exception:
             return False
 
     def _testar_16k(self, device_id):
@@ -256,6 +268,15 @@ class DeviceSelector:
         except Exception:
             return False
 
+    def _e_loopback(self, did):
+        """True se o device e canal de loopback/mixagem: captura a SAIDA dos
+        alto-falantes, nao o microfone fisico. Nunca deve ser preferido."""
+        for d in self._dispositivos_entrada():
+            if d["id"] == did:
+                nome = d["name"].lower()
+                return "mixagem" in nome or "stereo mix" in nome or "loopback" in nome
+        return False
+
     def benchmark(self, permitir_nativo=True):
         """Seleciona o melhor device de entrada por teste REAL de abertura + entrega.
 
@@ -269,6 +290,9 @@ class DeviceSelector:
         Retorna o id (int) ou None se nenhum abrir.
         """
         devs = self._dispositivos_entrada()
+        # Loopback/mixagem captura a saida dos alto-falantes, nao o usuario.
+        # Excluido de TODOS os niveis: melhor nenhum device que um falso mic.
+        devs = [d for d in devs if not self._e_loopback(d["id"])]
         if not devs:
             return None
 
@@ -282,7 +306,8 @@ class DeviceSelector:
         if pid is not None:
             try:
                 pid = int(pid)
-                if any(d["id"] == pid for d in devs) and _valido(pid, SAMPLE_RATE):
+                if (any(d["id"] == pid for d in devs) and _valido(pid, SAMPLE_RATE)
+                        and not self._e_loopback(pid)):
                     self._preferido = pid
                     self._persistir()
                     return pid
@@ -290,7 +315,7 @@ class DeviceSelector:
                 pass
 
         if self._preferido is not None and any(d["id"] == self._preferido for d in devs):
-            if _valido(self._preferido, SAMPLE_RATE):
+            if _valido(self._preferido, SAMPLE_RATE) and not self._e_loopback(self._preferido):
                 return self._preferido
 
         def score(d):
@@ -347,9 +372,9 @@ class DeviceSelector:
                 agora = time.time()
                 if (agora - self._ultimo_teste_ts) < self._ttl_teste:
                     return self._preferido
-                if self._testar_16k(self._preferido) and self._testar_entrega(
+                if (self._testar_16k(self._preferido) and self._testar_entrega(
                     self._preferido, SAMPLE_RATE
-                ):
+                ) and not self._e_loopback(self._preferido)):
                     self._ultimo_teste_ts = agora
                     return self._preferido
             dev = self.benchmark()

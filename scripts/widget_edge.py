@@ -28,6 +28,7 @@ RUNTIME = BASE / "runtime"
 UI = BASE / "www" / "index.html"
 STATE_FILE = RUNTIME / "widget_state.json"
 PID_FILE = RUNTIME / "widget.pid"
+STOP_FLAG = RUNTIME / "parar_fala.flag"
 BRIDGE_PORT = 8765
 
 
@@ -92,6 +93,15 @@ def ultima_fala():
     return ler_estado().get("ultima_fala") or None
 
 
+def ler_tts_estado():
+    """(falando, texto_atual) — fonte única: runtime/tts_estado.json."""
+    try:
+        d = json.loads((RUNTIME / "tts_estado.json").read_text(encoding="utf-8"))
+        return bool(d.get("falando", False)), str(d.get("texto_atual", "") or "")
+    except Exception:
+        return False, ""
+
+
 class EdgeApi:
     """API exposta ao JavaScript via pywebview (window.pywebview.api)."""
 
@@ -104,6 +114,7 @@ class EdgeApi:
         with self._lock:
             voz = self._voz_proc is not None and self._voz_proc.poll() is None
         est = ler_estado()
+        falando, texto = ler_tts_estado()
         return {
             "narr": servico_no_ar("narrador_desktop"),
             "tts": servico_no_ar("tts_service"),
@@ -111,7 +122,19 @@ class EdgeApi:
             "voz": voz,
             "volume": int(est.get("volume", 80)),
             "sleep": int(est.get("sleep", 0)),
+            "falando": falando,
+            "texto": texto,
+            "ultima_fala": est.get("ultima_fala") or "",
         }
+
+    def parar(self):
+        """Interrompe a fala corrente: grava a bandeira direto (o serviço de
+        voz checa durante a síntese, mesmo com a fila ocupada)."""
+        try:
+            STOP_FLAG.write_text(str(int(time.time())), encoding="utf-8")
+        except Exception:
+            pass
+        return True
 
     def set_volume(self, valor):
         salvar_estado({"volume": max(0, min(100, int(valor)))})
@@ -142,11 +165,17 @@ class EdgeApi:
             if os.path.exists(alvo):
                 exe = alvo
             flags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+            log_f = open(RUNTIME / "dialogo_widget.log", "a", buffering=1,
+                         encoding="utf-8")
+            try:
+                log_f.write(time.strftime("[%Y-%m-%d %H:%M:%S] spawn dialogo\n"))
+            except Exception:
+                pass
             self._voz_proc = subprocess.Popen(
                 [exe, "-u", str(SCRIPTS / "dialogo.py"), "--modo", "vad"],
                 cwd=str(SCRIPTS),
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
+                stdout=log_f,
+                stderr=subprocess.STDOUT,
                 creationflags=flags,
             )
         return True
@@ -252,6 +281,33 @@ def poller(api):
             pass
 
 
+def _posicao_inferior_esquerda(largura, altura):
+    """(x, y) para nascer no canto inferior esquerdo da área útil
+    (respeita a barra de tarefas via SPI_GETWORKAREA)."""
+    try:
+        import ctypes
+
+        class RECT(ctypes.Structure):
+            _fields_ = [("left", ctypes.c_long), ("top", ctypes.c_long),
+                        ("right", ctypes.c_long), ("bottom", ctypes.c_long)]
+
+        rc = RECT()
+        ok = ctypes.windll.user32.SystemParametersInfoW(0x0030, 0, ctypes.byref(rc), 0)
+        if ok:
+            x = rc.left + 8
+            y = max(rc.top, rc.bottom - altura - 8)
+            return int(x), int(y)
+    except Exception:
+        pass
+    try:
+        import ctypes
+
+        u = ctypes.windll.user32
+        return 8, max(0, u.GetSystemMetrics(1) - altura - 56)
+    except Exception:
+        return 8, 8
+
+
 def main():
     # Telemetria: sob pythonw as streams sao None; qualquer print interno
     # de biblioteca derruba o processo. Redireciona e habilita faulthandler.
@@ -273,10 +329,14 @@ def main():
     import webview
 
     api = EdgeApi()
+    px, py = _posicao_inferior_esquerda(360, 220)
+    print(f"posicao inicial: {px},{py}", flush=True)
     webview.create_window(
         "Edge",
         str(UI),
         js_api=api,
+        x=px,
+        y=py,
         width=360,
         height=220,
         frameless=True,

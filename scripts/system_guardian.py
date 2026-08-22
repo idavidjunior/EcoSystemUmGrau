@@ -23,7 +23,7 @@ PROTECTED_ECO_PIDS = set()
 # Fonte única de verdade dos serviços Eco: a própria tabela de processos.
 # Correspondência por token terminando em "<script>.py" (imune a falsos
 # positivos de wrappers powershell/python -c que só CONTÊM a string).
-SERVICOS_ECO_SCRIPTS = ("narrador_desktop.py", "tts_service.py", "widget_edge.py")
+SERVICOS_ECO_SCRIPTS = ("narrador_desktop.py", "tts_service.py", "widget_edge.py", "dialogo.py")
 
 def _token_e_script(token, script):
     return ((token or "").lower().strip('"').endswith(script))
