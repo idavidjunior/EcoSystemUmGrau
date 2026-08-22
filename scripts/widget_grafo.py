@@ -99,7 +99,10 @@ def layout_3d(nos, arestas, pos_antigas=None, iteracoes=None):
         contrib = delta * k_att
         np.add.at(forca, ia, contrib)
         np.add.at(forca, ib, -contrib)
-        forca -= pos * 0.018          # gravidade leve ao centro
+        # Nos sem nenhuma aresta (libs nao citadas) caem mais forte pro
+        # centro: viram um cacho denso em vez de estilhaços soltos.
+        grav = np.where(grau == 0, 0.09, 0.018)
+        forca -= pos * grav[:, None]
         passo = forca * lr
         norma = np.linalg.norm(passo, axis=1, keepdims=True)
         passo = passo / np.maximum(norma, 1e-9) * np.minimum(norma, 30.0)
@@ -203,9 +206,35 @@ class Api:
         self.payload = None
 
     def fechar(self):
-        import webview
-        if webview.windows:
-            webview.windows[0].destroy()
+        import webview, threading
+        # salva posicoes ANTES de destruir (o finally pode nao rodar)
+        try:
+            if ULTIMA_POS:
+                salvo = {}
+                if DADOS_FILE.exists():
+                    salvo = json.loads(DADOS_FILE.read_text(encoding="utf-8"))
+                salvo["_pos"] = ULTIMA_POS
+                DADOS_FILE.write_text(json.dumps(salvo, ensure_ascii=False),
+                                      encoding="utf-8")
+        except Exception:
+            pass
+        try:
+            if PID_FILE.exists():
+                PID_FILE.unlink()
+        except OSError:
+            pass
+        try:
+            if webview.windows:
+                webview.windows[0].destroy()
+        except Exception:
+            pass
+
+        def _sair():
+            print("encerrado (forcado)", flush=True)
+            os._exit(0)
+        # rede de seguranca: destroy() pode nao retornar o controle ao
+        # webview.start(), deixando o processo orfao. Garante o fim.
+        threading.Timer(2.0, _sair).start()
         return True
 
     def minimizar(self):
@@ -573,7 +602,7 @@ def main():
     except Exception:
         px, py = 900, 100
 
-    webview.create_window(
+    jw = webview.create_window(
         "Cerebro Vivo",
         str(UI),
         js_api=api,
@@ -587,6 +616,12 @@ def main():
         background_color="#0b0e14",
         transparent=False,
     )
+
+    def _janela_fechada():
+        """Alt+F4 ou fechamento pelo sistema: garante saida do processo."""
+        import threading as _t
+        _t.Timer(2.0, lambda: os._exit(0)).start()
+    jw.events.closed += _janela_fechada
 
     threading.Thread(target=vigia, args=(api,), daemon=True).start()
     threading.Thread(target=eco_sentinela, daemon=True).start()

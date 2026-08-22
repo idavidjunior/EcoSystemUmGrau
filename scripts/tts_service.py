@@ -31,6 +31,7 @@ RUNTIME = ROOT / "runtime"
 CMD_FILE = RUNTIME / "tts_cmd.json"
 STOP_FLAG = RUNTIME / "parar_fala.flag"
 ESTADO_FILE = RUNTIME / "tts_estado.json"
+TELEMETRIA_FILE = RUNTIME / "tts_telemetria.jsonl"
 
 RUNTIME.mkdir(parents=True, exist_ok=True)
 
@@ -104,6 +105,34 @@ def _write_resp(req_id, status, msg=""):
     _atomic_write(resp_file, {"status": status, "request_id": req_id, "msg": msg})
 
 
+def _telemetrizar(reg: dict):
+    """Append de uma linha JSONL com dados da fala (evidência contra truncamento).
+
+    Campos: ts, request_id, texto_chars, palavras, chunks, cache_hit,
+    mp3_bytes, duracao_s, status, erro. Rotação simples aos 5 MB.
+    """
+    try:
+        if TELEMETRIA_FILE.exists() and TELEMETRIA_FILE.stat().st_size > 5_000_000:
+            TELEMETRIA_FILE.replace(TELEMETRIA_FILE.with_suffix(".jsonl.old"))
+        with open(TELEMETRIA_FILE, "a", encoding="utf-8") as f:
+            f.write(json.dumps(reg, ensure_ascii=False) + "\n")
+    except Exception as e:
+        _log(f"telemetria falhou: {e}")
+
+
+def _cache_info(texto: str):
+    """(existe_antes, bytes_depois) do MP3 em cache para este texto."""
+    try:
+        import hashlib
+        from tts.config import TTS_DIR
+        cache_dir = TTS_DIR.parent / "runtime" / "tts_cache"
+        cache_file = cache_dir / f"{hashlib.md5(texto.encode('utf-8')).hexdigest()[:12]}.mp3"
+        antes = cache_file.exists()
+        return cache_file, antes
+    except Exception:
+        return None, None
+
+
 def _ler_volume() -> int:
     """ Lê volume (0-100) do widget_state.json. """
     try:
@@ -149,24 +178,52 @@ def _speak_text(texto: str, stop_flag: Path, req_id: str) -> bool:
     _current_req_id = req_id
     _processing = True
     volume = _ler_volume()
+    t0 = time.time()
+    reg = {"request_id": req_id, "texto_chars": len(texto),
+           "palavras": len(texto.split()), "chunks": None,
+           "cache_hit": None, "mp3_bytes": None, "duracao_s": None,
+           "status": None, "erro": None}
+    cache_file, cache_antes = (None, None)
+    if SPEECH_AVAILABLE and _speech:
+        try:
+            reg["chunks"] = len(_speech._partes_para_sintese(texto))
+        except Exception:
+            pass
+        cache_file, cache_antes = _cache_info(texto)
     try:
+        ok = False
         if SPEECH_AVAILABLE and _speech:
-            _speech.speak(texto, block=True, stop_flag=stop_flag, volume=volume)
-            return True
-        # Fallback
-        import subprocess
-        subprocess.run(
-            [sys.executable, str(VOX), "falar", texto],
-            cwd=str(ROOT),
-            timeout=90,
-            check=False,
-            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
-        )
-        return True
+            ok = bool(_speech.speak(texto, block=True, stop_flag=stop_flag,
+                                    volume=volume))
+        else:
+            import subprocess
+            subprocess.run(
+                [sys.executable, str(VOX), "falar", texto],
+                cwd=str(ROOT),
+                timeout=90,
+                check=False,
+                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+            )
+            ok = True
+        reg["status"] = "ok" if ok else "interrompida"
+        return ok
     except Exception as e:
+        reg["status"] = "erro"
+        reg["erro"] = str(e)[:200]
         _log(f"erro fala: {e}")
         return False
     finally:
+        try:
+            reg["duracao_s"] = round(time.time() - t0, 2)
+            if cache_file is not None:
+                reg["cache_hit"] = bool(cache_antes)
+                if cache_file.exists():
+                    reg["mp3_bytes"] = cache_file.stat().st_size
+            elif reg["status"] == "ok":
+                pass
+        except Exception:
+            pass
+        _telemetrizar(reg)
         _current_req_id = None
         _processing = False
 

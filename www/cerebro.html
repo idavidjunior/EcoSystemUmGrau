@@ -48,6 +48,7 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:2px 0 8px;}
   <span id="titulo">C&#233;rebro <b>Vivo</b></span>
   <button class="mini" id="btFoco">Foco</button>
   <button class="mini" id="btAjustes">Ajustes</button>
+  <button class="mini" id="btCentro">Centro</button>
   <button class="mini" id="btTopo">Fundo</button>
   <button class="mini" onclick="pywebview.api.minimizar()">&#8211;</button>
   <button class="mini" onclick="pywebview.api.fechar()">&#10005;</button>
@@ -170,6 +171,8 @@ let VIS = null;                  // Uint8Array: 1 = no visivel
 let ARVIS = [];                  // arestas entre nos visiveis
 let rotY = 0.6, rotX = -0.18, velY = 0.0022, velX = 0;
 let zoom = 1.0, alvoZoom = 1.0;
+let panX = 0, panY = 0, alvoPanX = 0, alvoPanY = 0, emPan = false;
+let pausaGiroAte = 0, cliqueNoX = 0, cliqueNoY = 0;
 let arrastando = false, mx0 = 0, my0 = 0, ultToque = 0;
 let mouseMX = -999, mouseMY = -999, hoverId = -1;
 let W = 0, H = 0, T0 = performance.now();
@@ -357,27 +360,79 @@ window.cerebroAtividade = function(tipo, nomes){
 };
 
 // ---------- interacao ----------
+// clique SOBRE um no (ou perto) = girar; clique FORA dos nos = mover o grafo.
+// botao direito sempre move.
 cv.addEventListener('mousedown', e=>{
-  arrastando = true; mx0 = e.clientX; my0 = e.clientY;
+  mx0 = e.clientX; my0 = e.clientY;
   cv.classList.add('girando');
+  if (e.button===2){ emPan = true; return; }
+  const dpr = devicePixelRatio||1;
+  const mxP = e.clientX*dpr, myP = e.clientY*dpr, limiar = 36*dpr;
+  let sobreNo = false;
+  for (let i=0;i<NOS.length;i++){
+    if (VIS && !VIS[i]) continue;
+    const dx = SX[i]-mxP, dy = SY[i]-myP;
+    if (dx*dx+dy*dy < limiar*limiar){ sobreNo = true; break; }
+  }
+  if (sobreNo){ arrastando = true; emPan = false; cliqueNoX = e.clientX; cliqueNoY = e.clientY; }
+  else { emPan = true; arrastando = false; }
 });
-window.addEventListener('mouseup', ()=>{ arrastando=false; cv.classList.remove('girando'); });
+window.addEventListener('mouseup', e=>{
+  // clique (sem arraste) sobre um no: pausa o giro por 5s
+  const moveu = Math.hypot(e.clientX-cliqueNoX, e.clientY-cliqueNoY) > 6;
+  if (arrastando && !moveu) pausaGiroAte = performance.now() + 5000;
+  emPan=false; arrastando=false; cv.classList.remove('girando');
+});
 window.addEventListener('mousemove', e=>{
   mouseMX = e.clientX * devicePixelRatio;
   mouseMY = e.clientY * devicePixelRatio;
-  if (!arrastando) return;
-  const dx = (e.clientX-mx0)*devicePixelRatio, dy=(e.clientY-my0)*devicePixelRatio;
-  velY = dx * 0.00028;
-  velX = dy * 0.00018;
-  rotY += velY * 14;
-  rotX = Math.max(-1.1, Math.min(1.1, rotX + velX * 14));
+  if (!emPan && !arrastando) return;
+  const dx = (e.clientX-mx0)*(devicePixelRatio||1), dy=(e.clientY-my0)*(devicePixelRatio||1);
+  if (arrastando){
+    // gesto de giro (funcionamento original)
+    velY = dx * 0.00028;
+    velX = dy * 0.00018;
+    rotY += velY * 14;
+    rotX = Math.max(-1.1, Math.min(1.1, rotX + velX * 14));
+  } else {
+    // gesto de mover livremente
+    const limX=cv.width*1.2, limY=cv.height*1.2;
+    panX=Math.max(-limX,Math.min(limX,panX+dx));
+    panY=Math.max(-limY,Math.min(limY,panY+dy));
+    alvoPanX=panX; alvoPanY=panY;
+  }
   mx0 = e.clientX; my0 = e.clientY;
   ultToque = performance.now();
 });
 cv.addEventListener('wheel', e=>{
   e.preventDefault();
-  alvoZoom = Math.max(.45, Math.min(3.2, alvoZoom * Math.exp(-e.deltaY*0.0011)));
+  const dpr = devicePixelRatio||1;
+  const cxT = cv.width/2, cyT = cv.height/2 + 12*dpr;
+  const mxP = e.clientX*dpr, myP = e.clientY*dpr;
+  const z0 = alvoZoom;
+  alvoZoom = Math.max(.3, Math.min(6.5, alvoZoom * Math.exp(-e.deltaY*0.0011)));
+  // ancora o ponto sob o mouse: pan compensa a mudanca de escala
+  const vx = (mxP - cxT - panX) / zoom, vy = (myP - cyT - panY) / zoom;
+  alvoPanX = mxP - cxT - vx*alvoZoom;
+  alvoPanY = myP - cyT - vy*alvoZoom;
 },{passive:false});
+cv.addEventListener('contextmenu', e=>e.preventDefault());
+// duplo clique: voa ate o no mais proximo do clique
+cv.addEventListener('dblclick', e=>{
+  const dpr=devicePixelRatio||1;
+  const mxP=e.clientX*dpr, myP=e.clientY*dpr;
+  let melhor=-1, melhorD=40*dpr;
+  for (let i=0;i<NOS.length;i++){
+    if (!VIS||!VIS[i]) continue;
+    const dx=SX[i]-mxP, dy=SY[i]-myP, d=Math.hypot(dx,dy);
+    if (d<melhorD){ melhorD=d; melhor=i; }
+  }
+  if (melhor<0) return;
+  const cxT=cv.width/2, cyT=cv.height/2+12*dpr;
+  alvoPanX += cxT - SX[melhor];
+  alvoPanY += cyT - SY[melhor];
+  alvoZoom = Math.max(alvoZoom, 2.2);
+});
 
 // ---------- sinapses ----------
 function garantirIncidencia(){
@@ -550,7 +605,7 @@ function projetar(t){
     // inclinacao X
     let ry=wy*cxr-rz*sxr; rz=wy*sxr+rz*cxr;
     const s=f/(f-rz*zP);
-    SX[i]=cxTela+rx*s*zP; SY[i]=cyTela+ry*s*zP; SS[i]=s; SZ[i]=rz;
+    SX[i]=cxTela+rx*s*zP+panX; SY[i]=cyTela+ry*s*zP+panY; SS[i]=s; SZ[i]=rz;
   }
   ORDEM.length=NOS.length;
   for (let i=0;i<NOS.length;i++) ORDEM[i]=i;
@@ -563,10 +618,13 @@ function desenhar(t, dt){
 
   // arestas
   ctx.lineWidth = 1;
+  const margem = 60*devicePixelRatio;
+  const foraTela = (x,y)=> x<-margem || x>W+margem || y<-margem || y>H+margem;
   for (let k=0;k<ARVIS.length;k++){
     const [a,b]=ARVIS[k];
     const za=(SZ[a]+900)/1800, zb=(SZ[b]+900)/1800;
     if (SS[a]<0.15||SS[b]<0.15) continue;
+    if (foraTela(SX[a],SY[a]) && foraTela(SX[b],SY[b])) continue;
     const prof=Math.min(1,(za+zb)/2*1.25);
     ctx.strokeStyle='rgba(137,180,250,'+(0.05+prof*0.13).toFixed(3)+')';
     ctx.beginPath();ctx.moveTo(SX[a],SY[a]);ctx.lineTo(SX[b],SY[b]);ctx.stroke();
@@ -601,6 +659,7 @@ function desenhar(t, dt){
     const n=NOS[i];
     if (VIS && !VIS[i]){ EXCITA[i]*=0.955; continue; }
     EXCITA[i]*=0.955;
+    if (foraTela(SX[i],SY[i])) continue;
     const prof=Math.max(0,Math.min(1,(SZ[i]+900)/1800));
     const esc=SS[i]*(0.72+0.5*prof)*n.nasce;
     const r=(2.3+Math.min(8.5,Math.sqrt(n.g)*1.25))*(0.75+n.a*0.45)*esc*
@@ -670,7 +729,10 @@ function desenhar(t, dt){
 
 function laco(t){
   const dt=Math.min(50,t-(laco._ant||t)); laco._ant=t;
-  if (!arrastando && t-ultToque>2600){
+  if (t < pausaGiroAte){
+    // pausa de giro apos clique em no: mata inercia suavemente
+    velY*=0.85; velX*=0.85;
+  } else if (!arrastando && t-ultToque>2600){
     velY+=(0.0022-velY)*0.01; velX*=0.97;
     rotY+=velY*dt/16.7; rotX+=velX*dt/16.7;
   } else if (arrastando){
@@ -679,6 +741,7 @@ function laco(t){
     rotY+=velY*dt/16.7; rotX+=velX*dt/16.7; velY*=0.96;
   }
   zoom+=(alvoZoom-zoom)*0.09;
+  panX+=(alvoPanX-panX)*0.09; panY+=(alvoPanY-panY)*0.09;
   if (FILTRO==='__ativos' && t-(laco._visAt||0)>5000){
     laco._visAt=t; atualizarVis();
   }
@@ -805,6 +868,11 @@ btTopo.addEventListener('click',()=>{
       btTopo.textContent = f ? 'Fundo' : 'Frente';
     });
   }catch(e){}
+});
+
+// centralizar: volta pan e zoom ao padrao (o easing existente anima suave)
+document.getElementById('btCentro').addEventListener('click',()=>{
+  alvoPanX = 0; alvoPanY = 0; alvoZoom = 1.0;
 });
 
 window.cerebroAjustesAplicar = function(txt){

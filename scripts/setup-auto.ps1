@@ -109,7 +109,7 @@ Pop-Location
 # ─── 4. Python deps ───────────────────────────────
 Write-Host ">>> [4/9] Python deps" -ForegroundColor Cyan
 Push-Location $ECO_DIR
-$reqs = @("dspy-ai", "edge-tts", "httpx", "websockets", "requests", "pyyaml", "tiktoken", "openai")
+$reqs = @("dspy", "edge-tts", "httpx", "websockets", "requests", "pyyaml", "tiktoken", "openai")
 foreach ($pkg in $reqs) {
     $ver = pip show $pkg 2>$null | Select-String "Version"
     $name = $pkg

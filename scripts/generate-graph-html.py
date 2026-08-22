@@ -38,11 +38,14 @@ CATEGORIA_COR = {
     'heuristicas': '#76b7b2',
     'frameworks': '#edc948',
     'missoes': '#b07aa1',
+    'mcp': '#cba6f7',
+    'lib': '#94e2d5',
 }
 CATEGORIA_LABEL = {
     'padroes': 'Padrões', 'decisoes': 'Decisões', 'bugs': 'Bugs',
     'cognitivo': 'Cognitivo', 'heuristicas': 'Heurísticas',
     'frameworks': 'Frameworks', 'missoes': 'Missões', 'hub': 'Hub',
+    'mcp': 'MCP', 'lib': 'Biblioteca',
 }
 # Descricoes curtas para os tooltips dos botoes de categoria
 CATEGORIA_DESC = {
@@ -54,6 +57,8 @@ CATEGORIA_DESC = {
     'frameworks': 'Frameworks, bibliotecas e ferramentas adotadas',
     'missoes': 'Missões e objetivos em andamento do ecossistema',
     'hub': 'Nó central que agrupa e conecta um conjunto de notas',
+    'mcp': 'Servidores MCP configurados no opencode.jsonc, ligados às notas que os citam',
+    'lib': 'Bibliotecas externas Python instaladas, ligadas às notas que as citam',
 }
 
 CLUSTERS = {
@@ -231,6 +236,64 @@ def _source_from_tags(tags):
     return ''
 
 
+def _parse_jsonc(caminho):
+    """Parse de JSONC (opencode.jsonc) removendo comentarios fora de strings
+    e virgulas pendentes. Retorna dict ou {} em caso de falha."""
+    try:
+        txt = Path(caminho).read_text(encoding='utf-8-sig')
+    except OSError:
+        return {}
+    out, i, n, in_str, esc = [], 0, len(txt), False, False
+    while i < n:
+        c = txt[i]
+        if in_str:
+            out.append(c)
+            if esc:
+                esc = False
+            elif c == '\\':
+                esc = True
+            elif c == '"':
+                in_str = False
+        else:
+            if c == '"':
+                in_str = True
+                out.append(c)
+            elif c == '/' and i + 1 < n and txt[i + 1] == '/':
+                while i < n and txt[i] != '\n':
+                    i += 1
+                out.append('\n')
+            elif c == '/' and i + 1 < n and txt[i + 1] == '*':
+                i += 2
+                while i + 1 < n and not (txt[i] == '*' and txt[i + 1] == '/'):
+                    i += 1
+                i += 1
+            else:
+                out.append(c)
+        i += 1
+    limpo = re.sub(r',(\s*[}\]])', r'\1', ''.join(out))
+    try:
+        return json.loads(limpo)
+    except json.JSONDecodeError:
+        return {}
+
+
+def _coletar_mcps():
+    """Nomes dos servidores MCP do config/opencode.jsonc, na ordem do arquivo."""
+    d = _parse_jsonc(os.path.join(BASE, 'config', 'opencode.jsonc'))
+    return list((d.get('mcp') or {}).keys())
+
+
+def _coletar_bibliotecas():
+    """Bibliotecas externas instaladas no ambiente Python (nome, versao)."""
+    try:
+        import importlib.metadata as im
+        vistos = {(dist.metadata['Name'] or '?', dist.version or '?')
+                  for dist in im.distributions()}
+        return sorted(vistos, key=lambda t: t[0].lower())
+    except Exception:
+        return []
+
+
 def extrair_nos():
     """ConstrÃ³i nÃ³s e arestas a partir do vault Obsidian vivo.
 
@@ -259,6 +322,7 @@ def extrair_nos():
     # ---- ler TODAS as notas do vault (incl. _hubs) ----
     md_files = sorted(Path(VAULT_DIR).rglob('*.md'))
     no_cache = {}  # slug -> set of wikilinks (guardado antes de add_no perder body)
+    corpo_por_slug = {}  # slug -> body completo (para casar mencoes MCP)
 
     # ---- TREINO do ClusterMapper ----
     # Coleta os metadados de todas as notas ANTES de montar o grafo e aprende
@@ -388,6 +452,7 @@ def extrair_nos():
         # armazenar wikilinks desta nota (antes de possivelmente ser usado)
         links = _extract_wikilinks(body)
         no_cache[slug] = links
+        corpo_por_slug[slug] = body
 
     # ---- construir arestas a partir dos wikilinks reais ----
     id_set = set(nos_por_id)
@@ -397,6 +462,58 @@ def extrair_nos():
             link_slug = link.split('|')[0].strip()
             if link_slug in id_set and slug in id_set:
                 arestas.add(tuple(sorted((slug, link_slug))))
+
+    # ---- nos MCP: um por servidor do opencode.jsonc, ligado as notas que o citam ----
+    corpos_low = {s: b.lower() for s, b in corpo_por_slug.items()}
+    for nome_mcp in _coletar_mcps():
+        nid = f'mcp/{nome_mcp}'
+        add_no(nid, nome_mcp, 'mcp', ['mcp'],
+               f'Servidor MCP configurado no opencode.jsonc (tipo local). '
+               f'Clique para focar nas notas que o citam.',
+               source='config/opencode.jsonc', cluster='mcp')
+        # termos de busca: nome completo + nome curto (eco-obsidian -> obsidian)
+        termos = [nome_mcp.lower()]
+        sufixo = re.sub(r'^(eco|mcp)-', '', nome_mcp.lower())
+        if sufixo != nome_mcp.lower():
+            termos.append(sufixo)
+        for slug, low in corpos_low.items():
+            if any(t in low for t in termos):
+                arestas.add(tuple(sorted((nid, slug))))
+
+    # ---- nos de Bibliotecas: uma por pacote Python instalado, ligado as
+    # notas que mencionam o nome e a quem a requer (cadeia de dependencia) ----
+    nos_lib = {}
+    nos_lib_norm = {}  # nome normalizado (lower, hifen) -> id do no
+    for nome_lib, versao in _coletar_bibliotecas():
+        lid = f'lib/{nome_lib}'
+        nos_lib[nome_lib] = lid
+        nos_lib_norm[nome_lib.lower().replace('_', '-')] = lid
+        add_no(lid, nome_lib, 'lib', ['biblioteca'],
+               f'Biblioteca externa Python instalada (v{versao}).',
+               source='ambiente python', cluster='bibliotecas')
+        low_nome = nome_lib.lower()
+        for slug, low in corpos_low.items():
+            if low_nome in low:
+                arestas.add(tuple(sorted((lid, slug))))
+
+    # transitivas (urllib3, sympy...) ninguem cita em nota: ligam na lib pai
+    try:
+        import importlib.metadata as _im
+        for pai, lid_pai in nos_lib.items():
+            try:
+                reqs = _im.requires(pai) or []
+            except Exception:
+                continue
+            for r in reqs:
+                base = r.split(';')[0].split('(')[0].strip()
+                for sep in ('<=', '>=', '==', '~=', '<', '>', '!='):
+                    base = base.replace(sep, '|').split('|')[0]
+                filha = base.strip().lower().replace('_', '-')
+                lid_filha = nos_lib_norm.get(filha)
+                if lid_filha and lid_filha != lid_pai:
+                    arestas.add(tuple(sorted((lid_pai, lid_filha))))
+    except Exception:
+        pass
 
     print(f'  Lidos {len(md_files)} notas do vault -> {len(nos)} nos, '
           f'{len(arestas)} arestas')
@@ -521,6 +638,16 @@ def gerar_html(nos, arestas, output_path):
         '<span class="dot" style="background:#a6e3a1"></span>Conhecimento</button>'
     )
 
+    # Bibliotecas externas instaladas no ambiente Python — botao abre painel
+    bibliotecas = _coletar_bibliotecas()
+    libs_js = json.dumps([{'n': n, 'v': v} for n, v in bibliotecas],
+                         ensure_ascii=False)
+    legend_libs = (
+        f'<button id="btnLibs" class="lg" '
+        f'title="Todas as bibliotecas externas instaladas no ambiente Python do ecossistema.">'
+        f'📚 Bibliotecas ({len(bibliotecas)})</button>'
+    )
+
     html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -542,6 +669,22 @@ def gerar_html(nos, arestas, output_path):
   #painel {{ display:none; width:320px; margin:10px 12px 10px 0; background:#181825; border:1px solid #313244;
             border-radius:8px; padding:12px; overflow-y:auto; max-height:calc(100vh - 120px); }}
   #painel.visivel {{ display:block; }}
+  #painelLibs {{ display:none; width:320px; margin:10px 12px 10px 0; background:#181825;
+                border:1px solid #313244; border-radius:8px; padding:12px;
+                overflow-y:auto; max-height:calc(100vh - 120px); }}
+  #painelLibs.aberto {{ display:block; }}
+  #painelLibs h2 {{ font-size:13px; margin:0 0 10px; display:flex; align-items:center; gap:6px; }}
+  #painelLibs h2 button {{ margin-left:auto; background:none; border:none; color:#a6adc8;
+                          cursor:pointer; font-size:13px; }}
+  #painelLibs h2 button:hover {{ color:#cdd6f4; }}
+  #painelLibs input {{ width:100%; box-sizing:border-box; padding:5px 8px; border-radius:6px;
+                      border:1px solid #313244; background:#11111b; color:#eee; font-size:11px;
+                      margin-bottom:8px; }}
+  #painelLibs ul {{ list-style:none; margin:0; padding:0; }}
+  #painelLibs li {{ display:flex; justify-content:space-between; gap:8px; padding:5px 8px;
+                   border-bottom:1px solid #232335; font-size:11px; }}
+  #painelLibs li:hover {{ background:#232335; }}
+  #painelLibs li .v {{ color:#a6adc8; }}
   #painel h2 {{ font-size:13px; margin:0 0 10px; display:flex; align-items:center; gap:6px; }}
   #painel .count {{ font-size:10px; color:#a6adc8; font-weight:normal; }}
   #painel ul {{ list-style:none; margin:0; padding:0; }}
@@ -610,6 +753,7 @@ def gerar_html(nos, arestas, output_path):
     {legend_cl}
     {legend_st}
     {legend_dom}
+    {legend_libs}
     <button class="lg home" data-filter="home" data-value="" data-color="#89b4fa"
       title="Home: restaura a visao inicial do grafo (posicao e zoom originais)."> Home</button>
     <button class="lg" data-filter="all" data-value="" data-color="#888"
@@ -620,7 +764,17 @@ def gerar_html(nos, arestas, output_path):
 <div id="wrap">
   <div id="net"></div>
   <div id="painel"></div>
+  <div id="painelLibs">
+    <h2>📚 Bibliotecas externas instaladas
+      <span class="count" id="libsCount"></span>
+      <button id="libsFechar" title="Fechar">✕</button></h2>
+    <input id="libsBusca" placeholder="filtrar por nome...">
+    <ul id="libsLista"></ul>
+  </div>
 </div>
+<script>
+  const DADOS_LIBS = {libs_js};
+</script>
 <script>
   const nodes = new vis.DataSet([{ ','.join(nodes_js)}]);
   const edges = new vis.DataSet([{ ','.join(edges_js)}]);
@@ -1961,6 +2115,37 @@ arestasUp = arestasUp.map(a =>
     }} catch (e) {{}}
     _restaurarCamera();
   }}, 2600);
+
+  // ==================== Painel de Bibliotecas externas ====================
+  (function() {{
+    var painel = document.getElementById('painelLibs');
+    var btn = document.getElementById('btnLibs');
+    var busca = document.getElementById('libsBusca');
+    var lista = document.getElementById('libsLista');
+    var contagem = document.getElementById('libsCount');
+
+    function render() {{
+      var q = (busca.value || '').toLowerCase();
+      var itens = DADOS_LIBS.filter(function(l) {{
+        return !q || l.n.toLowerCase().indexOf(q) !== -1;
+      }});
+      lista.innerHTML = itens.map(function(l) {{
+        return '<li><span class="n">' + l.n + '</span><span class="v">' + l.v + '</span></li>';
+      }}).join('') || '<li><span class="v">nada encontrado</span></li>';
+      contagem.textContent = itens.length + ' de ' + DADOS_LIBS.length;
+    }}
+
+    btn.addEventListener('click', function() {{
+      var aberto = painel.classList.toggle('aberto');
+      btn.classList.toggle('active', aberto);
+      if (aberto) {{ render(); busca.focus(); }}
+    }});
+    document.getElementById('libsFechar').addEventListener('click', function() {{
+      painel.classList.remove('aberto');
+      btn.classList.remove('active');
+    }});
+    busca.addEventListener('input', render);
+  }})();
 </script>
 </body>
 </html>"""
