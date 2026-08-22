@@ -47,7 +47,8 @@ function limparParaFala(texto) {
     .replace(/\s+\./g, ".")
     .replace(/[ \t]+/g, " ")
     .trim();
-  if (t.length > 1200) t = `${t.slice(0, 1200).trim()}... Mensagem truncada.`;
+  // SEM corte aqui: o SpeechPipeline (SentenceChunker) divide textos longos
+  // em chunks de até 2000 chars e concatena o áudio — nada se perde.
   return t;
 }
 

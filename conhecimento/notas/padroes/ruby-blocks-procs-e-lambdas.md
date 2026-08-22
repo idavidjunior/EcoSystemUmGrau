@@ -1,5 +1,5 @@
 ---
-tags: [fornece, métodos, padrao, range, reduce, ruby]
+tags: [closure, fornece, métodos, padrao, reduce, ruby]
 aliases: [Ruby: blocks, procs e lambdas]
 date: 2026-08-22
 ---

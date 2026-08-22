@@ -23,7 +23,7 @@ PROTECTED_ECO_PIDS = set()
 # Fonte única de verdade dos serviços Eco: a própria tabela de processos.
 # Correspondência por token terminando em "<script>.py" (imune a falsos
 # positivos de wrappers powershell/python -c que só CONTÊM a string).
-SERVICOS_ECO_SCRIPTS = ("narrador_desktop.py", "tts_service.py", "widget_edge.py", "dialogo.py")
+SERVICOS_ECO_SCRIPTS = ("narrador_desktop.py", "tts_service.py", "widget_edge.py", "dialogo.py", "widget_grafo.py")
 
 def _token_e_script(token, script):
     return ((token or "").lower().strip('"').endswith(script))
@@ -427,6 +427,7 @@ def kill_process(pid, name, reason):
     if (_pid_roda_script(pid, "narrador_desktop.py")
             or _pid_roda_script(pid, "tts_service.py")
             or _pid_roda_script(pid, "widget_edge.py")
+            or _pid_roda_script(pid, "widget_grafo.py")
             or is_narrador_pid(pid) or is_tts_service_pid(pid) or is_widget_pid(pid)):
         log.warning(f"Kill bloqueado para serviço Eco PID {pid} ({name}): {reason}")
         return False

@@ -709,8 +709,8 @@
     },
     {
       "id": "widget_grafo",
-      "arquivo": "scripts/widget_grafo.py",
-      "funcao": "Widget desktop frameless que exibe grafo interativo do conhecimento (534+ notas, vis-network, pseudo-3D, temas, persistência)"
+      "arquivo": "scripts/generate-graph-html.py",
+      "funcao": "Gera docs/grafo.html a partir do vault (grafo de conhecimento interativo vis-network); aberto direto no navegador"
     },
     {
       "id": "adherence_audit",

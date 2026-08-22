@@ -140,6 +140,11 @@ def add_memory(task, summary, kind='episodio', project='', tags=None,
     _save_memories(memories)
     if reindex:
         reindexar_semantico(best_effort=True)
+    try:
+        from atividade_emit import emitir
+        emitir("memoria", 0.75)
+    except Exception:
+        pass
     return memory['id']
 
 

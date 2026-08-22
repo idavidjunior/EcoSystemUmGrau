@@ -383,6 +383,11 @@ def _speak_text(texto: str, stop_flag: Path, req_id: str) -> bool:
         _current_req_id = req_id
         _processing = True
     try:
+        from atividade_emit import emitir
+        emitir("fala", 0.95)
+    except Exception:
+        pass
+    try:
         if SPEECH_AVAILABLE and _speech:
             _speech.speak(texto, block=True, stop_flag=stop_flag)
             return True
@@ -399,6 +404,11 @@ def _speak_text(texto: str, stop_flag: Path, req_id: str) -> bool:
         _log(f"erro fala: {e}")
         return False
     finally:
+        try:
+            from atividade_emit import emitir as _emitir_fim
+            _emitir_fim("fala", 0.0)
+        except Exception:
+            pass
         with _lock:
             _current_req_id = None
             _processing = False

@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<style>
+:root{
+  --bg:#0b0e14;--tx:#cdd6f4;--tx3:#6c7086;--acc:#89b4fa;
+  --on:#a6e3a1;--bdr:#45475a;--sb:#181825;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none;user-select:none;}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);
+  font-family:'Segoe UI',system-ui,sans-serif;color:var(--tx);}
+#topo{position:fixed;top:0;left:0;right:0;height:30px;display:flex;
+  align-items:center;gap:8px;padding:0 8px;background:linear-gradient(
+  180deg,rgba(24,24,37,.92),rgba(24,24,37,.55));backdrop-filter:blur(6px);
+  border-bottom:1px solid rgba(69,71,90,.5);z-index:10;}
+#titulo{font-size:11px;font-weight:600;letter-spacing:.4px;flex:1;color:var(--tx);}
+#titulo b{color:var(--acc);}
+.mini{font-size:11px;line-height:1;padding:3px 7px;border:1px solid var(--bdr);
+  border-radius:3px;background:transparent;color:var(--tx3);cursor:pointer;}
+.mini:hover{color:var(--tx);}
+canvas{position:fixed;inset:0;display:block;cursor:grab;}
+canvas.girando{cursor:grabbing;}
+#info{position:fixed;left:10px;bottom:8px;font-size:10px;color:var(--tx3);
+  z-index:10;text-shadow:0 1px 2px #000;}
+#hover{position:fixed;display:none;z-index:20;pointer-events:none;max-width:240px;
+  background:rgba(24,24,37,.95);border:1px solid var(--bdr);border-radius:5px;
+  padding:6px 9px;font-size:11px;color:var(--tx);box-shadow:0 4px 14px rgba(0,0,0,.5);}
+#hover .cl{font-size:9px;margin-top:2px;}
+.painel{position:fixed;top:34px;right:8px;width:200px;background:rgba(17,17,27,.97);
+  border:1px solid var(--bdr);border-radius:6px;padding:10px;z-index:15;display:none;
+  box-shadow:0 10px 26px rgba(0,0,0,.55);font-size:11px;}
+.ptitulo{font-size:10px;color:var(--tx3);text-transform:uppercase;
+  letter-spacing:.6px;margin-bottom:6px;}
+.linha{display:flex;justify-content:space-between;color:var(--tx);margin-top:6px;}
+input[type=range]{width:100%;accent-color:var(--acc);margin:2px 0 8px;}
+.foco-btn{display:flex;justify-content:space-between;width:100%;margin:2px 0;
+  padding:4px 7px;border:1px solid var(--bdr);border-radius:4px;background:transparent;
+  color:var(--tx);font-size:11px;cursor:pointer;text-align:left;font-family:inherit;}
+.foco-btn:hover{border-color:var(--acc);}
+.foco-btn.on{border-color:var(--acc);color:var(--acc);background:rgba(137,180,250,.12);}
+.foco-btn span{color:var(--tx3);}
+#listaFoco{max-height:320px;overflow-y:auto;}
+</style>
+</head>
+<body>
+<div id="topo" class="pywebview-drag-region">
+  <span id="titulo">C&#233;rebro <b>Vivo</b></span>
+  <button class="mini" id="btFoco">Foco</button>
+  <button class="mini" id="btAjustes">Ajustes</button>
+  <button class="mini" id="btTopo">Fundo</button>
+  <button class="mini" onclick="pywebview.api.minimizar()">&#8211;</button>
+  <button class="mini" onclick="pywebview.api.fechar()">&#10005;</button>
+</div>
+<canvas id="cv"></canvas>
+<div id="info"></div>
+<div id="hover"></div>
+<div id="painelAjustes" class="painel">
+  <div class="ptitulo">Ajustes</div>
+  <label class="linha">Foco do brilho <span id="valFoco"></span></label>
+  <input id="rgFoco" type="range" min="0" max="1" step="0.01">
+  <label class="linha">Vivacidade das cores <span id="valViva"></span></label>
+  <input id="rgViva" type="range" min="0" max="1" step="0.05">
+  <button id="btDecor" class="foco-btn">Pulsos decorativos <span id="estDecor"></span></button>
+</div>
+<div id="painelFoco" class="painel">
+  <div class="ptitulo">Mostrar apenas</div>
+  <div id="listaFoco"></div>
+</div>
+<script>
+'use strict';
+window.onerror = function(msg, src, linha){
+  try{
+    document.getElementById('info').textContent =
+      'ERRO JS: ' + msg + ' @' + linha;
+  }catch(e){}
+  return false;
+};
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+const info = document.getElementById('info');
+const hov = document.getElementById('hover');
+
+const PALETA = {
+  padroes:'#f9e2af', decisoes:'#a6e3a1', bugs:'#f38ba8', cognitivo:'#89b4fa',
+  heuristicas:'#fab387', frameworks:'#b4befe', missoes:'#cba6f7',
+  hub:'#94e2d5', geral:'#9399b2', android:'#89dceb', internet:'#74c7ec',
+  traducao:'#f5c2e7', programacao:'#eed49f', mp3player:'#ee99a0'
+};
+const EXTRA = ['#f5c2e7','#89dceb','#74c7ec','#94e2d5','#eed49f','#ee99a0',
+               '#a6e3a1','#fab387'];
+const FORTE = {padroes:'#ffd866',decisoes:'#5efc82',bugs:'#ff5370',
+  cognitivo:'#4da6ff',heuristicas:'#ff9e40',frameworks:'#8b9dff',
+  missoes:'#c77dff',hub:'#35e0c8',geral:'#aab2d0',android:'#33f0ff',
+  internet:'#38c6ff',traducao:'#ff7edb',programacao:'#ffe066',
+  mp3player:'#ff8ba0'};
+const EXTRA_FORTE = ['#ff7edb','#33f0ff','#38c6ff','#35e0c8','#ffe066',
+                     '#ff8ba0','#5efc82','#ff9e40'];
+const COR_CACHE = {};
+
+function mistura(a,b,t){
+  const pa=parseInt(a.slice(1),16), pb=parseInt(b.slice(1),16);
+  const r=Math.round(((pa>>16)&255)+((((pb>>16)&255)-((pa>>16)&255))*t));
+  const g=Math.round(((pa>>8)&255)+((((pb>>8)&255)-((pa>>8)&255))*t));
+  const bl=Math.round((pa&255)+(((pb&255)-(pa&255))*t));
+  return '#'+((1<<24)|(r<<16)|(g<<8)|bl).toString(16).slice(1);
+}
+
+function corDe(cl){
+  const t=AJUSTES.viva;
+  let base, forte;
+  if (PALETA[cl]){
+    base=PALETA[cl]; forte=FORTE[cl]||base;
+  } else {
+    let h=0;
+    for (let i=0;i<cl.length;i++) h=(h*31+cl.charCodeAt(i))>>>0;
+    base=EXTRA[h%EXTRA.length]; forte=EXTRA_FORTE[h%EXTRA_FORTE.length];
+  }
+  if (t<=0) return base;
+  const chave=cl+'|'+t.toFixed(2);
+  if (COR_CACHE[chave]) return COR_CACHE[chave];
+  const c=mistura(base,forte,t);
+  COR_CACHE[chave]=c;
+  return c;
+}
+
+// ---------- estado ----------
+let NOS = [];                    // {id,l,cl,g,a,x,y,z, cx,cy,cz, nasce}
+let MAPA = new Map();            // id -> no
+let ARESTAS = [];                // [i,j] indices em NOS
+let PULSOS = [];                 // {e, t, v, tr} tr=pulso de evento real
+let INCIDENCIA = null;           // indice no -> arestas incidentes
+let RINGS = [];                  // aneis de cognicao {i, t} (atividade real)
+let FLASH_TMR = null;            // timer do aviso temporario na linha info
+let ATIVOS = new Map();          // indice -> ts(ms) do ultimo uso real da nota
+let ECO_FALANDO = false;         // Eco falando agora (dialogo_vivo.json)
+let ULT_BATIDA = 0;              // ts da ultima batida do heartbeat de voz
+const JANELA_USO = 600000;       // 10 min: validade do "uso recente"
+
+// ---------- telemetria Jarvis (eventos reais -> regioes do grafo) ----------
+const BVC = { amp:0.42, velPulso:3.2, subida:3.4, descida:1.1,
+              hops:[1.0,0.72,0.50,0.32,0.18], sementeMax:8,
+              frenteMax:400, ondaMs:520 };
+const JREG = {
+  fala:['voz','tts','audio','dialogo','fala','speech','microfone'],
+  memoria:['memoria','aprendizado','conhecimento'],
+  busca:['busca','pesquisa','search','web'],
+  ferramenta:['script','adb','android','ler','daemon'],
+  resposta:['cognicao','raciocinio','opencode']
+};
+let JARVIS = {};        // tipo -> {t0(ms), i}
+let JALVO = null;       // Float32Array alvo por no
+let JCUR = null;        // Float32Array corrente (fade suave)
+let JADJ = null;        // adjacencia por indice
+let JSEEDS = {};        // tipo -> indices sementes (cache)
+let JULT_ONDA = 0;
+
+let EXCITA = null;               // Float32Array por no
+let sprites = {};                // chave cor+foco -> canvas
+let AJUSTES = {foco:0.55, viva:0.65, decor:true};
+try{ Object.assign(AJUSTES,
+  JSON.parse(localStorage.getItem('cerebroAjustes')||'{}')); }catch(e){}
+function salvarAjustes(){
+  try{ localStorage.setItem('cerebroAjustes',JSON.stringify(AJUSTES)); }catch(e){}
+  try{ if (window.pywebview && pywebview.api && pywebview.api.salvar_ajustes)
+    pywebview.api.salvar_ajustes(JSON.stringify(AJUSTES)); }catch(e){}
+}
+let FILTRO = null;               // cluster ativo no painel Foco (ou null)
+let VIS = null;                  // Uint8Array: 1 = no visivel
+let ARVIS = [];                  // arestas entre nos visiveis
+let rotY = 0.6, rotX = -0.18, velY = 0.0022, velX = 0;
+let zoom = 1.0, alvoZoom = 1.0;
+let arrastando = false, mx0 = 0, my0 = 0, ultToque = 0;
+let mouseMX = -999, mouseMY = -999, hoverId = -1;
+let W = 0, H = 0, T0 = performance.now();
+
+function hashFase(s){
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return (h % 1000) / 1000 * Math.PI * 2;
+}
+
+function sprite(cor){
+  const chave = cor+'|'+AJUSTES.foco.toFixed(2);
+  if (sprites[chave]) return sprites[chave];
+  const c = document.createElement('canvas');
+  c.width = c.height = 64;
+  const g = c.getContext('2d');
+  const k = Math.max(0, Math.min(1, AJUSTES.foco));
+  const alfa = Math.round(0x66 - 0x33*k).toString(16).padStart(2,'0');
+  const grad = g.createRadialGradient(32,32,0, 32,32,32);
+  grad.addColorStop(0,'#ffffff');
+  grad.addColorStop((0.14+0.12*k).toFixed(3),cor);
+  grad.addColorStop((0.30+0.22*k).toFixed(3),cor+alfa);
+  grad.addColorStop(Math.min(0.98,(0.55+0.43*k)).toFixed(3),'rgba(0,0,0,0)');
+  g.fillStyle = grad;
+  g.fillRect(0,0,64,64);
+  sprites[chave] = c;
+  return c;
+}
+
+function redimensionar(){
+  W = cv.width = window.innerWidth * devicePixelRatio;
+  H = cv.height = window.innerHeight * devicePixelRatio;
+  cv.style.width = window.innerWidth + 'px';
+  cv.style.height = window.innerHeight + 'px';
+}
+window.addEventListener('resize', redimensionar);
+redimensionar();
+
+// ---------- carga de dados ----------
+function centroidVizinhos(id){
+  // vizinhos ainda desconhecidos nascem perto do centro
+  return [0,0,0];
+}
+window.cerebroCarregar = function(dados){
+  const antigos = MAPA;
+  const novosNos = [];
+  const novoMapa = new Map();
+  for (const d of dados.nos){
+    const ant = antigos.get(d.id);
+    const no = {
+      id:d.id, l:d.l, cl:d.cl, g:d.g, a:(d.a==null?0.5:d.a),
+      x:d.x, y:d.y, z:d.z,
+      cx: ant ? ant.cx : d.x, cy: ant ? ant.cy : d.y, cz: ant ? ant.cz : d.z,
+      nasce: ant ? 1 : 0, fase: hashFase(d.id)
+    };
+    novoMapa.set(d.id, no);
+    novosNos.push(no);
+  }
+  const idx = new Map();
+  novosNos.forEach((n,i)=>idx.set(n.id,i));
+  const novasAr = [];
+  for (const [a,b] of dados.ar){
+    const i = idx.get(a), j = idx.get(b);
+    if (i!=null && j!=null) novasAr.push([i,j]);
+  }
+  NOS = novosNos; MAPA = novoMapa; ARESTAS = novasAr;
+  INCIDENCIA = null;
+  JADJ = null; JSEEDS = {};
+  if (Object.keys(JARVIS).length) recalcularJarvis();
+  EXCITA = new Float32Array(NOS.length);
+  PULSOS = [];
+  RINGS = [];
+  ATIVOS.clear();
+  ECO_FALANDO = false;
+  const hubs = [...NOS].sort((p,q)=>q.g-p.g).slice(0,16).map(n=>n.id);
+  window.__hubs = new Set(hubs);
+  if (FILTRO && !NOS.some(n=>n.cl===FILTRO)) FILTRO=null;
+  atualizarVis();
+  construirMenuFoco();
+};
+
+window.cerebroPosicoes = function(){
+  const r = {};
+  for (const n of NOS) r[n.id] = [n.x,n.y,n.z];
+  return r;
+};
+
+// ---------- eventos reais (vault e Eco) ----------
+window.cerebroEvento = function(nomes){
+  if (!NOS.length || !nomes || !nomes.length) return;
+  garantirIncidencia();
+  const alvos = [];
+  for (const nome of nomes){
+    const no = MAPA.get(nome);
+    if (no){
+      const i = NOS.indexOf(no);
+      if (i>=0) alvos.push(i);
+    }
+  }
+  for (const i of alvos){
+    ATIVOS.set(i, performance.now());
+    EXCITA[i] = Math.min(1.2, EXCITA[i]+1.0);
+    const ks = INCIDENCIA.get(i)||[];
+    const n = Math.min(ks.length, 6);
+    for (let k=0;k<n;k++){
+      PULSOS.push({e:ks[(Math.random()*ks.length)|0],
+                   t:-0.02-Math.random()*0.2,
+                   v:0.9+Math.random()*0.7, tr:true});
+    }
+  }
+};
+
+window.cerebroEco = function(estado){
+  ECO_FALANDO = (estado==='falando');
+  if (!NOS.length || !window.__hubs) return;
+  const forca = estado==='falando' ? 0.85 :
+                estado==='ouvindo' ? 0.45 :
+                estado==='pensando' ? 0.3 : 0;
+  if (!forca) return;
+  garantirIncidencia();
+  // quando fala, prioridade maxima para as notas em uso real recente
+  const fonte = [];
+  const agoraE = performance.now();
+  if (ECO_FALANDO){
+    for (const [i,t] of ATIVOS)
+      if (i<NOS.length && agoraE-t<JANELA_USO) fonte.push(i);
+  }
+  if (fonte.length < 3){
+    for (const id of window.__hubs){
+      const no = MAPA.get(id);
+      const i = no ? NOS.indexOf(no) : -1;
+      if (i>=0 && !fonte.includes(i)) fonte.push(i);
+    }
+  }
+  let feitos = 0;
+  const limite = estado==='falando' ? 12 : 6;
+  for (const i of fonte){
+    if (feitos>=limite) break;
+    EXCITA[i] = Math.min(1.2, EXCITA[i]+forca);
+    const ks = INCIDENCIA.get(i)||[];
+    if (ks.length){
+      PULSOS.push({e:ks[(Math.random()*ks.length)|0],
+                   t:-0.05, v:0.8+Math.random()*0.8, tr:true});
+    }
+    feitos++;
+  }
+};
+
+function piscarInfo(txt){
+  info.textContent = txt;
+  clearTimeout(FLASH_TMR);
+  FLASH_TMR = setTimeout(()=>{
+    info.textContent = window.__infoBase || '';
+  }, 2600);
+}
+
+// atividade real do agente: anel branco expandindo no neuronio acessado
+window.cerebroAtividade = function(tipo, nomes){
+  if (!NOS.length) return;
+  garantirIncidencia();
+  let achou = 0;
+  for (const nome of (nomes||[])){
+    const no = MAPA.get(nome);
+    if (!no) continue;
+    const i = NOS.indexOf(no);
+    if (i < 0) continue;
+    achou++;
+    ATIVOS.set(i, performance.now());
+    EXCITA[i] = Math.min(1.2, EXCITA[i] + (tipo==='cognicao' ? 1.2 : 0.9));
+    RINGS.push({i, t:0});
+    const ks = INCIDENCIA.get(i)||[];
+    const n = Math.min(ks.length, tipo==='cognicao' ? 6 : 3);
+    for (let k=0;k<n;k++){
+      PULSOS.push({e: ks[(Math.random()*ks.length)|0],
+                   t:-0.05-Math.random()*0.15,
+                   v:1.0+Math.random()*0.8, tr:true});
+    }
+  }
+  if (achou){
+    const rot = {leitura:'lendo', escrita:'escrevendo',
+                 cognicao:'pensando'}[tipo] || tipo;
+    piscarInfo(rot+': '+(nomes[0]||'')+
+      ((nomes.length>1)?' +'+(nomes.length-1):''));
+  }
+};
+
+// ---------- interacao ----------
+cv.addEventListener('mousedown', e=>{
+  arrastando = true; mx0 = e.clientX; my0 = e.clientY;
+  cv.classList.add('girando');
+});
+window.addEventListener('mouseup', ()=>{ arrastando=false; cv.classList.remove('girando'); });
+window.addEventListener('mousemove', e=>{
+  mouseMX = e.clientX * devicePixelRatio;
+  mouseMY = e.clientY * devicePixelRatio;
+  if (!arrastando) return;
+  const dx = (e.clientX-mx0)*devicePixelRatio, dy=(e.clientY-my0)*devicePixelRatio;
+  velY = dx * 0.00028;
+  velX = dy * 0.00018;
+  rotY += velY * 14;
+  rotX = Math.max(-1.1, Math.min(1.1, rotX + velX * 14));
+  mx0 = e.clientX; my0 = e.clientY;
+  ultToque = performance.now();
+});
+cv.addEventListener('wheel', e=>{
+  e.preventDefault();
+  alvoZoom = Math.max(.45, Math.min(3.2, alvoZoom * Math.exp(-e.deltaY*0.0011)));
+},{passive:false});
+
+// ---------- sinapses ----------
+function garantirIncidencia(){
+  if (INCIDENCIA) return INCIDENCIA;
+  INCIDENCIA = new Map();
+  for (let k=0;k<ARVIS.length;k++){
+    const [a,b]=ARVIS[k];
+    if(!INCIDENCIA.has(a)) INCIDENCIA.set(a,[]);
+    if(!INCIDENCIA.has(b)) INCIDENCIA.set(b,[]);
+    INCIDENCIA.get(a).push(k);
+    INCIDENCIA.get(b).push(k);
+  }
+  return INCIDENCIA;
+}
+
+function construirJAdj(){
+  if (!NOS.length) return;
+  const a = NOS.map(()=>[]);
+  for (const p of ARESTAS){ a[p[0]].push(p[1]); a[p[1]].push(p[0]); }
+  JADJ = a;
+}
+function sementesDe(tipo){
+  if (JSEEDS[tipo]) return JSEEDS[tipo];
+  const kw = JREG[tipo]||[]; const sc=[];
+  for (let i=0;i<NOS.length;i++){
+    const t=(NOS[i].l||'').toLowerCase(); let s=0;
+    for (const w of kw) if (t.indexOf(w)>=0) s++;
+    if (s>0) sc.push([s,i]);
+  }
+  sc.sort((x,y)=>y[0]-x[0]);
+  return JSEEDS[tipo]=sc.slice(0,BVC.sementeMax).map(p=>p[1]);
+}
+function recalcularJarvis(){
+  JSEEDS={};
+  if (!NOS.length){ JALVO=null; return; }
+  if (!JADJ || JADJ.length!==NOS.length) construirJAdj();
+  JALVO = new Float32Array(NOS.length);
+  for (const tipo in JARVIS){
+    const A=JARVIS[tipo]; const base=BVC.hops.map(h=>h*A.i);
+    const visto=new Int16Array(NOS.length).fill(-1);
+    let frente=sementesDe(tipo).slice(), h=0;
+    while (frente.length && h<base.length){
+      const nx=[];
+      for (const i of frente){
+        if (visto[i]>=0) continue;
+        visto[i]=h;
+        if (base[h]>JALVO[i]) JALVO[i]=base[h];
+        for (const v of JADJ[i]) if (visto[v]<0) nx.push(v);
+      }
+      frente=nx.slice(0,BVC.frenteMax); h++;
+    }
+  }
+}
+function brainSet(payload){
+  try{
+    payload=payload||{}; let mudou=false;
+    for (const t in payload){
+      const e=payload[t]; const i=+e.i||0;
+      if (i>0.01){ JARVIS[t]={t0:performance.now(),i:Math.min(1,i)}; mudou=true; }
+      else if (JARVIS[t]){ delete JARVIS[t]; mudou=true; }
+    }
+    if (mudou) recalcularJarvis();
+  }catch(e){}
+}
+window.brainSet = brainSet;
+window.brain = {
+  setActivity:(tipo,inten)=>brainSet({[tipo]:inten==null?1:Math.min(1,Math.max(0,inten))}),
+  clearActivity:()=>brainSet({})
+};
+
+function jarvisTelemetria(t, dt){
+  if (!NOS.length) return;
+  const temAtiv = Object.keys(JARVIS).length > 0;
+  if (!temAtiv && !JCUR) return;
+  if (!JALVO || JALVO.length !== NOS.length){
+    if (!temAtiv){ JCUR=null; return; }
+    recalcularJarvis();
+  }
+  if (!JCUR || JCUR.length !== NOS.length) JCUR = new Float32Array(NOS.length);
+  const ds = Math.min(50, dt) / 1000;
+  let pico = -1, picoV = 0.03;
+  for (let i=0;i<NOS.length;i++){
+    const alvo = JALVO ? JALVO[i] : 0;
+    const cur = JCUR[i];
+    const taxa = (alvo > cur) ? BVC.subida : BVC.descida;
+    JCUR[i] = cur + (alvo - cur) * Math.min(1, taxa * ds);
+    const c = JCUR[i];
+    if (c > 0.03){
+      const pulso = c * (1 + BVC.amp *
+        Math.sin((t/1000)*BVC.velPulso*2*Math.PI/6 + i*0.37));
+      if (pulso > EXCITA[i]) EXCITA[i] = Math.min(1.3, pulso);
+      if (VIS[i] && c > picoV){ picoV = c; pico = i; }
+    }
+  }
+  if (pico >= 0 && t - JULT_ONDA > BVC.ondaMs){
+    JULT_ONDA = t;
+    garantirIncidencia();
+    RINGS.push({i:pico, t:0});
+    const ks = INCIDENCIA.get(pico) || [];
+    if (ks.length){
+      PULSOS.push({e:ks[(Math.random()*ks.length)|0],
+                   t:-0.05, v:1.0+Math.random()*0.8, tr:true});
+    }
+  }
+}
+
+function dispararPulsos(t){
+  // batida da voz: sinal REAL do Eco falando (vale mesmo sem decorativos)
+  if (ECO_FALANDO && t-ULT_BATIDA>620){
+    ULT_BATIDA=t;
+    garantirIncidencia();
+    const agoraB=performance.now();
+    let vivos=[];
+    for (const [i,ts] of ATIVOS)
+      if (i<NOS.length && agoraB-ts<JANELA_USO) vivos.push(i);
+    let i=-1;
+    if (vivos.length){
+      i=vivos[(Math.random()*vivos.length)|0];
+    } else if (window.__hubs && window.__hubs.size){
+      const ids=[...window.__hubs];
+      const no=MAPA.get(ids[(Math.random()*ids.length)|0]);
+      i=no?NOS.indexOf(no):-1;
+    }
+    if (i>=0){
+      EXCITA[i]=Math.min(1.3,EXCITA[i]+0.35);
+      RINGS.push({i,t:0});
+      const ks=INCIDENCIA.get(i)||[];
+      if (ks.length){
+        PULSOS.push({e:ks[(Math.random()*ks.length)|0],
+                     t:-0.05,v:1.0+Math.random()*0.8,tr:true});
+      }
+    }
+  }
+  let amb=0;
+  for (const p of PULSOS) if (!p.tr) amb++;
+  // decorativos desligados: os vivos terminam a viagem e nao nascem outros
+  if (!AJUSTES.decor) return;
+  const alvo = Math.max(36, Math.min(130, Math.floor(ARVIS.length/22)));
+  while (amb < alvo && ARVIS.length){
+    PULSOS.push({e:(Math.random()*ARVIS.length)|0,
+                 t:-Math.random()*0.6, v:0.35+Math.random()*0.75, tr:false});
+    amb++;
+  }
+  let excesso = amb - alvo;
+  for (let i=PULSOS.length-1; i>=0 && excesso>0; i--){
+    if (!PULSOS[i].tr){ PULSOS.splice(i,1); excesso--; }
+  }
+}
+
+// ---------- projecao ----------
+let SX = [], SY = [], SS = [], SZ = [], ORDEM = [];
+function projetar(t){
+  const cy=Math.cos(rotY), sy=Math.sin(rotY);
+  const cxr=Math.cos(rotX), sxr=Math.sin(rotX);
+  const zP = zoom, f = 900;
+  const cxTela = W/2, cyTela = H/2 + 12*devicePixelRatio;
+  for (let i=0;i<NOS.length;i++){
+    const n=NOS[i];
+    if (n.nasce<1) n.nasce=Math.min(1,n.nasce+0.02);
+    // interpolacao suave para pos alvo
+    n.cx += (n.x-n.cx)*0.06; n.cy += (n.y-n.cy)*0.06; n.cz += (n.z-n.cz)*0.06;
+    // deriva organica (duas senoides por eixo)
+    const dr = 2.6*(0.5+n.a*0.8);
+    const ox = Math.sin(t*0.00052+n.fase)+Math.sin(t*0.00031+n.fase*2.3);
+    const oy = Math.sin(t*0.00047+n.fase*1.7)+Math.sin(t*0.00029+n.fase*3.1);
+    const oz = Math.sin(t*0.00041+n.fase*2.9)+Math.sin(t*0.00027+n.fase*4.7);
+    let wx=n.cx+ox*dr, wy=n.cy+oy*dr, wz=n.cz+oz*dr;
+    // rotacao Y
+    let rx=wx*cy-wz*sy, rz=wx*sy+wz*cy;
+    // inclinacao X
+    let ry=wy*cxr-rz*sxr; rz=wy*sxr+rz*cxr;
+    const s=f/(f-rz*zP);
+    SX[i]=cxTela+rx*s*zP; SY[i]=cyTela+ry*s*zP; SS[i]=s; SZ[i]=rz;
+  }
+  ORDEM.length=NOS.length;
+  for (let i=0;i<NOS.length;i++) ORDEM[i]=i;
+  ORDEM.sort((a,b)=>SZ[b]-SZ[a]);
+}
+
+function desenhar(t, dt){
+  ctx.fillStyle='#0b0e14';
+  ctx.fillRect(0,0,W,H);
+
+  // arestas
+  ctx.lineWidth = 1;
+  for (let k=0;k<ARVIS.length;k++){
+    const [a,b]=ARVIS[k];
+    const za=(SZ[a]+900)/1800, zb=(SZ[b]+900)/1800;
+    if (SS[a]<0.15||SS[b]<0.15) continue;
+    const prof=Math.min(1,(za+zb)/2*1.25);
+    ctx.strokeStyle='rgba(137,180,250,'+(0.05+prof*0.13).toFixed(3)+')';
+    ctx.beginPath();ctx.moveTo(SX[a],SY[a]);ctx.lineTo(SX[b],SY[b]);ctx.stroke();
+  }
+
+  // pulsos de sinapse
+  for (let pi=PULSOS.length-1; pi>=0; pi--){
+    const p=PULSOS[pi];
+    p.t+=p.v*dt/1000;
+    if (p.t>=1){
+      const [a,b]=ARVIS[p.e%ARVIS.length];
+      EXCITA[b]=Math.min(1,EXCITA[b]+0.85);
+      if (p.tr || !AJUSTES.decor){ PULSOS.splice(pi,1); continue; }
+      p.e=(Math.random()*ARVIS.length)|0;p.t=-0.15-Math.random()*0.5;
+      continue;
+    }
+    if (p.t<0) continue;
+    const [ai,bi]=ARVIS[p.e%ARVIS.length];
+    const na=NOS[ai],nb=NOS[bi];
+    const ca=corDe(na.cl);
+    const tt=p.t, tt2=tt*tt;
+    const x=SX[ai]+(SX[bi]-SX[ai])*tt, y=SY[ai]+(SY[bi]-SY[ai])*tt;
+    const s=(SS[ai]+(SS[bi]-SS[ai])*tt)*(2.6+EXCITA[bi]*2);
+    ctx.globalAlpha=Math.min(1,0.85*(1-tt2*0.25));
+    ctx.drawImage(sprite(ca),x-s*8,y-s*8,s*16,s*16);
+    ctx.globalAlpha=1;
+  }
+
+  // nos (pintor: fundo primeiro)
+  hoverId=-1; let melhorD=1e9;
+  for (const i of ORDEM){
+    const n=NOS[i];
+    if (VIS && !VIS[i]){ EXCITA[i]*=0.955; continue; }
+    EXCITA[i]*=0.955;
+    const prof=Math.max(0,Math.min(1,(SZ[i]+900)/1800));
+    const esc=SS[i]*(0.72+0.5*prof)*n.nasce;
+    const r=(2.3+Math.min(8.5,Math.sqrt(n.g)*1.25))*(0.75+n.a*0.45)*esc*
+      (1+EXCITA[i]*0.5);
+    const cor=corDe(n.cl);
+    ctx.globalAlpha=Math.min(1,(0.30+0.62*prof));
+    const sp=sprite(cor), tam=r*6;
+    ctx.drawImage(sp,SX[i]-tam/2,SY[i]-tam/2,tam,tam);
+    if (EXCITA[i]>0.08){
+      ctx.globalAlpha=EXCITA[i]*0.9;
+      const brilho=sprite('#ffffff');
+      ctx.drawImage(brilho,SX[i]-tam*0.24,SY[i]-tam*0.24,tam*0.48,tam*0.48);
+    }
+    ctx.globalAlpha=1;
+    const dxm=SX[i]/devicePixelRatio-mouseMX/devicePixelRatio,
+          dym=SY[i]/devicePixelRatio-mouseMY/devicePixelRatio;
+    const dm=dxm*dxm+dym*dym, lim=Math.max(9,r/devicePixelRatio+5);
+    if (dm<lim*lim && dm<melhorD){melhorD=dm;hoverId=i;}
+  }
+
+  // aneis de cognicao: atividade real do agente sobre o neuronio
+  for (let ri=RINGS.length-1; ri>=0; ri--){
+    const g=RINGS[ri];
+    g.t += dt/900;
+    if (g.t>=1){ RINGS.splice(ri,1); continue; }
+    const prof=Math.max(0,Math.min(1,(SZ[g.i]+900)/1800));
+    const esc=SS[g.i]*(0.72+0.5*prof)*NOS[g.i].nasce;
+    if (esc>0.02){
+      const r=(2.3+Math.min(8.5,Math.sqrt(NOS[g.i].g)*1.25))*esc;
+      ctx.globalAlpha=(1-g.t)*0.85;
+      ctx.strokeStyle='#ffffff';
+      ctx.lineWidth=2*devicePixelRatio;
+      ctx.beginPath();
+      ctx.arc(SX[g.i],SY[g.i], r*(1.4+3.4*g.t)*devicePixelRatio, 0, 6.283);
+      ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+  }
+
+  // etiquetas dos hubs proximos da frente
+  if (zoom>0.8){
+    ctx.font=(10*devicePixelRatio)+'px Segoe UI';
+    ctx.fillStyle='rgba(205,214,244,0.72)';
+    for (const i of ORDEM){
+      const n=NOS[i];
+      if (VIS && !VIS[i]) continue;
+      if (!window.__hubs.has(n.id)) continue;
+      if ((SZ[i]+900)/1800<0.58 || SS[i]<0.9) continue;
+      ctx.fillText(n.l.slice(0,34), SX[i]+7*devicePixelRatio,
+        SY[i]-6*devicePixelRatio);
+    }
+  }
+  if (hoverId>=0){
+    const n=NOS[hoverId];
+    hov.style.display='block';
+    hov.style.left=Math.min(window.innerWidth-250,mouseMX/devicePixelRatio+14)+'px';
+    hov.style.top=(mouseMY/devicePixelRatio+14)+'px';
+    hov.innerHTML='<div>'+n.l.replace(/</g,'&lt;').slice(0,80)+
+      '</div><div class="cl" style="color:'+corDe(n.cl)+'">'+n.cl+
+      ' \u00B7 grau '+n.g+'</div>';
+    cv.style.cursor='pointer';
+  } else {
+    hov.style.display='none';
+    if (!arrastando) cv.style.cursor='grab';
+  }
+}
+
+function laco(t){
+  const dt=Math.min(50,t-(laco._ant||t)); laco._ant=t;
+  if (!arrastando && t-ultToque>2600){
+    velY+=(0.0022-velY)*0.01; velX*=0.97;
+    rotY+=velY*dt/16.7; rotX+=velX*dt/16.7;
+  } else if (arrastando){
+    // ja aplicado no mousemove
+  } else {
+    rotY+=velY*dt/16.7; rotX+=velX*dt/16.7; velY*=0.96;
+  }
+  zoom+=(alvoZoom-zoom)*0.09;
+  if (FILTRO==='__ativos' && t-(laco._visAt||0)>5000){
+    laco._visAt=t; atualizarVis();
+  }
+  if (NOS.length){ jarvisTelemetria(t,dt); dispararPulsos(t); projetar(t); desenhar(t,dt); }
+  requestAnimationFrame(laco);
+}
+requestAnimationFrame(laco);
+
+// ---------- paineis (Foco e Ajustes) ----------
+const painelAjustes = document.getElementById('painelAjustes');
+const painelFoco = document.getElementById('painelFoco');
+
+function rotulo(c){ return String(c).replace(/[_-]+/g,' '); }
+
+function atualizarVis(){
+  VIS = new Uint8Array(NOS.length);
+  ARVIS = [];
+  const agoraV = performance.now();
+  for (let i=0;i<NOS.length;i++){
+    let vis = !FILTRO || NOS[i].cl===FILTRO;
+    if (!vis && FILTRO==='__ativos')
+      vis = agoraV-(ATIVOS.get(i)||-1e15)<JANELA_USO;
+    VIS[i]=vis?1:0;
+  }
+  for (const [a,b] of ARESTAS) if (VIS[a]&&VIS[b]) ARVIS.push([a,b]);
+  INCIDENCIA = null;
+  const base = NOS.length + ' notas \u00B7 ' + ARESTAS.length +
+    ' conex\u00F5es \u00B7 ' + new Set(NOS.map(n=>n.cl)).size + ' clusters';
+  const nomeFoco = FILTRO==='__ativos' ? 'uso do Eco' : rotulo(FILTRO);
+  info.textContent = FILTRO ? base+' \u00B7 foco: '+nomeFoco : base;
+  window.__infoBase = info.textContent;
+}
+
+function construirMenuFoco(){
+  const lista = document.getElementById('listaFoco');
+  lista.innerHTML = '';
+  const contagem = {};
+  for (const n of NOS) contagem[n.cl]=(contagem[n.cl]||0)+1;
+  const cls = Object.keys(contagem).sort((a,b)=>contagem[b]-contagem[a]);
+  const btTudo = document.createElement('button');
+  btTudo.className='foco-btn'+(FILTRO?'':' on');
+  btTudo.innerHTML='Tudo <span>'+NOS.length+'</span>';
+  btTudo.onclick=()=>{ FILTRO=null; atualizarVis(); construirMenuFoco(); };
+  lista.appendChild(btTudo);
+  // foco especial: o que o Eco realmente usou nos ultimos 10 minutos
+  let nAtivos=0;
+  const agoraM=performance.now();
+  for (const [i,tM] of ATIVOS)
+    if (i<NOS.length && agoraM-tM<JANELA_USO) nAtivos++;
+  const btUso=document.createElement('button');
+  btUso.className='foco-btn'+(FILTRO==='__ativos'?' on':'');
+  btUso.innerHTML='Uso do Eco <span>'+nAtivos+'</span>';
+  btUso.onclick=()=>{
+    FILTRO=(FILTRO==='__ativos'?null:'__ativos');
+    atualizarVis(); construirMenuFoco();
+  };
+  lista.appendChild(btUso);
+  for (const c of cls){
+    const b=document.createElement('button');
+    b.className='foco-btn'+(FILTRO===c?' on':'');
+    b.innerHTML=rotulo(c)+' <span>'+contagem[c]+'</span>';
+    b.onclick=()=>{ FILTRO=(FILTRO===c?null:c); atualizarVis(); construirMenuFoco(); };
+    lista.appendChild(b);
+  }
+}
+
+function fecharPaineis(){
+  painelAjustes.style.display='none';
+  painelFoco.style.display='none';
+}
+document.getElementById('btAjustes').addEventListener('click',()=>{
+  const aberto = painelAjustes.style.display==='block';
+  fecharPaineis();
+  if (!aberto) painelAjustes.style.display='block';
+});
+document.getElementById('btFoco').addEventListener('click',()=>{
+  const aberto = painelFoco.style.display==='block';
+  fecharPaineis();
+  if (!aberto) painelFoco.style.display='block';
+});
+document.addEventListener('mousedown',e=>{
+  if (!e.target.closest || (!e.target.closest('.painel')
+      && !e.target.closest('#btAjustes') && !e.target.closest('#btFoco')))
+    fecharPaineis();
+});
+
+const rgFoco=document.getElementById('rgFoco'),
+      valFoco=document.getElementById('valFoco'),
+      rgViva=document.getElementById('rgViva'),
+      valViva=document.getElementById('valViva'),
+      btDecor=document.getElementById('btDecor'),
+      estDecor=document.getElementById('estDecor');
+
+rgFoco.value=AJUSTES.foco;
+valFoco.textContent=Math.round(AJUSTES.foco*100)+'%';
+rgFoco.addEventListener('input',()=>{
+  AJUSTES.foco=+rgFoco.value;
+  valFoco.textContent=Math.round(AJUSTES.foco*100)+'%';
+  salvarAjustes();
+});
+
+rgViva.value=AJUSTES.viva;
+valViva.textContent=Math.round(AJUSTES.viva*100)+'%';
+rgViva.addEventListener('input',()=>{
+  AJUSTES.viva=+rgViva.value;
+  valViva.textContent=Math.round(AJUSTES.viva*100)+'%';
+  salvarAjustes();
+});
+
+function pintarDecor(){
+  estDecor.textContent=AJUSTES.decor?'ligado':'desligado';
+  btDecor.classList.toggle('on',AJUSTES.decor);
+}
+btDecor.addEventListener('click',()=>{
+  AJUSTES.decor=!AJUSTES.decor;
+  pintarDecor(); salvarAjustes();
+});
+pintarDecor();
+
+const btTopo=document.getElementById('btTopo');
+btTopo.addEventListener('click',()=>{
+  try{
+    pywebview.api.topo().then(f=>{
+      btTopo.textContent = f ? 'Fundo' : 'Frente';
+    });
+  }catch(e){}
+});
+
+window.cerebroAjustesAplicar = function(txt){
+  try{
+    Object.assign(AJUSTES, JSON.parse(txt));
+    if (!isFinite(AJUSTES.foco) || AJUSTES.foco<0) AJUSTES.foco=0;
+    if (AJUSTES.foco>1) AJUSTES.foco=1;
+    if (!isFinite(AJUSTES.viva)) AJUSTES.viva=0.65;
+    if (AJUSTES.viva<0) AJUSTES.viva=0;
+    if (AJUSTES.viva>1) AJUSTES.viva=1;
+    AJUSTES.decor = AJUSTES.decor !== false;
+    rgFoco.value=AJUSTES.foco; valFoco.textContent=Math.round(AJUSTES.foco*100)+'%';
+    rgViva.value=AJUSTES.viva; valViva.textContent=Math.round(AJUSTES.viva*100)+'%';
+    pintarDecor();
+  }catch(e){}
+};
+
+window.cerebroPronto = true;
+</script>
+</body>
+</html>

@@ -933,6 +933,7 @@
 - vigilante.ps1: 1 marcadores
 - vox_audio.py: 1 marcadores
 - watchdog.ps1: 1 marcadores
+- widget_grafo.py: 3 marcadores
 - code_filter.py: 3 marcadores
 - content_classifier.py: 1 marcadores
 - edge_tts_engine.py: 1 marcadores

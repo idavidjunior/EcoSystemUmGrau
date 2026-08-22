@@ -125,6 +125,11 @@ def _retrato_estado(estado=None, voce=None, erro=None):
         VIVO["erro"] = str(erro)[:300]
     VIVO["quando"] = time.time()
     _retrato_gravar()
+    try:
+        from atividade_emit import emitir
+        emitir("fala", 0.95 if VIVO["estado"] == "falando" else 0.0)
+    except Exception:
+        pass
 
 
 def _retrato_rms(valor):
