@@ -31,7 +31,7 @@ $ecoDir = Split-Path $PSScriptRoot -Parent
 $lerDir = "$ecoDir\ler-runtime"
 $configFile = "$ecoDir\config\persistencia.json"
 $logFile = "$env:USERPROFILE\.persistencia.log"
-$projectsDir = "$env:USERPROFILE\Documents\Default Project"
+$projectsDir = "$ecoDir\Projetos"
 $tempDir = $env:TEMP
 
 function Write-Log {
