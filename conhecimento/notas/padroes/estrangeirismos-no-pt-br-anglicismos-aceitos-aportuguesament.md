@@ -1,5 +1,5 @@
 ---
-tags: [artificial, corporativos, linkar, padrao, pt-br, texto]
+tags: [artificial, ganhou, linkar, padrao, pt-br, texto]
 aliases: [Estrangeirismos no pt-BR: anglicismos aceitos, aportuguesame]
 date: 2026-08-23
 ---
