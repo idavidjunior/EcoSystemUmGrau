@@ -12059,5 +12059,51 @@
     "access_count": 0,
     "created_at": "2026-08-22T23:51:30.660328",
     "last_accessed": "2026-08-22T23:51:30.660328"
+  },
+  {
+    "id": 473,
+    "kind": "erro",
+    "task": "Saudação espontânea não implementada",
+    "summary": "A cláusula pétrea de autoapresentação automática exige saudação curta (3-4 linhas) na primeira mensagem de cada sessão, variando o tom. Não está sendo executada automaticamente no fluxo do agente. Gap: falta integração do boot check + saudação espontânea no ciclo de resposta inicial.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "tom",
+      "variando",
+      "sessão",
+      "mensagem",
+      "linhas",
+      "curta"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-23T07:29:07.212915",
+    "last_accessed": "2026-08-23T07:29:07.212915"
+  },
+  {
+    "id": 474,
+    "kind": "decisao",
+    "task": "Implementar saudação espontânea automática",
+    "summary": "Criar hook no runtime_boot.py ou no ciclo de resposta do agente que: 1) detecta primeira mensagem da sessão (via state.json flag), 2) roda --check silencioso, 3) se OK, emite saudação curta variada com contexto leve (projeto ativo, pendências), 4) marca sessão como iniciada. Necessário para cumprir cláusula pétrea de autoapresentação.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "iniciada",
+      "marca",
+      "pendências",
+      "ativo",
+      "projeto",
+      "leve"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-23T07:30:11.624631",
+    "last_accessed": "2026-08-23T07:30:11.624631"
   }
 ]

@@ -460,6 +460,8 @@
     470,
     471,
     472,
+    473,
+    474,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -1763,6 +1765,8 @@
     "episodio",
     "padrao",
     "erro",
+    "erro",
+    "decisao",
     "nota",
     "nota",
     "nota",
@@ -3066,6 +3070,8 @@
     "pasta .git de ler-runtime sumiu 22/08 as 21h36, antes das edicoes do gate (funcoes novas nem existiam), causa externa nao identificada. arvore intacta: zip em runtime/backups/ler-runtime-resgate-20260822.zip, git init, commit inicial, gh repo create ler-runtime --private --push. o repo nunca tinha existido no github. alta-confianca identificada nao externa causa existiam novas episodio",
     "novo comando/agente ecow: abre widget cerebro vivo; se ja aberto, foca a janela. implementado em 3 camadas: widget_grafo.py agora foca janela existente via ctypes findwindoww+setforegroundwindow quando instancia_unica detecta rodando; scripts/ecow.bat launcher fino (pythonw); comando 'ecow' no opencode.jsonc (repo+deployed) delegando ao agente config/agents/ecow.md. preflight passou (1 timeout transitorio de mcp na 1a rodada). testes: nenhum processo duplicado, foco confirmado (hwnd valido, setforegroundwindow=1). alta-confianca rodando detecta unica instancia setforegroundwindow findwindoww padrao",
     "widget cerebro vivo agora roda sempre via pythonw (sem terminal): ecow.bat endurecido sem fallback python.exe; causa raiz da tela de terminal era um python.exe orfao (9176) de sessao anterior segurando instancia unica. sinapses amarelas recalibradas: raio 0.4->0.13, velocidade 0.009->0.0055, cor acende no pico (0.30+0.50*pulso) em vez de fixa, glow so acima de 0.55 com alpha 0.45 — vivo mas calmo, cor #ffd60a mantida. alta-confianca pythonw roda cerebro widget terminal unica erro",
+    "a cláusula pétrea de autoapresentação automática exige saudação curta (3-4 linhas) na primeira mensagem de cada sessão, variando o tom. não está sendo executada automaticamente no fluxo do agente. gap: falta integração do boot check + saudação espontânea no ciclo de resposta inicial. alta-confianca tom variando sessão mensagem linhas curta erro",
+    "criar hook no runtime_boot.py ou no ciclo de resposta do agente que: 1) detecta primeira mensagem da sessão (via state.json flag), 2) roda --check silencioso, 3) se ok, emite saudação curta variada com contexto leve (projeto ativo, pendências), 4) marca sessão como iniciada. necessário para cumprir cláusula pétrea de autoapresentação. alta-confianca iniciada marca pendências ativo projeto leve decisao",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -8115,12 +8121,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 104993,
-  "count": 1301,
-  "count_mem": 460,
+  "vocab_size": 105059,
+  "count": 1303,
+  "count_mem": 462,
   "count_notas": 841,
   "fingerprint": [
-    460,
+    462,
     [
       1787452796.2,
       1787452665.5,

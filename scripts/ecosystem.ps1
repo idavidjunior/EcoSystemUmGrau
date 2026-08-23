@@ -15,11 +15,16 @@
     ecosystem learn
     ecosystem repair
     ecosystem status
+    ecosystem logs
+    ecosystem metrics
+    ecosystem health
+    ecosystem trace
+    ecosystem incidents
 #>
 
 param(
     [Parameter(Position = 0)]
-    [ValidateSet("sync", "scan", "learn", "repair", "status", "help")]
+    [ValidateSet("sync", "scan", "learn", "repair", "status", "logs", "metrics", "health", "trace", "incidents", "help")]
     [string]$Command = "help"
 )
 
