@@ -1,5 +1,5 @@
 ---
-tags: [ceder, consistência, engenharia, padrao, pessoal, velocidade]
+tags: [ceder, engenharia, individual, padrao, pessoal, velocidade]
 aliases: [Engenharia: code review eficaz]
 date: 2026-08-23
 ---

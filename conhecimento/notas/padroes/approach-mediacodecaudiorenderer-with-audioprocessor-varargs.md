@@ -1,5 +1,5 @@
 ---
-tags: [audioprocessor, metadata, mp3player, mp3player-metadata-rescuemp3player-metadata-rescue, padrao, rescue]
+tags: [fonte, metadata, mp3player, mp3player-metadata-rescuemp3player-metadata-rescue, padrao, rescue]
 aliases: [Approach: `MediaCodecAudioRenderer` with `AudioProcessor...`]
 date: 2026-08-23
 ---
