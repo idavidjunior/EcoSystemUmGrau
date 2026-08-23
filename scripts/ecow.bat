@@ -6,15 +6,12 @@ REM  existente e sai (comportamento dentro do widget_grafo.py)
 REM ============================================================
 setlocal
 set "ROOT=%~dp0.."
+REM Somente pythonw: nunca abre console de terminal.
 where pythonw >nul 2>&1
 if %errorlevel% equ 0 (
   start "" pythonw "%ROOT%\scripts\widget_grafo.py"
 ) else (
-  where python >nul 2>&1
-  if %errorlevel% equ 0 (
-    start "" python "%ROOT%\scripts\widget_grafo.py"
-  ) else (
-    echo Python nao encontrado no PATH.
-  )
+  echo Pythonw nao encontrado no PATH. Widget nao iniciado.
+  exit /b 1
 )
 endlocal
