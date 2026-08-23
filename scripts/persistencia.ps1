@@ -123,7 +123,12 @@ function Invoke-RepoCommit {
         $msg = ''
         if ($UserMsg) { $msg = $UserMsg }
         else { $msg = "[gate] $MsgLabel - $(Get-Date -Format 'yyyy-MM-dd HH:mm')" }
-        git commit -m $msg 2>&1 | Out-Null
+        $commitOut = git commit -m $msg 2>&1 | Out-String
+        if ($LASTEXITCODE -ne 0) {
+            Write-Log "COMMIT ${RepoKey}: FALHOU - $($commitOut.Trim())"
+            Pop-Location; Remove-Item $lock -Force -ErrorAction SilentlyContinue
+            return 'ERROR'
+        }
         $commitHash = git rev-parse --short HEAD 2>$null
         Write-Log "COMMIT ${RepoKey}: $commitHash - $msg"
         if ($DoPush) {
