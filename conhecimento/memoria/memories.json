@@ -11799,5 +11799,28 @@
     "access_count": 0,
     "created_at": "2026-08-22T21:42:10.448519",
     "last_accessed": "2026-08-22T21:42:10.448519"
+  },
+  {
+    "id": 462,
+    "kind": "padrao",
+    "task": "Primeiro harness CLI construido: MP3Player via Gradle+ADB",
+    "summary": "Aplicada a metodologia CLI-Anything internalizada para gerar o primeiro harness real do ecossistema: Projetos/Mp3Player/agent-harness com CLI Python stdlib pura (info, devices, build, install, launch, stop, uninstall, logcat, screenshot), backend wrapper de gradlew/adb, 10 testes unittest 100% aprovados e E2E real contra dispositivo 6d92eed7 (launch, screenshot 604KB, logcat, stop). Teste adversarial encontrou bug de contrato JSON (campo erro ausente em falha adb) corrigido no ato. Lacunas registradas em TEST.md para futuro refine: filtro logcat por package e comandos Room.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "604kb",
+      "6d92eed7",
+      "dispositivo",
+      "e2e",
+      "aprovados",
+      "100"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-22T21:51:35.293102",
+    "last_accessed": "2026-08-22T21:51:35.293102"
   }
 ]
