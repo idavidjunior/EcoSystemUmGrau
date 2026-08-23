@@ -11730,5 +11730,28 @@
     "access_count": 0,
     "created_at": "2026-08-22T20:37:39.364480",
     "last_accessed": "2026-08-22T20:37:39.364480"
+  },
+  {
+    "id": 459,
+    "kind": "erro",
+    "task": "Gate persistencia: 3 bugs corrigidos no espelho PC-GitHub",
+    "summary": "1) projectsDir apontava para Documents/Default Project antigo; corrigido para ecoDir/Projetos - por isso os projetos nunca eram comitados pelo sync. 2) git commit engolia erro com Out-Null e reportava hash antigo como sucesso; agora captura exit code, loga FALHOU com motivo e retorna ERROR. 3) CLEAN nao fazia push quando DoPush - repos commitados mas sem push ficavam divergentes; agora push roda mesmo limpo. Alem disso: Mp3Player/TradingAgents sem user.name local causava Author identity unknown - identidade replicada do eco; index.lock orfao travava SupermarketCalculator. Achado de seguranca: release.jks do Mp3Player estava versionado no GitHub - removido do tracking e ignorado (*.jks); historico antigo ainda contem o keystore.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "divergentes",
+      "sucesso",
+      "ficavam",
+      "project",
+      "eco",
+      "default"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-22T21:29:50.924327",
+    "last_accessed": "2026-08-22T21:29:50.924327"
   }
 ]

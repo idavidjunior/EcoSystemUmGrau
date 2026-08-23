@@ -113,6 +113,7 @@ function Invoke-RepoCommit {
         }
         $status = git status --porcelain 2>&1 | Out-String
         if (-not $status.Trim()) {
+            if ($DoPush) { $pushOut = git push 2>&1 | Out-String; Write-Log "PUSH ${RepoKey}: $($pushOut.Trim())" }
             Pop-Location; Remove-Item $lock -Force -ErrorAction SilentlyContinue
             return 'CLEAN'
         }

@@ -446,6 +446,7 @@
     456,
     457,
     458,
+    459,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -1747,6 +1748,7 @@
     "padrao",
     "padrao",
     "episodio",
+    "erro",
     "nota",
     "nota",
     "nota",
@@ -3048,6 +3050,7 @@
     "clique (mouseup sem mover >6px) sobre no seta pausagiroate=now+5000; o laco zera inercia vely/velx suavemente durante a pausa e retoma auto-rotacao depois. arraste nao conta como clique. widget reiniciado e validado. alta-confianca rotacao auto retoma 5000 pausagiroate seta padrao",
     "clique (mouseup sem mover >6px) sobre no seta pausagiroate=now+5000; o laco zera inercia vely/velx suavemente durante a pausa e retoma auto-rotacao depois. arraste nao conta como clique. widget reiniciado e validado. alta-confianca rotacao auto 5000 retoma pausagiroate durante padrao",
     "usuario autorizou push com pc como fonte da verdade. backup cerebro.html.bak-zoom movido para runtime/backups (fora do git). commit manual via gate 4e0ce6e6 com 115 pendencias: grafo mcp+libs, zoom v2, gestos, fix orfao, higiene deps, 19 notas frameworks, memoria. head = origin sincronizados. alta-confianca memoria frameworks notas deps higiene orfao episodio",
+    "1) projectsdir apontava para documents/default project antigo; corrigido para ecodir/projetos - por isso os projetos nunca eram comitados pelo sync. 2) git commit engolia erro com out-null e reportava hash antigo como sucesso; agora captura exit code, loga falhou com motivo e retorna error. 3) clean nao fazia push quando dopush - repos commitados mas sem push ficavam divergentes; agora push roda mesmo limpo. alem disso: mp3player/tradingagents sem user.name local causava author identity unknown - identidade replicada do eco; index.lock orfao travava supermarketcalculator. achado de seguranca: release.jks do mp3player estava versionado no github - removido do tracking e ignorado (*.jks); historico antigo ainda contem o keystore. alta-confianca divergentes sucesso ficavam project eco default erro",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -8169,12 +8172,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 103932,
-  "count": 1299,
-  "count_mem": 446,
+  "vocab_size": 104026,
+  "count": 1300,
+  "count_mem": 447,
   "count_notas": 853,
   "fingerprint": [
-    446,
+    447,
     [
       1787437180.6,
       1787436580.3,
