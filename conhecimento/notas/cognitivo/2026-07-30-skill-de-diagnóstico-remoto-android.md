@@ -1,5 +1,5 @@
 ---
-tags: [100, cognitivo, fuso, general, horário, sdk]
+tags: [100, cognitivo, dominio, fuso, general, horário]
 aliases: [# 2026-07-30 - Skill de Diagnóstico Remoto Android]
 date: 2026-08-22
 ---

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-22T23:37:24.586916",
+  "last_updated": "2026-08-22T23:39:37.627104",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -2008,12 +2008,14 @@
       "merged_at": "2026-08-22T21:36:33.207548"
     },
     {
-      "source": "opencode",
+      "source": "opencode+opencode",
       "title": "@ecow e /ecow — abrir/focar o Cerebro Vivo",
       "action": "Usuário pediu comando /ecow e @ecow para abrir o widget Cérebro Vivo; se já aberto, trazer a janela para frente em vez de duplicar.",
       "description": "---\ntipo: padrao\ntags: [widget, cerebro-vivo, opencode, comando, foco-janela, ecow]\ndata: 2026-08-22\ncontexto: Usuário pediu comando /ecow e @ecow para abrir o widget Cérebro Vivo; se já aberto, trazer a janela para frente em vez de duplicar.\n---\n\n# @ecow e /ecow — abrir/focar o Cerebro Vivo\n\n## Dec",
       "domain": "general",
-      "extracted_at": "2026-08-22T23:36:45.210462"
+      "extracted_at": "2026-08-22T23:38:39.598993",
+      "merged_count": 2,
+      "merged_at": "2026-08-22T23:39:36.476300"
     }
   ],
   "decisions": [

@@ -1,6 +1,6 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-22T23:37:24.789919
+**Exportado em:** 2026-08-22T23:39:37.851744
 **Projetos:** 4
 **Padroes Tecnicos:** 279
 **Decisoes:** 74
@@ -853,7 +853,7 @@ decisao: |
 | 276 | opencode | Compressão Semântica Hierárquica — lições da implementação |
 | 277 | opencode | Relatório Eco estático — lições |
 | 278 | opencode+opencode | CLI-Anything Internalizado como Habilidade Soberana |
-| 279 | opencode | @ecow e /ecow — abrir/focar o Cerebro Vivo |
+| 279 | opencode+opencode | @ecow e /ecow — abrir/focar o Cerebro Vivo |
 
 ## Bug Fixes e Corrigidos
 
@@ -2042,7 +2042,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-22T23:37:24.586916
+**Ultima atualizacao:** 2026-08-22T23:39:37.627104
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*
