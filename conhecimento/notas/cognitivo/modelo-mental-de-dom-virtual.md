@@ -1,7 +1,7 @@
 ---
 tags: [acao, cognitivo, consultar, difere, real, web-rendering]
 aliases: [Modelo mental de DOM virtual]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Modelo mental de DOM virtual

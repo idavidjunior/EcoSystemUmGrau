@@ -1,7 +1,7 @@
 ---
 tags: [1234, ambíguo, iso, localizacao, localizada, padrao]
 aliases: [Números, moedas (R$) e percentuais no pt-BR]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Números, moedas (R$) e percentuais no pt-BR

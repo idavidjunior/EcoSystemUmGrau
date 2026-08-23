@@ -1,7 +1,7 @@
 ---
 tags: [dense, opencode, padrao, reindexação, sentencetransformers, tfidf]
 aliases: [Otimização do reindex semântico do Memory Engine]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Otimização do reindex semântico do Memory Engine

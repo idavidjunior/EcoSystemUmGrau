@@ -1,7 +1,7 @@
 ---
 tags: [csharp, iniciar, padrao, padrão, requests, vaza]
 aliases: [C#: injeção de dependência e ciclo de vida de serviços]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # C#: injeção de dependência e ciclo de vida de serviços

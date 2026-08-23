@@ -1,7 +1,7 @@
 ---
 tags: [auto, padrao, ruby, timestamps, update, updated]
 aliases: [Ruby: Rails — ActiveRecord e MVC]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Ruby: Rails — ActiveRecord e MVC

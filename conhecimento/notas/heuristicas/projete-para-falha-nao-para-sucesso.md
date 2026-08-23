@@ -1,7 +1,7 @@
 ---
 tags: [architecture, dominio, falha, graciosamente, heuristica, lida]
 aliases: [Projete para falha, nao para sucesso]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Projete para falha, nao para sucesso

@@ -1,7 +1,7 @@
 ---
 tags: [aplicada, cognitivo, debugging, erro, momento, reportado]
 aliases: [Principio da separacao causa-efeito-temporal]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Principio da separacao causa-efeito-temporal

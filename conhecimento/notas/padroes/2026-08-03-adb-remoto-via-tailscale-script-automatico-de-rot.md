@@ -1,7 +1,7 @@
 ---
 tags: [intermitentemente, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, powershell, scrcpy]
 aliases: [2026-08-03: ADB remoto via Tailscale - script automatico de ]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # 2026-08-03: ADB remoto via Tailscale - script automatico de rota (IPv4/IPv6)

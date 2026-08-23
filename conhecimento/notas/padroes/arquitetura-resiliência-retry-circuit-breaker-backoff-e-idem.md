@@ -1,7 +1,7 @@
 ---
-tags: [arquitetura, batendo, cascata, instante, padrao, sincronizados]
+tags: [arquitetura, batendo, clientes, instante, padrao, sincronizados]
 aliases: [Arquitetura: resiliência — retry, circuit breaker, backoff e]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Arquitetura: resiliência — retry, circuit breaker, backoff e idempotência

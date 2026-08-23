@@ -1,7 +1,7 @@
 ---
 tags: [androidpuresdk, arquivo, default, nao, padrao, salvo]
 aliases: [JSON persistence com File parameter]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # JSON persistence com File parameter

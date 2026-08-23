@@ -1577,6 +1577,158 @@ import functools
 
 
 # ============================================================================
+# 18b. AUTO-INSTRUMENTAÇÃO — DECORATORS E CONTEXT MANAGERS
+# ============================================================================
+
+class TracedContext:
+    """Context manager para tracing manual."""
+    def __init__(self, operation: str, component: str = "manual"):
+        self.operation = operation
+        self.component = component
+        self.ctx = None
+        self.start = None
+
+    def __enter__(self):
+        self.ctx = TraceContext.current()
+        self.start = metrics.timer_start(f'{self.component}.{self.operation}.latency')
+        metrics.inc(f'{self.component}.{self.operation}.total')
+        log.debug(self.component, self.operation, 'STARTED',
+                  correlation_id=self.ctx.get('correlation_id'),
+                  mission_id=self.ctx.get('mission_id'))
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        elapsed = metrics.timer_end(f'{self.component}.{self.operation}.latency', self.start)
+        if exc_type:
+            metrics.inc(f'{self.component}.{self.operation}.failure')
+            log.error(self.component, self.operation,
+                      f'FAILED: {exc_type.__name__}: {exc_val}',
+                      duration_ms=elapsed,
+                      error=str(exc_val),
+                      correlation_id=self.ctx.get('correlation_id'))
+        else:
+            metrics.inc(f'{self.component}.{self.operation}.success')
+            log.debug(self.component, self.operation, 'COMPLETED',
+                      duration_ms=elapsed,
+                      correlation_id=self.ctx.get('correlation_id'))
+        return False
+
+
+def traced(component: str, operation: str = None):
+    """Decorator para tracing automático (sem retry/health_check)."""
+    def decorator(fn: Callable):
+        op_name = operation or fn.__name__
+
+        @functools.wraps(fn)
+        def wrapper(*args, **kwargs):
+            ctx = TraceContext.current()
+            start = metrics.timer_start(f'{component}.{op_name}.latency')
+            metrics.inc(f'{component}.{op_name}.total')
+
+            try:
+                result = fn(*args, **kwargs)
+                elapsed = metrics.timer_end(f'{component}.{op_name}.latency', start)
+                metrics.inc(f'{component}.{op_name}.success')
+                log.debug(component, op_name, 'OK',
+                          duration_ms=elapsed,
+                          correlation_id=ctx.get('correlation_id'),
+                          mission_id=ctx.get('mission_id'))
+                return result
+            except Exception as e:
+                elapsed = metrics.timer_end(f'{component}.{op_name}.latency', start)
+                metrics.inc(f'{component}.{op_name}.failure')
+                log.error(component, op_name,
+                          f'Failed: {type(e).__name__}: {e}',
+                          duration_ms=elapsed,
+                          error=str(e),
+                          correlation_id=ctx.get('correlation_id'))
+                raise
+        return wrapper
+    return decorator
+
+
+def metered(component: str, operation: str = None, meter_name: str = None):
+    """Decorator para métricas customizadas (counter + timer)."""
+    def decorator(fn: Callable):
+        op_name = operation or fn.__name__
+        m_name = meter_name or f'{component}.{op_name}'
+
+        @functools.wraps(fn)
+        def wrapper(*args, **kwargs):
+            start = metrics.timer_start(f'{m_name}.latency')
+            metrics.inc(f'{m_name}.total')
+            try:
+                result = fn(*args, **kwargs)
+                metrics.inc(f'{m_name}.success')
+                return result
+            except Exception:
+                metrics.inc(f'{m_name}.failure')
+                raise
+            finally:
+                metrics.timer_end(f'{m_name}.latency', start)
+        return wrapper
+    return decorator
+
+
+class ObservedContext:
+    """Context manager completo: log + métricas + trace + health + retry opcional."""
+    def __init__(
+        self,
+        component: str,
+        operation: str,
+        timeout: float = None,
+        max_retries: int = 0,
+        retry_backoff: float = 1.0,
+        health_check: bool = True,
+    ):
+        self.component = component
+        self.operation = operation
+        self.timeout = timeout
+        self.max_retries = max_retries
+        self.retry_backoff = retry_backoff
+        self.health_check = health_check
+        self.ctx = None
+        self.start = None
+
+    def __enter__(self):
+        self.ctx = TraceContext.current()
+        self.start = metrics.timer_start(f'{self.component}.{self.operation}.latency')
+        metrics.inc(f'{self.component}.{self.operation}.total')
+        log.debug(self.component, self.operation, 'STARTED',
+                  correlation_id=self.ctx.get('correlation_id'),
+                  mission_id=self.ctx.get('mission_id'))
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        elapsed = metrics.timer_end(f'{self.component}.{self.operation}.latency', self.start)
+        if exc_type:
+            metrics.inc(f'{self.component}.{self.operation}.failure')
+            log.error(self.component, self.operation,
+                      f'FAILED: {exc_type.__name__}: {exc_val}',
+                      duration_ms=elapsed,
+                      error=str(exc_val),
+                      correlation_id=self.ctx.get('correlation_id'))
+
+            if self.health_check:
+                health.update_component(self.component, HealthLevel.DEGRADED)
+            return False  # Re-raise
+
+        metrics.inc(f'{self.component}.{self.operation}.success')
+        if self.health_check:
+            health.update_component(self.component, HealthLevel.HEALTHY)
+        log.debug(self.component, self.operation, 'COMPLETED',
+                  duration_ms=elapsed,
+                  correlation_id=self.ctx.get('correlation_id'))
+        return False
+
+
+# Exports para uso fácil
+observed = observable  # alias
+traced_ctx = TracedContext
+observed_ctx = ObservedContext
+
+
+# ============================================================================
 # 19. PERSISTENCE
 # ============================================================================
 
@@ -1615,6 +1767,7 @@ def main():
     parser = argparse.ArgumentParser(description='Observability + Reliability CLI')
     sub = parser.add_subparsers(dest='cmd')
 
+    # Existing commands
     sub.add_parser('health')
     sub.add_parser('metrics')
     sub.add_parser('incidents')
@@ -1625,7 +1778,31 @@ def main():
     sub.add_parser('recovery')
     p_log = sub.add_parser('logs')
     p_log.add_argument('--limit', type=int, default=20)
+    p_log.add_argument('--level', type=str, choices=['debug', 'info', 'warning', 'error', 'critical'])
+    p_log.add_argument('--component', type=str)
+    p_log.add_argument('--since-seconds', type=int)
     p_save = sub.add_parser('save')
+
+    # New commands matching ecosystem.ps1 expectations
+    p_trace = sub.add_parser('trace')
+    p_trace.add_argument('--action', type=str, choices=['get', 'start', 'child'], default='get')
+    p_trace.add_argument('--mission-id', type=str)
+    p_trace.add_argument('--correlation-id', type=str)
+    p_trace.add_argument('--trace-id', type=str)
+
+    p_incidents = sub.add_parser('incidents_list')
+    p_incidents.add_argument('--limit', type=int, default=20)
+    p_incidents.add_argument('--open-only', action='store_true')
+    p_incidents.add_argument('--stats-only', action='store_true')
+
+    p_health = sub.add_parser('health_report')
+    p_health.add_argument('--check-deps', action='store_true')
+
+    p_logq = sub.add_parser('log_query')
+    p_logq.add_argument('--limit', type=int, default=100)
+    p_logq.add_argument('--level', type=str, choices=['debug', 'info', 'warning', 'error', 'critical'])
+    p_logq.add_argument('--component', type=str)
+    p_logq.add_argument('--since-seconds', type=int)
 
     args = parser.parse_args()
 
@@ -1647,10 +1824,72 @@ def main():
     elif args.cmd == 'recovery':
         print(json.dumps(recovery.get_history(), indent=2, ensure_ascii=False))
     elif args.cmd == 'logs':
-        print(json.dumps(log.get_recent(args.limit), indent=2, ensure_ascii=False))
+        level = None
+        if args.level:
+            level = Severity(args.level.upper())
+        events = log.get_recent(limit=args.limit, level=level)
+        if args.component:
+            events = [e for e in events if args.component.lower() in e.get('component', '').lower()]
+        if args.since_seconds:
+            from datetime import datetime, timedelta
+            cutoff = datetime.now() - timedelta(seconds=args.since_seconds)
+            filtered = []
+            for e in events:
+                try:
+                    ts = datetime.fromisoformat(e.get('ts', ''))
+                    if ts >= cutoff:
+                        filtered.append(e)
+                except Exception:
+                    pass
+            events = filtered
+        print(json.dumps(events, indent=2, ensure_ascii=False))
     elif args.cmd == 'save':
         save_state()
         print("State saved")
+    elif args.cmd == 'trace':
+        if args.action == 'start':
+            ctx = TraceContext.start(
+                mission_id=args.mission_id,
+                correlation_id=args.correlation_id,
+                trace_id=args.trace_id,
+            )
+        elif args.action == 'child':
+            ctx = TraceContext.child()
+        else:
+            ctx = TraceContext.current()
+        print(json.dumps(ctx, indent=2, ensure_ascii=False))
+    elif args.cmd == 'incidents_list':
+        if args.stats_only:
+            print(json.dumps(incidents.get_stats(), indent=2, ensure_ascii=False))
+        elif args.open_only:
+            print(json.dumps(incidents.get_open(), indent=2, ensure_ascii=False))
+        else:
+            print(json.dumps(incidents.get_recent(args.limit), indent=2, ensure_ascii=False))
+    elif args.cmd == 'health_report':
+        report = health.get_report()
+        if not args.check_deps:
+            report.pop('dependencies', None)
+        print(json.dumps(report, indent=2, ensure_ascii=False))
+    elif args.cmd == 'log_query':
+        level = None
+        if args.level:
+            level = Severity(args.level.lower())
+        events = log.get_recent(limit=args.limit, level=level)
+        if args.component:
+            events = [e for e in events if args.component.lower() in e.get('component', '').lower()]
+        if args.since_seconds:
+            from datetime import datetime, timedelta
+            cutoff = datetime.now() - timedelta(seconds=args.since_seconds)
+            filtered = []
+            for e in events:
+                try:
+                    ts = datetime.fromisoformat(e.get('ts', ''))
+                    if ts >= cutoff:
+                        filtered.append(e)
+                except Exception:
+                    pass
+            events = filtered
+        print(json.dumps(events, indent=2, ensure_ascii=False))
     else:
         parser.print_help()
     return 0

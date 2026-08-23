@@ -1,7 +1,7 @@
 ---
 tags: [finanças, independentes, módulos, opencode, padrao, scripts]
 aliases: [Sistema de Análise Financeira]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Sistema de Análise Financeira

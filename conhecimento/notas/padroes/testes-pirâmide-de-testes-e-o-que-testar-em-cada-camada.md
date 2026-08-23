@@ -1,7 +1,7 @@
 ---
 tags: [funções, não, padrao, puras, testes, transformações]
 aliases: [Testes: pirâmide de testes e o que testar em cada camada]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Testes: pirâmide de testes e o que testar em cada camada

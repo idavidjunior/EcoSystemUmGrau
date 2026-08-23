@@ -1,7 +1,7 @@
 ---
 tags: [cérebro, foco, fonte, opencodeopencode, padrao, vivo]
 aliases: [@ecow e /ecow — abrir/focar o Cerebro Vivo]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # @ecow e /ecow — abrir/focar o Cerebro Vivo

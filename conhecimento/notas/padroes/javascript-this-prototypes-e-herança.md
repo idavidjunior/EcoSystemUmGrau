@@ -1,7 +1,7 @@
 ---
 tags: [chama, construtor, javascript, padrao, pai, super]
 aliases: [JavaScript: this, prototypes e herança]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # JavaScript: this, prototypes e herança

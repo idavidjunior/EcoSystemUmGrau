@@ -1,7 +1,7 @@
 ---
 tags: [alucinacao, extracao, fases, opencode, padrao, validator]
 aliases: [Compressão Semântica Hierárquica — lições da implementação]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Compressão Semântica Hierárquica — lições da implementação

@@ -1,7 +1,7 @@
 ---
 tags: [automaticamente, corrigindo, opencodeopencode, padrao, pedido, simultaneamente]
 aliases: [resiliencia widget duplicado]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # resiliencia widget duplicado

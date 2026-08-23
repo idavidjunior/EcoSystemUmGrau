@@ -1,7 +1,7 @@
 ---
 tags: [atomic, multi, padrao, rust, rwlock, thread]
 aliases: [Rust: ownership, borrow checker e o modelo de memória]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Rust: ownership, borrow checker e o modelo de memória

@@ -1,7 +1,7 @@
 ---
 tags: [123, element-detection, exato, heuristica, mudar, quebra]
 aliases: [Seletor mais especifico = mais fragil]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Seletor mais especifico = mais fragil

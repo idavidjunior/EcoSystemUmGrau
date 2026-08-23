@@ -1,7 +1,7 @@
 ---
 tags: [adb, cognitivo, general, independente, trocar, usb]
 aliases: [# Hora na tela vs hora no áudio (Jarvis)]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # # Hora na tela vs hora no áudio (Jarvis)

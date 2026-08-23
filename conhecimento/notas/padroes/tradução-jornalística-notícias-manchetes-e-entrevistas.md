@@ -1,7 +1,7 @@
 ---
 tags: [emocional, não, original, padrao, tem, traducao-texto]
 aliases: [Tradução jornalística: notícias, manchetes e entrevistas]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Tradução jornalística: notícias, manchetes e entrevistas

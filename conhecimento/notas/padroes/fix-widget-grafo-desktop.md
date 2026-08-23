@@ -1,7 +1,7 @@
 ---
 tags: [cerebro, network, opencode, padrao, scripts, vivo]
 aliases: [fix widget grafo desktop]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # fix widget grafo desktop

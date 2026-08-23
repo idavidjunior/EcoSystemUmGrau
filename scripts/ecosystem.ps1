@@ -25,8 +25,20 @@
 param(
     [Parameter(Position = 0)]
     [ValidateSet("sync", "scan", "learn", "repair", "status", "logs", "metrics", "health", "trace", "incidents", "help")]
-    [string]$Command = "help"
+    [string]$Command = "help",
+    [Parameter(ValueFromRemainingArguments = $true)]
+    [string[]]$RemainingArgs = @()
 )
+
+# Capture raw command line for observability commands that need --args
+$RawArgs = ""
+if ($Command -in @("logs", "health", "trace", "incidents")) {
+    $line = $MyInvocation.Line
+    # Extract everything after the command name
+    if ($line -match "(?<=ecosystem\.ps1\s+$Command\s)(.*)") {
+        $RawArgs = $matches[1].Trim()
+    }
+}
 
 $ecoDir = Split-Path $PSScriptRoot -Parent
 $lerDir = "$ecoDir\ler-runtime"
@@ -402,16 +414,62 @@ function Invoke-Learn {
 }
 
 # ══════════════════════════════════════════════════════════════════════
+# OBSERVABILIDADE
+# ══════════════════════════════════════════════════════════════════════
+function Invoke-Logs {
+    param([string]$RawArgs)
+    Write-Step "Buscando logs estruturados"
+    $pyArgs = @("scripts/observability_reliability.py", "log_query")
+    if ($RawArgs) { $pyArgs += $RawArgs.Split(' ', [StringSplitOptions]::RemoveEmptyEntries) }
+    python @pyArgs 2>&1 | ForEach-Object { Write-Host $_ }
+}
+
+function Invoke-Metrics {
+    param([string]$RawArgs)
+    Write-Step "Snapshot de métricas (p50/p95/p99)"
+    python "scripts/observability_reliability.py" "metrics" 2>&1 | ForEach-Object { Write-Host $_ }
+}
+
+function Invoke-Health {
+    param([string]$RawArgs)
+    Write-Step "Relatório de saúde do sistema"
+    $pyArgs = @("scripts/observability_reliability.py", "health_report")
+    if ($RawArgs) { $pyArgs += $RawArgs.Split(' ', [StringSplitOptions]::RemoveEmptyEntries) }
+    python @pyArgs 2>&1 | ForEach-Object { Write-Host $_ }
+}
+
+function Invoke-Trace {
+    param([string]$RawArgs)
+    Write-Step "Contexto de trace"
+    $pyArgs = @("scripts/observability_reliability.py", "trace")
+    if ($RawArgs) { $pyArgs += $RawArgs.Split(' ', [StringSplitOptions]::RemoveEmptyEntries) }
+    python @pyArgs 2>&1 | ForEach-Object { Write-Host $_ }
+}
+
+function Invoke-Incidents {
+    param([string]$RawArgs)
+    Write-Step "Listando incidentes"
+    $pyArgs = @("scripts/observability_reliability.py", "incidents_list")
+    if ($RawArgs) { $pyArgs += $RawArgs.Split(' ', [StringSplitOptions]::RemoveEmptyEntries) }
+    python @pyArgs 2>&1 | ForEach-Object { Write-Host $_ }
+}
+
+# ══════════════════════════════════════════════════════════════════════
 # MAIN
 # ══════════════════════════════════════════════════════════════════════
 switch ($Command) {
-    "sync"   { Invoke-Sync }
-    "scan"   { Invoke-Scan }
-    "learn"  { Invoke-Learn }
-    "repair" { Invoke-Repair }
-    "status" { Invoke-Status }
+    "sync"       { Invoke-Sync }
+    "scan"       { Invoke-Scan }
+    "learn"      { Invoke-Learn }
+    "repair"     { Invoke-Repair }
+    "status"     { Invoke-Status }
+    "logs"       { Invoke-Logs $RawArgs }
+    "metrics"    { Invoke-Metrics $RawArgs }
+    "health"     { Invoke-Health $RawArgs }
+    "trace"      { Invoke-Trace $RawArgs }
+    "incidents"  { Invoke-Incidents $RawArgs }
     default {
         Get-Help $PSCommandPath -Detailed
-        Write-Host "`nUso: ecosystem [sync|scan|learn|repair|status|help]" -ForegroundColor Yellow
+        Write-Host "`nUso: ecosystem [sync|scan|learn|repair|status|logs|metrics|health|trace|incidents|help]" -ForegroundColor Yellow
     }
 }

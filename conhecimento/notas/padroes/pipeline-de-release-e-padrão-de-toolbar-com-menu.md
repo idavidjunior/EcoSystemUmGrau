@@ -1,7 +1,7 @@
 ---
 tags: [dicionário, notas, opencodeopencode, padrao, recursos, referências]
 aliases: [Pipeline de release e padrão de toolbar com menu]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Pipeline de release e padrão de toolbar com menu

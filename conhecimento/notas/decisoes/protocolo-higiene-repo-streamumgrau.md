@@ -1,7 +1,7 @@
 ---
 tags: [arquivos, backups, decisao, opencode, runner, temporarios]
 aliases: [protocolo higiene repo streamumgrau]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # protocolo higiene repo streamumgrau

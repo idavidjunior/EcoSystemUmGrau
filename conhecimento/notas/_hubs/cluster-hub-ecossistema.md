@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**212 notas** do cluster ecossistema.
+**214 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -190,6 +190,8 @@
 - [[salvar-rustdesk-password-e-id-em-local-permanente-nao-gerar-]]
 - [[saudacao-auto-evolutiva-jarvis]]
 - [[saudacao-dinamica-jarvis]]
+- [[saudacao-espontanea-implementada]]
+- [[saudacao-espontanea-nao-implementada]]
 - [[saudacao-jarvis-estilo-filme]]
 - [[saudacao-llm-nvidia-api]]
 - [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]

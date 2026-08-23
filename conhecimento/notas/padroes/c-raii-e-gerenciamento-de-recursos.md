@@ -1,7 +1,7 @@
 ---
 tags: [caminhos, cpp, cópia, erro, movimento, padrao]
 aliases: [C++: RAII e gerenciamento de recursos]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # C++: RAII e gerenciamento de recursos

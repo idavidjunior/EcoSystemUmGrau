@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, fisica, general, labels, vivo, zoom]
 aliases: [# 2026-07-28: Botões de filtro sem texto visível — MaterialB]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # # 2026-07-28: Botões de filtro sem texto visível — MaterialButton vs TextView

@@ -1,7 +1,7 @@
 ---
 tags: [named, opencode, opencode mention, opencode mention comando, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao]
 aliases: [eco agente e comando global]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # eco agente e comando global

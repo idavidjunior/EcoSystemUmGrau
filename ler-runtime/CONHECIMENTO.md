@@ -1,11 +1,11 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-22T23:39:37.851744
+**Exportado em:** 2026-08-23T07:42:00.071649
 **Projetos:** 4
 **Padroes Tecnicos:** 279
-**Decisoes:** 74
+**Decisoes:** 75
 **Bug Fixes:** 52
-**Padroes Cognitivos:** 67
+**Padroes Cognitivos:** 68
 **Heuristicas:** 32
 **Frameworks:** 10
 **Missoes Aprendidas:** 134
@@ -569,6 +569,15 @@ decisao: |
   Modo MANUAL permaneceu byte a byte igual (validado por teste).
 
   1. Classificacao das pendencias (Get-TipoPendencia): vivo = conhecimen
+
+### saudacao espontanea implementada
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [saudacao, autoapresentacao, clausula-petrea, boot, primeira-mensagem, implementado]
+data: 2026-08-23
+contexto: "Cláusula pétrea de autoapresentação automática na primeira mensagem de cada sessão (AGENTS.md e Constituição) exige saudação curta (máx 3-4 linhas), espontânea, variando o tom a cada sessão, informando que EcoSystemUmGrau está ativo e operante, com leve contexto (projeto ativo, memória, pendências)."
+decisao: "Implementado mecanismo de saudação espontânea autom
 
 
 ## Padroes Tecnicos
@@ -1948,6 +1957,17 @@ adiada (desktop ativo)" no log do guardian. Investigação revelou três camadas
 1. Falso positivo estrutural: o detector marcava o subdiretório `objects` interno
    do próprio git (por co
 
+### saudacao espontanea nao implementada
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [saudacao, autoapresentacao, clausula-petrea, boot, primeira-mensagem]
+data: 2026-08-23
+contexto: "Cláusula pétrea de autoapresentação automática na primeira mensagem de cada sessão (AGENTS.md e Constituição) exige saudação curta (máx 3-4 linhas), espontânea, variando o tom a cada sessão, informando que EcoSystemUmGrau está ativo e operante, com leve contexto (projeto ativo, memória, pendências)."
+decisao: "Registrar erro e definir implementação: criar mecanismo de detecção 
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -2042,7 +2062,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-22T23:39:37.627104
+**Ultima atualizacao:** 2026-08-23T07:41:59.888894
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

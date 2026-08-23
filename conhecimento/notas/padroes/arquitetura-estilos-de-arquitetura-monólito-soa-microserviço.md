@@ -1,7 +1,7 @@
 ---
 tags: [arquitetura, god, integração, object, padrao, virar]
 aliases: [Arquitetura: estilos de arquitetura — monólito, SOA, microse]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Arquitetura: estilos de arquitetura — monólito, SOA, microserviços e serverless

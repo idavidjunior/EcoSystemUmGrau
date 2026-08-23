@@ -1,7 +1,7 @@
 ---
 tags: [argumentos, converte, cuidado, espaços, linux, padrao]
 aliases: [Linux: shell, pipelines, jq e automação via SSH]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Linux: shell, pipelines, jq e automação via SSH

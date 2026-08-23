@@ -1,6 +1,6 @@
 # Padroes Cognitivos
 
-**55 notas** conectadas a este hub.
+**56 notas** conectadas a este hub.
 
 
 ## Notas
@@ -54,6 +54,7 @@
 - [[reconhecimento-de-estado-por-elementos-chave]]
 - [[reconhecimento-instantaneo-de-framework]]
 - [[respostas-truncadas]]
+- [[saudacao-espontanea-nao-implementada]]
 - [[servidores-mcp-node-criados-e-validados]]
 - [[snapshots-corrompidos-do-opencode-referência-no-banco-decide]]
 - [[toast-de-erros-falsos-positivos]]

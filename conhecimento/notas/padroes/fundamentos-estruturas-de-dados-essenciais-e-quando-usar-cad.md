@@ -1,7 +1,7 @@
 ---
 tags: [autocomplete, domina, fundamentos, mapas, padrao, sequencial]
 aliases: [Fundamentos: estruturas de dados essenciais e quando usar ca]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Fundamentos: estruturas de dados essenciais e quando usar cada

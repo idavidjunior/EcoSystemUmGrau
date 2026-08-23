@@ -1,7 +1,7 @@
 ---
 tags: [container, containers, left, linux, negadas, padrao]
 aliases: [Linux: arquivos, permissões, filesystems, inodes e links]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Linux: arquivos, permissões, filesystems, inodes e links

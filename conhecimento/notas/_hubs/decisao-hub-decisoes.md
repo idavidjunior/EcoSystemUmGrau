@@ -1,6 +1,6 @@
 # Decisoes
 
-**70 notas** conectadas a este hub.
+**71 notas** conectadas a este hub.
 
 
 ## Notas
@@ -53,6 +53,7 @@
 - [[salvar-cria-novo-arquivo-timestampado-nunca-sobrescreve-exis]]
 - [[salvar-new-file-explicit-save-creates-timestamped-snapshot-n]]
 - [[salvar-rustdesk-password-e-id-em-local-permanente-nao-gerar-]]
+- [[saudacao-espontanea-implementada]]
 - [[searchmodenormal-relaxed-auto-fallback-se-normal-retorna-nul]]
 - [[sempre-fechar-teclado-virtual-android-antes-do-proximo-cliqu]]
 - [[separação-de-estados-editar-vs-salvar-despesas]]

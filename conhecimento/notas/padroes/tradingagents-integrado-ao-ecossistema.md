@@ -1,7 +1,7 @@
 ---
 tags: [apache, calling, estrelas, mil, opencode, padrao]
 aliases: [TradingAgents integrado ao ecossistema]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # TradingAgents integrado ao ecossistema

@@ -1,7 +1,7 @@
 ---
-tags: [backups, build, logs, manutencao, opencodeopencode, padrao]
+tags: [backups, fonte, logs, manutencao, opencodeopencode, padrao]
 aliases: [fase2 limpeza git artefatos rastreados]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # fase2 limpeza git artefatos rastreados

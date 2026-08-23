@@ -1,7 +1,7 @@
 ---
 tags: [dar, hang, out, padrao, rolê, traducao-audio]
 aliases: [Tradução de fala coloquial e falas sobrepostas em podcasts e]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Tradução de fala coloquial e falas sobrepostas em podcasts e entrevistas

@@ -1,7 +1,7 @@
 ---
 tags: [android-pure-sdk, decisao, directory, requirement, toolchain, trees]
 aliases: [Why:** d8 doesn't accept directory trees of .class files; it]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Why:** d8 doesn't accept directory trees of .class files; it needs a JAR. This is a historical Android toolchain requirement.

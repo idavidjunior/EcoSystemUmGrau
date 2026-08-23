@@ -1,7 +1,7 @@
 ---
 tags: [esconder, forte, git, grandes, incompleto, padrao]
 aliases: [Git: fluxos de trabalho (trunk-based e git flow) e quando us]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Git: fluxos de trabalho (trunk-based e git flow) e quando usar cada

@@ -1,7 +1,7 @@
 ---
 tags: [429, apis-web, header, limit, padrao, rate]
 aliases: [APIs: HTTP na prática (métodos, status, cabeçalhos, cache)]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # APIs: HTTP na prática (métodos, status, cabeçalhos, cache)

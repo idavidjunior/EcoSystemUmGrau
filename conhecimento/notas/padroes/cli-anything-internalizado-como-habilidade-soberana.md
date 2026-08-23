@@ -1,7 +1,7 @@
 ---
 tags: [assimilada, autossuficiênci, garantir, internalizada, opencodeopencode, padrao]
 aliases: [CLI-Anything Internalizado como Habilidade Soberana]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # CLI-Anything Internalizado como Habilidade Soberana

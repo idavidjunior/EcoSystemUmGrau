@@ -1,7 +1,7 @@
 ---
 tags: [auditoria, commit, completados, decisao, lerarquitetura, passos]
 aliases: [Pontuacao ponderada com 6 categorias (Req 30%, Func 30%, Tes]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Pontuacao ponderada com 6 categorias (Req 30%, Func 30%, Testes 10%, DoD 10%, Evidencias 10%, Auditoria 10%).

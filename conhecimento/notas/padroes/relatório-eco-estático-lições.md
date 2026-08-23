@@ -1,7 +1,7 @@
 ---
 tags: [adicional, informações, opencode, padrao, peso, script]
 aliases: [Relatório Eco estático — lições]
-date: 2026-08-22
+date: 2026-08-23
 ---
 
 # Relatório Eco estático — lições
