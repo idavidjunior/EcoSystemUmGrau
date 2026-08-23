@@ -12174,5 +12174,51 @@
     "access_count": 0,
     "created_at": "2026-08-23T08:14:21.307976",
     "last_accessed": "2026-08-23T08:14:21.307976"
+  },
+  {
+    "id": 478,
+    "kind": "padrao",
+    "task": "estilo-resposta-simples-direto",
+    "summary": "Usuario exige respostas SEMPRE curtas, diretas, sem prolixidade. Regra da Constituicao (Clausula Petrea Estilo Comunicacao Simples) deve ser aplicada rigorosamente em TODA resposta: maximo 3-4 linhas, frases curtas 8-15 palavras, sem formatacao complexa, sem preambulos, direto ao ponto. Nao esquecer nunca.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "toda",
+      "rigorosamente",
+      "aplicada",
+      "prolixidade",
+      "ponto",
+      "deve"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-23T09:55:04.453840",
+    "last_accessed": "2026-08-23T09:55:04.453840"
+  },
+  {
+    "id": 479,
+    "kind": "padrao",
+    "task": "Fase 1 ComplexityClassifier + PlannerAgent implementada",
+    "summary": "Implementado ComplexityClassifier (heurístico LOW/HIGH) no runtime_kernel.py, integrado no authorize() com roteamento condicional (DIRECT vs PLANNER_AGENT). Criado MCP server mcp-planner com tools create_plan, execute_plan, replan_on_failure. CLI commands: kernel complexity, kernel plan, kernel route. Preflight e runtime_boot validados. Fallback template quando LLM indisponível.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "failure",
+      "replan",
+      "execute",
+      "high",
+      "low",
+      "create"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-23T10:13:18.138926",
+    "last_accessed": "2026-08-23T10:13:18.138926"
   }
 ]

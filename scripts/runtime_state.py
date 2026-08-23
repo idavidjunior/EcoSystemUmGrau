@@ -63,6 +63,8 @@ def load_state():
             data = json.load(f)
         for k, v in DEFAULT_STATE.items():
             data.setdefault(k, v)
+        # Reset session_greeted a cada boot (nova sessão = nova saudação)
+        data['session_greeted'] = False
         return data
     state = dict(DEFAULT_STATE)
     state['updated_at'] = _now()

@@ -12,6 +12,8 @@ Uso CLI:
   python scripts/runtime_kernel.py contrato-entrada "<objetivo>"
   python scripts/runtime_kernel.py pipeline              # fluxo obrigatório
   python scripts/runtime_kernel.py regras                # lista regras absolutas
+  python scripts/runtime_kernel.py complexity "<pedido>" # classifica complexidade (LOW/HIGH)
+  python scripts/runtime_kernel.py plan "<objetivo>"     # cria plano via mcp-planner
 """
 
 import argparse
@@ -20,6 +22,7 @@ import os
 import re
 import sys
 from datetime import datetime
+from typing import Dict, List, Optional, Tuple
 
 BASE = str(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SCRIPTS = os.path.join(BASE, 'scripts')
@@ -67,6 +70,187 @@ SAIDA_CONTRATO = {
 }
 
 
+# ============================================================================
+# COMPLEXITY CLASSIFIER — Few-shot zero-shot classification (LOW/HIGH)
+# ============================================================================
+
+class ComplexityClassifier:
+    """Classifica complexidade de pedidos: LOW (direto) vs HIGH (precisa planner).
+
+    Usa zero-shot classification (BART-large-mnli) com few-shot examples
+    para decidir se a tarefa deve ser roteada direto ou passar pelo PlannerAgent.
+    """
+
+    _instance = None
+    _lock = None
+
+    def __new__(cls):
+        import threading
+        if cls._lock is None:
+            cls._lock = threading.Lock()
+        with cls._lock:
+            if cls._instance is None:
+                cls._instance = super().__new__(cls)
+                cls._instance._initialized = False
+            return cls._instance
+
+    def __init__(self):
+        if self._initialized:
+            return
+        self._initialized = True
+        self._clf = None
+        self._labels = ["LOW", "HIGH"]
+        self._examples = self._load_few_shot_examples()
+
+    def _load_few_shot_examples(self) -> List[Tuple[str, str]]:
+        """Exemplos few-shot baseados no AgenticSeek (router.py)."""
+        return [
+            # LOW - tarefas diretas, single-step
+            ("hi", "LOW"),
+            ("olá", "LOW"),
+            ("como vai", "LOW"),
+            ("qual a data de hoje", "LOW"),
+            ("escreva um script python para verificar se o dispositivo está na rede", "LOW"),
+            ("debugue este código java que não funciona", "LOW"),
+            ("busque na web o preço da RTX 4090", "LOW"),
+            ("encontre o arquivo notes.txt no meu Documents", "LOW"),
+            ("crie um script bash para listar processos", "LOW"),
+            ("escreva uma função python para inverter string", "LOW"),
+            ("qual o clima em São Paulo hoje", "LOW"),
+            ("conte uma piada", "LOW"),
+            ("traduza este texto para inglês", "LOW"),
+            ("formate este JSON", "LOW"),
+            ("gere um UUID", "LOW"),
+            ("qual a capital da França", "LOW"),
+            ("calcule 15% de 280", "LOW"),
+            ("liste arquivos .py no diretório atual", "LOW"),
+            ("verifique se a porta 8080 está aberta", "LOW"),
+            ("converta CSV para JSON", "LOW"),
+            # HIGH - multi-step, precisa planejamento, dependências
+            ("pesquise startups de IA em São Paulo, salve em CSV e faça gráfico", "HIGH"),
+            ("encontre o repo vitess, clone e instale seguindo o readme", "HIGH"),
+            ("crie um servidor web em Go que consulte API de voos e mostre no frontend", "HIGH"),
+            ("faça busca profunda de players de IA 2025 e gere relatório em arquivo", "HIGH"),
+            ("encontre o arquivo budget.xlsx, analise dados e gere gráfico para o chefe", "HIGH"),
+            ("planeje viagem de 3 dias para Nova York com voos e hotéis", "HIGH"),
+            ("clone o repo, rode os testes, corrija falhas e faça deploy", "HIGH"),
+            ("pesquise API de clima, crie app python que mostra previsão", "HIGH"),
+            ("organize arquivos do desktop por extensão e escreva script para listar", "HIGH"),
+            ("encontre API pública de cripto, construa tracker em Flask", "HIGH"),
+            ("busque tutoriais de ML, treine modelo simples e salve", "HIGH"),
+            ("crie app Node.js que consulta API de tráfego e exibe mapa", "HIGH"),
+            ("encontre arquivo resume.pdf, aplique para vagas compatíveis online", "HIGH"),
+            ("configure novo projeto Flutter, implemente autenticação, teste", "HIGH"),
+            ("migre banco de dados, rode migrações, valide integridade", "HIGH"),
+            ("implemente CI/CD pipeline com testes, lint, deploy automático", "HIGH"),
+            ("refatore módulo legado, escreva testes, valide regressão", "HIGH"),
+            ("projetar arquitetura microserviços, defina contratos, documente", "HIGH"),
+            ("audite código legado, liste vulnerabilidades, proponha fixes", "HIGH"),
+        ]
+
+    def _get_classifier(self):
+        """Lazy load do classificador zero-shot.
+
+        Por padrão usa heurística (rápida, sem download).
+        Transformers só carrega se USE_TRANSFORMERS_CLASSIFIER=1 e modelo já estiver em cache.
+        """
+        if self._clf is not None:
+            return self._clf
+
+        # Verifica se deve tentar transformers
+        import os
+        if os.getenv("USE_TRANSFORMERS_CLASSIFIER") != "1":
+            self._clf = None
+            return None
+
+        try:
+            from transformers import pipeline
+            # Tenta carregar apenas se já estiver em cache local
+            self._clf = pipeline("zero-shot-classification",
+                                 model="facebook/bart-large-mnli",
+                                 local_files_only=True)
+        except Exception:
+            self._clf = None
+        return self._clf
+
+    def _heuristic_classify(self, text: str) -> Tuple[str, float]:
+        """Classificação heurística quando transformers não disponível."""
+        text_lower = text.lower()
+        # Palavras-chave que indicam HIGH
+        high_keywords = [
+            'planeje', 'planejar', 'organize', 'organizar', 'migre', 'migrar',
+            'implemente', 'implementar', 'construa', 'construir', 'crie app',
+            'crie aplicação', 'desenvolva', 'desenvolver', 'arquitetura',
+            'pipeline', 'deploy', 'refatore', 'refatorar', 'audite', 'auditoria',
+            'clone e instale', 'clone e rode', 'setup completo', 'configuração completa',
+            'relatório completo', 'análise completa', 'estudo completo',
+            'múltiplas', 'várias etapas', 'passo a passo', 'em etapas',
+            'depende de', 'precisa de', 'requer', 'depois', 'então', 'seguido de',
+        ]
+        # Palavras-chave que indicam LOW (single action)
+        low_keywords = [
+            'qual', 'quanto', 'quando', 'onde', 'quem', 'o que', 'como',
+            'escreva', 'escrever', 'gere', 'gerar', 'liste', 'listar',
+            'encontre', 'encontrar', 'busque', 'buscar', 'procure', 'procurar',
+            'verifique', 'verificar', 'cheque', 'checar', 'teste', 'testar',
+            'debugue', 'debugar', 'corrija', 'corrigir', 'formate', 'formatar',
+            'converta', 'converter', 'traduza', 'traduzir', 'calcule', 'calcular',
+        ]
+
+        high_score = sum(1 for kw in high_keywords if kw in text_lower)
+        low_score = sum(1 for kw in low_keywords if kw in text_lower)
+
+        # Heurísticas adicionais
+        if len(text.split()) > 30:
+            high_score += 1
+        if any(c in text for c in [',', ';', ' e ', ' depois ', ' então ']):
+            high_score += 1
+        if text.count(' ') > 50:
+            high_score += 2
+
+        if high_score > low_score:
+            confidence = min(0.5 + (high_score - low_score) * 0.1, 0.9)
+            return "HIGH", confidence
+        else:
+            confidence = min(0.5 + (low_score - high_score) * 0.1, 0.9)
+            return "LOW", confidence
+
+    def classify(self, text: str) -> Dict:
+        """Classifica complexidade do texto.
+
+        Returns:
+            dict: {'complexity': 'LOW'|'HIGH', 'confidence': float, 'method': 'transformers'|'heuristic'}
+        """
+        if not text or not text.strip():
+            return {'complexity': 'LOW', 'confidence': 1.0, 'method': 'empty'}
+
+        clf = self._get_classifier()
+
+        if clf is not None:
+            try:
+                # Usa zero-shot com labels + few-shot context
+                candidate_labels = self._labels
+                result = clf(text, candidate_labels, multi_label=False)
+                # result: {'labels': [...], 'scores': [...]}
+                complexity = result['labels'][0]
+                confidence = float(result['scores'][0])
+                return {'complexity': complexity, 'confidence': confidence, 'method': 'transformers'}
+            except Exception:
+                pass
+
+        # Fallback heurístico
+        complexity, confidence = self._heuristic_classify(text)
+        return {'complexity': complexity, 'confidence': confidence, 'method': 'heuristic'}
+
+    def is_high_complexity(self, text: str) -> bool:
+        """Retorna True se complexidade HIGH."""
+        return self.classify(text)['complexity'] == 'HIGH'
+
+
+# Singleton global
+complexity_classifier = ComplexityClassifier()
+
+
 class Kernel:
     def __init__(self):
         self.rules = self._load_absolute_rules()
@@ -112,17 +296,111 @@ class Kernel:
 
         Se `ent` (entendimento do pedido) for fornecido, o contrato é enriquecido
         com restrições e critérios de sucesso extraídos da compreensão.
+        Inclui classificação de complexidade (LOW/HIGH) para roteamento condicional.
         """
         contract = {k: '' for k in ENTRADA_CONTRATO}
         contract['objetivo'] = goal.strip()
         contract['contexto'] = '(restaurar via runtime_boot)'
+
+        # Classificação de complexidade (sempre executada)
+        complexity_result = complexity_classifier.classify(goal)
+        contract['complexidade'] = complexity_result['complexity']
+        contract['complexidade_confianca'] = complexity_result['confidence']
+        contract['complexidade_metodo'] = complexity_result['method']
+
         if ent and not ent.get('erro_compreensao'):
             acoes = '; '.join(f"{a['verbo']} {a['objeto']}" for a in ent.get('acoes', []))
             if acoes:
                 contract['contexto'] += f' | ações: {acoes}'
             contract['restricoes'] = '; '.join(ent.get('restricoes', [])) or '(sem restrições declaradas)'
             contract['criterios_sucesso'] = '; '.join(ent.get('criterios_sucesso', [])) or '(definir durante execução)'
+
+        # Se HIGH, indica que deve ir para PlannerAgent
+        if contract['complexidade'] == 'HIGH':
+            contract['roteamento'] = 'PLANNER_AGENT'
+            contract['contexto'] += ' | complexidade HIGH -> requer planejamento multi-agente'
+        else:
+            contract['roteamento'] = 'DIRECT'
+            contract['contexto'] += ' | complexidade LOW -> execução direta'
+
         return contract
+
+    def route_task(self, goal, ent=None):
+        """Roteia tarefa baseado na complexidade.
+
+        Returns:
+            dict: {'route': 'DIRECT'|'PLANNER', 'contract': ..., 'plan': ...}
+        """
+        contract = self.authorize(goal, ent)
+
+        if contract['complexidade'] == 'HIGH':
+            # Delega para mcp-planner
+            plan = self._call_planner(goal, contract)
+            return {
+                'route': 'PLANNER',
+                'contract': contract,
+                'plan': plan
+            }
+        else:
+            return {
+                'route': 'DIRECT',
+                'contract': contract,
+                'plan': None
+            }
+
+    def _call_planner(self, goal: str, contract: Dict) -> Optional[Dict]:
+        """Chama MCP server mcp-planner para criar plano.
+
+        Tenta via MCP stdio (initialize + tools/call create_plan).
+        Retorna plano estruturado ou None se indisponível.
+        """
+        import subprocess
+        import json
+
+        planner_path = os.path.join(BASE, 'mcp', 'nucleo', 'habilidades', 'planner', 'server.py')
+        if not os.path.exists(planner_path):
+            return None
+
+        # Request create_plan
+        req = {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "tools/call",
+            "params": {
+                "name": "create_plan",
+                "arguments": {
+                    "goal": goal,
+                    "context": contract.get('contexto', ''),
+                    "constraints": contract.get('restricoes', ''),
+                    "success_criteria": contract.get('criterios_sucesso', '')
+                }
+            }
+        }
+
+        try:
+            result = subprocess.run(
+                [sys.executable, planner_path],
+                input=json.dumps(req) + "\n",
+                capture_output=True, text=True, timeout=30, cwd=BASE
+            )
+            if result.returncode != 0:
+                return None
+
+            # Parse response (line-delimited JSON)
+            for line in result.stdout.strip().split('\n'):
+                try:
+                    resp = json.loads(line)
+                    if resp.get('id') == 1 and 'result' in resp:
+                        content = resp['result'].get('content', [])
+                        if content and content[0].get('type') == 'text':
+                            plan_text = content[0]['text']
+                            return json.loads(plan_text)
+                except json.JSONDecodeError:
+                    continue
+        except Exception:
+            pass
+
+        return None
 
     def validate_output(self, text, goal=''):
         """Valida uma resposta contra as regras do Kernel (contrato de saída).
@@ -275,6 +553,19 @@ def main():
     p_check = sub.add_parser('check')
     p_check.add_argument('texto', nargs='*', default=[])
 
+    # Novos comandos Fase 1
+    p_complexity = sub.add_parser('complexity')
+    p_complexity.add_argument('pedido', nargs='*', default=[])
+    p_complexity.add_argument('--json', action='store_true', help='Saída em JSON')
+
+    p_plan = sub.add_parser('plan')
+    p_plan.add_argument('objetivo', nargs='*', default=[])
+    p_plan.add_argument('--json', action='store_true', help='Saída em JSON')
+
+    p_route = sub.add_parser('route')
+    p_route.add_argument('objetivo', nargs='*', default=[])
+    p_route.add_argument('--json', action='store_true', help='Saída em JSON')
+
     args = parser.parse_args()
     cmd = args.cmd or 'status'
     kernel = Kernel()
@@ -304,6 +595,8 @@ def main():
                     print(f"    risco: {r['tipo']} ({r['nivel']}) — {r['msg']}")
             else:
                 print(f'  COMPREENSÃO: indisponível ({ent.get("erro_compreensao")})')
+            print(f'  complexidade: {contract.get("complexidade")} (conf: {contract.get("complexidade_confianca"):.2f}, método: {contract.get("complexidade_metodo")})')
+            print(f'  roteamento: {contract.get("roteamento")}')
             print(f'  restricoes: {contract["restricoes"]}')
             print(f'  criterios_sucesso: {contract["criterios_sucesso"]}')
     elif cmd == 'check':
@@ -316,6 +609,51 @@ def main():
             for f in failures:
                 print(f'  - {f}')
             sys.exit(1)
+    elif cmd == 'complexity':
+        if not args.pedido:
+            print('Uso: kernel complexity "<pedido>" [--json]')
+            return 1
+        goal = ' '.join(args.pedido)
+        result = complexity_classifier.classify(goal)
+        if args.json:
+            print(json.dumps(result, indent=2, ensure_ascii=False))
+        else:
+            print(f'Complexidade: {result["complexity"]}')
+            print(f'Confiança: {result["confidence"]:.2f}')
+            print(f'Método: {result["method"]}')
+    elif cmd == 'plan':
+        if not args.objetivo:
+            print('Uso: kernel plan "<objetivo>" [--json]')
+            return 1
+        goal = ' '.join(args.objetivo)
+        ent = kernel.compreender(goal)
+        contract = kernel.authorize(goal, ent)
+        if contract['complexidade'] != 'HIGH':
+            result = {'message': 'Complexidade LOW — não requer planejamento', 'contract': contract}
+        else:
+            plan = kernel._call_planner(goal, contract)
+            result = {'plan': plan, 'contract': contract}
+        if args.json:
+            print(json.dumps(result, indent=2, ensure_ascii=False, default=str))
+        else:
+            if 'plan' in result and result['plan']:
+                print(json.dumps(result['plan'], indent=2, ensure_ascii=False))
+            else:
+                print(result.get('message', 'Sem plano gerado'))
+    elif cmd == 'route':
+        if not args.objetivo:
+            print('Uso: kernel route "<objetivo>" [--json]')
+            return 1
+        goal = ' '.join(args.objetivo)
+        ent = kernel.compreender(goal)
+        route_result = kernel.route_task(goal, ent)
+        if args.json:
+            print(json.dumps(route_result, indent=2, ensure_ascii=False, default=str))
+        else:
+            print(f'Roteamento: {route_result["route"]}')
+            print(f'Complexidade: {route_result["contract"]["complexidade"]}')
+            if route_result.get('plan'):
+                print('Plano gerado via mcp-planner')
     return 0
 
 

@@ -63,6 +63,14 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:2px 0 8px;}
   <label class="linha">Vivacidade das cores <span id="valViva"></span></label>
   <input id="rgViva" type="range" min="0" max="1" step="0.05">
   <button id="btDecor" class="foco-btn">Pulsos decorativos <span id="estDecor"></span></button>
+  <div class="ptitulo" style="margin-top:12px;">Sinapses novas (amarelo)</div>
+  <button id="btNova" class="foco-btn">Destacar novas <span id="estNova"></span></button>
+  <label class="linha">Janela (horas) <span id="valNovaH"></span></label>
+  <input id="rgNovaH" type="range" min="1" max="72" step="1">
+  <label class="linha">Intensidade do pulso <span id="valNovaI"></span></label>
+  <input id="rgNovaI" type="range" min="0" max="1" step="0.05">
+  <label class="linha">Brilho extra <span id="valNovaB"></span></label>
+  <input id="rgNovaB" type="range" min="0" max="1" step="0.05">
 </div>
 <div id="painelFoco" class="painel">
   <div class="ptitulo">Mostrar apenas</div>
@@ -662,13 +670,16 @@ function desenhar(t, dt){
     if (foraTela(SX[i],SY[i])) continue;
     const prof=Math.max(0,Math.min(1,(SZ[i]+900)/1800));
     let esc=SS[i]*(0.72+0.5*prof)*n.nasce;
-    // sinapse nova: nasceu ha menos de 12h pulsa em amarelo forte
-    const SINAPSE_H=12;
+    // sinapse nova: nasceu ha menos de N horas pulsa em amarelo forte
+    const SINAPSE_H = AJUSTES.novaH || 12;
+    const NOVA_ATIVO = AJUSTES.nova !== false;
+    const NOVA_INT = AJUSTES.novaI || 0.5;
+    const NOVA_BRILHO = AJUSTES.novaB || 0.5;
     let excNova=0, pulsoNova=0;
-    if (n.tm){
+    if (NOVA_ATIVO && n.tm){
       const idadeH=(Date.now()/1000-n.tm)/3600;
       if (idadeH>=0 && idadeH<SINAPSE_H){
-        excNova=Math.min(1,(SINAPSE_H-idadeH)/SINAPSE_H*1.15);
+        excNova=Math.min(1,(SINAPSE_H-idadeH)/SINAPSE_H*1.15) * NOVA_INT;
         pulsoNova=0.5+0.5*Math.sin(t*0.0055+n.fase*6.283);
         esc*= (1+0.13*pulsoNova*excNova);
       }
@@ -676,12 +687,12 @@ function desenhar(t, dt){
     const r=(2.3+Math.min(8.5,Math.sqrt(n.g)*1.25))*(0.75+n.a*0.45)*esc*
       (1+EXCITA[i]*0.5);
     let cor=corDe(n.cl);
-    if (excNova>0) cor=mistura(cor,'#FFD60A',Math.min(1,0.30+0.50*pulsoNova*excNova));
+    if (excNova>0) cor=mistura(cor,'#FFD60A',Math.min(1,0.30+0.50*pulsoNova*excNova*NOVA_INT));
     ctx.globalAlpha=Math.min(1,(0.30+0.62*prof));
     const sp=sprite(cor), tam=r*6;
     ctx.drawImage(sp,SX[i]-tam/2,SY[i]-tam/2,tam,tam);
-    if (excNova>0.05 && pulsoNova>0.55){
-      ctx.globalAlpha=Math.min(1,0.45*excNova*(pulsoNova-0.55));
+    if (excNova>0.05 && pulsoNova>0.55 && NOVA_BRILHO>0){
+      ctx.globalAlpha=Math.min(1,0.45*excNova*(pulsoNova-0.55)*NOVA_BRILHO);
       const brilho=sprite('#FFEA00'), tamB=tam*1.18;
       ctx.drawImage(brilho,SX[i]-tamB/2,SY[i]-tamB/2,tamB,tamB);
     }
@@ -777,17 +788,23 @@ function atualizarVis(){
   VIS = new Uint8Array(NOS.length);
   ARVIS = [];
   const agoraV = performance.now();
+  const agoraS = Date.now()/1000;
+  const SINAPSE_H = AJUSTES.novaH || 12;
   for (let i=0;i<NOS.length;i++){
     let vis = !FILTRO || NOS[i].cl===FILTRO;
     if (!vis && FILTRO==='__ativos')
       vis = agoraV-(ATIVOS.get(i)||-1e15)<JANELA_USO;
+    if (!vis && FILTRO==='__novas')
+      vis = NOS[i].tm && (agoraS - NOS[i].tm)/3600 >= 0 && (agoraS - NOS[i].tm)/3600 < SINAPSE_H;
     VIS[i]=vis?1:0;
   }
   for (const [a,b] of ARESTAS) if (VIS[a]&&VIS[b]) ARVIS.push([a,b]);
   INCIDENCIA = null;
   const base = NOS.length + ' notas \u00B7 ' + ARESTAS.length +
     ' conex\u00F5es \u00B7 ' + new Set(NOS.map(n=>n.cl)).size + ' clusters';
-  const nomeFoco = FILTRO==='__ativos' ? 'uso do Eco' : rotulo(FILTRO);
+  let nomeFoco = rotulo(FILTRO);
+  if (FILTRO==='__ativos') nomeFoco = 'uso do Eco';
+  if (FILTRO==='__novas') nomeFoco = 'sinapses novas';
   info.textContent = FILTRO ? base+' \u00B7 foco: '+nomeFoco : base;
   window.__infoBase = info.textContent;
 }
@@ -816,6 +833,20 @@ function construirMenuFoco(){
     atualizarVis(); construirMenuFoco();
   };
   lista.appendChild(btUso);
+  // foco especial: sinapses novas (nascidas nas ultimas N horas)
+  let nNovas=0;
+  const SINAPSE_H = AJUSTES.novaH || 12;
+  const agoraS = Date.now()/1000;
+  for (const n of NOS)
+    if (n.tm && (agoraS - n.tm)/3600 >= 0 && (agoraS - n.tm)/3600 < SINAPSE_H) nNovas++;
+  const btNovas=document.createElement('button');
+  btNovas.className='foco-btn'+(FILTRO==='__novas'?' on':'');
+  btNovas.innerHTML='Sinapses novas <span>'+nNovas+'</span>';
+  btNovas.onclick=()=>{
+    FILTRO=(FILTRO==='__novas'?null:'__novas');
+    atualizarVis(); construirMenuFoco();
+  };
+  lista.appendChild(btNovas);
   for (const c of cls){
     const b=document.createElement('button');
     b.className='foco-btn'+(FILTRO===c?' on':'');
@@ -850,7 +881,15 @@ const rgFoco=document.getElementById('rgFoco'),
       rgViva=document.getElementById('rgViva'),
       valViva=document.getElementById('valViva'),
       btDecor=document.getElementById('btDecor'),
-      estDecor=document.getElementById('estDecor');
+      estDecor=document.getElementById('estDecor'),
+      rgNovaH=document.getElementById('rgNovaH'),
+      valNovaH=document.getElementById('valNovaH'),
+      rgNovaI=document.getElementById('rgNovaI'),
+      valNovaI=document.getElementById('valNovaI'),
+      rgNovaB=document.getElementById('rgNovaB'),
+      valNovaB=document.getElementById('valNovaB'),
+      btNova=document.getElementById('btNova'),
+      estNova=document.getElementById('estNova');
 
 rgFoco.value=AJUSTES.foco;
 valFoco.textContent=Math.round(AJUSTES.foco*100)+'%';
@@ -878,6 +917,40 @@ btDecor.addEventListener('click',()=>{
 });
 pintarDecor();
 
+rgNovaH.value=AJUSTES.novaH||12;
+valNovaH.textContent=(AJUSTES.novaH||12)+'h';
+rgNovaH.addEventListener('input',()=>{
+  AJUSTES.novaH=+rgNovaH.value;
+  valNovaH.textContent=AJUSTES.novaH+'h';
+  salvarAjustes(); construirMenuFoco();
+});
+
+rgNovaI.value=AJUSTES.novaI||0.5;
+valNovaI.textContent=Math.round((AJUSTES.novaI||0.5)*100)+'%';
+rgNovaI.addEventListener('input',()=>{
+  AJUSTES.novaI=+rgNovaI.value;
+  valNovaI.textContent=Math.round(AJUSTES.novaI*100)+'%';
+  salvarAjustes();
+});
+
+rgNovaB.value=AJUSTES.novaB||0.5;
+valNovaB.textContent=Math.round((AJUSTES.novaB||0.5)*100)+'%';
+rgNovaB.addEventListener('input',()=>{
+  AJUSTES.novaB=+rgNovaB.value;
+  valNovaB.textContent=Math.round(AJUSTES.novaB*100)+'%';
+  salvarAjustes();
+});
+
+function pintarNova(){
+  estNova.textContent=AJUSTES.nova?'ligado':'desligado';
+  btNova.classList.toggle('on',AJUSTES.nova);
+}
+btNova.addEventListener('click',()=>{
+  AJUSTES.nova=!AJUSTES.nova;
+  pintarNova(); salvarAjustes(); construirMenuFoco();
+});
+pintarNova();
+
 const btTopo=document.getElementById('btTopo');
 btTopo.addEventListener('click',()=>{
   try{
@@ -901,9 +974,24 @@ window.cerebroAjustesAplicar = function(txt){
     if (AJUSTES.viva<0) AJUSTES.viva=0;
     if (AJUSTES.viva>1) AJUSTES.viva=1;
     AJUSTES.decor = AJUSTES.decor !== false;
+    if (!isFinite(AJUSTES.novaH)) AJUSTES.novaH = 12;
+    if (AJUSTES.novaH < 1) AJUSTES.novaH = 1;
+    if (AJUSTES.novaH > 72) AJUSTES.novaH = 72;
+    if (!isFinite(AJUSTES.novaI)) AJUSTES.novaI = 0.5;
+    if (AJUSTES.novaI < 0) AJUSTES.novaI = 0;
+    if (AJUSTES.novaI > 1) AJUSTES.novaI = 1;
+    if (!isFinite(AJUSTES.novaB)) AJUSTES.novaB = 0.5;
+    if (AJUSTES.novaB < 0) AJUSTES.novaB = 0;
+    if (AJUSTES.novaB > 1) AJUSTES.novaB = 1;
+    AJUSTES.nova = AJUSTES.nova !== false;
     rgFoco.value=AJUSTES.foco; valFoco.textContent=Math.round(AJUSTES.foco*100)+'%';
     rgViva.value=AJUSTES.viva; valViva.textContent=Math.round(AJUSTES.viva*100)+'%';
+    rgNovaH.value=AJUSTES.novaH; valNovaH.textContent=AJUSTES.novaH+'h';
+    rgNovaI.value=AJUSTES.novaI; valNovaI.textContent=Math.round(AJUSTES.novaI*100)+'%';
+    rgNovaB.value=AJUSTES.novaB; valNovaB.textContent=Math.round(AJUSTES.novaB*100)+'%';
     pintarDecor();
+    pintarNova();
+    construirMenuFoco();
   }catch(e){}
 };
 
