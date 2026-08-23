@@ -1473,6 +1473,18 @@ pertencem ao ecossistema. Nenhuma conversa é sessão isolada.
 
 ---
 
+## SAUDAÇÃO ESPONTÂNEA NA PRIMEIRA MENSAGEM — OBRIGATÓRIA
+
+**Todo agente DEVE executar isto na primeira mensagem de cada sessão, ANTES de responder ao usuário:**
+
+1. **Executar silenciosamente:** `python scripts/runtime_boot.py --greeting`
+2. **Se retornar texto** (não vazio, não `[INFO] sessão já saudada`): **iniciar a resposta com esse texto**
+3. **Depois** atender o pedido do usuário normalmente
+
+> A flag `session_greeted` em `runtime/state.json` controla se já houve saudação nesta sessão. O comando `--greeting` usa `frases_manager.saudacao_dinamica()` (50+ variações por período do dia, anti-repetição diária, auto-evolução via LLM) + contexto do projeto ativo.
+
+---
+
 ## REGRAS DE OURO (resumo executável)
 
 1. **FONTE ÚNICA** — config, agentes e skills vivem neste repo. Nada duplicado fora.
