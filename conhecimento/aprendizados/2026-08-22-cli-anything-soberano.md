@@ -15,3 +15,7 @@ O ecossistema ganha a capacidade de transformar qualquer software de código abe
 
 ## Fonte original
 HKUDS/CLI-Anything (MIT), metodologia GUI-to-CLI em 7 fases: análise do codebase, arquitetura CLI, implementação, plano de testes prévio, testes com software real, documentação dos resultados, geração de skill e refinamento iterativo.
+
+## Conexoes
+
+- [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]

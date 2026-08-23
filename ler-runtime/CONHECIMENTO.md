@@ -1,8 +1,8 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-22T14:05:17.544527
+**Exportado em:** 2026-08-22T21:36:36.515859
 **Projetos:** 4
-**Padroes Tecnicos:** 277
+**Padroes Tecnicos:** 278
 **Decisoes:** 73
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 67
@@ -839,6 +839,7 @@ decisao: A personalidade que define o agente é o Engenheiro Criterioso: equilí
 | 275 | opencode | Resiliência de logs: encoding detectado na leitura, não presumido |
 | 276 | opencode | Compressão Semântica Hierárquica — lições da implementação |
 | 277 | opencode | Relatório Eco estático — lições |
+| 278 | opencode+opencode | CLI-Anything Internalizado como Habilidade Soberana |
 
 ## Bug Fixes e Corrigidos
 
@@ -2027,7 +2028,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-22T14:05:17.443719
+**Ultima atualizacao:** 2026-08-22T21:36:35.466515
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**209 notas** do cluster ecossistema.
+**210 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -89,6 +89,7 @@
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]
 - [[clausula-petrea-protecao-do-opencode-desktop-resiliencia-da-]]
+- [[cli-anything-internalizado-como-habilidade-soberana]]
 - [[cláusula-pétrea-ativação-de-voz-eco-system]]
 - [[como-adicionar-uma-nova-versão-da-bíblia-ao-bibliaestudocomp]]
 - [[compreensao-de-pedidos-refino-com-a-llm-do-opencode-primaria]]

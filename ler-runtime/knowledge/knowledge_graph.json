@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-22T14:05:17.443719",
+  "last_updated": "2026-08-22T21:36:35.466515",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -1996,6 +1996,16 @@
       "description": "---\ntipo: padrao\ntags: [dashboard, relatorio, html-estatico, stdlib, hsc, integridade]\ndata: 2026-08-21\ncontexto: Usuário pediu visão tipo PowerBI das informações do eco sem peso adicional\ndecisao: Relatório HTML estático autocontido gerado sob demanda por script stdlib; zero processo residente, zer",
       "domain": "general",
       "extracted_at": "2026-08-21T23:26:51.206477"
+    },
+    {
+      "source": "opencode+opencode",
+      "title": "CLI-Anything Internalizado como Habilidade Soberana",
+      "action": "Instalação do projeto externo HKUDS/CLI-Anything no ecossistema, com diretriz do usuário de que toda capacidade externa deve ser assimilada e internalizada para garantir autossuficiência.",
+      "description": "---\ntipo: padrao\ntags: [cli-anything, soberania, internalizacao, opencode, habilidades]\ndata: 2026-08-22\ncontexto: Instalação do projeto externo HKUDS/CLI-Anything no ecossistema, com diretriz do usuário de que toda capacidade externa deve ser assimilada e internalizada para garantir autossuficiênci",
+      "domain": "general",
+      "extracted_at": "2026-08-22T21:35:04.511155",
+      "merged_count": 2,
+      "merged_at": "2026-08-22T21:36:33.207548"
     }
   ],
   "decisions": [

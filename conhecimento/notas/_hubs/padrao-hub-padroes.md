@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**272 notas** conectadas a este hub.
+**273 notas** conectadas a este hub.
 
 
 ## Notas
@@ -59,6 +59,7 @@
 - [[c-templates-sfinae-constexpr-e-o-custo-zero]]
 - [[cadeia-de-provedores-com-failover-inteligente]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
+- [[cli-anything-internalizado-como-habilidade-soberana]]
 - [[como-adicionar-uma-nova-versão-da-bíblia-ao-bibliaestudocomp]]
 - [[complete-build-pipeline-intelligence]]
 - [[compreensao-de-pedidos-refino-com-a-llm-do-opencode-primaria]]

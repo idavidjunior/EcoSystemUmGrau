@@ -1,5 +1,5 @@
 ---
-tags: [alm1911, app, banco, bibliaestudocompleta, opencodeopencode, padrao]
+tags: [app, banco, bibliaestudocompleta, fonte, opencodeopencode, padrao]
 aliases: [Como adicionar uma nova versão da Bíblia ao BibliaEstudoComp]
 date: 2026-08-22
 ---
