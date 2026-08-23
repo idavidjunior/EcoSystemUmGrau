@@ -11921,5 +11921,51 @@
     "access_count": 0,
     "created_at": "2026-08-22T23:11:43.631525",
     "last_accessed": "2026-08-22T23:11:43.631525"
+  },
+  {
+    "id": 467,
+    "kind": "erro",
+    "task": "Bug backslash no check de tracking apagava arquivo versionado",
+    "summary": "Invoke-Limpeza passava relpath com barra invertida ao git ls-files, que exige barra normal; check retornava falso e limpeza apagava arquivo TRACKED (velho.log do lab). Corrigido com -replace '\\\\','/' nos dois pontos. Evidencia: status D apos ciclo. Teste adversarial que pegou: item tracked sobreviveu apos fix.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "normal",
+      "exige",
+      "files",
+      "barra",
+      "git",
+      "invertida"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-22T23:14:34.626805",
+    "last_accessed": "2026-08-22T23:14:34.626805"
+  },
+  {
+    "id": 468,
+    "kind": "episodio",
+    "task": "ler-runtime perdeu .git local; resgatado e espelhado no GitHub",
+    "summary": ".git de ler-runtime sumiu 22/08 as 21:36 (antes das edicoes do gate; funcoes novas nem existiam). Causa externa nao identificada. Arvore intacta: backup zip runtime/backups/ler-runtime-resgate-20260822.zip + git init + commit inicial + gh repo create ler-runtime --private --push. Repo nunca existiu no GitHub antes.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "push",
+      "private",
+      "create",
+      "inicial",
+      "20260822",
+      "commit"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-22T23:15:02.073118",
+    "last_accessed": "2026-08-22T23:15:02.073118"
   }
 ]
