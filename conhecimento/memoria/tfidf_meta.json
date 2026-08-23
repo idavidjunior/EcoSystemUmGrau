@@ -455,6 +455,7 @@
     465,
     466,
     467,
+    468,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -1749,6 +1750,7 @@
     "padrao",
     "decisao",
     "erro",
+    "episodio",
     "nota",
     "nota",
     "nota",
@@ -3043,6 +3045,7 @@
     "implementado no widget_grafo.py (campo tm = mtime da nota no payload) e cerebro.html (logica sinapse_h=12): nos nascidos ha menos de 12 horas pulsam em amarelo forte (#ffd60a/#ffea00) com glow animado, depois assentam na cor normal. decisao de design: timestamp vai no payload e o relógio do frontend decide, entao o apagar das luzes aos 12h acontece sem rebuild e qualquer nota futura nasce piscando automaticamente. cache invalidado preservando _pos para primeira carga ja vir com tm. alta-confianca automaticamente piscando nasce futura qualquer rebuild padrao",
     "politicas no invoke-repocommit quando modo=auto: classificacao vivo x codigo das pendencias, preflight minimo (py_compile/node --check) barreira codigo quebrado com snapshot via stash create+store preservando working tree, debounce 30min apenas para estado vivo (codigo passa sempre), add-gitignorelixo antes do add impede lixo estrutural entrar no espelho, invoke-limpeza pos-push-ok com lista branca (pycache pyc log 7d temp 3d locks) pulando tracked por git ls-files, push_falhou nao limpa nada. modo manual intocado validado. alta-confianca nada limpa nao falhou files git decisao",
     "invoke-limpeza passava relpath com barra invertida ao git ls-files, que exige barra normal; check retornava falso e limpeza apagava arquivo tracked (velho.log do lab). corrigido com -replace '\\\\','/' nos dois pontos. evidencia: status d apos ciclo. teste adversarial que pegou: item tracked sobreviveu apos fix. alta-confianca normal exige files barra git invertida erro",
+    ".git de ler-runtime sumiu 22/08 as 21:36 (antes das edicoes do gate; funcoes novas nem existiam). causa externa nao identificada. arvore intacta: backup zip runtime/backups/ler-runtime-resgate-20260822.zip + git init + commit inicial + gh repo create ler-runtime --private --push. repo nunca existiu no github antes. alta-confianca push private create inicial 20260822 commit episodio",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -8068,12 +8071,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 104446,
-  "count": 1292,
-  "count_mem": 455,
+  "vocab_size": 104498,
+  "count": 1293,
+  "count_mem": 456,
   "count_notas": 837,
   "fingerprint": [
-    455,
+    456,
     [
       1787450878.8,
       1787450949.1,
