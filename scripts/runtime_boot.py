@@ -121,6 +121,95 @@ def check_data_integrity():
         return False, [('Integridade de dados', False, f'ERRO: {e}')]
 
 
+def check_mcp_servers():
+    """Verifica se servidores MCP essenciais respondem (initialize + tools/list)."""
+    import subprocess
+    import json
+
+    mcp_servers = [
+        ('compreensao-pedidos', 'mcp/nucleo/habilidades/compreensao-pedidos/server.py'),
+        ('observabilidade', 'mcp/nucleo/habilidades/observabilidade/server.py'),
+    ]
+
+    results = []
+    all_ok = True
+
+    for name, path in mcp_servers:
+        full_path = os.path.join(BASE, path)
+        if not os.path.exists(full_path):
+            results.append((f'MCP {name}', False, f'Arquivo não encontrado: {path}'))
+            all_ok = False
+            continue
+
+        # Test initialize
+        init_req = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}})
+        try:
+            r = subprocess.run(
+                [sys.executable, full_path],
+                input=init_req + "\n",
+                capture_output=True, text=True, timeout=10, cwd=BASE
+            )
+            if r.returncode != 0:
+                results.append((f'MCP {name} (initialize)', False, f'Exit {r.returncode}: {r.stderr[:100]}'))
+                all_ok = False
+                continue
+
+            # Parse response
+            resp_lines = r.stdout.strip().split('\n')
+            init_ok = False
+            for line in resp_lines:
+                try:
+                    resp = json.loads(line)
+                    if resp.get('id') == 1 and 'result' in resp:
+                        init_ok = True
+                        break
+                except json.JSONDecodeError:
+                    pass
+
+            if not init_ok:
+                results.append((f'MCP {name} (initialize)', False, 'Resposta inválida'))
+                all_ok = False
+                continue
+
+            # Test tools/list
+            tools_req = json.dumps({"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}})
+            r2 = subprocess.run(
+                [sys.executable, full_path],
+                input=tools_req + "\n",
+                capture_output=True, text=True, timeout=10, cwd=BASE
+            )
+            if r2.returncode != 0:
+                results.append((f'MCP {name} (tools/list)', False, f'Exit {r2.returncode}: {r2.stderr[:100]}'))
+                all_ok = False
+                continue
+
+            tools_ok = False
+            for line in r2.stdout.strip().split('\n'):
+                try:
+                    resp = json.loads(line)
+                    if resp.get('id') == 2 and 'result' in resp and 'tools' in resp['result']:
+                        tools_ok = True
+                        break
+                except json.JSONDecodeError:
+                    pass
+
+            if not tools_ok:
+                results.append((f'MCP {name} (tools/list)', False, 'Tools não listadas'))
+                all_ok = False
+                continue
+
+            results.append((f'MCP {name}', True, f'{len(resp["result"]["tools"])} tools'))
+
+        except subprocess.TimeoutExpired:
+            results.append((f'MCP {name}', False, 'Timeout'))
+            all_ok = False
+        except Exception as e:
+            results.append((f'MCP {name}', False, f'ERRO: {e}'))
+            all_ok = False
+
+    return all_ok, results
+
+
 def check_integrity():
     """Verifica integridade do ecossistema. Retorna (ok, detalhes)."""
     details = []
@@ -152,6 +241,10 @@ def check_integrity():
     except Exception as e:
         all_ok = False
         details.append(('Memory Engine (módulo)', False, f'ERRO: {e}'))
+    # MCP servers health check
+    mcp_ok, mcp_details = check_mcp_servers()
+    all_ok = all_ok and mcp_ok
+    details.extend(mcp_details)
     # módulos da camada 3?
     for mod in ('runtime_kernel', 'runtime_context', 'runtime_auditor', 'tool_orchestrator', 'llm_router', 'knowledge_graph', 'agent_council', 'mission_planner', 'security_engine', 'audit_engine', 'learning_engine'):
         try:
@@ -186,6 +279,16 @@ def load_runtime_state():
     """Restaura o estado persistente do Runtime."""
     from runtime_state import load_state
     return load_state()
+
+
+def generate_session_greeting():
+    """Gera saudação espontânea para a sessão atual (usado pelo agente na primeira mensagem)."""
+    from runtime_state import load_state, generate_spontaneous_greeting, mark_session_greeted
+    state = load_state()
+    greeting = generate_spontaneous_greeting(state)
+    if greeting:
+        mark_session_greeted()
+    return greeting
 
 
 def render_report(state, integrity_ok, integrity_details, memories, prefs):
@@ -274,7 +377,14 @@ def main():
     parser.add_argument('--status', action='store_true', help='só status, sem carregar memória')
     parser.add_argument('--check', action='store_true', help='só verificação de integridade')
     parser.add_argument('--report', action='store_true', help='relatório final compacto')
+    parser.add_argument('--greeting', action='store_true', help='gera saudação espontânea da sessão (para agente na primeira mensagem)')
     args = parser.parse_args()
+
+    if args.greeting:
+        greeting = generate_session_greeting()
+        if greeting:
+            print(greeting)
+        return 0
 
     if args.check:
         ok, details = check_integrity()

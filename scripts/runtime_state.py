@@ -224,67 +224,95 @@ def render_status(state):
     return '\n'.join(lines)
 
 
-GREETING_TEMPLATES = [
-    "EcoSystem no ar. {projeto} ativo — build OK no {device}. {pendencias} pendências técnicas carregadas.",
-    "Sistema operante. {projeto} rodando — {contexto}. Gaps: {gaps}.",
-    "Runtime restaurado. Memória: {mem_count} entradas, última tarefa: {last_task}. Pendências: {pendencias} abertas.",
-    "EcoSystemUmGrau ativo. {projeto} v{versao} no {device}. Checkpoint: {checkpoint}. {pendencias} itens pendentes.",
-]
+def _import_frases_manager():
+    """Importa frases_manager dinamicamente."""
+    import sys
+    import os
+    scripts_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'scripts')
+    if scripts_dir not in sys.path:
+        sys.path.insert(0, scripts_dir)
+    import frases_manager
+    return frases_manager
 
 
 def generate_spontaneous_greeting(state):
-    """Gera saudação espontânea curta (3-4 linhas) variando o tom."""
-    import random
-    
+    """Gera saudação espontânea curta (3-4 linhas) estilo Jarvis — contextual, variada, anti-repetição."""
     if state.get('session_greeted', False):
         return None
     
-    projeto = state.get('active_project', 'EcoSystem')
-    dispositivo = 'MIUI'  # poderia vir do operational_context
-    pendencias_list = [p for p in state.get('pending', []) if not p.get('done')]
-    pendencias_count = len(pendencias_list)
-    
-    # Extrair gaps principais
-    gaps = []
-    for p in pendencias_list[:3]:
-        texto = p.get('text', '')
-        if 'SQLite' in texto:
-            gaps.append('SQLite incremental')
-        elif 'data' in texto.lower() or 'incremental' in texto.lower():
-            gaps.append('scan por data')
-        elif 'export' in texto.lower() or 'csv' in texto.lower() or 'json' in texto.lower():
-            gaps.append('exportação')
-        elif 'widget' in texto.lower():
-            gaps.append('widget')
-        elif 'shizuku' in texto.lower() or 'root' in texto.lower():
-            gaps.append('Shizuku/root')
-    gaps_str = ', '.join(gaps) if gaps else 'nenhum crítico'
-    
-    mem_count = len(state.get('loaded_memory', []))
-    last_task = state.get('last_task', 'inicialização')[:50]
-    checkpoint = state.get('last_checkpoint', 'recente')
-    versao = '2.1'  # poderia vir do contexto
-    
-    contexto = state.get('operational_context', '')
-    if 'scan' in contexto.lower():
-        scan_info = 'scan ativo'
-    else:
-        scan_info = 'pronto'
-    
-    template = random.choice(GREETING_TEMPLATES)
-    greeting = template.format(
-        projeto=projeto,
-        device=dispositivo,
-        pendencias=pendencias_count,
-        contexto=scan_info,
-        gaps=gaps_str,
-        mem_count=mem_count,
-        last_task=last_task,
-        checkpoint=checkpoint,
-        versao=versao,
-    )
-    
-    return greeting
+    try:
+        fm = _import_frases_manager()
+        saudacao = fm.saudacao_dinamica()
+        # Adicionar contexto leve do estado do EcoSystem
+        projeto = state.get('active_project', 'EcoSystem')
+        pendencias_list = [p for p in state.get('pending', []) if not p.get('done')]
+        pendencias_count = len(pendencias_list)
+        
+        # Contexto extra: projeto + pendências
+        contexto_extra = f" {projeto} ativo"
+        if pendencias_count:
+            contexto_extra += f" — {pendencias_count} pendências"
+        
+        # Se a saudação já tem ponto final, adicionar contexto depois
+        if saudacao.endswith('.'):
+            saudacao = saudacao[:-1] + contexto_extra + '.'
+        else:
+            saudacao = saudacao + contexto_extra + '.'
+        
+        return saudacao
+    except Exception as e:
+        # Fallback para templates simples se frases_manager falhar
+        import random
+        GREETING_TEMPLATES = [
+            "EcoSystem no ar. {projeto} ativo — build OK no {device}. {pendencias} pendências técnicas carregadas.",
+            "Sistema operante. {projeto} rodando — {contexto}. Gaps: {gaps}.",
+            "Runtime restaurado. Memória: {mem_count} entradas, última tarefa: {last_task}. Pendências: {pendencias} abertas.",
+            "EcoSystemUmGrau ativo. {projeto} v{versao} no {device}. Checkpoint: {checkpoint}. {pendencias} itens pendentes.",
+        ]
+        
+        projeto = state.get('active_project', 'EcoSystem')
+        dispositivo = 'MIUI'
+        pendencias_list = [p for p in state.get('pending', []) if not p.get('done')]
+        pendencias_count = len(pendencias_list)
+        
+        gaps = []
+        for p in pendencias_list[:3]:
+            texto = p.get('text', '')
+            if 'SQLite' in texto:
+                gaps.append('SQLite incremental')
+            elif 'data' in texto.lower() or 'incremental' in texto.lower():
+                gaps.append('scan por data')
+            elif 'export' in texto.lower() or 'csv' in texto.lower() or 'json' in texto.lower():
+                gaps.append('exportação')
+            elif 'widget' in texto.lower():
+                gaps.append('widget')
+            elif 'shizuku' in texto.lower() or 'root' in texto.lower():
+                gaps.append('Shizuku/root')
+        gaps_str = ', '.join(gaps) if gaps else 'nenhum crítico'
+        
+        mem_count = len(state.get('loaded_memory', []))
+        last_task = state.get('last_task', 'inicialização')[:50]
+        checkpoint = state.get('last_checkpoint', 'recente')
+        versao = '2.1'
+        
+        contexto = state.get('operational_context', '')
+        if 'scan' in contexto.lower():
+            scan_info = 'scan ativo'
+        else:
+            scan_info = 'pronto'
+        
+        template = random.choice(GREETING_TEMPLATES)
+        return template.format(
+            projeto=projeto,
+            device=dispositivo,
+            pendencias=pendencias_count,
+            contexto=scan_info,
+            gaps=gaps_str,
+            mem_count=mem_count,
+            last_task=last_task,
+            checkpoint=checkpoint,
+            versao=versao,
+        )
 
 
 def mark_session_greeted():
