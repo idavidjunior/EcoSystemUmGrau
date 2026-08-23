@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**273 notas** conectadas a este hub.
+**274 notas** conectadas a este hub.
 
 
 ## Notas
@@ -89,6 +89,7 @@
 - [[dual-mode-dialog-pattern]]
 - [[dublagem-versão-sincronização-labial-tamanho-da-fala-e-natur]]
 - [[eco-agente-e-comando-global]]
+- [[ecow-e-ecow-abrirfocar-o-cerebro-vivo]]
 - [[edittext-inline-editing-toggle]]
 - [[elementos-culturalmente-intraduzíveis-humor-trocadilhos-prov]]
 - [[encoding-utf-8-explicito-em-python-no-windows]]

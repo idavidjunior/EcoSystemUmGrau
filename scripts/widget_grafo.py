@@ -562,6 +562,16 @@ def main():
 
     if not instancia_unica():
         print("Cerebro Vivo ja esta rodando.", flush=True)
+        try:
+            import ctypes
+            hwnd = ctypes.windll.user32.FindWindowW(None, "Cerebro Vivo")
+            if hwnd:
+                u32 = ctypes.windll.user32
+                u32.ShowWindow(hwnd, 9)          # SW_RESTORE: desfaz minimizada
+                u32.SetForegroundWindow(hwnd)    # traz para frente
+                print("janela existente trazida para frente.", flush=True)
+        except Exception as e:
+            print(f"foco: {type(e).__name__}: {e}", flush=True)
         return
 
     try:

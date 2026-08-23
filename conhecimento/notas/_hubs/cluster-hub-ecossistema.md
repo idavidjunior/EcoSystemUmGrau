@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**210 notas** do cluster ecossistema.
+**212 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -111,6 +111,7 @@
 - [[decisão-arquitetura-jarvis-app]]
 - [[desativar-bridge-android]]
 - [[eco-agente-e-comando-global]]
+- [[ecow-e-ecow-abrirfocar-o-cerebro-vivo]]
 - [[engenheiro-criterioso]]
 - [[ensureserve-spawns-opencode-serve-without-passing-env-contex]]
 - [[errado]]
@@ -152,6 +153,7 @@
 - [[mcp-server-handshake-obrigatorio]]
 - [[mcp-server-nao-respondia-a-toolscall]]
 - [[mcp-server-nao-respondia-nenhum-comando]]
+- [[modo-auto-gate]]
 - [[motor-de-criticalidade-auto-organizada-e-avalanches-neurais]]
 - [[mudar-config-mcp-de-objeto-para-array-no-opencodejson]]
 - [[mvp-streamumgrau-flutter-supabase]]

@@ -11967,5 +11967,74 @@
     "access_count": 0,
     "created_at": "2026-08-22T23:15:02.073118",
     "last_accessed": "2026-08-22T23:15:02.073118"
+  },
+  {
+    "id": 469,
+    "kind": "erro",
+    "task": "Bug backslash no check de tracking apagava arquivo versionado",
+    "summary": "Invoke-Limpeza passava relpath com barra invertida ao git ls-files, que exige barra normal; check retornava falso e limpeza apagava arquivo TRACKED (velho.log do lab). Corrigido com replace nos dois pontos. Teste adversarial confirmou: item tracked sobrevive apos fix.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "normal",
+      "exige",
+      "files",
+      "barra",
+      "git",
+      "invertida"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-22T23:21:46.309965",
+    "last_accessed": "2026-08-22T23:21:46.309965"
+  },
+  {
+    "id": 470,
+    "kind": "episodio",
+    "task": "ler-runtime perdeu .git; resgatado e espelhado",
+    "summary": "Pasta .git de ler-runtime sumiu 22/08 as 21h36, antes das edicoes do gate (funcoes novas nem existiam), causa externa nao identificada. Arvore intacta: zip em runtime/backups/ler-runtime-resgate-20260822.zip, git init, commit inicial, gh repo create ler-runtime --private --push. O repo nunca tinha existido no GitHub.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "identificada",
+      "nao",
+      "externa",
+      "causa",
+      "existiam",
+      "novas"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-22T23:22:40.261786",
+    "last_accessed": "2026-08-22T23:22:40.261786"
+  },
+  {
+    "id": 471,
+    "kind": "padrao",
+    "task": "@ecow e /ecow criados",
+    "summary": "Novo comando/agente EcoW: abre widget Cerebro Vivo; se ja aberto, foca a janela. Implementado em 3 camadas: widget_grafo.py agora foca janela existente via ctypes FindWindowW+SetForegroundWindow quando instancia_unica detecta rodando; scripts/ecow.bat launcher fino (pythonw); comando 'ecow' no opencode.jsonc (repo+deployed) delegando ao agente config/agents/ecow.md. Preflight passou (1 timeout transitorio de MCP na 1a rodada). Testes: nenhum processo duplicado, foco confirmado (hwnd valido, SetForegroundWindow=1).",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "rodando",
+      "detecta",
+      "unica",
+      "instancia",
+      "setforegroundwindow",
+      "findwindoww"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-22T23:35:23.266119",
+    "last_accessed": "2026-08-22T23:35:23.266119"
   }
 ]

@@ -117,6 +117,11 @@
       "description": "Controle: abre janela flutuante visual do Jarvis (voz ON/OFF, parar fala, microfone ON/OFF)",
       "template": "!`\"scripts/controle.bat\"` (abre janela flutuante de controle da voz: voz ON/OFF, parar fala, microfone)"
     },
+    "ecow": {
+      "description": "EcoW: abre o widget Cerebro Vivo (grafo 3D); se ja estiver aberto, traz a janela para frente",
+      "agent": "ecow",
+      "template": "Execute o protocolo @ecow seguindo o agente ecow (responda sempre em pt-BR, curto e direto). Comando recebido: $ARGUMENTS"
+    },
     "ecocell": {
       "description": "EcoCell: abre espelho de tela do celular via scrcpy",
       "agent": "ecocell",

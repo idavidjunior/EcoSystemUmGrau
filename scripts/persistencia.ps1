@@ -194,7 +194,9 @@ function Invoke-Limpeza {
                     $sz = (Get-ChildItem $d.FullName -Recurse -File -ErrorAction SilentlyContinue | Measure-Object Length -Sum).Sum
                     Remove-Item -LiteralPath $d.FullName -Recurse -Force -ErrorAction Stop
                     $apagados++; if ($sz) { $bytes += [long]$sz }
-                } catch { Write-Log "LIMPEZA: falha em $($d.FullName): $($_.Exception.Message)" }
+                } catch {
+                    if ($_.Exception.Message -notmatch 'não existe|does not exist|n\u00e3o existe') { Write-Log "LIMPEZA: falha em $($d.FullName): $($_.Exception.Message)" }
+                }
             }
         } else {
             $alvos = Get-ChildItem $raizAlvo -Recurse -File -Include $it.padrao -ErrorAction SilentlyContinue
@@ -206,7 +208,9 @@ function Invoke-Limpeza {
                 try {
                     Remove-Item -LiteralPath $f.FullName -Force -ErrorAction Stop
                     $apagados++; $bytes += [long]$f.Length
-                } catch { Write-Log "LIMPEZA: falha em $($f.FullName): $($_.Exception.Message)" }
+                } catch {
+                    if ($_.Exception.Message -notmatch 'não existe|does not exist') { Write-Log "LIMPEZA: falha em $($f.FullName): $($_.Exception.Message)" }
+                }
             }
         }
     }
@@ -260,7 +264,12 @@ function Invoke-RepoCommit {
                 $falhas = Test-PreFlightCodigo -RepoPath $path -Arquivos $alvos
                 if ($falhas.Count -gt 0) {
                     # stash create ignora untracked: stage temporario para o snapshot pegar tudo
-                    git add -A 2>&1 | Out-Null
+        git add -A 2>&1 | Out-Null
+        if ($LASTEXITCODE -ne 0) {
+            Write-Log "ADD ${RepoKey}: FALHOU (index.lock ou indice ocupado); ciclo abortado sem perda"
+            Pop-Location; Remove-Item $lock -Force -ErrorAction SilentlyContinue
+            return 'ADD_FALHOU'
+        }
                     foreach ($ex in @($cfg.excluir)) { if ($ex) { git reset -q -- "$ex" 2>&1 | Out-Null } }
                     $snap = git stash create "[auto-wip] codigo quebrado: $($falhas -join ', ')"
                     git reset -q 2>&1 | Out-Null

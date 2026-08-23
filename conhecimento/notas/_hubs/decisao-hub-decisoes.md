@@ -1,6 +1,6 @@
 # Decisoes
 
-**69 notas** conectadas a este hub.
+**70 notas** conectadas a este hub.
 
 
 ## Notas
@@ -36,6 +36,7 @@
 - [[ler-usa-python-puro-stdlib-only-zero-dependencias-externas-i]]
 - [[merge-by-name-if-name-matches-existing-item-increment-quanti]]
 - [[metadata-busca-em-multi-fontes-acoustid-itunes-br-musicbrain]]
+- [[modo-auto-gate]]
 - [[motor-de-criticalidade-auto-organizada-e-avalanches-neurais]]
 - [[mudar-config-mcp-de-objeto-para-array-no-opencodejson]]
 - [[organizar-desktopcodigos-como-raiz-unica-de-projetos]]
