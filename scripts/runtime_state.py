@@ -43,6 +43,7 @@ DEFAULT_STATE = {
     'pending': [],
     'history': [],
     'last_checkpoint': None,
+    'session_greeted': False,
 }
 
 
@@ -223,6 +224,85 @@ def render_status(state):
     return '\n'.join(lines)
 
 
+GREETING_TEMPLATES = [
+    "EcoSystem no ar. {projeto} ativo — build OK no {device}. {pendencias} pendências técnicas carregadas.",
+    "Sistema operante. {projeto} rodando — {contexto}. Gaps: {gaps}.",
+    "Runtime restaurado. Memória: {mem_count} entradas, última tarefa: {last_task}. Pendências: {pendencias} abertas.",
+    "EcoSystemUmGrau ativo. {projeto} v{versao} no {device}. Checkpoint: {checkpoint}. {pendencias} itens pendentes.",
+]
+
+
+def generate_spontaneous_greeting(state):
+    """Gera saudação espontânea curta (3-4 linhas) variando o tom."""
+    import random
+    
+    if state.get('session_greeted', False):
+        return None
+    
+    projeto = state.get('active_project', 'EcoSystem')
+    dispositivo = 'MIUI'  # poderia vir do operational_context
+    pendencias_list = [p for p in state.get('pending', []) if not p.get('done')]
+    pendencias_count = len(pendencias_list)
+    
+    # Extrair gaps principais
+    gaps = []
+    for p in pendencias_list[:3]:
+        texto = p.get('text', '')
+        if 'SQLite' in texto:
+            gaps.append('SQLite incremental')
+        elif 'data' in texto.lower() or 'incremental' in texto.lower():
+            gaps.append('scan por data')
+        elif 'export' in texto.lower() or 'csv' in texto.lower() or 'json' in texto.lower():
+            gaps.append('exportação')
+        elif 'widget' in texto.lower():
+            gaps.append('widget')
+        elif 'shizuku' in texto.lower() or 'root' in texto.lower():
+            gaps.append('Shizuku/root')
+    gaps_str = ', '.join(gaps) if gaps else 'nenhum crítico'
+    
+    mem_count = len(state.get('loaded_memory', []))
+    last_task = state.get('last_task', 'inicialização')[:50]
+    checkpoint = state.get('last_checkpoint', 'recente')
+    versao = '2.1'  # poderia vir do contexto
+    
+    contexto = state.get('operational_context', '')
+    if 'scan' in contexto.lower():
+        scan_info = 'scan ativo'
+    else:
+        scan_info = 'pronto'
+    
+    template = random.choice(GREETING_TEMPLATES)
+    greeting = template.format(
+        projeto=projeto,
+        device=dispositivo,
+        pendencias=pendencias_count,
+        contexto=scan_info,
+        gaps=gaps_str,
+        mem_count=mem_count,
+        last_task=last_task,
+        checkpoint=checkpoint,
+        versao=versao,
+    )
+    
+    return greeting
+
+
+def mark_session_greeted():
+    """Marca a sessão como já saudada."""
+    state = load_state()
+    state['session_greeted'] = True
+    save_state(state)
+    return '[OK] sessão marcada como saudada'
+
+
+def reset_session_greeting():
+    """Reseta a saudação para nova sessão (útil para testes)."""
+    state = load_state()
+    state['session_greeted'] = False
+    save_state(state)
+    return '[OK] saudação de sessão resetada'
+
+
 def main():
     parser = argparse.ArgumentParser(description='Runtime State — estado persistente do Ecossistema')
     sub = parser.add_subparsers(dest='cmd')
@@ -246,6 +326,8 @@ def main():
     p_list = sub.add_parser('list')
     p_note = sub.add_parser('note')
     p_note.add_argument('text', nargs='+')
+    sub.add_parser('greeting')
+    sub.add_parser('reset-greeting')
 
     args = parser.parse_args()
     cmd = args.cmd or 'status'
@@ -273,6 +355,16 @@ def main():
         print('\n'.join(list_checkpoints()) or '(nenhum checkpoint)')
     elif cmd == 'note':
         print(add_note(' '.join(args.text)))
+    elif cmd == 'greeting':
+        state = load_state()
+        greeting = generate_spontaneous_greeting(state)
+        if greeting:
+            print(greeting)
+            mark_session_greeted()
+        else:
+            print('[INFO] sessão já saudada')
+    elif cmd == 'reset-greeting':
+        print(reset_session_greeting())
     elif cmd == 'reset':
         print(reset())
     return 0
