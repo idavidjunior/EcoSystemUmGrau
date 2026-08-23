@@ -60,7 +60,7 @@
    "mp3player": 1
   },
   "github": {
-   "ecossistema": 2
+   "ecossistema": 1
   },
   "copilot": {
    "ecossistema": 1
@@ -256,9 +256,6 @@
   "antigas": {
    "ler": 1
   },
-  "remover": {
-   "ler": 1
-  },
   "split": {
    "mp3player": 1
   },
@@ -312,7 +309,7 @@
    "ler": 1
   },
   "projetos": {
-   "ecossistema": 2
+   "ecossistema": 3
   },
   "constantemente": {
    "ecossistema": 1
@@ -320,12 +317,13 @@
   "descoberta": {
    "ecossistema": 1
   },
-  "automacao": {
-   "ecossistema": 1
-  },
   "opencode": {
    "ecossistema": 130,
    "ler": 27
+  },
+  "auto": {
+   "ecossistema": 1,
+   "android": 1
   },
   "atingido": {
    "ler": 2
@@ -404,13 +402,13 @@
    "mp3player": 1
   },
   "handler": {
-   "mp3player": 1
+   "mp3player": 2
   },
   "polled": {
    "mp3player": 1
   },
-  "msg": {
-   "ecossistema": 1
+  "check": {
+   "ecossistema": 2
   },
   "mensagem": {
    "ecossistema": 1
@@ -433,8 +431,9 @@
   "input": {
    "navegacao": 2
   },
-  "crash": {
-   "ler": 2
+  "ntfs": {
+   "ler": 1,
+   "cognicao": 1
   },
   "meio": {
    "ler": 1,
@@ -443,7 +442,7 @@
   "multiplier": {
    "mp3player": 1
   },
-  "software": {
+  "master": {
    "mp3player": 1
   },
   "sent": {
@@ -483,7 +482,7 @@
    "ecossistema": 1,
    "cognicao": 2,
    "android": 2,
-   "navegacao": 2
+   "navegacao": 3
   },
   "verified": {
    "ler": 1
@@ -524,8 +523,7 @@
    "mp3player": 1
   },
   "return": {
-   "mp3player": 1,
-   "ecossistema": 1
+   "mp3player": 1
   },
   "loop": {
    "mp3player": 1,
@@ -593,7 +591,7 @@
    "ecossistema": 1
   },
   "vivo": {
-   "cognicao": 2,
+   "cognicao": 1,
    "ecossistema": 3
   },
   "zoom": {
@@ -601,7 +599,7 @@
    "navegacao": 1,
    "ecossistema": 2
   },
-  "nenhum": {
+  "fisica": {
    "cognicao": 2
   },
   "fuso": {
@@ -610,16 +608,10 @@
   "horrio": {
    "ecossistema": 1
   },
-  "100": {
-   "ecossistema": 1
-  },
   "config": {
    "ecossistema": 6
   },
   "unificada": {
-   "ecossistema": 1
-  },
-  "etapa": {
    "ecossistema": 1
   },
   "desugardebugfiledependencies": {
@@ -676,6 +668,10 @@
   "melodia": {
    "cognicao": 1
   },
+  "conhecimento": {
+   "cognicao": 2,
+   "ecossistema": 5
+  },
   "chega": {
    "cognicao": 1
   },
@@ -691,9 +687,6 @@
    "cognicao": 1
   },
   "vis": {
-   "cognicao": 1
-  },
-  "fisica": {
    "cognicao": 1
   },
   "processo": {
@@ -748,6 +741,9 @@
   "bblia": {
    "cognicao": 1
   },
+  "bblicos": {
+   "cognicao": 1
+  },
   "estudo": {
    "cognicao": 1
   },
@@ -797,10 +793,6 @@
    "cognicao": 1,
    "ecossistema": 1
   },
-  "conhecimento": {
-   "cognicao": 1,
-   "ecossistema": 5
-  },
   "existente": {
    "cognicao": 1,
    "android": 1
@@ -808,7 +800,7 @@
   "metacognicao": {
    "cognicao": 1
   },
-  "find": {
+  "dispositivo": {
    "cognicao": 1
   },
   "ativo": {
@@ -861,6 +853,9 @@
   "proxima": {
    "cognicao": 1
   },
+  "nenhum": {
+   "cognicao": 1
+  },
   "estagnacao": {
    "cognicao": 1
   },
@@ -868,8 +863,7 @@
    "cognicao": 1
   },
   "progresso": {
-   "cognicao": 1,
-   "ecossistema": 1
+   "cognicao": 1
   },
   "preserved": {
    "cognicao": 1
@@ -1060,7 +1054,7 @@
   "errada": {
    "cognicao": 1
   },
-  "retornar": {
+  "lexical": {
    "cognicao": 1
   },
   "consultar": {
@@ -1082,9 +1076,6 @@
    "cognicao": 1
   },
   "anomalias": {
-   "cognicao": 1
-  },
-  "ntfs": {
    "cognicao": 1
   },
   "sistema": {
@@ -1141,13 +1132,12 @@
    "cognicao": 1,
    "navegacao": 1
   },
-  "aplicada": {
-   "cognicao": 1,
-   "ecossistema": 1
-  },
   "momento": {
    "cognicao": 1,
    "ler": 1
+  },
+  "violado": {
+   "cognicao": 1
   },
   "reportado": {
    "cognicao": 1
@@ -1225,9 +1215,11 @@
   "ind": {
    "ecossistema": 1
   },
+  "servers": {
+   "ecossistema": 1
+  },
   "dados": {
-   "ecossistema": 1,
-   "cognicao": 1
+   "ecossistema": 1
   },
   "snapshot": {
    "ecossistema": 1
@@ -1290,10 +1282,10 @@
   "estruturado": {
    "ecossistema": 1
   },
-  "conversa": {
+  "reutilizado": {
    "ecossistema": 1
   },
-  "tarefa": {
+  "conversa": {
    "ecossistema": 1
   },
   "validao": {
@@ -1303,6 +1295,9 @@
    "ecossistema": 1
   },
   "prvia": {
+   "ecossistema": 1
+  },
+  "aplicada": {
    "ecossistema": 1
   },
   "algumas": {
@@ -1327,6 +1322,9 @@
    "ecossistema": 1
   },
   "curtas": {
+   "ecossistema": 1
+  },
+  "intil": {
    "ecossistema": 1
   },
   "redirect": {
@@ -1401,6 +1399,9 @@
   "viavel": {
    "ler": 1
   },
+  "crash": {
+   "ler": 1
+  },
   "lerarquitetura": {
    "ler": 6
   },
@@ -1449,14 +1450,14 @@
   "falando": {
    "ecossistema": 1
   },
+  "inicia": {
+   "ecossistema": 1
+  },
   "duplicacao": {
    "ecossistema": 1
   },
   "local": {
    "ecossistema": 3
-  },
-  "vigilante": {
-   "ecossistema": 2
   },
   "characters": {
    "android": 1
@@ -1526,18 +1527,15 @@
    "ecossistema": 2,
    "cognicao": 1
   },
-  "sesso": {
+  "strings": {
    "ecossistema": 1
   },
-  "strings": {
+  "linha": {
    "ecossistema": 1
   },
   "load": {
    "android": 1,
    "navegacao": 1
-  },
-  "auto": {
-   "android": 1
   },
   "forms": {
    "android": 1
@@ -1665,9 +1663,6 @@
    "ecossistema": 2,
    "cognicao": 1
   },
-  "raiz": {
-   "ecossistema": 1
-  },
   "workspaceorganization": {
    "ecossistema": 3
   },
@@ -1728,7 +1723,7 @@
    "cognicao": 1
   },
   "sao": {
-   "navegacao": 4,
+   "navegacao": 3,
    "cognicao": 1,
    "ecossistema": 1
   },
@@ -1888,8 +1883,9 @@
   "preta": {
    "ecossistema": 1
   },
-  "eliminando": {
-   "ecossistema": 1
+  "especializado": {
+   "ecossistema": 1,
+   "navegacao": 1
   },
   "absolutas": {
    "navegacao": 1
@@ -1956,13 +1952,13 @@
   "trees": {
    "android": 1
   },
+  "directory": {
+   "android": 1
+  },
   "toolchain": {
    "android": 1
   },
   "requirement": {
-   "android": 1
-  },
-  "historical": {
    "android": 1
   },
   "calculation": {
@@ -2034,6 +2030,9 @@
   "consistentes": {
    "cognicao": 1,
    "navegacao": 1
+  },
+  "invalide": {
+   "cognicao": 1
   },
   "utilizavel": {
    "cognicao": 1
@@ -2206,11 +2205,10 @@
   "resultado": {
    "cognicao": 1
   },
-  "usuario": {
-   "navegacao": 1,
-   "ecossistema": 1
-  },
   "repete": {
+   "navegacao": 1
+  },
+  "loaded": {
    "navegacao": 1
   },
   "faz": {
@@ -2282,16 +2280,13 @@
   "assume": {
    "cognicao": 1
   },
-  "operacao": {
-   "cognicao": 1
-  },
   "timeout": {
    "cognicao": 1
   },
   "10s": {
    "cognicao": 1
   },
-  "custa": {
+  "operacao": {
    "cognicao": 1
   },
   "causa": {
@@ -2325,6 +2320,9 @@
   },
   "detecta": {
    "ecossistema": 2
+  },
+  "vigilante": {
+   "ecossistema": 1
   },
   "deteco": {
    "ecossistema": 2
@@ -2405,6 +2403,9 @@
    "ecossistema": 1
   },
   "usuari": {
+   "ecossistema": 1
+  },
+  "usuario": {
    "ecossistema": 1
   },
   "enfati": {
@@ -2543,9 +2544,6 @@
   "plataforma": {
    "navegacao": 1
   },
-  "especializado": {
-   "navegacao": 1
-  },
   "multi": {
    "navegacao": 1
   },
@@ -2646,6 +2644,9 @@
   },
   "class": {
    "navegacao": 1
+  },
+  "audioprocessor": {
+   "mp3player": 1
   },
   "runtime": {
    "ecossistema": 1
@@ -2776,7 +2777,7 @@
   "bibliaestudocompleta": {
    "ecossistema": 1
   },
-  "alm1911": {
+  "tradues": {
    "ecossistema": 1
   },
   "intelligence": {
@@ -2791,13 +2792,16 @@
   "llmopencode": {
    "ecossistema": 1
   },
-  "validator": {
+  "fases": {
    "ecossistema": 1
   },
   "alucinacao": {
    "ecossistema": 1
   },
   "extracao": {
+   "ecossistema": 1
+  },
+  "validator": {
    "ecossistema": 1
   },
   "30s": {
@@ -2957,6 +2961,9 @@
   "renderer": {
    "ecossistema": 1
   },
+  "build": {
+   "ecossistema": 1
+  },
   "manutencao": {
    "ecossistema": 3
   },
@@ -3002,13 +3009,13 @@
   "cp1252": {
    "ecossistema": 1
   },
-  "overlap": {
-   "mp3player": 1
-  },
   "album": {
    "mp3player": 1
   },
   "chars": {
+   "mp3player": 1
+  },
+  "match": {
    "mp3player": 1
   },
   "words": {
@@ -3132,10 +3139,10 @@
   "pula": {
    "navegacao": 1
   },
-  "eco": {
+  "fontes": {
    "ecossistema": 1
   },
-  "fontes": {
+  "protocolos": {
    "ecossistema": 1
   },
   "dessincronizados": {
@@ -3234,9 +3241,6 @@
   "annotation": {
    "mp3player": 1
   },
-  "unstableapi": {
-   "mp3player": 1
-  },
   "listener": {
    "mp3player": 1
   },
@@ -3315,6 +3319,9 @@
   "120s": {
    "ecossistema": 1
   },
+  "primary": {
+   "ecossistema": 1
+  },
   "encapsulam": {
    "navegacao": 1
   },
@@ -3331,9 +3338,6 @@
    "ecossistema": 1
   },
   "event": {
-   "navegacao": 1
-  },
-  "pagina": {
    "navegacao": 1
   },
   "invalidando": {
@@ -3375,10 +3379,10 @@
   "estrelas": {
    "ecossistema": 1
   },
-  "referncia": {
+  "externa": {
    "ecossistema": 1
   },
-  "externa": {
+  "acumulou": {
    "ecossistema": 1
   },
   "sacrificar": {
@@ -3528,8 +3532,8 @@
    "250ms": 1,
    "handler": 1,
    "polled": 1,
+   "master": 1,
    "multiplier": 1,
-   "software": 1,
    "sent": 1,
    "never": 2,
    "bands": 1,
@@ -3568,6 +3572,7 @@
    "metadata": 4,
    "pipeline": 1,
    "rescue": 4,
+   "audioprocessor": 1,
    "mp3player": 3
   },
   "store": {
@@ -3664,10 +3669,7 @@
    "legitimo": 1,
    "sessaolimpezaauth": 1,
    "oauth": 1,
-   "copilot": 1,
-   "failed": 1,
-   "nome": 1,
-   "ind": 1
+   "copilot": 1
   },
   "legitimo": {
    "github": 1,
@@ -3782,7 +3784,7 @@
    "stock": 1,
    "misteriosas": 1,
    "falhas": 1,
-   "nao": 2,
+   "nao": 3,
    "arvore": 1,
    "acessibilidade": 1,
    "expoem": 1,
@@ -3799,7 +3801,6 @@
    "encapsulam": 1,
    "manualmente": 1,
    "event": 1,
-   "pagina": 1,
    "load": 1,
    "dom": 2,
    "casos": 1,
@@ -3886,7 +3887,6 @@
    "apos": 1,
    "refactor": 1,
    "estourar": 1,
-   "remover": 1,
    "entradas": 1,
    "antigas": 1,
    "indefinidamente": 1,
@@ -3896,7 +3896,7 @@
    "objetivo": 2,
    "prematura": 1,
    "terminava": 1,
-   "crash": 1,
+   "ntfs": 1,
    "meio": 1,
    "nao": 1,
    "verified": 1,
@@ -3907,7 +3907,7 @@
    "logica": 1,
    "read": 1,
    "lerauditoria": 2,
-   "crash": 1,
+   "ntfs": 1,
    "meio": 1,
    "padro": 1,
    "rpc": 1,
@@ -4005,7 +4005,7 @@
    "errors": 1,
    "extrair": 1,
    "estruturado": 1,
-   "tarefa": 1,
+   "reutilizado": 1,
    "conversa": 1,
    "ingles": 1,
    "som": 1,
@@ -4214,27 +4214,18 @@
   },
   "estourar": {
    "lerauditoria": 1,
-   "remover": 1,
-   "entradas": 1,
-   "antigas": 1
-  },
-  "remover": {
-   "estourar": 1,
-   "lerauditoria": 1,
    "entradas": 1,
    "antigas": 1
   },
   "entradas": {
    "estourar": 1,
    "lerauditoria": 1,
-   "remover": 1,
    "antigas": 1
   },
   "antigas": {
    "estourar": 1,
-   "lerauditoria": 1,
    "entradas": 1,
-   "remover": 1
+   "lerauditoria": 1
   },
   "split": {
    "space": 1,
@@ -4339,15 +4330,17 @@
    "projetos": 1,
    "descoberta": 1,
    "opencode": 1,
-   "automacao": 1
+   "auto": 1
   },
   "projetos": {
    "constantemente": 1,
    "descoberta": 1,
-   "automacao": 1,
    "opencode": 1,
+   "auto": 1,
+   "documentos": 1,
+   "unica": 1,
+   "workspaceorganization": 2,
    "cod": 1,
-   "workspaceorganization": 1,
    "mcpprotocol": 1,
    "desktop": 1,
    "jsonrpc": 1
@@ -4356,13 +4349,13 @@
    "constantemente": 1,
    "projetos": 1,
    "opencode": 1,
-   "automacao": 1
+   "auto": 1
   },
   "opencode": {
    "constantemente": 1,
    "descoberta": 1,
-   "automacao": 1,
    "projetos": 1,
+   "auto": 1,
    "aplicada": 1,
    "validao": 1,
    "passar": 1,
@@ -4376,9 +4369,9 @@
    "narrar": 1,
    "commits": 1,
    "curtas": 1,
+   "intil": 1,
    "nico": 1,
    "relatrio": 1,
-   "progresso": 1,
    "implementando": 1,
    "finais": 1,
    "problemas": 1,
@@ -4406,10 +4399,10 @@
    "ouvindo": 1,
    "resultados": 1,
    "falando": 1,
+   "inicia": 1,
    "duplicacao": 1,
    "etc": 2,
    "local": 3,
-   "vigilante": 2,
    "errado": 2,
    "est": 2,
    "autoavaliao": 1,
@@ -4420,8 +4413,8 @@
    "voz": 2,
    "multiline": 1,
    "dentro": 2,
-   "sesso": 1,
    "strings": 1,
+   "linha": 1,
    "saia": 1,
    "qualquer": 1,
    "resposta": 1,
@@ -4469,7 +4462,7 @@
    "descrio": 1,
    "decidir": 1,
    "caixa": 1,
-   "eliminando": 1,
+   "especializado": 1,
    "preta": 1,
    "frontmatter": 1,
    "conectados": 1,
@@ -4489,6 +4482,7 @@
    "real": 4,
    "arqui": 1,
    "detecta": 2,
+   "vigilante": 1,
    "deteco": 2,
    "verificar": 2,
    "uso": 1,
@@ -4641,13 +4635,14 @@
    "garantir": 1,
    "banco": 1,
    "bibliaestudocompleta": 1,
-   "alm1911": 1,
+   "tradues": 1,
    "opencodeprimaria": 1,
    "opencoderesiliencia": 1,
    "llmopencode": 1,
-   "validator": 1,
+   "fases": 1,
    "alucinacao": 1,
    "extracao": 1,
+   "validator": 1,
    "30s": 1,
    "rodando": 1,
    "oculto": 1,
@@ -4689,6 +4684,7 @@
    "terminal": 1,
    "reconnection": 1,
    "renderer": 1,
+   "build": 1,
    "manutencao": 3,
    "logs": 1,
    "gitignore": 1,
@@ -4712,9 +4708,9 @@
    "reindexao": 1,
    "tfidf": 1,
    "dense": 1,
-   "eco": 1,
    "fontes": 1,
    "dessincronizados": 1,
+   "protocolos": 1,
    "sync": 1,
    "execucoes": 1,
    "pane": 1,
@@ -4773,7 +4769,7 @@
    "mil": 1,
    "estrelas": 1,
    "externa": 1,
-   "referncia": 1,
+   "acumulou": 1,
    "crescer": 1,
    "enquanto": 1,
    "aprende": 1,
@@ -4785,11 +4781,15 @@
    "visibilidade": 1,
    "aumentar": 1
   },
-  "automacao": {
+  "auto": {
    "projetos": 1,
    "constantemente": 1,
    "descoberta": 1,
-   "opencode": 1
+   "opencode": 1,
+   "androidpuresdk": 1,
+   "load": 1,
+   "never": 1,
+   "forms": 1
   },
   "atingido": {
    "lerauditoria": 2,
@@ -4880,7 +4880,7 @@
    "comando": 2,
    "capabilities": 1,
    "protocolo": 1,
-   "msg": 1,
+   "check": 1,
    "mensagem": 1,
    "pode": 1,
    "openrouter": 1,
@@ -4890,7 +4890,7 @@
    "qualquer": 1,
    "initialize": 1,
    "120s": 1,
-   "return": 1,
+   "primary": 1,
    "automatico": 1
   },
   "capabilities": {
@@ -4899,7 +4899,7 @@
    "protocolo": 1,
    "annotation": 1,
    "mp3player": 1,
-   "unstableapi": 1,
+   "handler": 1,
    "listener": 1
   },
   "terminava": {
@@ -4964,7 +4964,11 @@
    "250ms": 1,
    "mp3playermetadatarescue": 1,
    "polled": 1,
-   "every": 1
+   "every": 1,
+   "annotation": 1,
+   "mp3player": 1,
+   "listener": 1,
+   "capabilities": 1
   },
   "polled": {
    "250ms": 1,
@@ -4972,13 +4976,21 @@
    "mp3playermetadatarescue": 1,
    "every": 1
   },
-  "msg": {
+  "check": {
    "sessaoprovidermanager": 1,
+   "mensagem": 1,
    "pode": 1,
-   "mensagem": 1
+   "config": 1,
+   "unificada": 1,
+   "desugardebugfiledependencies": 1
+  },
+  "mensagem": {
+   "check": 1,
+   "sessaoprovidermanager": 1,
+   "pode": 1
   },
   "pode": {
-   "msg": 1,
+   "check": 1,
    "mensagem": 1,
    "sessaoprovidermanager": 1,
    "banco": 1,
@@ -4992,11 +5004,6 @@
    "localizacao": 1,
    "automation": 1,
    "treinamentonavegacao": 1
-  },
-  "mensagem": {
-   "msg": 1,
-   "sessaoprovidermanager": 1,
-   "pode": 1
   },
   "botao": {
    "treinamentonavegacao": 1,
@@ -5028,17 +5035,8 @@
    "visivel": 1,
    "inputevent": 1
   },
-  "crash": {
-   "meio": 1,
-   "lerauditoria": 1,
-   "json": 1,
-   "momento": 1,
-   "qualquer": 1,
-   "viavel": 1,
-   "lerarquitetura": 1
-  },
   "meio": {
-   "crash": 1,
+   "ntfs": 1,
    "lerauditoria": 1,
    "json": 1,
    "corretamente": 1,
@@ -5046,35 +5044,44 @@
    "palavras": 1,
    "opencode": 1
   },
-  "multiplier": {
-   "software": 1,
-   "sent": 1,
-   "never": 1,
-   "mp3playermetadatarescue": 1
+  "ntfs": {
+   "meio": 1,
+   "lerauditoria": 1,
+   "json": 1,
+   "systemdesign": 1,
+   "sistema": 1,
+   "arquivos": 1,
+   "ext4": 1
   },
-  "software": {
-   "multiplier": 1,
+  "multiplier": {
    "sent": 1,
    "never": 1,
+   "master": 1,
    "mp3playermetadatarescue": 1
   },
   "sent": {
    "multiplier": 1,
-   "software": 1,
-   "never": 1,
-   "mp3playermetadatarescue": 1
+   "master": 1,
+   "mp3playermetadatarescue": 1,
+   "never": 1
   },
   "never": {
    "multiplier": 1,
-   "software": 1,
-   "sent": 1,
+   "master": 1,
    "mp3playermetadatarescue": 2,
+   "sent": 1,
    "audible": 1,
    "irreversible": 1,
    "load": 1,
    "androidpuresdk": 1,
    "auto": 1,
    "forms": 1
+  },
+  "master": {
+   "multiplier": 1,
+   "sent": 1,
+   "mp3playermetadatarescue": 1,
+   "never": 1
   },
   "touching": {
    "without": 1,
@@ -5145,10 +5152,13 @@
    "salvo": 1,
    "default": 1,
    "arquivo": 1,
-   "treinamentonavegacao": 2,
+   "treinamentonavegacao": 3,
    "arvore": 1,
    "acessibilidade": 1,
    "expoem": 1,
+   "event": 1,
+   "load": 1,
+   "dom": 1,
    "robusta": 1,
    "texto": 1,
    "tem": 1
@@ -5176,9 +5186,9 @@
    "audio": 1,
    "sqlite": 1,
    "tempo": 1,
-   "referncia": 1,
    "externa": 1,
-   "manutencao": 1
+   "manutencao": 1,
+   "acumulou": 1
   },
   "results": {
    "wrong": 1,
@@ -5241,10 +5251,7 @@
    "minimum": 1,
    "mp3playermetadatarescue": 1,
    "met": 1,
-   "threshold": 1,
-   "120s": 1,
-   "sessaoprovidermanager": 1,
-   "automatico": 1
+   "threshold": 1
   },
   "met": {
    "threshold": 1,
@@ -5402,10 +5409,7 @@
   },
   "vivo": {
    "zoom": 1,
-   "nenhum": 1,
-   "melodia": 1,
-   "chega": 1,
-   "fala": 1,
+   "fisica": 1,
    "localhost": 1,
    "ocupadas": 1,
    "threads": 1,
@@ -5420,7 +5424,7 @@
   },
   "zoom": {
    "vivo": 1,
-   "nenhum": 1,
+   "fisica": 1,
    "tema": 1,
    "treinamentonavegacao": 1,
    "layout": 1,
@@ -5432,29 +5436,22 @@
    "persistam": 1,
    "execucoes": 1
   },
-  "nenhum": {
+  "fisica": {
    "vivo": 1,
    "zoom": 1,
-   "systemdesign": 1,
-   "progresso": 1,
-   "estagnacao": 1,
-   "iteracoes": 1
+   "network": 1,
+   "javascript": 1,
+   "vis": 1
   },
   "fuso": {
-   "horrio": 1,
-   "100": 1
-  },
-  "horrio": {
-   "fuso": 1,
-   "100": 1
-  },
-  "100": {
-   "fuso": 1,
    "horrio": 1
   },
+  "horrio": {
+   "fuso": 1
+  },
   "config": {
+   "check": 1,
    "unificada": 1,
-   "etapa": 1,
    "desugardebugfiledependencies": 1,
    "objeto": 1,
    "providermcpdebug": 1,
@@ -5474,19 +5471,14 @@
    "mcp": 1
   },
   "unificada": {
+   "check": 1,
    "config": 1,
-   "etapa": 1,
-   "desugardebugfiledependencies": 1
-  },
-  "etapa": {
-   "config": 1,
-   "unificada": 1,
    "desugardebugfiledependencies": 1
   },
   "desugardebugfiledependencies": {
+   "check": 1,
    "config": 1,
    "unificada": 1,
-   "etapa": 1,
    "voxu": 1,
    "ram": 1,
    "opencode": 1
@@ -5496,8 +5488,8 @@
    "parent": 1,
    "ficar": 1,
    "curtas": 1,
+   "intil": 1,
    "relatrio": 1,
-   "progresso": 1,
    "opencode": 1
   },
   "vive": {
@@ -5589,23 +5581,46 @@
    "mobile": 1,
    "testing": 1
   },
-  "melodia": {
-   "vivo": 1,
-   "chega": 1,
-   "fala": 1
-  },
-  "chega": {
+  "conhecimento": {
    "melodia": 1,
-   "vivo": 1,
+   "fala": 1,
+   "chega": 1,
+   "ferramenta": 1,
+   "skill": 1,
+   "existente": 1,
+   "metacognicao": 1,
+   "ecossistema": 1,
+   "ler": 1,
+   "imp": 1,
+   "opencode": 5,
+   "usuari": 1,
+   "registra": 1,
+   "aprendizados": 1,
+   "arquivos": 1,
+   "jsons": 1,
+   "vrios": 1,
+   "cp1252": 1,
+   "registrados": 1,
+   "opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen": 1,
+   "tres": 1
+  },
+  "melodia": {
+   "conhecimento": 1,
+   "chega": 1,
    "fala": 1
   },
   "fala": {
+   "conhecimento": 1,
    "chega": 1,
    "melodia": 1,
-   "vivo": 1,
    "acento": 1,
    "escrita": 1,
    "opencode": 1
+  },
+  "chega": {
+   "melodia": 1,
+   "conhecimento": 1,
+   "fala": 1
   },
   "network": {
    "vis": 1,
@@ -5628,11 +5643,6 @@
    "network": 1,
    "vis": 1,
    "fisica": 1
-  },
-  "fisica": {
-   "network": 1,
-   "javascript": 1,
-   "vis": 1
   },
   "processo": {
    "read": 1,
@@ -5726,14 +5736,22 @@
   },
   "bblia": {
    "visvel": 1,
+   "bblicos": 1,
    "estudo": 1
   },
   "visvel": {
    "bblia": 1,
+   "bblicos": 1,
+   "estudo": 1
+  },
+  "bblicos": {
+   "bblia": 1,
+   "visvel": 1,
    "estudo": 1
   },
   "estudo": {
    "bblia": 1,
+   "bblicos": 1,
    "visvel": 1
   },
   "conexao": {
@@ -5741,7 +5759,7 @@
    "inverso": 1,
    "entrada": 1,
    "protocolo": 1,
-   "find": 1,
+   "dispositivo": 1,
    "device": 1,
    "ativo": 1,
    "persistente": 1,
@@ -5766,8 +5784,8 @@
    "muda": 1,
    "obvio": 1,
    "veja": 1,
-   "aplicada": 1,
    "momento": 1,
+   "violado": 1,
    "reportado": 1,
    "range": 1,
    "encoding": 1,
@@ -5886,26 +5904,6 @@
    "existente": 1,
    "skill": 1
   },
-  "conhecimento": {
-   "ferramenta": 1,
-   "skill": 1,
-   "existente": 1,
-   "metacognicao": 1,
-   "ecossistema": 1,
-   "ler": 1,
-   "imp": 1,
-   "opencode": 5,
-   "usuari": 1,
-   "registra": 1,
-   "aprendizados": 1,
-   "arquivos": 1,
-   "jsons": 1,
-   "vrios": 1,
-   "cp1252": 1,
-   "registrados": 1,
-   "opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen": 1,
-   "tres": 1
-  },
   "existente": {
    "conhecimento": 1,
    "ferramenta": 1,
@@ -5916,7 +5914,7 @@
    "arquivo": 1,
    "androidpuresdk": 1
   },
-  "find": {
+  "dispositivo": {
    "conexao": 1,
    "ativo": 1,
    "device": 1
@@ -5924,10 +5922,10 @@
   "device": {
    "conexao": 1,
    "ativo": 1,
-   "find": 1
+   "dispositivo": 1
   },
   "ativo": {
-   "find": 1,
+   "dispositivo": 1,
    "conexao": 1,
    "device": 1
   },
@@ -6009,8 +6007,8 @@
    "ext4": 1,
    "explicitamente": 1,
    "precisam": 1,
-   "dados": 1,
    "consistentes": 1,
+   "invalide": 1,
    "banco": 1,
    "falhar": 1,
    "pode": 1
@@ -6028,7 +6026,7 @@
    "proxima": 1,
    "120s": 1,
    "sessaoprovidermanager": 1,
-   "return": 1
+   "primary": 1
   },
   "precisa": {
    "automatico": 1,
@@ -6036,15 +6034,17 @@
    "systemdesign": 1,
    "proxima": 1
   },
+  "nenhum": {
+   "systemdesign": 1,
+   "progresso": 1,
+   "estagnacao": 1,
+   "iteracoes": 1
+  },
   "progresso": {
    "nenhum": 1,
    "estagnacao": 1,
    "iteracoes": 1,
-   "systemdesign": 1,
-   "curtas": 1,
-   "nico": 1,
-   "relatrio": 1,
-   "opencode": 1
+   "systemdesign": 1
   },
   "estagnacao": {
    "nenhum": 1,
@@ -6229,10 +6229,9 @@
    "loading": 1,
    "atual": 1,
    "completo": 1,
-   "operacao": 1,
-   "timeout": 1,
    "10s": 1,
-   "custa": 1
+   "timeout": 1,
+   "operacao": 1
   },
   "tab": {
    "efficiency": 1,
@@ -6380,8 +6379,8 @@
    "tem": 1,
    "elementdetection": 1,
    "event": 1,
-   "pagina": 1,
    "treinamentonavegacao": 2,
+   "nao": 1,
    "load": 1,
    "casos": 1,
    "invalidando": 1,
@@ -6461,12 +6460,12 @@
   "baixo": {
    "informacao": 1,
    "errada": 1,
-   "retornar": 1,
+   "lexical": 1,
    "algorithm": 1
   },
   "informacao": {
    "baixo": 1,
-   "retornar": 1,
+   "lexical": 1,
    "algorithm": 1,
    "errada": 1
   },
@@ -6474,9 +6473,9 @@
    "baixo": 1,
    "algorithm": 1,
    "informacao": 1,
-   "retornar": 1
+   "lexical": 1
   },
-  "retornar": {
+  "lexical": {
    "baixo": 1,
    "informacao": 1,
    "algorithm": 1,
@@ -6486,7 +6485,7 @@
    "baixo": 1,
    "informacao": 1,
    "errada": 1,
-   "retornar": 1
+   "lexical": 1
   },
   "consultar": {
    "webrendering": 1,
@@ -6526,12 +6525,6 @@
    "duas": 1,
    "guardian": 1,
    "loop": 1
-  },
-  "ntfs": {
-   "systemdesign": 1,
-   "sistema": 1,
-   "arquivos": 1,
-   "ext4": 1
   },
   "sistema": {
    "ntfs": 1,
@@ -6652,17 +6645,8 @@
    "boyd": 1,
    "automatizada": 1
   },
-  "aplicada": {
-   "momento": 1,
-   "debugging": 1,
-   "reportado": 1,
-   "validao": 1,
-   "passar": 1,
-   "prvia": 1,
-   "opencode": 1
-  },
   "momento": {
-   "aplicada": 1,
+   "violado": 1,
    "reportado": 1,
    "debugging": 1,
    "qualquer": 1,
@@ -6670,10 +6654,15 @@
    "crash": 1,
    "lerarquitetura": 1
   },
-  "reportado": {
-   "aplicada": 1,
+  "violado": {
    "momento": 1,
-   "debugging": 1
+   "debugging": 1,
+   "reportado": 1
+  },
+  "reportado": {
+   "momento": 1,
+   "debugging": 1,
+   "violado": 1
   },
   "pos": {
    "proporcao": 1,
@@ -6794,29 +6783,30 @@
    "llm": 1,
    "mitigacao": 1
   },
-  "failed": {
-   "nome": 1,
-   "github": 1,
+  "nome": {
+   "servers": 1,
+   "failed": 1,
    "ind": 1
   },
-  "nome": {
+  "servers": {
+   "nome": 1,
    "failed": 1,
-   "github": 1,
    "ind": 1
+  },
+  "failed": {
+   "nome": 1,
+   "ind": 1,
+   "servers": 1
   },
   "ind": {
    "failed": 1,
-   "github": 1,
-   "nome": 1
+   "nome": 1,
+   "servers": 1
   },
   "dados": {
    "snapshot": 1,
    "limpeza": 1,
-   "corrompido": 1,
-   "explicitamente": 1,
-   "precisam": 1,
-   "systemdesign": 1,
-   "consistentes": 1
+   "corrompido": 1
   },
   "snapshot": {
    "dados": 1,
@@ -6946,12 +6936,12 @@
    "ecosistemaopencode": 1
   },
   "extrair": {
-   "tarefa": 1,
+   "reutilizado": 1,
    "estruturado": 1,
    "ecosistemaopencode": 1,
    "conversa": 1
   },
-  "tarefa": {
+  "reutilizado": {
    "extrair": 1,
    "estruturado": 1,
    "ecosistemaopencode": 1,
@@ -6959,15 +6949,15 @@
   },
   "estruturado": {
    "extrair": 1,
-   "tarefa": 1,
+   "reutilizado": 1,
    "ecosistemaopencode": 1,
    "conversa": 1
   },
   "conversa": {
    "extrair": 1,
    "estruturado": 1,
-   "ecosistemaopencode": 1,
-   "tarefa": 1
+   "reutilizado": 1,
+   "ecosistemaopencode": 1
   },
   "passar": {
    "validao": 1,
@@ -6985,6 +6975,12 @@
    "passar": 1,
    "validao": 1,
    "aplicada": 1,
+   "opencode": 1
+  },
+  "aplicada": {
+   "validao": 1,
+   "passar": 1,
+   "prvia": 1,
    "opencode": 1
   },
   "algumas": {
@@ -7025,14 +7021,20 @@
   },
   "curtas": {
    "relatrio": 1,
+   "intil": 1,
    "nico": 1,
-   "progresso": 1,
    "opencode": 1
   },
   "relatrio": {
    "curtas": 1,
+   "intil": 1,
    "nico": 1,
-   "progresso": 1,
+   "opencode": 1
+  },
+  "intil": {
+   "curtas": 1,
+   "relatrio": 1,
+   "nico": 1,
    "opencode": 1
   },
   "false": {
@@ -7075,6 +7077,7 @@
    "rescue": 4,
    "metadata": 4,
    "androidpuresdkmp3playermetadatarescueandroidpuresdkmp3": 1,
+   "audioprocessor": 1,
    "mp3playermetadatarescue": 3,
    "consumidos": 1,
    "audio": 1,
@@ -7086,10 +7089,10 @@
    "double": 1,
    "album": 1,
    "chars": 1,
-   "overlap": 1,
    "words": 1,
-   "unstableapi": 1,
+   "match": 1,
    "annotation": 1,
+   "handler": 1,
    "listener": 1,
    "capabilities": 1
   },
@@ -7195,9 +7198,9 @@
    "sessaoseguranca": 1,
    "nvidia": 1,
    "duplicacao": 1,
+   "inicia": 1,
    "local": 1,
    "opencode": 2,
-   "vigilante": 1,
    "characters": 1,
    "portuguese": 1,
    "corrupted": 1,
@@ -7227,6 +7230,12 @@
    "momento": 1,
    "qualquer": 1,
    "crash": 1,
+   "lerarquitetura": 1
+  },
+  "crash": {
+   "momento": 1,
+   "qualquer": 1,
+   "viavel": 1,
    "lerarquitetura": 1
   },
   "lerarquitetura": {
@@ -7341,17 +7350,17 @@
    "resultados": 1,
    "opencode": 1
   },
-  "duplicacao": {
-   "etc": 1,
+  "inicia": {
    "local": 1,
    "opencode": 1,
-   "vigilante": 1
+   "duplicacao": 1,
+   "etc": 1
   },
   "local": {
+   "inicia": 1,
    "duplicacao": 1,
    "etc": 1,
    "opencode": 3,
-   "vigilante": 1,
    "ecossistema": 1,
    "correto": 1,
    "registrar": 1,
@@ -7359,14 +7368,11 @@
    "testar": 1,
    "validar": 1
   },
-  "vigilante": {
-   "duplicacao": 1,
+  "duplicacao": {
+   "inicia": 1,
    "etc": 1,
    "local": 1,
-   "opencode": 2,
-   "config": 1,
-   "arqui": 1,
-   "detecta": 1
+   "opencode": 1
   },
   "characters": {
    "portuguese": 1,
@@ -7417,9 +7423,9 @@
    "point": 1,
    "floating": 1,
    "trees": 1,
+   "directory": 1,
    "toolchain": 1,
    "requirement": 1,
-   "historical": 1,
    "calculation": 1,
    "model": 1,
    "mental": 1,
@@ -7451,8 +7457,8 @@
    "opencode": 2,
    "autoavaliao": 1,
    "preta": 1,
+   "especializado": 1,
    "caixa": 1,
-   "eliminando": 1,
    "deu": 1,
    "usou": 1,
    "encontrou": 1,
@@ -7556,28 +7562,22 @@
    "time": 1
   },
   "multiline": {
-   "sesso": 1,
    "strings": 1,
    "opencode": 1,
-   "dentro": 1
-  },
-  "sesso": {
-   "multiline": 1,
    "dentro": 1,
-   "strings": 1,
-   "opencode": 1
+   "linha": 1
   },
   "strings": {
    "multiline": 1,
    "dentro": 1,
-   "sesso": 1,
-   "opencode": 1
+   "opencode": 1,
+   "linha": 1
   },
   "dentro": {
    "multiline": 1,
-   "sesso": 1,
    "strings": 1,
    "opencode": 2,
+   "linha": 1,
    "debugging": 1,
    "saida": 1,
    "loop": 1,
@@ -7586,21 +7586,21 @@
    "tela": 1,
    "quantidade": 1
   },
+  "linha": {
+   "dentro": 1,
+   "multiline": 1,
+   "strings": 1,
+   "opencode": 1
+  },
   "load": {
    "never": 1,
    "androidpuresdk": 1,
    "auto": 1,
    "forms": 1,
    "event": 1,
-   "pagina": 1,
    "treinamentonavegacao": 1,
+   "nao": 1,
    "dom": 1
-  },
-  "auto": {
-   "androidpuresdk": 1,
-   "load": 1,
-   "never": 1,
-   "forms": 1
   },
   "forms": {
    "androidpuresdk": 1,
@@ -7856,8 +7856,8 @@
   },
   "documentos": {
    "unica": 1,
-   "raiz": 1,
    "workspaceorganization": 1,
+   "projetos": 1,
    "session": 1,
    "ferramentas": 1,
    "scripts": 1,
@@ -7866,7 +7866,7 @@
   "unica": {
    "documentos": 1,
    "workspaceorganization": 1,
-   "raiz": 1,
+   "projetos": 1,
    "original": 1,
    "debugging": 1,
    "solucao": 1,
@@ -7875,20 +7875,14 @@
    "ram": 1,
    "opencode": 1
   },
-  "raiz": {
-   "documentos": 1,
-   "unica": 1,
-   "workspaceorganization": 1
-  },
   "workspaceorganization": {
    "documentos": 1,
    "unica": 1,
-   "raiz": 1,
+   "projetos": 2,
    "nao": 1,
    "escapam": 1,
    "caminhos": 1,
    "cod": 1,
-   "projetos": 1,
    "mcpprotocol": 1,
    "desktop": 1,
    "jsonrpc": 1
@@ -8015,10 +8009,6 @@
    "bugs": 1,
    "esperando": 1,
    "coding": 1,
-   "usuario": 1,
-   "webnavigation": 1,
-   "repete": 1,
-   "faz": 1,
    "perguntou": 1,
    "uteis": 1,
    "verificar": 1,
@@ -8045,6 +8035,7 @@
    "runner": 1,
    "opencode": 2,
    "arquivos": 1,
+   "build": 1,
    "manutencao": 1,
    "logs": 1
   },
@@ -8333,19 +8324,24 @@
   "preta": {
    "errado": 1,
    "caixa": 1,
-   "eliminando": 1,
+   "especializado": 1,
    "opencode": 1
+  },
+  "especializado": {
+   "errado": 1,
+   "caixa": 1,
+   "preta": 1,
+   "opencode": 1,
+   "navegacao": 1,
+   "plataforma": 1,
+   "multi": 1,
+   "web": 1,
+   "desktop": 1
   },
   "caixa": {
    "errado": 1,
    "preta": 1,
-   "eliminando": 1,
-   "opencode": 1
-  },
-  "eliminando": {
-   "caixa": 1,
-   "errado": 1,
-   "preta": 1,
+   "especializado": 1,
    "opencode": 1
   },
   "absolutas": {
@@ -8479,28 +8475,28 @@
    "desnecessarios": 1,
    "elementclickinterceptedexception": 1
   },
-  "toolchain": {
+  "directory": {
    "trees": 1,
+   "toolchain": 1,
    "requirement": 1,
-   "historical": 1,
    "androidpuresdk": 1
   },
   "trees": {
+   "directory": 1,
    "toolchain": 1,
    "requirement": 1,
-   "historical": 1,
+   "androidpuresdk": 1
+  },
+  "toolchain": {
+   "directory": 1,
+   "trees": 1,
+   "requirement": 1,
    "androidpuresdk": 1
   },
   "requirement": {
+   "directory": 1,
    "trees": 1,
    "toolchain": 1,
-   "historical": 1,
-   "androidpuresdk": 1
-  },
-  "historical": {
-   "trees": 1,
-   "toolchain": 1,
-   "requirement": 1,
    "androidpuresdk": 1
   },
   "calculation": {
@@ -8637,20 +8633,26 @@
   "explicitamente": {
    "precisam": 1,
    "systemdesign": 1,
-   "dados": 1,
+   "invalide": 1,
    "consistentes": 1
   },
   "precisam": {
    "explicitamente": 1,
    "systemdesign": 1,
-   "dados": 1,
-   "consistentes": 1
+   "consistentes": 1,
+   "invalide": 1
+  },
+  "invalide": {
+   "explicitamente": 1,
+   "consistentes": 1,
+   "precisam": 1,
+   "systemdesign": 1
   },
   "consistentes": {
    "explicitamente": 1,
    "precisam": 1,
-   "dados": 1,
    "systemdesign": 1,
+   "invalide": 1,
    "treinamentonavegacao": 1,
    "gestos": 1,
    "tela": 1
@@ -8905,9 +8907,8 @@
    "root": 1,
    "container": 1,
    "principal": 1,
-   "usuario": 1,
-   "sao": 1,
    "repete": 1,
+   "loaded": 1,
    "faz": 1
   },
   "container": {
@@ -9018,27 +9019,20 @@
    "loop": 1,
    "saida": 1
   },
-  "usuario": {
-   "webnavigation": 1,
-   "sao": 1,
-   "repete": 1,
-   "faz": 1,
-   "enfati": 1,
-   "conectado": 1,
-   "tailscale": 1,
-   "opencode": 1
-  },
   "repete": {
-   "usuario": 1,
    "webnavigation": 1,
-   "sao": 1,
+   "loaded": 1,
+   "faz": 1
+  },
+  "loaded": {
+   "repete": 1,
+   "webnavigation": 1,
    "faz": 1
   },
   "faz": {
-   "usuario": 1,
+   "repete": 1,
    "webnavigation": 1,
-   "sao": 1,
-   "repete": 1
+   "loaded": 1
   },
   "mudar": {
    "quebra": 1,
@@ -9073,8 +9067,8 @@
    "falhar": 1,
    "pode": 1,
    "bibliaestudocompleta": 1,
-   "opencode": 1,
-   "alm1911": 1
+   "tradues": 1,
+   "opencode": 1
   },
   "falhar": {
    "banco": 1,
@@ -9177,28 +9171,19 @@
    "secundario": 1,
    "testing": 1
   },
-  "operacao": {
-   "efficiency": 1,
+  "10s": {
    "timeout": 1,
-   "10s": 1,
-   "custa": 1
+   "efficiency": 1,
+   "operacao": 1
   },
   "timeout": {
-   "efficiency": 1,
-   "operacao": 1,
-   "10s": 1,
-   "custa": 1
-  },
-  "10s": {
-   "efficiency": 1,
-   "operacao": 1,
-   "timeout": 1,
-   "custa": 1
-  },
-  "custa": {
    "10s": 1,
    "efficiency": 1,
-   "operacao": 1,
+   "operacao": 1
+  },
+  "operacao": {
+   "10s": 1,
+   "efficiency": 1,
    "timeout": 1
   },
   "causa": {
@@ -9268,6 +9253,12 @@
    "30s": 1,
    "est": 1,
    "rodando": 1
+  },
+  "vigilante": {
+   "config": 1,
+   "arqui": 1,
+   "detecta": 1,
+   "opencode": 1
   },
   "arqui": {
    "config": 1,
@@ -9444,6 +9435,12 @@
    "tailscale": 1,
    "opencode": 1,
    "conectado": 1
+  },
+  "usuario": {
+   "enfati": 1,
+   "conectado": 1,
+   "tailscale": 1,
+   "opencode": 1
   },
   "tailscale": {
    "enfati": 1,
@@ -9729,13 +9726,6 @@
    "encapsulam": 1,
    "manualmente": 1
   },
-  "especializado": {
-   "navegacao": 1,
-   "plataforma": 1,
-   "multi": 1,
-   "web": 1,
-   "desktop": 1
-  },
   "multi": {
    "especializado": 1,
    "desktop": 1,
@@ -9875,14 +9865,16 @@
    "metadata": 5,
    "androidpuresdkmp3playermetadatarescueandroidpuresdkmp3": 1,
    "pipeline": 1,
-   "mp3playermetadatarescue": 4
+   "mp3playermetadatarescue": 4,
+   "audioprocessor": 1
   },
   "metadata": {
    "mp3player": 4,
    "rescue": 5,
    "androidpuresdkmp3playermetadatarescueandroidpuresdkmp3": 1,
    "pipeline": 1,
-   "mp3playermetadatarescue": 4
+   "mp3playermetadatarescue": 4,
+   "audioprocessor": 1
   },
   "androidpuresdkmp3playermetadatarescueandroidpuresdkmp3": {
    "mp3player": 1,
@@ -9960,6 +9952,12 @@
    "text": 1,
    "treinamentonavegacao": 1,
    "visivel": 1
+  },
+  "audioprocessor": {
+   "mp3player": 1,
+   "metadata": 1,
+   "rescue": 1,
+   "mp3playermetadatarescue": 1
   },
   "narracao": {
    "runtime": 1,
@@ -10222,10 +10220,10 @@
   },
   "bibliaestudocompleta": {
    "banco": 1,
-   "opencode": 1,
-   "alm1911": 1
+   "tradues": 1,
+   "opencode": 1
   },
-  "alm1911": {
+  "tradues": {
    "banco": 1,
    "bibliaestudocompleta": 1,
    "opencode": 1
@@ -10251,20 +10249,29 @@
    "opencoderesiliencia": 1,
    "opencode": 1
   },
-  "validator": {
+  "fases": {
+   "validator": 1,
    "opencode": 1,
    "alucinacao": 1,
    "extracao": 1
   },
+  "validator": {
+   "fases": 1,
+   "alucinacao": 1,
+   "extracao": 1,
+   "opencode": 1
+  },
   "alucinacao": {
-   "opencode": 1,
+   "fases": 1,
+   "extracao": 1,
    "validator": 1,
-   "extracao": 1
+   "opencode": 1
   },
   "extracao": {
    "alucinacao": 1,
-   "opencode": 1,
-   "validator": 1
+   "fases": 1,
+   "validator": 1,
+   "opencode": 1
   },
   "rodando": {
    "est": 1,
@@ -10583,20 +10590,28 @@
    "terminal": 1,
    "opencode": 1
   },
+  "build": {
+   "manutencao": 1,
+   "opencode": 1,
+   "logs": 1,
+   "backups": 1
+  },
   "manutencao": {
+   "build": 1,
    "backups": 1,
    "opencode": 3,
    "logs": 1,
    "orfaos": 1,
    "gitignore": 1,
    "externa": 1,
-   "referncia": 1,
-   "real": 1
+   "real": 1,
+   "acumulou": 1
   },
   "logs": {
+   "build": 1,
    "backups": 1,
-   "opencode": 1,
-   "manutencao": 1
+   "manutencao": 1,
+   "opencode": 1
   },
   "gitignore": {
    "orfaos": 1,
@@ -10677,29 +10692,29 @@
    "vrios": 1,
    "opencode": 1
   },
-  "overlap": {
-   "words": 1,
-   "album": 1,
-   "chars": 1,
-   "mp3player": 1
-  },
-  "words": {
-   "overlap": 1,
-   "album": 1,
-   "chars": 1,
-   "mp3player": 1
-  },
   "album": {
-   "overlap": 1,
    "chars": 1,
    "mp3player": 1,
+   "match": 1,
    "words": 1
   },
   "chars": {
    "album": 1,
-   "overlap": 1,
+   "mp3player": 1,
+   "match": 1,
+   "words": 1
+  },
+  "match": {
+   "album": 1,
+   "chars": 1,
    "mp3player": 1,
    "words": 1
+  },
+  "words": {
+   "album": 1,
+   "chars": 1,
+   "mp3player": 1,
+   "match": 1
   },
   "salvo": {
    "nao": 1,
@@ -10945,27 +10960,27 @@
    "treinamentonavegacao": 1,
    "tela": 1
   },
-  "eco": {
-   "fontes": 1,
+  "fontes": {
+   "protocolos": 1,
    "sync": 1,
    "opencode": 1,
    "dessincronizados": 1
   },
-  "fontes": {
-   "eco": 1,
+  "protocolos": {
+   "fontes": 1,
    "sync": 1,
-   "opencode": 1,
-   "dessincronizados": 1
+   "dessincronizados": 1,
+   "opencode": 1
   },
   "sync": {
-   "eco": 1,
    "fontes": 1,
+   "protocolos": 1,
    "dessincronizados": 1,
    "opencode": 1
   },
   "dessincronizados": {
-   "eco": 1,
    "fontes": 1,
+   "protocolos": 1,
    "sync": 1,
    "opencode": 1
   },
@@ -11140,22 +11155,16 @@
    "peso": 1,
    "opencode": 1
   },
-  "unstableapi": {
-   "mp3player": 1,
-   "annotation": 1,
-   "listener": 1,
-   "capabilities": 1
-  },
   "annotation": {
    "mp3player": 1,
-   "unstableapi": 1,
+   "handler": 1,
    "listener": 1,
    "capabilities": 1
   },
   "listener": {
    "annotation": 1,
+   "handler": 1,
    "mp3player": 1,
-   "unstableapi": 1,
    "capabilities": 1
   },
   "simultaneamente": {
@@ -11302,7 +11311,12 @@
   },
   "120s": {
    "sessaoprovidermanager": 1,
-   "return": 1,
+   "primary": 1,
+   "automatico": 1
+  },
+  "primary": {
+   "120s": 1,
+   "sessaoprovidermanager": 1,
    "automatico": 1
   },
   "encapsulam": {
@@ -11333,14 +11347,8 @@
    "opencode": 1
   },
   "event": {
-   "pagina": 1,
    "treinamentonavegacao": 1,
-   "load": 1,
-   "dom": 1
-  },
-  "pagina": {
-   "event": 1,
-   "treinamentonavegacao": 1,
+   "nao": 1,
    "load": 1,
    "dom": 1
   },
@@ -11412,15 +11420,15 @@
    "mil": 1,
    "opencode": 1
   },
-  "referncia": {
+  "externa": {
+   "real": 1,
+   "manutencao": 1,
+   "opencode": 1,
+   "acumulou": 1
+  },
+  "acumulou": {
    "real": 1,
    "externa": 1,
-   "manutencao": 1,
-   "opencode": 1
-  },
-  "externa": {
-   "referncia": 1,
-   "real": 1,
    "manutencao": 1,
    "opencode": 1
   },
@@ -11581,7 +11589,7 @@
   "4216": 1,
   "feedback": 1,
   "512kb": 1,
-  "automacao": 1,
+  "auto": 1,
   "atingido": 2,
   "protocolo": 1,
   "handle": 1,
@@ -11589,10 +11597,10 @@
   "default": 1,
   "frequency": 1,
   "250ms": 1,
-  "mensagem": 1,
+  "check": 2,
   "botao": 1,
-  "crash": 2,
-  "mp3player-metadata-rescue": 1,
+  "json": 1,
+  "master": 1,
   "bands": 1,
   "expected": 1,
   "audible": 1,
@@ -11606,15 +11614,13 @@
   "block": 1,
   "agentes": 1,
   "está": 1,
-  "labels": 1,
-  "100": 1,
-  "config": 3,
+  "fisica": 2,
+  "dominio": 4,
   "ficar": 1,
   "agents": 1,
   "clicar": 1,
   "adaptability": 1,
   "chega": 1,
-  "fisica": 1,
   "forenses": 1,
   "act": 1,
   "ativar": 1,
@@ -11637,7 +11643,7 @@
   "2024": 1,
   "ecossistema": 1,
   "accordion": 1,
-  "debugging": 8,
+  "debugging": 9,
   "adb": 1,
   "deploy": 1,
   "architecture": 3,
@@ -11651,9 +11657,7 @@
   "logo": 1,
   "formularios": 1,
   "barreiras": 1,
-  "aplicada": 2,
   "1080x2400": 1,
-  "dominio": 2,
   "state-detection": 1,
   "classes": 1,
   "cortada": 1,
@@ -11663,6 +11667,7 @@
   "concorrencia": 1,
   "deveriam": 1,
   "conversa": 1,
+  "aplicada": 1,
   "algumas": 1,
   "commits": 1,
   "curtas": 1,
@@ -11670,6 +11675,7 @@
   "boota": 1,
   "criar": 1,
   "etc": 2,
+  "crash": 1,
   "erro": 1,
   "depends": 1,
   "explícita": 1,
@@ -11730,9 +11736,8 @@
   "auth": 1,
   "atual": 1,
   "acontecer": 1,
-  "faz": 1,
   "123": 1,
-  "banco": 1,
+  "banco": 2,
   "configuration": 1,
   "casos": 2,
   "assume": 1,
@@ -11740,6 +11745,7 @@
   "causa": 1,
   "caminho": 1,
   "arqui": 1,
+  "config": 2,
   "model": 1,
   "2026 scan proativo": 25,
   "autom": 1,
@@ -11772,9 +11778,10 @@
   "add": 1,
   "android-pure-sdkmp3player-metadata-rescueandroid-pure-sdkmp3": 1,
   "message": 1,
-  "metadata": 4,
+  "metadata": 3,
   "elementos": 2,
   "class": 1,
+  "audioprocessor": 1,
   "desativa": 1,
   "automation": 2,
   "base": 1,
@@ -11787,7 +11794,6 @@
   "anthropic": 1,
   "130": 1,
   "assimilada": 1,
-  "alm1911": 1,
   "llm opencode": 1,
   "alucinacao": 1,
   "30s": 1,
@@ -11847,7 +11853,7 @@
   "codigo": 1,
   "nao": 1,
   "apache": 1,
-  "externa": 1,
+  "acumulou": 1,
   "confiabilidade": 1,
   "aprende": 1,
   "killer": 1,
@@ -11863,7 +11869,7 @@
     "frequencia": 5
    },
    "debugging": {
-    "n_notas": 8,
+    "n_notas": 9,
     "junto_com": "conexao",
     "frequencia": 1
    },

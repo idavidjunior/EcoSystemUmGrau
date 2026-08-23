@@ -1,5 +1,5 @@
 ---
-tags: [chega, cognitivo, conhecimento, fala, general, vivo]
+tags: [chega, cognitivo, conhecimento, fala, general, melodia]
 aliases: [# Aprendizado — 2026-07-31 — Pontuação automática de transcr]
 date: 2026-08-22
 ---

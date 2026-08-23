@@ -11875,5 +11875,51 @@
     "access_count": 0,
     "created_at": "2026-08-22T22:50:42.905045",
     "last_accessed": "2026-08-22T22:50:42.905045"
+  },
+  {
+    "id": 465,
+    "kind": "padrao",
+    "task": "Sinapses novas piscam em amarelo por 12h no Cerebro Vivo",
+    "summary": "Implementado no widget_grafo.py (campo tm = mtime da nota no payload) e cerebro.html (logica SINAPSE_H=12): nos nascidos ha menos de 12 horas pulsam em amarelo forte (#FFD60A/#FFEA00) com glow animado, depois assentam na cor normal. Decisao de design: timestamp vai no payload e o relógio do frontend decide, entao o apagar das luzes aos 12h acontece sem rebuild e qualquer nota futura nasce piscando automaticamente. Cache invalidado preservando _pos para primeira carga ja vir com tm.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "automaticamente",
+      "piscando",
+      "nasce",
+      "futura",
+      "qualquer",
+      "rebuild"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-22T23:07:43.980360",
+    "last_accessed": "2026-08-22T23:07:43.980360"
+  },
+  {
+    "id": 466,
+    "kind": "decisao",
+    "task": "Gate persistencia: modo AUTO inteligente implementado",
+    "summary": "Politicas no Invoke-RepoCommit quando modo=auto: classificacao vivo x codigo das pendencias, preflight minimo (py_compile/node --check) barreira codigo quebrado com snapshot via stash create+store preservando working tree, debounce 30min apenas para estado vivo (codigo passa sempre), Add-GitignoreLixo antes do add impede lixo estrutural entrar no espelho, Invoke-Limpeza pos-push-ok com lista branca (pycache pyc log 7d temp 3d locks) pulando tracked por git ls-files, PUSH_FALHOU nao limpa nada. Modo MANUAL intocado validado.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "nada",
+      "limpa",
+      "nao",
+      "falhou",
+      "files",
+      "git"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-22T23:11:43.631525",
+    "last_accessed": "2026-08-22T23:11:43.631525"
   }
 ]

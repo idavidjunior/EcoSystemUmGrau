@@ -1,5 +1,5 @@
 ---
-tags: [android-pure-sdk, decisao, historical, requirement, toolchain, trees]
+tags: [android-pure-sdk, decisao, directory, requirement, toolchain, trees]
 aliases: [Why:** d8 doesn't accept directory trees of .class files; it]
 date: 2026-08-22
 ---
