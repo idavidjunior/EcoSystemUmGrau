@@ -11753,5 +11753,28 @@
     "access_count": 0,
     "created_at": "2026-08-22T21:29:50.924327",
     "last_accessed": "2026-08-22T21:29:50.924327"
+  },
+  {
+    "id": 460,
+    "kind": "padrao",
+    "task": "CLI-Anything internalizado como habilidade soberana",
+    "summary": "Instalados 5 comandos globais do CLI-Anything em ~/.config/opencode/commands e criada habilidade interna mcp/desenvolvimento/habilidades/cli-anything com skill.md destilada em pt-BR e references/HARNESS.md preservada localmente. Diretriz do usuario: capacidades externas devem ser assimiladas e internalizadas, ecossistema autossuficiente sem depender de ferramentas externas. Se o projeto externo sumir, a metodologia continua viva aqui.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "skill",
+      "habilidades",
+      "desenvolvimento",
+      "mcp",
+      "ferramentas",
+      "anything"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-22T21:32:51.821466",
+    "last_accessed": "2026-08-22T21:32:51.821466"
   }
 ]
