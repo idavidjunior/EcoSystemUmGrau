@@ -122,11 +122,13 @@ def montar_payload(mod, pos_antigas=None):
     for a, b in arestas:
         grau_por_id[a] = grau_por_id.get(a, 0) + 1
         grau_por_id[b] = grau_por_id.get(b, 0) + 1
+    mtimes = mapa_mtimes()
     pos, herdados = layout_3d(nos_brutos, arestas, pos_antigas)
     nos = []
     for n in nos_brutos:
         nid = n["id"]
-        nos.append({
+        nascido = mtimes.get(nid)
+        no = {
             "id": nid,
             "l": n.get("label") or nid,
             "cl": n.get("cl", "geral"),
@@ -135,7 +137,10 @@ def montar_payload(mod, pos_antigas=None):
             "x": pos[nid][0],
             "y": pos[nid][1],
             "z": pos[nid][2],
-        })
+        }
+        if nascido:
+            no["tm"] = round(float(nascido), 1)
+        nos.append(no)
     global ULTIMA_POS
     ULTIMA_POS = pos
     return {"nos": nos, "ar": [[a, b] for a, b in arestas]}, herdados

@@ -92,6 +92,127 @@ function Get-Pendentes {
     return $s.Trim()
 }
 
+function Get-TipoPendencia {
+    param([string]$Caminho, [string]$RepoPath)
+    if ($Caminho -match '(^|[\\/])(conhecimento[\\/]memoria|ler-runtime[\\/]knowledge|runtime|build[\\/]CerebroVivo)([\\/]|$)') { return 'vivo' }
+    if ($Caminho -match 'tfidf|knowledge_graph\.json$|CONHECIMENTO\.md$|cluster_mapper') { return 'vivo' }
+    if ($Caminho -match '[\\/]$|^\s*$') { return 'vivo' }
+    if ($Caminho.EndsWith('/') -or $Caminho.EndsWith('\')) {
+        $cheia = Join-Path $RepoPath $Caminho.TrimEnd('\/')
+        if (Test-Path $cheia) {
+            $temCodigo = Get-ChildItem $cheia -Recurse -File -ErrorAction SilentlyContinue |
+                Where-Object { $_.Name -match '\.(py|js|kt|java|json|xml|ps1)$' } | Select-Object -First 1
+            if ($temCodigo) { return 'codigo' }
+        }
+        return 'vivo'
+    }
+    if ($Caminho -match '\.(py|ps1|js|html|css|kt|java|kts|gradle|json|xml)$') { return 'codigo' }
+    return 'vivo'
+}
+
+function Test-PreFlightCodigo {
+    param([string]$RepoPath, [string[]]$Arquivos)
+    $falhas = New-Object System.Collections.Generic.List[string]
+    foreach ($a in $Arquivos) {
+        $full = Join-Path $RepoPath $a
+        if (-not (Test-Path -LiteralPath $full)) { continue }
+        if ($a -match '\.py$') {
+            python -m py_compile $full *> $null
+            if ($LASTEXITCODE -ne 0) { $falhas.Add($a) }
+        } elseif ($a -match '\.js$' -and (Get-Command node -ErrorAction SilentlyContinue)) {
+            node --check $full *> $null
+            if ($LASTEXITCODE -ne 0) { $falhas.Add($a) }
+        }
+    }
+    return $falhas
+}
+
+function Test-ArquivoTrackeado {
+    param([string]$RepoPath, [string]$CaminhoRelativo)
+    if ([string]::IsNullOrWhiteSpace($CaminhoRelativo)) { return $false }
+    $r = git -C $RepoPath ls-files -- $CaminhoRelativo 2>$null
+    return [bool]($r | Where-Object { $_.Trim() })
+}
+
+function Add-GitignoreLixo {
+    param([string]$RepoPath)
+    $gi = Join-Path $RepoPath '.gitignore'
+    $alvo = @('__pycache__/', '*.pyc')
+    $atuais = @()
+    if (Test-Path $gi) { $atuais = @(Get-Content $gi -ErrorAction SilentlyContinue | ForEach-Object { $_.Trim() }) }
+    $faltam = @($alvo | Where-Object { $atuais -notcontains $_ })
+    if ($faltam.Count -gt 0) {
+        try {
+            Add-Content -Path $gi -Value (($faltam) -join "`r`n") -Encoding UTF8 -ErrorAction Stop
+            Write-Log "GITIGNORE ${RepoPath}: adicionado $($faltam -join ', ')"
+        } catch { Write-Log "GITIGNORE falhou em ${RepoPath}: $($_.Exception.Message)" }
+    }
+}
+
+function Invoke-PushELimpeza {
+    param([string]$Path, [string]$RepoKey, [bool]$DoPush, $Cfg)
+    if (-not $DoPush) { return $null }
+    $pushOut = git push 2>&1 | Out-String
+    Write-Log "PUSH ${RepoKey}: $($pushOut.Trim())"
+    if ($LASTEXITCODE -ne 0) { return 'PUSH_FALHOU' }
+    if ($Cfg.modo -eq 'auto' -and $Cfg.limpeza_pos_push) {
+        $resumoL = Invoke-Limpeza -RepoPath $Path -Cfg $Cfg
+        Write-Log "LIMPEZA ${RepoKey}: $resumoL"
+    }
+    return $null
+}
+
+function Invoke-Limpeza {
+    param([string]$RepoPath, $Cfg)
+    $itens = @(
+        [pscustomobject]@{ padrao='__pycache__'; tipo='pastas';   idade_dias=0; escopo='repo' },
+        [pscustomobject]@{ padrao='*.pyc';       tipo='arquivos'; idade_dias=0; escopo='repo' },
+        [pscustomobject]@{ padrao='*.log';       tipo='arquivos'; idade_dias=7; escopo='runtime' },
+        [pscustomobject]@{ padrao='*';           tipo='arquivos'; idade_dias=3; escopo='temp-opencode' },
+        [pscustomobject]@{ padrao='persistencia-*.lock'; tipo='arquivos'; idade_dias=0; escopo='temp-locks' }
+    )
+    if ($Cfg -and ($Cfg.PSObject.Properties.Name -contains 'limpeza_itens') -and $Cfg.limpeza_itens) {
+        $itens = @($Cfg.limpeza_itens)
+    }
+    $apagados = 0; $bytes = [long]0
+    foreach ($it in $itens) {
+        $raizAlvo = $null
+        if     ($it.escopo -eq 'repo')          { $raizAlvo = $RepoPath }
+        elseif ($it.escopo -eq 'runtime')       { if (Test-Path "$RepoPath\runtime") { $raizAlvo = "$RepoPath\runtime" } }
+        elseif ($it.escopo -eq 'temp-opencode') { $raizAlvo = Join-Path $env:TEMP 'opencode' }
+        elseif ($it.escopo -eq 'temp-locks')    { $raizAlvo = $env:TEMP }
+        if (-not $raizAlvo -or -not (Test-Path $raizAlvo)) { continue }
+        $cutoff = (Get-Date).AddDays(-1 * [double]$it.idade_dias)
+        if ($it.tipo -eq 'pastas') {
+            $alvos = Get-ChildItem $raizAlvo -Recurse -Directory -Filter $it.padrao -ErrorAction SilentlyContinue
+            foreach ($d in @($alvos)) {
+                if ($d.LastWriteTime -gt $cutoff) { continue }
+                $rel = ''
+                if ($d.FullName.StartsWith($RepoPath)) { $rel = $d.FullName.Substring($RepoPath.Length).TrimStart('\','/') -replace '\\','/' }
+                if (Test-ArquivoTrackeado -RepoPath $RepoPath -CaminhoRelativo $rel) { continue }
+                try {
+                    $sz = (Get-ChildItem $d.FullName -Recurse -File -ErrorAction SilentlyContinue | Measure-Object Length -Sum).Sum
+                    Remove-Item -LiteralPath $d.FullName -Recurse -Force -ErrorAction Stop
+                    $apagados++; if ($sz) { $bytes += [long]$sz }
+                } catch { Write-Log "LIMPEZA: falha em $($d.FullName): $($_.Exception.Message)" }
+            }
+        } else {
+            $alvos = Get-ChildItem $raizAlvo -Recurse -File -Include $it.padrao -ErrorAction SilentlyContinue
+            foreach ($f in @($alvos)) {
+                if ($f.LastWriteTime -gt $cutoff) { continue }
+                $rel = ''
+                if ($f.FullName.StartsWith($RepoPath)) { $rel = $f.FullName.Substring($RepoPath.Length).TrimStart('\','/') -replace '\\','/' }
+                if (Test-ArquivoTrackeado -RepoPath $RepoPath -CaminhoRelativo $rel) { continue }
+                try {
+                    Remove-Item -LiteralPath $f.FullName -Force -ErrorAction Stop
+                    $apagados++; $bytes += [long]$f.Length
+                } catch { Write-Log "LIMPEZA: falha em $($f.FullName): $($_.Exception.Message)" }
+            }
+        }
+    }
+    return '{0} itens, {1:N2} MB liberados' -f $apagados, ($bytes/1MB)
+}
+
 function Invoke-RepoCommit {
     param([string]$RepoKey, [string]$MsgLabel, [switch]$DoPush, [string]$UserMsg)
     $path = Get-RepoPath $RepoKey
@@ -101,6 +222,11 @@ function Invoke-RepoCommit {
     New-Item -Path $lock -ItemType File -Force -ErrorAction SilentlyContinue | Out-Null
     try {
         $cfg = Get-Config
+        foreach ($kv in @(@('ultimo_auto_commit',$null),@('debounce_minutos',30),@('preflight_codigo',$true),@('limpeza_pos_push',$true))) {
+            if (-not ($cfg.PSObject.Properties.Name -contains $kv[0])) {
+                $cfg | Add-Member -NotePropertyName $kv[0] -NotePropertyValue $kv[1] -Force
+            }
+        }
         Push-Location $path
         if ($DoPush) {
             $pullOut = git pull --ff-only 2>&1 | Out-String
@@ -113,10 +239,51 @@ function Invoke-RepoCommit {
         }
         $status = git status --porcelain 2>&1 | Out-String
         if (-not $status.Trim()) {
-            if ($DoPush) { $pushOut = git push 2>&1 | Out-String; Write-Log "PUSH ${RepoKey}: $($pushOut.Trim())" }
+            $rPush = Invoke-PushELimpeza -Path $path -RepoKey $RepoKey -DoPush:$DoPush -Cfg $cfg
             Pop-Location; Remove-Item $lock -Force -ErrorAction SilentlyContinue
+            if ($rPush) { return $rPush }
             return 'CLEAN'
         }
+
+        # ---- politicas do modo AUTO (modo MANUAL mantem comportamento original) ----
+        if ($cfg.modo -eq 'auto') {
+            $codigos = @(); $vivos = 0
+            foreach ($l in ($status -split "`n" | Where-Object { $_.Trim() })) {
+                if ($l.Length -lt 4) { continue }
+                $caminho = $l.Substring(3).Trim()
+                $tipo = Get-TipoPendencia -Caminho $caminho -RepoPath $path
+                if ($tipo -eq 'codigo') { $codigos += $caminho } else { $vivos++ }
+            }
+            # preflight minimo de codigo: quebrado nao sobe, vira snapshot recuperavel
+            if ($codigos.Count -gt 0 -and $cfg.preflight_codigo) {
+                $alvos = @($codigos | Where-Object { Test-Path (Join-Path $path $_) })
+                $falhas = Test-PreFlightCodigo -RepoPath $path -Arquivos $alvos
+                if ($falhas.Count -gt 0) {
+                    # stash create ignora untracked: stage temporario para o snapshot pegar tudo
+                    git add -A 2>&1 | Out-Null
+                    foreach ($ex in @($cfg.excluir)) { if ($ex) { git reset -q -- "$ex" 2>&1 | Out-Null } }
+                    $snap = git stash create "[auto-wip] codigo quebrado: $($falhas -join ', ')"
+                    git reset -q 2>&1 | Out-Null
+                    if ($snap) { git stash store -m "[auto-wip $(Get-Date -Format 'yyyy-MM-dd HH:mm')] $($falhas -join ', ')" $snap | Out-Null }
+                    Write-Log "AUTO WIP ${RepoKey}: preflight falhou ($($falhas -join ', ')); snapshot guardado, nada commitado"
+                    Pop-Location; Remove-Item $lock -Force -ErrorAction SilentlyContinue
+                    return 'WIP_QUEBRADO'
+                }
+            }
+            # debounce: estado vivo sozinho espera o lote; codigo passa na hora
+            if ($codigos.Count -eq 0 -and $cfg.ultimo_auto_commit) {
+                try {
+                    $dt = [datetime]::Parse($cfg.ultimo_auto_commit)
+                    if (((Get-Date) - $dt).TotalMinutes -lt [double]$cfg.debounce_minutos) {
+                        Pop-Location; Remove-Item $lock -Force -ErrorAction SilentlyContinue
+                        return 'DEBOUNCE'
+                    }
+                } catch {}
+            }
+            # lixo estrutural nunca entra no espelho: garante o .gitignore antes do add
+            Add-GitignoreLixo -RepoPath $path
+        }
+
         git add -A 2>&1 | Out-Null
         foreach ($ex in @($cfg.excluir)) {
             if ($ex) { git reset -q -- "$ex" 2>&1 | Out-Null }
@@ -132,12 +299,13 @@ function Invoke-RepoCommit {
         }
         $commitHash = git rev-parse --short HEAD 2>$null
         Write-Log "COMMIT ${RepoKey}: $commitHash - $msg"
-        if ($DoPush) {
-            $pushOut = git push 2>&1 | Out-String
-            Write-Log "PUSH ${RepoKey}: $($pushOut.Trim())"
+        if ($cfg.modo -eq 'auto') {
+            $cfg | Add-Member -NotePropertyName ultimo_auto_commit -NotePropertyValue (Get-Date -Format 'o') -Force
+            Set-Config $cfg
         }
-        Pop-Location
-        Remove-Item $lock -Force -ErrorAction SilentlyContinue
+        $rPush = Invoke-PushELimpeza -Path $path -RepoKey $RepoKey -DoPush:$DoPush -Cfg $cfg
+        Pop-Location; Remove-Item $lock -Force -ErrorAction SilentlyContinue
+        if ($rPush) { return $rPush }
         return "COMMIT:$commitHash"
     } catch {
         Write-Log "ERRO ${RepoKey}: $_"

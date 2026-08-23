@@ -450,6 +450,8 @@
     460,
     461,
     462,
+    463,
+    464,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -1738,6 +1740,8 @@
     "padrao",
     "erro",
     "padrao",
+    "decisao",
+    "episodio",
     "nota",
     "nota",
     "nota",
@@ -3026,6 +3030,8 @@
     "instalados 5 comandos globais do cli-anything em ~/.config/opencode/commands e criada habilidade interna mcp/desenvolvimento/habilidades/cli-anything com skill.md destilada em pt-br e references/harness.md preservada localmente. diretriz do usuario: capacidades externas devem ser assimiladas e internalizadas, ecossistema autossuficiente sem depender de ferramentas externas. se o projeto externo sumir, a metodologia continua viva aqui. alta-confianca skill habilidades desenvolvimento mcp ferramentas anything padrao",
     "a memoria anterior (#459) afirmava que o keystore estava versionado no historico - errado. git ls-files lista o indice, nao commits; o arquivo estava apenas staged sem commit. verificacao definitiva: git log --all -- release.jks vazio em todas as branches locais e remota. o github nunca teve a chave porque o unico commit que a incluiria falhou pelo bug de identidade. estado seguro: arquivo fora do tracking, *.jks e *.keystore ignorados, varredura de segredos nos 14 repos encontrou zero chaves reais. alta-confianca errado historico identidade versionado bug pelo erro",
     "aplicada a metodologia cli-anything internalizada para gerar o primeiro harness real do ecossistema: projetos/mp3player/agent-harness com cli python stdlib pura (info, devices, build, install, launch, stop, uninstall, logcat, screenshot), backend wrapper de gradlew/adb, 10 testes unittest 100% aprovados e e2e real contra dispositivo 6d92eed7 (launch, screenshot 604kb, logcat, stop). teste adversarial encontrou bug de contrato json (campo erro ausente em falha adb) corrigido no ato. lacunas registradas em test.md para futuro refine: filtro logcat por package e comandos room. alta-confianca 604kb 6d92eed7 dispositivo e2e aprovados 100 padrao",
+    "usuario ofereceu liberdade para o agente escolher seu proprio nome. escolha registrada: grau, derivado do ecosystemumgrau e da missao de tornar tudo um grau mais efetivo e inteligente. jarvis permanece como apelido da bridge de voz e edge como sintetizador tts. comando eco segue exclusivamente para ativacao do modo voz. em todas as sessoes futuras o agente responde pelo nome grau quando chamado. alta-confianca proprio escolher nome liberdade inteligente tts decisao",
+    "instalados comandos globais, metodologia internalizada como habilidade soberana, harness mp3player criado com 10 testes aprovados e e2e real no dispositivo, identidade grau adotada. tarefa concluida com sucesso. adotada grau identidade dispositivo real e2e episodio",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -8045,12 +8051,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 104095,
-  "count": 1286,
-  "count_mem": 450,
+  "vocab_size": 104161,
+  "count": 1288,
+  "count_mem": 452,
   "count_notas": 836,
   "fingerprint": [
-    450,
+    452,
     [
       1787445444.4,
       1787445292.7,

@@ -1,5 +1,5 @@
 ---
-tags: [decisao, dentro, multiline, opencode, sessão, strings]
+tags: [decisao, dentro, linha, multiline, opencode, strings]
 aliases: [Fase A concluída: catálogo real no Supabase (64 obras via TM]
 date: 2026-08-22
 ---

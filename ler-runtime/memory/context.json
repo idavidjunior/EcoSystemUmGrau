@@ -1,0 +1,142 @@
+{
+  "goal_analysis": {
+    "raw": "Criar um aplicativo Android para registrar gastos, com persistencia local e integracao com API de cotacao",
+    "objective": "Criar um aplicativo android para registrar gastos, com persistencia local e integracao com api de cotacao",
+    "domain": "android",
+    "task_type": "creation",
+    "technologies": [
+      "android"
+    ],
+    "requirements": [
+      "Understand and implement the requested functionality"
+    ],
+    "constraints": [
+      "Must use Git versioning"
+    ],
+    "dependencies": [
+      "Android SDK",
+      "Java/JDK",
+      "Build tools"
+    ],
+    "assumptions": [
+      "Android SDK is installed and configured",
+      "All dependencies can be installed via standard package managers"
+    ],
+    "success_criteria": [
+      "APK compilado sem erros",
+      "Aplicativo abre no dispositivo",
+      "Funcoes principais funcionando",
+      "Codigo versionado no Git",
+      "Documentacao minima gerada"
+    ],
+    "complexity": 10,
+    "estimated_phases": [
+      {
+        "phase": 1,
+        "name": "Analise",
+        "description": "Analisar requisitos e ambiente"
+      },
+      {
+        "phase": 2,
+        "name": "Planejamento",
+        "description": "Criar estrategia e plano de execucao"
+      },
+      {
+        "phase": 3,
+        "name": "Implementacao",
+        "description": "Desenvolver a solucao"
+      },
+      {
+        "phase": 6,
+        "name": "Revisao",
+        "description": "Revisar e refinar implementacao"
+      },
+      {
+        "phase": 4,
+        "name": "Testes",
+        "description": "Validar funcionamento"
+      },
+      {
+        "phase": 5,
+        "name": "Entrega",
+        "description": "Finalizar e apresentar resultado"
+      }
+    ],
+    "risks": [
+      {
+        "risk": "Android SDK version mismatch",
+        "severity": "high"
+      },
+      {
+        "risk": "External API may be unavailable or rate-limited",
+        "severity": "medium"
+      },
+      {
+        "risk": "Requirements may be incomplete or ambiguous",
+        "severity": "low"
+      }
+    ],
+    "acceptance_criteria": [
+      "Understand and implement the requested functionality implementado e funcional",
+      "Nenhum erro critico no funcionamento basico",
+      "Codigo compila/executa sem erros"
+    ],
+    "definition_of_done": [
+      "Todos os requisitos implementados",
+      "Codigo compila e executa sem erros",
+      "Testes basicos aprovados",
+      "Evidencias de funcionamento coletadas",
+      "Auditoria final aprovada",
+      "Relatorio final gerado",
+      "Codigo versionado no Git"
+    ],
+    "goal_spec": {
+      "objective": "Criar um aplicativo android para registrar gastos, com persistencia local e integracao com api de cotacao",
+      "requirements": [
+        "Understand and implement the requested functionality"
+      ],
+      "constraints": [
+        "Must use Git versioning"
+      ],
+      "dependencies": [
+        "Android SDK",
+        "Java/JDK",
+        "Build tools"
+      ],
+      "assumptions": [
+        "Android SDK is installed and configured",
+        "All dependencies can be installed via standard package managers"
+      ],
+      "acceptance_criteria": [
+        "Understand and implement the requested functionality implementado e funcional",
+        "Nenhum erro critico no funcionamento basico",
+        "Codigo compila/executa sem erros"
+      ],
+      "definition_of_done": [
+        "Todos os requisitos implementados",
+        "Codigo compila e executa sem erros",
+        "Testes basicos aprovados",
+        "Evidencias de funcionamento coletadas",
+        "Auditoria final aprovada",
+        "Relatorio final gerado",
+        "Codigo versionado no Git"
+      ],
+      "risks": [
+        {
+          "risk": "Android SDK version mismatch",
+          "severity": "high"
+        },
+        {
+          "risk": "External API may be unavailable or rate-limited",
+          "severity": "medium"
+        },
+        {
+          "risk": "Requirements may be incomplete or ambiguous",
+          "severity": "low"
+        }
+      ]
+    },
+    "spec_markdown": "---\nid: spec-criar-um-aplicativo-android-para-registrar-gastos-com-persis\nversao: 0.1.0\nstatus: proposta\ncomponente: .\ntags: [ler, goal-analysis]\ndata: 2026-08-13\n---\n\n# Spec — criar-um-aplicativo-android-para-registrar-gastos-com-persis\n\n## Objetivo\n\nCriar um aplicativo android para registrar gastos, com persistencia local e integracao com api de cotacao\n\n## Requisitos\n\n1. Understand and implement the requested functionality\n\n## Restrições\n\n- Must use Git versioning\n\n## Dependências\n\n- Android SDK\n- Java/JDK\n- Build tools\n\n## Premissas\n\n- Android SDK is installed and configured\n- All dependencies can be installed via standard package managers\n\n## Entradas e Saídas\n\n- Entrada: interface do aplicativo Android (toques, formularios, eventos de sistema).\n- Saída: comportamento do app atualizado na tela e no dispositivo.\n- Efeito colateral: dados persistidos localmente no aparelho. E versionado no Git.\n\n## Casos de Borda\n\n- SDK/ferramentas de build ausentes ou com versão incompatível\n- Serviço externo indisponível ou com rate limit (timeout/retry/fallback)\n- Requisitos ambíguos ou incompletos\n- Entradas vazias ou inválidas\n- Execução repetida (idempotência e estado parcial)\n\n## Critérios de Aceitação\n\n- Understand and implement the requested functionality implementado e funcional\n- Nenhum erro critico no funcionamento basico\n- Codigo compila/executa sem erros\n\n## Definition of Done\n\n- [ ] Todos os requisitos implementados\n- [ ] Codigo compila e executa sem erros\n- [ ] Testes basicos aprovados\n- [ ] Evidencias de funcionamento coletadas\n- [ ] Auditoria final aprovada\n- [ ] Relatorio final gerado\n- [ ] Codigo versionado no Git\n\n## Riscos\n\n- Android SDK version mismatch — severidade high\n- External API may be unavailable or rate-limited — severidade medium\n- Requirements may be incomplete or ambiguous — severidade low\n\n## Testes Relacionados\n\n- Testes unitários/instrumentados do módulo do app (diretório de testes do aplicativo).\n- Teste de regressão: repetir o fluxo principal após alterações\n",
+    "analyzed_at": "2026-08-13T20:42:19.362380"
+  }
+}

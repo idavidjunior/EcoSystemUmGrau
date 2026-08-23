@@ -1,15 +1,3 @@
-﻿# Python
 __pycache__/
 *.pyc
-.pytest_cache/
-
-# Runtime data (regeneravel dos aprendizados)
-checkpoints/
-logs/
-memory/
-reports/
-projects/
-
-# Env
-.env
-config/.env
+*.log

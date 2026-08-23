@@ -3,5 +3,9 @@
     "excluir":  [
 
                 ],
-    "ultima_sync":  null
+    "ultima_sync":  null,
+    "debounce_minutos":  30,
+    "preflight_codigo":  true,
+    "limpeza_pos_push":  true,
+    "ultimo_auto_commit":  "2026-08-21T19:00:00.0000000-03:00"
 }
