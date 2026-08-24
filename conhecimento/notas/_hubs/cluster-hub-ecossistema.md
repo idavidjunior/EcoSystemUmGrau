@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**219 notas** do cluster ecossistema.
+**220 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -145,6 +145,7 @@
 - [[importação-de-pasta-preservando-árvore-remoção-de-referência]]
 - [[integracao-completa-mcps-offline-placeholder]]
 - [[integrity-guard-vigilante-dados]]
+- [[janela-flutuante-para-visuais-sem-navegador]]
 - [[jarvis-do-celular-e-do-pc-um-só-cérebro-arquitetura-sincroni]]
 - [[junkscanner-benchmark-do-scan-incremental]]
 - [[junkscanner-scan-incremental-cache-de-hash-memoização]]

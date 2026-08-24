@@ -16,7 +16,5 @@ contexto: Usuario pediu para verificar a conexao com o Jarvis. Constatado que a 
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]
-- [[ecow-e-ecow-abrirfocar-o-cerebro-vivo]]
 - [[integrity-guard-vigilante-dados]]
 - [[padrao-hub-padroes]]
-- [[padrao-organizacao-comandos]]

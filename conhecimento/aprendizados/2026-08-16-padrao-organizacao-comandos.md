@@ -154,6 +154,7 @@ aprendizado: >
 - [[inline-editing-pattern]]
 - [[integrity-guard-vigilante-dados]]
 - [[itunes-search-with-scoring-thresholds]]
+- [[janela-flutuante-para-visuais-sem-navegador]]
 - [[java-concorrência-com-threads-e-locks]]
 - [[java-garbage-collection-e-tuning]]
 - [[java-jvm-bytecode-e-memory-model]]

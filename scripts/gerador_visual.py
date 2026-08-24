@@ -14,10 +14,44 @@ Nunca abre navegador nem servidor. Apenas cria o arquivo.
 import argparse
 import json
 import os
+import subprocess
 import sys
 import tempfile
 from datetime import datetime
 from pathlib import Path
+
+MOTORES_JANELA = [
+    r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+    r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+    r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+    r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+]
+
+
+def abrir_janela_flutuante(arquivo_html: Path) -> str:
+    """Abre o HTML numa janela própria estilo aplicativo (sem barras/abas).
+
+    Usa WMI para criar o processo fora da árvore da sessão: processos filhos
+    diretos são mortos quando o comando pai termina.
+    """
+    url = arquivo_html.resolve().as_uri()
+    for motor in MOTORES_JANELA:
+        if os.path.isfile(motor):
+            cmd = f'"{motor}" --app="{url}" --window-size=980,760'
+            cmd_ps = cmd.replace("'", "''")
+            ps_cmd = (
+                "$r = Invoke-CimMethod -ClassName Win32_Process "
+                "-MethodName Create -Arguments @{CommandLine='"
+                + cmd_ps + "'}; exit $r.ReturnValue"
+            )
+            resultado = subprocess.run(
+                ["powershell", "-NoProfile", "-Command", ps_cmd],
+                capture_output=True, text=True,
+                creationflags=subprocess.CREATE_NO_WINDOW,
+            )
+            if resultado.returncode == 0:
+                return f"{Path(motor).name} via WMI (janela independente)"
+    return "nenhum motor de janela encontrado; abra o arquivo manualmente"
 
 BASE_CSS = """
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -155,6 +189,24 @@ def _render_mockup(dados: dict) -> str:
             f"repeat(auto-fit,minmax(320px,1fr))\">{colunas}</div>")
 
 
+def _render_composto(dados: dict) -> str:
+    partes = []
+    for i, secao in enumerate(dados.get("secoes", [])):
+        tipo = secao.get("tipo")
+        render = RENDERIZADORES.get(tipo)
+        if render is None or tipo == "composto":
+            continue
+        sub = secao.get("titulo", "")
+        if sub:
+            partes.append(
+                f"<h2 style=\"max-width:900px;margin:28px auto 12px;"
+                f"font-size:16px;font-weight:600;color:#aeb6c8\">"
+                f"{_esc(sub)}</h2>"
+            )
+        partes.append(render(secao.get("dados", {})))
+    return "".join(partes)
+
+
 def _render_texto(dados: dict) -> str:
     paragrafos = "".join(
         f"<p style=\"max-width:900px;margin:0 auto 14px;line-height:1.6;"
@@ -178,6 +230,7 @@ RENDERIZADORES = {
     "barras": _render_barras,
     "mockup": _render_mockup,
     "texto": _render_texto,
+    "composto": _render_composto,
 }
 
 
@@ -201,6 +254,8 @@ def main():
     parser.add_argument("--json", help="dados JSON inline")
     parser.add_argument("--arquivo", help="arquivo JSON com os dados")
     parser.add_argument("--salvar", help="persistir em caminho específico")
+    parser.add_argument("--mostrar", action="store_true",
+                        help="abrir janela flutuante estilo aplicativo")
     args = parser.parse_args()
 
     if args.json:
@@ -221,7 +276,11 @@ def main():
     caminho = gerar(args.tipo, args.titulo, dados, destino)
     tamanho = caminho.stat().st_size
     print(f"[OK] visual criado: {caminho} ({tamanho} bytes)")
-    print("Abra o arquivo manualmente quando quiser ver.")
+    if args.mostrar:
+        motor = abrir_janela_flutuante(caminho)
+        print(f"[OK] janela flutuante: {motor}")
+    else:
+        print("Use --mostrar para abrir na janela flutuante.")
 
 
 if __name__ == "__main__":

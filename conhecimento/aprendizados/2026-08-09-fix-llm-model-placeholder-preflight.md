@@ -107,6 +107,7 @@ impacto: >
 - [[idioma-padrao-pt-br]]
 - [[ilhas-no-grafo-notas-com-grau-0-e-como-conecta-las]]
 - [[importação-de-pasta-preservando-árvore-remoção-de-referência]]
+- [[janela-flutuante-para-visuais-sem-navegador]]
 - [[jarvis-do-celular-e-do-pc-um-só-cérebro-arquitetura-sincroni]]
 - [[junkscanner-benchmark-do-scan-incremental]]
 - [[junkscanner-scan-incremental-cache-de-hash-memoização]]

@@ -12933,5 +12933,51 @@
     "access_count": 0,
     "created_at": "2026-08-24T08:49:47.267668",
     "last_accessed": "2026-08-24T08:49:47.267668"
+  },
+  {
+    "id": 511,
+    "kind": "padrao",
+    "task": "Visual flutuante: chrome app-mode via WMI resolve fechamento",
+    "summary": "Causa raiz das janelas que abriam e fechavam: processos filhos da sessao sao mortos por job object quando o comando termina (inclusive o iexplore da associacao .html morta). Solucao validada: chrome.exe --app=file:///... abre janela flutuante SEM navegador (sem barras/abas) e Win32_Process.Create via WMI cria o processo fora da arvore. Edge nao existe nesta maquina; chrome esta em Program Files\\Google\\Chrome. gerador_visual.py --mostrar implementa tudo.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "associacao",
+      "iexplore",
+      "fechavam",
+      "inclusive",
+      "termina",
+      "abriam"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-24T09:36:29.932996",
+    "last_accessed": "2026-08-24T09:36:29.932996"
+  },
+  {
+    "id": 512,
+    "kind": "erro",
+    "task": "Associacao HTML corrigida: classe legada apontava para IE morto",
+    "summary": "HKLM htmlfile shell open command apontava para iexplore.exe descontinuado. Escrita via ftype exige admin (acesso negado). Solucao sem elevacao: override em HKCU\\Software\\Classes\\htmlfile\\shell\\open\\command -> chrome --single-argument %1, que tem precedencia na fusao do HKCR. Backup antes em runtime\\backups\\assoc_html_antes_20260824.reg. UserChoice do usuario ja era ChromeHTML (sao). Teste ponta-a-ponta via WMI+powershell Start-Process confirmou Chrome abrindo janela viva.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "hkcr",
+      "fusao",
+      "precedencia",
+      "tem",
+      "argument",
+      "single"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-24T09:46:52.335474",
+    "last_accessed": "2026-08-24T09:46:52.335474"
   }
 ]

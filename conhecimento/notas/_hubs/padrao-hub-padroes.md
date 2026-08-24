@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**278 notas** conectadas a este hub.
+**279 notas** conectadas a este hub.
 
 
 ## Notas
@@ -133,6 +133,7 @@
 - [[inline-editing-pattern]]
 - [[integrity-guard-vigilante-dados]]
 - [[itunes-search-with-scoring-thresholds]]
+- [[janela-flutuante-para-visuais-sem-navegador]]
 - [[java-concorrência-com-threads-e-locks]]
 - [[java-garbage-collection-e-tuning]]
 - [[java-jvm-bytecode-e-memory-model]]
