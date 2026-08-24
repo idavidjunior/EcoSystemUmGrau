@@ -59,7 +59,8 @@ function Get-RepoPath {
         '^(ler|ler-runtime)$' { return $lerDir }
         '^proj:(.+)$'        { return $Matches[1].Trim() }
         default {
-            if (Test-Path $Key) { return $Key }
+            if (Test-Path -LiteralPath $Key) { return $Key }
+            if (Test-Path -LiteralPath "$projectsDir\$Key") { return "$projectsDir\$Key" }
             return $ecoDir
         }
     }

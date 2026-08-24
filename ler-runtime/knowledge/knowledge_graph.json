@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-23T19:54:13.621103",
+  "last_updated": "2026-08-23T23:15:19.929684",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -2032,6 +2032,14 @@
       "description": "---\ntipo: padrao\ntags: [junkscanner, android, performance, cache, scan-incremental]\ndata: 2026-08-23\ncontexto: Pendência #2 do JunkScanner — scans repetidos reprocessavam tudo (hash SHA-256 de todos os candidatos a duplicado + rescan das mesmas pastas nas categorias cache/temp/logs).\ndecisao: Duas o",
       "domain": "general",
       "extracted_at": "2026-08-23T19:48:37.202532"
+    },
+    {
+      "source": "opencode",
+      "title": "CI de Android em máquina fraca + keystore estável",
+      "action": "Build do Mp3Player impossível no PC local (4GB RAM); deploy ao celular exigia APK assinado com a mesma chave.",
+      "description": "---\ntipo: padrao\ntags: [ci, android, gradle, assinatura, gate, mp3player]\ndata: 2026-08-23\ncontexto: Build do Mp3Player impossível no PC local (4GB RAM); deploy ao celular exigia APK assinado com a mesma chave.\ndecisao: |\n  1. CI no GitHub Actions (.github/workflows/build.yml) constrói o APK: ubuntu",
+      "domain": "general",
+      "extracted_at": "2026-08-23T23:14:35.452192"
     }
   ],
   "decisions": [

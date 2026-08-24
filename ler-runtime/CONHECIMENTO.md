@@ -1,8 +1,8 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-23T19:54:13.687201
+**Exportado em:** 2026-08-23T23:15:20.411040
 **Projetos:** 4
-**Padroes Tecnicos:** 281
+**Padroes Tecnicos:** 282
 **Decisoes:** 75
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 69
@@ -865,6 +865,7 @@ decisao: "Implementado mecanismo de saudação espontânea autom
 | 279 | opencode+opencode+opencode | @ecow e /ecow — abrir/focar o Cerebro Vivo |
 | 280 | opencode | JunkScanner — Benchmark do scan incremental |
 | 281 | opencode | JunkScanner — Scan incremental (cache de hash + memoização) |
+| 282 | opencode | CI de Android em máquina fraca + keystore estável |
 
 ## Bug Fixes e Corrigidos
 
@@ -2079,7 +2080,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-23T19:54:13.621103
+**Ultima atualizacao:** 2026-08-23T23:15:19.929684
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*
