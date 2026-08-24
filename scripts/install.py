@@ -55,10 +55,10 @@ def step(n, msg):
     print(f"\n{CYAN}>>> [{n}] {msg}{RESET}")
 
 
-def run(cmd, cwd=None, capture=False):
+def run(cmd, cwd=None, capture=False, timeout=300):
     try:
         r = subprocess.run(
-            cmd, shell=True, cwd=cwd, capture_output=capture, text=True, timeout=300
+            cmd, shell=True, cwd=cwd, capture_output=capture, text=True, timeout=timeout
         )
         return r.returncode, r.stdout.strip() if capture else "", r.stderr.strip() if capture else ""
     except subprocess.TimeoutExpired:
@@ -114,17 +114,6 @@ def step_venv(no_venv=False):
         warn("Pulando venv (--no-venv)")
         return False
 
-    if not VENV_DIR.exists():
-        info("Criando .venv...")
-        code, _, err = run(f'"{sys.executable}" -m venv "{VENV_DIR}"')
-        if code != 0:
-            warn(f"Falha ao criar venv: {err}. Continuando no global.")
-            return False
-        ok("Virtualenv criado")
-    else:
-        ok("Virtualenv ja existe")
-
-    # Return the venv python path
     if WIN:
         venv_python = VENV_DIR / "Scripts" / "python.exe"
         venv_pip = VENV_DIR / "Scripts" / "pip.exe"
@@ -132,10 +121,41 @@ def step_venv(no_venv=False):
         venv_python = VENV_DIR / "bin" / "python"
         venv_pip = VENV_DIR / "bin" / "pip"
 
+    def create_venv():
+        info("Criando .venv...")
+        # Try with pip first (default)
+        code, _, err = run(f'"{sys.executable}" -m venv "{VENV_DIR}"')
+        if code != 0:
+            # Try without pip as fallback
+            code, _, err = run(f'"{sys.executable}" -m venv "{VENV_DIR}" --without-pip')
+            if code != 0:
+                warn(f"Falha ao criar venv: {err}. Continuando no global.")
+                return False
+            # Bootstrap pip
+            info("Instalando pip no venv...")
+            run(f'"{venv_python}" -m ensurepip --upgrade', capture=True)
+        return True
+
+    if not VENV_DIR.exists():
+        if not create_venv():
+            return False
+        ok("Virtualenv criado")
+    else:
+        # Check if pip exists in existing venv
+        if not venv_pip.exists():
+            warn("Venv sem pip, recriando...")
+            shutil.rmtree(VENV_DIR, ignore_errors=True)
+            if not create_venv():
+                return False
+            ok("Virtualenv recriado")
+        else:
+            ok("Virtualenv ja existe")
+
     if not venv_python.exists():
         warn("Venv corrompido, recriando...")
-        shutil.rmtree(VENV_DIR)
-        run(f'"{sys.executable}" -m venv "{VENV_DIR}"')
+        shutil.rmtree(VENV_DIR, ignore_errors=True)
+        if not create_venv():
+            return False
         if not venv_python.exists():
             return False
 
@@ -147,20 +167,16 @@ def step_deps(python_path=None):
     step(3, "Dependencias Python")
     py = python_path or sys.executable
 
-    # Upgrade pip first
-    info("Atualizando pip...")
-    run(f'"{py}" -m pip install --upgrade pip', capture=True)
-
     if not REQ_FILE.exists():
         warn("requirements.txt nao encontrado, pulando deps")
         return
 
     info("Instalando dependencias do requirements.txt...")
-    code, out, err = run(f'"{py}" -m pip install -r "{REQ_FILE}" --quiet', capture=True)
+    code, out, err = run(f'"{py}" -m pip install -r "{REQ_FILE}" --quiet', capture=True, timeout=600)
     if code == 0:
         ok("Todas as dependencias instaladas")
     else:
-        warn(f"Algumas deps podem ter falhado: {err}")
+        warn(f"Algumas deps podem ter falhado: {err[:200] if err else 'unknown'}")
 
     # Verify critical deps
     critical = ["requests", "pyyaml", "httpx", "websockets"]
@@ -236,10 +252,12 @@ def step_mcp_preflight():
     pf = SCRIPTS_DIR / "preflight_check.py"
     if pf.exists():
         info("Rodando preflight_check.py...")
-        code, out, err = run(f'"{sys.executable}" "{pf}"', capture=True)
+        code, out, err = run(f'"{sys.executable}" "{pf}"', capture=True, timeout=120)
         output = out + err
         if "TODOS TESTES PASSARAM" in output or code == 0:
             ok("Preflight: PASS")
+        elif "timeout" in (err or "").lower():
+            warn("Preflight: timeout (120s). MCPs podem estar indisponiveis.")
         else:
             warn("Preflight: verifique os logs acima")
     else:
