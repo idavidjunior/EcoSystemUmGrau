@@ -725,11 +725,13 @@ $onSinapsesCiclo = {
         Set-Content -Path $marcador -Value (Get-Date).ToString('o') -Encoding UTF8
     } catch { Write-Log "SINAPSES: erro: $_" }
 }
-$sinapsesTimer = New-Object System.Timers.Timer
-$sinapsesTimer.Interval = 3600000   # checa a cada 1h; gate interno de 24h
-$sinapsesTimer.AutoReset = $true
-Register-ObjectEvent $sinapsesTimer "Elapsed" -Action $onSinapsesCiclo > $null
-$sinapsesTimer.Start()
 
-# Mantem vivo
-while ($true) { Start-Sleep -Seconds 10 }
+# SINAPSES roda no loop principal (padrao comprovado): Timer+Register-ObjectEvent
+# nao entrega eventos com Start-Sleep bloqueando o runspace. Gate de 24h no if.
+while ($true) {
+    try {
+        $ultimaSinapses = if (Test-Path $sinapsesMarcador) { (Get-Item $sinapsesMarcador).LastWriteTime } else { [datetime]::MinValue }
+        if (((Get-Date) - $ultimaSinapses).TotalHours -ge 24) { & $onSinapsesCiclo }
+    } catch { Write-Log "SINAPSES loop: erro: $_" }
+    Start-Sleep -Seconds 10
+}

@@ -12817,5 +12817,51 @@
     "access_count": 0,
     "created_at": "2026-08-23T23:12:22.677185",
     "last_accessed": "2026-08-23T23:12:22.677185"
+  },
+  {
+    "id": 506,
+    "kind": "episodio",
+    "task": "Hardware RAM Acer E5-571",
+    "summary": "Notebook Acer Aspire E5-571 com 1x4GB Smart Modular SH564128FJ8NWRNSQR DDR3L 1600MHz SODIMM, slot ChannelA-DIMM0, 2 slots no total, limite 16GB. Upgrade ideal: pente 8GB DDR3L 1600 SODIMM.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "16gb",
+      "limite",
+      "total",
+      "slots",
+      "dimm0",
+      "channela"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-23T23:34:21.495712",
+    "last_accessed": "2026-08-23T23:34:21.495712"
+  },
+  {
+    "id": 507,
+    "kind": "padrao",
+    "task": "Vigilante morria silencioso e timer de evento nao entregava",
+    "summary": "O processo do vigilante.ps1 sumia sem log (pressao de memoria da maquina). E Register-ObjectEvent com Timers.Timer nao executa a Action enquanto o runspace bloqueia em Start-Sleep infinito. Correcao dupla: checagem das Sinapses movida para dentro do loop principal (padrao deterministico) e reinicio pela tarefa agendada. Log provou ciclo as 23h58 apos o restart.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "agendada",
+      "tarefa",
+      "pela",
+      "reinicio",
+      "infinito",
+      "deterministico"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-24T00:08:31.517193",
+    "last_accessed": "2026-08-24T00:08:31.517193"
   }
 ]
