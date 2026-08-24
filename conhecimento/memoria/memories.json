@@ -13048,5 +13048,28 @@
     "access_count": 0,
     "created_at": "2026-08-24T18:52:29.644146",
     "last_accessed": "2026-08-24T18:52:29.644146"
+  },
+  {
+    "id": 516,
+    "kind": "erro",
+    "task": "Preflight e instalador robustos no Windows",
+    "summary": "Corrigido preflight_check.py test_mcp_server: Popen com encoding utf-8+errors=replace evita UnicodeDecodeError (cp1252) que causava erro NoneType.split e travamento aparente; add guarda stdout None. Corrigido install.py step_mcp_preflight: deteccao de pass/fail por ERRO(S) em vez de depender de stderr limpo.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "nonetype",
+      "causava",
+      "cp1252",
+      "unicodedecodeerror",
+      "evita",
+      "replace"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-24T19:13:27.498343",
+    "last_accessed": "2026-08-24T19:13:27.498343"
   }
 ]
