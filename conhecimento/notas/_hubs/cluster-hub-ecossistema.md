@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**220 notas** do cluster ecossistema.
+**221 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -118,6 +118,7 @@
 - [[errado]]
 - [[erro-unicodeencodeerror-no-runtimecontext-cp1252]]
 - [[estilo-de-comunicação-simples-e-direto]]
+- [[estilo-por-pedido-power-bi-implementado]]
 - [[etapa-25-teste-end-to-end]]
 - [[etapa19-tool-permission-runtime]]
 - [[etapa21-memory-learning-consolidation]]

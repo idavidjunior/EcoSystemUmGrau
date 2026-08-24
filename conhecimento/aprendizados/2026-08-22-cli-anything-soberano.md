@@ -92,6 +92,7 @@ HKUDS/CLI-Anything (MIT), metodologia GUI-to-CLI em 7 fases: análise do codebas
 - [[desativar-bridge-android]]
 - [[engenheiro-criterioso]]
 - [[estilo-de-comunicação-simples-e-direto]]
+- [[estilo-por-pedido-power-bi-implementado]]
 - [[etapa24-interface-jarvis]]
 - [[evolução-do-tts-jarvis-naturalidade-via-ssml]]
 - [[fase-a-concluída-catálogo-real-no-supabase-64-obras-via-tmdb]]

@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**279 notas** conectadas a este hub.
+**280 notas** conectadas a este hub.
 
 
 ## Notas
@@ -99,6 +99,7 @@
 - [[engenharia-dívida-técnica-e-manutenibilidade]]
 - [[engenharia-refactoring-seguro]]
 - [[engenharia-requisitos-e-definição-de-escopo]]
+- [[estilo-por-pedido-power-bi-implementado]]
 - [[estrangeirismos-no-pt-br-anglicismos-aceitos-aportuguesament]]
 - [[estratégias-de-tradução-literal-semântica-adaptativa-e-quand]]
 - [[etapa19-tool-permission-runtime]]

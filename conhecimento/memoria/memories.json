@@ -12979,5 +12979,28 @@
     "access_count": 0,
     "created_at": "2026-08-24T09:46:52.335474",
     "last_accessed": "2026-08-24T09:46:52.335474"
+  },
+  {
+    "id": 513,
+    "kind": "preferencia",
+    "task": "Estilo visual segue o pedido: Power BI para dados",
+    "summary": "David instruiu: conforme o pedido, criar o visual no estilo respectivo. Para pedidos de dados/financeiros/analytics usar tema Power BI (fundo #201F1F, tiles #252423, amarelo #F2C811, header com faixa amarela) implementado como tipo 'dashboard' do gerador_visual.py com kpis, donut SVG, gauge, barras e tabela. Mockups continuam com tipo 'mockup'. Abrir sempre via --mostrar (janela flutuante WMI).",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "gerador",
+      "dashboard",
+      "implementado",
+      "amarela",
+      "faixa",
+      "header"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-24T10:23:13.545479",
+    "last_accessed": "2026-08-24T10:23:13.545479"
   }
 ]

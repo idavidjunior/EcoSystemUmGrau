@@ -189,6 +189,139 @@ def _render_mockup(dados: dict) -> str:
             f"repeat(auto-fit,minmax(320px,1fr))\">{colunas}</div>")
 
 
+def _render_dashboard(dados: dict) -> str:
+    css_pbi = """
+    body { background:#201F1F !important; padding:20px !important; }
+    .pbi-header { max-width:1100px; margin:0 auto 18px; display:flex;
+                  justify-content:space-between; align-items:center;
+                  border-bottom:2px solid #F2C811; padding-bottom:10px; }
+    .pbi-header h1 { font-size:18px; color:#fff; font-weight:600; }
+    .pbi-header .marca { color:#F2C811; font-size:12px; letter-spacing:.06em; }
+    .pbi-grade { max-width:1100px; margin:0 auto; display:grid; gap:12px;
+                 grid-template-columns:repeat(12,1fr); }
+    .tile { background:#252423; border-radius:6px; padding:16px;
+            box-shadow:0 1px 3px rgba(0,0,0,.4); }
+    .tile h3 { font-size:12px; color:#B3B0AD; font-weight:600;
+               text-transform:none; margin-bottom:10px; }
+    .kpi-tile { grid-column:span 3; text-align:center; }
+    .kpi-tile .valor { font-size:26px; color:#fff; font-weight:700; }
+    .kpi-tile .rotulo { font-size:11px; color:#8A8886; margin-top:6px; }
+    .kpi-tile .destaque { font-size:11px; color:#F2C811; margin-top:4px; }
+    .meia { grid-column:span 6; }
+    .inteira { grid-column:span 12; }
+    .fatia-legenda { display:flex; justify-content:space-between;
+                     font-size:12px; color:#D3D3D3; padding:3px 0; }
+    .fatia-cor { display:inline-block; width:10px; height:10px;
+                 border-radius:2px; margin-right:8px; vertical-align:middle; }
+    .barra-pbi-fundo { background:#3B3A39; height:18px; border-radius:3px;
+                       margin-top:5px; overflow:hidden; }
+    .barra-pbi-valor { background:#F2C811; height:100%; min-width:4px; }
+    .barra-item .linha span { color:#D3D3D3; font-size:12px; }
+    td, th { border-color:#3B3A39 !important; color:#D3D3D3 !important; }
+    .notas li { background:#252423 !important; border-color:#F2C811 !important; }
+    """
+    partes = [
+        "<style>" + css_pbi + "</style>"
+        "<div class=\"pbi-header\"><h1>" + _esc(dados.get("subtitulo", "")) +
+        "</h1><div class=\"marca\">POWER BI STYLE</div></div>"
+        "<div class=\"pbi-grade\">"
+    ]
+    cores = ["#F2C811", "#118DFF", "#E044A7", "#12239E", "#74AA7C", "#FB8181"]
+    for k in dados.get("kpis", []):
+        partes.append(
+            "<div class=\"tile kpi-tile\"><div class=\"valor\">"
+            + _esc(k.get("valor", "")) + "</div><div class=\"rotulo\">"
+            + _esc(k.get("rotulo", "")) + "</div><div class=\"destaque\">"
+            + _esc(k.get("destaque", "")) + "</div></div>"
+        )
+    for g in dados.get("graficos", []):
+        titulo = g.get("titulo", "")
+        tipo = g.get("tipo", "")
+        if tipo == "donut":
+            fatias = g.get("fatias", [])
+            total = sum(f.get("valor", 0) for f in fatias) or 1
+            offset = 25
+            circulos = ""
+            legendas = ""
+            for i, f in enumerate(fatias):
+                frac = f.get("valor", 0) / total * 100
+                circulos += (
+                    f"<circle r='40' cx='60' cy='60' fill='none' "
+                    f"stroke='{cores[i % len(cores)]}' stroke-width='16' "
+                    f"stroke-dasharray='{frac:.1f} {100 - frac:.1f}' "
+                    f"stroke-dashoffset='{offset}' />"
+                )
+                offset -= frac
+                cor = cores[i % len(cores)]
+                legendas += (
+                    "<div class='fatia-legenda'><span>"
+                    f"<span class='fatia-cor' style='background:{cor}'></span>"
+                    + _esc(f.get("rotulo", "")) + "</span><span>"
+                    + f"{frac:.1f}%</span></div>"
+                )
+            corpo = (
+                "<svg viewBox='0 0 120 120' width='150' height='150' "
+                "style='display:block;margin:0 auto'>"
+                "<circle r='48' cx='60' cy='60' fill='#3B3A39' />"
+                + circulos + "</svg><div style='margin-top:10px'>"
+                + legendas + "</div>"
+            )
+        elif tipo == "gauge":
+            valor = float(g.get("valor", 0))
+            maximo = float(g.get("maximo", 100)) or 1
+            pct = max(0.0, min(100.0, valor / maximo * 100))
+            arco = pct / 200 * 100
+            corpo = (
+                "<svg viewBox='0 0 120 70' width='180' height='105' "
+                "style='display:block;margin:0 auto'>"
+                "<path d='M 15 62 A 45 45 0 0 1 105 62' fill='none' "
+                "stroke='#3B3A39' stroke-width='13' stroke-linecap='round' />"
+                "<path d='M 15 62 A 45 45 0 0 1 105 62' fill='none' "
+                f"stroke='#F2C811' stroke-width='13' stroke-linecap='round' "
+                f"stroke-dasharray='{arco:.1f} 100' /></svg>"
+                "<div style='text-align:center'><span style='font-size:24px;"
+                "color:#fff;font-weight:700'>" + _esc(g.get("rotulo_valor",
+                    f"{valor:g}"))
+                + "</span><div style='font-size:11px;color:#8A8886'>"
+                + _esc(g.get("rotulo", "")) + "</div></div>"
+            )
+        elif tipo == "barras":
+            itens = g.get("itens", [])
+            maximo = max([abs(i.get("valor", 0)) for i in itens] or [1]) or 1
+            blocos = ""
+            for i, item in enumerate(itens):
+                pct = abs(item.get("valor", 0)) / maximo * 100
+                blocos += (
+                    "<div class='barra-item'><div class='linha'>"
+                    "<span>" + _esc(item.get("rotulo", "")) + "</span><span>"
+                    + _esc(item.get("texto", "")) + "</span></div>"
+                    "<div class='barra-pbi-fundo'><div class='barra-pbi-valor'"
+                    f" style='width:{pct:.1f}%;background:"
+                    f"{cores[i % len(cores)]}'></div></div></div>"
+                )
+            corpo = blocos
+        elif tipo == "tabela":
+            corpo = (
+                "<table><thead><tr>"
+                + "".join(f"<th>{_esc(c)}</th>" for c in g.get("colunas", []))
+                + "</tr></thead><tbody>"
+                + "".join(
+                    "<tr>" + "".join(f"<td>{_esc(c)}</td>" for c in linha)
+                    + "</tr>"
+                    for linha in g.get("linhas", [])
+                  )
+                + "</tbody></table>"
+            )
+        else:
+            continue
+        partes.append(
+            f"<div class=\"tile {'meia' if g.get('largura') == 'meia' else 'inteira'}\">"
+            f"<h3>{_esc(titulo)}</h3>{corpo}</div>"
+        )
+    partes.append("</div>")
+    return _com_notas("".join(partes), {"notas": []})
+
+
 def _render_composto(dados: dict) -> str:
     partes = []
     for i, secao in enumerate(dados.get("secoes", [])):
@@ -231,6 +364,7 @@ RENDERIZADORES = {
     "mockup": _render_mockup,
     "texto": _render_texto,
     "composto": _render_composto,
+    "dashboard": _render_dashboard,
 }
 
 

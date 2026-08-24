@@ -500,6 +500,7 @@
     510,
     511,
     512,
+    513,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -1871,6 +1872,7 @@
     "preferencia",
     "padrao",
     "erro",
+    "preferencia",
     "nota",
     "nota",
     "nota",
@@ -3242,6 +3244,7 @@
     "quando david pedir 'visual' (ou materializar informacoes/mockup), gerar arquivo html autocontido via scripts/gerador_visual.py em %temp%\\opencode\\visuals, sem abrir navegador nem servidor. tipos: kpi, tabela, barras, mockup, texto. usar --salvar caminho quando ele quiser persistir como template. dados financeiros: trabalhar por cota de 100 reais. alta-confianca gerador scripts autocontido arquivo gerar informacoes preferencia",
     "causa raiz das janelas que abriam e fechavam: processos filhos da sessao sao mortos por job object quando o comando termina (inclusive o iexplore da associacao .html morta). solucao validada: chrome.exe --app=file:///... abre janela flutuante sem navegador (sem barras/abas) e win32_process.create via wmi cria o processo fora da arvore. edge nao existe nesta maquina; chrome esta em program files\\google\\chrome. gerador_visual.py --mostrar implementa tudo. alta-confianca associacao iexplore fechavam inclusive termina abriam padrao",
     "hklm htmlfile shell open command apontava para iexplore.exe descontinuado. escrita via ftype exige admin (acesso negado). solucao sem elevacao: override em hkcu\\software\\classes\\htmlfile\\shell\\open\\command -> chrome --single-argument %1, que tem precedencia na fusao do hkcr. backup antes em runtime\\backups\\assoc_html_antes_20260824.reg. userchoice do usuario ja era chromehtml (sao). teste ponta-a-ponta via wmi+powershell start-process confirmou chrome abrindo janela viva. alta-confianca hkcr fusao precedencia tem argument single erro",
+    "david instruiu: conforme o pedido, criar o visual no estilo respectivo. para pedidos de dados/financeiros/analytics usar tema power bi (fundo #201f1f, tiles #252423, amarelo #f2c811, header com faixa amarela) implementado como tipo 'dashboard' do gerador_visual.py com kpis, donut svg, gauge, barras e tabela. mockups continuam com tipo 'mockup'. abrir sempre via --mostrar (janela flutuante wmi). alta-confianca gerador dashboard implementado amarela faixa header preferencia",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -8459,12 +8462,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 110063,
-  "count": 1369,
-  "count_mem": 500,
+  "vocab_size": 110125,
+  "count": 1370,
+  "count_mem": 501,
   "count_notas": 869,
   "fingerprint": [
-    500,
+    501,
     [
       1787575287.6,
       1787575064.3,
