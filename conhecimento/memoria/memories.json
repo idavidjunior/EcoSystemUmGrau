@@ -13025,5 +13025,28 @@
     "access_count": 0,
     "created_at": "2026-08-24T17:10:56.064899",
     "last_accessed": "2026-08-24T17:10:56.064899"
+  },
+  {
+    "id": 515,
+    "kind": "erro",
+    "task": "Fix silencio total EqualizerAudioProcessor",
+    "summary": "flip() apos escrita via ShortBuffer-view em cachedOutBuf zerava o output: a view nao move o position do ByteBuffer pai, entao flip colapsava limit para 0 e getOutput devolvia buffer vazio sempre (silencio total desde o primeiro build portado). Correcao: position(0) apos limit(outBytes), sem flip. Diagnostico por instrumentacao EqDbg (qIn/getOut/ACTIVE done outRem) via CI + adb logcat remoto.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "portado",
+      "build",
+      "desde",
+      "vazio",
+      "buffer",
+      "devolvia"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-24T18:52:29.644146",
+    "last_accessed": "2026-08-24T18:52:29.644146"
   }
 ]

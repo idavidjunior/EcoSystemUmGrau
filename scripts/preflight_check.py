@@ -73,13 +73,15 @@ def test_mcp_server(server_name, command, args):
         proc = subprocess.Popen(
             [cmd_expanded] + args_expanded,
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-            text=True, cwd=BASE)
+            text=True, cwd=BASE, encoding='utf-8', errors='replace')
         init = '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}\n'
         tools = '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}\n'
         stdout, stderr = proc.communicate(input=init + tools, timeout=5)
         proc.kill()
         if stderr and 'Error' in stderr:
             return check(f'MCP {server_name}', False, stderr[:200])
+        if not stdout:
+            return check(f'MCP {server_name}', False, 'Sem resposta do servidor')
         # Aceita os dois protocolos de resposta: JSON por linha (servidores
         # legados) e framing MCP oficial (Content-Length: n\r\n\r\n<body>).
         for l in stdout.split('\n'):

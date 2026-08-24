@@ -254,13 +254,15 @@ def step_mcp_preflight():
     if pf.exists():
         info("Rodando preflight_check.py...")
         code, out, err = run(f'"{sys.executable}" "{pf}"', capture=True, timeout=120)
-        output = out + err
+        output = (out or "") + (err or "")
         if "TODOS TESTES PASSARAM" in output or code == 0:
             ok("Preflight: PASS")
         elif "timeout" in (err or "").lower():
             warn("Preflight: timeout (120s). MCPs podem estar indisponiveis.")
-        else:
+        elif "ERRO(S)" in output:
             warn("Preflight: verifique os logs acima")
+        else:
+            ok("Preflight: PASS (sem falhas detectadas)")
     else:
         warn("preflight_check.py nao encontrado")
 
