@@ -17,6 +17,4 @@ contexto: Instalação do projeto externo HKUDS/CLI-Anything no ecossistema, com
 
 - [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-teste-do-vigilante-automático]]
-- [[ecow-e-ecow-abrirfocar-o-cerebro-vivo]]
 - [[padrao-hub-padroes]]
-- [[padrao-organizacao-comandos]]

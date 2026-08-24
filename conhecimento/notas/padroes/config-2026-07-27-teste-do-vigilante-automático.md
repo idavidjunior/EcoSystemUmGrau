@@ -21,6 +21,4 @@ Verificar se o vigilante detecta automaticamente novos arquivos em conhecimento/
 
 - [[cli-anything-internalizado-como-habilidade-soberana]]
 - [[cluster-hub-ecossistema]]
-- [[ecow-e-ecow-abrirfocar-o-cerebro-vivo]]
 - [[padrao-hub-padroes]]
-- [[padrao-organizacao-comandos]]

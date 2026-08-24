@@ -22,4 +22,6 @@ exibia dezenas
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]
+- [[ecow-e-ecow-abrirfocar-o-cerebro-vivo]]
 - [[padrao-hub-padroes]]
+- [[padrao-organizacao-comandos]]

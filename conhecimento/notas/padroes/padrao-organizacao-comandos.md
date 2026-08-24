@@ -1,12 +1,12 @@
 ---
-tags: [dessincronizados, eco, fontes, opencodeopencodeopencode, padrao, sync]
+tags: [agentes, dessincronizados, fontes, opencodeopencodeopencodeopencode, padrao, sync]
 aliases: [padrao organizacao comandos]
 date: 2026-08-17
 ---
 
 # padrao organizacao comandos
 
-**Fonte:** opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -18,8 +18,7 @@ contexto: >
   Limpeza total removeu ~
 ## Conexoes
 
-- [[cli-anything-internalizado-como-habilidade-soberana]]
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-teste-do-vigilante-automático]]
+- [[correção-de-mojibake-no-knowledgegraphjson-utf-8-lido-como-c]]
 - [[ecow-e-ecow-abrirfocar-o-cerebro-vivo]]
 - [[padrao-hub-padroes]]

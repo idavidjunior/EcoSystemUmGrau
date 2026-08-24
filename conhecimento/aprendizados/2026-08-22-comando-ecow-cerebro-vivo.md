@@ -93,6 +93,7 @@ Três camadas enxutas, sem duplicar lógica de foco fora do widget:
 - [[backup-de-apks-fontes-no-github]]
 - [[botao-importar-unificado]]
 - [[build-local-flutter-orquestrador]]
+- [[ci-de-android-em-máquina-fraca-keystore-estável]]
 - [[clausula-petrea-protecao-do-opencode-desktop-resiliencia-da-]]
 - [[compressão-semântica-hierárquica-lições-da-implementação]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]

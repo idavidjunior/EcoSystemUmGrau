@@ -106,6 +106,7 @@ NVIDIA dava timeout (30/60s) e o refino ficava inutil na pratica.
 - [[backup-de-apks-fontes-no-github]]
 - [[botao-importar-unificado]]
 - [[build-local-flutter-orquestrador]]
+- [[ci-de-android-em-máquina-fraca-keystore-estável]]
 - [[clausula-petrea-protecao-do-opencode-desktop-resiliencia-da-]]
 - [[cluster-hub-ecossistema]]
 - [[compressão-semântica-hierárquica-lições-da-implementação]]

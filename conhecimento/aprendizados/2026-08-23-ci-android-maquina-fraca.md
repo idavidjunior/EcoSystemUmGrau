@@ -56,3 +56,13 @@ adb install -r app-debug.apk
 ## Evidência
 CI verde run 32681780441 (3m37s) após correção do import; APK 11.355.303 bytes;
 commits 31ea42e e ccdd704 no master do Mp3Player via gate.
+
+## Conexoes
+
+- [[album-art-download-com-redirect-loop-manual-instancefollowre]]
+- [[audioprocessorisactive-must-be-dynamic]]
+- [[filename-artist-extraction-two-strategies]]
+- [[itunes-search-with-scoring-thresholds]]
+- [[metadata-busca-em-multi-fontes-acoustid-itunes-br-musicbrain]]
+- [[renderersfactory-for-custom-audioprocessor]]
+- [[searchmodenormal-relaxed-auto-fallback-se-normal-retorna-nul]]

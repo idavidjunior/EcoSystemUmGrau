@@ -80,6 +80,7 @@ aprendizado: >
 - [[c-templates-sfinae-constexpr-e-o-custo-zero]]
 - [[cadeia-de-provedores-com-failover-inteligente]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
+- [[ci-de-android-em-máquina-fraca-keystore-estável]]
 - [[cli-anything-internalizado-como-habilidade-soberana]]
 - [[como-adicionar-uma-nova-versão-da-bíblia-ao-bibliaestudocomp]]
 - [[complete-build-pipeline-intelligence]]
