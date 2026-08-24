@@ -197,6 +197,7 @@ aprendizado: >
 - [[opencode-mcp-config-format]]
 - [[otimização-do-reindex-semântico-do-memory-engine]]
 - [[packageactivity-launch-pattern]]
+- [[padrao-de-pergunta-validacao-numerica-por-cota]]
 - [[padrao-organizacao-comandos]]
 - [[palavras-de-preenchimento-hesitações-e-ruído-na-transcrição-]]
 - [[performance-caching-em-camadas-e-invalidação]]

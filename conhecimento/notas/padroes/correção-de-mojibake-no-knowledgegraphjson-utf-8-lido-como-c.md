@@ -21,7 +21,6 @@ O vault Obsidian (`conhecimento/notas/_hubs/`) gerado por `generate-obsidian-not
 exibia dezenas
 ## Conexoes
 
+- [[cli-anything-internalizado-como-habilidade-soberana]]
 - [[cluster-hub-ecossistema]]
-- [[ecow-e-ecow-abrirfocar-o-cerebro-vivo]]
 - [[padrao-hub-padroes]]
-- [[padrao-organizacao-comandos]]

@@ -1,12 +1,12 @@
 ---
-tags: [cérebro, foco, fonte, opencodeopencodeopencodeopencode, padrao, vivo]
+tags: [cérebro, foco, fonte, opencodeopencodeopencodeopencodeopencode, padrao, vivo]
 aliases: [@ecow e /ecow — abrir/focar o Cerebro Vivo]
 date: 2026-08-22
 ---
 
 # @ecow e /ecow — abrir/focar o Cerebro Vivo
 
-**Fonte:** opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -20,7 +20,8 @@ contexto: Usuário pediu comando /ecow e @ecow para abrir o widget Cérebro Vivo
 ## Dec
 ## Conexoes
 
+- [[2026-08-04-persistencia-da-conexao-do-jarvis]]
 - [[cluster-hub-ecossistema]]
-- [[correção-de-mojibake-no-knowledgegraphjson-utf-8-lido-como-c]]
+- [[integrity-guard-vigilante-dados]]
 - [[padrao-hub-padroes]]
 - [[padrao-organizacao-comandos]]

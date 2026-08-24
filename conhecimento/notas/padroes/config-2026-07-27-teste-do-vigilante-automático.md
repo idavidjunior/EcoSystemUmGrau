@@ -19,6 +19,5 @@ date: 2026-07-27
 Verificar se o vigilante detecta automaticamente novos arquivos em conhecimento/aprendizados/, registra no K
 ## Conexoes
 
-- [[cli-anything-internalizado-como-habilidade-soberana]]
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]

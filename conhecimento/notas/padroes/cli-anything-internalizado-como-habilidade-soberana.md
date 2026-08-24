@@ -1,12 +1,12 @@
 ---
-tags: [assimilada, autossuficiênci, garantir, internalizada, opencodeopencodeopencode, padrao]
+tags: [assimilada, autossuficiênci, garantir, internalizada, opencodeopencodeopencodeopencode, padrao]
 aliases: [CLI-Anything Internalizado como Habilidade Soberana]
 date: 2026-08-22
 ---
 
 # CLI-Anything Internalizado como Habilidade Soberana
 
-**Fonte:** opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -16,5 +16,5 @@ contexto: Instalação do projeto externo HKUDS/CLI-Anything no ecossistema, com
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-teste-do-vigilante-automático]]
+- [[correção-de-mojibake-no-knowledgegraphjson-utf-8-lido-como-c]]
 - [[padrao-hub-padroes]]

@@ -105,6 +105,7 @@ detalhes: LICAO: no opencode, placeholders suportados sao {env:VAR} (e {{USERPRO
 - [[mvp-streamumgrau-flutter-supabase]]
 - [[módulo-de-compreensão-de-pedidos-mcp-compreensao-pedidos]]
 - [[otimização-do-reindex-semântico-do-memory-engine]]
+- [[padrao-de-pergunta-validacao-numerica-por-cota]]
 - [[pais]]
 - [[persistencia-completa-widget-grafo]]
 - [[política-de-resposta-rápida-caminhos-rápidos-constantes-no-j]]

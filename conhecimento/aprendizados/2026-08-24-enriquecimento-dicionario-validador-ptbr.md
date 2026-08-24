@@ -53,3 +53,12 @@ memories.json entry sintética (id 497) gravada com chave 'created' em vez de 'c
 2. Console PowerShell exibe UTF-8 como mojibake — verificar bytes antes de diagnosticar corrupção inexistente
 3. Score baseado em razão sobre caracteres totais é armadilha: métricas linguísticas devem ser por palavra
 4. pip install --target falhou silenciosamente neste ambiente (exit 15, pasta não criada) — preferir fontes raw quando possível
+
+## Conexoes
+
+- [[estrangeirismos-no-pt-br-anglicismos-aceitos-aportuguesament]]
+- [[formas-de-tratamento-em-pt-br-você-tu-senhora-e-concordância]]
+- [[norma-culta-x-coloquial-no-pt-br-quando-usar-cada-registro-n]]
+- [[regionalismos-brasileiros-como-traduzir-sem-cair-em-gírias-m]]
+- [[siglas-acrônimos-e-nomes-próprios-manter-traduzir-ou-adaptar]]
+- [[variações-pt-pt-x-pt-br-reescrever-para-o-brasileiro]]

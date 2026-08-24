@@ -1,12 +1,12 @@
 ---
-tags: [agentes, dessincronizados, fontes, opencodeopencodeopencodeopencode, padrao, sync]
+tags: [agentes, dessincronizados, fontes, opencodeopencodeopencodeopencodeopencode, padrao, sync]
 aliases: [padrao organizacao comandos]
 date: 2026-08-17
 ---
 
 # padrao organizacao comandos
 
-**Fonte:** opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -18,7 +18,8 @@ contexto: >
   Limpeza total removeu ~
 ## Conexoes
 
+- [[2026-08-04-persistencia-da-conexao-do-jarvis]]
 - [[cluster-hub-ecossistema]]
-- [[correção-de-mojibake-no-knowledgegraphjson-utf-8-lido-como-c]]
 - [[ecow-e-ecow-abrirfocar-o-cerebro-vivo]]
+- [[integrity-guard-vigilante-dados]]
 - [[padrao-hub-padroes]]
