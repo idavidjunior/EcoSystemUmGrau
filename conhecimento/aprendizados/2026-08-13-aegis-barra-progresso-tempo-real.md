@@ -12,4 +12,7 @@ erros_encontrados:
 
 ## Conexoes
 
+- [[rust-enums-pattern-matching-result-e-option]]
+- [[rust-lifetimes-referências-e-elisão]]
 - [[rust-ownership-borrow-checker-e-o-modelo-de-memória]]
+- [[rust-traits-generics-e-trait-objects]]

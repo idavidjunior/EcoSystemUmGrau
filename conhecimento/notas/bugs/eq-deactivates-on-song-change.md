@@ -1,7 +1,7 @@
 ---
 tags: [actual, always, bug, enabled, gains, mp3player-metadata-rescue]
 aliases: [**EQ deactivates on song change**]
-date: 2026-08-23
+date: 2026-07-28
 ---
 
 # **EQ deactivates on song change**

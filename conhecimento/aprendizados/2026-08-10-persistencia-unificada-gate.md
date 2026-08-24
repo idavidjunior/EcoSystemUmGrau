@@ -35,5 +35,13 @@ impacto: Commits automáticos parados quando o usuário quiser (persistencia.ps1
 
 ## Conexoes
 
+- [[arquitetura-adrs-e-governança-de-decisões-por-que-e-como-reg]]
+- [[arquitetura-camadas-vs-hexagonal-vs-clean-architecture-depen]]
+- [[arquitetura-ddd-bounded-contexts-agregados-e-ubiquitous-lang]]
 - [[arquitetura-estilos-de-arquitetura-monólito-soa-microserviço]]
+- [[arquitetura-event-driven-e-mensageria-filas-tópicos-e-consis]]
+- [[arquitetura-resiliência-retry-circuit-breaker-backoff-e-idem]]
+- [[git-conventional-commits-e-versionamento-semântico]]
 - [[git-fluxos-de-trabalho-trunk-based-e-git-flow-e-quando-usar-]]
+- [[git-rebase-vs-merge-e-históricos-limpos]]
+- [[git-resolver-conflitos-e-reverter-com-segurança-revert-reset]]

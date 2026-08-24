@@ -12,3 +12,7 @@ impacto: Janela agora trava na frente de forma verificada e autorreparavel. Prov
 O Windows pode recusar HWND_TOPMOST sem erro visivel. A direcao NOTOPMOST/BOTTOM sempre funcionou; a direcao TOPMOST falhou tanto de processo externo quanto no clique interno, sem rastro. A cura nao foi descobrir a causa unica, foi eliminar a classe do problema: verificacao por leitura apos cada aplicacao, retentativas escalonando metodo, e um vigia que corrige deriva sozinho a cada ciclo.
 
 Memoria relacionada: #438 (fundo verdadeiro), #439 (cura de camada).
+
+## Conexoes
+
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]

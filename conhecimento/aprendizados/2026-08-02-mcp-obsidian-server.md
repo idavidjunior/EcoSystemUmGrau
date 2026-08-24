@@ -64,4 +64,7 @@ Segurança: `safe_resolve()` bloqueia traversal de path fora do ecossistema.
 
 ## Conexoes
 
+- [[2026-07-27-4-teste-do-ciclo-de-polling-verificar-se-o-vigila]]
+- [[2026-07-27-5-teste-final-do-vigilante-em-processo-real-verif]]
 - [[2026-07-27-teste-do-vigilante-automático-teste-do-sistema-de]]
+- [[2026-07-28-formato-correto-do-mcp-no-opencode-1187-ao-adicio]]

@@ -1,7 +1,7 @@
 ---
 tags: [android, android-pure-sdkandroid-pure-sdk, fonte, padrao, pure, sdk]
 aliases: [Step-by-Step Pipeline]
-date: 2026-08-23
+date: 2026-07-28
 ---
 
 # Step-by-Step Pipeline

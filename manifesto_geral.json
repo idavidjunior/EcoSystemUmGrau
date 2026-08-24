@@ -187,6 +187,16 @@
       ]
     },
     {
+      "id": "browser-mcp",
+      "categoria": "ponte",
+      "dominio": "internet",
+      "nome": "browser-mcp",
+      "descricao": "",
+      "entrypoint": null,
+      "script": "mcp/internet/habilidades/browser-mcp/server.py",
+      "triggers": []
+    },
+    {
       "id": "busca-web",
       "categoria": "ponte",
       "dominio": "internet",
@@ -227,6 +237,18 @@
       "entrypoint": "mcp/internet/habilidades/navegacao-perita/skill.md",
       "script": null,
       "triggers": []
+    },
+    {
+      "id": "scrape-md",
+      "categoria": "ponte",
+      "dominio": "internet",
+      "nome": "scrape-md",
+      "descricao": "|",
+      "entrypoint": "mcp/internet/habilidades/scrape-md/skill.md",
+      "script": "mcp/internet/habilidades/scrape-md/scrape_md.py",
+      "triggers": [
+        "|"
+      ]
     },
     {
       "id": "accessibility",
@@ -283,6 +305,16 @@
       "triggers": [
         "Orquestracao de agentes de IA: planejamento, execucao paralela, memoria entre passos, ferramentas, loops autonomos e composicao. Trigger keywords: orquestrar agentes, multi-agente, planner, loop autonomo, coordenador de agentes."
       ]
+    },
+    {
+      "id": "analise-financeira",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "analise-financeira",
+      "descricao": "",
+      "entrypoint": "mcp/desenvolvimento/habilidades/analise-financeira/skill.md",
+      "script": null,
+      "triggers": []
     },
     {
       "id": "android-diagnostics",
@@ -415,6 +447,16 @@
       "triggers": [
         "Pipelines de integracao e entrega continua: build, teste, artefato, deploy, estrategias de release e gatilhos. Trigger keywords: CI/CD, pipeline, integracao continua, entrega continua, build, release, github actions, jenkins."
       ]
+    },
+    {
+      "id": "cli-anything",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "cli-anything",
+      "descricao": "",
+      "entrypoint": "mcp/desenvolvimento/habilidades/cli-anything/skill.md",
+      "script": null,
+      "triggers": []
     },
     {
       "id": "code-review",
@@ -585,6 +627,16 @@
       ]
     },
     {
+      "id": "dev-tools",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "dev-tools",
+      "descricao": "",
+      "entrypoint": null,
+      "script": "mcp/desenvolvimento/habilidades/dev-tools/server.py",
+      "triggers": []
+    },
+    {
       "id": "developer-experience-dx",
       "categoria": "tecnica",
       "dominio": "desenvolvimento",
@@ -643,6 +695,16 @@
       "triggers": [
         "|"
       ]
+    },
+    {
+      "id": "epistemico-cruzamento",
+      "categoria": "tecnica",
+      "dominio": "nucleo",
+      "nome": "epistemico-cruzamento",
+      "descricao": "",
+      "entrypoint": "mcp/nucleo/habilidades/epistemico-cruzamento/skill.md",
+      "script": "mcp/nucleo/habilidades/epistemico-cruzamento/epistemico.py",
+      "triggers": []
     },
     {
       "id": "error-message-design",
@@ -751,6 +813,16 @@
       "triggers": [
         "|"
       ]
+    },
+    {
+      "id": "fundamentos-computacao",
+      "categoria": "tecnica",
+      "dominio": "desenvolvimento",
+      "nome": "fundamentos-computacao",
+      "descricao": "",
+      "entrypoint": "mcp/desenvolvimento/habilidades/fundamentos-computacao/skill.md",
+      "script": null,
+      "triggers": []
     },
     {
       "id": "golang-patterns",
@@ -998,6 +1070,16 @@
       ]
     },
     {
+      "id": "observabilidade",
+      "categoria": "tecnica",
+      "dominio": "nucleo",
+      "nome": "observabilidade",
+      "descricao": "",
+      "entrypoint": "mcp/nucleo/habilidades/observabilidade/skill.md",
+      "script": "mcp/nucleo/habilidades/observabilidade/server.py",
+      "triggers": []
+    },
+    {
       "id": "observability-stack",
       "categoria": "tecnica",
       "dominio": "desenvolvimento",
@@ -1005,6 +1087,28 @@
       "descricao": "|",
       "entrypoint": "mcp/desenvolvimento/habilidades/observability-stack/skill.md",
       "script": null,
+      "triggers": [
+        "|"
+      ]
+    },
+    {
+      "id": "os-automation",
+      "categoria": "tecnica",
+      "dominio": "os",
+      "nome": "os-automation",
+      "descricao": "",
+      "entrypoint": "mcp/os/habilidades/os-automation/skill.md",
+      "script": "mcp/os/habilidades/os-automation/server.py",
+      "triggers": []
+    },
+    {
+      "id": "pais",
+      "categoria": "tecnica",
+      "dominio": "nucleo",
+      "nome": "pais",
+      "descricao": "|",
+      "entrypoint": "mcp/nucleo/habilidades/pais/skill.md",
+      "script": "mcp/nucleo/habilidades/pais/cli.py",
       "triggers": [
         "|"
       ]
@@ -1020,6 +1124,16 @@
       "triggers": [
         "Teste de performance: load, stress, endurance, pico, metricas e otimizacao. Trigger keywords: performance testing, load test, stress test, teste de carga, endurance, pico, latencia, throughput."
       ]
+    },
+    {
+      "id": "planner",
+      "categoria": "tecnica",
+      "dominio": "nucleo",
+      "nome": "planner",
+      "descricao": "",
+      "entrypoint": "mcp/nucleo/habilidades/planner/skill.md",
+      "script": "mcp/nucleo/habilidades/planner/find_return.py",
+      "triggers": []
     },
     {
       "id": "prompt-engineering",

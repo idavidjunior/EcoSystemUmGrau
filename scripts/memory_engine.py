@@ -191,14 +191,41 @@ def reinforce(memory_id, delta=0.15):
     memories = _load_memories()
     for m in memories:
         if m['id'] == memory_id:
-            m['strength'] = min(2.0, m['strength'] + delta)
-            m['access_count'] += 1
+            m['strength'] = min(2.0, m.get('strength', 1.0) + delta)
+            m['access_count'] = m.get('access_count', 0) + 1
             m['last_accessed'] = datetime.now().isoformat()
             # Confiança aumenta levemente com reforço (memória usada = mais confiável)
             m['confidence'] = min(1.0, m.get('confidence', 1.0) + 0.02)
             _save_memories(memories)
             return True
     return False
+
+
+def penalizar(memory_id, delta=0.05):
+    """Sinapses Vivas fase 1: memória servida mas inútil/enganosa perde força.
+    Proteções: decisões consolidadas e confiança alta não descem de
+    confidence; strength tem piso 0.1 (decay_pass arquiva abaixo disso)."""
+    memories = _load_memories()
+    for m in memories:
+        if m['id'] == memory_id:
+            if m.get('kind') == 'decisao' and m.get('confidence', 1.0) >= 0.9:
+                return False          # decisão consolidada é intocável aqui
+            m['strength'] = max(0.1, m.get('strength', 1.0) - delta)
+            m['last_accessed'] = datetime.now().isoformat()
+            m['access_count'] = m.get('access_count', 0) + 1  # acesso conta mesmo negativo
+            if m.get('confidence', 1.0) < 0.9:
+                m['confidence'] = round(max(0.3, m['confidence'] - 0.01), 4)
+            _save_memories(memories)
+            return True
+    return False
+
+
+def buscar_por_id(memory_id):
+    memories = _load_memories()
+    for m in memories:
+        if m['id'] == memory_id:
+            return m
+    return None
 
 def link_solution(memory_id, solucao_desc, script=None, validado=True, tags=None):
     """Vincula uma solução a uma memória de erro existente.
@@ -348,6 +375,11 @@ def decay_pass(dry_run=False):
     kept = []
     archived = 0
     for m in memories:
+        # Sinapses Vivas: decisão consolidada nunca arquiva por idade sozinha
+        if m.get('kind') == 'decisao' and m.get('confidence', 1.0) >= 0.9 \
+                and not m.get('archived'):
+            kept.append(m)
+            continue
         score = _decay_score(m, now)
         # Ajusta meia-vida para baixa confiança
         if m.get('confidence', 1.0) < 0.3:

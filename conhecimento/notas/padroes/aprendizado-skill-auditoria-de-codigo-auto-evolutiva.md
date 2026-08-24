@@ -1,7 +1,7 @@
 ---
 tags: [conclusões, erradas, gerando, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao]
 aliases: [Aprendizado: Skill auditoria-de-codigo (auto-evolutiva)]
-date: 2026-08-23
+date: 2026-08-10
 ---
 
 # Aprendizado: Skill auditoria-de-codigo (auto-evolutiva)

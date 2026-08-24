@@ -31,4 +31,8 @@ Adicionada a secao [6] Secrets Guard ao `scripts/preflight_check.py`:
 
 ## Conexoes
 
+- [[segurança-autenticação-e-gestão-de-sessões-seguras]]
+- [[segurança-controle-de-acesso-rbacabac-e-menor-privilégio]]
+- [[segurança-criptografia-hashing-cifras-tls-e-segredos]]
+- [[segurança-hardening-e-dependências-vulneráveis-sbom-cve-e-su]]
 - [[segurança-owasp-top-10-aplicado-na-prática]]

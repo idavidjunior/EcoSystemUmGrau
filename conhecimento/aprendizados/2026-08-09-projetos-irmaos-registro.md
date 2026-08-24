@@ -54,4 +54,11 @@ O Jarvis passa a conhecer os tres projetos irmaos para futuras referencias em co
 
 ## Conexoes
 
+- [[2026-08-04-foco-vocal-via-jarvis-voz-orienta-o-grafo-do-conh]]
+- [[album-art-download-com-redirect-loop-manual-instancefollowre]]
+- [[audioprocessorisactive-must-be-dynamic]]
 - [[filename-artist-extraction-two-strategies]]
+- [[itunes-search-with-scoring-thresholds]]
+- [[metadata-busca-em-multi-fontes-acoustid-itunes-br-musicbrain]]
+- [[renderersfactory-for-custom-audioprocessor]]
+- [[searchmodenormal-relaxed-auto-fallback-se-normal-retorna-nul]]

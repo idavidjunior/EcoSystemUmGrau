@@ -1,7 +1,7 @@
 ---
 tags: [aplique, cabeçalho, método, padrao, seguranca, verbos]
 aliases: [Segurança: OWASP Top 10 aplicado na prática]
-date: 2026-08-23
+date: 2026-08-10
 ---
 
 # Segurança: OWASP Top 10 aplicado na prática

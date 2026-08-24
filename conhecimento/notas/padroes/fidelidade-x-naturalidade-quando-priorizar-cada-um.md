@@ -1,7 +1,7 @@
 ---
 tags: [exatas, números, padrao, referências, traducao, unidades]
 aliases: [Fidelidade x naturalidade: quando priorizar cada um]
-date: 2026-08-23
+date: 2026-08-10
 ---
 
 # Fidelidade x naturalidade: quando priorizar cada um

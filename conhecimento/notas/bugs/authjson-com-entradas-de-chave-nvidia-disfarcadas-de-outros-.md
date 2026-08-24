@@ -1,7 +1,7 @@
 ---
 tags: [bug, copilot, github, legitimo, oauth, sessaolimpezaauth]
 aliases: [auth.json com entradas de chave NVIDIA disfarcadas de outros]
-date: 2026-08-23
+date: 2026-07-28
 ---
 
 # auth.json com entradas de chave NVIDIA disfarcadas de outros provedores

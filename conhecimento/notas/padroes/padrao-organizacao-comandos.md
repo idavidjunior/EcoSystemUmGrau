@@ -1,12 +1,12 @@
 ---
-tags: [dessincronizados, eco, fontes, opencodeopencode, padrao, sync]
+tags: [dessincronizados, fontes, opencodeopencodeopencode, padrao, protocolos, sync]
 aliases: [padrao organizacao comandos]
-date: 2026-08-23
+date: 2026-08-17
 ---
 
 # padrao organizacao comandos
 
-**Fonte:** opencode+opencode
+**Fonte:** opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -18,9 +18,8 @@ contexto: >
   Limpeza total removeu ~
 ## Conexoes
 
-- [[aegis-registrado-como-projeto-irmao-rust]]
-- [[certificacao-forense-de-processos-boot-do-watchdog]]
+- [[cli-anything-internalizado-como-habilidade-soberana]]
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
+- [[config-2026-07-27-teste-do-vigilante-automático]]
+- [[ecow-e-ecow-abrirfocar-o-cerebro-vivo]]
 - [[padrao-hub-padroes]]
-- [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]

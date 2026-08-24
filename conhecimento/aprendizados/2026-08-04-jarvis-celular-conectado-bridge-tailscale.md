@@ -34,3 +34,7 @@ Get-NetTCPConnection -LocalPort 8765 -State Established
 # Estado salvo da ultima conexao
 Get-Content scripts\bridge_estado.json
 ```
+
+## Conexoes
+
+- [[aprendizado-2026-07-31-horas-faladas-corretamente-no-tts-do-]]

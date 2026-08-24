@@ -17,3 +17,7 @@ impacto: >
   Auto-replica repertório quando sente que esta ficando repetitivo.
   Zero dependencia externa para evolucao.
 ---
+
+## Conexoes
+
+- [[aprendizado-2026-07-31-horas-faladas-corretamente-no-tts-do-]]

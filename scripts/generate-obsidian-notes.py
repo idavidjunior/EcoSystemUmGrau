@@ -17,6 +17,7 @@ Exit: 0 = sucesso.
 import json
 import os
 import re
+import subprocess
 import sys
 from collections import defaultdict
 from datetime import datetime
@@ -36,6 +37,38 @@ try:
     from cluster_mapper import ClusterMapper
 except ImportError:
     ClusterMapper = None
+
+RX_DATA_TITULO = re.compile(r'(\d{4}-\d{2}-\d{2})')
+
+
+def _git_datas_criacao():
+    """{slug da nota: data do primeiro commit} via git log --diff-filter=A.
+    Fonte verdadeira de quando cada conhecimento nasceu no vault."""
+    datas = {}
+    try:
+        out = subprocess.run(
+            ['git', '-c', 'core.quotepath=false', 'log', '--reverse',
+             '--diff-filter=A', '--name-only', '--format=%cI'],
+            capture_output=True, text=True, encoding='utf-8',
+            errors='replace', cwd=BASE, timeout=60)
+        data_atual = None
+        for linha in (out.stdout or '').splitlines():
+            linha = linha.strip()
+            if not linha:
+                continue
+            if 'T' in linha and linha[4] == '-' and len(linha) >= 10:
+                data_atual = linha[:10]
+            elif data_atual and linha.startswith('conhecimento/notas/'):
+                slug = Path(linha).stem
+                datas.setdefault(slug, data_atual)
+    except Exception:
+        pass
+    return datas
+
+
+def _data_do_titulo(title):
+    m = RX_DATA_TITULO.search(title or '')
+    return m.group(1) if m else ''
 
 CATEGORIAS = ['padroes', 'decisoes', 'bugs', 'cognitivo', 'heuristicas', 'frameworks', 'missoes']
 
@@ -101,8 +134,7 @@ def read_graph():
 
 def extract_items(g):
     """Extrai notas planas de todas as categorias do graph."""
-    items = []  # (categoria, slug, title, tags, body, sources)
-    updated = g.get('last_updated', datetime.now().isoformat())[:10]
+    items = []  # (categoria, slug, title, tags, body, sources, created_at)
 
     for p in g.get('patterns', []):
         title = (p.get('title', '') or '').strip()
@@ -113,7 +145,8 @@ def extract_items(g):
             continue
         src = p.get('source', '')
         body = f'**Fonte:** {src}\n\n{p.get("description", p.get("action", ""))}'
-        items.append(('padroes', slug, title, ['padrao', slugify(src) or 'geral'], body, [src], updated))
+        created = p.get('created_at', p.get('updated_at', ''))[:10]
+        items.append(('padroes', slug, title, ['padrao', slugify(src) or 'geral'], body, [src], created))
 
     for d in g.get('decisions', []):
         title = (d.get('decision', '') or '').strip()
@@ -123,8 +156,9 @@ def extract_items(g):
         if not slug:
             continue
         src = d.get('source', '')
-        body = f'**Fonte:** {src}\n\n{p.get("rationale", d.get("rationale", ""))}'
-        items.append(('decisoes', slug, title, ['decisao', slugify(src) or 'geral'], body, [src], updated))
+        body = f'**Fonte:** {src}\n\n{d.get("rationale", "")}'
+        created = d.get('created_at', d.get('updated_at', ''))[:10]
+        items.append(('decisoes', slug, title, ['decisao', slugify(src) or 'geral'], body, [src], created))
 
     for b in g.get('bug_fixes', []):
         title = (b.get('issue', '') or '').strip()
@@ -135,7 +169,8 @@ def extract_items(g):
             continue
         src = b.get('source', '')
         body = f'**Projeto:** {src}\n\n## Causa Raiz\n{b.get("root_cause", "")}\n\n## Correcao\n{b.get("fix", "")}'
-        items.append(('bugs', slug, title, ['bug', slugify(src) or 'geral'], body, [src], updated))
+        created = b.get('created_at', b.get('updated_at', ''))[:10]
+        items.append(('bugs', slug, title, ['bug', slugify(src) or 'geral'], body, [src], created))
 
     for c in g.get('cognitive_patterns', []):
         title = c.get('title', 'Cognitive pattern')
@@ -145,7 +180,8 @@ def extract_items(g):
         dom = slugify(c.get('domain', 'general')) or 'general'
         src = c.get('source', '')
         body = f'**Dominio:** {c.get("domain", "")}\n\n{c.get("body", "")}'
-        items.append(('cognitivo', slug, title, ['cognitivo', dom], body, [src], updated))
+        created = c.get('created_at', c.get('updated_at', ''))[:10]
+        items.append(('cognitivo', slug, title, ['cognitivo', dom], body, [src], created))
 
     for h in g.get('heuristics', []):
         title = h.get('title', 'Heuristic')
@@ -155,7 +191,8 @@ def extract_items(g):
         dom = slugify(h.get('domain', '')) or 'geral'
         src = h.get('source', '')
         body = f'**Dominio:** {h.get("domain", "")} | **Fonte:** {src}\n\n{h.get("description", "")}'
-        items.append(('heuristicas', slug, title, ['heuristica', dom], body, [src], updated))
+        created = h.get('created_at', h.get('updated_at', ''))[:10]
+        items.append(('heuristicas', slug, title, ['heuristica', dom], body, [src], created))
 
     for f in g.get('frameworks', []):
         name = f.get('name', 'Framework')
@@ -164,7 +201,8 @@ def extract_items(g):
             continue
         src = f.get('source', '')
         body = f'{f.get("description", "")}\n\n{f.get("body", "")}'
-        items.append(('frameworks', slug, name, ['framework'], body, [src], updated))
+        created = f.get('created_at', f.get('updated_at', ''))[:10]
+        items.append(('frameworks', slug, name, ['framework'], body, [src], created))
 
     for m in g.get('mission_learnings', []):
         goal = (m.get('goal_objective', 'Mission') or '')[:80]
@@ -172,13 +210,14 @@ def extract_items(g):
         if not slug:
             continue
         ts = m.get('timestamp', '')[:10]
+        created = m.get('created_at', m.get('updated_at', ts or ''))[:10]
         tags = ['missao'] + [slugify(t) for t in (m.get('tags', []) or [])[:3] if slugify(t)]
         files = m.get('files_modified', [])
         files_str = ', '.join(files[:10]) if isinstance(files, list) else str(files or '')
         body = f'**Status:** {m.get("status", "")}\n\n**Objetivo:** {goal}'
         if files_str:
             body += f'\n\n**Arquivos:** {files_str}'
-        items.append(('missoes', slug, goal, tags, body, [], ts or updated))
+        items.append(('missoes', slug, goal, tags, body, [], created))
 
     return items
 
@@ -287,7 +326,10 @@ def generate(dry_run=False, inject_links=True):
 
     written = 0
     # ---------- notas individuais ----------
-    for cat, slug, title, tags, body, sources, updated in items:
+    datas_git = _git_datas_criacao()
+    hoje = (g.get('last_updated', '') or datetime.now().isoformat())[:10]
+    for cat, slug, title, tags, body, sources, created in items:
+        criada = created or _data_do_titulo(title) or datas_git.get(slug, '') or hoje
         cl = cluster_da_nota(tags, cat, slug, _mapper, sources[0] if sources else '')
         links = []
         links.append(f'{CATEGORIA_EMOJI[cat]}-hub-{cat}')
@@ -304,13 +346,13 @@ def generate(dry_run=False, inject_links=True):
                     vizinhos += 1
                     if vizinhos >= 4:
                         break
-            if vizinhos >= 4:
-                break
+                if vizinhos >= 4:
+                    break
         if not dry_run:
             # enriquece tags com conceitos do corpo (sinapses via tags semanticas)
             tags_finais = _enriquecer_tags(list(tags), f'{title} {body}')
             escritos.add(write_note(cat, f'{slug}.md',
-                       f'{frontmatter(tags_finais, [title[:60]], updated)}\n\n# {title}\n\n{body}{seccao_conexoes(links)}'))
+                       f'{frontmatter(tags_finais, [title[:60]], criada)}\n\n# {title}\n\n{body}{seccao_conexoes(links)}'))
         written += 1
 
     # ---------- hubs de categoria ----------
@@ -413,6 +455,15 @@ def generate(dry_run=False, inject_links=True):
                             achou = True
                             break
                     if achou:
+                        break
+                # sinapses nota-a-nota: notas do vault que compartilham tags
+                for t in tag_list:
+                    if t in ('geral', 'general'):
+                        continue
+                    for v in por_tag.get(t, []):
+                        if v not in links:
+                            links.append(v)
+                    if len(links) >= 6:
                         break
                 links = [l for l in set(links) if l in index or l.startswith('cluster-hub-')]
                 # grava SEMPRE a secao regenerada (idempotente): se links==[] a

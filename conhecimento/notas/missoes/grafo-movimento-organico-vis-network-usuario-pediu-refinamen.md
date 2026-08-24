@@ -16,4 +16,5 @@ date: 2026-08-04
 - [[2026-08-04-pseudo-3d-vivo-profundidade-sem-webgl-pedido-para]]
 - [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]
 - [[cluster-hub-ecossistema]]
+- [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
 - [[missao-hub-missoes]]

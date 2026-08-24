@@ -17,4 +17,7 @@ git clone --recursive do EcoSystemUmGrau agora baixa todos os projetos automatic
 
 ## Conexoes
 
+- [[git-conventional-commits-e-versionamento-semântico]]
 - [[git-fluxos-de-trabalho-trunk-based-e-git-flow-e-quando-usar-]]
+- [[git-rebase-vs-merge-e-históricos-limpos]]
+- [[git-resolver-conflitos-e-reverter-com-segurança-revert-reset]]

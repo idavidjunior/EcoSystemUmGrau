@@ -1,7 +1,7 @@
 ---
 tags: [conhecimento, cp1252, jsons, opencodeopencodeopencodeopencodeopencode, padrao, vários]
 aliases: [integrity guard vigilante dados]
-date: 2026-08-23
+date: 2026-08-20
 ---
 
 # integrity guard vigilante dados

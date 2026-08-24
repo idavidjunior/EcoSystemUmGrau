@@ -58,3 +58,7 @@ Adicionar clamp de geometria em `scripts/widget_grafo.py`:
 
 - Confirmar visualmente o grafo viva no widget.
 - (Opcional) cláusula pétrea de preflight passou antes do commit.
+
+## Conexoes
+
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]

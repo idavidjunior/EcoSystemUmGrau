@@ -1,7 +1,7 @@
 ---
 tags: [decisao, encontrados, finais, implementando, opencode, problemas]
 aliases: [Aprendizado: Regra de fala resumida do Jarvis]
-date: 2026-08-23
+date: 2026-08-20
 ---
 
 # Aprendizado: Regra de fala resumida do Jarvis

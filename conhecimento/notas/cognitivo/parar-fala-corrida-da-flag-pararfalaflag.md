@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, general, logo, parada, pipeline, speech]
 aliases: [Parar Fala — corrida da flag parar_fala.flag]
-date: 2026-08-23
+date: 2026-08-13
 ---
 
 # Parar Fala — corrida da flag parar_fala.flag

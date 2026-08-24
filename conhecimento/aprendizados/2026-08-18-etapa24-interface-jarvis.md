@@ -29,3 +29,7 @@ impacto: A interface agora é uma camada separada do cérebro. UIState é a font
 
 - [[2026-08-18-etapa23-observability-reliability]]
 - [[2026-08-18-etapa22-self-assessment-self-improvement]]
+
+## Conexoes
+
+- [[aprendizado-2026-07-31-horas-faladas-corretamente-no-tts-do-]]

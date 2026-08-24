@@ -1,0 +1,1 @@
+{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"execute_plan","arguments":{"plan":{"goal":"test","steps":[{"id":"1","task":"test task","need":null,"mcp_suggested":"mcp-internet","agent_suggested":"BrowserAgent"}]},"goal":"test"}}}

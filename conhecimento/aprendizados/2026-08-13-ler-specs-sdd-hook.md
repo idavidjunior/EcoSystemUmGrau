@@ -10,4 +10,5 @@ impacto: Toda missao LER agora produz um artefato .spec.md persistido no EcoSyst
 
 ## Conexoes
 
+- [[2026-07-27-sistema-automático-de-captura-de-conhecimento-do-]]
 - [[cluster-hub-ler]]

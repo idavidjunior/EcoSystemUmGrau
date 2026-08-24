@@ -1,6 +1,6 @@
 # Padroes Cognitivos
 
-**56 notas** conectadas a este hub.
+**57 notas** conectadas a este hub.
 
 
 ## Notas
@@ -45,6 +45,7 @@
 - [[modelo-de-scoring-para-busca-multi-resultado]]
 - [[modelo-mental-de-dom-virtual]]
 - [[narrador-morto-por-bloco-duplicado-falso-positivo-de-encodin]]
+- [[pacote-seguro-de-serviços-windows-aplicação-com-backup]]
 - [[padrao-de-escrita-atomica-para-persistencia]]
 - [[parar-fala-corrida-da-flag-pararfalaflag]]
 - [[pattern-matching-por-estrutura-de-ui]]

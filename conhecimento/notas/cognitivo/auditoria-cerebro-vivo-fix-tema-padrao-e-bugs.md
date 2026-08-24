@@ -1,7 +1,7 @@
 ---
 tags: [automaticamente, cognitivo, comportamento, general, repita, vier]
 aliases: [auditoria cerebro vivo fix tema padrao e bugs]
-date: 2026-08-23
+date: 2026-08-13
 ---
 
 # auditoria cerebro vivo fix tema padrao e bugs

@@ -11,4 +11,9 @@ impacto: Respostas do ecossistema agora seguem o padrão pt-BR de forma permanen
 
 - [[2026-07-27-teste-do-vigilante-automático-teste-do-sistema-de]]
 - [[cluster-hub-traducao]]
+- [[estrangeirismos-no-pt-br-anglicismos-aceitos-aportuguesament]]
+- [[formas-de-tratamento-em-pt-br-você-tu-senhora-e-concordância]]
 - [[norma-culta-x-coloquial-no-pt-br-quando-usar-cada-registro-n]]
+- [[regionalismos-brasileiros-como-traduzir-sem-cair-em-gírias-m]]
+- [[siglas-acrônimos-e-nomes-próprios-manter-traduzir-ou-adaptar]]
+- [[variações-pt-pt-x-pt-br-reescrever-para-o-brasileiro]]

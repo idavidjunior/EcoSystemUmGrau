@@ -1,7 +1,7 @@
 ---
 tags: [correto mcp opencode, jsonc opencode, mcp opencode, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao]
 aliases: [Config: # 2026-07-28: Formato correto do MCP no OpenCode 1.1]
-date: 2026-08-23
+date: 2026-07-28
 ---
 
 # Config: # 2026-07-28: Formato correto do MCP no OpenCode 1.18.7

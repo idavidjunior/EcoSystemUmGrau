@@ -9,3 +9,7 @@ uso: pip install pywebview; python scripts/widget_grafo.py
 uso (sem console): pythonw scripts\widget_grafo.py  (ou clicar widget-grafo.bat)
 detalhe: o .bat usa pythonw.exe para suprimir a janela de terminal, deixando
 apenas a janela do grafo frameless.
+
+## Conexoes
+
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]

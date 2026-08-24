@@ -1,7 +1,7 @@
 ---
 tags: [bancos-dados, durabilidade, falha, interferem, padrao, sobrevivem]
 aliases: [Bancos de dados: transações, ACID e níveis de isolamento]
-date: 2026-08-23
+date: 2026-08-10
 ---
 
 # Bancos de dados: transações, ACID e níveis de isolamento

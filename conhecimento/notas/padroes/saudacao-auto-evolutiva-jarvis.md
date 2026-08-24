@@ -1,7 +1,7 @@
 ---
 tags: [autonoma, conta, llm, opencode, padrao, propria]
 aliases: [saudacao auto evolutiva jarvis]
-date: 2026-08-23
+date: 2026-08-20
 ---
 
 # saudacao auto evolutiva jarvis

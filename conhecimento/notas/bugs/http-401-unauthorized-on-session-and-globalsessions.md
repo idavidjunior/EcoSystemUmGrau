@@ -1,7 +1,7 @@
 ---
 tags: [4216, bug, correct, ecosistema-opencode, new, pid]
 aliases: [HTTP 401 Unauthorized on /session and /global/sessions/*]
-date: 2026-08-23
+date: 2026-08-07
 ---
 
 # HTTP 401 Unauthorized on /session and /global/sessions/*

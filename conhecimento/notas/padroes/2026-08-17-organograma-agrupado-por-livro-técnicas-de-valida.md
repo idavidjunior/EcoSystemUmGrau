@@ -1,7 +1,7 @@
 ---
 tags: [branca, faixa, fonte, opencodeopencode, padrao, renderizava]
 aliases: [2026-08-17: Organograma agrupado por livro + técnicas de val]
-date: 2026-08-23
+date: 2026-08-17
 ---
 
 # 2026-08-17: Organograma agrupado por livro + técnicas de validação visual via adb

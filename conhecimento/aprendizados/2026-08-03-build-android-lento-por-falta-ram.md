@@ -40,4 +40,8 @@ Em máquinas com pouca RAM (<8GB) e builds Android, o heap do Gradle precisa ser
 
 ## Conexoes
 
+- [[espera-adaptativa-por-tipo-de-recurso]]
+- [[performance-caching-em-camadas-e-invalidação]]
+- [[performance-complexidade-assintótica-vs-custo-real]]
+- [[performance-concorrência-e-paralelismo-quando-vale-a-pena]]
 - [[performance-profiling-primeiro-onde-o-tempo-realmente-vai]]

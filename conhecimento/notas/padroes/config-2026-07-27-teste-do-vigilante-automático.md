@@ -1,7 +1,7 @@
 ---
 tags: [aprendizados, arquivos, conhecimento, opencodeopencodeopencode, padrao, registra]
 aliases: [Config: 2026-07-27: Teste do vigilante automático]
-date: 2026-08-23
+date: 2026-07-27
 ---
 
 # Config: 2026-07-27: Teste do vigilante automático
@@ -19,5 +19,8 @@ date: 2026-08-23
 Verificar se o vigilante detecta automaticamente novos arquivos em conhecimento/aprendizados/, registra no K
 ## Conexoes
 
+- [[cli-anything-internalizado-como-habilidade-soberana]]
 - [[cluster-hub-ecossistema]]
+- [[ecow-e-ecow-abrirfocar-o-cerebro-vivo]]
 - [[padrao-hub-padroes]]
+- [[padrao-organizacao-comandos]]

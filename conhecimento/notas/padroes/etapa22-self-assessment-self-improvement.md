@@ -1,7 +1,7 @@
 ---
 tags: [drift, experimentos, gaming, opencodeopencode, padrao, rollback]
 aliases: [etapa22 self assessment self improvement]
-date: 2026-08-23
+date: 2026-08-20
 ---
 
 # etapa22 self assessment self improvement

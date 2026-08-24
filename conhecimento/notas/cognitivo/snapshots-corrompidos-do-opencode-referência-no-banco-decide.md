@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, corrompido, dados, general, limpeza, snapshot]
 aliases: [Snapshots "corrompidos" do opencode: referência no banco dec]
-date: 2026-08-23
+date: 2026-08-22
 ---
 
 # Snapshots "corrompidos" do opencode: referência no banco decide, não heurística

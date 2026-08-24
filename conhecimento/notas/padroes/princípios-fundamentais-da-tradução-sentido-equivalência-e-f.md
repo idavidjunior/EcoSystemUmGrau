@@ -1,7 +1,7 @@
 ---
-tags: [alterado, business, distorcer, padrao, tom, traducao]
+tags: [alterado, distorcer, naturalidade, padrao, tom, traducao]
 aliases: [Princípios fundamentais da tradução: sentido, equivalência e]
-date: 2026-08-23
+date: 2026-08-10
 ---
 
 # Princípios fundamentais da tradução: sentido, equivalência e fidelidade

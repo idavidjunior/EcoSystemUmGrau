@@ -1,7 +1,7 @@
 ---
 tags: [crypt, gzip, json, node, padrao, parse]
 aliases: [Node.js: streams e backpressure]
-date: 2026-08-23
+date: 2026-08-10
 ---
 
 # Node.js: streams e backpressure

@@ -1,7 +1,7 @@
 ---
 tags: [elo, fonte, fraco, gravação, opencode, padrao]
 aliases: [Resiliência de logs: encoding detectado na leitura, não pres]
-date: 2026-08-23
+date: 2026-08-22
 ---
 
 # Resiliência de logs: encoding detectado na leitura, não presumido

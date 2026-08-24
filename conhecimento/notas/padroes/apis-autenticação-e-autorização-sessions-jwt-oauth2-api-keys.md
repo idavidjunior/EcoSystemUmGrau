@@ -1,7 +1,7 @@
 ---
 tags: [apis-web, deprecado, device, duração, implicit, padrao]
 aliases: [APIs: autenticação e autorização (sessions, JWT, OAuth2, API]
-date: 2026-08-23
+date: 2026-08-10
 ---
 
 # APIs: autenticação e autorização (sessions, JWT, OAuth2, API keys)

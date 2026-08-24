@@ -1,7 +1,7 @@
 ---
-tags: [cobram, engenharia, exceção, futuro, padrao, proxy]
+tags: [cobram, engenharia, exceção, futuro, padrao, presente]
 aliases: [Engenharia: dívida técnica e manutenibilidade]
-date: 2026-08-23
+date: 2026-08-10
 ---
 
 # Engenharia: dívida técnica e manutenibilidade

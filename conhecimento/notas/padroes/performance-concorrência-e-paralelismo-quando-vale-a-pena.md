@@ -1,7 +1,7 @@
 ---
 tags: [absorve, decoupling, escalam, padrao, performance, pico]
 aliases: [Performance: concorrência e paralelismo — quando vale a pena]
-date: 2026-08-23
+date: 2026-08-10
 ---
 
 # Performance: concorrência e paralelismo — quando vale a pena

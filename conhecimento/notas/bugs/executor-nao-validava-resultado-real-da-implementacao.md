@@ -1,7 +1,7 @@
 ---
 tags: [apos, bug, fix, lerauditoria, refactor, status]
 aliases: [Executor nao validava resultado real da implementacao]
-date: 2026-08-23
+date: 2026-07-28
 ---
 
 # Executor nao validava resultado real da implementacao

@@ -1,9 +1,11 @@
 // falar-respostas.js — Fala as respostas do assistente via tts_service (EcoSystemUmGrau).
 //
-// Fluxo: evento message.updated (assistente concluído) -> junta as partes de
-// texto da mensagem -> limpa markdown/blocos de código -> grava runtime/
-// tts_cmd.json (protocolo oficial do tts_service) -> o serviço único de voz
-// fala em fila, respeitando volume e PARAR_FALA globais.
+// Fluxo: evento message.updated (assistente concluído) -> pega apenas o ÚLTIMO
+// trecho de texto da mensagem (o resumo final; textos intermediários entre
+// ferramentas são pensamento em voz alta e NÃO são narrados) -> limpa markdown/
+// blocos de código -> grava runtime/tts_cmd.json (protocolo oficial do
+// tts_service) -> o serviço único de voz fala em fila, respeitando volume e
+// PARAR_FALA globais.
 //
 // Silêncio controlado pelo botão de voz do Widget Edge: se narracao_estado.json
 // tiver ativo=false, nada é falado. Arquivo ausente = fala ligada.
@@ -60,13 +62,15 @@ export const FalarRespostas = async () => {
   async function falarSePronta(msgID) {
     if (faladas.has(msgID)) return;
     faladas.add(msgID);
-    const pedacos = [];
+    // Map preserva ordem de inserção (chegada dos eventos): o último trecho
+    // de texto da mensagem é o resumo final. Intermediários são descartados.
+    let ultimo = "";
     for (const [id, parte] of [...partes]) {
       if (parte.msgID !== msgID) continue;
-      pedacos.push(parte.texto);
+      ultimo = parte.texto || "";
       partes.delete(id);
     }
-    const texto = limparParaFala(pedacos.join("\n"));
+    const texto = limparParaFala(ultimo);
     if (texto.length < 2) return;
 
     const estado = await lerJsonSeguro(`${RUNTIME}/narracao_estado.json`);

@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**214 notas** do cluster ecossistema.
+**217 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -145,6 +145,8 @@
 - [[integracao-completa-mcps-offline-placeholder]]
 - [[integrity-guard-vigilante-dados]]
 - [[jarvis-do-celular-e-do-pc-um-só-cérebro-arquitetura-sincroni]]
+- [[junkscanner-benchmark-do-scan-incremental]]
+- [[junkscanner-scan-incremental-cache-de-hash-memoização]]
 - [[ler-specs-sdd-hook]]
 - [[loop-infinito-de-push-no-vigilante-emails-do-github-a-cada-m]]
 - [[mcp-obsidian-server-vault-consumido-pelo-llm]]
@@ -162,6 +164,7 @@
 - [[opencode-go-provider-crash-ao-processar-mensagem]]
 - [[organizar-desktopcodigos-como-raiz-unica-de-projetos]]
 - [[otimização-do-reindex-semântico-do-memory-engine]]
+- [[pacote-seguro-de-serviços-windows-aplicação-com-backup]]
 - [[padrao-organizacao-comandos]]
 - [[pais]]
 - [[parar-fala-corrida-da-flag-pararfalaflag]]

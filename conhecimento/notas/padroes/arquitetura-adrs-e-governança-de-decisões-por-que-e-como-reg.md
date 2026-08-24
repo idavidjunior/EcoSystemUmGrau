@@ -1,7 +1,7 @@
 ---
 tags: [aceito, arquitetura, off, padrao, qual, trade]
 aliases: [Arquitetura: ADRs e governança de decisões — por que e como ]
-date: 2026-08-23
+date: 2026-08-10
 ---
 
 # Arquitetura: ADRs e governança de decisões — por que e como registrar

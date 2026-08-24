@@ -21,5 +21,11 @@ App leve e eficiente, reaproveitando todo o ecossistema já construído. Mínimo
 
 ## Conexoes
 
+- [[aprendizado-2026-07-31-horas-faladas-corretamente-no-tts-do-]]
+- [[arquitetura-adrs-e-governança-de-decisões-por-que-e-como-reg]]
+- [[arquitetura-camadas-vs-hexagonal-vs-clean-architecture-depen]]
+- [[arquitetura-ddd-bounded-contexts-agregados-e-ubiquitous-lang]]
 - [[arquitetura-estilos-de-arquitetura-monólito-soa-microserviço]]
+- [[arquitetura-event-driven-e-mensageria-filas-tópicos-e-consis]]
+- [[arquitetura-resiliência-retry-circuit-breaker-backoff-e-idem]]
 - [[cluster-hub-programacao]]

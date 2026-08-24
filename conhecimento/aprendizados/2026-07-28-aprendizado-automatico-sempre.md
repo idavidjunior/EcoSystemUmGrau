@@ -22,4 +22,9 @@ Ecossistema evolui sozinho. Cada sessão adiciona ao conhecimento coletivo autom
 
 ## Conexoes
 
+- [[2026-08-04-foco-vocal-via-jarvis-voz-orienta-o-grafo-do-conh]]
+- [[2026-08-04-labels-ocultas-por-padrão-botão-de-ocultar-menus-]]
+- [[2026-08-04-malha-viva-onda-viajante-de-profundidade-giro-3d-]]
+- [[2026-08-04-pseudo-3d-vivo-profundidade-sem-webgl-pedido-para]]
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]
 - [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]

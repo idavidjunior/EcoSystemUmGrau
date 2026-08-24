@@ -26,3 +26,7 @@ impacto: >
   infinito. Validado: harness Node 47/47 PASS; repro6 (200 ticks de fisica +
   tick handler corrigido) sem NaN e sem crash; widget rodando 135s+ ALIVE,
   0 erros regenerar, 0 novos stack overflows no log.
+
+## Conexoes
+
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]

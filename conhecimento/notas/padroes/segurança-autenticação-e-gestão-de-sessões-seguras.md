@@ -1,7 +1,7 @@
 ---
 tags: [crypto, csrf, equals, lax, padrao, seguranca]
 aliases: [Segurança: autenticação e gestão de sessões seguras]
-date: 2026-08-23
+date: 2026-08-10
 ---
 
 # Segurança: autenticação e gestão de sessões seguras

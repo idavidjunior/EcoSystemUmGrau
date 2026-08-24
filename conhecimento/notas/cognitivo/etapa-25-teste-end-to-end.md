@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, general, observability, preserved, response, selfassessment]
 aliases: [ETAPA 25 — Teste End-to-End]
-date: 2026-08-23
+date: 2026-08-20
 ---
 
 # ETAPA 25 — Teste End-to-End

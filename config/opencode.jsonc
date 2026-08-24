@@ -64,6 +64,16 @@
       "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/internet/server.py"],
       "enabled": true
     },
+    "mcp-browser": {
+      "type": "local",
+      "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/internet/habilidades/browser-mcp/server.py"],
+      "enabled": true
+    },
+    "mcp-dev-tools": {
+      "type": "local",
+      "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/desenvolvimento/habilidades/dev-tools/server.py"],
+      "enabled": true
+    },
     "mcp-memoria": {
       "type": "local",
       "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/memoria/server.py"],

@@ -36,3 +36,7 @@ Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -match 'watchdog' 
   `Start-Process powershell.exe -ArgumentList '-NoProfile','-ExecutionPolicy','Bypass','-WindowStyle','Hidden','-File',"`$PSScriptRoot\watchdog.ps1`" `
 - O app Android desconecta ao ir para background — reconexao automatica e responsabilidade do app (abrindo o app, ele reconecta sozinho).
 - O usuario enfatizou: NAO duplicar aprendizados curtos/irrelevantes no log da bridge; registrar apenas o essencial.
+
+## Conexoes
+
+- [[aprendizado-2026-07-31-horas-faladas-corretamente-no-tts-do-]]

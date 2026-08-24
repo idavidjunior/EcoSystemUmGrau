@@ -24,3 +24,7 @@ impacto: >
   Modo silencioso desativa voz automaticamente. Narrador nao fala mais
   conteudo antigo apos parar e reativar.
 ---
+
+## Conexoes
+
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]

@@ -1,7 +1,7 @@
 ---
 tags: [barra, decisao, files, normal, opencode, relpath]
 aliases: [modo auto gate]
-date: 2026-08-23
+date: 2026-08-22
 ---
 
 # modo auto gate

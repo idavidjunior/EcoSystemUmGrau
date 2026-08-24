@@ -253,6 +253,7 @@ class LearningEngine:
                 source=f"learning_{record.source.value}",
                 confidence=record.confidence,
                 node_id=f"learn_{record.id}",
+                created_at=record.created_at,
             )
             # Link to project if exists
             if record.project:

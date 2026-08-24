@@ -1,7 +1,7 @@
 ---
 tags: [opencode, padrao, processo, service, singleton, widget]
 aliases: [restauracao unified bridge]
-date: 2026-08-23
+date: 2026-08-20
 ---
 
 # restauracao unified bridge

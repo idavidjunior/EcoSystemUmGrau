@@ -29,3 +29,7 @@ Python + SQLite (somente leitura) resolvem o narrador de voz do desktop.
 - `python scripts/narrador_desktop.py --teste` (testa áudio)
 - `python scripts/narrador_desktop.py` (narra em tempo real)
 - `scripts\narrador_start.bat` (inicia em background)
+
+## Conexoes
+
+- [[aprendizado-2026-07-31-horas-faladas-corretamente-no-tts-do-]]

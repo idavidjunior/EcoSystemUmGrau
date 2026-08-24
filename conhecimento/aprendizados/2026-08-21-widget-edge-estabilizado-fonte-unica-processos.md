@@ -36,3 +36,7 @@ impacto: |
   pid file tem janela de corrida entre spawn e gravacao; (d) pywebview importa
   como `import webview` e sob pythonw as streams sao None — redirecionar para
   log + faulthandler antes de qualquer print de biblioteca.
+
+## Conexoes
+
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]

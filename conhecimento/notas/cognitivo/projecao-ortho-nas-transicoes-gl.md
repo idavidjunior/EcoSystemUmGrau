@@ -1,7 +1,7 @@
 ---
 tags: [1080x2400, cognitivo, general, multiplicacao, pos, proporcao]
 aliases: [Projecao ortho nas transicoes GL]
-date: 2026-08-23
+date: 2026-08-20
 ---
 
 # Projecao ortho nas transicoes GL

@@ -1,7 +1,7 @@
 ---
-tags: [fornece, métodos, padrao, range, reduce, ruby]
+tags: [closure, fornece, padrao, range, reduce, ruby]
 aliases: [Ruby: blocks, procs e lambdas]
-date: 2026-08-23
+date: 2026-08-10
 ---
 
 # Ruby: blocks, procs e lambdas

@@ -82,3 +82,8 @@ Teste in-proc (mesma janela + poller no mesmo processo):
 - WebView2 child PID 10964 (msedgewebview2)
 - `widget_err.log` vazio (sem erros)
 - Launch via `scripts/controle.bat` → `pythonw widget_controle_jarvis.py`
+
+## Conexoes
+
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]
+- [[aprendizado-2026-07-31-horas-faladas-corretamente-no-tts-do-]]

@@ -81,3 +81,8 @@ python -m py_compile scripts/widget_controle_jarvis.py scripts/frases_manager.py
 ## Memórias relacionadas
 - #302 (padrao): Fix ativação de voz: reset posição narrador + frases variadas
 - #131 (padrao): Saudacoes inteligentes (reconexao vs primeira vez) — base do `saudacao_estado.json`
+
+## Conexoes
+
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]
+- [[aprendizado-2026-07-31-horas-faladas-corretamente-no-tts-do-]]

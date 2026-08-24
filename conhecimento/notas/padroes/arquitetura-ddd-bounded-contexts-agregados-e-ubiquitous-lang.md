@@ -1,7 +1,7 @@
 ---
 tags: [arquitetura, customer, moderação, padrao, supplier, uso]
 aliases: [Arquitetura: DDD — bounded contexts, agregados e ubiquitous ]
-date: 2026-08-23
+date: 2026-08-10
 ---
 
 # Arquitetura: DDD — bounded contexts, agregados e ubiquitous language

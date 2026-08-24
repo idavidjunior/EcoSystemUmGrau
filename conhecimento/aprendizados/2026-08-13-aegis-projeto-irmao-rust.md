@@ -34,5 +34,8 @@ O ecossistema passa a conhecer o Aegis como projeto irmao. O projeto tem version
 
 - [[cluster-hub-programacao]]
 - [[git-fluxos-de-trabalho-trunk-based-e-git-flow-e-quando-usar-]]
+- [[rust-enums-pattern-matching-result-e-option]]
+- [[rust-lifetimes-referências-e-elisão]]
 - [[rust-ownership-borrow-checker-e-o-modelo-de-memória]]
+- [[rust-traits-generics-e-trait-objects]]
 - [[segurança-owasp-top-10-aplicado-na-prática]]

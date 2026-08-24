@@ -1,7 +1,7 @@
 ---
 tags: [espalhados, list, mapa, padrao, performance, ponteiros]
 aliases: [Performance: complexidade assintótica vs custo real]
-date: 2026-08-23
+date: 2026-08-10
 ---
 
 # Performance: complexidade assintótica vs custo real

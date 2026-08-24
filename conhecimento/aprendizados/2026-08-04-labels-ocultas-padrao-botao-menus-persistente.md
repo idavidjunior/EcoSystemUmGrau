@@ -33,3 +33,7 @@ impacto: Widget abre limpo, sem etiquetas, sem menus; usuario personaliza com 1 
   `preflight_check.py` (cláusula pétrea).
 - NÃO confiar na 1ª edição: conferir que TODAS as leituras da mesma chave usam a
   mesma regra (havia linhas antigas `=== 'true'` residuais em 420/428).
+
+## Conexoes
+
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]

@@ -318,13 +318,8 @@ $onGitSync = {
 Register-ObjectEvent $gitTimer "Elapsed" -Action $onGitSync > $null
 $gitTimer.Start()
 
-# Memory decay pass diario
-$decayTimer = New-Object System.Timers.Timer
-$decayTimer.Interval = 86400000  # 24h
-$decayTimer.AutoReset = $true
-$onDecay = { python "$ecoDir\scripts\memory_engine.py" decay 2>$null | Out-Null }
-Register-ObjectEvent $decayTimer "Elapsed" -Action $onDecay > $null
-$decayTimer.Start()
+# Memory decay diario: SUBSTITUIDO pelo SINAPSES VIVAS TIMER (fim do arquivo),
+# cujo "sinapses.py ciclo" inclui decay + reindexacao + relatorio de saude.
 
 # ══════════════════════════════════════════════════════════════════════
 # LEARN TIMER: varredura proativa uma vez por dia
@@ -705,6 +700,36 @@ $archIntegrityTimer.Interval = 14400000  # 4h
 $archIntegrityTimer.AutoReset = $true
 Register-ObjectEvent $archIntegrityTimer "Elapsed" -Action $onArchIntegrity > $null
 $archIntegrityTimer.Start()
+
+# SINAPSES VIVAS: molde canonico do vigilante (mesmo padrao comprovado do
+# LEARN TIMER): timer de evento + flag de data. Gate 24h persistido no
+# marcador runtime/sinapses/ultimo_ciclo.txt.
+$sinapsesMarcador = "$ecoDir\runtime\sinapses\ultimo_ciclo.txt"
+$lastSinapsesRun = if (Test-Path $sinapsesMarcador) {
+    (Get-Item $sinapsesMarcador).LastWriteTime
+} else { [datetime]::MinValue }
+
+$onSinapsesCiclo = {
+    try {
+        $marcador = "$ecoDir\runtime\sinapses\ultimo_ciclo.txt"
+        $ultima = if (Test-Path $marcador) { (Get-Item $marcador).LastWriteTime }
+                  else { [datetime]::MinValue }
+        if (((Get-Date) - $ultima).TotalHours -lt 24) { return }
+        Write-Log "SINAPSES: destilacao de lacunas iniciando..."
+        $outD = python "$ecoDir\scripts\sinapses.py" destilar 2>&1 | Out-String
+        Write-Log ("SINAPSES destilar: " + ($outD.Trim() -replace '\r?\n', ' | '))
+        Write-Log "SINAPSES: ciclo de vida iniciando (decay + reindex + relatorio)..."
+        $out = python "$ecoDir\scripts\sinapses.py" ciclo 2>&1 | Out-String
+        $resumo = ($out -split "`n" | Where-Object { $_ -match "memorias ativas|arquivadas" }) -join "; "
+        Write-Log "SINAPSES: $resumo"
+        Set-Content -Path $marcador -Value (Get-Date).ToString('o') -Encoding UTF8
+    } catch { Write-Log "SINAPSES: erro: $_" }
+}
+$sinapsesTimer = New-Object System.Timers.Timer
+$sinapsesTimer.Interval = 3600000   # checa a cada 1h; gate interno de 24h
+$sinapsesTimer.AutoReset = $true
+Register-ObjectEvent $sinapsesTimer "Elapsed" -Action $onSinapsesCiclo > $null
+$sinapsesTimer.Start()
 
 # Mantem vivo
 while ($true) { Start-Sleep -Seconds 10 }

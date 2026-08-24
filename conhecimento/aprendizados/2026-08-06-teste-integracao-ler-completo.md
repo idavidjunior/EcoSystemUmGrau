@@ -32,4 +32,5 @@ Rodou `python tests/test_integration.py` no `ler-runtime/`.
 
 ## Conexoes
 
+- [[2026-07-27-sistema-automático-de-captura-de-conhecimento-do-]]
 - [[cluster-hub-ler]]

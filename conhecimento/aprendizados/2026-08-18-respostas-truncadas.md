@@ -35,3 +35,7 @@ truncada no meio da última palavra.
 
 Cortes de geração no fim da resposta são o sintoma mais comum de estouro de
 limite. A verificação final de completude é obrigatória antes de cada entrega.
+
+## Conexoes
+
+- [[2026-08-03-scan-proativo-orquestradorapk-flutter]]

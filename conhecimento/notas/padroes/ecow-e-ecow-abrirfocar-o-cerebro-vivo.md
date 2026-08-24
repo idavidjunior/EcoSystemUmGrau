@@ -1,12 +1,12 @@
 ---
-tags: [cérebro, foco, fonte, opencodeopencode, padrao, vivo]
+tags: [cérebro, foco, fonte, opencodeopencodeopencode, padrao, vivo]
 aliases: [@ecow e /ecow — abrir/focar o Cerebro Vivo]
-date: 2026-08-23
+date: 2026-08-22
 ---
 
 # @ecow e /ecow — abrir/focar o Cerebro Vivo
 
-**Fonte:** opencode+opencode
+**Fonte:** opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -20,9 +20,8 @@ contexto: Usuário pediu comando /ecow e @ecow para abrir o widget Cérebro Vivo
 ## Dec
 ## Conexoes
 
-- [[aegis-registrado-como-projeto-irmao-rust]]
-- [[certificacao-forense-de-processos-boot-do-watchdog]]
+- [[cli-anything-internalizado-como-habilidade-soberana]]
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
+- [[config-2026-07-27-teste-do-vigilante-automático]]
 - [[padrao-hub-padroes]]
-- [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]
+- [[padrao-organizacao-comandos]]

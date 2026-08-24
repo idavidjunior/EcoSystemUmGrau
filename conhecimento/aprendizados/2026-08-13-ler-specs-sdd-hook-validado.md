@@ -11,4 +11,5 @@ impacto: Lacuna 1 VALIDADA com integracao dirigida: kernel real (LERKernel) + Or
 
 ## Conexoes
 
+- [[2026-07-27-sistema-automático-de-captura-de-conhecimento-do-]]
 - [[cluster-hub-ler]]

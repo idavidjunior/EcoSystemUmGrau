@@ -1,7 +1,7 @@
 ---
 tags: [decidir, decisao, descrição, finance, gravasse, opencode]
 aliases: [Separação de estados: Editar vs Salvar despesas]
-date: 2026-08-23
+date: 2026-08-14
 ---
 
 # Separação de estados: Editar vs Salvar despesas

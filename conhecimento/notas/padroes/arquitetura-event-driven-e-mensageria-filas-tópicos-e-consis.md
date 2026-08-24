@@ -1,7 +1,7 @@
 ---
 tags: [arquitetura, correlação, exige, padrao, trace, transversal]
 aliases: [Arquitetura: event-driven e mensageria — filas, tópicos e co]
-date: 2026-08-23
+date: 2026-08-10
 ---
 
 # Arquitetura: event-driven e mensageria — filas, tópicos e consistência eventual

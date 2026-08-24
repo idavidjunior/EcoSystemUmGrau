@@ -34,3 +34,8 @@ Cada script só limpa duplicatas da própria classe, então não se cancelaram.
 Antes de abrir qualquer widget/ponte, verificar se já existe o processo canônico
 rodando (unified_bridge.py) e não abrir o widget antigo separado. Consultar a
 memória antes de iniciar processos que possuem versão canônica consolidada.
+
+## Conexoes
+
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]
+- [[aprendizado-2026-07-31-horas-faladas-corretamente-no-tts-do-]]

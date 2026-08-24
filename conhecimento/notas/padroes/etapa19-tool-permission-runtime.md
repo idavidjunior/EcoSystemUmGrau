@@ -1,7 +1,7 @@
 ---
 tags: [core, ferramentas, opencodeopencode, padrao, permissioneng, toolregistry]
 aliases: [etapa19 tool permission runtime]
-date: 2026-08-23
+date: 2026-08-20
 ---
 
 # etapa19 tool permission runtime

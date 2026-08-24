@@ -16,3 +16,7 @@ impacto: >
   Sistema evolui sem depender de LLM, apenas combinando templates.
   Total de 52 frases base distribuidas em 5 periodos.
 ---
+
+## Conexoes
+
+- [[aprendizado-2026-07-31-horas-faladas-corretamente-no-tts-do-]]

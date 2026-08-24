@@ -35,4 +35,8 @@ erros_encontrados:
 
 ## Conexoes
 
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]
+- [[javascript-assincronismo-event-loop-promises-e-asyncawait]]
 - [[javascript-closures-escopo-e-hoisting]]
+- [[javascript-this-prototypes-e-herança]]
+- [[javascript-tipos-coerção-e-igualdade]]

@@ -20,4 +20,7 @@ impacto: >
 
 - [[cluster-hub-programacao]]
 - [[norma-culta-x-coloquial-no-pt-br-quando-usar-cada-registro-n]]
+- [[python-decoradores-e-metaprogramação]]
+- [[python-gil-e-concorrência]]
+- [[python-idioms-e-boas-práticas]]
 - [[python-sintaxe-e-núcleo-da-linguagem]]

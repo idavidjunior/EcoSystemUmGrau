@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**274 notas** conectadas a este hub.
+**276 notas** conectadas a este hub.
 
 
 ## Notas
@@ -142,6 +142,8 @@
 - [[javascript-tipos-coerção-e-igualdade]]
 - [[json-persistence-com-file-parameter]]
 - [[json-persistence-pattern]]
+- [[junkscanner-benchmark-do-scan-incremental]]
+- [[junkscanner-scan-incremental-cache-de-hash-memoização]]
 - [[key-design-decisions]]
 - [[keyboard-only-navigation-fallback]]
 - [[kotlin-corrotinas-e-concorrência-estruturada]]

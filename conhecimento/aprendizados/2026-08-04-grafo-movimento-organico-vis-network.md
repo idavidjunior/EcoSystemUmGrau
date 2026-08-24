@@ -60,3 +60,7 @@ busca a apos um marcador proprio (ex: 'Respiracao do layout').
 | timestep | 0.5 | 0.2 | passo da simulacao |
 | minVelocity | 0.1 | 0 | nunca para |
 | maxVelocity | 50 | 6 | velocidade maxima |
+
+## Conexoes
+
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]

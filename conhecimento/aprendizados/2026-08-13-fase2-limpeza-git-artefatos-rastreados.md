@@ -32,4 +32,7 @@ evidencia: git status (31 remoções), test-ecosystem.ps1 32 PASS, runtime_boot 
 ## Conexoes
 
 - [[cluster-hub-programacao]]
+- [[git-conventional-commits-e-versionamento-semântico]]
 - [[git-fluxos-de-trabalho-trunk-based-e-git-flow-e-quando-usar-]]
+- [[git-rebase-vs-merge-e-históricos-limpos]]
+- [[git-resolver-conflitos-e-reverter-com-segurança-revert-reset]]

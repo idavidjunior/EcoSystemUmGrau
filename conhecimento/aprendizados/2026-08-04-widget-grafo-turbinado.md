@@ -54,3 +54,8 @@ impacto: Grafo mais vivo e configuravel; navegacao do conhecimento ganha context
   ponto central visivel — melhor que calcular centroide dos nos.
 - LocalStorage persiste preferencias (velocidade, tamanho, labels, menus) sem
   depender do bridge Python.
+
+## Conexoes
+
+- [[2026-08-04-foco-vocal-via-jarvis-voz-orienta-o-grafo-do-conh]]
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]

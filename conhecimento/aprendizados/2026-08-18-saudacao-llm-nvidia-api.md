@@ -17,3 +17,7 @@ impacto: >
   Total de 40+ frases por periodo, mix de origens.
   Sem depender do serve local para geracao de saudacoes.
 ---
+
+## Conexoes
+
+- [[aprendizado-2026-07-31-horas-faladas-corretamente-no-tts-do-]]

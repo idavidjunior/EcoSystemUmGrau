@@ -7,3 +7,8 @@ decisao: Janela pywebview frameless ancorada atras das outras janelas via SetWin
 impacto: Widget de desktop funcional, redimensionavel, com estado restaurado entre execucoes. 
 licoes: (1) Ancoragem Progman/WorkerW (SetParent p/ WorkerW) NAO funciona com WebView2 (EdgeChromium) - WebView2 cria janelas-filha proprias que resistem ao reparent; parent fica None; usar HWND_BOTTOM + re-baixamento continuo. (2) FindWindowW(None,title) pode retornar 0 para janelas ancoradas; preferir EnumWindows por classe/processo. (3) ctypes.wintypes e usado via 'from ctypes import wintypes', nao 'ctypes.wintypes'. (4) frameless sem moldura exige alca custom em JS para redimensionar pois nao ha handle nativa.
 uso: python scripts/widget_grafo.py
+
+## Conexoes
+
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]
+- [[treinamento-especializado-em-navegacao-multi-plataforma-reco]]

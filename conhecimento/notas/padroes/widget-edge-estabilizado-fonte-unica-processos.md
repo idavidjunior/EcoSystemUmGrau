@@ -1,7 +1,7 @@
 ---
-tags: [corrida, killer, opencode, padrao, ram, unica]
+tags: [killer, log, opencode, padrao, ram, unica]
 aliases: [widget edge estabilizado fonte unica processos]
-date: 2026-08-23
+date: 2026-08-21
 ---
 
 # widget edge estabilizado fonte unica processos

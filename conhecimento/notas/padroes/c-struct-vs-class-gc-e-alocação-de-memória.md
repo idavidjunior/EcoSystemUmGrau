@@ -1,7 +1,7 @@
 ---
 tags: [arrays, cache, contíguos, csharp, friendly, padrao]
 aliases: [C#: struct vs class, GC e alocação de memória]
-date: 2026-08-23
+date: 2026-08-10
 ---
 
 # C#: struct vs class, GC e alocação de memória

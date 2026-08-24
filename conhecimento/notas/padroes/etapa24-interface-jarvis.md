@@ -1,7 +1,7 @@
 ---
 tags: [dedup, opencode, padrao, reconnection, renderer, terminal]
 aliases: [etapa24 interface jarvis]
-date: 2026-08-23
+date: 2026-08-20
 ---
 
 # etapa24 interface jarvis

@@ -66,4 +66,8 @@ impacto: >
 ## Conexoes
 
 - [[cluster-hub-programacao]]
+- [[engenharia-code-review-eficaz]]
+- [[engenharia-documentação-que-não-vira-lixo-adr-readme-vivo-co]]
+- [[engenharia-dívida-técnica-e-manutenibilidade]]
+- [[engenharia-refactoring-seguro]]
 - [[engenharia-requisitos-e-definição-de-escopo]]

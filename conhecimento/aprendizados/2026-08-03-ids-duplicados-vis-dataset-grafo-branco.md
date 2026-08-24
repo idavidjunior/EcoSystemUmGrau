@@ -40,3 +40,7 @@ O grafo do widget voltou a renderizar (282 nós, 1199 conexões). O aprendizado:
 erros dentro do `<script>` que cria a rede abortam silenciosamente tudo — o
 diagnóstico precisa capturar erro no próprio bloco (via listener no `<head>`)
 ou via `evaluate_js`, nunca por handler registrado depois no body.
+
+## Conexoes
+
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]

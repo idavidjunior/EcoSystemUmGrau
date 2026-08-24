@@ -72,6 +72,13 @@ Fonte única dos cards: `ler-runtime/knowledge/knowledge_graph.json` (36 cards n
 ## Conexoes
 
 - [[cluster-hub-traducao]]
+- [[elementos-culturalmente-intraduzíveis-humor-trocadilhos-prov]]
+- [[estratégias-de-tradução-literal-semântica-adaptativa-e-quand]]
+- [[falsos-cognatos-e-armadilhas-interlíngua-inglês-português]]
+- [[fidelidade-x-naturalidade-quando-priorizar-cada-um]]
 - [[localização-l10n-vs-internacionalização-i18n-vs-transcreatio]]
 - [[norma-culta-x-coloquial-no-pt-br-quando-usar-cada-registro-n]]
+- [[pipeline-de-tradução-de-qualidade-análise-rascunho-revisão-e]]
 - [[princípios-fundamentais-da-tradução-sentido-equivalência-e-f]]
+- [[quando-adaptar-x-quando-manter-o-termo-original-estrangeiris]]
+- [[tom-e-registro-formal-técnico-coloquial-como-detectar-e-mant]]

@@ -32,3 +32,8 @@ Usuário relatou que o botão "Parar Fala" do widget Jarvis não parava a fala.
 ## Lição
 
 Flag de interrupção nunca deve ser criada e apagada na mesma sequência quando o consumidor faz polling em intervalo maior. Manter a flag viva por janela maior que o intervalo do polling garante a detecção.
+
+## Conexoes
+
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]
+- [[aprendizado-2026-07-31-horas-faladas-corretamente-no-tts-do-]]

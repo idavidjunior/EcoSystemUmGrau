@@ -29,3 +29,7 @@ impacto: O ecossistema agora tem observabilidade unificada (logs estruturados, m
 
 - [[2026-08-18-etapa22-self-assessment-self-improvement]]
 - [[2026-08-18-etapa21-memory-learning-consolidation]]
+
+## Conexoes
+
+- [[nunca-armazenar-api-keys-em-config-files]]

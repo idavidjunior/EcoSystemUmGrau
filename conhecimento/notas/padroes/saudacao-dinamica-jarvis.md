@@ -1,7 +1,7 @@
 ---
 tags: [complexo, lento, opencode, padrao, saudacoes, tts]
 aliases: [saudacao dinamica jarvis]
-date: 2026-08-23
+date: 2026-08-20
 ---
 
 # saudacao dinamica jarvis

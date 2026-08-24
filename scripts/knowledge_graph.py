@@ -236,6 +236,7 @@ class KnowledgeGraph:
         source: str = "manual",
         confidence: float = 1.0,
         node_id: str = None,
+        created_at: str = None,
     ) -> KGNode:
         with self._lock:
             node_id = node_id or str(uuid.uuid4())[:12]
@@ -256,6 +257,7 @@ class KnowledgeGraph:
                 tags=tags or [],
                 source=source,
                 confidence=confidence,
+                created_at=created_at or datetime.now().isoformat(timespec='seconds'),
             )
             self._add_node_internal(node)
             self._save()

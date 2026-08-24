@@ -48,3 +48,7 @@ contexto: Widget "Cerebro Vivo" (pywebview 6.2.1, edgechromium) nao disparava o 
 ## Arquivos
 
 - `scripts/widget_grafo.py`: fix aplicada (`_win`, URL file://, bridge funcionando).
+
+## Conexoes
+
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]

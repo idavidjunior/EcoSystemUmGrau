@@ -13,3 +13,7 @@ notas:
   - guardar_orbGrafo/ORB_FILE eram bridge morta; orbita persistia 3.00 num arquivo que nada lia.
   - Removidos ~130 artefatos de debug (scripts/_backup_debug_temp, check_*.py, debug_*.py, _test_*.js, gg.js, api-inject.js, orbGrafo.json).
   - pywebview 6.2.1: Window.move/resize/evaluate_js disponiveis; nao ha propriedades x/y/width/height diretas (geometria via JS window.screenX/innerWidth).
+
+## Conexoes
+
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]

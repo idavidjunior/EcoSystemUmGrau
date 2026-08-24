@@ -13,3 +13,8 @@ confianca: 0.9
 # Evento de segurança: path_traversal
 
 Attempt to access ../../etc/passwd
+
+## Conexoes
+
+- [[nunca-armazenar-api-keys-em-config-files]]
+- [[treinamento-especializado-em-navegacao-multi-plataforma-reco]]

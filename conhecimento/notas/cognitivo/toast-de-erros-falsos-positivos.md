@@ -1,7 +1,7 @@
 ---
 tags: [cognitivo, falado, falhou, general, reais, texto]
 aliases: [Toast de Erros - Falsos Positivos]
-date: 2026-08-23
+date: 2026-08-20
 ---
 
 # Toast de Erros - Falsos Positivos

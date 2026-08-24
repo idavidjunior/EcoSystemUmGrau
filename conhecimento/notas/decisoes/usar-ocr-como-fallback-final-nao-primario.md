@@ -1,7 +1,7 @@
 ---
 tags: [decisao, falsos, fonte, positivos, sujeito, treinamentonavegacao]
 aliases: [Usar OCR como fallback final, nao primario]
-date: 2026-08-23
+date: 2026-07-28
 ---
 
 # Usar OCR como fallback final, nao primario

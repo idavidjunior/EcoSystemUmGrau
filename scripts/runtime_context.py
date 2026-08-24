@@ -117,6 +117,7 @@ def _carregar_memorias(assunto, tags, limite, projeto_ativo=''):
         result = []
         for score, m in scored[:limite]:
             result.append({
+                'id': m.get('id'),
                 'tipo': m['kind'],
                 'titulo': _clean(m['task']),
                 'resumo': _clean(m['summary'])[:160],
@@ -175,6 +176,60 @@ def _carregar_decisoes(assunto, tags, limite):
                 for _, m in scored[:limite]]
     except Exception:
         return []
+
+
+_RX_LINK = re.compile(r'\[\[([^\]\|#]+)')
+_DIRS_NOTAS = [os.path.join(BASE, 'conhecimento', 'notas'),
+               os.path.join(BASE, 'conhecimento', 'aprendizados')]
+
+
+def _carregar_sinapses(conhecimento, max_notas=4, max_links=4):
+    """Expande resultados do vault com a vizinhanca do grafo vivo.
+
+    Para cada nota recuperada pelo BM25, extrai os links [[...]] do corpo
+    e devolve as conexoes (sinapses) como contexto estruturado.
+    Hubs e Home sao ignorados (navegacao, nao conhecimento).
+    """
+    alvos = [c['titulo'] for c in conhecimento if c.get('fonte') == 'nota']
+    if not alvos:
+        return []
+    restantes = set(alvos[:max_notas])
+    achados = {}
+    for notas_dir in _DIRS_NOTAS:
+        if not restantes or not os.path.isdir(notas_dir):
+            continue
+        for root, _, files in os.walk(notas_dir):
+            if not restantes:
+                break
+            for fname in files:
+                stem = fname[:-3] if fname.endswith('.md') else ''
+                if stem in restantes:
+                    achados[stem] = os.path.join(root, fname)
+                    restantes.discard(stem)
+                    if not restantes:
+                        break
+    out = []
+    for slug in alvos:
+        if len(out) >= max_notas or slug not in achados:
+            continue
+        try:
+            with open(achados[slug], encoding='utf-8', errors='replace') as f:
+                conteudo = f.read(8000)
+        except OSError:
+            continue
+        links = []
+        for m in _RX_LINK.findall(conteudo):
+            destino = _clean(m).strip()
+            if not destino or 'hub-' in destino.lower() or \
+                    destino.lower() in ('home',):
+                continue
+            if destino not in links:
+                links.append(destino)
+            if len(links) >= max_links:
+                break
+        if links:
+            out.append({'nota': slug[:60], 'conecta': links})
+    return out
 
 
 def _carregar_docs_projeto(projeto_ativo, limite=5):
@@ -250,6 +305,77 @@ def _carregar_pendencias_runtime():
         return []
 
 
+def _carregar_sinapses_dinamicas(memorias_servidas, maximo=4):
+    """Sinapses Vivas fase 2: vizinhos das arestas de co-uso real.
+    Fail-soft; nunca inventa memória inexistente."""
+    try:
+        from pathlib import Path
+        import json as _json
+        f = Path(__file__).resolve().parent.parent / 'runtime' / 'sinapses' / 'arestas.json'
+        arestas = _json.loads(f.read_text(encoding='utf-8'))
+    except Exception:
+        return []
+    ids_servidos = {m.get('id') for m in memorias_servidas
+                    if isinstance(m.get('id'), int)}
+    if not ids_servidos:
+        return []
+    vizinhos = {}
+    for chave, peso in arestas.items():
+        try:
+            a, b = (int(x) for x in chave.split('-'))
+        except (ValueError, AttributeError):
+            continue
+        if a in ids_servidos and b not in ids_servidos:
+            vizinhos[b] = vizinhos.get(b, 0) + peso
+        elif b in ids_servidos and a not in ids_servidos:
+            vizinhos[a] = vizinhos.get(a, 0) + peso
+    if not vizinhos:
+        return []
+    try:
+        import memory_engine as me
+        saida = []
+        for mid, peso in sorted(vizinhos.items(), key=lambda kv: -kv[1])[:maximo]:
+            m = me.buscar_por_id(mid)
+            if m:
+                saida.append({
+                    'id': mid,
+                    'titulo': _clean(m.get('task', ''))[:70],
+                    'peso': peso,
+                })
+        return saida
+    except Exception:
+        return []
+
+
+def _telemetria_sinapses(contexto):
+    """Fase 0 Sinapses Vivas: registra o que foi servido a cada tarefa.
+    Fail-soft absoluto: telemetria nunca quebra o contexto."""
+    try:
+        from pathlib import Path
+        from datetime import datetime
+        import json as _json
+        d = Path(__file__).resolve().parent.parent / 'runtime' / 'sinapses'
+        d.mkdir(parents=True, exist_ok=True)
+        registro = {
+            'ts': datetime.now().isoformat(timespec='seconds'),
+            'assunto': (contexto.get('assunto') or '')[:120],
+            'projeto': contexto.get('projeto_ativo', ''),
+            'criticidade': contexto.get('criticidade', ''),
+            'memorias_servidas': [
+                {'id': m.get('id'), 'score': m.get('score')}
+                for m in contexto.get('memorias', [])
+            ],
+            'conhecimento_titulos': [c['titulo'][:60] for c in
+                                     contexto.get('conhecimento', [])][:4],
+            'decisoes_titulos': [d['titulo'][:60] for d in
+                                 contexto.get('decisoes', [])][:3],
+        }
+        with open(d / 'telemetria.jsonl', 'a', encoding='utf-8') as f:
+            f.write(_json.dumps(registro, ensure_ascii=False) + '\n')
+    except Exception:
+        pass
+
+
 def carregar_contexto(assunto, projeto='', limite=5, incluir_pendencias=True,
                       criticidade=None, registrar=False):
     """Monta o contexto relevante para a tarefa. Nunca carrega tudo."""
@@ -264,19 +390,25 @@ def carregar_contexto(assunto, projeto='', limite=5, incluir_pendencias=True,
         except Exception:
             criticidade = 'baixa'
 
+    conhecimento_rel = _carregar_conhecimento(assunto, tags, limite)
+    memorias_rel = _carregar_memorias(assunto, tags, limite, projeto_ativo)
     contexto = {
         'assunto': assunto,
         'tags_detectadas': tags,
         'projeto_ativo': projeto_ativo,
         'criticidade': criticidade,
-        'memorias': _carregar_memorias(assunto, tags, limite, projeto_ativo),
-        'conhecimento': _carregar_conhecimento(assunto, tags, limite),
+        'memorias': memorias_rel,
+        'conhecimento': conhecimento_rel,
+        'sinapses': _carregar_sinapses(conhecimento_rel),
+        'sinapses_dinamicas': _carregar_sinapses_dinamicas(memorias_rel),
         'decisoes': _carregar_decisoes(assunto, tags, max(2, limite // 2)),
         'docs_projeto': _carregar_docs_projeto(projeto_ativo),
         'knowledge_graph': _carregar_knowledge_graph(assunto, tags, limite, projeto_ativo),
         'agentes_sugeridos': _sugerir_agentes(criticidade),
         'pendencias': _carregar_pendencias_runtime() if incluir_pendencias else [],
     }
+
+    _telemetria_sinapses(contexto)
 
     if registrar:
         try:
@@ -313,6 +445,17 @@ def render(contexto):
         lines.append('Conhecimento relevante:')
         for c in contexto['conhecimento']:
             lines.append(f"  - {c['titulo'][:80]} (score {c['score']}, {c['fonte']})")
+    if contexto.get('sinapses'):
+        lines.append('')
+        lines.append('Sinapses do grafo (vizinhança das notas):')
+        lines.append("")
+        for s in contexto['sinapses']:
+            lines.append(f"  - {s['nota']} -> conecta: {', '.join(s['conecta'])}")
+    if contexto.get('sinapses_dinamicas'):
+        lines.append('')
+        lines.append('Sinapses vivas (co-uso real, peso):')
+        for s in contexto['sinapses_dinamicas']:
+            lines.append(f"  - [{s['id']}] {s['titulo']} (peso {s['peso']})")
     if contexto['decisoes']:
         lines.append('')
         lines.append('Decisões consolidadas relacionadas:')
@@ -347,6 +490,7 @@ def render(contexto):
     lines.append('')
     lines.append(f"Carregado: {len(contexto['memorias'])} memórias, "
                  f"{len(contexto['conhecimento'])} conhecimentos, "
+                 f"{len(contexto.get('sinapses', []))} sinapses, "
                  f"{len(contexto['decisoes'])} decisões, "
                  f"{len(contexto['docs_projeto'])} documentos. "
                  f"(não carregou a memória inteira)")

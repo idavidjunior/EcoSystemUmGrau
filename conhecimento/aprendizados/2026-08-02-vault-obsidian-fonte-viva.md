@@ -29,4 +29,10 @@ sentence-transformers, que não estão instalados (apenas torch). Determinístic
 
 ## Conexoes
 
+- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]
+- [[arquitetura-adrs-e-governança-de-decisões-por-que-e-como-reg]]
+- [[arquitetura-camadas-vs-hexagonal-vs-clean-architecture-depen]]
+- [[arquitetura-ddd-bounded-contexts-agregados-e-ubiquitous-lang]]
 - [[arquitetura-estilos-de-arquitetura-monólito-soa-microserviço]]
+- [[arquitetura-event-driven-e-mensageria-filas-tópicos-e-consis]]
+- [[arquitetura-resiliência-retry-circuit-breaker-backoff-e-idem]]

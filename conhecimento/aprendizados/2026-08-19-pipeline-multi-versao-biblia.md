@@ -84,4 +84,11 @@ Arquivos que conhecem tradução (todos precisam de `translation_id`):
 
 ## Conexoes
 
+- [[elementos-culturalmente-intraduzíveis-humor-trocadilhos-prov]]
+- [[estratégias-de-tradução-literal-semântica-adaptativa-e-quand]]
+- [[falsos-cognatos-e-armadilhas-interlíngua-inglês-português]]
+- [[fidelidade-x-naturalidade-quando-priorizar-cada-um]]
+- [[pipeline-de-tradução-de-qualidade-análise-rascunho-revisão-e]]
 - [[princípios-fundamentais-da-tradução-sentido-equivalência-e-f]]
+- [[quando-adaptar-x-quando-manter-o-termo-original-estrangeiris]]
+- [[tom-e-registro-formal-técnico-coloquial-como-detectar-e-mant]]

@@ -541,6 +541,239 @@ class Kernel:
                 'alternativas': []
             }
 
+    def execute_plan(self, goal: str, max_replans: int = 3) -> dict:
+        """Executa plano completo com replan automático em falhas.
+
+        Fluxo:
+        1. Roteia tarefa (complexity -> DIRECT ou PLANNER)
+        2. Se PLANNER: cria plano via mcp-planner
+        3. Executa plano via tool_orchestrator (MCPs reais)
+        4. Se step falha: chama replan_on_failure (máx max_replans vezes)
+        5. Retorna resultado final agregado
+        """
+        import json
+
+        route_result = self.route_task(goal)
+
+        if route_result['route'] == 'DIRECT':
+            return {
+                'route': 'DIRECT',
+                'message': 'Tarefa de baixa complexidade — execução direta (não implementado)',
+                'contract': route_result['contract']
+            }
+
+        # PLANNER route
+        plan = route_result.get('plan')
+        if not plan:
+            return {
+                'route': 'PLANNER',
+                'error': 'Falha ao criar plano via mcp-planner',
+                'contract': route_result['contract']
+            }
+
+        replan_count = 0
+        current_plan = plan
+        final_results = {}
+
+        while replan_count <= max_replans:
+            # Executa plano atual
+            exec_result = self._execute_plan_via_orchestrator(current_plan, goal)
+
+            # Verifica se houve falhas
+            failed_steps = [
+                (sid, r) for sid, r in exec_result.get('results', {}).items()
+                if r.get('status') == 'failed'
+            ]
+
+            if not failed_steps:
+                # Sucesso total
+                final_results = exec_result.get('results', {})
+                return {
+                    'route': 'PLANNER',
+                    'status': 'success',
+                    'replans': replan_count,
+                    'plan': current_plan,
+                    'results': final_results,
+                    'contract': route_result['contract']
+                }
+
+            # Falha detectada - tenta replan
+            failed_step_id, failed_result = failed_steps[0]
+            error_msg = failed_result.get('error', 'Erro desconhecido')
+
+            # Coleta resultados parciais dos steps que executaram
+            partial_results = {
+                sid: r for sid, r in exec_result.get('results', {}).items()
+                if r.get('status') == 'success'
+            }
+
+            # Chama replan_on_failure via MCP
+            new_plan = self._call_replan(current_plan, failed_step_id, error_msg, partial_results)
+            if not new_plan or new_plan.get('error'):
+                return {
+                    'route': 'PLANNER',
+                    'status': 'failed',
+                    'error': f'Replan falhou: {new_plan.get("error") if new_plan else "sem resposta"}',
+                    'replans': replan_count,
+                    'plan': current_plan,
+                    'results': exec_result.get('results', {}),
+                    'contract': route_result['contract']
+                }
+
+            # Prepara para próxima iteração
+            current_plan = new_plan
+            replan_count += 1
+
+        # Esgotou tentativas de replan
+        return {
+            'route': 'PLANNER',
+            'status': 'failed',
+            'error': f'Esgotadas {max_replans} tentativas de replan',
+            'replans': replan_count,
+            'plan': current_plan,
+            'results': final_results,
+            'contract': route_result['contract']
+        }
+
+    def _execute_plan_via_orchestrator(self, plan: dict, goal: str) -> dict:
+        """Chama mcp-planner:execute_plan via MCP stdio."""
+        import subprocess
+        import json
+        import os
+
+        planner_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                    'mcp', 'nucleo', 'habilidades', 'planner', 'server.py')
+
+        req = {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "tools/call",
+            "params": {
+                "name": "execute_plan",
+                "arguments": {
+                    "plan": plan,
+                    "goal": goal
+                }
+            }
+        }
+
+        try:
+            result = subprocess.run(
+                [sys.executable, planner_path],
+                input=json.dumps(req) + "\n",
+                capture_output=True, text=True, timeout=300, cwd=os.path.dirname(planner_path)
+            )
+            if result.returncode != 0:
+                return {"error": f"MCP planner falhou: {result.stderr[:500]}"}
+
+            for line in result.stdout.strip().split('\n'):
+                try:
+                    resp = json.loads(line)
+                    if resp.get('id') == 1 and 'result' in resp:
+                        content = resp['result'].get('content', [])
+                        if content and content[0].get('type') == 'text':
+                            return json.loads(content[0]['text'])
+                except json.JSONDecodeError:
+                    continue
+            return {"error": "Resposta MCP inválida", "raw": result.stdout}
+        except Exception as e:
+            return {"error": f"Erro executando plano: {str(e)}"}
+
+    def _call_replan(self, plan: dict, failed_step_id: str, error: str, partial_results: dict) -> dict:
+        """Chama mcp-planner:replan_on_failure via MCP stdio."""
+        import subprocess
+        import json
+        import os
+
+        planner_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                    'mcp', 'nucleo', 'habilidades', 'planner', 'server.py')
+
+        req = {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "tools/call",
+            "params": {
+                "name": "replan_on_failure",
+                "arguments": {
+                    "plan": plan,
+                    "failed_step_id": failed_step_id,
+                    "error": error,
+                    "partial_results": partial_results
+                }
+            }
+        }
+
+        try:
+            result = subprocess.run(
+                [sys.executable, planner_path],
+                input=json.dumps(req) + "\n",
+                capture_output=True, text=True, timeout=60, cwd=os.path.dirname(planner_path)
+            )
+            if result.returncode != 0:
+                return {"error": f"MCP planner replan falhou: {result.stderr[:500]}"}
+
+            for line in result.stdout.strip().split('\n'):
+                try:
+                    resp = json.loads(line)
+                    if resp.get('id') == 1 and 'result' in resp:
+                        content = resp['result'].get('content', [])
+                        if content and content[0].get('type') == 'text':
+                            return json.loads(content[0]['text'])
+                except json.JSONDecodeError:
+                    continue
+            return {"error": "Resposta MCP inválida", "raw": result.stdout}
+        except Exception as e:
+            return {"error": f"Erro no replan: {str(e)}"}
+
+    def _call_planner(self, goal: str, contract: dict):
+        """Chama mcp-planner:create_plan via MCP stdio."""
+        import subprocess
+        import json
+        import os
+
+        planner_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                    'mcp', 'nucleo', 'habilidades', 'planner', 'server.py')
+        if not os.path.exists(planner_path):
+            return None
+
+        req = {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "tools/call",
+            "params": {
+                "name": "create_plan",
+                "arguments": {
+                    "goal": goal,
+                    "context": contract.get('contexto', ''),
+                    "constraints": contract.get('restricoes', ''),
+                    "success_criteria": contract.get('criterios_sucesso', '')
+                }
+            }
+        }
+
+        try:
+            result = subprocess.run(
+                [sys.executable, planner_path],
+                input=json.dumps(req) + "\n",
+                capture_output=True, text=True, timeout=30, cwd=os.path.dirname(planner_path)
+            )
+            if result.returncode != 0:
+                return None
+
+            for line in result.stdout.strip().split('\n'):
+                try:
+                    resp = json.loads(line)
+                    if resp.get('id') == 1 and 'result' in resp:
+                        content = resp['result'].get('content', [])
+                        if content and content[0].get('type') == 'text':
+                            return json.loads(content[0]['text'])
+                except json.JSONDecodeError:
+                    continue
+        except Exception:
+            pass
+        return None
+
+
 def main():
     parser = argparse.ArgumentParser(description='Kernel Permanente do Ecossistema')
     sub = parser.add_subparsers(dest='cmd')
@@ -565,6 +798,12 @@ def main():
     p_route = sub.add_parser('route')
     p_route.add_argument('objetivo', nargs='*', default=[])
     p_route.add_argument('--json', action='store_true', help='Saída em JSON')
+
+    # Fase 2: execução de plano com replan
+    p_execute = sub.add_parser('execute-plan')
+    p_execute.add_argument('objetivo', nargs='*', default=[])
+    p_execute.add_argument('--max-replans', type=int, default=3, help='Máximo de replans em falhas')
+    p_execute.add_argument('--json', action='store_true', help='Saída em JSON')
 
     args = parser.parse_args()
     cmd = args.cmd or 'status'
@@ -654,6 +893,25 @@ def main():
             print(f'Complexidade: {route_result["contract"]["complexidade"]}')
             if route_result.get('plan'):
                 print('Plano gerado via mcp-planner')
+    elif cmd == 'execute-plan':
+        if not args.objetivo:
+            print('Uso: kernel execute-plan "<objetivo>" [--max-replans N] [--json]')
+            return 1
+        goal = ' '.join(args.objetivo)
+        result = kernel.execute_plan(goal, max_replans=args.max_replans)
+        if args.json:
+            print(json.dumps(result, indent=2, ensure_ascii=False, default=str))
+        else:
+            print(f'Roteamento: {result.get("route")}')
+            print(f'Status: {result.get("status")}')
+            if result.get('replans') is not None:
+                print(f'Replans: {result["replans"]}')
+            if result.get('error'):
+                print(f'Erro: {result["error"]}')
+            if result.get('results'):
+                success = sum(1 for r in result['results'].values() if r.get('status') == 'success')
+                total = len(result['results'])
+                print(f'Steps: {success}/{total} sucessos')
     return 0
 
 

@@ -20,6 +20,7 @@ import importlib.util
 import json
 import math
 import os
+import re
 import sys
 import threading
 import time
@@ -48,6 +49,45 @@ JANELA_FILE = RUNTIME / "cerebro_janela.json"
 VAULT = BASE / "conhecimento" / "notas"
 
 LARG, ALT = 430, 570
+
+
+DATE_RE = re.compile(r'^date:\s*(.+)$', re.MULTILINE)
+
+
+def _frontmatter_date(path):
+    """Extrai o campo 'date' do frontmatter YAML da nota."""
+    try:
+        txt = path.read_text(encoding='utf-8')
+        m = DATE_RE.search(txt)
+        if m:
+            return m.group(1).strip().strip('"\'')
+    except Exception:
+        pass
+    return None
+
+
+def mapa_datas():
+    """{slug da nota: timestamp (epoch)} do campo 'date' do frontmatter.
+    Usa mtime como fallback se nao houver date."""
+    m = {}
+    for f in VAULT.rglob("*.md"):
+        try:
+            ds = _frontmatter_date(f)
+            ts = None
+            if ds:
+                from datetime import datetime
+                for fmt in ('%Y-%m-%d', '%Y-%m-%dT%H:%M:%S', '%Y-%m-%dT%H:%M:%S.%f'):
+                    try:
+                        ts = datetime.strptime(ds[:19], fmt).timestamp()
+                        break
+                    except ValueError:
+                        continue
+            if ts is None:
+                ts = f.stat().st_mtime
+            m[f.stem] = ts
+        except Exception:
+            continue
+    return m
 
 
 def carregar_gerador():
@@ -122,7 +162,7 @@ def montar_payload(mod, pos_antigas=None):
     for a, b in arestas:
         grau_por_id[a] = grau_por_id.get(a, 0) + 1
         grau_por_id[b] = grau_por_id.get(b, 0) + 1
-    mtimes = mapa_mtimes()
+    mtimes = mapa_datas()
     pos, herdados = layout_3d(nos_brutos, arestas, pos_antigas)
     nos = []
     for n in nos_brutos:
@@ -148,13 +188,7 @@ def montar_payload(mod, pos_antigas=None):
 
 def mapa_mtimes():
     """{slug da nota: mtime} de todo o vault. Fonte do diff de eventos."""
-    m = {}
-    for f in VAULT.rglob("*.md"):
-        try:
-            m[f.stem] = f.stat().st_mtime
-        except OSError:
-            continue
-    return m
+    return mapa_datas()
 
 
 def assinatura_de_mapa(mapa):

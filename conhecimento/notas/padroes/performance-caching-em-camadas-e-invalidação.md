@@ -1,7 +1,7 @@
 ---
 tags: [forever, lentidão, negrito, padrao, performance, stale]
 aliases: [Performance: caching em camadas e invalidação]
-date: 2026-08-23
+date: 2026-08-10
 ---
 
 # Performance: caching em camadas e invalidação
