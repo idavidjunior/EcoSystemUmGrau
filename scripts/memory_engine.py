@@ -60,7 +60,12 @@ def _decay_score(memory, now=None):
         now = datetime.now()
     kind = memory.get('kind', 'episodio')
     half_life = HALF_LIFE.get(kind, 14)
-    last_acc = datetime.fromisoformat(memory.get('last_accessed', memory['created_at']))
+    # Tolerante a variações de chave em memórias antigas/sintéticas
+    stamp = (memory.get('last_accessed')
+             or memory.get('created_at')
+             or memory.get('created')
+             or now.isoformat())
+    last_acc = datetime.fromisoformat(stamp)
     days = (now - last_acc).total_seconds() / 86400
     strength = memory.get('strength', 1.0)
     return strength * (0.5 ** (days / half_life))
