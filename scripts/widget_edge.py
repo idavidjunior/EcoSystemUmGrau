@@ -303,31 +303,51 @@ def poller(api):
             pass
 
 
-def _posicao_inferior_esquerda(largura, altura):
-    """(x, y) para nascer no canto inferior esquerdo da área útil
-    (respeita a barra de tarefas via SPI_GETWORKAREA)."""
+def _area_util():
+    """(left, top, right, bottom) da área útil via SPI_GETWORKAREA."""
+    import ctypes
+
+    class RECT(ctypes.Structure):
+        _fields_ = [("left", ctypes.c_long), ("top", ctypes.c_long),
+                    ("right", ctypes.c_long), ("bottom", ctypes.c_long)]
+
     try:
-        import ctypes
-
-        class RECT(ctypes.Structure):
-            _fields_ = [("left", ctypes.c_long), ("top", ctypes.c_long),
-                        ("right", ctypes.c_long), ("bottom", ctypes.c_long)]
-
         rc = RECT()
         ok = ctypes.windll.user32.SystemParametersInfoW(0x0030, 0, ctypes.byref(rc), 0)
         if ok:
-            x = rc.left + 8
-            y = max(rc.top, rc.bottom - altura - 8)
-            return int(x), int(y)
+            return int(rc.left), int(rc.top), int(rc.right), int(rc.bottom)
     except Exception:
         pass
     try:
         import ctypes
-
         u = ctypes.windll.user32
-        return 8, max(0, u.GetSystemMetrics(1) - altura - 56)
+        w = u.GetSystemMetrics(0)
+        h = u.GetSystemMetrics(1)
+        return 0, 0, int(w), int(h) - 56
     except Exception:
-        return 8, 8
+        return 0, 0, 1024, 700
+
+
+def _posicao_restaurada(largura, altura):
+    """Posição salva em widget_state.json se ainda couber na área útil
+    atual (monitor mudou, resolução diferente, etc)."""
+    try:
+        x = int(ler_estado().get("win_x"))
+        y = int(ler_estado().get("win_y"))
+    except (TypeError, ValueError):
+        return None
+    l, t, r, b = _area_util()
+    # precisa caber inteira e ao menos parcialmente visível
+    if not (l <= x < r and t <= y < b and x + largura <= r + 8 and y + altura <= b + 8):
+        return None
+    return x, y
+
+
+def _posicao_inferior_esquerda(largura, altura):
+    """(x, y) para nascer no canto inferior esquerdo da área útil
+    (respeita a barra de tarefas via SPI_GETWORKAREA)."""
+    l, t, r, b = _area_util()
+    return int(l) + 8, max(int(t), int(b) - altura - 8)
 
 
 def main():
@@ -351,9 +371,9 @@ def main():
     import webview
 
     api = EdgeApi()
-    px, py = _posicao_inferior_esquerda(360, 300)
+    px, py = _posicao_restaurada(360, 300) or _posicao_inferior_esquerda(360, 300)
     print(f"posicao inicial: {px},{py}", flush=True)
-    webview.create_window(
+    window = webview.create_window(
         "Edge",
         str(UI),
         js_api=api,
@@ -368,6 +388,14 @@ def main():
         background_color="#1e1e2e",
     )
     print("janela criada", flush=True)
+
+    # Persiste a posição quando o usuário arrasta a janela (easy_drag).
+    try:
+        window.events.moved += lambda: salvar_estado(
+            {"win_x": window.x, "win_y": window.y}
+        )
+    except Exception as e:
+        print(f"moved handler indisponivel: {e}", flush=True)
 
     threading.Thread(target=poller, args=(api,), daemon=True).start()
     try:

@@ -13117,5 +13117,28 @@
     "access_count": 0,
     "created_at": "2026-08-24T19:27:33.474884",
     "last_accessed": "2026-08-24T19:27:33.474884"
+  },
+  {
+    "id": 519,
+    "kind": "decisao",
+    "task": "Edge: persistencia da posicao da janela",
+    "summary": "Widget Edge agora salva win_x/win_y em widget_state.json via handler events.moved e restaura no boot validando contra a area util do monitor (fallback para canto inferior esquerdo se a posicao nao couber). Refatorado _posicao_inferior_esquerda para reutilizar _area_util (DRY).",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "couber",
+      "nao",
+      "esquerdo",
+      "canto",
+      "fallback",
+      "monitor"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-24T20:06:33.996766",
+    "last_accessed": "2026-08-24T20:06:33.996766"
   }
 ]
