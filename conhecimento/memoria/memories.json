@@ -13071,5 +13071,51 @@
     "access_count": 0,
     "created_at": "2026-08-24T19:13:27.498343",
     "last_accessed": "2026-08-24T19:13:27.498343"
+  },
+  {
+    "id": 517,
+    "kind": "padrao",
+    "task": "Gate persistencia: -Repo com caminho do projeto",
+    "summary": "persistencia.ps1 commit sem -Repo comita sempre no repo eco (default). Para projetos Android usar -Repo <caminho absoluto do repo>, ex: -Repo C:\\...\\Projetos\\Mp3Player. Repos conhecidos do gate: eco, ler; projetos entram via sync/caminho.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "default",
+      "absoluto",
+      "comita",
+      "usar",
+      "eco default",
+      "absoluto repo"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-24T19:27:19.190431",
+    "last_accessed": "2026-08-24T19:27:19.190431"
+  },
+  {
+    "id": 518,
+    "kind": "padrao",
+    "task": "Gate persistencia -Repo caminho projeto",
+    "summary": "persistencia.ps1 commit sem -Repo comita no repo eco por default. Para Mp3Player usar -Repo <caminho absoluto>. Commit 3833e86c caiu no eco por engano; 7582909 correto no Mp3Player.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "default",
+      "projeto",
+      "eco",
+      "comita",
+      "persistencia",
+      "engano"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-24T19:27:33.474884",
+    "last_accessed": "2026-08-24T19:27:33.474884"
   }
 ]

@@ -504,6 +504,8 @@
     514,
     515,
     516,
+    517,
+    518,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -1891,6 +1893,8 @@
     "decisao",
     "erro",
     "erro",
+    "padrao",
+    "padrao",
     "nota",
     "nota",
     "nota",
@@ -3278,6 +3282,8 @@
     "criado scripts/install.py com flags --no-venv, --check, --sync. instala dependencias, deploya config, sincroniza regras, roda preflight, configura profile e scheduled task. wrapper install.bat para windows. resolveu problema de venv sem pip e preflight travando. alta-confianca task scheduled profile configura roda regras decisao",
     "flip() apos escrita via shortbuffer-view em cachedoutbuf zerava o output: a view nao move o position do bytebuffer pai, entao flip colapsava limit para 0 e getoutput devolvia buffer vazio sempre (silencio total desde o primeiro build portado). correcao: position(0) apos limit(outbytes), sem flip. diagnostico por instrumentacao eqdbg (qin/getout/active done outrem) via ci + adb logcat remoto. alta-confianca portado build desde vazio buffer devolvia erro",
     "corrigido preflight_check.py test_mcp_server: popen com encoding utf-8+errors=replace evita unicodedecodeerror (cp1252) que causava erro nonetype.split e travamento aparente; add guarda stdout none. corrigido install.py step_mcp_preflight: deteccao de pass/fail por erro(s) em vez de depender de stderr limpo. alta-confianca nonetype causava cp1252 unicodedecodeerror evita replace erro",
+    "persistencia.ps1 commit sem -repo comita sempre no repo eco (default). para projetos android usar -repo <caminho absoluto do repo>, ex: -repo c:\\...\\projetos\\mp3player. repos conhecidos do gate: eco, ler; projetos entram via sync/caminho. alta-confianca default absoluto comita usar eco default absoluto repo padrao",
+    "persistencia.ps1 commit sem -repo comita no repo eco por default. para mp3player usar -repo <caminho absoluto>. commit 3833e86c caiu no eco por engano; 7582909 correto no mp3player. alta-confianca default projeto eco comita persistencia engano padrao",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -8567,12 +8573,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 112387,
-  "count": 1385,
-  "count_mem": 504,
+  "vocab_size": 112433,
+  "count": 1387,
+  "count_mem": 506,
   "count_notas": 881,
   "fingerprint": [
-    504,
+    506,
     [
       1787608496.1,
       1787608472.8,
