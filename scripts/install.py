@@ -179,9 +179,10 @@ def step_deps(python_path=None):
         warn(f"Algumas deps podem ter falhado: {err[:200] if err else 'unknown'}")
 
     # Verify critical deps
-    critical = ["requests", "pyyaml", "httpx", "websockets"]
-    for pkg in critical:
-        code, _, _ = run(f'"{py}" -c "import {pkg.replace(chr(45), chr(95))}"', capture=True)
+    # mapeia nome do pacote pip -> nome do modulo python (ex.: pyyaml -> yaml)
+    critical = {"requests": "requests", "pyyaml": "yaml", "httpx": "httpx", "websockets": "websockets"}
+    for pkg, mod in critical.items():
+        code, _, _ = run(f'"{py}" -c "import {mod}"', capture=True)
         if code == 0:
             ok(f"  {pkg}")
         else:
