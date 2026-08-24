@@ -1,5 +1,5 @@
 ---
-tags: [dessincronizados, fontes, opencodeopencodeopencode, padrao, protocolos, sync]
+tags: [dessincronizados, eco, fontes, opencodeopencodeopencode, padrao, sync]
 aliases: [padrao organizacao comandos]
 date: 2026-08-17
 ---
