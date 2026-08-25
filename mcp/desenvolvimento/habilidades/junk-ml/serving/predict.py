@@ -49,23 +49,12 @@ def _load_artifacts() -> tuple:
 
 
 # ─── Feature Extraction (mesma lógica do generate_dataset) ───
-TYPE_CACHE = 0
-TYPE_TEMP = 1
-TYPE_APK = 2
-TYPE_LOG = 3
-TYPE_EMPTY_DIR = 4
-TYPE_LARGE_FILE = 5
-TYPE_DOWNLOAD = 6
+# NOTE: Não usar constantes hardcoded! O label encoder do modelo define a ordem.
+# As constantes abaixo são apenas para referência do generate_dataset.
+# Em runtime, SEMPRE usar encoder.inverse_transform() do modelo.
 
-TYPE_NAMES = {
-    TYPE_CACHE: "cache",
-    TYPE_TEMP: "temp",
-    TYPE_APK: "apk",
-    TYPE_LOG: "log",
-    TYPE_EMPTY_DIR: "empty_dir",
-    TYPE_LARGE_FILE: "large_file",
-    TYPE_DOWNLOAD: "download",
-}
+TYPE_NAMES = {}  # Será preenchido no _load_artifacts
+TYPE_NAMES_REVERSE = {}  # Será preenchido no _load_artifacts
 
 LARGE_FILE_THRESHOLD = 20 * 1024 * 1024
 
@@ -195,6 +184,44 @@ def get_model_info() -> Dict[str, Any]:
     """Retorna metadata do modelo carregado."""
     _, _, metadata, _ = _load_artifacts()
     return metadata
+
+
+def log_correction(path: str, corrected_label_name: str, confidence: float = 0.0) -> bool:
+    """
+    Registra correção do usuário para retreino automático.
+    
+    Args:
+        path: Caminho do arquivo que foi classificado
+        corrected_label_name: Nome do label correto (ex: "apk", "cache", "log")
+        confidence: Confiança da predição original
+        
+    Returns:
+        True se feedback foi registrado
+    """
+    # Obtém a predição original para saber o que o modelo previu
+    result = categorize_file(path)
+    if result.get("label") == -1:
+        return False
+    
+    predicted_label = result["label"]
+    corrected_label = TYPE_NAMES_REVERSE.get(corrected_label_name.lower())
+    if corrected_label is None:
+        return False
+    
+    # Extrai features do arquivo
+    from pathlib import Path as _Path
+    feats_df = _extract_features(_Path(path))
+    if feats_df is None:
+        return False
+    
+    features = feats_df.iloc[0].to_dict()
+    
+    # Loga correção (integra com pipeline contínuo)
+    try:
+        from ..data.feedback_collector import log_correction
+        return log_correction(features, result["label"], corrected_label, result["confidence"], path)
+    except Exception:
+        return False
 
 
 def warmup():
