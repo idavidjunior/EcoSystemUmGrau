@@ -266,7 +266,9 @@ def guardian_check_retrain() -> bool:
 
 def get_integration_status() -> Dict[str, Any]:
     """Retorna status completo da integração."""
-    from .feedback_collector import get_buffer_status
+    import sys
+    sys.path.insert(0, str(DATA_DIR))
+    from feedback_collector import get_buffer_status
     
     buffer_stats = get_buffer_status()
     

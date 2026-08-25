@@ -7,11 +7,24 @@ Integra-se ao serving: quando usuário corrige, salva (features, label_correto) 
 import json
 import threading
 import time
+import os
+import sys
 from pathlib import Path
 from typing import Dict, Any, Optional
 from datetime import datetime
-import fcntl
-import os
+
+# Lock cross-platform (threading + atomic file ops)
+try:
+    import msvcrt
+    HAS_MSVCRT = True
+except ImportError:
+    HAS_MSVCRT = False
+
+try:
+    import fcntl
+    HAS_FCNTL = True
+except ImportError:
+    HAS_FCNTL = False
 
 BASE = Path(__file__).resolve().parent.parent
 BUFFER_DIR = BASE / "data" / "buffer"
@@ -27,18 +40,30 @@ MIN_INTERVAL_HOURS = 6  # intervalo mínimo entre retreinos
 
 
 class FeedbackCollector:
-    """Thread-safe feedback collector com lock de arquivo."""
+    """Thread-safe feedback collector com lock cross-platform."""
     
     def __init__(self):
         self._lock = threading.Lock()
     
     def _acquire_lock(self, timeout=10):
-        """Lock baseado em arquivo (funciona cross-process)."""
+        """Lock baseado em arquivo (funciona cross-process, cross-platform)."""
         start = time.time()
         while True:
             try:
+                # Abre arquivo de lock
                 self._lock_fd = open(LOCK_FILE, 'w')
-                fcntl.flock(self._lock_fd.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                
+                if HAS_MSVCRT:
+                    # Windows: usa msvcrt.locking
+                    msvcrt.locking(self._lock_fd.fileno(), msvcrt.LK_NBLCK, 1)
+                elif HAS_FCNTL:
+                    # Unix: usa fcntl
+                    import fcntl
+                    fcntl.flock(self._lock_fd.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                else:
+                    # Fallback: threading.Lock apenas (não cross-process)
+                    pass
+                
                 return True
             except (IOError, OSError):
                 if time.time() - start > timeout:
@@ -47,7 +72,11 @@ class FeedbackCollector:
     
     def _release_lock(self):
         try:
-            fcntl.flock(self._lock_fd.fileno(), fcntl.LOCK_UN)
+            if HAS_MSVCRT:
+                msvcrt.locking(self._lock_fd.fileno(), msvcrt.LK_UNLCK, 1)
+            elif HAS_FCNTL:
+                import fcntl
+                fcntl.flock(self._lock_fd.fileno(), fcntl.LOCK_UN)
             self._lock_fd.close()
         except Exception:
             pass

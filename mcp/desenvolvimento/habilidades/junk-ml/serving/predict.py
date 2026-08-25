@@ -39,6 +39,9 @@ def _load_artifacts() -> tuple:
         with open(METADATA_PATH, "r", encoding="utf-8") as f:
             _load_artifacts._METADATA = json.load(f)
         _load_artifacts._FEATURES = _load_artifacts._METADATA["features"]
+        
+        # Popula mapeamentos de labels do encoder do modelo (ordem correta!)
+        _populate_label_mappings(_load_artifacts._ENCODER)
     
     return (
         _load_artifacts._MODEL,
@@ -48,13 +51,19 @@ def _load_artifacts() -> tuple:
     )
 
 
-# ─── Feature Extraction (mesma lógica do generate_dataset) ───
-# NOTE: Não usar constantes hardcoded! O label encoder do modelo define a ordem.
-# As constantes abaixo são apenas para referência do generate_dataset.
-# Em runtime, SEMPRE usar encoder.inverse_transform() do modelo.
+# ─── Mappings de labels (preenchidos no _load_artifacts) ───
+TYPE_NAMES = {}
+TYPE_NAMES_REVERSE = {}
 
-TYPE_NAMES = {}  # Será preenchido no _load_artifacts
-TYPE_NAMES_REVERSE = {}  # Será preenchido no _load_artifacts
+
+def _populate_label_mappings(encoder):
+    """Popula mapeamentos globais do encoder."""
+    global TYPE_NAMES, TYPE_NAMES_REVERSE
+    classes = encoder.classes_
+    TYPE_NAMES.clear()
+    TYPE_NAMES_REVERSE.clear()
+    TYPE_NAMES.update({i: name for i, name in enumerate(encoder.classes_)})
+    TYPE_NAMES_REVERSE.update({name: i for i, name in enumerate(encoder.classes_)})
 
 LARGE_FILE_THRESHOLD = 20 * 1024 * 1024
 
@@ -218,8 +227,11 @@ def log_correction(path: str, corrected_label_name: str, confidence: float = 0.0
     
     # Loga correção (integra com pipeline contínuo)
     try:
-        from ..data.feedback_collector import log_correction
-        return log_correction(features, result["label"], corrected_label, result["confidence"], path)
+        # Import absoluto via sys.path
+        import sys
+        sys.path.insert(0, str(Path(__file__).parent.parent / "data"))
+        from feedback_collector import log_correction as fc_log
+        return fc_log(features, result["label"], corrected_label, result["confidence"], path)
     except Exception:
         return False
 
