@@ -13140,5 +13140,28 @@
     "access_count": 0,
     "created_at": "2026-08-24T20:06:33.996766",
     "last_accessed": "2026-08-24T20:06:33.996766"
+  },
+  {
+    "id": 520,
+    "kind": "padrao",
+    "task": "ADB via Tailscale configurado",
+    "summary": "Celular 100.64.71.9, PC 100.91.141.101. Porta wireless debugging 37777 (via mDNS adb-6d92eed7). Script scripts/adb-tailscale-connect.ps1 descobre porta automaticamente. Alias adb-wifi no profile PowerShell. Wireless debugging sem timeout (null). Tailscale precisa estar ativo no celular e PC. Porta muda a cada reboot do celular, script adapta automaticamente.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "6d92eed7",
+      "adapta",
+      "mdns",
+      "37777",
+      "automaticamente",
+      "reboot"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-25T05:42:57.217448",
+    "last_accessed": "2026-08-25T05:42:57.217448"
   }
 ]
