@@ -1,0 +1,68 @@
+{
+  "model_type": "RandomForest",
+  "features": [
+    "size_mb",
+    "depth",
+    "ext",
+    "parent_name",
+    "grandparent_name",
+    "has_apk_ext",
+    "has_log_ext",
+    "has_temp_ext",
+    "is_media_ext",
+    "name_has_cache",
+    "name_has_temp",
+    "name_has_trash",
+    "name_is_thumbnails",
+    "name_is_temp_dir",
+    "is_hidden",
+    "is_system_dir",
+    "is_dir"
+  ],
+  "numeric_features": [
+    "size_mb",
+    "depth"
+  ],
+  "categorical_features": [
+    "ext",
+    "parent_name",
+    "grandparent_name"
+  ],
+  "boolean_features": [
+    "has_apk_ext",
+    "has_log_ext",
+    "has_temp_ext",
+    "is_media_ext",
+    "name_has_cache",
+    "name_has_temp",
+    "name_has_trash",
+    "name_is_thumbnails",
+    "name_is_temp_dir",
+    "is_hidden",
+    "is_system_dir",
+    "is_dir"
+  ],
+  "target_classes": [
+    "apk",
+    "cache",
+    "empty_dir",
+    "large_file",
+    "log",
+    "temp"
+  ],
+  "target_mapping": {
+    "0": "apk",
+    "1": "cache",
+    "2": "empty_dir",
+    "3": "large_file",
+    "4": "log",
+    "5": "temp"
+  },
+  "n_samples_train": 936,
+  "n_samples_test": 235,
+  "accuracy": 0.9617021276595744,
+  "f1_macro": 0.9365440391282962,
+  "f1_weighted": 0.9642610471387101,
+  "sklearn_version": "1.5.3",
+  "features_count": 17
+}
