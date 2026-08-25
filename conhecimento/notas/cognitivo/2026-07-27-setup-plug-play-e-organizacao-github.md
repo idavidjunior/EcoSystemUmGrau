@@ -817,6 +817,14 @@ Rodou `python tests/test_integration.py` no `ler-runtime/`.
 - test_smoke.py: 2 marcadores
 - consolidate_build_pipeline.py: 6 marcadores
 - flutter
+
+﻿# 2026-08-25 - Scan proativo: agenticSeek-analysis
+## Marcadores encontrados
+- searxSearch.py: 2 marcadores
+- webSearch.py: 1 marcadores
+- router.py: 1 marcadores
+- text_to_speech.py: 2 marcadores
+
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]
