@@ -78,6 +78,9 @@ SLEEP_FRASES = re.compile(
     re.IGNORECASE,
 )
 
+# Flag global de parada (mesmo arquivo do widget/servicos)
+STOP_FLAG = SCRIPTS.parent / "runtime" / "parar_fala.flag"
+
 
 def _ctrl_pressionado():
     try:
@@ -494,7 +497,7 @@ def tocar_base64(b64, parar_evento=None):
     mp3 = _novo_mp3_temp("vox_dialogo")
     try:
         mp3.write_bytes(base64.b64decode(b64))
-        _tocar_mci(str(mp3), parar_evento=parar_evento)
+        _tocar_mci(str(mp3), parar_evento=parar_evento, stop_flag=STOP_FLAG)
     except Exception as e:
         print(f"[erro play] {e}")
     finally:

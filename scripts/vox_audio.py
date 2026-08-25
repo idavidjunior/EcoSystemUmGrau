@@ -41,6 +41,9 @@ AUDIO_CACHE_DIR = Path(tempfile.gettempdir()) / "jarvis_tts_cache"
 AUDIO_CACHE_DIR.mkdir(exist_ok=True)
 AUDIO_CACHE_MAX = 50  # máximo de arquivos em cache
 
+# Flag global de parada (mesmo arquivo do widget/servicos)
+STOP_FLAG = ECOSSISTEMA_DIR / "runtime" / "parar_fala.flag"
+
 WHISPER_MODEL = os.environ.get("VOX_WHISPER_MODEL", "base")
 WHISPER_DEVICE = "cpu"
 WHISPER_COMPUTE = "int8"
@@ -52,14 +55,17 @@ RECORD_SECONDS = float(os.environ.get("VOX_RECORD_SECONDS", "7"))
 ENERGY_THRESHOLD = 300
 
 
-def _tocar_mci(mp3, parar_evento=None):
+def _tocar_mci(mp3, parar_evento=None, stop_flag=None):
     """Toca MP3 via API MCI do Windows (confiavel em scripts; MediaPlayer falha
     em subprocessos). Bloqueia ate o final do audio.
 
     Se `parar_evento` (threading.Event) for fornecido, o audio para no momento
-    em que o evento for setado (barge-in: usuario falou ou apertou tecla)."""
+    em que o evento for setado (barge-in: usuario falou ou apertou tecla).
+    Se `stop_flag` (Path) for fornecido, o audio para se o arquivo existir
+    (mecanismo de parada global do widget/servicos)."""
     import ctypes
     import time
+    from pathlib import Path
     mci = ctypes.windll.winmm.mciSendStringW
     alias = f"vox{int(time.time() * 1000)}"
     r = mci(f'open "{mp3}" type mpegvideo alias {alias}', None, 0, 0)
@@ -73,21 +79,23 @@ def _tocar_mci(mp3, parar_evento=None):
         duracao_ms = int(buf.value)
     except ValueError:
         duracao_ms = 0
-    if parar_evento is not None:
-        # toca em steps pequenos, cortando na hora que o evento disparar
-        fim = duracao_ms / 1000 + 0.3 if duracao_ms > 0 else 15.0
-        decorrido = 0.0
-        while decorrido < fim:
-            if parar_evento.is_set():
-                mci(f'stop {alias}', None, 0, 0)
-                break
-            time.sleep(0.05)
-            decorrido += 0.05
-        # se acabou sem interrupcao, close normal; se interrompeu, ja parado
-    elif duracao_ms > 0:
-        time.sleep(duracao_ms / 1000 + 0.3)
-    else:
-        time.sleep(1.0)
+    fim = duracao_ms / 1000 + 0.3 if duracao_ms > 0 else 15.0
+    decorrido = 0.0
+    while decorrido < fim:
+        # Verifica evento de barge-in (teclado/voz)
+        if parar_evento is not None and parar_evento.is_set():
+            mci(f'stop {alias}', None, 0, 0)
+            break
+        # Verifica arquivo-flag global de parada (widget/servicos)
+        if stop_flag is not None and isinstance(stop_flag, Path) and stop_flag.exists():
+            try:
+                stop_flag.unlink(missing_ok=True)
+            except Exception:
+                pass
+            mci(f'stop {alias}', None, 0, 0)
+            break
+        time.sleep(0.05)
+        decorrido += 0.05
     try:
         mci(f'close {alias}', None, 0, 0)
     except Exception:
@@ -135,10 +143,10 @@ def _normalizar_fallback_tts(texto):
         return texto
 
 
-def _tocar_e_limpar(mp3, parar_evento=None):
+def _tocar_e_limpar(mp3, parar_evento=None, stop_flag=None):
     """Toca via MCI e remove o arquivo temporário ao final (não deixa órfãos)."""
     try:
-        _tocar_mci(str(mp3), parar_evento=parar_evento)
+        _tocar_mci(str(mp3), parar_evento=parar_evento, stop_flag=stop_flag)
     finally:
         try:
             mp3.unlink(missing_ok=True)
@@ -146,7 +154,7 @@ def _tocar_e_limpar(mp3, parar_evento=None):
             pass
 
 
-def _falar(texto, parar_evento=None):
+def _falar(texto, parar_evento=None, stop_flag=None):
     """Gera MP3 e toca via MCI. Otimizado para baixa latência com cache."""
     if not texto or not texto.strip():
         return
@@ -156,7 +164,7 @@ def _falar(texto, parar_evento=None):
         try:
             mp3 = _novo_mp3_temp("vox_fala")
             if _speech_pipeline.save(texto, str(mp3)):
-                _tocar_e_limpar(mp3, parar_evento)
+                _tocar_e_limpar(mp3, parar_evento, stop_flag)
                 return
             mp3.unlink(missing_ok=True)
         except Exception as e:
@@ -170,7 +178,7 @@ def _falar(texto, parar_evento=None):
     if cache_file.exists():
         # Áudio em cache — toca instantaneamente (0ms latência)
         try:
-            _tocar_mci(str(cache_file), parar_evento=parar_evento)
+            _tocar_mci(str(cache_file), parar_evento=parar_evento, stop_flag=stop_flag)
             return
         except Exception:
             pass  # cache corrompido, gera de novo
@@ -206,7 +214,7 @@ def _falar(texto, parar_evento=None):
             pass
 
 
-async def _tts_stream_e_tocar(texto, caminho_mp3, parar_evento=None):
+async def _tts_stream_e_tocar(texto, caminho_mp3, parar_evento=None, stop_flag=None):
     """Gera áudio via streaming e toca assim que tiver dados suficientes.
     
     Reduz latência significativamente: em vez de aguardar áudio completo,
@@ -255,7 +263,7 @@ async def _tts_stream_e_tocar(texto, caminho_mp3, parar_evento=None):
                     play_thread = threading.Thread(
                         target=_tocar_mci, 
                         args=(caminho_mp3,), 
-                        kwargs={"parar_evento": parar_evento},
+                        kwargs={"parar_evento": parar_evento, "stop_flag": stop_flag},
                         daemon=True
                     )
                     play_thread.start()
@@ -268,7 +276,7 @@ async def _tts_stream_e_tocar(texto, caminho_mp3, parar_evento=None):
     
     # Se não deu para tocar streaming (texto muito curto), toca agora
     if not started_playing and audio_chunks:
-        _tocar_mci(caminho_mp3, parar_evento=parar_evento)
+        _tocar_mci(caminho_mp3, parar_evento=parar_evento, stop_flag=stop_flag)
     
     # Espera thread de reprodução terminar
     if play_thread and play_thread.is_alive():
@@ -427,7 +435,7 @@ def cmd_ouvir_google():
     return texto
 
 
-async def _falar_async(texto, parar_evento=None):
+async def _falar_async(texto, parar_evento=None, stop_flag=None):
     """Versão async de _falar para uso dentro de event loop. Streaming: toca enquanto gera."""
     if not texto or not texto.strip():
         return
@@ -437,7 +445,7 @@ async def _falar_async(texto, parar_evento=None):
         try:
             mp3 = _novo_mp3_temp("vox_fala")
             if _speech_pipeline.save(texto, str(mp3)):
-                _tocar_e_limpar(mp3, parar_evento)
+                _tocar_e_limpar(mp3, parar_evento, stop_flag)
                 return
             mp3.unlink(missing_ok=True)
         except Exception as e:
@@ -446,7 +454,7 @@ async def _falar_async(texto, parar_evento=None):
     # Streaming: gera áudio em chunks e toca assim que tiver buffer suficiente
     mp3 = _novo_mp3_temp("vox_fala_stream")
     try:
-        await _tts_stream_e_tocar(texto, str(mp3), parar_evento)
+        await _tts_stream_e_tocar(texto, str(mp3), parar_evento, stop_flag)
     except Exception as e:
         print(f"[erro stream tts] {e}")
         # Fallback: método legado (batch)
@@ -454,7 +462,7 @@ async def _falar_async(texto, parar_evento=None):
         mp3_batch = _novo_mp3_temp("vox_fala")
         try:
             await _tts_salvar(texto, str(mp3_batch))
-            _tocar_e_limpar(mp3_batch, parar_evento)
+            _tocar_e_limpar(mp3_batch, parar_evento, stop_flag)
         except Exception as e2:
             print(f"[erro fallback tts] {e2}")
             mp3_batch.unlink(missing_ok=True)
@@ -465,14 +473,14 @@ async def _falar_async(texto, parar_evento=None):
 async def cmd_falar_async(texto, interruptivel=False):
     import threading
     evento = threading.Event()
-    await _falar_async(texto, parar_evento=evento)
+    await _falar_async(texto, parar_evento=evento, stop_flag=STOP_FLAG)
     print(f"[Falado {len(texto)} chars]" + (" (interruptivel)" if interruptivel else ""))
 
 
 def cmd_falar(texto, interruptivel=False):
     import threading
     evento = threading.Event()
-    _falar(texto, parar_evento=evento)
+    _falar(texto, parar_evento=evento, stop_flag=STOP_FLAG)
     print(f"[Falado {len(texto)} chars]" + (" (interruptivel)" if interruptivel else ""))
 
 

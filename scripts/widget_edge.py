@@ -30,6 +30,7 @@ STATE_FILE = RUNTIME / "widget_state.json"
 PID_FILE = RUNTIME / "widget.pid"
 STOP_FLAG = RUNTIME / "parar_fala.flag"
 BRIDGE_PORT = 8765
+NARRACAO_CONTROLE = RUNTIME / "narracao_estado.json"
 
 
 def ler_estado():
@@ -177,7 +178,31 @@ class EdgeApi:
     def _expirar_sono(self):
         self.voice_off()
 
+    def _narrador_pausar(self, pausar: bool):
+        """Pausa/retoma o narrador via arquivo de controle compartilhado."""
+        try:
+            estado = {"ativo": True, "pausado": False}
+            if NARRACAO_CONTROLE.exists():
+                try:
+                    estado = json.loads(NARRACAO_CONTROLE.read_text(encoding="utf-8"))
+                except Exception:
+                    pass
+            estado["pausado"] = bool(pausar)
+            # Se pausar, também para fala atual via flag
+            if pausar:
+                try:
+                    STOP_FLAG.write_text(str(int(time.time())), encoding="utf-8")
+                except Exception:
+                    pass
+            tmp = NARRACAO_CONTROLE.with_suffix(".tmp")
+            tmp.write_text(json.dumps(estado), encoding="utf-8")
+            tmp.replace(NARRACAO_CONTROLE)
+        except Exception:
+            pass
+
     def voice_on(self):
+        # Pausa narrador enquanto widget está falando (evita dupla fala)
+        self._narrador_pausar(True)
         with self._lock:
             if self._voz_proc and self._voz_proc.poll() is None:
                 return True
@@ -209,6 +234,8 @@ class EdgeApi:
                 except Exception:
                     pass
             self._voz_proc = None
+        # Retoma narrador ao desligar widget
+        self._narrador_pausar(False)
         return True
 
     def voice_toggle(self):

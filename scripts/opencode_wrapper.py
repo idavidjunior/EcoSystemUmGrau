@@ -22,6 +22,9 @@ sys.path.insert(0, BASE)
 from jarvis_bridge import gerar_audio
 from vox_audio import _tocar_mci
 
+# Flag global de parada (mesmo arquivo do widget/servicos)
+STOP_FLAG = os.path.join(BASE, "..", "runtime", "parar_fala.flag")
+
 # Remove códigos ANSI
 ANSI_RE = re.compile(r'\x1b\[[0-9;]*m')
 
@@ -103,7 +106,7 @@ class AudioNarrator:
                     f.write(base64.b64decode(audio_b64))
                 
                 # Toca via MCI (bloqueia até terminar)
-                _tocar_mci(mp3_path)
+                _tocar_mci(mp3_path, stop_flag=STOP_FLAG)
                 
                 # Remove temp file
                 try:
