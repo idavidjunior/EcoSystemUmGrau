@@ -89,6 +89,18 @@ mcp_benchmark_results.json
 # Backup de config (nunca versionar)
 *.bak
 
+# TF-IDF artifacts (regenerated at runtime)
+conhecimento/memoria/tfidf_matrix.npz
+conhecimento/memoria/tfidf_vectorizer.pkl
+conhecimento/memoria/tfidf_meta.json
+conhecimento/memoria/tfidf_acesso.json
+
+# Cluster mapper (regenerated)
+conhecimento/aprendizados/cluster_mapper.json
+
+# ADB Tailscale local config (contains IP/serial)
+scripts/.adb_tailscale.json
+
 # Artefatos de teste/desenvolvimento do widget e docs (nao versionar)
 docs/test_*.html
 docs/teste_*.html

@@ -218,6 +218,25 @@ function Invoke-Limpeza {
     return '{0} itens, {1:N2} MB liberados' -f $apagados, ($bytes/1MB)
 }
 
+function Invoke-PreflightGlobal {
+    param([string]$RepoPath)
+    $script = "$RepoPath\scripts\preflight_check.py"
+    if (-not (Test-Path $script)) {
+        Write-Log "PREFLIGHT: script nao encontrado $script"
+        return $false
+    }
+    Write-Log "PREFLIGHT: executando $script"
+    $out = python $script 2>&1 | Out-String
+    $code = $LASTEXITCODE
+    if ($code -eq 0) {
+        Write-Log "PREFLIGHT: PASS"
+        return $true
+    } else {
+        Write-Log "PREFLIGHT: FAIL ($code) - $($out.Trim())"
+        return $false
+    }
+}
+
 function Invoke-RepoCommit {
     param([string]$RepoKey, [string]$MsgLabel, [switch]$DoPush, [string]$UserMsg)
     $path = Get-RepoPath $RepoKey
@@ -278,6 +297,14 @@ function Invoke-RepoCommit {
                     Write-Log "AUTO WIP ${RepoKey}: preflight falhou ($($falhas -join ', ')); snapshot guardado, nada commitado"
                     Pop-Location; Remove-Item $lock -Force -ErrorAction SilentlyContinue
                     return 'WIP_QUEBRADO'
+                }
+            }
+            # global preflight (smoke test) before commit
+            if ($cfg.preflight_codigo -and (Get-Command python -ErrorAction SilentlyContinue)) {
+                $pf = Invoke-PreflightGlobal -RepoPath $path
+                if (-not $pf) {
+                    Pop-Location; Remove-Item $lock -Force -ErrorAction SilentlyContinue
+                    return 'PREFLIGHT_FAIL'
                 }
             }
             # debounce: estado vivo sozinho espera o lote; codigo passa na hora

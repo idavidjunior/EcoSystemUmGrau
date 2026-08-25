@@ -159,29 +159,20 @@ def _parar_fala():
 
 # ─── Janela oculta para receber mensagens ───
 def _wnd_proc(hwnd, msg, wparam, lparam):
-    _log(f"wnd_proc: hwnd={hwnd}, msg={msg}, wparam={wparam}, lparam={lparam}")
-    try:
-        if msg == win32con.WM_DESTROY:
-            _log("WM_DESTROY received, posting quit")
-            win32gui.PostQuitMessage(0)
-            return 0
-        elif msg == win32con.WM_USER + 1:
-            # Tray icon message: lparam = mouse event, wparam = icon ID
-            _log(f"Tray callback: lparam={lparam}")
-            if lparam == win32con.WM_RBUTTONUP:
-                _mostrar_menu(hwnd)
-            elif lparam == win32con.WM_LBUTTONDBLCLK:
-                _voice_toggle()
-            return 0
-        elif msg == win32con.WM_COMMAND:
-            # Menu item selected: wparam = command ID
-            _log(f"WM_COMMAND: wparam={wparam}")
-            _processar_comando(wparam)
-            return 0
-    except Exception as e:
-        _log(f"Exception in wnd_proc: {e}")
-        import traceback
-        _log(traceback.format_exc())
+    if msg == win32con.WM_DESTROY:
+        win32gui.PostQuitMessage(0)
+        return 0
+    elif msg == win32con.WM_USER + 1:
+        # Tray icon message: lparam = mouse event, wparam = icon ID
+        if lparam == win32con.WM_RBUTTONUP:
+            _mostrar_menu(hwnd)
+        elif lparam == win32con.WM_LBUTTONDBLCLK:
+            _voice_toggle()
+        return 0
+    elif msg == win32con.WM_COMMAND:
+        # Menu item selected: wparam = command ID
+        _processar_comando(wparam)
+        return 0
     return win32gui.DefWindowProc(hwnd, msg, wparam, lparam)
 
 def _registrar_classe():
@@ -196,15 +187,18 @@ def _registrar_classe():
 def _criar_janela_oculta():
     global _hwnd
     _registrar_classe()
+    # Janela oculta normal (não message-only) - fica invisível mas tem message queue
     _hwnd = win32gui.CreateWindow(
         "WidgetTrayClass",
         "WidgetTrayHidden",
-        win32con.WS_OVERLAPPED,
+        win32con.WS_POPUP,  # estilo popup invisível
         0, 0, 0, 0,
-        0, 0,
+        0,  # sem parent
+        0,
         win32api.GetModuleHandle(None),
         None
     )
+    _log(f"Janela oculta criada: hwnd={_hwnd}")
     return _hwnd
 
 # ─── Ícone na bandeja ───
@@ -324,25 +318,17 @@ def _processar_comando(cmd_id):
         win32gui.PostQuitMessage(0)
 
 # ─── Loop principal ───
+# ─── Loop principal ───
 def _message_loop():
-    _log("message_loop started")
-    iteration = 0
-    while True:
-        iteration += 1
-        _log(f"iteration {iteration}: calling GetMessage")
-        result = win32gui.GetMessage(None, 0, 0)
-        _log(f"GetMessage result: {result}")
-        if not result or result[0] == 0:
-            _log("GetMessage returned 0, exiting loop")
-            break
-        # result = [1, (hwnd, message, wparam, lparam, time, pt)]
-        try:
-            win32gui.TranslateMessage(result[1])
-            win32gui.DispatchMessage(result[1])
-        except Exception as e:
-            _log(f"Exception in message loop: {e}")
-            import traceback
-            _log(traceback.format_exc())
+    _log("message_loop started (PumpMessages)")
+    try:
+        win32gui.PumpMessages()
+    except KeyboardInterrupt:
+        _log("KeyboardInterrupt")
+    except Exception as e:
+        _log(f"PumpMessages exception: {e}")
+        import traceback
+        _log(traceback.format_exc())
     _log("message_loop ended")
 
 def _cleanup():
