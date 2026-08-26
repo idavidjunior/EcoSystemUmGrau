@@ -214,6 +214,65 @@ class DiskHealth:
                         ))
         return disks
 
+    def winfr_recover(self, source: str, dest: str, mode: str = "regular", filters: List[str] = None, file_types: List[str] = None) -> Dict[str, Any]:
+        """Windows File Recovery (winfr). Requer Admin + winfr instalado via Microsoft Store."""
+        require_admin_check("winfr_recover")
+        
+        # Verificar se winfr existe
+        code, out, err = run_cmd(["where", "winfr"], timeout=10)
+        if code != 0:
+            return {
+                "error": "winfr não encontrado. Instale via Microsoft Store: 'Microsoft.WindowsFileRecovery' ou 'winget install Microsoft.WindowsFileRecovery'",
+                "exit_code": -1,
+                "installed": False
+            }
+
+        source = source.rstrip(':\\')
+        if not source.endswith(':'):
+            source += ':'
+        dest = dest.rstrip(':\\')
+        if not dest.endswith(':'):
+            dest += ':'
+
+        valid_modes = ["regular", "extensive", "segment"]
+        if mode not in valid_modes:
+            mode = "regular"
+
+        cmd = ["winfr", source, dest, f"/{mode}"]
+        
+        if filters:
+            for f in filters:
+                cmd.extend(["/n", f])
+        
+        if file_types:
+            for ft in file_types:
+                cmd.extend(["/y", ft])
+
+        result = {
+            "source": source,
+            "dest": dest,
+            "mode": mode,
+            "filters": filters,
+            "file_types": file_types,
+            "timestamp": datetime.now().isoformat()
+        }
+
+        code, out, err = run_cmd(cmd, timeout=7200)  # 2h max
+        result["exit_code"] = code
+        result["output"] = out
+        result["errors"] = err
+        
+        return result
+
+    def winfr_check_installed(self) -> Dict[str, Any]:
+        """Verifica se winfr está instalado."""
+        code, out, err = run_cmd(["where", "winfr"], timeout=10)
+        if code == 0:
+            # Tentar obter versão
+            code2, out2, err2 = run_cmd(["winfr", "/?"], timeout=10)
+            return {"installed": True, "path": out.strip(), "version_info": out2}
+        return {"installed": False, "error": "winfr não encontrado no PATH"}
+
     def analyze_volume(self, drive: str) -> Dict[str, Any]:
         """Analisa volume (chkdsk /scan para NTFS online)."""
         drive = drive.rstrip(':\\')
@@ -613,6 +672,7 @@ class WindowsMaintenance:
         self.services = ServiceManager()
         self.network = NetworkDiagnostics()
         self.drivers = DriverManager()
+        self.winfr = self.disk  # winfr methods are in DiskHealth
 
     def full_health_check(self) -> HealthReport:
         """Health check completo não-invasivo (sem Admin)."""
@@ -770,6 +830,15 @@ Exemplos:
     boot_parser.add_argument("--reagentc-enable", action="store_true", help="Habilitar WinRE")
     boot_parser.add_argument("--reagentc-disable", action="store_true", help="Desabilitar WinRE")
 
+    # winfr
+    winfr_parser = subparsers.add_parser("winfr", help="Windows File Recovery (requer Admin + winfr instalado)")
+    winfr_parser.add_argument("--source", help="Drive origem (ex: C:) - obrigatório exceto com --check")
+    winfr_parser.add_argument("--dest", help="Drive destino (ex: D:) - obrigatório exceto com --check")
+    winfr_parser.add_argument("--mode", choices=["regular", "extensive", "segment"], default="regular", help="Modo de recuperação")
+    winfr_parser.add_argument("--filter", nargs="+", help="Filtros de arquivo (ex: *.docx *.pdf)")
+    winfr_parser.add_argument("--type", nargs="+", dest="file_types", help="Tipos de arquivo: doc, pic, vid, aud, zip, etc.")
+    winfr_parser.add_argument("--check", action="store_true", help="Apenas verifica se winfr está instalado")
+
     # update
     upd_parser = subparsers.add_parser("update", help="Windows Update")
     upd_parser.add_argument("--log", action="store_true", help="Gerar log Windows Update")
@@ -921,6 +990,23 @@ Exemplos:
             if args.history:
                 results["history"] = wm.update.get_update_history()
             print(json.dumps(results, indent=2, ensure_ascii=False))
+
+        elif args.command == "winfr":
+            if args.check:
+                result = wm.disk.winfr_check_installed()
+                print(json.dumps(result, indent=2, ensure_ascii=False))
+            else:
+                if not args.source or not args.dest:
+                    print("Erro: --source e --dest são obrigatórios (use --check para apenas verificar instalação)")
+                    return 1
+                result = wm.disk.winfr_recover(
+                    source=args.source,
+                    dest=args.dest,
+                    mode=args.mode,
+                    filters=args.filter,
+                    file_types=args.file_types
+                )
+                print(json.dumps(result, indent=2, ensure_ascii=False))
 
         elif args.command == "drivers":
             if args.list:

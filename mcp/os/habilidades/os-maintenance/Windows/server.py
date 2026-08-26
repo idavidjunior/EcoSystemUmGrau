@@ -109,6 +109,17 @@ class WindowsMaintenanceMCP:
         """Testa conectividade."""
         return self.wm.network.test_connection(target, port)
 
+    async def winfr_recover(self, source: str, dest: str, mode: str = "regular", filters: List[str] = None, file_types: List[str] = None) -> Dict[str, Any]:
+        """Windows File Recovery."""
+        try:
+            return self.wm.disk.winfr_recover(source, dest, mode, filters, file_types)
+        except AdminRequired as e:
+            return {"error": str(e), "requires_admin": True}
+
+    async def winfr_check(self) -> Dict[str, Any]:
+        """Verifica se winfr está instalado."""
+        return self.wm.disk.winfr_check_installed()
+
 
 # MCP Protocol handlers
 mcp = WindowsMaintenanceMCP()
@@ -234,6 +245,26 @@ TOOLS = {
             "required": ["target"]
         },
         "handler": mcp.network_test
+    },
+    "win_winfr_recover": {
+        "description": "Windows File Recovery - recupera arquivos deletados (requer Admin + winfr instalado via Microsoft Store)",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "source": {"type": "string", "description": "Drive origem (ex: C:)"},
+                "dest": {"type": "string", "description": "Drive destino (ex: D:)"},
+                "mode": {"type": "string", "enum": ["regular", "extensive", "segment"], "default": "regular"},
+                "filters": {"type": "array", "items": {"type": "string"}, "description": "Filtros de arquivo (ex: *.docx, *.pdf)"},
+                "file_types": {"type": "array", "items": {"type": "string"}, "description": "Tipos: doc, pic, vid, aud, zip, etc."}
+            },
+            "required": ["source", "dest"]
+        },
+        "handler": mcp.winfr_recover
+    },
+    "win_winfr_check": {
+        "description": "Verifica se winfr (Windows File Recovery) está instalado",
+        "inputSchema": {"type": "object", "properties": {}},
+        "handler": mcp.winfr_check
     },
 }
 

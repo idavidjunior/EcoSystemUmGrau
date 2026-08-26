@@ -1,6 +1,7 @@
 {
-  "total_samples": 2,
-  "last_retrain": null,
+  "total_samples": 3,
+  "last_retrain": "2026-08-26T01:50:33.329609Z",
   "created": "2026-08-25T23:09:40.104698Z",
-  "last_update": "2026-08-25T23:12:52.338929Z"
+  "last_update": "2026-08-26T01:59:24.730818Z",
+  "samples_at_retrain": 2
 }

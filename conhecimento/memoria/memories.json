@@ -13163,5 +13163,28 @@
     "access_count": 0,
     "created_at": "2026-08-25T05:42:57.217448",
     "last_accessed": "2026-08-25T05:42:57.217448"
+  },
+  {
+    "id": 521,
+    "kind": "padrao",
+    "task": "os-maintenance núcleo único Windows/Linux",
+    "summary": "Criado núcleo os-maintenance com subpastas Windows e Linux contendo ferramentas nativas completas de manutenção. Windows: chkdsk, sfc, DISM, defrag, Storage Health, wevtutil, bcdedit, winfr (Windows File Recovery), Windows Update, serviços, rede, drivers. Linux: fsck, smartctl, systemd, journalctl, package managers multi-distro, kernel/boot, rede, hardware, segurança. Ambos com CLI, MCP server e health check automatizado.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "manutenção",
+      "drivers",
+      "completas",
+      "serviços",
+      "nativas",
+      "update"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-25T22:11:55.339610",
+    "last_accessed": "2026-08-25T22:11:55.339610"
   }
 ]

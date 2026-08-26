@@ -16,7 +16,7 @@ from typing import Dict, Any, Optional
 from datetime import datetime, timezone
 
 # Paths do ecossistema
-ECO_ROOT = Path(__file__).resolve().parent.parent.parent.parent.parent
+ECO_ROOT = Path(__file__).resolve().parent.parent.parent.parent.parent.parent
 SCRIPTS_DIR = ECO_ROOT / "scripts"
 JUNK_ML_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = JUNK_ML_ROOT / "data"
@@ -145,7 +145,9 @@ def get_model_version() -> str:
 
 def should_trigger_retrain() -> bool:
     """Verifica se deve disparar retreino baseado no buffer + threshold."""
-    from .feedback_collector import should_retrain_now
+    import sys
+    sys.path.insert(0, str(DATA_DIR))
+    from feedback_collector import should_retrain_now
     return should_retrain_now()
 
 
@@ -226,8 +228,10 @@ def trigger_auto_retrain(reason: str = "buffer_threshold") -> Dict[str, Any]:
 def mark_retrain_complete():
     """Marca retreino como concluído no feedback_collector."""
     try:
-        from .feedback_collector import mark_retrain_complete
-        mark_retrain_complete()
+        import sys
+        sys.path.insert(0, str(DATA_DIR))
+        from feedback_collector import mark_retrain_complete as _mark
+        _mark()
     except Exception:
         pass
 
