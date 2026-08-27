@@ -11,11 +11,17 @@ BRIDGE_FLAG = BASE / "runtime" / "bridge_enabled.flag"
 
 RAM_CRITICAL_MB = 200
 RAM_WARN_MB = 500
+RAM_EARLY_WARN_MB = 1024  # alerta proativo: entra em modo preventivo abaixo de 1GB
+PROACTIVE_COOLDOWN_S = 300  # no máximo uma limpeza preventiva a cada 5 min
 CPU_RUNAWAY_PCT = 80.0
 CPU_RUNAWAY_SECONDS = 300
 CHECK_INTERVAL = 20
 
 CPU_HISTORY = {}
+
+# Histórico de RAM livre para detecção proativa de queda (janela de 10 min)
+RAM_HISTORY = []
+_LAST_PROACTIVE_CLEAN = 0.0
 
 # PIDs dos serviços Eco protegidos - atualizado a cada ciclo
 PROTECTED_ECO_PIDS = set()
@@ -438,6 +444,69 @@ def get_ram_mb():
 def get_disk_free_gb():
     return psutil.disk_usage("C:").free / 1024 / 1024 / 1024
 
+def _record_ram_sample(ram_mb):
+    """Registra amostra de RAM livre (janela móvel de 10 min)."""
+    now = time.time()
+    RAM_HISTORY.append((now, ram_mb))
+    cutoff = now - 600
+    while RAM_HISTORY and RAM_HISTORY[0][0] < cutoff:
+        RAM_HISTORY.pop(0)
+
+def _ram_slope_mb_per_min():
+    """Inclinação (MB/min) da RAM livre. Negativo = caindo."""
+    if len(RAM_HISTORY) < 4:
+        return 0.0
+    n = len(RAM_HISTORY)
+    t0 = RAM_HISTORY[0][0]
+    ts = [(t - t0) / 60.0 for t, _ in RAM_HISTORY]
+    ys = [m for _, m in RAM_HISTORY]
+    n_f = float(n)
+    mean_t = sum(ts) / n_f
+    mean_y = sum(ys) / n_f
+    num = sum((ts[i] - mean_t) * (ys[i] - mean_y) for i in range(n))
+    den = sum((t - mean_t) ** 2 for t in ts)
+    if den == 0:
+        return 0.0
+    return num / den
+
+def check_proactive_ram(ram_mb, state):
+    """Camada proativa: detecta queda de RAM e limpa cache antes do limite.
+
+    Não substitui a ação reativa (RAM crítica). Complementa: age quando a RAM
+    ainda está acima do limiar de alerta mas já em tendência de queda, evitando
+    chegar ao esgotamento. Respeita cooldown para não menstruar o cache.
+    """
+    global _LAST_PROACTIVE_CLEAN
+    _record_ram_sample(ram_mb)
+    if ram_mb >= RAM_EARLY_WARN_MB:
+        return
+    slope = _ram_slope_mb_per_min()
+    if slope >= -5.0:  # estável ou subindo: não intervir
+        return
+    now = time.time()
+    if now - _LAST_PROACTIVE_CLEAN < PROACTIVE_COOLDOWN_S:
+        return
+    _LAST_PROACTIVE_CLEAN = now
+    log.warning(f"RAM em queda ({ram_mb:.0f} MB livre, tendência {slope:.1f} MB/min) - limpeza preventiva de cache")
+    try:
+        r = subprocess.run(
+            [sys.executable, str(BASE / "scripts" / "opencode_resilience.py"), "--clean"],
+            capture_output=True, text=True, timeout=60, cwd=str(BASE),
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+        )
+        if r.returncode == 0:
+            log.info(f"Limpeza preventiva concluída: {r.stdout.strip()}")
+            state.setdefault("actions", []).append({
+                "action": "proactive_ram_cleanup",
+                "ram_mb": round(ram_mb, 1),
+                "slope": round(slope, 1),
+            })
+        else:
+            detalhe = (r.stderr.strip() or r.stdout.strip() or "sem mensagem")[:200]
+            log.error(f"Limpeza preventiva falhou: {detalhe}")
+    except Exception as e:
+        log.error(f"Limpeza preventiva erro: {e}")
+
 def save_state(state):
     with open(STATE_FILE, "w", encoding="utf-8") as f:
         json.dump(state, f, indent=2, ensure_ascii=False)
@@ -497,6 +566,8 @@ def check_and_act():
         "disk_gb": round(disk_gb, 1),
         "actions": [],
     }
+    # Camada proativa: antecipa queda de RAM e limpa cache preventivamente
+    check_proactive_ram(ram_mb, state)
     for pid, name in list(CPU_HISTORY.items()):
         try:
             p = psutil.Process(pid)
