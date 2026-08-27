@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**222 notas** do cluster ecossistema.
+**223 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -151,6 +151,7 @@
 - [[junkscanner-benchmark-do-scan-incremental]]
 - [[junkscanner-scan-incremental-cache-de-hash-memoização]]
 - [[ler-specs-sdd-hook]]
+- [[limpeza-disco-windows]]
 - [[loop-infinito-de-push-no-vigilante-emails-do-github-a-cada-m]]
 - [[mcp-obsidian-server-vault-consumido-pelo-llm]]
 - [[mcp-prompt-optimization-não-conectava-transporte-json-por-li]]

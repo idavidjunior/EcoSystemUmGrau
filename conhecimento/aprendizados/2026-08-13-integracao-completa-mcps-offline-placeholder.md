@@ -129,6 +129,7 @@ config resolvido pelo opencode).
 - [[junkscanner-benchmark-do-scan-incremental]]
 - [[junkscanner-scan-incremental-cache-de-hash-memoização]]
 - [[ler-specs-sdd-hook]]
+- [[limpeza-disco-windows]]
 - [[loop-infinito-de-push-no-vigilante-emails-do-github-a-cada-m]]
 - [[modo-auto-gate]]
 - [[motor-de-criticalidade-auto-organizada-e-avalanches-neurais]]

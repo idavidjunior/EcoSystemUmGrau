@@ -1,6 +1,6 @@
 {
-  "versao": "1.0",
-  "atualizado_em": "2026-08-17T00:02:47.772333",
+  "versao": "1.1",
+  "atualizado_em": "2026-08-27T00:00:00",
   "descricao": "Inventário oficial de estruturas ativas do EcoSystemUmGrau. Consulte antes de criar qualquer estrutura nova (cláusula anti-duplicação).",
   "agentes": [
     {
@@ -376,6 +376,11 @@
       "id": "adb-redmi",
       "arquivo": "scripts/adb-redmi.ps1",
       "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "limpeza_disco",
+      "arquivo": "scripts/limpeza_disco.py",
+      "funcao": "Diagnóstico e limpeza segura do disco C: (Windows) — npm-cache, Temp, VSIX, balena nupkg, zips Flutter, tmp Ollama. Uso: python scripts/limpeza_disco.py --diagnostico | --limpar | --simular | --gradle. Log em runtime/limpeza_disco.log."
     },
     {
       "id": "adb_scan",
@@ -781,6 +786,7 @@
     "valida_specs.py"
   ],
   "scripts_utilitarios": [
+    "limpeza_disco.py",
     "bootstrap.ps1",
     "deploy-config.ps1",
     "guardian_manager.ps1",

@@ -1,6 +1,6 @@
 # Decisoes
 
-**72 notas** conectadas a este hub.
+**73 notas** conectadas a este hub.
 
 
 ## Notas
@@ -34,6 +34,7 @@
 - [[jarvis-deve-manter-registro-de-suas-proprias-habilidades-em-]]
 - [[ler-specs-sdd-hook]]
 - [[ler-usa-python-puro-stdlib-only-zero-dependencias-externas-i]]
+- [[limpeza-disco-windows]]
 - [[merge-by-name-if-name-matches-existing-item-increment-quanti]]
 - [[metadata-busca-em-multi-fontes-acoustid-itunes-br-musicbrain]]
 - [[modo-auto-gate]]

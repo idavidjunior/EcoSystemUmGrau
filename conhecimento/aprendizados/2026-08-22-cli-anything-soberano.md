@@ -109,6 +109,7 @@ HKUDS/CLI-Anything (MIT), metodologia GUI-to-CLI em 7 fases: análise do codebas
 - [[junkscanner-benchmark-do-scan-incremental]]
 - [[junkscanner-scan-incremental-cache-de-hash-memoização]]
 - [[ler-specs-sdd-hook]]
+- [[limpeza-disco-windows]]
 - [[loop-infinito-de-push-no-vigilante-emails-do-github-a-cada-m]]
 - [[modo-auto-gate]]
 - [[motor-de-criticalidade-auto-organizada-e-avalanches-neurais]]
