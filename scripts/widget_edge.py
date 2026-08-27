@@ -3,7 +3,7 @@
 """Edge — widget flutuante do EcoSystemUmGrau (pywebview).
 
 Bolinhas de status refletem serviços reais:
-  narr   -> narrador_desktop rodando (psutil)
+  narr   -> narrador integrado ativo (narracao_estado.json)
   tts    -> tts_service rodando (psutil)
   bridge -> porta 8765 escutando
 
@@ -13,13 +13,18 @@ Controles:
   Voz     -> liga/desliga dialogo.py --modo vad (padrão do ecossistema)
 """
 
+import hashlib
 import json
 import os
+import re
 import socket
+import sqlite3
 import subprocess
 import sys
 import threading
 import time
+import unicodedata
+import uuid
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
@@ -31,6 +36,63 @@ PID_FILE = RUNTIME / "widget.pid"
 STOP_FLAG = RUNTIME / "parar_fala.flag"
 BRIDGE_PORT = 8765
 NARRACAO_CONTROLE = RUNTIME / "narracao_estado.json"
+
+# --- Narrador integrado ---
+DB_NARRADOR = Path(os.environ.get("OPENCODE_DB", r"C:\Users\David Jr\.local\share\opencode\opencode.db"))
+POSICAO_NARRADOR = RUNTIME / "narrador_posicao.json"
+TTS_CMD = RUNTIME / "tts_cmd.json"
+NARR_LOG = SCRIPTS / "narrador_desktop_log.txt"
+EXCLUIR_PADRAO = ["watchdog-health"]
+DEBOUNCE_S = 0.5
+_FALADOS: dict = {}
+_FALADOS_TTL = 120
+
+# Detecção de palavras em inglês para pronúncia correta
+try:
+    from detect_english_words import pipeline_completo_tts
+    ENGLISH_DETECT_AVAILABLE = True
+except ImportError:
+    ENGLISH_DETECT_AVAILABLE = False
+    def pipeline_completo_tts(texto):
+        return texto
+
+# Validação de idioma — narrador só fala português
+try:
+    from validar_idioma import validar_idioma
+    IDIOMA_AVAILABLE = True
+except ImportError:
+    IDIOMA_AVAILABLE = False
+    def validar_idioma(texto, threshold=30.0):
+        return {"ok": True, "score": 100, "idioma": "pt-BR"}
+
+# Perfil do usuário para formatação de resposta
+try:
+    from scripts.profile_hook import format_response_for_profile, get_response_config
+    _profile_config = get_response_config()
+    PROFILE_HOOK_AVAILABLE = True
+except ImportError:
+    _profile_config = {}
+    PROFILE_HOOK_AVAILABLE = False
+    def format_response_for_profile(texto, config):
+        return texto
+    def get_response_config():
+        return {}
+
+# Regex para limpeza de texto para fala
+_EXTensoes = re.compile(
+    r"\.(?:py|js|ts|json|jsonc|md|html|css|yaml|yml|toml|cfg|ini|sh|ps1|bat|cmd|"
+    r"exe|dll|so|jar|apk|aab|zip|tar|gz|bak|tmp|log|db|sqlite|csv|xml|env|"
+    r"mp3|wav|ogg|mp4|mkv|avi|mov|pdf|png|jpg|jpeg|gif|svg|ico|webp|"
+    r"pyc|pyo|whl|egg|cab|msi|deb|rpm|dmg|iso|img|bin|dat|old|new|orig|"
+    r"save|swp|swo|swn|temp|cache)\b",
+    re.IGNORECASE,
+)
+_Caminhos = re.compile(
+    r"[A-Z]:\\[\w\\. -]+"
+    r"|(?:/scripts|/usr|/etc|/var|/tmp|/home|/root|~/)[\w/._ -]*",
+    re.IGNORECASE,
+)
+_Arquivos = re.compile(r"\b\w+\.(?:py|js|ts|json|jsonc|md|html|css|ps1|bat|sh)\b", re.IGNORECASE)
 
 
 def ler_estado():
@@ -103,6 +165,288 @@ def ler_tts_estado():
         return False, ""
 
 
+# ---------------------------------------------------------------------------
+# Narrador integrado — funções transplantadas de narrador_desktop.py
+# ---------------------------------------------------------------------------
+
+def _log_narr(msg):
+    linha = f"[{time.strftime('%Y-%m-%dT%H:%M:%S')}] {msg}"
+    try:
+        with open(NARR_LOG, "a", encoding="utf-8") as f:
+            f.write(linha + "\n")
+    except Exception:
+        pass
+
+
+def _enviar_tts_cmd(cmd: dict):
+    """Envia comando de voz ao tts_service com escrita atômica resiliente a lock."""
+    TTS_CMD.parent.mkdir(parents=True, exist_ok=True)
+    tmp = TTS_CMD.with_suffix(".tmp")
+    tmp.write_text(json.dumps(cmd, ensure_ascii=False), encoding="utf-8")
+    for _ in range(6):
+        try:
+            tmp.replace(TTS_CMD)
+            return
+        except OSError:
+            time.sleep(0.15)
+    try:
+        tmp.replace(TTS_CMD)
+    except OSError as e:
+        _log_narr(f"falha de voz: {e}")
+
+
+def _conectar_narrador():
+    c = sqlite3.connect(f"file:{DB_NARRADOR}?mode=ro", uri=True, timeout=10)
+    c.execute("PRAGMA query_only=ON")
+    return c
+
+
+def _ler_posicao_narrador():
+    try:
+        if POSICAO_NARRADOR.exists():
+            return json.loads(POSICAO_NARRADOR.read_text(encoding="utf-8"))
+    except Exception:
+        pass
+    return {"ultimo_ts": 0}
+
+
+def _salvar_posicao_narrador(pos):
+    for tentativa in range(3):
+        try:
+            POSICAO_NARRADOR.parent.mkdir(parents=True, exist_ok=True)
+            tmp = POSICAO_NARRADOR.with_suffix(".tmp")
+            tmp.write_text(json.dumps(pos, ensure_ascii=False), encoding="utf-8")
+            tmp.replace(POSICAO_NARRADOR)
+            return
+        except PermissionError:
+            if tentativa < 2:
+                time.sleep(0.1)
+        except Exception:
+            return
+
+
+def _estado_narrador_ativo():
+    """True se narracao ativa e não pausada."""
+    try:
+        if NARRACAO_CONTROLE.exists():
+            estado = json.loads(NARRACAO_CONTROLE.read_text(encoding="utf-8"))
+            return bool(estado.get("ativo", True)) and not bool(estado.get("pausado", False))
+    except Exception:
+        pass
+    return True
+
+
+def _limpar_texto(texto):
+    """Remove Markdown, emojis e símbolos; fica só o texto puro para TTS."""
+    if not texto:
+        return ""
+    texto = unicodedata.normalize("NFC", texto)
+    texto = re.sub(r"```.*?```", " ", texto, flags=re.DOTALL)
+    texto = re.sub(r"`([^`]+)`", r"\1", texto)
+    texto = re.sub(r"^#{1,6}\s*", "", texto, flags=re.MULTILINE)
+    texto = re.sub(r"(\*\*|__|~~)", "", texto)
+    texto = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", texto)
+    texto = re.sub(r"^\s*[-*+]\s+", "", texto, flags=re.MULTILINE)
+    texto = re.sub(r"^\s*\d+[.)]\s+", "", texto, flags=re.MULTILINE)
+    texto = re.sub(r"<[^>]+>", " ", texto)
+
+    def _limpar_simbolos(c):
+        if c.isspace():
+            return " "
+        cat = unicodedata.category(c)
+        if cat in ("Cc", "Cf", "Cs", "Co", "Mn") or cat.startswith("S"):
+            return " "
+        return c
+
+    texto = "".join(_limpar_simbolos(c) for c in texto)
+    texto = re.sub(r"\s+", " ", texto)
+    return texto.strip()
+
+
+def _simplificar_para_fala(texto):
+    """Remove termos técnicos e simplifica texto para fala natural."""
+    if not texto:
+        return ""
+    texto = _EXTensoes.sub("", texto)
+    texto = _Caminhos.sub(" ", texto)
+    texto = _Arquivos.sub(" ", texto)
+    texto = re.sub(r"[,;:]\s*[)\]]", " ", texto)
+    texto = re.sub(r"\s+", " ", texto)
+    texto = texto.strip()
+    if len(texto) > 200:
+        frases = re.split(r"(?<=[.!?])\s+", texto)
+        texto = " ".join(frases[:2])
+    return texto
+
+
+def _partes_novas(conn, ultimo_ts, excluir):
+    """Retorna lista (ts, session_id, titulo, texto) de partes novas."""
+    if not DB_NARRADOR.exists():
+        return []
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            """SELECT p.id, p.time_created, p.data, m.data, s.title, s.id
+               FROM part p
+               JOIN message m ON m.id = p.message_id
+               JOIN session s ON s.id = p.session_id
+               WHERE p.time_created > ? AND p.data LIKE '%"type":"text"%'
+               AND EXISTS (
+                   SELECT 1 FROM part pf
+                   WHERE pf.message_id = m.id AND pf.data LIKE '%"type":"step-finish"%'
+               )
+               ORDER BY p.time_created ASC LIMIT 800""",
+            (ultimo_ts,),
+        )
+        por_msg = {}
+        for pid, ts, pdata, mdata, titulo, sid in cur.fetchall():
+            try:
+                p = json.loads(pdata)
+                m = json.loads(mdata)
+            except Exception:
+                continue
+            if p.get("type") != "text":
+                continue
+            if m.get("role") != "assistant":
+                continue
+            texto = (p.get("text") or "").strip()
+            if not texto:
+                continue
+            msg_id = m.get("id", pid)
+            por_msg[msg_id] = (ts or 0, sid, titulo or "", texto)
+        saida = []
+        for ts, sid, titulo, texto in por_msg.values():
+            if titulo and any(x.lower() in titulo.lower() for x in excluir):
+                continue
+            saida.append((ts, sid, titulo, texto))
+        return saida
+    except Exception as e:
+        _log_narr(f"erro lendo banco: {e}")
+        return []
+
+
+class _Narrador:
+    """Buffer com debounce que acumula texto e fala após pausa."""
+
+    def __init__(self, voz):
+        self.voz = voz
+        self.buffer = []
+        self.timer = None
+        self.lock = threading.Lock()
+        self.falando = threading.Lock()
+        self.buffer_lock = threading.Lock()
+
+    def alimentar(self, textos):
+        with self.buffer_lock:
+            self.buffer.extend(textos)
+        if self.timer is None:
+            self.timer = threading.Timer(DEBOUNCE_S, self._flush)
+            self.timer.daemon = True
+            self.timer.start()
+
+    def _flush(self):
+        with self.buffer_lock:
+            textos = self.buffer
+            self.buffer = []
+        self.timer = None
+        texto = " ".join(textos).strip()
+        texto = _limpar_texto(texto)
+        texto = _simplificar_para_fala(texto)
+        if IDIOMA_AVAILABLE and len(texto) > 30:
+            resultado = validar_idioma(texto, threshold=5.0)
+            if not resultado["ok"]:
+                _log_narr(f"BLOQUEADO (idioma={resultado['idioma']}): {texto[:60]}...")
+                return
+        texto_hash = hashlib.md5(texto.encode("utf-8")).hexdigest()[:16]
+        agora = time.time()
+        expirados = [k for k, t in _FALADOS.items() if agora - t > _FALADOS_TTL]
+        for k in expirados:
+            _FALADOS.pop(k, None)
+        if texto_hash in _FALADOS:
+            _log_narr(f"DEDUP pulando: {texto[:60]}...")
+            return
+        _FALADOS[texto_hash] = agora
+        if STOP_FLAG.exists():
+            _log_narr("pulando (parar_fala.flag ativo)")
+            return
+        texto = pipeline_completo_tts(texto)
+        if PROFILE_HOOK_AVAILABLE:
+            texto = format_response_for_profile(texto, _profile_config)
+        if len(texto) < 15:
+            return
+        with self.falando:
+            _log_narr(f"falando ({len(texto)} chars): {texto[:70]}...")
+            try:
+                req_id = str(uuid.uuid4())[:8]
+                cmd = {"cmd": "speak", "texto": texto, "request_id": req_id, "priority": 0}
+                _enviar_tts_cmd(cmd)
+                resp_file = RUNTIME / f"tts_resp_{req_id}.json"
+                try:
+                    for _ in range(1800):
+                        if STOP_FLAG.exists():
+                            _log_narr("interrompido (parar_fala.flag)")
+                            break
+                        if resp_file.exists():
+                            content = resp_file.read_text(encoding="utf-8")
+                            if content and content.strip():
+                                try:
+                                    resp = json.loads(content)
+                                    if resp.get("status") != "ok":
+                                        _log_narr(f"TTS service erro: {resp.get('msg')}")
+                                except (json.JSONDecodeError, TypeError):
+                                    pass
+                            break
+                        time.sleep(0.05)
+                finally:
+                    resp_file.unlink(missing_ok=True)
+            except Exception as e:
+                _log_narr(f"falha de voz: {e}")
+
+    def parar(self):
+        if self.timer:
+            self.timer.cancel()
+
+
+def _narrador_loop():
+    """Thread interna: lê SQLite, alimenta narrador, envia TTS."""
+    pos = _ler_posicao_narrador()
+    narrador = _Narrador("assistant")
+    _log_narr("narrador integrado ao widget")
+    ultimo_ts = pos.get("ultimo_ts", 0)
+    try:
+        conn = _conectar_narrador()
+    except Exception as e:
+        _log_narr(f"falha ao conectar banco: {e}")
+        return
+    try:
+        while True:
+            ativo = _estado_narrador_ativo()
+            novas = _partes_novas(conn, ultimo_ts, EXCLUIR_PADRAO)
+            if novas:
+                textos = [t for _, _, _, t in novas]
+                if STOP_FLAG.exists():
+                    narrador.parar()
+                    _log_narr("buffer descartado (parar_fala.flag)")
+                elif ativo:
+                    narrador.alimentar(textos)
+                ultimo_ts = max(x[0] for x in novas)
+                _salvar_posicao_narrador({"ultimo_ts": ultimo_ts})
+            try:
+                ts_now = _ler_posicao_narrador().get("ultimo_ts", 0)
+                if ts_now > ultimo_ts:
+                    ultimo_ts = ts_now
+                    narrador.parar()
+                    narrador = _Narrador("assistant")
+            except Exception:
+                pass
+            time.sleep(0.5)
+    except Exception:
+        _log_narr("narrador thread encerrada")
+
+
+# ---------------------------------------------------------------------------
+
+
 def ler_retrato():
     """Retrato vivo do diálogo ({estado, voce, rms, erro, quando}).
     Voz desligada ou retrato velho (>12s) = parado."""
@@ -137,7 +481,7 @@ class EdgeApi:
         else:
             vivo.pop("quando", None)
         return {
-            "narr": servico_no_ar("narrador_desktop"),
+            "narr": _estado_narrador_ativo(),
             "tts": servico_no_ar("tts_service"),
             "bridge": bridge_no_ar(),
             "voz": voz,
@@ -255,8 +599,8 @@ class EdgeApi:
                 except Exception:
                     pass
             self._voz_proc = None
-        # Desliga narrador completamente ao desligar widget (evita dupla fala)
-        self._narrador_desativar()
+        # Pausa narrador (mantém ativo=true, pausado=true) — NÃO desativa
+        self._narrador_pausar(True)
         return True
 
     def voice_toggle(self):
@@ -446,6 +790,7 @@ def main():
         print(f"moved handler indisponivel: {e}", flush=True)
 
     threading.Thread(target=poller, args=(api,), daemon=True).start()
+    threading.Thread(target=_narrador_loop, daemon=True).start()
     try:
         webview.start()
     finally:

@@ -77,7 +77,8 @@ def handle_tool(tool, args, rid):
             return {'jsonrpc': '2.0', 'id': rid, 'result': {'content': [{'type': 'text', 'text': 'No query'}]}}
         r = subprocess.run(
             [sys.executable, os.path.join(BASE, 'mcp', 'memoria', 'habilidades', 'busca-conhecimento', 'search_knowledge.py'), q],
-            capture_output=True, text=True, cwd=BASE, timeout=30)
+            capture_output=True, text=True, cwd=BASE, timeout=30,
+            creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
         text = (r.stdout or r.stderr or f'No results for: {q}')[:10000]
         return {'jsonrpc': '2.0', 'id': rid, 'result': {'content': [{'type': 'text', 'text': text}]}}
 
@@ -85,7 +86,8 @@ def handle_tool(tool, args, rid):
         proj = args.get('project', '')
         cmd = [sys.executable, os.path.join(BASE, 'scripts', 'memory_engine.py'), 'context']
         if proj: cmd.extend(['--project', proj])
-        r = subprocess.run(cmd, capture_output=True, text=True, cwd=BASE, timeout=15)
+        r = subprocess.run(cmd, capture_output=True, text=True, cwd=BASE, timeout=15,
+                           creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
         text = (r.stdout or 'No context available')[:10000]
         return {'jsonrpc': '2.0', 'id': rid, 'result': {'content': [{'type': 'text', 'text': text}]}}
 
@@ -96,7 +98,8 @@ def handle_tool(tool, args, rid):
         r = subprocess.run(
             [sys.executable, os.path.join(BASE, 'scripts', 'memory_engine.py'),
              'add', task, summary, kind],
-            capture_output=True, text=True, cwd=BASE, timeout=15)
+            capture_output=True, text=True, cwd=BASE, timeout=15,
+            creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
         text = (r.stdout or r.stderr or 'OK')[:500]
         return {'jsonrpc': '2.0', 'id': rid, 'result': {'content': [{'type': 'text', 'text': text}]}}
 

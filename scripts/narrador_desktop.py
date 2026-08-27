@@ -413,26 +413,34 @@ def teste_audio():
 
 
 def main():
-    # Previne instâncias múltiplas
+    # Previne instâncias múltiplas via trava atômica (O_EXCL)
+    import psutil
     pid_file = ROOT / "runtime" / "narrador.pid"
     pid_file.parent.mkdir(parents=True, exist_ok=True)
-    if pid_file.exists():
+    for _ in range(2):
         try:
-            old_pid = int(pid_file.read_text().strip())
-            import psutil
-            if psutil.pid_exists(old_pid):
-                # Não sair se for o próprio PID (race condition guardian -> narrador)
-                if old_pid == os.getpid():
-                    log(f"PID file já contém nosso PID ({old_pid}) - continuando")
-                else:
+            fd = os.open(str(pid_file), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            os.write(fd, str(os.getpid()).encode())
+            os.close(fd)
+            break
+        except FileExistsError:
+            try:
+                old_pid = int(pid_file.read_text().strip())
+                if psutil.pid_exists(old_pid) and old_pid != os.getpid():
                     p = psutil.Process(old_pid)
                     cmd = " ".join(p.cmdline()).lower()
                     if "narrador_desktop" in cmd:
                         log(f"instância duplicada detectada (PID {old_pid}) - saindo")
                         return
-        except (ValueError, psutil.NoSuchProcess, psutil.AccessDenied):
-            pass
-    pid_file.write_text(str(os.getpid()))
+            except (ValueError, psutil.NoSuchProcess, psutil.AccessDenied):
+                pass
+            try:
+                pid_file.unlink()
+            except FileNotFoundError:
+                pass
+    else:
+        log("não conseguiu travar PID - saindo")
+        return
 
     ap = argparse.ArgumentParser(description="Narrador de voz do Jarvis no opencode desktop")
     ap.add_argument("--teste", action="store_true", help="fala uma frase de teste e sai")

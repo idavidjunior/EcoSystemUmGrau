@@ -160,10 +160,16 @@ def matar_tts_ativo():
 
 
 def cmd_stop():
-    # pausa narração futura + interrompe TTS atual
-    gravar(ativo=False, pausado=True)
+    """Interrompe fala atual SEM desativar o narrador.
+    Escreve parar_fala.flag (narrador/tts_service checam durante fala)
+    e mata qualquer subprocesso TTS ativo. NÃO altera narracao_estado.json."""
+    stop_flag = ROOT / "runtime" / "parar_fala.flag"
+    try:
+        stop_flag.write_text(str(int(time.time())), encoding="utf-8")
+    except Exception:
+        pass
     matar_tts_ativo()
-    print("Fala interrompida. Narracao PAUSADA (STOP ECO).")
+    print("Fala interrompida. Narrador continua ativo.")
     return 0
 
 

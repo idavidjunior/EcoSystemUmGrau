@@ -23,7 +23,7 @@ PROTECTED_ECO_PIDS = set()
 # Fonte única de verdade dos serviços Eco: a própria tabela de processos.
 # Correspondência por token terminando em "<script>.py" (imune a falsos
 # positivos de wrappers powershell/python -c que só CONTÊM a string).
-SERVICOS_ECO_SCRIPTS = ("narrador_desktop.py", "tts_service.py", "widget_edge.py", "dialogo.py", "widget_grafo.py")
+SERVICOS_ECO_SCRIPTS = ("tts_service.py", "widget_edge.py", "dialogo.py", "widget_grafo.py")
 
 def _token_e_script(token, script):
     return ((token or "").lower().strip('"').endswith(script))
@@ -114,8 +114,16 @@ def start_serve():
     return False
 
 def is_narrador_up():
-    """Narrador vivo? Fonte única: varredura de cmdline por token."""
-    return "narrador_desktop.py" in _pids_servicos_eco()
+    """Narrador vivo? Agora integrado ao widget — checa state file."""
+    try:
+        estado_file = BASE / "runtime" / "narracao_estado.json"
+        if estado_file.exists():
+            import json
+            estado = json.loads(estado_file.read_text(encoding="utf-8"))
+            return bool(estado.get("ativo", True))
+    except Exception:
+        pass
+    return False
 
 def is_tts_service_up():
     """TTS Service vivo? Fonte única: varredura de cmdline por token."""
@@ -182,25 +190,9 @@ def restart_widget():
     time.sleep(1)
     return start_widget()
 def start_narrador():
-    try:
-        py = "C:/Users/David Jr/AppData/Local/Programs/Python/Python312/pythonw.exe"
-        script = str(BASE / "scripts" / "narrador_desktop.py")
-        proc = subprocess.Popen([py, script], cwd=str(BASE), creationflags=subprocess.CREATE_NO_WINDOW)
-        # PID file imediato para proteção contra RAM cleanup
-        pid_file = BASE / "runtime" / "narrador.pid"
-        pid_file.parent.mkdir(parents=True, exist_ok=True)
-        pid_file.write_text(str(proc.pid))
-        # Aguarda e verifica se narrador realmente subiu
-        for _ in range(10):
-            time.sleep(0.5)
-            if psutil.pid_exists(proc.pid) and psutil.Process(proc.pid).is_running():
-                log.warning("Narrador reiniciado e confirmado rodando")
-                return True
-        log.error(f"Narrador morreu logo após iniciar (PID {proc.pid})")
-        return False
-    except Exception as e:
-        log.error(f"Falha ao iniciar narrador: {e}")
-    return False
+    """Narrador agora é thread interna do widget_edge.py — não precisa de processo separado."""
+    log.info("Narrador integrado ao widget — start_narrador é no-op")
+    return True
 
 
 def start_tts_service():
@@ -337,13 +329,7 @@ def is_widget_pid(pid: int) -> bool:
 
 
 def is_narrador_pid(pid: int) -> bool:
-    """Verifica se PID é do narrador_desktop.py (serviço Eco protegido) via PID file."""
-    try:
-        pid_file = BASE / "runtime" / "narrador.pid"
-        if pid_file.exists():
-            return int(pid_file.read_text().strip()) == pid
-    except Exception:
-        pass
+    """Narrador agora é thread do widget — não há PID separado para proteger."""
     return False
 
 
@@ -632,13 +618,15 @@ def run_opencode_resilience():
             return
         r = subprocess.run(
             [sys.executable, str(resilience_script), "--check"],
-            capture_output=True, text=True, timeout=30, cwd=str(BASE)
+            capture_output=True, text=True, timeout=30, cwd=str(BASE),
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
         )
         if r.returncode == 1:
             log.warning(f"OpenCode resilience: limpeza recomendada - {r.stdout.strip()}")
             r_clean = subprocess.run(
                 [sys.executable, str(resilience_script), "--clean"],
-                capture_output=True, text=True, timeout=60, cwd=str(BASE)
+                capture_output=True, text=True, timeout=60, cwd=str(BASE),
+                creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
             )
             if r_clean.returncode == 0:
                 log.info(f"OpenCode cache limpo: {r_clean.stdout.strip()}")
