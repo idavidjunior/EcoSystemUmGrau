@@ -28,6 +28,11 @@ DESTINO = r"E:\Default Project\EcoSystemUmGrau"
 DEFAULT_INTERVAL = 1800  # 30 minutos (checagem periodica leve)
 
 
+def hd_conectado() -> bool:
+    """Verifica se o HD externo esta conectado."""
+    return os.path.exists(os.path.join(DESTINO, ".git"))
+
+
 def _git(repo: str, *args) -> tuple:
     """Executa comando git. Retorna (stdout, stderr, returncode)."""
     cmd = ["git", "-C", repo] + list(args)
@@ -80,6 +85,9 @@ def sync(origem: str, destino: str) -> dict:
     Returns:
         dict com status da operacao
     """
+    if not hd_conectado():
+        return {"timestamp": datetime.now().isoformat(timespec='seconds'), "action": "skip", "success": False, "error": "HD nao conectado"}
+
     _ensure_safe_directory()
 
     result = {
@@ -157,9 +165,8 @@ def run_watchdog(interval: int = DEFAULT_INTERVAL):
 
     while True:
         try:
-            # Verifica se destino existe
-            if not os.path.exists(os.path.join(DESTINO, ".git")):
-                print(f"[Watchdog HD] ERRO: Destino nao encontrado: {DESTINO}")
+            # Verifica se HD externo esta conectado — se nao, silenciosamente ignora
+            if not hd_conectado():
                 time.sleep(interval)
                 continue
 
