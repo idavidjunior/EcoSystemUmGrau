@@ -120,6 +120,73 @@ class WindowsMaintenanceMCP:
         """Verifica se winfr está instalado."""
         return self.wm.disk.winfr_check_installed()
 
+    # Cache Tiering handlers
+    async def cache_list_pools(self) -> Dict[str, Any]:
+        return self.wm.cache.list_pools()
+
+    async def cache_list_tiers(self, pool_name: str) -> Dict[str, Any]:
+        return self.wm.cache.list_tiers(pool_name)
+
+    async def cache_create_pool(self, pool_name: str, physical_disks: List[str], resiliency: str = "Simple") -> Dict[str, Any]:
+        try:
+            return self.wm.cache.create_pool_with_tiers(pool_name, physical_disks, resiliency=resiliency)
+        except AdminRequired as e:
+            return {"error": str(e), "requires_admin": True}
+
+    async def cache_create_vdisk(self, pool_name: str, vdisk_name: str, size: str,
+                                  ssd_tier_size: str = None, hdd_tier_size: str = None,
+                                  resiliency: str = "Simple", write_cache: str = "On") -> Dict[str, Any]:
+        try:
+            return self.wm.cache.create_tiered_virtual_disk(pool_name, vdisk_name, size,
+                                                              ssd_tier_size, hdd_tier_size, resiliency, write_cache)
+        except AdminRequired as e:
+            return {"error": str(e), "requires_admin": True}
+
+    async def cache_set_write_cache(self, vdisk_name: str, policy: str = "On") -> Dict[str, Any]:
+        try:
+            return self.wm.cache.set_write_cache_policy(vdisk_name, policy)
+        except AdminRequired as e:
+            return {"error": str(e), "requires_admin": True}
+
+    async def cache_optimize(self, pool_name: str = None, vdisk_name: str = None) -> Dict[str, Any]:
+        try:
+            return self.wm.cache.optimize_tier(pool_name, vdisk_name)
+        except AdminRequired as e:
+            return {"error": str(e), "requires_admin": True}
+
+    async def cache_metrics(self, vdisk_name: str = None) -> Dict[str, Any]:
+        return self.wm.cache.get_tier_metrics(vdisk_name)
+
+    async def cache_enable_writeback(self, physical_disk: str) -> Dict[str, Any]:
+        try:
+            return self.wm.cache.enable_write_back_cache(physical_disk)
+        except AdminRequired as e:
+            return {"error": str(e), "requires_admin": True}
+
+    async def cache_ramdisk(self, size_gb: int, drive_letter: str = "R:") -> Dict[str, Any]:
+        try:
+            return self.wm.cache.create_ram_disk(size_gb, drive_letter)
+        except AdminRequired as e:
+            return {"error": str(e), "requires_admin": True}
+
+    async def cache_remove_ramdisk(self, drive_letter: str = "R:") -> Dict[str, Any]:
+        try:
+            return self.wm.cache.remove_ram_disk(drive_letter)
+        except AdminRequired as e:
+            return {"error": str(e), "requires_admin": True}
+
+    async def cache_warm(self, paths: List[str], priority: str = "Normal") -> Dict[str, Any]:
+        return self.wm.cache.warm_cache(paths, priority)
+
+    async def cache_superfetch_status(self) -> Dict[str, Any]:
+        return self.wm.cache.get_superfetch_status()
+
+    async def cache_set_superfetch(self, enable_prefetch: int, enable_superfetch: int) -> Dict[str, Any]:
+        try:
+            return self.wm.cache.set_superfetch(enable_prefetch, enable_superfetch)
+        except AdminRequired as e:
+            return {"error": str(e), "requires_admin": True}
+
 
 # MCP Protocol handlers
 mcp = WindowsMaintenanceMCP()
@@ -265,6 +332,148 @@ TOOLS = {
         "description": "Verifica se winfr (Windows File Recovery) está instalado",
         "inputSchema": {"type": "object", "properties": {}},
         "handler": mcp.winfr_check
+    },
+    "win_cache_list_pools": {
+        "description": "Lista Storage Pools com tiers",
+        "inputSchema": {"type": "object", "properties": {}},
+        "handler": mcp.cache_list_pools
+    },
+    "win_cache_list_tiers": {
+        "description": "Lista tiers de um Storage Pool",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "pool_name": {"type": "string", "description": "Nome do pool"}
+            },
+            "required": ["pool_name"]
+        },
+        "handler": mcp.cache_list_tiers
+    },
+    "win_cache_create_pool": {
+        "description": "Cria Storage Pool com tiers SSD+HDD (requer Admin)",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "pool_name": {"type": "string", "description": "Nome do pool"},
+                "physical_disks": {"type": "array", "items": {"type": "string"}, "description": "Lista de discos físicos"},
+                "resiliency": {"type": "string", "enum": ["Simple", "Mirror", "Parity"], "default": "Simple"}
+            },
+            "required": ["pool_name", "physical_disks"]
+        },
+        "handler": mcp.cache_create_pool
+    },
+    "win_cache_create_vdisk": {
+        "description": "Cria Virtual Disk tiered no pool (requer Admin)",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "pool_name": {"type": "string", "description": "Nome do pool"},
+                "vdisk_name": {"type": "string", "description": "Nome do Virtual Disk"},
+                "size": {"type": "string", "description": "Tamanho (ex: 500GB)"},
+                "ssd_tier_size": {"type": "string", "description": "Tamanho tier SSD"},
+                "hdd_tier_size": {"type": "string", "description": "Tamanho tier HDD"},
+                "resiliency": {"type": "string", "enum": ["Simple", "Mirror", "Parity"], "default": "Simple"},
+                "write_cache": {"type": "string", "enum": ["On", "Off", "Auto"], "default": "On"}
+            },
+            "required": ["pool_name", "vdisk_name", "size"]
+        },
+        "handler": mcp.cache_create_vdisk
+    },
+    "win_cache_set_write_cache": {
+        "description": "Define política write cache do Virtual Disk (requer Admin)",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "vdisk_name": {"type": "string", "description": "Nome do Virtual Disk"},
+                "policy": {"type": "string", "enum": ["On", "Off", "Auto"], "default": "On"}
+            },
+            "required": ["vdisk_name"]
+        },
+        "handler": mcp.cache_set_write_cache
+    },
+    "win_cache_optimize": {
+        "description": "Otimiza placement de dados entre tiers (requer Admin)",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "pool_name": {"type": "string", "description": "Nome do pool (opcional)"},
+                "vdisk_name": {"type": "string", "description": "Nome do VDisk (opcional)"}
+            }
+        },
+        "handler": mcp.cache_optimize
+    },
+    "win_cache_metrics": {
+        "description": "Métricas de uso dos tiers (hit ratio, espaço, utilização)",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "vdisk_name": {"type": "string", "description": "Nome do VDisk (opcional)"}
+            }
+        },
+        "handler": mcp.cache_metrics
+    },
+    "win_cache_enable_writeback": {
+        "description": "Habilita write-back cache no disco físico (requer Admin)",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "physical_disk": {"type": "string", "description": "Nome do disco físico"}
+            },
+            "required": ["physical_disk"]
+        },
+        "handler": mcp.cache_enable_writeback
+    },
+    "win_cache_ramdisk": {
+        "description": "Cria RAM Disk via ImDisk (requer Admin + ImDisk instalado)",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "size_gb": {"type": "integer", "description": "Tamanho em GB"},
+                "drive_letter": {"type": "string", "description": "Letra da unidade", "default": "R:"}
+            },
+            "required": ["size_gb"]
+        },
+        "handler": mcp.cache_ramdisk
+    },
+    "win_cache_remove_ramdisk": {
+        "description": "Remove RAM Disk (requer Admin)",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "drive_letter": {"type": "string", "description": "Letra da unidade", "default": "R:"}
+            },
+            "required": ["drive_letter"]
+        },
+        "handler": mcp.cache_remove_ramdisk
+    },
+    "win_cache_warm": {
+        "description": "Pré-carrega arquivos no cache do sistema (Standby list)",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "paths": {"type": "array", "items": {"type": "string"}, "description": "Paths para aquecer"},
+                "priority": {"type": "string", "enum": ["Low", "Normal", "High"], "default": "Normal"}
+            },
+            "required": ["paths"]
+        },
+        "handler": mcp.cache_warm
+    },
+    "win_cache_superfetch_status": {
+        "description": "Status do SysMain (Superfetch/Prefetcher)",
+        "inputSchema": {"type": "object", "properties": {}},
+        "handler": mcp.cache_superfetch_status
+    },
+    "win_cache_set_superfetch": {
+        "description": "Configura Prefetcher/Superfetch (requer Admin)",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "enable_prefetch": {"type": "integer", "description": "0=Off, 1=App, 2=Boot, 3=Both", "minimum": 0, "maximum": 3, "default": 3},
+                "enable_superfetch": {"type": "integer", "description": "0=Off, 1=App, 2=Boot, 3=Both", "minimum": 0, "maximum": 3, "default": 3}
+            },
+            "required": ["enable_prefetch", "enable_superfetch"]
+        },
+        "handler": mcp.cache_set_superfetch
     },
 }
 

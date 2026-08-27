@@ -1,5 +1,5 @@
 ---
-tags: [automaticamente, labels, nada, padrao, pato, ruby]
+tags: [labels, nada, padrao, pato, quack, ruby]
 aliases: [Ruby: tudo é objeto e duck typing]
 date: 2026-08-10
 ---

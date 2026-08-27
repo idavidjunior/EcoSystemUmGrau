@@ -18,6 +18,7 @@ Uso:
   --teste: fala uma frase para confirmar que o áudio está funcionando e sai.
 """
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -80,6 +81,9 @@ TTS_CMD = ROOT / "runtime" / "tts_cmd.json"
 EXCLUIR_PADRAO = ["watchdog-health"]
 DEBOUNCE_S = 0.5
 FALAR_TIMEOUT = 90
+# Dedup: textos falados recentemente (hash -> timestamp) para evitar falar o mesmo texto duas vezes
+_FALADOS: dict = {}  # hash -> time.time()
+_FALADOS_TTL = 120  # segundos — textos idênticos são ignorados por 2 min
 
 
 def log(msg):
@@ -184,6 +188,49 @@ def limpar_texto(texto):
     return texto.strip()
 
 
+# Termos técnicos que poluem a fala — removidos ou substituídos
+# Foco: extensões de arquivo e caminhos, NÃO palavras normais do português
+_EXTensoes = re.compile(
+    r"\.(?:py|js|ts|json|jsonc|md|html|css|yaml|yml|toml|cfg|ini|sh|ps1|bat|cmd|"
+    r"exe|dll|so|jar|apk|aab|zip|tar|gz|bak|tmp|log|db|sqlite|csv|xml|env|"
+    r"mp3|wav|ogg|mp4|mkv|avi|mov|pdf|png|jpg|jpeg|gif|svg|ico|webp|"
+    r"pyc|pyo|whl|egg|cab|msi|deb|rpm|dmg|iso|img|bin|dat|old|new|orig|"
+    r"save|swp|swo|swn|temp|cache)\b",
+    re.IGNORECASE,
+)
+
+# Caminhos do Windows/Linux (ex: C:\Users\..., /scripts/, ~/...)
+_Caminhos = re.compile(
+    r"[A-Z]:\\[\w\\. -]+"
+    r"|(?:/scripts|/usr|/etc|/var|/tmp|/home|/root|~/)[\w/._ -]*",
+    re.IGNORECASE,
+)
+
+# Nomes de arquivos com extensão (ex: narrator_desktop.py, tts_service.py)
+_Arquivos = re.compile(r"\b\w+\.(?:py|js|ts|json|jsonc|md|html|css|ps1|bat|sh)\b", re.IGNORECASE)
+
+
+def simplificar_para_fala(texto):
+    """Remove termos técnicos e simplifica texto para fala natural."""
+    if not texto:
+        return ""
+    # Remove extensões de arquivo isoladas (ex: ".py" no final de palavras)
+    texto = _EXTensoes.sub("", texto)
+    # Remove caminhos completos
+    texto = _Caminhos.sub(" ", texto)
+    # Remove nomes de arquivos técnicos (ex: "narrador_desktop")
+    texto = _Arquivos.sub(" ", texto)
+    # Limpa pontuação solta e espaços extras
+    texto = re.sub(r"[,;:]\s*[)\]]", " ", texto)
+    texto = re.sub(r"\s+", " ", texto)
+    texto = texto.strip()
+    # Se muito longo, pega só as primeiras 2 frases
+    if len(texto) > 200:
+        frases = re.split(r"(?<=[.!?])\s+", texto)
+        texto = " ".join(frases[:2])
+    return texto
+
+
 def partes_novas(conn, ultimo_ts, excluir):
     """Retorna lista (ts, session_id, titulo, texto) de partes de texto novas.
 
@@ -263,12 +310,24 @@ class Narrador:
         self.timer = None
         texto = " ".join(textos).strip()
         texto = limpar_texto(texto)
+        texto = simplificar_para_fala(texto)
         # Bloqueia texto em inglês — narrador só fala português
         if IDIOMA_AVAILABLE and len(texto) > 30:
             resultado = validar_idioma(texto, threshold=5.0)
             if not resultado["ok"]:
                 log(f"BLOQUEADO (idioma={resultado['idioma']}, score={resultado['score']}): {texto[:60]}...")
                 return
+        # Dedup: ignora texto idêntico falado nos últimos _FALADOS_TTL segundos
+        texto_hash = hashlib.md5(texto.encode("utf-8")).hexdigest()[:16]
+        agora = time.time()
+        # Limpa hashes expirados
+        expirados = [k for k, t in _FALADOS.items() if agora - t > _FALADOS_TTL]
+        for k in expirados:
+            _FALADOS.pop(k, None)
+        if texto_hash in _FALADOS:
+            log(f"DEDUP pulando texto repetido: {texto[:60]}...")
+            return
+        _FALADOS[texto_hash] = agora
         # Verifica parar_fala.flag — se ativo, não fala
         if PARAR_FALA.exists():
             log("pulando fala (parar_fala.flag ativo)")

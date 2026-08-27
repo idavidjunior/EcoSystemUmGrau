@@ -660,6 +660,285 @@ class DriverManager:
         return {"error": err, "exit_code": code, "raw": out}
 
 
+class CacheTierManager:
+    """Gerenciamento de Cache Tiering nativo Windows (Storage Spaces).
+    Substitui PrimoCache usando: Storage Tiers (SSD+HDD), Write Cache policies, RAM Disk opcional.
+    """
+
+    def __init__(self):
+        self.ps_available = True  # Assume PowerShell disponível
+
+    def list_pools(self) -> Dict[str, Any]:
+        """Lista Storage Pools existentes."""
+        ps_script = """
+        Get-StoragePool | Where-Object {$_.IsPrimordial -eq $false} |
+        Select-Object FriendlyName, OperationalStatus, HealthStatus, TotalPhysicalCapacity, RemainingCapacity,
+        @{Name='PhysicalDisks';Expression={(Get-PhysicalDisk | Where-Object {$_.StoragePoolFriendlyName -eq $_.FriendlyName} | Measure-Object).Count}} |
+        ConvertTo-Json -Depth 3
+        """
+        code, out, err = run_cmd(["powershell", "-NoProfile", "-Command", ps_script], timeout=60)
+        if code == 0:
+            try:
+                data = json.loads(out)
+                if not isinstance(data, list):
+                    data = [data] if data else []
+                return {"pools": data, "count": len(data)}
+            except Exception as e:
+                return {"error": f"Parse error: {e}", "raw": out}
+        return {"error": err, "exit_code": code}
+
+    def list_tiers(self, pool_name: str = None) -> Dict[str, Any]:
+        """Lista tiers de um pool."""
+        filter_str = f" | Where-Object {{$.StoragePoolFriendlyName -eq '{pool_name}'}}" if pool_name else ""
+        ps_script = f"""
+        Get-StorageTier{filter_str} |
+        Select-Object FriendlyName, MediaType, ResiliencySettingName, Size, PhysicalDiskRedundancy,
+        @{{Name='Pool';Expression={{$_.StoragePoolFriendlyName}}}} |
+        ConvertTo-Json -Depth 3
+        """
+        code, out, err = run_cmd(["powershell", "-NoProfile", "-Command", ps_script], timeout=60)
+        if code == 0:
+            try:
+                data = json.loads(out)
+                if not isinstance(data, list):
+                    data = [data] if data else []
+                return {"tiers": data, "count": len(data)}
+            except Exception as e:
+                return {"error": f"Parse error: {e}", "raw": out}
+        return {"error": err, "exit_code": code}
+
+    def create_pool_with_tiers(self, pool_name: str, physical_disks: List[str], 
+                                ssd_tier_size: str = "auto", hdd_tier_size: str = "auto",
+                                resiliency: str = "Simple") -> Dict[str, Any]:
+        """Cria Storage Pool com tiers SSD (Performance) + HDD (Capacity).
+        Requer Admin.
+        physical_disks: lista de IDs ou nomes (ex: ['PhysicalDisk1','PhysicalDisk2'])
+        """
+        require_admin_check("create_pool_with_tiers")
+        
+        disks_str = ",".join([f"'{d}'" for d in physical_disks])
+        ps_script = f"""
+        $disks = Get-PhysicalDisk | Where-Object {{ $_.FriendlyName -in @({disks_str}) -or $_.UniqueId -in @({disks_str}) }}
+        if ($disks.Count -ne {len(physical_disks)}) {{
+            throw "Alguns discos não encontrados: {physical_disks}"
+        }}
+        $pool = New-StoragePool -FriendlyName '{pool_name}' -PhysicalDisks $disks -StorageSubsystemFriendlyName 'Windows Storage*' -WriteCacheSizeDefault 1GB
+        
+        # Separar SSD e HDD
+        $ssdDisks = $disks | Where-Object {{ $_.MediaType -eq 'SSD' }}
+        $hddDisks = $disks | Where-Object {{ $_.MediaType -eq 'HDD' }}
+        
+        if ($ssdDisks.Count -gt 0) {{
+            $ssdTier = New-StorageTier -StoragePoolFriendlyName '{pool_name}' -FriendlyName '{pool_name}_Performance' -MediaType SSD -ResiliencySettingName {resiliency}
+        }}
+        if ($hddDisks.Count -gt 0) {{
+            $hddTier = New-StorageTier -StoragePoolFriendlyName '{pool_name}' -FriendlyName '{pool_name}_Capacity' -MediaType HDD -ResiliencySettingName {resiliency}
+        }}
+        
+        $pool | Get-StoragePool | Select-Object FriendlyName, OperationalStatus, HealthStatus | ConvertTo-Json
+        """
+        code, out, err = run_cmd(["powershell", "-NoProfile", "-Command", ps_script], timeout=120)
+        return {"exit_code": code, "output": out, "errors": err}
+
+    def create_tiered_virtual_disk(self, pool_name: str, vdisk_name: str, size: str,
+                                    ssd_tier_size: str = None, hdd_tier_size: str = None,
+                                    resiliency: str = "Simple", write_cache: str = "On") -> Dict[str, Any]:
+        """Cria Virtual Disk tiered (SSD + HDD). Requer Admin."""
+        require_admin_check("create_tiered_virtual_disk")
+        
+        tier_params = []
+        if ssd_tier_size:
+            tier_params.append(f"-StorageTierFriendlyNames '{pool_name}_Performance' -StorageTierSizes {ssd_tier_size}")
+        if hdd_tier_size:
+            tier_params.append(f"-StorageTierFriendlyNames '{pool_name}_Capacity' -StorageTierSizes {hdd_tier_size}")
+        
+        tier_str = " ".join(tier_params) if tier_params else ""
+        
+        ps_script = f"""
+        $pool = Get-StoragePool -FriendlyName '{pool_name}'
+        $vdisk = New-VirtualDisk -StoragePoolFriendlyName '{pool_name}' -FriendlyName '{vdisk_name}' -Size {size} {tier_str} -ResiliencySettingName {resiliency} -WriteCacheSize 1GB
+        $vdisk | Select-Object FriendlyName, Size, OperationalStatus, HealthStatus | ConvertTo-Json
+        """
+        code, out, err = run_cmd(["powershell", "-NoProfile", "-Command", ps_script], timeout=120)
+        return {"exit_code": code, "output": out, "errors": err}
+
+    def set_write_cache_policy(self, vdisk_name: str, policy: str = "On") -> Dict[str, Any]:
+        """Define política de write cache do Virtual Disk. Requer Admin.
+        policy: On, Off, Auto
+        """
+        require_admin_check("set_write_cache_policy")
+        valid = ["On", "Off", "Auto"]
+        if policy not in valid:
+            return {"error": f"Policy inválida: {policy}. Use: {', '.join(valid)}"}
+        
+        ps_script = f"""
+        Get-VirtualDisk -FriendlyName '{vdisk_name}' | Set-VirtualDisk -WriteCacheSize 1GB -WriteCachePolicy {policy}
+        Get-VirtualDisk -FriendlyName '{vdisk_name}' | Select-Object FriendlyName, WriteCachePolicy, WriteCacheSize | ConvertTo-Json
+        """
+        code, out, err = run_cmd(["powershell", "-NoProfile", "-Command", ps_script], timeout=60)
+        return {"exit_code": code, "output": out, "errors": err}
+
+    def optimize_tier(self, pool_name: str = None, vdisk_name: str = None) -> Dict[str, Any]:
+        """Otimiza placement de dados entre tiers (promove/demota). Requer Admin."""
+        require_admin_check("optimize_tier")
+        
+        filter_pool = f"-StoragePoolFriendlyName '{pool_name}'" if pool_name else ""
+        filter_vdisk = f"-FriendlyName '{vdisk_name}'" if vdisk_name else ""
+        
+        ps_script = f"""
+        $vdisk = Get-VirtualDisk {filter_vdisk}
+        if ($vdisk) {{
+            Optimize-StorageTier -InputObject $vdisk -Verbose
+        }} else {{
+            $pools = Get-StoragePool {filter_pool} | Where-Object {{ $_.IsPrimordial -eq $false }}
+            foreach ($pool in $pools) {{
+                Optimize-StoragePool -FriendlyName $pool.FriendlyName -Verbose
+            }}
+        }}
+        """
+        code, out, err = run_cmd(["powershell", "-NoProfile", "-Command", ps_script], timeout=600)
+        return {"exit_code": code, "output": out, "errors": err}
+
+    def get_tier_metrics(self, vdisk_name: str = None) -> Dict[str, Any]:
+        """Métricas de uso dos tiers (hit ratio estimado, espaço, etc.)."""
+        filter_vdisk = ""
+        if vdisk_name:
+            filter_vdisk = " | Where-Object { $_.FriendlyName -eq '" + vdisk_name + "' }"
+        
+        ps_script = """
+        $vdisks = Get-VirtualDisk""" + filter_vdisk + """
+        $results = @()
+        foreach ($vd in $vdisks) {
+            $tiers = Get-StorageTier -VirtualDisk $vd
+            $tierInfo = @()
+            foreach ($t in $tiers) {
+                $usage = Get-StorageTierUsage -InputObject $t
+                $tierInfo += [pscustomobject]@{
+                    TierName = $t.FriendlyName
+                    MediaType = $t.MediaType
+                    Size = $t.Size
+                    Used = $usage.UsedSize
+                    Free = $usage.FreeSize
+                    UtilizationPct = if ($t.Size -gt 0) { [math]::Round($usage.UsedSize / $t.Size * 100, 1) } else { 0 }
+                }
+            }
+            $results += [pscustomobject]@{
+                VirtualDisk = $vd.FriendlyName
+                Size = $vd.Size
+                Tiers = $tierInfo
+            }
+        }
+        $results | ConvertTo-Json -Depth 4
+        """
+        code, out, err = run_cmd(["powershell", "-NoProfile", "-Command", ps_script], timeout=60)
+        if code == 0:
+            try:
+                data = json.loads(out)
+                if not isinstance(data, list):
+                    data = [data] if data else []
+                return {"virtual_disks": data}
+            except Exception as e:
+                return {"error": f"Parse error: {e}", "raw": out}
+        return {"error": err, "exit_code": code}
+
+    def enable_write_back_cache(self, physical_disk: str) -> Dict[str, Any]:
+        """Habilita write-back cache no disco físico (se suportado). Requer Admin."""
+        require_admin_check("enable_write_back_cache")
+        ps_script = f"""
+        $disk = Get-PhysicalDisk -FriendlyName '{physical_disk}'
+        if ($disk.SupportsWriteBackCache) {{
+            $disk | Set-PhysicalDisk -WriteCacheSize 1GB
+            "Write-back cache habilitado em $($disk.FriendlyName)"
+        }} else {{
+            "Disco não suporta write-back cache: $($disk.FriendlyName)"
+        }}
+        """
+        code, out, err = run_cmd(["powershell", "-NoProfile", "-Command", ps_script], timeout=60)
+        return {"exit_code": code, "output": out, "errors": err}
+
+    def create_ram_disk(self, size_gb: int, drive_letter: str = "R:") -> Dict[str, Any]:
+        """Cria RAM Disk via ImDisk (requer ImDisk instalado). Requer Admin."""
+        require_admin_check("create_ram_disk")
+        # Verifica se ImDisk está disponível
+        code, out, err = run_cmd(["imdisk", "-l"], timeout=10)
+        if code != 0:
+            return {"error": "ImDisk não instalado. Baixe de: https://www.ltr-data.se/opencode.html/", "exit_code": code}
+        
+        size_mb = size_gb * 1024
+        ps_script = f"""
+        imdisk -a -t vm -s {size_mb}M -m '{drive_letter}' -p "/fs:NTFS /q /y"
+        if ($LASTEXITCODE -eq 0) {{
+            "RAM Disk {size_gb}GB criado em {drive_letter}"
+        }} else {{
+            "Falha ao criar RAM Disk"
+        }}
+        """
+        code, out, err = run_cmd(["powershell", "-NoProfile", "-Command", ps_script], timeout=60)
+        return {"exit_code": code, "output": out, "errors": err}
+
+    def remove_ram_disk(self, drive_letter: str = "R:") -> Dict[str, Any]:
+        """Remove RAM Disk. Requer Admin."""
+        require_admin_check("remove_ram_disk")
+        code, out, err = run_cmd(["imdisk", "-D", "-m", drive_letter], timeout=30)
+        return {"exit_code": code, "output": out, "errors": err}
+
+    def warm_cache(self, paths: List[str], priority: str = "Normal") -> Dict[str, Any]:
+        """Pré-carrega arquivos no cache do sistema (Standby list / Superfetch).
+        Usa Windows Prefetcher / Superfetch nativo.
+        """
+        results = []
+        for path in paths:
+            ps_script = """
+            $files = Get-ChildItem -Path '""" + path + """' -Recurse -File -ErrorAction SilentlyContinue | Select-Object -First 500
+            foreach ($f in $files) {
+                try {
+                    $stream = [System.IO.File]::OpenRead($f.FullName)
+                    $buffer = New-Object byte[] 65536
+                    while ($stream.Read($buffer, 0, $buffer.Length) -gt 0) { }
+                    $stream.Close()
+                } catch { }
+            }
+            "Warmed: """ + path + """ ($($files.Count) files)"
+            """
+            code, out, err = run_cmd(["powershell", "-NoProfile", "-Command", ps_script], timeout=120)
+            results.append({"path": path, "exit_code": code, "output": out, "errors": err})
+        return {"results": results, "count": len(results)}
+
+    def get_superfetch_status(self) -> Dict[str, Any]:
+        """Status do SysMain (Superfetch/Prefetcher)."""
+        ps_script = """
+        $svc = Get-Service -Name 'SysMain'
+        $reg = Get-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters' -ErrorAction SilentlyContinue
+        [pscustomobject]@{
+            ServiceName = $svc.Name
+            Status = $svc.Status
+            StartType = $svc.StartType
+            EnablePrefetcher = $reg.EnablePrefetcher
+            EnableSuperfetch = $reg.EnableSuperfetch
+        } | ConvertTo-Json
+        """
+        code, out, err = run_cmd(["powershell", "-NoProfile", "-Command", ps_script], timeout=30)
+        if code == 0:
+            try:
+                return json.loads(out)
+            except Exception:
+                return {"raw": out}
+        return {"error": err, "exit_code": code}
+
+    def set_superfetch(self, enable_prefetch: int = 3, enable_superfetch: int = 3) -> Dict[str, Any]:
+        """Configura Prefetcher/Superfetch. Requer Admin.
+        0=Desligado, 1=Application, 2=Boot, 3=Ambos
+        """
+        require_admin_check("set_superfetch")
+        ps_script = f"""
+        Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters' -Name 'EnablePrefetcher' -Value {enable_prefetch} -Force
+        Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters' -Name 'EnableSuperfetch' -Value {enable_superfetch} -Force
+        "Prefetcher={enable_prefetch}, Superfetch={enable_superfetch} aplicado. Requer reinicialização."
+        """
+        code, out, err = run_cmd(["powershell", "-NoProfile", "-Command", ps_script], timeout=30)
+        return {"exit_code": code, "output": out, "errors": err}
+
+
 class WindowsMaintenance:
     """Orquestrador principal."""
 
@@ -672,7 +951,8 @@ class WindowsMaintenance:
         self.services = ServiceManager()
         self.network = NetworkDiagnostics()
         self.drivers = DriverManager()
-        self.winfr = self.disk  # winfr methods are in DiskHealth
+        self.winfr = self.disk
+        self.cache = CacheTierManager()
 
     def full_health_check(self) -> HealthReport:
         """Health check completo não-invasivo (sem Admin)."""
@@ -867,6 +1147,27 @@ Exemplos:
     net_parser.add_argument("--reset-tcpip", action="store_true", help="Reset TCP/IP (Admin)")
     net_parser.add_argument("--interfaces", action="store_true", help="Mostrar interfaces")
 
+    # cache tiering (Storage Spaces)
+    cache_parser = subparsers.add_parser("cache", help="Cache Tiering nativo (Storage Spaces)")
+    cache_parser.add_argument("--list-pools", action="store_true", help="Lista Storage Pools")
+    cache_parser.add_argument("--list-tiers", help="Lista tiers do pool (nome do pool)")
+    cache_parser.add_argument("--create-pool", nargs="+", metavar="DISK", help="Cria pool com tiers (lista de discos físicos)")
+    cache_parser.add_argument("--pool-name", help="Nome do pool")
+    cache_parser.add_argument("--create-vdisk", nargs=2, metavar=("POOL", "VDISK"), help="Cria Virtual Disk tiered")
+    cache_parser.add_argument("--size", help="Tamanho do VDisk (ex: 500GB)")
+    cache_parser.add_argument("--ssd-size", help="Tamanho tier SSD")
+    cache_parser.add_argument("--hdd-size", help="Tamanho tier HDD")
+    cache_parser.add_argument("--write-cache", choices=["On", "Off", "Auto"], help="Política write cache")
+    cache_parser.add_argument("--optimize", action="store_true", help="Otimiza placement entre tiers")
+    cache_parser.add_argument("--metrics", help="Métricas de tiers do VDisk")
+    cache_parser.add_argument("--enable-writeback", help="Habilita write-back no disco físico")
+    cache_parser.add_argument("--ramdisk", type=int, metavar="GB", help="Cria RAM Disk (requer ImDisk)")
+    cache_parser.add_argument("--ramdisk-letter", default="R:", help="Letra do RAM Disk")
+    cache_parser.add_argument("--remove-ramdisk", help="Remove RAM Disk (letra)")
+    cache_parser.add_argument("--warm", nargs="+", help="Pré-carrega paths no cache (Standby list)")
+    cache_parser.add_argument("--superfetch-status", action="store_true", help="Status SysMain/Superfetch")
+    cache_parser.add_argument("--set-superfetch", nargs=2, type=int, metavar=("PREFETCH", "SUPERFETCH"), help="Configura Prefetcher/Superfetch (0-3)")
+
     # report
     rpt_parser = subparsers.add_parser("report", help="Relatório completo JSON")
     rpt_parser.add_argument("--json", action="store_true", help="Saída JSON")
@@ -1046,6 +1347,51 @@ Exemplos:
                 results["reset_tcpip"] = wm.network.reset_tcpip()
             if args.interfaces:
                 results["interfaces"] = wm.network.show_interfaces()
+            print(json.dumps(results, indent=2, ensure_ascii=False))
+
+        elif args.command == "cache":
+            results = {}
+            if args.list_pools:
+                results["pools"] = wm.cache.list_pools()
+            if args.list_tiers:
+                results["tiers"] = wm.cache.list_tiers(args.list_tiers)
+            if args.create_pool:
+                if not args.pool_name:
+                    print("Erro: --pool-name é obrigatório com --create-pool")
+                    return 1
+                results["create_pool"] = wm.cache.create_pool_with_tiers(args.pool_name, args.create_pool)
+            if args.create_vdisk:
+                pool, vdisk = args.create_vdisk
+                if not args.size:
+                    print("Erro: --size é obrigatório com --create-vdisk")
+                    return 1
+                results["create_vdisk"] = wm.cache.create_tiered_virtual_disk(
+                    pool, vdisk, args.size,
+                    ssd_tier_size=args.ssd_size,
+                    hdd_tier_size=args.hdd_size,
+                    write_cache=args.write_cache or "On"
+                )
+            if args.write_cache:
+                if not args.metrics:
+                    print("Erro: --metrics (nome do VDisk) é obrigatório com --write-cache")
+                    return 1
+                results["write_cache"] = wm.cache.set_write_cache_policy(args.metrics, args.write_cache)
+            if args.optimize:
+                results["optimize"] = wm.cache.optimize_tier(pool_name=args.pool_name, vdisk_name=args.metrics)
+            if args.metrics:
+                results["metrics"] = wm.cache.get_tier_metrics(args.metrics)
+            if args.enable_writeback:
+                results["writeback"] = wm.cache.enable_write_back_cache(args.enable_writeback)
+            if args.ramdisk:
+                results["ramdisk"] = wm.cache.create_ram_disk(args.ramdisk, args.ramdisk_letter)
+            if args.remove_ramdisk:
+                results["remove_ramdisk"] = wm.cache.remove_ram_disk(args.remove_ramdisk)
+            if args.warm:
+                results["warm"] = wm.cache.warm_cache(args.warm)
+            if args.superfetch_status:
+                results["superfetch"] = wm.cache.get_superfetch_status()
+            if args.set_superfetch:
+                results["set_superfetch"] = wm.cache.set_superfetch(args.set_superfetch[0], args.set_superfetch[1])
             print(json.dumps(results, indent=2, ensure_ascii=False))
 
         elif args.command == "report":
