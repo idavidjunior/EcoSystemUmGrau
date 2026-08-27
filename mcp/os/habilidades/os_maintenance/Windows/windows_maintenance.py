@@ -906,7 +906,7 @@ class CacheTierManager:
 
     def get_superfetch_status(self) -> Dict[str, Any]:
         """Status do SysMain (Superfetch/Prefetcher)."""
-        ps_script = """
+        ps_script = r"""
         $svc = Get-Service -Name 'SysMain'
         $reg = Get-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters' -ErrorAction SilentlyContinue
         [pscustomobject]@{
@@ -930,10 +930,10 @@ class CacheTierManager:
         0=Desligado, 1=Application, 2=Boot, 3=Ambos
         """
         require_admin_check("set_superfetch")
-        ps_script = f"""
-        Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters' -Name 'EnablePrefetcher' -Value {enable_prefetch} -Force
-        Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters' -Name 'EnableSuperfetch' -Value {enable_superfetch} -Force
-        "Prefetcher={enable_prefetch}, Superfetch={enable_superfetch} aplicado. Requer reinicialização."
+        ps_script = r"""
+        Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters' -Name 'EnablePrefetcher' -Value """ + str(enable_prefetch) + r""" -Force
+        Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters' -Name 'EnableSuperfetch' -Value """ + str(enable_superfetch) + r""" -Force
+        "Prefetcher=""" + str(enable_prefetch) + r""", Superfetch=""" + str(enable_superfetch) + r""" aplicado. Requer reinicialização."
         """
         code, out, err = run_cmd(["powershell", "-NoProfile", "-Command", ps_script], timeout=30)
         return {"exit_code": code, "output": out, "errors": err}
