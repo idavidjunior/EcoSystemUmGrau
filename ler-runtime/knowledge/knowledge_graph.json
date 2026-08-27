@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-27T11:34:50.950152",
+  "last_updated": "2026-08-27T12:03:43.961647",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -2066,14 +2066,14 @@
       "extracted_at": "2026-08-24T10:24:24.685552"
     },
     {
-      "source": "opencode+opencode+opencode",
+      "source": "opencode+opencode+opencode+opencode",
       "title": "retencao opencode db vigilante",
       "action": "Verificação de espaço no C: revelou opencode.db com 5,9 GB. O opencode não tem retenção nativa e o banco cresce sem limite (eventos repetem o payload da sessão).",
       "description": "---\ntipo: padrao\ntags: [opencode, retencao, vacuum, vigilante, limpeza-db]\ndata: 2026-08-27\ncontexto: Verificação de espaço no C: revelou opencode.db com 5,9 GB. O opencode não tem retenção nativa e o banco cresce sem limite (eventos repetem o payload da sessão).\ndecisao: Integrar a retenção do open",
       "domain": "general",
-      "extracted_at": "2026-08-27T11:34:17.888574",
-      "merged_count": 3,
-      "merged_at": "2026-08-27T11:34:33.903496"
+      "extracted_at": "2026-08-27T12:03:12.243806",
+      "merged_count": 4,
+      "merged_at": "2026-08-27T12:03:43.442644"
     }
   ],
   "decisions": [

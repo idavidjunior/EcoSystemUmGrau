@@ -165,8 +165,22 @@ function Invoke-PushELimpeza {
         $hdExterno = "E:\Default Project\EcoSystemUmGrau"
         if (Test-Path "$hdExterno\.git") {
             try {
-                git -C $hdExterno pull --ff-only --quiet 2>&1 | Out-Null
-                Write-Log "HD EXTERNO espelhado apos push eco"
+                $hdTracked = git -C $hdExterno status --porcelain 2>$null
+                $hdBloqueio = @($hdTracked | Where-Object {
+                    $_ -notmatch '^\?\?'
+                    -and $_ -notmatch 'Projetos/'
+                    -and $_ -notmatch 'persistencia\.json'
+                })
+                if ($hdBloqueio.Count -gt 0) {
+                    Write-Log "HD EXTERNO sync adiado: $($hdBloqueio.Count) alteracao(es) local(ais) no espelho (preservada(s))"
+                } else {
+                    $hdBranch = git -C $hdExterno symbolic-ref --short HEAD 2>$null
+                    if (-not $hdBranch) { $hdBranch = 'opencode/mighty-meadow' }
+                    git -C $hdExterno fetch origin --quiet 2>&1 | Out-Null
+                    git -C $hdExterno reset --hard "origin/$hdBranch" 2>&1 | Out-Null
+                    git -C $hdExterno submodule update --init --recursive 2>&1 | Out-Null
+                    Write-Log "HD EXTERNO espelhado apos push eco"
+                }
             } catch {
                 Write-Log "HD EXTERNO sync falhou: $($_.Exception.Message)"
             }

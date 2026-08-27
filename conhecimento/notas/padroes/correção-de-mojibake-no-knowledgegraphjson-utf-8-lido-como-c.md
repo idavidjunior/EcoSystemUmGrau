@@ -23,3 +23,4 @@ exibia dezenas
 
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]
+- [[retencao-opencode-db-vigilante]]

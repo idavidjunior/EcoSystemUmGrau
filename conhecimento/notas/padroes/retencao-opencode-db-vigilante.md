@@ -1,12 +1,12 @@
 ---
-tags: [eventos, opencodeopencodeopencode, padrao, payload, repetem, sessão]
+tags: [eventos, opencodeopencodeopencodeopencode, padrao, payload, repetem, sessão]
 aliases: [retencao opencode db vigilante]
 date: 2026-08-27
 ---
 
 # retencao opencode db vigilante
 
-**Fonte:** opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -17,5 +17,5 @@ decisao: Integrar a retenção do open
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-teste-do-vigilante-automático]]
+- [[correção-de-mojibake-no-knowledgegraphjson-utf-8-lido-como-c]]
 - [[padrao-hub-padroes]]

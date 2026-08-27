@@ -1,6 +1,6 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-27T11:34:51.078150
+**Exportado em:** 2026-08-27T12:03:44.145648
 **Projetos:** 4
 **Padroes Tecnicos:** 286
 **Decisoes:** 77
@@ -887,7 +887,7 @@ decisao: Criar scripts/limpeza_disco.py com diagnóstico + limpeza segura de cac
 | 283 | opencode | Padrao de pergunta: validacao numerica por cota |
 | 284 | opencode | Janela flutuante para visuais (sem navegador) |
 | 285 | opencode | Estilo por pedido (Power BI implementado) |
-| 286 | opencode+opencode+opencode | retencao opencode db vigilante |
+| 286 | opencode+opencode+opencode+opencode | retencao opencode db vigilante |
 
 ## Bug Fixes e Corrigidos
 
@@ -2120,7 +2120,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-27T11:34:50.950152
+**Ultima atualizacao:** 2026-08-27T12:03:43.961647
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

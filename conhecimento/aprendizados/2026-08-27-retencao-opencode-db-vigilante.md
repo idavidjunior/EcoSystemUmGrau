@@ -5,14 +5,16 @@ data: 2026-08-27
 contexto: Verificação de espaço no C: revelou opencode.db com 5,9 GB. O opencode não tem retenção nativa e o banco cresce sem limite (eventos repetem o payload da sessão).
 decisao: Integrar a retenção do opencode.db no vigilante.ps1 (estrutura existente) chamando limpeza_disco.py --opencode-db --dias 7, com gate de 24h via marcador runtime. A poda roda sempre; o VACUUM só roda quando nenhuma instância do OpenCode está ativa, pois exige lock exclusivo.
 implementacao:
-  - scripts/limpeza_disco.py: cmd_opencode_db (poda de session/message/part/todo/event/event_sequence/session_share/session_context_epoch + backup + VACUUM), flag --opencode-db, --dias (padrão 7), --no-vacuum. Removida duplicação do bloco de conexão (os.replace/try-finally).
-  - scripts/vigilante.ps1: timer $opencodeDbRetTimer (check 1h, gate 24h no marcador runtime/opencode_db_ultima_retencao.txt). Detecta OpenCode ativo (Get-Process OpenCode/opencode) e usa --no-vacuum quando aberto.
+  - scripts/limpeza_disco.py: cmd_opencode_db (poda de session/message/part/todo/event/event_sequence/session_share/session_context_epoch + backup + VACUUM), flag --opencode-db, --dias (padrão 7), --no-vacuum, --no-backup. VACUUM roda sempre ao final (mesmo com 0 sessões a remover), salvo --no-vacuum/--simular. Removida duplicação do bloco de conexão (os.replace/try-finally).
+  - scripts/vigilante.ps1: timer $opencodeDbRetTimer (check 1h, gate 24h no marcador runtime/opencode_db_ultima_retencao.txt; --no-vacuum com OpenCode aberto, completo fechado) + timer $opencodeDbOutTimer (60s) que reage à SAÍDA do desktop (Test-DesktopSolved via Win32_Process, Name -ceq "OpenCode.exe", como no opencode_desktop_guardian.ps1) e dispara retenção com VACUUM imediata, sem backup e sem reabrir o marcador de 24h.
+  - CAMPO CRÍTICO (encoding): PS 5.1 lê .ps1 como ANSI/CP1252. Travessão UTF-8 (—, bytes E2 80 94) decodifica como ” (0x94) e quebra a string em runtime; manter ASCII puro em strings e comentários de scripts ps1. Separador ═ (E2 94 80) em comentário é inócuo.
   - Banco usa schema V1 sem FKs declaradas: a poda é manual por coluna (message/part/todo/session_id; event/event_sequence/aggregate_id; session_share/session_id; session_context_epoch/session_id).
 impacto:
-  - Poda removeu 1476 sessões + 492.346 linhas filhas na primeira execução (restaram 101 sessões).
+  - Poda removeu 1476 sessões + 492.346 linhas filhas na primeira execução (restaram 101 sessões); segunda poda removeu 2 sessões novas.
   - Arquivo não encolhe até o VACUUM rodar (OpenCode fechado): 2,21 GB recuperáveis no freelist.
   - Uma instância aberta do OpenCode segura lock que bloqueia VACUUM; nunca tenta fechar o desktop (cláusula pétrea).
-resultado: Podas automáticas diárias; VACUUM aguarda o OpenCode ficar fechado.
+  - Vigilante reiniciado (PID 3940); marcador gate 24h já criado (2026-08-27T11:22:58).
+resultado: Podas automáticas diárias + VACUUM imediato na saída do desktop; VACUUM em horário de app fechado só pelo disparo natural de fechamento.
 
 ## Conexoes
 
