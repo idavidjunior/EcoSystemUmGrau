@@ -1,6 +1,6 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-27T09:23:43.123472
+**Exportado em:** 2026-08-27T09:26:56.492052
 **Projetos:** 4
 **Padroes Tecnicos:** 285
 **Decisoes:** 77
@@ -879,8 +879,8 @@ decisao: Criar scripts/limpeza_disco.py com diagnóstico + limpeza segura de cac
 | 275 | opencode | Resiliência de logs: encoding detectado na leitura, não presumido |
 | 276 | opencode | Compressão Semântica Hierárquica — lições da implementação |
 | 277 | opencode | Relatório Eco estático — lições |
-| 278 | opencode+opencode+opencode+opencode+opencode+opencode | CLI-Anything Internalizado como Habilidade Soberana |
-| 279 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | @ecow e /ecow — abrir/focar o Cerebro Vivo |
+| 278 | opencode+opencode+opencode+opencode+opencode+opencode+opencode | CLI-Anything Internalizado como Habilidade Soberana |
+| 279 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | @ecow e /ecow — abrir/focar o Cerebro Vivo |
 | 280 | opencode | JunkScanner — Benchmark do scan incremental |
 | 281 | opencode | JunkScanner — Scan incremental (cache de hash + memoização) |
 | 282 | opencode | CI de Android em máquina fraca + keystore estável |
@@ -2119,7 +2119,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-27T09:23:42.939934
+**Ultima atualizacao:** 2026-08-27T09:26:56.394050
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

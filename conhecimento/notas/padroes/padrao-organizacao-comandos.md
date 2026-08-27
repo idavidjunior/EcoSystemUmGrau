@@ -18,5 +18,6 @@ contexto: >
   Limpeza total removeu ~
 ## Conexoes
 
+- [[cli-anything-internalizado-como-habilidade-soberana]]
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]
