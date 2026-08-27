@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-26T20:35:02.615460",
+  "last_updated": "2026-08-26T22:37:53",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -5811,5 +5811,107 @@
       "extracted_at": "2026-08-06T23:24:06"
     }
   ],
-  "_last_reload": 1786152093.0103226
+  "_last_reload": 1786152093.0103226,
+  "research": [
+    {
+      "id": "research_1787793850",
+      "type": "research",
+      "theme": "Docker multi-stage builds best practices",
+      "objective": "Identify best practices for implementing multi-stage Docker builds to optimize image size and security.",
+      "main_insights": [],
+      "confidence": 0.0,
+      "gaps": [
+        "Nenhum achado disponível para síntese"
+      ],
+      "sources_count": 0,
+      "created_at": "2026-08-26T22:24:10",
+      "tags": [
+        "deep-research",
+        "auto-generated"
+      ]
+    },
+    {
+      "id": "research_1787794194",
+      "type": "research",
+      "theme": "Docker multi-stage builds best practices",
+      "objective": "Identificar as melhores práticas para builds multi-stage no Docker",
+      "main_insights": [],
+      "confidence": 0.0,
+      "gaps": [
+        "Nenhum achado disponível para síntese"
+      ],
+      "sources_count": 14,
+      "created_at": "2026-08-26T22:29:54",
+      "tags": [
+        "deep-research",
+        "auto-generated"
+      ]
+    },
+    {
+      "id": "research_1787794410",
+      "type": "research",
+      "theme": "Docker multi-stage builds best practices",
+      "objective": "Identify best practices for implementing multi-stage Docker builds to optimize image size and build efficiency.",
+      "main_insights": [],
+      "confidence": 0.0,
+      "gaps": [
+        "Nenhum achado disponível para síntese"
+      ],
+      "sources_count": 17,
+      "created_at": "2026-08-26T22:33:29",
+      "tags": [
+        "deep-research",
+        "auto-generated"
+      ]
+    },
+    {
+      "id": "research_1787794596",
+      "type": "research",
+      "theme": "Docker multi-stage builds best practices",
+      "objective": "Identificar as melhores práticas para criar imagens Docker enxutas usando builds multi-stage.",
+      "main_insights": [
+        "Multi-stage builds can shrink production images from gigabytes to under 10MB",
+        "Proper layer ordering and caching are critical for build performance",
+        "Intermediate stages remove build‑time tools, improving security",
+        "Using minimal base images and copying only necessary artifacts optimizes size",
+        "Best practices include non‑root execution and stripping unnecessary packages"
+      ],
+      "confidence": 0.75,
+      "gaps": [
+        "Lack of concrete benchmark numbers across different programming languages",
+        "Guidance on integrating multi‑stage builds into CI/CD pipelines",
+        "Details on BuildKit features and advanced caching strategies",
+        "Limitations when using certain base images or OS layers"
+      ],
+      "sources_count": 9,
+      "created_at": "2026-08-26T22:36:36",
+      "tags": [
+        "deep-research",
+        "auto-generated"
+      ]
+    },
+    {
+      "id": "research_1787794673",
+      "type": "research",
+      "theme": "Docker multi-stage builds best practices",
+      "objective": "Pesquisar informações atualizadas sobre Docker multi-stage builds best practices",
+      "main_insights": [
+        "Multi-stage builds significantly reduce final image size",
+        "They improve security by removing build-time tools from production images",
+        "Effective usage requires careful stage organization, caching, and integration with CI/CD tooling"
+      ],
+      "confidence": 0.78,
+      "gaps": [
+        "Lack of detailed guidance on conditional or parameter-driven stage selection",
+        "Limited coverage of advanced caching mechanisms and layer optimization",
+        "Scarcity of examples integrating multi-stage builds with modern IaC tools beyond Terraform"
+      ],
+      "sources_count": 5,
+      "created_at": "2026-08-26T22:37:53",
+      "tags": [
+        "deep-research",
+        "auto-generated"
+      ]
+    }
+  ]
 }

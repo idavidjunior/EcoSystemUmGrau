@@ -63,6 +63,37 @@ USE quando começa simples mas PODE CRESCER:
 
 Cada tarefa deve passar por estes gates na ordem:
 
+**G0 - RESEARCH (AUTOMÁTICO):** Detectar ignorância e pesquisar antes de planejar.
+
+COMO SABER SE PRECISA PESQUISAR (critérios de ativação):
+- Tarefa envolve tecnologia, padrão ou framework que o ecossistema NÃO domina
+- Não existem aprendizados registrados sobre o tema em `conhecimento/aprendizados/`
+- Não existe pesquisa anterior no vault em `conhecimento/Research/`
+- A memória não tem registro relevante sobre o tema
+- É a primeira vez que o ecossistema mexe com aquilo
+- O tema é ambíguo e precisa de referências atualizadas
+
+FLUXO OBRIGATÓRIO (quando G0 ativa):
+1. AVISAR ao usuário: "Não tenho conhecimento suficiente sobre [tema]. Vou pesquisar e aprender antes de planejar."
+2. Executar: `python -m research_engine "<tema relevante>"`
+3. Aguardar conclusão (~30-40s)
+4. Ler o relatório gerado em `conhecimento/Research/`
+5. Alimentar o G1-PLAN com os insights, best practices e gaps encontrados
+6. Registrar memória: `python scripts/memory_engine.py add "Pesquisou [tema]" "Resumo dos achados" padrao`
+
+EXEMPLOS DE QUANDO ATIVAR G0:
+- "Implementar autenticação OAuth2" → G0 pesquisa "OAuth2 best practices implementation"
+- "Criar API REST" → G0 pesquisa "REST API design best practices 2026"
+- "Configurar Docker production" → G0 pesquisa "Docker production deployment best practices"
+- "Usar Redis para cache" → G0 pesquisa "Redis cache patterns production"
+- "Migrar banco de dados" → G0 pesquisa "database migration zero downtime patterns"
+
+QUANDO NÃO ATIVAR G0:
+- Tarefa é apenas editar texto, ajustar config, ou algo puramente mecânico
+- Já existe pesquisa anterior no vault sobre o mesmo tema (cache de 24h)
+- O ecossistema já domina o tema (há aprendizados e memórias suficientes)
+- É uma correção simples de bug conhecido
+
 **G1 - PLAN:** Plano aprovado antes de codificar.
 - [ ] Escopo claro e sem ambiguidade
 - [ ] Arquivos identificados
@@ -120,6 +151,7 @@ Antes de assumir que não sabe algo, consulte:
 - 10-Aprendizado — extrair e persistir conhecimento (OBRIGATÓRIO)
 - 11-LER-Executor — delegar loops complexos
 - 12-Parallel-Planner — dividir tarefas grandes em subtarefas paralelas (use quando 4+ arquivos independentes)
+- Research Engine — deep research automatizado para gather best practices antes de implementar
 
 # CHECKLIST FINAL
 
