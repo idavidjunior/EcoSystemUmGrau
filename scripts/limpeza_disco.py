@@ -243,13 +243,6 @@ def cmd_opencode_db(args) -> None:
         return
 
     try:
-        conn = sqlite3.connect(str(OPENCODE_DB), timeout=60)
-        conn.execute("PRAGMA busy_timeout = 60000")
-    except sqlite3.Error as e:
-        _log(f"  ERRO ao abrir o banco: {e}")
-        return
-
-    try:
         cur = conn.cursor()
         # Sessão ativa (para reportar qual será preservada)
         cur.execute("SELECT id FROM session ORDER BY time_updated DESC LIMIT 1")
@@ -284,14 +277,19 @@ def cmd_opencode_db(args) -> None:
              f"{removidos['linhas_tabelas']} linhas em tabelas filhas")
         conn.commit()
 
-        # VACUUM devolve espaço ao arquivo
-        try:
-            _log("  VACUUM (devolvendo espaço ao arquivo)...")
-            conn.execute("VACUUM")
-            _log("  VACUUM OK")
-        except sqlite3.Error as e:
-            _log(f"  AVISO: VACUUM falhou ({e}). "
-                 "O espaço será liberado em uma próxima abertura/VACUUM.")
+        # VACUUM devolve espaço ao arquivo (skip com --no-vacuum: exige
+        # lock exclusivo, impossível com o OpenCode aberto)
+        if not args.no_vacuum:
+            try:
+                _log("  VACUUM (devolvendo espaço ao arquivo)...")
+                conn.execute("VACUUM")
+                _log("  VACUUM OK")
+            except sqlite3.Error as e:
+                _log(f"  AVISO: VACUUM falhou ({e}). "
+                     "O espaço será liberado em uma próxima abertura/VACUUM.")
+        else:
+            _log("  VACUUM pulado (--no-vacuum): arquivo só encolhe "
+                 "com o OpenCode fechado.")
 
         tamanho_final = OPENCODE_DB.stat().st_size / (1024 ** 3)
         _log(f"  tamanho após retenção: {tamanho_final:.2f} GB "
@@ -346,6 +344,8 @@ def main() -> None:
                    help="Retenção do banco: apaga sessões inativas há mais de N dias.")
     p.add_argument("--dias", type=int, default=None,
                    help=f"Dias de retenção (padrão {RETENCAO_DIAS_PADRAO}). Usado com --opencode-db.")
+    p.add_argument("--no-vacuum", action="store_true",
+                   help="Pula o VACUUM ao final da retenção (útil com o OpenCode aberto).")
     args = p.parse_args()
 
     if args.opencode_db:

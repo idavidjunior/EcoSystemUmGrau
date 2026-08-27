@@ -536,6 +536,43 @@ Register-ObjectEvent $opencodeCacheTimer "Elapsed" -Action $onOpencodeCache > $n
 $opencodeCacheTimer.Start()
 
 # ══════════════════════════════════════════════════════════════════════
+# OPENCODE DB RETENTION: poda do opencode.db (1x/dia, gate via marcador)
+# Apaga sessões inativas há mais de N dias (padrão 7). A poda em si pode
+# rodar com o OpenCode aberto; o VACUUM (que devolve espaço ao arquivo)
+# só roda quando nenhuma instância do OpenCode estiver ativa, pois exige
+# lock exclusivo. NUNCA fecha o OpenCode (cláusula pétrea).
+# ══════════════════════════════════════════════════════════════════════
+$opencodeDbMarker = "$ecoDir\runtime\opencode_db_ultima_retencao.txt"
+$opencodeDbDays = 7
+$onOpencodeDbRet = {
+    $marker = "$ecoDir\runtime\opencode_db_ultima_retencao.txt"
+    $ultima = if (Test-Path $marker) { (Get-Item $marker).LastWriteTime } else { [datetime]::MinValue }
+    if (((Get-Date) - $ultima).TotalHours -lt 24) { return }
+    $codeRunning = [bool](Get-Process -Name "OpenCode" -ErrorAction SilentlyContinue)
+    if (-not $codeRunning) {
+        foreach ($p in Get-Process -Name "opencode" -ErrorAction SilentlyContinue) {
+            $cmdline = (Get-CimInstance Win32_Process -Filter "ProcessId=$($p.Id)" -ErrorAction SilentlyContinue).CommandLine
+            if ($cmdline -and $cmdline -match "opencode\.exe.*run") { $codeRunning = $true; break }
+        }
+    }
+    Write-Log "OPENCODE DB RETENÇÃO: checando ($(if ($codeRunning) {'nova poda, VACUUM adiado (OpenCode aberto)'} else {'poda + VACUUM (OpenCode fechado)'}))..."
+    try {
+        if ($codeRunning) {
+            $out = python "$ecoDir\scripts\limpeza_disco.py" --opencode-db --dias $opencodeDbDays --no-vacuum 2>&1 | Out-String
+        } else {
+            $out = python "$ecoDir\scripts\limpeza_disco.py" --opencode-db --dias $opencodeDbDays 2>&1 | Out-String
+        }
+        $out.Trim() | ForEach-Object { Write-Log "  $_" }
+        Set-Content -Path $marker -Value (Get-Date).ToString('o') -Encoding UTF8
+    } catch { Write-Log "OPENCODE DB RETENÇÃO: ignorado: $_" }
+}
+$opencodeDbRetTimer = New-Object System.Timers.Timer
+$opencodeDbRetTimer.Interval = 3600000  # check a cada 1h, gate 24h no marcador
+$opencodeDbRetTimer.AutoReset = $true
+Register-ObjectEvent $opencodeDbRetTimer "Elapsed" -Action $onOpencodeDbRet > $null
+$opencodeDbRetTimer.Start()
+
+# ══════════════════════════════════════════════════════════════════════
 # EVOLUTION RADAR TIMER: auto-evolução curada (4h, permissão admin, pacotes)
 # ══════════════════════════════════════════════════════════════════════
 $evolutionRadarInterval = 14400000  # 4h (configurável)
