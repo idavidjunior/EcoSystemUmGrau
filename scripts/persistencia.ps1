@@ -160,6 +160,18 @@ function Invoke-PushELimpeza {
         $resumoL = Invoke-Limpeza -RepoPath $Path -Cfg $Cfg
         Write-Log "LIMPEZA ${RepoKey}: $resumoL"
     }
+    # Espelha HD externo apos push bem-sucedido (apenas do repo principal)
+    if ($RepoKey -eq 'eco') {
+        $hdExterno = "E:\Default Project\EcoSystemUmGrau"
+        if (Test-Path "$hdExterno\.git") {
+            try {
+                git -C $hdExterno pull --ff-only --quiet 2>&1 | Out-Null
+                Write-Log "HD EXTERNO espelhado apos push eco"
+            } catch {
+                Write-Log "HD EXTERNO sync falhou: $($_.Exception.Message)"
+            }
+        }
+    }
     return $null
 }
 
