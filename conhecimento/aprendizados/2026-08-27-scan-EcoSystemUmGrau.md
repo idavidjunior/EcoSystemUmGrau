@@ -918,6 +918,7 @@
 - inventory_manager.py: 1 marcadores
 - jarvis_bridge.py: 5 marcadores
 - jarvis_interface.py: 1 marcadores
+- limpeza_disco.py: 6 marcadores
 - llm-wizard.py: 1 marcadores
 - llm_caller.py: 1 marcadores
 - memory_consolidation.py: 2 marcadores

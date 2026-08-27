@@ -13416,5 +13416,143 @@
     "access_count": 0,
     "created_at": "2026-08-27T06:03:58.926358",
     "last_accessed": "2026-08-27T06:03:58.926358"
+  },
+  {
+    "id": 532,
+    "kind": "decisao",
+    "task": "Ollama 100% no HD externo E: (NTFS)",
+    "summary": "Após reformatar E: de exFAT (corrompido) para NTFS, reconstruí o Ollama no E: instalando os binários (E:\\Ollama\\bin) e copiando os 5 modelos do backup C: para E:\\Ollama\\models via robocopy. Servidor lista os 5 modelos corretamente (tinyllama, qwen2.5:3b, llama3.2:3b, phi3:mini, gemma2:2b) e inferência real funciona. Espelhei também o EcoSystemUmGrau do C: para E:\\Default Project\\EcoSystemUmGrau (35.482 arquivos, 6.16GB, 0 falhas). Causa raiz da corrupção anterior era o exFAT com leituras inconsistentes; NTFS resolveu.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "inconsistentes",
+      "leituras",
+      "era",
+      "qwen2",
+      "anterior",
+      "corrupção"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-27T08:17:49.063624",
+    "last_accessed": "2026-08-27T08:17:49.063624"
+  },
+  {
+    "id": 533,
+    "kind": "erro",
+    "task": "Bug checkpoint: label com ':' quebrava os.replace no Windows",
+    "summary": "runtime_state.py save_checkpoint usava o label cru no nome do arquivo; no Windows, ':' (e outros chars < > : / \\\\ | ? *) sao invalidos em nome de arquivo, causando OSError WinError 87. Corrigi sanitizando o label no nome do arquivo. Testado com label contendo ':' - agora salva corretamente.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "winerror",
+      "oserror",
+      "causando",
+      "cru",
+      "arquivo",
+      "nome"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-27T08:20:52.559476",
+    "last_accessed": "2026-08-27T08:20:52.559476"
+  },
+  {
+    "id": 534,
+    "kind": "padrao",
+    "task": "Ferramenta limpeza_disco.py para C:",
+    "summary": "Criado scripts/limpeza_disco.py (diagnostico + limpeza segura do disco Windows). Limpeza executada: 11,9 GB livres ficaram 23,87 GB (npm-cache 4,8, Temp 3,6, VSIX 0,85, balena nupkg, 2 zips Flutter 3,1, tmp Ollama 0,45). Corrigido bug medicao de arquivos (os.walk != arquivo). Pagina de referencia: python scripts/limpeza_disco.py --limpar",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "ollama",
+      "tmp",
+      "flutter",
+      "zips",
+      "nupkg",
+      "balena"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-27T09:15:58.707059",
+    "last_accessed": "2026-08-27T09:15:58.707059"
+  },
+  {
+    "id": 535,
+    "kind": "padrao",
+    "task": "Retenção automática opencode.db via vigilante",
+    "summary": "VACUUM do opencode.db trava com o desktop aberto (lock exclusivo). Poda funciona sempre; VACUUM só com OpenCode fechado. Integrado como timer com gate 24h no vigilante.ps1, chamando limpeza_disco.py --opencode-db --dias 7 (--no-vacuum se OpenCode ativo).",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "ativo",
+      "exclusivo",
+      "24h",
+      "lock",
+      "gate",
+      "aberto"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-27T11:24:05.292129",
+    "last_accessed": "2026-08-27T11:24:05.292129"
+  },
+  {
+    "id": 536,
+    "kind": "erro",
+    "task": "Detector de saida do OpenCode + encoding ANSI no vigilante",
+    "summary": "Vigilante agora dispara VACUUM do opencode.db imediatamente quando o usuario fecha o desktop (timer 60s, Test-DesktopSolved usa Win32_Process Name -ceq OpenCode.exe como o guardian). LICAO: PS 5.1 le .ps1 como ANSI - travessao UTF-8 (E2 80 94) vira aspa 0x94 e quebra string; manter ASCII puro em strings/comentarios de scripts ps1.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "ceq",
+      "name",
+      "process",
+      "win32",
+      "usa",
+      "desktopsolved"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-27T12:02:03.283445",
+    "last_accessed": "2026-08-27T12:02:03.283445"
+  },
+  {
+    "id": 537,
+    "kind": "padrao",
+    "task": "Espelho HD externo corrigido no gate",
+    "summary": "O espelho do HD externo (E:\\\\Default Project\\\\EcoSystemUmGrau) em persistencia.ps1 usava pull --ff-only, que falhava sempre porque config/persistencia.json tem o campo volátil ultimo_auto_commit reescrito pelo proprio gate. Corrigido: guarda de status (ignora untracked, Projetos/ submódulos e persistencia.json) e, se limpo, fetch + reset --hard origin/branch + submodule update. Trabalho real no HD nunca e destruido - sync adiado com log.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "proprio",
+      "pelo",
+      "reescrito",
+      "commit",
+      "update",
+      "auto"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-27T12:19:13.952478",
+    "last_accessed": "2026-08-27T12:19:13.952478"
   }
 ]

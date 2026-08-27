@@ -1,5 +1,5 @@
 ---
-tags: [anomalias, cognitivo, duas, general, git, guardian]
+tags: [anomalias, cognitivo, duas, general, git, loop]
 aliases: [Narrador morto por bloco duplicado; falso-positivo de encodi]
 date: 2026-08-22
 ---
