@@ -13347,5 +13347,74 @@
     "access_count": 0,
     "created_at": "2026-08-27T00:07:04.140384",
     "last_accessed": "2026-08-27T00:07:04.140384"
+  },
+  {
+    "id": 529,
+    "kind": "padrao",
+    "task": "Narrador inteligente — filtro _deve_narrar",
+    "summary": "O narrador do widget narrava tudo sem critério (frases de processo, tempo técnico, código). Foi adicionado filtro _deve_narrar() em widget_edge.py: pula <30 chars, frases de processo (Vou investigar, Agora vou, Continuando, Passo N, gerúndio de ação), densidade técnica >30%, maioria de linhas de código; sempre narra conclusões/resumos. Filtro aplicado por mensagem em _narrador_loop e reforçado no _flush.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "linhas",
+      "código",
+      "maioria",
+      "técnica",
+      "densidade",
+      "técnico"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-27T05:49:19.770551",
+    "last_accessed": "2026-08-27T05:49:19.770551"
+  },
+  {
+    "id": 530,
+    "kind": "decisao",
+    "task": "Unificacao watchdog.ps1 para system_guardian.py",
+    "summary": "watchdog.ps1 rebaixado a keeper (so garante vigilante.ps1 + system_guardian.py vivos, preservando boot watchdog_start.bat). Certificacao forense de kill e cleanup_orphan_cli portados para system_guardian.py, que virou unico dono da saude de processos no PC (bridge/serve/RAM/CPU/orfaos). Clausula petrea realinhada em AGENTS.md e 00-system-rules.md para citar system_guardian.py. Validado: py_compile OK, parse PS1 OK, slope RAM -200 MB/min.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "orfaos",
+      "cpu",
+      "serve",
+      "portados",
+      "bridge",
+      "processos"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-27T05:50:52.801908",
+    "last_accessed": "2026-08-27T05:50:52.801908"
+  },
+  {
+    "id": 531,
+    "kind": "padrao",
+    "task": "Narrador inteligente — filtro _deve_narrar validado em produção",
+    "summary": "Filtro de narração _deve_narrar integrado em _narrador_loop (por mensagem) e _flush (2a camada). Padrões: processo = Vou <verbo> genérico, gerúndios de ação, 3 primeiras frases checadas; conclusão = termos sem acento (resumo, concluido, finalizado...); tecnico >30% bloqueia. Widget reiniciado, log confirma PULANDO para frases intermediárias. Fica pendente bug de encoding de acentos no log do narrador (está -> estǭ).",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "camada",
+      "flush",
+      "mensagem",
+      "loop",
+      "integrado",
+      "narração"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-27T06:03:58.926358",
+    "last_accessed": "2026-08-27T06:03:58.926358"
   }
 ]

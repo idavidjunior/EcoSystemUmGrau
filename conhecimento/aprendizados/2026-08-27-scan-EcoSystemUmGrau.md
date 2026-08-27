@@ -944,7 +944,6 @@
 - ver_log.py: 1 marcadores
 - vigilante.ps1: 1 marcadores
 - vox_audio.py: 1 marcadores
-- watchdog.ps1: 1 marcadores
 - widget_grafo.py: 3 marcadores
 - code_filter.py: 3 marcadores
 - content_classifier.py: 1 marcadores
