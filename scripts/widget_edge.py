@@ -279,6 +279,124 @@ def _simplificar_para_fala(texto):
     return texto
 
 
+# --- Filtros de inteligência do narrador ---
+
+# Padrões de frases de processo/etapa intermediária — NÃO devem ser narrados
+_PADROES_PROCESSO = re.compile(
+    r"^\s*(?:"
+    r"[Vv]ou\s+[\wá-úÁ-Ú]+"
+    r"|[Aa]gora (?:vou|continuo|prossigo|preciso)"
+    r"|[Cc]ontinuando a"
+    r"|[Pp]asso \d+"
+    r"|[Ee]tapas do"
+    r"|[Pp]roximos passos"
+    r"|[Ss]eguindo para"
+    r"|[Pp]rocurando"
+    r"|[Cc]hecando"
+    r"|[Vv]erificando"
+    r"|[Ii]dentificando"
+    r"|[Mm]apeando"
+    r"|[Cc]lassificando"
+    r"|[Dd]efinindo"
+    r"|[Cc]ompletando"
+    r"|[Rr]egistrando"
+    r"|[Tt]este(?:i|ndo)"
+    r"|[Ii]nstalando"
+    r"|[Bb]aixando"
+    r"|[Ss]incronizando"
+    r"|[Rr]einiciando"
+    r"|[Aa]tualizando"
+    r"|[Ee]nviando"
+    r"|[Rr]ecebendo"
+    r"|[Cc]onectando"
+    r"|[Dd]esconectando"
+    r"|[Ee]ncerrando"
+    r"|[Ii]niciando"
+    r"|[Ss]alvando"
+    r"|[Ll]impando"
+    r"|[Oo]timizando"
+    r"|[Gg]erando"
+    r"|[Cc]onstruindo"
+    r"|[Cc]ompilando"
+    r"|[Pp]reparando"
+    r"|[Ff]iltrando"
+    r"|[Ss]intetizando"
+    r"|[Rr]esumindo"
+    r"|[Vv]alidando"
+    r")\b",
+    re.IGNORECASE,
+)
+
+# Termos técnicos que indicam conteúdo interno (não para narrar)
+_TERMO_TECNICO = re.compile(
+    r"(?:"
+    r"PID|CMD|SQL|API|JSON|XML|HTML|CSS|JS|TS|PY|PS1|BAT|SH"
+    r"|GET|POST|PUT|DELETE|PATCH"
+    r"|SELECT|INSERT|UPDATE|FROM|WHERE|JOIN"
+    r"|\b\w+\.(?:py|js|ts|json|md|html|css|ps1|bat|sh)\b"
+    r"|\b\d+\.\d+\.\d+\b"
+    r"|\b(?:MB|GB|TB|KB|ms)\b"
+    r"|https?://\S+"
+    r")\b",
+    re.IGNORECASE,
+)
+
+# Termos de conclusão/importância — indicam conteúdo para narrar
+_CONCLUSAO = re.compile(
+    r"(?:"
+    r"resumo|diagnostico|conclusao|resultado|status|atualizacao|novidade"
+    r"|importante|atencao|erro|sucesso|falha|problema|solucao|correcao"
+    r"|melhoria|evolucao|descoberta|achado|finalizado|concluido|pronto"
+    r"|completo|aprovado|reprovado|bloqueado|desbloqueado|recuperado"
+    r"|restaurado|sincronizado|deployado|configurado|criado|deletado"
+    r"|removido|movido|copiado|renomeado|salvo|carregado|enviado"
+    r"|recebido|conectado|desconectado|encerrado|iniciado|limpo"
+    r"|optimizado|resolvido|tratado|validado|testado|executado"
+    r")\b",
+    re.IGNORECASE,
+)
+
+
+def _deve_narrar(texto):
+    """Decide se um texto deve ser narrado. Retorna (deve_narrar, motivo)."""
+    if not texto or not texto.strip():
+        return False, "vazio"
+
+    texto = texto.strip()
+
+    # 1. Muito curto para ser útil
+    if len(texto) < 30:
+        return False, "muito curto"
+
+    # 2. Verifica se é frase de processo/etapa intermediária
+    #    considera as 3 primeiras frases: "Confirmado: X. Vou matar e subir..." também bloqueia
+    frases = re.split(r"(?<=[.!?])\s+", texto)[:3]
+    for frase in frases:
+        if _PADROES_PROCESSO.match(frase.strip()):
+            return False, "frase de processo"
+
+    # 3. Verifica densidade de termos técnicos
+    palavras = re.findall(r"\b\w+\b", texto)
+    if len(palavras) > 5:
+        tecnicos = sum(1 for p in palavras if _TERMO_TECNICO.match(p))
+        ratio_tecnico = tecnicos / len(palavras)
+        if ratio_tecnico > 0.3:
+            return False, f"muito tecnico ({ratio_tecnico:.0%})"
+
+    # 4. Texto majoritariamente código (muitas linhas com indentação)
+    linhas = texto.split("\n")
+    linhas_codigo = sum(1 for l in linhas if l.startswith("    ") or l.startswith("\t") or l.startswith("```"))
+    if len(linhas) > 3 and linhas_codigo / len(linhas) > 0.4:
+        return False, "maioria codigo"
+
+    # 5. É uma conclusão/resumo/importante? → sempre narrar
+    if _CONCLUSAO.search(texto[:200]):
+        return True, "conclusao"
+
+    # 6. Texto longo o suficiente e não é processo → narrar
+    return True, "conteudo"
+
+
 def _partes_novas(conn, ultimo_ts, excluir):
     """Retorna lista (ts, session_id, titulo, texto) de partes novas."""
     if not DB_NARRADOR.exists():
@@ -352,6 +470,11 @@ class _Narrador:
         texto = " ".join(textos).strip()
         texto = _limpar_texto(texto)
         texto = _simplificar_para_fala(texto)
+        # Filtro inteligente: deve narrar?
+        deve, motivo = _deve_narrar(texto)
+        if not deve:
+            _log_narr(f"PULANDO ({motivo}): {texto[:60]}...")
+            return
         if IDIOMA_AVAILABLE and len(texto) > 30:
             resultado = validar_idioma(texto, threshold=5.0)
             if not resultado["ok"]:
@@ -423,11 +546,18 @@ def _narrador_loop():
             ativo = _estado_narrador_ativo()
             novas = _partes_novas(conn, ultimo_ts, EXCLUIR_PADRAO)
             if novas:
-                textos = [t for _, _, _, t in novas]
+                # Filtro inteligente por mensagem: só entra no buffer o que vale narrar
+                textos = []
+                for ts, sid, titulo, t in novas:
+                    deve, motivo = _deve_narrar(t)
+                    if deve:
+                        textos.append(t)
+                    else:
+                        _log_narr(f"PULANDO ({motivo}): {t[:60]}...")
                 if STOP_FLAG.exists():
                     narrador.parar()
                     _log_narr("buffer descartado (parar_fala.flag)")
-                elif ativo:
+                elif ativo and textos:
                     narrador.alimentar(textos)
                 ultimo_ts = max(x[0] for x in novas)
                 _salvar_posicao_narrador({"ultimo_ts": ultimo_ts})

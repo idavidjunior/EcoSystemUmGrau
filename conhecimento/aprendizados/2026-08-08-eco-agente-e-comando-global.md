@@ -134,6 +134,7 @@ impacto: "@eco" e "/eco" agora funcionam globalmente em qualquer sessão e qualq
 - [[tradingagents-integrado-ao-ecossistema]]
 - [[transparencia-execucao-tarefas]]
 - [[triagem-scripts-legado-orgaos-movidos]]
+- [[unificacao-de-vigilantes-watchdogps1-rebaixado-a-keeper]]
 - [[vault-obsidian-cerebro-vivo-grafo]]
 - [[vault-obsidian-fonte-viva]]
 - [[widget-desktop-frameless-persistente]]

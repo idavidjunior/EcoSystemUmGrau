@@ -139,7 +139,7 @@ Somente o usuário pode fechá-lo, manualmente.
 O desktop roda como OpenCode.exe em @opencode-aidesktop — todo processo com esse
 caminho é intocável por automação.
 
-O watchdog (scripts/watchdog.ps1) DEVE proteger explicitamente o desktop no filtro
+O System Guardian (scripts/system_guardian.py) DEVE proteger explicitamente o desktop no filtro
 de órfãos: só pode limpar opencode.exe run (CLI), nunca processos do desktop.
 
 Qualquer script/agente que matar processos OpenCode por engano viola esta cláusula

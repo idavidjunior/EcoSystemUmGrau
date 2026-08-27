@@ -185,6 +185,7 @@ Probe MCP padrão (framing correto) agora responde:
 - [[tradingagents-integrado-ao-ecossistema]]
 - [[transparencia-execucao-tarefas]]
 - [[triagem-scripts-legado-orgaos-movidos]]
+- [[unificacao-de-vigilantes-watchdogps1-rebaixado-a-keeper]]
 - [[vault-obsidian-cerebro-vivo-grafo]]
 - [[vault-obsidian-fonte-viva]]
 - [[widget-desktop-frameless-persistente]]

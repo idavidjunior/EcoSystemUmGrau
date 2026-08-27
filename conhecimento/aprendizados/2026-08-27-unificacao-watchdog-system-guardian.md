@@ -1,77 +1,57 @@
 ---
 tipo: decisao
-tags: [resiliencia, watchdog, opencode, desktop, bridge, clausula-petrea, android]
-data: 2026-08-06
-contexto: "Usuario exigiu que nenhum processo automatico possa fechar o OpenCode desktop — apenas o usuario manualmente. Testes de resiliencia do bridge (que morria sem log) revelaram que o watchdog podia derrubar o desktop por erro de filtro."
-decisao: "Corrigir watchdog.ps1 com protecao absoluta do desktop (clausula petrea) e robustez de instancia unica via lock de PID. Reestruturar saudacoes do bridge com estado persistente."
-impacto: "Bridge e serve se auto-recuperam em <60s apos queda. Desktop OpenCode jamais e fechado automaticamente. Saudações variam entre primeira vez e reconexao."
+tags: [resiliencia, watchdog, system-guardian, unificacao, opencode, desktop, clausula-petrea]
+data: 2026-08-27
+contexto: "Usuario pediu unificar os vigilantes fragmentados do PC. Haviam 3 loops redundantes cuidando de bridge/serve: system_guardian.py (RAM/CPU + restart), watchdog.ps1 e a camada do bridge. Decisao de consolidar num unico dono de saude de processos."
+decisao: "Rebaixar watchdog.ps1 a keeper (so garante que vigilante.ps1 e system_guardian.py rodem, preservando o boot watchdog_start.bat). Portar a certificacao forense de kill e a limpeza de orfaos CLI do watchdog.ps1 para system_guardian.py, tornando-o unico dono da saude de processos. NAO fundir bridge_resiliencia.py (ele e ADB/Tailscale, sobrepoe connection_guardian.py, nao a porta 8765). Realinhar a clausula petrea (AGENTS.md e 00-system-rules.md) para citar system_guardian.py como protetor do desktop. Atualizar inventario_estruturas.json e HABILIDADES.md."
+impacto: "Um so watcher de processo no PC (system_guardian.py). Boot preservado (watchdog_start.bat -> watchdog.ps1 -> vigilante.ps1 -> system_guardian.py). Protecao do desktop mantida via is_desktop_opencode no guardian. Maior coesao e menos duplicacao, conforme a clausula de proibicao de estrutura redundante."
 ---
 
-# Clausula Petrea: protecao do OpenCode desktop + resiliencia da bridge
+# Unificacao de vigilantes: watchdog.ps1 rebaixado a keeper
 
-## Regra imutavel (clausula petrea)
-**Em hipotese alguma, o Windows ou qualquer outro processo automatico pode fechar o
-OpenCode desktop. Somente o usuario pode, manualmente.**
+## Diagnostico (antes)
+- `system_guardian.py` (Python): RAM/CPU, restart de bridge 8765, serve 8767,
+  narrador, tts, widget; instala o `ensure_bridge_flag` e chama `opencode_resilience`.
+- `watchdog.ps1` (PowerShell): SEGUNDO loop para bridge/serve + limpeza de orfaos
+  CLI + widget unico + certificacao forense de kill.
+- `vigilante.ps1`: orquestrador que ja mantem `system_guardian.py` vivo (timer 5 min).
+- `bridge_resiliencia.py` / `connection_guardian.py`: dominio ADB/Tailscale
+  (conectividade), NAO processo do PC — confundido no primeiro diagnostico, corrigido.
 
-- O desktop roda como `OpenCode.exe` em `@opencode-aidesktop`.
-- O CLI roda como `opencode.exe` (serve na porta 8767, run em sessoes).
+Tripla redundancia em bridge/serve. A peca que faltava no guardian era a gestao
+PROATIVA de RAM (alerta antes do limite) e a portabilidade da certificacao forense.
 
-## Bug critico encontrado
-O filtro antigo de orfaos do watchdog matava qualquer `opencode.exe` cujo comando
-NAO contivesse " serve":
-```powershell
-$cmd -match "opencode\.exe run" -or ($cmd -match "opencode\.exe" -and $cmd -notmatch " serve")
-```
-O desktop (`OpenCode.exe`) casa no segundo criterio (nao tem " serve" no comando),
-entao o proprio watchdog poderia derrubar o desktop. **Corrigido** com protecao
-explicita por caminho (`opencode-aidesktop`) e filtro restrito a `opencode run`.
+## O que foi feito
+1. **Camada proativa de RAM** (ja implementada antes desta unificacao): constantes
+   `RAM_EARLY_WARN_MB=1024`, `PROACTIVE_COOLDOWN_S=300`; funcoes `_record_ram_sample`,
+   `_ram_slope_mb_per_min`, `check_proactive_ram` (chama `opencode_resilience.py --clean`
+   quando RAM < 1GB e queda > 5 MB/min, com cooldown).
+2. **Certificacao forense** `_forensic_safe_to_kill(pid, ...)` portada para Python:
+   recusa kill se processo tem filhos vivos, rede ativa, e recente, ou e desktop/eco/
+   essencial. Base da seguranca do desktop.
+3. **`cleanup_orphan_cli()`**: mata so `opencode.exe run` orfao (CLI), com certificacao
+   forense; nunca o desktop (`@opencode-aidesktop`) nem o serve. Chamada a cada ciclo
+   de `check_and_act`.
+4. **watchdog.ps1 rebaixado**: mantem lock PID + `watchdog_log.txt`; loop passa a
+   apenas `Ensure-Running` de `vigilante.ps1` e `system_guardian.py`.
+5. **Clausula petrea** realinhada: `watchdog.ps1` -> `system_guardian.py` em AGENTS.md
+   e 00-system-rules.md (a protecao ja vivia no guardian).
+6. **Inventario e HABILIDADES.md** atualizados para o novo papel do watchdog.
 
-## Melhorias no watchdog.ps1
-1. **Instancia unica via lock de PID** (`watchdog.lock`): substitui o Mutex nomeado,
-   que no Windows fica "abandoned" quando o processo dono e morto e NAO e re-adquirido
-   — o que travava qualquer restart do watchdog.
-2. **Health-check do bridge** (`Test-BridgeAlive`): verifica porta LISTENING + processo
-   dono vivo. Detecta socket orfao (porta ocupada por processo morto) e limpa.
-3. **Serve com health HTTP** (`/global/health` + Basic Auth): so considera saudavel se
-   responde, nao apenas se a porta escuta.
-4. **Log com limite de 2MB**: ao estourar, descarta a metade mais antiga.
-5. **Filtro de orfaos seguro**: so mata `opencode.exe run` (CLI), nunca o desktop.
+## Validacao
+- `python -m py_compile scripts/system_guardian.py` -> OK.
+- Parse PS1 do watchdog.ps1 -> OK.
+- `_ram_slope_mb_per_min` com 5 amostras: -200 MB/min (correto).
+- `_forensic_safe_to_kill(999999)` -> (False, ['processo inexistente']) sem excecao.
+- `_forensic_safe_to_kill(os.getpid())` -> (False, ['recem-criado']) sem excecao.
 
-## Reestruturacao das saudacoes (jarvis_bridge.py)
-> Detalhado em `2026-08-06-saudacoes-inteligentes-reconexao-vs-primeira-vez.md`
-> (memoria #131). Estado persistente `saudacao_estado.json`, `_classificar_conexao()`
-> com 3 fontes, prompt de retomada curto na reconexao, fallback variado, timeout 90s.
-
-## Testes realizados (100%)
-1. **Recuperacao do bridge**: derrubado -> watchdog restaurou em <60s (novo PID).
-2. **Recuperacao do serve**: derrubado -> watchdog restaurou em <60s (novo PID).
-3. **Desktop intocado**: 8 processos `OpenCode.exe` permaneceram apos as quedas.
-4. **Saudacoes**: 3 conexoes seguidas geraram 3 saudações distintas; a reconexao
-   retornou "De volta, senhor. Continuando de onde paramos." e "Voltou. Sistemas
-   seguem quentes, é só falar." — reconhecendo a retomada.
-5. **Watchdog duplicado**: lock de PID impede duas instancias concorrentes.
-
-## Monitoramento
-- Log do watchdog: `scripts/watchdog_log.txt` (limitado a 2MB).
-- Log do bridge: `scripts/bridge_log.txt`.
-- Estado de saudoes: `scripts/saudacao_estado.json`.
-- Estado do bridge: `scripts/bridge_estado.json`.
-
-## Atualizacao 2026-08-27 — Unificacao de vigilantes (watchdog -> system_guardian)
-
-O watchdog.ps1 foi **rebaixado a keeper** (boot/launcher). A saude de processos
-no PC (bridge 8765, serve 8767, narrador, tts, widget, RAM/CPU e limpeza de
-orfaos CLI do opencode) eh agora **unica responsabilidade do system_guardian.py**
-(Python). A certificacao forense de kill (`_forensic_safe_to_kill`) e a rotina
-`cleanup_orphan_cli()` foram portadas do watchdog.ps1 para o system_guardian.py.
-O watchdog.ps1 mantem o lock PID e o `watchdog_log.txt` (para nao quebrar o
-boot `watchdog_start.bat` nem integracoes), mas seu loop agora so garante que
-`vigilante.ps1` e `system_guardian.py` estejam vivos. Cadeia: watchdog ->
-vigilante -> guardian. A clausula petrea de protecao do desktop (em AGENTS.md e
-00-system-rules.md) foi realinhada para citar `system_guardian.py` como o
-protetor do desktop (a protecao ja vivia no guardian via `is_desktop_opencode`).
-Validado: py_compile OK, parse PS1 OK, slope de RAM -200 MB/min, forensic em PID
-inexistente e auto-PID sem excecao.
+## Licoes
+- Ao unificar, PRESERVAR o ponto de boot (watchdog_start.bat depende de watchdog.ps1).
+  Rebaixar a arquivo mantem a cadeia; apagar quebraria o boot.
+- Nao confundir dominios: bridge_resiliencia.py e conectividade (ADB/Tailscale),
+  nao processo do PC. Verificar o conteudo antes de propor fusao.
+- Clauses petreas que citam nomes de arquivos devem ser realinhadas quando a
+  propriedade da responsabilidade muda, para nao mentirem.
 
 ## Conexoes
 

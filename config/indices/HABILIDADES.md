@@ -173,7 +173,7 @@ Reservado para futuras habilidades de áudio, imagem e vídeo.
 |---|---|
 | `jarvis_bridge.py` | Bridge principal (WebSocket porta 8765) |
 | `run_bridge.py` / `run_serve.py` | Launchers da bridge e do serve |
-| `watchdog.ps1` | Monitora bridge e serve a cada 20s, reinicia se cair |
+| `watchdog.ps1` | Boot/keeper: garante que vigilante.ps1 e system_guardian.py rodem (saúde de bridge/serve/órfãos agora em system_guardian.py) |
 | `ecosystem.ps1` | Gerenciamento do ecossistema |
 | `bootstrap.ps1` | Inicialização do ambiente |
 | `vigilante.ps1` | Monitoramento git |

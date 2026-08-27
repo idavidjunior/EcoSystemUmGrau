@@ -16,6 +16,5 @@ contexto: O ecossistema sofreu corrupção de dados por mojibake (texto UTF-8 li
 ## Conexoes
 
 - [[2026-08-04-persistencia-da-conexao-do-jarvis]]
-- [[cli-anything-internalizado-como-habilidade-soberana]]
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]

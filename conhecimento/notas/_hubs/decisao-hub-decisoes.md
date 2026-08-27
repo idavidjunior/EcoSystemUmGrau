@@ -1,6 +1,6 @@
 # Decisoes
 
-**71 notas** conectadas a este hub.
+**72 notas** conectadas a este hub.
 
 
 ## Notas
@@ -64,6 +64,7 @@
 - [[supervisor-monitora-todos-os-modulos-individualmente-nunca-r]]
 - [[the-issue-description-and-root-cause]]
 - [[transparencia-execucao-tarefas]]
+- [[unificacao-de-vigilantes-watchdogps1-rebaixado-a-keeper]]
 - [[usar-coordenadas-relativas-porcentagem-em-vez-de-absolutas-p]]
 - [[usar-keyboard-shortcuts-como-fallback-universal]]
 - [[usar-ocr-como-fallback-final-nao-primario]]

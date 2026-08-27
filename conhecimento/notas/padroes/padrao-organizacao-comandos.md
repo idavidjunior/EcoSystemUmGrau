@@ -19,5 +19,4 @@ contexto: >
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]
-- [[ecow-e-ecow-abrirfocar-o-cerebro-vivo]]
 - [[padrao-hub-padroes]]

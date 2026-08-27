@@ -1,12 +1,12 @@
 ---
-tags: [cérebro, foco, fonte, opencodeopencodeopencodeopencodeopencodeopencodeopencode, padrao, vivo]
+tags: [cérebro, foco, fonte, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, vivo]
 aliases: [@ecow e /ecow — abrir/focar o Cerebro Vivo]
 date: 2026-08-22
 ---
 
 # @ecow e /ecow — abrir/focar o Cerebro Vivo
 
-**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -20,6 +20,9 @@ contexto: Usuário pediu comando /ecow e @ecow para abrir o widget Cérebro Vivo
 ## Dec
 ## Conexoes
 
+- [[2026-08-03-adb-remoto-via-tailscale-script-automatico-de-rot]]
 - [[cluster-hub-ecossistema]]
+- [[compreensao-de-pedidos-refino-com-a-llm-do-opencode-primaria]]
+- [[config-2026-07-28-formato-correto-do-mcp-no-opencode-1187]]
+- [[eco-agente-e-comando-global]]
 - [[padrao-hub-padroes]]
-- [[padrao-organizacao-comandos]]

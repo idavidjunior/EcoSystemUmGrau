@@ -507,6 +507,124 @@ def check_proactive_ram(ram_mb, state):
     except Exception as e:
         log.error(f"Limpeza preventiva erro: {e}")
 
+def _forensic_safe_to_kill(pid, nome_esperado=None, idade_minima_seg=60,
+                           porta_listen=None, caminhos_protegidos=()):
+    """Certificação forense (portada do antigo watchdog.ps1).
+
+    Só libera a morte se o processo for comprovadamente lixo: sem filhos vivos,
+    sem rede ativa, idoso o suficiente e fora das listas de proteção. Nunca
+    libera desktop/eco/essenciais. Retorna (libera: bool, motivos: list).
+    """
+    motivos = []
+    libera = True
+    try:
+        p = psutil.Process(pid)
+    except (psutil.NoSuchProcess, psutil.AccessDenied):
+        return False, ["processo inexistente (ja morto)"]
+    if nome_esperado and p.name().lower() != nome_esperado.lower():
+        motivos.append(f"nome diverge (esperado {nome_esperado}, tem {p.name()})")
+        libera = False
+    try:
+        exe = (p.exe() or "").lower()
+        for prot in caminhos_protegidos:
+            if prot and prot.lower() in exe:
+                motivos.append(f"caminho protegido: {exe}")
+                libera = False
+    except Exception:
+        pass
+    if is_desktop_opencode(pid):
+        motivos.append("desktop OpenCode intocavel")
+        libera = False
+    if pid in PROTECTED_ECO_PIDS or any(
+        _pid_roda_script(pid, s) for s in SERVICOS_ECO_SCRIPTS
+    ):
+        motivos.append("servico Eco protegido")
+        libera = False
+    if pid in ESSENTIAL_PIDS:
+        motivos.append("processo essencial do Windows")
+        libera = False
+    try:
+        idade = time.time() - p.create_time()
+        if idade < idade_minima_seg:
+            motivos.append(f"recem-criado ({idade:.0f}s < {idade_minima_seg}s)")
+            libera = False
+    except Exception:
+        pass
+    try:
+        filhos = p.children()
+        if filhos:
+            motivos.append(f"tem {len(filhos)} filhos vivos")
+            libera = False
+    except Exception:
+        pass
+    try:
+        conns = p.connections(kind="inet")
+        ativas = [c for c in conns if c.status in (
+            "ESTABLISHED", "CLOSE_WAIT", "TIME_WAIT",
+            "FIN_WAIT_1", "FIN_WAIT_2", "SYN_SENT")]
+        if ativas:
+            motivos.append(f"tem {len(ativas)} conexoes de rede ativas")
+            libera = False
+        for c in conns:
+            if c.status == "LISTEN" and porta_listen and c.laddr.port != porta_listen:
+                motivos.append(f"escutando porta {c.laddr.port} (em uso)")
+                libera = False
+    except Exception:
+        pass
+    if not motivos:
+        motivos.append("nenhum indicio de atividade - candidato a lixo")
+    return libera, motivos
+
+
+def cleanup_orphan_cli():
+    """Remove sessões CLI órfãs do opencode (opencode.exe run) com certificação forense.
+
+    Responsabilidade antes no watchdog.ps1; centralizada aqui para haver um
+    único dono da saúde de processos no PC. Nunca toca desktop, serve ou Eco.
+    """
+    mortos = 0
+    preservados = 0
+    desktop_path = "opencode-aidesktop"
+    try:
+        for p in psutil.process_iter(["pid", "name", "cmdline", "create_time"]):
+            try:
+                info = p.info
+                if (info["name"] or "").lower() != "opencode.exe":
+                    continue
+                cmd = " ".join(info["cmdline"] or "")
+                if not cmd:
+                    continue
+                if desktop_path in cmd.lower():
+                    continue
+                if "opencode.exe run" not in cmd:
+                    continue
+                libera, motivos = _forensic_safe_to_kill(
+                    info["pid"], nome_esperado="opencode.exe",
+                    idade_minima_seg=60, caminhos_protegidos=(desktop_path,))
+                if libera:
+                    try:
+                        proc = psutil.Process(info["pid"])
+                        proc.terminate()
+                        try:
+                            proc.wait(timeout=3)
+                        except psutil.TimeoutExpired:
+                            proc.kill()
+                        mortos += 1
+                        log.warning(f"Orfao CLI morto PID {info['pid']} - {motivos[-1]}")
+                    except Exception as e:
+                        log.error(f"Erro ao matar orfao CLI {info['pid']}: {e}")
+                else:
+                    preservados += 1
+                    log.info(f"Orfao CLI preservado PID {info['pid']}: {motivos[-1]}")
+            except (psutil.NoSuchProcess, psutil.AccessDenied):
+                continue
+    except Exception as e:
+        log.error(f"cleanup_orphan_cli erro: {e}")
+    if mortos or preservados:
+        log.info(f"Orfaos CLI: {mortos} mortos, {preservados} preservados. Desktop intocado.")
+    return mortos, preservados
+
+
 def save_state(state):
     with open(STATE_FILE, "w", encoding="utf-8") as f:
         json.dump(state, f, indent=2, ensure_ascii=False)
@@ -554,6 +672,10 @@ def check_and_act():
     update_protected_eco_pids()
     # Atualiza ESSENTIAL_PIDS com novos PIDs
     ESSENTIAL_PIDS = get_essential_pids()
+
+    # Limpeza de orfaos CLI (antes no watchdog.ps1; agora unico dono da saude
+    # de processos no PC). Nunca toca desktop/serve/eco.
+    cleanup_orphan_cli()
 
     ram_mb = get_ram_mb()
     disk_gb = get_disk_free_gb()

@@ -365,7 +365,7 @@
     {
       "id": "watchdog",
       "arquivo": "scripts/watchdog.ps1",
-      "funcao": "Protege OpenCode desktop, limpa processos órfãos CLI"
+      "funcao": "Boot/keeper do ecossistema (rebaixado): garante que vigilante.ps1 e system_guardian.py rodem. Saude de processos/bridge/serve/orfaos agora centralizada em system_guardian.py"
     },
     {
       "id": "audit_triagem",
