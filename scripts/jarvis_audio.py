@@ -77,10 +77,19 @@ def narrador_rodando():
             pid = int(PID_FILE.read_text(encoding="utf-8").strip())
             saida = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"],
                                    capture_output=True, text=True, timeout=20).stdout
-            return str(pid) in saida
-    except Exception:
-        pass
-    return False
+            if str(pid) in saida:
+                return True
+            else:
+                # PID stale: processo morreu, limpar arquivo
+                PID_FILE.unlink(missing_ok=True)
+        return False
+    except (ValueError, FileNotFoundError):
+        # PID inválido no arquivo: limpar e tratar como não-rodando
+        try:
+            PID_FILE.unlink(missing_ok=True)
+        except Exception:
+            pass
+        return False
 
 
 def iniciar_narrador():
