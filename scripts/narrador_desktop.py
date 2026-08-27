@@ -37,6 +37,14 @@ ECOSSISTEMA_DIR = ROOT
 if str(ECOSSISTEMA_DIR) not in sys.path:
     sys.path.insert(0, str(ECOSSISTEMA_DIR))
 
+# Dedup COMPARTILHADO em disco (evita que narrador_desktop e widget_edge
+# falem a mesma resposta 2x — cada processo tinha seu _FALADOS em memória).
+try:
+    from narrador_dedup import ja_falado
+except ImportError:
+    def ja_falado(texto_hash):
+        return False
+
 # Detecção automática de palavras em inglês para pronúncia correta
 try:
     from detect_english_words import pipeline_completo_tts
