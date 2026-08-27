@@ -136,7 +136,10 @@ def add_note(text):
 def save_checkpoint(label='auto'):
     state = load_state()
     cid = datetime.now().strftime('%Y%m%d_%H%M%S')
-    cpath = os.path.join(CHECKPOINTS_DIR, f'{cid}_{label}.json')
+    safe_label = ''.join(c for c in label if c not in '<>:"/\\|?*').strip().replace(' ', '_')
+    if not safe_label:
+        safe_label = 'auto'
+    cpath = os.path.join(CHECKPOINTS_DIR, f'{cid}_{safe_label}.json')
     cp = {'id': cid, 'label': label, 'created': _now(), 'state': state}
     tmp = cpath + '.tmp'
     with open(tmp, 'w', encoding='utf-8') as f:

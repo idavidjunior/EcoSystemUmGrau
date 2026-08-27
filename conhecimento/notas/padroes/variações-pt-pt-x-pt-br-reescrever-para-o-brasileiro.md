@@ -1,5 +1,5 @@
 ---
-tags: [acentos, brasileiras, fontes, padrao, pt-br, variantes]
+tags: [acentos, brasileiras, converter, padrao, pt-br, variantes]
 aliases: [Variações PT-PT x PT-BR: reescrever para o brasileiro]
 date: 2026-08-10
 ---

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-27T06:20:18.685765",
+  "last_updated": "2026-08-27T08:19:45.981465",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -3561,6 +3561,13 @@
       "extracted_at": "2026-08-23T19:48:57.996185",
       "merged_count": 2,
       "merged_at": "2026-08-23T19:49:14.284379"
+    },
+    {
+      "source": "opencode",
+      "title": "﻿---",
+      "domain": "general",
+      "body": "﻿---\ntipo: decisao\ntags: [ollama, hd-externo, ntfs, exfat, reconstrucao]\ndata: 2026-08-27\ncontexto: HD externo E: estava com exFAT corrompido (leituras inconsistentes), bloqueando o Ollama.\ndecisao: Reformatar E: para NTFS e reconstruir o Ollama + espelhar o EcoSystemUmGrau.\nimpacto: Ollama 100% no E: com 5 modelos; espelho do ecossistema no E:.\n---\n\n## Reconstrução do Ollama no HD Externo (NTFS)\n\nCausa raiz: o exFAT do E: tinha corrupção estrutural de diretório — cada leitor\n(PowerShell, Python",
+      "extracted_at": "2026-08-27T08:18:49.749089"
     }
   ],
   "heuristics": [

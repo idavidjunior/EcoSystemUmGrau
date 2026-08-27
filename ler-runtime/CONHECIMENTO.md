@@ -1,11 +1,11 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-27T06:20:18.777930
+**Exportado em:** 2026-08-27T08:19:46.279093
 **Projetos:** 4
 **Padroes Tecnicos:** 285
 **Decisoes:** 76
 **Bug Fixes:** 52
-**Padroes Cognitivos:** 69
+**Padroes Cognitivos:** 70
 **Heuristicas:** 32
 **Frameworks:** 10
 **Missoes Aprendidas:** 134
@@ -1998,6 +1998,24 @@ decisao: "Registrar erro e definir implementação: criar mecanismo de detecçã
 ## Decisão
 Desativar 27 serviços inúteis para este perfil de uso (desenvolvimento local, 
 
+### ﻿---
+**Dominio:** general
+**Fonte:** opencode
+
+﻿---
+tipo: decisao
+tags: [ollama, hd-externo, ntfs, exfat, reconstrucao]
+data: 2026-08-27
+contexto: HD externo E: estava com exFAT corrompido (leituras inconsistentes), bloqueando o Ollama.
+decisao: Reformatar E: para NTFS e reconstruir o Ollama + espelhar o EcoSystemUmGrau.
+impacto: Ollama 100% no E: com 5 modelos; espelho do ecossistema no E:.
+---
+
+## Reconstrução do Ollama no HD Externo (NTFS)
+
+Causa raiz: o exFAT do E: tinha corrupção estrutural de diretório — cada leitor
+(PowerShell, Python
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -2092,7 +2110,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-27T06:20:18.685765
+**Ultima atualizacao:** 2026-08-27T08:19:45.981465
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*
