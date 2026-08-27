@@ -196,6 +196,7 @@ function Invoke-Limpeza {
         [pscustomobject]@{ padrao='*.pyc';       tipo='arquivos'; idade_dias=0; escopo='repo' },
         [pscustomobject]@{ padrao='*.log';       tipo='arquivos'; idade_dias=7; escopo='runtime' },
         [pscustomobject]@{ padrao='*';           tipo='arquivos'; idade_dias=3; escopo='temp-opencode' },
+        [pscustomobject]@{ padrao='*';           tipo='arquivos'; idade_dias=7; escopo='cache-opencode' },
         [pscustomobject]@{ padrao='persistencia-*.lock'; tipo='arquivos'; idade_dias=0; escopo='temp-locks' }
     )
     if ($Cfg -and ($Cfg.PSObject.Properties.Name -contains 'limpeza_itens') -and $Cfg.limpeza_itens) {
@@ -208,6 +209,7 @@ function Invoke-Limpeza {
         elseif ($it.escopo -eq 'runtime')       { if (Test-Path "$RepoPath\runtime") { $raizAlvo = "$RepoPath\runtime" } }
         elseif ($it.escopo -eq 'temp-opencode') { $raizAlvo = Join-Path $env:TEMP 'opencode' }
         elseif ($it.escopo -eq 'temp-locks')    { $raizAlvo = $env:TEMP }
+        elseif ($it.escopo -eq 'cache-opencode') { $raizAlvo = Join-Path $env:USERPROFILE '.cache\opencode' }
         if (-not $raizAlvo -or -not (Test-Path $raizAlvo)) { continue }
         $cutoff = (Get-Date).AddDays(-1 * [double]$it.idade_dias)
         if ($it.tipo -eq 'pastas') {
