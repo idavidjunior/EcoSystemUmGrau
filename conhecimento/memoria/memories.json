@@ -13209,5 +13209,143 @@
     "access_count": 0,
     "created_at": "2026-08-26T20:13:08.698775",
     "last_accessed": "2026-08-26T20:13:08.698775"
+  },
+  {
+    "id": 523,
+    "kind": "padrao",
+    "task": "Windows Cache Tiering no os_maintenance",
+    "summary": "Implementado CacheTierManager completo no Windows: Storage Spaces Tiering (pool creation, tiered VDisk, write cache policies, optimization), métricas de tiers, write-back cache físico, RAM Disk via ImDisk, cache warming (Standby list), Superfetch/Prefetcher config. 15 tools MCP adicionadas. Substitui PrimoCache usando nativo Windows. Testado: health check, superfetch status, MCP tools list.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "config",
+      "prefetcher",
+      "standby",
+      "warming",
+      "imdisk",
+      "disk"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-26T21:12:40.171491",
+    "last_accessed": "2026-08-26T21:12:40.171491"
+  },
+  {
+    "id": 524,
+    "kind": "decisao",
+    "task": "Conselho com LLM real e paralelismo",
+    "summary": "Refatoracao completa do agent_council.py: respostas hardcoded substituidas por LLM real via llm_caller.py (NVIDIA NIM nemotron-3-nano-30b-a3b). Agentes independentes (Estrategista, Cetico, Futuro, Criativo, Etica, Recursos) rodam em paralelo via ThreadPool(max_workers=5). Agentes dependentes (Realista, Revisor) rodam na rodada 2. council_orchestrator.py converte deliberação em plano de execução com tarefas, dependências e bloqueadores. Pipeline testado: 8 agentes, consenso, 10 tarefas geradas.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "workers",
+      "max",
+      "threadpool",
+      "paralelo",
+      "recursos",
+      "etica"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-26T21:35:30.268491",
+    "last_accessed": "2026-08-26T21:35:30.268491"
+  },
+  {
+    "id": 525,
+    "kind": "decisao",
+    "task": "Research Engine - modulo deep research completo",
+    "summary": "Modulo research_engine criado em ler-runtime/modules/research_engine/ com 7 arquivos: models.py (dataclasses), planner.py (decomicao LLM), searcher.py (DuckDuckGo Lite POST paralelo), crawler.py (fetch URLs), synthesizer.py (sintese LLM com retry), reporter.py (Markdown com frontmatter YAML), graph_writer.py (persistencia vault Obsidian + Knowledge Graph), engine.py (orquestrador 6 fases). Pipeline testado end-to-end: 28-44s, 3-5 secoes, 75-78% confianca, 5-9 fontes. Correcao importante: DuckDuckGo HTML GET bloqueado, usando Lite POST. LLM as vezes retorna lista em vez de dict, tratado com fallback.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "arquivos",
+      "modules",
+      "runtime",
+      "ler",
+      "criado",
+      "research"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-26T22:38:51.304901",
+    "last_accessed": "2026-08-26T22:38:51.304901"
+  },
+  {
+    "id": 526,
+    "kind": "decisao",
+    "task": "Research Engine completo",
+    "summary": "Modulo research_engine em ler-runtime/modules/research_engine/ com 8 arquivos. Pipeline 6 fases testado end-to-end. DuckDuckGo Lite POST funciona.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "arquivos",
+      "modules",
+      "runtime",
+      "ler",
+      "engine",
+      "research"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-26T22:39:40.146326",
+    "last_accessed": "2026-08-26T22:39:40.146326"
+  },
+  {
+    "id": 527,
+    "kind": "padrao",
+    "task": "Research Engine completo + Maestro G0",
+    "summary": "Módulo research_engine finalizado: CLI, cache 24h, pipeline 6 fases. Maestro atualizado com Gate G0 automático — detecta ignorância, avisa usuário, pesquisa e usa resultados no planejamento. Config deployado.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "planejamento",
+      "resultados",
+      "usa",
+      "pesquisa",
+      "usuário",
+      "avisa"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-26T22:58:41.127854",
+    "last_accessed": "2026-08-26T22:58:41.127854"
+  },
+  {
+    "id": 528,
+    "kind": "decisao",
+    "task": "Integração do narrador ao widget",
+    "summary": "Narrador_desktop.py era processo separado com race condition (2 instâncias simultâneas). Solução: integração completa ao widget_edge.py como thread interna. Eliminou PID lock, eliminou processo separado, eliminou duplicação de fala. voice_off() agora usa pausar() em vez de desativar(). Flickering do CMD corrigido adicionando CREATE_NO_WINDOW em mcp-knowledge-server.py e system_guardian.py.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "server",
+      "fala",
+      "knowledge",
+      "duplicação",
+      "mcp",
+      "window"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "access_count": 0,
+    "created_at": "2026-08-27T00:07:04.140384",
+    "last_accessed": "2026-08-27T00:07:04.140384"
   }
 ]
