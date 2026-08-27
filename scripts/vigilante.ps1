@@ -555,7 +555,7 @@ $onOpencodeDbRet = {
             if ($cmdline -and $cmdline -match "opencode\.exe.*run") { $codeRunning = $true; break }
         }
     }
-    Write-Log "OPENCODE DB RETENÇÃO: checando ($(if ($codeRunning) {'nova poda, VACUUM adiado (OpenCode aberto)'} else {'poda + VACUUM (OpenCode fechado)'}))..."
+    Write-Log "OPENCODE DB RETENCAO: checando ($(if ($codeRunning) {'nova poda, VACUUM adiado (OpenCode aberto)'} else {'poda + VACUUM (OpenCode fechado)'}))..."
     try {
         if ($codeRunning) {
             $out = python "$ecoDir\scripts\limpeza_disco.py" --opencode-db --dias $opencodeDbDays --no-vacuum 2>&1 | Out-String
@@ -564,13 +564,49 @@ $onOpencodeDbRet = {
         }
         $out.Trim() | ForEach-Object { Write-Log "  $_" }
         Set-Content -Path $marker -Value (Get-Date).ToString('o') -Encoding UTF8
-    } catch { Write-Log "OPENCODE DB RETENÇÃO: ignorado: $_" }
+    } catch { Write-Log "OPENCODE DB RETENCAO: ignorado: $_" }
 }
 $opencodeDbRetTimer = New-Object System.Timers.Timer
 $opencodeDbRetTimer.Interval = 3600000  # check a cada 1h, gate 24h no marcador
 $opencodeDbRetTimer.AutoReset = $true
 Register-ObjectEvent $opencodeDbRetTimer "Elapsed" -Action $onOpencodeDbRet > $null
 $opencodeDbRetTimer.Start()
+
+# ══════════════════════════════════════════════════════════════════════
+# OPENCODE DB — VACUUM NA SAÍDA DO DESKTOP
+# Quando o usuário fechar o OpenCode desktop (única hora segura para o
+# VACUUM, lock exclusivo), dispara a retenção completa na hora — sem
+# esperar 1h nem o gate de 24h. NUNCA fecha o desktop: só reage à saída.
+# ══════════════════════════════════════════════════════════════════════
+function Test-DesktopSolved {
+    # Distingue o DESKTOP (OpenCode.exe) do CLI (opencode.exe), como no guardian.
+    $procs = Get-CimInstance Win32_Process | Where-Object { $_.Name -ceq "OpenCode.exe" }
+    if (-not $procs) { return $false }
+    foreach ($pp in $procs) {
+        try {
+            $gp = Get-Process -Id $pp.ProcessId -ErrorAction Stop
+            if ($gp.MainWindowHandle -ne [IntPtr]::Zero) { return $true }
+        } catch {}
+    }
+    return ($procs.Count -ge 3)
+}
+$script:desktopWasRunning = Test-DesktopSolved
+$opencodeDbOutTimer = New-Object System.Timers.Timer
+$opencodeDbOutTimer.Interval = 60000  # monitora a cada 1 min
+$opencodeDbOutTimer.AutoReset = $true
+$onOpencodeDbOut = {
+    if ($script:desktopWasRunning -and -not (Test-DesktopSolved)) {
+        Write-Log "OPENCODE DB: saida do desktop detectada - disparando retencao com VACUUM (sem backup)..."
+        try {
+            $out = python "$ecoDir\scripts\limpeza_disco.py" --opencode-db --dias $opencodeDbDays --no-backup 2>&1 | Out-String
+            $out.Trim() | ForEach-Object { Write-Log "  $_" }
+            Set-Content -Path "$ecoDir\runtime\opencode_db_ultima_retencao.txt" -Value (Get-Date).ToString('o') -Encoding UTF8
+        } catch { Write-Log "OPENCODE DB: saida ignorada: $_" }
+    }
+    $script:desktopWasRunning = Test-DesktopSolved
+}
+Register-ObjectEvent $opencodeDbOutTimer "Elapsed" -Action $onOpencodeDbOut > $null
+$opencodeDbOutTimer.Start()
 
 # ══════════════════════════════════════════════════════════════════════
 # EVOLUTION RADAR TIMER: auto-evolução curada (4h, permissão admin, pacotes)

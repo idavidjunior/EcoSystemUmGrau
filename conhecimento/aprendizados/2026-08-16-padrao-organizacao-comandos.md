@@ -232,6 +232,7 @@ aprendizado: >
 - [[resiliencia-widget-duplicado]]
 - [[resiliência-de-logs-encoding-detectado-na-leitura-não-presum]]
 - [[restauracao-unified-bridge]]
+- [[retencao-opencode-db-vigilante]]
 - [[retry-com-backoff-exponencial]]
 - [[ruby-blocks-procs-e-lambdas]]
 - [[ruby-rails-activerecord-e-mvc]]

@@ -1,12 +1,12 @@
 ---
-tags: [dessincronizados, eco, fontes, opencodeopencodeopencodeopencodeopencodeopencodeopencode, padrao, sync]
+tags: [dessincronizados, fontes, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, sync]
 aliases: [padrao organizacao comandos]
 date: 2026-08-17
 ---
 
 # padrao organizacao comandos
 
-**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -18,6 +18,9 @@ contexto: >
   Limpeza total removeu ~
 ## Conexoes
 
-- [[cli-anything-internalizado-como-habilidade-soberana]]
+- [[2026-08-03-adb-remoto-via-tailscale-script-automatico-de-rot]]
 - [[cluster-hub-ecossistema]]
+- [[compreensao-de-pedidos-refino-com-a-llm-do-opencode-primaria]]
+- [[config-2026-07-28-formato-correto-do-mcp-no-opencode-1187]]
+- [[eco-agente-e-comando-global]]
 - [[padrao-hub-padroes]]

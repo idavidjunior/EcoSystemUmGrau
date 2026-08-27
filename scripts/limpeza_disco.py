@@ -223,7 +223,12 @@ def _poda_executar(cur: sqlite3.Cursor, dias: int) -> dict:
 
 
 def cmd_opencode_db(args) -> None:
-    """Retenção do opencode.db: apaga sessões inativas há mais de N dias."""
+    """Retenção do opencode.db: apaga sessões inativas há mais de N dias.
+
+    Sempre tenta VACUUM ao final (mesmo sem nada a remover, para recuperar a
+    freelist de podas anteriores), a menos que --no-vacuum seja usado (útil
+    com o OpenCode aberto, quando o lock exclusivo do VACUUM é impossível).
+    """
     dias = args.dias if args.dias is not None else RETENCAO_DIAS_PADRAO
     if not OPENCODE_DB.exists():
         _log(f"opencode.db não encontrado: {OPENCODE_DB}")
@@ -252,41 +257,48 @@ def cmd_opencode_db(args) -> None:
         _log(f"  sessões a remover (inativas > {dias} dias): {stats['sessioes']}")
         for nome, (n, b) in stats["por_tabela"].items():
             _log(f"  {nome:16s} {n:6d} linhas  {b / (1024**3):6.2f} GB payload")
-        if stats["sessioes"] == 0:
+
+        if stats["sessioes"] > 0:
+            if args.simular:
+                _log("  Simulação: nenhuma linha será apagada. "
+                     "Rode --opencode-db sem --simular para executar.")
+                return
+
+            # Backup antes de apagar (--no-backup pula quando já existe backup)
+            if args.no_backup:
+                _log("  backup pulado (--no-backup): confiando em backup anterior.")
+            else:
+                backup = OPENCODE_DB.with_name(
+                    f"opencode.db.bak.{time.strftime('%Y%m%d_%H%M%S')}")
+                _log(f"  backup em: {backup}")
+                try:
+                    shutil.copy2(OPENCODE_DB, backup)
+                    _log(f"  backup OK ({backup.stat().st_size / (1024**3):.2f} GB)")
+                except OSError as e:
+                    _log(f"  ERRO de backup — abortando sem apagar: {e}")
+                    return
+
+            removidos = _poda_executar(cur, dias)
+            _log(f"  removidos: {removidos['sessioes']} sessões, "
+                 f"{removidos['linhas_tabelas']} linhas em tabelas filhas")
+            conn.commit()
+        else:
             _log("  Nada a remover. Retenção em dia ✓")
-            return
-
-        if args.simular:
-            _log("  Simulação: nenhuma linha será apagada. "
-                 "Rode --opencode-db sem --simular para executar.")
-            return
-
-        # Backup antes de apagar
-        backup = OPENCODE_DB.with_name(
-            f"opencode.db.bak.{time.strftime('%Y%m%d_%H%M%S')}")
-        _log(f"  backup em: {backup}")
-        try:
-            shutil.copy2(OPENCODE_DB, backup)
-            _log(f"  backup OK ({backup.stat().st_size / (1024**3):.2f} GB)")
-        except OSError as e:
-            _log(f"  ERRO de backup — abortando sem apagar: {e}")
-            return
-
-        removidos = _poda_executar(cur, dias)
-        _log(f"  removidos: {removidos['sessioes']} sessões, "
-             f"{removidos['linhas_tabelas']} linhas em tabelas filhas")
-        conn.commit()
 
         # VACUUM devolve espaço ao arquivo (skip com --no-vacuum: exige
-        # lock exclusivo, impossível com o OpenCode aberto)
+        # lock exclusivo, impossível com o OpenCode aberto). Como sempre:
+        # sem nada a remover, ainda recupera a freelist de podas anteriores.
         if not args.no_vacuum:
-            try:
-                _log("  VACUUM (devolvendo espaço ao arquivo)...")
-                conn.execute("VACUUM")
-                _log("  VACUUM OK")
-            except sqlite3.Error as e:
-                _log(f"  AVISO: VACUUM falhou ({e}). "
-                     "O espaço será liberado em uma próxima abertura/VACUUM.")
+            if args.simular:
+                _log("  Simulação: VACUUM seria executado em execução real.")
+            else:
+                try:
+                    _log("  VACUUM (devolvendo espaço ao arquivo)...")
+                    conn.execute("VACUUM")
+                    _log("  VACUUM OK")
+                except sqlite3.Error as e:
+                    _log(f"  AVISO: VACUUM falhou ({e}). "
+                         "O espaço será liberado em uma próxima abertura/VACUUM.")
         else:
             _log("  VACUUM pulado (--no-vacuum): arquivo só encolhe "
                  "com o OpenCode fechado.")
@@ -346,6 +358,9 @@ def main() -> None:
                    help=f"Dias de retenção (padrão {RETENCAO_DIAS_PADRAO}). Usado com --opencode-db.")
     p.add_argument("--no-vacuum", action="store_true",
                    help="Pula o VACUUM ao final da retenção (útil com o OpenCode aberto).")
+    p.add_argument("--no-backup", action="store_true",
+                   help="Pula o backup do opencode.db antes da poda (quando já existe "
+                        "backup recente do gate de retenção).")
     args = p.parse_args()
 
     if args.opencode_db:
