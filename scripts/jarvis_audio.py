@@ -71,7 +71,25 @@ def estado_atual():
     return True, False
 
 
+def _widget_rodando():
+    """Fonte única do narrador: o widget_edge.py (narrador integrado)."""
+    try:
+        saida = subprocess.run(
+            ["powershell", "-NoProfile", "-Command",
+             "Get-CimInstance Win32_Process -Filter \"name='python.exe' or name='pythonw.exe'\" | "
+             "Where-Object { $_.CommandLine -match 'widget_edge' } | Measure-Object | Select-Object -ExpandProperty Count"],
+            capture_output=True, text=True, timeout=20,
+        ).stdout.strip()
+        return saida.isdigit() and int(saida) > 0
+    except Exception:
+        pass
+    return False
+
+
 def narrador_rodando():
+    """Narrador ativo = widget_edge rodando (fonte única) OU PID file válido."""
+    if _widget_rodando():
+        return True
     try:
         if PID_FILE.exists():
             pid = int(PID_FILE.read_text(encoding="utf-8").strip())
@@ -93,12 +111,18 @@ def narrador_rodando():
 
 
 def iniciar_narrador():
+    """Garante o narrador único. narrador_desktop.py é agora um guard:
+    se o widget (fonte única) já roda, não faz nada; se não, inicia o widget."""
     if narrador_rodando():
         return True
     try:
         DETACHED = getattr(subprocess, "DETACHED_PROCESS", 0)
+        # pythonw.exe para não abrir janela de terminal
+        pyw = sys.executable.replace("python.exe", "pythonw.exe")
+        if not os.path.exists(pyw):
+            pyw = sys.executable
         proc = subprocess.Popen(
-            [sys.executable, str(NARRADOR)],
+            [pyw, str(NARRADOR)],
             cwd=str(ROOT), creationflags=DETACHED | subprocess.CREATE_NEW_PROCESS_GROUP,
             close_fds=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
         )

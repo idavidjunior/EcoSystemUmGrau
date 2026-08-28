@@ -99,11 +99,14 @@ def log_session(session_id=None, task=None, project=None, outcome=None,
 def add_memory(task, summary, kind='episodio', project='', tags=None,
                strength=1.0, metadata=None, reindex=True,
                confidence=1.0, source_type='experiencia',
-               solucao_aplicada=None):
+               solucao_aplicada=None,
+               source_anchors=None):
     """Add a consolidated memory with decay + epistemic metadata.
 
     confidence: float 0-1 — confiança epistêmica (1.0 = fato, 0.3 = hipótese).
     source_type: enum — 'experiencia', 'inferido', 'api', 'humano', 'rag'.
+    source_anchors: list[dict] — âncoras de source {filePath, lineStart, lineEnd, snippet}
+        para evidence-grounding (rastreabilidade até código/fonte).
     solucao_aplicada: dict ou None — para memórias de tipo 'erro', armazena a
         solução aplicada: {desc, script, data, tags, validado}.
 
@@ -135,6 +138,7 @@ def add_memory(task, summary, kind='episodio', project='', tags=None,
         'strength': strength,
         'confidence': confidence,
         'source_type': source_type,
+        'source_anchors': source_anchors or [],
         'access_count': 0,
         'created_at': now.isoformat(),
         'last_accessed': now.isoformat()
@@ -408,16 +412,20 @@ if __name__ == '__main__':
         no_reindex = '--no-reindex' in sys.argv
         confidence = 1.0
         source_type = 'experiencia'
+        source_anchors = None
         for arg in sys.argv:
             if arg.startswith('--confidence='):
                 confidence = float(arg.split('=')[1])
             elif arg.startswith('--source='):
                 source_type = arg.split('=')[1]
+            elif arg.startswith('--anchors='):
+                import json
+                source_anchors = json.loads(arg.split('=', 1)[1])
         if no_reindex:
             _no_reindex_global = True
-            mid = add_memory(task, summary, kind, reindex=False, confidence=confidence, source_type=source_type)
+            mid = add_memory(task, summary, kind, reindex=False, confidence=confidence, source_type=source_type, source_anchors=source_anchors)
         else:
-            mid = add_memory(task, summary, kind, confidence=confidence, source_type=source_type)
+            mid = add_memory(task, summary, kind, confidence=confidence, source_type=source_type, source_anchors=source_anchors)
         print(f'[OK] Memory #{mid}: {task[:60]} (conf={confidence:.2f}, src={source_type})')
     elif cmd == 'query':
         text = sys.argv[2] if len(sys.argv) > 2 else None

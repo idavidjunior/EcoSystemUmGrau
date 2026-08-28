@@ -13554,5 +13554,90 @@
     "access_count": 0,
     "created_at": "2026-08-27T12:19:13.952478",
     "last_accessed": "2026-08-27T12:19:13.952478"
+  },
+  {
+    "id": 538,
+    "kind": "padrao",
+    "task": "Behavior slice: Boot sequence (flow)",
+    "summary": "Sequência de boot do EcoSystemUmGrau",
+    "project": "",
+    "tags": [
+      "behavior-slice",
+      "flow",
+      "boot",
+      "runtime",
+      "alta-confianca",
+      "ecosystemumgrau",
+      "sequência",
+      "sequence",
+      "slice"
+    ],
+    "metadata": {
+      "slice_id": "slice:boot_sequence:f1aa73f7",
+      "slice_kind": "flow",
+      "steps_count": 3,
+      "evidence_confidence": "proven",
+      "evidence_provenance": "deterministic"
+    },
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "access_count": 0,
+    "created_at": "2026-08-27T21:52:03.350158",
+    "last_accessed": "2026-08-27T21:52:03.350158"
+  },
+  {
+    "id": 539,
+    "kind": "episodio",
+    "task": "Teste source_anchors",
+    "summary": "Verifica se source anchors funciona",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "funciona",
+      "anchors",
+      "verifica",
+      "source",
+      "teste"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "experiencia",
+    "source_anchors": [
+      {
+        "filePath": "scripts/test.py",
+        "lineStart": 10,
+        "lineEnd": 15,
+        "snippet": "def test():"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-27T21:55:12.586779",
+    "last_accessed": "2026-08-27T21:55:12.586779"
+  },
+  {
+    "id": 540,
+    "kind": "erro",
+    "task": "Eliminar duplicidade de narradores (narrador_desktop + widget_edge falando a mesma resposta 2x)",
+    "summary": "Causa raiz: narrador_desktop.py (processo standalone) e widget_edge.py (thread _narrador_loop integrada) ambos liam o mesmo SQLite e falavam via TTS, cada um com _FALADOS próprio em memória. A posição narrador_posicao.json ficou corrompida (log de instalação VC_redist), fazendo ultimo_ts=0 e relendo/falando todo o histórico em loop. Correção: (1) fonte única = narrador integrado no widget_edge.py; (2) narrador_desktop.py virou guard que detecta widget e só inicia o widget (pythonw, sem janela) se ausente; (3) criado narrador_dedup.py (cache em disco runtime/falados_cache.json, TTL 120s, escrita atômica) compartilhado pelos narradores; (4) _ler_posicao_narrador resiliente: se corrompido retorna time.time()*1000 em vez de 0 (evita reler histórico); (5) jarvis_audio.py narrador_rodando() agora detecta widget_edge como fonte única e limpa PID stale; (6) todos os lançadores usam pythonw.exe (sem janelas). Resultado: 1 narrador (widget_edge) + 1 tts_service, log sem pares duplicados.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "todo",
+      "memória",
+      "próprio",
+      "relendo",
+      "raiz",
+      "causa"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-27T22:29:12.956204",
+    "last_accessed": "2026-08-27T22:29:12.956204"
   }
 ]

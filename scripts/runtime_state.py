@@ -172,13 +172,15 @@ def load_checkpoint(cid=None):
 
 
 def restore(cid=None):
+    # Pre-restore backup: save current state before restoring
+    pre_restore_id = save_checkpoint('pre-restore')
     cp = load_checkpoint(cid)
     if not cp:
         return '[ERR] checkpoint não encontrado'
     state = cp['state']
     state['last_checkpoint'] = cp['id']
     save_state(state)
-    return f"[OK] restaurado checkpoint {cp['id']} ({cp.get('label')})"
+    return f"[OK] restaurado checkpoint {cp['id']} ({cp.get('label')}) — backup pré-restore: {pre_restore_id}"
 
 
 def list_checkpoints():

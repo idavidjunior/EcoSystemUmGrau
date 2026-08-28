@@ -62,6 +62,8 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:2px 0 8px;}
   <input id="rgFoco" type="range" min="0" max="1" step="0.01">
   <label class="linha">Vivacidade das cores <span id="valViva"></span></label>
   <input id="rgViva" type="range" min="0" max="1" step="0.05">
+  <label class="linha">Filtro temporal (decay) <span id="valDecay"></span></label>
+  <input id="rgDecay" type="range" min="0" max="1" step="0.01">
   <button id="btDecor" class="foco-btn">Pulsos decorativos <span id="estDecor"></span></button>
   <div class="ptitulo" style="margin-top:12px;">Sinapses novas (amarelo)</div>
   <button id="btNova" class="foco-btn">Destacar novas <span id="estNova"></span></button>
@@ -174,6 +176,45 @@ function salvarAjustes(){
   try{ if (window.pywebview && pywebview.api && pywebview.api.salvar_ajustes)
     pywebview.api.salvar_ajustes(JSON.stringify(AJUSTES)); }catch(e){}
 }
+
+// ===== STATE PERSISTENCE (camera, filters, decay) =====
+const STATE_API = 'http://localhost:8766/api/ecow/state';
+
+async function salvarEstado(){
+  const estado = {
+    camera: { rotY, rotX, zoom, panX, panY },
+    filtros: { filtro: FILTRO, decay: AJUSTES.decay || 0 },
+    ajustes: { foco: AJUSTES.foco, viva: AJUSTES.viva, decor: AJUSTES.decor,
+               novaH: AJUSTES.novaH, novaI: AJUSTES.novaI, novaB: AJUSTES.novaB, nova: AJUSTES.nova }
+  };
+  try {
+    await fetch(STATE_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ state: estado })
+    });
+  } catch (e) { /* silencioso */ }
+}
+
+async function carregarEstado(){
+  try {
+    const resp = await fetch(STATE_API);
+    if (resp.ok) {
+      const data = await resp.json();
+      const s = data.state || {};
+      if (s.camera) { rotY=s.camera.rotY||0.6; rotX=s.camera.rotX||-0.18;
+        zoom=s.camera.zoom||1; panX=s.camera.panX||0; panY=s.camera.panY||0;
+        alvoZoom=zoom; alvoPanX=panX; alvoPanY=panY; }
+      if (s.filtros) { FILTRO=s.filtros.filtro||null; AJUSTES.decay=s.filtros.decay||0; }
+      if (s.ajustes) { Object.assign(AJUSTES, s.ajustes); }
+    }
+  } catch (e) { /* silencioso */ }
+}
+
+// Auto-save a cada 5s
+setInterval(salvarEstado, 5000);
+// Carrega estado no boot
+carregarEstado();
 let FILTRO = null;               // cluster ativo no painel Foco (ou null)
 let VIS = null;                  // Uint8Array: 1 = no visivel
 let ARVIS = [];                  // arestas entre nos visiveis
@@ -388,7 +429,25 @@ cv.addEventListener('mousedown', e=>{
 window.addEventListener('mouseup', e=>{
   // clique (sem arraste) sobre um no: pausa o giro por 5s
   const moveu = Math.hypot(e.clientX-cliqueNoX, e.clientY-cliqueNoY) > 6;
-  if (arrastando && !moveu) pausaGiroAte = performance.now() + 5000;
+  if (arrastando && !moveu) {
+    pausaGiroAte = performance.now() + 5000;
+    // clique simples em no: abre arquivo se tiver filePath
+    const dpr = devicePixelRatio||1;
+    const mxP = e.clientX*dpr, myP = e.clientY*dpr, limiar = 36*dpr;
+    for (let i=0;i<NOS.length;i++){
+      if (VIS && !VIS[i]) continue;
+      const dx = SX[i]-mxP, dy = SY[i]-myP;
+      if (dx*dx+dy*dy < limiar*limiar){
+        const n = NOS[i];
+        const fp = n._filePath || n.filePath;
+        if (fp && window.pywebview && pywebview.api){
+          pywebview.api.abrir_arquivo ? pywebview.api.abrir_arquivo(fp) :
+            fetch('http://localhost:8766/open-file', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({path:fp})}).catch(()=>{});
+        }
+        break;
+      }
+    }
+  }
   emPan=false; arrastando=false; cv.classList.remove('girando');
 });
 window.addEventListener('mousemove', e=>{
@@ -790,12 +849,18 @@ function atualizarVis(){
   const agoraV = performance.now();
   const agoraS = Date.now()/1000;
   const SINAPSE_H = AJUSTES.novaH || 12;
+  const DECAY_MIN = AJUSTES.decay || 0;  // 0 a 1
   for (let i=0;i<NOS.length;i++){
     let vis = !FILTRO || NOS[i].cl===FILTRO;
     if (!vis && FILTRO==='__ativos')
       vis = agoraV-(ATIVOS.get(i)||-1e15)<JANELA_USO;
     if (!vis && FILTRO==='__novas')
       vis = NOS[i].tm && (agoraS - NOS[i].tm)/3600 >= 0 && (agoraS - NOS[i].tm)/3600 < SINAPSE_H;
+    // Filtro por decay score (Ebbinghaus)
+    if (vis && DECAY_MIN > 0) {
+      const ds = NOS[i]._decayScore || NOS[i].decayScore || 0;
+      if (ds < DECAY_MIN) vis = false;
+    }
     VIS[i]=vis?1:0;
   }
   for (const [a,b] of ARESTAS) if (VIS[a]&&VIS[b]) ARVIS.push([a,b]);
@@ -905,6 +970,15 @@ rgViva.addEventListener('input',()=>{
   AJUSTES.viva=+rgViva.value;
   valViva.textContent=Math.round(AJUSTES.viva*100)+'%';
   salvarAjustes();
+});
+
+const rgDecay=document.getElementById('rgDecay'), valDecay=document.getElementById('valDecay');
+rgDecay.value=AJUSTES.decay||0;
+valDecay.textContent=Math.round((AJUSTES.decay||0)*100)+'%';
+rgDecay.addEventListener('input',()=>{
+  AJUSTES.decay=+rgDecay.value;
+  valDecay.textContent=Math.round(AJUSTES.decay*100)+'%';
+  salvarAjustes(); atualizarVis();
 });
 
 function pintarDecor(){

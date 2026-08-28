@@ -420,111 +420,58 @@ def teste_audio():
     return 0
 
 
-def main():
-    # Previne instâncias múltiplas via trava atômica (O_EXCL)
+def _widget_rodando():
+    """True se o widget_edge (fonte única do narrador) está rodando."""
     import psutil
-    pid_file = ROOT / "runtime" / "narrador.pid"
-    pid_file.parent.mkdir(parents=True, exist_ok=True)
-    for _ in range(2):
+    for p in psutil.process_iter(["pid", "cmdline"]):
         try:
-            fd = os.open(str(pid_file), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-            os.write(fd, str(os.getpid()).encode())
-            os.close(fd)
-            break
-        except FileExistsError:
-            try:
-                old_pid = int(pid_file.read_text().strip())
-                if psutil.pid_exists(old_pid) and old_pid != os.getpid():
-                    p = psutil.Process(old_pid)
-                    cmd = " ".join(p.cmdline()).lower()
-                    if "narrador_desktop" in cmd:
-                        log(f"instância duplicada detectada (PID {old_pid}) - saindo")
-                        return
-            except (ValueError, psutil.NoSuchProcess, psutil.AccessDenied):
-                pass
-            try:
-                pid_file.unlink()
-            except FileNotFoundError:
-                pass
-    else:
-        log("não conseguiu travar PID - saindo")
-        return
+            cmd = " ".join(p.cmdline() or []).lower()
+            if "widget_edge.py" in cmd:
+                return True
+        except Exception:
+            pass
+    return False
 
-    ap = argparse.ArgumentParser(description="Narrador de voz do Jarvis no opencode desktop")
+
+def _iniciar_widget():
+    """Inicia o widget_edge silenciosamente (pythonw, sem janela)."""
+    import subprocess
+    pyw = sys.executable.replace("python.exe", "pythonw.exe")
+    if not os.path.exists(pyw):
+        pyw = sys.executable
+    try:
+        proc = subprocess.Popen(
+            [pyw, str(ROOT / "scripts" / "widget_edge.py")],
+            cwd=str(ROOT),
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+            close_fds=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        time.sleep(2)
+        return True
+    except Exception as e:
+        log(f"falha ao iniciar widget: {e}")
+        return False
+
+
+def main():
+    """Fonte única do narrador: o widget_edge.py (thread _narrador_loop).
+
+    Este script NUNCA narra em paralelo. Ele apenas garante que o widget
+    esteja rodando (com o narrador integrado). Se o widget já está ativo,
+    apenas atualiza o controle de narração e sai. Sem duplicidade.
+    """
+    ap = argparse.ArgumentParser(description="Guarantees o narrador único (widget_edge) do opencode desktop")
     ap.add_argument("--teste", action="store_true", help="fala uma frase de teste e sai")
-    ap.add_argument("--intervalo", type=float, default=0.5, help="segundos entre leituras do banco")
-    ap.add_argument("--voz", choices=["assistant", "user", "ambos"], default="assistant",
-                    help="quem narrar (padrao: assistant)")
-    ap.add_argument("--excluir", default=",".join(EXCLUIR_PADRAO),
-                    help="substrings de titulos de sessao a ignorar (separadas por virgula)")
     args = ap.parse_args()
     if args.teste:
         return teste_audio()
-    excluir = [x.strip().lower() for x in args.excluir.split(",") if x.strip()]
-    pos = ler_posicao()
-    narrador = Narrador(args.voz)
-    log(f"narrador iniciado (banco={DB.name}, intervalo={args.intervalo}s, voz={args.voz}, exclui={excluir})")
-    ultimo_ts = pos.get("ultimo_ts", 0)
-    conn = conectar()
-    estado_logado = None
-    try:
-        while True:
-            ativo = estado_ativo()
-            if ativo != estado_logado:
-                estado_logado = ativo
-                if ativo:
-                    log("narracao ATIVADA (AT ECO)")
-                else:
-                    # Distingue entre pausado e desativado lendo o estado completo
-                    try:
-                        if CONTROLE.exists():
-                            estado = json.loads(CONTROLE.read_text(encoding="utf-8"))
-                            if estado.get("ativo", True) and estado.get("pausado", False):
-                                log("narracao PAUSADA (PS ECO)")
-                            else:
-                                log("narracao DESATIVADA (DT ECO)")
-                        else:
-                            log("narracao DESATIVADA (DT ECO)")
-                    except Exception:
-                        log("narracao PAUSADA (PS ECO)")
-            novas = partes_novas(conn, ultimo_ts, excluir)
-            if novas:
-                textos = [t for _, _, _, t in novas]
-                # Se parar_fala.flag ativo, descarta buffer e não fala
-                if PARAR_FALA.exists():
-                    narrador.parar()
-                    log("buffer descartado (parar_fala.flag ativo)")
-                elif ativo:
-                    narrador.alimentar(textos)
-                ultimo_ts = max(x[0] for x in novas)
-                salvar_posicao({"ultimo_ts": ultimo_ts})
-            # Re-lê posição do disco periodicamente (widget pode ter resetado)
-            try:
-                pos_now = ler_posicao()
-                ts_now = pos_now.get("ultimo_ts", 0)
-                if ts_now > ultimo_ts:
-                    ultimo_ts = ts_now
-                    narrador.parar()  # descarta buffer obsoleto
-                    narrador = Narrador(args.voz)
-            except Exception:
-                pass
-            time.sleep(args.intervalo)
-    except KeyboardInterrupt:
-        log("narrador encerrado")
-    finally:
-        narrador.parar()
-        try:
-            conn.close()
-        except Exception:
-            pass
-        # Limpa PID file
-        try:
-            pid_file = ROOT / "runtime" / "narrador.pid"
-            if pid_file.exists():
-                pid_file.unlink()
-        except Exception:
-            pass
-    return 0
+    if _widget_rodando():
+        log("narrador único já ativo (widget_edge) - nada a fazer")
+        return 0
+    log("widget_edge ausente - iniciando narrador único")
+    return 0 if _iniciar_widget() else 1
 
 
 if __name__ == "__main__":

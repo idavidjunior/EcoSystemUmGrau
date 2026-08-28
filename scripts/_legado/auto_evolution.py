@@ -149,15 +149,15 @@ REFERENCE_CAPABILITIES = {
 ECOSYSTEM_CAPABILITIES = {
     'memory_engine': {
         'name': 'Motor de Memória (memory_engine.py)',
-        'description': 'Memória episódica com decay de Ebbinghaus, tipos: decisao/erro/padrao/episodio/contexto/preferencia',
-        'components': ['ebbinghaus_decay', 'semantic_tags', 'session_tracking', 'query_by_tag'],
-        'pattern': 'add(title, summary, kind) → query(termo) → context(project)',
+        'description': 'Memória episódica com decay de Ebbinghaus, tipos: decisao/erro/padrao/episodio/contexto/preferencia. JÁ TEM: confidence (float 0-1), source_type (provenance), source_anchors (evidence grounding)',
+        'components': ['ebbinghaus_decay', 'semantic_tags', 'session_tracking', 'query_by_tag', 'confidence', 'provenance', 'source_anchors'],
+        'pattern': 'add(task, summary, kind, confidence, source_type, source_anchors) → query(termo) → context(project)',
         'coverage': 'high',
     },
     'knowledge_graph': {
         'name': 'Knowledge Graph (knowledge_graph.py)',
-        'description': 'Grafo de conhecimento com BM25 semântico para busca',
-        'components': ['bm25_search', 'tfidf_index', 'nodes', 'edges'],
+        'description': 'Grafo de conhecimento com BM25 semântico para busca. JÁ TEM: confidence (float). FALTA: provenance enum, source_anchors por node/edge.',
+        'components': ['bm25_search', 'tfidf_index', 'nodes', 'edges', 'confidence_float'],
         'pattern': 'add_node → add_edge → search(query)',
         'coverage': 'high',
     },
@@ -170,9 +170,9 @@ ECOSYSTEM_CAPABILITIES = {
     },
     'runtime_state': {
         'name': 'Runtime Persistente (runtime_state.py)',
-        'description': 'Estado persistente entre sessões: projeto ativo, objetivo, última tarefa, pendências',
-        'components': ['state_persistence', 'checkpoint', 'restore', 'last_task'],
-        'pattern': 'set(key, value) → get(key) → checkpoint(label)',
+        'description': 'Estado persistente entre sessões: projeto ativo, objetivo, última tarefa, pendências. JÁ TEM: checkpoint, restore, list, pre-restore backup.',
+        'components': ['state_persistence', 'checkpoint', 'restore', 'last_task', 'pre_restore_backup'],
+        'pattern': 'set(key, value) → get(key) → checkpoint(label) → restore(cid)',
         'coverage': 'high',
     },
     'runtime_boot': {
@@ -265,6 +265,27 @@ ECOSYSTEM_CAPABILITIES = {
         'components': ['performance_tracking', 'limit_monitoring', 'auto_switch'],
         'pattern': 'monitor → metrics → switch_if_needed',
         'coverage': 'medium',
+    },
+    'behavior_slices': {
+        'name': 'Behavior Slices (behavior_slices.py)',
+        'description': 'Rastreio de fluxos de comportamento (flows) e changesets, com evidence-grounding (anchors, confidence, provenance). Inspirado no Cartographer.',
+        'components': ['flow_narratives', 'changeset_tracking', 'step_ordering', 'source_anchors', 'confidence_levels', 'provenance_tracking'],
+        'pattern': 'write_slice(name, kind, steps[], evidence) → query_slices(entity) → get_slice(id)',
+        'coverage': 'high',
+    },
+    'evidence_grounding': {
+        'name': 'Evidence-Grounding (memory_engine + behavior_slices)',
+        'description': 'Fatos com source anchors (file:line + snippet), confidence e provenance. Presente em memory_engine (source_anchors) e behavior_slices.',
+        'components': ['source_anchors', 'confidence_levels', 'provenance_tracking'],
+        'pattern': 'fact → anchors[] → confidence → provenance → reasoning',
+        'coverage': 'high',
+    },
+    'snapshots': {
+        'name': 'Snapshots & Restore (runtime_state.py)',
+        'description': 'Checkpoints com backup pré-restore atômico (os.replace) e cleanup automático.',
+        'components': ['atomic_write', 'prune_old', 'pre_restore_backup'],
+        'pattern': 'checkpoint(label) → restore(cid) → pre-restore backup',
+        'coverage': 'high',
     },
 }
 
@@ -374,13 +395,14 @@ def analyze_gaps() -> List[Gap]:
         ))
 
     # --- 5. Behavior Slices ---
-    if 'slice_store' not in eco_entity_types:
+    has_slices = any(s in eco_entity_types for s in ('flow_narratives', 'step_ordering', 'changeset_tracking'))
+    if not has_slices:
         gaps.append(Gap(
             reference_id='behavior:slices',
             reference_name='Behavior Slices',
             description='Fluxos de comportamento ordenados (orderados) e changesets de PR',
             severity='high',
-            ecosystem_equivalent=None,
+            ecosystem_equivalent='behavior_slices.py',
             action='create',
             rationale='O ecossistema não tem conceito de "fluxo de comportamento ordenado" — é essencial para auditar o que acontece quando X dispara.',
             effort='large',
@@ -402,7 +424,7 @@ def analyze_gaps() -> List[Gap]:
         ))
 
     # --- 7. Snapshots & Atomic Restore ---
-    has_snapshots = any('snapshot' in c.lower() for c in eco_entity_types)
+    has_snapshots = any(s in eco_entity_types for s in ('pre_restore_backup', 'atomic_write', 'checkpoint'))
     if not has_snapshots:
         gaps.append(Gap(
             reference_id='persistence:snapshots',
