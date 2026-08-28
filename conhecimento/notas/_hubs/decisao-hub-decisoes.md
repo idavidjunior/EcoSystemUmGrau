@@ -1,6 +1,6 @@
 # Decisoes
 
-**73 notas** conectadas a este hub.
+**74 notas** conectadas a este hub.
 
 
 ## Notas
@@ -10,6 +10,7 @@
 - [[album-art-download-com-redirect-loop-manual-instancefollowre]]
 - [[aprendizado-regra-de-fala-resumida-do-jarvis]]
 - [[atualização-ecosystemumgrau-auto-carregamento-gatilho-único-]]
+- [[auto-evolution-e-behavior-slices]]
 - [[botao-importar-unificado]]
 - [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]

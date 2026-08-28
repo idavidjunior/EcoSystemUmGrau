@@ -112,6 +112,7 @@ PROATIVA de RAM (alerta antes do limite) e a portabilidade da certificacao foren
 - [[aprendizado-regra-de-fala-resumida-do-jarvis]]
 - [[aprendizado-skill-auditoria-de-codigo-viva-com-evolução-gate]]
 - [[atualização-ecosystemumgrau-auto-carregamento-gatilho-único-]]
+- [[auto-evolution-e-behavior-slices]]
 - [[backup-de-apks-fontes-no-github]]
 - [[botao-importar-unificado]]
 - [[build-local-flutter-orquestrador]]

@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**224 notas** do cluster ecossistema.
+**225 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -81,6 +81,7 @@
 - [[atualização-ecosystemumgrau-auto-carregamento-gatilho-único-]]
 - [[auditoria-cerebro-vivo-fix-tema-padrao-e-bugs]]
 - [[authjson-com-entradas-de-chave-nvidia-disfarcadas-de-outros-]]
+- [[auto-evolution-e-behavior-slices]]
 - [[backup-de-apks-fontes-no-github]]
 - [[botao-importar-unificado]]
 - [[bug-parametro-pid-e-variavel-automatica-do-powershell]]

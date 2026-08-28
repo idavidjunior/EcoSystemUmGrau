@@ -75,6 +75,7 @@ HKUDS/CLI-Anything (MIT), metodologia GUI-to-CLI em 7 fases: análise do codebas
 - [[aprendizado-regra-de-fala-resumida-do-jarvis]]
 - [[aprendizado-skill-auditoria-de-codigo-viva-com-evolução-gate]]
 - [[atualização-ecosystemumgrau-auto-carregamento-gatilho-único-]]
+- [[auto-evolution-e-behavior-slices]]
 - [[backup-de-apks-fontes-no-github]]
 - [[botao-importar-unificado]]
 - [[build-local-flutter-orquestrador]]

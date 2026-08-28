@@ -18,3 +18,4 @@ contexto: Usuario pediu para verificar a conexao com o Jarvis. Constatado que a 
 - [[cluster-hub-ecossistema]]
 - [[integrity-guard-vigilante-dados]]
 - [[padrao-hub-padroes]]
+- [[retencao-opencode-db-vigilante]]

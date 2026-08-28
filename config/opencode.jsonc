@@ -153,6 +153,10 @@
     "bootstrap": {
       "description": "Bootstrap completo do agente: carrega runtime, contexto, perfil do usuário",
       "template": "!`python scripts/agent_bootstrap.py bootstrap $ARGUMENTS`"
+    },
+    "autoevolve": {
+      "description": "Auto-Evolução do Ecossistema: analisa capacidades externas (ex: Cartographer) vs as do ecossistema, detecta gaps e gera planos de evolução. Use /autoevolve scan, /autoevolve gaps, /autoevolve plan, /autoevolve assess, /autoevolve status",
+      "template": "Execute o Auto-Evolution Engine do EcoSystemUmGrau (responda sempre em pt-BR).\n\n1. Analise o argumento: \"$ARGUMENTS\"\n2. Se vazio ou 'scan': execute `python scripts/auto_evolution.py scan`\n3. Se 'gaps': execute `python scripts/auto_evolution.py gaps`\n4. Se 'plan': execute `python scripts/auto_evolution.py plan`\n5. Se 'assess': execute `python scripts/auto_evolution.py assess`\n6. Se 'status': execute `python scripts/auto_evolution.py status`\n7. Se 'evolve': execute `python scripts/auto_evolution.py evolve`\n8. Se 'evolve --apply': execute `python scripts/auto_evolution.py evolve --apply`\n9. Reporte o resultado de forma clara e objetiva, destacando os gaps de alta prioridade e o que já foi incorporado.\n\nComando: $ARGUMENTS"
     }
   },
   "agent": {
