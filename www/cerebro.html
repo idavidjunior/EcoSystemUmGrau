@@ -149,6 +149,7 @@ let FLASH_TMR = null;            // timer do aviso temporario na linha info
 let ATIVOS = new Map();          // indice -> ts(ms) do ultimo uso real da nota
 let ECO_FALANDO = false;         // Eco falando agora (dialogo_vivo.json)
 let ULT_BATIDA = 0;              // ts da ultima batida do heartbeat de voz
+let FALA_ROT = 0;                // cursor rotativo pelas sementes de fala
 const JANELA_USO = 600000;       // 10 min: validade do "uso recente"
 
 // ---------- telemetria Jarvis (eventos reais -> regioes do grafo) ----------
@@ -674,17 +675,29 @@ function dispararPulsos(t){
   if (ECO_FALANDO && t-ULT_BATIDA>620){
     ULT_BATIDA=t;
     garantirIncidencia();
-    const agoraB=performance.now();
-    let vivos=[];
-    for (const [i,ts] of ATIVOS)
-      if (i<NOS.length && agoraB-ts<JANELA_USO) vivos.push(i);
+    const fala = sementesDe('fala') || [];
+    if (fala.length){
+      // regiao de fala disparando em tempo real junto com a voz
+      const alvo = Math.min(3, 1 + ((t/620)|0) % 3);
+      for (let k=0;k<alvo;k++){
+        const i = fala[(FALA_ROT+k) % fala.length];
+        disparoNeural(i, 0.95, '#8be9fd', 0);
+      }
+      FALA_ROT = (FALA_ROT + 1) % fala.length;
+    }
     let i=-1;
-    if (vivos.length){
-      i=vivos[(Math.random()*vivos.length)|0];
-    } else if (window.__hubs && window.__hubs.size){
-      const ids=[...window.__hubs];
-      const no=MAPA.get(ids[(Math.random()*ids.length)|0]);
-      i=no?NOS.indexOf(no):-1;
+    if (fala.length < 3){
+      const agoraB=performance.now();
+      let vivos=[];
+      for (const [it,ts] of ATIVOS)
+        if (it<NOS.length && agoraB-ts<JANELA_USO) vivos.push(it);
+      if (vivos.length){
+        i=vivos[(Math.random()*vivos.length)|0];
+      } else if (window.__hubs && window.__hubs.size){
+        const ids=[...window.__hubs];
+        const no=MAPA.get(ids[(Math.random()*ids.length)|0]);
+        i=no?NOS.indexOf(no):-1;
+      }
     }
     if (i>=0){
       EXCITA[i]=Math.min(1.3,EXCITA[i]+0.35);
