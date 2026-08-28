@@ -189,6 +189,7 @@ aprendizado: >
 - [[modaldialog-overlay-detection]]
 - [[mvp-streamumgrau-flutter-supabase]]
 - [[módulo-de-compreensão-de-pedidos-mcp-compreensao-pedidos]]
+- [[narracao-seletiva-por-relevancia-no-narrador-edge]]
 - [[nodejs-commonjs-esm-e-resolução-de-módulos]]
 - [[nodejs-event-loop-e-io-não-bloqueante]]
 - [[nodejs-streams-e-backpressure]]

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-28T20:23:36.660968",
+  "last_updated": "2026-08-28T20:46:46.306444",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -2074,6 +2074,14 @@
       "extracted_at": "2026-08-28T20:22:26.513188",
       "merged_count": 7,
       "merged_at": "2026-08-28T20:22:42.501063"
+    },
+    {
+      "source": "opencode",
+      "title": "Narracao seletiva por relevancia no narrador Edge",
+      "action": "\"Usuario reclamou que o narrador fala sem parar e sem criterio. A causa era dupla: o filtro _deve_narrar do widget_edge.py tinha fallback 'conteudo' que narrava qualquer texto longo, e as clausulas de audio da Constituicao/AGENTS.md e do JARVIS_SYSTEM.md mandavam narrar 'o tempo todo' sem delimitar relevancia.\"",
+      "description": "---\ntipo: padrao\ntags: [narrador, widget, audio, fala, selecao, relevancia, jarvis, tts]\ndata: 2026-08-28\ncontexto: \"Usuario reclamou que o narrador fala sem parar e sem criterio. A causa era dupla: o filtro _deve_narrar do widget_edge.py tinha fallback 'conteudo' que narrava qualquer texto longo, e",
+      "domain": "general",
+      "extracted_at": "2026-08-28T20:46:14.373127"
     }
   ],
   "decisions": [

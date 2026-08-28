@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**229 notas** do cluster ecossistema.
+**230 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -168,6 +168,7 @@
 - [[mudar-config-mcp-de-objeto-para-array-no-opencodejson]]
 - [[mvp-streamumgrau-flutter-supabase]]
 - [[módulo-de-compreensão-de-pedidos-mcp-compreensao-pedidos]]
+- [[narracao-seletiva-por-relevancia-no-narrador-edge]]
 - [[narrador-morto-por-bloco-duplicado-falso-positivo-de-encodin]]
 - [[oficializacao-narrador-edge-cerebro-vivo]]
 - [[opencode-go-provider-crash-ao-processar-mensagem]]

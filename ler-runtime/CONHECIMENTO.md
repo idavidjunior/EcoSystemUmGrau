@@ -1,8 +1,8 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-28T20:23:36.908277
+**Exportado em:** 2026-08-28T20:46:47.469989
 **Projetos:** 4
-**Padroes Tecnicos:** 286
+**Padroes Tecnicos:** 287
 **Decisoes:** 80
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 74
@@ -917,6 +917,7 @@ decisao: Adicionar servidor MCP remoto "composio" no config/opencode.jsonc apont
 | 284 | opencode | Janela flutuante para visuais (sem navegador) |
 | 285 | opencode | Estilo por pedido (Power BI implementado) |
 | 286 | opencode+opencode+opencode+opencode+opencode+opencode+opencode | retencao opencode db vigilante |
+| 287 | opencode | Narracao seletiva por relevancia no narrador Edge |
 
 ## Bug Fixes e Corrigidos
 
@@ -2193,7 +2194,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-28T20:23:36.660968
+**Ultima atualizacao:** 2026-08-28T20:46:46.306444
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

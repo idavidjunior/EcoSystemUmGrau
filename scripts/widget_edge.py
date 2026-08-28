@@ -413,8 +413,10 @@ def _deve_narrar(texto):
     if _CONCLUSAO.search(texto[:200]):
         return True, "conclusao"
 
-    # 6. Texto longo o suficiente e não é processo → narrar
-    return True, "conteudo"
+    # 6. Sem sinal de conclusão/resultado/erro/imporância → NÃO narrar.
+    #    Regra de 28/08/2026 (pedido do usuário): fala apenas eventos
+    #    relevantes, silenciando o conteúdo comum de rotina.
+    return False, "sem relevancia"
 
 
 def _partes_novas(conn, ultimo_ts, excluir):

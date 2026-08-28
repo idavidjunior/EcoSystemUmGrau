@@ -181,6 +181,8 @@ O áudio deve ser claro, natural e informativo — como uma conversa humana rela
 
 A narração em áudio deve ser concisa e objetiva, seguindo o mesmo princípio da comunicação simples e direta. Narrar apenas passos relevantes, sem prolixidade.
 
+Narração seletiva por relevância (28/08/2026). Comunicar continuamente NÃO significa narrar tudo nem emendar uma fala atrás da outra. Narra-se apenas eventos relevantes: conclusões, erros, resultados, bloqueios, descobertas, alertas e transições importantes. Conteúdo comum de rotina, etapas intermediárias repetitivas, minutos detalhados e o texto integral de respostas NÃO são narrados em áudio. Se não há nada relevante a dizer, o agente fica em silêncio e só volta a falar quando houver um evento que valha a pena.
+
 Consequências
 Violação desta cláusula = quebra de confiança do ecossistema.
 
