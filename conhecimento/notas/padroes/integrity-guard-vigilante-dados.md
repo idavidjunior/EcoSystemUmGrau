@@ -18,4 +18,3 @@ contexto: O ecossistema sofreu corrupção de dados por mojibake (texto UTF-8 li
 - [[2026-08-04-persistencia-da-conexao-do-jarvis]]
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]
-- [[retencao-opencode-db-vigilante]]

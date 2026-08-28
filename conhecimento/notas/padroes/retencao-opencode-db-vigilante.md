@@ -1,12 +1,12 @@
 ---
-tags: [eventos, opencodeopencodeopencodeopencodeopencode, padrao, payload, repetem, sessão]
+tags: [eventos, opencodeopencodeopencodeopencodeopencodeopencode, padrao, payload, repetem, sessão]
 aliases: [retencao opencode db vigilante]
 date: 2026-08-27
 ---
 
 # retencao opencode db vigilante
 
-**Fonte:** opencode+opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -16,7 +16,5 @@ contexto: Verificação de espaço no C: revelou opencode.db com 5,9 GB. O openc
 decisao: Integrar a retenção do open
 ## Conexoes
 
-- [[2026-08-04-persistencia-da-conexao-do-jarvis]]
 - [[cluster-hub-ecossistema]]
-- [[integrity-guard-vigilante-dados]]
 - [[padrao-hub-padroes]]
