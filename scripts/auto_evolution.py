@@ -15,15 +15,27 @@ Uso:
     python scripts/auto_evolution.py gaps                # Mostra gaps vs referência
     python scripts/auto_evolution.py plan                # Gera plano de evolução
     python scripts/auto_evolution.py assess              # Auto-avaliação completa
-    python scripts/auto_evolution.py evolve [--apply]    # Executa evoluções (dry-run por padrão)
+    python scripts/auto_evolution.py evolve              # Dry-run do ciclo fechado (padrão, seguro)
+    python scripts/auto_evolution.py evolve --apply      # Executa evoluções via subagente
+    python scripts/auto_evolution.py evolve --apply --max-plans 1   # Limita a 1 plano
+    python scripts/auto_evolution.py evolve --apply --force         # Permite risco alto
+    python scripts/auto_evolution.py evolve --apply --no-preflight  # Audita sem preflight
     python scripts/auto_evolution.py status              # Status da auto-evolução
+
+Ciclo fechado: detecta → prioriza → avalia risco → checkpoint → delega →
+detecta mudanças → valida escopo → preflight técnico/ético → testes →
+persiste via gate → aprende. Em falha: rollback de código + estado,
+memória de erro preservada. O motor nunca altera o sistema diretamente.
 """
 
 import os
 import sys
 import json
 import re
+import shutil
 import hashlib
+import subprocess
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple, Set
@@ -36,11 +48,13 @@ RUNTIME = os.path.join(BASE, 'runtime')
 KNOWLEDGE = os.path.join(BASE, 'conhecimento')
 LEARNING_DIR = os.path.join(RUNTIME, 'learning')
 EVOLUTION_DIR = os.path.join(LEARNING_DIR, 'evolution')
+CYCLE_DIR = os.path.join(EVOLUTION_DIR, 'cycle')
+LOCK_FILE = os.path.join(EVOLUTION_DIR, '.evolve.lock')
 
 sys.path.insert(0, SCRIPTS)
 
 def _ensure_dirs():
-    for d in [RUNTIME, LEARNING_DIR, EVOLUTION_DIR]:
+    for d in [RUNTIME, LEARNING_DIR, EVOLUTION_DIR, CYCLE_DIR]:
         os.makedirs(d, exist_ok=True)
 
 
@@ -862,58 +876,654 @@ def _persist_evolution(assessment: Dict[str, Any]):
     return assess_file
 
 
-def run_evolution(apply_changes: bool = False) -> Dict[str, Any]:
-    """Executa ciclo completo de auto-evolução."""
+# ═══════════════════════════════════════════════════════════════════
+# 6. MOTOR DE INCORPORAÇÃO — CICLO FECHADO
+# ═══════════════════════════════════════════════════════════════════
+# O motor nunca altera o sistema diretamente. Ele orquestra, supervisiona,
+# valida e aprende. A alteração é sempre delegada a um executor externo.
+# Princípio: «O sistema pode mudar a si mesmo, mas nunca sem saber o que
+# pretende mudar, sem proteger o estado anterior, sem validar o resultado e
+# sem aprender com as consequências.»
+
+# Estados da máquina de estados (enxuta, funcional).
+STATE_DISCOVERED = 'discovered'
+STATE_CHECKPOINTED = 'checkpointed'
+STATE_DELEGATED = 'delegated'
+STATE_EXECUTING = 'executing'
+STATE_SCOPE_OK = 'scope_ok'
+STATE_PREFLIGHT_TECH = 'preflight_technical'
+STATE_PREFLIGHT_ETH = 'preflight_ethical'
+STATE_TESTING = 'testing'
+STATE_PERSISTING = 'persisting'
+STATE_COMPLETED = 'completed'
+STATE_NO_CHANGE = 'no_change'
+STATE_BLOCKED_RISK = 'blocked_risk'
+STATE_BLOCKED_EXTERNAL = 'blocked_external'
+STATE_TIMEOUT = 'timeout'
+STATE_VALIDATION_FAILED = 'validation_failed'
+STATE_ROLLED_BACK = 'rolled_back'
+STATE_ROLLBACK_FAILED = 'rollback_failed'
+STATE_SKIPPED = 'skipped'
+
+# Paths que nunca podem ser alterados por evolução (segurança).
+FORBIDDEN_PATHS = ['.env', 'credentials', 'runtime/secrets', 'config/opencode.jsonc', '.git/']
+
+
+def _process_alive(pid: int) -> bool:
+    """Verifica se um processo existe no Windows (tolerante a encoding OEM)."""
+    if not pid or pid <= 0:
+        return False
+    try:
+        r = subprocess.run(
+            ['tasklist', '/FI', f'PID eq {pid}', '/NH'],
+            capture_output=True, timeout=10,
+        )
+        out = r.stdout.decode('utf-8', errors='replace')
+        if not out.strip():
+            return False
+        # A saída de processo vivo contém o PID; a de "não encontrado" não.
+        return str(pid) in out
+    except Exception:
+        return True  # dúvida: mantém lock (conservador, evita execução concorrente)
+
+
+class EvolutionLock:
+    """Lock por repositório para impedir execução concorrente."""
+
+    def __init__(self, lock_path: str = LOCK_FILE):
+        self.lock_path = lock_path
+
+    def acquire(self, execution_id: str) -> bool:
+        _ensure_dirs()
+        if os.path.exists(self.lock_path):
+            # Trata lock órfão: se o PID que o criou não está mais vivo, libera.
+            try:
+                with open(self.lock_path, encoding='utf-8-sig') as f:
+                    data = json.load(f)
+                pid = data.get('pid')
+                if pid and not _process_alive(pid):
+                    print(f'[EVOLVE] Lock órfão removido (PID {pid} não está mais ativo).')
+                    os.remove(self.lock_path)
+                else:
+                    return False
+            except Exception:
+                return False
+        payload = {
+            'execution_id': execution_id,
+            'pid': os.getpid(),
+            'created_at': datetime.now().isoformat(),
+        }
+        with open(self.lock_path, 'w', encoding='utf-8') as f:
+            json.dump(payload, f)
+        return True
+
+    def release(self):
+        try:
+            if os.path.exists(self.lock_path):
+                os.remove(self.lock_path)
+        except OSError:
+            pass
+
+    def is_locked(self) -> bool:
+        return os.path.exists(self.lock_path)
+
+    def status(self) -> Optional[Dict[str, Any]]:
+        if not os.path.exists(self.lock_path):
+            return None
+        with open(self.lock_path, encoding='utf-8') as f:
+            return json.load(f)
+
+
+def _git_status() -> List[str]:
+    """Retorna lista de arquivos modificados/novos no git (read-only)."""
+    try:
+        r = subprocess.run(
+            ['git', 'status', '--porcelain'],
+            capture_output=True, text=True, cwd=BASE, timeout=15,
+        )
+        if r.returncode != 0:
+            return []
+        return [line.strip() for line in r.stdout.splitlines() if line.strip()]
+    except Exception:
+        return []
+
+
+def _snapshot_files(paths: List[str], snapshot_dir: str) -> List[Dict[str, Any]]:
+    """Cria snapshot (cópia) dos arquivos que serão alterados, para rollback."""
+    snapshots = []
+    for rel_path in paths:
+        src = os.path.join(BASE, rel_path)
+        if not os.path.exists(src):
+            continue
+        try:
+            dest = os.path.join(snapshot_dir, rel_path.replace('/', '__'))
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
+            shutil.copy2(src, dest)
+            snapshots.append({'rel': rel_path, 'snapshot': os.path.relpath(dest, BASE)})
+        except Exception as e:
+            print(f'[EVOLVE] Aviso: não foi possível snapshot de {rel_path}: {e}')
+    return snapshots
+
+
+def _restore_snapshots(snapshots: List[Dict[str, Any]]):
+    """Restaura arquivos a partir de um snapshot."""
+    for snap in snapshots:
+        rel = snap['rel']
+        snap_path = os.path.join(BASE, snap['snapshot'])
+        dest = os.path.join(BASE, rel)
+        try:
+            if os.path.exists(snap_path):
+                os.makedirs(os.path.dirname(dest), exist_ok=True)
+                shutil.copy2(snap_path, dest)
+        except Exception as e:
+            print(f'[EVOLVE] Erro no rollback de {rel}: {e}')
+
+
+def _detect_changes(before: List[str], after: List[str]) -> Tuple[str, List[str]]:
+    """Compara estado git antes/depois para detectar mudanças reais."""
+    new_changes = [c for c in after if c not in before]
+    if new_changes:
+        return 'mudanca_detectada', new_changes
+    return 'sem_mudanca', []
+
+
+def _validate_scope(changes: List[str], allowed_paths: List[str]) -> Tuple[bool, List[str]]:
+    """Valida se as mudanças estão dentro do escopo permitido."""
+    violations = []
+    for change in changes:
+        rel = change[3:].strip() if len(change) > 3 else change  # remove " M " prefix
+        rel = re.sub(r'^[A-Z? ]+\s+', '', change)
+        for forbidden in FORBIDDEN_PATHS:
+            if rel.startswith(forbidden):
+                violations.append(rel)
+        if allowed_paths:
+            in_scope = any(rel.startswith(p) for p in allowed_paths)
+            if not in_scope:
+                violations.append(rel)
+    return (len(violations) == 0, violations)
+
+
+def _run_executor(command: str, timeout_seconds: int) -> Dict[str, Any]:
+    """Executa um subagente externo com timeout e captura de saída."""
+    started = datetime.now().isoformat()
+    try:
+        r = subprocess.run(
+            command, shell=True, capture_output=True, text=True,
+            cwd=BASE, timeout=timeout_seconds,
+        )
+        status = 'success' if r.returncode == 0 else 'failed'
+        return {
+            'executor': 'opencode',
+            'command': command,
+            'started_at': started,
+            'finished_at': datetime.now().isoformat(),
+            'timeout_seconds': timeout_seconds,
+            'exit_code': r.returncode,
+            'execution_status': status,
+            'output': (r.stdout or '')[-2000:],
+            'error': (r.stderr or '')[-2000:],
+        }
+    except subprocess.TimeoutExpired:
+        return {
+            'executor': 'opencode',
+            'command': command,
+            'started_at': started,
+            'finished_at': datetime.now().isoformat(),
+            'timeout_seconds': timeout_seconds,
+            'exit_code': -1,
+            'execution_status': 'timeout',
+            'output': '',
+            'error': 'timeout',
+        }
+    except Exception as e:
+        return {
+            'executor': 'opencode',
+            'command': command,
+            'started_at': started,
+            'finished_at': datetime.now().isoformat(),
+            'timeout_seconds': timeout_seconds,
+            'exit_code': -1,
+            'execution_status': 'failed',
+            'output': '',
+            'error': str(e),
+        }
+
+
+def _run_preflight(preflight_script: str) -> Dict[str, Any]:
+    """Executa um script de preflight e retorna resultado."""
+    try:
+        r = subprocess.run(
+            [sys.executable, os.path.join(SCRIPTS, preflight_script)],
+            capture_output=True, text=True, cwd=BASE, timeout=120,
+        )
+        return {
+            'script': preflight_script,
+            'exit_code': r.returncode,
+            'passed': r.returncode == 0,
+            'output': (r.stdout or '')[-2000:],
+            'error': (r.stderr or '')[-2000:],
+        }
+    except subprocess.TimeoutExpired:
+        return {'script': preflight_script, 'exit_code': -1, 'passed': False,
+                'output': '', 'error': 'timeout'}
+    except Exception as e:
+        return {'script': preflight_script, 'exit_code': -1, 'passed': False,
+                'output': '', 'error': str(e)}
+
+
+def _run_tests() -> Dict[str, Any]:
+    """Executa testes do projeto (best-effort)."""
+    test_cmds = [
+        [sys.executable, os.path.join(SCRIPTS, 'valida_specs.py'), '--json'],
+    ]
+    for cmd in test_cmds:
+        try:
+            r = subprocess.run(cmd, capture_output=True, text=True, cwd=BASE, timeout=120)
+            return {'command': cmd, 'exit_code': r.returncode,
+                    'passed': r.returncode == 0, 'output': (r.stdout or '')[-1500:]}
+        except Exception as e:
+            return {'command': cmd, 'exit_code': -1, 'passed': False, 'output': str(e)}
+    return {'command': None, 'exit_code': 0, 'passed': True, 'output': ''}
+
+
+def _persist_via_gate() -> Dict[str, Any]:
+    """Persiste mudanças via gate oficial (persistencia.ps1). Nunca git direto."""
+    try:
+        r = subprocess.run(
+            ['powershell', '-NoProfile', '-Command',
+             r'& "scripts/persistencia.ps1" run-sync'],
+            capture_output=True, text=True, cwd=BASE, timeout=180,
+        )
+        return {'exit_code': r.returncode, 'passed': r.returncode == 0,
+                'output': (r.stdout or '')[-1500:], 'error': (r.stderr or '')[-1500:]}
+    except Exception as e:
+        return {'exit_code': -1, 'passed': False, 'output': '', 'error': str(e)}
+
+
+def _register_memory(kind: str, task: str, summary: str, metadata: Dict[str, Any] = None,
+                     source_anchors: List[Dict[str, Any]] = None):
+    """Registra memória de decisão ou erro (best-effort, nunca bloqueia)."""
+    try:
+        from memory_engine import add_memory
+        add_memory(
+            task=task, summary=summary, kind=kind,
+            tags=['auto-evolution', 'ciclo-fechado'],
+            confidence=0.9 if kind == 'decisao' else 0.7,
+            source_type='inferido',
+            source_anchors=source_anchors or [],
+            metadata=metadata or {},
+            reindex=False,
+        )
+    except Exception as e:
+        print(f'[EVOLVE] Aviso: memória não registrada: {e}')
+
+
+def _plan_fingerprint(plan: EvolutionPlan) -> str:
+    """Hash determinístico do plano para idempotência."""
+    gap_sig = f"{plan.gap.reference_id}:{plan.gap.reference_name}:{plan.gap.severity}"
+    files_sig = ','.join(sorted(plan.files_to_create + plan.files_to_modify))
+    steps_sig = ';'.join(plan.implementation_steps[:3])
+    return hashlib.sha256(f"{gap_sig}|{files_sig}|{steps_sig}".encode()).hexdigest()[:16]
+
+
+def _is_applied(fingerprint: str) -> bool:
+    """Verifica se um plano (por fingerprint) já foi aplicado."""
+    state_file = os.path.join(EVOLUTION_DIR, 'evolution_state.json')
+    if not os.path.exists(state_file):
+        return False
+    with open(state_file, encoding='utf-8') as f:
+        state = json.load(f)
+    applied = state.get('applied_plans', [])
+    return any(a.get('fingerprint') == fingerprint and a.get('final_status') == 'completed'
+               for a in applied)
+
+
+def _record_applied(fingerprint: str, record: Dict[str, Any]):
+    """Registra um plano aplicado para idempotência."""
+    state_file = os.path.join(EVOLUTION_DIR, 'evolution_state.json')
+    state = {}
+    if os.path.exists(state_file):
+        with open(state_file, encoding='utf-8') as f:
+            state = json.load(f)
+    applied = state.setdefault('applied_plans', [])
+    # Remove anterior com mesmo fingerprint para não duplicar
+    applied = [a for a in applied if a.get('fingerprint') != fingerprint]
+    applied.append({'fingerprint': fingerprint, **record})
+    state['applied_plans'] = applied[-50:]
+    _ensure_dirs()
+    tmp = state_file + '.tmp'
+    with open(tmp, 'w', encoding='utf-8') as f:
+        json.dump(state, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, state_file)
+
+
+def _save_cycle_record(record: Dict[str, Any]):
+    """Salva registro de execução do ciclo."""
+    _ensure_dirs()
+    ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+    fname = os.path.join(CYCLE_DIR, f'cycle_{ts}.json')
+    with open(fname, 'w', encoding='utf-8') as f:
+        json.dump(record, f, ensure_ascii=False, indent=2)
+    return fname
+
+
+def _print_cycle_report(records: List[Dict[str, Any]]):
+    """Imprime relatório do ciclo de evolução."""
+    print(f'\n{"="*60}')
+    print('  AUTO-EVOLUTION CYCLE')
+    print(f'{"="*60}\n')
+    for rec in records:
+        gap = rec.get('gap_id', '?')
+        name = rec.get('name', '?')
+        status = rec.get('final_status', '?')
+        print(f'  Plano: {gap} — {name}')
+        print(f'    Risco: {rec.get("risk", "?")} | Executor: {rec.get("executor", "?")}')
+        print(f'    Checkpoint: {rec.get("checkpoint", "?")} | Estado: {rec.get("final_state", "?")}')
+        print(f'    STATUS FINAL: {status.upper()}')
+        print()
+    total_completed = sum(1 for r in records if r['final_status'] == 'completed')
+    print(f'  Resumo: {len(records)} plano(s), {total_completed} concluído(s)')
+    print()
+
+
+def run_evolution(apply_changes: bool = False, max_plans: int = 0,
+                  force: bool = False, no_preflight: bool = False) -> Dict[str, Any]:
+    """Executa o ciclo fechado de auto-evolução.
+
+    apply_changes: se True, executa de verdade (delega a subagente). Se False, dry-run.
+    max_plans: limite de planos. No dry-run, 0 = mostra todos. No apply, 0 = não executa
+        nenhum (seguro por padrão — exige --max-plans N para aplicar).
+    force: permite planos de risco alto.
+    no_preflight: ignora preflights (apenas auditoria manual controlada).
+    """
+    _ensure_dirs()
     assessment = full_assessment()
     assess_file = _persist_evolution(assessment)
+    gaps = analyze_gaps()
+    plans = generate_evolution_plans(gaps)
 
-    result = {
+    records = []
+    applied_count = 0
+
+    if not apply_changes:
+        # Dry-run: mostra o que seria feito, sem alterar nada.
+        limit = max_plans if max_plans > 0 else len(plans)
+        for plan in plans[:limit]:
+            records.append({
+                'gap_id': plan.gap.reference_id,
+                'name': plan.gap.reference_name,
+                'risk': plan.gap.risk,
+                'executor': 'opencode' if plan.gap.effort != 'large' else 'ler',
+                'checkpoint': 'simulado',
+                'final_state': STATE_DISCOVERED,
+                'final_status': 'dry_run',
+            })
+        _print_cycle_report(records)
+        return {
+            'assessment_file': assess_file,
+            'gaps': assessment['gaps_detected'],
+            'plans': assessment['plans_generated'],
+            'applied': False,
+            'changes': records,
+            'mode': 'dry-run',
+        }
+
+    # ── Modo APPLY: ciclo fechado governado ──
+    # Lock de concorrência
+    execution_id = f"evo-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+    lock = EvolutionLock()
+    if not lock.acquire(execution_id):
+        return {'status': 'evolucao_bloqueada_por_lock',
+                'assessment_file': assess_file, 'applied': False,
+                'changes': [], 'lock': lock.status()}
+    try:
+        before = _git_status()
+        count = 0
+        for plan in plans:
+            if count >= max_plans:
+                break
+            record = _execute_plan(plan, before, force=force, no_preflight=no_preflight,
+                                   execution_id=execution_id)
+            records.append(record)
+            if record['final_status'] == 'completed':
+                count += 1
+            # Se rollback falhou, interrompe o ciclo (estado potencialmente inconsistente)
+            if record['final_status'] == 'rollback_failed':
+                break
+    finally:
+        lock.release()
+
+    _print_cycle_report(records)
+    return {
         'assessment_file': assess_file,
         'gaps': assessment['gaps_detected'],
         'plans': assessment['plans_generated'],
-        'applied': apply_changes,
-        'changes': [],
+        'applied': True,
+        'changes': records,
+        'mode': 'apply',
+        'execution_id': execution_id,
     }
 
-    if apply_changes:
-        # Implementar mudanças de baixo risco e pequeno esforço
-        for plan in sorted(
-            [p for p in generate_evolution_plans(analyze_gaps())
-             if p.gap.risk == 'low' and p.gap.effort == 'small'],
-            key=lambda p: p.priority
-        ):
-            change = _apply_plan(plan)
-            if change:
-                result['changes'].append(change)
 
-    return result
+def _execute_plan(plan: EvolutionPlan, git_before: List[str],
+                  force: bool, no_preflight: bool, execution_id: str) -> Dict[str, Any]:
+    """Executa um plano individual com checkpoint, validação e rollback."""
+    _ensure_dirs()
+    plan_snapshot_dir = os.path.join(CYCLE_DIR, f'plan_{datetime.now().strftime("%H%M%S%f")}')
+    os.makedirs(plan_snapshot_dir, exist_ok=True)
 
-
-def _apply_plan(plan: EvolutionPlan) -> Optional[Dict[str, Any]]:
-    """Aplica um plano de evolução de baixo risco."""
-    if plan.gap.risk != 'low' or plan.gap.effort != 'small':
-        return None
-
-    change = {
-        'gap': plan.gap.reference_id,
+    record = {
+        'plan_id': execution_id,
+        'gap_id': plan.gap.reference_id,
         'name': plan.gap.reference_name,
-        'status': 'dry_run',
-        'files': [],
+        'risk': plan.gap.risk,
+        'effort': plan.gap.effort,
+        'checkpoint': 'ok',
+        'executor': 'opencode' if plan.gap.effort != 'large' else 'ler',
+        'final_state': STATE_DISCOVERED,
+        'final_status': 'pending',
     }
 
-    # Para gaps de entity_kind ou relationship, apenas documentar
+    # 1. Gaps de documentação (entity_kind/relationship) não exigem execução real.
     if plan.gap.reference_id.startswith(('entity_kind:', 'relationship:')):
-        change['status'] = 'documented'
-        change['note'] = 'Gap documentado para implementação futura'
-        return change
+        record['final_state'] = STATE_SKIPPED
+        record['final_status'] = 'skipped'
+        record['note'] = 'Gap de ontologia — documentado para implementação futura'
+        return record
 
-    # Para confidence/provenance, adicionar ao knowledge_graph
-    if plan.gap.reference_id in ('evidence:provenance', 'learning:confidence_tracking'):
-        change['status'] = 'deferred'
-        change['note'] = 'Requer alteração de schema — documentado para implementação futura'
-        return change
+    # 2. Idempotência: plano já aplicado?
+    fp = _plan_fingerprint(plan)
+    if _is_applied(fp):
+        record['final_state'] = STATE_SKIPPED
+        record['final_status'] = 'pulado_por_idempotencia'
+        record['note'] = 'Plano já aplicado anteriormente (mesmo fingerprint)'
+        return record
 
-    return change
+    # 3. Avaliação de risco
+    if plan.gap.risk == 'high' and not force:
+        record['final_state'] = STATE_BLOCKED_RISK
+        record['final_status'] = 'bloqueado_por_risco'
+        record['note'] = 'Risco alto requer --force'
+        return record
+
+    # 4. Verificar executor disponível
+    executor_available = shutil.which('opencode') is not None or shutil.which('ler') is not None
+    if not executor_available:
+        record['final_state'] = STATE_BLOCKED_EXTERNAL
+        record['final_status'] = 'bloqueado_externo'
+        record['note'] = 'Nenhum executor (opencode/ler) disponível'
+        return record
+
+    # 5. Checkpoint obrigatório (snapshot de código + runtime)
+    files_to_touch = list(set(plan.files_to_create + plan.files_to_modify))
+    snapshots = _snapshot_files(files_to_touch, plan_snapshot_dir)
+    try:
+        from runtime_state import save_checkpoint
+        cp_id = save_checkpoint(f'auto-evolve-{plan.gap.reference_id}')
+    except Exception as e:
+        cp_id = None
+        print(f'[EVOLVE] Aviso: checkpoint runtime: {e}')
+    if not files_to_touch and cp_id is None:
+        record['final_state'] = STATE_CHECKPOINTED
+        record['checkpoint'] = 'parcial'
+    record['snapshots'] = snapshots
+    record['runtime_checkpoint'] = cp_id
+
+    # 6. Montar comando de delegação
+    steps_desc = ' | '.join(plan.implementation_steps)
+    if shutil.which('opencode'):
+        cmd = (f'opencode run --model nvidia/deepseek-ai/deepseek-v4-flash '
+               f'--agent general "Execute o plano de evolução do EcoSystemUmGrau. '
+               f'Objetivo: {plan.gap.reference_name}. {steps_desc}. '
+               f'Respeite os arquivos: {files_to_touch}. Trabalhe na raiz do projeto '
+               f'C:/Users/David Jr/Documents/Default Project/EcoSystemUmGrau. '
+               f'Retorne o que foi alterado."')
+    else:
+        cmd = (f'ler "{plan.gap.reference_name}. {steps_desc} '
+               f'(respete: {files_to_touch})"')
+
+    timeout_seconds = 900 if plan.gap.effort == 'large' else 300
+    record['command'] = cmd
+    record['timeout_seconds'] = timeout_seconds
+
+    # 7. Delegar execução
+    record['final_state'] = STATE_EXECUTING
+    exec_result = _run_executor(cmd, timeout_seconds)
+
+    if exec_result['execution_status'] == 'timeout':
+        record['execution'] = exec_result
+        record['final_state'] = STATE_TIMEOUT
+        record['final_status'] = 'timeout'
+        # Avaliar se houve mudança parcial → rollback
+        after = _git_status()
+        status, changes = _detect_changes(git_before, after)
+        if status == 'mudanca_detectada':
+            _restore_snapshots(snapshots)
+            record['rollback'] = 'ok'
+            record['final_status'] = 'rolled_back'
+        _register_memory('erro', f'Timeout na evolução: {plan.gap.reference_name}',
+                         f'Subagente excedeu {timeout_seconds}s.', {'gap': plan.gap.reference_id})
+        return record
+
+    if exec_result['execution_status'] == 'failed':
+        record['execution'] = exec_result
+        record['final_state'] = STATE_VALIDATION_FAILED
+        record['final_status'] = 'execution_failed'
+        _register_memory('erro', f'Falha na execução: {plan.gap.reference_name}',
+                         f'Exit {exec_result.get("exit_code")}. {exec_result.get("error", "")}',
+                         {'gap': plan.gap.reference_id})
+        return record
+
+    record['execution'] = exec_result
+
+    # 8. Detecção de mudanças
+    after = _git_status()
+    change_status, changes = _detect_changes(git_before, after)
+    if change_status == 'sem_mudanca':
+        record['final_state'] = STATE_NO_CHANGE
+        record['final_status'] = 'sem_mudanca'
+        record['note'] = 'Executor terminou com sucesso mas nada mudou'
+        return record
+    record['changes'] = changes
+
+    # 9. Validação de escopo
+    allowed_paths = [p for p in files_to_touch if not p.startswith('scripts/_legado')]
+    scope_ok, violations = _validate_scope(changes, allowed_paths)
+    if not scope_ok:
+        record['final_state'] = STATE_VALIDATION_FAILED
+        record['final_status'] = 'alteracao_invalida'
+        record['violations'] = violations
+        _restore_snapshots(snapshots)
+        record['rollback'] = 'ok'
+        record['final_status'] = 'rolled_back'
+        _register_memory('erro', f'Alteração fora de escopo: {plan.gap.reference_name}',
+                         f'Violou: {violations}', {'gap': plan.gap.reference_id})
+        return record
+
+    # 10. Preflight técnico (obrigatório salvo --no-preflight)
+    if no_preflight:
+        record['preflight_technical'] = {'passed': None, 'note': 'ignorado por --no-preflight'}
+    else:
+        pt = _run_preflight('preflight_check.py')
+        record['preflight_technical'] = pt
+        if not pt['passed']:
+            record['final_state'] = STATE_VALIDATION_FAILED
+            record['final_status'] = 'validation_failed'
+            _restore_snapshots(snapshots)
+            record['rollback'] = 'ok'
+            record['final_status'] = 'rolled_back'
+            _register_memory('erro', f'Preflight técnico falhou: {plan.gap.reference_name}',
+                             f'Exit {pt.get("exit_code")}. {pt.get("error", "")}',
+                             {'gap': plan.gap.reference_id})
+            return record
+
+    # 11. Preflight ético
+    if no_preflight:
+        record['preflight_ethical'] = {'passed': None, 'note': 'ignorado por --no-preflight'}
+    else:
+        pe = _run_preflight('preflight_etica.py')
+        record['preflight_ethical'] = pe
+        if not pe['passed']:
+            record['final_state'] = STATE_VALIDATION_FAILED
+            record['final_status'] = 'validation_failed'
+            _restore_snapshots(snapshots)
+            record['rollback'] = 'ok'
+            record['final_status'] = 'rolled_back'
+            _register_memory('erro', f'Preflight ético falhou: {plan.gap.reference_name}',
+                             f'Exit {pe.get("exit_code")}. {pe.get("error", "")}',
+                             {'gap': plan.gap.reference_id})
+            return record
+
+    # 12. Testes
+    test_result = _run_tests()
+    record['tests'] = test_result
+    if not test_result['passed']:
+        record['final_state'] = STATE_VALIDATION_FAILED
+        record['final_status'] = 'validation_failed'
+        _restore_snapshots(snapshots)
+        record['rollback'] = 'ok'
+        record['final_status'] = 'rolled_back'
+        _register_memory('erro', f'Testes falharam: {plan.gap.reference_name}',
+                         test_result.get('output', '')[:300],
+                         {'gap': plan.gap.reference_id})
+        return record
+
+    # 13. Persistir via gate
+    persist = _persist_via_gate()
+    record['persistence'] = persist
+    if not persist['passed']:
+        record['final_state'] = STATE_PERSISTING
+        record['final_status'] = 'persistence_failed'
+        _register_memory('erro', f'Persistência falhou: {plan.gap.reference_name}',
+                         persist.get('error', '')[:300], {'gap': plan.gap.reference_id})
+        return record
+
+    # 14. Registrar memória de decisão + idempotência + estado
+    record['final_state'] = STATE_COMPLETED
+    record['final_status'] = 'completed'
+    _record_applied(fp, {'gap_id': plan.gap.reference_id,
+                         'final_status': 'completed',
+                         'executor': record['executor'],
+                         'completed_at': datetime.now().isoformat()})
+    _register_memory(
+        'decisao', f'Evolução aplicada: {plan.gap.reference_name}',
+        f'Gap {plan.gap.reference_id} implementado via {record["executor"]}. '
+        f'Validações: técnico={record.get("preflight_technical", {}).get("passed")}, '
+        f'ético={record.get("preflight_ethical", {}).get("passed")}, testes=OK.',
+        {'gap': plan.gap.reference_id, 'plan': plan.gap.reference_name,
+         'executor': record['executor']},
+        source_anchors=[{'filePath': 'scripts/auto_evolution.py', 'lineStart': 1,
+                         'lineEnd': 20, 'snippet': 'Ciclo fechado de auto-evolução'}],
+    )
+
+    # 15. Limpar snapshot do plano (evolução aprovada e persistida)
+    try:
+        shutil.rmtree(plan_snapshot_dir, ignore_errors=True)
+    except Exception:
+        pass
+
+    _save_cycle_record(record)
+    return record
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -1060,16 +1670,29 @@ def main():
 
     elif cmd == 'evolve':
         apply = '--apply' in sys.argv
-        result = run_evolution(apply_changes=apply)
-        print(f'\nResultado da evolução:')
-        print(f'  Assessment: {result["assessment_file"]}')
-        print(f'  Gaps: {result["gaps"]}')
-        print(f'  Planos: {result["plans"]}')
-        print(f'  Aplicado: {result["applied"]}')
-        if result['changes']:
-            print(f'  Mudanças aplicadas: {len(result["changes"])}')
-            for c in result['changes']:
-                print(f'    - {c["name"]}: {c["status"]}')
+        force = '--force' in sys.argv
+        no_preflight = '--no-preflight' in sys.argv
+        max_plans = 0
+        for i, arg in enumerate(sys.argv):
+            if arg == '--max-plans' and i + 1 < len(sys.argv):
+                try:
+                    max_plans = int(sys.argv[i + 1])
+                except ValueError:
+                    max_plans = 0
+        result = run_evolution(apply_changes=apply, max_plans=max_plans,
+                               force=force, no_preflight=no_preflight)
+        if result.get('status') == 'evolucao_bloqueada_por_lock':
+            print(f'\nEVOLUÇÃO BLOQUEADA POR LOCK')
+            print(f'Outra execução está em andamento: {result.get("lock")}')
+        elif not apply:
+            print(f'\n[DRY-RUN] Nenhuma mudança real foi feita.')
+            print(f'Assessment: {result["assessment_file"]}')
+            print(f'Gaps: {result["gaps"]} | Planos: {result["plans"]}')
+        else:
+            print(f'\nResultado da evolução (apply):')
+            print(f'  Assessment: {result["assessment_file"]}')
+            print(f'  Execution ID: {result.get("execution_id")}')
+            print(f'  Planos processados: {len(result["changes"])}')
 
     elif cmd == 'status':
         _print_status()
