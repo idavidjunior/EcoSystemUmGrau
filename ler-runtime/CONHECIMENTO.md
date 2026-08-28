@@ -1,11 +1,11 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-28T08:23:41.847280
+**Exportado em:** 2026-08-28T14:08:59.244935
 **Projetos:** 4
 **Padroes Tecnicos:** 286
 **Decisoes:** 78
 **Bug Fixes:** 52
-**Padroes Cognitivos:** 70
+**Padroes Cognitivos:** 72
 **Heuristicas:** 32
 **Frameworks:** 10
 **Missoes Aprendidas:** 134
@@ -2036,6 +2036,28 @@ impacto: Ollama 100% no E: com 5 modelos; espelho do ecossistema no E:.
 Causa raiz: o exFAT do E: tinha corrupção estrutural de diretório — cada leitor
 (PowerShell, Python
 
+### ﻿---
+**Dominio:** general
+**Fonte:** opencode
+
+﻿---
+tipo: decisao
+tags: [narrador, edge, widget, pausa, cerebro]
+data: 2026-08-28
+contexto: Pedido de botao pausar/parar no widget. A primeira implementacao foi colocada no Cerebro Vivo (www/cerebro.html + widget_grafo.py), mas o alvo correto era a janela Edge (widget_edge.py), onde roda o motor de narracao.
+decisao: Reverter as mudancas do Cerebro e implementar Pausar/Retomar no Edge. EdgeApi ganhou pause()/resume() e status() passou a retornar pausado. UI www/index.html ganhou o botao btnPaus
+
+### ﻿---
+**Dominio:** general
+**Fonte:** opencode
+
+﻿---
+tipo: decisao
+tags: [narrador, edge, widget, pausa, cerebro]
+data: 2026-08-28
+contexto: Pedido de botao pausar/parar no widget. A primeira implementacao foi colocada no Cerebro Vivo (www/cerebro.html + widget_grafo.py), mas o alvo correto era a janela Edge (widget_edge.py), onde roda o motor de narracao.
+decisao: Reverter as mudancas do Cerebro e implementar Pausar/Retomar no Edge. EdgeApi ganhou pause()/resume() e status() passou a retornar pausado. UI www/index.html ganhou o botao btnPaus
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -2130,7 +2152,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-28T08:23:41.529118
+**Ultima atualizacao:** 2026-08-28T14:08:59.051261
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

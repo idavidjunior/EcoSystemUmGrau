@@ -167,9 +167,9 @@ function Invoke-PushELimpeza {
             try {
                 $hdTracked = git -C $hdExterno status --porcelain 2>$null
                 $hdBloqueio = @($hdTracked | Where-Object {
-                    $_ -notmatch '^\?\?'
-                    -and $_ -notmatch 'Projetos/'
-                    -and $_ -notmatch 'persistencia\.json'
+                    $_ -notmatch '^\?\?' -and
+                    $_ -notmatch 'Projetos/' -and
+                    $_ -notmatch 'persistencia\.json'
                 })
                 if ($hdBloqueio.Count -gt 0) {
                     Write-Log "HD EXTERNO sync adiado: $($hdBloqueio.Count) alteracao(es) local(ais) no espelho (preservada(s))"

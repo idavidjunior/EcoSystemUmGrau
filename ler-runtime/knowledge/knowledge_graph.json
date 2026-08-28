@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-28T08:23:41.529118",
+  "last_updated": "2026-08-28T14:08:59.051261",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -3594,6 +3594,20 @@
       "domain": "general",
       "body": "﻿---\ntipo: decisao\ntags: [ollama, hd-externo, ntfs, exfat, reconstrucao]\ndata: 2026-08-27\ncontexto: HD externo E: estava com exFAT corrompido (leituras inconsistentes), bloqueando o Ollama.\ndecisao: Reformatar E: para NTFS e reconstruir o Ollama + espelhar o EcoSystemUmGrau.\nimpacto: Ollama 100% no E: com 5 modelos; espelho do ecossistema no E:.\n---\n\n## Reconstrução do Ollama no HD Externo (NTFS)\n\nCausa raiz: o exFAT do E: tinha corrupção estrutural de diretório — cada leitor\n(PowerShell, Python",
       "extracted_at": "2026-08-27T08:18:49.749089"
+    },
+    {
+      "source": "opencode",
+      "title": "﻿---",
+      "domain": "general",
+      "body": "﻿---\ntipo: decisao\ntags: [narrador, edge, widget, pausa, cerebro]\ndata: 2026-08-28\ncontexto: Pedido de botao pausar/parar no widget. A primeira implementacao foi colocada no Cerebro Vivo (www/cerebro.html + widget_grafo.py), mas o alvo correto era a janela Edge (widget_edge.py), onde roda o motor de narracao.\ndecisao: Reverter as mudancas do Cerebro e implementar Pausar/Retomar no Edge. EdgeApi ganhou pause()/resume() e status() passou a retornar pausado. UI www/index.html ganhou o botao btnPaus",
+      "extracted_at": "2026-08-28T14:05:10.028672"
+    },
+    {
+      "source": "opencode",
+      "title": "﻿---",
+      "domain": "general",
+      "body": "﻿---\ntipo: decisao\ntags: [narrador, edge, widget, pausa, cerebro]\ndata: 2026-08-28\ncontexto: Pedido de botao pausar/parar no widget. A primeira implementacao foi colocada no Cerebro Vivo (www/cerebro.html + widget_grafo.py), mas o alvo correto era a janela Edge (widget_edge.py), onde roda o motor de narracao.\ndecisao: Reverter as mudancas do Cerebro e implementar Pausar/Retomar no Edge. EdgeApi ganhou pause()/resume() e status() passou a retornar pausado. UI www/index.html ganhou o botao btnPaus",
+      "extracted_at": "2026-08-28T14:08:26.049484"
     }
   ],
   "heuristics": [
