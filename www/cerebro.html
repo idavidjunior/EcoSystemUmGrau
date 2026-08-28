@@ -142,6 +142,9 @@ let ARESTAS = [];                // [i,j] indices em NOS
 let PULSOS = [];                 // {e, t, v, tr} tr=pulso de evento real
 let INCIDENCIA = null;           // indice no -> arestas incidentes
 let RINGS = [];                  // aneis de cognicao {i, t} (atividade real)
+let PARTICULAS = [];             // particulas luminosas do disparo {x,y,vx,vy,cor,tam,vida,nac}
+let HALOS = [];                  // halos destacados do disparo {i,t,cor,int}
+let GERACAO = 0;                 // versao dos dados (invalida timers de cascata)
 let FLASH_TMR = null;            // timer do aviso temporario na linha info
 let ATIVOS = new Map();          // indice -> ts(ms) do ultimo uso real da nota
 let ECO_FALANDO = false;         // Eco falando agora (dialogo_vivo.json)
@@ -294,6 +297,9 @@ window.cerebroCarregar = function(dados){
   EXCITA = new Float32Array(NOS.length);
   PULSOS = [];
   RINGS = [];
+  PARTICULAS = [];
+  HALOS = [];
+  GERACAO++;
   ATIVOS.clear();
   ECO_FALANDO = false;
   const hubs = [...NOS].sort((p,q)=>q.g-p.g).slice(0,16).map(n=>n.id);
@@ -390,6 +396,7 @@ window.cerebroAtividade = function(tipo, nomes){
     if (i < 0) continue;
     achou++;
     ATIVOS.set(i, performance.now());
+    disparoNeural(i, tipo==='cognicao' ? 1.2 : 0.9, corDe(no.cl), 0);
     EXCITA[i] = Math.min(1.2, EXCITA[i] + (tipo==='cognicao' ? 1.2 : 0.9));
     RINGS.push({i, t:0});
     const ks = INCIDENCIA.get(i)||[];
@@ -439,6 +446,7 @@ window.addEventListener('mouseup', e=>{
       const dx = SX[i]-mxP, dy = SY[i]-myP;
       if (dx*dx+dy*dy < limiar*limiar){
         const n = NOS[i];
+        disparoNeural(i, 1.0, corDe(n.cl), 0);
         const fp = n._filePath || n.filePath;
         if (fp && window.pywebview && pywebview.api){
           pywebview.api.abrir_arquivo ? pywebview.api.abrir_arquivo(fp) :
@@ -513,6 +521,61 @@ function garantirIncidencia(){
     INCIDENCIA.get(b).push(k);
   }
   return INCIDENCIA;
+}
+
+// ---------- disparo neural destacado ----------
+// Toque/acesso a um no: highlight intenso + particulas + propagacao em cascata.
+function disparoNeural(i, intensidade, cor, profundidade){
+  if (i<0 || i>=NOS.length) return;
+  garantirIncidencia();
+  const prof = profundidade || 0;
+  // 1) highlight: pico de excitacao + halo nitido
+  EXCITA[i] = Math.min(1.35, Math.max(EXCITA[i], intensidade));
+  HALOS.push({i, t:0, cor, int:Math.min(1, intensidade)});
+  RINGS.push({i, t:0});
+  // 2) particulas luminosas: 15-30 por disparo
+  const nP = 15 + Math.floor(Math.random()*16);
+  emitirParticulas(i, cor, nP, intensidade);
+  // pulsos de sinapse pelos canais do no
+  const ksP = INCIDENCIA.get(i)||[];
+  const nPu = Math.min(ksP.length, prof===0 ? 4 : 2);
+  for (let k=0;k<nPu;k++){
+    PULSOS.push({e: ksP[(Math.random()*ksP.length)|0],
+                 t:-0.05, v:1.0+Math.random()*0.8, tr:true});
+  }
+  // 3) propagate: ativa vizinhos conectados com delay suave
+  if (prof < 3){
+    const ks = INCIDENCIA.get(i)||[];
+    const nViz = Math.min(ks.length, prof===0 ? 6 : (prof===1 ? 4 : 2));
+    const ger = GERACAO;
+    for (let k=0;k<nViz;k++){
+      const eI = ks[(Math.random()*ks.length)|0];
+      const [a,b] = ARVIS[eI % ARVIS.length];
+      const j = (a===i) ? b : a;
+      if (VIS && !VIS[j]) continue;
+      setTimeout(()=>{
+        if (ger !== GERACAO) return;
+        disparoNeural(j, intensidade*0.55, cor, prof+1);
+      }, 160 + Math.random()*160);
+    }
+  }
+}
+function emitirParticulas(i, cor, n, intensidade){
+  const dpr = devicePixelRatio||1;
+  const cx = SX[i] !== undefined ? SX[i] : cv.width/2;
+  const cy = SY[i] !== undefined ? SY[i] : cv.height/2;
+  const base = (56 + 130*intensidade) * dpr;
+  for (let k=0;k<n;k++){
+    const a = Math.random()*6.283;
+    const v = base*(0.6+Math.random()*0.9);
+    PARTICULAS.push({x:cx, y:cy,
+      vx:Math.cos(a)*v, vy:Math.sin(a)*v,
+      cor: Math.random()<0.7 ? cor : '#ffffff',
+      tam:(1.4+Math.random()*1.8)*dpr,
+      vida:0.34+Math.random()*0.22,
+      nac:performance.now()});
+  }
+  if (PARTICULAS.length>600) PARTICULAS.splice(0, PARTICULAS.length-600);
 }
 
 function construirJAdj(){
@@ -785,6 +848,49 @@ function desenhar(t, dt){
     }
     ctx.globalAlpha=1;
   }
+
+  // halos destacados do disparo neural (flash curto e intenso)
+  for (let hi=HALOS.length-1; hi>=0; hi--){
+    const h = HALOS[hi];
+    h.t += dt/420;
+    if (h.t>=1){ HALOS.splice(hi,1); continue; }
+    const prof=Math.max(0,Math.min(1,(SZ[h.i]+900)/1800));
+    const esc=SS[h.i]*(0.72+0.5*prof)*NOS[h.i].nasce;
+    if (esc>0.02){
+      const r=(2.3+Math.min(8.5,Math.sqrt(NOS[h.i].g)*1.25))*esc;
+      const a=(1-h.t)*h.int;
+      ctx.globalAlpha=Math.min(0.9,a*0.9);
+      ctx.strokeStyle=h.cor;
+      ctx.lineWidth=2.4*devicePixelRatio;
+      ctx.beginPath();
+      ctx.arc(SX[h.i],SY[h.i], r*(1.4+3.0*h.t)*devicePixelRatio,0,6.283);
+      ctx.stroke();
+      ctx.globalAlpha=Math.min(0.8,a);
+      ctx.fillStyle=h.cor;
+      ctx.beginPath();
+      ctx.arc(SX[h.i],SY[h.i], r*0.9*devicePixelRatio,0,6.283);
+      ctx.fill();
+    }
+    ctx.globalAlpha=1;
+  }
+
+  // particulas luminosas do disparo neural
+  for (let pi=PARTICULAS.length-1; pi>=0; pi--){
+    const q = PARTICULAS[pi];
+    const t = (performance.now()-q.nac)/1000;
+    if (t>=q.vida || q.vida<=0){ PARTICULAS.splice(pi,1); continue; }
+    q.x += q.vx*dt/1000;
+    q.y += q.vy*dt/1000;
+    q.vx *= 0.96;
+    q.vy *= 0.96;
+    const a = 1 - t/q.vida;
+    ctx.globalAlpha = Math.max(0, a*0.95);
+    ctx.fillStyle = q.cor;
+    ctx.beginPath();
+    ctx.arc(q.x, q.y, q.tam*(0.4+0.6*a), 0, 6.283);
+    ctx.fill();
+  }
+  ctx.globalAlpha=1;
 
   // etiquetas dos hubs proximos da frente
   if (zoom>0.8){
