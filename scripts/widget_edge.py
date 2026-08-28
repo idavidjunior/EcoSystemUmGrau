@@ -44,8 +44,13 @@ TTS_CMD = RUNTIME / "tts_cmd.json"
 NARR_LOG = SCRIPTS / "narrador_desktop_log.txt"
 EXCLUIR_PADRAO = ["watchdog-health"]
 DEBOUNCE_S = 0.5
-_FALADOS: dict = {}
-_FALADOS_TTL = 120
+
+# Dedup COMPARTILHADO em disco (fonte única de narração: este widget).
+try:
+    from narrador_dedup import ja_falado
+except ImportError:
+    def ja_falado(texto_hash):
+        return False
 
 # Detecção de palavras em inglês para pronúncia correta
 try:
@@ -202,12 +207,16 @@ def _conectar_narrador():
 
 
 def _ler_posicao_narrador():
+    """Lê posição salva. Se corrompido, NÃO relê histórico antigo (evita loop)."""
     try:
         if POSICAO_NARRADOR.exists():
-            return json.loads(POSICAO_NARRADOR.read_text(encoding="utf-8"))
+            dados = json.loads(POSICAO_NARRADOR.read_text(encoding="utf-8"))
+            if isinstance(dados, dict) and isinstance(dados.get("ultimo_ts"), (int, float)):
+                return dados
     except Exception:
         pass
-    return {"ultimo_ts": 0}
+    # Corrompido ou inválido: avança para "agora" em vez de zero
+    return {"ultimo_ts": time.time() * 1000}
 
 
 def _salvar_posicao_narrador(pos):
@@ -481,14 +490,9 @@ class _Narrador:
                 _log_narr(f"BLOQUEADO (idioma={resultado['idioma']}): {texto[:60]}...")
                 return
         texto_hash = hashlib.md5(texto.encode("utf-8")).hexdigest()[:16]
-        agora = time.time()
-        expirados = [k for k, t in _FALADOS.items() if agora - t > _FALADOS_TTL]
-        for k in expirados:
-            _FALADOS.pop(k, None)
-        if texto_hash in _FALADOS:
+        if ja_falado(texto_hash):
             _log_narr(f"DEDUP pulando: {texto[:60]}...")
             return
-        _FALADOS[texto_hash] = agora
         if STOP_FLAG.exists():
             _log_narr("pulando (parar_fala.flag ativo)")
             return

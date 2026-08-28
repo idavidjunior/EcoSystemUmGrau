@@ -1,5 +1,6 @@
 import asyncio, websockets, edge_tts, base64, json, logging, os, re, time, xml.sax.saxutils, socket, urllib.request, urllib.error, random, datetime, subprocess, sys, unicodedata
 from pathlib import Path
+from aiohttp import web
 
 # Speech Pipeline — pipeline central de TTS
 SCRIPTS_DIR = Path(__file__).resolve().parent
@@ -2212,6 +2213,326 @@ async def lidar(ws):
             pass
 
 
+# ============ HTTP ENDPOINTS FOR ECOW ============
+# Cache simples em memória para /api/memories
+_memories_cache = {'data': None, 'timestamp': 0, 'params': None}
+_CACHE_TTL = 60  # segundos
+
+def _build_memories_response(limit=200, kind_filter=None, max_days=None):
+    """Constrói resposta otimizada para /api/memories"""
+    from memory_engine import _load_memories
+    memories = _load_memories()
+    
+    # Carrega mapeamento id -> filepath real
+    id_to_file = {}
+    map_path = Path(ECOSSISTEMA_DIR) / 'conhecimento' / 'memoria' / 'id_to_file.json'
+    if map_path.exists():
+        try:
+            with open(map_path, 'r', encoding='utf-8') as f:
+                id_to_file = json.load(f)
+        except Exception as e:
+            logger.warning(f"Failed to load id_to_file map: {e}")
+    
+    HALF_LIFE = {
+        'erro': 90, 'decisao': 30, 'padrao': 60,
+        'episodio': 7, 'preferencia': 365,
+        'experiencia': 180, 'melhoria': 120
+    }
+    
+    KIND_COLOR = {
+        'erro': '#ff4444', 'decisao': '#4488ff', 'padrao': '#44cc44',
+        'episodio': '#ffaa00', 'preferencia': '#aa44ff',
+        'experiencia': '#00cccc', 'melhoria': '#ff44aa'
+    }
+    
+    KIND_SIZE = {
+        'erro': 7, 'decisao': 6.5, 'padrao': 6,
+        'episodio': 5.5, 'preferencia': 5, 'experiencia': 5.5, 'melhoria': 6
+    }
+    
+    now = datetime.datetime.now()
+    nodes = []
+    
+    for m in memories:
+        if m.get('confidence', 1.0) < 0.3:
+            continue
+        
+        kind = m.get('kind', 'episodio')
+        if kind_filter and kind not in kind_filter:
+            continue
+        
+        half_life = HALF_LIFE.get(kind, 14)
+        last_acc_str = (m.get('last_accessed') or m.get('created_at') or now.isoformat())
+        try:
+            last_acc = datetime.datetime.fromisoformat(last_acc_str)
+        except Exception:
+            last_acc = now
+        
+        days = (now - last_acc).total_seconds() / 86400
+        if max_days and days > max_days:
+            continue
+        
+        strength = min(m.get('strength', 1.0), 1.0)  # Cap strength at 1.0
+        decay_score = max(0.01, min(1.0, strength * (0.5 ** (days / half_life))))  # Cap at 1.0
+        if decay_score < 0.05:
+            continue
+        
+        # Usa mapeamento real se disponível, senão infere
+        file_path = id_to_file.get(str(m['id']), '')
+        if not file_path:
+            if m.get('file'):
+                file_path = f"conhecimento/aprendizados/{m.get('file')}"
+            elif m.get('id'):
+                title_slug = m.get('task', '').lower().replace(' ', '-')[:50]
+                file_path = f"conhecimento/aprendizados/{last_acc.strftime('%Y-%m-%d')}-{title_slug}.md"
+        
+        nodes.append({
+            'id': m['id'],
+            'title': m.get('task', '')[:60],
+            'summary': m.get('summary', ''),
+            'kind': kind,
+            'tags': m.get('tags', []),
+            'project': m.get('project', ''),
+            'created_at': m.get('created_at'),
+            'last_accessed': m.get('last_accessed'),
+            'strength': strength,
+            'confidence': m.get('confidence', 1.0),
+            'filePath': file_path,
+            'decayScore': round(decay_score, 4),
+            'color': KIND_COLOR.get(kind, '#888888'),
+            'size': KIND_SIZE.get(kind, 4),
+            '_last_acc_days': days,
+            '_decay_score': decay_score
+        })
+    
+    # Ordena por decay score decrescente e limita
+    nodes.sort(key=lambda n: -n['_decay_score'])
+    nodes = nodes[:limit]
+    
+    # Remove campos internos
+    for n in nodes:
+        n.pop('_last_acc_days', None)
+        n.pop('_decay_score', None)
+    
+    # Constrói links apenas para os nós retornados (mais eficiente)
+    links = []
+    tag_index = {}
+    project_index = {}
+    
+    for i, n in enumerate(nodes):
+        for tag in n.get('tags', []):
+            tag_index.setdefault(tag, []).append(i)
+        proj = n.get('project')
+        if proj:
+            project_index.setdefault(proj, []).append(i)
+    
+    # Links por tags
+    for tag, indices in tag_index.items():
+        if len(indices) > 1:
+            for i in range(len(indices)):
+                for j in range(i + 1, len(indices)):
+                    links.append({'source': indices[i], 'target': indices[j], 'weight': 1, 'type': 'tag', 'tag': tag})
+    
+    # Links por projeto
+    for proj, indices in project_index.items():
+        if len(indices) > 1:
+            for i in range(len(indices)):
+                for j in range(i + 1, len(indices)):
+                    links.append({'source': indices[i], 'target': indices[j], 'weight': 0.5, 'type': 'project', 'project': proj})
+    
+    return {'nodes': nodes, 'links': links}
+
+
+async def handle_memories(request):
+    """Endpoint /api/memories - retorna nós e links para o grafo 3D"""
+    global _memories_cache
+    
+    try:
+        # Parâmetros da query
+        limit = min(int(request.query.get('limit', 200)), 500)
+        kind_filter = request.query.get('kind', '').split(',') if request.query.get('kind') else None
+        max_days = int(request.query.get('max_days', 0)) or None
+        
+        cache_key = (limit, tuple(kind_filter) if kind_filter else None, max_days)
+        now_ts = time.time()
+        
+        # Verifica cache
+        if (_memories_cache['data'] is not None and 
+            _memories_cache['params'] == cache_key and
+            now_ts - _memories_cache['timestamp'] < _CACHE_TTL):
+            logger.info(f"/api/memories cache hit (params={cache_key})")
+            return web.json_response(_memories_cache['data'])
+        
+        # Constrói resposta
+        logger.info(f"/api/memories building (limit={limit}, kind={kind_filter}, max_days={max_days})")
+        start = time.time()
+        data = _build_memories_response(limit, kind_filter, max_days)
+        elapsed = time.time() - start
+        logger.info(f"/api/memories built in {elapsed:.2f}s: {len(data['nodes'])} nodes, {len(data['links'])} links")
+        
+        # Atualiza cache
+        _memories_cache['data'] = data
+        _memories_cache['timestamp'] = now_ts
+        _memories_cache['params'] = cache_key
+        
+        return web.json_response(data)
+    except Exception as e:
+        logger.error(f"/api/memories error: {e}")
+        return web.json_response({'error': str(e), 'nodes': [], 'links': []}, status=500)
+
+
+async def handle_open_file(request):
+    """Endpoint /open-file - abre arquivo no editor"""
+    try:
+        data = await request.json()
+        path = data.get('path', '')
+        if not path:
+            return web.json_response({'error': 'path required'}, status=400)
+        
+        # Resolve caminho completo
+        full_path = Path(ECOSSISTEMA_DIR) / path
+        if not full_path.exists():
+            # Tenta caminhos alternativos
+            alt_paths = [
+                ECOSSISTEMA_DIR / path,
+                Path.cwd() / path,
+                Path(path)
+            ]
+            for alt in alt_paths:
+                if alt.exists():
+                    full_path = alt
+                    break
+        
+        # Abre no editor (code, cursor, notepad++, etc.)
+        # Detecta VS Code no Windows
+        code_paths = [
+            os.environ.get('EDITOR'),
+            r"C:\Users\David Jr\AppData\Local\Programs\Microsoft VS Code\bin\code.cmd",
+            r"C:\Program Files\Microsoft VS Code\bin\code.cmd",
+            r"C:\Program Files (x86)\Microsoft VS Code\bin\code.cmd",
+            'code',  # fallback se estiver no PATH
+        ]
+        code_cmd = next((p for p in code_paths if p and (os.path.exists(p) or p == 'code')), 'code')
+        
+        try:
+            subprocess.Popen([code_cmd, str(full_path)], start_new_session=True, shell=True)
+            return web.json_response({'ok': True, 'path': str(full_path), 'editor': code_cmd})
+        except Exception as e:
+            logger.error(f"Failed to open file with {code_cmd}: {e}")
+            # Fallback: notepad
+            try:
+                subprocess.Popen(['notepad', str(full_path)], start_new_session=True)
+                return web.json_response({'ok': True, 'path': str(full_path), 'fallback': 'notepad'})
+            except Exception as e2:
+                logger.error(f"Failed to open file with notepad: {e2}")
+                return web.json_response({'error': str(e2)}, status=500)
+    except Exception as e:
+        logger.error(f"/open-file error: {e}")
+        return web.json_response({'error': str(e)}, status=500)
+
+
+# ============ ECOW STATE PERSISTENCE ============
+async def handle_ecow_state_get(request):
+    """GET /api/ecow/state - carrega estado salvo do EcoW"""
+    try:
+        state_path = Path(ECOSSISTEMA_DIR) / 'runtime' / 'state.json'
+        if state_path.exists():
+            with open(state_path, 'r', encoding='utf-8') as f:
+                state = json.load(f)
+            ecow_state = state.get('ecow', {})
+            return web.json_response({'ok': True, 'state': ecow_state})
+        return web.json_response({'ok': True, 'state': {}})
+    except Exception as e:
+        logger.error(f"/api/ecow/state GET error: {e}")
+        return web.json_response({'error': str(e)}, status=500)
+
+
+async def handle_ecow_state_post(request):
+    """POST /api/ecow/state - salva estado do EcoW"""
+    try:
+        data = await request.json()
+        ecow_state = data.get('state', {})
+        
+        state_path = Path(ECOSSISTEMA_DIR) / 'runtime' / 'state.json'
+        state = {}
+        if state_path.exists():
+            with open(state_path, 'r', encoding='utf-8') as f:
+                state = json.load(f)
+        
+        state['ecow'] = ecow_state
+        
+        # Escrita atômica
+        tmp_path = state_path.with_suffix('.tmp')
+        with open(tmp_path, 'w', encoding='utf-8') as f:
+            json.dump(state, f, ensure_ascii=False, indent=2)
+        os.replace(tmp_path, state_path)
+        
+        return web.json_response({'ok': True})
+    except Exception as e:
+        logger.error(f"/api/ecow/state POST error: {e}")
+        return web.json_response({'error': str(e)}, status=500)
+
+
+async def start_http_server():
+    """Inicia servidor HTTP aiohttp na porta 8766"""
+    # CORS middleware simples
+    async def cors_middleware(app, handler):
+        async def middleware_handler(request):
+            if request.method == 'OPTIONS':
+                return web.Response(
+                    headers={
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+                        'Access-Control-Allow-Headers': 'Content-Type',
+                        'Access-Control-Max-Age': '86400'
+                    }
+                )
+            response = await handler(request)
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+            response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+            return response
+        return middleware_handler
+    
+    app = web.Application(middlewares=[cors_middleware])
+    app.router.add_get('/api/memories', handle_memories)
+    app.router.add_post('/open-file', handle_open_file)
+    app.router.add_get('/health', lambda r: web.json_response({'status': 'ok'}))
+    
+    # EcoW state persistence
+    app.router.add_get('/api/ecow/state', handle_ecow_state_get)
+    app.router.add_post('/api/ecow/state', handle_ecow_state_post)
+    app.router.add_options('/api/ecow/state', lambda r: web.Response(
+        headers={
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type'
+        }
+    ))
+    
+    app.router.add_options('/api/memories', lambda r: web.Response(
+        headers={
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type'
+        }
+    ))
+    app.router.add_options('/open-file', lambda r: web.Response(
+        headers={
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type'
+        }
+    ))
+    
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, '0.0.0.0', 8766)
+    await site.start()
+    logger.info(f"HTTP API server started on http://0.0.0.0:8766 (CORS enabled)")
+    return runner
+
+
 async def servir():
     logger.info("="*50)
     logger.info("  Vox UmGrau Bridge v6 (serve HTTP API + Dashboard)")
@@ -2238,6 +2559,9 @@ async def servir():
         max_size=2 * 1024 * 1024,
         max_queue=16,
     ):
+        # Inicia servidor HTTP API (EcoW endpoints)
+        http_runner = await start_http_server()
+        
         # Warm-up automatico do LLM em background (usa _http_async/urllib,
         # mesmo cliente da cadeia principal — sem dependencia de aiohttp)
         async def warmup():
@@ -2284,7 +2608,11 @@ async def servir():
             logger.warning("warm-up: todas as tentativas falharam (modelo pode estar frio)")
 
         asyncio.create_task(warmup())
-        await asyncio.Future()
+        try:
+            await asyncio.Future()
+        finally:
+            if http_runner:
+                await http_runner.cleanup()
 
 if __name__ == "__main__":
     asyncio.run(servir())

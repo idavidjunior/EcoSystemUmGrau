@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoW — Cérebro Vivo</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <div id="ui-overlay">
+    <header class="top-bar">
+      <h1>EcoW — Cérebro Vivo</h1>
+      <div class="stats" id="stats">Carregando...</div>
+    </header>
+    
+    <aside class="controls">
+      <section class="control-group">
+        <label>Filtro temporal</label>
+        <div class="slider-container">
+          <input type="range" id="timeFilter" min="7" max="365" value="30" step="1">
+          <span id="timeFilterValue">30 dias</span>
+        </div>
+        <small>Memórias acessadas nos últimos <strong id="timeFilterDays">30</strong> dias (respeita decay Ebbinghaus)</small>
+      </section>
+      
+      <section class="control-group">
+        <label>Tipos visíveis</label>
+        <div class="kind-filters" id="kindFilters"></div>
+      </section>
+      
+      <section class="control-group">
+        <label>Busca</label>
+        <input type="text" id="searchInput" placeholder="Filtrar por título, tags, projeto...">
+      </section>
+      
+      <section class="control-group">
+        <button id="resetView">Resetar visão</button>
+        <button id="exportGraph">Exportar JSON</button>
+      </section>
+    </aside>
+    
+    <div class="tooltip" id="tooltip"></div>
+  </div>
+  
+  <div id="graph-container"></div>
+  
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

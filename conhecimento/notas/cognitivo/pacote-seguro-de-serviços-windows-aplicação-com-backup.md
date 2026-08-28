@@ -1,5 +1,5 @@
 ---
-tags: [ativos, cognitivo, ecosystemumgrau, general, rdp, sshd]
+tags: [cognitivo, dominio, ecosystemumgrau, general, rdp, sshd]
 aliases: [Pacote Seguro de Serviços Windows — Aplicação com Backup]
 date: 2026-08-23
 ---
