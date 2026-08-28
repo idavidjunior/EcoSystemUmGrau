@@ -19,6 +19,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);
 .mini{font-size:11px;line-height:1;padding:3px 7px;border:1px solid var(--bdr);
   border-radius:3px;background:transparent;color:var(--tx3);cursor:pointer;}
 .mini:hover{color:var(--tx);}
+#btPause.piscando{color:var(--on);border-color:var(--on);animation:pisca 1s steps(2,start) infinite;}
+@keyframes pisca{50%{opacity:.25;}}
 canvas{position:fixed;inset:0;display:block;cursor:grab;}
 canvas.girando{cursor:grabbing;}
 #info{position:fixed;left:10px;bottom:8px;font-size:10px;color:var(--tx3);
