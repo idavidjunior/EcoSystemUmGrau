@@ -110,6 +110,7 @@ NVIDIA dava timeout (30/60s) e o refino ficava inutil na pratica.
 - [[ci-de-android-em-máquina-fraca-keystore-estável]]
 - [[clausula-petrea-protecao-do-opencode-desktop-resiliencia-da-]]
 - [[cluster-hub-ecossistema]]
+- [[composio-mcp-remoto]]
 - [[compressão-semântica-hierárquica-lições-da-implementação]]
 - [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
 - [[confirmação-em-áudio-regra-permanente-01082026]]

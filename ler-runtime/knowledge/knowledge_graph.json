@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-28T19:38:12.069491",
+  "last_updated": "2026-08-28T20:18:07.008682",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -2608,6 +2608,12 @@
       "extracted_at": "2026-08-28T16:02:06.804295",
       "merged_count": 2,
       "merged_at": "2026-08-28T16:02:34.431239"
+    },
+    {
+      "source": "opencode",
+      "decision": "composio mcp remoto",
+      "rationale": "---\ntipo: decisao\ntags: [composio, mcp, opencode, remote, preflight]\ndata: 2026-08-28\ncontexto: Integrar o Composio ao EcoSystemUmGrau via endpoint MCP remoto (streamable HTTP) com a chave de consumer do gateway.\ndecisao: Adicionar servidor MCP remoto \"composio\" no config/opencode.jsonc apontando para https://connect.composio.dev/mcp com header x-consumer-api-key usando interpolacao {env:COMPOSIO_API_KEY}. Persistir a chave via setx (HKCU Environment) e scripts/.env. Adaptar preflight_check.py para suportar type=remote.\nimpacto: Servidor MCP remoto valido no schema do opencode; preflight agora testa MCP remoto via urllib resolvendo {env:VAR} em headers; auth 401 do CLI (chave ck_) nao bloqueia o uso via endpoint MCP.\nnotas:\n- Chave de consumer (ck_) NAO serve como user API key do CLI (espera uak_); usar endpoint MCP com header x-consumer-api-key.\n- Endpoint exige Accept: application/json, text/event-stream + Content-Type: application/json (initialize/tools/list validados).\n- Preflight: test_remote_mcp_server faz initialize remoto com timeout 8s; check_mcp_servers pula exigencia de command quando type=remote.\n- Reinicio do OpenCode desktop necessario para carregar a env var (setx so vale para novos processos).",
+      "extracted_at": "2026-08-28T20:17:36.781999"
     }
   ],
   "bug_fixes": [

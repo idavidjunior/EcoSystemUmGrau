@@ -1,9 +1,9 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-28T19:38:12.294621
+**Exportado em:** 2026-08-28T20:18:07.179032
 **Projetos:** 4
 **Padroes Tecnicos:** 286
-**Decisoes:** 79
+**Decisoes:** 80
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 74
 **Heuristicas:** 32
@@ -616,6 +616,15 @@ data: 2026-08-28
 contexto: Duplicidade de narradores (narrador_desktop.py standalone vs thread do widget_edge.py) gerava referências mortas, atalhos quebrados e checks de auditor desatualizados. O usuário decidiu: Narrador Edge (widget_edge.py) e Cérebro Vivo (widget_grafo.py) são os dois oficiais; qualquer outro é duplicidade.
 decisao:
   - Narrador oficial é a thread interna de scripts/widget_edge.py (ú
+
+### composio mcp remoto
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [composio, mcp, opencode, remote, preflight]
+data: 2026-08-28
+contexto: Integrar o Composio ao EcoSystemUmGrau via endpoint MCP remoto (streamable HTTP) com a chave de consumer do gateway.
+decisao: Adicionar servidor MCP remoto "composio" no config/opencode.jsonc apontando para https://connect.composio.dev/mcp com header x-consumer-api-key usando interpolacao {env:COMPOSIO_API_KEY}. Persistir a chave via setx (HKCU Environment) e scripts/.env. Adaptar preflight_check.py p
 
 
 ## Padroes Tecnicos
@@ -2184,7 +2193,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-28T19:38:12.069491
+**Ultima atualizacao:** 2026-08-28T20:18:07.008682
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

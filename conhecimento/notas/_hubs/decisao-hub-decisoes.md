@@ -1,6 +1,6 @@
 # Decisoes
 
-**75 notas** conectadas a este hub.
+**76 notas** conectadas a este hub.
 
 
 ## Notas
@@ -16,6 +16,7 @@
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]
 - [[checkpoints-salvos-antes-de-cada-iteracao-sobrevive-a-crash-]]
 - [[clausula-petrea-protecao-do-opencode-desktop-resiliencia-da-]]
+- [[composio-mcp-remoto]]
 - [[context-engine-manifesto-domínios-multimídiacomportamentais]]
 - [[decisão-aprendizado-automático-permanente]]
 - [[decisão-arquitetura-jarvis-app]]

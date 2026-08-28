@@ -93,6 +93,14 @@
       "type": "local",
       "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/nucleo/habilidades/compreensao-pedidos/server.py"],
       "enabled": true
+    },
+    "composio": {
+      "type": "remote",
+      "url": "https://connect.composio.dev/mcp",
+      "headers": {
+        "x-consumer-api-key": "{env:COMPOSIO_API_KEY}"
+      },
+      "enabled": true
     }
   },
   "command": {

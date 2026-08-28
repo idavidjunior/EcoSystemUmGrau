@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**228 notas** do cluster ecossistema.
+**229 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -95,6 +95,7 @@
 - [[cli-anything-internalizado-como-habilidade-soberana]]
 - [[cláusula-pétrea-ativação-de-voz-eco-system]]
 - [[como-adicionar-uma-nova-versão-da-bíblia-ao-bibliaestudocomp]]
+- [[composio-mcp-remoto]]
 - [[compreensao-de-pedidos-refino-com-a-llm-do-opencode-primaria]]
 - [[compressão-semântica-hierárquica-lições-da-implementação]]
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]

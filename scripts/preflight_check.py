@@ -21,6 +21,29 @@ NVAPI_DONO_LEGITIMO = 'nvidia'
 ERRORS = []
 WARNS = []
 
+def _load_dotenv_missing():
+    """Carrega scripts/.env no ambiente apenas para vars ainda nao definidas.
+    Idempotente: nao sobrescreve env ja presente (ex.: app desktop do OpenCode).
+    Garante que o preflight (e o gate de persistencia, processo novo) enxergue
+    secrets como COMPOSIO_API_KEY sem depender de setx/relogin."""
+    try:
+        env_file = os.path.join(BASE, 'scripts', '.env')
+        if not os.path.isfile(env_file):
+            return
+        with open(env_file, encoding='utf-8-sig') as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#') or '=' not in line:
+                    continue
+                k, _, v = line.partition('=')
+                k = k.strip()
+                if k and k not in os.environ:
+                    os.environ[k] = v.strip()
+    except Exception:
+        pass
+
+_load_dotenv_missing()
+
 PREFLIGHT_LOG = Path(__file__).resolve().parent.parent / 'runtime' / 'preflight_executions.log'
 
 def log_preflight_execution(tipo: str, success: bool, erros_count: int = 0):
@@ -62,6 +85,42 @@ def expand_path(path_str):
     result = path_str.replace('{env:USERPROFILE}', USERPROFILE.replace('\\', '/'))
     result = result.replace('{{USERPROFILE}}', USERPROFILE.replace('\\', '/'))
     return result
+
+def test_remote_mcp_server(server_name, url, headers=None):
+    """Test a remote MCP server (streamable HTTP): initialize + tools/list.
+    Sem subprocess: usa urllib (stdlib) com timeout de 8s. Resposta pode ser:
+    JSON puro ou SSE (event: message). Header x-api-key vem da config."""
+    print(f'  Testing MCP (remote): {server_name}...')
+    try:
+        import urllib.request
+        hdrs = {'Content-Type': 'application/json',
+                'Accept': 'application/json, text/event-stream'}
+        if headers:
+            for k, v in (headers or {}).items():
+                if k.lower() not in ('content-type', 'accept'):
+                    vs = str(v)
+                    for m in re.findall(r'\{env:([A-Z0-9_]+)\}', vs):
+                        vs = vs.replace('{env:%s}' % m, os.environ.get(m, ''))
+                    hdrs[k] = vs
+        body_init = json.dumps({'jsonrpc': '2.0', 'id': 1,
+                                'method': 'initialize',
+                                'params': {'protocolVersion': '2025-03-26',
+                                           'capabilities': {},
+                                           'clientInfo': {'name': 'preflight',
+                                                          'version': '1.0'}}})
+        req = urllib.request.Request(url, data=body_init.encode('utf-8'),
+                                     headers=hdrs, method='POST')
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            raw = resp.read().decode('utf-8', errors='replace')
+        if '"error"' in raw:
+            return check(f'MCP {server_name}', False,
+                         f'initialize retornou erro: {raw[:200]}')
+        if '"result"' not in raw:
+            return check(f'MCP {server_name}', False,
+                         f'sem result no initialize: {raw[:200]}')
+        return check(f'MCP {server_name}', True, 'remote initialize ok')
+    except Exception as e:
+        return check(f'MCP {server_name}', False, str(e)[:200])
 
 def test_mcp_server(server_name, command, args):
     """Test an MCP server: initialize + tools/list must complete in 5s."""
@@ -122,6 +181,15 @@ def check_mcp_servers(cfg, label='Config', test_servers=True):
     check(f'{label}: {len(servers)} MCP servidor(es)', True)
     for sname, sconfig in servers.items():
         if not isinstance(sconfig, dict):
+            continue
+        if sconfig.get('type') == 'remote':
+            url = sconfig.get('url', '')
+            if not url:
+                check(f'{label}: MCP {sname} remote sem url', False)
+                continue
+            check(f'{label}: MCP {sname} (remote)', True)
+            if test_servers:
+                test_remote_mcp_server(sname, url, sconfig.get('headers'))
             continue
         cmd = sconfig.get('command', '')
         args = sconfig.get('args', [])
