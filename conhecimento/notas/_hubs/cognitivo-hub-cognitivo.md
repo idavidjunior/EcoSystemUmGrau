@@ -1,6 +1,6 @@
 # Padroes Cognitivos
 
-**58 notas** conectadas a este hub.
+**59 notas** conectadas a este hub.
 
 
 ## Notas
@@ -14,6 +14,7 @@
 - [[2026-08-04-refinamento-do-grafo-zoom-microscópio-expandir-e-]]
 - [[antecipacao-de-comportamento-adaptativo]]
 - [[aprendizado-2026-07-31-pontuação-automática-de-transcrições-]]
+- [[audit-runner-recuperado]]
 - [[auditoria-cerebro-vivo-fix-tema-padrao-e-bugs]]
 - [[bug-parametro-pid-e-variavel-automatica-do-powershell]]
 - [[ciclo-ooda-aplicado-a-navegacao]]

@@ -1,11 +1,11 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-28T14:27:27.980488
+**Exportado em:** 2026-08-28T14:57:56.819915
 **Projetos:** 4
 **Padroes Tecnicos:** 286
 **Decisoes:** 78
 **Bug Fixes:** 52
-**Padroes Cognitivos:** 73
+**Padroes Cognitivos:** 74
 **Heuristicas:** 32
 **Frameworks:** 10
 **Missoes Aprendidas:** 134
@@ -2069,6 +2069,17 @@ data: 2026-08-28
 contexto: Sync apos controles de narracao no widget Edge. Gate persistencia.ps1 travava espelho do HD externo e repos nativos.
 decisao: Corrigir bug de continuacao de linha PowerShell no filtro $hdBloqueio (mover '-and' para o fim da linha); Invoke-PreflightGlobal passa a pular preflight quando scripts/preflight_check.py nao existe (em vez de bloquear); identidade git local configurada no repo claude-co
 
+### audit runner recuperado
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [guardian, auditoria, monitor, audit_runner, widget]
+data: 2026-08-28
+contexto: system_guardian.py executava scripts/audit_runner.py a cada ~30 min para gerar runtime/audit_result.json e reportar saúde do ecossistema.
+decisao: Recriar scripts/audit_runner.py (arquivo referenciado não existia mais), reutilizando audit_eco.run_audit como fonte única e escrevendo o resultado com escrita atômica (tmp + os.replace) no contrato que o guardian lê (timestamp epoch + score + findings
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -2163,7 +2174,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-28T14:27:27.766489
+**Ultima atualizacao:** 2026-08-28T14:57:56.523915
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

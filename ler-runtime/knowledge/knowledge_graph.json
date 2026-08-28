@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-28T14:27:27.766489",
+  "last_updated": "2026-08-28T14:57:56.523915",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -3617,6 +3617,15 @@
       "extracted_at": "2026-08-28T14:26:50.618898",
       "merged_count": 2,
       "merged_at": "2026-08-28T14:27:27.535488"
+    },
+    {
+      "source": "opencode",
+      "title": "audit runner recuperado",
+      "domain": "general",
+      "body": "---\ntipo: erro\ntags: [guardian, auditoria, monitor, audit_runner, widget]\ndata: 2026-08-28\ncontexto: system_guardian.py executava scripts/audit_runner.py a cada ~30 min para gerar runtime/audit_result.json e reportar saúde do ecossistema.\ndecisao: Recriar scripts/audit_runner.py (arquivo referenciado não existia mais), reutilizando audit_eco.run_audit como fonte única e escrevendo o resultado com escrita atômica (tmp + os.replace) no contrato que o guardian lê (timestamp epoch + score + findings",
+      "extracted_at": "2026-08-28T14:57:12.854533",
+      "merged_count": 2,
+      "merged_at": "2026-08-28T14:57:56.009915"
     }
   ],
   "heuristics": [

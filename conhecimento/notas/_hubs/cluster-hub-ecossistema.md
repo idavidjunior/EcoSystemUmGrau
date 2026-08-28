@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**226 notas** do cluster ecossistema.
+**227 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -79,6 +79,7 @@
 - [[aprendizado-skill-auditoria-de-codigo-auto-evolutiva]]
 - [[aprendizado-skill-auditoria-de-codigo-viva-com-evolução-gate]]
 - [[atualização-ecosystemumgrau-auto-carregamento-gatilho-único-]]
+- [[audit-runner-recuperado]]
 - [[auditoria-cerebro-vivo-fix-tema-padrao-e-bugs]]
 - [[authjson-com-entradas-de-chave-nvidia-disfarcadas-de-outros-]]
 - [[auto-evolution-e-behavior-slices]]
