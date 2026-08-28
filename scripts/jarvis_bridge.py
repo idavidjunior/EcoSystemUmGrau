@@ -129,6 +129,46 @@ def _ler_volume_widget() -> int:
 # continua fluindo (evita o "recomeço" a cada reconexão dentro da mesma sessão).
 JANELA_CONVERSA_MIN = 30
 
+# Retrato vivo do diálogo: quem fala é o bridge (TTS via app), então ele marca
+# "falando" no runtime/dialogo_vivo.json e emite a atividade "fala" — o Cérebro
+# Vivo (widget_grafo.py eco_sentinela) acende a região de fala em tempo real.
+_RETRATO_BRIDGE = ECOSSISTEMA_DIR / "runtime" / "dialogo_vivo.json"
+_fala_seq = [0]
+
+
+def _retrato_fala(on, voce="", erro=""):
+    """Espelha o padrão do dialogo.py: "falando" enquanto o bridge fala via TTS."""
+    try:
+        d = {"estado": "falando" if on else "ouvindo",
+             "voce": str(voce)[:200] if on else "",
+             "erro": str(erro)[:300] if erro else "",
+             "quando": time.time()}
+        tmp = _RETRATO_BRIDGE.with_suffix(".tmp")
+        tmp.write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
+        os.replace(tmp, _RETRATO_BRIDGE)
+        from atividade_emit import emitir
+        emitir("fala", 0.95 if on else 0.0)
+    except Exception:
+        pass
+
+
+def _marcar_inicio_fala(texto):
+    """Marca "falando" e agenda o retorno a "ouvindo" ao fim da fala estimada."""
+    _fala_seq[0] += 1
+    seq = _fala_seq[0]
+    _retrato_fala(True, texto)
+    duracao = max(0.5, len(texto) * 0.055)  # ~18 chars/s TTS + margem
+
+    async def _fim():
+        await asyncio.sleep(duracao)
+        if _fala_seq[0] == seq:
+            _retrato_fala(False)
+
+    try:
+        asyncio.get_event_loop().create_task(_fim())
+    except Exception:
+        pass
+
 DIAS = ["segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado","domingo"]
 MESES = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"]
 INTERRUPCAO = re.compile(r'^(ok|ta bom|esta bom|chega|para|cala a boca|já chega|valeu|obrigado|entendi|deixa pra lá|depois eu pergunto)[\s!.?…]*$', re.IGNORECASE)
@@ -1803,6 +1843,7 @@ async def _retomar_ultima_tarefa(ws, c):
     aviso = f"Conexão restabelecida. Retomando automaticamente: {msg[:50]}{'...' if len(msg) > 50 else ''}"
     try:
         a = await gerar_audio(aviso)
+        _marcar_inicio_fala(aviso)
         await ws.send(json.dumps({"audio": a, "text": aviso, "retomada": True, "volume": _ler_volume_widget()}))
     except Exception as e:
         logger.warning(f"aviso retomada: {e}")
@@ -1816,6 +1857,7 @@ async def _retomar_ultima_tarefa(ws, c):
             try:
                 a = await gerar_audio(r_tela)
                 if a:
+                    _marcar_inicio_fala(r_tela)
                     await ws.send(json.dumps({"text": r_tela, "audio": a, "retomada": True, "volume": _ler_volume_widget()}))
                     logger.info(f"retomada resp: {len(r_tela)}c / audio {len(a)}c")
                 else:
@@ -1979,6 +2021,8 @@ async def lidar(ws):
             except Exception as e:
                 logger.warning(f"tts startup: {e}")
                 a = ""
+            if a:
+                _marcar_inicio_fala(saudacao_tela)
             try:
                 await ws.send(json.dumps({"audio": a, "text": saudacao_tela, "volume": _ler_volume_widget()}))
             except websockets.exceptions.ConnectionClosed:
@@ -2035,6 +2079,7 @@ async def lidar(ws):
                 # Envia via WebSocket (texto + áudio)
                 try:
                     a = await gerar_audio(frase)
+                    _marcar_inicio_fala(frase)
                     await ws.send(json.dumps({"audio": a, "text": frase, "continuidade": True, "volume": _ler_volume_widget()}))
                 except Exception:
                     await ws.send(json.dumps({"text": frase, "continuidade": True}))
@@ -2146,6 +2191,7 @@ async def lidar(ws):
                 r = "Interrompido. Pode falar quando quiser."
                 try:
                     a = await gerar_audio(r)
+                    _marcar_inicio_fala(r)
                     await ws.send(json.dumps({"text": r, "audio": a, "corrigido": m, "volume": _ler_volume_widget()}) if a else {"text": r, "corrigido": m})
                 except:
                     await ws.send(json.dumps({"text": r, "corrigido": m}))
@@ -2194,6 +2240,7 @@ async def lidar(ws):
                 await _enviar_progresso(ws, "Criando sua resposta em áudio")
                 await ws.send(json.dumps({"text": r_tela, "corrigido": m, "audio_streaming": True, "volume": _ler_volume_widget()}))
                 logger.info(f"resp inicio: {len(r_tela)}c (streaming)")
+                _marcar_inicio_fala(r_tela)
                 bytes_enviados = 0
                 async for chunk_b64 in gerar_audio_stream(r_tela):
                     await ws.send(json.dumps({"audio_chunk": chunk_b64}))
