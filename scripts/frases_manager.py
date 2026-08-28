@@ -1,7 +1,7 @@
 """frases_manager.py — Gerenciador unificado de frases anti-repetição para o ecossistema.
 
 Usado por:
-- widget_controle_jarvis.py (ativação/desativação voz, mic, ações UI)
+- widget_edge.py (ativação/desativação voz, narração contínua)
 - jarvis_bridge.py (saudações de reconexão vs primeira vez)
 
 Padrão: uma frase por ação, não repete no dia, aprende novas, persiste em JSON.

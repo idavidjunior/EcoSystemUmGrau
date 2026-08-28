@@ -1,9 +1,9 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-28T14:57:56.819915
+**Exportado em:** 2026-08-28T15:55:29.086496
 **Projetos:** 4
 **Padroes Tecnicos:** 286
-**Decisoes:** 78
+**Decisoes:** 79
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 74
 **Heuristicas:** 32
@@ -606,6 +606,16 @@ data: 2026-08-28
 contexto: Usuário pediu para o EcoSystemUmGrau aprender com o Cartographer (miltonian/cartographer), absorver capacidades e evoluir com auto-aprendizado.
 decisao: Implementar Auto-Evolution Engine + Behavior Slices + evidência-grounding no memory_engine, e integrar novos scripts para não serem movidos à triagem.
 impacto: Ecossistema agora analisa automaticamente gaps vs refer
+
+### oficializacao narrador edge cerebro vivo
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [narrador, widget, arquitetura, oficializacao, duplicidade, limpeza]
+data: 2026-08-28
+contexto: Duplicidade de narradores (narrador_desktop.py standalone vs thread do widget_edge.py) gerava referências mortas, atalhos quebrados e checks de auditor desatualizados. O usuário decidiu: Narrador Edge (widget_edge.py) e Cérebro Vivo (widget_grafo.py) são os dois oficiais; qualquer outro é duplicidade.
+decisao:
+  - Narrador oficial é a thread interna de scripts/widget_edge.py (ú
 
 
 ## Padroes Tecnicos
@@ -2174,7 +2184,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-28T14:57:56.523915
+**Ultima atualizacao:** 2026-08-28T15:55:28.770964
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

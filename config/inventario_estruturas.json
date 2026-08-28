@@ -568,9 +568,9 @@
       "funcao": "PENDENTE: descrever função"
     },
     {
-      "id": "narrador_desktop",
-      "arquivo": "scripts/narrador_desktop.py",
-      "funcao": "PENDENTE: descrever função"
+      "id": "narrador_desktop_legado",
+      "arquivo": "scripts/_legado/narrador_desktop.py",
+      "funcao": "DESCONTINUADO: narrador oficial agora é thread interna de scripts/widget_edge.py (Widget Edge). Mantido apenas como registro histórico."
     },
     {
       "id": "niveis_etica",

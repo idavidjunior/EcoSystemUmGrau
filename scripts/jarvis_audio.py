@@ -12,7 +12,7 @@ Legados (ainda funcionam, mas depreciados):
   "Para" / "Cala"       -> stop
 
 Mecanismo: grava runtime/narracao_estado.json ({"ativo": bool, "pausado": bool}).
-O narrador (scripts/narrador_desktop.py) lê esse arquivo a cada loop.
+O narrador (thread interna do scripts/widget_edge.py) lê esse arquivo a cada loop.
 "on" garante que o processo do narrador esteja rodando.
 "stop" mata o subprocesso TTS ativo (vox_audio.py falar) imediatamente.
 
@@ -29,7 +29,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 CONTROLE = ROOT / "runtime" / "narracao_estado.json"
 PID_FILE = ROOT / "runtime" / "narrador.pid"
-NARRADOR = ROOT / "scripts" / "narrador_desktop.py"
+NARRADOR = ROOT / "scripts" / "widget_edge.py"
 VOX = ROOT / "scripts" / "vox_audio.py"
 
 
@@ -111,7 +111,7 @@ def narrador_rodando():
 
 
 def iniciar_narrador():
-    """Garante o narrador único. narrador_desktop.py é agora um guard:
+    """Garante o narrador único. O narrador oficial é a thread do widget_edge.py:
     se o widget (fonte única) já roda, não faz nada; se não, inicia o widget."""
     if narrador_rodando():
         return True

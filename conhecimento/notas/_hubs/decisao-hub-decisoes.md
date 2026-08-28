@@ -1,6 +1,6 @@
 # Decisoes
 
-**74 notas** conectadas a este hub.
+**75 notas** conectadas a este hub.
 
 
 ## Notas
@@ -41,6 +41,7 @@
 - [[modo-auto-gate]]
 - [[motor-de-criticalidade-auto-organizada-e-avalanches-neurais]]
 - [[mudar-config-mcp-de-objeto-para-array-no-opencodejson]]
+- [[oficializacao-narrador-edge-cerebro-vivo]]
 - [[organizar-desktopcodigos-como-raiz-unica-de-projetos]]
 - [[pais]]
 - [[pontes-inter-cluster-cerebro-vivo-grafo]]

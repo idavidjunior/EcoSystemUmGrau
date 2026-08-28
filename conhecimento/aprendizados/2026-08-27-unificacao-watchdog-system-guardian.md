@@ -153,6 +153,7 @@ PROATIVA de RAM (alerta antes do limite) e a portabilidade da certificacao foren
 - [[motor-de-criticalidade-auto-organizada-e-avalanches-neurais]]
 - [[mvp-streamumgrau-flutter-supabase]]
 - [[módulo-de-compreensão-de-pedidos-mcp-compreensao-pedidos]]
+- [[oficializacao-narrador-edge-cerebro-vivo]]
 - [[otimização-do-reindex-semântico-do-memory-engine]]
 - [[padrao-de-pergunta-validacao-numerica-por-cota]]
 - [[pais]]

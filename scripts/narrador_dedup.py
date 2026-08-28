@@ -1,12 +1,13 @@
 """narrador_dedup.py — dedup COMPARTILHADO em disco para o narrador.
 
-Problema que resolve: narrador_desktop.py e widget_edge.py rodam em processos
-separados, cada um com seu próprio _FALADOS em memória. Como ambos leem o mesmo
-banco SQLite e falam pelo mesmo TTS, uma resposta era narrada 2x.
+Problema que resolve: o narrador roda como thread dentro do widget_edge.py
+(o único narrador oficial). Deduplica no disco o que já foi falado, para que
+nenhum texto seja narrado 2x quando o widget reinicia ou outras threads vocais
+(tempo real vs pilha) coexistem.
 
 Solução: cache em disco (runtime/falados_cache.json) com escrita atômica e
 lock, usado por TODOS os narradores. Um texto é falado uma única vez dentro do
-TTL, independentemente de qual processo o detectou primeiro.
+TTL, independentemente de qual thread o detectou primeiro.
 """
 import json
 import time

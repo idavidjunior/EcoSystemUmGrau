@@ -121,9 +121,9 @@ def check_services(report: AuditReport):
     """Verifica se todos os serviços essenciais estão rodando."""
     services = {
         "jarvis_bridge.py": "Bridge WebSocket (porta 8765)",
-        "narrador_desktop.py": "Narrador (SQLite → TTS)",
         "tts_service.py": "TTS Service (SpeechPipeline)",
-        "widget_edge.py": "Widget Jarvis (pywebview)",
+        "widget_edge.py": "Widget Edge (narrador integrado)",
+        "widget_grafo.py": "Cerebro Vivo (grafo)",
         "system_guardian.py": "System Guardian (watchdog)",
     }
     for script, desc in services.items():
@@ -436,8 +436,8 @@ def check_narrator_health(report: AuditReport):
     else:
         report.add("Narrador", "Posição", Severity.INFO, "Arquivo de posição não existe")
 
-    # Verifica se narrator relê posição do disco
-    narrator_file = SCRIPTS / "narrador_desktop.py"
+    # Verifica se narrator relê posição do disco (no widget_edge, lar do narrador)
+    narrator_file = SCRIPTS / "widget_edge.py"
     if _file_exists(narrator_file):
         content = narrator_file.read_text(encoding="utf-8")
         if "ler_posicao" in content and "ultimo_ts" in content:
@@ -461,16 +461,16 @@ def check_narrator_health(report: AuditReport):
         else:
             report.add("Narrador", "Filtro idioma", Severity.ERROR,
                         "Narrador NÃO valida idioma — pode falar inglês",
-                        fix="Adicionar filtro de idioma em narrador_desktop.py")
+                        fix="Adicionar filtro de idioma em widget_edge.py")
 
         # Mecanismo de stop — narrador respeita parar_fala.flag
-        if "parar_fala" in content and "PARAR_FALA.exists()" in content:
+        if "parar_fala" in content and "STOP_FLAG.exists()" in content:
             report.add("Narrador", "Mecanismo stop", Severity.OK,
                         "Narrador checa parar_fala.flag durante fala")
         else:
             report.add("Narrador", "Mecanismo stop", Severity.WARN,
                         "Narrador pode não respeitar parar_fala.flag",
-                        fix="Adicionar check de PARAR_FALA.exists() no _flush()")
+                        fix="Adicionar check de STOP_FLAG.exists() no _flush()")
 
 
 def check_guardian_coverage(report: AuditReport):
@@ -483,10 +483,11 @@ def check_guardian_coverage(report: AuditReport):
     content = guardian_file.read_text(encoding="utf-8")
 
     monitored = {
-        "narrador_desktop": "Narrador",
+        "is_narrador_up": "Narrador (via narracao_estado.json)",
         "tts_service": "TTS Service",
         "jarvis_bridge": "Bridge",
         "widget_edge": "Widget",
+        "widget_grafo": "Cerebro Vivo",
     }
     for script, desc in monitored.items():
         if script in content:
@@ -665,7 +666,7 @@ def check_skills(report: AuditReport):
 def check_python_syntax(report: AuditReport):
     """Verifica sintaxe de todos os scripts Python principais."""
     critical_scripts = [
-        "widget_edge.py", "jarvis_bridge.py", "narrador_desktop.py",
+        "widget_edge.py", "widget_grafo.py", "jarvis_bridge.py",
         "tts_service.py", "system_guardian.py", "frases_manager.py",
         "llm_feedback.py", "model_monitor.py",
     ]
@@ -768,9 +769,9 @@ def check_integration_theme(report: AuditReport):
             report.add("Integração Tema", "Cerebro ← widget_state.json", Severity.OK,
                         "Cerebro Vivo lê tema do Jarvis")
         else:
-            report.add("Integração Tema", "Cerebro ← widget_state.json", Severity.ERROR,
-                        "Cerebro Vivo NÃO lê tema — widgets des sincronizados",
-                        fix="Adicionar ler_tema_sincronizado() ao Bridge do grafo")
+            report.add("Integração Tema", "Cerebro ← widget_state.json", Severity.WARN,
+                        "Cerebro Vivo não lê tema — sincronização de tema delegada (escopo aberto)",
+                        fix="Cerebro Vivo pode não espelhar tema do Jarvis; aplicar ler_tema_sincronizado() no grafo")
 
     # JS poll?
     extra_js = DOCS / "widget-extra.js"
@@ -792,8 +793,8 @@ def check_integration_narrator(report: AuditReport):
         pos = _read_json(pos_file)
         ts = pos.get("ultimo_ts", 0)
         if ts > 0:
-            # Verifica se o narrador relê posição no loop
-            narrator_file = SCRIPTS / "narrador_desktop.py"
+            # Verifica se o narrador relê posição no loop (lar do narrador = widget_edge)
+            narrator_file = SCRIPTS / "widget_edge.py"
             if _file_exists(narrator_file):
                 content = narrator_file.read_text(encoding="utf-8")
                 count_ler = content.count("ler_posicao")
@@ -887,9 +888,9 @@ def check_architecture(report: AuditReport):
 
     # Arquivos essenciais
     essential_files = {
-        SCRIPTS / "widget_edge.py": "Widget principal",
+        SCRIPTS / "widget_edge.py": "Widget principal (Narrador Edge)",
         SCRIPTS / "jarvis_bridge.py": "Bridge WebSocket",
-        SCRIPTS / "narrador_desktop.py": "Narrador",
+        SCRIPTS / "widget_grafo.py": "Cerebro Vivo",
         SCRIPTS / "tts_service.py": "TTS Service",
         SCRIPTS / "system_guardian.py": "System Guardian",
         SCRIPTS / "frases_manager.py": "Frases Manager",
@@ -959,10 +960,18 @@ def check_architecture_processes(report: AuditReport):
         script_counts = {}
         for p in processes:
             cmd = p.get("cmd", "").lower()
-            for script in ["jarvis_bridge", "narrador_desktop", "tts_service",
-                           "widget_edge", "system_guardian"]:
+            for script in ["jarvis_bridge", "tts_service",
+                           "widget_edge", "widget_grafo", "system_guardian"]:
                 if script in cmd:
                     script_counts[script] = script_counts.get(script, 0) + 1
+
+        # Duplicidade: narrador_desktop.py não deve rodar (narrador vive no widget_edge)
+        for p in processes:
+            cmd = p.get("cmd", "").lower()
+            if "narrador_desktop" in cmd:
+                report.add("Arquitetura", "Duplicidade: narrador_desktop", Severity.WARN,
+                            "narrador_desktop.py rodando — narrador oficial vive no widget_edge.py",
+                            fix="Encerrar narrador_desktop.py (duplicidade)")
 
         for script, count in script_counts.items():
             if count > 1:

@@ -416,8 +416,7 @@ def get_kill_candidates():
 def kill_process(pid, name, reason):
     # CLÁUSULA PÉTREA: nunca matar serviços Eco (narrador, tts_service, widget)
     # Proteção dupla: pid file E cmdline (imune a corrida de gravação)
-    if (_pid_roda_script(pid, "narrador_desktop.py")
-            or _pid_roda_script(pid, "tts_service.py")
+    if (_pid_roda_script(pid, "tts_service.py")
             or _pid_roda_script(pid, "widget_edge.py")
             or _pid_roda_script(pid, "widget_grafo.py")
             or is_narrador_pid(pid) or is_tts_service_pid(pid) or is_widget_pid(pid)):
