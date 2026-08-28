@@ -1127,8 +1127,11 @@ def calcular_score_pt(texto: str) -> float:
         bonus_curto = 15  # ajuda textos curtos legítimos
 
     # 5. Penalidade por palavras inequívocas de outros idiomas (máx -40)
+    # Proporcional à participação no texto: algumas ocorrências técnicas
+    # (and, for, this) não tornam o texto estrangeiro, mas alta proporção sim.
     estranhas = sum(1 for p in palavras if p in PALAVRAS_NAO_PT)
-    penalidade = min(estranhas * 4, 40)
+    proporcao_estranhas = estranhas / max(len(palavras), 1)
+    penalidade = min(proporcao_estranhas * 40, 40)
 
     # Peso final ajustado
     score_final = (

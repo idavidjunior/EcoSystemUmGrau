@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-28T16:02:34.768865",
+  "last_updated": "2026-08-28T19:38:12.069491",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -3513,8 +3513,10 @@
       "source": "opencode",
       "title": "Parar Fala — corrida da flag parar_fala.flag",
       "domain": "general",
-      "body": "---\ntipo: erro\ntags: [widget, narrador, parar-fala, flag, corrida, tts, jarvis, speech-pipeline]\ndata: 2026-08-13\ncontexto: Botão \"Parar Fala\" do widget Jarvis não parava a narração; usuário relatou que Jarvis continuava falando após acionar o botão.\ndecisao: cmd_interromper_fala (scripts/widget_controle_jarvis.py) passou a manter a flag runtime/parar_fala.flag por 1.5s antes de apagá-la, e removeu o feedback de áudio \"Voz desativada\" que era falado logo após a parada.\nimpacto: Narrador em proce",
-      "extracted_at": "2026-08-13T23:12:25.757115"
+      "body": "---\ntipo: erro\ntags: [widget, narrador, parar-fala, flag, corrida, tts, jarvis, speech-pipeline]\ndata: 2026-08-13\ncontexto: Botão \"Parar Fala\" do widget Jarvis não parava a narração; usuário relatou que Jarvis continuava falando após acionar o botão.\ndecisao: cmd_interromper_fala (scripts/widget_controle_jarvis.py) passou a manter a flag runtime/parar_fala.flag por 1.5s antes de apagá-la, e removeu o feedback de áudio \"Voz desativada\" que era falado logo após a parada.\nimpacto: Narrador em proce\n\n---\ntipo: erro\ntags: [cerebro-vivo, fala, jarvis-bridge, dialogo, retrato, widget]\ndata: 2026-08-28\ncontexto: O usuário pediu que os efeitos do Cérebro Vivo acendessem enquanto o Eco fala por voz. Ao auditar, descobriu-se que a região de fala nunca acendia na prática.\ndecisao: O jarvis_bridge.py gerava TTS (edge-tts) e enviava o áudio ao app via WebSocket, mas NUNCA marcava runtime/dialogo_vivo.json nem emitia a atividade \"fala\". Apenas scripts/dialogo.py (modo VAD, que não roda no PC quando se ",
+      "extracted_at": "2026-08-28T19:37:13.706520",
+      "merged_count": 3,
+      "merged_at": "2026-08-28T19:38:10.799123"
     },
     {
       "source": "opencode",
