@@ -47,6 +47,7 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:2px 0 8px;}
 <div id="topo" class="pywebview-drag-region">
   <span id="titulo">C&#233;rebro <b>Vivo</b></span>
   <button class="mini" id="btFoco">Foco</button>
+  <button class="mini" id="btPause">Pausar</button>
   <button class="mini" id="btAjustes">Ajustes</button>
   <button class="mini" id="btCentro">Centro</button>
   <button class="mini" id="btTopo">Fundo</button>
@@ -926,6 +927,21 @@ function fecharPaineis(){
   painelFoco.style.display='none';
 }
 document.getElementById('btAjustes').addEventListener('click',()=>{
+  const aberto = painelAjustes.style.display==='block';
+  fecharPaineis();
+  if (!aberto) painelAjustes.style.display='block';
+});
+
+// pause toggle
+const btnPause=document.getElementById('btPause');
+let paused=false;
+btnPause.addEventListener('click',()=>{
+  paused=!paused;
+  btnPause.textContent=paused?'Retomar':'Pausar';
+  if (window.pywebview && pywebview.api){
+    paused?pywebview.api.pause().catch(()=>{}):pywebview.api.resume().catch(()=>{});
+  }
+});
   const aberto = painelAjustes.style.display==='block';
   fecharPaineis();
   if (!aberto) painelAjustes.style.display='block';
