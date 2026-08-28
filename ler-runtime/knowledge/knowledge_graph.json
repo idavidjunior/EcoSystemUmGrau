@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-28T14:08:59.051261",
+  "last_updated": "2026-08-28T14:27:27.766489",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -3608,6 +3608,15 @@
       "domain": "general",
       "body": "﻿---\ntipo: decisao\ntags: [narrador, edge, widget, pausa, cerebro]\ndata: 2026-08-28\ncontexto: Pedido de botao pausar/parar no widget. A primeira implementacao foi colocada no Cerebro Vivo (www/cerebro.html + widget_grafo.py), mas o alvo correto era a janela Edge (widget_edge.py), onde roda o motor de narracao.\ndecisao: Reverter as mudancas do Cerebro e implementar Pausar/Retomar no Edge. EdgeApi ganhou pause()/resume() e status() passou a retornar pausado. UI www/index.html ganhou o botao btnPaus",
       "extracted_at": "2026-08-28T14:08:26.049484"
+    },
+    {
+      "source": "opencode",
+      "title": "gate hd externo e preflight repos nativos",
+      "domain": "general",
+      "body": "---\ntipo: erro\ntags: [gate, persistencia, hd-externo, preflight, powershell]\ndata: 2026-08-28\ncontexto: Sync apos controles de narracao no widget Edge. Gate persistencia.ps1 travava espelho do HD externo e repos nativos.\ndecisao: Corrigir bug de continuacao de linha PowerShell no filtro $hdBloqueio (mover '-and' para o fim da linha); Invoke-PreflightGlobal passa a pular preflight quando scripts/preflight_check.py nao existe (em vez de bloquear); identidade git local configurada no repo claude-co",
+      "extracted_at": "2026-08-28T14:26:50.618898",
+      "merged_count": 2,
+      "merged_at": "2026-08-28T14:27:27.535488"
     }
   ],
   "heuristics": [

@@ -1,6 +1,6 @@
 # Padroes Cognitivos
 
-**57 notas** conectadas a este hub.
+**58 notas** conectadas a este hub.
 
 
 ## Notas
@@ -32,6 +32,7 @@
 - [[etapa-25-teste-end-to-end]]
 - [[fix-favoritos-tags-e-contagem-por-capitulo]]
 - [[fix-tts-corte-final-textos-longos]]
+- [[gate-hd-externo-e-preflight-repos-nativos]]
 - [[grafo-vis-network-bug-string-js-json-dumps]]
 - [[guia-controle-total-de-tv-lg-webos-reaproveitável]]
 - [[heuristica-de-densidade-de-informacao]]

@@ -1,11 +1,11 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-28T14:08:59.244935
+**Exportado em:** 2026-08-28T14:27:27.980488
 **Projetos:** 4
 **Padroes Tecnicos:** 286
 **Decisoes:** 78
 **Bug Fixes:** 52
-**Padroes Cognitivos:** 72
+**Padroes Cognitivos:** 73
 **Heuristicas:** 32
 **Frameworks:** 10
 **Missoes Aprendidas:** 134
@@ -2058,6 +2058,17 @@ data: 2026-08-28
 contexto: Pedido de botao pausar/parar no widget. A primeira implementacao foi colocada no Cerebro Vivo (www/cerebro.html + widget_grafo.py), mas o alvo correto era a janela Edge (widget_edge.py), onde roda o motor de narracao.
 decisao: Reverter as mudancas do Cerebro e implementar Pausar/Retomar no Edge. EdgeApi ganhou pause()/resume() e status() passou a retornar pausado. UI www/index.html ganhou o botao btnPaus
 
+### gate hd externo e preflight repos nativos
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [gate, persistencia, hd-externo, preflight, powershell]
+data: 2026-08-28
+contexto: Sync apos controles de narracao no widget Edge. Gate persistencia.ps1 travava espelho do HD externo e repos nativos.
+decisao: Corrigir bug de continuacao de linha PowerShell no filtro $hdBloqueio (mover '-and' para o fim da linha); Invoke-PreflightGlobal passa a pular preflight quando scripts/preflight_check.py nao existe (em vez de bloquear); identidade git local configurada no repo claude-co
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -2152,7 +2163,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-28T14:08:59.051261
+**Ultima atualizacao:** 2026-08-28T14:27:27.766489
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*
