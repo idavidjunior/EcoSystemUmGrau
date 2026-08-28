@@ -19,8 +19,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);
 .mini{font-size:11px;line-height:1;padding:3px 7px;border:1px solid var(--bdr);
   border-radius:3px;background:transparent;color:var(--tx3);cursor:pointer;}
 .mini:hover{color:var(--tx);}
-#btPause.piscando{color:var(--on);border-color:var(--on);animation:pisca 1s steps(2,start) infinite;}
-@keyframes pisca{50%{opacity:.25;}}
 canvas{position:fixed;inset:0;display:block;cursor:grab;}
 canvas.girando{cursor:grabbing;}
 #info{position:fixed;left:10px;bottom:8px;font-size:10px;color:var(--tx3);
@@ -49,7 +47,6 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:2px 0 8px;}
 <div id="topo" class="pywebview-drag-region">
   <span id="titulo">C&#233;rebro <b>Vivo</b></span>
   <button class="mini" id="btFoco">Foco</button>
-  <button class="mini" id="btPause">Pausar</button>
   <button class="mini" id="btAjustes">Ajustes</button>
   <button class="mini" id="btCentro">Centro</button>
   <button class="mini" id="btTopo">Fundo</button>
@@ -929,21 +926,6 @@ function fecharPaineis(){
   painelFoco.style.display='none';
 }
 document.getElementById('btAjustes').addEventListener('click',()=>{
-  const aberto = painelAjustes.style.display==='block';
-  fecharPaineis();
-  if (!aberto) painelAjustes.style.display='block';
-});
-
-// pause toggle
-const btnPause=document.getElementById('btPause');
-let paused=false;
-btnPause.addEventListener('click',()=>{
-  paused=!paused;
-  btnPause.textContent=paused?'Retomar':'Pausar';
-  if (window.pywebview && pywebview.api){
-    paused?pywebview.api.pause().catch(()=>{}):pywebview.api.resume().catch(()=>{});
-  }
-});
   const aberto = painelAjustes.style.display==='block';
   fecharPaineis();
   if (!aberto) painelAjustes.style.display='block';

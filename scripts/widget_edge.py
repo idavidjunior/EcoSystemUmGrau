@@ -616,6 +616,7 @@ class EdgeApi:
             vivo.pop("quando", None)
         return {
             "narr": _estado_narrador_ativo(),
+            "pausado": _ler_narracao_pausada(),
             "tts": servico_no_ar("tts_service"),
             "bridge": bridge_no_ar(),
             "voz": voz,
@@ -632,6 +633,20 @@ class EdgeApi:
         voz checa durante a síntese, mesmo com a fila ocupada)."""
         try:
             STOP_FLAG.write_text(str(int(time.time())), encoding="utf-8")
+        except Exception:
+            pass
+        return True
+
+    def pause(self):
+        """Pausa o narrador (mantém ativo=true, pausado=true)."""
+        self._narrador_pausar(True)
+        return True
+
+    def resume(self):
+        """Retoma o narrador e limpa a bandeira de parada pendente."""
+        self._narrador_pausar(False)
+        try:
+            STOP_FLAG.unlink(missing_ok=True)
         except Exception:
             pass
         return True
