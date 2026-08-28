@@ -95,11 +95,8 @@
       "enabled": true
     },
     "composio": {
-      "type": "remote",
-      "url": "https://connect.composio.dev/mcp",
-      "headers": {
-        "x-consumer-api-key": "{env:COMPOSIO_API_KEY}"
-      },
+      "type": "local",
+      "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/mcp-composio-server.py"],
       "enabled": true
     }
   },
