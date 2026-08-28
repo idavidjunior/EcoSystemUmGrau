@@ -59,7 +59,7 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:2px 0 8px;}
 <div id="painelAjustes" class="painel">
   <div class="ptitulo">Ajustes</div>
   <label class="linha">Foco do brilho <span id="valFoco"></span></label>
-  <input id="rgFoco" type="range" min="0" max="1" step="0.01">
+  <input id="rgFoco" type="range" min="-1" max="1" step="0.01">
   <label class="linha">Vivacidade das cores <span id="valViva"></span></label>
   <input id="rgViva" type="range" min="0" max="1" step="0.05">
   <label class="linha">Filtro temporal (decay) <span id="valDecay"></span></label>
@@ -242,13 +242,15 @@ function sprite(cor){
   const c = document.createElement('canvas');
   c.width = c.height = 64;
   const g = c.getContext('2d');
-  const k = Math.max(0, Math.min(1, AJUSTES.foco));
-  const alfa = Math.round(0x66 - 0x33*k).toString(16).padStart(2,'0');
+  const k = Math.max(-1, Math.min(1, AJUSTES.foco));
+  const kr = Math.max(0, k);                 // positivo: brilho normal (0..1)
+  const kn = Math.max(0, -k);                // negativo: afina o brilho (0..1)
+  const alfa = Math.round((0x66 - 0x33*kr) * (1 - 0.75*kn)).toString(16).padStart(2,'0');
   const grad = g.createRadialGradient(32,32,0, 32,32,32);
   grad.addColorStop(0,'#ffffff');
-  grad.addColorStop((0.14+0.12*k).toFixed(3),cor);
-  grad.addColorStop((0.30+0.22*k).toFixed(3),cor+alfa);
-  grad.addColorStop(Math.min(0.98,(0.55+0.43*k)).toFixed(3),'rgba(0,0,0,0)');
+  grad.addColorStop((0.14+0.12*kr-0.12*kn).toFixed(3),cor);
+  grad.addColorStop((0.30+0.22*kr-0.30*kn).toFixed(3),cor+alfa);
+  grad.addColorStop(Math.min(0.98,(0.55+0.43*kr-0.55*kn).toFixed(3)),'rgba(0,0,0,0)');
   g.fillStyle = grad;
   g.fillRect(0,0,64,64);
   sprites[chave] = c;
@@ -1186,7 +1188,7 @@ document.getElementById('btCentro').addEventListener('click',()=>{
 window.cerebroAjustesAplicar = function(txt){
   try{
     Object.assign(AJUSTES, JSON.parse(txt));
-    if (!isFinite(AJUSTES.foco) || AJUSTES.foco<0) AJUSTES.foco=0;
+    if (!isFinite(AJUSTES.foco) || AJUSTES.foco < -1) AJUSTES.foco=-1;
     if (AJUSTES.foco>1) AJUSTES.foco=1;
     if (!isFinite(AJUSTES.viva)) AJUSTES.viva=0.65;
     if (AJUSTES.viva<0) AJUSTES.viva=0;
