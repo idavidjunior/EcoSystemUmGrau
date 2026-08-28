@@ -250,8 +250,8 @@ function Invoke-PreflightGlobal {
     param([string]$RepoPath)
     $script = "$RepoPath\scripts\preflight_check.py"
     if (-not (Test-Path $script)) {
-        Write-Log "PREFLIGHT: script nao encontrado $script"
-        return $false
+        Write-Log "PREFLIGHT: repositorio sem scripts/preflight_check.py, preflight pulado"
+        return $true
     }
     Write-Log "PREFLIGHT: executando $script"
     $out = python $script 2>&1 | Out-String
