@@ -874,6 +874,26 @@ function atualizarVis(){
   window.__infoBase = info.textContent;
 }
 
+const DESCRICOES_FOCO = {
+  __tudo:'Exibe todos os n\u00F3s do grafo, sem filtro.',
+  __ativos:'Destaca as notas realmente usadas pelo Eco nos \u00FAltimos 10 minutos.',
+  __novas:'Destaca os n\u00F3s nascidos nas \u00FAltimas horas (janela configur\u00E1vel em Ajustes).',
+  padroes:'Padr\u00F5es e t\u00E9cnicas de engenharia reutiliz\u00E1veis.',
+  decisoes:'Decis\u00F5es de arquitetura registradas (ADRs).',
+  bugs:'Bugs e corre\u00E7\u00F5es j\u00E1 aplicadas.',
+  cognitivo:'Conte\u00FAdo voltado \u00E0 cogni\u00E7\u00E3o e ao racioc\u00EDnio.',
+  heuristicas:'Heur\u00EDsticas e atalhos validados na pr\u00E1tica.',
+  frameworks:'Frameworks e bibliotecas utilizados.',
+  missoes:'Miss\u00F5es e objetivos do ecossistema.',
+  hub:'Hubs centrais de navega\u00E7\u00E3o do conhecimento.',
+  geral:'Conte\u00FAdo geral do vault.',
+  android:'Conhecimento de desenvolvimento Android.',
+  internet:'Conhecimento de internet e web.',
+  traducao:'Tradu\u00E7\u00E3o e localiza\u00E7\u00E3o para o pt-BR.',
+  programacao:'Programa\u00E7\u00E3o e pr\u00E1ticas de c\u00F3digo.',
+  mp3player:'Projeto MP3Player.'
+};
+
 function construirMenuFoco(){
   const lista = document.getElementById('listaFoco');
   lista.innerHTML = '';
@@ -882,6 +902,7 @@ function construirMenuFoco(){
   const cls = Object.keys(contagem).sort((a,b)=>contagem[b]-contagem[a]);
   const btTudo = document.createElement('button');
   btTudo.className='foco-btn'+(FILTRO?'':' on');
+  btTudo.title=DESCRICOES_FOCO.__tudo;
   btTudo.innerHTML='Tudo <span>'+NOS.length+'</span>';
   btTudo.onclick=()=>{ FILTRO=null; atualizarVis(); construirMenuFoco(); };
   lista.appendChild(btTudo);
@@ -892,6 +913,7 @@ function construirMenuFoco(){
     if (i<NOS.length && agoraM-tM<JANELA_USO) nAtivos++;
   const btUso=document.createElement('button');
   btUso.className='foco-btn'+(FILTRO==='__ativos'?' on':'');
+  btUso.title=DESCRICOES_FOCO.__ativos;
   btUso.innerHTML='Uso do Eco <span>'+nAtivos+'</span>';
   btUso.onclick=()=>{
     FILTRO=(FILTRO==='__ativos'?null:'__ativos');
@@ -906,6 +928,7 @@ function construirMenuFoco(){
     if (n.tm && (agoraS - n.tm)/3600 >= 0 && (agoraS - n.tm)/3600 < SINAPSE_H) nNovas++;
   const btNovas=document.createElement('button');
   btNovas.className='foco-btn'+(FILTRO==='__novas'?' on':'');
+  btNovas.title=DESCRICOES_FOCO.__novas;
   btNovas.innerHTML='Sinapses novas <span>'+nNovas+'</span>';
   btNovas.onclick=()=>{
     FILTRO=(FILTRO==='__novas'?null:'__novas');
@@ -915,6 +938,8 @@ function construirMenuFoco(){
   for (const c of cls){
     const b=document.createElement('button');
     b.className='foco-btn'+(FILTRO===c?' on':'');
+    b.title=DESCRICOES_FOCO[c] ||
+      ('Notas sobre '+rotulo(c)+'.');
     b.innerHTML=rotulo(c)+' <span>'+contagem[c]+'</span>';
     b.onclick=()=>{ FILTRO=(FILTRO===c?null:c); atualizarVis(); construirMenuFoco(); };
     lista.appendChild(b);
