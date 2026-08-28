@@ -24,11 +24,16 @@ select{flex:1;font-size:11px;background:var(--in);color:var(--tx);border:1px sol
   border-radius:3px;padding:3px 6px;outline:none;}
 select:focus{border-color:var(--acc);}
 button#btnVoz{font-size:11px;padding:5px 10px;border:1px solid var(--bdr);border-radius:4px;
-  background:var(--in);color:var(--tx);cursor:pointer;width:110px;}
+  background:var(--in);color:var(--tx);cursor:pointer;width:90px;}
 button#btnVoz.on{background:#1d3a26;border-color:var(--on);color:var(--on);}
 .linhaBotoes{display:flex;gap:8px;align-items:center;}
+button#btnPausa{font-size:11px;padding:5px 10px;border:1px solid var(--bdr);border-radius:4px;
+  background:transparent;color:var(--tx3);cursor:pointer;width:90px;}
+button#btnPausa.pausado{background:#3d3424;border-color:#f9e2af;color:#f9e2af;
+  box-shadow:0 0 6px rgba(249,226,175,.4);animation:piscaPausa 1s steps(2,start) infinite;}
+@keyframes piscaPausa{50%{opacity:.35;}}
 button#btnParar{font-size:11px;padding:5px 10px;border:1px solid var(--bdr);border-radius:4px;
-  background:transparent;color:var(--tx3);cursor:pointer;width:110px;}
+  background:transparent;color:var(--tx3);cursor:pointer;width:90px;}
 button#btnParar.falando{background:#3a1d1d;border-color:#f38ba8;color:#f38ba8;
   box-shadow:0 0 6px rgba(243,139,168,.4);}
 .fala{font-size:10px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
@@ -80,6 +85,7 @@ button#btnParar.falando{background:#3a1d1d;border-color:#f38ba8;color:#f38ba8;
   </div>
   <div class="linhaBotoes">
     <button id="btnVoz">Ligar voz</button>
+    <button id="btnPausa">Pausar</button>
     <button id="btnParar" title="Interromper fala">&#9632; Parar</button>
   </div>
   <div class="linha">
@@ -102,6 +108,9 @@ function edgeAtualizar(st){
   b.textContent = st.voz ? '\u25CF Voz ligada' : 'Ligar voz';
   var p = document.getElementById('btnParar');
   p.classList.toggle('falando', !!st.falando);
+  var bp = document.getElementById('btnPausa');
+  bp.classList.toggle('pausado', !!st.pausado);
+  bp.textContent = st.pausado ? 'Retomar' : 'Pausar';
   var v = st.vivo || {};
   var nomes = {ouvindo:'Ouvindo', pensando:'Pensando', falando:'Falando',
                erro:'Erro', iniciando:'Iniciando'};
@@ -145,6 +154,14 @@ window.addEventListener('pywebviewready', async function(){
   });
   document.getElementById('btnParar').addEventListener('click', function(){
     try{ window.pywebview.api.parar(); }catch(e){}
+  });
+  document.getElementById('btnPausa').addEventListener('click', async function(){
+    try{
+      var st = await window.pywebview.api.status();
+      if (st.pausado){ await window.pywebview.api.resume(); }
+      else{ await window.pywebview.api.pause(); }
+      edgeAtualizar({pausado: !st.pausado});
+    }catch(e){}
   });
 });
 </script>

@@ -245,6 +245,17 @@ def _estado_narrador_ativo():
     return True
 
 
+def _ler_narracao_pausada():
+    """True se a narracao está pausada (mantendo ativo=false como pausada)."""
+    try:
+        if NARRACAO_CONTROLE.exists():
+            estado = json.loads(NARRACAO_CONTROLE.read_text(encoding="utf-8"))
+            return bool(estado.get("pausado", False))
+    except Exception:
+        pass
+    return False
+
+
 def _limpar_texto(texto):
     """Remove Markdown, emojis e símbolos; fica só o texto puro para TTS."""
     if not texto:
