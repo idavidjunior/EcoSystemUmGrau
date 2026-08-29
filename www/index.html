@@ -67,6 +67,7 @@ button#btnParar.falando{background:#3a1d1d;border-color:#f38ba8;color:#f38ba8;
     <i class="pt" id="ptBridge" title="Bridge"></i>
   </span>
   <button class="mini" id="btnLogs" title="Terminal de logs">Logs</button>
+  <button class="mini" id="btnTopo" title="Alternar Frente/Fundo">Fundo</button>
   <button class="mini" onclick="pywebview.api.minimize()">&#8211;</button>
   <button class="mini" onclick="pywebview.api.close()">&#10005;</button>
 </div>
@@ -113,7 +114,7 @@ function terminalAbrir(){
   document.getElementById('btnLogs').classList.add('ativo');
   if (!terminalWidget){
     terminalWidget = new TerminalWidget({
-      hospedeiro: c, cor: '#a6e3a1', buffer: 120,
+      hospedeiro: c, cor: '#33ff66', buffer: 70,
       onFechar: function(){ try{ window.pywebview.api.logs_toggle(); }catch(e){} }
     });
   }
@@ -133,6 +134,8 @@ function edgeAtualizar(st){
   document.getElementById('ptNarr').classList.toggle('on', !!st.narr);
   document.getElementById('ptTts').classList.toggle('on', !!st.tts);
   document.getElementById('ptBridge').classList.toggle('on', !!st.bridge);
+  var btTopo = document.getElementById('btnTopo');
+  btTopo.textContent = st.frente ? 'Fundo' : 'Frente';
   var b = document.getElementById('btnVoz');
   b.classList.toggle('on', !!st.voz);
   b.textContent = st.voz ? '\u25CF Voz ligada' : 'Ligar voz';
@@ -175,6 +178,14 @@ window.addEventListener('pywebviewready', async function(){
     try{
       var r = await window.pywebview.api.logs_toggle();
       terminalAlternar(r);
+    }catch(e){}
+  });
+  document.getElementById('btnTopo').addEventListener('click', function(){
+    try{
+      window.pywebview.api.topo().then(function(f){
+        document.getElementById('btnTopo').textContent =
+          f ? 'Fundo' : 'Frente';
+      });
     }catch(e){}
   });
   document.getElementById('volume').addEventListener('change', function(e){

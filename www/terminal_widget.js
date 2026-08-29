@@ -16,6 +16,8 @@
     intentoFechado: false,
   };
 
+  var RUIDO = /(:\s*connection (open|closed)$|websockets\.server|websockets\.client|HTTP connection|PING|health-check)/i;
+
   function escapar(t){
     return String(t == null ? '' : t)
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -23,9 +25,21 @@
 
   function nivelDeLinha(texto){
     var t = String(texto || '');
-    if (/erro|error|falha|FATAL|CRITICAL|CRITICO/i.test(t)) return 'erro';
+    if (/erro|error|falha|FATAL|CRITICAL|CRITICO|traceback|exception/i.test(t)) return 'erro';
     if (/aviso|warn|warning|aten|ALERT/i.test(t)) return 'aviso';
+    if (/info|websockets/i.test(t)) return 'info';
     return null;
+  }
+
+  function ehRuido(nome, texto){
+    var t = String(texto || '');
+    if (/bridge/i.test(nome) && /websockets\.(server|client)/i.test(t)) return true;
+    return RUIDO.test(t);
+  }
+
+  function horaDinamica(){
+    var d = new Date(), p = function(n){ return (n < 10 ? '0' : '') + n; };
+    return p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
   }
 
   function igualSets(a, b){
@@ -47,6 +61,7 @@
     this._falhas = 0;
     this._poll = null;
     this.status = 'parado';
+    this._desde = Date.now();
     this._construir();
   }
 
@@ -60,12 +75,16 @@
     c.innerHTML =
       '<div class="tw-barra">' +
         '<span class="tw-titulo">logs &#8212; eco</span>' +
+        '<span class="tw-legenda" title="Logs em tempo real do ecossistema. Fontes: bridge, narrador, edge, dialogo, preflight. Ultima linha no topo, buffer de 70.">&#9658; feed vivo, ultimo no topo</span>' +
+        '<span class="tw-contador">0</span>' +
         '<span class="tw-status" data-status="parado">parado</span>' +
+        '<span class="tw-cursor">&#9608;</span>' +
         '<button class="tw-botao" data-acao="limpar" title="Limpar">limpar</button>' +
         '<button class="tw-botao" data-acao="fechar" title="Fechar">&#10005;</button>' +
       '</div>' +
       '<div class="tw-tela"></div>';
     this._elBarra = c.querySelector('.tw-barra');
+    this._elContador = this._elBarra.querySelector('.tw-contador');
     this._elStatus = this._elBarra.querySelector('.tw-status');
     this._elTela = c.querySelector('.tw-tela');
     this._elTela.addEventListener('click', function(e){
@@ -99,24 +118,41 @@
     if (this._linhas.length > this.buffer){
       this._linhas.splice(0, this._linhas.length - this.buffer);
     }
+    if (this._elContador) this._elContador.textContent = this._linhas.length;
     if (!this._raf){
       this._raf = requestAnimationFrame(function(){ self._render(); });
     }
   };
 
+  TerminalWidget.prototype._criarLinha = function(linha){
+    var nivel = nivelDeLinha(linha.texto);
+    var nome = '<span class="tw-nome">' + escapar(linha.nome) + '</span>';
+    var ts = linha.ts ? '<span class="tw-ts">' + escapar(linha.ts) + '</span> ' : '';
+    var cls = nivel ? 'tw-linha tw-' + nivel : 'tw-linha';
+    var div = document.createElement('div');
+    div.className = cls;
+    div.innerHTML = ts + nome + ' ' + escapar(linha.texto);
+    return div;
+  };
+
   TerminalWidget.prototype._render = function(){
     this._raf = null;
     if (!this._elTela) return;
-    var noFim = this._elTela.scrollHeight - this._elTela.scrollTop - this._elTela.clientHeight < 24;
-    this._elTela.innerHTML = this._linhas.map(function(linha){
-      var nivel = nivelDeLinha(linha.texto);
-      var nome = '<span class="tw-nome">' + escapar(linha.nome) + '</span>';
-      var ts = linha.ts ? '<span class="tw-ts">' + escapar(linha.ts) + '</span> ' : '';
-      var cls = nivel ? 'tw-linha tw-' + nivel : 'tw-linha';
-      return '<div class="' + cls + '">' + ts + nome + ' ' + escapar(linha.texto) + '</div>';
-    }).join('') ||
-      '<div class="tw-vazio">sem linhas recebidas ainda</div>';
-    if (noFim) this._elTela.scrollTop = this._elTela.scrollHeight;
+    var noTopo = this._elTela.scrollTop < 24;
+    var frag = document.createDocumentFragment();
+    var linhas = this._linhas;
+    for (var i = linhas.length - 1; i >= 0; i--){
+      frag.appendChild(this._criarLinha(linhas[i]));
+    }
+    this._elTela.innerHTML = '';
+    this._elTela.appendChild(frag);
+    if (linhas.length === 0){
+      var vazio = document.createElement('div');
+      vazio.className = 'tw-vazio';
+      vazio.textContent = 'sem linhas recebidas ainda';
+      this._elTela.appendChild(vazio);
+    }
+    if (noTopo) this._elTela.scrollTop = 0;
   };
 
   TerminalWidget.prototype._parserLinha = function(nome, texto){
@@ -130,6 +166,7 @@
     var self = this;
     var out = [];
     (textos || []).forEach(function(t){
+      if (ehRuido(nome, t)) return;
       var p = self._parserLinha(nome, t);
       out.push({nome: nome, ts: p.ts, texto: p.texto});
     });

@@ -39,6 +39,7 @@ LARGURA = 360
 ALTURA_BASE = 300
 ALTURA_LOG = 480
 NARRACAO_CONTROLE = RUNTIME / "narracao_estado.json"
+JANELA_FILE = RUNTIME / "widget_janela.json"
 
 # --- Narrador integrado ---
 DB_NARRADOR = Path(os.environ.get("OPENCODE_DB", r"C:\Users\David Jr\.local\share\opencode\opencode.db"))
@@ -684,6 +685,68 @@ def ler_retrato():
         return {}
 
 
+def hwnd_edge():
+    """Identificador nativo da janela: handle real ou busca pelo título."""
+    import ctypes
+    try:
+        import webview
+        if webview.windows:
+            return int(webview.windows[0].native.Handle)
+    except Exception:
+        pass
+    return int(ctypes.windll.user32.FindWindowW(None, "Edge"))
+
+
+def janela_frente_desejada():
+    """Fonte da verdade da camada: o arquivo que todo clique atualiza."""
+    try:
+        return bool(json.loads(
+            JANELA_FILE.read_text(encoding="utf-8")).get("frente", True))
+    except Exception:
+        return True
+
+
+def camada_bit(hwnd):
+    import ctypes
+    return bool(ctypes.windll.user32.GetWindowLongW(hwnd, -20) & 0x8)
+
+
+def camada_aplicar(frente):
+    """TOPMOST na frente; ao fundo, tira o privilégio e afunda na fila já.
+    Mesma estratégia do Cerebro Vivo (widget_grafo.py)."""
+    import ctypes
+    hwnd = hwnd_edge()
+    if not hwnd:
+        print("camada: janela nao encontrada", flush=True)
+        return False
+    u32 = ctypes.windll.user32
+    flags = 0x0001 | 0x0002 | 0x0010  # NOSIZE|NOMOVE|NOACTIVATE
+    if not frente:
+        u32.SetWindowPos(hwnd, -2, 0, 0, 0, 0, flags)   # HWND_NOTOPMOST
+        u32.SetWindowPos(hwnd, 1, 0, 0, 0, 0, flags)    # HWND_BOTTOM
+        return True
+    for tentativa in range(4):
+        if tentativa == 1:
+            u32.SetWindowPos(hwnd, -1, 0, 0, 0, 0,
+                             flags | 0x0040)             # SWP_SHOWWINDOW
+        if tentativa == 2 or tentativa == 3:
+            try:
+                import webview
+                webview.windows[0].native.TopMost = True
+            except Exception as e:
+                print(f"camada native: {type(e).__name__}: {e}", flush=True)
+        else:
+            u32.SetWindowPos(hwnd, -1, 0, 0, 0, 0, flags)
+        if camada_bit(hwnd) == frente:
+            if tentativa:
+                print(f"camada frente ok (tentativa {tentativa + 1})",
+                      flush=True)
+            return True
+        time.sleep(0.25)
+    print("camada: TOPMOST recusado pelo sistema", flush=True)
+    return False
+
+
 class EdgeApi:
     """API exposta ao JavaScript via pywebview (window.pywebview.api)."""
 
@@ -691,6 +754,7 @@ class EdgeApi:
         self._voz_proc = None
         self._sono_timer = None
         self._lock = threading.Lock()
+        self._frente = janela_frente_desejada()
 
     def voz_ligada(self):
         with self._lock:
@@ -719,6 +783,7 @@ class EdgeApi:
             "ultima_fala": est.get("ultima_fala") or "",
             "vivo": vivo,
             "logs_aberto": bool(est.get("logs_aberto", False)),
+            "frente": self._frente,
         }
 
     def parar(self):
@@ -890,6 +955,20 @@ class EdgeApi:
             webview.windows[0].minimize()
         return True
 
+    def topo(self):
+        """Alterna sempre-no-topo <-> fundo do desktop (persistente)."""
+        try:
+            self._frente = not self._frente
+            camada_aplicar(self._frente)
+            JANELA_FILE.write_text(
+                json.dumps({"frente": self._frente}), encoding="utf-8")
+            print("janela: " + ("frente" if self._frente else "fundo"),
+                  flush=True)
+            return self._frente
+        except Exception as e:
+            print(f"topo: {type(e).__name__}: {e}", flush=True)
+            return self._frente
+
     def close(self):
         import webview
 
@@ -951,9 +1030,23 @@ def poller(api):
     import webview
 
     ultima = None
+    vez_camada = 0
     while True:
         # voz ligada pede ritmo maior (barra de mic e estados ao vivo)
         time.sleep(1 if api.voz_ligada() else 2)
+        # cura de deriva: camada desejada vs bit real da janela
+        vez_camada += 1
+        if vez_camada >= 2:
+            vez_camada = 0
+            try:
+                hwnd = hwnd_edge()
+                if hwnd and camada_bit(hwnd) != api._frente:
+                    if camada_aplicar(api._frente):
+                        print("camada reafirmada: " +
+                              ("frente" if api._frente else "fundo"),
+                              flush=True)
+            except Exception:
+                pass
         try:
             st = api.status()
             chave = json.dumps(st, sort_keys=True)

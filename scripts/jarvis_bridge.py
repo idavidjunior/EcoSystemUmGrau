@@ -80,6 +80,8 @@ except ImportError as e:
     def marcar_atividade(): pass
 
 logging.basicConfig(level=logging.INFO)
+logging.getLogger("websockets.server").setLevel(logging.WARNING)
+logging.getLogger("websockets.client").setLevel(logging.WARNING)
 file_handler = logging.FileHandler(Path(__file__).parent / "bridge_log.txt", mode="a", encoding="utf-8")
 file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s:%(name)s:%(message)s"))
 logging.getLogger().addHandler(file_handler)
