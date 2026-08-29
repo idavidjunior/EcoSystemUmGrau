@@ -1,5 +1,5 @@
 ---
-tags: [ativa, decisao, opencode, recente, rede, vivos]
+tags: [ativa, decisao, opencode, recente, rede, resilience]
 aliases: [Unificacao de vigilantes: watchdog.ps1 rebaixado a keeper]
 date: 2026-08-27
 ---
