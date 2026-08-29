@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**230 notas** do cluster ecossistema.
+**231 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -179,6 +179,7 @@
 - [[padrao-organizacao-comandos]]
 - [[pais]]
 - [[parar-fala-corrida-da-flag-pararfalaflag]]
+- [[pausa-total-widget]]
 - [[persistencia-completa-widget-grafo]]
 - [[pipeline-de-release-e-padrão-de-toolbar-com-menu]]
 - [[política-de-resposta-rápida-caminhos-rápidos-constantes-no-j]]

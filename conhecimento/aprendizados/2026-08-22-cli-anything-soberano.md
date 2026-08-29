@@ -121,6 +121,7 @@ HKUDS/CLI-Anything (MIT), metodologia GUI-to-CLI em 7 fases: análise do codebas
 - [[otimização-do-reindex-semântico-do-memory-engine]]
 - [[padrao-de-pergunta-validacao-numerica-por-cota]]
 - [[pais]]
+- [[pausa-total-widget]]
 - [[persistencia-completa-widget-grafo]]
 - [[política-de-resposta-rápida-caminhos-rápidos-constantes-no-j]]
 - [[ponte-web-video-cast]]

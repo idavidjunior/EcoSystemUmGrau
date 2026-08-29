@@ -1,6 +1,6 @@
 # Decisoes
 
-**76 notas** conectadas a este hub.
+**77 notas** conectadas a este hub.
 
 
 ## Notas
@@ -45,6 +45,7 @@
 - [[oficializacao-narrador-edge-cerebro-vivo]]
 - [[organizar-desktopcodigos-como-raiz-unica-de-projetos]]
 - [[pais]]
+- [[pausa-total-widget]]
 - [[pontes-inter-cluster-cerebro-vivo-grafo]]
 - [[ponto-único-de-persistência-gate]]
 - [[pontuacao-ponderada-com-6-categorias-req-30-func-30-testes-1]]
