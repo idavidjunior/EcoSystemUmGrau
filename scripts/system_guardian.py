@@ -801,6 +801,29 @@ def run_audit_periodico():
 
 AUDIT_INTERVALO = 90  # rodar audit a cada 90 ciclos (90 * 20s = 30 min)
 OPENCODE_RESILIENCE_INTERVALO = 45  # rodar resiliência a cada 45 ciclos (45 * 20s = 15 min)
+DRIVE_MONITOR_INTERVALO = 180  # vigiar Google Drive a cada 180 ciclos (180 * 20s = 1 hora)
+
+def run_drive_monitor():
+    """Vigia o Google Drive (changes API) e registra adições/remoções/alterações."""
+    try:
+        monitor = BASE / "scripts" / "drive_monitor.py"
+        if not monitor.exists():
+            return
+        r = subprocess.run(
+            [sys.executable, str(monitor), "check"],
+            capture_output=True, text=True, timeout=90, cwd=str(BASE),
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+        )
+        saida = (r.stdout or "").strip()
+        if r.returncode == 0:
+            if "evento(s)" in saida:
+                log.info(f"DRIVE MONITOR: {saida.splitlines()[-1]}")
+            else:
+                log.info("DRIVE MONITOR: sem mudanças")
+        else:
+            log.error(f"DRIVE MONITOR falhou (exit {r.returncode}): {(saida or r.stderr or '')[:200]}")
+    except Exception as e:
+        log.error(f"DRIVE MONITOR erro: {e}")
 
 def run_opencode_resilience():
     """Verifica e limpa cache do OpenCode se necessário."""
@@ -835,6 +858,7 @@ def run_forever():
     log.info(f"RAM critica: <{RAM_CRITICAL_MB} MB, alerta: <{RAM_WARN_MB} MB, intervalo: {CHECK_INTERVAL}s")
     log.info(f"Audit periodico: a cada {AUDIT_INTERVALO * CHECK_INTERVAL // 60} minutos")
     log.info(f"OpenCode resilience: a cada {OPENCODE_RESILIENCE_INTERVALO * CHECK_INTERVAL // 60} minutos")
+    log.info(f"Drive monitor: a cada {DRIVE_MONITOR_INTERVALO * CHECK_INTERVAL // 60} minutos")
 
     with open(PID_FILE, "w", encoding="utf-8") as f:
         f.write(str(os.getpid()))
@@ -861,6 +885,8 @@ def run_forever():
                 run_audit_periodico()
             if ciclos % OPENCODE_RESILIENCE_INTERVALO == 0:
                 run_opencode_resilience()
+            if ciclos % DRIVE_MONITOR_INTERVALO == 0:
+                run_drive_monitor()
         except Exception as e:
             log.error(f"Erro no ciclo: {e}")
         time.sleep(CHECK_INTERVAL)
