@@ -1,5 +1,5 @@
 ---
-tags: [base, caminho, checks, padrao, padrão, typescript]
+tags: [base, bloco, checks, padrao, padrão, typescript]
 aliases: [TypeScript: type narrowing, guards e type assertions]
 date: 2026-08-10
 ---
