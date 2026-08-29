@@ -71,10 +71,13 @@ CLUSTERS = {
                     'sessao_limpeza_auth', 'provider_mcp_debug', 'provider_mcp_server.py',
                     'provider_mcp_server.py:52-55', 'workspace_organization'],
     'cognicao': ['meta_cognition'],
+    'composio': ['composio', 'composio-mcp-remoto', 'composio_mcp_remoto',
+                 'composiomcp', 'composiomcpremoto', 'composioremoto'],
 }
 CLUSTER_COR = {
     'android': '#8dd3c7', 'mp3player': '#ffffb3', 'ler': '#bebada',
     'navegacao': '#fb8072', 'ecossistema': '#80b1d3', 'cognicao': '#fdb462', 'geral': '#b3b3b3',
+    'composio': '#fccde5',
 }
 # Descricoes curtas para os tooltips dos botoes de cluster
 CLUSTER_DESC = {
@@ -84,6 +87,7 @@ CLUSTER_DESC = {
     'navegacao': 'Notas de treinamento de navegacao e sessoes',
     'ecossistema': 'Notas do proprio EcoSystemUmGrau (config, MCP, agentes)',
     'cognicao': 'Notas de meta-cognicao e raciocinio',
+    'composio': 'MCP remoto Composio e notas relacionadas',
     'geral': 'Notas sem cluster especifico ou de escopo geral',
 }
 
@@ -467,10 +471,11 @@ def extrair_nos():
     corpos_low = {s: b.lower() for s, b in corpo_por_slug.items()}
     for nome_mcp in _coletar_mcps():
         nid = f'mcp/{nome_mcp}'
+        cl_mcp = 'composio' if 'composio' in nome_mcp else 'mcp'
         add_no(nid, nome_mcp, 'mcp', ['mcp'],
                f'Servidor MCP configurado no opencode.jsonc (tipo local). '
                f'Clique para focar nas notas que o citam.',
-               source='config/opencode.jsonc', cluster='mcp')
+               source='config/opencode.jsonc', cluster=cl_mcp)
         # termos de busca: nome completo + nome curto (eco-obsidian -> obsidian)
         termos = [nome_mcp.lower()]
         sufixo = re.sub(r'^(eco|mcp)-', '', nome_mcp.lower())

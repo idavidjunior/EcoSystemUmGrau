@@ -96,7 +96,7 @@ const PALETA = {
   padroes:'#f9e2af', decisoes:'#a6e3a1', bugs:'#f38ba8', cognitivo:'#89b4fa',
   heuristicas:'#fab387', frameworks:'#b4befe', missoes:'#cba6f7',
   hub:'#94e2d5', geral:'#9399b2', android:'#89dceb', internet:'#74c7ec',
-  traducao:'#f5c2e7', programacao:'#eed49f', mp3player:'#ee99a0'
+  traducao:'#f5c2e7', programacao:'#eed49f', mp3player:'#ee99a0', composio:'#fccde5'
 };
 const EXTRA = ['#f5c2e7','#89dceb','#74c7ec','#94e2d5','#eed49f','#ee99a0',
                '#a6e3a1','#fab387'];
@@ -104,7 +104,7 @@ const FORTE = {padroes:'#ffd866',decisoes:'#5efc82',bugs:'#ff5370',
   cognitivo:'#4da6ff',heuristicas:'#ff9e40',frameworks:'#8b9dff',
   missoes:'#c77dff',hub:'#35e0c8',geral:'#aab2d0',android:'#33f0ff',
   internet:'#38c6ff',traducao:'#ff7edb',programacao:'#ffe066',
-  mp3player:'#ff8ba0'};
+  mp3player:'#ff8ba0',composio:'#ffb3d9'};
 const EXTRA_FORTE = ['#ff7edb','#33f0ff','#38c6ff','#35e0c8','#ffe066',
                      '#ff8ba0','#5efc82','#ff9e40'];
 const COR_CACHE = {};
@@ -1012,7 +1012,8 @@ const DESCRICOES_FOCO = {
   internet:'Conhecimento de internet e web.',
   traducao:'Tradu\u00E7\u00E3o e localiza\u00E7\u00E3o para o pt-BR.',
   programacao:'Programa\u00E7\u00E3o e pr\u00E1ticas de c\u00F3digo.',
-  mp3player:'Projeto MP3Player.'
+  mp3player:'Projeto MP3Player.',
+  composio:'MCP remoto Composio e notas relacionadas.'
 };
 
 function construirMenuFoco(){
@@ -1061,7 +1062,10 @@ function construirMenuFoco(){
     b.className='foco-btn'+(FILTRO===c?' on':'');
     b.title=DESCRICOES_FOCO[c] ||
       ('Notas sobre '+rotulo(c)+'.');
-    b.innerHTML=rotulo(c)+' <span>'+contagem[c]+'</span>';
+    b.innerHTML='<span style="display:inline-block;width:8px;height:8px;'
+      +'border-radius:50%;background:'+corDe(c)+';margin-right:6px;'
+      +'vertical-align:middle"></span>'+rotulo(c)
+      +' <span>'+contagem[c]+'</span>';
     b.onclick=()=>{ FILTRO=(FILTRO===c?null:c); atualizarVis(); construirMenuFoco(); };
     lista.appendChild(b);
   }

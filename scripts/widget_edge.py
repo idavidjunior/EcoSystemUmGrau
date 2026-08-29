@@ -377,12 +377,29 @@ _CONCLUSAO = re.compile(
 )
 
 
+# Resumo/cabeçalho de estado do OpenCode (recompactado a cada condensação de
+# contexto) — NUNCA é narrável. O narrador lê esses blocos como "novos" porque
+# o OpenCode os regrava no banco com timestamp novo a cada poucos minutos.
+_PADRAO_SUMMARY = re.compile(
+    r"^\s*(?:"
+    r"##\s*(?:objective|objetivo)"
+    r"|##\s*(?:resumo|summary)\s*:"
+    r"|(?:objetivo|objectivo)\s*:"
+    r")\b",
+    re.IGNORECASE,
+)
+
+
 def _deve_narrar(texto):
     """Decide se um texto deve ser narrado. Retorna (deve_narrar, motivo)."""
     if not texto or not texto.strip():
         return False, "vazio"
 
     texto = texto.strip()
+
+    # 0. Bloco de resumo de estado (## Objective / objetivo:) — nunca narrar
+    if _PADRAO_SUMMARY.match(texto):
+        return False, "summary de estado"
 
     # 1. Muito curto para ser útil
     if len(texto) < 30:

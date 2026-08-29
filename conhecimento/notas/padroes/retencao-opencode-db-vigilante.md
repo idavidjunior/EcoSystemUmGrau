@@ -1,12 +1,12 @@
 ---
-tags: [eventos, opencodeopencodeopencodeopencodeopencodeopencodeopencode, padrao, payload, repetem, sessão]
+tags: [eventos, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, payload, repetem, sessão]
 aliases: [retencao opencode db vigilante]
 date: 2026-08-27
 ---
 
 # retencao opencode db vigilante
 
-**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao
@@ -16,5 +16,9 @@ contexto: Verificação de espaço no C: revelou opencode.db com 5,9 GB. O openc
 decisao: Integrar a retenção do open
 ## Conexoes
 
+- [[2026-08-03-adb-remoto-via-tailscale-script-automatico-de-rot]]
 - [[cluster-hub-ecossistema]]
+- [[compreensao-de-pedidos-refino-com-a-llm-do-opencode-primaria]]
+- [[config-2026-07-28-formato-correto-do-mcp-no-opencode-1187]]
+- [[eco-agente-e-comando-global]]
 - [[padrao-hub-padroes]]

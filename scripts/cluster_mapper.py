@@ -46,8 +46,17 @@ GENERIC = frozenset({
 
 
 def norm(s):
-    """Normaliza fonte/tag: minúsculas, sem pontuação/espaços."""
-    return re.sub(r'[^a-z0-9]', '', (s or '').lower())
+    """Normaliza fonte/tag: minúsculas, acentos transliterados (NFKD+ASCII),
+    sem pontuação/espaços.
+
+    IMPORTANTE: usar NFKD antes de descartar caracteres não-ASCII evita colisão
+    de palavras acentuadas com variantes sem acento (ex: 'composição' vira
+    'composicao', NUNCA 'composio' da marca Composio)."""
+    import unicodedata
+    s = (s or '').lower()
+    s = unicodedata.normalize('NFKD', s)
+    s = s.encode('ascii', 'ignore').decode('ascii')
+    return re.sub(r'[^a-z0-9]', '', s)
 
 
 def dedupe(norm_s):
@@ -90,6 +99,8 @@ class ClusterMapper:
                         'ecosystemumgrau', 'ecosystem', 'jarvis', 'config',
                         'habilidades', 'skill', 'opencodeopencode'],
         'cognicao': ['meta_cognition', 'metacognicao', 'metacognition'],
+        'composio': ['composio', 'composio-mcp-remoto', 'composio_mcp_remoto',
+                     'composiomcp', 'composiomcpremoto', 'composioremoto'],
     }
 
     def __init__(self, extra_clusters=None):

@@ -1,12 +1,12 @@
 ---
-tags: [jarvis, longo, opencode, padrao, texto, tts]
+tags: [jarvis, longo, opencodeopencode, padrao, texto, tts]
 aliases: [Narracao seletiva por relevancia no narrador Edge]
 date: 2026-08-28
 ---
 
 # Narracao seletiva por relevancia no narrador Edge
 
-**Fonte:** opencode
+**Fonte:** opencode+opencode
 
 ---
 tipo: padrao
@@ -15,9 +15,9 @@ data: 2026-08-28
 contexto: "Usuario reclamou que o narrador fala sem parar e sem criterio. A causa era dupla: o filtro _deve_narrar do widget_edge.py tinha fallback 'conteudo' que narrava qualquer texto longo, e
 ## Conexoes
 
-- [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
+- [[aegis-registrado-como-projeto-irmao-rust]]
+- [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
-- [[controle-da-tv-lg-webos-via-ssap]]
+- [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
 - [[padrao-hub-padroes]]
-- [[secrets-guard-no-preflightcheck]]
+- [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]
