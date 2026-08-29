@@ -235,14 +235,55 @@ def _salvar_posicao_narrador(pos):
 
 
 def _estado_narrador_ativo():
-    """True se narracao ativa e não pausada."""
+    """True se narracao ativa e não pausada (inclui pausa total do botão)."""
     try:
         if NARRACAO_CONTROLE.exists():
             estado = json.loads(NARRACAO_CONTROLE.read_text(encoding="utf-8"))
-            return bool(estado.get("ativo", True)) and not bool(estado.get("pausado", False))
+            return (bool(estado.get("ativo", True))
+                    and not bool(estado.get("pausado", False))
+                    and not bool(estado.get("pausa_total", False)))
     except Exception:
         pass
     return True
+
+
+def _ler_pausa_total():
+    """True se a pausa total (botão Pausar) está ativa no runtime."""
+    try:
+        if NARRACAO_CONTROLE.exists():
+            estado = json.loads(NARRACAO_CONTROLE.read_text(encoding="utf-8"))
+            return bool(estado.get("pausa_total", False))
+    except Exception:
+        pass
+    return False
+
+
+def _gravar_pausa_total(pausar: bool):
+    """Estado mestre do botão Pausar.
+
+    pausa_total=true silencia todo áudio de saída (narração, TTS e voz
+    Jarvis) até voltar a false. É separado de `pausado`, que o
+    voice_on/voice_off usa para pausar o narrador durante a fala do Jarvis
+    (não toca na pausa total). Escrita atômica.
+    """
+    try:
+        estado = {"ativo": True, "pausado": False, "pausa_total": False}
+        if NARRACAO_CONTROLE.exists():
+            try:
+                estado = json.loads(NARRACAO_CONTROLE.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+        estado["pausa_total"] = bool(pausar)
+        tmp = NARRACAO_CONTROLE.with_suffix(".tmp")
+        tmp.write_text(json.dumps(estado), encoding="utf-8")
+        tmp.replace(NARRACAO_CONTROLE)
+    except Exception:
+        pass
+    if pausar:
+        try:
+            STOP_FLAG.write_text(str(int(time.time())), encoding="utf-8")
+        except Exception:
+            pass
 
 
 def _ler_narracao_pausada():
@@ -382,10 +423,10 @@ _CONCLUSAO = re.compile(
 # o OpenCode os regrava no banco com timestamp novo a cada poucos minutos.
 _PADRAO_SUMMARY = re.compile(
     r"^\s*(?:"
-    r"##\s*(?:objective|objetivo)"
-    r"|##\s*(?:resumo|summary)\s*:"
-    r"|(?:objetivo|objectivo)\s*:"
-    r")\b",
+    r"##\s*(?:objective|objetivo)\b"
+    r"|##\s*(?:resumo|summary)\s*[:]"
+    r"|(?:objetivo|objectivo)\s*[:]"
+    r")",
     re.IGNORECASE,
 )
 
