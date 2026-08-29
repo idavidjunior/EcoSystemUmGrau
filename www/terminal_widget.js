@@ -127,11 +127,11 @@
   TerminalWidget.prototype._criarLinha = function(linha){
     var nivel = nivelDeLinha(linha.texto);
     var nome = '<span class="tw-nome">' + escapar(linha.nome) + '</span>';
-    var ts = linha.ts ? '<span class="tw-ts">' + escapar(linha.ts) + '</span> ' : '';
+    var ts = linha.ts ? ' <span class="tw-ts">' + escapar(linha.ts) + '</span>' : '';
     var cls = nivel ? 'tw-linha tw-' + nivel : 'tw-linha';
     var div = document.createElement('div');
     div.className = cls;
-    div.innerHTML = ts + nome + ' ' + escapar(linha.texto);
+    div.innerHTML = nome + ' <span class="tw-texto">' + escapar(linha.texto) + '</span>' + ts;
     return div;
   };
 

@@ -98,8 +98,10 @@
 .tw-tela::-webkit-scrollbar{width:6px;}
 .tw-tela::-webkit-scrollbar-thumb{background:#0a2a14;border-radius:3px;}
 .tw-linha{
-  white-space:pre-wrap;
-  word-break:break-word;
+  display:flex;
+  align-items:baseline;
+  gap:6px;
+  white-space:nowrap;
   line-height:1.45;
   color:#3ddc84;
   opacity:.95;
@@ -109,7 +111,8 @@
   from{opacity:0;}
   to{opacity:.95;}
 }
-.tw-linha .tw-ts{color:#1f9a4c;}
+.tw-linha .tw-texto{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;}
+.tw-linha .tw-ts{flex:0 0 auto;color:#1f9a4c;}
 .tw-linha .tw-nome{color:var(--tw-cor,#33ff66);text-shadow:0 0 6px rgba(51,255,102,.4);}
 .tw-linha.tw-erro{color:#ff6b6b;}
 .tw-linha.tw-erro .tw-nome{color:#ff6b6b;text-shadow:0 0 6px rgba(255,107,107,.4);}
