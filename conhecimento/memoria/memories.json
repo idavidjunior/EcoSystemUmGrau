@@ -13639,5 +13639,1258 @@
     "access_count": 0,
     "created_at": "2026-08-27T22:29:12.956204",
     "last_accessed": "2026-08-27T22:29:12.956204"
+  },
+  {
+    "id": 541,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T05:59:09.131598",
+    "last_accessed": "2026-08-28T05:59:09.131598"
+  },
+  {
+    "id": 542,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T06:11:03.175289",
+    "last_accessed": "2026-08-28T06:11:03.175289"
+  },
+  {
+    "id": 543,
+    "kind": "decisao",
+    "task": "Implementado Auto-Evolution Engine + Behavior Slices inspirados no Cartographer",
+    "summary": "Criei scripts/auto_evolution.py (analisa capacidades externas vs ecossistema, detecta gaps, gera planos) e scripts/behavior_slices.py (rastreio de fluxos de comportamento com evidence-grounding). Adicionei source_anchors ao memory_engine (aditivo), pre-restore backup ao runtime_state, e comando /autoevolve no opencode.jsonc. Aprendizado importante: o audit_triagem.py move scripts órfãos (sem referência externa) para _legado — novos scripts precisam ser integrados/referenciados para não serem movidos.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "opencode",
+      "movidos",
+      "serem",
+      "autoevolve",
+      "comando",
+      "não"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T06:17:50.594981",
+    "last_accessed": "2026-08-28T06:17:50.594981"
+  },
+  {
+    "id": 544,
+    "kind": "decisao",
+    "task": "Implementado Auto-Evolution Engine + Behavior Slices",
+    "summary": "Criei auto_evolution.py (analisa capacidades externas vs ecossistema) e behavior_slices.py (rastreio de fluxos com evidence-grounding). Adicionei source_anchors ao memory_engine, pre-restore backup ao runtime_state, comando /autoevolve. Aprendizado: audit_triagem.py move scripts orfaos para _legado - novos scripts precisam de referencia.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "autoevolve",
+      "comando",
+      "state",
+      "runtime",
+      "backup",
+      "restore"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T06:18:37.829787",
+    "last_accessed": "2026-08-28T06:18:37.829787"
+  },
+  {
+    "id": 545,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T07:14:43.258692",
+    "last_accessed": "2026-08-28T07:14:43.258692"
+  },
+  {
+    "id": 546,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T07:15:01.044781",
+    "last_accessed": "2026-08-28T07:15:01.044781"
+  },
+  {
+    "id": 547,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T07:16:04.686001",
+    "last_accessed": "2026-08-28T07:16:04.686001"
+  },
+  {
+    "id": 548,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T07:16:24.668439",
+    "last_accessed": "2026-08-28T07:16:24.668439"
+  },
+  {
+    "id": 549,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T07:16:43.390838",
+    "last_accessed": "2026-08-28T07:16:43.390838"
+  },
+  {
+    "id": 550,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T07:18:48.765534",
+    "last_accessed": "2026-08-28T07:18:48.765534"
+  },
+  {
+    "id": 551,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T07:19:06.333877",
+    "last_accessed": "2026-08-28T07:19:06.333877"
+  },
+  {
+    "id": 552,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T07:19:26.027323",
+    "last_accessed": "2026-08-28T07:19:26.027323"
+  },
+  {
+    "id": 553,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T07:20:53.028866",
+    "last_accessed": "2026-08-28T07:20:53.028866"
+  },
+  {
+    "id": 554,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T07:21:11.107457",
+    "last_accessed": "2026-08-28T07:21:11.107457"
+  },
+  {
+    "id": 555,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T07:21:33.924170",
+    "last_accessed": "2026-08-28T07:21:33.924170"
+  },
+  {
+    "id": 556,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T07:58:23.617518",
+    "last_accessed": "2026-08-28T07:58:23.617518"
+  },
+  {
+    "id": 557,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T07:59:22.441966",
+    "last_accessed": "2026-08-28T07:59:22.441966"
+  },
+  {
+    "id": 558,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T08:03:08.729474",
+    "last_accessed": "2026-08-28T08:03:08.729474"
+  },
+  {
+    "id": 559,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T08:04:30.335312",
+    "last_accessed": "2026-08-28T08:04:30.335312"
+  },
+  {
+    "id": 560,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T08:13:56.953437",
+    "last_accessed": "2026-08-28T08:13:56.953437"
+  },
+  {
+    "id": 561,
+    "kind": "erro",
+    "task": "Falha na execução: Memória com Evidence-Grounding",
+    "summary": "Exit 1. \u001b[93m\u001b[1m! \u001b[0m agent \"general\" is a subagent, not a primary agent. Falling back to default agent\n\u001b[0m\n> build Â· deepseek-ai/deepseek-v4-flash\n\u001b[0m\n\u001b[91m\u001b[1mError: \u001b[0mGone: {\"type\":\"about:blank\",\"title\":\"Gone\",\"status\":410,\"detail\":\"The model 'deepseek-ai/deepseek-v4-flash' has reached its end of life on 2026-08-07T09:00:00Z and is no longer available.\"}\n",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "ciclo-fechado",
+      "07t09",
+      "2026",
+      "life",
+      "end",
+      "reached",
+      "flash"
+    ],
+    "metadata": {
+      "gap": "memory:evidence_consolidation"
+    },
+    "strength": 1.0,
+    "confidence": 0.7,
+    "source_type": "inferido",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T08:15:24.116548",
+    "last_accessed": "2026-08-28T08:15:24.116548"
+  },
+  {
+    "id": 562,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T08:19:23.623229",
+    "last_accessed": "2026-08-28T08:19:23.623229"
+  },
+  {
+    "id": 563,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T08:19:45.636591",
+    "last_accessed": "2026-08-28T08:19:45.636591"
+  },
+  {
+    "id": 564,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T08:20:13.458759",
+    "last_accessed": "2026-08-28T08:20:13.458759"
+  },
+  {
+    "id": 565,
+    "kind": "decisao",
+    "task": "Ciclo fechado de auto-evolucao implementado",
+    "summary": "Implementei o ciclo fechado no auto_evolution.py: delega a subagente (opencode/ler), checkpoint de codigo (snapshot), deteccao de mudancas via git status, validacao de escopo, preflight tecnico+etico, testes, persistencia via gate, rollback com restore de snapshots, idempotencia por fingerprint, lock com tratamento de orfao. Padrao seguro: dry-run por default, --apply requer --max-plans N. Classe EvolutionLock usa _process_alive via tasklist para limpar locks de processo morto.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "orfao",
+      "tratamento",
+      "lock",
+      "fingerprint",
+      "idempotencia",
+      "snapshots"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T08:22:05.347507",
+    "last_accessed": "2026-08-28T08:22:05.347507"
+  },
+  {
+    "id": 566,
+    "kind": "decisao",
+    "task": "Auto-evolução: 26 gaps vs Cartographer",
+    "summary": "Análise comparativa detectou 26 gaps e gerou 26 planos. Severidades: {'medium': 13, 'low': 12, 'high': 1}. Capacidades: 7 referência vs 20 ecossistema.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "cartographer",
+      "gap-analysis",
+      "architecture",
+      "alta-confianca",
+      "planos",
+      "gerou",
+      "detectou",
+      "comparativa",
+      "gaps",
+      "análise"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.9,
+    "source_type": "inferido",
+    "source_anchors": [
+      {
+        "filePath": "scripts/auto_evolution.py",
+        "lineStart": 1,
+        "lineEnd": 40,
+        "snippet": "Auto-Evolution Engine — Motor de Auto-Aprendizado e Evolução do Ecossistema"
+      }
+    ],
+    "access_count": 0,
+    "created_at": "2026-08-28T08:47:01.322399",
+    "last_accessed": "2026-08-28T08:47:01.322399"
+  },
+  {
+    "id": 567,
+    "kind": "decisao",
+    "task": "Controles de narracao no widget Edge",
+    "summary": "O botao Pausar/Retomar do narrador pertence ao widget Edge (widget_edge.py + www/index.html), nao ao Cerebro Vivo. EdgeApi.pause/resume gravam narracao_estado.json e cuidam do parar_fala.flag; botao pisca quando pausado. Cerebro Vivo (widget_grafo.py) fica limpo para futura atualizacao visual.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "edge",
+      "pertence",
+      "narrador",
+      "retomar",
+      "pausar",
+      "widget"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T13:58:15.432498",
+    "last_accessed": "2026-08-28T13:58:15.432498"
+  },
+  {
+    "id": 568,
+    "kind": "erro",
+    "task": "Bug no espelho do HD externo do gate (persistencia.ps1)",
+    "summary": "O filtro de bloqueio do espelho do HD externo quebrava porque o '-and' iniciava linha nova sem operador de continuacao no fim; corrigido colocando '-and' no fim da linha. Tambem ajustado Invoke-PreflightGlobal para pular preflight quando scripts/preflight_check.py inexistente (repos nativos nunca sincronizavam) e configurada identidade git local (idavidjunior) no repo claude-code-extra-agents.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "agents",
+      "extra",
+      "code",
+      "claude",
+      "repo",
+      "idavidjunior"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T14:24:37.701407",
+    "last_accessed": "2026-08-28T14:24:37.701407"
+  },
+  {
+    "id": 569,
+    "kind": "erro",
+    "task": "audit_runner.py recriado (monitor de auditoria voltou a rodar)",
+    "summary": "O system_guardian chamava scripts/audit_runner.py a cada 30min, mas o arquivo nao existia mais: runtime/audit_result.json estava parado desde 21/08 e o guardian logava 'AUDIT: resultado antigo'. Recriei o runner reutilizando audit_eco.run_audit, escrevendo o JSON atomico com timestamp epoch no contrato que o guardian le. Auditoria voltou: score 90, 2 erros reais (narrador_desktop parado, Cerebro Vivo sem ler tema), 17 warnings por checagens desatualizadas (auditoria ainda procura widget_controle_jarvis.py, atual e widget_edge.py) e duplicacao de widgets (widget_edge, widget_grafo, widget_grafo_fixed).",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "jarvis",
+      "controle",
+      "procura",
+      "desatualizadas",
+      "checagens",
+      "warnings"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T14:55:06.476038",
+    "last_accessed": "2026-08-28T14:55:06.476038"
+  },
+  {
+    "id": 570,
+    "kind": "decisao",
+    "task": "Oficializacao Narrador Edge e Cerebro Vivo",
+    "summary": "Decisao consolidada: narrador oficial e thread interna de scripts/widget_edge.py; Cerebro Vivo = scripts/widget_grafo.py. Duplicidades (narrador_desktop.py, narrador_start.bat, recreate_narrator_shortcut.ps1, unified_bridge stub) movidas/descontinuadas para scripts/_legado. Guardian: is_narrador_up via narracao_estado.json, start_narrador no-op, kill_protection sem narrador_desktop. Auditor atualizado com probes honestas (narrador via widget_edge, STOP_FLAG parar_fala.flag, duplicidade WARN).",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "fala",
+      "parar",
+      "stop",
+      "legado",
+      "honestas",
+      "edge"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T15:54:00.049815",
+    "last_accessed": "2026-08-28T15:54:00.049815"
+  },
+  {
+    "id": 571,
+    "kind": "padrao",
+    "task": "Tooltips nos itens do painel Foco do Cerebro Vivo",
+    "summary": "Adicionados tooltips (title) explicando cada item do menu Foco em www/cerebro.html: itens fixos (Tudo, Uso do Eco, Sinapses novas) e um por cluster com descricoes especificas + fallback generico. Janela recarregada via reinicio do widget_grafo.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "menu",
+      "item",
+      "explicando",
+      "cerebro",
+      "title",
+      "foco"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T18:01:22.571471",
+    "last_accessed": "2026-08-28T18:01:22.571471"
+  },
+  {
+    "id": 572,
+    "kind": "decisao",
+    "task": "Disparo Neural no Cerebro Vivo",
+    "summary": "Sistema de disparo neural destacado no widget Cerebro Vivo: ao clicar em um no ou no acesso da IA (cerebroAtividade), o no dispara highlight com halo colorido (HALOS), 15-30 particulas luminosas (PARTICULAS) e propagacao em cascata para vizinhos conectados com delay suave (~200ms, ate 3 niveis, decaimento 0.55x). Falhas de validacao: JS check via node --check. Resets em cerebroCarregar. GERACAO invalida timers apos novo payload.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "decaimento",
+      "niveis",
+      "200ms",
+      "suave",
+      "delay",
+      "conectados"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T18:29:00.514127",
+    "last_accessed": "2026-08-28T18:29:00.514127"
+  },
+  {
+    "id": 573,
+    "kind": "decisao",
+    "task": "Cerebro Vivo dispara regiao de fala em tempo real",
+    "summary": "Evolucao do disparo neural: enquanto o Eco fala (sinal real de dialogo.py -> fala.json -> brainSet), o heartbeat de voz (dispararPulsos 620ms) agora dispara nos reais das sementes de fala (sementesDe('fala'), ~45 nos com voz/tts/audio/dialogo/fala/speech/microfone) com disparoNeural(0.95, ciano #8be9fd), em rodizio (FALA_ROT) de 1-3 nos por batida; fallback antigo (vivos/hubs) so quando ha menos de 3 sementes. Sinal ja existia; so o alvo da batida mudou de hubs aleatorios para regiao semantica de fala.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "disparoneural",
+      "microfone",
+      "speech",
+      "audio",
+      "tts",
+      "sementesde"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T18:43:50.546901",
+    "last_accessed": "2026-08-28T18:43:50.546901"
+  },
+  {
+    "id": 574,
+    "kind": "decisao",
+    "task": "Cerebro Vivo: foco do brilho com faixa negativa",
+    "summary": "Slider Foco do brilho ampliado de [0..1] para [-1..1]. foco negativo afina o brilho ate quase apagar (alfa e stops do gradiente em sprite() escalonados por kn: alfa=(0x66-0x33*kr)*(1-0.75*kn), paradas 0.14-...-0.55 encolhem com kn), preservando mapeamento atual para foco>=0. Clamp em cerebroAjustesAplicar aceita -1; salvarAjustes persiste JSON completo sem truncar. Resolve: com a minima 0 o brilho ainda piscava forte; agora da para baixar abaixo de zero.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "escalonados",
+      "sprite",
+      "gradiente",
+      "stops",
+      "apagar",
+      "quase"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T19:05:30.949697",
+    "last_accessed": "2026-08-28T19:05:30.949697"
+  },
+  {
+    "id": 575,
+    "kind": "erro",
+    "task": "Bridge marca falando no retrato para Cerebro Vivo",
+    "summary": "O jarvis_bridge.py falava (TTS via app) sem marcar runtime/dialogo_vivo.json nem emitir atividade fala — so o dialogo.py (VAD, nao rodando no PC) fazia isso. Por isso a regiao de fala do Cerebro Vivo nao acendia enquanto o Eco respondia por voz. Fix: helper _retrato_fala/_marcar_inicio_fala no bridge grava retrato atomico (estado falando/ouvindo + quando) e emite fala 0.95/0.0, com task agendada para zerar apos duracao estimada (len*0.055s). Aplicado na saudacao, continuidade, retomada, interrupcao e resposta principal (streaming). Validado: retrato 'falando' -> 'ouvindo' e fala 0.95 -> 0.0.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "emite",
+      "estado",
+      "atomico",
+      "grava",
+      "voz",
+      "inicio"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T19:33:02.169600",
+    "last_accessed": "2026-08-28T19:33:02.169600"
+  },
+  {
+    "id": 576,
+    "kind": "erro",
+    "task": "Correção do validador de idioma no boot",
+    "summary": "O boot falhava com INTEGRIDADE FALHOU: a penalidade por palavras estrangeiras em validar_idioma.py usava contagem absoluta (ocorrencia * 4), derrubando o score de textos pt-BR longos com termos tecnicos. Corrigido para penalidade proporcional a participacao no texto (9/7822 ocorrencias ~ 0 penalidade). Constituicao e AGENTS.md voltaram a 41.8 e 41.5 (pt-BR).",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "tecnicos",
+      "termos",
+      "longos",
+      "textos",
+      "score",
+      "falhou"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T19:37:24.950154",
+    "last_accessed": "2026-08-28T19:37:24.950154"
+  },
+  {
+    "id": 577,
+    "kind": "decisao",
+    "task": "Composio MCP remoto integrado ao opencode via endpoint streamable HTTP",
+    "summary": "Adicionado servidor MCP remoto 'composio' (type remote) ao config/opencode.jsonc, apontando para https://connect.composio.dev/mcp com header x-consumer-api-key={env:COMPOSIO_API_KEY}. Chave ck_ != user api key (CLI 401). Preflight adaptado: test_remote_mcp_server resolve {env:VAR} em headers e valida initialize via urllib; check_mcp_servers ignora command para type=remote. Env persistente via setx + scripts/.env. Preflight 100% PASS.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "config",
+      "opencode",
+      "servidor",
+      "adicionado",
+      "remoto",
+      "streamable"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T20:17:00.272009",
+    "last_accessed": "2026-08-28T20:17:00.272009"
+  },
+  {
+    "id": 578,
+    "kind": "padrao",
+    "task": "Narracao seletiva por relevancia no narrador Edge",
+    "summary": "Clausula de narracao seletiva: narrador (widget_edge.py) e Jarvis (JARVIS_SYSTEM.md) falam apenas eventos relevantes - conclusoes, erros, resultados, descobertas e alertas - silenciando rotina, etapas intermediarias e texto integral de respostas. _deve_narrar passo 6 passa a retornar False 'sem relevancia' para conteudo sem sinal de conclusao. Mirrors sincronizados nas 3 camadas (Constituicao, AGENTS.md, deployed) via sync_rules update.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "respostas",
+      "integral",
+      "texto",
+      "intermediarias",
+      "etapas",
+      "rotina"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T20:45:43.981147",
+    "last_accessed": "2026-08-28T20:45:43.981147"
+  },
+  {
+    "id": 579,
+    "kind": "erro",
+    "task": "Cluster composio no Cérebro Vivo: corrigir mapeamento e regenerar payload",
+    "summary": "Bug em cluster_mapper.norm(): regex [^a-z0-9] descartava acentos, fazendo 'composição' (e 'composição' em notas Go) colidir com a marca 'composio', gerando falsos positivos. Corrigido com transliteração NFKD (unicodedata) antes do descarte ASCII. Payload regenerado: mcp/composio agora em cluster composio (cor #fccde5), sem falsos positivos. Nota composio-mcp-remoto permanece em ecossistema (tags abrangentes), ligada ao nó MCP por aresta.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "gerando",
+      "aresta",
+      "marca",
+      "positivos",
+      "colidir",
+      "ligada"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T21:09:29.316783",
+    "last_accessed": "2026-08-28T21:09:29.316783"
+  },
+  {
+    "id": 580,
+    "kind": "erro",
+    "task": "Cluster composio no Cérebro Vivo: corrigir mapeamento",
+    "summary": "Bug em cluster_mapper.norm(): descarte de acentos por regex fazia 'composição' colidir com a marca 'composio' gerando falsos positivos em notas Go. Corrigido com transliteração NFKD antes do descarte ASCII. Payload regenerado: mcp/composio em cluster composio (#fccde5), sem falsos positivos. Nota composio-mcp-remoto fica em ecossistema, ligada ao nó MCP por aresta.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "notas",
+      "gerando",
+      "marca",
+      "positivos",
+      "colidir",
+      "aresta"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T21:09:55.044274",
+    "last_accessed": "2026-08-28T21:09:55.044274"
+  },
+  {
+    "id": 581,
+    "kind": "decisao",
+    "task": "Pausa total do widget silencia todo audio de saida (narrador+TTS+voz Jarvis)",
+    "summary": "Botao Pausar do widget virou mestre global pausa_total em runtime/narracao_estado.json: narrador, tts_service (speak responde ignored/pausado) e dialogo (gates em tocar_base64/falar_com_bargein/responder/saudar_inicio) silenciam; VAD continua ouvindo e Jarvis responde so em texto; voz_on/off nao tocam no mestre; filtro _PADRAO_SUMMARY bloqueia blocos '## Objective' regravados pelo OpenCode (4 supressoes reais validadas)",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "estado",
+      "narracao",
+      "runtime",
+      "global",
+      "virou",
+      "pausar"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T22:33:49.505422",
+    "last_accessed": "2026-08-28T22:33:49.505422"
+  },
+  {
+    "id": 582,
+    "kind": "episodio",
+    "task": "Deletar todos os e-mails do GitHub do Gmail via Composio",
+    "summary": "Excluí 4.245 e-mails do remetente notifications@github.com movendo para a lixeira via GMAIL_BATCH_MODIFY_MESSAGES (addLabelIds TRASH, removeLabelIds INBOX) em 5 lotes de até 1000 IDs, com 0 falhas. Padrão confirmado: COMPOSIO_MULTI_EXECUTE_TOOL exige memory={} e sync_response_to_workbench; respostas grandes vêm em data_preview; GMAIL_FETCH_EMAILS pagination via nextPageToken com max_results up to 500; parse deve aceitar data OU data_preview. Conexões Gmail (gmail_messan-least) e Google Drive (googledrive_taker-rusine) ativas com i.davidjunior@gmail.com.",
+    "project": "",
+    "tags": [
+      "alta-confianca",
+      "falhas",
+      "ids",
+      "1000",
+      "até",
+      "lotes",
+      "inbox"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 1.0,
+    "source_type": "experiencia",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-08-28T23:12:47.112109",
+    "last_accessed": "2026-08-28T23:12:47.112109"
   }
 ]

@@ -55,6 +55,7 @@ from .config import (
 )
 from .code_filter import CodeFilter
 from .markdown_cleaner import MarkdownCleaner
+from .numeros_por_extenso import numero_feminino, numero_por_extenso
 
 
 # ── Dicionário de pronúncia de extensões ──────────────────────────────
@@ -126,6 +127,15 @@ EXTENSAO_FALA = {
 # Extensões que, quando encontradas em caminho, geram leitura por extensão.
 # Captura palavra inteira + extensão: "config.json" -> nome="config", ext="json".
 _EXTENSAO_PATTERN = re.compile(r'\b([\w.-]+)\.([A-Za-z0-9]{1,6})\b')
+
+# Datas (dd/mm, dd/mm/yyyy ou dd/mm/yy) e horas hh:mm — protegidos na camada
+# V2 contra a remoção de '/' e a expansão numérica prematura.
+_RE_DATA = re.compile(r'\b(\d{1,2})/(\d{1,2})(?:/(\d{2,4}))?\b')
+_RE_HORA = re.compile(r'\b(\d{1,2}):(\d{2})\b')
+# Decimais/milhares (1.234, 2.5, 12,5) — preservados contra expansão e contra
+# inserção de espaço após pontuação no componente clássico. Só continua com
+# pares separador+dígitos, para não engolir pontuação final (ex.: "45,90.").
+_RE_DECIMAL = re.compile(r'\d+[.,]\d+(?:[.,]\d+)*')
 
 
 # ── Símbolos técnicos -> linguagem natural (contextuais) ──────────────
@@ -202,6 +212,7 @@ class TTSTextNormalizer:
         self._code_filter = CodeFilter()
         self._markdown_cleaner = MarkdownCleaner()
         self._punct_normalizer = _TextNormalizerClasico()
+        self._sensitive = ([], [], [])
 
         # Debug log opcional (nunca em produção)
         if os.environ.get("TTS_NORMALIZER_DEBUG", "").lower() in ("1", "true", "sim"):
@@ -263,6 +274,77 @@ class TTSTextNormalizer:
 
     # ── API principal ──────────────────────────────────────────────────
 
+    _data_holder_pat = re.compile(r'§DATA(\d+)§')
+    _hora_holder_pat = re.compile(r'§HORA(\d+)§')
+    _decimal_holder_pat = re.compile(r'§DEC([a-z])§')
+
+    def _protect_sensitive(self, text: str) -> tuple:
+        """Protege horas, datas e decimais contra destrutores e expansão.
+
+        Horas/datas precisam de '/' e ':' até o clássico (que os converte por
+        extenso); decimais/milhares precisam ser preservados em forma numérica
+        (o texto RESTAURADO sai do clássico com espaço após '.'/',').
+        """
+        datas, horas, decimais = [], [], []
+        t = text
+
+        def _captura_data(m):
+            datas.append(m.group(0))
+            return f'§DATA{len(datas) - 1}§'
+
+        def _captura_hora(m):
+            horas.append(m.group(0))
+            return f'§HORA{len(horas) - 1}§'
+
+        def _captura_decimal(m):
+            decimais.append(m.group(0))
+            # Índice em letras (a=aª ocorrência) para o clássico não expandir o
+            # dígito do placeholder como número.
+            letra = chr(ord('a') + len(decimais) - 1)
+            return f'§DEC{letra}§'
+
+        t = _RE_DATA.sub(_captura_data, t)
+        t = _RE_HORA.sub(_captura_hora, t)
+        t = _RE_DECIMAL.sub(_captura_decimal, t)
+        return t, (datas, horas, decimais)
+
+    def _restore_sensitive(self, text: str) -> str:
+        """Restaura datas/horas (§DATAi§/§HORAi§) para o componente clássico.
+
+        Decimais (§DECi§) permanecem protegidos até depois do clássico para
+        não ganharem espaço após separador.
+        """
+        if not text:
+            return text
+        datas, horas, _ = self._sensitive or ([], [], [])
+        texto = text
+
+        def _restaura_data(m):
+            i = int(m.group(1))
+            return datas[i] if i < len(datas) else m.group(0)
+
+        def _restaura_hora(m):
+            i = int(m.group(1))
+            return horas[i] if i < len(horas) else m.group(0)
+
+        texto = self._data_holder_pat.sub(_restaura_data, texto)
+        texto = self._hora_holder_pat.sub(_restaura_hora, texto)
+        return texto
+
+    def _restore_decimals(self, text: str) -> str:
+        """Restaura decimais/milhares (§DECa§, §DECb§…) após o clássico."""
+        if not text:
+            return text
+        decimais = self._sensitive[2] if self._sensitive and len(self._sensitive) > 2 else []
+        if not decimais:
+            return text
+
+        def _restaura_decimal(m):
+            i = ord(m.group(1)) - ord('a')
+            return decimais[i] if i < len(decimais) else m.group(0)
+
+        return self._decimal_holder_pat.sub(_restaura_decimal, text)
+
     def normalize(self, text: str) -> str:
         """Normaliza texto completo da IA para TTS (determinístico).
 
@@ -280,6 +362,11 @@ class TTSTextNormalizer:
         if not text:
             return ""
         t = text
+
+        # 1b. Protege horas/datas (dd/mm, hh:mm) contra destrutores de '/' e
+        # de expansão numérica prematura. Restauradas antes do clássico.
+        t, self._sensitive = self._protect_sensitive(t)
+        self._debug("PROTECT", t)
 
         # 2. Remoção de metadados internos
         if self._cfg.get("remove_metadata"):
@@ -349,12 +436,22 @@ class TTSTextNormalizer:
         t = self._re_blank_lines.sub('\n', t)
 
         # 15. Pontuação / respiração / horas / datas (componente clássico)
+        t = self._restore_sensitive(t)
         t = self._punct_normalizer.normalize(t)
         self._debug("PUNCTUATION", t)
+
+        # 15b. Decimais permanecem protegidos (§DECx§) para sobreviver à validação
+        # final (que insere espaço após ','/'.'); restaurados no passo 16b.
+        self._debug("DECIMALS", t)
 
         # 16. Validação final
         t = self._final_validation(t)
         self._debug("FINAL", t)
+
+        # 16b. Restaura decimais/milhares (após a validação final, para que a
+        # inserção de espaço após ',' / '.' não quebre 12,5 / 1.234)
+        t = self._restore_decimals(t)
+        self._debug("DECIMALS2", t)
 
         return t
 
@@ -598,8 +695,15 @@ class _TextNormalizerClasico:
         return t
 
     def _normalize_hours(self, text: str) -> str:
-        text = re.sub(r'\b(\d{1,2}):00\b', r'\1 horas em ponto', text)
-        text = re.sub(r'\b(\d{1,2}):(\d{2})\b', r'\1 horas e \2', text)
+        def _hora_falada(m):
+            hora = int(m.group(1))
+            minutos = int(m.group(2))
+            palavra_hora = numero_feminino(hora)
+            unidade_hora = "hora" if hora == 1 else "horas"
+            if minutos == 0:
+                return f"{palavra_hora} {unidade_hora} em ponto"
+            return f"{palavra_hora} {unidade_hora} e {numero_por_extenso(minutos)}"
+        text = re.sub(r'\b(\d{1,2}):(\d{2})\b', _hora_falada, text)
         return text
 
     def _normalize_dates(self, text: str) -> str:
@@ -608,14 +712,20 @@ class _TextNormalizerClasico:
             5: "maio", 6: "junho", 7: "julho", 8: "agosto",
             9: "setembro", 10: "outubro", 11: "novembro", 12: "dezembro",
         }
+        def _dia_por_extenso(dia: int) -> str:
+            if dia == 1:
+                return "primeiro"
+            return numero_por_extenso(dia)
+        def _ano_por_extenso(ano: str) -> str:
+            return numero_por_extenso(int(ano))
         def _replace_date(m):
             dia = int(m.group(1))
             mes = int(m.group(2))
             ano = m.group(3)
             if mes in meses:
-                resultado = f"{dia} de {meses[mes]}"
+                resultado = f"{_dia_por_extenso(dia)} de {meses[mes]}"
                 if ano:
-                    resultado += f" de {ano}"
+                    resultado += f" de {_ano_por_extenso(ano)}"
                 return resultado
             return m.group(0)
         text = re.sub(
@@ -626,7 +736,18 @@ class _TextNormalizerClasico:
         return text
 
     def _normalize_numbers(self, text: str) -> str:
-        text = re.sub(r'(\d+)%', r'\1 por cento', text)
+        text = re.sub(
+            r'(?<![.,])(\d{1,6})%',
+            lambda m: f'{numero_por_extenso(int(m.group(1)))} por cento',
+            text
+        )
+        # Expande inteiros soltos (1..999999) sem tocar decimais/separadores
+        # (bloqueia precedência por '.'/',' — ex.: 1.234, 12,5)
+        text = re.sub(
+            r'(?<![\d.,])(\d{1,6})(?![\d,]|\.\d)',
+            lambda m: numero_por_extenso(int(m.group(1))),
+            text
+        )
         return text
 
     def _normalize_punctuation(self, text: str) -> str:

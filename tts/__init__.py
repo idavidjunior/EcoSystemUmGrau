@@ -34,6 +34,7 @@ from .pronunciation import PronunciationEngine
 from .sentence_chunker import SentenceChunker
 from .tts_validator import TTSValidator
 from .edge_tts_engine import EdgeTTSEngine
+from .numeros_por_extenso import numero_por_extenso, numero_feminino
 from .config import (
     DEFAULT_VOICE,
     DEFAULT_RATE,
@@ -69,6 +70,9 @@ __all__ = [
     "SentenceChunker",
     "TTSValidator",
     "EdgeTTSEngine",
+    # Números por extenso
+    "numero_por_extenso",
+    "numero_feminino",
     # Config
     "DEFAULT_VOICE",
     "DEFAULT_RATE",
