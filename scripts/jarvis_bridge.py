@@ -664,6 +664,15 @@ def _inserir_respiracao(ora):
     matches = list(alvo.finditer(ora))
     if not matches:
         return ora
+    # Não insere vírgula dentro de numerais por extenso ("trinta e quatro",
+    # "dois mil e vinte e seis") — regra central no módulo tts.
+    try:
+        from tts.text_normalizer import e_conector_de_numeral
+        matches = [m for m in matches if not e_conector_de_numeral(ora, m)]
+    except ImportError:
+        pass
+    if not matches:
+        return ora
     centro = len(ora) // 2
     melhor = min(matches, key=lambda m: abs(m.start() - centro))
     return ora[:melhor.start()].rstrip() + ', ' + ora[melhor.start():].strip()

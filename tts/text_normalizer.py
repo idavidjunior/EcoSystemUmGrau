@@ -57,6 +57,38 @@ from .code_filter import CodeFilter
 from .markdown_cleaner import MarkdownCleaner
 from .numeros_por_extenso import numero_feminino, numero_por_extenso
 
+# Vocabulário das palavras de numeral por extenso em pt-BR (gerado das
+# palavras reais do número, para a respiração não inserir vírgula dentro de
+# "trinta e quatro", "dois mil e vinte e seis", etc.).
+_PALAVRAS_NUMERAIS = frozenset(
+    token
+    for n in list(range(0, 1001)) + list(range(2000, 2100)) + [10000, 100000, 1000000]
+    for token in numero_por_extenso(n).split()
+)
+
+
+def e_conector_de_numeral(sentence: str, match: "re.Match", numerais=frozenset()) -> bool:
+    """True se o conector 'e'/'ou' casado pelo padrão de respiração faz parte de
+    um numeral por extenso (ex.: 'trinta e quatro', 'dois mil e vinte'), e não é
+    conector de oração. Evita vírgula interna em números falados.
+
+    Fonte única da regra — reutilizada pelo TextNormalizer clássico (V2) e pelo
+    pipeline legado de respiração da bridge (scripts/jarvis_bridge.py).
+    """
+    if match.group(0).strip().lower() not in ("e", "ou"):
+        return False
+    parte_antes = sentence[:match.start()].rstrip()
+    parte_depois = sentence[match.end():].lstrip()
+    if not parte_antes or not parte_depois:
+        return False
+    palavra_antes = parte_antes.rsplit(maxsplit=1)[-1].strip(".,;:!?")
+    palavra_depois = parte_depois.split(maxsplit=1)[0].strip(".,;:!?")
+    numerais = numerais or _PALAVRAS_NUMERAIS
+    return (
+        palavra_antes.lower() in numerais
+        or palavra_depois.lower() in numerais
+    )
+
 
 # ── Dicionário de pronúncia de extensões ──────────────────────────────
 # Usado quando NORMALIZE_EXTENSIONS está ativo. Não duplica o pronuncias.json:
@@ -775,7 +807,10 @@ class _TextNormalizerClasico:
         return ' '.join(resultado)
 
     def _add_breathing_point(self, sentence: str) -> str:
-        matches = list(self._respiracao_pattern.finditer(sentence))
+        matches = [
+            m for m in self._respiracao_pattern.finditer(sentence)
+            if not e_conector_de_numeral(sentence, m)
+        ]
         if not matches:
             return sentence
         centro = len(sentence) // 2
