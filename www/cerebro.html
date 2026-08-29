@@ -175,7 +175,7 @@ function salvarAjustes(){
     pywebview.api.salvar_ajustes(JSON.stringify(AJUSTES)); }catch(e){}
 }
 
-// ===== STATE PERSISTENCE (camera, filters, decay) =====
+// ===== STATE PERSISTENCE (camera, filters, movimento, rotacao) =====
 const STATE_API = 'http://localhost:8766/api/ecow/state';
 
 async function salvarEstado(){
@@ -804,11 +804,11 @@ function desenhar(t, dt){
     if (foraTela(SX[i],SY[i])) continue;
     const prof=Math.max(0,Math.min(1,(SZ[i]+900)/1800));
     let esc=SS[i]*(0.72+0.5*prof)*n.nasce;
-    // sinapse nova: nasceu ha menos de N horas pulsa em amarelo forte
-    const SINAPSE_H = AJUSTES.novaH || 12;
-    const NOVA_ATIVO = AJUSTES.nova !== false;
-    const NOVA_INT = AJUSTES.novaI || 0.5;
-    const NOVA_BRILHO = AJUSTES.novaB || 0.5;
+    // sinapse nova: nasceu ha menos de 12h pulsa em amarelo forte (janela fixa)
+    const SINAPSE_H = 12;
+    const NOVA_ATIVO = true;
+    const NOVA_INT = 0.5;
+    const NOVA_BRILHO = 0.5;
     let excNova=0, pulsoNova=0;
     if (NOVA_ATIVO && n.tm){
       const idadeH=(Date.now()/1000-n.tm)/3600;
@@ -967,19 +967,13 @@ function atualizarVis(){
   ARVIS = [];
   const agoraV = performance.now();
   const agoraS = Date.now()/1000;
-  const SINAPSE_H = AJUSTES.novaH || 12;
-  const DECAY_MIN = AJUSTES.decay || 0;  // 0 a 1
+  const SINAPSE_H = 12;
   for (let i=0;i<NOS.length;i++){
     let vis = !FILTRO || NOS[i].cl===FILTRO;
     if (!vis && FILTRO==='__ativos')
       vis = agoraV-(ATIVOS.get(i)||-1e15)<JANELA_USO;
     if (!vis && FILTRO==='__novas')
       vis = NOS[i].tm && (agoraS - NOS[i].tm)/3600 >= 0 && (agoraS - NOS[i].tm)/3600 < SINAPSE_H;
-    // Filtro por decay score (Ebbinghaus)
-    if (vis && DECAY_MIN > 0) {
-      const ds = NOS[i]._decayScore || NOS[i].decayScore || 0;
-      if (ds < DECAY_MIN) vis = false;
-    }
     VIS[i]=vis?1:0;
   }
   for (const [a,b] of ARESTAS) if (VIS[a]&&VIS[b]) ARVIS.push([a,b]);
@@ -1040,9 +1034,9 @@ function construirMenuFoco(){
     atualizarVis(); construirMenuFoco();
   };
   lista.appendChild(btUso);
-  // foco especial: sinapses novas (nascidas nas ultimas N horas)
+  // foco especial: sinapses novas (nascidas nas ultimas 12 horas)
   let nNovas=0;
-  const SINAPSE_H = AJUSTES.novaH || 12;
+  const SINAPSE_H = 12;
   const agoraS = Date.now()/1000;
   for (const n of NOS)
     if (n.tm && (agoraS - n.tm)/3600 >= 0 && (agoraS - n.tm)/3600 < SINAPSE_H) nNovas++;
@@ -1141,40 +1135,6 @@ btDecor.addEventListener('click',()=>{
   pintarDecor(); salvarAjustes();
 });
 pintarDecor();
-
-rgNovaH.value=AJUSTES.novaH||12;
-valNovaH.textContent=(AJUSTES.novaH||12)+'h';
-rgNovaH.addEventListener('input',()=>{
-  AJUSTES.novaH=+rgNovaH.value;
-  valNovaH.textContent=AJUSTES.novaH+'h';
-  salvarAjustes(); construirMenuFoco();
-});
-
-rgNovaI.value=AJUSTES.novaI||0.5;
-valNovaI.textContent=Math.round((AJUSTES.novaI||0.5)*100)+'%';
-rgNovaI.addEventListener('input',()=>{
-  AJUSTES.novaI=+rgNovaI.value;
-  valNovaI.textContent=Math.round(AJUSTES.novaI*100)+'%';
-  salvarAjustes();
-});
-
-rgNovaB.value=AJUSTES.novaB||0.5;
-valNovaB.textContent=Math.round((AJUSTES.novaB||0.5)*100)+'%';
-rgNovaB.addEventListener('input',()=>{
-  AJUSTES.novaB=+rgNovaB.value;
-  valNovaB.textContent=Math.round(AJUSTES.novaB*100)+'%';
-  salvarAjustes();
-});
-
-function pintarNova(){
-  estNova.textContent=AJUSTES.nova?'ligado':'desligado';
-  btNova.classList.toggle('on',AJUSTES.nova);
-}
-btNova.addEventListener('click',()=>{
-  AJUSTES.nova=!AJUSTES.nova;
-  pintarNova(); salvarAjustes(); construirMenuFoco();
-});
-pintarNova();
 
 const btTopo=document.getElementById('btTopo');
 btTopo.addEventListener('click',()=>{

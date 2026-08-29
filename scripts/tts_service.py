@@ -69,7 +69,14 @@ def _pausa_total():
 
 
 def _log(msg):
-    print(f"[tts_service] {msg}", flush=True)
+    line = f"[tts_service] {msg}"
+    print(line, flush=True)
+    try:
+        log_file = RUNTIME / "tts_service.log"
+        with open(log_file, "a", encoding="utf-8") as f:
+            f.write(line + "\n")
+    except Exception:
+        pass
 
 
 def _atomic_write(path: Path, data: dict):
@@ -241,8 +248,55 @@ def _speak_text(texto: str, stop_flag: Path, req_id: str) -> bool:
         _processing = False
 
 
+def _instancia_unica():
+    """Garante apenas uma instância do tts_service rodando."""
+    import psutil
+    PID_FILE = RUNTIME / "tts_service.pid"
+    me = str(os.getpid())
+    for _ in range(2):
+        try:
+            fd = os.open(PID_FILE, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            # Verifica se outro tts_service vivo existe
+            try:
+                for p in psutil.process_iter(["pid", "cmdline"]):
+                    if p.info["pid"] == os.getpid():
+                        continue
+                    if any(
+                        t.lower().strip('"').endswith("tts_service.py")
+                        for t in (p.info["cmdline"] or [])
+                    ):
+                        os.close(fd)
+                        PID_FILE.unlink()
+                        return False
+            except Exception:
+                pass
+            os.write(fd, me.encode())
+            os.close(fd)
+            return True
+        except FileExistsError:
+            dono_vivo = False
+            try:
+                dono = int(PID_FILE.read_text().strip())
+                p = psutil.Process(dono)
+                if any(t.lower().endswith("tts_service.py") for t in p.cmdline()):
+                    dono_vivo = True
+            except Exception:
+                pass
+            if dono_vivo:
+                return False
+            try:
+                PID_FILE.unlink()
+            except FileNotFoundError:
+                pass
+    return False
+
+
 def main():
     global _paused
+    # Instância única
+    if not _instancia_unica():
+        _log("tts_service ja esta rodando.")
+        return
     # Escreve PID file para proteção contra RAM cleanup
     PID_FILE = RUNTIME / "tts_service.pid"
     PID_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -255,74 +309,89 @@ def main():
     _escrever_estado(False)
 
     last_mtime = 0
-    while True:
-        try:
-            # Checa comando novo
-            if CMD_FILE.exists():
-                try:
-                    mtime = CMD_FILE.stat().st_mtime
-                except OSError:
-                    continue
-                if mtime != last_mtime:
-                    last_mtime = mtime
-                    cmd = _read_cmd()
-                    if cmd:
-                        _clear_cmd()
-                        c = cmd.get("cmd")
-                        req_id = cmd.get("request_id", str(uuid.uuid4())[:8])
+    try:
+        while True:
+            try:
+                # Checa comando novo
+                if CMD_FILE.exists():
+                    try:
+                        mtime = CMD_FILE.stat().st_mtime
+                    except OSError:
+                        continue
+                    if mtime != last_mtime:
+                        last_mtime = mtime
+                        cmd = _read_cmd()
+                        if cmd:
+                            _clear_cmd()
+                            c = cmd.get("cmd")
+                            req_id = cmd.get("request_id", str(uuid.uuid4())[:8])
 
-                        if c == "speak":
-                            texto = cmd.get("texto", "").strip()
-                            if texto and not _paused and not _pausa_total():
-                                _log(f"fala req={req_id}: {texto[:60]}...")
-                                _escrever_estado(True, texto)
+                            if c == "speak":
+                                texto = cmd.get("texto", "").strip()
+                                if texto and not _paused and not _pausa_total():
+                                    _log(f"fala req={req_id}: {texto[:60]}...")
+                                    _escrever_estado(True, texto)
+                                    ok = False
+                                    try:
+                                        ok = _speak_text(texto, STOP_FLAG, req_id)
+                                        _log(f"_speak_text returned ok={ok}")
+                                    except Exception as e:
+                                        _log(f"_speak_text EXCEPTION: {e}")
+                                        import traceback
+                                        traceback.print_exc()
+                                    finally:
+                                        _escrever_estado(False)
+                                    _write_resp(req_id, "ok" if ok else "error")
+                                    _log(f"_write_resp done for {req_id}")
+                                elif _paused or _pausa_total():
+                                    _write_resp(req_id, "ignored", "pausado")
+                                else:
+                                    _write_resp(req_id, "ignored", "texto vazio")
+
+                            elif c == "stop":
+                                _log(f"STOP req={req_id}")
                                 try:
-                                    ok = _speak_text(texto, STOP_FLAG, req_id)
-                                finally:
-                                    _escrever_estado(False)
-                                _write_resp(req_id, "ok" if ok else "error")
-                            elif _paused or _pausa_total():
-                                _write_resp(req_id, "ignored", "pausado")
-                            else:
-                                _write_resp(req_id, "ignored", "texto vazio")
+                                    STOP_FLAG.write_text(str(int(time.time())), encoding="utf-8")
+                                except Exception:
+                                    pass
+                                _write_resp(req_id, "ok")
 
-                        elif c == "stop":
-                            _log(f"STOP req={req_id}")
+                            elif c == "pause":
+                                _paused = True
+                                _log("PAUSADO")
+                                _write_resp(req_id, "ok")
+
+                            elif c == "resume":
+                                _paused = False
+                                _log("RESUMIDO")
+                                _write_resp(req_id, "ok")
+
+                        if STOP_FLAG.exists():
                             try:
-                                STOP_FLAG.write_text(str(int(time.time())), encoding="utf-8")
+                                ts = float(STOP_FLAG.read_text(encoding="utf-8").strip())
+                                if time.time() - ts > 2:
+                                    STOP_FLAG.unlink(missing_ok=True)
                             except Exception:
                                 pass
-                            _write_resp(req_id, "ok")
 
-                        elif c == "pause":
-                            _paused = True
-                            _log("PAUSADO")
-                            _write_resp(req_id, "ok")
+                        # Limpeza periódica de respostas TTS antigas (a cada ~60 iterações = ~3s)
+                        if int(time.time()) % 3 == 0:
+                            _cleanup_old_responses()
 
-                        elif c == "resume":
-                            _paused = False
-                            _log("RESUMIDO")
-                            _write_resp(req_id, "ok")
-
-            if STOP_FLAG.exists():
-                try:
-                    ts = float(STOP_FLAG.read_text(encoding="utf-8").strip())
-                    if time.time() - ts > 2:
-                        STOP_FLAG.unlink(missing_ok=True)
-                except Exception:
-                    pass
-
-            # Limpeza periódica de respostas TTS antigas (a cada ~60 iterações = ~3s)
-            if int(time.time()) % 3 == 0:
-                _cleanup_old_responses()
-
-            time.sleep(0.05)
-        except KeyboardInterrupt:
-            _log("Encerrando...")
-            break
-        except Exception as e:
-            _log(f"loop error: {e}")
-            time.sleep(0.5)
+                        time.sleep(0.05)
+            except KeyboardInterrupt:
+                _log("Encerrando...")
+                break
+            except Exception as e:
+                _log(f"loop error: {e}")
+                time.sleep(0.5)
+    finally:
+        try:
+            PID_FILE = RUNTIME / "tts_service.pid"
+            if PID_FILE.exists() and PID_FILE.read_text().strip() == str(os.getpid()):
+                PID_FILE.unlink()
+        except Exception:
+            pass
 
     return 0
 
