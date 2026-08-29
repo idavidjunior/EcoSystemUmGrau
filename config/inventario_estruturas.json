@@ -1,6 +1,6 @@
 {
   "versao": "1.1",
-  "atualizado_em": "2026-08-27T00:00:00",
+  "atualizado_em": "2026-08-29T00:00:00",
   "descricao": "Inventário oficial de estruturas ativas do EcoSystemUmGrau. Consulte antes de criar qualquer estrutura nova (cláusula anti-duplicação).",
   "agentes": [
     {
@@ -616,6 +616,11 @@
       "id": "run_bridge",
       "arquivo": "scripts/run_bridge.py",
       "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "widget_edge",
+      "arquivo": "scripts/widget_edge.py",
+      "funcao": "Janela Edge (pywebview, 360x300/480) — mini app com status, logs via logs_toggle, resize ancorado na base, polling bridge 8765"
     },
     {
       "id": "run_dashboard",

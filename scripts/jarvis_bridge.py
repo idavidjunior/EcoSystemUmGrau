@@ -24,6 +24,10 @@ if str(SCRIPTS_DIR) not in sys.path:
 try:
     from nvidia_quota_monitor import get_monitor, nvidia_request_with_quota
     NVIDIA_QUOTA_AVAILABLE = True
+    try:
+        from ver_log import _decodificar as _decodificar_verlog
+    except ImportError:
+        _decodificar_verlog = None
 except ImportError as e:
     logging.warning(f"nvidia_quota_monitor não disponível: {e}")
     NVIDIA_QUOTA_AVAILABLE = False
@@ -1896,7 +1900,198 @@ async def _enviar_progresso(ws, etapa: str):
         pass
 
 
+# ---------------------------------------------------------------------------
+# Terminal de Logs (canal /logs e GET /api/logs) — painel do Edge
+# ---------------------------------------------------------------------------
+# Allowlist (nome -> caminho real). NUNCA seguir caminho fornecido pelo cliente.
+LOGS_ECO = {
+    "bridge": SCRIPTS_DIR / "bridge_log.txt",
+    "narrador": SCRIPTS_DIR / "narrador_desktop_log.txt",
+    "edge": ECOSSISTEMA_DIR / "runtime" / "widget_edge.log",
+    "dialogo": ECOSSISTEMA_DIR / "runtime" / "dialogo_widget.log",
+    "preflight": ECOSSISTEMA_DIR / "runtime" / "preflight_executions.log",
+}
+
+
+def _decodificar_log(b):
+    """Decodifica bytes em texto (BOM/utf-8/cp1252) via ver_log.py."""
+    if _decodificar_verlog is not None:
+        return _decodificar_verlog(b)
+    return b.decode("utf-8", errors="replace")
+
+
+def _tail_decodificar(bloco):
+    """Decodifica bloco retrocedendo até 4 bytes para não cortar multibyte.
+    Retorna (texto, consumidos_bytes)."""
+    n = len(bloco)
+    for k in range(0, min(n, 4) + 1):
+        try:
+            return bloco[: n - k].decode("utf-8"), n - k
+        except UnicodeDecodeError:
+            continue
+    return _decodificar_log(bloco), n
+
+
+# Estado de leitura incremental por nome de log (persistente no processo).
+_TAIL_ESTADO = {}
+
+
+def _ler_linhas_novas(nome):
+    """Lê linhas completas novas de um log da allowlist.
+    Retorna (existente, linhas_novas). Reseta offset se o arquivo rotacionou."""
+    caminho = LOGS_ECO.get(nome)
+    if caminho is None:
+        return False, []
+    try:
+        if not caminho.exists():
+            _TAIL_ESTADO[nome] = {"offset": 0, "pendente": ""}
+            return False, []
+        tamanho = caminho.stat().st_size
+        st = _TAIL_ESTADO.get(nome, {"offset": 0, "pendente": ""})
+        if tamanho < st["offset"]:
+            st = {"offset": 0, "pendente": ""}
+        if tamanho == st["offset"]:
+            _TAIL_ESTADO[nome] = st
+            return True, []
+        with open(caminho, "rb") as f:
+            f.seek(st["offset"])
+            bloco = f.read(tamanho - st["offset"])
+        texto, consumidos = _tail_decodificar(bloco)
+        st["offset"] = st["offset"] + consumidos
+        unido = st["pendente"] + texto
+        partes = unido.split("\n")
+        if unido.endswith("\n"):
+            linhas = [x.rstrip("\r") for x in partes[:-1]]
+            st["pendente"] = ""
+        else:
+            linhas = [x.rstrip("\r") for x in partes[:-1]]
+            st["pendente"] = partes[-1]
+        _TAIL_ESTADO[nome] = st
+        return True, linhas
+    except Exception:
+        return False, []
+
+
+def _log_snapshot(nome, n=120):
+    """Snapshot das últimas N linhas completas (bytes do final do arquivo)."""
+    try:
+        caminho = LOGS_ECO.get(nome)
+        if caminho is None or not caminho.exists():
+            return {"existente": False, "linhas": []}
+        bloco = caminho.read_bytes()
+        if len(bloco) > 262144:
+            bloco = bloco[-262144:]
+        texto = _decodificar_log(bloco)
+        linhas = texto.splitlines()
+        return {"existente": True, "linhas": linhas[-n:]}
+    except Exception:
+        return {"existente": True, "linhas": []}
+
+
+_TAIL_ESTADO = {nome: {"offset": 0, "pendente": ""} for nome in LOGS_ECO}
+_TAIL_LOCK = asyncio.Lock()
+
+
+async def lidar_logs(ws):
+    """Canal /logs do Edge: primeiro subscribe, snapshot inicial e depois
+    stream de linhas novas. Não gera saudação nem polui o histórico."""
+    alvo = list(LOGS_ECO.keys())
+    client_ip = ws.remote_address[0] if ws.remote_address else "desconhecido"
+    logger.info(f"terminal de logs conectado de {client_ip}")
+    try:
+        prim = await asyncio.wait_for(ws.recv(), timeout=5)
+        try:
+            obj0 = json.loads(prim)
+            if isinstance(obj0, dict) and obj0.get("tipo") == "log_subscribe":
+                req = [a for a in obj0.get("arquivos") if a in LOGS_ECO]
+                if req:
+                    alvo = req
+        except json.JSONDecodeError:
+            pass
+    except asyncio.TimeoutError:
+        pass
+    except websockets.exceptions.ConnectionClosed:
+        logger.info("cliente fechou sem se inscrever")
+        return
+    async def _log_zerar_tails(*nomes):
+        """Posiciona offsets no fim do arquivo (snapshot já entrega o passado;
+        stream só carrega o que vier daqui pra frente)."""
+        async with _TAIL_LOCK:
+            for nome in nomes:
+                caminho = LOGS_ECO.get(nome)
+                tam = caminho.stat().st_size if caminho and caminho.exists() else 0
+                _TAIL_ESTADO[nome] = {"offset": tam, "pendente": ""}
+
+    try:
+        await _log_zerar_tails(*alvo)
+        await ws.send(json.dumps(
+            {"type": "log_snapshot", "logs": {n: _log_snapshot(n) for n in alvo}},
+            ensure_ascii=False,
+        ))
+    except ConnectionError:
+        return
+    except websockets.exceptions.ConnectionClosed:
+        return
+    try:
+        while True:
+            try:
+                msg = await asyncio.wait_for(ws.recv(), timeout=0.7)
+                try:
+                    obj = json.loads(msg)
+                    if isinstance(obj, dict) and obj.get("tipo") == "log_subscribe":
+                        req = [a for a in obj.get("arquivos") if a in LOGS_ECO]
+                        if req:
+                            alvo = req
+                            await _log_zerar_tails(*alvo)
+                            await ws.send(json.dumps(
+                                {"type": "log_snapshot", "logs": {n: _log_snapshot(n) for n in alvo}},
+                                ensure_ascii=False,
+                            ))
+                except json.JSONDecodeError:
+                    pass
+            except asyncio.TimeoutError:
+                pass
+            novas = {}
+            async with _TAIL_LOCK:
+                for nome in alvo:
+                    _, linhas = _ler_linhas_novas(nome)
+                    if linhas:
+                        novas[nome] = linhas
+            if novas:
+                await ws.send(json.dumps(
+                    {"type": "log_lines", "linhas": novas},
+                    ensure_ascii=False,
+                ))
+    except (ConnectionError, websockets.exceptions.ConnectionClosed):
+        logger.info("terminal de logs fechado")
+        return
+    except Exception as e:
+        logger.warning(f"terminal de logs erro: {e}")
+        try:
+            await ws.close()
+        except Exception:
+            pass
+
+
+async def handle_logs(request):
+    """GET /api/logs?arquivos=bridge,narrador&linhas=120 — snapshot (fallback)."""
+    nomes = [a.strip() for a in request.query.get("arquivos", "").split(",") if a.strip()]
+    nomes = [n for n in nomes if n in LOGS_ECO] or list(LOGS_ECO.keys())
+    try:
+        n = max(1, min(int(request.query.get("linhas", "120")), 500))
+    except ValueError:
+        n = 120
+    return web.json_response({"ok": True, "logs": {nome: _log_snapshot(nome, n) for nome in nomes}})
+
+
 async def lidar(ws):
+    try:
+        path = getattr(ws.request, "path", "/")
+        if path == "/logs":
+            await lidar_logs(ws)
+            return
+    except Exception:
+        pass
     c = Cliente()
     client_ip = ws.remote_address[0] if ws.remote_address else "desconhecido"
     logger.info(f"conectado de {client_ip} hist={len(c._hist)//2}")
@@ -2554,6 +2749,7 @@ async def start_http_server():
     app.router.add_get('/api/memories', handle_memories)
     app.router.add_post('/open-file', handle_open_file)
     app.router.add_get('/health', lambda r: web.json_response({'status': 'ok'}))
+    app.router.add_get('/api/logs', handle_logs)
     
     # EcoW state persistence
     app.router.add_get('/api/ecow/state', handle_ecow_state_get)

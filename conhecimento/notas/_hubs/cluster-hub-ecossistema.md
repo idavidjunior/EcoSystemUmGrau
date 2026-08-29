@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**231 notas** do cluster ecossistema.
+**233 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -172,6 +172,7 @@
 - [[narrador-morto-por-bloco-duplicado-falso-positivo-de-encodin]]
 - [[oficializacao-narrador-edge-cerebro-vivo]]
 - [[opencode-go-provider-crash-ao-processar-mensagem]]
+- [[ordinais-text-normalizer]]
 - [[organizar-desktopcodigos-como-raiz-unica-de-projetos]]
 - [[otimização-do-reindex-semântico-do-memory-engine]]
 - [[pacote-seguro-de-serviços-windows-aplicação-com-backup]]
@@ -221,6 +222,7 @@
 - [[sistema-de-análise-financeira]]
 - [[snapshots-corrompidos-do-opencode-referência-no-banco-decide]]
 - [[stt-no-partialstreaming-results]]
+- [[terminalwidget-edge]]
 - [[toast-de-erros-falsos-positivos]]
 - [[tradingagents-integrado-ao-ecossistema]]
 - [[transparencia-execucao-tarefas]]

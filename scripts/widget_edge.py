@@ -35,6 +35,9 @@ STATE_FILE = RUNTIME / "widget_state.json"
 PID_FILE = RUNTIME / "widget.pid"
 STOP_FLAG = RUNTIME / "parar_fala.flag"
 BRIDGE_PORT = 8765
+LARGURA = 360
+ALTURA_BASE = 300
+ALTURA_LOG = 480
 NARRACAO_CONTROLE = RUNTIME / "narracao_estado.json"
 
 # --- Narrador integrado ---
@@ -700,6 +703,7 @@ class EdgeApi:
             "texto": texto,
             "ultima_fala": est.get("ultima_fala") or "",
             "vivo": vivo,
+            "logs_aberto": bool(est.get("logs_aberto", False)),
         }
 
     def parar(self):
@@ -836,6 +840,33 @@ class EdgeApi:
             return {"voz": False}
         self.voice_on()
         return {"voz": True}
+
+    def logs_toggle(self):
+        """Alterna o terminal de logs: expande/recolhe a janela mantendo a
+        borda inferior fixa (cresce para cima). Estado persistido em
+        widget_state.json e devolvido ao front."""
+        import webview
+
+        aberto = not bool(ler_estado().get("logs_aberto", False))
+        salvar_estado({"logs_aberto": aberto})
+        if not webview.windows:
+            return {"logs_aberto": aberto}
+        w = webview.windows[0]
+        try:
+            largura = getattr(w, "width", None) or LARGURA
+            alt_atual = getattr(w, "height", None) or ALTURA_BASE
+            x0 = int(getattr(w, "x", None) or _area_util()[0] + 8)
+            y0 = int(getattr(w, "y", None) or _area_util()[1] + 8)
+            nova = ALTURA_LOG if aberto else ALTURA_BASE
+            # mantém o rodapé: y_novo = (y_atual + alt_atual) - nova
+            l, t, r, b = _area_util()
+            y1 = (y0 + alt_atual) - nova
+            y1 = max(t, y1)
+            w.resize(largura, nova)
+            w.move(x0, y1)
+        except Exception as e:
+            print(f"logs_toggle resize: {e}", flush=True)
+        return {"logs_aberto": aberto}
 
     def minimize(self):
         import webview
@@ -988,16 +1019,17 @@ def main():
     import webview
 
     api = EdgeApi()
-    px, py = _posicao_restaurada(360, 300) or _posicao_inferior_esquerda(360, 300)
-    print(f"posicao inicial: {px},{py}", flush=True)
+    altura = ALTURA_LOG if bool(ler_estado().get("logs_aberto", False)) else ALTURA_BASE
+    px, py = _posicao_restaurada(LARGURA, altura) or _posicao_inferior_esquerda(LARGURA, altura)
+    print(f"posicao inicial: {px},{py} altura={altura}", flush=True)
     window = webview.create_window(
         "Edge",
         str(UI),
         js_api=api,
         x=px,
         y=py,
-        width=360,
-        height=300,
+        width=LARGURA,
+        height=altura,
         frameless=True,
         easy_drag=True,
         on_top=True,

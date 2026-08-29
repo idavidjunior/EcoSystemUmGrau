@@ -8,8 +8,8 @@
   --on:#a6e3a1;--off:#45475a;--acc:#89b4fa;--bdr:#45475a;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none;user-select:none;}
-html,body{overflow:hidden;font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);width:100%;height:100%;}
-.barra{background:var(--sb);padding:8px 10px;display:flex;align-items:center;gap:8px;cursor:move;}
+html,body{overflow:hidden;font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);width:100%;height:100%;display:flex;flex-direction:column;}
+.barra{background:var(--sb);padding:8px 10px;display:flex;align-items:center;gap:8px;cursor:move;flex:0 0 auto;}
 .titulo{font-size:12px;font-weight:600;color:var(--tx);flex:1;}
 .pontos{display:flex;gap:5px;margin-right:4px;}
 .pt{width:11px;height:11px;border-radius:50%;background:var(--off);transition:background .25s;display:inline-block;}
@@ -17,7 +17,8 @@ html,body{overflow:hidden;font-family:'Segoe UI',system-ui,sans-serif;background
 .mini{font-size:11px;line-height:1;padding:3px 7px;border:1px solid var(--bdr);border-radius:3px;
   background:transparent;color:var(--tx3);cursor:pointer;}
 .mini:hover{color:var(--tx);}
-.corpo{padding:12px 14px;display:flex;flex-direction:column;gap:10px;}
+.mini.ativo{background:#1d2a3d;border-color:var(--acc);color:var(--acc);}
+.corpo{padding:12px 14px;display:flex;flex-direction:column;gap:10px;flex:0 0 auto;}
 .linha{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--tx3);}
 .rotulo{width:78px;}
 select{flex:1;font-size:11px;background:var(--in);color:var(--tx);border:1px solid var(--bdr);
@@ -53,6 +54,8 @@ button#btnParar.falando{background:#3a1d1d;border-color:#f38ba8;color:#f38ba8;
   max-height:14px;line-height:14px;}
 .erroVivo{font-size:10px;color:#f38ba8;background:rgba(243,139,168,.08);
   border:1px solid rgba(243,139,168,.5);border-radius:4px;padding:4px 8px;display:none;}
+#terminalContainer{display:none;flex:1 1 auto;min-height:0;}
+#terminalContainer.aberto{display:flex;flex-direction:column;min-height:140px;}
 </style>
 </head>
 <body>
@@ -63,6 +66,7 @@ button#btnParar.falando{background:#3a1d1d;border-color:#f38ba8;color:#f38ba8;
     <i class="pt" id="ptTts" title="TTS"></i>
     <i class="pt" id="ptBridge" title="Bridge"></i>
   </span>
+  <button class="mini" id="btnLogs" title="Terminal de logs">Logs</button>
   <button class="mini" onclick="pywebview.api.minimize()">&#8211;</button>
   <button class="mini" onclick="pywebview.api.close()">&#10005;</button>
 </div>
@@ -98,7 +102,33 @@ button#btnParar.falando{background:#3a1d1d;border-color:#f38ba8;color:#f38ba8;
   <div class="fala" id="linhaFala"></div>
   <div class="erroVivo" id="linhaErro"></div>
 </div>
+<div id="terminalContainer"></div>
+<link rel="stylesheet" href="terminal_widget.css">
+<script src="terminal_widget.js"></script>
 <script>
+var terminalWidget = null;
+function terminalAbrir(){
+  var c = document.getElementById('terminalContainer');
+  c.classList.add('aberto');
+  document.getElementById('btnLogs').classList.add('ativo');
+  if (!terminalWidget){
+    terminalWidget = new TerminalWidget({
+      hospedeiro: c, cor: '#a6e3a1', buffer: 120,
+      onFechar: function(){ try{ window.pywebview.api.logs_toggle(); }catch(e){} }
+    });
+  }
+  terminalWidget.conectar();
+}
+function terminalFechar(){
+  var c = document.getElementById('terminalContainer');
+  c.classList.remove('aberto');
+  document.getElementById('btnLogs').classList.remove('ativo');
+  if (terminalWidget){ terminalWidget.destruir(); terminalWidget = null; }
+}
+function terminalAlternar(r){
+  if (r && r.logs_aberto) terminalAbrir();
+  else terminalFechar();
+}
 function edgeAtualizar(st){
   document.getElementById('ptNarr').classList.toggle('on', !!st.narr);
   document.getElementById('ptTts').classList.toggle('on', !!st.tts);
@@ -139,7 +169,14 @@ window.addEventListener('pywebviewready', async function(){
     edgeAtualizar(st);
     document.getElementById('volume').value = st.volume;
     document.getElementById('sleep').value = st.sleep;
+    if (st.logs_aberto) terminalAlternar({logs_aberto: true});
   }catch(e){}
+  document.getElementById('btnLogs').addEventListener('click', async function(){
+    try{
+      var r = await window.pywebview.api.logs_toggle();
+      terminalAlternar(r);
+    }catch(e){}
+  });
   document.getElementById('volume').addEventListener('change', function(e){
     window.pywebview.api.set_volume(e.target.value);
   });

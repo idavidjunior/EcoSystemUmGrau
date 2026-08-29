@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**282 notas** conectadas a este hub.
+**283 notas** conectadas a este hub.
 
 
 ## Notas
@@ -251,6 +251,7 @@
 - [[tab-navigation-pattern]]
 - [[taxonomia-correta-de-habilidades-jarvis]]
 - [[template-matching-para-botoes-graficos]]
+- [[terminalwidget-edge]]
 - [[testes-cobertura-de-código-como-métrica-o-que-ela-mostra-e-o]]
 - [[testes-mocks-fakes-e-stubs-e-quando-evitar-mockar]]
 - [[testes-pirâmide-de-testes-e-o-que-testar-em-cada-camada]]

@@ -57,6 +57,50 @@ from .code_filter import CodeFilter
 from .markdown_cleaner import MarkdownCleaner
 from .numeros_por_extenso import numero_feminino, numero_por_extenso
 
+_ORO_masc = {
+    1: "primeiro", 2: "segundo", 3: "terceiro", 4: "quarto", 5: "quinto",
+    6: "sexto", 7: "sétimo", 8: "oitavo", 9: "nono", 10: "décimo",
+    20: "vigésimo", 30: "trigésimo", 40: "quadragésimo", 50: "quinquagésimo",
+    60: "sexagésimo", 70: "septuagésimo", 80: "octogésimo", 90: "nonagésimo",
+    100: "centésimo", 200: "ducentésimo", 300: "tricentésimo", 400: "quadringentésimo",
+    500: "quingentésimo", 600: "sexcentésimo", 700: "septingentésimo",
+    800: "octingentésimo", 900: "noningentésimo",
+}
+_ORO_fem = {k: v[:-1] + "a" for k, v in _ORO_masc.items()}
+
+
+def ordinal_por_extenso(n: int, genero: str = "m") -> str:
+    """Ordinal por extenso (1º → 'primeiro', 1ª → 'primeira'). Suporta 1..999."""
+    base = _ORO_fem if genero == "f" else _ORO_masc
+    if n <= 0 or n >= 1000:
+        return numero_por_extenso(n)
+    if n in base:
+        return base[n]
+    if n < 100:
+        d = (n // 10) * 10
+        u = n % 10
+        return f"{_ORO_masc[d]} {base[u]}"
+    c = (n // 100) * 100
+    resto = n % 100
+    if resto == 0:
+        return base[c]
+    nome_c = "cento" if (c == 100 and genero == "m") else base[c]
+    resto_nome = ordinal_por_extenso(resto, genero)
+    return f"{nome_c} {resto_nome}"
+
+
+def _letras_de(i: int) -> str:
+    """Índice 1..N como chave só-de-letras (a, b, ..., z, aa, ab...) para
+    placeholders de ordinais que não podem conter dígitos."""
+    s = ''
+    while i > 0:
+        i, resto = divmod(i - 1, 26)
+        s = chr(ord('a') + resto) + s
+    return s
+
+
+_ORDINAL_PH = re.compile(r'=(ORDO[A-Za-z]+)=')
+
 # Vocabulário das palavras de numeral por extenso em pt-BR (gerado das
 # palavras reais do número, para a respiração não inserir vírgula dentro de
 # "trinta e quatro", "dois mil e vinte e seis", etc.).
@@ -710,6 +754,7 @@ class _TextNormalizerClasico:
             r')\s+',
             re.IGNORECASE
         )
+        self._ordinais = {}
 
     def normalize(self, text: str) -> str:
         if not text:
@@ -771,6 +816,22 @@ class _TextNormalizerClasico:
         text = re.sub(
             r'(?<![.,])(\d{1,6})%',
             lambda m: f'{numero_por_extenso(int(m.group(1)))} por cento',
+            text
+        )
+        # Ordinais (1º → primeiro, 2ª → segunda, até 999º/ª) via placeholder
+        # só-de-letras (dígitos atrás não são capturados pela expansão de
+        # inteiros e a palavra não vira conector inicial/meio no pipeline).
+        contador = [0]
+        def _sub_ordinal(m):
+            n = int(m.group(1))
+            genero = 'f' if m.group(2) == 'ª' else 'm'
+            contador[0] += 1
+            chave = 'ORDO' + _letras_de(contador[0]) + ('F' if genero == 'f' else 'M')
+            self._ordinais[chave] = ordinal_por_extenso(n, genero)
+            return '=' + chave + '='
+        text = re.sub(
+            r'(?<![\d.,])(\d{1,3})([ºª])',
+            _sub_ordinal,
             text
         )
         # Expande inteiros soltos (1..999999) sem tocar decimais/separadores
@@ -841,6 +902,9 @@ class _TextNormalizerClasico:
         text = re.sub(r'^,\s*', '', text)
         text = re.sub(r'^\.\s*', '', text)
         text = re.sub(r'\s+', ' ', text)
+        def _restaurar(m):
+            return self._ordinais.pop(m.group(1), m.group(0))
+        text = _ORDINAL_PH.sub(_restaurar, text)
         text = re.sub(
             r'\b(e|ou)\s*,\s*(?=depois|então|porém|contudo|portanto|finalmente|enfim)\b',
             r'\1 ',
