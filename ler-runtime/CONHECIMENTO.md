@@ -1,11 +1,11 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-29T01:40:17.783827
+**Exportado em:** 2026-08-29T17:26:10.397632
 **Projetos:** 4
 **Padroes Tecnicos:** 288
 **Decisoes:** 81
 **Bug Fixes:** 52
-**Padroes Cognitivos:** 75
+**Padroes Cognitivos:** 76
 **Heuristicas:** 32
 **Frameworks:** 10
 **Missoes Aprendidas:** 134
@@ -2121,6 +2121,26 @@ data: 2026-08-29
 contexto: text_normalizer.py expandia 1º/2ª como "umº" (sufixo ordinal mantido), pois _normalize_numbers só tratava inteiros/percentuais. Correção necessária para expandir ordinais por extenso.
 decisao: Adicionar ordinal_por_extenso(n, genero) (1..999, masc/fem) e regex (?<![\d.,])(\d{1,3})([ºª]) com placeholder "=ORDO<chave_letras>M/F=" (chave só-de-letras via _letras_de para a regex de inteiros não ca
 
+### Silêncio do narrador — três causas empilhadas
+**Dominio:** general
+**Fonte:** opencode
+
+---
+titulo: Silencio do narrador tinha tres causas empilhadas
+tipo: erro
+tags: [narrador, tts, audio, resiliencia, diagnóstico]
+data: 2026-08-29
+---
+
+# Silêncio do narrador — três causas empilhadas
+
+## Contexto
+O usuário relatou "não estou ouvindo o narrador". A telemetria mostrava fala ok (MP3 gerado, `ok=True`), mas nada saía no alto-falante.
+
+## Causas encontradas (em camadas)
+
+1. **Bug no widget**: `voice_off()` chamava `_narrador_pausar(True)` em vez de `False`. Corrigido — hoje a função re
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -2215,7 +2235,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-29T01:40:17.673569
+**Ultima atualizacao:** 2026-08-29T17:26:05.679021
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

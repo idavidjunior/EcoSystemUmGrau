@@ -5,12 +5,12 @@
   "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-mp3player.md": 2,
   "nota:conhecimento/notas/missoes/2026-08-03-scan-proativo-supermarketcalculator.md": 2,
   "nota:conhecimento/aprendizados/2026-08-06-janela-conversa-ativa-suprime-saudacao.md": 14,
-  "nota:conhecimento/aprendizados/2026-08-06-saudacoes-inteligentes-reconexao-vs-primeira-vez.md": 23,
+  "nota:conhecimento/aprendizados/2026-08-06-saudacoes-inteligentes-reconexao-vs-primeira-vez.md": 26,
   "nota:conhecimento/notas/padroes/saudacoes-inteligentes-reconexao-vs-primeira-vez.md": 3,
   "nota:conhecimento/aprendizados/2026-08-06-recuperacao-rapida-conexao.md": 1,
   "nota:conhecimento/notas/padroes/cadeia-de-provedores-com-failover-inteligente.md": 1,
   "nota:conhecimento/aprendizados/2026-08-01-clausula-petrea-comunicacao-audio.md": 14,
-  "nota:conhecimento/aprendizados/2026-07-31-pontuacao-transcricoes-de-voz-jarvis.md": 14,
+  "nota:conhecimento/aprendizados/2026-07-31-pontuacao-transcricoes-de-voz-jarvis.md": 18,
   "nota:conhecimento/notas/padroes/config-2026-07-27-4-teste-do-ciclo-de-polling.md": 16,
   "nota:conhecimento/notas/heuristicas/heuristica-de-isolamento-de-falha.md": 4,
   "46": 1,
@@ -94,5 +94,8 @@
   "nota:conhecimento/aprendizados/2026-08-08-idioma-padrao-pt-br.md": 32,
   "nota:conhecimento/notas/padroes/2026-08-17-car-bt-controle-total-via-adb-bluetooth-automotiv.md": 1,
   "nota:conhecimento/aprendizados/2026-08-28-narrador-edge-pausa-botao.md": 1,
-  "nota:conhecimento/notas/padroes/palavras-de-preenchimento-hesitações-e-ruído-na-transcrição-.md": 1
+  "nota:conhecimento/notas/padroes/palavras-de-preenchimento-hesitações-e-ruído-na-transcrição-.md": 1,
+  "348": 1,
+  "nota:conhecimento/notas/padroes/arquitetura-resiliência-retry-circuit-breaker-backoff-e-idem.md": 1,
+  "348": 3
 }
