@@ -567,6 +567,9 @@ class _Narrador:
         if STOP_FLAG.exists():
             _log_narr("pulando (parar_fala.flag ativo)")
             return
+        if _ler_pausa_total():
+            _log_narr("buffer descartado (pausa total ativa)")
+            return
         texto = pipeline_completo_tts(texto)
         if PROFILE_HOOK_AVAILABLE:
             texto = format_response_for_profile(texto, _profile_config)
@@ -687,7 +690,7 @@ class EdgeApi:
             vivo.pop("quando", None)
         return {
             "narr": _estado_narrador_ativo(),
-            "pausado": _ler_narracao_pausada(),
+            "pausado": _ler_pausa_total(),
             "tts": servico_no_ar("tts_service"),
             "bridge": bridge_no_ar(),
             "voz": voz,
@@ -709,13 +712,15 @@ class EdgeApi:
         return True
 
     def pause(self):
-        """Pausa o narrador (mantém ativo=true, pausado=true)."""
-        self._narrador_pausar(True)
+        """Pausa total: silencia todo áudio de saída (narração, TTS e voz
+        Jarvis) até Retomar. Estado mestre separado do `pausado` do narrador,
+        que o voice_on/voice_off usam sem tocar na pausa total."""
+        _gravar_pausa_total(True)
         return True
 
     def resume(self):
-        """Retoma o narrador e limpa a bandeira de parada pendente."""
-        self._narrador_pausar(False)
+        """Retoma todo o áudio e limpa a bandeira de parada pendente."""
+        _gravar_pausa_total(False)
         try:
             STOP_FLAG.unlink(missing_ok=True)
         except Exception:

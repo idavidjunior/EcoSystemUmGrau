@@ -32,6 +32,7 @@ CMD_FILE = RUNTIME / "tts_cmd.json"
 STOP_FLAG = RUNTIME / "parar_fala.flag"
 ESTADO_FILE = RUNTIME / "tts_estado.json"
 TELEMETRIA_FILE = RUNTIME / "tts_telemetria.jsonl"
+NARRACAO_CONTROLE = RUNTIME / "narracao_estado.json"
 
 RUNTIME.mkdir(parents=True, exist_ok=True)
 
@@ -53,6 +54,18 @@ VOX = ROOT / "scripts" / "vox_audio.py"
 _paused = False
 _current_req_id = None
 _processing = False
+
+
+def _pausa_total():
+    """True se a pausa total (botão Pausar) estiver ativa — silencia este
+    serviço até o usuário retomar, independentemente de `pausado`."""
+    try:
+        if NARRACAO_CONTROLE.exists():
+            data = json.loads(NARRACAO_CONTROLE.read_text(encoding="utf-8"))
+            return bool(data.get("pausa_total", False))
+    except Exception:
+        return False
+    return False
 
 
 def _log(msg):
@@ -260,7 +273,7 @@ def main():
 
                         if c == "speak":
                             texto = cmd.get("texto", "").strip()
-                            if texto and not _paused:
+                            if texto and not _paused and not _pausa_total():
                                 _log(f"fala req={req_id}: {texto[:60]}...")
                                 _escrever_estado(True, texto)
                                 try:
@@ -268,7 +281,7 @@ def main():
                                 finally:
                                     _escrever_estado(False)
                                 _write_resp(req_id, "ok" if ok else "error")
-                            elif _paused:
+                            elif _paused or _pausa_total():
                                 _write_resp(req_id, "ignored", "pausado")
                             else:
                                 _write_resp(req_id, "ignored", "texto vazio")

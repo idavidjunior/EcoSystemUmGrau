@@ -491,8 +491,25 @@ def transcrever(audio):
     return texto
 
 
+def _pausa_total_ativa():
+    """True quando o botão Pausar do widget está ativo: todo áudio de saída do
+    diálogo (gerar_audio/tocar_base64) é silenciado; Jarvis continua ouvindo e
+    responde apenas em texto até o usuário retomar."""
+    try:
+        controle = SCRIPTS.parent / "runtime" / "narracao_estado.json"
+        if controle.exists():
+            data = json.loads(controle.read_text(encoding="utf-8"))
+            return bool(data.get("pausa_total", False))
+    except Exception:
+        pass
+    return False
+
+
 def tocar_base64(b64, parar_evento=None):
     if not b64:
+        return
+    if _pausa_total_ativa():
+        print(f"{FALAR_COLOR}[pausa total — áudio suprimido]{RESET}", flush=True)
         return
     mp3 = _novo_mp3_temp("vox_dialogo")
     try:
@@ -575,6 +592,9 @@ def falar_com_bargein(b64):
     interrupcao, corta o audio imediatamente e devolve True (usuario quer falar)."""
     if not b64:
         return False
+    if _pausa_total_ativa():
+        print(f"{FALAR_COLOR}[pausa total — fala suprimida]{RESET}", flush=True)
+        return False
     _retrato_estado("falando")
     parar_evento = threading.Event()
     threads = [
@@ -608,6 +628,10 @@ async def responder(cliente, texto, interrompivel=True):
         r = "Não consegui gerar uma resposta."
     r_tela = normalizar_hora_display(r)
     print(f"{FALAR_COLOR}[jarvis]{RESET} {r_tela}", flush=True)
+    # Pausa total: responde apenas em texto (sem gerar nem tocar áudio)
+    if _pausa_total_ativa():
+        _retrato_estado("ouvindo", erro="")
+        return
     try:
         audio = await gerar_audio(r_tela)
     except Exception as e:
@@ -813,6 +837,9 @@ async def saudar_inicio(cliente):
         saudacao = f"{random.choice(abridores)}! {extra}{status}{random.choice(fechos)}"
     saudacao_tela = normalizar_hora_display(saudacao)
     print(f"{FALAR_COLOR}[jarvis]{RESET} {saudacao_tela}", flush=True)
+    if _pausa_total_ativa():
+        _retrato_estado("ouvindo", erro="")
+        return
     try:
         audio = await gerar_audio(saudacao_tela)
     except Exception as e:
