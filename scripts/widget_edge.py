@@ -103,6 +103,9 @@ _Caminhos = re.compile(
 _Arquivos = re.compile(r"\b\w+\.(?:py|js|ts|json|jsonc|md|html|css|ps1|bat|sh)\b", re.IGNORECASE)
 
 
+_ESTADO_LOCK = threading.Lock()
+
+
 def ler_estado():
     try:
         return json.loads(STATE_FILE.read_text(encoding="utf-8"))
@@ -111,11 +114,23 @@ def ler_estado():
 
 
 def salvar_estado(update):
-    estado = ler_estado()
-    estado.update(update)
-    tmp = STATE_FILE.with_suffix(".tmp")
-    tmp.write_text(json.dumps(estado, ensure_ascii=False), encoding="utf-8")
-    os.replace(tmp, STATE_FILE)
+    """Persiste widget_state.json com escrita atômica serializada.
+
+    O handler de `moved` da janela (pywebview) pode disparar em threads
+    concorrentes; sem lock, duas threads gravam o mesmo .tmp e o
+    os.replace falha com PermissionError (WinError 32).
+    """
+    with _ESTADO_LOCK:
+        estado = ler_estado()
+        estado.update(update)
+        tmp = STATE_FILE.with_suffix(".tmp")
+        tmp.write_text(json.dumps(estado, ensure_ascii=False), encoding="utf-8")
+        for _ in range(3):
+            try:
+                os.replace(tmp, STATE_FILE)
+                return
+            except OSError:
+                time.sleep(0.05)
 
 
 def servico_no_ar(frag, excluir=None):
