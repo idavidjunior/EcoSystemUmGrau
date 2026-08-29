@@ -62,17 +62,11 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:2px 0 8px;}
   <input id="rgFoco" type="range" min="-1" max="1" step="0.01">
   <label class="linha">Vivacidade das cores <span id="valViva"></span></label>
   <input id="rgViva" type="range" min="0" max="1" step="0.05">
-  <label class="linha">Filtro temporal (decay) <span id="valDecay"></span></label>
-  <input id="rgDecay" type="range" min="0" max="1" step="0.01">
   <button id="btDecor" class="foco-btn">Pulsos decorativos <span id="estDecor"></span></button>
-  <div class="ptitulo" style="margin-top:12px;">Sinapses novas (amarelo)</div>
-  <button id="btNova" class="foco-btn">Destacar novas <span id="estNova"></span></button>
-  <label class="linha">Janela (horas) <span id="valNovaH"></span></label>
-  <input id="rgNovaH" type="range" min="1" max="72" step="1">
-  <label class="linha">Intensidade do pulso <span id="valNovaI"></span></label>
-  <input id="rgNovaI" type="range" min="0" max="1" step="0.05">
-  <label class="linha">Brilho extra <span id="valNovaB"></span></label>
-  <input id="rgNovaB" type="range" min="0" max="1" step="0.05">
+  <label class="linha">Velocidade do movimento <span id="valMov"></span></label>
+  <input id="rgMov" type="range" min="0" max="1" step="0.01">
+  <label class="linha">Velocidade da rotação <span id="valRot"></span></label>
+  <input id="rgRot" type="range" min="0" max="1" step="0.01">
 </div>
 <div id="painelFoco" class="painel">
   <div class="ptitulo">Mostrar apenas</div>
@@ -172,7 +166,7 @@ let JULT_ONDA = 0;
 
 let EXCITA = null;               // Float32Array por no
 let sprites = {};                // chave cor+foco -> canvas
-let AJUSTES = {foco:0.55, viva:0.65, decor:true};
+let AJUSTES = {foco:0.55, viva:0.65, decor:true, movimento:0.65, rotacao:0.6};
 try{ Object.assign(AJUSTES,
   JSON.parse(localStorage.getItem('cerebroAjustes')||'{}')); }catch(e){}
 function salvarAjustes(){
@@ -187,9 +181,9 @@ const STATE_API = 'http://localhost:8766/api/ecow/state';
 async function salvarEstado(){
   const estado = {
     camera: { rotY, rotX, zoom, panX, panY },
-    filtros: { filtro: FILTRO, decay: AJUSTES.decay || 0 },
+    filtros: { filtro: FILTRO },
     ajustes: { foco: AJUSTES.foco, viva: AJUSTES.viva, decor: AJUSTES.decor,
-               novaH: AJUSTES.novaH, novaI: AJUSTES.novaI, novaB: AJUSTES.novaB, nova: AJUSTES.nova }
+               movimento: AJUSTES.movimento, rotacao: AJUSTES.rotacao }
   };
   try {
     await fetch(STATE_API, {
@@ -209,7 +203,7 @@ async function carregarEstado(){
       if (s.camera) { rotY=s.camera.rotY||0.6; rotX=s.camera.rotX||-0.18;
         zoom=s.camera.zoom||1; panX=s.camera.panX||0; panY=s.camera.panY||0;
         alvoZoom=zoom; alvoPanX=panX; alvoPanY=panY; }
-      if (s.filtros) { FILTRO=s.filtros.filtro||null; AJUSTES.decay=s.filtros.decay||0; }
+      if (s.filtros) { FILTRO=s.filtros.filtro||null; }
       if (s.ajustes) { Object.assign(AJUSTES, s.ajustes); }
     }
   } catch (e) { /* silencioso */ }
@@ -222,7 +216,7 @@ carregarEstado();
 let FILTRO = null;               // cluster ativo no painel Foco (ou null)
 let VIS = null;                  // Uint8Array: 1 = no visivel
 let ARVIS = [];                  // arestas entre nos visiveis
-let rotY = 0.6, rotX = -0.18, velY = 0.0022, velX = 0;
+let rotY = 0.6, rotX = -0.18, velY = 0.0042, velX = 0;
 let zoom = 1.0, alvoZoom = 1.0;
 let panX = 0, panY = 0, alvoPanX = 0, alvoPanY = 0, emPan = false;
 let pausaGiroAte = 0, cliqueNoX = 0, cliqueNoY = 0;
@@ -739,11 +733,14 @@ function projetar(t){
     if (n.nasce<1) n.nasce=Math.min(1,n.nasce+0.02);
     // interpolacao suave para pos alvo
     n.cx += (n.x-n.cx)*0.06; n.cy += (n.y-n.cy)*0.06; n.cz += (n.z-n.cz)*0.06;
-    // deriva organica (duas senoides por eixo)
-    const dr = 2.6*(0.5+n.a*0.8);
-    const ox = Math.sin(t*0.00052+n.fase)+Math.sin(t*0.00031+n.fase*2.3);
-    const oy = Math.sin(t*0.00047+n.fase*1.7)+Math.sin(t*0.00029+n.fase*3.1);
-    const oz = Math.sin(t*0.00041+n.fase*2.9)+Math.sin(t*0.00027+n.fase*4.7);
+    // deriva organica (duas senoides por eixo) — amplitude e ritmo controlados por AJUSTES.movimento (0-1)
+    // o bastante para cada no borbulhar de forma perceptivel sem desmanchar.
+    const m = AJUSTES.movimento || 0.65;
+    const dr = (2.0 + m * 10.0) * (0.5 + n.a * 0.8);
+    const fbase = 0.0005 + m * 0.0015;
+    const ox = Math.sin(t * (fbase * 2.8) + n.fase) + Math.sin(t * (fbase * 1.8) + n.fase * 2.3);
+    const oy = Math.sin(t * (fbase * 2.5) + n.fase * 1.7) + Math.sin(t * (fbase * 1.6) + n.fase * 3.1);
+    const oz = Math.sin(t * (fbase * 2.2) + n.fase * 2.9) + Math.sin(t * (fbase * 1.4) + n.fase * 4.7);
     let wx=n.cx+ox*dr, wy=n.cy+oy*dr, wz=n.cz+oz*dr;
     // rotacao Y
     let rx=wx*cy-wz*sy, rz=wx*sy+wz*cy;
@@ -937,11 +934,12 @@ function desenhar(t, dt){
 
 function laco(t){
   const dt=Math.min(50,t-(laco._ant||t)); laco._ant=t;
+  const rotAlvo = 0.0015 + (AJUSTES.rotacao || 0.6) * 0.0045;
   if (t < pausaGiroAte){
     // pausa de giro apos clique em no: mata inercia suavemente
     velY*=0.85; velX*=0.85;
   } else if (!arrastando && t-ultToque>2600){
-    velY+=(0.0022-velY)*0.01; velX*=0.97;
+    velY+=(rotAlvo-velY)*0.012; velX*=0.97;
     rotY+=velY*dt/16.7; rotX+=velX*dt/16.7;
   } else if (arrastando){
     // ja aplicado no mousemove
@@ -1097,14 +1095,10 @@ const rgFoco=document.getElementById('rgFoco'),
       valViva=document.getElementById('valViva'),
       btDecor=document.getElementById('btDecor'),
       estDecor=document.getElementById('estDecor'),
-      rgNovaH=document.getElementById('rgNovaH'),
-      valNovaH=document.getElementById('valNovaH'),
-      rgNovaI=document.getElementById('rgNovaI'),
-      valNovaI=document.getElementById('valNovaI'),
-      rgNovaB=document.getElementById('rgNovaB'),
-      valNovaB=document.getElementById('valNovaB'),
-      btNova=document.getElementById('btNova'),
-      estNova=document.getElementById('estNova');
+      rgMov=document.getElementById('rgMov'),
+      valMov=document.getElementById('valMov'),
+      rgRot=document.getElementById('rgRot'),
+      valRot=document.getElementById('valRot');
 
 rgFoco.value=AJUSTES.foco;
 valFoco.textContent=Math.round(AJUSTES.foco*100)+'%';
@@ -1122,13 +1116,20 @@ rgViva.addEventListener('input',()=>{
   salvarAjustes();
 });
 
-const rgDecay=document.getElementById('rgDecay'), valDecay=document.getElementById('valDecay');
-rgDecay.value=AJUSTES.decay||0;
-valDecay.textContent=Math.round((AJUSTES.decay||0)*100)+'%';
-rgDecay.addEventListener('input',()=>{
-  AJUSTES.decay=+rgDecay.value;
-  valDecay.textContent=Math.round(AJUSTES.decay*100)+'%';
-  salvarAjustes(); atualizarVis();
+rgMov.value=AJUSTES.movimento;
+valMov.textContent=Math.round(AJUSTES.movimento*100)+'%';
+rgMov.addEventListener('input',()=>{
+  AJUSTES.movimento=+rgMov.value;
+  valMov.textContent=Math.round(AJUSTES.movimento*100)+'%';
+  salvarAjustes();
+});
+
+rgRot.value=AJUSTES.rotacao;
+valRot.textContent=Math.round(AJUSTES.rotacao*100)+'%';
+rgRot.addEventListener('input',()=>{
+  AJUSTES.rotacao=+rgRot.value;
+  valRot.textContent=Math.round(AJUSTES.rotacao*100)+'%';
+  salvarAjustes();
 });
 
 function pintarDecor(){
@@ -1198,23 +1199,17 @@ window.cerebroAjustesAplicar = function(txt){
     if (AJUSTES.viva<0) AJUSTES.viva=0;
     if (AJUSTES.viva>1) AJUSTES.viva=1;
     AJUSTES.decor = AJUSTES.decor !== false;
-    if (!isFinite(AJUSTES.novaH)) AJUSTES.novaH = 12;
-    if (AJUSTES.novaH < 1) AJUSTES.novaH = 1;
-    if (AJUSTES.novaH > 72) AJUSTES.novaH = 72;
-    if (!isFinite(AJUSTES.novaI)) AJUSTES.novaI = 0.5;
-    if (AJUSTES.novaI < 0) AJUSTES.novaI = 0;
-    if (AJUSTES.novaI > 1) AJUSTES.novaI = 1;
-    if (!isFinite(AJUSTES.novaB)) AJUSTES.novaB = 0.5;
-    if (AJUSTES.novaB < 0) AJUSTES.novaB = 0;
-    if (AJUSTES.novaB > 1) AJUSTES.novaB = 1;
-    AJUSTES.nova = AJUSTES.nova !== false;
+    if (!isFinite(AJUSTES.movimento)) AJUSTES.movimento = 0.65;
+    if (AJUSTES.movimento < 0) AJUSTES.movimento = 0;
+    if (AJUSTES.movimento > 1) AJUSTES.movimento = 1;
+    if (!isFinite(AJUSTES.rotacao)) AJUSTES.rotacao = 0.6;
+    if (AJUSTES.rotacao < 0) AJUSTES.rotacao = 0;
+    if (AJUSTES.rotacao > 1) AJUSTES.rotacao = 1;
     rgFoco.value=AJUSTES.foco; valFoco.textContent=Math.round(AJUSTES.foco*100)+'%';
     rgViva.value=AJUSTES.viva; valViva.textContent=Math.round(AJUSTES.viva*100)+'%';
-    rgNovaH.value=AJUSTES.novaH; valNovaH.textContent=AJUSTES.novaH+'h';
-    rgNovaI.value=AJUSTES.novaI; valNovaI.textContent=Math.round(AJUSTES.novaI*100)+'%';
-    rgNovaB.value=AJUSTES.novaB; valNovaB.textContent=Math.round(AJUSTES.novaB*100)+'%';
+    rgMov.value=AJUSTES.movimento; valMov.textContent=Math.round(AJUSTES.movimento*100)+'%';
+    rgRot.value=AJUSTES.rotacao; valRot.textContent=Math.round(AJUSTES.rotacao*100)+'%';
     pintarDecor();
-    pintarNova();
     construirMenuFoco();
   }catch(e){}
 };

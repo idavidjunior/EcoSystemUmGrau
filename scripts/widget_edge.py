@@ -40,6 +40,7 @@ ALTURA_BASE = 300
 ALTURA_LOG = 480
 NARRACAO_CONTROLE = RUNTIME / "narracao_estado.json"
 JANELA_FILE = RUNTIME / "widget_janela.json"
+NARRADOR_HEARTBEAT = RUNTIME / "narrador_heartbeat.json"
 
 # --- Narrador integrado ---
 DB_NARRADOR = Path(os.environ.get("OPENCODE_DB", r"C:\Users\David Jr\.local\share\opencode\opencode.db"))
@@ -640,6 +641,11 @@ def _narrador_loop():
         return
     try:
         while True:
+            # Heartbeat para watchdog
+            try:
+                NARRADOR_HEARTBEAT.write_text(json.dumps({"ts": time.time(), "pid": os.getpid()}), encoding="utf-8")
+            except Exception:
+                pass
             ativo = _estado_narrador_ativo()
             novas = _partes_novas(conn, ultimo_ts, EXCLUIR_PADRAO)
             if novas:
@@ -908,8 +914,8 @@ class EdgeApi:
                 except Exception:
                     pass
             self._voz_proc = None
-        # Pausa narrador (mantém ativo=true, pausado=true) — NÃO desativa
-        self._narrador_pausar(True)
+        # Retoma narrador (mantém ativo=true, pausado=false)
+        self._narrador_pausar(False)
         return True
 
     def voice_toggle(self):
@@ -1031,9 +1037,29 @@ def poller(api):
 
     ultima = None
     vez_camada = 0
+    narrador_thread = None
     while True:
         # voz ligada pede ritmo maior (barra de mic e estados ao vivo)
         time.sleep(1 if api.voz_ligada() else 2)
+        # Watchdog do narrador: verifica heartbeat e reinicia thread se morta
+        try:
+            if NARRADOR_HEARTBEAT.exists():
+                hb = json.loads(NARRADOR_HEARTBEAT.read_text(encoding="utf-8"))
+                idade = time.time() - float(hb.get("ts", 0))
+                if idade > 10:  # heartbeat parado há >10s
+                    _log_narr(f"watchdog: heartbeat parado ha {idade:.0f}s, reiniciando thread")
+                    # A thread daemon morre sozinha; basta criar nova
+                    import threading
+                    narrador_thread = threading.Thread(target=_narrador_loop, daemon=True)
+                    narrador_thread.start()
+            else:
+                # Sem heartbeat ainda — inicia thread se não existir
+                if narrador_thread is None or not narrador_thread.is_alive():
+                    import threading
+                    narrador_thread = threading.Thread(target=_narrador_loop, daemon=True)
+                    narrador_thread.start()
+        except Exception as e:
+            _log_narr(f"watchdog erro: {e}")
         # cura de deriva: camada desejada vs bit real da janela
         vez_camada += 1
         if vez_camada >= 2:
@@ -1106,6 +1132,30 @@ def _posicao_inferior_esquerda(largura, altura):
     return int(l) + 8, max(int(t), int(b) - altura - 8)
 
 
+def _normalizar_narrador_boot():
+    """Garante narrador ativo e desbloqueado no boot do widget."""
+    try:
+        estado = {"ativo": True, "pausado": False, "pausa_total": False}
+        if NARRACAO_CONTROLE.exists():
+            try:
+                estado = json.loads(NARRACAO_CONTROLE.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+        estado["ativo"] = True
+        estado["pausado"] = False
+        estado["pausa_total"] = False
+        tmp = NARRACAO_CONTROLE.with_suffix(".tmp")
+        tmp.write_text(json.dumps(estado), encoding="utf-8")
+        tmp.replace(NARRACAO_CONTROLE)
+    except Exception:
+        pass
+    # Limpa flag de parada residual
+    try:
+        STOP_FLAG.unlink(missing_ok=True)
+    except Exception:
+        pass
+
+
 def main():
     # Telemetria: sob pythonw as streams sao None; qualquer print interno
     # de biblioteca derruba o processo. Redireciona e habilita faulthandler.
@@ -1118,6 +1168,9 @@ def main():
 
     faulthandler.enable(file=sys.stderr)
     print(time.strftime("[%Y-%m-%d %H:%M:%S] boot"), flush=True)
+
+    # Normaliza estado do narrador no boot
+    _normalizar_narrador_boot()
 
     if not instancia_unica():
         print("Edge ja esta rodando.", flush=True)
