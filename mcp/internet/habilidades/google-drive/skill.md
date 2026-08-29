@@ -1,30 +1,44 @@
 ---
 name: google-drive
 description: |
-  Acesso ao Google Drive do usuario via Composio (MCP remoto). Listar pastas,
-  buscar arquivos, ler metadados, criar pastas, mover, renomear e ver estrutura
-  do Drive usando comandos simples do utilitario local drive_utils.py.
+  Acesso ao Google Drive do usuario: listar pastas, buscar arquivos, ler
+  metadados, criar pastas, mover, renomear e ver estrutura do Drive.
+  Usa credenciais OAuth PROPRIAS (acesso direto via drive_api.py) com fallback
+  para o Composio (drive_utils.py).
   Trigger phrases: "google drive", "drive", "minhas pastas", "meu drive",
   "arquivo no drive", "acessar drive", "pasta no drive".
 allowed-tools: Bash
-version: 1.0.0
+version: 1.1.0
 ---
 
 # Google Drive — Acesso às Pastas do Usuário
 
 ## Objetivo
 Dar ao ecossistema acesso real e simples às pastas e arquivos do Google Drive
-do usuário, usando o Composio (servidor MCP remoto já integrado).
+do usuário. **Acesso direto (credenciais próprias, sem intermediário)** sempre
+que houver refresh token; fallback para Composio enquanto não configurado.
+
+## Modos de acesso
+1. **Direto (preferido, Opção A)**: `scripts/drive_api.py` — chama a Google
+   Drive API v3 direto com token OAuth próprio (scripts/.env). Setup:
+   `python scripts/google_drive_auth.py` (após criar credenciais no Google
+   Cloud Console).
+2. **Composio (fallback)**: `scripts/drive_utils.py` — MCP remoto
+   (connect.composio.dev/mcp). Usado automaticamente enquanto não houver
+   refresh token próprio.
 
 ## Como usar
-Use o utilitário local `scripts/drive_utils.py` (encapsula o fluxo Composio).
-Toda chamada passa por `python scripts/drive_utils.py <comando> [args]`.
+A interface dos dois utilitários é idêntica:
+```
+python scripts/drive_api.py <comando> [args]     # acesso direto
+python scripts/drive_utils.py <comando> [args]   # via Composio
+```
 
 ## Comandos
 
 Listar conteúdo de uma pasta (default: raiz do Drive):
 ```
-python scripts/drive_utils.py listar [folder_id]
+python scripts/drive_api.py listar [folder_id]
 ```
 
 Buscar arquivos/pastas por termo no nome:
