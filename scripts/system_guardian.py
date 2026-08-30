@@ -802,6 +802,7 @@ def run_audit_periodico():
 AUDIT_INTERVALO = 90  # rodar audit a cada 90 ciclos (90 * 20s = 30 min)
 OPENCODE_RESILIENCE_INTERVALO = 45  # rodar resiliência a cada 45 ciclos (45 * 20s = 15 min)
 DRIVE_MONITOR_INTERVALO = 180  # vigiar Google Drive a cada 180 ciclos (180 * 20s = 1 hora)
+AUTO_HUB_INTERVALO = 150  # auto-hub de fala a cada 150 ciclos (150 * 20s = 50 min)
 
 def run_drive_monitor():
     """Vigia o Google Drive (changes API) e registra adições/remoções/alterações."""
@@ -853,12 +854,35 @@ def run_opencode_resilience():
     except Exception as e:
         log.error(f"OpenCode resilience erro: {e}")
 
+def run_auto_hub_fala():
+    """Atualiza hub de fala com novos neurônios (critérios rigorosos)."""
+    try:
+        auto_hub = BASE / "scripts" / "auto_hub_fala.py"
+        if not auto_hub.exists():
+            return
+        r = subprocess.run(
+            [sys.executable, str(auto_hub)],
+            capture_output=True, text=True, timeout=30, cwd=str(BASE),
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+        )
+        saida = (r.stdout or "").strip()
+        if r.returncode == 0:
+            if "Adicionados" in saida:
+                log.info(f"AUTO-HUB FALA: {saida.splitlines()[-1]}")
+            else:
+                log.info("AUTO-HUB FALA: sem novos neurônios")
+        else:
+            log.error(f"AUTO-HUB FALA falhou (exit {r.returncode}): {(saida or r.stderr or '')[:200]}")
+    except Exception as e:
+        log.error(f"AUTO-HUB FALA erro: {e}")
+
 def run_forever():
     log.info("System Guardian iniciado")
     log.info(f"RAM critica: <{RAM_CRITICAL_MB} MB, alerta: <{RAM_WARN_MB} MB, intervalo: {CHECK_INTERVAL}s")
     log.info(f"Audit periodico: a cada {AUDIT_INTERVALO * CHECK_INTERVAL // 60} minutos")
     log.info(f"OpenCode resilience: a cada {OPENCODE_RESILIENCE_INTERVALO * CHECK_INTERVAL // 60} minutos")
     log.info(f"Drive monitor: a cada {DRIVE_MONITOR_INTERVALO * CHECK_INTERVAL // 60} minutos")
+    log.info(f"Auto-hub fala: a cada {AUTO_HUB_INTERVALO * CHECK_INTERVAL // 60} minutos")
 
     with open(PID_FILE, "w", encoding="utf-8") as f:
         f.write(str(os.getpid()))
@@ -887,6 +911,8 @@ def run_forever():
                 run_opencode_resilience()
             if ciclos % DRIVE_MONITOR_INTERVALO == 0:
                 run_drive_monitor()
+            if ciclos % AUTO_HUB_INTERVALO == 0:
+                run_auto_hub_fala()
         except Exception as e:
             log.error(f"Erro no ciclo: {e}")
         time.sleep(CHECK_INTERVAL)
