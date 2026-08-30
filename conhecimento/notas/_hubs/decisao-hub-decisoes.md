@@ -1,6 +1,6 @@
 # Decisoes
 
-**77 notas** conectadas a este hub.
+**78 notas** conectadas a este hub.
 
 
 ## Notas
@@ -13,6 +13,7 @@
 - [[auto-evolution-e-behavior-slices]]
 - [[botao-importar-unificado]]
 - [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
+- [[cerebro-vivo-nos-clicaveis-navegaveis]]
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]
 - [[checkpoints-salvos-antes-de-cada-iteracao-sobrevive-a-crash-]]
 - [[clausula-petrea-protecao-do-opencode-desktop-resiliencia-da-]]

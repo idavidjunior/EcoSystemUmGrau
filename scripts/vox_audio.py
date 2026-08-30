@@ -49,6 +49,13 @@ WHISPER_DEVICE = "cpu"
 WHISPER_COMPUTE = "int8"
 _WHISPER_MODEL = None
 
+# Filtros de alucinação (padrão isair/jarvis): segmentos que o próprio Whisper
+# avalia como sem fala (no_speech_prob alto) ou com confiança muito baixa
+# (avg_logprob muito negativo) são descartados — mata transcrições fantasmas
+# em silêncio/ruído. Ajustáveis via env para calibrar sem editar código.
+WHISPER_MIN_AVG_LOGPROB = float(os.environ.get("VOX_WHISPER_MIN_LOGPROB", "-2.0"))
+WHISPER_MAX_NO_SPEECH = float(os.environ.get("VOX_WHISPER_NO_SPEECH", "0.5"))
+
 GOOGLE_LANG = "pt-BR"
 SAMPLE_RATE = 16000
 RECORD_SECONDS = float(os.environ.get("VOX_RECORD_SECONDS", "7"))
@@ -386,13 +393,27 @@ def _stt_whisper(audio, partial_callback=None):
         },
     )
     texto = ""
+    descartados = 0
     for s in segments:
+        # Filtro de alucinação por segmento: o Whisper é confiante em frases
+        # fantasmas; o próprio sinal no_speech_prob/avg_logprob denuncia.
+        try:
+            if s.no_speech_prob is not None and s.no_speech_prob > WHISPER_MAX_NO_SPEECH:
+                descartados += 1
+                continue
+            if s.avg_logprob is not None and s.avg_logprob < WHISPER_MIN_AVG_LOGPROB:
+                descartados += 1
+                continue
+        except Exception:
+            pass
         seg_text = s.text.strip()
         if seg_text:
             texto += seg_text + " "
             if partial_callback:
                 partial_callback(texto.strip())
             print(f"\r{VOZ_COLOR}[voce (streaming)]{RESET} {texto.strip()}", flush=True, end="", file=sys.stderr)
+    if descartados:
+        print(f"[whisper: {descartados} segmento(s) filtrados como alucinacao]", file=sys.stderr)
     print()
     return texto.strip(), f"whisper:{WHISPER_MODEL}"
 

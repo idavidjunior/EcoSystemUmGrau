@@ -494,6 +494,14 @@ def _deve_narrar(texto):
     # 6. Sem sinal de conclusão/resultado/erro/imporância → NÃO narrar.
     #    Regra de 28/08/2026 (pedido do usuário): fala apenas eventos
     #    relevantes, silenciando o conteúdo comum de rotina.
+    #    Modos de escuta (heardlabs/heard): companion é mais permissivo e
+    #    vira um briefing contínuo; focus/copilot silenciam a rotina.
+    try:
+        from narracao_modo import permite_relevancia
+        if permite_relevancia("sem relevancia"):
+            return True, "companion (briefing continuo)"
+    except Exception:
+        pass
     return False, "sem relevancia"
 
 

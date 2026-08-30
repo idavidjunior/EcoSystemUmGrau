@@ -41,6 +41,26 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:2px 0 8px;}
 .foco-btn.on{border-color:var(--acc);color:var(--acc);background:rgba(137,180,250,.12);}
 .foco-btn span{color:var(--tx3);}
 #listaFoco{max-height:320px;overflow-y:auto;}
+#barraInfo{position:fixed;left:8px;right:8px;bottom:8px;height:26px;display:none;
+  align-items:center;gap:6px;padding:0 8px;background:rgba(13,14,22,.82);
+  border:1px solid var(--bdr);border-radius:4px;backdrop-filter:blur(6px);
+  font-size:11px;cursor:pointer;z-index:16;}
+#barraInfo .cor{width:8px;height:8px;border-radius:50%;flex:none;}
+#barraTitulo{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  color:var(--tx);}
+#barraMeta{color:var(--tx3);font-size:10px;white-space:nowrap;}
+#painelInfo{left:8px;bottom:40px;width:300px;max-height:calc(72vh - 56px);
+  overflow-y:auto;background:rgba(13,14,22,.9);backdrop-filter:blur(6px);}
+#infoTitulo{font-size:12px;color:var(--tx);font-weight:600;margin-bottom:2px;
+  word-break:break-word;padding-right:20px;}
+#infoX{position:absolute;top:8px;right:8px;}
+.info-meta{font-size:10px;color:var(--tx3);margin-top:3px;}
+.info-sum{font-size:11px;color:var(--tx);margin-top:8px;line-height:1.45;
+  white-space:pre-wrap;word-break:break-word;}
+.info-tags{font-size:10px;color:var(--acc);margin-top:8px;line-height:1.5;
+  word-break:break-word;}
+.info-fp{font-size:9px;color:var(--tx3);margin-top:8px;word-break:break-all;}
+.info-viz{max-height:160px;overflow-y:auto;margin-top:2px;}
 </style>
 </head>
 <body>
@@ -71,6 +91,17 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:2px 0 8px;}
 <div id="painelFoco" class="painel">
   <div class="ptitulo">Mostrar apenas</div>
   <div id="listaFoco"></div>
+</div>
+<div id="painelInfo" class="painel">
+  <div id="infoTitulo"></div>
+  <div id="infoBody"></div>
+</div>
+<div id="barraInfo">
+  <span class="cor" id="barraCor"></span>
+  <span id="barraTitulo"></span>
+  <span id="barraMeta"></span>
+  <button class="mini" id="barraToggle" title="Expandir/recolher">&#9656;</button>
+  <button class="mini" id="barraX" title="Fechar">&#10005;</button>
 </div>
 <script>
 'use strict';
@@ -222,6 +253,8 @@ let panX = 0, panY = 0, alvoPanX = 0, alvoPanY = 0, emPan = false;
 let pausaGiroAte = 0, cliqueNoX = 0, cliqueNoY = 0;
 let arrastando = false, mx0 = 0, my0 = 0, ultToque = 0;
 let mouseMX = -999, mouseMY = -999, hoverId = -1;
+let selNo = -1, selViz = new Set();   // no selecionado e vizinhos diretos
+let RAMO_ATIVO = new Set(), RAMO_DESDE = 0;  // ramificacao brilhando por 16s
 let W = 0, H = 0, T0 = performance.now();
 
 function hashFase(s){
@@ -413,6 +446,142 @@ window.cerebroAtividade = function(tipo, nomes){
 };
 
 // ---------- interacao ----------
+const painelInfo = document.getElementById('painelInfo');
+
+function vizinhosDe(i){
+  const s = new Set();
+  if (!INCIDENCIA) garantirIncidencia();
+  const ks = INCIDENCIA.get(i) || [];
+  for (const eI of ks){
+    const [a,b] = ARVIS[eI % ARVIS.length];
+    s.add(a===i ? b : a);
+  }
+  return s;
+}
+
+function abrirArquivo(fp){
+  if (!fp) return;
+  fetch('http://localhost:8766/open-file',
+    {method:'POST', headers:{'Content-Type':'application/json'},
+     body:JSON.stringify({path:fp})}).catch(()=>{});
+}
+
+function limparSelecao(){
+  selNo = -1; selViz.clear();
+  RAMO_ATIVO.clear(); RAMO_DESDE = 0;
+  painelInfo.style.display = 'none';
+  document.getElementById('barraInfo').style.display = 'none';
+}
+
+function preencherPainelInfo(i){
+  const n = NOS[i];
+  document.getElementById('infoTitulo').textContent = n.l || n.id;
+  const body = document.getElementById('infoBody');
+  body.innerHTML = '';
+  const meta = document.createElement('div');
+  meta.className = 'info-meta';
+  meta.style.color = corDe(n.cl);
+  meta.textContent = rotulo(n.cl) + ' \u00B7 grau ' + n.g;
+  body.appendChild(meta);
+  if (n._kind){
+    const k = document.createElement('div');
+    k.className = 'info-meta';
+    k.textContent = 'tipo: ' + rotulo(n._kind);
+    body.appendChild(k);
+  }
+  if (n._summary){
+    const s = document.createElement('div');
+    s.className = 'info-sum';
+    s.textContent = n._summary;
+    body.appendChild(s);
+  }
+  if (n._tags && n._tags.length){
+    const tg = document.createElement('div');
+    tg.className = 'info-tags';
+    tg.textContent = '#' + n._tags.join(' #');
+    body.appendChild(tg);
+  }
+  if (n._filePath){
+    const fp = document.createElement('div');
+    fp.className = 'info-fp';
+    fp.textContent = n._filePath;
+    body.appendChild(fp);
+    const bt = document.createElement('button');
+    bt.className = 'foco-btn';
+    bt.textContent = 'Abrir no editor';
+    bt.onclick = ()=>abrirArquivo(n._filePath);
+    body.appendChild(bt);
+  }
+  const viz = [...selViz].filter(j => !VIS || VIS[j]);
+  if (viz.length){
+    const lb = document.createElement('div');
+    lb.className = 'ptitulo';
+    lb.textContent = 'Conectado a ' + viz.length;
+    body.appendChild(lb);
+    const lista = document.createElement('div');
+    lista.className = 'info-viz';
+    for (const j of viz){
+      const b = document.createElement('button');
+      b.className = 'foco-btn';
+      b.innerHTML = '<span style="color:'+corDe(NOS[j].cl)+'">\u25CF</span> ' +
+        (NOS[j].l || NOS[j].id).slice(0, 42);
+      b.onclick = ()=>selecionarNo(j);
+      lista.appendChild(b);
+    }
+    body.appendChild(lista);
+  }
+}
+
+function abrirBarraInfo(i, expandido){
+  const n = NOS[i];
+  document.getElementById('barraCor').style.background = corDe(n.cl);
+  document.getElementById('barraTitulo').textContent = n.l || n.id;
+  document.getElementById('barraMeta').textContent =
+    rotulo(n.cl) + ' \u00B7 grau ' + n.g;
+  const aberto = expandido ? 'block' : 'none';
+  painelInfo.style.display = aberto;
+  document.getElementById('barraToggle').textContent = expandido ? '\u25BE' : '\u25B8';
+  document.getElementById('barraInfo').style.display = 'flex';
+}
+function togglePainelInfo(){
+  const aberto = painelInfo.style.display === 'block';
+  painelInfo.style.display = aberto ? 'none' : 'block';
+  document.getElementById('barraToggle').textContent = aberto ? '\u25B8' : '\u25BE';
+}
+
+function selecionarNo(i){
+  if (i<0 || i>=NOS.length) return;
+  selNo = i;
+  const n = NOS[i];
+  selViz = vizinhosDe(i);
+  // ramificacao (no + vizinhos) brilha por 16s
+  RAMO_ATIVO = new Set([i]);
+  for (const j of selViz) RAMO_ATIVO.add(j);
+  RAMO_DESDE = performance.now();
+  disparoNeural(i, 1.1, corDe(n.cl), 0);
+  // voa ate o no e centraliza
+  const cxT = cv.width/2, cyT = cv.height/2 + 12*devicePixelRatio;
+  alvoPanX += cxT - SX[i];
+  alvoPanY += cyT - SY[i];
+  alvoZoom = Math.max(alvoZoom, 2.4);
+  pausaGiroAte = performance.now() + 8000;
+  // barra fina recolhivel no rodape
+  const estavaExpandido = painelInfo.style.display === 'block';
+  fecharPaineis();
+  preencherPainelInfo(i);
+  abrirBarraInfo(i, estavaExpandido);
+}
+
+document.getElementById('barraX').addEventListener('click', ()=>{
+  limparSelecao();
+  fecharPaineis();
+});
+document.getElementById('barraToggle').addEventListener('click', togglePainelInfo);
+document.getElementById('barraInfo').addEventListener('click', (e)=>{
+  if (e.target.closest('button')) return;
+  togglePainelInfo();
+});
+
 // clique SOBRE um no (ou perto) = girar; clique FORA dos nos = mover o grafo.
 // botao direito sempre move.
 cv.addEventListener('mousedown', e=>{
@@ -428,30 +597,21 @@ cv.addEventListener('mousedown', e=>{
     if (dx*dx+dy*dy < limiar*limiar){ sobreNo = true; break; }
   }
   if (sobreNo){ arrastando = true; emPan = false; cliqueNoX = e.clientX; cliqueNoY = e.clientY; }
-  else { emPan = true; arrastando = false; }
+  else { emPan = true; arrastando = false; if (e.button===0) limparSelecao(); }
 });
 window.addEventListener('mouseup', e=>{
-  // clique (sem arraste) sobre um no: pausa o giro por 5s
+  // clique (sem arraste) sobre um no: seleciona, voa e abre o painel
   const moveu = Math.hypot(e.clientX-cliqueNoX, e.clientY-cliqueNoY) > 6;
   if (arrastando && !moveu) {
-    pausaGiroAte = performance.now() + 5000;
-    // clique simples em no: abre arquivo se tiver filePath
     const dpr = devicePixelRatio||1;
     const mxP = e.clientX*dpr, myP = e.clientY*dpr, limiar = 36*dpr;
+    let achou = -1;
     for (let i=0;i<NOS.length;i++){
       if (VIS && !VIS[i]) continue;
       const dx = SX[i]-mxP, dy = SY[i]-myP;
-      if (dx*dx+dy*dy < limiar*limiar){
-        const n = NOS[i];
-        disparoNeural(i, 1.0, corDe(n.cl), 0);
-        const fp = n._filePath || n.filePath;
-        if (fp && window.pywebview && pywebview.api){
-          pywebview.api.abrir_arquivo ? pywebview.api.abrir_arquivo(fp) :
-            fetch('http://localhost:8766/open-file', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({path:fp})}).catch(()=>{});
-        }
-        break;
-      }
+      if (dx*dx+dy*dy < limiar*limiar){ achou = i; break; }
     }
+    if (achou >= 0) selecionarNo(achou);
   }
   emPan=false; arrastando=false; cv.classList.remove('girando');
 });
@@ -768,7 +928,10 @@ function desenhar(t, dt){
     if (SS[a]<0.15||SS[b]<0.15) continue;
     if (foraTela(SX[a],SY[a]) && foraTela(SX[b],SY[b])) continue;
     const prof=Math.min(1,(za+zb)/2*1.25);
-    ctx.strokeStyle='rgba(137,180,250,'+(0.05+prof*0.13).toFixed(3)+')';
+    let eDim = 1;
+    if (selNo>=0 && a!==selNo && b!==selNo && !selViz.has(a) && !selViz.has(b))
+      eDim = 0.10;
+    ctx.strokeStyle='rgba(137,180,250,'+(0.05+prof*0.13*eDim).toFixed(3)+')';
     ctx.beginPath();ctx.moveTo(SX[a],SY[a]);ctx.lineTo(SX[b],SY[b]);ctx.stroke();
   }
 
@@ -801,6 +964,11 @@ function desenhar(t, dt){
     const n=NOS[i];
     if (VIS && !VIS[i]){ EXCITA[i]*=0.955; continue; }
     EXCITA[i]*=0.955;
+    // ramificacao do no selecionado brilha por 16s apos o clique
+    if (RAMO_ATIVO.size && RAMO_ATIVO.has(i)
+        && performance.now()-RAMO_DESDE < 16000){
+      EXCITA[i] = Math.max(EXCITA[i], 0.5 + 0.28*Math.sin(t*0.005 + i));
+    }
     if (foraTela(SX[i],SY[i])) continue;
     const prof=Math.max(0,Math.min(1,(SZ[i]+900)/1800));
     let esc=SS[i]*(0.72+0.5*prof)*n.nasce;
@@ -822,9 +990,19 @@ function desenhar(t, dt){
       (1+EXCITA[i]*0.5);
     let cor=corDe(n.cl);
     if (excNova>0) cor=mistura(cor,'#FFD60A',Math.min(1,0.30+0.50*pulsoNova*excNova*NOVA_INT));
-    ctx.globalAlpha=Math.min(1,(0.30+0.62*prof));
+    let dim = 1;
+    if (selNo>=0 && i!==selNo && !selViz.has(i)) dim = 0.15;
+    ctx.globalAlpha=Math.min(1,(0.30+0.62*prof))*dim;
     const sp=sprite(cor), tam=r*6;
     ctx.drawImage(sp,SX[i]-tam/2,SY[i]-tam/2,tam,tam);
+    if (i===selNo){
+      ctx.globalAlpha=0.95;
+      ctx.strokeStyle=corDe(n.cl);
+      ctx.lineWidth=2.2*devicePixelRatio;
+      ctx.beginPath();
+      ctx.arc(SX[i],SY[i], tam*0.5+4*devicePixelRatio, 0, 6.283);
+      ctx.stroke();
+    }
     if (excNova>0.05 && pulsoNova>0.55 && NOVA_BRILHO>0){
       ctx.globalAlpha=Math.min(1,0.45*excNova*(pulsoNova-0.55)*NOVA_BRILHO);
       const brilho=sprite('#FFEA00'), tamB=tam*1.18;
@@ -985,6 +1163,7 @@ function atualizarVis(){
   if (FILTRO==='__novas') nomeFoco = 'sinapses novas';
   info.textContent = FILTRO ? base+' \u00B7 foco: '+nomeFoco : base;
   window.__infoBase = info.textContent;
+  if (selNo>=0 && (!VIS[selNo])) limparSelecao();
 }
 
 const DESCRICOES_FOCO = {
@@ -1066,6 +1245,7 @@ function construirMenuFoco(){
 function fecharPaineis(){
   painelAjustes.style.display='none';
   painelFoco.style.display='none';
+  painelInfo.style.display='none';
 }
 document.getElementById('btAjustes').addEventListener('click',()=>{
   const aberto = painelAjustes.style.display==='block';

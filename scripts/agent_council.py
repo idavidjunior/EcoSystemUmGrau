@@ -556,6 +556,66 @@ class AgentCouncil:
             'consensus_rate': round(consensus / total * 100, 1) if total > 0 else 0,
         }
 
+    def escolher_saliente(self, members: List[CouncilMember]) -> Tuple[Optional[CouncilMember], str]:
+        """Saliência multi-agente (padrão heardlabs/heard).
+
+        Entre vários agentes com perspectivas diferentes, escolhe O mais saliente
+        para narrar/responder e devolve um resumo dos demais. Prioridade:
+          1. voto contrário (bloqueio/oposição) — precisa ser ouvido primeiro
+          2. abstenção com preocupações (risco não resolvido)
+          3. qualquer preocupação (dúvida com impacto)
+          4. com sugestões/ações (proposta concreta)
+          5. demais (perspectiva informativa)
+
+        Retorna (membro_saliente, resumo_dos_demais).
+        """
+        if not members:
+            return None, ""
+
+        def peso(m: CouncilMember) -> int:
+            if m.vote == "rejeitar":
+                return 5
+            if m.vote == "abster-se" and m.concerns:
+                return 4
+            if m.concerns:
+                return 3
+            if m.suggestions or m.action_items:
+                return 2
+            return 1
+
+        ordenados = sorted(members, key=peso, reverse=True)
+        saliente = ordenados[0]
+        demais = ordenados[1:]
+
+        rotulo = {
+            5: "bloqueio/oposição",
+            4: "risco não resolvido",
+            3: "preocupação com impacto",
+            2: "proposta concreta",
+            1: "informativo",
+        }.get(peso(saliente), "informativo")
+
+        if not demais:
+            return saliente, rotulo
+        linhas = [f"[{m.role.value}] {m.perspective[:120]} (voto: {m.vote}, confiança: {m.confidence:.1f})" for m in demais if m.perspective]
+        return saliente, rotulo + " | outros: " + " || ".join(linhas[:3])
+
+    def narrar_saliencia(self, deliberation: Deliberation) -> str:
+        """Texto pronto para narração/voz da deliberação: o saliente em detalhe,
+        os demais em resumo de uma linha. Usado pelo narrador para não falar
+        todos os agentes igualmente (um fala, os outros resumem)."""
+        saliente, resumo = self.escolher_saliente(deliberation.members)
+        if saliente is None:
+            return ""
+        texto = f"{saliente.role.value.upper()}: {saliente.perspective}"
+        if saliente.concerns:
+            texto += f". Preocupações: {'; '.join(saliente.concerns[:2])}."
+        if saliente.suggestions:
+            texto += f" Sugestão: {saliente.suggestions[0]}."
+        if resumo:
+            texto += f" {resumo}"
+        return texto[:600]
+
 
 council = AgentCouncil()
 

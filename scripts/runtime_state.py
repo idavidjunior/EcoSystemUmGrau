@@ -231,6 +231,35 @@ def render_status(state):
     return '\n'.join(lines)
 
 
+def gerar_catch_up(state, max_notas=4):
+    """Catch me up (padrão heardlabs/heard): resume em poucas frases o que
+    aconteceu enquanto o usuário esteve fora — últimas notas do histórico,
+    tarefa pendente de destaque e pendências abertas.
+
+    Retorna texto curto e natural para saudação/briefing, ou '' se nada mudou.
+    """
+    if not state:
+        return ""
+    notas = [h.get('text', '').strip() for h in state.get('history', []) if h.get('text', '').strip()]
+    notas = notas[-max_notas:]
+    pend = [p for p in state.get('pending', []) if not p.get('done')]
+
+    partes = []
+    if notas:
+        partes.append("Enquanto você esteve fora: " + "; ".join(notas) + ".")
+    if pend:
+        primeiro = pend[0].get('text', '').strip()
+        restante = len(pend) - 1
+        if primeiro:
+            if restante > 0:
+                partes.append(f"{len(pend)} pendências em aberto, a primeira: {primeiro}.")
+            else:
+                partes.append(f"1 pendência em aberto: {primeiro}.")
+    elif not notas:
+        return ""
+    return " ".join(partes)[:600]
+
+
 def _import_frases_manager():
     """Importa frases_manager dinamicamente."""
     import sys
@@ -363,6 +392,7 @@ def main():
     p_note.add_argument('text', nargs='+')
     sub.add_parser('greeting')
     sub.add_parser('reset-greeting')
+    sub.add_parser('catchup')
 
     args = parser.parse_args()
     cmd = args.cmd or 'status'
@@ -400,6 +430,8 @@ def main():
             print('[INFO] sessão já saudada')
     elif cmd == 'reset-greeting':
         print(reset_session_greeting())
+    elif cmd == 'catchup':
+        print(gerar_catch_up(load_state()) or '(nada a reportar desde a última sessão)')
     elif cmd == 'reset':
         print(reset())
     return 0

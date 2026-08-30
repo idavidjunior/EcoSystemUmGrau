@@ -257,6 +257,18 @@ def mapa_datas():
     return m
 
 
+def mapa_caminhos():
+    """{slug da nota: caminho relativo ao ecossistema} do vault.
+    Usado para abrir a nota no editor a partir de um clique no grafo."""
+    m = {}
+    for f in VAULT.rglob("*.md"):
+        try:
+            m[f.stem] = f.relative_to(BASE).as_posix()
+        except Exception:
+            continue
+    return m
+
+
 def carregar_gerador():
     spec = importlib.util.spec_from_file_location(
         "gerador_grafo", str(SCRIPTS / "generate-graph-html.py")
@@ -330,6 +342,7 @@ def montar_payload(mod, pos_antigas=None):
         grau_por_id[a] = grau_por_id.get(a, 0) + 1
         grau_por_id[b] = grau_por_id.get(b, 0) + 1
     mtimes = mapa_datas()
+    paths = mapa_caminhos()
     pos, herdados = layout_3d(nos_brutos, arestas, pos_antigas)
     nos = []
     for n in nos_brutos:
@@ -347,6 +360,14 @@ def montar_payload(mod, pos_antigas=None):
         }
         if nascido:
             no["tm"] = round(float(nascido), 1)
+        # Campos extras para o painel de detalhes do frontend
+        if n.get("title"):
+            no["_summary"] = str(n.get("title"))
+        if n.get("tags"):
+            tg = n.get("tags")
+            no["_tags"] = tg if isinstance(tg, list) else [tg]
+        no["_filePath"] = paths.get(nid, "")
+        no["_kind"] = "nota"
         nos.append(no)
     global ULTIMA_POS
     ULTIMA_POS = pos

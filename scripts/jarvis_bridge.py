@@ -1125,6 +1125,17 @@ class Cliente:
                 logger.info(f"memoria semantica: {len(_rs)} hits para '{msg[:40]}'")
         except Exception as _e:
             logger.debug(f"memoria semantica indisponivel: {_e}")
+        # Digest de contexto (padrão isair/jarvis): modelos pequenos degradam
+        # quando o prompt cresce. Condensa a memória injetada antes do sufixo.
+        # LLM_DIGEST_ENABLED=1 força; "auto" (padrão) liga para modelos ≤7B.
+        try:
+            from runtime_context import digest_contexto, _modelo_pequeno
+            habilitar = os.environ.get("LLM_DIGEST_ENABLED", "auto").lower()
+            if habilitar == "1" or (habilitar == "auto" and _modelo_pequeno()):
+                _teto = int(os.environ.get("LLM_DIGEST_MAX_CHARS", "4000"))
+                ctx_mem = digest_contexto(ctx_mem, max_chars=_teto)
+        except Exception:
+            pass
         sufixo = f"Usuario: {msg}\nJarvis:"
         livre = MAX_PROMPT - len(SISTEMA) - len(estado) - len(ctx_mem) - 4 - len(sufixo)
         p = SISTEMA + "\n\n" + estado + "\n\n" + ctx_mem

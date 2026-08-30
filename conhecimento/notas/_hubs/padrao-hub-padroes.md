@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**283 notas** conectadas a este hub.
+**284 notas** conectadas a este hub.
 
 
 ## Notas
@@ -18,6 +18,7 @@
 - [[android-gesture-patterns]]
 - [[android-keyboard-dismissal]]
 - [[android-view-hierarchy-scanning]]
+- [[análise-de-jarvis-opensource-aprendizados-aplicáveis]]
 - [[apis-autenticação-e-autorização-sessions-jwt-oauth2-api-keys]]
 - [[apis-http-na-prática-métodos-status-cabeçalhos-cache]]
 - [[apis-rest-recursos-coleções-versionamento-e-hipermidia]]

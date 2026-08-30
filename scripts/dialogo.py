@@ -81,6 +81,114 @@ SLEEP_FRASES = re.compile(
 # Flag global de parada (mesmo arquivo do widget/servicos)
 STOP_FLAG = SCRIPTS.parent / "runtime" / "parar_fala.flag"
 
+# --- Detecção de eco do TTS (padrão isair/jarvis) -------------------------
+# Guarda a última fala do Jarvis (texto exibido). Se o microfone capturar a
+# própria fala vazando dos alto-falantes ao retomar a escuta, a transcrição
+# casa com esta referência e é descartada como eco (não vira novo comando).
+_ULTIMA_FALA_JARVIS = [""]
+_ECO_SIMILARIDADE = float(os.environ.get("VOX_ECO_SIMILARIDADE", "0.8"))
+_ULTIMO_FALADO_TS = [0.0]
+_ECO_JANELA_S = float(os.environ.get("VOX_ECO_JANELA_S", "8.0"))
+
+
+def _normalizar_eco(texto):
+    """Normaliza texto p/ comparação de eco: minúsculas, sem pontuação, sem espaços repetidos."""
+    t = re.sub(r"[^\w\sáéíóúâêôãõçàü]", " ", texto, flags=re.UNICODE)
+    return re.sub(r"\s+", " ", t).strip().lower()
+
+
+def _registrar_fala_jarvis(texto):
+    """Registra a fala do Jarvis como referência anti-eco."""
+    if not texto:
+        return
+    norm = _normalizar_eco(texto)
+    if norm:
+        _ULTIMA_FALA_JARVIS[0] = norm
+        _ULTIMO_FALADO_TS[0] = time.time()
+
+
+def _parece_eco(texto):
+    """True se a transcrição ouvida é (quase) a fala que o Jarvis acabou de emitir."""
+    if not texto:
+        return False
+    norm = _normalizar_eco(texto)
+    if not norm or not _ULTIMA_FALA_JARVIS[0]:
+        return False
+    if time.time() - _ULTIMO_FALADO_TS[0] > _ECO_JANELA_S:
+        return False
+    try:
+        from difflib import SequenceMatcher
+        ratio = SequenceMatcher(None, norm, _ULTIMA_FALA_JARVIS[0]).ratio()
+    except Exception:
+        return False
+    return ratio >= _ECO_SIMILARIDADE
+
+
+# --- Juiz de intenção (padrão isair/jarvis) -------------------------------
+# Um juiz (LLM pequeno opcional, fallback determinístico sempre ativo) decide
+# o que o usuário quis dizer: comando, pergunta, saudação, interrupção ou eco.
+# Interrupções ("para", "chega") não viram pergunta; saudações recebem resposta
+# curta; o resto segue para o responder normal.
+_INTENT_LLM_ENABLED = os.environ.get("VOX_INTENT_LLM", "0") == "1"
+_INTERRUPCAO = re.compile(
+    r"^(?:para|pare|pára|chega|cala a boca|cala-se|cala\s+boca|já chega|sil[eê]ncio|basta|deixa pra l[áa]|deixa para l[áa])\b",
+    re.IGNORECASE,
+)
+_SAUDACAO = re.compile(
+    r"^(?:oi|ola|olá|e a[ií]|eai|bom dia|boa tarde|boa noite|hey|ei|opa|fala a[ií]|falai|bom dia jarvis)\b",
+    re.IGNORECASE,
+)
+
+
+def _juiz_intencao(texto):
+    """Classifica a intenção da fala ouvida. Retorna {"intencao", "query"}.
+
+    intencao: comando|pergunta|saudacao|interrupcao|eco|vazio|conversa
+    query: texto limpo (sem "jarvis", sem saudações) p/ processamento.
+    """
+    if not texto or not texto.strip():
+        return {"intencao": "vazio", "query": ""}
+    t = texto.strip()
+    tl = t.lower().strip()
+
+    # 1) Juiz via LLM pequeno (opcional; não bloqueia se indisponível)
+    if _INTENT_LLM_ENABLED:
+        try:
+            from llm_caller import call_llm_json
+            r = call_llm_json(
+                prompt=(
+                    "Classifique a intenção desta fala ouvida por um assistente de voz.\n"
+                    f"Fala: \"{t}\"\n"
+                    "Responda JSON: "
+                    '{"intencao": "comando|pergunta|saudacao|interrupcao|eco|conversa", '
+                    '"query": "texto limpo sem a palavra jarvis e sem saudações"}'
+                ),
+                system="Assistente de voz. Responda APENAS JSON.",
+                max_tokens=80,
+                temperature=0.0,
+                timeout=6,
+            )
+            if isinstance(r, dict) and "intencao" in r:
+                q = (r.get("query") or t).strip()
+                return {"intencao": r["intencao"], "query": q}
+        except Exception:
+            pass
+
+    # 2) Fallback determinístico (nunca falha, custo zero)
+    if _INTERRUPCAO.match(tl):
+        return {"intencao": "interrupcao", "query": ""}
+    if _parece_eco(t):
+        return {"intencao": "eco", "query": ""}
+    if _SAUDACAO.match(tl) and len(t.split()) <= 6:
+        return {"intencao": "saudacao", "query": _separar_jarvis(t)}
+    if re.match(
+        r"^(abra|abre|execute|executa|rode|roda|inicie|inicia|ligue|liga|desligue|desliga|"
+        r"toque|toca|envie|envia|busque|busca|procure|procura)\b",
+        tl,
+    ):
+        return {"intencao": "comando", "query": t}
+    return {"intencao": "pergunta", "query": _separar_jarvis(t)}
+
 
 def _ctrl_pressionado():
     try:
@@ -487,6 +595,11 @@ def transcrever(audio):
             print(f"[google falhou: {e}]")
     if not texto:
         return ""
+    # Anti-eco: se o microfone capturou a própria fala do Jarvis (vazando dos
+    # alto-falantes ao retomar a escuta), descarta como eco — não vira comando.
+    if _parece_eco(texto):
+        print(f"{VOZ_COLOR}[eco do jarvis detectado, ignorado]{RESET} '{texto[:40]}'", flush=True)
+        return ""
     print(f"{VOZ_COLOR}[voce ({fonte})]{RESET} {texto}", flush=True)
     return texto
 
@@ -627,6 +740,7 @@ async def responder(cliente, texto, interrompivel=True):
     if not r:
         r = "Não consegui gerar uma resposta."
     r_tela = normalizar_hora_display(r)
+    _registrar_fala_jarvis(r_tela)
     print(f"{FALAR_COLOR}[jarvis]{RESET} {r_tela}", flush=True)
     # Pausa total: responde apenas em texto (sem gerar nem tocar áudio)
     if _pausa_total_ativa():
@@ -677,6 +791,14 @@ async def loop_vad(cliente):
         if not texto:
             continue
         _retrato_estado(voce=texto)
+        # Juiz de intenção: interrupção não vira pergunta
+        intencao = _juiz_intencao(texto).get("intencao")
+        if intencao == "interrupcao":
+            print(f"{FALAR_COLOR}[jarvis]{RESET} Entendido, parando.", flush=True)
+            falar_com_bargein(await gerar_audio("Entendido, parando."))
+            continue
+        if intencao == "eco":
+            continue
         # pausa o mic enquanto o Jarvis responde (evita eco)
         try:
             manager.marcar_paused_tts()
@@ -813,6 +935,14 @@ async def saudar_inicio(cliente):
         extra = briefing_espontaneo()
     except Exception:
         extra = ""
+    # Catch me up: o que aconteceu enquanto o usuário esteve fora (heardlabs/heard)
+    try:
+        from runtime_state import gerar_catch_up, load_state
+        catch = gerar_catch_up(load_state())
+        if catch:
+            extra = (extra + " " + catch).strip()
+    except Exception:
+        pass
     saudacao = ""
     try:
         saudacao = await cliente.saudar(extra, status)
@@ -836,6 +966,7 @@ async def saudar_inicio(cliente):
         ]
         saudacao = f"{random.choice(abridores)}! {extra}{status}{random.choice(fechos)}"
     saudacao_tela = normalizar_hora_display(saudacao)
+    _registrar_fala_jarvis(saudacao_tela)
     print(f"{FALAR_COLOR}[jarvis]{RESET} {saudacao_tela}", flush=True)
     if _pausa_total_ativa():
         _retrato_estado("ouvindo", erro="")

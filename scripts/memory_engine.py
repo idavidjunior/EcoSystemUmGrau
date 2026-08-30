@@ -24,6 +24,37 @@ HALF_LIFE = {
     'preferencia': 365 # preferences last 1 year
 }
 
+# Redação automática de dados sensíveis antes de persistir (padrão isair/jarvis).
+# Emails, chaves de API, tokens, senhas em pares, JWT, cartões e CPF/CNPJ são
+# substituídos por marcadores — reforça LGPD/GDPR (cláusula de deveres externos):
+# a memória em disco nunca guarda segredo em claro.
+REDACT_ENABLED = os.environ.get('MEMORY_REDACT', '1') == '1'
+_REDACT_PATTERNS = [
+    (re.compile(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'), '[email]'),
+    (re.compile(r'\b(?:sk|pk|ghp|gho|ghu|ghs|xox[baprs]|AKIA|AIza|sk-ant|sk-[A-Za-z0-9])\S*\b', re.IGNORECASE), '[chave]'),
+    (re.compile(r'eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}'), '[jwt]'),
+    (re.compile(r'(?i)\b(password|passwd|senha|secret|token|api[-_]?key)\b\s*[=:]\s*["\']?[^\s,;"\']+'), r'\1=[redigido]'),
+    (re.compile(r'\b(?:\d[ -]*?){13,16}\b'), '[cartao]'),
+    (re.compile(r'\b\d{3}\.\d{3}\.\d{3}-\d{2}\b'), '[cpf]'),
+    (re.compile(r'\b\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}\b'), '[cnpj]'),
+]
+
+
+def redigir_sensivel(texto):
+    """Substitui segredos/identificadores pessoais em `texto` por marcadores.
+
+    Nunca lança: se algo falhar, devolve o texto original (seguro não perder
+    a memória por causa do redator). Desativável via env MEMORY_REDACT=0.
+    """
+    if not texto or not REDACT_ENABLED:
+        return texto
+    try:
+        for padrao, marcador in _REDACT_PATTERNS:
+            texto = padrao.sub(marcador, texto)
+        return texto
+    except Exception:
+        return texto
+
 def _ensure_dirs():
     for d in [MEM_DIR, SESSIONS_DIR]:
         os.makedirs(d, exist_ok=True)
@@ -117,6 +148,9 @@ def add_memory(task, summary, kind='episodio', project='', tags=None,
     memories = _load_memories()
     now = datetime.now()
     tags = tags or []
+    # Redação de dados sensíveis antes de persistir (LGPD; nunca gravar segredo)
+    task = redigir_sensivel(task)
+    summary = redigir_sensivel(summary)
     # Tag automática de confiança
     if confidence < 0.7:
         tags.append('baixa-confianca')

@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**234 notas** do cluster ecossistema.
+**236 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -68,6 +68,7 @@
 - [[2026-08-17-organograma-agrupado-por-livro-técnicas-de-valida]]
 - [[aegis-barra-progresso-tempo-real]]
 - [[aegis-registrado-como-projeto-irmao-rust]]
+- [[análise-de-jarvis-opensource-aprendizados-aplicáveis]]
 - [[aprendizado-2026-07-31-horas-faladas-corretamente-no-tts-do-]]
 - [[aprendizado-2026-07-31-pontuação-automática-de-transcrições-]]
 - [[aprendizado-2026-07-31-reorg-catálogo-único-habilidades-cami]]
@@ -88,6 +89,7 @@
 - [[bug-parametro-pid-e-variavel-automatica-do-powershell]]
 - [[build-local-flutter-orquestrador]]
 - [[cadeia-de-provedores-com-failover-inteligente]]
+- [[cerebro-vivo-nos-clicaveis-navegaveis]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]
 - [[ci-de-android-em-máquina-fraca-keystore-estável]]

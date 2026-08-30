@@ -57,6 +57,35 @@ def _clean(s):
     return (s or '').replace(_BOM, '')
 
 
+# --- Digest passes para modelos pequenos (padrão isair/jarvis) -------------
+# Modelos pequenos (≤7B) degradam quando o prompt cresce. O digest condensa o
+# contexto de memória/ferramentas antes de injetar: cabeçalho + corpo enxuto +
+# fecho, sem descartar o começo (quase sempre o mais relevante). Nunca lança.
+def _modelo_pequeno(modelo=None):
+    if not modelo:
+        modelo = os.environ.get('LLM_CHAT_MODEL', '')
+    nome = (modelo or '').lower()
+    return any(x in nome for x in ('0.8b', '1b', '1.5b', '2b', '3b', '4b', '7b')) or nome in ('', 'auto')
+
+
+def digest_contexto(texto, max_chars=4000):
+    """Condensa texto de contexto para caber em modelos pequenos.
+
+    Se o texto já cabe no teto, devolve intacto. Caso contrário, mantém o
+    início (cabeçalho/contexto imediato), reduz o miolo a linhas essenciais
+    e preserva o fecho. Retorna string nunca vazia se a entrada não era vazia.
+    """
+    if not texto:
+        return ""
+    if max_chars <= 0:
+        return texto
+    if len(texto) <= max_chars:
+        return texto
+    inicio = texto[: max_chars // 2]
+    fim = texto[-max(200, max_chars // 4):]
+    return inicio.rstrip() + f"\n...[contexto condensado: {len(texto) - (max_chars // 2 + max(200, max_chars // 4))} chars suprimidos]...\n" + fim.lstrip()
+
+
 def _tokenizar(texto):
     return [t for t in re.findall(r'[a-zA-Z0-9]{3,}', (texto or '').lower())
             if t not in _STOP]
