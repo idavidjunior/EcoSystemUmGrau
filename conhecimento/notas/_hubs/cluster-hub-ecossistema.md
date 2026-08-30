@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**236 notas** do cluster ecossistema.
+**237 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -165,6 +165,7 @@
 - [[mcp-server-handshake-obrigatorio]]
 - [[mcp-server-nao-respondia-a-toolscall]]
 - [[mcp-server-nao-respondia-nenhum-comando]]
+- [[melhorias-inspiradas-nos-jarvis-opensource-implementadas]]
 - [[modo-auto-gate]]
 - [[motor-de-criticalidade-auto-organizada-e-avalanches-neurais]]
 - [[mudar-config-mcp-de-objeto-para-array-no-opencodejson]]

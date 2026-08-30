@@ -1,12 +1,12 @@
 ---
-tags: [assimilada, autossuficiênci, garantir, internalizada, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao]
+tags: [autossuficiênci, garantir, internalizada, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao]
 aliases: [CLI-Anything Internalizado como Habilidade Soberana]
 date: 2026-08-22
 ---
 
 # CLI-Anything Internalizado como Habilidade Soberana
 
-**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao

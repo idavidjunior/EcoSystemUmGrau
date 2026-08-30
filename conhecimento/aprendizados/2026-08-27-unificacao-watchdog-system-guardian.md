@@ -151,6 +151,7 @@ PROATIVA de RAM (alerta antes do limite) e a portabilidade da certificacao foren
 - [[ler-specs-sdd-hook]]
 - [[limpeza-disco-windows]]
 - [[loop-infinito-de-push-no-vigilante-emails-do-github-a-cada-m]]
+- [[melhorias-inspiradas-nos-jarvis-opensource-implementadas]]
 - [[modo-auto-gate]]
 - [[motor-de-criticalidade-auto-organizada-e-avalanches-neurais]]
 - [[mvp-streamumgrau-flutter-supabase]]

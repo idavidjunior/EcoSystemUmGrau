@@ -171,6 +171,7 @@ inexistente e auto-PID sem excecao.
 - [[ler-specs-sdd-hook]]
 - [[limpeza-disco-windows]]
 - [[loop-infinito-de-push-no-vigilante-emails-do-github-a-cada-m]]
+- [[melhorias-inspiradas-nos-jarvis-opensource-implementadas]]
 - [[modo-auto-gate]]
 - [[motor-de-criticalidade-auto-organizada-e-avalanches-neurais]]
 - [[mvp-streamumgrau-flutter-supabase]]
