@@ -752,6 +752,18 @@ function sementesDe(tipo){
   sc.sort((x,y)=>y[0]-x[0]);
   return JSEEDS[tipo]=sc.slice(0,BVC.sementeMax).map(p=>p[1]);
 }
+let SET_FALA = null;   // cache: indices de TODOS os nos de fala (para o Foco)
+function indicesDeFala(){
+  if (SET_FALA) return SET_FALA;
+  const kw = JREG.fala || [];
+  const s = new Set();
+  for (let i=0;i<NOS.length;i++){
+    const t = (NOS[i].l || '').toLowerCase();
+    if (kw.some(w => t.indexOf(w) >= 0)) s.add(i);
+  }
+  SET_FALA = s;
+  return s;
+}
 function recalcularJarvis(){
   JSEEDS={};
   if (!NOS.length){ JALVO=null; return; }
