@@ -970,9 +970,40 @@ function projetar(t){
   ORDEM.sort((a,b)=>SZ[b]-SZ[a]);
 }
 
+function desenharZonaFala(){
+  // região cortical de fala: halo rosa ao redor dos neurônios de fala
+  const pts = [];
+  for (let i=0;i<NOS.length;i++){
+    if (VIS && !VIS[i]) continue;
+    if (!NOS[i]._fala) continue;
+    if (SS[i]<0.15) continue;
+    pts.push([SX[i],SY[i]]);
+  }
+  if (pts.length < 3) return;
+  let cx=0, cy=0;
+  for (const p of pts){ cx+=p[0]; cy+=p[1]; }
+  cx/=pts.length; cy/=pts.length;
+  let raio=0;
+  for (const p of pts){ const d=Math.hypot(p[0]-cx,p[1]-cy); if (d>raio) raio=d; }
+  raio = raio + 20*devicePixelRatio;
+  const grad = ctx.createRadialGradient(cx,cy,raio*0.15, cx,cy,raio);
+  grad.addColorStop(0,'rgba(243,139,168,0.18)');
+  grad.addColorStop(1,'rgba(243,139,168,0)');
+  ctx.fillStyle=grad;
+  ctx.beginPath(); ctx.arc(cx,cy,raio,0,6.283); ctx.fill();
+  ctx.globalAlpha=0.32;
+  ctx.strokeStyle='#f38ba8';
+  ctx.lineWidth=1.4*devicePixelRatio;
+  ctx.setLineDash([5*devicePixelRatio,4*devicePixelRatio]);
+  ctx.beginPath(); ctx.arc(cx,cy,raio,0,6.283); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.globalAlpha=1;
+}
+
 function desenhar(t, dt){
   ctx.fillStyle='#0b0e14';
   ctx.fillRect(0,0,W,H);
+  desenharZonaFala();
 
   // arestas
   ctx.lineWidth = 1;
@@ -987,7 +1018,14 @@ function desenhar(t, dt){
     let eDim = 1;
     if (selNo>=0 && a!==selNo && b!==selNo && !selViz.has(a) && !selViz.has(b))
       eDim = 0.10;
-    ctx.strokeStyle='rgba(137,180,250,'+(0.05+prof*0.13*eDim).toFixed(3)+')';
+    const eFala = NOS[a]._fala && NOS[b]._fala;
+    if (eFala){
+      ctx.strokeStyle='rgba(243,139,168,'+(0.22+prof*0.34*eDim).toFixed(3)+')';
+      ctx.lineWidth=1.6;
+    } else {
+      ctx.strokeStyle='rgba(137,180,250,'+(0.05+prof*0.13*eDim).toFixed(3)+')';
+      ctx.lineWidth=1;
+    }
     ctx.beginPath();ctx.moveTo(SX[a],SY[a]);ctx.lineTo(SX[b],SY[b]);ctx.stroke();
   }
 
@@ -1015,6 +1053,7 @@ function desenhar(t, dt){
   }
 
   // nos (pintor: fundo primeiro)
+  const falaSet = indicesDeFala();
   hoverId=-1; let melhorD=1e9;
   for (const i of ORDEM){
     const n=NOS[i];
@@ -1051,6 +1090,24 @@ function desenhar(t, dt){
     ctx.globalAlpha=Math.min(1,(0.30+0.62*prof))*dim;
     const sp=sprite(cor), tam=r*6;
     ctx.drawImage(sp,SX[i]-tam/2,SY[i]-tam/2,tam,tam);
+    if (n._fala){
+      ctx.globalAlpha=0.55;
+      ctx.strokeStyle='#f38ba8';
+      ctx.lineWidth=1.2*devicePixelRatio;
+      ctx.beginPath();
+      ctx.arc(SX[i],SY[i], tam*0.5+2*devicePixelRatio, 0, 6.283);
+      ctx.stroke();
+      ctx.globalAlpha=1;
+    }
+    if (falaSet.has(i) && i!==selNo){
+      ctx.globalAlpha=Math.min(0.7, (0.35+0.25*Math.sin(t*0.004+i))*prof);
+      ctx.strokeStyle='#f38ba8';
+      ctx.lineWidth=1.3*devicePixelRatio;
+      ctx.beginPath();
+      ctx.arc(SX[i],SY[i], tam*0.5+3*devicePixelRatio, 0, 6.283);
+      ctx.stroke();
+      ctx.globalAlpha=1;
+    }
     if (i===selNo){
       ctx.globalAlpha=0.95;
       ctx.strokeStyle=corDe(n.cl);
@@ -1202,6 +1259,17 @@ function atualizarVis(){
   const agoraV = performance.now();
   const agoraS = Date.now()/1000;
   const SINAPSE_H = 12;
+  // rede de fala: neuronios de fala + vizinhos diretos (liga as ilhas)
+  let redeFala = null;
+  if (FILTRO==='__fala'){
+    const idIdx = new Map(); NOS.forEach((n,i)=>idIdx.set(n.id,i));
+    redeFala = new Set(indicesDeFala());
+    for (const [a,b] of ARESTAS){
+      const ia=idIdx.get(a), ib=idIdx.get(b);
+      if (ia!=null && redeFala.has(ia) && ib!=null) redeFala.add(ib);
+      if (ib!=null && redeFala.has(ib) && ia!=null) redeFala.add(ia);
+    }
+  }
   for (let i=0;i<NOS.length;i++){
     let vis = !FILTRO || NOS[i].cl===FILTRO;
     if (!vis && FILTRO==='__ativos')
@@ -1209,7 +1277,7 @@ function atualizarVis(){
     if (!vis && FILTRO==='__novas')
       vis = NOS[i].tm && (agoraS - NOS[i].tm)/3600 >= 0 && (agoraS - NOS[i].tm)/3600 < SINAPSE_H;
     if (!vis && FILTRO==='__fala')
-      vis = indicesDeFala().has(i);
+      vis = redeFala.has(i);
     VIS[i]=vis?1:0;
   }
   for (const [a,b] of ARESTAS) if (VIS[a]&&VIS[b]) ARVIS.push([a,b]);
@@ -1229,7 +1297,7 @@ const DESCRICOES_FOCO = {
   __tudo:'Exibe todos os n\u00F3s do grafo, sem filtro.',
   __ativos:'Destaca as notas realmente usadas pelo Eco nos \u00FAltimos 10 minutos.',
   __novas:'Destaca os n\u00F3s nascidos nas \u00FAltimas horas (janela configur\u00E1vel em Ajustes).',
-  __fala:'Neur\u00F4nios da fala: as \u00E1reas que se acendem quando o Eco fala (voz, TTS, \u00E1udio, compreens\u00E3o).',
+  __fala:'Rede de fala: os neur\u00F4nios de fala (voz, TTS, \u00E1udio, compreens\u00E3o) e os vizinhos conectados, para ver a regi\u00E3o de fala como uma \u00E1rea coesa.',
   padroes:'Padr\u00F5es e t\u00E9cnicas de engenharia reutiliz\u00E1veis.',
   decisoes:'Decis\u00F5es de arquitetura registradas (ADRs).',
   bugs:'Bugs e corre\u00E7\u00F5es j\u00E1 aplicadas.',

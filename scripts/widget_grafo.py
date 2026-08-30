@@ -60,6 +60,29 @@ MEMORIES_API = "http://localhost:8766"
 # Fonte de dados: "vault" (notas), "memories" (memórias reais), "combined"
 DATA_SOURCE = os.environ.get("CEREBRO_DATA_SOURCE", "combined")
 
+# ---------- região de fala (metáfora neurológica) ----------
+FALA_KW = ['voz', 'tts', 'audio', 'dialogo', 'fala', 'speech', 'microfone']
+
+
+def eh_fala(label):
+    """True se o rótulo do nó indica área de fala (voz/tts/áudio/diálogo)."""
+    t = (label or '').lower()
+    return any(w in t for w in FALA_KW)
+
+
+def interligar_fala(nos, ar):
+    """Adiciona arestas ligando os neurônios de fala a um hub central.
+    Os nós de fala passam a formar uma região interligada (estrela radial)."""
+    fala = [n for n in nos if n.get('_fala')]
+    if len(fala) < 2:
+        return [list(a) for a in ar]
+    hub = max(fala, key=lambda n: n.get('g', 0))
+    ar_set = set(tuple(sorted(a)) for a in ar)
+    for n in fala:
+        if n['id'] != hub['id']:
+            ar_set.add(tuple(sorted([n['id'], hub['id']])))
+    return [list(a) for a in ar_set]
+
 
 def fetch_memories_api(limit=300, kind=None, max_days=None):
     """Busca memórias reais do jarvis_bridge.py /api/memories."""
@@ -167,6 +190,7 @@ def memories_to_widget(nodes, links, pos_antigas=None):
         no["_summary"] = n.get("summary", "")
         no["_tags"] = n.get("tags", [])
         no["_project"] = n.get("project", "")
+        no["_fala"] = eh_fala(n.get("title") or n.get("summary") or "")
         nos.append(no)
     
     # Recalcula graus baseados nas arestas
@@ -177,7 +201,8 @@ def memories_to_widget(nodes, links, pos_antigas=None):
     for no in nos:
         no["g"] = grau.get(no["id"], 1)
     
-    return {"nos": nos, "ar": [[a, b] for a, b in widget_links]}
+    widget_links = interligar_fala(nos, widget_links)
+    return {"nos": nos, "ar": widget_links}
 
 
 def montar_payload_combined(mod, pos_antigas=None):
@@ -203,6 +228,7 @@ def montar_payload_combined(mod, pos_antigas=None):
                 existing["_summary"] = n.get("_summary", existing.get("_summary"))
                 existing["_tags"] = n.get("_tags", existing.get("_tags"))
                 existing["_project"] = n.get("_project", existing.get("_project"))
+                existing["_fala"] = n.get("_fala", existing.get("_fala", False))
                 # Atualiza atv com decayScore
                 existing["a"] = max(existing["a"], n["a"])
             else:
@@ -331,6 +357,16 @@ def layout_3d(nos, arestas, pos_antigas=None, iteracoes=None):
     alvo = 150.0
     esc = alvo / max(np.median(raio), 1e-6)
     pos *= min(esc, 6.0)
+
+    # agrupa a região de fala: comprime os neurônios de fala ao seu centroide,
+    # formando um aglomerado cortical coeso (mantendo a estrutura interna).
+    fala_i = [i for i in range(n) if eh_fala(nos[i].get('label'))]
+    if len(fala_i) >= 3:
+        cf = pos[fala_i].mean(axis=0)
+        comp = 0.30
+        for i in fala_i:
+            pos[i] = cf + (pos[i] - cf) * comp
+
     return {nid: [round(float(v), 2) for v in pos[idx[nid]]] for nid in ids}, herdados
 
 
@@ -368,10 +404,12 @@ def montar_payload(mod, pos_antigas=None):
             no["_tags"] = tg if isinstance(tg, list) else [tg]
         no["_filePath"] = paths.get(nid, "")
         no["_kind"] = "nota"
+        no["_fala"] = eh_fala(n.get("label") or nid)
         nos.append(no)
     global ULTIMA_POS
     ULTIMA_POS = pos
-    return {"nos": nos, "ar": [[a, b] for a, b in arestas]}, herdados
+    arestas_final = interligar_fala(nos, arestas)
+    return {"nos": nos, "ar": arestas_final}, herdados
 
 
 def mapa_mtimes():
