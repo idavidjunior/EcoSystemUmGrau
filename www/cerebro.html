@@ -334,7 +334,10 @@ window.cerebroCarregar = function(dados){
   ECO_FALANDO = false;
   const hubs = [...NOS].sort((p,q)=>q.g-p.g).slice(0,16).map(n=>n.id);
   window.__hubs = new Set(hubs);
-  if (FILTRO && !NOS.some(n=>n.cl===FILTRO)) FILTRO=null;
+  SET_FALA = null;
+  for (const k in AREA_FALA_CACHE) delete AREA_FALA_CACHE[k];
+  FALA_AREA_IDX = 0; FALA_AREA_ULT = 0;
+  if (FILTRO && !FILTRO.startsWith('__') && !NOS.some(n=>n.cl===FILTRO)) FILTRO=null;
   atualizarVis();
   construirMenuFoco();
 };
@@ -764,6 +767,47 @@ function indicesDeFala(){
   SET_FALA = s;
   return s;
 }
+
+// ---------- áreas de fala (metáfora neurológica) ----------
+// Assim como o cérebro ativa regiões em sequência ao falar (conceitualização,
+// formulação/Broca, fonologia, articulação/motor, compreensão/Wernicke), o
+// grafo agrupa neurônios em áreas e os acende em cascata quando o Eco fala.
+const AREAS_FALA = [
+  {n:'conceito',  kw:['planeja','conceito','ideia','missao','intenc','objetivo','estrat','pensar'], cor:'#cba6f7'},
+  {n:'formula',   kw:['gramatica','sintaxe','estrutur','padrao','codigo','lingu','frase','regra'], cor:'#89b4fa'},
+  {n:'fonema',    kw:['fono','siliba','palavra','som','signific','semant','lexic'], cor:'#a6e3a1'},
+  {n:'motor',     kw:['voz','tts','audio','fala','speech','microfone','articul','falado'], cor:'#f38ba8'},
+  {n:'compreende',kw:['compreens','entend','leitura','contexto','interpret','leia','entende'], cor:'#fab387'}
+];
+const AREA_FALA_CACHE = {};
+function indicesDeArea(area){
+  if (AREA_FALA_CACHE[area.n]) return AREA_FALA_CACHE[area.n];
+  const s = new Set();
+  for (let i=0;i<NOS.length;i++){
+    const t = (NOS[i].l || '').toLowerCase();
+    if (area.kw.some(w => t.indexOf(w) >= 0)) s.add(i);
+  }
+  AREA_FALA_CACHE[area.n] = s;
+  return s;
+}
+let FALA_AREA_IDX = 0, FALA_AREA_ULT = 0;
+function dispararAreasFala(t){
+  if (!ECO_FALANDO || t - FALA_AREA_ULT < 720) return;
+  FALA_AREA_ULT = t;
+  // percorre as áreas em sequencia (conceito -> formula -> fonema -> motor)
+  const area = AREAS_FALA[FALA_AREA_IDX % AREAS_FALA.length];
+  FALA_AREA_IDX++;
+  const nos = [...indicesDeArea(area)];
+  if (!nos.length) return;
+  const n = Math.min(5, nos.length);
+  const escolhidos = new Set();
+  for (let k=0;k<n;k++){
+    const i = nos[(Math.random()*nos.length)|0];
+    if (escolhidos.has(i)) continue;
+    escolhidos.add(i);
+    disparoNeural(i, 0.95, area.cor, 0);
+  }
+}
 function recalcularJarvis(){
   JSEEDS={};
   if (!NOS.length){ JALVO=null; return; }
@@ -1141,7 +1185,7 @@ function laco(t){
   if (FILTRO==='__ativos' && t-(laco._visAt||0)>5000){
     laco._visAt=t; atualizarVis();
   }
-  if (NOS.length){ jarvisTelemetria(t,dt); dispararPulsos(t); projetar(t); desenhar(t,dt); }
+  if (NOS.length){ jarvisTelemetria(t,dt); dispararPulsos(t); dispararAreasFala(t); projetar(t); desenhar(t,dt); }
   requestAnimationFrame(laco);
 }
 requestAnimationFrame(laco);
@@ -1164,6 +1208,8 @@ function atualizarVis(){
       vis = agoraV-(ATIVOS.get(i)||-1e15)<JANELA_USO;
     if (!vis && FILTRO==='__novas')
       vis = NOS[i].tm && (agoraS - NOS[i].tm)/3600 >= 0 && (agoraS - NOS[i].tm)/3600 < SINAPSE_H;
+    if (!vis && FILTRO==='__fala')
+      vis = indicesDeFala().has(i);
     VIS[i]=vis?1:0;
   }
   for (const [a,b] of ARESTAS) if (VIS[a]&&VIS[b]) ARVIS.push([a,b]);
@@ -1173,6 +1219,7 @@ function atualizarVis(){
   let nomeFoco = rotulo(FILTRO);
   if (FILTRO==='__ativos') nomeFoco = 'uso do Eco';
   if (FILTRO==='__novas') nomeFoco = 'sinapses novas';
+  if (FILTRO==='__fala') nomeFoco = 'fala';
   info.textContent = FILTRO ? base+' \u00B7 foco: '+nomeFoco : base;
   window.__infoBase = info.textContent;
   if (selNo>=0 && (!VIS[selNo])) limparSelecao();
@@ -1182,6 +1229,7 @@ const DESCRICOES_FOCO = {
   __tudo:'Exibe todos os n\u00F3s do grafo, sem filtro.',
   __ativos:'Destaca as notas realmente usadas pelo Eco nos \u00FAltimos 10 minutos.',
   __novas:'Destaca os n\u00F3s nascidos nas \u00FAltimas horas (janela configur\u00E1vel em Ajustes).',
+  __fala:'Neur\u00F4nios da fala: as \u00E1reas que se acendem quando o Eco fala (voz, TTS, \u00E1udio, compreens\u00E3o).',
   padroes:'Padr\u00F5es e t\u00E9cnicas de engenharia reutiliz\u00E1veis.',
   decisoes:'Decis\u00F5es de arquitetura registradas (ADRs).',
   bugs:'Bugs e corre\u00E7\u00F5es j\u00E1 aplicadas.',
@@ -1240,6 +1288,19 @@ function construirMenuFoco(){
     atualizarVis(); construirMenuFoco();
   };
   lista.appendChild(btNovas);
+  // foco especial: neurônios da fala (áreas ativadas quando o Eco fala)
+  const nFala = indicesDeFala().size;
+  const btFala=document.createElement('button');
+  btFala.className='foco-btn'+(FILTRO==='__fala'?' on':'');
+  btFala.title=DESCRICOES_FOCO.__fala;
+  btFala.innerHTML='<span style="display:inline-block;width:8px;height:8px;'
+    +'border-radius:50%;background:#f38ba8;margin-right:6px;'
+    +'vertical-align:middle"></span>Fala <span>'+nFala+'</span>';
+  btFala.onclick=()=>{
+    FILTRO=(FILTRO==='__fala'?null:'__fala');
+    atualizarVis(); construirMenuFoco();
+  };
+  lista.appendChild(btFala);
   for (const c of cls){
     const b=document.createElement('button');
     b.className='foco-btn'+(FILTRO===c?' on':'');

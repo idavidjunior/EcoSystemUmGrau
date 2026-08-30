@@ -191,6 +191,7 @@ aprendizado: >
 - [[mvp-streamumgrau-flutter-supabase]]
 - [[módulo-de-compreensão-de-pedidos-mcp-compreensao-pedidos]]
 - [[narracao-seletiva-por-relevancia-no-narrador-edge]]
+- [[neurociência-da-fala-aplicada-ao-cérebro-vivo]]
 - [[nodejs-commonjs-esm-e-resolução-de-módulos]]
 - [[nodejs-event-loop-e-io-não-bloqueante]]
 - [[nodejs-streams-e-backpressure]]

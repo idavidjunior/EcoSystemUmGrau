@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**237 notas** do cluster ecossistema.
+**238 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -173,6 +173,7 @@
 - [[módulo-de-compreensão-de-pedidos-mcp-compreensao-pedidos]]
 - [[narracao-seletiva-por-relevancia-no-narrador-edge]]
 - [[narrador-morto-por-bloco-duplicado-falso-positivo-de-encodin]]
+- [[neurociência-da-fala-aplicada-ao-cérebro-vivo]]
 - [[oficializacao-narrador-edge-cerebro-vivo]]
 - [[opencode-go-provider-crash-ao-processar-mensagem]]
 - [[ordinais-text-normalizer]]
