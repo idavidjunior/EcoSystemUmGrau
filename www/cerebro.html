@@ -168,6 +168,8 @@ let PULSOS = [];                 // {e, t, v, tr} tr=pulso de evento real
 let INCIDENCIA = null;           // indice no -> arestas incidentes
 let RINGS = [];                  // aneis de cognicao {i, t} (atividade real)
 let PARTICULAS = [];             // particulas luminosas do disparo {x,y,vx,vy,cor,tam,vida,nac}
+let ESPICULAS = [];              // espiculas sinapticas {k, ate} arestas piscando
+let ONDAS_HUB = [];              // ondas concentricas {cx, cy, r, vida, maxR, cor}
 let HALOS = [];                  // halos destacados do disparo {i,t,cor,int}
 let GERACAO = 0;                 // versao dos dados (invalida timers de cascata)
 let FLASH_TMR = null;            // timer do aviso temporario na linha info
@@ -329,6 +331,8 @@ window.cerebroCarregar = function(dados){
   RINGS = [];
   PARTICULAS = [];
   HALOS = [];
+  ESPICULAS = [];
+  ONDAS_HUB = [];
   GERACAO++;
   ATIVOS.clear();
   ECO_FALANDO = false;
@@ -1005,6 +1009,20 @@ function desenhar(t, dt){
   ctx.fillRect(0,0,W,H);
   desenharZonaFala();
 
+  // ondas do hub: pulsos concentricos de respiracao cerebral
+  for (let i=0;i<ONDAS_HUB.length;i++){
+    const o=ONDAS_HUB[i];
+    const prog = o.vida/o.duracao;
+    const r = 18 + (o.maxR-18)*prog;
+    ctx.globalAlpha = Math.max(0, (1-prog)*0.35);
+    ctx.strokeStyle = o.cor;
+    ctx.lineWidth = 1.2*devicePixelRatio;
+    ctx.beginPath();
+    ctx.arc(o.cx, o.cy, r, 0, 6.283);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+
   // arestas
   ctx.lineWidth = 1;
   const margem = 60*devicePixelRatio;
@@ -1027,6 +1045,24 @@ function desenhar(t, dt){
       ctx.lineWidth=1;
     }
     ctx.beginPath();ctx.moveTo(SX[a],SY[a]);ctx.lineTo(SX[b],SY[b]);ctx.stroke();
+  }
+
+  // espiculas sinapticas: arestas piscando como sinapses disparando
+  for (let i=0;i<ESPICULAS.length;i++){
+    const e=ESPICULAS[i];
+    if (e.k>=ARVIS.length) continue;
+    const [a,b]=ARVIS[e.k];
+    if (SS[a]<0.2||SS[b]<0.2) continue;
+    const za=(SZ[a]+900)/1800, zb=(SZ[b]+900)/1800;
+    const prof=Math.min(1,(za+zb)/2*1.25);
+    const rest = (e.ate - t) / 1600;
+    if (rest<=0) continue;
+    const piscada = 0.5 + 0.5*Math.sin(rest*8);
+    ctx.globalAlpha = Math.min(0.9, rest*prof*piscada*0.85);
+    ctx.strokeStyle = NOS[a]._fala && NOS[b]._fala ? '#f38ba8' : '#f9e2af';
+    ctx.lineWidth = 1.8;
+    ctx.beginPath();ctx.moveTo(SX[a],SY[a]);ctx.lineTo(SX[b],SY[b]);ctx.stroke();
+    ctx.globalAlpha = 1;
   }
 
   // pulsos de sinapse
@@ -1239,6 +1275,30 @@ function laco(t){
   }
   zoom+=(alvoZoom-zoom)*0.09;
   panX+=(alvoPanX-panX)*0.09; panY+=(alvoPanY-panY)*0.09;
+  // vida de fundo: espiculas sinapticas e ondas do hub
+  if (ARVIS.length){
+    for (let i=ESPICULAS.length-1;i>=0;i--){ if (ESPICULAS[i].ate<t) ESPICULAS.splice(i,1); }
+    if (Math.random()<0.018 && ESPICULAS.length<8){
+      const k=(Math.random()*ARVIS.length)|0;
+      ESPICULAS.push({k, ate:t+900+Math.random()*700});
+    }
+  }
+  if (VIS && NOS.length){
+    for (let i=ONDAS_HUB.length-1;i>=0;i--){
+      const o=ONDAS_HUB[i];
+      o.vida += dt;
+      if (o.vida>=o.duracao) ONDAS_HUB.splice(i,1);
+    }
+    if (!laco._hubOnda || t-laco._hubOnda > 8000+Math.random()*4000){
+      laco._hubOnda = t;
+      // centro medio dos neuronios visiveis (cerebro)
+      let cx=0,cy=0,n=0;
+      for (let i=0;i<NOS.length;i++){ if (VIS[i]){ cx+=SX[i];cy+=SY[i];n++; } }
+      if (n>5){ cx/=n; cy/=n; }
+      else { cx=W/2; cy=H/2; }
+      ONDAS_HUB.push({cx,cy,r:18,vida:0,duracao:3200,maxR:Math.min(W,H)*0.42,cor:'#a6e3a1'});
+    }
+  }
   if (FILTRO==='__ativos' && t-(laco._visAt||0)>5000){
     laco._visAt=t; atualizarVis();
   }
