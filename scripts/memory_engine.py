@@ -131,7 +131,8 @@ def add_memory(task, summary, kind='episodio', project='', tags=None,
                strength=1.0, metadata=None, reindex=True,
                confidence=1.0, source_type='experiencia',
                solucao_aplicada=None,
-               source_anchors=None):
+               source_anchors=None,
+               validado=False):
     """Add a consolidated memory with decay + epistemic metadata.
 
     confidence: float 0-1 — confiança epistêmica (1.0 = fato, 0.3 = hipótese).
@@ -141,10 +142,25 @@ def add_memory(task, summary, kind='episodio', project='', tags=None,
     solucao_aplicada: dict ou None — para memórias de tipo 'erro', armazena a
         solução aplicada: {desc, script, data, tags, validado}.
 
+    validado: bool — PROTEÇÃO ANTI-LIXO. Se False, a memória entra como
+        RASCUNHO (confidence=0.3, tag='rascunho', aparece no /listar com aviso).
+        Só vai pra base de conhecimento como fato após o usuário validar via
+        scripts/promover_aprendizado.py. Default False (regra de 2026-08-31:
+        nada vira conhecimento sem prova).
+
     Dispara reindexação semântica automática (TF-IDF + denso) para que a nova
     memória fique imediatamente recuperável por significado. Nunca bloqueia o add
     em caso de falha (best-effort). Use reindex=False para adições em lote rápidas.
     """
+    # Gate de validacao (regra 2026-08-31): memorias nao validadas tem
+    # confidence baixa e tag 'rascunho' para nao poluir a base.
+    if not validado:
+        confidence = min(confidence, 0.3)
+        tags = list(tags or [])
+        if 'rascunho' not in tags:
+            tags.append('rascunho')
+        if source_type == 'experiencia':
+            source_type = 'rascunho'
     memories = _load_memories()
     now = datetime.now()
     tags = tags or []

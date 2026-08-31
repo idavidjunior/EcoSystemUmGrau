@@ -150,18 +150,52 @@ def _pid_roda_script(pid, script_py):
     except Exception:
         return False
 
+
+# Cooldown/anti-loop para não renascer serviço em loop frenético.
+# Estrutura: {script_py: ultimo_ts_reinicio}. Se tentar reiniciar o mesmo
+# script dentro de COOLDOWN_S segundos, aborta. Resolve o bug do guardian
+# acordar tts_service/widget várias vezes por segundo em ciclo de falha.
+COOLDOWN_S = 15
+_ULTIMO_RESTART = {}
+
+
+def _pode_iniciar(script_py: str) -> bool:
+    """Retorna False se o script foi reiniciado há menos de COOLDOWN_S.
+
+    Causa raiz do bug do áudio engasgando: o guardian detectava "fora do ar"
+    num momento transitório, dava Popen, o serviço morria rápido, e o próximo
+    ciclo (a cada 3-5s) reiniciava de novo — vários TTS services coexistiam,
+    cada um pegava o mesmo comando de fala, gerando áudio duplicado.
+    """
+    agora = time.time()
+    ultimo = _ULTIMO_RESTART.get(script_py, 0)
+    if agora - ultimo < COOLDOWN_S:
+        return False
+    return True
+
+
+def _marcar_restart(script_py: str):
+    _ULTIMO_RESTART[script_py] = time.time()
+
+
 def start_widget():
-    """Inicia o widget_edge.py."""
+    """Inicia o widget_edge.py com proteções anti-duplicidade."""
+    script_py = "widget_edge.py"
+    if not _pode_iniciar(script_py):
+        log.debug("Widget em cooldown, ignorando restart")
+        return False
+    if is_widget_up():
+        log.debug("Widget já está vivo, não iniciar de novo")
+        return False
     try:
         # Edge tem trava própria (O_EXCL em runtime/widget.pid):
         # se já há instância viva, ela continua; nunca matar antes de gerar.
         py = "C:/Users/David Jr/AppData/Local/Programs/Python/Python312/pythonw.exe"
-        script = str(BASE / "scripts" / "widget_edge.py")
+        script = str(BASE / "scripts" / script_py)
         proc = subprocess.Popen([py, script], cwd=str(BASE), creationflags=subprocess.CREATE_NO_WINDOW)
-        # NÃO escreve runtime/widget.pid: essa trava pertence ao widget (O_EXCL).
-        # Guardian é apenas observador via tabela de processos.
+        _marcar_restart(script_py)
         # Aguarda e verifica se widget realmente subiu
-        for _ in range(10):
+        for _ in range(20):
             time.sleep(0.5)
             if not (psutil.pid_exists(proc.pid) and psutil.Process(proc.pid).is_running()):
                 log.error(f"Widget morreu logo após iniciar (PID {proc.pid})")
@@ -202,22 +236,60 @@ def start_narrador():
 
 
 def start_tts_service():
+    """Inicia tts_service.py com proteções anti-duplicidade:
+    - Cooldown (não inicia se já reiniciou há < COOLDOWN_S)
+    - Singleton (não inicia se já existe instância viva)
+    - Escreve pid_file SOMENTE após confirmar que está vivo
+    """
+    script_py = "tts_service.py"
+    if not _pode_iniciar(script_py):
+        log.debug(f"TTS Service em cooldown, ignorando restart")
+        return False
+    if is_tts_service_up():
+        log.debug("TTS Service já está vivo, não iniciar de novo")
+        return False
     try:
         py = "C:/Users/David Jr/AppData/Local/Programs/Python/Python312/pythonw.exe"
-        script = str(BASE / "scripts" / "tts_service.py")
+        script = str(BASE / "scripts" / script_py)
         proc = subprocess.Popen([py, script], cwd=str(BASE), creationflags=subprocess.CREATE_NO_WINDOW)
-        # PID file imediato para proteção contra RAM cleanup
+        _marcar_restart(script_py)
+        # Aguarda serviço estar realmente vivo antes de escrever pid_file
         pid_file = BASE / "runtime" / "tts_service.pid"
         pid_file.parent.mkdir(parents=True, exist_ok=True)
-        pid_file.write_text(str(proc.pid))
-        # Aguarda e verifica se tts_service realmente subiu
-        for _ in range(10):
+        vivo = False
+        for _ in range(20):  # até 10s
             time.sleep(0.5)
-            if psutil.pid_exists(proc.pid) and psutil.Process(proc.pid).is_running():
-                log.warning("TTS Service reiniciado e confirmado rodando")
-                return True
-        log.error(f"TTS Service morreu logo após iniciar (PID {proc.pid})")
-        return False
+            try:
+                if psutil.pid_exists(proc.pid) and psutil.Process(proc.pid).is_running():
+                    vivo = True
+                    break
+            except Exception:
+                pass
+        if not vivo:
+            log.error(f"TTS Service morreu logo após iniciar (PID {proc.pid})")
+            # NÃO escreve pid_file — não queremos fantasma no pid_file
+            return False
+        # Confirma o serviço de fato assumiu o singleton dele (pode ter
+        # detectado outro vivo e saído). Verifica pid_file escrito pelo
+        # próprio serviço, não pelo guardian.
+        for _ in range(10):
+            time.sleep(0.3)
+            if pid_file.exists():
+                try:
+                    pid_no_arquivo = int(pid_file.read_text().strip())
+                    if pid_no_arquivo == proc.pid:
+                        log.warning(f"TTS Service reiniciado e confirmado (PID {proc.pid})")
+                        return True
+                    # Outro PID no arquivo — o serviço novo detectou
+                    # um antigo vivo e saiu (singleton dele funcionou).
+                    log.warning(f"TTS Service detectou outro vivo (PID no arquivo={pid_no_arquivo}), nosso PID {proc.pid} vai sair")
+                    return False
+                except (ValueError, OSError):
+                    pass
+        # Serviço vivo mas não escreveu pid_file — improvável, escreve como fallback
+        pid_file.write_text(str(proc.pid))
+        log.warning(f"TTS Service reiniciado (PID {proc.pid}, pid_file por fallback)")
+        return True
     except Exception as e:
         log.error(f"Falha ao iniciar tts_service: {e}")
     return False
