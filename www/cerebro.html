@@ -87,6 +87,11 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:2px 0 8px;}
   <input id="rgMov" type="range" min="0" max="1" step="0.01">
   <label class="linha">Velocidade da rotação <span id="valRot"></span></label>
   <input id="rgRot" type="range" min="0" max="1" step="0.01">
+  <button id="btEfeitos" class="foco-btn">Efeitos <span id="estEfeitos"></span></button>
+  <div id="listaEfeitos" style="display:none">
+    <button class="foco-btn efeito-btn" data-efeito="espiculas">Espiculas sinapticas <span class="estEfeito"></span></button>
+    <button class="foco-btn efeito-btn" data-efeito="ondasHub">Ondas do hub <span class="estEfeito"></span></button>
+  </div>
 </div>
 <div id="painelFoco" class="painel">
   <div class="ptitulo">Mostrar apenas</div>
@@ -199,7 +204,7 @@ let JULT_ONDA = 0;
 
 let EXCITA = null;               // Float32Array por no
 let sprites = {};                // chave cor+foco -> canvas
-let AJUSTES = {foco:0.55, viva:0.65, decor:true, movimento:0.65, rotacao:0.6};
+let AJUSTES = {foco:0.55, viva:0.65, decor:true, movimento:0.65, rotacao:0.6, efeitos:{espiculas:true, ondasHub:true}};
 try{ Object.assign(AJUSTES,
   JSON.parse(localStorage.getItem('cerebroAjustes')||'{}')); }catch(e){}
 function salvarAjustes(){
@@ -1276,14 +1281,14 @@ function laco(t){
   zoom+=(alvoZoom-zoom)*0.09;
   panX+=(alvoPanX-panX)*0.09; panY+=(alvoPanY-panY)*0.09;
   // vida de fundo: espiculas sinapticas e ondas do hub
-  if (ARVIS.length){
+  if (AJUSTES.efeitos.espiculas && ARVIS.length){
     for (let i=ESPICULAS.length-1;i>=0;i--){ if (ESPICULAS[i].ate<t) ESPICULAS.splice(i,1); }
     if (Math.random()<0.018 && ESPICULAS.length<8){
       const k=(Math.random()*ARVIS.length)|0;
       ESPICULAS.push({k, ate:t+900+Math.random()*700});
     }
   }
-  if (VIS && NOS.length){
+  if (AJUSTES.efeitos.ondasHub && VIS && NOS.length){
     for (let i=ONDAS_HUB.length-1;i>=0;i--){
       const o=ONDAS_HUB[i];
       o.vida += dt;
@@ -1517,6 +1522,39 @@ btDecor.addEventListener('click',()=>{
 });
 pintarDecor();
 
+// efeitos: botao expande lista com toggles individuais
+const btEfeitos=document.getElementById('btEfeitos');
+const listaEfeitos=document.getElementById('listaEfeitos');
+const estEfeitos=document.getElementById('estEfeitos');
+function pintarEfeitos(){
+  const total = (AJUSTES.efeitos.espiculas?1:0)+(AJUSTES.efeitos.ondasHub?1:0);
+  const ativos = Object.values(AJUSTES.efeitos).filter(Boolean).length;
+  estEfeitos.textContent = ativos+'/'+total;
+  btEfeitos.classList.toggle('on', ativos>0);
+  document.querySelectorAll('.efeito-btn').forEach(bt=>{
+    const k=bt.dataset.efeito;
+    const on=AJUSTES.efeitos[k];
+    bt.classList.toggle('on', on);
+    const sp=bt.querySelector('.estEfeito');
+    if(sp) sp.textContent = on?'ligado':'desligado';
+  });
+}
+btEfeitos.addEventListener('click',()=>{
+  listaEfeitos.style.display = listaEfeitos.style.display==='block'?'none':'block';
+});
+document.querySelectorAll('.efeito-btn').forEach(bt=>{
+  bt.addEventListener('click',()=>{
+    const k=bt.dataset.efeito;
+    AJUSTES.efeitos[k] = !AJUSTES.efeitos[k];
+    if (!AJUSTES.efeitos[k]){
+      if (k==='espiculas') ESPICULAS=[];
+      if (k==='ondasHub') ONDAS_HUB=[];
+    }
+    pintarEfeitos(); salvarAjustes();
+  });
+});
+pintarEfeitos();
+
 const btTopo=document.getElementById('btTopo');
 btTopo.addEventListener('click',()=>{
   try{
@@ -1550,7 +1588,11 @@ window.cerebroAjustesAplicar = function(txt){
     rgViva.value=AJUSTES.viva; valViva.textContent=Math.round(AJUSTES.viva*100)+'%';
     rgMov.value=AJUSTES.movimento; valMov.textContent=Math.round(AJUSTES.movimento*100)+'%';
     rgRot.value=AJUSTES.rotacao; valRot.textContent=Math.round(AJUSTES.rotacao*100)+'%';
+    if (!AJUSTES.efeitos || typeof AJUSTES.efeitos!=='object') AJUSTES.efeitos={};
+    if (AJUSTES.efeitos.espiculas===undefined) AJUSTES.efeitos.espiculas=true;
+    if (AJUSTES.efeitos.ondasHub===undefined) AJUSTES.efeitos.ondasHub=true;
     pintarDecor();
+    pintarEfeitos();
     construirMenuFoco();
   }catch(e){}
 };
