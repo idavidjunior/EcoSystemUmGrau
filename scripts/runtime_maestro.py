@@ -41,6 +41,12 @@ PID_FILE = RUNTIME / "maestro.pid"
 # Singleton deste proprio maestro
 _MAESTRO_PID = None
 
+# Lock em disco para escrita atomica do estado (evita race entre
+# multiplos comandos chegando ao mesmo tempo). Cada PID escreve
+# seu proprio lock file; conflito = retry.
+_ESTADO_LOCK_FILE = RUNTIME / "maestro_estado.lock"
+_ESTADO_LOCK_MAX_WAIT = 2.0  # segundos
+
 # Cooldown padrao entre restarts do mesmo script (segundos)
 COOLDOWN_S = 15
 
@@ -89,8 +95,48 @@ def _read_estado():
 
 
 def _save_estado(estado):
-    """Persiste livro de estado."""
-    _atomic_write(ESTADO_FILE, estado)
+    """Persiste livro de estado com lock pra evitar race entre comandos."""
+    _acquire_lock()
+    try:
+        _atomic_write(ESTADO_FILE, estado)
+    finally:
+        _release_lock()
+
+
+def _acquire_lock(timeout=_ESTADO_LOCK_MAX_WAIT):
+    """Adquire lock em disco. Espera ate timeout se outro PID tem o lock."""
+    t0 = time.time()
+    while True:
+        try:
+            # O_EXCL falha se arquivo ja existe
+            fd = os.open(_ESTADO_LOCK_FILE, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            os.write(fd, str(os.getpid()).encode())
+            os.close(fd)
+            return
+        except FileExistsError:
+            # Verifica se dono morreu (lock stale)
+            try:
+                dono = int(_ESTADO_LOCK_FILE.read_text().strip())
+                import psutil
+                if not psutil.pid_exists(dono):
+                    _ESTADO_LOCK_FILE.unlink(missing_ok=True)
+                    continue
+            except Exception:
+                _ESTADO_LOCK_FILE.unlink(missing_ok=True)
+                continue
+            if time.time() - t0 > timeout:
+                # Timeout: assume lock stale e segue em frente
+                _ESTADO_LOCK_FILE.unlink(missing_ok=True)
+                return
+            time.sleep(0.05)
+
+
+def _release_lock():
+    """Libera lock."""
+    try:
+        _ESTADO_LOCK_FILE.unlink(missing_ok=True)
+    except Exception:
+        pass
 
 
 def _limpar_cooldowns_vencidos(estado):
@@ -263,11 +309,20 @@ def _write_resp(req_id: str, resposta: dict):
     O cliente le este arquivo e DEPOIS deleta. Se o maestro deletasse
     logo apos escrever, o cliente nunca teria tempo de ler.
     Cleanup de arquivos orfaos (>10min) e feito por _limpar_resp_antigas().
+    Tolerante a WinError 32 (arquivo em uso por outro processo).
     """
     if not req_id:
         return
     resp_file = RUNTIME / f"maestro_resp_{req_id}.json"
-    _atomic_write(resp_file, resposta)
+    for tentativa in range(3):
+        try:
+            _atomic_write(resp_file, resposta)
+            return
+        except (OSError, PermissionError):
+            time.sleep(0.05)
+        except Exception as e:
+            _log(f"erro escrevendo resp: {e}", "ERROR")
+            return
 
 
 def _limpar_resp_antigas(max_age_sec: int = 600):
@@ -278,6 +333,8 @@ def _limpar_resp_antigas(max_age_sec: int = 600):
             try:
                 if agora - f.stat().st_mtime > max_age_sec:
                     f.unlink(missing_ok=True)
+            except (OSError, PermissionError):
+                pass  # arquivo em uso, tenta depois
             except Exception:
                 pass
     except Exception:

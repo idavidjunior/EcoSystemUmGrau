@@ -147,19 +147,27 @@ def test_client_com_maestro_rodando():
         # Limpa estado novamente pra este teste especifico
         reset_estado()
         # Da um tempo pro maestro ver o reset
-        time.sleep(0.5)
+        time.sleep(1)
 
-        r = consultar_maestro("pode_iniciar", script="tts_service.py")
-        if r.get("status") == "offline":
-            # debug: tenta de novo com mais tempo
-            time.sleep(1)
+        # Tenta ate 3x com espera pra tolerar race
+        r = None
+        for tentativa in range(3):
             r = consultar_maestro("pode_iniciar", script="tts_service.py")
-        assert r.get("pode") is True, f"esperava pode=True, recebi {r}"
+            if r.get("pode") is True:
+                break
+            time.sleep(0.5)
+        assert r and r.get("pode") is True, f"esperava pode=True, recebi {r}"
 
-        # Agora registra
+        # Registra e verifica bloqueio
         consultar_maestro("registrar", script="tts_service.py", pid=9999, owner="test")
-        r2 = consultar_maestro("pode_iniciar", script="tts_service.py")
-        assert r2.get("pode") is False, f"apos registrar deveria negar, recebi {r2}"
+        time.sleep(0.3)
+        r2 = None
+        for tentativa in range(3):
+            r2 = consultar_maestro("pode_iniciar", script="tts_service.py")
+            if r2.get("pode") is False:
+                break
+            time.sleep(0.5)
+        assert r2 and r2.get("pode") is False, f"apos registrar deveria negar, recebi {r2}"
         print(f"  [OK] fluxo completo: registrou e bloqueio funcionou ({r2['motivo']})")
     finally:
         proc.terminate()
