@@ -159,22 +159,26 @@ COOLDOWN_S = 15
 _ULTIMO_RESTART = {}
 
 
-def _observar_no_maestro(script_py: str, decisao_local: str, pid_novo=None) -> None:
-    """Consulta o Maestro (se vivo) sobre o que o guardian esta prestes a fazer.
+def _observar_no_maestro(script_py: str, decisao_local: str, pid_novo=None) -> dict:
+    """Consulta o Maestro e OBEECE sua decisao (fase ativa).
 
-    FASE 1 (observador): NAO bloqueia. So registra o que guardian QUER fazer,
-    o que Maestro RECOMENDA, e se ha divergencia. Apos 1-3 dias de fase 1,
-    fase 2 passa a obedecer a recomendacao do Maestro.
+    Retorna dict {pode: bool, motivo: str}. Se Maestro offline, retorna
+    {pode: True, motivo: "fallback_degraded"} e seta alerta.
+
+    FASE ATIVA: se Maestro diz "nao pode", guardian OBedece e NAO inicia.
 
     Args:
         script_py: nome do script (tts_service.py, widget_edge.py, etc)
         decisao_local: o que o guardian decidiu ("vou_iniciar", "vou_pular_cooldown", etc)
         pid_novo: PID que acabou de nascer (None se ainda nao nasceu)
     """
+    resultado = {"pode": True, "motivo": "fallback_maestro_offline"}
     try:
         from maestro_client import maestro_disponivel, consultar_maestro, fallback_degraded
         if not maestro_disponivel():
-            return  # maestro offline, nao atrapalha guardian
+            fallback_degraded("guardian", f"start_{script_py}")
+            resultado = {"pode": True, "motivo": "maestro_offline_fallback"}
+            return resultado
 
         # Consulta o que o maestro acha
         decisao_maestro = consultar_maestro(
@@ -182,29 +186,27 @@ def _observar_no_maestro(script_py: str, decisao_local: str, pid_novo=None) -> N
         )
         if decisao_maestro.get("status") == "offline":
             fallback_degraded("guardian", f"start_{script_py}")
-            return
+            resultado = {"pode": True, "motivo": "maestro_caiu_fallback"}
+            return resultado
 
         pode_m = decisao_maestro.get("pode", True)
         motivo_m = decisao_maestro.get("motivo", "")
 
-        # Compara decisao local vs maestro
-        # Guardian local decide com base em cooldown local + is_X_up
-        # Maestro decide com base em livro_estado global
-        divergencia = False
-        if decisao_local == "vou_iniciar" and not pode_m:
-            divergencia = True
-        elif decisao_local == "vou_pular" and pode_m:
-            divergencia = True
+        resultado = {"pode": pode_m, "motivo": motivo_m}
 
-        if divergencia:
+        # FASE ATIVA: obedece o Maestro
+        if decisao_local == "vou_iniciar" and not pode_m:
             log.warning(
-                f"[MAESTRO_OBS] divergencia: guardian={decisao_local} "
-                f"maestro=pode={pode_m} motivo={motivo_m} script={script_py}"
+                f"[MAESTRO_BLOQUEOU] guardian queria iniciar {script_py}, "
+                f"maestro negou: {motivo_m}"
+            )
+        elif decisao_local == "vou_iniciar" and pode_m:
+            log.info(
+                f"[MAESTRO_LIBEROU] guardian pode iniciar {script_py}: {motivo_m}"
             )
         else:
             log.debug(
-                f"[MAESTRO_OBS] concordou: guardian={decisao_local} "
-                f"maestro=pode={pode_m} script={script_py}"
+                f"[MAESTRO_OBS] {decisao_local} maestro=pode={pode_m} script={script_py}"
             )
 
         # Se nasceu um PID, registra no livro do maestro
@@ -214,6 +216,7 @@ def _observar_no_maestro(script_py: str, decisao_local: str, pid_novo=None) -> N
             )
     except Exception as e:
         log.debug(f"[MAESTRO_OBS] erro consultando maestro: {e}")
+    return resultado
 
 
 def _pode_iniciar(script_py: str) -> bool:
@@ -246,7 +249,11 @@ def start_widget():
         log.debug("Widget já está vivo, não iniciar de novo")
         _observar_no_maestro(script_py, decisao_local="vou_pular_ja_vivo")
         return False
-    _observar_no_maestro(script_py, decisao_local="vou_iniciar")
+    # FASE ATIVA: Maestro pode bloquear
+    r = _observar_no_maestro(script_py, decisao_local="vou_iniciar")
+    if not r.get("pode", True):
+        log.warning(f"[MAESTRO_BLOQUEOU] start_widget cancelado: {r.get('motivo')}")
+        return False
     try:
         # Edge tem trava própria (O_EXCL em runtime/widget.pid):
         # se já há instância viva, ela continua; nunca matar antes de gerar.
@@ -300,6 +307,7 @@ def start_tts_service():
     """Inicia tts_service.py com proteções anti-duplicidade:
     - Cooldown (não inicia se já reiniciou há < COOLDOWN_S)
     - Singleton (não inicia se já existe instância viva)
+    - FASE ATIVA: Maestro pode bloquear
     - Escreve pid_file SOMENTE após confirmar que está vivo
     """
     script_py = "tts_service.py"
@@ -311,7 +319,11 @@ def start_tts_service():
         log.debug("TTS Service já está vivo, não iniciar de novo")
         _observar_no_maestro(script_py, decisao_local="vou_pular_ja_vivo")
         return False
-    _observar_no_maestro(script_py, decisao_local="vou_iniciar")
+    # FASE ATIVA: Maestro pode bloquear
+    r = _observar_no_maestro(script_py, decisao_local="vou_iniciar")
+    if not r.get("pode", True):
+        log.warning(f"[MAESTRO_BLOQUEOU] start_tts_service cancelado: {r.get('motivo')}")
+        return False
     try:
         py = "C:/Users/David Jr/AppData/Local/Programs/Python/Python312/pythonw.exe"
         script = str(BASE / "scripts" / script_py)

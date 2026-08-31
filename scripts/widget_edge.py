@@ -684,38 +684,47 @@ def iniciar_narrador_thread():
     diretamente. Garante singleton por PID e evita o bug de múltiplas
     threads narradoras (causa do log triplicado).
 
-    Fase 1: tambem consulta o Maestro (se vivo) pra ele saber que o
-    widget quer acordar o narrador. Maestro NAO bloqueia — so observa.
+    FASE ATIVA: consulta o Maestro e OBEECE. Se Maestro nega, nao inicia.
     """
     with _NARRADOR_LOCK:
         # Já existe thread viva neste PID? Não cria outra.
         if _NARRADOR_INSTANCIA is not None and _NARRADOR_INSTANCIA.is_alive():
             _observar_maestro("widget_edge.py", decisao_local="narrador_ja_vivo")
             return False
-    _observar_maestro("widget_edge.py", decisao_local="narrador_vou_iniciar")
+    # FASE ATIVA: Maestro pode bloquear
+    if not _observar_maestro("widget_edge.py", decisao_local="narrador_vou_iniciar"):
+        return False
     return _adquirir_singleton_narrador()
 
 
-def _observar_maestro(script_py: str, decisao_local: str) -> None:
-    """Wrapper local pro observador do Maestro (fase 1, nao bloqueia)."""
+def _observar_maestro(script_py: str, decisao_local: str) -> bool:
+    """Consulta o Maestro e OBEECE sua decisao (fase ativa).
+
+    Retorna True se pode prosseguir, False se Maestro bloqueou.
+    Se Maestro offline, fallback permite com alerta.
+    """
     try:
         from maestro_client import maestro_disponivel, consultar_maestro, fallback_degraded
         if not maestro_disponivel():
-            return
+            fallback_degraded("widget_edge", f"narrador: {decisao_local}")
+            return True  # fallback: permite
         decisao = consultar_maestro("pode_iniciar", script=script_py)
         if decisao.get("status") == "offline":
             fallback_degraded("widget_edge", f"narrador: {decisao_local}")
-            return
+            return True  # fallback: permite
         pode = decisao.get("pode", True)
         motivo = decisao.get("motivo", "")
         if decisao_local == "narrador_vou_iniciar" and not pode:
-            _log_narr(f"[MAESTRO_OBS] divergencia: widget vai criar narrador, maestro nega ({motivo})")
+            _log_narr(f"[MAESTRO_BLOQUEOU] widget quer narrador, maestro nega: {motivo}")
+            return False  # OBedece: nao inicia
         elif decisao_local == "narrador_ja_vivo" and pode:
             _log_narr(f"[MAESTRO_OBS] maestro acha que widget pode criar narrador, mas widget ja tem")
         else:
-            _log_narr(f"[MAESTRO_OBS] concordou: {decisao_local} maestro=pode={pode}")
+            _log_narr(f"[MAESTRO_LIBEROU] {decisao_local} maestro=pode={pode}")
+        return True
     except Exception as e:
         _log_narr(f"[MAESTRO_OBS] erro: {e}")
+        return True  # fallback: permite
 
 
 def _narrador_loop():

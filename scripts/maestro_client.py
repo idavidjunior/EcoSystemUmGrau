@@ -1,5 +1,13 @@
 """maestro_client.py — Helper para componentes consultarem o Maestro.
 
+Protocolo: mailbox atômica com nomes únicos.
+- Cliente escreve: runtime/maestro_cmd_<uuid>.json (nome único, sem conflito)
+- Maestro lê e processa
+- Maestro escreve: runtime/maestro_resp_<uuid>.json (nome único, sem conflito)
+- Cliente lê e deleta ambos
+
+Nunca existe arquivo compartilhado. Cada request tem seu par cmd/resp isolado.
+
 Uso:
     from maestro_client import consultar_maestro, fallback_degraded
 
@@ -16,7 +24,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 RUNTIME = ROOT / "runtime"
-CMD_FILE = RUNTIME / "maestro_cmd.json"
 
 # Timeout pra aguardar resposta do maestro
 TIMEOUT_S = 1.5
@@ -27,6 +34,10 @@ DEGRADED_TIMEOUT_S = 5.0
 def consultar_maestro(cmd: str, **kwargs) -> dict:
     """Envia comando ao maestro e aguarda resposta.
 
+    Protocolo mailbox: escreve cmd_<uuid>.json (unica vez), aguarda
+    resp_<uuid>.json. Nao existe arquivo compartilhado, portanto nao
+    ha race condition entre clientes ou entre cliente e maestro.
+
     Args:
         cmd: acao ("pode_iniciar", "registrar", "heartbeat", "parar", etc)
         **kwargs: campos extras (script, pid, owner)
@@ -34,62 +45,47 @@ def consultar_maestro(cmd: str, **kwargs) -> dict:
     Returns:
         dict da resposta do maestro, ou {"status": "offline"} se nao respondeu.
     """
-    # PRIMEIRO: verifica se maestro esta vivo. Sem isso, resposta cacheada
-    # antiga do maestro anterior poderia ser lida como se fosse atual.
     if not maestro_disponivel():
         return {"status": "offline", "motivo": "maestro_nao_esta_rodando"}
 
     req_id = str(uuid.uuid4())[:8]
     payload = {"cmd": cmd, "request_id": req_id, **kwargs}
 
-    # Limpa resposta antiga deste mesmo req_id (se sobrou de chamada anterior)
+    cmd_file = RUNTIME / f"maestro_cmd_{req_id}.json"
     resp_file = RUNTIME / f"maestro_resp_{req_id}.json"
+
+    # Limpa resposta antiga deste req_id (se sobrou de chamada anterior)
     resp_file.unlink(missing_ok=True)
 
-    # Estrategia: arquivo unico por request, evita race com o maestro
-    # deletando o cmd global. Maestro procura em maestro_cmd.json e em
-    # maestro_cmd_<id>.json (fallback).
-    cmd_file_req = RUNTIME / f"maestro_cmd_{req_id}.json"
-    tmp = cmd_file_req.with_suffix(".tmp")
-    # Retry ate 3x pra evitar WinError 32 (arquivo em uso)
-    escrito = False
+    # Escreve comando — nome unico, sem conflito com ninguem
     for tentativa in range(3):
         try:
+            tmp = cmd_file.with_suffix(".tmp")
             tmp.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
-            os.replace(tmp, cmd_file_req)
-            escrito = True
+            os.replace(tmp, cmd_file)
             break
-        except OSError:
+        except (OSError, PermissionError):
             time.sleep(0.05)
-    if not escrito:
+    else:
         return {"status": "offline", "motivo": "falha_escrita_cmd"}
-
-    # Tambem tenta no arquivo global (compatibilidade)
-    try:
-        tmp2 = CMD_FILE.with_suffix(".tmp")
-        tmp2.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
-        os.replace(tmp2, CMD_FILE)
-    except OSError:
-        pass  # nao bloqueia se o global falhar
 
     # Aguarda resposta
     t0 = time.time()
     while time.time() - t0 < TIMEOUT_S:
         if resp_file.exists():
             try:
-                # Verifica novamente se maestro ainda esta vivo antes de ler
                 if not maestro_disponivel():
                     resp_file.unlink(missing_ok=True)
-                    cmd_file_req.unlink(missing_ok=True)
+                    cmd_file.unlink(missing_ok=True)
                     return {"status": "offline", "motivo": "maestro_caiu_durante_consulta"}
                 resp = json.loads(resp_file.read_text(encoding="utf-8"))
                 resp_file.unlink(missing_ok=True)
-                cmd_file_req.unlink(missing_ok=True)
+                cmd_file.unlink(missing_ok=True)
                 return resp
             except Exception:
                 pass
         time.sleep(0.05)
-    cmd_file_req.unlink(missing_ok=True)
+    cmd_file.unlink(missing_ok=True)
     return {"status": "offline", "motivo": "timeout"}
 
 

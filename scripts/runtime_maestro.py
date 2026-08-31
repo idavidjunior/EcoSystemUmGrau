@@ -39,7 +39,6 @@ except ImportError:
 
 ROOT = Path(__file__).resolve().parent.parent
 RUNTIME = ROOT / "runtime"
-CMD_FILE = RUNTIME / "maestro_cmd.json"
 ESTADO_FILE = RUNTIME / "maestro_estado.json"
 LOG_FILE = RUNTIME / "maestro.log"
 PID_FILE = RUNTIME / "maestro.pid"
@@ -393,11 +392,16 @@ def _limpar_resp_antigas(max_age_sec: int = 600):
 
 
 def daemon_loop():
-    """Loop principal: le comandos do disco e responde."""
+    """Loop principal: le comandos do disco e responde.
+
+    Protocolo mailbox: varre maestro_cmd_*.json (nomes unicos por request),
+    processa cada um, escreve maestro_resp_<id>.json. Nao existe arquivo
+    compartilhado — cada cliente escreve seu proprio arquivo com nome unico.
+    """
     global _MAESTRO_PID
     _MAESTRO_PID = os.getpid()
     PID_FILE.write_text(str(_MAESTRO_PID), encoding="utf-8")
-    _log(f"maestro iniciado pid={_MAESTRO_PID} fase=observador")
+    _log(f"maestro iniciado pid={_MAESTRO_PID} fase=ATIVO")
     # Quando rodando em background (subprocess sem terminal), garante que
     # print nao trava esperando stdout. Redireciona para o log.
     if sys.stdout is None or sys.stderr is None:
@@ -407,7 +411,6 @@ def daemon_loop():
             sys.stderr = sf
         except Exception:
             pass
-    last_mtime_global = 0
     last_cleanup = 0
     seen_per_req = set()  # request_ids ja processados
     try:
@@ -418,42 +421,8 @@ def daemon_loop():
                     _limpar_resp_antigas()
                     last_cleanup = time.time()
 
-                # 1. Le arquivo global maestro_cmd.json (compat)
-                #    Com retry: arquivo pode estar em uso por outro processo
-                if CMD_FILE.exists():
-                    mtime = CMD_FILE.stat().st_mtime
-                    if mtime != last_mtime_global:
-                        last_mtime_global = mtime
-                        # Retry ate 3x se outro processo esta escrevendo
-                        cmd = None
-                        for tentativa in range(3):
-                            try:
-                                cmd = json.loads(CMD_FILE.read_text(encoding="utf-8-sig"))
-                                CMD_FILE.unlink(missing_ok=True)
-                                break
-                            except (OSError, PermissionError):
-                                # WinError 32 = arquivo em uso. Aguarda e tenta de novo
-                                time.sleep(0.05)
-                            except Exception as e:
-                                _log(f"erro lendo cmd global: {e}", "ERROR")
-                                break
-                        if cmd is None:
-                            continue
-                        try:
-                            req_id = cmd.get("request_id", str(uuid.uuid4())[:8])
-                            if req_id in seen_per_req:
-                                continue
-                            seen_per_req.add(req_id)
-                            resp = processar_comando(cmd)
-                            _write_resp(req_id, resp)
-                            _log(f"cmd={cmd.get('cmd')} script={cmd.get('script','-')} resp={resp}")
-                        except (OSError, PermissionError) as e:
-                            # WinError 32 tambem pode ocorrer no _write_resp
-                            _log(f"erro processando cmd global (lock): {e}", "ERROR")
-                        except Exception as e:
-                            _log(f"erro processando cmd global: {e}", "ERROR")
-
-                # 2. Le arquivos per-request maestro_cmd_<id>.json (race-safe)
+                # Varre arquivos per-request maestro_cmd_<id>.json
+                # Cada arquivo e unico por request — sem race condition
                 for f in RUNTIME.glob("maestro_cmd_*.json"):
                     req_id_part = f.stem.replace("maestro_cmd_", "")
                     if req_id_part in seen_per_req:
@@ -482,8 +451,8 @@ def daemon_loop():
                     except Exception as e:
                         _log(f"erro processando cmd req: {e}", "ERROR")
 
-                # Limpa seen_per_req periodicamente
-                if len(seen_per_req) > 500:
+                # Limita tamanho do set de ids vistos
+                if len(seen_per_req) > 5000:
                     seen_per_req.clear()
 
             except KeyboardInterrupt:
