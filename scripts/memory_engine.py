@@ -460,6 +460,7 @@ if __name__ == '__main__':
         summary = sys.argv[3] if len(sys.argv) > 3 else ''
         kind = sys.argv[4] if len(sys.argv) > 4 else 'episodio'
         no_reindex = '--no-reindex' in sys.argv
+        validado = '--validado' in sys.argv
         confidence = 1.0
         source_type = 'experiencia'
         source_anchors = None
@@ -473,10 +474,11 @@ if __name__ == '__main__':
                 source_anchors = json.loads(arg.split('=', 1)[1])
         if no_reindex:
             _no_reindex_global = True
-            mid = add_memory(task, summary, kind, reindex=False, confidence=confidence, source_type=source_type, source_anchors=source_anchors)
+            mid = add_memory(task, summary, kind, reindex=False, confidence=confidence, source_type=source_type, source_anchors=source_anchors, validado=validado)
         else:
-            mid = add_memory(task, summary, kind, confidence=confidence, source_type=source_type, source_anchors=source_anchors)
-        print(f'[OK] Memory #{mid}: {task[:60]} (conf={confidence:.2f}, src={source_type})')
+            mid = add_memory(task, summary, kind, confidence=confidence, source_type=source_type, source_anchors=source_anchors, validado=validado)
+        tag_valid = ' [VALIDADO]' if validado else ' [RASCUNHO]'
+        print(f'[OK] Memory #{mid}: {task[:60]} (conf={confidence:.2f}, src={source_type}){tag_valid}')
     elif cmd == 'query':
         text = sys.argv[2] if len(sys.argv) > 2 else None
         results = query(text=text)
