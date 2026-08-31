@@ -159,6 +159,63 @@ COOLDOWN_S = 15
 _ULTIMO_RESTART = {}
 
 
+def _observar_no_maestro(script_py: str, decisao_local: str, pid_novo=None) -> None:
+    """Consulta o Maestro (se vivo) sobre o que o guardian esta prestes a fazer.
+
+    FASE 1 (observador): NAO bloqueia. So registra o que guardian QUER fazer,
+    o que Maestro RECOMENDA, e se ha divergencia. Apos 1-3 dias de fase 1,
+    fase 2 passa a obedecer a recomendacao do Maestro.
+
+    Args:
+        script_py: nome do script (tts_service.py, widget_edge.py, etc)
+        decisao_local: o que o guardian decidiu ("vou_iniciar", "vou_pular_cooldown", etc)
+        pid_novo: PID que acabou de nascer (None se ainda nao nasceu)
+    """
+    try:
+        from maestro_client import maestro_disponivel, consultar_maestro, fallback_degraded
+        if not maestro_disponivel():
+            return  # maestro offline, nao atrapalha guardian
+
+        # Consulta o que o maestro acha
+        decisao_maestro = consultar_maestro(
+            "pode_iniciar", script=script_py
+        )
+        if decisao_maestro.get("status") == "offline":
+            fallback_degraded("guardian", f"start_{script_py}")
+            return
+
+        pode_m = decisao_maestro.get("pode", True)
+        motivo_m = decisao_maestro.get("motivo", "")
+
+        # Compara decisao local vs maestro
+        # Guardian local decide com base em cooldown local + is_X_up
+        # Maestro decide com base em livro_estado global
+        divergencia = False
+        if decisao_local == "vou_iniciar" and not pode_m:
+            divergencia = True
+        elif decisao_local == "vou_pular" and pode_m:
+            divergencia = True
+
+        if divergencia:
+            log.warning(
+                f"[MAESTRO_OBS] divergencia: guardian={decisao_local} "
+                f"maestro=pode={pode_m} motivo={motivo_m} script={script_py}"
+            )
+        else:
+            log.debug(
+                f"[MAESTRO_OBS] concordou: guardian={decisao_local} "
+                f"maestro=pode={pode_m} script={script_py}"
+            )
+
+        # Se nasceu um PID, registra no livro do maestro
+        if pid_novo and decisao_local == "vou_iniciar":
+            consultar_maestro(
+                "registrar", script=script_py, pid=pid_novo, owner="guardian"
+            )
+    except Exception as e:
+        log.debug(f"[MAESTRO_OBS] erro consultando maestro: {e}")
+
+
 def _pode_iniciar(script_py: str) -> bool:
     """Retorna False se o script foi reiniciado há menos de COOLDOWN_S.
 
@@ -183,10 +240,13 @@ def start_widget():
     script_py = "widget_edge.py"
     if not _pode_iniciar(script_py):
         log.debug("Widget em cooldown, ignorando restart")
+        _observar_no_maestro(script_py, decisao_local="vou_pular_cooldown")
         return False
     if is_widget_up():
         log.debug("Widget já está vivo, não iniciar de novo")
+        _observar_no_maestro(script_py, decisao_local="vou_pular_ja_vivo")
         return False
+    _observar_no_maestro(script_py, decisao_local="vou_iniciar")
     try:
         # Edge tem trava própria (O_EXCL em runtime/widget.pid):
         # se já há instância viva, ela continua; nunca matar antes de gerar.
@@ -194,6 +254,7 @@ def start_widget():
         script = str(BASE / "scripts" / script_py)
         proc = subprocess.Popen([py, script], cwd=str(BASE), creationflags=subprocess.CREATE_NO_WINDOW)
         _marcar_restart(script_py)
+        _observar_no_maestro(script_py, decisao_local="nasceu", pid_novo=proc.pid)
         # Aguarda e verifica se widget realmente subiu
         for _ in range(20):
             time.sleep(0.5)
@@ -244,15 +305,19 @@ def start_tts_service():
     script_py = "tts_service.py"
     if not _pode_iniciar(script_py):
         log.debug(f"TTS Service em cooldown, ignorando restart")
+        _observar_no_maestro(script_py, decisao_local="vou_pular_cooldown")
         return False
     if is_tts_service_up():
         log.debug("TTS Service já está vivo, não iniciar de novo")
+        _observar_no_maestro(script_py, decisao_local="vou_pular_ja_vivo")
         return False
+    _observar_no_maestro(script_py, decisao_local="vou_iniciar")
     try:
         py = "C:/Users/David Jr/AppData/Local/Programs/Python/Python312/pythonw.exe"
         script = str(BASE / "scripts" / script_py)
         proc = subprocess.Popen([py, script], cwd=str(BASE), creationflags=subprocess.CREATE_NO_WINDOW)
         _marcar_restart(script_py)
+        _observar_no_maestro(script_py, decisao_local="nasceu", pid_novo=proc.pid)
         # Aguarda serviço estar realmente vivo antes de escrever pid_file
         pid_file = BASE / "runtime" / "tts_service.pid"
         pid_file.parent.mkdir(parents=True, exist_ok=True)
