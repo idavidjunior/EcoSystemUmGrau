@@ -1,44 +1,38 @@
 ---
-titulo: Maestro de Runtime — proposta de cérebro unificado de processos
+titulo: Maestro de Runtime — proposta final
 tipo: decisao
 tags: [maestro, runtime, coordenador, anti-conflito, arquitetura]
 data: 2026-08-31
 status: RASCUNHO
 resumo: |
   Proposta de criar runtime_maestro.py como único autorizado a iniciar/parar
-  serviços e validar mudanças de estado. Hoje guardian, vigilante e widget
-  decidem em paralelo sem se coordenar (causa do bug triplo do narrador e
-  do TTS duplicado). O Maestro seria invocado por todos antes de agir.
+  serviços. Fase 1: modo observador (logar sem bloquear). Comunicação via
+  arquivo de comando em disco. Fallback: se maestro cair, componente permite
+  a ação mas loga ALERTA. Após 1-3 dias validando, vai pra fase ativa.
+decisoes_do_usuario:
+  fase_inicial: observador (não bloqueia ninguém nos primeiros 1-3 dias)
+  comunicacao: arquivo em disco (mesmo padrão do tts_cmd.json)
+  fallback: permite a ação com ALERTA alto se maestro não responder em 5s
+  observacao: maestro ja tem regras deterministicas (singleton, cooldown,
+    anti-orfao). Nao precisa aprender, precisa apenas ser validado que
+    enxerga todos os starts e suas decisoes batem com o cenario real.
+    1-3 dias cobrem uso normal + fim de semana + variacao.
 contexto: |
-  Diagnóstico atual (31/08/2026):
-  - system_guardian.py tem 5 funcoes start_* (bridge, serve, widget,
-    narrador, tts_service) e roda em 2 processos duplicados (PID 5604, 9220)
-  - vigilante.ps1 (PowerShell) tambem acorda processos (PID 4296)
-  - widget_edge.py decide sozinho se acorda narrador
-  - jarvis_bridge.py inicia http_server sozinho
-  - runtime_kernel.py valida TEXTO mas nao gerencia PROCESSOS
-  Resultado: 3 "chefes" tomando decisao sobre a mesma coisa, sem se falar.
-  Consequencia observada: TTS service nasceu 3x no mesmo ciclo, audio
-  do narrador repetia a mesma frase 2-3 vezes.
-proposta: |
-  Criar scripts/runtime_maestro.py como singleton daemon com 3
-  responsabilidades:
-  1. UNICA porta de entrada para start_/stop_ de qualquer servico Eco.
-     Guardian, widget, bridge, vigilante consultam o Maestro via
-     comando (pode ser arquivo de lock + IPC simples, ou socket local).
-  2. LIVRO DE ESTADO UNICO: runtime/maestro_estado.json com o inventario
-     ao vivo de todos os servicos (pid, script, started_at, owner,
-     cooldown_ate). Substitui a leitura espalhada de pid_files.
-  3. COOLDOWN/SINGLETON GLOBAL: a unica instancia que decide se pode
-     iniciar algo. Cooldown compartilhado entre todos os chamadores.
-     Se alguem pediu start_foo() ha 5s, o proximo start_foo() e no-op.
-arquitetura_alvo: |
+  Hoje o ecossistema tem 3 "chefes" de processos decidindo em paralelo:
+  - system_guardian.py (PID 5604, 9220 — duplicado)
+  - vigilante.ps1 (PID 4296)
+  - widget_edge.py decide sozinho sobre narrador
+  Resultado observado: TTS service nasceu 3x, áudio repetia mesma frase,
+  narrador logava triplicado. Falta um único chefe.
+arquitetura: |
   ┌─────────────────────────────────────────────────┐
   │            runtime_maestro (singleton)           │
-  │  - livro_estado (pid, script, owner, cooldown)  │
-  │  - lock global por script                       │
-  │  - cooldown por script                          │
-  │  - heartbeat proprio (anti-orfão do maestro)    │
+  │  livro_estado.json (inventário único)           │
+  │  maestro_cmd.json (entrada)                     │
+  │  maestro_resp_<id>.json (saída)                 │
+  │  cooldown global por script                     │
+  │  singleton check global                         │
+  │  heartbeat próprio (anti-órfão)                 │
   └────────┬──────────┬──────────┬─────────┬────────┘
            │          │          │         │
      ┌─────▼───┐ ┌────▼────┐ ┌──▼─────┐ ┌─▼──────────┐
@@ -46,71 +40,98 @@ arquitetura_alvo: |
      │  (olho) │ │(narrador)│ │  (voz) │ │(legado PS1)│
      └─────────┘ └─────────┘ └────────┘ └────────────┘
 
-  Antes de agir, TODOS consultam o Maestro:
-  - guardian.check_and_act() → maestro.pode_iniciar("tts_service")?
-  - widget_edge.boot() → maestro.pode_iniciar("narrador_thread")?
-  - jarvis_bridge.boot() → maestro.pode_iniciar("http_server")?
-  - vigilante.ps1 → maestro.pode_iniciar(...)?
+  Todos consultam maestro antes de agir via arquivo de comando.
 contrato_publico: |
-  Maestro expoe (via CLI ou IPC):
-  - pode_iniciar(script_py) -> bool  (checa singleton + cooldown)
-  - registrar(script_py, pid, owner) -> ok
-  - heartbeat(script_py) -> ok  (atualiza timestamp)
-  - listar_vivos() -> dict  (inventario ao vivo)
-  - parar(script_py) -> bool  (mata via PID registrado)
-  - matar_duplicatas(script_py) -> int  (anti-orfao automatico)
-migracao: |
-  Fase 1 (segura):
-  - Criar runtime_maestro.py comecando como OBSERVADOR (so loga, nao bloqueia)
-  - Guardian e widget passam a chamar maestro.pode_iniciar() em modo shadow
-  - Comparar decisoes: maestro X decisao atual. Se discordarem, loga WARN
-  Fase 2:
-  - Quando fase 1 mostrar 100% concordancia por 7 dias, modo ATIVO
-  - Componentes passam a obedecer a resposta do maestro
-  - Remover logicas duplicadas de singleton/cooldown de cada arquivo
-  Fase 3:
-  - vigilante.ps1 migrado pra Python OU passa a consultar maestro via
-    comando shell (python scripts/runtime_maestro.py pode_iniciar X)
-  - Documentar maestro como ponto unico em AGENTS.md
-riscos: |
-  - Se maestro cair, ninguem consegue iniciar servico: precisa de
-    fallback (se maestro nao responde em 5s, modo degraded = permite
-    tudo, mas loga ALERTA)
-  - Adicionar camada de complexidade. So vale a pena se a dor
-    continuar aparecendo.
-  - Cuidado para nao virar mais um fiscal duplicado (ja tivemos isso
-    com 2 guardians).
-beneficio_esperado: |
-  - Bug triplo do narrador: impossivel de voltar (singleton central)
-  - TTS duplicado: impossivel (cooldown central)
-  - Qualquer novo servico que alguem esquecer de coordenar: maestro
-    recusa automaticamente
-  - Um unico ponto de observacao (runtime/maestro_estado.json) pra
-    ver tudo que ta vivo
-alternativas_consideradas: |
-  A) Estender runtime_kernel.py pra cuidar de processos tambem.
-     Rejeitada: kernel e modullo de validacao de texto/resposta, nao
-     de processo. Misturar responsabilidades viola separacao.
-  B) Fazer Guardian ser o maestro (ele ja cuida de processos).
-     Rejeitada: Guardian e executado por alguem (vigilante). Maestro
-     precisa ser independente do executor.
-  C) Deixar como esta e so documentar.
-     Rejeitada: ja vimos que da bug. Nao tem coordenacao.
-decisao_pendente: |
-  Antes de implementar, o usuario precisa decidir:
-  1. Aprovar a proposta como esta?
-  2. Comecar por fase 1 (observador) ou ja ir pra ativa?
-  3. Quem deve ser o primeiro chamador migrado (guardian ou widget)?
+  Comandos (runtime/maestro_cmd.json):
+    {"cmd": "pode_iniciar", "script": "tts_service.py", "request_id": "abc"}
+    {"cmd": "registrar",    "script": "...", "pid": 1234, "owner": "guardian"}
+    {"cmd": "heartbeat",    "script": "...", "pid": 1234}
+    {"cmd": "parar",        "script": "..."}
+    {"cmd": "matar_duplicatas", "script": "..."}
+    {"cmd": "listar_vivos"}
+
+  Respostas (runtime/maestro_resp_<id>.json):
+    {"status": "ok|warn|error", "decisao": true|false, "motivo": "..."}
+
+  Sempre responde em até 1s. Se não responder em 5s, componente entra
+  em modo degraded (permite + ALERTA).
+fluxo_fase1_observador: |
+  1. Componente decide o que fazer (como hoje)
+  2. Componente escreve comando em maestro_cmd.json
+  3. Maestro observa e loga:
+     - O que componente QUER fazer
+     - O que componente FEZ de fato
+     - Se a decisão do componente bate com a recomendação do maestro
+  4. Se houver divergência, reporta WARN imediato (nao acumula)
+  5. Após 1-3 dias de observacao (cobre variacao de uso), passa pra fase 2
+     se nao houver divergencias criticas. 7 dias era conservador demais
+     para um sistema com regras deterministicas — ele nao aprende,
+     apenas executa logica conhecida.
+fluxo_fase2_ativo: |
+  1. Componente escreve comando em maestro_cmd.json
+  2. Maestro DECIDE: pode ou não pode
+  3. Componente só age se maestro respondeu "pode"
+  4. Se maestro não respondeu em 5s: modo degraded (age + ALERTA)
+  5. Loga todas decisões pra auditoria posterior
+fallback_detalhado: |
+  Modo degraded (maestro indisponível):
+  - Componente executa a ação normalmente
+  - Loga ALERTA no formato: [MAESTRO_OFFLINE] guardian tentou iniciar
+    tts_service sem resposta do maestro em 5s. Ação executada.
+  - Cada componente tem seu próprio cooldown local como segurança
+  - Após 3 ALERTAs consecutivos, watchdog tenta religar maestro
+  - Maestro tem heartbeat próprio; watchdog detecta queda
+anti_orfao_maestro: |
+  O maestro não pode ficar órfão:
+  - watchdog.ps1 vigia maestro.pid
+  - Se maestro cair, watchdog tenta religar em até 3x
+  - Se falhar 3x, sistema fica em degraded total (permite tudo +
+    ALERTA MÁXIMO a cada ação) até maestro voltar
+migracao_3_fases: |
+  Fase 1 (1-3 dias, observador):
+  - Criar runtime_maestro.py + livro_estado.json
+  - Componentes passam a logar o que fariam e o que fizeram
+  - Maestro compara mas não bloqueia
+  - Relatório: divergências por dia
+  Fase 2 (ativo):
+  - Maestro começa a bloquear ações conflitantes
+  - Componentes perdem autonomia de start_*
+  - Cooldown central substitui os cooldowns locais
+  Fase 3 (consolidação):
+  - vigilante.ps1 migrado pra maestro (Python único)
+  - Documentar maestro em AGENTS.md como ponto único
+  - Remover lógica de singleton/cooldown duplicada
+riscos_e_mitigacoes: |
+  Risco 1: Maestro vira mais um fiscal duplicado
+  Mitigação: fase 1 observa, não decide. Só ativa após validação.
+
+  Risco 2: Se maestro cair, ninguém inicia nada
+  Mitigação: fallback permite + ALERTA em 5s.
+
+  Risco 3: Adiciona latência (arquivo em disco)
+  Mitigação: comando/resp são minúsculos (<1KB). Disco local SSD.
+
+  Risco 4: Complexidade adicional sem ganho real
+  Mitigação: só continua se fase 1 mostrar bugs reais sendo prevenidos.
+testes_fase1:
+  - Maestro roda por 7 dias sem divergência
+  - Simular TTS duplicado: maestro detecta e loga WARN
+  - Simular widget fantasma: maestro detecta e loga WARN
+  - Derrubar maestro manualmente: todos os componentes continuam
+    funcionando com ALERTA visível
+  - Reload do maestro: nenhum serviço precisa reiniciar
 arquivos_seriam_criados:
-  - scripts/runtime_maestro.py
+  - scripts/runtime_maestro.py (daemon singleton)
+  - scripts/test_runtime_maestro.py (testes fase 1)
   - runtime/maestro_estado.json (gerado em runtime)
-arquivos_seriam_alterados:
-  - scripts/system_guardian.py (substituir start_* por chamada ao maestro)
-  - scripts/widget_edge.py (singleton narrador ja existe, alinhar com maestro)
-  - scripts/jarvis_bridge.py (start_http_server passa pelo maestro)
-  - config/agents/00-system-rules.md (documentar maestro como ponto unico)
-testes_pendentes:
-  - Fase 1: comparar decisoes atuais vs maestro por 7 dias
-  - Fase 2: matar um servico e confirmar que maestro recusa renascimento
-    imediato (cooldown funciona)
-  - Fase 3: rodar preflight e verificar 0 conflitos
+arquivos_seriam_alterados_fase2:
+  - scripts/system_guardian.py (start_* consultam maestro)
+  - scripts/widget_edge.py (singleton narrador alinha com maestro)
+  - scripts/jarvis_bridge.py (start_http_server consulta maestro)
+  - config/agents/00-system-rules.md (maestro como ponto único)
+proximos_passos:
+  1. Usuário aprova este rascunho (ou pede ajustes)
+  2. Implementar runtime_maestro.py mínimo (esqueleto + livro_estado)
+  3. Rodar fase 1 por 7 dias
+  4. Relatório de divergências
+  5. Decisão go/no-go pra fase 2
