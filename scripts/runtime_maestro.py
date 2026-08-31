@@ -31,6 +31,12 @@ import time
 import uuid
 from pathlib import Path
 
+# msvcrt e so Windows; fora do Windows o Maestro usa apenas os retry
+try:
+    import msvcrt
+except ImportError:
+    msvcrt = None
+
 ROOT = Path(__file__).resolve().parent.parent
 RUNTIME = ROOT / "runtime"
 CMD_FILE = RUNTIME / "maestro_cmd.json"
@@ -75,13 +81,58 @@ def _log(msg, level="INFO"):
 
 
 def _atomic_write(path: Path, data: dict):
-    """Escrita atomica (tmp + replace) para evitar corrupcao."""
+    """Escrita atomica (tmp + replace) tolerante a race condition do Windows.
+
+    No Windows, quando outro processo esta lendo o arquivo de destino,
+    o os.replace pode falhar com WinError 32. Estrategia em 3 camadas:
+
+    1. Retry com pequena espera (cobre race de curta duracao).
+    2. fsync no tmp antes do replace (garante dados no disco).
+    3. Se retry falhar, escreve direto no destino com lock de bytes
+       via msvcrt.locking (exclusivo no Windows).
+    """
     tmp = path.with_suffix(".tmp")
-    tmp.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    payload = json.dumps(data, ensure_ascii=False).encode("utf-8")
+    last_err = None
+    for tentativa in range(5):
+        try:
+            with open(tmp, "wb") as f:
+                f.write(payload)
+                f.flush()
+                os.fsync(f.fileno())
+            os.replace(tmp, path)
+            return
+        except (OSError, PermissionError) as e:
+            last_err = e
+            if tentativa < 4:
+                time.sleep(0.05 * (tentativa + 1))  # backoff crescente
+            continue
+    # 5 tentativas falhas: tenta escrita direta com lock Windows
+    if msvcrt is None:
+        _log(f"atomic_write falhou e msvcrt nao disponivel: {last_err}", "ERROR")
+        raise last_err
     try:
-        tmp.replace(path)
-    except OSError:
-        os.replace(tmp, path)
+        with open(path, "rb+") as f:
+            msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)  # 1 byte
+            try:
+                f.seek(0)
+                f.truncate()
+                f.write(payload)
+                f.flush()
+                os.fsync(f.fileno())
+            finally:
+                msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
+        return
+    except Exception as e:
+        # Se tudo falhar, loga e propaga o primeiro erro
+        _log(f"atomic_write falhou apos 5 retries + lock: {last_err} | lock={e}", "ERROR")
+        raise last_err
+    finally:
+        try:
+            if tmp.exists():
+                tmp.unlink()
+        except Exception:
+            pass
 
 
 def _read_estado():
