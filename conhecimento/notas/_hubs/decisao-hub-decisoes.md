@@ -1,6 +1,6 @@
 # Decisoes
 
-**80 notas** conectadas a este hub.
+**81 notas** conectadas a este hub.
 
 
 ## Notas
@@ -28,6 +28,7 @@
 - [[estilo-de-comunicação-simples-e-direto]]
 - [[estrategia-selecionada-por-ranking-cost-risk-time-complexity]]
 - [[fase-a-concluída-catálogo-real-no-supabase-64-obras-via-tmdb]]
+- [[fix-narrador-triplicado-e-resiliencia-orfaos]]
 - [[form-starts-empty-input-forms-never-auto-load-from-file-user]]
 - [[form-starts-empty-input-forms-nunca-auto-carregam-arquivo-ao]]
 - [[habilidades-de-jarvis-seguem-taxonomia-de-3-niveis]]

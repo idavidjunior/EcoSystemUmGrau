@@ -50,6 +50,16 @@ NARR_LOG = SCRIPTS / "narrador_desktop_log.txt"
 EXCLUIR_PADRAO = ["watchdog-health"]
 DEBOUNCE_S = 0.5
 
+# Singleton do narrador — UMA thread por processo, UMA por PID.
+# Antes deste lock, o main() e o poller() podiam criar 2 (ou 3) threads
+# narradoras paralelas, cada uma chamando _flush() para as mesmas partes
+# do SQLite → 2-3 logs idênticos por evento.
+_NARRADOR_LOCK = threading.Lock()
+_NARRADOR_INSTANCIA = None  # a Thread viva
+_NARRADOR_PID = None        # PID que possui a thread
+_NARRADOR_TID = None        # thread id da thread viva
+NARRADOR_REGISTRO = RUNTIME / "narrador_thread.json"  # {pid, tid, ts}
+
 # Dedup COMPARTILHADO em disco (fonte única de narração: este widget).
 try:
     from narrador_dedup import ja_falado
@@ -636,30 +646,104 @@ class _Narrador:
             self.timer.cancel()
 
 
+def _narrador_thread_esta_viva(pid_alvo, tid_alvo):
+    """Verifica se a thread (pid, tid) ainda está viva.
+
+    Retorna False se morreu ou se outra thread tomou o lugar."""
+    with _NARRADOR_LOCK:
+        if _NARRADOR_INSTANCIA is None:
+            return False
+        if _NARRADOR_PID != pid_alvo or _NARRADOR_TID != tid_alvo:
+            return False
+        return _NARRADOR_INSTANCIA.is_alive()
+
+
+def _adquirir_singleton_narrador():
+    """Tenta se registrar como thread narradora ÚNICA deste PID.
+
+    Retorna True se conseguiu (caller deve rodar o loop).
+    Retorna False se JÁ existe outra thread narrativa viva — caller aborta.
+    """
+    global _NARRADOR_INSTANCIA, _NARRADOR_PID, _NARRADOR_TID
+    with _NARRADOR_LOCK:
+        if _NARRADOR_INSTANCIA is not None and _NARRADOR_INSTANCIA.is_alive():
+            return False
+        _NARRADOR_PID = os.getpid()
+        _NARRADOR_TID = threading.get_ident()
+        t = threading.Thread(target=_narrador_loop, daemon=True,
+                             name=f"narrador-{_NARRADOR_PID}-{_NARRADOR_TID}")
+        _NARRADOR_INSTANCIA = t
+        t.start()
+        return True
+
+
+def iniciar_narrador_thread():
+    """PORTA ÚNICA para iniciar o narrador.
+
+    Use isto no main() e no watchdog do poller — em vez de criar Thread
+    diretamente. Garante singleton por PID e evita o bug de múltiplas
+    threads narradoras (causa do log triplicado).
+    """
+    with _NARRADOR_LOCK:
+        # Já existe thread viva neste PID? Não cria outra.
+        if _NARRADOR_INSTANCIA is not None and _NARRADOR_INSTANCIA.is_alive():
+            return False
+    return _adquirir_singleton_narrador()
+
+
 def _narrador_loop():
-    """Thread interna: lê SQLite, alimenta narrador, envia TTS."""
+    """Thread interna: lê SQLite, alimenta narrador, envia TTS.
+
+    Proteções anti-duplicidade (causa raiz do bug tríplice):
+    - Singleton por PID via _NARRADOR_LOCK + _NARRADOR_INSTANCIA
+    - Dedup em memória do último texto processado (evita log triplo mesmo
+      em race entre duas threads que escapem do singleton)
+    - Heartbeat agora inclui thread-id para o poller identificar quem é dono
+    """
+    global _NARRADOR_INSTANCIA, _NARRADOR_PID, _NARRADOR_TID
+    pid = os.getpid()
+    tid = threading.get_ident()
     pos = _ler_posicao_narrador()
     narrador = _Narrador("assistant")
     _log_narr("narrador integrado ao widget")
     ultimo_ts = pos.get("ultimo_ts", 0)
+    # Dedup em memória: (ts, primeiros 80 chars do texto) já visto nesta thread
+    vistos = set()
     try:
         conn = _conectar_narrador()
     except Exception as e:
         _log_narr(f"falha ao conectar banco: {e}")
+        with _NARRADOR_LOCK:
+            if _NARRADOR_PID == pid and _NARRADOR_TID == tid:
+                _NARRADOR_INSTANCIA = None
+                _NARRADOR_PID = None
+                _NARRADOR_TID = None
         return
     try:
         while True:
-            # Heartbeat para watchdog
+            # Heartbeat para watchdog (inclui tid para diagnóstico)
             try:
-                NARRADOR_HEARTBEAT.write_text(json.dumps({"ts": time.time(), "pid": os.getpid()}), encoding="utf-8")
+                NARRADOR_HEARTBEAT.write_text(
+                    json.dumps({"ts": time.time(), "pid": pid, "tid": tid}),
+                    encoding="utf-8",
+                )
             except Exception:
                 pass
             ativo = _estado_narrador_ativo()
             novas = _partes_novas(conn, ultimo_ts, EXCLUIR_PADRAO)
             if novas:
-                # Filtro inteligente por mensagem: só entra no buffer o que vale narrar
+                # Filtro inteligente por mensagem: só entra no buffer o que vale narrar.
+                # Dedup em memória: se a mesma parte já foi vista nesta thread,
+                # não loga nem processa de novo (defesa contra race entre threads).
                 textos = []
                 for ts, sid, titulo, t in novas:
+                    chave = (ts, t[:80])
+                    if chave in vistos:
+                        continue
+                    vistos.add(chave)
+                    # Limpa vistos antigos para não crescer indefinidamente
+                    if len(vistos) > 2000:
+                        vistos.clear()
                     deve, motivo = _deve_narrar(t)
                     if deve:
                         textos.append(t)
@@ -683,6 +767,13 @@ def _narrador_loop():
             time.sleep(0.5)
     except Exception:
         _log_narr("narrador thread encerrada")
+    finally:
+        # Libera o singleton para que watchdog possa recriar se morrer de vez
+        with _NARRADOR_LOCK:
+            if _NARRADOR_PID == pid and _NARRADOR_TID == tid:
+                _NARRADOR_INSTANCIA = None
+                _NARRADOR_PID = None
+                _NARRADOR_TID = None
 
 
 # ---------------------------------------------------------------------------
@@ -1045,27 +1136,26 @@ def poller(api):
 
     ultima = None
     vez_camada = 0
-    narrador_thread = None
     while True:
         # voz ligada pede ritmo maior (barra de mic e estados ao vivo)
         time.sleep(1 if api.voz_ligada() else 2)
-        # Watchdog do narrador: verifica heartbeat e reinicia thread se morta
+        # Watchdog do narrador: usa porta única iniciar_narrador_thread().
+        # Antes: criava Thread diretamente e podia duplicar a do main().
+        # Agora: verifica singleton por PID e só cria se ninguém vivo.
         try:
+            with _NARRADOR_LOCK:
+                vivo = (_NARRADOR_INSTANCIA is not None
+                        and _NARRADOR_INSTANCIA.is_alive())
+            if vivo:
+                continue  # narrador já roda, nada a fazer
             if NARRADOR_HEARTBEAT.exists():
                 hb = json.loads(NARRADOR_HEARTBEAT.read_text(encoding="utf-8"))
                 idade = time.time() - float(hb.get("ts", 0))
-                if idade > 10:  # heartbeat parado há >10s
+                if idade > 10:
                     _log_narr(f"watchdog: heartbeat parado ha {idade:.0f}s, reiniciando thread")
-                    # A thread daemon morre sozinha; basta criar nova
-                    import threading
-                    narrador_thread = threading.Thread(target=_narrador_loop, daemon=True)
-                    narrador_thread.start()
+                    iniciar_narrador_thread()
             else:
-                # Sem heartbeat ainda — inicia thread se não existir
-                if narrador_thread is None or not narrador_thread.is_alive():
-                    import threading
-                    narrador_thread = threading.Thread(target=_narrador_loop, daemon=True)
-                    narrador_thread.start()
+                iniciar_narrador_thread()
         except Exception as e:
             _log_narr(f"watchdog erro: {e}")
         # cura de deriva: camada desejada vs bit real da janela
@@ -1216,7 +1306,7 @@ def main():
         print(f"moved handler indisponivel: {e}", flush=True)
 
     threading.Thread(target=poller, args=(api,), daemon=True).start()
-    threading.Thread(target=_narrador_loop, daemon=True).start()
+    iniciar_narrador_thread()
     try:
         webview.start()
     finally:

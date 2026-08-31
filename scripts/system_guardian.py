@@ -624,6 +624,123 @@ def cleanup_orphan_cli():
     return mortos, preservados
 
 
+# Scripts críticos do ecossistema que devem ter APENAS UMA instância viva.
+# Se dois PIDs rodando o mesmo script coexistirem, o mais novo é órfão e
+# deve ser morto — origem do bug "narrador repete 3x" (3 threads narradoras).
+SCRIPTS_SINGLETON = frozenset({
+    "widget_edge.py",      # narrador integrado (causa do bug)
+    "jarvis_bridge.py",
+    "tts_service.py",
+    "dialogo.py",
+    "system_guardian.py",  # protege-se também (não pode haver 2 guardas)
+})
+
+
+def cleanup_duplicate_scripts():
+    """Detecta e mata PIDs duplicados do mesmo script.
+
+    Regra: se houver 2+ processos python rodando o mesmo script (em
+    SCRIPTS_SINGLETON), o mais NOVO (maior create_time) é considerado
+    órfão e morto. Protege serviços Eco antes de qualquer ação.
+
+    Não toca o OpenCode desktop (opencode-aidesktop). Não toca MCPs
+    (cada um tem seu próprio lock e vida curta).
+
+    Retorna (mortos, preservados, erros).
+    """
+    from collections import defaultdict
+    mortos = 0
+    preservados = 0
+    erros = 0
+    pid_arquivo = {
+        "widget_edge.py": BASE / "runtime" / "widget.pid",
+        "jarvis_bridge.py": BASE / "runtime" / "jarvis_bridge.pid",
+        "tts_service.py": BASE / "runtime" / "tts_service.pid",
+        "dialogo.py": BASE / "runtime" / "dialogo.pid",
+        "system_guardian.py": BASE / "runtime" / "system_guardian.pid",
+    }
+    agrupado = defaultdict(list)
+    try:
+        for p in psutil.process_iter(["pid", "name", "cmdline", "create_time"]):
+            try:
+                info = p.info
+                if (info["name"] or "").lower() != "python.exe":
+                    continue
+                cmd = " ".join(info["cmdline"] or [])
+                if not cmd:
+                    continue
+                # Filtra só scripts do singleton
+                for script in SCRIPTS_SINGLETON:
+                    if script in cmd:
+                        agrupado[script].append(info)
+                        break
+            except (psutil.NoSuchProcess, psutil.AccessDenied):
+                continue
+    except Exception as e:
+        log.error(f"cleanup_duplicate_scripts erro varrendo: {e}")
+        erros += 1
+        return 0, 0, erros
+
+    for script, lista in agrupado.items():
+        if len(lista) <= 1:
+            preservados += len(lista)
+            continue
+        # Ordena do mais antigo (mantém) para o mais novo (mata)
+        lista.sort(key=lambda i: i.get("create_time") or 0)
+        dono = lista[0]
+        orfaos = lista[1:]
+        pid_file = pid_arquivo.get(script)
+        # Mata órfãos (pula se for o dono registrado no pid_file)
+        pid_dono_registrado = None
+        if pid_file and pid_file.exists():
+            try:
+                pid_dono_registrado = int(pid_file.read_text().strip())
+            except Exception:
+                pass
+        for orfao in orfaos:
+            opid = orfao["pid"]
+            if pid_dono_registrado and opid == pid_dono_registrado:
+                # Este é o dono segundo o pid_file — preserva e mata o "antigo"
+                if dono["pid"] != opid:
+                    try:
+                        proc = psutil.Process(dono["pid"])
+                        proc.terminate()
+                        try:
+                            proc.wait(timeout=3)
+                        except psutil.TimeoutExpired:
+                            proc.kill()
+                        mortos += 1
+                        log.warning(
+                            f"Duplicata {script}: PID {dono['pid']} (antigo) morto — "
+                            f"dono registrado no pid_file é {opid}"
+                        )
+                    except Exception as e:
+                        log.error(f"Erro ao matar duplicata {dono['pid']}: {e}")
+                        erros += 1
+                continue
+            try:
+                proc = psutil.Process(opid)
+                proc.terminate()
+                try:
+                    proc.wait(timeout=3)
+                except psutil.TimeoutExpired:
+                    proc.kill()
+                mortos += 1
+                log.warning(
+                    f"Duplicata {script}: PID {opid} (novo) morto — "
+                    f"dono legítimo é PID {dono['pid']}"
+                )
+            except Exception as e:
+                log.error(f"Erro ao matar duplicata {opid}: {e}")
+                erros += 1
+    if mortos or erros:
+        log.info(
+            f"Anti-orfao scripts: {mortos} duplicatas mortas, "
+            f"{preservados} preservados, {erros} erros"
+        )
+    return mortos, preservados, erros
+
+
 def save_state(state):
     with open(STATE_FILE, "w", encoding="utf-8") as f:
         json.dump(state, f, indent=2, ensure_ascii=False)
@@ -675,6 +792,13 @@ def check_and_act():
     # Limpeza de orfaos CLI (antes no watchdog.ps1; agora unico dono da saude
     # de processos no PC). Nunca toca desktop/serve/eco.
     cleanup_orphan_cli()
+    # Anti-órfão: mata duplicatas do mesmo script (causa do bug narrador
+    # repetindo 3x). Roda ANTES de checar serviços, para o que sobrar ser o
+    # dono legítimo.
+    m, p_, e = cleanup_duplicate_scripts()
+    if m or e:
+        state["actions"].append({"action": "kill_script_duplicates",
+                                 "mortos": m, "erros": e})
 
     ram_mb = get_ram_mb()
     disk_gb = get_disk_free_gb()

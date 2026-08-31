@@ -100,6 +100,7 @@ HKUDS/CLI-Anything (MIT), metodologia GUI-to-CLI em 7 fases: análise do codebas
 - [[evolução-do-tts-jarvis-naturalidade-via-ssml]]
 - [[fase-a-concluída-catálogo-real-no-supabase-64-obras-via-tmdb]]
 - [[fase3-rotina-automatica-de-tiragem-organizacional]]
+- [[fix-narrador-triplicado-e-resiliencia-orfaos]]
 - [[fix-widget-grafo-desktop]]
 - [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]
 - [[gramática-do-português-brasileiro-guia-prático-do-dia-a-dia]]
