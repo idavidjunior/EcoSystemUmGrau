@@ -1,0 +1,7 @@
+# Dependências isoladas do gui-desktop.
+# Instalar em venv dedicado para não contaminar o ambiente principal.
+# Recomendado: python -m venv .venv-gui && .venv-gui\Scripts\activate && pip install -r gui-desktop/requirements-gui.txt
+PyQt6>=6.6
+sounddevice>=0.4.6
+numpy>=1.24
+websockets>=12.0

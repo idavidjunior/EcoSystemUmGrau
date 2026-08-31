@@ -151,6 +151,7 @@ Probe MCP padrão (framing correto) agora responde:
 - [[importação-de-pasta-preservando-árvore-remoção-de-referência]]
 - [[janela-flutuante-para-visuais-sem-navegador]]
 - [[jarvis-do-celular-e-do-pc-um-só-cérebro-arquitetura-sincroni]]
+- [[jarvis-gui-desktop-referencia]]
 - [[junkscanner-benchmark-do-scan-incremental]]
 - [[junkscanner-scan-incremental-cache-de-hash-memoização]]
 - [[ler-specs-sdd-hook]]
