@@ -311,13 +311,27 @@ def daemon_loop():
                     last_cleanup = time.time()
 
                 # 1. Le arquivo global maestro_cmd.json (compat)
+                #    Com retry: arquivo pode estar em uso por outro processo
                 if CMD_FILE.exists():
                     mtime = CMD_FILE.stat().st_mtime
                     if mtime != last_mtime_global:
                         last_mtime_global = mtime
+                        # Retry ate 3x se outro processo esta escrevendo
+                        cmd = None
+                        for tentativa in range(3):
+                            try:
+                                cmd = json.loads(CMD_FILE.read_text(encoding="utf-8-sig"))
+                                CMD_FILE.unlink(missing_ok=True)
+                                break
+                            except (OSError, PermissionError):
+                                # WinError 32 = arquivo em uso. Aguarda e tenta de novo
+                                time.sleep(0.05)
+                            except Exception as e:
+                                _log(f"erro lendo cmd global: {e}", "ERROR")
+                                break
+                        if cmd is None:
+                            continue
                         try:
-                            cmd = json.loads(CMD_FILE.read_text(encoding="utf-8-sig"))
-                            CMD_FILE.unlink(missing_ok=True)
                             req_id = cmd.get("request_id", str(uuid.uuid4())[:8])
                             if req_id in seen_per_req:
                                 continue
@@ -325,6 +339,9 @@ def daemon_loop():
                             resp = processar_comando(cmd)
                             _write_resp(req_id, resp)
                             _log(f"cmd={cmd.get('cmd')} script={cmd.get('script','-')} resp={resp}")
+                        except (OSError, PermissionError) as e:
+                            # WinError 32 tambem pode ocorrer no _write_resp
+                            _log(f"erro processando cmd global (lock): {e}", "ERROR")
                         except Exception as e:
                             _log(f"erro processando cmd global: {e}", "ERROR")
 
@@ -333,14 +350,27 @@ def daemon_loop():
                     req_id_part = f.stem.replace("maestro_cmd_", "")
                     if req_id_part in seen_per_req:
                         continue
+                    cmd = None
+                    for tentativa in range(3):
+                        try:
+                            cmd = json.loads(f.read_text(encoding="utf-8-sig"))
+                            f.unlink(missing_ok=True)
+                            break
+                        except (OSError, PermissionError):
+                            time.sleep(0.05)
+                        except Exception as e:
+                            _log(f"erro lendo cmd req: {e}", "ERROR")
+                            break
+                    if cmd is None:
+                        continue
                     try:
-                        cmd = json.loads(f.read_text(encoding="utf-8-sig"))
-                        f.unlink(missing_ok=True)
                         req_id = cmd.get("request_id", req_id_part)
                         seen_per_req.add(req_id)
                         resp = processar_comando(cmd)
                         _write_resp(req_id, resp)
                         _log(f"cmd(req)={cmd.get('cmd')} script={cmd.get('script','-')} resp={resp}")
+                    except (OSError, PermissionError) as e:
+                        _log(f"erro processando cmd req (lock): {e}", "ERROR")
                     except Exception as e:
                         _log(f"erro processando cmd req: {e}", "ERROR")
 
@@ -397,14 +427,16 @@ def main():
         script = sys.argv[2] if len(sys.argv) > 2 else ""
         print(json.dumps(matar_duplicatas(script), indent=2, ensure_ascii=False))
     elif cmd == "registrar":
-        # registrar <script> <pid> <owner>
         if len(sys.argv) < 4:
             print("uso: registrar <script> <pid> <owner>")
             return 1
         print(json.dumps(registrar(sys.argv[2], int(sys.argv[3]), sys.argv[4] if len(sys.argv) > 4 else "?")))
+    elif cmd == "parar":
+        script = sys.argv[2] if len(sys.argv) > 2 else ""
+        print(json.dumps(parar(script), indent=2, ensure_ascii=False))
     else:
         print(f"comando desconhecido: {cmd}")
-        print("uso: runtime_maestro.py [status|loop|listar|pode_iniciar <script>|matar_duplicatas <script>|registrar <script> <pid> <owner>]")
+        print("uso: runtime_maestro.py [status|loop|listar|pode_iniciar <script>|matar_duplicatas <script>|registrar <script> <pid> <owner>|parar <script>]")
         return 1
     return 0
 

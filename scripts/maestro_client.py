@@ -34,18 +34,34 @@ def consultar_maestro(cmd: str, **kwargs) -> dict:
     Returns:
         dict da resposta do maestro, ou {"status": "offline"} se nao respondeu.
     """
+    # PRIMEIRO: verifica se maestro esta vivo. Sem isso, resposta cacheada
+    # antiga do maestro anterior poderia ser lida como se fosse atual.
+    if not maestro_disponivel():
+        return {"status": "offline", "motivo": "maestro_nao_esta_rodando"}
+
     req_id = str(uuid.uuid4())[:8]
     payload = {"cmd": cmd, "request_id": req_id, **kwargs}
+
+    # Limpa resposta antiga deste mesmo req_id (se sobrou de chamada anterior)
+    resp_file = RUNTIME / f"maestro_resp_{req_id}.json"
+    resp_file.unlink(missing_ok=True)
 
     # Estrategia: arquivo unico por request, evita race com o maestro
     # deletando o cmd global. Maestro procura em maestro_cmd.json e em
     # maestro_cmd_<id>.json (fallback).
     cmd_file_req = RUNTIME / f"maestro_cmd_{req_id}.json"
     tmp = cmd_file_req.with_suffix(".tmp")
-    try:
-        tmp.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
-        os.replace(tmp, cmd_file_req)
-    except OSError:
+    # Retry ate 3x pra evitar WinError 32 (arquivo em uso)
+    escrito = False
+    for tentativa in range(3):
+        try:
+            tmp.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+            os.replace(tmp, cmd_file_req)
+            escrito = True
+            break
+        except OSError:
+            time.sleep(0.05)
+    if not escrito:
         return {"status": "offline", "motivo": "falha_escrita_cmd"}
 
     # Tambem tenta no arquivo global (compatibilidade)
@@ -57,11 +73,15 @@ def consultar_maestro(cmd: str, **kwargs) -> dict:
         pass  # nao bloqueia se o global falhar
 
     # Aguarda resposta
-    resp_file = RUNTIME / f"maestro_resp_{req_id}.json"
     t0 = time.time()
     while time.time() - t0 < TIMEOUT_S:
         if resp_file.exists():
             try:
+                # Verifica novamente se maestro ainda esta vivo antes de ler
+                if not maestro_disponivel():
+                    resp_file.unlink(missing_ok=True)
+                    cmd_file_req.unlink(missing_ok=True)
+                    return {"status": "offline", "motivo": "maestro_caiu_durante_consulta"}
                 resp = json.loads(resp_file.read_text(encoding="utf-8"))
                 resp_file.unlink(missing_ok=True)
                 cmd_file_req.unlink(missing_ok=True)
