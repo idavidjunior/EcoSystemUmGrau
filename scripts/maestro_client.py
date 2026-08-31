@@ -9,6 +9,7 @@ Uso:
     # ... faz a acao ...
 """
 import json
+import os
 import time
 import uuid
 from pathlib import Path
@@ -36,16 +37,24 @@ def consultar_maestro(cmd: str, **kwargs) -> dict:
     req_id = str(uuid.uuid4())[:8]
     payload = {"cmd": cmd, "request_id": req_id, **kwargs}
 
-    # Escrita atomica do comando
-    tmp = CMD_FILE.with_suffix(".tmp")
-    tmp.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+    # Estrategia: arquivo unico por request, evita race com o maestro
+    # deletando o cmd global. Maestro procura em maestro_cmd.json e em
+    # maestro_cmd_<id>.json (fallback).
+    cmd_file_req = RUNTIME / f"maestro_cmd_{req_id}.json"
+    tmp = cmd_file_req.with_suffix(".tmp")
     try:
-        tmp.replace(CMD_FILE)
+        tmp.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+        os.replace(tmp, cmd_file_req)
     except OSError:
-        try:
-            tmp.replace(CMD_FILE)
-        except OSError:
-            return {"status": "offline", "motivo": "falha_escrita_cmd"}
+        return {"status": "offline", "motivo": "falha_escrita_cmd"}
+
+    # Tambem tenta no arquivo global (compatibilidade)
+    try:
+        tmp2 = CMD_FILE.with_suffix(".tmp")
+        tmp2.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+        os.replace(tmp2, CMD_FILE)
+    except OSError:
+        pass  # nao bloqueia se o global falhar
 
     # Aguarda resposta
     resp_file = RUNTIME / f"maestro_resp_{req_id}.json"
@@ -55,10 +64,12 @@ def consultar_maestro(cmd: str, **kwargs) -> dict:
             try:
                 resp = json.loads(resp_file.read_text(encoding="utf-8"))
                 resp_file.unlink(missing_ok=True)
+                cmd_file_req.unlink(missing_ok=True)
                 return resp
             except Exception:
                 pass
         time.sleep(0.05)
+    cmd_file_req.unlink(missing_ok=True)
     return {"status": "offline", "motivo": "timeout"}
 
 

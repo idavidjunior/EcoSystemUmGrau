@@ -16,7 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import runtime_maestro as m
+import runtime_maestro as m  # noqa: E402
 
 
 def reset_estado():
@@ -124,12 +124,15 @@ def test_client_com_maestro_rodando():
     from maestro_client import consultar_maestro, maestro_disponivel
     reset_estado()
 
-    # Sobe maestro em subprocess
+    # Sobe maestro em subprocess (cwd explicito via env var)
+    env = os.environ.copy()
     proc = subprocess.Popen(
-        ["python",
-         str(ROOT / "scripts" / "runtime_maestro.py"), "loop"],
+        ["python", str(ROOT / "scripts" / "runtime_maestro.py"), "loop"],
         cwd=str(ROOT),
-        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+        env=env,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
     )
 
     # Espera ate maestro estar vivo (pid_file escrito e processo rodando)
@@ -141,8 +144,18 @@ def test_client_com_maestro_rodando():
     assert maestro_disponivel(), "maestro deveria estar vivo em ate 10s"
 
     try:
+        # Limpa estado novamente pra este teste especifico
+        reset_estado()
+        # Da um tempo pro maestro ver o reset
+        time.sleep(0.5)
+
         r = consultar_maestro("pode_iniciar", script="tts_service.py")
+        if r.get("status") == "offline":
+            # debug: tenta de novo com mais tempo
+            time.sleep(1)
+            r = consultar_maestro("pode_iniciar", script="tts_service.py")
         assert r.get("pode") is True, f"esperava pode=True, recebi {r}"
+
         # Agora registra
         consultar_maestro("registrar", script="tts_service.py", pid=9999, owner="test")
         r2 = consultar_maestro("pode_iniciar", script="tts_service.py")

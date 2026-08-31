@@ -258,19 +258,20 @@ def processar_comando(cmd: dict) -> dict:
 
 
 def _write_resp(req_id: str, resposta: dict):
-    """Escreve resposta em maestro_resp_<req_id>.json."""
+    """Escreve resposta em maestro_resp_<req_id>.json.
+
+    O cliente le este arquivo e DEPOIS deleta. Se o maestro deletasse
+    logo apos escrever, o cliente nunca teria tempo de ler.
+    Cleanup de arquivos orfaos (>10min) e feito por _limpar_resp_antigas().
+    """
     if not req_id:
         return
     resp_file = RUNTIME / f"maestro_resp_{req_id}.json"
     _atomic_write(resp_file, resposta)
-    try:
-        resp_file.unlink()  # Limpa apos escrever (caller ja leu?)
-    except Exception:
-        pass
 
 
 def _limpar_resp_antigas(max_age_sec: int = 600):
-    """Remove arquivos de resposta com mais de 10 min."""
+    """Remove arquivos de resposta com mais de 10 min (cleanup periodico)."""
     try:
         agora = time.time()
         for f in RUNTIME.glob("maestro_resp_*.json"):
@@ -289,8 +290,18 @@ def daemon_loop():
     _MAESTRO_PID = os.getpid()
     PID_FILE.write_text(str(_MAESTRO_PID), encoding="utf-8")
     _log(f"maestro iniciado pid={_MAESTRO_PID} fase=observador")
-    last_mtime = 0
+    # Quando rodando em background (subprocess sem terminal), garante que
+    # print nao trava esperando stdout. Redireciona para o log.
+    if sys.stdout is None or sys.stderr is None:
+        try:
+            sf = open(LOG_FILE, "a", buffering=1, encoding="utf-8")
+            sys.stdout = sf
+            sys.stderr = sf
+        except Exception:
+            pass
+    last_mtime_global = 0
     last_cleanup = 0
+    seen_per_req = set()  # request_ids ja processados
     try:
         while True:
             try:
@@ -299,19 +310,44 @@ def daemon_loop():
                     _limpar_resp_antigas()
                     last_cleanup = time.time()
 
+                # 1. Le arquivo global maestro_cmd.json (compat)
                 if CMD_FILE.exists():
                     mtime = CMD_FILE.stat().st_mtime
-                    if mtime != last_mtime:
-                        last_mtime = mtime
+                    if mtime != last_mtime_global:
+                        last_mtime_global = mtime
                         try:
                             cmd = json.loads(CMD_FILE.read_text(encoding="utf-8-sig"))
                             CMD_FILE.unlink(missing_ok=True)
                             req_id = cmd.get("request_id", str(uuid.uuid4())[:8])
+                            if req_id in seen_per_req:
+                                continue
+                            seen_per_req.add(req_id)
                             resp = processar_comando(cmd)
                             _write_resp(req_id, resp)
                             _log(f"cmd={cmd.get('cmd')} script={cmd.get('script','-')} resp={resp}")
                         except Exception as e:
-                            _log(f"erro processando comando: {e}", "ERROR")
+                            _log(f"erro processando cmd global: {e}", "ERROR")
+
+                # 2. Le arquivos per-request maestro_cmd_<id>.json (race-safe)
+                for f in RUNTIME.glob("maestro_cmd_*.json"):
+                    req_id_part = f.stem.replace("maestro_cmd_", "")
+                    if req_id_part in seen_per_req:
+                        continue
+                    try:
+                        cmd = json.loads(f.read_text(encoding="utf-8-sig"))
+                        f.unlink(missing_ok=True)
+                        req_id = cmd.get("request_id", req_id_part)
+                        seen_per_req.add(req_id)
+                        resp = processar_comando(cmd)
+                        _write_resp(req_id, resp)
+                        _log(f"cmd(req)={cmd.get('cmd')} script={cmd.get('script','-')} resp={resp}")
+                    except Exception as e:
+                        _log(f"erro processando cmd req: {e}", "ERROR")
+
+                # Limpa seen_per_req periodicamente
+                if len(seen_per_req) > 500:
+                    seen_per_req.clear()
+
             except KeyboardInterrupt:
                 _log("encerrando por KeyboardInterrupt")
                 break
