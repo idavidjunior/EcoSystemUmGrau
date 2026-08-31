@@ -32,7 +32,7 @@ from PyQt6.QtGui import (
 )
 from PyQt6.QtWidgets import QWidget
 
-from gui_desktop.core.state import JarvisState
+from gui_desktop.core.state import JarvisState  # noqa: F401  (resolvido pelo shim em main.py)
 
 PARTICLE_COUNT = 60
 BAR_COUNT = 40

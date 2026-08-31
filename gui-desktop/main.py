@@ -12,12 +12,41 @@ import logging
 import sys
 from pathlib import Path
 
+# Pacote se chama gui-desktop (kebab-case), mas Python precisa de identificador
+# valido para import. Adicionamos a pasta do projeto ao sys.path e usamos
+# importlib para carregar modulos com nome canonico "gui_desktop.*".
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+import importlib.util as _ilu
+import types as _types
+
+def _load(name: str, file_path: str) -> _types.ModuleType:
+    spec = _ilu.spec_from_file_location(name, file_path)
+    mod = _ilu.module_from_spec(spec)
+    sys.modules[name] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+_pkg_name = "gui_desktop"
+_pkg_root = Path(__file__).resolve().parent
+sys.modules.setdefault(_pkg_name, _types.ModuleType(_pkg_name))
+sys.modules[_pkg_name].__path__ = [str(_pkg_root)]
+
+_load(f"{_pkg_name}.core", str(_pkg_root / "core" / "__init__.py"))
+_state = _load(f"{_pkg_name}.core.state", str(_pkg_root / "core" / "state.py"))
+_streaming = _load(f"{_pkg_name}.core.streaming", str(_pkg_root / "core" / "streaming.py"))
+_agent_bridge = _load(f"{_pkg_name}.core.agent_bridge", str(_pkg_root / "core" / "agent_bridge.py"))
+_load(f"{_pkg_name}.ui", str(_pkg_root / "ui" / "__init__.py"))
+_hud = _load(f"{_pkg_name}.ui.hud_overlay", str(_pkg_root / "ui" / "hud_overlay.py"))
+
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtWidgets import QApplication
 
-from gui_desktop.core.agent_bridge import AgentBridge
-from gui_desktop.core.state import JarvisState
-from gui_desktop.ui.hud_overlay import HUDOverlay
+AgentBridge = _agent_bridge.AgentBridge
+JarvisState = _state.JarvisState
+HUDOverlay = _hud.HUDOverlay
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("gui-desktop")
