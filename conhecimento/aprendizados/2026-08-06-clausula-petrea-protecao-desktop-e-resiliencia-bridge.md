@@ -161,6 +161,7 @@ inexistente e auto-PID sem excecao.
 - [[fix-widget-grafo-desktop]]
 - [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]
 - [[gramática-do-português-brasileiro-guia-prático-do-dia-a-dia]]
+- [[gui-desktop-desativada-edge-e-cerebro-vivo]]
 - [[gui-remover-chatpanel]]
 - [[habilidade-navegação-perita-internet-pc-e-celular]]
 - [[idioma-padrao-pt-br]]
