@@ -1,7 +1,7 @@
 ---
 tags: [2024, cognitivo, general, manufacture, serialnumber, similares]
 aliases: [# Guia: Controle Total de TV LG webOS (reaproveitável)]
-date: 2026-08-31
+date: 2026-09-01
 ---
 
 # # Guia: Controle Total de TV LG webOS (reaproveitável)

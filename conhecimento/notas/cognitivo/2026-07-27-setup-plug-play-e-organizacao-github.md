@@ -1000,6 +1000,33 @@ Rodou `python tests/test_integration.py` no `ler-runtime/`.
 - test_smoke.py: 2 marcadores
 - consolidate_build_pipeline.py: 6 marcadores
 - flutter
+
+﻿# 2026-09-01 - Scan proativo: agenticSeek-analysis
+## Marcadores encontrados
+- searxSearch.py: 2 marcadores
+- webSearch.py: 1 marcadores
+- router.py: 1 marcadores
+- text_to_speech.py: 2 marcadores
+
+
+
+﻿# 2026-09-01 - Scan proativo: EcoSystemUmGrau
+## Marcadores encontrados
+- api.py: 7 marcadores
+- backend_ctypes.py: 4 marcadores
+- cparser.py: 16 marcadores
+- ffiplatform.py: 2 marcadores
+- model.py: 3 marcadores
+- recompiler.py: 4 marcadores
+- setuptools_ext.py: 2 marcadores
+- vengine_cpy.py: 10 marcadores
+- vengine_gen.py: 10 marcadores
+- test_docs.py: 2 marcadores
+- test_f2py2e.py: 50 marcadores
+- _meson.py: 2 marcadores
+- capi_maps.py: 4 marcadores
+- cfuncs.py: 10 marcadores
+- crackfortran.
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]

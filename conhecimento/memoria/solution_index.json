@@ -1802,6 +1802,22 @@
         "mp3player"
       ],
       "tem_solucao": false
+    },
+    {
+      "id": 640,
+      "task": "conserto serve modelo morto conversa com eco",
+      "summary": "O modelo deepseek-ai/deepseek-v4-flash morreu (410 Gone) e quebrava a janela Conversa com Eco. Troquei para deepseek-ai/deepseek-v4-flash-0731 no config global (~/.config/opencode/opencode.jsonc). O s",
+      "tags": [
+        "rascunho",
+        "baixa-confianca",
+        "janela",
+        "quebrava",
+        "gone",
+        "410",
+        "eco",
+        "morreu"
+      ],
+      "tem_solucao": false
     }
   ],
   "solucoes": [
@@ -2141,11 +2157,11 @@
       "erro_task": "EQ distorce em boost alto",
       "solucao_desc": "Substituir coerceIn por tanh soft-clipping + peak limiter",
       "tags": [
-        "soft",
-        "peak",
-        "clipping",
         "limiter",
-        "tanh"
+        "clipping",
+        "tanh",
+        "peak",
+        "soft"
       ]
     },
     {
@@ -2154,10 +2170,10 @@
       "solucao_desc": "Mudar separador de virgula para newline",
       "tags": [
         "virgula",
-        "corrompido",
-        "separador",
         "newline",
-        "mudar"
+        "mudar",
+        "separador",
+        "corrompido"
       ]
     },
     {
@@ -2166,9 +2182,9 @@
       "solucao_desc": "Usar tmp+os.replace para escrita atomica",
       "tags": [
         "usar",
+        "escrita",
         "atomica",
         "tmp",
-        "escrita",
         "atomicidade"
       ]
     },
@@ -2177,11 +2193,11 @@
       "erro_task": "MCP npx trava OpenCode na inicializacao",
       "solucao_desc": "Ao adicionar servidores MCP via npx, OpenCode trava na inicializacao. Modelos nao carregam. Solucao: usar apenas servidores Python puros e validar sempre antes de deploy.",
       "tags": [
+        "adicionar",
         "trava",
-        "opencode",
         "npx",
         "inicializacao",
-        "adicionar"
+        "opencode"
       ]
     },
     {
@@ -2189,11 +2205,11 @@
       "erro_task": "Bug: re.sub \\\\b%\\\\b fail",
       "solucao_desc": "Regex \\\\b(\\\\d+)%\\\\b na porcentagem nunca casava '85%' porque % e espaço nao sao word-chars -> \\\\b a direita nao existe. Fix: usar (\\\\d+)\\\\s*%|(\\\\d+)\\\\s*por cento sem \\\\b final. Datas precisam zero-pad",
       "tags": [
-        "nao",
-        "chars",
-        "direita",
         "word",
-        "sao"
+        "direita",
+        "sao",
+        "nao",
+        "chars"
       ]
     },
     {
@@ -2202,10 +2218,10 @@
       "solucao_desc": "Causa raiz: setup.bat so registra funcoes no profile, mas nenhum script criava a task EcoSystemVigilante (README prometia logon). Profile.ps1 nao existia. Corrigido com Register-ScheduledTask (AtLogOn",
       "tags": [
         "logon",
-        "raiz",
+        "readme",
         "prometia",
-        "ecosystemvigilante",
-        "readme"
+        "raiz",
+        "ecosystemvigilante"
       ]
     },
     {
@@ -2213,11 +2229,11 @@
       "erro_task": "Vazamento de caracteres no TTS antes de falar o nome do usuário (saudação)",
       "solucao_desc": "edge-tts >= 7.x removeu suporte a SSML custom: o __init__ do Communicate() escapa todo o texto (escape() converte < > em &lt; &gt;), então tags <break>, <phoneme>, <say-as>, <prosody> são lidas LITERA",
       "tags": [
-        "voz",
-        "substituiã",
-        "pronuncias",
+        "pela",
         "falada",
-        "pela"
+        "voz",
+        "pronuncias",
+        "substituiã"
       ]
     },
     {
@@ -2226,9 +2242,9 @@
       "solucao_desc": "edge-tts>=7.x escapa tags SSML (<break>,<phoneme>,<say-as>) no Communicate e as lê literalmente. Corrigido: bridge envia texto puro; pronuncias.json usa campo 'fala' (grafia falada) em vez de tags. Re",
       "tags": [
         "tts",
+        "communicate",
         "literalmente",
         "edge",
-        "communicate",
         "say"
       ]
     },
@@ -2237,11 +2253,11 @@
       "erro_task": "Investigar por que a voz lia os caracteres do fonema antes do nome",
       "solucao_desc": "Causa raiz: edge-tts >=7.x escapa TODO texto no __init__ (escape()), então tags SSML <phoneme>/<break>/<say-as> são lidas literalmente pela voz. A bridge rodando (PID antigo) tinha código antigo em me",
       "tags": [
-        "literalmente",
+        "pela",
         "break",
+        "literalmente",
         "lidas",
-        "say",
-        "pela"
+        "say"
       ]
     },
     {
@@ -2249,11 +2265,11 @@
       "erro_task": "Grafo visual do conhecimento (vis-network) funcionando",
       "solucao_desc": "Gerado docs/grafo.html: 226 nos, 1460 conexoes, force-directed, cores por categoria. Bug: string JS com quebra de linha literal em label quebrava sintaxe do script -> canvas vazio. Fix: json.dumps par",
       "tags": [
-        "carrega",
-        "nao",
         "vazio",
+        "quebrava",
         "docs",
-        "quebrava"
+        "carrega",
+        "nao"
       ]
     },
     {
@@ -2261,11 +2277,11 @@
       "erro_task": "Corrigido travamento do widget pywebview (recursao AccessibilityObject.Bounds)",
       "solucao_desc": "Bug reportado pelo usuario: widget do grafo travava com stderr '[pywebview] Error while processing win.native.AccessibilityObject.Bounds...Empty...: maximum recursion depth exceeded'. Diagnostico: era",
       "tags": [
-        "warning",
+        "vivo",
         "trava",
-        "nao",
+        "warning",
         "aviso",
-        "vivo"
+        "nao"
       ]
     },
     {
@@ -2273,12 +2289,12 @@
       "erro_task": "Widget pywebview: bridge JS quebrado por atributo publico e HTTP server",
       "solucao_desc": "js_api nao pode ter atributo publico nao-callable (self.win) - pywebview serializa recursivamente e quebra a injecao. URL resolve() usa HTTP server e nao dispara loaded; usar file:// explicito. Fix: _",
       "tags": [
-        "publico",
+        "callable",
+        "pode",
         "self",
         "ter",
         "atributo",
-        "pode",
-        "callable"
+        "publico"
       ]
     },
     {
@@ -2286,12 +2302,12 @@
       "erro_task": "Widget Cerebro Vivo - geometria travada em 384x100 e fix do clique",
       "solucao_desc": "Janela do widget abria invisivel (384x100) porque geo corrompido era re-salvo por report(). Fix: clamp MIN_W=400/MIN_H=300 em _carregar_geo (usa defaults p/ degeneradas) e guardar_geo ignora geometrie",
       "tags": [
+        "invisivel",
         "era",
-        "report",
-        "corrompido",
         "salvo",
         "minimo",
-        "invisivel"
+        "corrompido",
+        "report"
       ]
     },
     {
@@ -2299,9 +2315,9 @@
       "erro_task": "Bug grafo em branco - ids duplicados no vis.DataSet",
       "solucao_desc": "O grafo do widget nao renderizava porque 9 notas existem em pastas duplicadas (ex: cognitivo/X.md e missoes/X.md), gerando id de no duplicado. vis.DataSet lanca 'Cannot add item: id already exists' e ",
       "tags": [
+        "vazio",
         "network",
         "duplicadas",
-        "vazio",
         "canvas",
         "pastas",
         "existem"
@@ -2312,9 +2328,9 @@
       "erro_task": "Build Android lento travava por falta de RAM: 4GB total / 256MB livre com Gradle Xmx2048m",
       "solucao_desc": "O build do VoxUmGrau travava no desugarDebugFileDependencies e morria no timeout (600s). Causa raiz: máquina com apenas 4GB RAM e 256MB livres, mas Gradle configurado com -Xmx2048m causando thrashing;",
       "tags": [
-        "morria",
         "voxumgrau",
         "thrashing",
+        "morria",
         "desugardebugfiledependencies",
         "timeout",
         "600s"
@@ -2328,9 +2344,9 @@
         "msedgewebview2",
         "chrome",
         "teamviewer",
-        "msmpeng",
         "379",
-        "237"
+        "237",
+        "msmpeng"
       ]
     },
     {
@@ -2338,12 +2354,12 @@
       "erro_task": "Grafo vivo v3: onda viajante de profundidade em vez de giro CSS + fix efeitos de clique",
       "solucao_desc": "Em scripts/generate-graph-html.py: (1) REMOVIDO o giro rigido via transform CSS do canvas (rotateZ/rotateX girava o quadro 2D como folha, artificial). SUBSTITUIDO por ONDA VIAJANTE de profundidade: po",
       "tags": [
-        "efeito",
-        "graph",
-        "artificial",
-        "preservando",
         "folha",
-        "html"
+        "html",
+        "efeito",
+        "artificial",
+        "graph",
+        "preservando"
       ]
     },
     {
@@ -2351,12 +2367,12 @@
       "erro_task": "Fix: timeout conexao app apos saudacao",
       "solucao_desc": "Root causes reais: (1) opencode serve zumbi (uptime >18h) travando. (2) serve frio demora 35s para primeira resposta. (3) senha OPENCODE_SERVER_PASSWORD do .env era antiga (521cf1f4) mas serve atual e",
       "tags": [
-        "causes",
         "reais",
-        "estatico",
         "atualizado",
-        "edbe7432",
-        "espera"
+        "estatico",
+        "causes",
+        "espera",
+        "edbe7432"
       ]
     },
     {
@@ -2364,12 +2380,12 @@
       "erro_task": "Widget grafo: botoes de filtro nao funcionavam - barra de arraste bloqueava cliques",
       "solucao_desc": "Bug critico: a barra de arraste #mk-drag (16px no topo, z-index:9999) sobrepunha o header do grafo, bloqueando cliques em todos os botoes de filtro (.lg) como Bugs, Padroes, Decisoes etc. O CSS origin",
       "tags": [
-        "tinha",
         "enquanto",
         "nivel",
         "critico",
         "deixando",
-        "bug"
+        "bug",
+        "tinha"
       ]
     },
     {
@@ -2377,12 +2393,12 @@
       "erro_task": "Widget grafo: correcao de 8 bugs + teste completo headless",
       "solucao_desc": "Corrigidos {{ }} no tema (painel morto), RESIZE_JS/API_INJECT nao injetados, botao T errado, TDZ de 'original' no template, typo _aplicarForcesTema, --help, test_widget_live quebrado. Validado: esprim",
       "tags": [
-        "live",
-        "aplicarforcestema",
-        "typo",
-        "test",
+        "quebrado",
         "help",
-        "quebrado"
+        "typo",
+        "aplicarforcestema",
+        "test",
+        "live"
       ]
     },
     {
@@ -2390,12 +2406,12 @@
       "erro_task": "Bug critico watchdog: parametro $Pid e variavel automatica read-only do PowerShell",
       "solucao_desc": "A funcao Test-ForensicoLixo e Invoke-KillCertificado usavam [int]$Pid como parametro. $PID e variavel automatica read-only do PowerShell (PID do processo). Com ErrorActionPreference=SilentlyContinue, ",
       "tags": [
-        "killcertificado",
         "usavam",
-        "podendo",
-        "invoke",
         "matar",
-        "int"
+        "int",
+        "invoke",
+        "killcertificado",
+        "podendo"
       ]
     },
     {
@@ -2403,12 +2419,12 @@
       "erro_task": "Widget grafo: causa raiz do travamento (NaN->stack overflow) e loop de regenerar",
       "solucao_desc": "2 bugs corrigidos no widget Cerebro Vivo. (1) Crash: tick handler usava n.x/n.y do dataset (sem posicoes) -> undefined+orb=NaN -> quadtree Barnes-Hut recursao infinita -> RangeError stack overflow (6x",
       "tags": [
-        "cerebro",
-        "recursao",
         "rangeerror",
         "vivo",
+        "cerebro",
         "log",
-        "infinita"
+        "infinita",
+        "recursao"
       ]
     },
     {
@@ -2416,12 +2432,12 @@
       "erro_task": "Bug 426: health-check HTTP na porta WS da bridge",
       "solucao_desc": "Causa raiz: universal_bridge fazia check_http em http://127.0.0.1:8765 (porta WebSocket) gerando '426 Upgrade Required' 1/min no log. Corrigido com checker ws_health (handshake WS real via websockets.",
       "tags": [
-        "gerando",
-        "raiz",
-        "required",
         "upgrade",
-        "min",
-        "log"
+        "required",
+        "gerando",
+        "log",
+        "raiz",
+        "min"
       ]
     },
     {
@@ -2429,11 +2445,11 @@
       "erro_task": "Loop infinito de push no vigilante - emails GitHub por minuto",
       "solucao_desc": "Vigilante escrevia memory_engine log de git-sync dentro do repo, re-disparando o FileSystemWatcher (auto-descoberta pegou o proprio EcoSystemUmGrau como projeto). Fix: remover log de git-sync + exclui",
       "tags": [
-        "filesystemwatcher",
-        "pegou",
         "proprio",
-        "ecosystemumgrau",
         "disparando",
+        "pegou",
+        "ecosystemumgrau",
+        "filesystemwatcher",
         "projeto"
       ]
     },
@@ -2442,10 +2458,10 @@
       "erro_task": "UnicodeEncodeError no runtime_context ao renderizar memoria com seta",
       "solucao_desc": "runtime_context.py crashava com UnicodeEncodeError (cp1252) ao imprimir contexto com caracter U+2194 (seta) presente na memoria @sync. Corrigido com sys.stdout.reconfigure(encoding=utf-8, errors=repla",
       "tags": [
-        "simbolos",
-        "sync",
-        "caracter",
         "presente",
+        "simbolos",
+        "caracter",
+        "sync",
         "2194",
         "memoria"
       ]
@@ -2455,12 +2471,12 @@
       "erro_task": "ClassNotFoundException MainActivity por sed com barras",
       "solucao_desc": "No CI, o sed que renomeava o package do MainActivity.kt usava o caminho com barras (com/umgrau/stream_um_grau) mas a declaracao Kotlin usa pontos (com.umgrau.stream_um_grau) - nunca casava. Resultado:",
       "tags": [
+        "declaracao",
         "novo",
-        "apontava",
         "pro",
         "usa",
-        "declaracao",
-        "kotlin"
+        "kotlin",
+        "apontava"
       ]
     },
     {
@@ -2468,12 +2484,12 @@
       "erro_task": "Fix modelo trocado: placeholder {{LLM_MODEL}} nao era substituido pelo opencode",
       "solucao_desc": "Causa raiz do 'model_not_found' ao trocar de LLM: config com placeholder nao resolvido quebrava sessoes novas (sem fallback). Fix definitivo: config/opencode.jsonc usa '{env:LLM_MODEL}' (resolvido pel",
       "tags": [
-        "causa",
+        "pickle",
         "big",
         "raiz",
-        "found",
         "trocar",
-        "pickle"
+        "found",
+        "causa"
       ]
     },
     {
@@ -2482,11 +2498,11 @@
       "solucao_desc": "Auditada a barra de botoes do topo (#header/legend do grafo). Corrigido mojibake duplo-encoded no gerador: em-dash (7x), emoji da Home, simbolo ✕ do Limpar, e simbolos de status dos labels (✔/⚠/✖) via",
       "tags": [
         "bytes",
-        "nao",
-        "nivel",
-        "topo",
         "legend",
-        "auditada"
+        "nivel",
+        "auditada",
+        "topo",
+        "nao"
       ]
     },
     {
@@ -2494,12 +2510,12 @@
       "erro_task": "Bug shadow=False quebra bridge pywebview",
       "solucao_desc": "Em pywebview 6.2.1/WebView2, passar shadow=False cria janela layered transparente e quebra a injecao de window.pywebview.api no contexto da pagina (erro 'sem bridge' -> nenhum botao funciona). Solucao",
       "tags": [
-        "window",
+        "janela",
+        "layered",
         "transparente",
         "cria",
-        "injecao",
-        "layered",
-        "janela"
+        "window",
+        "injecao"
       ]
     },
     {
@@ -2507,12 +2523,12 @@
       "erro_task": "Bug drag widget: .drag 0-height + window.screenX unreliable",
       "solucao_desc": ".drag{flex:1;cursor:move;} tinha altura 0 (div vazia em flex container align-items:center) — elemento nao clicavel, mousedown nunca fazia. Fix: min-height:22px. window.screenX/screenY retornam 0 no We",
       "tags": [
+        "container",
         "vazia",
         "confiavel",
-        "container",
-        "combinacao",
+        "align",
         "items",
-        "align"
+        "combinacao"
       ]
     },
     {
@@ -2520,12 +2536,12 @@
       "erro_task": "Correção: TTS truncava textos longos em 2000 caracteres",
       "solucao_desc": "O SpeechPipeline.prepare() truncava texto em MAX_TEXT_LENGTH(2000), cortando o final da fala. Corrigido: prepare() agora preserva o texto completo e a síntese divide em chunks via SentenceChunker.chun",
       "tags": [
-        "final",
-        "cortado",
+        "nada",
         "fala",
+        "cortado",
         "sentencechunker",
         "cortando",
-        "nada"
+        "final"
       ]
     },
     {
@@ -2533,12 +2549,12 @@
       "erro_task": "Integração completa: MCPs offline por placeholder não renderizado no opencode.jsonc",
       "solucao_desc": "opencode.jsonc deployado em ~/.config/opencode tinha {{USERPROFILE}} literal (openCode não expande) → 13 MCPs com Connection closed. Renderizado o placeholder com path real (backup .bak). test-ecosyst",
       "tags": [
-        "closed",
         "expande",
-        "literal",
-        "não",
         "connection",
-        "userprofile"
+        "não",
+        "userprofile",
+        "closed",
+        "literal"
       ]
     },
     {
@@ -2546,12 +2562,12 @@
       "erro_task": "Boot runtime_boot.py: caminho relativo adb_scan.py quebrava fora do repo",
       "solucao_desc": "runtime_boot.py chamava scripts/adb_scan.py com caminho relativo ao CWD; quando o boot rodava fora da raiz do EcoSystemUmGrau, o arquivo não era encontrado. Corrigido usando os.path.join(SCRIPTS, 'adb",
       "tags": [
-        "era",
-        "encontrado",
-        "raiz",
+        "arquivo",
         "não",
+        "raiz",
+        "era",
         "ecosystemumgrau",
-        "arquivo"
+        "encontrado"
       ]
     },
     {
@@ -2561,10 +2577,10 @@
       "tags": [
         "comando",
         "quebrando",
-        "toda",
-        "runtime",
+        "disparando",
         "abria",
-        "disparando"
+        "runtime",
+        "toda"
       ]
     },
     {
@@ -2573,11 +2589,11 @@
       "solucao_desc": "Causa raiz tripla do TTS corrigida e validada: (1) tts/edge_tts_engine.py synthesize_sync usava asyncio.get_event_loop() em loop sem running (fix: get_running_loop + ThreadPoolExecutor); (2) faltava i",
       "tags": [
         "validada",
+        "startup",
+        "false",
         "nativo",
         "reconciliação",
-        "startup",
-        "minimize",
-        "false"
+        "minimize"
       ]
     },
     {
@@ -2586,11 +2602,11 @@
       "solucao_desc": "Corrigido [WinError 32] (arquivo em uso) no SpeechPipeline.speak(): usava caminho fixo speech_pipeline_fala.mp3 em tempdir, compartilhado por TTS concorrente (widget + narrador + vox_audio), causando ",
       "tags": [
         "isolado",
+        "colisao",
+        "audio",
         "vox",
         "causando",
-        "audio",
-        "narrador",
-        "colisao"
+        "narrador"
       ]
     },
     {
@@ -2600,8 +2616,8 @@
       "tags": [
         "parava",
         "reforcando",
-        "falando",
         "continuava",
+        "falando",
         "percepcao",
         "apos"
       ]
@@ -2611,13 +2627,13 @@
       "erro_task": "MicrofoneManager WDM-KS int16 e audit_triagem import refs",
       "solucao_desc": "Captura de microfone usa int16 (float32 corrompe no WDM-KS Realtek). audit_triagem corrigido p/ detectar imports sem extensao; bridge usa classificar_conexao (str) traduzido p/ dict.",
       "tags": [
+        "microfone",
         "corrompe",
         "realtek",
-        "alta-confianca",
         "float32",
-        "microfone",
+        "wdm",
         "captura",
-        "wdm"
+        "alta-confianca"
       ]
     },
     {
@@ -2625,13 +2641,13 @@
       "erro_task": "MicrofoneManager WDM-KS int16 e audit_triagem import refs",
       "solucao_desc": "Captura de microfone usa int16 (float32 corrompe no WDM-KS Realtek). audit_triagem corrigido p/ detectar imports sem extensao; bridge usa classificar_conexao (str) traduzido p/ dict.",
       "tags": [
+        "microfone",
         "corrompe",
         "realtek",
-        "alta-confianca",
         "float32",
-        "microfone",
+        "wdm",
         "captura",
-        "wdm"
+        "alta-confianca"
       ]
     },
     {
@@ -2639,13 +2655,13 @@
       "erro_task": "Fix widget grafo: resize.js stale, grafico_widget.bat hardcoded, README desatualizado",
       "solucao_desc": "Removida referencia a docs/resize.js que nao existe (dead code substituido por inline). Corrigido grafico_widget.bat para usar deteccao dinamica de pythonw em vez de path hardcoded. Corrigido README p",
       "tags": [
-        "geracao",
-        "referencia",
-        "alta-confianca",
         "conhecimento",
+        "referencia",
+        "docs",
         "removida",
+        "geracao",
         "conexoes",
-        "docs"
+        "alta-confianca"
       ]
     },
     {
@@ -2653,12 +2669,12 @@
       "erro_task": "Fix monitoramento e saúde do ecossistema",
       "solucao_desc": "Auditoria completa de monitoramento: (1) guardian log sem rotacao 2.86MB → truncado + rotacao embutida a cada 1000 ciclos, (2) system_guardian não integrado ao vigilantе → timer 5min adicionado, (3) b",
       "tags": [
+        "rotina",
         "output",
+        "vigilant",
+        "jarvis",
         "alta-confianca",
         "27h",
-        "vigilant",
-        "rotina",
-        "jarvis",
         "health"
       ]
     },
@@ -2667,13 +2683,13 @@
       "erro_task": "Correção do ADB auto-connect para Tailscale",
       "solucao_desc": "Caminho do ADB no adb_auto_connect.py estava errado (Sdk ao invés de platform-tools/platform-tools). Corrigido para tentar múltiplos caminhos. Tailscale agora funciona como alternativa viável para scr",
       "tags": [
-        "alta-confianca",
-        "adb",
-        "tools",
         "auto",
         "caminho",
+        "tools",
+        "platform",
         "connect",
-        "platform"
+        "alta-confianca",
+        "adb"
       ]
     },
     {
@@ -2681,13 +2697,13 @@
       "erro_task": "Auditoria widget unified_bridge",
       "solucao_desc": "Auditoria do widget identificou 7 bugs: (1) ler_estado_voz() nao definida causava NameError silencioso, (2) variavel morta at/pa no toggle, (3) botao Parar Fala so pausava nunca retomava, (4) close us",
       "tags": [
-        "pausava",
-        "usava",
-        "alta-confianca",
-        "parar",
-        "retomava",
         "fala",
-        "close"
+        "usava",
+        "retomava",
+        "close",
+        "parar",
+        "alta-confianca",
+        "pausava"
       ]
     },
     {
@@ -2696,12 +2712,12 @@
       "solucao_desc": "SettingsActivity.SettingsAdapter: array icons[] com 10 elementos, mas items[] com 11 itens. Ao renderizar 'Importar Backup' (pos 10) estourava ArrayIndexOutOfBoundsException (length=10; index=10). Fix",
       "tags": [
         "mover",
-        "alta-confianca",
-        "length",
         "arrayindexoutofboundsexception",
-        "teste",
+        "length",
         "durante",
-        "menu"
+        "menu",
+        "alta-confianca",
+        "teste"
       ]
     },
     {
@@ -2710,12 +2726,12 @@
       "solucao_desc": "Toast de erros no widget mostrava falsos positivos porque o regex pegava linhas 'falando' do narrador que continham palavras como 'erro' e 'falhou'. Lição: sempre testar regex de detecção contra dados",
       "tags": [
         "pegava",
-        "alta-confianca",
-        "falando",
-        "continham",
-        "linhas",
+        "positivos",
         "falhou",
-        "positivos"
+        "linhas",
+        "falando",
+        "alta-confianca",
+        "continham"
       ]
     },
     {
@@ -2723,13 +2739,13 @@
       "erro_task": "Corrigido erro posição não salva no widget",
       "solucao_desc": "Causa raiz: duas instâncias do narrador_desktop.py competindo pelo mesmo arquivo narrador_posicao.json. Correções: 1) Adicionado PID file check para prevenir instâncias múltiplas, 2) Adicionado retry ",
       "tags": [
-        "alta-confianca",
-        "finally",
-        "limpo",
-        "permissionerror",
-        "retry",
         "salvar",
-        "tentativas"
+        "finally",
+        "retry",
+        "permissionerror",
+        "limpo",
+        "tentativas",
+        "alta-confianca"
       ]
     },
     {
@@ -2737,13 +2753,13 @@
       "erro_task": "Commit do gate falhava silenciosamente por hook pre-commit quebrado",
       "solucao_desc": "Causa raiz: arquivo .git/hooks/pre-commit sem extensao era um batch disfarcado que o git nao conseguia spawnar (cannot spawn .git/hooks/pre-commit). Todo commit via gate falhava silenciosamente porque",
       "tags": [
-        "spawnar",
-        "alta-confianca",
-        "nao",
         "spawn",
         "disfarcado",
-        "conseguia",
-        "batch"
+        "spawnar",
+        "batch",
+        "alta-confianca",
+        "nao",
+        "conseguia"
       ]
     }
   ]
