@@ -1,11 +1,11 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-08-31T09:28:59.793735
+**Exportado em:** 2026-08-31T20:49:06.943391
 **Projetos:** 4
 **Padroes Tecnicos:** 290
 **Decisoes:** 85
 **Bug Fixes:** 52
-**Padroes Cognitivos:** 76
+**Padroes Cognitivos:** 77
 **Heuristicas:** 32
 **Frameworks:** 10
 **Missoes Aprendidas:** 134
@@ -2193,6 +2193,22 @@ O usuário relatou "não estou ouvindo o narrador". A telemetria mostrava fala o
 
 1. **Bug no widget**: `voice_off()` chamava `_narrador_pausar(True)` em vez de `False`. Corrigido — hoje a função re
 
+### Maestro Fase Ativa - Fix Registro e Stale PID
+**Dominio:** general
+**Fonte:** opencode
+
+﻿---
+tipo: decisao
+tags: [maestro, runtime, guardian, fase-ativa, stale-pid]
+data: 2026-08-31
+contexto: |
+  Maestro de Runtime em fase ativa. Guardians consultam antes de iniciar servicos.
+  Bug: Maestro nao verificava se PID registrado ainda estava vivo (confiava cego no campo vivo).
+  Bug: Guardian nao registrava PID no Maestro apos iniciar servico.
+decisao: |
+  1. Adicionar verificacao de vida (psutil.pid_exists) no pode_iniciar() do Maestro.
+     Se PID registrado morto, limpar registro stal
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -2287,7 +2303,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-08-31T09:28:59.540729
+**Ultima atualizacao:** 2026-08-31T20:49:06.802768
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

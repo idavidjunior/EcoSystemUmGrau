@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-08-31T09:28:59.540729",
+  "last_updated": "2026-08-31T20:49:06.802768",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -3734,6 +3734,13 @@
       "domain": "general",
       "body": "---\ntitulo: Silencio do narrador tinha tres causas empilhadas\ntipo: erro\ntags: [narrador, tts, audio, resiliencia, diagnóstico]\ndata: 2026-08-29\n---\n\n# Silêncio do narrador — três causas empilhadas\n\n## Contexto\nO usuário relatou \"não estou ouvindo o narrador\". A telemetria mostrava fala ok (MP3 gerado, `ok=True`), mas nada saía no alto-falante.\n\n## Causas encontradas (em camadas)\n\n1. **Bug no widget**: `voice_off()` chamava `_narrador_pausar(True)` em vez de `False`. Corrigido — hoje a função re",
       "extracted_at": "2026-08-29T16:34:08.659127"
+    },
+    {
+      "source": "opencode",
+      "title": "Maestro Fase Ativa - Fix Registro e Stale PID",
+      "domain": "general",
+      "body": "﻿---\ntipo: decisao\ntags: [maestro, runtime, guardian, fase-ativa, stale-pid]\ndata: 2026-08-31\ncontexto: |\n  Maestro de Runtime em fase ativa. Guardians consultam antes de iniciar servicos.\n  Bug: Maestro nao verificava se PID registrado ainda estava vivo (confiava cego no campo vivo).\n  Bug: Guardian nao registrava PID no Maestro apos iniciar servico.\ndecisao: |\n  1. Adicionar verificacao de vida (psutil.pid_exists) no pode_iniciar() do Maestro.\n     Se PID registrado morto, limpar registro stal",
+      "extracted_at": "2026-08-31T20:48:38.546112"
     }
   ],
   "heuristics": [

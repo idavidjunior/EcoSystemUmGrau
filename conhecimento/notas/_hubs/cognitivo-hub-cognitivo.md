@@ -1,6 +1,6 @@
 # Padroes Cognitivos
 
-**61 notas** conectadas a este hub.
+**62 notas** conectadas a este hub.
 
 
 ## Notas
@@ -41,6 +41,7 @@
 - [[hora-na-tela-vs-hora-no-áudio-jarvis]]
 - [[integracao-completa-mcps-offline-placeholder]]
 - [[lei-de-postel-aplicada-a-engenharia]]
+- [[maestro-fase-ativa-fix-registro-e-stale-pid]]
 - [[mapa-mental-de-navegadores-web]]
 - [[mcp-obsidian-server-vault-consumido-pelo-llm]]
 - [[mcp-prompt-optimization-não-conectava-transporte-json-por-li]]

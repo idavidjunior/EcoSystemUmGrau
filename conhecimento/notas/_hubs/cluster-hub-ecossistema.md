@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**240 notas** do cluster ecossistema.
+**241 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -161,6 +161,7 @@
 - [[ler-specs-sdd-hook]]
 - [[limpeza-disco-windows]]
 - [[loop-infinito-de-push-no-vigilante-emails-do-github-a-cada-m]]
+- [[maestro-fase-ativa-fix-registro-e-stale-pid]]
 - [[mcp-obsidian-server-vault-consumido-pelo-llm]]
 - [[mcp-prompt-optimization-não-conectava-transporte-json-por-li]]
 - [[mcp-server-failed-to-get-tools-no-opencode]]

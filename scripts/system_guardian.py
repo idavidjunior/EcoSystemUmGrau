@@ -210,7 +210,7 @@ def _observar_no_maestro(script_py: str, decisao_local: str, pid_novo=None) -> d
             )
 
         # Se nasceu um PID, registra no livro do maestro
-        if pid_novo and decisao_local == "vou_iniciar":
+        if pid_novo and decisao_local in ("vou_iniciar", "registrar_nascimento"):
             consultar_maestro(
                 "registrar", script=script_py, pid=pid_novo, owner="guardian"
             )
@@ -261,7 +261,7 @@ def start_widget():
         script = str(BASE / "scripts" / script_py)
         proc = subprocess.Popen([py, script], cwd=str(BASE), creationflags=subprocess.CREATE_NO_WINDOW)
         _marcar_restart(script_py)
-        _observar_no_maestro(script_py, decisao_local="nasceu", pid_novo=proc.pid)
+        _observar_no_maestro(script_py, decisao_local="registrar_nascimento", pid_novo=proc.pid)
         # Aguarda e verifica se widget realmente subiu
         for _ in range(20):
             time.sleep(0.5)
@@ -329,7 +329,7 @@ def start_tts_service():
         script = str(BASE / "scripts" / script_py)
         proc = subprocess.Popen([py, script], cwd=str(BASE), creationflags=subprocess.CREATE_NO_WINDOW)
         _marcar_restart(script_py)
-        _observar_no_maestro(script_py, decisao_local="nasceu", pid_novo=proc.pid)
+        _observar_no_maestro(script_py, decisao_local="registrar_nascimento", pid_novo=proc.pid)
         # Aguarda serviço estar realmente vivo antes de escrever pid_file
         pid_file = BASE / "runtime" / "tts_service.pid"
         pid_file.parent.mkdir(parents=True, exist_ok=True)

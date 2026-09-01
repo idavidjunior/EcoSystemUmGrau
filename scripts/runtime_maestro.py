@@ -211,14 +211,25 @@ def pode_iniciar(script: str) -> dict:
     servicos = estado.get("servicos", {})
     cooldowns = estado.get("cooldowns", {})
 
-    # Singleton: ja existe vivo?
-    for s, info in servicos.items():
+    # Singleton: ja existe vivo? (verifica PID real, nao confia no campo vivo)
+    for s, info in list(servicos.items()):
         if s == script and info.get("vivo"):
             pid = info.get("pid")
-            return {
-                "pode": False,
-                "motivo": f"ja_vivo (pid={pid}, owner={info.get('owner','?')})",
-            }
+            pid_real_vivo = False
+            try:
+                import psutil
+                pid_real_vivo = psutil.pid_exists(pid) and psutil.Process(pid).is_running()
+            except Exception:
+                pass
+            if pid_real_vivo:
+                return {
+                    "pode": False,
+                    "motivo": f"ja_vivo (pid={pid}, owner={info.get('owner','?')})",
+                }
+            # PID morto: limpa registro stale e permite restart
+            _log(f"pode_iniciar: {script} pid={pid} morto, limpando registro stale")
+            del servicos[s]
+            _save_estado(estado)
 
     # Cooldown: foi reiniciado muito recentemente?
     ultimo = cooldowns.get(script, 0)
