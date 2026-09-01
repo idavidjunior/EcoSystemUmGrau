@@ -108,6 +108,7 @@ impacto: >
 - [[fix-widget-grafo-desktop]]
 - [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]
 - [[gramática-do-português-brasileiro-guia-prático-do-dia-a-dia]]
+- [[gui-remover-chatpanel]]
 - [[habilidade-navegação-perita-internet-pc-e-celular]]
 - [[idioma-padrao-pt-br]]
 - [[ilhas-no-grafo-notas-com-grau-0-e-como-conecta-las]]

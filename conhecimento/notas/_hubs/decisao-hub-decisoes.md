@@ -1,6 +1,6 @@
 # Decisoes
 
-**81 notas** conectadas a este hub.
+**82 notas** conectadas a este hub.
 
 
 ## Notas
@@ -31,6 +31,7 @@
 - [[fix-narrador-triplicado-e-resiliencia-orfaos]]
 - [[form-starts-empty-input-forms-never-auto-load-from-file-user]]
 - [[form-starts-empty-input-forms-nunca-auto-carregam-arquivo-ao]]
+- [[gui-remover-chatpanel]]
 - [[habilidades-de-jarvis-seguem-taxonomia-de-3-niveis]]
 - [[idioma-padrao-pt-br]]
 - [[if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-]]
