@@ -16,11 +16,14 @@ Contrato (recebimento — bridge → GUI):
     {"type": "profile_changed", "name": "...", "hue": 182}
 
 Contrato (envio — GUI → bridge):
-    {"type": "get_state"}
-    {"type": "user_text", "text": "..."}
+    {"tipo": "mensagem", "id": N, "texto": "..."}   -> conversa (protocolo legado Android)
     {"type": "interrupt"}
-    {"type": "approval", "allowed": true|false}
     {"type": "ping"}
+
+Recebimento (bridge → GUI) — resposta de conversa:
+    {"text": ...}                          -> texto da resposta (pode ter audio embutido)
+    {"audio_chunk": base64}                -> audio em streaming
+    {"audio_done": True}                   -> fim do audio
 """
 
 import asyncio
@@ -55,6 +58,7 @@ class _BridgeWorker(QObject):
         self._loop: Optional[asyncio.AbstractEventLoop] = None
         self._ws = None
         self._stop = False
+        self._msg_id = 0
 
     async def _connect_and_listen(self):
         import websockets
@@ -66,7 +70,9 @@ class _BridgeWorker(QObject):
                     self.connected.emit()
                     logger.info(f"Bridge connected: {self.url}")
                     try:
-                        await ws.send(json.dumps({"type": "get_state"}))
+                        # 'ping' confirma conexão sem ativar o modo dashboard
+                        # (get_state dispararia snapshot periódico que atrapalha a conversa).
+                        await ws.send(json.dumps({"type": "ping"}))
                     except Exception:
                         pass
 
@@ -111,6 +117,10 @@ class _BridgeWorker(QObject):
                 self.profile_changed.emit(str(msg.get("name", "")), int(msg.get("hue", 182)))
             except (TypeError, ValueError):
                 pass
+        elif "text" in msg:
+            # Resposta de conversa da bridge. 'text' pode vir sozinho ou com
+            # 'audio'/'audio_streaming' — em qualquer caso exibimos o texto no chat.
+            self.reply_chunk.emit(str(msg.get("text", "")))
 
     async def _send(self, payload: dict):
         if self._ws is None:
@@ -174,7 +184,11 @@ class AgentBridge(QObject):
         self._thread.wait(3000)
 
     def send_user_text(self, text: str):
-        self._worker._send({"type": "user_text", "text": text})
+        # Protocolo legado Android que a bridge entende como conversa real.
+        self._worker._msg_id += 1
+        self._worker._send(
+            {"tipo": "mensagem", "id": self._worker._msg_id, "texto": text}
+        )
 
     def send_interrupt(self):
         self._worker._send({"type": "interrupt"})
