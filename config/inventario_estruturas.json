@@ -1,6 +1,6 @@
 {
   "versao": "1.1",
-  "atualizado_em": "2026-08-29T00:00:00",
+  "atualizado_em": "2026-09-02T08:37:49.779280",
   "descricao": "Inventário oficial de estruturas ativas do EcoSystemUmGrau. Consulte antes de criar qualquer estrutura nova (cláusula anti-duplicação).",
   "agentes": [
     {
@@ -134,6 +134,12 @@
       "arquivo": "config/agents/ecomodelo.md",
       "tipo": "habilidade",
       "responsabilidade": "Gerenciamento inteligente de modelos (monitor, troca, config)"
+    },
+    {
+      "id": "ecow",
+      "arquivo": "config/agents/ecow.md",
+      "tipo": "desconhecido",
+      "responsabilidade": "PENDENTE: classificar responsabilidade"
     }
   ],
   "skills_opencode": [
@@ -260,13 +266,21 @@
       "vulnerability-scanning",
       "python-patterns",
       "state-management",
-      "evolucao"
+      "evolucao",
+      "analise-financeira",
+      "cli-anything",
+      "dev-tools",
+      "fundamentos-computacao",
+      "junk-ml"
     ],
     "internet": [
       "busca-web",
       "clima-api",
       "endereco-geo",
-      "navegacao-perita"
+      "navegacao-perita",
+      "browser-mcp",
+      "google-drive",
+      "scrape-md"
     ],
     "memoria": [
       "busca-conhecimento",
@@ -285,10 +299,13 @@
       "epistemico",
       "cli",
       "adaptation",
-      "pais"
+      "pais",
+      "observabilidade",
+      "planner"
     ],
     "os": [
-      "os-automation"
+      "os-automation",
+      "os_maintenance"
     ]
   },
   "scripts_core": [
@@ -683,11 +700,6 @@
       "funcao": "PENDENTE: descrever função"
     },
     {
-      "id": "test_widget_live",
-      "arquivo": "scripts/test_widget_live.py",
-      "funcao": "PENDENTE: descrever função"
-    },
-    {
       "id": "tv_control",
       "arquivo": "scripts/tv_control.py",
       "funcao": "PENDENTE: descrever função"
@@ -725,6 +737,356 @@
     {
       "id": "adherence_audit",
       "arquivo": "scripts/adherence_audit.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "adb-tailscale-connect",
+      "arquivo": "scripts/adb-tailscale-connect.ps1",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "adb_auto_connect",
+      "arquivo": "scripts/adb_auto_connect.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "adb_monitor",
+      "arquivo": "scripts/adb_monitor.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "adb_monitor_daemon",
+      "arquivo": "scripts/adb_monitor_daemon.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "adb_monitor_silent",
+      "arquivo": "scripts/adb_monitor_silent.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "agent_bootstrap",
+      "arquivo": "scripts/agent_bootstrap.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "agent_council",
+      "arquivo": "scripts/agent_council.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "agent_profile_integration",
+      "arquivo": "scripts/agent_profile_integration.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "architecture_integrity_monitor",
+      "arquivo": "scripts/architecture_integrity_monitor.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "atividade_emit",
+      "arquivo": "scripts/atividade_emit.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "audit_eco",
+      "arquivo": "scripts/audit_eco.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "audit_engine",
+      "arquivo": "scripts/audit_engine.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "audit_runner",
+      "arquivo": "scripts/audit_runner.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "auto_evolution",
+      "arquivo": "scripts/auto_evolution.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "auto_hub_fala",
+      "arquivo": "scripts/auto_hub_fala.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "behavior_slices",
+      "arquivo": "scripts/behavior_slices.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "cerebro_toque",
+      "arquivo": "scripts/cerebro_toque.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "cleanup_all",
+      "arquivo": "scripts/cleanup_all.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "clean_sessions",
+      "arquivo": "scripts/clean_sessions.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "cognitive_core",
+      "arquivo": "scripts/cognitive_core.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "council_orchestrator",
+      "arquivo": "scripts/council_orchestrator.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "detect_english_words",
+      "arquivo": "scripts/detect_english_words.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "drive_api",
+      "arquivo": "scripts/drive_api.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "drive_monitor",
+      "arquivo": "scripts/drive_monitor.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "drive_utils",
+      "arquivo": "scripts/drive_utils.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "frases_manager",
+      "arquivo": "scripts/frases_manager.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "gerador_visual",
+      "arquivo": "scripts/gerador_visual.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "google_drive_auth",
+      "arquivo": "scripts/google_drive_auth.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "hsc",
+      "arquivo": "scripts/hsc.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "improvement_engine",
+      "arquivo": "scripts/improvement_engine.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "install",
+      "arquivo": "scripts/install.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "integrity_guard",
+      "arquivo": "scripts/integrity_guard.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "jarvis_interface",
+      "arquivo": "scripts/jarvis_interface.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "knowledge_graph",
+      "arquivo": "scripts/knowledge_graph.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "learning_engine",
+      "arquivo": "scripts/learning_engine.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "llm_caller",
+      "arquivo": "scripts/llm_caller.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "llm_router",
+      "arquivo": "scripts/llm_router.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "maestro_client",
+      "arquivo": "scripts/maestro_client.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "mcp-composio-server",
+      "arquivo": "scripts/mcp-composio-server.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "memory_consolidation",
+      "arquivo": "scripts/memory_consolidation.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "microfone_manager",
+      "arquivo": "scripts/microfone_manager.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "migrate_solutions",
+      "arquivo": "scripts/migrate_solutions.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "mission_loop",
+      "arquivo": "scripts/mission_loop.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "mission_planner",
+      "arquivo": "scripts/mission_planner.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "narracao_modo",
+      "arquivo": "scripts/narracao_modo.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "narrador_dedup",
+      "arquivo": "scripts/narrador_dedup.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "observability_reliability",
+      "arquivo": "scripts/observability_reliability.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "opencode_resilience",
+      "arquivo": "scripts/opencode_resilience.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "preference_detector",
+      "arquivo": "scripts/preference_detector.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "profile_hook",
+      "arquivo": "scripts/profile_hook.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "promover_aprendizado",
+      "arquivo": "scripts/promover_aprendizado.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "relatorio_eco",
+      "arquivo": "scripts/relatorio_eco.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "retag_memories",
+      "arquivo": "scripts/retag_memories.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "runtime_maestro",
+      "arquivo": "scripts/runtime_maestro.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "security_engine",
+      "arquivo": "scripts/security_engine.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "self_assessment_engine",
+      "arquivo": "scripts/self_assessment_engine.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "setup-auto",
+      "arquivo": "scripts/setup-auto.ps1",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "sinapses",
+      "arquivo": "scripts/sinapses.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "solution_index",
+      "arquivo": "scripts/solution_index.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "stub_integracao_maestro",
+      "arquivo": "scripts/stub_integracao_maestro.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "sync_ecosystem",
+      "arquivo": "scripts/sync_ecosystem.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "test_runtime_maestro",
+      "arquivo": "scripts/test_runtime_maestro.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "tool_orchestrator",
+      "arquivo": "scripts/tool_orchestrator.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "tool_permission_runtime",
+      "arquivo": "scripts/tool_permission_runtime.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "tts_service",
+      "arquivo": "scripts/tts_service.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "unified_bridge",
+      "arquivo": "scripts/unified_bridge.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "user_profile",
+      "arquivo": "scripts/user_profile.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "validacao_maestro",
+      "arquivo": "scripts/validacao_maestro.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "validar_resposta",
+      "arquivo": "scripts/validar_resposta.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "ver_log",
+      "arquivo": "scripts/ver_log.py",
       "funcao": "PENDENTE: descrever função"
     }
   ],

@@ -56,7 +56,7 @@ def run_cmd(cmd: List[str], cwd: Path = BASE, timeout: int = 30) -> tuple[int, s
 def parse_git_log(days: int) -> List[Dict[str, Any]]:
     """Parse git log para analisar commits."""
     since = (datetime.now() - timedelta(days=days)).strftime('%Y-%m-%d')
-    rc, out, err = run_cmd(['git', 'log', f'--since={since}', '--pretty=format:%H|%an|%ad|%s', '--date=short'])
+    rc, out, err = run_cmd(['git', 'log', f'--since={since}', '--pretty=format:%H|%an|%ad|%s', '--date=iso'])
     if rc != 0:
         return []
     commits = []
@@ -243,7 +243,10 @@ def check_preflight_por_entrega(days: int) -> Dict[str, Any]:
                 arquivos = [f.strip() for f in out.strip().split('\n') if f.strip()]
                 if any(arquivo_relacionado_a_estrutura(a) for a in arquivos):
                     try:
-                        commit_dt = datetime.strptime(c['date'], '%Y-%m-%d')
+                        # --date=iso retorna 'YYYY-MM-DD HH:MM:SS +TZEE'; parse com hora p/ comparar com preflight
+                        commit_dt = datetime.fromisoformat(c['date'].strip())
+                        if commit_dt.tzinfo is not None:
+                            commit_dt = commit_dt.replace(tzinfo=None)
                         entregas.append({'hash': c['hash'], 'date': commit_dt, 'message': c['message']})
                     except:
                         pass
