@@ -1,0 +1,27 @@
+---
+tags: [aprender, comprovado, dano, decisao, monitorar, opencode]
+aliases: [governanca ciclo jurisprudencia]
+date: 2026-09-02
+---
+
+# governanca ciclo jurisprudencia
+
+**Fonte:** opencode
+
+---
+tipo: decisao
+tags: [governanca, jurisprudencia, clausula-petrea, evolucao-regras, decisao-arquitetural]
+data: 2026-09-02
+contexto: O usuário propôs um modelo de evolução de regras do ecossistema baseado em evidência temporal: prática comprovada → jurisprudência → cláusula pétrea. O gate de persistência é o primeiro candidato a esse ciclo, tendo passado por auditoria, correção, monitoramento e medição contínua (adherence_audit.py).
+decisao: Criar um ciclo de governança de três estágios para regras do ecossistema: (1) REGRA EXPERIMENTAL — regra nova, em teste, sujeita a revisão. (2) JURISPRUDÊNCIA — regra que sobreviveu a pelo menos 14 dias sem violação, com métricas monitoradas (ex.: gate_persistencia_min >= 1.0 por 14 dias consecutivos no adherence_audit) e correção automática de desvios demonstrada. Jurisprudência fica documentada em `docs/jurisprudencia.md` com data de origem, evidência e critérios de manutenção. (3) CLÁUSULA PÉTREA — regra que manteve status de jurisprudência por pelo menos 30 dias adicionais, aprovada pelo Conselho Permanente (ou validada por 3 agentes especialistas independentes), e cuja violação é irreversível ou causa dano comprovado. Cláusulas pétreas entram em `config/agents/00-system-rules.md` com tag `[CLÁUSULA PÉTREA]`. Critérios de rebaixamento: se uma jurisprudência sofrer 2+ violações em 7 dias, rebaixa para experimental; se uma cláusula pétrea for questionada com evidência técnica válida, entra em revisão (não é rebaixada automaticamente).
+impacto: O ecossistema ganha um processo maduro de evolução de regras: não aceita regras como permanentes só porque funcionam uma vez, mas também não descarta o que funciona. A evidência temporal é o critério de promoção. Isso evita tanto a rigidez prematura quanto a instabilidade por mudança constante.
+validacao: Modelo coerente com o princípio da melhoria contínua (cláusula da Constituição), com a regra de evidência (não declarar algo como verdadeiro sem evidência), e com o loop final (OBSERVAR → COMPREENDER → PLANEJAR → IMPLEMENTAR → TESTAR → MONITORAR → APRENDER).
+
+## Conexoes
+
+- [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
+- [[cluster-hub-ecossistema]]
+- [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
+- [[controle-da-tv-lg-webos-via-ssap]]
+- [[decisao-hub-decisoes]]
+- [[secrets-guard-no-preflightcheck]]

@@ -95,6 +95,7 @@ detalhes: LICAO: no opencode, placeholders suportados sao {env:VAR} (e {{USERPRO
 - [[fix-narrador-triplicado-e-resiliencia-orfaos]]
 - [[fix-widget-grafo-desktop]]
 - [[gate-ponto-unico-compilador]]
+- [[governanca-ciclo-jurisprudencia]]
 - [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]
 - [[gramática-do-português-brasileiro-guia-prático-do-dia-a-dia]]
 - [[gui-desktop-desativada-edge-e-cerebro-vivo]]

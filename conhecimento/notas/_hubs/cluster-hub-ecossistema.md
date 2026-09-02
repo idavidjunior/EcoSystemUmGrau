@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**246 notas** do cluster ecossistema.
+**247 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -144,6 +144,7 @@
 - [[gate-hd-externo-e-preflight-repos-nativos]]
 - [[gate-ponto-unico-compilador]]
 - [[geraraudio-blocks-until-full-tts-generation-no-streaming]]
+- [[governanca-ciclo-jurisprudencia]]
 - [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]
 - [[grafo-vis-network-bug-string-js-json-dumps]]
 - [[gramática-do-português-brasileiro-guia-prático-do-dia-a-dia]]

@@ -2,6 +2,8 @@
 
 Regras que sobreviveram ao teste de evidência temporal e aguardam promoção a cláusula pétrea.
 
+Escopo: este ciclo se aplica a regras novas adotadas a partir de 2026-09-02. Regras existentes (cláusulas pétreas, regras da Constituição, regras do AGENTS.md) permanecem como estão, sem necessidade de passar pelo ciclo. O ciclo vale para qualquer prática que o ecossistema adote daqui para frente e que ainda não tenha status de cláusula pétrea.
+
 Critérios de promoção (ciclo de governança):
 - REGRA EXPERIMENTAL → JURISPRUDÊNCIA: 14+ dias sem violação, métricas monitoradas, correção automática de desvios demonstrada.
 - JURISPRUDÊNCIA → CLÁUSULA PÉTREA: 30+ dias adicionais como jurisprudência, aprovação do Conselho Permanente (ou 3 agentes especialistas independentes), violação causando dano comprovado.
