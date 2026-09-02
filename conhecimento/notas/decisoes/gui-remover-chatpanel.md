@@ -1,5 +1,5 @@
 ---
-tags: [decisao, mensagens, opencode, ping, responde, respondia]
+tags: [decisao, mensagens, online, opencode, ping, respondia]
 aliases: [gui remover chatpanel]
 date: 2026-09-01
 ---
