@@ -344,16 +344,10 @@ print('OK')
     if ($errors -gt 0) { Write-Err "$errors erros durante reparo" }
     else { Write-OK "Reparo concluido sem erros" }
 
-    # 6. Git commit
-    Write-Step "Versionando reparo"
-    Push-Location $ecoDir
-    $status = git status --porcelain
-    if ($status) {
-        git add -A
-        git commit -m "[ecosystem repair] $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
-        Write-OK "Commit realizado"
-    } else { Write-OK "Nada a commitar" }
-    Pop-Location
+    # 6. Commit via gate unico (persistencia.ps1) - nunca git direto
+    Write-Step "Versionando reparo via gate"
+    $gateResult = & powershell -ExecutionPolicy Bypass -File "$ecoDir\scripts\persistencia.ps1" run-sync -Repo eco -Label "ecosystem repair" -Push 2>&1 | Out-String
+    Write-OK $gateResult.Trim()
 }
 
 # ══════════════════════════════════════════════════════════════════════
@@ -401,16 +395,10 @@ function Invoke-Learn {
         python "$ecoDir\scripts\generate-obsidian-notes.py" 2>&1 | ForEach-Object { Write-Info "Obsidian: $_" }
     } catch { Write-Err "Falha na consolidacao: $_" }
 
-    # 3. Commit
-    Push-Location $ecoDir
-    $status = git status --porcelain
-    if ($status) {
-        git add -A
-        git commit -m "[ecosystem learn] $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
-        git push
-        Write-OK "Conhecimento versionado"
-    } else { Write-OK "Nada novo" }
-    Pop-Location
+    # 3. Commit via gate unico (persistencia.ps1) - nunca git direto
+    Write-Step "Versionando conhecimento via gate"
+    $gateResult = & powershell -ExecutionPolicy Bypass -File "$ecoDir\scripts\persistencia.ps1" run-sync -Repo eco -Label "ecosystem learn" -Push 2>&1 | Out-String
+    Write-OK $gateResult.Trim()
 }
 
 # ══════════════════════════════════════════════════════════════════════
