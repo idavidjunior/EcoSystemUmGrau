@@ -248,6 +248,64 @@ def _plano_sugerido(entendimento):
     return plano
 
 
+# ---------------------------------------------------------------------------
+# Checklist de entrega + gate de veto (Fase 1)
+# Capricho: entregável verificável ("pronto e finalizado") + o que está
+# PROIBIDO/BLOQUEADO antes de executar. Não toca no Kernel: é um gate
+# consultável (a LLM ou um agente o consulta antes de executar).
+# ---------------------------------------------------------------------------
+VETOS = [
+    ('SINCRONIZAR_GIT', re.compile(r'\b(git add|git commit|git push|push direto|commitar direto|commit direto|fazer commit|push sem o gate)\b', re.I),
+     'Persistência em git passa EXCLUSIVAMENTE pelo gate scripts/persistencia.ps1. Proibido git add/commit/push direto.'),
+    ('DESTRUICAO', re.compile(r'\b(apagar|deletar|remover|excluir|rm -rf|formatar|destruir)\b', re.I),
+     'Operação destrutiva irreversível exige backup e confirmação humana antes de qualquer ação.'),
+    ('SECRETOS', re.compile(r'\b(senha em|código-fonte\b.*\bchave|token de api|api key|segredo no código|chave privada)\b', re.I),
+     'Nunca colocar chaves, senhas ou tokens em código-fonte. Validar exposição antes de persistir.'),
+    ('DESKTOP', re.compile(r'\b(fechar o opencode desktop|matar o opencode|encerrar o opencode|fechar o opencode)\b', re.I),
+     'O OpenCode desktop NUNCA pode ser fechado ou morto por automação.'),
+]
+
+
+def _checklist_entrega(pedido, entendimento):
+    """Monta checklist de entrega verificável a partir da compreensão.
+
+    Itens = "pronto e finalizado" observável (ações + critérios de sucesso).
+    Vetos = o que está PROIBIDO dentro do escopo do pedido (gate de veto).
+    """
+    check = []
+    for a in entendimento.get('acoes', [])[:6]:
+        check.append(f"Concluir: {a['verbo']} — {a['objeto'][:60] or a['verbo']}")
+    for c in entendimento.get('criterios_sucesso', [])[:4]:
+        if not any(c[:38] in item for item in check):
+            check.append(f"Validar: {c}")
+    if not check:
+        check.append('Entregar resposta objetiva conforme a intenção do pedido')
+    elif not entendimento.get('acoes'):
+        check.append('Confirmar se o pedido é informativo (não requer execução)')
+
+    vetos = []
+    for nome, padrao, msg in VETOS:
+        if padrao.search(pedido):
+            vetos.append({'regra': nome, 'proibido': True, 'detalhe': msg})
+    # Vetos implícitos derivados de ambigüidades/riscos (bloqueiam se perigosos)
+    for risco in entendimento.get('riscos', []):
+        if risco.get('tipo') == 'SEM_ENTREGAVEL_CLARO':
+            vetos.append({'regra': 'SEM_ENTREGAVEL', 'proibido': True,
+                          'detalhe': 'Sem entregável observável — bloqueado até definir o que será entregue.'})
+        if risco.get('tipo') == 'ACAO_INDEFINIDA':
+            vetos.append({'regra': 'ACAO_INDEFINIDA', 'proibido': True,
+                          'detalhe': 'Sem ação identificada — confirmar o que deve ser feito antes de executar.'})
+
+    return {'itens': check, 'vetos': vetos,
+            'status': 'BLOQUEADO' if vetos else 'APROVADO'}
+
+
+def gerar_checklist(pedido):
+    """Gera o gate consultável de entrega/veto para um pedido (Fase 1)."""
+    entendimento = compreender(pedido)
+    return _checklist_entrega(pedido, entendimento)
+
+
 def _score_clareza(pedido, entendimento):
     pontos = 100
     if not entendimento.get('acoes'):
@@ -500,6 +558,7 @@ def compreender(pedido, refinar=False):
     entendimento['plano_sugerido'] = _plano_sugerido(entendimento)
     entendimento['score_entendimento'] = _score_clareza(pedido, entendimento)
     entendimento['julgamento'] = _julgamento(entendimento['score_entendimento'], ambiguidades)
+    entendimento['checklist'] = _checklist_entrega(pedido, entendimento)
     if refinar:
         entendimento['llm_refino'] = refinar_com_llm(pedido, entendimento)
     return entendimento
@@ -639,6 +698,7 @@ def main():
     parser.add_argument('--refinar', action='store_true', help='refina com a LLM disponível (fail-soft)')
     parser.add_argument('--json', action='store_true', help='saída JSON')
     parser.add_argument('--spec', action='store_true', help='gera e salva a spec em specs/ (escrita atômica)')
+    parser.add_argument('--checklist', action='store_true', help='exibe o checklist de entrega + status de veto do pedido')
     args = parser.parse_args()
     if not args.pedido:
         pedido = sys.stdin.read().strip() if not sys.stdin.isatty() else ''
@@ -650,6 +710,13 @@ def main():
     out = compreender(pedido, refinar=args.refinar)
     if args.spec:
         out['spec'] = salvar_spec(pedido, entendimento=out)
+    if args.checklist:
+        cl = out.get('checklist', {})
+        linhas = [f"STATUS: {cl.get('status')}", "CHECKLIST:"]
+        linhas += [f"  - {i}" for i in cl.get('itens', [])]
+        linhas += [f"VETO ({v['regra']}): {v['detalhe']}" for v in cl.get('vetos', [])]
+        print("\n".join(linhas))
+        return 0
     print(json.dumps(out, ensure_ascii=False, indent=2) if args.json else
           f"OBJETIVO: {out['objetivo']}\nSCORE: {out['score_entendimento']} ({out['julgamento']})\n"
           f"AÇÕES: {len(out['acoes'])} | AMBIGUIDADES: {len(out['ambiguidades'])} | CONCEITOS: {len(out['conceitos'])}"

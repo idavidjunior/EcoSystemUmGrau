@@ -13,6 +13,7 @@ Tools:
   - refinar_entendimento  — compreensão + refino com a LLM do opencode (fallback NVIDIA/OpenAI/Anthropic)
   - resolver_conceitos    — resolve termos do pedido no acervo do ecossistema
   - detectar_desperdicio  — riscos de desperdício e atalhos (repetição, escopo)
+  - veto_pedido           — checklist de entrega + gate de veto (APROVADO/BLOQUEADO) antes de executar
   - gerar_spec            — gera e salva a spec em specs/<slug>.spec.md
 """
 import json
@@ -77,6 +78,17 @@ TOOLS = [
             "type": "object",
             "properties": {
                 "pedido": {"type": "string", "description": "O pedido a analisar", "minLength": 1}
+            },
+            "required": ["pedido"]
+        },
+    },
+    {
+        "name": "veto_pedido",
+        "description": "Gate consultável de entrega e veto (Fase 1): monta o checklist de 'pronto e finalizado' de um pedido e diz se ele está APROVADO ou BLOQUEADO, listando o que está proibido (vetos) dentro do escopo do ecossistema. Consulte ANTES de executar um pedido.\n\nTrigger keywords: veto, checklist, bloqueado, aprovado, gate de execução, posso executar, está proibido.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "pedido": {"type": "string", "description": "O pedido a examinar antes de executar", "minLength": 1}
             },
             "required": ["pedido"]
         },
@@ -150,6 +162,10 @@ def handle_tool(tool, args, rid):
             pedido = args.get("pedido", "")
             result = cp.detectar_desperdicio(pedido)
             result["tool"] = "detectar_desperdicio"
+        elif tool == "veto_pedido":
+            pedido = args.get("pedido", "")
+            result = cp.gerar_checklist(pedido)
+            result["tool"] = "veto_pedido"
         elif tool == "gerar_spec":
             pedido = args.get("pedido", "")
             destino = args.get("destino")
