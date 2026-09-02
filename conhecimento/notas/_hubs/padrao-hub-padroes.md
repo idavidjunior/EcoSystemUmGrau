@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**285 notas** conectadas a este hub.
+**286 notas** conectadas a este hub.
 
 
 ## Notas
@@ -77,6 +77,7 @@
 - [[css-selector-priority-ladder]]
 - [[custom-numpad-pattern]]
 - [[datas-horas-e-fuso-horário-no-brasil-ddmmaaaa-24h-brt]]
+- [[deduplicacao-memoria-semantica]]
 - [[dependency-inclusion-pattern]]
 - [[design-patterns-anti-patterns-comuns-god-object-service-loca]]
 - [[design-patterns-comportamentais-strategy-observer-template-m]]

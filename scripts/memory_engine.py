@@ -104,6 +104,83 @@ def _decay_score(memory, now=None):
 def _next_id(memories):
     return max([m['id'] for m in memories], default=0) + 1
 
+# ── Deduplicação por similaridade (2026-09-02) ─────────────────────────────
+# Antes de criar memória nova, busca no índice semântico existente uma memória
+# suficientemente semelhante. Se existir, MESCLA o conteúdo nela (em vez de
+# duplicar) e devolve o id da existente. Se não existir referência, cria nova.
+# Escopo: global — toda chamada a add_memory fica protegida (evita lixo/redundância).
+# Segurança: desligável via env MEMORY_DEDUP=0 ou flag --no-dedup.
+DEDUP_ENABLED = os.environ.get('MEMORY_DEDUP', '1') == '1'
+DEDUP_MIN_SCORE = float(os.environ.get('MEMORY_DEDUP_MIN_SCORE', '0.80'))
+
+
+def _buscar_similar(task, summary, k=3):
+    """Busca memórias existentes semanticamente semelhantes a task+summary.
+
+    Reutiliza o índice semântico existente (memory_semantic.search, cosseno [0,1]).
+    Nunca lança: se o índice falhar, devolve vazio (seguro criar nova memória).
+    """
+    try:
+        from memory_semantic import search as _sem_search
+    except Exception:
+        return []
+    if not task and not summary:
+        return []
+    query = f'{task} {summary}'.strip()
+    try:
+        return _sem_search(query, k=k, min_score=DEDUP_MIN_SCORE * 0.6) or []
+    except Exception:
+        return []
+
+
+def _merge_memory(existente, task, summary, kind, tags, metadata,
+                  confidence, source_type, source_anchors, solucao_aplicada):
+    """Mescla o conteúdo novo na memória existente, sem duplicar.
+
+    Concatena o resumo (com histórico), mescla tags, sobe strength/access_count,
+    atualiza last_accessed e preserva provenance. Nunca apaga a memória original.
+    """
+    now = datetime.now().isoformat()
+    hist = existente.get('metadata', {}) or {}
+    hist.setdefault('merge_history', []).append({
+        'em': now,
+        'task': task,
+        'summary': summary,
+        'confidence': confidence,
+        'source_type': source_type,
+    })
+    # Concatena contexto de forma compacta, evitando repetição exata de texto.
+    resumo = existente.get('summary', '')
+    if summary and summary not in resumo:
+        resumo = (resumo + ' | ' + summary) if resumo else summary
+    if task and task not in existente.get('task', ''):
+        existente['task'] = (existente.get('task', '') + ' / ' + task).strip(' /')
+    existente['summary'] = resumo
+    existente['metadata'] = hist
+    existente.setdefault('last_accessed', now)
+    existente['last_accessed'] = now
+    existente['access_count'] = int(existente.get('access_count', 0)) + 1
+    # Mescla tags novas (sem duplicar), preservando existentes.
+    _tags = list(existente.get('tags', []) or [])
+    for t in (tags or []):
+        if t and t not in _tags:
+            _tags.append(t)
+    existente['tags'] = _tags
+    # Preserva a maior confiança e mescla âncoras novas (rastreabilidade).
+    if source_anchors:
+        anchors = list(existente.get('source_anchors', []) or [])
+        existentes = {json.dumps(a, ensure_ascii=False, sort_keys=True) for a in anchors}
+        for a in source_anchors:
+            chave = json.dumps(a, ensure_ascii=False, sort_keys=True)
+            if chave not in existentes:
+                anchors.append(a)
+                existentes.add(chave)
+        existente['source_anchors'] = anchors
+    existente['confidence'] = max(float(existente.get('confidence', 0.0)), float(confidence))
+    if solucao_aplicada and kind == 'erro' and not existente.get('solucao_aplicada'):
+        existente['solucao_aplicada'] = solucao_aplicada
+    return existente
+
 def log_session(session_id=None, task=None, project=None, outcome=None,
                 files=None, tokens=None, duration=None, tags=None):
     """Log a raw session event to JSONL."""
@@ -177,6 +254,23 @@ def add_memory(task, summary, kind='episodio', project='', tags=None,
         for t in semanticas:
             if t and t not in tags:
                 tags.append(t)
+
+    # Deduplicação global por similaridade (2026-09-02): se já existe memória
+    # semelhante, MESCLA nela (atualiza) em vez de criar lixo redundante.
+    if DEDUP_ENABLED and '--no-dedup' not in sys.argv:
+        for hit in _buscar_similar(task, summary):
+            for m in memories:
+                if m.get('id') == hit.get('id'):
+                    _merge_memory(m, task, summary, kind, tags, metadata,
+                                  confidence, source_type, source_anchors,
+                                  solucao_aplicada)
+                    _save_memories(memories)
+                    if reindex:
+                        reindexar_semantico(best_effort=True)
+                    return m['id']
+            # hit pode referenciar memória ausente do corpus; para no 1º válido.
+            break
+
     memory = {
         'id': _next_id(memories),
         'kind': kind,

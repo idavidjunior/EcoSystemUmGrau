@@ -1,12 +1,12 @@
 ---
-tags: [cérebro, opencode, opencode comando, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, vivo opencode]
+tags: [opencode, opencode comando, opencode comando foco, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, vivo opencode]
 aliases: [@ecow e /ecow — abrir/focar o Cerebro Vivo]
 date: 2026-08-22
 ---
 
 # @ecow e /ecow — abrir/focar o Cerebro Vivo
 
-**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao

@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**244 notas** do cluster ecossistema.
+**245 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -116,6 +116,7 @@
 - [[crash-topicindex-version-mismatch]]
 - [[decisão-aprendizado-automático-permanente]]
 - [[decisão-arquitetura-jarvis-app]]
+- [[deduplicacao-memoria-semantica]]
 - [[desativar-bridge-android]]
 - [[eco-agente-e-comando-global]]
 - [[ecow-e-ecow-abrirfocar-o-cerebro-vivo]]

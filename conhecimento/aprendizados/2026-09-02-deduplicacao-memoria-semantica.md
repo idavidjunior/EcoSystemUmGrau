@@ -1,0 +1,8 @@
+---
+tipo: padrao
+tags: [memoria, dedup, semantica, melhoria, memory_engine]
+data: 2026-09-02
+contexto: O usuário pediu que o auto-evolution aprendesse sozinho sem depender de alguém lembrar, e que o registro de memórias evitasse lixo/redundância: antes de criar memória nova, verificar por similaridade semântica e, se houver referência pré-existente, apenas atualizá-la em vez de duplicar.
+decisao: (1) Deduplicação global por similaridade no memory_engine.add_memory, mesclando conteúdo na memória existente quando o score cosseno (índice semântico memory_semantic) >= 0.80. Criar nova memória apenas quando não há referência. Desligável via env MEMORY_DEDUP=0 ou flag --no-dedup. (2) AUTO-EVOLUTION TIMER no scripts/vigilante.ps1 (padrão do LEARN TIMER, gate diário por data): roda auto_evolution.py evolve a cada 24h — dry-run sempre (assessment + detecção de gaps, inerte) + apply curado de 1 plano de baixo risco quando há executor (opencode/ler), com o motor bloqueando risco alto, fazendo checkpoint, preflight+testes+gate e rollback.
+impacto: Toda chamada a add_memory do ecossistema fica protegida contra duplicação; memórias semelhantes são consolidadas. O auto-evolution agora dispara sozinho diariamente, sem o usuário precisar lembrar, aprendendo por conta própria de forma curada e segura.
+validacao: py_compile OK; preflight_check.py TODOS TESTES PASSARAM (antes e depois); ParseFile do vigilante.ps1 OK (sem erros de sintaxe); testes isolados de _merge_memory OK (reuso de id, idempotência, não baixar confiança); _buscar_similar retorna match exato (score 1.0) sobre dados reais; auto_evolution.py evolve dry-run executa e gera assessment. Base de memória intacta (644 memórias, sem corrupção).

@@ -201,6 +201,7 @@ foreach ($proj in $projectRepos) {
 $ecoLastSync = [datetime]::MinValue
 $lerLastSync = [datetime]::MinValue
 $lastLearnDate = (Get-Date).Date.AddDays(-1)  # roda no primeiro ciclo
+$lastAutoEvolveDate = (Get-Date).Date.AddDays(-1)  # auto-evolucao roda no 1o ciclo diario
 
 # Quiet period: verifica se o working tree esta queto ha $quietPeriod segundos.
 # Recebe o tempo desde a ultima sync (em segundos) para aplicar o teto forcado.
@@ -344,6 +345,44 @@ $onLearn = {
 }
 Register-ObjectEvent $learnTimer "Elapsed" -Action $onLearn > $null
 $learnTimer.Start()
+
+# ══════════════════════════════════════════════════════════════════════
+# AUTO-EVOLUTION TIMER: auto-evolucao sozinha (aprende sem ninguem lembrar, 1x/dia)
+# Roda o ciclo fechado do scripts/auto_evolution.py a cada 24h (gate por data):
+#   - SEMPRE em dry-run: reavalia capacidades, detecta gaps novos, gera planos (0 mutacao).
+#   - SE houver executor (opencode/ler) disponivel: aplica ate 1 plano de BAIXO risco
+#     automaticamente. O motor ja bloqueia risco alto (sem --force), faz checkpoint,
+#     passa preflight+testes+gate e faz rollback em falha. Assim evoluir sozinho
+#     nao joga a estabilidade no lixo.
+# Seguranca: dry-run e inerte; apply e curado pelo proprio motor (autonomia responsavel).
+# ══════════════════════════════════════════════════════════════════════
+$autoEvolveTimer = New-Object System.Timers.Timer
+$autoEvolveTimer.Interval = 3600000  # check a cada 1h
+$autoEvolveTimer.AutoReset = $true
+
+$onAutoEvolve = {
+    $today = (Get-Date).Date
+    if ($lastAutoEvolveDate -lt $today) {
+        $lastAutoEvolveDate = $today
+        Write-Log "Auto-evolucao diaria (aprender sozinho) iniciada..."
+        try {
+            # 1) Dry-run sempre: assessment + gaps novos (inerte, mantem a base fresca)
+            $dry = & python "$ecoDir\scripts\auto_evolution.py" evolve 2>&1 | Out-String
+            Write-Log "Auto-evolucao dry-run: $($dry.Trim())"
+            # 2) Apply curado de 1 plano de baixo risco se houver executor disponivel
+            $executor = Get-Command opencode -ErrorAction SilentlyContinue
+            if (-not $executor) { $executor = Get-Command ler -ErrorAction SilentlyContinue }
+            if ($executor) {
+                $res = & python "$ecoDir\scripts\auto_evolution.py" evolve --apply --max-plans 1 2>&1 | Out-String
+                Write-Log "Auto-evolucao apply (curado): $($res.Trim())"
+            } else {
+                Write-Log "Auto-evolucao: sem executor (opencode/ler), mantendo dry-run."
+            }
+        } catch { Write-Log "Auto-evolucao ignorado: $_" }
+    }
+}
+Register-ObjectEvent $autoEvolveTimer "Elapsed" -Action $onAutoEvolve > $null
+$autoEvolveTimer.Start()
 
 # ══════════════════════════════════════════════════════════════════════
 # PREFERENCE DETECTOR: detecção automática de preferências do usuário (1x/h)
