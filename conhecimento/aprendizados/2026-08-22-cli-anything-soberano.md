@@ -103,6 +103,7 @@ HKUDS/CLI-Anything (MIT), metodologia GUI-to-CLI em 7 fases: análise do codebas
 - [[fix-narrador-triplicado-e-resiliencia-orfaos]]
 - [[fix-widget-grafo-desktop]]
 - [[gate-ponto-unico-compilador]]
+- [[gate-veto-compreensao]]
 - [[governanca-ciclo-jurisprudencia]]
 - [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]
 - [[gramática-do-português-brasileiro-guia-prático-do-dia-a-dia]]

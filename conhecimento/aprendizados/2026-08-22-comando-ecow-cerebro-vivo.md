@@ -118,6 +118,7 @@ Três camadas enxutas, sem duplicar lógica de foco fora do widget:
 - [[fix-narrador-triplicado-e-resiliencia-orfaos]]
 - [[fix-widget-grafo-desktop]]
 - [[gate-ponto-unico-compilador]]
+- [[gate-veto-compreensao]]
 - [[governanca-ciclo-jurisprudencia]]
 - [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]
 - [[gramática-do-português-brasileiro-guia-prático-do-dia-a-dia]]
