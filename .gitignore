@@ -101,6 +101,9 @@ conhecimento/aprendizados/cluster_mapper.json
 # ADB Tailscale local config (contains IP/serial)
 scripts/.adb_tailscale.json
 
+# Modelo TTS Piper (binarios grandes, baixa-se de novo; nao versionar)
+scripts/piper_models/
+
 # Artefatos de teste/desenvolvimento do widget e docs (nao versionar)
 docs/test_*.html
 docs/teste_*.html
