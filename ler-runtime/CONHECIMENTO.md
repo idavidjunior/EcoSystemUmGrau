@@ -1,11 +1,11 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-09-02T06:46:41.344911
+**Exportado em:** 2026-09-02T09:04:39.855432
 **Projetos:** 4
 **Padroes Tecnicos:** 290
 **Decisoes:** 87
 **Bug Fixes:** 52
-**Padroes Cognitivos:** 77
+**Padroes Cognitivos:** 78
 **Heuristicas:** 32
 **Frameworks:** 10
 **Missoes Aprendidas:** 134
@@ -2228,6 +2228,23 @@ decisao: |
   1. Adicionar verificacao de vida (psutil.pid_exists) no pode_iniciar() do Maestro.
      Se PID registrado morto, limpar registro stal
 
+### Correção de métricas de aderência (@sync)
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [aderencia, preflight, adherencia-audit, metrica, bug]
+data: 2026-09-02
+contexto: O @sync reportava @sync FAIL por metricas de aderencia baixas (inventario 15.8%, preflight 25%). Investigacao revelou bugs reais em duas metricas e um falso positivo no deploy config.
+decisao: Correcao de 3 frentes para elevar o score geral de aderencia de 69.6 para 93.4/100.
+impacto: @sync agora PASS (thresholds OK). Score EXCELENTE.
+---
+
+# Correção de métricas de aderência (@sync)
+
+## 1. Bug 
+
 ## Heuristicas
 
 | # | Dominio | Titulo | Descricao |
@@ -2322,7 +2339,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-09-02T06:46:41.233261
+**Ultima atualizacao:** 2026-09-02T09:04:39.733835
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

@@ -1,6 +1,6 @@
 # Padroes Cognitivos
 
-**62 notas** conectadas a este hub.
+**63 notas** conectadas a este hub.
 
 
 ## Notas
@@ -19,6 +19,7 @@
 - [[bug-parametro-pid-e-variavel-automatica-do-powershell]]
 - [[ciclo-ooda-aplicado-a-navegacao]]
 - [[cláusula-pétrea-ativação-de-voz-eco-system]]
+- [[correção-de-métricas-de-aderência-sync]]
 - [[corrigido-travamento-widget-pywebview]]
 - [[crash-topicindex-version-mismatch]]
 - [[debugging-em-cascata-reversa]]

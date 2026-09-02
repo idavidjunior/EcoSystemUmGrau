@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**243 notas** do cluster ecossistema.
+**244 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -111,6 +111,7 @@
 - [[controle-da-tv-lg-webos-via-ssap]]
 - [[controle-de-tv-lg-01082026]]
 - [[correção-de-mojibake-no-knowledgegraphjson-utf-8-lido-como-c]]
+- [[correção-de-métricas-de-aderência-sync]]
 - [[corrigido-travamento-widget-pywebview]]
 - [[crash-topicindex-version-mismatch]]
 - [[decisão-aprendizado-automático-permanente]]

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-09-02T06:46:41.233261",
+  "last_updated": "2026-09-02T09:04:39.733835",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -3757,6 +3757,15 @@
       "domain": "general",
       "body": "﻿---\ntipo: decisao\ntags: [maestro, runtime, guardian, fase-ativa, stale-pid]\ndata: 2026-08-31\ncontexto: |\n  Maestro de Runtime em fase ativa. Guardians consultam antes de iniciar servicos.\n  Bug: Maestro nao verificava se PID registrado ainda estava vivo (confiava cego no campo vivo).\n  Bug: Guardian nao registrava PID no Maestro apos iniciar servico.\ndecisao: |\n  1. Adicionar verificacao de vida (psutil.pid_exists) no pode_iniciar() do Maestro.\n     Se PID registrado morto, limpar registro stal",
       "extracted_at": "2026-08-31T20:48:38.546112"
+    },
+    {
+      "source": "opencode",
+      "title": "Correção de métricas de aderência (@sync)",
+      "domain": "general",
+      "body": "---\ntipo: erro\ntags: [aderencia, preflight, adherencia-audit, metrica, bug]\ndata: 2026-09-02\ncontexto: O @sync reportava @sync FAIL por metricas de aderencia baixas (inventario 15.8%, preflight 25%). Investigacao revelou bugs reais em duas metricas e um falso positivo no deploy config.\ndecisao: Correcao de 3 frentes para elevar o score geral de aderencia de 69.6 para 93.4/100.\nimpacto: @sync agora PASS (thresholds OK). Score EXCELENTE.\n---\n\n# Correção de métricas de aderência (@sync)\n\n## 1. Bug ",
+      "extracted_at": "2026-09-02T09:04:13.254171",
+      "merged_count": 2,
+      "merged_at": "2026-09-02T09:04:39.539304"
     }
   ],
   "heuristics": [
