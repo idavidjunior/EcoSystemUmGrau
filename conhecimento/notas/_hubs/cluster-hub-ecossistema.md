@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**247 notas** do cluster ecossistema.
+**248 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -236,6 +236,7 @@
 - [[sistema-de-análise-financeira]]
 - [[snapshots-corrompidos-do-opencode-referência-no-banco-decide]]
 - [[stt-no-partialstreaming-results]]
+- [[suggestions-hermes-itens-1-3]]
 - [[terminalwidget-edge]]
 - [[toast-de-erros-falsos-positivos]]
 - [[tradingagents-integrado-ao-ecossistema]]

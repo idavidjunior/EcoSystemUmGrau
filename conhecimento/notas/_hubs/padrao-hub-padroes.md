@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**286 notas** conectadas a este hub.
+**287 notas** conectadas a este hub.
 
 
 ## Notas
@@ -251,6 +251,7 @@
 - [[step-by-step-pipeline]]
 - [[strategy-engine-v20]]
 - [[sub-tab-pattern-nested-tabs]]
+- [[suggestions-hermes-itens-1-3]]
 - [[tab-navigation-pattern]]
 - [[taxonomia-correta-de-habilidades-jarvis]]
 - [[template-matching-para-botoes-graficos]]
