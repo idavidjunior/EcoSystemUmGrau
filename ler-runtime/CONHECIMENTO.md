@@ -1,9 +1,9 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-09-02T10:57:23.254313
+**Exportado em:** 2026-09-02T11:07:49.823434
 **Projetos:** 4
 **Padroes Tecnicos:** 291
-**Decisoes:** 87
+**Decisoes:** 88
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 78
 **Heuristicas:** 32
@@ -703,6 +703,15 @@ tags: [gui, desktop, widget, edge, cerebro-vivo, ecow]
 data: 2026-09-01
 contexto: O usuario pediu para remover as janelas da GUI desktop (chat e HUD) e deixar o sistema "como era somente com o Edge e o cerebro vivo".
 decisao: Desativada a GUI desktop (gui-desktop/main.py), que abria a janela HUD (Arc Reactor) e a janela de chat. O ecossistema passa a rodar apenas com o widget oficial Edge (scripts/widget_edge.py) e o Cerebro Vivo (scripts/widget_grafo.py, grafo 3D do conhecimen
+
+### gate ponto unico compilador
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [gate, persistencia, ponto-unico, auditoria, compiladorAPK, ecosystem]
+data: 2026-09-02
+contexto: O usuário perguntou se a ordem de commit/push do ecossistema realmente parte de um único lugar (o gate persistencia.ps1) ou se existem vários pontos emitindo ordens. Ao auditar, encontrei desvios reais do gate e precisei decidir como tratá-los sem quebrar fluxos legítimos.
+decisao: (1) Corpus no núcleo do EcoSystemUmGrau: scripts/ecosystem.ps1 nas funções repair (linhas 352-3
 
 
 ## Padroes Tecnicos
@@ -2340,7 +2349,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-09-02T10:57:22.421754
+**Ultima atualizacao:** 2026-09-02T11:07:49.733915
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

@@ -103,6 +103,7 @@ resultado: Podas automáticas diárias + VACUUM imediato na saída do desktop; V
 - [[fase3-rotina-automatica-de-tiragem-organizacional]]
 - [[fix-narrador-triplicado-e-resiliencia-orfaos]]
 - [[fix-widget-grafo-desktop]]
+- [[gate-ponto-unico-compilador]]
 - [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]
 - [[gramática-do-português-brasileiro-guia-prático-do-dia-a-dia]]
 - [[gui-desktop-desativada-edge-e-cerebro-vivo]]
