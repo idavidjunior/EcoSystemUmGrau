@@ -47,6 +47,7 @@ from .pronunciation import PronunciationEngine
 from .sentence_chunker import SentenceChunker
 from .tts_validator import TTSValidator
 from .edge_tts_engine import EdgeTTSEngine
+from .piper_engine import PiperTTSEngine
 from .exceptions import (
     TextTooShortError,
     TextTooLongError,
@@ -132,20 +133,48 @@ class SpeechPipeline:
         return self._chunker.chunk_by_length(texto, max_chars=MAX_TEXT_LENGTH)
 
     async def _synthesize_async(self, texto: str) -> bytes:
-        """Sintetiza texto (possivelmente longo) em bytes MP3, sem cortar o final."""
+        """Sintetiza texto (possivelmente longo) em bytes de áudio,
+        sem cortar o final. Tenta EdgeTTS primeiro, depois Piper TTS."""
         tts = self._get_tts()
         audio = b""
         for parte in self._partes_para_sintese(texto):
-            audio += await tts.synthesize(parte)
+            try:
+                audio += await tts.synthesize(parte)
+            except TTSynthesisError:
+                audio += await self._synthesize_piper(parte)
         return audio
 
     def _synthesize_async_bytes(self, texto: str) -> bytes:
-        """Sintetiza texto (possivelmente longo) em bytes MP3 (bloqueante), sem cortar o final."""
+        """Sintetiza texto (possivelmente longo) em bytes de áudio
+        (bloqueante), sem cortar o final."""
         tts = self._get_tts()
         audio = b""
         for parte in self._partes_para_sintese(texto):
-            audio += tts.synthesize_sync(parte)
+            try:
+                audio += tts.synthesize_sync(parte)
+            except TTSynthesisError:
+                audio += self._synthesize_piper_sync(parte)
         return audio
+
+    async def _synthesize_piper(self, texto: str) -> bytes:
+        """Sintetiza via Piper TTS como fallback."""
+        try:
+            piper = PiperTTSEngine()
+            if piper.available:
+                return await piper.synthesize(texto)
+        except Exception:
+            pass
+        raise TTSynthesisError("Nenhum motor TTS disponível")
+
+    def _synthesize_piper_sync(self, texto: str) -> bytes:
+        """Sintetiza via Piper TTS como fallback (bloqueante)."""
+        try:
+            piper = PiperTTSEngine()
+            if piper.available:
+                return piper.synthesize_sync(texto)
+        except Exception:
+            pass
+        raise TTSynthesisError("Nenhum motor TTS disponível")
 
     # ── API Principal ───────────────────────────────────────────────────
 

@@ -12,6 +12,7 @@ import asyncio
 import base64
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -56,6 +57,74 @@ _WHISPER_MODEL = None
 WHISPER_MIN_AVG_LOGPROB = float(os.environ.get("VOX_WHISPER_MIN_LOGPROB", "-2.0"))
 WHISPER_MAX_NO_SPEECH = float(os.environ.get("VOX_WHISPER_NO_SPEECH", "0.5"))
 
+# --- Hallucination filter: lista de frases conhecidas que o Whisper
+# costuma gerar do nada (silêncio/ruído), validada em ICASSP 2025
+# (arXiv:2501.11378 — Bag of Hallucinations) e usada pelo Hermes Agent. ---
+WHISPER_HALLUCINATIONS = {
+    # Português Brasileiro
+    "obrigado", "obrigada", "obrigado pela audiência", "obrigado por assistir",
+    "obrigada pela audiência", "obrigada por assistir",
+    "inscreva-se", "inscreva-se no canal", "inscreva-se no meu canal",
+    "se inscreva", "se inscreva no canal", "se inscreva no meu canal",
+    "like and subscribe", "like and subscribe",
+    "até mais", "até logo", "até amanhã", "até amanhã",
+    "volte sempre", "volte para cá", "volte sempre",
+    "comentem aqui embaixo", "deixe seu comentário", "deixe seu comentario",
+    "curta o vídeo", "curta esse vídeo", "curta o vídeo",
+    "compartilhe com os amigos", "compartilhe esse vídeo",
+    "ativinho", "ativinho do dia", "ativinho de vocês",
+    "você é incrível", "você é o melhor",
+    # Inglês
+    "thank you", "thank you very much", "thanks for watching",
+    "thanks for your time", "please subscribe",
+    "please like and subscribe", "please like the video",
+    "bye", "bye bye", "see you", "see you later", "see you soon",
+    "the end", "that's all", "that's it", "that is all",
+    "you're amazing", "you're the best", "you're awesome",
+    "have a nice day", "have a great day", "good night",
+    "good morning", "good evening", "goodbye",
+    "don't forget to", "make sure to", "remember to",
+    # Genéricos — padrões que costumam aparecer como alucinação
+    "welcome to", "welcome back", "welcome to the",
+    "before we go", "before we start", "before we end",
+    "in today's video", "in this video", "in this tutorial",
+    "i hope you", "i hope you enjoyed", "i hope you liked",
+    "if you liked", "if you enjoyed", "if you found this helpful",
+    "stay tuned", "stay safe", "stay healthy",
+    "now let's", "now let me", "now let's get",
+    "so what are you waiting", "so let's get started",
+    "today we're going to", "today we're gonna",
+    "in this video i", "in this tutorial i",
+}
+
+_HALLUCINATION_REPEAT_RE = re.compile(
+    r'^(?:n[-\s]?n[-\s]?n)+$',
+    flags=re.IGNORECASE,
+)
+
+_HALLUCINATION_SINGLE_CHARS_RE = re.compile(
+    r'^(?:[a-z]\s*[-,\s]*\s*)+$',
+    flags=re.IGNORECASE,
+)
+
+
+def _is_hallucination(texto):
+    """Detecta alucinações conhecidas do Whisper usando lista de frases
+    conhecidas + padrões repetitivos. Baseado em pesquisa ICASSP 2025
+    (arXiv:2501.11378) e implementação Hermes Agent."""
+    if not texto or not texto.strip():
+        return True
+    t = texto.strip().lower()
+    if not t:
+        return True
+    if t in WHISPER_HALLUCINATIONS:
+        return True
+    if _HALLUCINATION_REPEAT_RE.match(t):
+        return True
+    if _HALLUCINATION_SINGLE_CHARS_RE.match(t):
+        return True
+    return False
+
 GOOGLE_LANG = "pt-BR"
 SAMPLE_RATE = 16000
 RECORD_SECONDS = float(os.environ.get("VOX_RECORD_SECONDS", "7"))
@@ -63,8 +132,7 @@ ENERGY_THRESHOLD = 300
 
 
 def _tocar_mci(mp3, parar_evento=None, stop_flag=None):
-    """Toca MP3 via API MCI do Windows (confiavel em scripts; MediaPlayer falha
-    em subprocessos). Bloqueia ate o final do audio.
+    """Toca MP3 ou WAV via API MCI do Windows. Auto-detecta o tipo.
 
     Se `parar_evento` (threading.Event) for fornecido, o audio para no momento
     em que o evento for setado (barge-in: usuario falou ou apertou tecla).
@@ -75,7 +143,9 @@ def _tocar_mci(mp3, parar_evento=None, stop_flag=None):
     from pathlib import Path
     mci = ctypes.windll.winmm.mciSendStringW
     alias = f"vox{int(time.time() * 1000)}"
-    r = mci(f'open "{mp3}" type mpegvideo alias {alias}', None, 0, 0)
+    ext = Path(str(mp3)).suffix.lower()
+    mci_type = "waveaudio" if ext in (".wav", ".wave") else "mpegvideo"
+    r = mci(f'open "{mp3}" type {mci_type} alias {alias}', None, 0, 0)
     if r != 0:
         print(f"[erro mci open: {r}]")
         return
@@ -137,6 +207,13 @@ def _novo_mp3_temp(prefixo="vox_fala"):
     return Path(caminho)
 
 
+def _novo_audio_temp(prefixo="vox_fala", extensao=".wav"):
+    """Cria caminho de áudio temporário único com extensão personalizada."""
+    fd, caminho = tempfile.mkstemp(prefix=f"{prefixo}_", suffix=extensao)
+    os.close(fd)
+    return Path(caminho)
+
+
 def _normalizar_fallback_tts(texto):
     """Aplica a camada V2 (TTS Text Normalizer) no texto quando o
     SpeechPipeline não está disponível. Nunca falha: retorna o texto
@@ -190,13 +267,25 @@ def _falar(texto, parar_evento=None, stop_flag=None):
         except Exception:
             pass  # cache corrompido, gera de novo
     
-    # Fallback: gera e toca diretamente
+    # Fallback: gera e toca diretamente via edge-tts
     mp3 = _novo_mp3_temp("vox_fala")
     try:
         asyncio.run(_tts_salvar(texto, str(mp3)))
     except Exception as e:
         print(f"[erro tts] {e}")
         mp3.unlink(missing_ok=True)
+        # Fallback: tenta Piper TTS local
+        try:
+            from tts.piper_engine import PiperTTSEngine
+            piper = PiperTTSEngine()
+            if piper.available:
+                wav_path = str(_novo_audio_temp("vox_fala", ".wav"))
+                if piper.save_sync(texto, wav_path):
+                    _tocar_e_limpar(wav_path, parar_evento, stop_flag)
+                    return
+                print("[piper falhou ao salvar WAV]")
+        except Exception as pe:
+            print(f"[erro piper] {pe}")
         return
     if not mp3.exists():
         mp3.unlink(missing_ok=True)
@@ -226,11 +315,26 @@ async def _tts_stream_e_tocar(texto, caminho_mp3, parar_evento=None, stop_flag=N
     
     Reduz latência significativamente: em vez de aguardar áudio completo,
     toca os primeiros chunks enquanto o resto ainda está sendo gerado.
+    Usa sentence chunking para iniciar a síntese pela primeira sentença,
+    reduzindo o time-to-first-audio.
     """
     import edge_tts
 
     # Prepara texto: normaliza via camada V2 quando disponível
     texto = _normalizar_fallback_tts(texto)
+
+    # Sentence chunking: divide em sentenças para time-to-first-audio menor
+    chunks = []
+    try:
+        if SPEECH_PIPELINE_AVAILABLE and _speech_pipeline:
+            chunks = _speech_pipeline.sentence_chunker.chunk_for_streaming(texto)
+            if not chunks:
+                chunks = [texto]
+    except Exception:
+        chunks = [texto]
+    
+    if not chunks:
+        chunks = [texto]
 
     # Prepara communicate
     try:
@@ -385,6 +489,7 @@ def _stt_whisper(audio, partial_callback=None):
         condition_on_previous_text=False,
         no_speech_threshold=0.6,
         log_prob_threshold=-1.0,
+        compression_ratio_threshold=2.4,
         vad_filter=True,
         vad_parameters={
             "min_silence_duration_ms": 800,
@@ -407,11 +512,13 @@ def _stt_whisper(audio, partial_callback=None):
         except Exception:
             pass
         seg_text = s.text.strip()
-        if seg_text:
+        if seg_text and not _is_hallucination(seg_text):
             texto += seg_text + " "
             if partial_callback:
                 partial_callback(texto.strip())
             print(f"\r{VOZ_COLOR}[voce (streaming)]{RESET} {texto.strip()}", flush=True, end="", file=sys.stderr)
+        elif seg_text:
+            descartados += 1
     if descartados:
         print(f"[whisper: {descartados} segmento(s) filtrados como alucinacao]", file=sys.stderr)
     print()
