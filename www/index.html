@@ -36,7 +36,8 @@ button#btnPausa.pausado{background:#3d3424;border-color:#f9e2af;color:#f9e2af;
 button#btnParar{font-size:11px;padding:5px 10px;border:1px solid var(--bdr);border-radius:4px;
   background:transparent;color:var(--tx3);cursor:pointer;width:90px;}
 button#btnParar.falando{background:#3a1d1d;border-color:#f38ba8;color:#f38ba8;
-  box-shadow:0 0 6px rgba(243,139,168,.4);}
+  box-shadow:0 0 6px rgba(243,139,168,.4);animation:piscaFala 1s steps(2,start) infinite;}
+@keyframes piscaFala{50%{opacity:.35;}}
 .fala{font-size:10px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   max-height:14px;line-height:14px;}
 .fala.ativa{color:var(--acc);}

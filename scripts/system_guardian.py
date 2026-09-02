@@ -393,7 +393,7 @@ ESSENTIAL_EXES = {
     "winlogon", "services", "lsass", "csrss", "smss",
     "svchost", "System", "Idle", "Registry", "MsMpEng",
     "explorer", "conhost", "dwm", "fontdrvhost",
-    "spoolsv", "TeamViewer", "TeamViewer_Service",
+    "spoolsv", "TeamViewer", "TeamViewer_Service", "AnyDesk",
     "SecurityHealthService", "SecurityHealthSystray",
     "RuntimeBroker", "sihost", "taskhostw", "ctfmon",
     "SearchIndexer", "ShellExperienceHost",
@@ -457,6 +457,14 @@ def is_tailscale(pid):
         p = psutil.Process(pid)
         cmd = " ".join(p.cmdline()).lower()
         return "tailscale" in cmd
+    except Exception:
+        return False
+
+def is_anydesk(pid):
+    try:
+        p = psutil.Process(pid)
+        cmd = " ".join(p.cmdline()).lower()
+        return "anydesk" in cmd
     except Exception:
         return False
 
@@ -537,7 +545,7 @@ def get_kill_candidates():
             # Proteção incondicional dos serviços Eco
             if pid in PROTECTED_ECO_PIDS:
                 continue
-            if is_bridge(pid) or is_serve(pid) or is_tailscale(pid):
+            if is_bridge(pid) or is_serve(pid) or is_tailscale(pid) or is_anydesk(pid):
                 continue
             # Protege widget/narrador/tts_service se Eco ativo (fallback)
             if eco_on and (is_widget_pid(pid) or is_narrador_pid(pid) or is_tts_service_pid(pid)):
