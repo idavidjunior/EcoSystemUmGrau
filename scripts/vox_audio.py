@@ -310,13 +310,16 @@ def _falar(texto, parar_evento=None, stop_flag=None):
             pass
 
 
-async def _tts_stream_e_tocar(texto, caminho_mp3, parar_evento=None, stop_flag=None):
-    """Gera áudio via streaming e toca assim que tiver dados suficientes.
-    
-    Reduz latência significativamente: em vez de aguardar áudio completo,
-    toca os primeiros chunks enquanto o resto ainda está sendo gerado.
-    Usa sentence chunking para iniciar a síntese pela primeira sentença,
+async def _tts_stream_e_tocar(texto, caminho_mp3=None, parar_evento=None, stop_flag=None):
+    """Gera áudio via streaming por sentença e toca cada uma assim que pronta.
+
+    Divide o texto em sentenças (SentenceChunker) e sintetiza/toca cada
+    sentença em sequência. Como a primeira sentença é curta, ela começa a
+    tocar (via buffer) enquanto as demais ainda estão sendo geradas —
     reduzindo o time-to-first-audio.
+
+    Se o chunking não se aplicar (1 chunk), cai no streaming padrão do
+    texto inteiro, preservando o comportamento anterior.
     """
     import edge_tts
 
@@ -324,74 +327,79 @@ async def _tts_stream_e_tocar(texto, caminho_mp3, parar_evento=None, stop_flag=N
     texto = _normalizar_fallback_tts(texto)
 
     # Sentence chunking: divide em sentenças para time-to-first-audio menor
-    chunks = []
+    chunks = [texto]
     try:
         if SPEECH_PIPELINE_AVAILABLE and _speech_pipeline:
-            chunks = _speech_pipeline.sentence_chunker.chunk_for_streaming(texto)
-            if not chunks:
-                chunks = [texto]
+            c = _speech_pipeline.sentence_chunker.chunk_for_streaming(texto)
+            if c:
+                chunks = c
     except Exception:
-        chunks = [texto]
-    
-    if not chunks:
-        chunks = [texto]
+        pass
 
-    # Prepara communicate
-    try:
-        from pronunciar_termos import marcar_para_tts
-        texto_marcado = marcar_para_tts(texto, formato="ssml")
-        if texto_marcado and '<lang' in str(texto_marcado):
-            texto_ssml = f'<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="pt-BR">{texto_marcado}</speak>'
-            communicate = edge_tts.Communicate(texto_ssml, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
-        else:
-            communicate = edge_tts.Communicate(texto, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
-    except (ImportError, Exception):
-        communicate = edge_tts.Communicate(texto, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
-
-    # Coleta chunks de áudio
-    audio_chunks = []
-    total_bytes = 0
-    PREBUFFER_BYTES = 4000  # ~4KB = ~100ms de áudio (início mais rápido)
-    started_playing = False
-    play_thread = None
-    
-    async for chunk in communicate.stream():
+    # Sintetiza e toca cada sentença em sequência (playback não sobreposto)
+    for sentenca in chunks:
         if parar_evento and parar_evento.is_set():
             break
-        if chunk["type"] == "audio":
-            audio_chunks.append(chunk["data"])
-            total_bytes += len(chunk["data"])
-            
-            # Quando tiver buffer suficiente, salva e toca em thread separada
-            if not started_playing and total_bytes >= PREBUFFER_BYTES:
-                started_playing = True
-                # Salva o que já tem
-                with open(caminho_mp3, "wb") as f:
-                    for c in audio_chunks:
-                        f.write(c)
-                # Toca em background enquanto continua recebendo
-                if play_thread is None or not play_thread.is_alive():
-                    play_thread = threading.Thread(
-                        target=_tocar_mci, 
-                        args=(caminho_mp3,), 
-                        kwargs={"parar_evento": parar_evento, "stop_flag": stop_flag},
-                        daemon=True
-                    )
-                    play_thread.start()
-    
-    # Salva áudio completo
-    if audio_chunks:
-        with open(caminho_mp3, "wb") as f:
-            for c in audio_chunks:
-                f.write(c)
-    
-    # Se não deu para tocar streaming (texto muito curto), toca agora
-    if not started_playing and audio_chunks:
-        _tocar_mci(caminho_mp3, parar_evento=parar_evento, stop_flag=stop_flag)
-    
-    # Espera thread de reprodução terminar
-    if play_thread and play_thread.is_alive():
-        play_thread.join(timeout=10)
+
+        # Prepara communicate para esta sentença
+        try:
+            from pronunciar_termos import marcar_para_tts
+            texto_marcado = marcar_para_tts(sentenca, formato="ssml")
+            if texto_marcado and '<lang' in str(texto_marcado):
+                texto_ssml = f'<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="pt-BR">{texto_marcado}</speak>'
+                communicate = edge_tts.Communicate(texto_ssml, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
+            else:
+                communicate = edge_tts.Communicate(sentenca, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
+        except (ImportError, Exception):
+            communicate = edge_tts.Communicate(sentenca, TTS_VOICE, rate=TTS_RATE, pitch=TTS_PITCH)
+
+        # Arquivo temporário único para esta sentença
+        tmp = _novo_mp3_temp("vox_stream")
+
+        # Coleta chunks de áudio da sentença
+        audio_chunks = []
+        total_bytes = 0
+        PREBUFFER_BYTES = 4000  # ~4KB = ~100ms de áudio (início mais rápido)
+        started_playing = False
+        play_thread = None
+
+        async for chunk in communicate.stream():
+            if parar_evento and parar_evento.is_set():
+                break
+            if chunk["type"] == "audio":
+                audio_chunks.append(chunk["data"])
+                total_bytes += len(chunk["data"])
+
+                # Quando tiver buffer suficiente, salva e toca em thread separada
+                if not started_playing and total_bytes >= PREBUFFER_BYTES:
+                    started_playing = True
+                    with open(tmp, "wb") as f:
+                        for c in audio_chunks:
+                            f.write(c)
+                    if play_thread is None or not play_thread.is_alive():
+                        play_thread = threading.Thread(
+                            target=_tocar_mci,
+                            args=(str(tmp),),
+                            kwargs={"parar_evento": parar_evento, "stop_flag": stop_flag},
+                            daemon=True
+                        )
+                        play_thread.start()
+
+        # Salva áudio completo da sentença
+        if audio_chunks:
+            with open(tmp, "wb") as f:
+                for c in audio_chunks:
+                    f.write(c)
+
+        # Se não deu para tocar streaming (sentença muito curta), toca agora
+        if not started_playing and audio_chunks:
+            _tocar_mci(str(tmp), parar_evento=parar_evento, stop_flag=stop_flag)
+
+        # Espera thread de reprodução terminar (não sobrepor próxima sentença)
+        if play_thread and play_thread.is_alive():
+            play_thread.join(timeout=10)
+
+        tmp.unlink(missing_ok=True)
 
 
 async def _tts_salvar(texto, caminho):
@@ -579,14 +587,12 @@ async def _falar_async(texto, parar_evento=None, stop_flag=None):
         except Exception as e:
             print(f"[SpeechPipeline falhou: {e}]")
 
-    # Streaming: gera áudio em chunks e toca assim que tiver buffer suficiente
-    mp3 = _novo_mp3_temp("vox_fala_stream")
+    # Streaming: gera áudio em chunks por sentença e toca conforme cada uma fica pronta
     try:
-        await _tts_stream_e_tocar(texto, str(mp3), parar_evento, stop_flag)
+        await _tts_stream_e_tocar(texto, None, parar_evento, stop_flag)
     except Exception as e:
         print(f"[erro stream tts] {e}")
         # Fallback: método legado (batch)
-        mp3.unlink(missing_ok=True)
         mp3_batch = _novo_mp3_temp("vox_fala")
         try:
             await _tts_salvar(texto, str(mp3_batch))
@@ -594,8 +600,6 @@ async def _falar_async(texto, parar_evento=None, stop_flag=None):
         except Exception as e2:
             print(f"[erro fallback tts] {e2}")
             mp3_batch.unlink(missing_ok=True)
-    else:
-        mp3.unlink(missing_ok=True)
 
 
 async def cmd_falar_async(texto, interruptivel=False):
