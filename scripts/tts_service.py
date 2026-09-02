@@ -21,6 +21,8 @@ Resposta (runtime/tts_resp_<request_id>.json):
 """
 import json
 import os
+import re
+import subprocess
 import sys
 import time
 import uuid
@@ -193,6 +195,47 @@ def _escrever_estado(falando: bool, texto_atual: str = ""):
             pass
 
 
+def _audio_disponivel() -> bool:
+    """Verifica se ha dispositivo de saida de audio disponivel no Windows.
+    Usa stdlib/subprocess (PowerShell) — sem dependencia externa. Fallback seguro
+    (True) se a verificacao falhar, para nunca bloquear o TTS de forma definitiva.
+    Registra telemetria do resultado."""
+    result = True
+    origem = "fallback"
+    try:
+        import subprocess as sp
+        cmd = (
+            "powershell -NoProfile -Command "
+            '"@(Get-CimInstance Win32_SoundDevice -ErrorAction SilentlyContinue ).Count"'
+        )
+        out = sp.run(cmd, capture_output=True, text=True, timeout=15,
+                     shell=True, creationflags=getattr(sp, "CREATE_NO_WINDOW", 0))
+        texto = (out.stdout or "").strip()
+        if texto.isdigit():
+            dispositivos = int(texto)
+            result = dispositivos > 0
+            origem = "wmi"
+        if result:
+            # Confirma servico Windows Audio ativo.
+            cmd2 = (
+                "powershell -NoProfile -Command "
+                '"@(Get-Service -Name Audiosrv -ErrorAction SilentlyContinue).Status "'
+            )
+            out2 = sp.run(cmd2, capture_output=True, text=True, timeout=15,
+                          shell=True, creationflags=getattr(sp, "CREATE_NO_WINDOW", 0))
+            status = (out2.stdout or "").strip().splitlines()
+            if status and status[0].strip() == "Running":
+                result = True
+    except Exception:
+        result = True
+        origem = "fallback"
+    try:
+        _telemetrizar({"tipo": "audio_check", "disponivel": result, "origem": origem})
+    except Exception:
+        pass
+    return result
+
+
 def _speak_text(texto: str, stop_flag: Path, req_id: str) -> bool:
     global _current_req_id, _processing
     _current_req_id = req_id
@@ -210,6 +253,13 @@ def _speak_text(texto: str, stop_flag: Path, req_id: str) -> bool:
         except Exception:
             pass
         cache_file, cache_antes = _cache_info(texto)
+    if not _audio_disponivel():
+        # Sem dispositivo de saida de audio: degrada controlado, nao tenta falar.
+        reg["status"] = "sem_audio"
+        reg["erro"] = "nenhum dispositivo de audio disponivel"
+        _log("sem audio: nenhum dispositivo de saida disponivel; fala abortada")
+        _processing = False
+        return False
     try:
         ok = False
         if SPEECH_AVAILABLE and _speech:
