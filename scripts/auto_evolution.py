@@ -322,6 +322,7 @@ class Gap:
     rationale: str
     effort: str  # small, medium, large
     risk: str  # low, medium, high
+    sources: List[Dict[str, Any]] = field(default_factory=list)  # fontes relevantes do source_registry
 
 @dataclass
 class EvolutionPlan:
@@ -334,6 +335,80 @@ class EvolutionPlan:
     validation_criteria: List[str]
     rollback_plan: str
     priority: int  # 1=highest
+
+
+def _enrich_gaps_with_sources(gaps: List[Gap]) -> List[Gap]:
+    """Enriquece cada gap com fontes relevantes do source_registry.
+
+    Para cada gap, mapeia a categoria para domínios do catálogo e busca
+    fontes de alta autoridade nesses domínios. A busca é guiada por
+    mapeamento semântico (não apenas matching textual), pois os gaps são
+    sobre conceitos de arquitetura de software, não sobre linguagens específicas.
+    """
+    try:
+        from source_registry import SourceRegistry
+        reg = SourceRegistry()
+    except Exception:
+        return gaps  # fail-soft: sem registry, gaps ficam sem fontes
+
+    # Mapeamento de categorias de gap → domínios relevantes no catálogo
+    GAP_DOMAIN_MAP = {
+        'entity_kind': ['architecture', 'general'],
+        'relationship': ['architecture', 'database'],
+        'confidence': ['architecture', 'general'],
+        'evidence': ['architecture', 'security'],
+        'behavior': ['architecture', 'general'],
+        'perspective': ['architecture', 'frontend'],
+        'query': ['architecture', 'database'],
+        'search': ['architecture', 'database'],
+        'knowledge': ['architecture', 'ml'],
+        'memory': ['architecture', 'python'],
+        'monitor': ['devops', 'architecture'],
+        'alert': ['devops', 'architecture'],
+        'test': ['python', 'architecture'],
+        'security': ['security', 'architecture'],
+        'api': ['api', 'architecture'],
+        'data': ['database', 'architecture'],
+        'graph': ['architecture', 'ml'],
+        'source': ['architecture', 'general'],
+        'anchor': ['architecture', 'general'],
+    }
+
+    for gap in gaps:
+        # Determinar categorias do gap
+        ref_key = gap.reference_id.split(':')[0] if ':' in gap.reference_id else gap.reference_id
+
+        # Buscar domínios relevantes
+        domains = GAP_DOMAIN_MAP.get(ref_key, ['architecture', 'general'])
+
+        # Buscar fontes de alta autoridade nos domínios relevantes
+        relevant = []
+        for domain in domains:
+            domain_sources = reg.get_top_authority(domain=domain, limit=2)
+            relevant.extend(domain_sources)
+
+        # Deduplicar e ordenar por reliability
+        seen = set()
+        unique = []
+        for s in relevant:
+            sid = s.get('id', '')
+            if sid not in seen:
+                seen.add(sid)
+                unique.append(s)
+        unique.sort(key=lambda s: -s.get('reliability', 0))
+
+        gap.sources = [
+            {
+                'id': s.get('id', ''),
+                'name': s.get('name', ''),
+                'url': s.get('url', ''),
+                'authority_level': s.get('authority_level', ''),
+                'reliability': s.get('reliability', 0),
+            }
+            for s in unique[:3]  # máx 3 por gap
+        ]
+
+    return gaps
 
 
 def analyze_gaps() -> List[Gap]:
@@ -534,6 +609,9 @@ def analyze_gaps() -> List[Gap]:
         effort='small',
         risk='low',
     ))
+
+    # Enriquecer cada gap com fontes relevantes do catálogo
+    gaps = _enrich_gaps_with_sources(gaps)
 
     return gaps
 
@@ -1694,7 +1772,7 @@ def _print_assessment(assessment: Dict[str, Any]):
 
 
 def _print_gaps(gaps: List[Gap]):
-    """Imprime gaps formatados."""
+    """Imprime gaps formatados com fontes relevantes."""
     print(f'\n{"="*70}')
     print(f'  GAPS DETECTADOS — Cartographer vs EcoSystemUmGrau')
     print(f'{"="*70}\n')
@@ -1707,6 +1785,10 @@ def _print_gaps(gaps: List[Gap]):
         if gap.ecosystem_equivalent:
             print(f'     Equivalente: {gap.ecosystem_equivalent}')
         print(f'     Ação: {gap.action}')
+        if gap.sources:
+            print(f'     Fontes:')
+            for s in gap.sources:
+                print(f'       [{s.get("authority_level", "?")}] {s.get("name", "")} ({s.get("url", "")})')
         print()
 
     print(f'Total: {len(gaps)} gaps\n')

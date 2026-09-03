@@ -35,3 +35,7 @@ impacto: 142 fontes catalogadas em 37 domínios, busca por domínio/autoridade/t
 - Separação SPEC vs catálogo: spec ensina como pensar, YAML ensina onde procurar
 - Campo `reliability` (0-1) para ordenação, não como critério absoluto
 - `import_to_knowledge_graph` aceita filtro por domains para importação parcial
+
+## Conexoes
+
+- [[2026-08-04-foco-vocal-via-jarvis-voz-orienta-o-grafo-do-conh]]

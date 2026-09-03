@@ -264,6 +264,7 @@ aprendizado: >
 - [[siglas-acrônimos-e-nomes-próprios-manter-traduzir-ou-adaptar]]
 - [[sistema-de-análise-financeira]]
 - [[sotaques-e-variantes-do-português-falado-transcrever-sem-dis]]
+- [[source-registry-módulo-de-fontes-de-conhecimento-técnico]]
 - [[spa-navigation-detection]]
 - [[sql-joins-e-semântica-de-conjunto]]
 - [[sql-modelagem-relacional-e-normalização]]
