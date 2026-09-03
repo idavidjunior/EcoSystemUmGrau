@@ -291,6 +291,55 @@ class Kernel:
         except Exception as e:
             return {'objetivo': pedido.strip(), 'erro_compreensao': str(e)}
 
+    def _load_compreensao_mod(self):
+        """Carrega o módulo de compreensão (fail-soft) ou None."""
+        try:
+            import importlib.util
+            mod_path = os.path.join(BASE, 'mcp', 'nucleo', 'habilidades',
+                                    'compreensao-pedidos', 'compreensao.py')
+            spec = importlib.util.spec_from_file_location('compreensao_pedidos_mod', mod_path)
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            return mod
+        except Exception:
+            return None
+
+    def gate_veto(self, goal, ent=None):
+        """Gate consultável de entrega/veto (Fase 2). Bloqueia antes de rotear.
+
+        Reutiliza `gerar_checklist` do módulo de compreensão (responsabilidade
+        única, sem duplicar a lógica de vetos). Fail-soft: se o módulo estiver
+        indisponível, o pedido segue APROVADO (não trava a execução).
+
+        Returns:
+            dict: {'aprovado': bool, 'status': 'APROVADO'|'BLOQUEADO',
+                   'vetos': list, 'itens': list, 'objetivo': str,
+                   'gate': bool, 'motivo': str}
+        """
+        mod = self._load_compreensao_mod()
+        if mod is None:
+            return {'aprovado': True, 'status': 'APROVADO', 'vetos': [],
+                    'itens': [], 'objetivo': goal, 'gate': False,
+                    'motivo': 'módulo de compreensão indisponível (fail-soft)'}
+        try:
+            res = mod.gerar_checklist(goal)
+            vetos = res.get('vetos', [])
+            status = res.get('status', 'APROVADO')
+            return {
+                'aprovado': status != 'BLOQUEADO',
+                'status': status,
+                'vetos': vetos,
+                'itens': res.get('itens', []),
+                'objetivo': goal,
+                'gate': True,
+                'motivo': ('vetado: ' + '; '.join(v.get('regra', '?') for v in vetos)
+                           if vetos else 'sem vetos ativos'),
+            }
+        except Exception as e:
+            return {'aprovado': True, 'status': 'APROVADO', 'vetos': [],
+                    'itens': [], 'objetivo': goal, 'gate': False,
+                    'motivo': f'falha no gate ({e}) — fail-soft aprovado'}
+
     def authorize(self, goal, ent=None):
         """Enquadra a tarefa no contrato de entrada. Retorna contrato preenchido.
 
@@ -333,19 +382,34 @@ class Kernel:
         """
         contract = self.authorize(goal, ent)
 
+        # Fase 2 — gate de veto consultável antes de rotear. Bloqueia pedidos
+        # que disparam regra de veto (commit direto, destruição, segredos, etc.)
+        gate = self.gate_veto(goal, ent)
+        if not gate['aprovado']:
+            return {
+                'route': 'BLOQUEADO',
+                'contract': contract,
+                'plan': None,
+                'gate': gate,
+                'bloqueio': True,
+                'motivo': gate['motivo'],
+            }
+
         if contract['complexidade'] == 'HIGH':
             # Delega para mcp-planner
             plan = self._call_planner(goal, contract)
             return {
                 'route': 'PLANNER',
                 'contract': contract,
-                'plan': plan
+                'plan': plan,
+                'gate': gate,
             }
         else:
             return {
                 'route': 'DIRECT',
                 'contract': contract,
-                'plan': None
+                'plan': None,
+                'gate': gate,
             }
 
     def _call_planner(self, goal: str, contract: Dict) -> Optional[Dict]:
@@ -554,6 +618,15 @@ class Kernel:
         import json
 
         route_result = self.route_task(goal)
+
+        if route_result['route'] == 'BLOQUEADO':
+            return {
+                'route': 'BLOQUEADO',
+                'status': 'bloqueado',
+                'motivo': route_result.get('motivo', ''),
+                'gate': route_result.get('gate', {}),
+                'contract': route_result['contract']
+            }
 
         if route_result['route'] == 'DIRECT':
             return {

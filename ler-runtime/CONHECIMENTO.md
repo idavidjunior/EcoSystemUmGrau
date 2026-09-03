@@ -1,9 +1,9 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-09-02T16:09:07.177211
+**Exportado em:** 2026-09-02T23:22:25.749736
 **Projetos:** 4
 **Padroes Tecnicos:** 292
-**Decisoes:** 90
+**Decisoes:** 91
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 78
 **Heuristicas:** 32
@@ -730,6 +730,15 @@ tags: [governanca, veto, checklist, compreensao-pedidos, kernel]
 data: 2026-09-02
 contexto: Implementar mecanismo de governança no EcoSystemUmGrau: fluxo de compreender pedido -> checklist/veto -> aprovação -> executar -> entregar. Fase 1 aprovada pelo usuário: implementar sem tocar no kernel; kernel fica para Fase 2.
 decisao: Implementado bloco VETOS + _checklist_entrega + gerar_checklist no compreensao.py e tool MCP veto_pedido no server.py. Gate retorna status BLOQUEADO/APRO
+
+### gate veto kernel
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [gate, veto, kernel, governanca, roteamento, compreensao-pedidos]
+data: 2026-09-02
+contexto: Fase 2 do mecanismo de governanca — integrar o gate de veto no roteamento do kernel, apos a Fase 1 (gerar_checklist + tool MCP veto_pedido) aprovada.
+decisao: Adicionar o metodo gate_veto ao kernel (scripts/runtime_kernel.py) e chamar no route_task, logo apos authorize. Pedidos que disparam regra de veto retornam route BLOQUEADO antes de rotear. execute_plan trata BLOQUEADO sem cr
 
 
 ## Padroes Tecnicos
@@ -2368,7 +2377,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-09-02T16:09:07.082210
+**Ultima atualizacao:** 2026-09-02T23:22:25.590734
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

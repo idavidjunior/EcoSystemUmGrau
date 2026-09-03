@@ -1,6 +1,6 @@
 # Decisoes
 
-**86 notas** conectadas a este hub.
+**87 notas** conectadas a este hub.
 
 
 ## Notas
@@ -33,6 +33,7 @@
 - [[form-starts-empty-input-forms-nunca-auto-carregam-arquivo-ao]]
 - [[gate-ponto-unico-compilador]]
 - [[gate-veto-compreensao]]
+- [[gate-veto-kernel]]
 - [[governanca-ciclo-jurisprudencia]]
 - [[gui-desktop-desativada-edge-e-cerebro-vivo]]
 - [[gui-remover-chatpanel]]

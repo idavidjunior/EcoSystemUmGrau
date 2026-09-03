@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-09-02T16:09:07.082210",
+  "last_updated": "2026-09-02T23:22:25.590734",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -2742,6 +2742,12 @@
       "decision": "gate veto compreensao",
       "rationale": "---\ntipo: decisao\ntags: [governanca, veto, checklist, compreensao-pedidos, kernel]\ndata: 2026-09-02\ncontexto: Implementar mecanismo de governança no EcoSystemUmGrau: fluxo de compreender pedido -> checklist/veto -> aprovação -> executar -> entregar. Fase 1 aprovada pelo usuário: implementar sem tocar no kernel; kernel fica para Fase 2.\ndecisao: Implementado bloco VETOS + _checklist_entrega + gerar_checklist no compreensao.py e tool MCP veto_pedido no server.py. Gate retorna status BLOQUEADO/APROVADO. Não houve alteração no kernel nesta fase.\nimpacto: Pedidos destrutivos, de commit direto, de exposição de segredos e de fechamento do desktop são bloqueados antes da execução. Fase 2 pode exigir aprovação real no kernel antes de route_task.\nnota_tecnica: Bug de teste adversarial resolvido — regex DESTRUICAO original era restrito demais (ex.: 'apagar definitivamente') e não capturava 'apagar'. Reescrito para verbos destrutivos genéricos (apagar|deletar|remover|excluir|rm -rf|formatar|destruir).\n",
       "extracted_at": "2026-09-02T16:04:32.976785"
+    },
+    {
+      "source": "opencode",
+      "decision": "gate veto kernel",
+      "rationale": "---\ntipo: decisao\ntags: [gate, veto, kernel, governanca, roteamento, compreensao-pedidos]\ndata: 2026-09-02\ncontexto: Fase 2 do mecanismo de governanca — integrar o gate de veto no roteamento do kernel, apos a Fase 1 (gerar_checklist + tool MCP veto_pedido) aprovada.\ndecisao: Adicionar o metodo gate_veto ao kernel (scripts/runtime_kernel.py) e chamar no route_task, logo apos authorize. Pedidos que disparam regra de veto retornam route BLOQUEADO antes de rotear. execute_plan trata BLOQUEADO sem crash. Reutiliza gerar_checklist do modulo compreensao via importlib (mesmo padrao que o kernel ja usava para compreender) — sem duplicar a logica de vetos (anti-Frankestein).\nimpacto: Pedidos destrutivos (DESTRUICAO) ou de sincronizacao de git sem o gate (SINCRONIZAR_GIT) sao bloqueados no roteamento. Toda chamada a route_task (CLI route, execute-plan, integracoes) passa pelo gate. Fail-soft: se o modulo de compreensao estiver indisponivel, o pedido segue APROVADO (nao trava a execucao).\nvalidacao: py_compile OK; route \"criar csv\" -> DIRECT/APROVADO; route \"apagar pasta de producao\" -> BLOQUEADO (DESTRUICAO); route \"commit direto sem gate\" -> BLOQUEADO (a partir de SINCRONIZAR_GIT, complexidade HIGH); execute-plan bloqueado nao crasha. JSON do gate confirma aprovado/vetos/itens/motivo.\nnota_tecnica: o memory_engine.add pode demorar por causa da reindexacao semantica (chama LLM); usar timeout amplo. A primeira execucao do add pode persistir a memoria mas o shell cortar a saida no timeout — conferir sempre no memories.json.\n",
+      "extracted_at": "2026-09-02T23:21:57.085173"
     }
   ],
   "bug_fixes": [

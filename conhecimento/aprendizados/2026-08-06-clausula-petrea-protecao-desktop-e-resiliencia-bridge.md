@@ -161,6 +161,7 @@ inexistente e auto-PID sem excecao.
 - [[fix-widget-grafo-desktop]]
 - [[gate-ponto-unico-compilador]]
 - [[gate-veto-compreensao]]
+- [[gate-veto-kernel]]
 - [[governanca-ciclo-jurisprudencia]]
 - [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]
 - [[gramática-do-português-brasileiro-guia-prático-do-dia-a-dia]]
