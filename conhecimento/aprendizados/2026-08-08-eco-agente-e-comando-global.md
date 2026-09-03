@@ -149,6 +149,7 @@ impacto: "@eco" e "/eco" agora funcionam globalmente em qualquer sessão e qualq
 - [[separação-de-estados-editar-vs-salvar-despesas]]
 - [[sessao-de-configuracao-do-opencode-com-failover-de-servidor-]]
 - [[sistema-de-análise-financeira]]
+- [[smc-ab5-calculadora-simples]]
 - [[suggestions-hermes-itens-1-3]]
 - [[supermarketcalculator-v157]]
 - [[tradingagents-integrado-ao-ecossistema]]

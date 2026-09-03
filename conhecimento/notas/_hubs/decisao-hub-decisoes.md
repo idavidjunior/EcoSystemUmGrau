@@ -1,6 +1,6 @@
 # Decisoes
 
-**91 notas** conectadas a este hub.
+**92 notas** conectadas a este hub.
 
 
 ## Notas
@@ -77,6 +77,7 @@
 - [[separação-de-estados-editar-vs-salvar-despesas]]
 - [[server-health-check-via-http-ping-localhostporta-em-vez-de-s]]
 - [[single-activity-com-framelayout-visibilidade-setvisibility-s]]
+- [[smc-ab5-calculadora-simples]]
 - [[step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo]]
 - [[stringbuilder-for-price-fine-grained-control-over-display-fo]]
 - [[supermarketcalculator-v157]]

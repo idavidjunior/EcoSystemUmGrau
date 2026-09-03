@@ -1,9 +1,9 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-09-03T16:05:46.943049
+**Exportado em:** 2026-09-03T16:52:55.625302
 **Projetos:** 4
 **Padroes Tecnicos:** 294
-**Decisoes:** 95
+**Decisoes:** 96
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 78
 **Heuristicas:** 32
@@ -792,6 +792,15 @@ impacto: App mais funcional e versão v1.5.7 gerada e versionada.
 # SupermarketCalculator v1.5.7
 
 ## Novidad
+
+### smc ab5 calculadora simples
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [supermarket-calculator, android, calculadora, feature, sdk-puro]
+data: 2026-09-03
+contexto: Usuario pediu uma quinta aba com calculadora simples no SupermarketCalculator (SDK puro, Java, sem Gradle). A aba "Calculadora" existente e a calculadora de compras do mercado; a nova e uma calculadora comum.
+decisao: Adicionar a 5a aba "Simples" (id tabSimpleCalc, indice 4 no switchTab) com uma pagina simpleCalcPage contendo display + teclado (0-9, virgula, %, limpar, apagar, +, 
 
 
 ## Padroes Tecnicos
@@ -2432,7 +2441,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-09-03T16:05:46.824043
+**Ultima atualizacao:** 2026-09-03T16:52:55.499769
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

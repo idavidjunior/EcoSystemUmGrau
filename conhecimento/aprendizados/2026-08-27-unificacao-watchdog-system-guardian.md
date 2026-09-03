@@ -195,6 +195,7 @@ PROATIVA de RAM (alerta antes do limite) e a portabilidade da certificacao foren
 - [[separação-de-estados-editar-vs-salvar-despesas]]
 - [[sessao-de-configuracao-do-opencode-com-failover-de-servidor-]]
 - [[sistema-de-análise-financeira]]
+- [[smc-ab5-calculadora-simples]]
 - [[suggestions-hermes-itens-1-3]]
 - [[supermarketcalculator-v157]]
 - [[tradingagents-integrado-ao-ecossistema]]

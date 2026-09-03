@@ -187,6 +187,7 @@ NVIDIA dava timeout (30/60s) e o refino ficava inutil na pratica.
 - [[separação-de-estados-editar-vs-salvar-despesas]]
 - [[sessao-de-configuracao-do-opencode-com-failover-de-servidor-]]
 - [[sistema-de-análise-financeira]]
+- [[smc-ab5-calculadora-simples]]
 - [[suggestions-hermes-itens-1-3]]
 - [[supermarketcalculator-v157]]
 - [[tradingagents-integrado-ao-ecossistema]]
