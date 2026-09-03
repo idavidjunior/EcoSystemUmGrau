@@ -79,16 +79,31 @@ def load_state() -> Dict:
     if STATE_FILE.exists():
         try:
             with open(STATE_FILE, encoding="utf-8") as f:
-                return json.load(f)
+                state = json.load(f)
+            # JSON salva listas; converte de volta para set para consistência em memória
+            seen = state.get("seen_hashes", {})
+            state["seen_hashes"] = {k: set(v) for k, v in seen.items()}
+            return state
         except Exception:
             pass
     return {"last_run": {}, "seen_hashes": {}}
 
 
+def _json_clean(obj: Any):
+    """Converte set para list (JSON não serializa set)."""
+    if isinstance(obj, dict):
+        return {k: _json_clean(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [_json_clean(v) for v in obj]
+    if isinstance(obj, set):
+        return sorted(obj)
+    return obj
+
+
 def save_state(state: Dict):
     tmp = STATE_FILE.with_suffix(".tmp")
     with open(tmp, "w", encoding="utf-8") as f:
-        json.dump(state, f, ensure_ascii=False, indent=2)
+        json.dump(_json_clean(state), f, ensure_ascii=False, indent=2)
     tmp.replace(STATE_FILE)
 
 

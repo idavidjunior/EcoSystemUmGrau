@@ -22,6 +22,7 @@ Uso:
     python scripts/auto_evolution.py evolve --apply --no-preflight  # Audita sem preflight
     python scripts/auto_evolution.py status              # Status da auto-evolução
     python scripts/auto_evolution.py health              # Diagnóstico da saúde do ecossistema
+    python scripts/auto_evolution.py radar               # Busca externa de gaps (evolution radar)
 
 Ciclo fechado: detecta → prioriza → avalia risco → gate de veto (kernel) →
 checkpoint → delega → detecta mudanças → valida escopo → preflight técnico/ético →
@@ -1232,6 +1233,81 @@ def _kernel_gate_veto(goal: str) -> Dict[str, Any]:
                 'motivo': f'kernel indisponível ({e}) — fail-soft aprovado'}
 
 
+def _maestro_consulta(script: str, acao: str = 'confirmar') -> Dict[str, Any]:
+    """Consulta o Maestro de Runtime antes de acionar/delegar uma evolução.
+
+    Cláusula pétrea do Maestro: todo serviço Eco consulta o Maestro antes de
+    iniciar/parar processos críticos. O auto-evolution consulta por segurança
+    (comando 'registrar') antes de delegar cada plano. Fail-soft: se o Maestro
+    estiver offline ou não responder, a evolução segue (modo degraded),
+    nunca travando por dependência externa.
+
+    Returns:
+        dict: resposta do maestro, ou {'status':'offline', ...} em fail-soft.
+    """
+    try:
+        from maestro_client import consultar_maestro
+        return consultar_maestro(acao, script=script, owner='auto-evolution')
+    except Exception as e:
+        return {'status': 'offline', 'motivo': f'maestro_client indisponível ({e})'}
+
+
+def _save_cycle_learning_report(records: List[Dict[str, Any]], execution_id: str = None) -> Optional[str]:
+    """Gera relatório consolidado do ciclo de evolução em conhecimento/aprendizados/.
+
+    Ao final de cada ciclo apply, consolida todos os planos processados
+    (concluídos, bloqueados, rollback, etc.) em um único Markdown datado,
+    para que a evolução fique rastreável e indexável no acervo de
+    conhecimento — não apenas em JSON interno (runtime/learning/evolution).
+    Retorna o caminho do arquivo ou None.
+    """
+    if not records:
+        return None
+    try:
+        from datetime import date
+        ts = datetime.now()
+        fname = os.path.join(KNOWLEDGE, 'aprendizados',
+                             f"{ts.strftime('%Y-%m-%d')}-auto-evolucao.md")
+        total = len(records)
+        done = sum(1 for r in records if r.get('final_status') == 'completed')
+        lines = [
+            '---',
+            'tipo: episodio',
+            'tags: [auto-evolution, ciclo-fechado, evolucao]',
+            f'data: {ts.strftime("%Y-%m-%d")}',
+            f'hora: {ts.strftime("%H:%M")}',
+            'contexto: Ciclo de auto-evolucao do Ecossistema (auto_evolution.py).',
+            'impacto: Evidencia do ciclo de evolucao e suas decisoes.',
+            '---',
+            '',
+            f'# Ciclo de Auto-Evolução — {ts.strftime("%Y-%m-%d %H:%M")}',
+            '',
+            f'Execution ID: {execution_id or "n/a"}',
+            f'Planos processados: {total} | Concluídos: {done}',
+            '',
+        ]
+        for rec in records:
+            status = rec.get('final_status', '?')
+            name = rec.get('name', '?')
+            gap = rec.get('gap_id', '?')
+            lines.append(f'- [{status.upper()}] {name} (gap {gap})')
+            if rec.get('note'):
+                lines.append(f'  - Nota: {rec["note"]}')
+            if rec.get('kernel_gate', {}).get('status'):
+                lines.append(f'  - Kernel gate: {rec["kernel_gate"]["status"]}')
+        lines.append('')
+        content = '\n'.join(lines)
+        os.makedirs(os.path.dirname(fname), exist_ok=True)
+        tmp = fname + '.tmp'
+        with open(tmp, 'w', encoding='utf-8') as f:
+            f.write(content)
+        os.replace(tmp, fname)
+        return fname
+    except Exception as e:
+        print(f'[EVOLVE] Aviso: relatório de aprendizado não gerado: {e}')
+        return None
+
+
 def _print_cycle_report(records: List[Dict[str, Any]]):
     """Imprime relatório do ciclo de evolução."""
     print(f'\n{"="*60}')
@@ -1319,6 +1395,14 @@ def run_evolution(apply_changes: bool = False, max_plans: int = 0,
         lock.release()
 
     _print_cycle_report(records)
+    report_file = _save_cycle_learning_report(records, execution_id)
+    done = sum(1 for r in records if r.get('final_status') == 'completed')
+    if records:
+        _register_memory(
+            'episodio', f'Ciclo de auto-evolução: {done}/{len(records)} concluídos',
+            f'{len(records)} planos processados, {done} concluídos, relatório em {report_file}.',
+            {'execution_id': execution_id, 'concluidos': done, 'total': len(records)},
+        )
     return {
         'assessment_file': assess_file,
         'gaps': assessment['gaps_detected'],
@@ -1327,6 +1411,7 @@ def run_evolution(apply_changes: bool = False, max_plans: int = 0,
         'changes': records,
         'mode': 'apply',
         'execution_id': execution_id,
+        'learning_report': report_file,
     }
 
 
@@ -1388,6 +1473,15 @@ def _execute_plan(plan: EvolutionPlan, git_before: List[str],
         record['final_state'] = STATE_BLOCKED_EXTERNAL
         record['final_status'] = 'bloqueado_externo'
         record['note'] = 'Nenhum executor (opencode/ler) disponível'
+        return record
+
+    # 4b. Consulta ao Maestro de Runtime (cláusula pétrea) — fail-soft
+    maestro = _maestro_consulta(script=plan.gap.reference_id)
+    record['maestro'] = maestro
+    if maestro.get('status') == 'blocked':
+        record['final_state'] = STATE_BLOCKED_RISK
+        record['final_status'] = 'bloqueado_por_maestro'
+        record['note'] = maestro.get('motivo', 'Maestro bloqueou a ação')
         return record
 
     # 5. Checkpoint obrigatório (snapshot de código + runtime)
@@ -1737,6 +1831,47 @@ def _run_health() -> Dict[str, Any]:
     return report
 
 
+def _collect_external_gaps() -> Dict[str, Any]:
+    """Busca autônoma de gaps em fontes externas via Evolution Radar Collector.
+
+    Executa `evolution_radar_collect.py --full` (collect → filter → package),
+    que coleta propostas reais do GitHub e outras fontes configuradas em
+    config/evolution_sources.json. Depois consolida as propostas/pacotes
+    existentes como candidatos de evolução externa. Reutiliza o coletor
+    existente (responsabilidade única) — não recria a coleta.
+    """
+    import subprocess as _sp
+    result = {'timestamp': datetime.now().isoformat(), 'execution': None,
+              'candidatos': [], 'pacotes': [], 'saudavel': True}
+    try:
+        r = _sp.run(['python', os.path.join('scripts', 'evolution_radar_collect.py'), '--full'],
+                    capture_output=True, text=True, cwd=BASE, timeout=300,
+                    env={**os.environ, 'PYTHONUTF8': '1'})
+        result['execution'] = {'exit_code': r.returncode, 'passed': r.returncode == 0,
+                               'output': (r.stdout or '')[-2500:],
+                               'error': (r.stderr or '')[-1000:]}
+    except Exception as e:
+        result['execution'] = {'exit_code': -1, 'passed': False, 'output': '', 'error': str(e)}
+        result['saudavel'] = False
+
+    # Consolida propostas filtradas (.spec.md) como candidatos
+    radar = os.path.join(KNOWLEDGE, 'evolution-radar')
+    filtrados = os.path.join(radar, 'filtrado')
+    if os.path.isdir(filtrados):
+        for f in sorted(os.listdir(filtrados)):
+            if f.endswith('.spec.md'):
+                result['candidatos'].append({'arquivo': f, 'fonte': 'evolution-radar'})
+
+    # Consolida pacotes gerados
+    pacotes = os.path.join(radar, 'pacotes')
+    if os.path.isdir(pacotes):
+        for f in sorted(os.listdir(pacotes)):
+            if f.endswith('.json'):
+                result['pacotes'].append(f)
+
+    return result
+
+
 def main():
     if len(sys.argv) < 2:
         print(__doc__)
@@ -1811,6 +1946,29 @@ def main():
             print(f'  [OK ] checkpoint: {cp_val}')
         veredito = 'SAUDÁVEL' if report['saudavel'] else 'DEGRADADO — atuar via evolve/audit'
         print(f'\n  VEREDITO: {veredito}\n')
+
+    elif cmd == 'radar':
+        report = _collect_external_gaps()
+        print(f'\n{"="*70}')
+        print('  RADAR DE EVOLUÇÃO EXTERNA (auto-evolution radar)')
+        print(f'  {report["timestamp"]}')
+        print(f'{"="*70}\n')
+        ex = report.get('execution') or {}
+        print(f'  Coleta (evolution_radar_collect --full): '
+              f'{"OK" if ex.get("passed") else "FALHA"} (exit {ex.get("exit_code")})')
+        if ex.get('error'):
+            print(f'        {ex["error"]}')
+        print(f'  Candidatos (propostas filtradas): {len(report["candidatos"])}')
+        for c in report['candidatos']:
+            print(f'    - {c["arquivo"]} [{c["fonte"]}]')
+        print(f'  Pacotes gerados: {len(report["pacotes"])}')
+        for p in report['pacotes']:
+            print(f'    - {p}')
+        print()
+        if ex.get('output'):
+            print('  --- Saída da coleta (resumo) ---')
+            print(ex['output'])
+            print()
 
     else:
         print(f'Comando desconhecido: {cmd}')

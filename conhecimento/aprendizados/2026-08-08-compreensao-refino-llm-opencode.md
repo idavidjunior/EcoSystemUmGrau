@@ -104,6 +104,8 @@ NVIDIA dava timeout (30/60s) e o refino ficava inutil na pratica.
 - [[aprendizado-skill-auditoria-de-codigo-viva-com-evolução-gate]]
 - [[atualização-ecosystemumgrau-auto-carregamento-gatilho-único-]]
 - [[auto-evolution-e-behavior-slices]]
+- [[auto-evolution-gate-veto-health]]
+- [[auto-evolution-maestro-radar-relatório-consolidado]]
 - [[backup-de-apks-fontes-no-github]]
 - [[botao-importar-unificado]]
 - [[build-local-flutter-orquestrador]]

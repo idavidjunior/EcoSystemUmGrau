@@ -1,6 +1,6 @@
 # Decisoes
 
-**87 notas** conectadas a este hub.
+**89 notas** conectadas a este hub.
 
 
 ## Notas
@@ -11,6 +11,8 @@
 - [[aprendizado-regra-de-fala-resumida-do-jarvis]]
 - [[atualização-ecosystemumgrau-auto-carregamento-gatilho-único-]]
 - [[auto-evolution-e-behavior-slices]]
+- [[auto-evolution-gate-veto-health]]
+- [[auto-evolution-maestro-radar-relatório-consolidado]]
 - [[botao-importar-unificado]]
 - [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
 - [[cerebro-vivo-nos-clicaveis-navegaveis]]
