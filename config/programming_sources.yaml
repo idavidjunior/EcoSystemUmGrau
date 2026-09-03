@@ -1,0 +1,2107 @@
+# ============================================================================
+# CATÁLOGO DE FONTES DE CONHECIMENTO TÉCNICO PARA PROGRAMAÇÃO
+# ============================================================================
+# Versão: 1.0.0
+# Princípio: Fontes são pontos de partida para investigação, não lista fechada.
+# Quality = authority + evidence + reproducibility + freshness + relevance + utility
+# ============================================================================
+
+version: "1.0.0"
+description: "Catálogo de fontes de conhecimento técnico — seed sources para investigação"
+
+# Classificação de autoridade (dimensão, não critério único):
+#   A = Autoridade primária (docs oficiais, specs, RFCs)
+#   B = Autoridade acadêmica (universidades, papers, periódicos)
+#   C = Implementação real (projetos maduros, código em produção)
+#   D = Conhecimento de campo (issues, PRs, SO, blogs, experimentos)
+#   E = Conteúdo secundário (tutoriais, vídeos, posts)
+
+# Estados da fonte:
+#   active = verificada e acessível
+#   monitored = rastreada pelo evolution_radar
+#   seed = ponto de partida, ainda não integrada ao pipeline
+
+sources:
+  # ==========================================================================
+  # PYTHON
+  # ==========================================================================
+  - id: "python-docs"
+    name: "Python Documentation"
+    url: "https://docs.python.org/3/"
+    domain: "python"
+    country: "US"
+    language: "en"
+    category: "LANGUAGE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.98
+    relevance: ["python", "stdlib", "language-reference", "tutorial"]
+    status: "active"
+    description: "Documentação oficial do Python 3 — referência primária."
+
+  - id: "python-peps"
+    name: "Python Enhancement Proposals"
+    url: "https://peps.python.org/"
+    domain: "python"
+    country: "US"
+    language: "en"
+    category: "STANDARD"
+    source_type: "SPECIFICATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.97
+    relevance: ["python", "pep", "design-decisions", "language-evolution"]
+    status: "active"
+    description: "PEPs — decisões de design e evolução da linguagem."
+
+  - id: "pypi"
+    name: "Python Package Index"
+    url: "https://pypi.org/"
+    domain: "python"
+    country: "US"
+    language: "en"
+    category: "ECOSYSTEM"
+    source_type: "OPEN_SOURCE"
+    authority_level: "C"
+    evidence_level: "high"
+    reliability: 0.90
+    relevance: ["python", "packages", "dependencies", "versions"]
+    status: "active"
+    description: "Repositório oficial de pacotes Python."
+
+  - id: "real-python"
+    name: "Real Python"
+    url: "https://realpython.com/"
+    domain: "python"
+    country: "US"
+    language: "en"
+    category: "TUTORIAL"
+    source_type: "TECHNICAL_BLOG"
+    authority_level: "D"
+    evidence_level: "medium"
+    reliability: 0.75
+    relevance: ["python", "tutorials", "best-practices", "intermediate"]
+    status: "active"
+    description: "Tutoriais Python de alta qualidade, com código verificável."
+
+  - id: "python-github"
+    name: "Python GitHub (cpython)"
+    url: "https://github.com/python/cpython"
+    domain: "python"
+    country: "US"
+    language: "en"
+    category: "SOURCE_CODE"
+    source_type: "SOURCE_CODE"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.99
+    relevance: ["python", "implementation", "internals", "cpython"]
+    status: "active"
+    description: "Código-fonte oficial do CPython — fonte primária de implementação."
+
+  - id: "pytest-docs"
+    name: "pytest Documentation"
+    url: "https://docs.pytest.org/"
+    domain: "python"
+    country: "US"
+    language: "en"
+    category: "TOOL"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["python", "testing", "pytest", "test-automation"]
+    status: "active"
+
+  - id: "black-docs"
+    name: "Black Formatter"
+    url: "https://black.readthedocs.io/"
+    domain: "python"
+    country: "US"
+    language: "en"
+    category: "TOOL"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["python", "formatting", "black", "code-style"]
+    status: "active"
+
+  - id: "fastapi-docs"
+    name: "FastAPI Documentation"
+    url: "https://fastapi.tiangolo.com/"
+    domain: "python"
+    country: "MX"
+    language: "en"
+    category: "FRAMEWORK"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["python", "fastapi", "async", "api", "rest"]
+    status: "active"
+
+  - id: "django-docs"
+    name: "Django Documentation"
+    url: "https://docs.djangoproject.com/"
+    domain: "python"
+    country: "US"
+    language: "en"
+    category: "FRAMEWORK"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["python", "django", "web", "orm", "mvc"]
+    status: "active"
+
+  - id: "flask-docs"
+    name: "Flask Documentation"
+    url: "https://flask.palletsprojects.com/"
+    domain: "python"
+    country: "CH"
+    language: "en"
+    category: "FRAMEWORK"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.92
+    relevance: ["python", "flask", "microframework", "web"]
+    status: "active"
+
+  - id: "python-requests"
+    name: "Requests Library"
+    url: "https://requests.readthedocs.io/"
+    domain: "python"
+    country: "US"
+    language: "en"
+    category: "LIBRARY"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["python", "http", "requests", "networking"]
+    status: "active"
+
+  - id: "numpy-docs"
+    name: "NumPy Documentation"
+    url: "https://numpy.org/doc/"
+    domain: "python"
+    country: "US"
+    language: "en"
+    category: "LIBRARY"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.96
+    relevance: ["python", "numpy", "numerical", "arrays", "science"]
+    status: "active"
+
+  - id: "pandas-docs"
+    name: "pandas Documentation"
+    url: "https://pandas.pydata.org/docs/"
+    domain: "python"
+    country: "US"
+    language: "en"
+    category: "LIBRARY"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["python", "pandas", "dataframes", "data-analysis"]
+    status: "active"
+
+  - id: "scikit-learn-docs"
+    name: "scikit-learn Documentation"
+    url: "https://scikit-learn.org/stable/documentation.html"
+    domain: "python"
+    country: "FR"
+    language: "en"
+    category: "LIBRARY"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["python", "machine-learning", "scikit-learn", "classification"]
+    status: "active"
+
+  - id: "pydantic-docs"
+    name: "Pydantic Documentation"
+    url: "https://docs.pydantic.dev/"
+    domain: "python"
+    country: "GB"
+    language: "en"
+    category: "LIBRARY"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.94
+    relevance: ["python", "pydantic", "validation", "schemas", "typing"]
+    status: "active"
+
+  - id: "sqlalchemy-docs"
+    name: "SQLAlchemy Documentation"
+    url: "https://docs.sqlalchemy.org/"
+    domain: "python"
+    country: "US"
+    language: "en"
+    category: "LIBRARY"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["python", "sqlalchemy", "orm", "database", "sql"]
+    status: "active"
+
+  - id: "celery-docs"
+    name: "Celery Documentation"
+    url: "https://docs.celeryq.dev/"
+    domain: "python"
+    country: "DK"
+    language: "en"
+    category: "LIBRARY"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.90
+    relevance: ["python", "celery", "task-queue", "async", "distributed"]
+    status: "active"
+
+  # ==========================================================================
+  # JAVASCRIPT / TYPESCRIPT
+  # ==========================================================================
+  - id: "mdn-web-docs"
+    name: "MDN Web Docs"
+    url: "https://developer.mozilla.org/"
+    domain: "javascript"
+    country: "US"
+    language: "en"
+    category: "LANGUAGE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.97
+    relevance: ["javascript", "typescript", "html", "css", "web", "browser-api"]
+    status: "active"
+    description: "Referência primária para web platform — JS, HTML, CSS, APIs."
+
+  - id: "ecma-intl-spec"
+    name: "ECMA-262 (ECMAScript Specification)"
+    url: "https://tc39.es/ecma262/"
+    domain: "javascript"
+    country: "INTL"
+    language: "en"
+    category: "SPECIFICATION"
+    source_type: "SPECIFICATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.99
+    relevance: ["javascript", "ecmascript", "specification", "tc39"]
+    status: "active"
+    description: "Especificação oficial do ECMAScript — fonte primária absoluta."
+
+  - id: "typescript-docs"
+    name: "TypeScript Documentation"
+    url: "https://www.typescriptlang.org/docs/"
+    domain: "typescript"
+    country: "US"
+    language: "en"
+    category: "LANGUAGE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.96
+    relevance: ["typescript", "types", "compilation", "type-safety"]
+    status: "active"
+
+  - id: "node-docs"
+    name: "Node.js Documentation"
+    url: "https://nodejs.org/docs/latest/"
+    domain: "nodejs"
+    country: "US"
+    language: "en"
+    category: "RUNTIME"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.96
+    relevance: ["nodejs", "runtime", "server-side", "javascript"]
+    status: "active"
+
+  - id: "npm-registry"
+    name: "npm Registry"
+    url: "https://www.npmjs.com/"
+    domain: "javascript"
+    country: "US"
+    language: "en"
+    category: "ECOSYSTEM"
+    source_type: "OPEN_SOURCE"
+    authority_level: "C"
+    evidence_level: "medium"
+    reliability: 0.85
+    relevance: ["javascript", "nodejs", "packages", "dependencies"]
+    status: "active"
+
+  - id: "react-docs"
+    name: "React Documentation"
+    url: "https://react.dev/"
+    domain: "react"
+    country: "US"
+    language: "en"
+    category: "FRAMEWORK"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["react", "frontend", "components", "hooks", "jsx"]
+    status: "active"
+
+  - id: "vue-docs"
+    name: "Vue.js Documentation"
+    url: "https://vuejs.org/guide/"
+    domain: "vue"
+    country: "CN"
+    language: "en"
+    category: "FRAMEWORK"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["vue", "frontend", "components", "composition-api"]
+    status: "active"
+
+  - id: "svelte-docs"
+    name: "Svelte Documentation"
+    url: "https://svelte.dev/docs"
+    domain: "svelte"
+    country: "US"
+    language: "en"
+    category: "FRAMEWORK"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.91
+    relevance: ["svelte", "compiler", "frontend", "lightweight"]
+    status: "active"
+
+  - id: "nextjs-docs"
+    name: "Next.js Documentation"
+    url: "https://nextjs.org/docs"
+    domain: "nextjs"
+    country: "US"
+    language: "en"
+    category: "FRAMEWORK"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.92
+    relevance: ["nextjs", "react", "ssr", "fullstack", "vercel"]
+    status: "active"
+
+  - id: "tailwind-docs"
+    name: "Tailwind CSS Documentation"
+    url: "https://tailwindcss.com/docs"
+    domain: "css"
+    country: "US"
+    language: "en"
+    category: "FRAMEWORK"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["tailwind", "css", "styling", "utility-first"]
+    status: "active"
+
+  - id: "deno-docs"
+    name: "Deno Documentation"
+    url: "https://docs.deno.com/"
+    domain: "deno"
+    country: "US"
+    language: "en"
+    category: "RUNTIME"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.90
+    relevance: ["deno", "runtime", "typescript", "secure"]
+    status: "active"
+
+  # ==========================================================================
+  # RUST
+  # ==========================================================================
+  - id: "rust-book"
+    name: "The Rust Programming Language"
+    url: "https://doc.rust-lang.org/book/"
+    domain: "rust"
+    country: "US"
+    language: "en"
+    category: "LANGUAGE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.98
+    relevance: ["rust", "ownership", "borrowing", "safety", "systems"]
+    status: "active"
+    description: "O 'Rust Book' — referência primária da linguagem."
+
+  - id: "rust-reference"
+    name: "Rust Reference"
+    url: "https://doc.rust-lang.org/reference/"
+    domain: "rust"
+    country: "US"
+    language: "en"
+    category: "LANGUAGE"
+    source_type: "SPECIFICATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.98
+    relevance: ["rust", "reference", "specification", "semantics"]
+    status: "active"
+
+  - id: "rust-docs-rs"
+    name: "docs.rs"
+    url: "https://docs.rs/"
+    domain: "rust"
+    country: "US"
+    language: "en"
+    category: "ECOSYSTEM"
+    source_type: "OPEN_SOURCE"
+    authority_level: "C"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["rust", "crates", "documentation", "api"]
+    status: "active"
+
+  - id: "crates-io"
+    name: "crates.io"
+    url: "https://crates.io/"
+    domain: "rust"
+    country: "US"
+    language: "en"
+    category: "ECOSYSTEM"
+    source_type: "OPEN_SOURCE"
+    authority_level: "C"
+    evidence_level: "medium"
+    reliability: 0.90
+    relevance: ["rust", "packages", "dependencies", "crates"]
+    status: "active"
+
+  - id: "rust-rfc"
+    name: "Rust RFCs"
+    url: "https://rust-lang.github.io/rfcs/"
+    domain: "rust"
+    country: "US"
+    language: "en"
+    category: "STANDARD"
+    source_type: "SPECIFICATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.97
+    relevance: ["rust", "rfc", "design", "evolution"]
+    status: "active"
+
+  - id: "tokio-docs"
+    name: "Tokio Documentation"
+    url: "https://tokio.rs/tokio/docs"
+    domain: "rust"
+    country: "US"
+    language: "en"
+    category: "LIBRARY"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.94
+    relevance: ["rust", "tokio", "async", "runtime", "networking"]
+    status: "active"
+
+  - id: "serde-docs"
+    name: "Serde Documentation"
+    url: "https://serde.rs/"
+    domain: "rust"
+    country: "US"
+    language: "en"
+    category: "LIBRARY"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["rust", "serde", "serialization", "deserialization"]
+    status: "active"
+
+  - id: "axum-docs"
+    name: "Axum Documentation"
+    url: "https://docs.rs/axum/latest/axum/"
+    domain: "rust"
+    country: "US"
+    language: "en"
+    category: "FRAMEWORK"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.91
+    relevance: ["rust", "axum", "web", "tower", "async"]
+    status: "active"
+
+  # ==========================================================================
+  # C / C++
+  # ==========================================================================
+  - id: "gcc-docs"
+    name: "GCC Documentation"
+    url: "https://gcc.gnu.org/onlinedocs/"
+    domain: "c"
+    country: "US"
+    language: "en"
+    category: "TOOL"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["c", "c++", "gcc", "compiler", "optimization"]
+    status: "active"
+
+  - id: "clang-docs"
+    name: "Clang Documentation"
+    url: "https://clang.llvm.org/docs/"
+    domain: "c"
+    country: "US"
+    language: "en"
+    category: "TOOL"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["c", "c++", "clang", "llvm", "compiler"]
+    status: "active"
+
+  - id: "cppreference"
+    name: "cppreference"
+    url: "https://en.cppreference.com/"
+    domain: "c++"
+    country: "INTL"
+    language: "en"
+    category: "LANGUAGE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.96
+    relevance: ["c", "c++", "stl", "standard-library", "reference"]
+    status: "active"
+    description: "Referência padrão C/C++ — wiki mantida pela comunidade com alta precisão."
+
+  - id: "isocpp-faq"
+    name: "ISO C++ FAQ"
+    url: "https://isocpp.org/faq"
+    domain: "c++"
+    country: "US"
+    language: "en"
+    category: "LANGUAGE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["c++", "best-practices", "faq", "iso"]
+    status: "active"
+
+  - id: "cmake-docs"
+    name: "CMake Documentation"
+    url: "https://cmake.org/cmake/help/latest/"
+    domain: "c++"
+    country: "US"
+    language: "en"
+    category: "TOOL"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.94
+    relevance: ["c++", "c", "cmake", "build-system"]
+    status: "active"
+
+  # ==========================================================================
+  # JAVA / KOTLIN
+  # ==========================================================================
+  - id: "java-docs"
+    name: "Java Documentation (Oracle)"
+    url: "https://docs.oracle.com/en/java/"
+    domain: "java"
+    country: "US"
+    language: "en"
+    category: "LANGUAGE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.97
+    relevance: ["java", "jdk", "jvm", "standard-library"]
+    status: "active"
+
+  - id: "openjdk"
+    name: "OpenJDK"
+    url: "https://openjdk.org/"
+    domain: "java"
+    country: "US"
+    language: "en"
+    category: "SOURCE_CODE"
+    source_type: "SOURCE_CODE"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.98
+    relevance: ["java", "jdk", "open-source", "jvm"]
+    status: "active"
+
+  - id: "kotlin-docs"
+    name: "Kotlin Documentation"
+    url: "https://kotlinlang.org/docs/"
+    domain: "kotlin"
+    country: "CZ"
+    language: "en"
+    category: "LANGUAGE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["kotlin", "android", "jvm", "coroutines"]
+    status: "active"
+
+  - id: "spring-docs"
+    name: "Spring Documentation"
+    url: "https://docs.spring.io/spring-framework/reference/"
+    domain: "java"
+    country: "US"
+    language: "en"
+    category: "FRAMEWORK"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.94
+    relevance: ["java", "spring", "spring-boot", "microservices", "di"]
+    status: "active"
+
+  - id: "gradle-docs"
+    name: "Gradle Documentation"
+    url: "https://docs.gradle.org/"
+    domain: "java"
+    country: "US"
+    language: "en"
+    category: "TOOL"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["java", "kotlin", "gradle", "build-system"]
+    status: "active"
+
+  - id: "maven-central"
+    name: "Maven Central"
+    url: "https://central.sonatype.com/"
+    domain: "java"
+    country: "US"
+    language: "en"
+    category: "ECOSYSTEM"
+    source_type: "OPEN_SOURCE"
+    authority_level: "C"
+    evidence_level: "medium"
+    reliability: 0.90
+    relevance: ["java", "maven", "dependencies", "artifacts"]
+    status: "active"
+
+  # ==========================================================================
+  # GO
+  # ==========================================================================
+  - id: "go-docs"
+    name: "Go Documentation"
+    url: "https://go.dev/doc/"
+    domain: "go"
+    country: "US"
+    language: "en"
+    category: "LANGUAGE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.97
+    relevance: ["go", "golang", "stdlib", "concurrency"]
+    status: "active"
+
+  - id: "go-wiki"
+    name: "Go Wiki"
+    url: "https://go.dev/wiki/"
+    domain: "go"
+    country: "US"
+    language: "en"
+    category: "LANGUAGE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["go", "best-practices", "patterns", "faq"]
+    status: "active"
+
+  - id: "pkg-go-dev"
+    name: "pkg.go.dev"
+    url: "https://pkg.go.dev/"
+    domain: "go"
+    country: "US"
+    language: "en"
+    category: "ECOSYSTEM"
+    source_type: "OPEN_SOURCE"
+    authority_level: "C"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["go", "packages", "documentation", "modules"]
+    status: "active"
+
+  - id: "go-proverbs"
+    name: "Go Proverbs (Rob Pike)"
+    url: "https://go-proverbs.github.io/"
+    domain: "go"
+    country: "US"
+    language: "en"
+    category: "PHILOSOPHY"
+    source_type: "TECHNICAL_BLOG"
+    authority_level: "B"
+    evidence_level: "high"
+    reliability: 0.90
+    relevance: ["go", "philosophy", "simplicity", "design"]
+    status: "active"
+
+  # ==========================================================================
+  # SWIFT / iOS
+  # ==========================================================================
+  - id: "swift-docs"
+    name: "Swift Documentation"
+    url: "https://www.swift.org/documentation/"
+    domain: "swift"
+    country: "US"
+    language: "en"
+    category: "LANGUAGE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["swift", "ios", "apple", "stdlib"]
+    status: "active"
+
+  - id: "apple-developer"
+    name: "Apple Developer Documentation"
+    url: "https://developer.apple.com/documentation/"
+    domain: "ios"
+    country: "US"
+    language: "en"
+    category: "PLATFORM"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["ios", "swift", "uikit", "swiftui", "cocoa"]
+    status: "active"
+
+  # ==========================================================================
+  # ANDROID
+  # ==========================================================================
+  - id: "android-developers"
+    name: "Android Developers"
+    url: "https://developer.android.com/"
+    domain: "android"
+    country: "US"
+    language: "en"
+    category: "PLATFORM"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["android", "kotlin", "java", "sdk", "play-store"]
+    status: "active"
+
+  - id: "android-source"
+    name: "Android Open Source Project"
+    url: "https://source.android.com/"
+    domain: "android"
+    country: "US"
+    language: "en"
+    category: "SOURCE_CODE"
+    source_type: "SOURCE_CODE"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.97
+    relevance: ["android", "aosp", "system", "kernel", "hal"]
+    status: "active"
+
+  - id: "kotlin-android"
+    name: "Kotlin for Android"
+    url: "https://developer.android.com/kotlin"
+    domain: "android"
+    country: "US"
+    language: "en"
+    category: "PLATFORM"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["android", "kotlin", "jetpack", "coroutines"]
+    status: "active"
+
+  # ==========================================================================
+  # FLUTTER / DART
+  # ==========================================================================
+  - id: "flutter-docs"
+    name: "Flutter Documentation"
+    url: "https://docs.flutter.dev/"
+    domain: "flutter"
+    country: "US"
+    language: "en"
+    category: "FRAMEWORK"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["flutter", "dart", "cross-platform", "mobile"]
+    status: "active"
+
+  - id: "dart-docs"
+    name: "Dart Documentation"
+    url: "https://dart.dev/guides"
+    domain: "dart"
+    country: "US"
+    language: "en"
+    category: "LANGUAGE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["dart", "language", "vm", "compilation"]
+    status: "active"
+
+  - id: "pub-dev"
+    name: "pub.dev"
+    url: "https://pub.dev/"
+    domain: "flutter"
+    country: "US"
+    language: "en"
+    category: "ECOSYSTEM"
+    source_type: "OPEN_SOURCE"
+    authority_level: "C"
+    evidence_level: "medium"
+    reliability: 0.88
+    relevance: ["flutter", "dart", "packages", "dependencies"]
+    status: "active"
+
+  # ==========================================================================
+  # BANCOS DE DADOS
+  # ==========================================================================
+  - id: "postgresql-docs"
+    name: "PostgreSQL Documentation"
+    url: "https://www.postgresql.org/docs/"
+    domain: "database"
+    country: "US"
+    language: "en"
+    category: "DATABASE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.98
+    relevance: ["postgresql", "sql", "relational", "acid", "indexes"]
+    status: "active"
+
+  - id: "mysql-docs"
+    name: "MySQL Documentation"
+    url: "https://dev.mysql.com/doc/"
+    domain: "database"
+    country: "US"
+    language: "en"
+    category: "DATABASE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["mysql", "sql", "relational", "innodb"]
+    status: "active"
+
+  - id: "sqlite-docs"
+    name: "SQLite Documentation"
+    url: "https://www.sqlite.org/docs.html"
+    domain: "database"
+    country: "US"
+    language: "en"
+    category: "DATABASE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.98
+    relevance: ["sqlite", "embedded", "sql", "lightweight"]
+    status: "active"
+
+  - id: "redis-docs"
+    name: "Redis Documentation"
+    url: "https://redis.io/docs/"
+    domain: "database"
+    country: "US"
+    language: "en"
+    category: "DATABASE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["redis", "cache", "key-value", "pub-sub", "data-structures"]
+    status: "active"
+
+  - id: "mongodb-docs"
+    name: "MongoDB Documentation"
+    url: "https://www.mongodb.com/docs/"
+    domain: "database"
+    country: "US"
+    language: "en"
+    category: "DATABASE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["mongodb", "nosql", "document", "aggregation"]
+    status: "active"
+
+  - id: "mariadb-docs"
+    name: "MariaDB Documentation"
+    url: "https://mariadb.com/kb/en/documentation/"
+    domain: "database"
+    country: "INTL"
+    language: "en"
+    category: "DATABASE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["mariadb", "sql", "mysql-fork", "galera"]
+    status: "active"
+
+  - id: "firebase-docs"
+    name: "Firebase Documentation"
+    url: "https://firebase.google.com/docs"
+    domain: "database"
+    country: "US"
+    language: "en"
+    category: "DATABASE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.92
+    relevance: ["firebase", "nosql", "realtime", "serverless"]
+    status: "active"
+
+  - id: "supabase-docs"
+    name: "Supabase Documentation"
+    url: "https://supabase.com/docs"
+    domain: "database"
+    country: "INTL"
+    language: "en"
+    category: "DATABASE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.90
+    relevance: ["supabase", "postgres", "realtime", "auth", "serverless"]
+    status: "active"
+
+  # ==========================================================================
+  # INFRAESTRUTURA / DEVOPS
+  # ==========================================================================
+  - id: "docker-docs"
+    name: "Docker Documentation"
+    url: "https://docs.docker.com/"
+    domain: "devops"
+    country: "US"
+    language: "en"
+    category: "TOOL"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["docker", "containers", "images", "compose", "runtime"]
+    status: "active"
+
+  - id: "kubernetes-docs"
+    name: "Kubernetes Documentation"
+    url: "https://kubernetes.io/docs/"
+    domain: "devops"
+    country: "US"
+    language: "en"
+    category: "PLATFORM"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["kubernetes", "k8s", "orchestration", "pods", "services"]
+    status: "active"
+
+  - id: "terraform-docs"
+    name: "Terraform Documentation"
+    url: "https://developer.hashicorp.com/terraform/docs"
+    domain: "devops"
+    country: "US"
+    language: "en"
+    category: "TOOL"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["terraform", "iac", "infrastructure", "hcl"]
+    status: "active"
+
+  - id: "ansible-docs"
+    name: "Ansible Documentation"
+    url: "https://docs.ansible.com/"
+    domain: "devops"
+    country: "US"
+    language: "en"
+    category: "TOOL"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.92
+    relevance: ["ansible", "automation", "configuration", "playbooks"]
+    status: "active"
+
+  - id: "nginx-docs"
+    name: "NGINX Documentation"
+    url: "https://nginx.org/en/docs/"
+    domain: "devops"
+    country: "US"
+    language: "en"
+    category: "TOOL"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["nginx", "reverse-proxy", "load-balancer", "web-server"]
+    status: "active"
+
+  - id: "github-actions-docs"
+    name: "GitHub Actions Documentation"
+    url: "https://docs.github.com/en/actions"
+    domain: "devops"
+    country: "US"
+    language: "en"
+    category: "TOOL"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["github-actions", "ci-cd", "automation", "workflows"]
+    status: "active"
+
+  - id: "linux-docs"
+    name: "The Linux Documentation Project"
+    url: "https://tldp.org/"
+    domain: "linux"
+    country: "INTL"
+    language: "en"
+    category: "PLATFORM"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "B"
+    evidence_level: "high"
+    reliability: 0.88
+    relevance: ["linux", "shell", "system-administration", "kernel"]
+    status: "active"
+
+  - id: "kernel-docs"
+    name: "Linux Kernel Documentation"
+    url: "https://www.kernel.org/doc/html/latest/"
+    domain: "linux"
+    country: "INTL"
+    language: "en"
+    category: "PLATFORM"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.97
+    relevance: ["linux", "kernel", "drivers", "syscalls", "filesystem"]
+    status: "active"
+
+  - id: "arch-wiki"
+    name: "ArchWiki"
+    url: "https://wiki.archlinux.org/"
+    domain: "linux"
+    country: "DE"
+    language: "en"
+    category: "COMMUNITY"
+    source_type: "COMMUNITY"
+    authority_level: "D"
+    evidence_level: "high"
+    reliability: 0.88
+    relevance: ["linux", "arch", "systemd", "configuration"]
+    status: "active"
+
+  # ==========================================================================
+  # REDES / PROTOCOLOS
+  # ==========================================================================
+  - id: "rfc-editor"
+    name: "RFC Editor"
+    url: "https://www.rfc-editor.org/"
+    domain: "networking"
+    country: "US"
+    language: "en"
+    category: "SPECIFICATION"
+    source_type: "SPECIFICATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.99
+    relevance: ["tcp", "http", "dns", "tls", "protocols", "rfc"]
+    status: "active"
+    description: "Repositório oficial de RFCs — especificações de protocolos de internet."
+
+  - id: "http-spec"
+    name: "HTTP Specification (RFC 9110)"
+    url: "https://httpwg.org/specs/"
+    domain: "networking"
+    country: "INTL"
+    language: "en"
+    category: "SPECIFICATION"
+    source_type: "SPECIFICATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.98
+    relevance: ["http", "https", "http2", "http3", "headers", "status"]
+    status: "active"
+
+  - id: "mozilla-network"
+    name: "MDN Networking"
+    url: "https://developer.mozilla.org/en-US/docs/Web/HTTP"
+    domain: "networking"
+    country: "US"
+    language: "en"
+    category: "REFERENCE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["http", "networking", "web", "protocols"]
+    status: "active"
+
+  - id: "wireshark-docs"
+    name: "Wireshark Documentation"
+    url: "https://www.wireshark.org/docs/"
+    domain: "networking"
+    country: "US"
+    language: "en"
+    category: "TOOL"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.94
+    relevance: ["networking", "packet-analysis", "debugging", "protocol"]
+    status: "active"
+
+  # ==========================================================================
+  # SEGURANÇA
+  # ==========================================================================
+  - id: "owasp-top10"
+    name: "OWASP Top 10"
+    url: "https://owasp.org/www-project-top-ten/"
+    domain: "security"
+    country: "INTL"
+    language: "en"
+    category: "STANDARD"
+    source_type: "STANDARD"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.96
+    relevance: ["security", "owasp", "vulnerabilities", "web-security"]
+    status: "active"
+
+  - id: "owasp-cheatsheet"
+    name: "OWASP Cheat Sheet Series"
+    url: "https://cheatsheetseries.owasp.org/"
+    domain: "security"
+    country: "INTL"
+    language: "en"
+    category: "STANDARD"
+    source_type: "STANDARD"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.94
+    relevance: ["security", "cheatsheet", "hardening", "best-practices"]
+    status: "active"
+
+  - id: "cve-mitre"
+    name: "CVE (MITRE)"
+    url: "https://cve.mitre.org/"
+    domain: "security"
+    country: "US"
+    language: "en"
+    category: "DATABASE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.98
+    relevance: ["security", "cve", "vulnerabilities", "advisories"]
+    status: "active"
+
+  - id: "nvd-nist"
+    name: "NVD - National Vulnerability Database"
+    url: "https://nvd.nist.gov/"
+    domain: "security"
+    country: "US"
+    language: "en"
+    category: "DATABASE"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.97
+    relevance: ["security", "nvd", "cvss", "vulnerability-scoring"]
+    status: "active"
+
+  - id: "cryptography-survey"
+    name: "Handbook of Applied Cryptography"
+    url: "https://cacr.uwaterloo.ca/hac/"
+    domain: "security"
+    country: "CA"
+    language: "en"
+    category: "ACADEMIC"
+    source_type: "BOOK"
+    authority_level: "B"
+    evidence_level: "very_high"
+    reliability: 0.96
+    relevance: ["cryptography", "algorithms", "mathematics", "security"]
+    status: "active"
+
+  # ==========================================================================
+  # ALGORITMOS / ESTRUTURAS DE DADOS
+  # ==========================================================================
+  - id: "clrs"
+    name: "Introduction to Algorithms (CLRS)"
+    url: "https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/"
+    domain: "algorithms"
+    country: "US"
+    language: "en"
+    category: "ACADEMIC"
+    source_type: "BOOK"
+    authority_level: "B"
+    evidence_level: "very_high"
+    reliability: 0.98
+    relevance: ["algorithms", "data-structures", "complexity", "sorting", "graphs"]
+    status: "active"
+    description: "Referência acadêmica padrão para algoritmos e estruturas de dados."
+
+  - id: "cs-algorithms"
+    name: "CS Algorithms (GitHub)"
+    url: "https://github.com/TheAlgorithms"
+    domain: "algorithms"
+    country: "INTL"
+    language: "en"
+    category: "SOURCE_CODE"
+    source_type: "OPEN_SOURCE"
+    authority_level: "C"
+    evidence_level: "high"
+    reliability: 0.85
+    relevance: ["algorithms", "implementations", "learning", "python", "java"]
+    status: "active"
+
+  - id: "algorithm-design"
+    name: "Algorithm Design (Kleinberg & Tardos)"
+    url: "https://www.cs.cornell.edu/courses/cs482/2019sp/lecture-notes/"
+    domain: "algorithms"
+    country: "US"
+    language: "en"
+    category: "ACADEMIC"
+    source_type: "BOOK"
+    authority_level: "B"
+    evidence_level: "very_high"
+    reliability: 0.97
+    relevance: ["algorithms", "greedy", "dynamic-programming", "network-flow"]
+    status: "active"
+
+  - id: "leetcode"
+    name: "LeetCode"
+    url: "https://leetcode.com/"
+    domain: "algorithms"
+    country: "US"
+    language: "en"
+    category: "PRACTICE"
+    source_type: "COMMUNITY"
+    authority_level: "D"
+    evidence_level: "high"
+    reliability: 0.82
+    relevance: ["algorithms", "data-structures", "coding-interview", "practice"]
+    status: "active"
+
+  - id: "visualgo"
+    name: "VisuAlgo"
+    url: "https://visualgo.net/"
+    domain: "algorithms"
+    country: "SG"
+    language: "en"
+    category: "EDUCATIONAL"
+    source_type: "TUTORIAL"
+    authority_level: "E"
+    evidence_level: "medium"
+    reliability: 0.85
+    relevance: ["algorithms", "visualization", "learning", "data-structures"]
+    status: "active"
+
+  # ==========================================================================
+  # IA / MACHINE LEARNING
+  # ==========================================================================
+  - id: "pytorch-docs"
+    name: "PyTorch Documentation"
+    url: "https://pytorch.org/docs/stable/"
+    domain: "ml"
+    country: "US"
+    language: "en"
+    category: "LIBRARY"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["pytorch", "deep-learning", "tensors", "gpu"]
+    status: "active"
+
+  - id: "tensorflow-docs"
+    name: "TensorFlow Documentation"
+    url: "https://www.tensorflow.org/guide"
+    domain: "ml"
+    country: "US"
+    language: "en"
+    category: "LIBRARY"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.94
+    relevance: ["tensorflow", "deep-learning", "ml", "keras"]
+    status: "active"
+
+  - id: "huggingface-docs"
+    name: "Hugging Face Documentation"
+    url: "https://huggingface.co/docs"
+    domain: "ml"
+    country: "FR"
+    language: "en"
+    category: "LIBRARY"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["huggingface", "transformers", "nlp", "llm", "models"]
+    status: "active"
+
+  - id: "arxiv-ml"
+    name: "arXiv (Machine Learning)"
+    url: "https://arxiv.org/list/cs.LG/recent"
+    domain: "ml"
+    country: "US"
+    language: "en"
+    category: "ACADEMIC"
+    source_type: "PAPER"
+    authority_level: "B"
+    evidence_level: "very_high"
+    reliability: 0.92
+    relevance: ["machine-learning", "deep-learning", "papers", "research"]
+    status: "active"
+
+  - id: "papers-with-code"
+    name: "Papers With Code"
+    url: "https://paperswithcode.com/"
+    domain: "ml"
+    country: "INTL"
+    language: "en"
+    category: "ACADEMIC"
+    source_type: "COMMUNITY"
+    authority_level: "B"
+    evidence_level: "high"
+    reliability: 0.88
+    relevance: ["ml", "papers", "benchmarks", "reproducibility", "sota"]
+    status: "active"
+
+  - id: "scikit-learn-tutorials"
+    name: "scikit-learn Tutorials"
+    url: "https://scikit-learn.org/stable/tutorial/"
+    domain: "ml"
+    country: "FR"
+    language: "en"
+    category: "EDUCATIONAL"
+    source_type: "TUTORIAL"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["scikit-learn", "ml", "tutorials", "classical-ml"]
+    status: "active"
+
+  # ==========================================================================
+  # ARQUITETURA / DESIGN PATTERNS
+  # ==========================================================================
+  - id: "refactoring-guru"
+    name: "Refactoring Guru"
+    url: "https://refactoring.guru/"
+    domain: "architecture"
+    country: "RU"
+    language: "en"
+    category: "EDUCATIONAL"
+    source_type: "TUTORIAL"
+    authority_level: "D"
+    evidence_level: "high"
+    reliability: 0.88
+    relevance: ["design-patterns", "refactoring", "solid", "clean-code"]
+    status: "active"
+
+  - id: "martin-fowler"
+    name: "Martin Fowler"
+    url: "https://martinfowler.com/"
+    domain: "architecture"
+    country: "GB"
+    language: "en"
+    category: "ACADEMIC"
+    source_type: "TECHNICAL_BLOG"
+    authority_level: "B"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["architecture", "patterns", "refactoring", "architecture-decision"]
+    status: "active"
+
+  - id: "high-availability"
+    name: "High Availability (github)"
+    url: "https://github.com/donnemartin/system-design-primer"
+    domain: "architecture"
+    country: "US"
+    language: "en"
+    category: "EDUCATIONAL"
+    source_type: "OPEN_SOURCE"
+    authority_level: "C"
+    evidence_level: "high"
+    reliability: 0.87
+    relevance: ["system-design", "scalability", "architecture", "interview"]
+    status: "active"
+
+  - id: "kubernetes-patterns"
+    name: "Kubernetes Patterns"
+    url: "https://kubernetespatterns.com/"
+    domain: "architecture"
+    country: "INTL"
+    language: "en"
+    category: "ACADEMIC"
+    source_type: "BOOK"
+    authority_level: "B"
+    evidence_level: "high"
+    reliability: 0.90
+    relevance: ["kubernetes", "patterns", "cloud-native", "microservices"]
+    status: "active"
+
+  # ==========================================================================
+  # LINGUAGEM C / SISTEMAS
+  # ==========================================================================
+  - id: "kernighan-ritchie"
+    name: "The C Programming Language (K&R)"
+    url: "https://en.wikipedia.org/wiki/The_C_Programming_Language"
+    domain: "c"
+    country: "US"
+    language: "en"
+    category: "ACADEMIC"
+    source_type: "BOOK"
+    authority_level: "B"
+    evidence_level: "very_high"
+    reliability: 0.98
+    relevance: ["c", "systems", "unix", "fundamentals"]
+    status: "active"
+
+  - id: "apue"
+    name: "Advanced Programming in the Unix Environment"
+    url: "https://www.apuebook.com/"
+    domain: "c"
+    country: "US"
+    language: "en"
+    category: "ACADEMIC"
+    source_type: "BOOK"
+    authority_level: "B"
+    evidence_level: "very_high"
+    reliability: 0.97
+    relevance: ["c", "unix", "systems-programming", "posix", "syscalls"]
+    status: "active"
+
+  - id: "beejs-guide"
+    name: "Beej's Guide to C/Network Programming"
+    url: "https://beej.us/guide/"
+    domain: "c"
+    country: "US"
+    language: "en"
+    category: "EDUCATIONAL"
+    source_type: "BOOK"
+    authority_level: "E"
+    evidence_level: "high"
+    reliability: 0.85
+    relevance: ["c", "networking", "sockets", "systems"]
+    status: "active"
+
+  # ==========================================================================
+  # GAMEDEV
+  # ==========================================================================
+  - id: "unity-docs"
+    name: "Unity Documentation"
+    url: "https://docs.unity3d.com/"
+    domain: "gamedev"
+    country: "US"
+    language: "en"
+    category: "FRAMEWORK"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["unity", "game-development", "c#", "3d", "2d"]
+    status: "active"
+
+  - id: "godot-docs"
+    name: "Godot Documentation"
+    url: "https://docs.godotengine.org/"
+    domain: "gamedev"
+    country: "INTL"
+    language: "en"
+    category: "FRAMEWORK"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.91
+    relevance: ["godot", "game-development", "gdscript", "open-source"]
+    status: "active"
+
+  - id: "unreal-docs"
+    name: "Unreal Engine Documentation"
+    url: "https://docs.unrealengine.com/"
+    domain: "gamedev"
+    country: "US"
+    language: "en"
+    category: "FRAMEWORK"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["unreal", "game-development", "cpp", "blueprints"]
+    status: "active"
+
+  # ==========================================================================
+  # DOCUMENTAÇÃO TÉCNICA GERAL / FERRAMENTAS
+  # ==========================================================================
+  - id: "devdocs"
+    name: "DevDocs"
+    url: "https://devdocs.io/"
+    domain: "general"
+    country: "INTL"
+    language: "en"
+    category: "REFERENCE"
+    source_type: "AGGREGATOR"
+    authority_level: "C"
+    evidence_level: "high"
+    reliability: 0.90
+    relevance: ["reference", "api", "docs", "multi-language"]
+    status: "active"
+
+  - id: "github"
+    name: "GitHub"
+    url: "https://github.com/"
+    domain: "general"
+    country: "US"
+    language: "en"
+    category: "ECOSYSTEM"
+    source_type: "OPEN_SOURCE"
+    authority_level: "C"
+    evidence_level: "high"
+    reliability: 0.90
+    relevance: ["open-source", "code", "collaboration", "version-control"]
+    status: "active"
+
+  - id: "gitlab"
+    name: "GitLab"
+    url: "https://gitlab.com/"
+    domain: "general"
+    country: "INTL"
+    language: "en"
+    category: "ECOSYSTEM"
+    source_type: "OPEN_SOURCE"
+    authority_level: "C"
+    evidence_level: "high"
+    reliability: 0.88
+    relevance: ["git", "ci-cd", "devops", "code-review"]
+    status: "active"
+
+  - id: "stackoverflow"
+    name: "Stack Overflow"
+    url: "https://stackoverflow.com/"
+    domain: "general"
+    country: "INTL"
+    language: "en"
+    category: "COMMUNITY"
+    source_type: "STACK_OVERFLOW"
+    authority_level: "D"
+    evidence_level: "medium"
+    reliability: 0.75
+    relevance: ["qa", "community", "solutions", "debugging"]
+    status: "active"
+    description: "Fonte de conhecimento de campo — verificar votos e idade antes de confiar."
+
+  - id: "hacker-news"
+    name: "Hacker News"
+    url: "https://news.ycombinator.com/"
+    domain: "general"
+    country: "US"
+    language: "en"
+    category: "NEWS"
+    source_type: "NEWS"
+    authority_level: "E"
+    evidence_level: "medium"
+    reliability: 0.70
+    relevance: ["news", "trends", "discussion", "tech-industry"]
+    status: "active"
+
+  - id: "lobsters"
+    name: "Lobsters"
+    url: "https://lobste.rs/"
+    domain: "general"
+    country: "INTL"
+    language: "en"
+    category: "COMMUNITY"
+    source_type: "COMMUNITY"
+    authority_level: "D"
+    evidence_level: "medium"
+    reliability: 0.75
+    relevance: ["programming", "curated", "community", "discussion"]
+    status: "active"
+
+  - id: "git-scm"
+    name: "Git Documentation"
+    url: "https://git-scm.com/docs"
+    domain: "general"
+    country: "US"
+    language: "en"
+    category: "TOOL"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.96
+    relevance: ["git", "version-control", "branching", "merging"]
+    status: "active"
+
+  - id: "vim-docs"
+    name: "Vim Documentation"
+    url: "https://vimhelp.org/"
+    domain: "general"
+    country: "NL"
+    language: "en"
+    category: "TOOL"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["vim", "editor", "text-processing", "scripting"]
+    status: "active"
+
+  - id: "emacs-docs"
+    name: "GNU Emacs Documentation"
+    url: "https://www.gnu.org/software/emacs/manual/"
+    domain: "general"
+    country: "US"
+    language: "en"
+    category: "TOOL"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.94
+    relevance: ["emacs", "editor", "elisp", "text-processing"]
+    status: "active"
+
+  # ==========================================================================
+  # EMBEDDED / IOT
+  # ==========================================================================
+  - id: "esp-idf-docs"
+    name: "ESP-IDF Documentation"
+    url: "https://docs.espressif.com/projects/esp-idf/"
+    domain: "embedded"
+    country: "CN"
+    language: "en"
+    category: "PLATFORM"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.91
+    relevance: ["esp32", "iot", "embedded", "wifi", "bluetooth"]
+    status: "active"
+
+  - id: "arm-docs"
+    name: "ARM Developer Documentation"
+    url: "https://developer.arm.com/documentation"
+    domain: "embedded"
+    country: "GB"
+    language: "en"
+    category: "PLATFORM"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.96
+    relevance: ["arm", "embedded", "microcontroller", "assembly"]
+    status: "active"
+
+  # ==========================================================================
+  # CLOUD / SERVIÇOS
+  # ==========================================================================
+  - id: "aws-docs"
+    name: "AWS Documentation"
+    url: "https://docs.aws.amazon.com/"
+    domain: "cloud"
+    country: "US"
+    language: "en"
+    category: "PLATFORM"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["aws", "cloud", "serverless", "ec2", "s3", "lambda"]
+    status: "active"
+
+  - id: "gcp-docs"
+    name: "Google Cloud Documentation"
+    url: "https://cloud.google.com/docs"
+    domain: "cloud"
+    country: "US"
+    language: "en"
+    category: "PLATFORM"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.94
+    relevance: ["gcp", "cloud", "bigquery", "cloud-functions"]
+    status: "active"
+
+  - id: "azure-docs"
+    name: "Microsoft Azure Documentation"
+    url: "https://learn.microsoft.com/azure/"
+    domain: "cloud"
+    country: "US"
+    language: "en"
+    category: "PLATFORM"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["azure", "cloud", "microsoft", "entra", "devops"]
+    status: "active"
+
+  - id: "cloudflare-docs"
+    name: "Cloudflare Developer Documentation"
+    url: "https://developers.cloudflare.com/"
+    domain: "cloud"
+    country: "US"
+    language: "en"
+    category: "PLATFORM"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.92
+    relevance: ["cloudflare", "edge", "workers", "cdn", "dns"]
+    status: "active"
+
+  # ==========================================================================
+  # PADRÕES DE COMUNICAÇÃO / API
+  # ==========================================================================
+  - id: "openapi-spec"
+    name: "OpenAPI Specification"
+    url: "https://spec.openapis.org/"
+    domain: "api"
+    country: "INTL"
+    language: "en"
+    category: "SPECIFICATION"
+    source_type: "SPECIFICATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.96
+    relevance: ["openapi", "rest", "api-design", "documentation"]
+    status: "active"
+
+  - id: "graphql-spec"
+    name: "GraphQL Specification"
+    url: "https://spec.graphql.org/"
+    domain: "api"
+    country: "US"
+    language: "en"
+    category: "SPECIFICATION"
+    source_type: "SPECIFICATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.95
+    relevance: ["graphql", "api", "query-language", "schema"]
+    status: "active"
+
+  - id: "grpc-docs"
+    name: "gRPC Documentation"
+    url: "https://grpc.io/docs/"
+    domain: "api"
+    country: "US"
+    language: "en"
+    category: "FRAMEWORK"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["grpc", "protobuf", "rpc", "microservices"]
+    status: "active"
+
+  - id: "soap-wsdl"
+    name: "W3C SOAP/WSDL"
+    url: "https://www.w3.org/TR/soap/"
+    domain: "api"
+    country: "INTL"
+    language: "en"
+    category: "SPECIFICATION"
+    source_type: "SPECIFICATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.95
+    relevance: ["soap", "wsdl", "enterprise", "legacy"]
+    status: "active"
+
+  # ==========================================================================
+  # COMPILADORES / LINGUAGENS DE DOMÍNIO
+  # ==========================================================================
+  - id: "llvm-docs"
+    name: "LLVM Documentation"
+    url: "https://llvm.org/docs/"
+    domain: "compilers"
+    country: "US"
+    language: "en"
+    category: "TOOL"
+    source_type: "OFFICIAL_DOCUMENTATION"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.96
+    relevance: ["llvm", "compilers", "ir", "optimization", "backend"]
+    status: "active"
+
+  - id: "crafting-interpreters"
+    name: "Crafting Interpreters"
+    url: "https://craftinginterpreters.com/"
+    domain: "compilers"
+    country: "US"
+    language: "en"
+    category: "ACADEMIC"
+    source_type: "BOOK"
+    authority_level: "B"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["interpreters", "compilers", "parsing", "bytecode"]
+    status: "active"
+
+  - id: "dragon-book"
+    name: "Compilers: Principles, Techniques, and Tools"
+    url: "https://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools"
+    domain: "compilers"
+    country: "US"
+    language: "en"
+    category: "ACADEMIC"
+    source_type: "BOOK"
+    authority_level: "B"
+    evidence_level: "very_high"
+    reliability: 0.97
+    relevance: ["compilers", "parsing", "lexer", "semantic-analysis"]
+    status: "active"
+
+  # ==========================================================================
+  # CONTROLE DE VERSÃO / GIT
+  # ==========================================================================
+  - id: "git-internals"
+    name: "Git Internals (Pro Git Ch. 10)"
+    url: "https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain"
+    domain: "git"
+    country: "US"
+    language: "en"
+    category: "EDUCATIONAL"
+    source_type: "BOOK"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.95
+    relevance: ["git", "internals", "plumbing", "objects", "refs"]
+    status: "active"
+
+  - id: "pro-git"
+    name: "Pro Git Book"
+    url: "https://git-scm.com/book/en/v2"
+    domain: "git"
+    country: "US"
+    language: "en"
+    category: "ACADEMIC"
+    source_type: "BOOK"
+    authority_level: "A"
+    evidence_level: "very_high"
+    reliability: 0.96
+    relevance: ["git", "version-control", "branching", "merging", "workflow"]
+    status: "active"
+
+  # ==========================================================================
+  # BENCHMARKS / DADOS REAIS
+  # ==========================================================================
+  - id: "tech-empires"
+    name: "The Architecture of Open Source Applications"
+    url: "https://aosabook.org/en/"
+    domain: "general"
+    country: "US"
+    language: "en"
+    category: "ACADEMIC"
+    source_type: "BOOK"
+    authority_level: "B"
+    evidence_level: "high"
+    reliability: 0.92
+    relevance: ["architecture", "open-source", "case-studies", "design"]
+    status: "active"
+
+  - id: "db-engines"
+    name: "DB-Engines Ranking"
+    url: "https://db-engines.com/en/ranking"
+    domain: "database"
+    country: "DE"
+    language: "en"
+    category: "BENCHMARK"
+    source_type: "BENCHMARK"
+    authority_level: "D"
+    evidence_level: "medium"
+    reliability: 0.82
+    relevance: ["databases", "ranking", "trends", "comparison"]
+    status: "active"
+
+  - id: "benchmarks-game"
+    name: "The Computer Language Benchmarks Game"
+    url: "https://benchmarksgame-team.pages.debian.net/benchmarksgame/"
+    domain: "general"
+    country: "INTL"
+    language: "en"
+    category: "BENCHMARK"
+    source_type: "BENCHMARK"
+    authority_level: "C"
+    evidence_level: "high"
+    reliability: 0.88
+    relevance: ["benchmarks", "performance", "languages", "comparison"]
+    status: "active"
+
+  # ==========================================================================
+  # MICROSERVIÇOS / EVENTOS
+  # ==========================================================================
+  - id: "microservices-io"
+    name: "Microservices.io"
+    url: "https://microservices.io/patterns/"
+    domain: "architecture"
+    country: "INTL"
+    language: "en"
+    category: "EDUCATIONAL"
+    source_type: "TUTORIAL"
+    authority_level: "D"
+    evidence_level: "high"
+    reliability: 0.85
+    relevance: ["microservices", "patterns", "saga", "circuit-breaker"]
+    status: "active"
+
+  - id: "event-sourcing"
+    name: "Event Sourcing (Martin Fowler)"
+    url: "https://martinfowler.com/eaaDev/EventSourcing.html"
+    domain: "architecture"
+    country: "GB"
+    language: "en"
+    category: "ACADEMIC"
+    source_type: "TECHNICAL_BLOG"
+    authority_level: "B"
+    evidence_level: "high"
+    reliability: 0.92
+    relevance: ["event-sourcing", "cqrs", "architecture", "persistence"]
+    status: "active"
+
+  # ==========================================================================
+  # BROWSER / FRONTEND REFS
+  # ==========================================================================
+  - id: "caniuse"
+    name: "Can I Use"
+    url: "https://caniuse.com/"
+    domain: "frontend"
+    country: "INTL"
+    language: "en"
+    category: "REFERENCE"
+    source_type: "AGGREGATOR"
+    authority_level: "C"
+    evidence_level: "high"
+    reliability: 0.90
+    relevance: ["browser-support", "compatibility", "web", "css", "js"]
+    status: "active"
+
+  - id: "web.dev"
+    name: "web.dev"
+    url: "https://web.dev/"
+    domain: "frontend"
+    country: "US"
+    language: "en"
+    category: "EDUCATIONAL"
+    source_type: "TUTORIAL"
+    authority_level: "A"
+    evidence_level: "high"
+    reliability: 0.93
+    relevance: ["performance", "pwa", "accessibility", "best-practices"]
+    status: "active"
+
+  # ==========================================================================
+  # COMUNIDADES REGIONAIS
+  # ==========================================================================
+  - id: "python-brasil"
+    name: "Python Brasil"
+    url: "https://pythonbrasil.org/"
+    domain: "python"
+    country: "BR"
+    language: "pt"
+    category: "COMMUNITY"
+    source_type: "COMMUNITY"
+    authority_level: "D"
+    evidence_level: "medium"
+    reliability: 0.82
+    relevance: ["python", "brasil", "comunidade", "eventos"]
+    status: "active"
+
+  - id: "blogdopython"
+    name: "Blog do Python"
+    url: "https://blogdo.dev/"
+    domain: "python"
+    country: "BR"
+    language: "pt"
+    category: "COMMUNITY"
+    source_type: "TECHNICAL_BLOG"
+    authority_level: "D"
+    evidence_level: "medium"
+    reliability: 0.78
+    relevance: ["python", "brasil", "tutoriais", "artigos"]
+    status: "active"
+
+  - id: "wesley-ferreira"
+    name: "Wesley Ferreira (Python BR)"
+    url: "https://wesleyferreira.com.br/"
+    domain: "python"
+    country: "BR"
+    language: "pt"
+    category: "COMMUNITY"
+    source_type: "TECHNICAL_BLOG"
+    authority_level: "D"
+    evidence_level: "medium"
+    reliability: 0.80
+    relevance: ["python", "brasil", "dev-backend", "tutoriais"]
+    status: "active"
+
+  - id: "devto"
+    name: "DEV.to"
+    url: "https://dev.to/"
+    domain: "general"
+    country: "US"
+    language: "en"
+    category: "COMMUNITY"
+    source_type: "COMMUNITY"
+    authority_level: "E"
+    evidence_level: "low"
+    reliability: 0.65
+    relevance: ["tutorials", "community", "blog", "diverse"]
+    status: "active"
+
+  - id: "hashnode"
+    name: "Hashnode"
+    url: "https://hashnode.com/"
+    domain: "general"
+    country: "INTL"
+    language: "en"
+    category: "COMMUNITY"
+    source_type: "TECHNICAL_BLOG"
+    authority_level: "E"
+    evidence_level: "low"
+    reliability: 0.65
+    relevance: ["blog", "community", "tutorials", "diverse"]
+    status: "active"

@@ -1,6 +1,6 @@
 {
   "versao": "1.1",
-  "atualizado_em": "2026-09-02T12:05:26.311733",
+  "atualizado_em": "2026-09-03T00:00:00.000000",
   "descricao": "Inventário oficial de estruturas ativas do EcoSystemUmGrau. Consulte antes de criar qualquer estrutura nova (cláusula anti-duplicação).",
   "agentes": [
     {
@@ -502,7 +502,12 @@
     {
       "id": "evolution_radar_collect",
       "arquivo": "scripts/evolution_radar_collect.py",
-      "funcao": "PENDENTE: descrever função"
+      "funcao": "Coleta de sinais de evolução de fontes externas (radar)"
+    },
+    {
+      "id": "source_registry",
+      "arquivo": "scripts/source_registry.py",
+      "funcao": "Registro de fontes de conhecimento técnico: catálogo YAML com busca por domínio/autoridade/tags, integração com knowledge_graph (nodes de fontes) e memory_engine (proveniência de fontes)"
     },
     {
       "id": "generate-graph-html",
@@ -1220,6 +1225,11 @@
       "id": "evolution_sources",
       "arquivo": "config/evolution_sources.json",
       "descricao": "Fontes de evolução do ecossistema"
+    },
+    {
+      "id": "programming_sources",
+      "arquivo": "config/programming_sources.yaml",
+      "descricao": "Catálogo de ~140 fontes de conhecimento técnico para programação (seed sources), classificadas por domínio, autoridade e confiabilidade"
     },
     {
       "id": "llm_choice",
