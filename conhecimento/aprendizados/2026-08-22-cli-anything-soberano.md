@@ -159,6 +159,7 @@ HKUDS/CLI-Anything (MIT), metodologia GUI-to-CLI em 7 fases: análise do codebas
 - [[sessao-de-configuracao-do-opencode-com-failover-de-servidor-]]
 - [[sistema-de-análise-financeira]]
 - [[suggestions-hermes-itens-1-3]]
+- [[supermarketcalculator-v157]]
 - [[tradingagents-integrado-ao-ecossistema]]
 - [[transparencia-execucao-tarefas]]
 - [[triagem-scripts-legado-orgaos-movidos]]

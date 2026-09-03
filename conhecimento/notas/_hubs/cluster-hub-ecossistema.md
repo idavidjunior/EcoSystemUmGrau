@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**255 notas** do cluster ecossistema.
+**256 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -244,6 +244,7 @@
 - [[source-registry-módulo-de-fontes-de-conhecimento-técnico]]
 - [[stt-no-partialstreaming-results]]
 - [[suggestions-hermes-itens-1-3]]
+- [[supermarketcalculator-v157]]
 - [[terminalwidget-edge]]
 - [[toast-de-erros-falsos-positivos]]
 - [[tradingagents-integrado-ao-ecossistema]]

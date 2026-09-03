@@ -1,6 +1,6 @@
 # Decisoes
 
-**90 notas** conectadas a este hub.
+**91 notas** conectadas a este hub.
 
 
 ## Notas
@@ -79,6 +79,7 @@
 - [[single-activity-com-framelayout-visibilidade-setvisibility-s]]
 - [[step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo]]
 - [[stringbuilder-for-price-fine-grained-control-over-display-fo]]
+- [[supermarketcalculator-v157]]
 - [[supervisor-monitora-todos-os-modulos-individualmente-nunca-r]]
 - [[the-issue-description-and-root-cause]]
 - [[transparencia-execucao-tarefas]]
