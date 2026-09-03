@@ -1,6 +1,6 @@
 # Decisoes
 
-**89 notas** conectadas a este hub.
+**90 notas** conectadas a este hub.
 
 
 ## Notas
@@ -31,6 +31,7 @@
 - [[estrategia-selecionada-por-ranking-cost-risk-time-complexity]]
 - [[fase-a-concluída-catálogo-real-no-supabase-64-obras-via-tmdb]]
 - [[fix-narrador-triplicado-e-resiliencia-orfaos]]
+- [[fontes-consumidas-nas-construções-kg-memória]]
 - [[form-starts-empty-input-forms-never-auto-load-from-file-user]]
 - [[form-starts-empty-input-forms-nunca-auto-carregam-arquivo-ao]]
 - [[gate-ponto-unico-compilador]]

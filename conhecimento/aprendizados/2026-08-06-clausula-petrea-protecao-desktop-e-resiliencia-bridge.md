@@ -161,6 +161,7 @@ inexistente e auto-PID sem excecao.
 - [[fase3-rotina-automatica-de-tiragem-organizacional]]
 - [[fix-narrador-triplicado-e-resiliencia-orfaos]]
 - [[fix-widget-grafo-desktop]]
+- [[fontes-consumidas-nas-construções-kg-memória]]
 - [[gate-ponto-unico-compilador]]
 - [[gate-veto-compreensao]]
 - [[gate-veto-kernel]]
