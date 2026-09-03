@@ -1,5 +1,5 @@
 ---
-tags: [cpp, ferramenta, legíveis, padrao, suporta, traits]
+tags: [cpp, ferramenta, legíveis, melhor, padrao, suporta]
 aliases: [C++: templates, SFINAE, constexpr e o custo-zero]
 date: 2026-08-10
 ---
