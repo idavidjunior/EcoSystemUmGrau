@@ -180,6 +180,7 @@ config resolvido pelo opencode).
 - [[sistema-de-análise-financeira]]
 - [[smc-ab5-calculadora-simples]]
 - [[smc-ab5-formatacao-brl]]
+- [[smc-acrescimo-resultado-grande]]
 - [[suggestions-hermes-itens-1-3]]
 - [[supermarketcalculator-v157]]
 - [[tradingagents-integrado-ao-ecossistema]]

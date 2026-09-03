@@ -1,6 +1,6 @@
 # Decisoes
 
-**93 notas** conectadas a este hub.
+**94 notas** conectadas a este hub.
 
 
 ## Notas
@@ -79,6 +79,7 @@
 - [[single-activity-com-framelayout-visibilidade-setvisibility-s]]
 - [[smc-ab5-calculadora-simples]]
 - [[smc-ab5-formatacao-brl]]
+- [[smc-acrescimo-resultado-grande]]
 - [[step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo]]
 - [[stringbuilder-for-price-fine-grained-control-over-display-fo]]
 - [[supermarketcalculator-v157]]
