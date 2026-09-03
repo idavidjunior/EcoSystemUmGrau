@@ -1,9 +1,9 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-09-03T20:24:41.781545
+**Exportado em:** 2026-09-03T20:40:56.529286
 **Projetos:** 4
 **Padroes Tecnicos:** 294
-**Decisoes:** 98
+**Decisoes:** 99
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 78
 **Heuristicas:** 32
@@ -820,6 +820,15 @@ data: 2026-09-03
 contexto: Correcao do percentual em BigDecimal validada; usuario pediu exibir resultado e acrescimo em destaque na 5a aba "Simples".
 decisao: Ao clicar em '%' com operacao pendente, resolve imediato montando: scExpression mostra a conta (a + p% =), novo campo scResult mostra o resultado (a+p% ou equivalente), e scDisplay (40sp bold) mostra o acrescimo = |resultado - operando i
 
+### projeto completo e ativo a recuperar
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [ecossistema, projeto, recuperacao, codigo-fonte, versionamento, git, compilar, smc, ativo]
+data: 2026-09-03
+contexto: Usuario consolidou que o SupermarketCalculator esta completo e funcional, com todo o codigo-fonte versionado do inicio ao fim. O ecossistema nao deve redescobrir nem reconstruir nada: deve apenas guardar, lembrar e, quando pedido, recuperar o codigo pronto e compilar.
+decisao: Projeto entregue e versionado passa a ser tratado como ATIVO A RECUPERAR, nao c
+
 
 ## Padroes Tecnicos
 
@@ -1103,14 +1112,14 @@ decisao: Ao clicar em '%' com operacao pendente, resolve imediato montando: scEx
 | 276 | opencode | Compressão Semântica Hierárquica — lições da implementação |
 | 277 | opencode | Relatório Eco estático — lições |
 | 278 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | CLI-Anything Internalizado como Habilidade Soberana |
-| 279 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | @ecow e /ecow — abrir/focar o Cerebro Vivo |
+| 279 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | @ecow e /ecow — abrir/focar o Cerebro Vivo |
 | 280 | opencode | JunkScanner — Benchmark do scan incremental |
 | 281 | opencode | JunkScanner — Scan incremental (cache de hash + memoização) |
 | 282 | opencode | CI de Android em máquina fraca + keystore estável |
 | 283 | opencode | Padrao de pergunta: validacao numerica por cota |
 | 284 | opencode | Janela flutuante para visuais (sem navegador) |
 | 285 | opencode | Estilo por pedido (Power BI implementado) |
-| 286 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | retencao opencode db vigilante |
+| 286 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | retencao opencode db vigilante |
 | 287 | opencode+opencode | Narracao seletiva por relevancia no narrador Edge |
 | 288 | opencode+opencode | terminalwidget edge |
 | 289 | opencode+opencode | Análise de Jarvis opensource — aprendizados aplicáveis |
@@ -2459,7 +2468,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-09-03T20:24:41.652753
+**Ultima atualizacao:** 2026-09-03T20:40:56.358744
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

@@ -178,6 +178,7 @@ PROATIVA de RAM (alerta antes do limite) e a portabilidade da certificacao foren
 - [[pontes-inter-cluster-cerebro-vivo-grafo]]
 - [[ponto-único-de-persistência-gate]]
 - [[pontuação-da-transcrição-voltando-ao-balão-do-app-corrigido]]
+- [[projeto-completo-e-ativo-a-recuperar]]
 - [[pronúncia-járvis-escrita-sem-acento-fala-com-acento]]
 - [[protocolo-higiene-repo-streamumgrau]]
 - [[quiet-period-commits-do-vigilante]]

@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**259 notas** do cluster ecossistema.
+**260 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -208,6 +208,7 @@
 - [[ponto-único-de-persistência-gate]]
 - [[pontuação-da-transcrição-voltando-ao-balão-do-app-corrigido]]
 - [[projecao-ortho-nas-transicoes-gl]]
+- [[projeto-completo-e-ativo-a-recuperar]]
 - [[projetos-irmaos-do-ecosystemumgrau]]
 - [[pronuncia-do-nome-do-usuario-david-deivid]]
 - [[pronuncia-python-ptbr]]
