@@ -1,9 +1,9 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-09-03T08:37:54.560415
+**Exportado em:** 2026-09-03T08:54:01.919880
 **Projetos:** 4
 **Padroes Tecnicos:** 294
-**Decisoes:** 93
+**Decisoes:** 94
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 78
 **Heuristicas:** 32
@@ -763,6 +763,20 @@ impacto: Motor de auto-evolucao respeita governanca do Maestro, ganha busca exte
 ---
 
 # Auto-Evolution: Maestro + Radar + Relatório Consolidado
+
+### Fontes consumidas nas construções (KG + memória)
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [fontes, source-registry, knowledge-graph, memory-engine, auto-evolution]
+data: 2026-09-03
+contexto: >
+  Decision de garantir que as 142+ fontes do catálogo (config/programming_sources.yaml)
+  sejam consumidas nas construções do ecossistema, não apenas decorativas.
+decisao: >
+  Integrar o source_registry em 3 pontos de consumo:
+  (1) auto_evolution.py — Gap.sources enriquecido via _enrich_gaps_with_sources
+  com GAP_DOMAIN_MAP (fallback preferindo domínios primários sobre
 
 
 ## Padroes Tecnicos
@@ -2403,7 +2417,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-09-03T08:37:54.442604
+**Ultima atualizacao:** 2026-09-03T08:54:01.770452
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

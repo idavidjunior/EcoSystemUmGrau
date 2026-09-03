@@ -406,6 +406,33 @@ class KnowledgeGraph:
                             break
         return KGQueryResult(nodes=nodes, edges=edges)
 
+    def suggest_sources(self, query: str, limit: int = 5) -> List[Dict[str, Any]]:
+        """Sugere fontes autoritativas relevantes para uma consulta.
+
+        Usa o source_registry para levantar pontos de partida confiáveis,
+        complementando os nodes do grafo. Fail-soft: sem registry disponível,
+        retorna lista vazia (a busca do grafo continua funcionando).
+        """
+        try:
+            from source_registry import SourceRegistry
+            reg = SourceRegistry()
+            sources = reg.get_relevant_sources(query, limit=limit)
+            return [
+                {
+                    'id': s.get('id', ''),
+                    'name': s.get('name', ''),
+                    'url': s.get('url', ''),
+                    'authority_level': s.get('authority_level', ''),
+                    'reliability': s.get('reliability', 0),
+                    'domain': s.get('domain', ''),
+                }
+                for s in sources
+            ]
+        except Exception:
+            return []
+
+
+
     def shortest_path(self, source_id: str, target_id: str, max_depth: int = 4) -> List[List[str]]:
         if source_id not in self.nodes or target_id not in self.nodes:
             return []

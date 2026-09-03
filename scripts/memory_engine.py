@@ -176,6 +176,16 @@ def _merge_memory(existente, task, summary, kind, tags, metadata,
                 anchors.append(a)
                 existentes.add(chave)
         existente['source_anchors'] = anchors
+    # Mescla proveniência de fontes novas (source_refs) com as existentes.
+    novos_refs = _enrich_source_refs(task, summary)
+    if novos_refs:
+        refs = list(existente.get('source_refs', []) or [])
+        existentes = {r.get('id') for r in refs}
+        for nr in novos_refs:
+            if nr.get('id') not in existentes:
+                refs.append(nr)
+                existentes.add(nr.get('id'))
+        existente['source_refs'] = refs
     existente['confidence'] = max(float(existente.get('confidence', 0.0)), float(confidence))
     if solucao_aplicada and kind == 'erro' and not existente.get('solucao_aplicada'):
         existente['solucao_aplicada'] = solucao_aplicada
@@ -203,6 +213,32 @@ def log_session(session_id=None, task=None, project=None, outcome=None,
     with open(path, 'a', encoding='utf-8') as f:
         f.write(json.dumps(event, ensure_ascii=False) + '\n')
     return session_id
+
+def _enrich_source_refs(task, summary):
+    """Enriquece uma memória com proveniência de fontes autoritativas.
+
+    Usa o source_registry para levantar fontes relevantes ao tópico da memória
+    (task + summary). Fontes são pontos de partida para investigação futura —
+    não viés nem instrução cega. Fail-soft: sem registry, retorna lista vazia.
+    """
+    try:
+        from source_registry import SourceRegistry
+        reg = SourceRegistry()
+        topic = f'{task} {summary}'
+        sources = reg.get_relevant_sources(topic, limit=3)
+        return [
+            {
+                'id': s.get('id', ''),
+                'name': s.get('name', ''),
+                'url': s.get('url', ''),
+                'authority_level': s.get('authority_level', ''),
+                'reliability': s.get('reliability', 0),
+            }
+            for s in sources
+        ]
+    except Exception:
+        return []
+
 
 def add_memory(task, summary, kind='episodio', project='', tags=None,
                strength=1.0, metadata=None, reindex=True,
@@ -285,7 +321,8 @@ def add_memory(task, summary, kind='episodio', project='', tags=None,
         'source_anchors': source_anchors or [],
         'access_count': 0,
         'created_at': now.isoformat(),
-        'last_accessed': now.isoformat()
+        'last_accessed': now.isoformat(),
+        'source_refs': _enrich_source_refs(task, summary),
     }
     if solucao_aplicada and kind == 'erro':
         memory['solucao_aplicada'] = solucao_aplicada

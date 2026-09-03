@@ -381,10 +381,16 @@ def _enrich_gaps_with_sources(gaps: List[Gap]) -> List[Gap]:
         # Buscar domínios relevantes
         domains = GAP_DOMAIN_MAP.get(ref_key, ['architecture', 'general'])
 
-        # Buscar fontes de alta autoridade nos domínios relevantes
+        # Buscar fontes de alta autoridade nos domínios relevantes.
+        # Preferir domínio 'architecture' como principal se presente; 'general'
+        # só é usado como fallback para evitar fontes genéricas (Git, Vim).
+        primary_domains = [d for d in domains if d != 'general']
+        if not primary_domains:
+            primary_domains = domains
+
         relevant = []
-        for domain in domains:
-            domain_sources = reg.get_top_authority(domain=domain, limit=2)
+        for domain in primary_domains:
+            domain_sources = reg.get_top_authority(domain=domain, limit=3)
             relevant.extend(domain_sources)
 
         # Deduplicar e ordenar por reliability

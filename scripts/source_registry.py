@@ -152,6 +152,11 @@ class SourceRegistry:
         Usa matching de tags + domínio + texto livre.
         """
         topic_lower = topic.lower()
+        words = topic_lower.split()
+        domain_words = set()
+        for w in words:
+            domain_words.add(w)
+            domain_words.add(w.rstrip('s'))
 
         # Tentar匹配 por tags de relevância primeiro
         tag_hits: Dict[str, int] = {}
@@ -161,21 +166,30 @@ class SourceRegistry:
                     sid = s.get('id', '')
                     tag_hits[sid] = tag_hits.get(sid, 0) + 1
 
-        # Matching por domínio
+        # Matching por domínio. Usa fronteira de palavra para não casar
+        # domínios curtos como 'c' como substring de qualquer token ('database').
         for domain, sources in self._by_domain.items():
-            if domain in topic_lower or topic_lower in domain:
+            if domain in domain_words:
                 for s in sources:
                     sid = s.get('id', '')
                     tag_hits[sid] = tag_hits.get(sid, 0) + 2  # domínio tem peso maior
 
-        # Matching por texto livre no nome/descrição
+        # Matching por texto livre no nome/descrição.
+        # Penaliza fontes de domínio "genérico" (c, general, git, vim) que casam
+        # apenas por palavra solta (ex.: 'memory', 'security'), evitando ruído
+        # quando o tópico não é daquele domínio.
+        GENERIC_DOMAINS = {'c', 'general', 'git', 'vim', 'embedded'}
         for s in self._sources:
             text = f"{s.get('name', '')} {s.get('description', '')}".lower()
-            words = topic_lower.split()
-            matches = sum(1 for w in words if w in text)
+            matches = sum(1 for w in words if len(w) > 2 and w in text)
             if matches > 0:
                 sid = s.get('id', '')
-                tag_hits[sid] = tag_hits.get(sid, 0) + matches
+                weight = matches
+                # Domínio genérico só pontua se o tópico claramente o mencionar.
+                if s.get('domain', '').lower() in GENERIC_DOMAINS:
+                    weight = matches if any(w in topic_lower for w in (s.get('domain', '').lower(), 'c programming')) else 0
+                if weight > 0:
+                    tag_hits[sid] = tag_hits.get(sid, 0) + weight
 
         # Ordenar por hits, depois reliability
         scored = []
