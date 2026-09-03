@@ -1,12 +1,12 @@
 ---
-tags: [opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, payload, repetem, sessão]
+tags: [opencode, opencode não, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, payload, sessão]
 aliases: [retencao opencode db vigilante]
 date: 2026-08-27
 ---
 
 # retencao opencode db vigilante
 
-**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
 
 ---
 tipo: padrao

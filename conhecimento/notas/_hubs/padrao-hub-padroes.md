@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**287 notas** conectadas a este hub.
+**288 notas** conectadas a este hub.
 
 
 ## Notas
@@ -190,6 +190,7 @@
 - [[performance-concorrência-e-paralelismo-quando-vale-a-pena]]
 - [[performance-profiling-primeiro-onde-o-tempo-realmente-vai]]
 - [[persistencia-completa-widget-grafo]]
+- [[pesquisa-interfaces-de-conversa-hermes-e-outros]]
 - [[php-modelo-de-execução-e-sapi]]
 - [[php-psrs-autoload-e-composer]]
 - [[php-sistema-de-tipos-arrays-e-coerção]]
