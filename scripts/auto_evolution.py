@@ -21,10 +21,11 @@ Uso:
     python scripts/auto_evolution.py evolve --apply --force         # Permite risco alto
     python scripts/auto_evolution.py evolve --apply --no-preflight  # Audita sem preflight
     python scripts/auto_evolution.py status              # Status da auto-evolução
+    python scripts/auto_evolution.py health              # Diagnóstico da saúde do ecossistema
 
-Ciclo fechado: detecta → prioriza → avalia risco → checkpoint → delega →
-detecta mudanças → valida escopo → preflight técnico/ético → testes →
-persiste via gate → aprende. Em falha: rollback de código + estado,
+Ciclo fechado: detecta → prioriza → avalia risco → gate de veto (kernel) →
+checkpoint → delega → detecta mudanças → valida escopo → preflight técnico/ético →
+testes → persiste via gate → aprende. Em falha: rollback de código + estado,
 memória de erro preservada. O motor nunca altera o sistema diretamente.
 """
 
@@ -1208,6 +1209,29 @@ def _save_cycle_record(record: Dict[str, Any]):
     return fname
 
 
+def _kernel_gate_veto(goal: str) -> Dict[str, Any]:
+    """Consulta o gate de veto do Kernel (Fase 2) antes de aplicar um plano.
+
+    Integra o auto-evolution ao kernel de governança: o mesmo gate usado
+    no roteamento de tarefas (`runtime_kernel.Kernel.gate_veto`) é consultado
+    aqui para que a evolução respeite as regras de veto (commit direto,
+    destruição, segredos, etc.). Fail-soft: se o kernel estiver indisponível,
+    o plano segue sem bloqueio (evolução não trava por dependência externa).
+
+    Returns:
+        dict: {'aprovado': bool, 'status': str, 'vetos': list,
+               'objetivo': str, 'gate': bool, 'motivo': str}
+    """
+    try:
+        from runtime_kernel import Kernel
+        kernel = Kernel()
+        return kernel.gate_veto(goal)
+    except Exception as e:
+        return {'aprovado': True, 'status': 'APROVADO', 'vetos': [],
+                'objetivo': goal, 'gate': False,
+                'motivo': f'kernel indisponível ({e}) — fail-soft aprovado'}
+
+
 def _print_cycle_report(records: List[Dict[str, Any]]):
     """Imprime relatório do ciclo de evolução."""
     print(f'\n{"="*60}')
@@ -1345,6 +1369,17 @@ def _execute_plan(plan: EvolutionPlan, git_before: List[str],
         record['final_state'] = STATE_BLOCKED_RISK
         record['final_status'] = 'bloqueado_por_risco'
         record['note'] = 'Risco alto requer --force'
+        return record
+
+    # 3b. Gate de veto do Kernel (Fase 2) — respeita regras de governança
+    gate = _kernel_gate_veto(plan.gap.reference_name)
+    record['kernel_gate'] = gate
+    if not gate['aprovado']:
+        record['final_state'] = STATE_BLOCKED_VETO
+        record['final_status'] = 'bloqueado_por_veto'
+        record['note'] = gate['motivo']
+        _register_memory('erro', f'Evolução vetada pelo kernel: {plan.gap.reference_name}',
+                         gate['motivo'], {'gap': plan.gap.reference_id})
         return record
 
     # 4. Verificar executor disponível
@@ -1642,6 +1677,66 @@ def _print_status():
     print()
 
 
+def _run_health() -> Dict[str, Any]:
+    """Diagnóstico autônomo da saúde do ecossistema (orquestra checks existentes).
+
+    Reutiliza os checks consolidados (preflight técnico, preflight ético,
+    testes, git status read-only, memória) sem duplicar a lógica deles.
+    Gera um relatório único e um veredito geral. Se um check apontar falha,
+    o ecossistema permanece operante mas o relatório marca a saúde degradada
+    para atuação subsequente (evolve/audit).
+    """
+    import subprocess as _sp
+    report = {'timestamp': datetime.now().isoformat(), 'checks': {}, 'saudavel': True}
+
+    def _run(cmd, timeout=120):
+        try:
+            r = _sp.run(['python', os.path.join('scripts', cmd)], capture_output=True,
+                        text=True, cwd=BASE, timeout=timeout, env={**os.environ, 'PYTHONUTF8': '1'})
+            return {'exit_code': r.returncode, 'passed': r.returncode == 0,
+                    'output': (r.stdout or '')[-1200:], 'error': (r.stderr or '')[-800:]}
+        except Exception as e:
+            return {'exit_code': -1, 'passed': False, 'output': '', 'error': str(e)}
+
+    report['checks']['preflight_tecnico'] = _run('preflight_check.py')
+    report['checks']['preflight_etico'] = _run('preflight_etica.py')
+
+    try:
+        from runtime_state import save_checkpoint
+        cp = save_checkpoint('auto-evolution-health')
+        if isinstance(cp, dict):
+            report['checkpoint'] = cp.get('id') or cp
+        else:
+            report['checkpoint'] = cp
+    except Exception as e:
+        report['checkpoint'] = {'id': None, 'erro': str(e)}
+
+    # Git status read-only (sem commitar — gate de persistência intocado)
+    try:
+        r = _sp.run(['git', 'status', '--short'], capture_output=True, text=True,
+                    cwd=BASE, timeout=60)
+        pendentes = [l for l in (r.stdout or '').splitlines() if l.strip()]
+        report['checks']['git_status'] = {'passed': True, 'pendentes': len(pendentes),
+                                          'output': (r.stdout or '')[:1500]}
+    except Exception as e:
+        report['checks']['git_status'] = {'passed': False, 'error': str(e)}
+
+    # Memória (stats/sanidade), se disponível — read-only
+    try:
+        r = _sp.run(['python', os.path.join('scripts', 'memory_engine.py'), 'stats'],
+                    capture_output=True, text=True, cwd=BASE, timeout=120,
+                    env={**os.environ, 'PYTHONUTF8': '1'})
+        report['checks']['memoria'] = {'passed': r.returncode == 0,
+                                       'output': (r.stdout or '')[:1200],
+                                       'error': (r.stderr or '')[:600]}
+    except Exception as e:
+        report['checks']['memoria'] = {'passed': False, 'error': str(e)}
+
+    report['saudavel'] = all(c.get('passed', True) for c in report['checks'].values()
+                             if isinstance(c, dict))
+    return report
+
+
 def main():
     if len(sys.argv) < 2:
         print(__doc__)
@@ -1697,6 +1792,25 @@ def main():
 
     elif cmd == 'status':
         _print_status()
+
+    elif cmd == 'health':
+        report = _run_health()
+        print(f'\n{"="*70}')
+        print('  SAÚDE DO ECOSSISTEMA (auto-evolution health)')
+        print(f'  {report["timestamp"]}')
+        print(f'{"="*70}\n')
+        for k, v in report['checks'].items():
+            if not isinstance(v, dict):
+                continue
+            ok = 'OK ' if v.get('passed', True) else 'FALHA'
+            print(f'  [{ok}] {k}')
+            if v.get('error'):
+                print(f'        {v["error"]}')
+        cp_val = report.get('checkpoint')
+        if isinstance(cp_val, str) and cp_val:
+            print(f'  [OK ] checkpoint: {cp_val}')
+        veredito = 'SAUDÁVEL' if report['saudavel'] else 'DEGRADADO — atuar via evolve/audit'
+        print(f'\n  VEREDITO: {veredito}\n')
 
     else:
         print(f'Comando desconhecido: {cmd}')
