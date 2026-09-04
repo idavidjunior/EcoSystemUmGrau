@@ -477,7 +477,7 @@ def search(query: str, k: int = 5, min_score: float = 0.05) -> list:
             })
         else:
             mem = c['mem_by_id'].get(doc_id)
-            if mem:
+            if mem and not mem.get('archived', False):
                 titulo = mem.get('title', '') or mem.get('summary', mem.get('resumo', ''))
                 results.append({
                     'id': doc_id,

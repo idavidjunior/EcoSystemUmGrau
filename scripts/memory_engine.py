@@ -1,5 +1,7 @@
 """Memory engine: cross-session memory with Ebbinghaus decay."""
-import json, os, re, sys
+import json, os, re, sys, time
+from contextlib import contextmanager
+from functools import wraps
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -8,6 +10,7 @@ MEM_DIR = os.path.join(BASE, 'conhecimento', 'memoria')
 SESSIONS_DIR = os.path.join(MEM_DIR, 'sessions')
 MEMORIES_FILE = os.path.join(MEM_DIR, 'memories.json')
 INDEX_FILE = os.path.join(MEM_DIR, 'index.json')
+MEMORY_LOCK_FILE = MEMORIES_FILE + '.lock'
 
 sys.path.insert(0, os.path.join(BASE, 'scripts'))
 try:
@@ -58,6 +61,45 @@ def redigir_sensivel(texto):
 def _ensure_dirs():
     for d in [MEM_DIR, SESSIONS_DIR]:
         os.makedirs(d, exist_ok=True)
+
+
+@contextmanager
+def _memory_lock(timeout=10, stale_after=600):
+    """Serializa operações load-modify-save entre processos."""
+    _ensure_dirs()
+    started = time.monotonic()
+    acquired = False
+    while not acquired:
+        try:
+            fd = os.open(MEMORY_LOCK_FILE, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            os.close(fd)
+            acquired = True
+        except FileExistsError:
+            try:
+                if time.time() - os.path.getmtime(MEMORY_LOCK_FILE) > stale_after:
+                    os.remove(MEMORY_LOCK_FILE)
+                    continue
+            except FileNotFoundError:
+                continue
+            if time.monotonic() - started >= timeout:
+                raise TimeoutError('timeout aguardando lock da memoria')
+            time.sleep(0.05)
+    try:
+        yield
+    finally:
+        try:
+            os.remove(MEMORY_LOCK_FILE)
+        except FileNotFoundError:
+            pass
+
+
+def _serialized_memory_mutation(function):
+    """Protege operações que fazem load-modify-save do corpus."""
+    @wraps(function)
+    def wrapper(*args, **kwargs):
+        with _memory_lock():
+            return function(*args, **kwargs)
+    return wrapper
 
 def _load_memories():
     _ensure_dirs()
@@ -156,6 +198,8 @@ def _merge_memory(existente, task, summary, kind, tags, metadata,
     if task and task not in existente.get('task', ''):
         existente['task'] = (existente.get('task', '') + ' / ' + task).strip(' /')
     existente['summary'] = resumo
+    if metadata:
+        existente.setdefault('metadata', {}).update(metadata)
     existente['metadata'] = hist
     existente.setdefault('last_accessed', now)
     existente['last_accessed'] = now
@@ -240,6 +284,7 @@ def _enrich_source_refs(task, summary):
         return []
 
 
+@_serialized_memory_mutation
 def add_memory(task, summary, kind='episodio', project='', tags=None,
                strength=1.0, metadata=None, reindex=True,
                confidence=1.0, source_type='experiencia',
@@ -295,6 +340,8 @@ def add_memory(task, summary, kind='episodio', project='', tags=None,
     # semelhante, MESCLA nela (atualiza) em vez de criar lixo redundante.
     if DEDUP_ENABLED and '--no-dedup' not in sys.argv:
         for hit in _buscar_similar(task, summary):
+            if float(hit.get('score', 0.0)) < DEDUP_MIN_SCORE:
+                continue
             for m in memories:
                 if m.get('id') == hit.get('id'):
                     _merge_memory(m, task, summary, kind, tags, metadata,
@@ -376,6 +423,7 @@ def reindexar_semantico(best_effort=True):
         else:
             raise
 
+@_serialized_memory_mutation
 def reinforce(memory_id, delta=0.15):
     """Reinforce a memory when reused."""
     memories = _load_memories()
@@ -391,6 +439,7 @@ def reinforce(memory_id, delta=0.15):
     return False
 
 
+@_serialized_memory_mutation
 def penalizar(memory_id, delta=0.05):
     """Sinapses Vivas fase 1: memória servida mas inútil/enganosa perde força.
     Proteções: decisões consolidadas e confiança alta não descem de
@@ -417,6 +466,7 @@ def buscar_por_id(memory_id):
             return m
     return None
 
+@_serialized_memory_mutation
 def link_solution(memory_id, solucao_desc, script=None, validado=True, tags=None):
     """Vincula uma solução a uma memória de erro existente.
 
@@ -497,6 +547,8 @@ def query(project=None, tags=None, kind=None, text=None, limit=10,
     scored = []
 
     for m in memories:
+        if m.get('archived', False):
+            continue
         score = _decay_score(m, now)
         if score < min_score: continue
         if project and m.get('project') != project: continue
@@ -539,6 +591,8 @@ def stats():
     by_source = {}
     active = 0
     for m in memories:
+        if m.get('archived', False):
+            continue
         k = m.get('kind', 'unknown')
         by_kind[k] = by_kind.get(k, 0) + 1
         conf = m.get('confidence', 1.0)
@@ -554,6 +608,7 @@ def stats():
     return {'total': total, 'active': active, 'by_kind': by_kind,
             'by_confidence': by_confidence, 'by_source': by_source}
 
+@_serialized_memory_mutation
 def decay_pass(dry_run=False):
     """Decay pass: archive memories below threshold.
 
@@ -565,6 +620,9 @@ def decay_pass(dry_run=False):
     kept = []
     archived = 0
     for m in memories:
+        if m.get('archived', False):
+            kept.append(m)
+            continue
         # Sinapses Vivas: decisão consolidada nunca arquiva por idade sozinha
         if m.get('kind') == 'decisao' and m.get('confidence', 1.0) >= 0.9 \
                 and not m.get('archived'):
@@ -660,7 +718,7 @@ if __name__ == '__main__':
         except ValueError:
             min_conf = 0.5
         results = query(min_confidence=min_conf)
-        print(f'Memorias com confidence < {min_conf}: {len(results)}')
+        print(f'Memorias com confidence >= {min_conf}: {len(results)}')
         for m in results:
             conf = m.get('confidence', 1.0)
             src = m.get('source_type', '?')
