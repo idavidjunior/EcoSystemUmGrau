@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**289 notas** conectadas a este hub.
+**290 notas** conectadas a este hub.
 
 
 ## Notas
@@ -283,6 +283,7 @@
 - [[typescript-sistema-de-tipos-estrutural]]
 - [[typescript-type-narrowing-guards-e-type-assertions]]
 - [[unidades-de-medida-e-convenções-brasileiras-m-kg-c-telefone-]]
+- [[unificacao-aprendizados-adb-cluster-a]]
 - [[variações-pt-pt-x-pt-br-reescrever-para-o-brasileiro]]
 - [[vibration-pattern]]
 - [[wait-strategy-adaptive]]

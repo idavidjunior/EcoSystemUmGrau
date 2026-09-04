@@ -1,5 +1,5 @@
 ---
-tags: [bridge, decisao, exceto, hoje, jarvis, opencode]
+tags: [bridge, decisao, direta, hoje, jarvis, opencode]
 aliases: [fix narrador triplicado e resiliencia orfaos]
 date: 2026-08-31
 ---

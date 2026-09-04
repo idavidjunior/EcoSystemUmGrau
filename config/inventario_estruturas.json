@@ -1,6 +1,6 @@
 {
   "versao": "1.1",
-  "atualizado_em": "2026-09-03T08:53:24",
+  "atualizado_em": "2026-09-04T05:36:55",
   "descricao": "Inventário oficial de estruturas ativas do EcoSystemUmGrau. Consulte antes de criar qualquer estrutura nova (cláusula anti-duplicação).",
   "agentes": [
     {
@@ -1127,7 +1127,8 @@
     "debug_health_check.py",
     "debug_mcp.py",
     "debug.py",
-    "architecture_integrity_monitor.py"
+    "architecture_integrity_monitor.py",
+    "health_aggregator.py"
   ],
   "scripts_memoria_conhecimento": [
     "memory_semantic.py",

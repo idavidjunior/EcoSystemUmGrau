@@ -64,7 +64,7 @@ def _ensure_dirs():
 
 
 @contextmanager
-def _memory_lock(timeout=10, stale_after=600):
+def _memory_lock(timeout=10, stale_after=120):
     """Serializa operações load-modify-save entre processos."""
     _ensure_dirs()
     started = time.monotonic()

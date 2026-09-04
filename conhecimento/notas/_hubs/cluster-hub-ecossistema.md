@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**261 notas** do cluster ecossistema.
+**262 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -255,6 +255,7 @@
 - [[tradingagents-integrado-ao-ecossistema]]
 - [[transparencia-execucao-tarefas]]
 - [[triagem-scripts-legado-orgaos-movidos]]
+- [[unificacao-aprendizados-adb-cluster-a]]
 - [[unificacao-de-vigilantes-watchdogps1-rebaixado-a-keeper]]
 - [[vault-obsidian-cerebro-vivo-grafo]]
 - [[vault-obsidian-fonte-viva]]
