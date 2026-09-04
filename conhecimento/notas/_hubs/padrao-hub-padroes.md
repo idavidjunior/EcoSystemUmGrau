@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**290 notas** conectadas a este hub.
+**291 notas** conectadas a este hub.
 
 
 ## Notas
@@ -165,6 +165,7 @@
 - [[mcp-json-rpc-notification-handling]]
 - [[mcp-server-handshake-obrigatorio]]
 - [[mcp-toolscall-method-dispatch]]
+- [[melhorias-lock-dedup-sanitizacao]]
 - [[metadata-search-pipeline]]
 - [[miuihyperos-permission-dialogs]]
 - [[modaldialog-overlay-detection]]

@@ -119,6 +119,7 @@ detalhes: LICAO: no opencode, placeholders suportados sao {env:VAR} (e {{USERPRO
 - [[limpeza-disco-windows]]
 - [[loop-infinito-de-push-no-vigilante-emails-do-github-a-cada-m]]
 - [[melhorias-inspiradas-nos-jarvis-opensource-implementadas]]
+- [[melhorias-lock-dedup-sanitizacao]]
 - [[modo-auto-gate]]
 - [[motor-de-criticalidade-auto-organizada-e-avalanches-neurais]]
 - [[mvp-streamumgrau-flutter-supabase]]

@@ -1,6 +1,6 @@
 {
   "versao": "1.1",
-  "atualizado_em": "2026-09-04T05:36:55",
+  "atualizado_em": "2026-09-04T10:06:19.260951",
   "descricao": "Inventário oficial de estruturas ativas do EcoSystemUmGrau. Consulte antes de criar qualquer estrutura nova (cláusula anti-duplicação).",
   "agentes": [
     {
@@ -758,6 +758,11 @@
       "id": "adb_auto_connect",
       "arquivo": "scripts/adb_auto_connect.py",
       "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "adb_connection_manager",
+      "arquivo": "scripts/adb_connection_manager.py",
+      "funcao": "Nucleo central de conexao ADB (USB/WiFi/mDNS/Tailscale), orientado a estados e eventos, com health check, backoff e fallback entre transportes. Consumido por adb_auto_connect, adb_monitor_silent e adb_monitor_daemon."
     },
     {
       "id": "adb_monitor",

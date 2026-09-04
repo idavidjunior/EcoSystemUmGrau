@@ -118,6 +118,7 @@ impacto: "@eco" e "/eco" agora funcionam globalmente em qualquer sessão e qualq
 - [[limpeza-disco-windows]]
 - [[loop-infinito-de-push-no-vigilante-emails-do-github-a-cada-m]]
 - [[melhorias-inspiradas-nos-jarvis-opensource-implementadas]]
+- [[melhorias-lock-dedup-sanitizacao]]
 - [[modo-auto-gate]]
 - [[motor-de-criticalidade-auto-organizada-e-avalanches-neurais]]
 - [[mvp-streamumgrau-flutter-supabase]]

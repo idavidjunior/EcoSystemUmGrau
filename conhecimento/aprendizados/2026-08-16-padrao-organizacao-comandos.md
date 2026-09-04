@@ -186,6 +186,7 @@ aprendizado: >
 - [[mcp-json-rpc-notification-handling]]
 - [[mcp-server-handshake-obrigatorio]]
 - [[mcp-toolscall-method-dispatch]]
+- [[melhorias-lock-dedup-sanitizacao]]
 - [[metadata-search-pipeline]]
 - [[miuihyperos-permission-dialogs]]
 - [[modaldialog-overlay-detection]]
