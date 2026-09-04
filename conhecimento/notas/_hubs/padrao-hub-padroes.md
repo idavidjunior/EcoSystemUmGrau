@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**291 notas** conectadas a este hub.
+**293 notas** conectadas a este hub.
 
 
 ## Notas
@@ -134,6 +134,7 @@
 - [[iframecontenteditable-text-entry]]
 - [[ilhas-no-grafo-notas-com-grau-0-e-como-conecta-las]]
 - [[inline-editing-pattern]]
+- [[integracao-contexto-kernel]]
 - [[integrity-guard-vigilante-dados]]
 - [[itunes-search-with-scoring-thresholds]]
 - [[janela-flutuante-para-visuais-sem-navegador]]
@@ -238,6 +239,7 @@
 - [[segurança-criptografia-hashing-cifras-tls-e-segredos]]
 - [[segurança-hardening-e-dependências-vulneráveis-sbom-cve-e-su]]
 - [[segurança-owasp-top-10-aplicado-na-prática]]
+- [[selecao-direct-explicita]]
 - [[server-failover-com-auto-return]]
 - [[shadow-dom-penetration]]
 - [[sharedpreferences-pattern-immediate-save]]

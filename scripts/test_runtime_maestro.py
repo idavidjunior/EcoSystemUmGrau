@@ -38,7 +38,7 @@ def test_pode_iniciar_sem_estado():
 def test_pode_iniciar_com_servico_vivo():
     """Com servico registrado vivo: NAO pode iniciar de novo."""
     reset_estado()
-    m.registrar("tts_service.py", 9999, "guardian")
+    m.registrar("tts_service.py", os.getpid(), "guardian")
     r = m.pode_iniciar("tts_service.py")
     assert r["pode"] is False, f"esperava pode=False, recebi {r}"
     assert "ja_vivo" in r["motivo"], f"motivo errado: {r}"
@@ -73,8 +73,8 @@ def test_parar_limpa_singleton():
 def test_listar_vivos():
     """Listar mostra apenas os vivos."""
     reset_estado()
-    m.registrar("tts_service.py", 1111, "guardian")
-    m.registrar("widget_edge.py", 2222, "widget")
+    m.registrar("tts_service.py", os.getpid(), "guardian")
+    m.registrar("widget_edge.py", os.getpid(), "widget")
     m.parar("tts_service.py")
     r = m.listar_vivos()
     assert "widget_edge.py" in r["vivos"]
@@ -110,13 +110,24 @@ def test_pode_iniciar_cli():
 
 
 def test_client_sem_maestro_rodando():
-    """Cliente consulta maestro offline sem travar."""
-    from maestro_client import consultar_maestro, maestro_disponivel, fallback_degraded
-    assert maestro_disponivel() is False, "esperava maestro offline"
+    """Cliente recupera o Maestro automaticamente quando ele esta parado."""
+    from maestro_client import consultar_maestro, maestro_disponivel
+    m.PID_FILE.unlink(missing_ok=True)
     r = consultar_maestro("pode_iniciar", script="tts_service.py")
-    assert r["status"] == "offline"
-    assert fallback_degraded("test", "teste") is True
-    print("  [OK] cliente nao trava se maestro offline")
+    assert maestro_disponivel(), "cliente deveria iniciar o maestro automaticamente"
+    assert "pode" in r, f"resposta inesperada: {r}"
+    print("  [OK] cliente recuperou maestro automaticamente")
+
+
+def test_reconciliar_pid_morto():
+    """Registro vivo com PID inexistente vira órfão automaticamente."""
+    reset_estado()
+    m.registrar("widget_edge.py", 999999, "teste")
+    estado, alterado = m.reconciliar_estado()
+    assert alterado is True
+    assert estado["servicos"]["widget_edge.py"]["vivo"] is False
+    assert estado["servicos"]["widget_edge.py"]["motivo_inatividade"] == "pid_morto"
+    print("  [OK] PID morto reconciliado como órfão")
 
 
 def test_client_com_maestro_rodando():
@@ -189,6 +200,7 @@ if __name__ == "__main__":
         test_status_cli,
         test_pode_iniciar_cli,
         test_client_sem_maestro_rodando,
+        test_reconciliar_pid_morto,
         test_client_com_maestro_rodando,
     ]
     passou = 0

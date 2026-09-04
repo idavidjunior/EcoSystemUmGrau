@@ -423,8 +423,10 @@ def run():
     try:
         import subprocess as sp
         r = sp.run([sys.executable, os.path.join(BASE, 'scripts', 'test_json_sanitization.py')],
-                   capture_output=True, text=True, timeout=60, cwd=BASE)
-        out = (r.stdout + r.stderr).strip()
+                   capture_output=True, text=True, encoding='utf-8', errors='replace',
+                   timeout=60, cwd=BASE)
+        out = (r.stdout or '') + (r.stderr or '')
+        out = out.strip()
         for line in out.splitlines():
             if '[FAIL]' in line:
                 check('JSON sanitization', False, line.strip())

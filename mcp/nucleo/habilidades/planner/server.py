@@ -676,12 +676,30 @@ def execute_plan_logic(plan: dict, goal: str) -> dict:
 
     results = {}
     completed = 0
+    completed_ids = {
+        step.get("id") for step in plan.get("steps", [])
+        if step.get("status") == "success"
+    }
 
     for step in plan.get("steps", []):
         step_id = step.get("id")
+        if step.get("status") == "success":
+            continue
         task = step.get("task")
         mcp = step.get("mcp_suggested", "mcp-desenvolvimento")
         agent = step.get("agent", "CoderAgent")  # usa o agent do plano
+
+        dependencies = step.get("need") or []
+        missing = [dependency for dependency in dependencies
+                   if dependency not in completed_ids]
+        if missing:
+            results[step_id] = {
+                "step_id": step_id,
+                "task": task,
+                "status": "failed",
+                "error": "Dependências não concluídas: " + ", ".join(missing)
+            }
+            break
 
         # Determina qual tool chamar no MCP baseado no agente/tarefa
         tool_name = _infer_tool_name(agent, task)
@@ -719,6 +737,8 @@ def execute_plan_logic(plan: dict, goal: str) -> dict:
                 "status": "success",
                 "output": output
             }
+            step["status"] = "success"
+            completed_ids.add(step_id)
             completed += 1
         except Exception as e:
             results[step_id] = {
@@ -741,7 +761,7 @@ def execute_plan_logic(plan: dict, goal: str) -> dict:
     }
 
 
-def handle(req):
+async def handle(req):
     rid = req.get("id")
     method = req.get("method", "")
     params = req.get("params", {})
@@ -762,7 +782,7 @@ def handle(req):
     if method == "tools/call":
         tool = params.get("name", "")
         args = params.get("arguments", {})
-        return asyncio.run(handle_tool_async(tool, args, rid))
+        return await handle_tool_async(tool, args, rid)
 
     return None
 
@@ -827,7 +847,7 @@ def replan_on_failure_logic(plan, failed_step_id, error, partial_results):
         "is_retry": True
     }
     
-    new_steps = steps[:failed_idx+1] + [retry_step] + steps[failed_idx+1:]
+    new_steps = steps[:failed_idx] + [retry_step] + steps[failed_idx+1:]
     
     return {
         "goal": plan.get("goal"),

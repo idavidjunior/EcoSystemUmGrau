@@ -1,6 +1,6 @@
 # Decisoes
 
-**96 notas** conectadas a este hub.
+**97 notas** conectadas a este hub.
 
 
 ## Notas
@@ -30,6 +30,7 @@
 - [[estado-persiste-em-json-nao-sqlite-legivel-editavel-fora-do-]]
 - [[estilo-de-comunicação-simples-e-direto]]
 - [[estrategia-selecionada-por-ranking-cost-risk-time-complexity]]
+- [[executor-direct]]
 - [[fase-a-concluída-catálogo-real-no-supabase-64-obras-via-tmdb]]
 - [[fix-narrador-triplicado-e-resiliencia-orfaos]]
 - [[fontes-consumidas-nas-construções-kg-memória]]

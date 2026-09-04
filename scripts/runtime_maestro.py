@@ -54,6 +54,7 @@ _ESTADO_LOCK_MAX_WAIT = 2.0  # segundos
 
 # Cooldown padrao entre restarts do mesmo script (segundos)
 COOLDOWN_S = 15
+HEARTBEAT_STALE_S = 120
 
 # Timeout de leitura de comando (loop daemon)
 LOOP_INTERVAL_S = 0.3
@@ -144,6 +145,39 @@ def _read_estado():
         return {"servicos": {}, "cooldowns": {}, "owner_atual": {}}
 
 
+def _pid_vivo(pid):
+    """Verifica o processo real, nunca apenas o campo `vivo`."""
+    try:
+        import psutil
+        return bool(pid) and psutil.pid_exists(int(pid)) and psutil.Process(int(pid)).is_running()
+    except Exception:
+        return False
+
+
+def reconciliar_estado(estado=None):
+    """Marca registros mortos ou sem heartbeat como órfãos."""
+    estado = estado if estado is not None else _read_estado()
+    agora = time.time()
+    alterado = False
+    for script, info in estado.get("servicos", {}).items():
+        pid = info.get("pid")
+        heartbeat = info.get("last_heartbeat", info.get("started_at", 0))
+        real_vivo = _pid_vivo(pid)
+        heartbeat_atual = bool(heartbeat) and agora - heartbeat <= HEARTBEAT_STALE_S
+        vivo = bool(info.get("vivo")) and real_vivo and heartbeat_atual
+        if info.get("vivo") != vivo:
+            info["vivo"] = vivo
+            info["reconciliado_em"] = agora
+            if not vivo:
+                info["motivo_inatividade"] = (
+                    "pid_morto" if not real_vivo else "heartbeat_obsoleto"
+                )
+            alterado = True
+    if alterado and estado is not None:
+        _save_estado(estado)
+    return estado, alterado
+
+
 def _save_estado(estado):
     """Persiste livro de estado com lock pra evitar race entre comandos."""
     _acquire_lock()
@@ -206,7 +240,7 @@ def pode_iniciar(script: str) -> dict:
     Retorna dict {pode: bool, motivo: str}. NAO bloqueia nada na fase 1:
     o caller decide se obedece ou so registra.
     """
-    estado = _read_estado()
+    estado, _ = reconciliar_estado()
     _limpar_cooldowns_vencidos(estado)
     servicos = estado.get("servicos", {})
     cooldowns = estado.get("cooldowns", {})
@@ -289,7 +323,7 @@ def parar(script: str) -> dict:
 
 def listar_vivos() -> dict:
     """Retorna inventario completo."""
-    estado = _read_estado()
+    estado, _ = reconciliar_estado()
     vivos = {
         s: info for s, info in estado.get("servicos", {}).items()
         if info.get("vivo")
@@ -413,6 +447,7 @@ def daemon_loop():
     _MAESTRO_PID = os.getpid()
     PID_FILE.write_text(str(_MAESTRO_PID), encoding="utf-8")
     _log(f"maestro iniciado pid={_MAESTRO_PID} fase=ATIVO")
+    reconciliar_estado()
     # Quando rodando em background (subprocess sem terminal), garante que
     # print nao trava esperando stdout. Redireciona para o log.
     if sys.stdout is None or sys.stderr is None:
@@ -482,20 +517,23 @@ def daemon_loop():
 
 def cmd_status():
     """Imprime estado atual para o CLI."""
-    estado = _read_estado()
+    estado, _ = reconciliar_estado()
     print("=== MAESTRO STATUS ===")
     print(f"Estado arquivo: {ESTADO_FILE}")
     print(f"PID arquivo: {PID_FILE}")
     if PID_FILE.exists():
-        print(f"  PID vivo: {PID_FILE.read_text().strip()}")
+        pid_text = PID_FILE.read_text().strip()
+        print(f"  PID registrado: {pid_text}")
+        print(f"  Processo real:  {'VIVO' if _pid_vivo(pid_text) else 'MORTO'}")
     print(f"Log: {LOG_FILE}")
     print()
     print("Servicos conhecidos:", ", ".join(sorted(SCRIPTS_CONHECIDOS)))
     print()
     print("Livro de estado:")
     for s, info in estado.get("servicos", {}).items():
-        vivo = "VIVO" if info.get("vivo") else "MORTO"
-        print(f"  [{vivo}] {s}: pid={info.get('pid')} owner={info.get('owner')}")
+        vivo = "VIVO" if info.get("vivo") else "MORTO/ÓRFÃO"
+        idade = time.time() - info.get("last_heartbeat", info.get("started_at", time.time()))
+        print(f"  [{vivo}] {s}: pid={info.get('pid')} owner={info.get('owner')} heartbeat={idade:.0f}s atrás")
 
 
 def main():
@@ -511,6 +549,11 @@ def main():
         print(json.dumps(pode_iniciar(script), indent=2, ensure_ascii=False))
     elif cmd == "listar":
         print(json.dumps(listar_vivos(), indent=2, ensure_ascii=False))
+    elif cmd in ("processos", "listar_vivos"):
+        print(json.dumps(listar_vivos(), indent=2, ensure_ascii=False))
+    elif cmd == "duplicatas":
+        script = sys.argv[2] if len(sys.argv) > 2 else ""
+        print(json.dumps(matar_duplicatas(script), indent=2, ensure_ascii=False))
     elif cmd == "matar_duplicatas":
         script = sys.argv[2] if len(sys.argv) > 2 else ""
         print(json.dumps(matar_duplicatas(script), indent=2, ensure_ascii=False))

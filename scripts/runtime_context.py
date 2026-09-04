@@ -21,6 +21,7 @@ Uso CLI:
 """
 
 import argparse
+import importlib.util
 import json
 import os
 import re
@@ -164,8 +165,11 @@ def _carregar_conhecimento(assunto, tags, limite):
         ksearch = os.path.join(BASE, 'mcp', 'memoria', 'habilidades',
                                'busca-conhecimento', 'search_knowledge.py')
         if os.path.exists(ksearch):
-            sys.path.insert(0, os.path.dirname(ksearch))
-            import search_knowledge as sk
+            spec = importlib.util.spec_from_file_location('search_knowledge_mod', ksearch)
+            if spec is None or spec.loader is None:
+                return []
+            sk = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(sk)
             docs = sk.load_corpus()
             query = assunto
             if tags:

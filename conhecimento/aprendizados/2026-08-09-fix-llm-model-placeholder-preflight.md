@@ -105,6 +105,7 @@ impacto: >
 - [[estilo-por-pedido-power-bi-implementado]]
 - [[etapa24-interface-jarvis]]
 - [[evolução-do-tts-jarvis-naturalidade-via-ssml]]
+- [[executor-direct]]
 - [[fase-a-concluída-catálogo-real-no-supabase-64-obras-via-tmdb]]
 - [[fase3-rotina-automatica-de-tiragem-organizacional]]
 - [[fix-narrador-triplicado-e-resiliencia-orfaos]]

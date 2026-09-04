@@ -18,6 +18,8 @@ Uso:
 """
 import json
 import os
+import subprocess
+import sys
 import time
 import uuid
 from pathlib import Path
@@ -29,6 +31,7 @@ RUNTIME = ROOT / "runtime"
 TIMEOUT_S = 1.5
 # Se maestro nao responder em ate este tempo, modo degraded
 DEGRADED_TIMEOUT_S = 5.0
+_START_LOCK = RUNTIME / "maestro_start.lock"
 
 
 def consultar_maestro(cmd: str, **kwargs) -> dict:
@@ -45,7 +48,7 @@ def consultar_maestro(cmd: str, **kwargs) -> dict:
     Returns:
         dict da resposta do maestro, ou {"status": "offline"} se nao respondeu.
     """
-    if not maestro_disponivel():
+    if not garantir_maestro():
         return {"status": "offline", "motivo": "maestro_nao_esta_rodando"}
 
     req_id = str(uuid.uuid4())[:8]
@@ -87,6 +90,55 @@ def consultar_maestro(cmd: str, **kwargs) -> dict:
         time.sleep(0.05)
     cmd_file.unlink(missing_ok=True)
     return {"status": "offline", "motivo": "timeout"}
+
+
+def garantir_maestro(timeout=DEGRADED_TIMEOUT_S) -> bool:
+    """Garante uma instância do Maestro sem criar processos duplicados."""
+    if maestro_disponivel():
+        return True
+    RUNTIME.mkdir(parents=True, exist_ok=True)
+    try:
+        fd = os.open(_START_LOCK, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        os.write(fd, str(os.getpid()).encode())
+        os.close(fd)
+    except FileExistsError:
+        # Outro cliente já está iniciando; apenas aguarda a recuperação.
+        try:
+            if time.time() - _START_LOCK.stat().st_mtime > timeout:
+                _START_LOCK.unlink(missing_ok=True)
+        except OSError:
+            pass
+        inicio = time.time()
+        while time.time() - inicio < timeout:
+            if maestro_disponivel():
+                return True
+            time.sleep(0.1)
+        return False
+    try:
+        if maestro_disponivel():
+            return True
+        kwargs = {
+            'cwd': str(ROOT),
+            'stdin': subprocess.DEVNULL,
+            'stdout': subprocess.DEVNULL,
+            'stderr': subprocess.DEVNULL,
+        }
+        if os.name == 'nt':
+            kwargs['creationflags'] = getattr(subprocess, 'CREATE_NO_WINDOW', 0)
+        subprocess.Popen([sys.executable, str(ROOT / 'scripts' / 'runtime_maestro.py'), 'loop'], **kwargs)
+        inicio = time.time()
+        while time.time() - inicio < timeout:
+            if maestro_disponivel():
+                return True
+            time.sleep(0.1)
+        return False
+    except Exception:
+        return False
+    finally:
+        try:
+            _START_LOCK.unlink(missing_ok=True)
+        except OSError:
+            pass
 
 
 def maestro_disponivel() -> bool:

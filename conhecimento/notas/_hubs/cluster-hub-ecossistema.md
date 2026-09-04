@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**263 notas** do cluster ecossistema.
+**266 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -136,6 +136,7 @@
 - [[etapa23-observability-reliability]]
 - [[etapa24-interface-jarvis]]
 - [[evolução-do-tts-jarvis-naturalidade-via-ssml]]
+- [[executor-direct]]
 - [[fase-a-concluída-catálogo-real-no-supabase-64-obras-via-tmdb]]
 - [[fase2-limpeza-git-artefatos-rastreados]]
 - [[fase3-rotina-automatica-de-tiragem-organizacional]]
@@ -164,6 +165,7 @@
 - [[ilhas-no-grafo-notas-com-grau-0-e-como-conecta-las]]
 - [[importação-de-pasta-preservando-árvore-remoção-de-referência]]
 - [[integracao-completa-mcps-offline-placeholder]]
+- [[integracao-contexto-kernel]]
 - [[integrity-guard-vigilante-dados]]
 - [[janela-flutuante-para-visuais-sem-navegador]]
 - [[jarvis-do-celular-e-do-pc-um-só-cérebro-arquitetura-sincroni]]
@@ -235,6 +237,7 @@
 - [[saudacao-llm-nvidia-api]]
 - [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]
 - [[secrets-guard-no-preflightcheck]]
+- [[selecao-direct-explicita]]
 - [[separação-de-estados-editar-vs-salvar-despesas]]
 - [[server-failover-com-auto-return]]
 - [[server-health-check-via-http-ping-localhostporta-em-vez-de-s]]

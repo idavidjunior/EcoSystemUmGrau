@@ -144,8 +144,8 @@ def main():
     # Decisões relacionadas via context loader
     decisoes = []
     try:
-        from runtime_context import _carregar_decisoes
-        decisoes = _carregar_decisoes(objetivo, 3)
+        from runtime_context import _carregar_decisoes, _extrair_tags
+        decisoes = _carregar_decisoes(objetivo, _extrair_tags(objetivo), 3)
     except Exception:
         pass
 

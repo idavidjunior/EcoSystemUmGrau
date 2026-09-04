@@ -56,6 +56,7 @@ ENTRADA_CONTRATO = {
     'contexto': 'Estado atual do ecossistema',
     'restricoes': 'Limites e condições',
     'memoria_necessaria': 'Memórias que precisam ser carregadas',
+    'contexto_relevante': 'Contexto recuperado para esta tarefa',
     'ferramentas': 'Ferramentas e documentos disponíveis',
     'criterios_sucesso': 'Como saber que a tarefa foi concluída',
     'formato_esperado': 'Formato da resposta',
@@ -265,14 +266,23 @@ class Kernel:
         with open(CONSTITUICAO, encoding='utf-8') as f:
             content = f.read()
         # Regras absolutas numeradas dentro da cláusula pétrea de soberania
-        section = content.split('# CLÁUSULA PÉTREA — SOBERANIA DO RUNTIME E DO KERNEL')
+        section = re.split(
+            r'^\s*#?\s*CLÁUSULA PÉTREA\s+—\s+SOBERANIA DO RUNTIME E DO KERNEL\s*$',
+            content,
+            maxsplit=1,
+            flags=re.MULTILINE,
+        )
         if len(section) > 1:
-            body = section[1].split('\n---')[0]
+            body = re.split(r'^\s*Consequências\s*$', section[1], maxsplit=1,
+                            flags=re.MULTILINE)[0]
+            collecting = False
             for line in body.splitlines():
                 line = line.strip()
-                m = re.match(r'\d+\.\s+(.+)', line)
-                if m:
-                    rules.append(m.group(1))
+                if line.lower() == 'regras absolutas (não negociáveis)':
+                    collecting = True
+                    continue
+                if collecting and line and not line.endswith(':'):
+                    rules.append(re.sub(r'^\d+[.)]\s+', '', line))
         return rules
 
     def compreender(self, pedido):
@@ -305,12 +315,20 @@ class Kernel:
         except Exception:
             return None
 
+    def _load_task_context(self, goal):
+        """Carrega apenas o contexto relacionado à tarefa atual."""
+        try:
+            from runtime_context import carregar_contexto
+            return carregar_contexto(goal, limite=5, registrar=True)
+        except Exception as e:
+            return {'erro': f'Context Loader indisponível: {e}'}
+
     def gate_veto(self, goal, ent=None):
         """Gate consultável de entrega/veto (Fase 2). Bloqueia antes de rotear.
 
         Reutiliza `gerar_checklist` do módulo de compreensão (responsabilidade
-        única, sem duplicar a lógica de vetos). Fail-soft: se o módulo estiver
-        indisponível, o pedido segue APROVADO (não trava a execução).
+        única, sem duplicar a lógica de vetos). Falha fechada: se o módulo
+        estiver indisponível, a execução é bloqueada.
 
         Returns:
             dict: {'aprovado': bool, 'status': 'APROVADO'|'BLOQUEADO',
@@ -319,13 +337,23 @@ class Kernel:
         """
         mod = self._load_compreensao_mod()
         if mod is None:
-            return {'aprovado': True, 'status': 'APROVADO', 'vetos': [],
+            return {'aprovado': False, 'status': 'BLOQUEADO', 'vetos': [],
                     'itens': [], 'objetivo': goal, 'gate': False,
-                    'motivo': 'módulo de compreensão indisponível (fail-soft)'}
+                    'motivo': 'módulo de compreensão indisponível (fail-closed)'}
         try:
             res = mod.gerar_checklist(goal)
             vetos = res.get('vetos', [])
             status = res.get('status', 'APROVADO')
+            if vetos and all(v.get('regra') == 'ACAO_INDEFINIDA' for v in vetos):
+                return {
+                    'aprovado': True,
+                    'status': 'APROVADO',
+                    'vetos': [],
+                    'itens': res.get('itens', []),
+                    'objetivo': goal,
+                    'gate': True,
+                    'motivo': 'pedido informativo — sem execução de ferramenta',
+                }
             return {
                 'aprovado': status != 'BLOQUEADO',
                 'status': status,
@@ -337,9 +365,9 @@ class Kernel:
                            if vetos else 'sem vetos ativos'),
             }
         except Exception as e:
-            return {'aprovado': True, 'status': 'APROVADO', 'vetos': [],
+            return {'aprovado': False, 'status': 'BLOQUEADO', 'vetos': [],
                     'itens': [], 'objetivo': goal, 'gate': False,
-                    'motivo': f'falha no gate ({e}) — fail-soft aprovado'}
+                    'motivo': f'falha no gate ({e}) — execução bloqueada'}
 
     def authorize(self, goal, ent=None):
         """Enquadra a tarefa no contrato de entrada. Retorna contrato preenchido.
@@ -351,6 +379,21 @@ class Kernel:
         contract = {k: '' for k in ENTRADA_CONTRATO}
         contract['objetivo'] = goal.strip()
         contract['contexto'] = '(restaurar via runtime_boot)'
+        task_context = self._load_task_context(goal)
+        contract['contexto_relevante'] = task_context
+        contract['memoria_necessaria'] = [
+            memory['titulo'] for memory in task_context.get('memorias', [])
+        ]
+        contract['ferramentas'] = [
+            document['titulo'] for document in task_context.get('conhecimento', [])
+        ]
+        if task_context.get('projeto_ativo'):
+            contract['contexto'] += f" | projeto ativo: {task_context['projeto_ativo']}"
+        contract['contexto'] += (
+            f" | contexto recuperado: {len(task_context.get('memorias', []))} memórias, "
+            f"{len(task_context.get('conhecimento', []))} conhecimentos, "
+            f"{len(task_context.get('decisoes', []))} decisões"
+        )
 
         # Classificação de complexidade (sempre executada)
         complexity_result = complexity_classifier.classify(goal)
@@ -451,20 +494,34 @@ class Kernel:
             if result.returncode != 0:
                 return None
 
-            # Parse response (line-delimited JSON)
+            # O planner atual retorna tanto envelopes JSON-RPC quanto payloads diretos.
             for line in result.stdout.strip().split('\n'):
                 try:
-                    resp = json.loads(line)
-                    if resp.get('id') == 1 and 'result' in resp:
-                        content = resp['result'].get('content', [])
-                        if content and content[0].get('type') == 'text':
-                            plan_text = content[0]['text']
-                            return json.loads(plan_text)
+                    parsed = self._parse_mcp_response(json.loads(line))
+                    if parsed is not None:
+                        return parsed
                 except json.JSONDecodeError:
                     continue
         except Exception:
             pass
 
+        return None
+
+    @staticmethod
+    def _parse_mcp_response(response):
+        """Extrai payloads de respostas MCP JSON-RPC ou retornos diretos."""
+        if not isinstance(response, dict):
+            return None
+        if response.get('error'):
+            error = response['error']
+            return {'error': error.get('message', str(error)) if isinstance(error, dict) else str(error)}
+        if 'result' in response:
+            content = response['result'].get('content', [])
+            if content and content[0].get('type') == 'text':
+                return json.loads(content[0]['text'])
+            return response['result']
+        if any(key in response for key in ('steps', 'results', 'goal', 'error')):
+            return response
         return None
 
     def validate_output(self, text, goal=''):
@@ -646,11 +703,7 @@ class Kernel:
             }
 
         if route_result['route'] == 'DIRECT':
-            return {
-                'route': 'DIRECT',
-                'message': 'Tarefa de baixa complexidade — execução direta (não implementado)',
-                'contract': route_result['contract']
-            }
+            return self._execute_direct(goal, route_result['contract'])
 
         # PLANNER route
         plan = route_result.get('plan')
@@ -663,11 +716,24 @@ class Kernel:
 
         replan_count = 0
         current_plan = plan
-        final_results = {}
+        accumulated_results = {}
 
-        while replan_count <= max_replans:
+        while True:
             # Executa plano atual
             exec_result = self._execute_plan_via_orchestrator(current_plan, goal)
+
+            if exec_result.get('error'):
+                return {
+                    'route': 'PLANNER',
+                    'status': 'failed',
+                    'error': exec_result['error'],
+                    'replans': replan_count,
+                    'plan': current_plan,
+                    'results': accumulated_results,
+                    'contract': route_result['contract']
+                }
+
+            accumulated_results.update(exec_result.get('results', {}))
 
             # Verifica se houve falhas
             failed_steps = [
@@ -677,13 +743,12 @@ class Kernel:
 
             if not failed_steps:
                 # Sucesso total
-                final_results = exec_result.get('results', {})
                 return {
                     'route': 'PLANNER',
                     'status': 'success',
                     'replans': replan_count,
                     'plan': current_plan,
-                    'results': final_results,
+                    'results': accumulated_results,
                     'contract': route_result['contract']
                 }
 
@@ -697,6 +762,17 @@ class Kernel:
                 if r.get('status') == 'success'
             }
 
+            if replan_count >= max_replans:
+                return {
+                    'route': 'PLANNER',
+                    'status': 'failed',
+                    'error': f'Esgotadas {max_replans} tentativas de replan',
+                    'replans': replan_count,
+                    'plan': current_plan,
+                    'results': accumulated_results,
+                    'contract': route_result['contract']
+                }
+
             # Chama replan_on_failure via MCP
             new_plan = self._call_replan(current_plan, failed_step_id, error_msg, partial_results)
             if not new_plan or new_plan.get('error'):
@@ -706,24 +782,109 @@ class Kernel:
                     'error': f'Replan falhou: {new_plan.get("error") if new_plan else "sem resposta"}',
                     'replans': replan_count,
                     'plan': current_plan,
-                    'results': exec_result.get('results', {}),
+                    'results': accumulated_results,
                     'contract': route_result['contract']
                 }
+
+            completed_ids = {
+                step_id for step_id, result in accumulated_results.items()
+                if result.get('status') == 'success'
+            }
+            for step in new_plan.get('steps', []):
+                if step.get('id') in completed_ids:
+                    step['status'] = 'success'
 
             # Prepara para próxima iteração
             current_plan = new_plan
             replan_count += 1
 
-        # Esgotou tentativas de replan
-        return {
-            'route': 'PLANNER',
-            'status': 'failed',
-            'error': f'Esgotadas {max_replans} tentativas de replan',
-            'replans': replan_count,
-            'plan': current_plan,
-            'results': final_results,
-            'contract': route_result['contract']
-        }
+    def _execute_direct(self, goal: str, contract: dict) -> dict:
+        """Executa tarefas LOW somente quando existe uma ação MCP explícita."""
+        try:
+            if BASE not in sys.path:
+                sys.path.insert(0, BASE)
+            from cognitive_core import analyze_intent
+            intent = analyze_intent(goal)
+        except Exception as e:
+            return {
+                'route': 'DIRECT', 'status': 'failed',
+                'error': f'Falha ao analisar intenção: {e}',
+                'contract': contract,
+            }
+
+        if not intent.get('requires_tools'):
+            return {
+                'route': 'DIRECT', 'status': 'needs_response',
+                'message': 'Pedido LOW não requer execução de ferramenta.',
+                'intent': intent, 'contract': contract,
+            }
+
+        try:
+            import importlib.util
+            planner_path = os.path.join(BASE, 'mcp', 'nucleo', 'habilidades',
+                                        'planner', 'server.py')
+            spec = importlib.util.spec_from_file_location('planner_tools_mod', planner_path)
+            if spec is None or spec.loader is None:
+                raise RuntimeError('mapeamento de ferramentas indisponível')
+            planner_tools = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(planner_tools)
+
+            selected = self._select_direct_tool(goal, intent)
+            if selected is None:
+                return {
+                    'route': 'DIRECT', 'status': 'unsupported',
+                    'error': 'Nenhuma ferramenta DIRECT segura foi identificada.',
+                    'intent': intent, 'contract': contract,
+                }
+            agent, tool_name, mcp_name = selected
+            step = {'id': 'direct-1', 'task': goal, 'agent': agent}
+            args = planner_tools._build_tool_args(agent, goal, step)
+
+            from tool_orchestrator import orchestrator
+            output = orchestrator.execute(
+                tool_name=f'{mcp_name}.{tool_name}',
+                fn=lambda **kwargs: planner_tools._call_mcp_tool(mcp_name, tool_name, kwargs),
+                args=args, timeout=120.0, max_retries=2, backoff_base=2.0,
+                metadata={'goal': goal, 'route': 'DIRECT', 'intent': intent},
+            )
+            if isinstance(output, dict) and output.get('error'):
+                raise RuntimeError(output['error'])
+            return {
+                'route': 'DIRECT', 'status': 'success',
+                'tool': f'{mcp_name}.{tool_name}', 'output': output,
+                'contract': contract,
+            }
+        except Exception as e:
+            return {
+                'route': 'DIRECT', 'status': 'failed',
+                'error': str(e), 'contract': contract,
+            }
+
+    @staticmethod
+    def _select_direct_tool(goal: str, intent: dict):
+        """Seleciona apenas operações DIRECT com contrato conhecido."""
+        text = goal.lower()
+        file_words = ('arquivo', 'pasta', 'diretório', 'diretorio', 'ficheiro')
+        if any(word in text for word in file_words):
+            if any(word in text for word in ('apagar', 'apague', 'deletar', 'excluir')):
+                tool = 'delete_file'
+            elif any(word in text for word in ('listar', 'liste', 'list')):
+                tool = 'list_files'
+            elif any(word in text for word in ('glob', 'padrão', 'padrao', 'pattern')):
+                tool = 'glob'
+            elif any(word in text for word in ('ler', 'leia', 'abrir', 'abra', 'read')):
+                tool = 'read_file'
+            elif any(word in text for word in ('criar', 'crie', 'escrever', 'escreva', 'salvar', 'salve')):
+                tool = 'write_file'
+            else:
+                return None
+            return 'FileAgent', tool, 'mcp-dev-tools'
+
+        if any(word in text for word in ('python:', 'código python', 'codigo python')):
+            return 'CoderAgent', 'execute_python', 'mcp-dev-tools'
+        if any(word in text for word in ('comando:', 'shell:', 'terminal:')):
+            return 'CoderAgent', 'execute_shell', 'mcp-dev-tools'
+        return None
 
     def _execute_plan_via_orchestrator(self, plan: dict, goal: str) -> dict:
         """Chama mcp-planner:execute_plan via MCP stdio."""
@@ -758,11 +919,9 @@ class Kernel:
 
             for line in result.stdout.strip().split('\n'):
                 try:
-                    resp = json.loads(line)
-                    if resp.get('id') == 1 and 'result' in resp:
-                        content = resp['result'].get('content', [])
-                        if content and content[0].get('type') == 'text':
-                            return json.loads(content[0]['text'])
+                    parsed = self._parse_mcp_response(json.loads(line))
+                    if parsed is not None:
+                        return parsed
                 except json.JSONDecodeError:
                     continue
             return {"error": "Resposta MCP inválida", "raw": result.stdout}
@@ -804,65 +963,14 @@ class Kernel:
 
             for line in result.stdout.strip().split('\n'):
                 try:
-                    resp = json.loads(line)
-                    if resp.get('id') == 1 and 'result' in resp:
-                        content = resp['result'].get('content', [])
-                        if content and content[0].get('type') == 'text':
-                            return json.loads(content[0]['text'])
+                    parsed = self._parse_mcp_response(json.loads(line))
+                    if parsed is not None:
+                        return parsed
                 except json.JSONDecodeError:
                     continue
             return {"error": "Resposta MCP inválida", "raw": result.stdout}
         except Exception as e:
             return {"error": f"Erro no replan: {str(e)}"}
-
-    def _call_planner(self, goal: str, contract: dict):
-        """Chama mcp-planner:create_plan via MCP stdio."""
-        import subprocess
-        import json
-        import os
-
-        planner_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                                    'mcp', 'nucleo', 'habilidades', 'planner', 'server.py')
-        if not os.path.exists(planner_path):
-            return None
-
-        req = {
-            "jsonrpc": "2.0",
-            "id": 1,
-            "method": "tools/call",
-            "params": {
-                "name": "create_plan",
-                "arguments": {
-                    "goal": goal,
-                    "context": contract.get('contexto', ''),
-                    "constraints": contract.get('restricoes', ''),
-                    "success_criteria": contract.get('criterios_sucesso', '')
-                }
-            }
-        }
-
-        try:
-            result = subprocess.run(
-                [sys.executable, planner_path],
-                input=json.dumps(req) + "\n",
-                capture_output=True, text=True, timeout=30, cwd=os.path.dirname(planner_path)
-            )
-            if result.returncode != 0:
-                return None
-
-            for line in result.stdout.strip().split('\n'):
-                try:
-                    resp = json.loads(line)
-                    if resp.get('id') == 1 and 'result' in resp:
-                        content = resp['result'].get('content', [])
-                        if content and content[0].get('type') == 'text':
-                            return json.loads(content[0]['text'])
-                except json.JSONDecodeError:
-                    continue
-        except Exception:
-            pass
-        return None
-
 
 def main():
     parser = argparse.ArgumentParser(description='Kernel Permanente do Ecossistema')
@@ -957,7 +1065,10 @@ def main():
         goal = ' '.join(args.objetivo)
         ent = kernel.compreender(goal)
         contract = kernel.authorize(goal, ent)
-        if contract['complexidade'] != 'HIGH':
+        gate = kernel.gate_veto(goal, ent)
+        if not gate['aprovado']:
+            result = {'error': gate['motivo'], 'gate': gate, 'contract': contract}
+        elif contract['complexidade'] != 'HIGH':
             result = {'message': 'Complexidade LOW — não requer planejamento', 'contract': contract}
         else:
             plan = kernel._call_planner(goal, contract)
