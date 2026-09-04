@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-09-04T14:15:26.582017",
+  "last_updated": "2026-09-04T14:32:59.414863",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -3921,8 +3921,10 @@
       "source": "opencode",
       "title": "Maestro Fase Ativa - Fix Registro e Stale PID",
       "domain": "general",
-      "body": "﻿---\ntipo: decisao\ntags: [maestro, runtime, guardian, fase-ativa, stale-pid]\ndata: 2026-08-31\ncontexto: |\n  Maestro de Runtime em fase ativa. Guardians consultam antes de iniciar servicos.\n  Bug: Maestro nao verificava se PID registrado ainda estava vivo (confiava cego no campo vivo).\n  Bug: Guardian nao registrava PID no Maestro apos iniciar servico.\ndecisao: |\n  1. Adicionar verificacao de vida (psutil.pid_exists) no pode_iniciar() do Maestro.\n     Se PID registrado morto, limpar registro stal",
-      "extracted_at": "2026-08-31T20:48:38.546112"
+      "body": "﻿---\ntipo: decisao\ntags: [maestro, runtime, guardian, fase-ativa, stale-pid]\ndata: 2026-08-31\ncontexto: |\n  Maestro de Runtime em fase ativa. Guardians consultam antes de iniciar servicos.\n  Bug: Maestro nao verificava se PID registrado ainda estava vivo (confiava cego no campo vivo).\n  Bug: Guardian nao registrava PID no Maestro apos iniciar servico.\ndecisao: |\n  1. Adicionar verificacao de vida (psutil.pid_exists) no pode_iniciar() do Maestro.\n     Se PID registrado morto, limpar registro stal\n\n---\ntipo: erro\ntags: [maestro, runtime, resiliencia, pid, heartbeat]\ndata: 2026-09-04\ncontexto: O livro do Maestro mantinha serviços mortos e o PID persistido do daemon apontava para processo inexistente.\ndecisão: Reconciliar por PID e heartbeat, iniciar o daemon automaticamente com lock único e executar a autocura no boot completo.\nimpacto: Registros órfãos deixam de bloquear reinícios, o status informa a vida real do processo e clientes recuperam o Maestro sem intervenção manual.\n---\n\nO livro ",
+      "extracted_at": "2026-09-04T14:32:41.427436",
+      "merged_count": 3,
+      "merged_at": "2026-09-04T14:32:59.239825"
     },
     {
       "source": "opencode",

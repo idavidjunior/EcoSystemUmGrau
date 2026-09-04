@@ -367,6 +367,13 @@ def run_boot(status_only=False):
     if status_only:
         print(render_status(state))
         return 0 if integrity_ok else 1
+    try:
+        from maestro_client import garantir_maestro
+        maestro_ok = garantir_maestro()
+        details.append(('Maestro Runtime', maestro_ok,
+                        'autocura ativa' if maestro_ok else 'modo degradado'))
+    except Exception as e:
+        details.append(('Maestro Runtime', False, f'ERRO: {e}'))
     memories, prefs = load_session_context()
     print(render_report(state, integrity_ok, details, memories, prefs))
     return 0 if integrity_ok else 1
