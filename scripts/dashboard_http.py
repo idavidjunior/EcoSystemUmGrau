@@ -2,10 +2,21 @@ import http.server
 import socketserver
 import threading
 import json
+import sys
 from pathlib import Path
 
 DASHBOARD_HTML = Path(__file__).resolve().parent.parent / "Projetos" / "EcoDashboard" / "web" / "dashboard.html"
 PORT = 8766
+
+
+def _health_payload() -> dict:
+    """Agrega o score unico de saude; fail-soft se o agregador falhar."""
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from health_aggregator import health_score
+        return health_score()
+    except Exception as e:
+        return {"status": "ok", "dashboard": True, "score": None, "erro": str(e)}
 
 class Handler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
@@ -24,8 +35,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
         elif self.path == "/health":
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
             self.end_headers()
-            self.wfile.write(json.dumps({"status": "ok", "dashboard": True}).encode())
+            self.wfile.write(json.dumps(_health_payload(), ensure_ascii=False).encode())
         else:
             self.send_response(404)
             self.end_headers()

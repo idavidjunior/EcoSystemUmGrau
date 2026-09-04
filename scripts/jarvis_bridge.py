@@ -1113,6 +1113,33 @@ class Cliente:
             except Exception as e:
                 logger.warning(f"init estado: {e}")
 
+    def _contexto_recente(self, pares: int = 7):
+        """Lê as últimas N interações (usuário↔Jarvis) do histórico persistido
+        para dar à saudação de reconexão uma memória de curto prazo real e o
+        Jarvis identificar sozinho onde paramos, sem perguntar.
+        Retorna uma string resumida ou '' se não houver histórico."""
+        try:
+            if not HIST_PATH.exists():
+                return ""
+            with open(HIST_PATH, "r", encoding="utf-8-sig") as f:
+                d = json.load(f)
+            if not isinstance(d, list):
+                return ""
+            ultimas = d[-pares * 2:]
+            if not ultimas:
+                return ""
+            return " | ".join(
+                s[len(prefix):].strip()[:200]
+                for s in ultimas[-pares * 2:]
+                if isinstance(s, str)
+                and (s.startswith("Usuário:") or s.startswith("Jarvis:"))
+                for prefix in ("Usuário:", "Jarvis:")
+                if s.startswith(prefix)
+            )
+        except Exception as e:
+            logger.warning(f"_contexto_recente: {e}")
+            return ""
+
     def _montar(self, msg):
         estado = _estado_cacheado()
         # ---- Memoria semantica: top-3 memorias mais relevantes a msg ----
@@ -1367,27 +1394,35 @@ class Cliente:
         if contexto.get("eh_reconexao"):
             ultimas = contexto.get("ultimas_saudacoes", []) or []
             ultimas_txt = "; ".join(u[:100] for u in ultimas[-3:]) if ultimas else "nenhuma"
+            # Memória de curto prazo: últimas interações reais da conversa para o
+            # Jarvis identificar SOZINHO onde paramos e continuar, sem perguntar.
+            ctx_recente = self._contexto_recente()
             instrucao = (
                 "Você é o Jarvis, assistente de voz do EcoSystemUmGrau, do usuário David. "
-                "Pronuncie o nome como 'Deivid' (como em ingles, som de 'ei'). "
-                "Nunca fale 'Davi' nem 'Dávid' (que são nomes diferentes). "
+                "ESCREVA sempre o nome como 'David' (com 'v'). Pronuncie como 'Deivid' "
+                "(como em ingles, som de 'ei') apenas quando for leitura em voz alta. "
+                "Nunca escreva 'Deivid', 'Davi' nem 'Dávid'. "
                 "A conexão de voz VOLTOU AGORA, no meio de uma conversa já existente — "
                 "NÃO é a primeira vez que fala com o David hoje. "
                 "NÃO se apresente, NÃO recite briefing, NÃO diga 'data e hora', "
-                "NÃO pergunte 'o que precisa' como se fosse um encontro novo. "
-                "Faça uma saudação CURTA (1 frase, no máximo 2) de quem está retomando "
-                "uma conversa, como um assistente que já estava trabalhando e reconhece "
-                "a volta do usuário. Pode ser leve, seca, bem-humorada ou direta — variando. "
+                "NUNCA pergunte 'de onde paramos', 'onde paramos', 'o que estavamos fazendo' "
+                "nem qualquer pergunta de retomada: você JÁ sabe o contexto abaixo. "
+                "Identifique por conta própria o que estávamos fazendo e faça uma saudação "
+                "CURTA (1 frase, no máximo 2) de continuidade, retomando naturalmente o "
+                "assunto em curso, como um assistente que estava trabalhando e volta. "
+                "Pode ser leve, seca, bem-humorada ou direta — variando. "
                 f"Saudações que você JÁ USOU e NÃO deve repetir: {ultimas_txt}. "
                 "Escolha um tom diferente dos já usados. "
                 "Nada de emojis, markdown, listas ou aspas. "
+                f"Últimas interações da conversa (use para saber de onde viemos): {ctx_recente} "
                 "Responda apenas com a saudação de retomada."
             )
         else:
             instrucao = (
                 "Você é o Jarvis, assistente de voz do EcoSystemUmGrau, do usuário David. "
-                "Pronuncie o nome como 'Deivid' (como em ingles, som de 'ei'). "
-                "Nunca fale 'Davi' nem 'Dávid' (que são nomes diferentes). "
+                "ESCREVA sempre o nome como 'David' (com 'v'). Pronuncie como 'Deivid' "
+                "(como em ingles, som de 'ei') apenas quando for leitura em voz alta. "
+                "Nunca escreva 'Deivid', 'Davi' nem 'Dávid'. "
                 "Crie UMA saudação inicial em português brasileiro, para TTS "
                 "(sem emojis, sem markdown, sem listas, sem aspas). "
                 "Inspire-se nos exemplos abaixo para VARIAR tom e comprimento "
@@ -2191,9 +2226,8 @@ async def lidar(ws):
                 retomadas = [
                     "De volta, senhor. A linha continua aberta.",
                     "Conexão restabelecida. Estava aqui esperando.",
-                    "Aí de novo, senhor. Onde paramos?",
                     "Voltou. Sistemas seguem quentes, é só falar.",
-                    "Reconectado. Continue de onde estava.",
+                    "A conexão voltou. Retomando da onde estávamos.",
                     "E a conexão voltou. Estou por aqui.",
                 ]
                 saudacao = random.choice(retomadas)
