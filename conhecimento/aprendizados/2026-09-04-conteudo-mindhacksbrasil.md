@@ -29,11 +29,11 @@ Regra do banco: gancho nos primeiros 2 segundos, curiosidade antes de resposta, 
 
 7. Tema: Onde fica o monte Sinai. Gancho: "A tradição colocou o Sinai num lugar. A geografia de verdade aponta pra outro. E o lugar que a Bíblia descreve nem existe no caminho tradicional." Formato: reel com mapa comparativo. CTA: "Salva pra assistir com calma."
 
-8. Tema: Arqueologia de Jerico. Gancho: "Os muros de Jerico caíram pra dentro, a unica forma que um exército nao consegue derrubar. A arqueologia achou as muralhas caídas exatamente desse jeito." Formato: reel tempo-real, narração intensa. CTA: "Manda prum amigo que ama historia."
+8. Tema: Arqueologia de Jerico. Gancho: "Os muros de Jerico tembram pra fora e formaram uma rampa natural de entrada. Nenhuma tecnica de cerco derruba um muro assim de uma vez. As escavacoes acharam os tijolos desabados encosta abaixo, deixando a cidade aberta." Formato: reel tempo-real, narração intensa. CTA: "Manda prum amigo que ama historia." OBSERVAÇÃO DE PRECISÃO: a datacao das muralhas divide arqueologos (Garstang ~1400 a.C. vs Kenyon ~1550 a.C.); apresentar o fato do colapso e abrir o debate no CTA, sem afirmar cronologia como se fosse pacifica.
 
 ## Polarização inocente (compartilhamento em massa)
 
-9. Tema: A origem da semana de 7 dias. Gancho: "O mundo inteiro usa a semana de 7 dias. Nenhuma civilização criou essa conta sozinha por acaso. De onde veio? Isso mesmo: o relato mais antigo que existe preserva essa conta." Formato: carrossel 5 cards. CTA: "Discorda? Comenta ai seu argumento."
+9. Tema: A origem da semana de 7 dias. Gancho: "O dia, o mes e o ano tem explicacao no ceu: rotacao, lua, sol. A semana nao tem. Roma usava 8 dias, Egito e China 10. A conta de 7 dias que o mundo inteiro usa hoje veio de um unico relato: a criacao. De onde mais?" Formato: carrossel 5 cards. CTA: "Discorda? Comenta ai seu argumento."
 
 10. Tema: Dilúvio comparado. Gancho: "Quase toda cultura tem um diluvio com um homem salvando os pares de animais. A ciencia moderna ainda nao deu resposta definitiva pra isso. Mas uma coisa e fato: o relato mais antigo esta na Bíblia." Formato: reel com mapa de culturas. CTA: "Seguinte pra ver a parte 2."
 
