@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**260 notas** do cluster ecossistema.
+**261 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -91,6 +91,7 @@
 - [[bug-parametro-pid-e-variavel-automatica-do-powershell]]
 - [[build-local-flutter-orquestrador]]
 - [[cadeia-de-provedores-com-failover-inteligente]]
+- [[calculadora-formato-consolidado-do-percentual-restaurado]]
 - [[cerebro-vivo-nos-clicaveis-navegaveis]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]

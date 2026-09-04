@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-09-03T21:06:17.517338",
+  "last_updated": "2026-09-03T22:02:04.841505",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -2822,6 +2822,12 @@
       "extracted_at": "2026-09-03T20:50:51.097820",
       "merged_count": 4,
       "merged_at": "2026-09-03T20:51:19.997771"
+    },
+    {
+      "source": "opencode",
+      "decision": "Calculadora — Formato Consolidado do Percentual Restaurado",
+      "rationale": "---\ntipo: decisao\ntags: [calculadora, android, percentual, formato-consolidado]\ndata: 2026-09-03\ncontexto: Restaurar o formato consolidado do percentual na tab Simples da MainActivity.java do SupermarketCalculator.\ndecisao: O handler 'percent' foi reescrito para restaurar o comportamento consolidado: 'A + B%' mostra a expressão digitada, o resultado em 'scResult' e o acrescimo em 'scDisplay' (fonte grande).\nimpacto: Validado no dispositivo: '1.000.000 + 0,6% =' mostra '1.006.000' em scResult e '6.000' em scDisplay. Menos regressao e experiencia consistente com a versao 1.5.8.\n---\n\n# Calculadora — Formato Consolidado do Percentual Restaurado\n\nTarefa: restaurar o formato consolidado do percentual da calculadora simples (tab Simples da MainActivity.java).\n\nO comportamento consolidado (baseline no commit 485dd9f) e:\n- Expressao: `formatDisplay(a) + \" \" + scLastOp + \" \" + formatDisplay(p) + \"% =\"` — preserva a digitacao (0,6 fica 0,6).\n- Resultado (`scResult`): `formatDisplay(bdToString(r))` — ex. 1.006.000.\n- Display grande (`scDisplay`): `formatDisplay(bdToString(r.subtract(a).abs()))` — o acrescimo, ex. 6.000.\n\nValidado no dispositivo (adb input tap + uiautomator dump): digitado `1.000.000 + 0,6%`, visor mostra `1.000.000 + 0,6% =`, `1.006.000` em scResult e `6.000` em scDisplay.\n\n## Aprendizados\n- O handler percent usa o modelo de tokens (scTokens/scCurNum/scStartNewNumber/scLastWasEquals/scSolvedExpr). A reescrita que havia quebrado o formato consolidado usava modelo antigo; o fix restaurou o modelo de tokens com os campos declarados fora do if.\n- `formatDisplay` preserva a fracao como digitada (0,6 nao vira 0,60).\n- Bug de digitacao em teste ADB: o toque de coordenada errada (`[672,1878]` e o botao 3, nao o 6) entrou digito incorreto; o botao 6 da tab Simples esta em `[672,1538]` (linha 4/5/6).\n- Layout da tab Simples (centros): C [144,858], % [672,858], 6 [672,1538], 1 [144,1878], + [936,1878], 0 [145,2179], , [411,2179].\n",
+      "extracted_at": "2026-09-03T22:00:19.030017"
     }
   ],
   "bug_fixes": [
@@ -3661,10 +3667,10 @@
       "source": "opencode",
       "title": "Bug: parametro Pid e variavel automatica do PowerShell",
       "domain": "general",
-      "body": "---\ntipo: erro\ntags: [watchdog, powershell, bug, resiliencia]\ndata: 2026-08-06\ncontexto: Certificacao forense de processos no watchdog.ps1 (Test-ForensicoLixo / Invoke-KillCertificado)\ndecisao: Renomear parametro [int]Pid para [int]ProcessId nas funcoes forenses\nimpacto: Evita que o watchdog mate o proprio processo (variavel automatica PID read-only)\n---\n\n# Bug: parametro Pid e variavel automatica do PowerShell\n\n## Sintoma\nA funcao `Test-ForensicoLixo` e `Invoke-KillCertificado` declaravam `[int",
-      "extracted_at": "2026-08-10T23:16:59.951067",
-      "merged_count": 819,
-      "merged_at": "2026-08-10T23:17:13.060350"
+      "body": "---\ntipo: erro\ntags: [watchdog, powershell, bug, resiliencia]\ndata: 2026-08-06\ncontexto: Certificacao forense de processos no watchdog.ps1 (Test-ForensicoLixo / Invoke-KillCertificado)\ndecisao: Renomear parametro [int]Pid para [int]ProcessId nas funcoes forenses\nimpacto: Evita que o watchdog mate o proprio processo (variavel automatica PID read-only)\n---\n\n# Bug: parametro Pid e variavel automatica do PowerShell\n\n## Sintoma\nA funcao `Test-ForensicoLixo` e `Invoke-KillCertificado` declaravam `[int\n\n---\ntipo: erro\ntags: [calculadora, supermarket, precedencia, bug, idempotencia-igual, android, puresdk]\ndata: 2026-09-03\ncontexto: Reescrevi a tab Calculadora Simples (setupSimpleCalc da MainActivity.java do SupermarketCalculator, pure SDK) para aceitar expressão completa com precedência matemática e corrigir o bug do botão = que recalculava ao apertar repetidamente.\ndecisao: Avalei a expressão tokenizada com precedência ×÷ antes de +− (esquerda-direita) via BigDecimal. O handler op, no caso pós",
+      "extracted_at": "2026-09-03T21:41:29.448496",
+      "merged_count": 821,
+      "merged_at": "2026-09-03T21:42:01.626984"
     },
     {
       "source": "opencode",

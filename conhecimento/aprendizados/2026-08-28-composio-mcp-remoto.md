@@ -76,6 +76,7 @@ notas:
 - [[backup-de-apks-fontes-no-github]]
 - [[botao-importar-unificado]]
 - [[build-local-flutter-orquestrador]]
+- [[calculadora-formato-consolidado-do-percentual-restaurado]]
 - [[cerebro-vivo-nos-clicaveis-navegaveis]]
 - [[ci-de-android-em-máquina-fraca-keystore-estável]]
 - [[clausula-petrea-protecao-do-opencode-desktop-resiliencia-da-]]

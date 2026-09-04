@@ -1,6 +1,6 @@
 # Decisoes
 
-**95 notas** conectadas a este hub.
+**96 notas** conectadas a este hub.
 
 
 ## Notas
@@ -14,6 +14,7 @@
 - [[auto-evolution-gate-veto-health]]
 - [[auto-evolution-maestro-radar-relatório-consolidado]]
 - [[botao-importar-unificado]]
+- [[calculadora-formato-consolidado-do-percentual-restaurado]]
 - [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
 - [[cerebro-vivo-nos-clicaveis-navegaveis]]
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]

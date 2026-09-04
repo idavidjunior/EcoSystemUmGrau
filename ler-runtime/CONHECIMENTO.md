@@ -1,9 +1,9 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-09-03T21:06:17.613753
+**Exportado em:** 2026-09-03T22:02:05.282298
 **Projetos:** 4
 **Padroes Tecnicos:** 294
-**Decisoes:** 99
+**Decisoes:** 100
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 78
 **Heuristicas:** 32
@@ -828,6 +828,16 @@ tags: [ecossistema, projeto, recuperacao, codigo-fonte, versionamento, git, comp
 data: 2026-09-03
 contexto: Usuario consolidou que o SupermarketCalculator esta completo e funcional, com todo o codigo-fonte versionado do inicio ao fim. O ecossistema nao deve redescobrir nem reconstruir nada: deve apenas guardar, lembrar e, quando pedido, recuperar o codigo pronto e compilar.
 decisao: Projeto entregue e versionado passa a ser tratado como ATIVO A RECUPERAR, nao c
+
+### Calculadora — Formato Consolidado do Percentual Restaurado
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [calculadora, android, percentual, formato-consolidado]
+data: 2026-09-03
+contexto: Restaurar o formato consolidado do percentual na tab Simples da MainActivity.java do SupermarketCalculator.
+decisao: O handler 'percent' foi reescrito para restaurar o comportamento consolidado: 'A + B%' mostra a expressão digitada, o resultado em 'scResult' e o acrescimo em 'scDisplay' (fonte grande).
+impacto: Validado no dispositivo: '1.000.000 + 0,6% =' mostra '1.006.000' em scResult e '
 
 
 ## Padroes Tecnicos
@@ -2468,7 +2478,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-09-03T21:06:17.517338
+**Ultima atualizacao:** 2026-09-03T22:02:04.841505
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

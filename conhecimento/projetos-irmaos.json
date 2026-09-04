@@ -6,8 +6,8 @@
       "description": "Calculadora de supermercado — orçamento, lista de compras, controle de preços/quantidade. App nativo Android (Kotlin/Java).",
       "path": "{{PROJECT_PARENT}}\\SupermarketCalculator",
       "status": "funcional",
-      "version": "v1.2",
-      "apk": "releases/SupermarketCalculator-v1.2.apk",
+      "version": "v1.5.9",
+      "apk": "releases/SupermarketCalculator-v1.5.9.apk",
       "build_script": "build.ps1",
       "key_files": [
         "AndroidManifest.xml",
@@ -22,7 +22,7 @@
         ".opencode/skills/android-pure-sdk"
       ],
       "ecosystem_involvement": "criado com auxílio do EcoSystemUmGrau (agentes, build, arquitetura)",
-      "last_sync": "2026-08-01",
+      "last_sync": "2026-09-03",
       "tags": ["android", "kotlin", "calculator", "shopping", "budget"]
     },
     {
