@@ -1,5 +1,5 @@
 ---
-tags: [consistencia, decisao, load, manter, opencode, rastreabilidade]
+tags: [consistencia, decisao, load, manter, markdown, opencode]
 aliases: [Auto-Evolution: Maestro + Radar + Relatório Consolidado]
 date: 2026-09-03
 ---
