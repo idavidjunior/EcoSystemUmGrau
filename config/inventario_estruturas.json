@@ -310,6 +310,11 @@
   },
   "scripts_core": [
     {
+      "id": "skill_recorrente",
+      "arquivo": "scripts/skill_recorrente.py",
+      "funcao": "Cria ou atualiza skills a partir de recorrências registradas"
+    },
+    {
       "id": "runtime_boot",
       "arquivo": "scripts/runtime_boot.py",
       "funcao": "Bootloader obrigatório — verifica integridade, restaura estado, carrega memória"

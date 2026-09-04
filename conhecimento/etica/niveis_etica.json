@@ -1,5 +1,5 @@
 {
-  "nivel_atual": "desativado",
+  "nivel_atual": "medio",
   "niveis": {
     "desativado": {
       "descricao": "Etica desativada. Sem avisos e sem bloqueios. Padrao para administrador/desenvolvedor do ecossistema.",

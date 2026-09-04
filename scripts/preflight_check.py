@@ -406,13 +406,15 @@ def run():
         r = sp.run([sys.executable, os.path.join(BASE, 'scripts', 'preflight_etica.py')],
                    capture_output=True, text=True, timeout=120, cwd=BASE)
         out = (r.stdout + r.stderr).strip()
-        for line in out.splitlines():
-            if line.startswith('[BLOQUEIO]') or 'BLOQUEADO' in line:
-                check('Preflight etico', False, line.strip())
-        if 'APROVADO' in out or 'DESATIVADO' in out:
+        if r.returncode != 0:
+            motivo = next((line.strip() for line in out.splitlines()
+                           if 'BLOQUEADO' in line or '[BLOQUEIO]' in line),
+                          'preflight etico retornou bloqueio')
+            check('Preflight etico', False, motivo)
+        elif 'APROVADO' in out:
             check('Preflight etico aprovado', True)
         else:
-            check('Preflight etico aprovado', False, 'saida sem APROVADO/DESATIVADO')
+            check('Preflight etico aprovado', False, 'saida sem aprovacao explicita')
     except Exception as e:
         check('Preflight etico', False, str(e)[:200])
 

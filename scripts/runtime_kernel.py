@@ -20,6 +20,7 @@ import argparse
 import json
 import os
 import re
+import subprocess
 import sys
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
@@ -475,6 +476,22 @@ class Kernel:
         text = text or ''
         if not text.strip():
             failures.append('Resposta vazia')
+        if text.strip():
+            try:
+                result = subprocess.run(
+                    [sys.executable, os.path.join(SCRIPTS, 'validar_resposta.py'), '--stdin'],
+                    input=text,
+                    capture_output=True,
+                    text=True,
+                    encoding='utf-8',
+                    timeout=30,
+                    cwd=BASE,
+                )
+                validation = json.loads(result.stdout)
+                if not validation.get('ok', False):
+                    failures.append('Resposta reprovada pelo validador de idioma')
+            except (OSError, subprocess.SubprocessError, json.JSONDecodeError):
+                failures.append('Validador de idioma indisponível')
         for rule in self.rules:
             rl = rule.lower()
             # Checagens heurísticas leves baseadas nas regras absolutas

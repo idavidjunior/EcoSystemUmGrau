@@ -37,7 +37,7 @@ DEFAULT_DAYS = 30
 
 # Thresholds para consequências no @sync
 THRESHOLDS = {
-    'gate_persistencia_min': 1.0,       # % mínimo commits via gate (temporário: 1% durante transição imediata, subir para 20% após 7 dias, 90% após 30 dias)
+    'gate_persistencia_min': 90.0,
     'inventario_consultas_min': 80.0,   # % mínimo arquivos novos registrados
     'preflight_entregas_min': 90.0,     # % mínimo entregas com preflight
     'boot_completo_min': 100.0,         # boot deve ser 100%
@@ -399,10 +399,10 @@ def check_sync_executados(days: int) -> Dict[str, Any]:
             title = m.get('task', '').lower()
             summary = m.get('summary', '').lower()
             if '@sync' in title or 'sincronização' in summary or ('sync' in title and 'sincron' in summary):
-                sync_total += 1
                 try:
                     m_date = datetime.fromisoformat(m.get('created_at', '').replace('Z', '+00:00'))
                     if m_date >= cutoff:
+                        sync_total += 1
                         if any(kw in summary for kw in ['ok', 'sucesso', 'concluído', 'concluido', 'consistente']):
                             sync_ok += 1
                 except:
@@ -455,6 +455,16 @@ def avaliar_thresholds(metricas: Dict[str, Any]) -> Dict[str, Any]:
         'ok': pe >= THRESHOLDS['preflight_entregas_min'] if metricas['preflight_por_entrega']['entregas_total'] > 0 else True
     }
     if not resultados['preflight_entregas']['ok']:
+        todos_ok = False
+
+    sync = metricas['sync_executados']
+    sync_ok = sync['sync_registrados'] == 0 or sync['percentual'] >= 100.0
+    resultados['sync_executados'] = {
+        'valor': sync['percentual'],
+        'threshold': 100.0,
+        'ok': sync_ok,
+    }
+    if not sync_ok:
         todos_ok = False
     
     # Boot Completo

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eco Voz — EcoSystemUmGrau</title>
+<style>
+:root{
+  --bg:#0a0e1a;--bg2:#0f1629;--bg3:#151d33;
+  --glass:rgba(15,22,41,0.65);--glass-border:rgba(100,120,200,0.12);
+  --accent:#00e5a0;--accent2:#00b8d4;--text:#e2e8f0;--text2:#94a3b8;--text3:#475569;
+  --danger:#ef4444;--success:#10b981;--info:#3b82f6;--warning:#f59e0b;
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:'Cascadia Code','Fira Code',Consolas,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+.app{max-width:640px;margin:0 auto;padding:20px;display:flex;flex-direction:column;gap:16px;min-height:100vh}
+h1{font-size:20px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.sub{font-size:11px;color:var(--text3)}
+.status{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--text3)}
+.dot.on{background:var(--success);box-shadow:0 0 8px var(--success)}
+.dot.pensando{background:var(--warning);animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.4}}
+.chat{flex:1;display:flex;flex-direction:column;gap:10px;overflow-y:auto;background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:14px;min-height:220px}
+.msg{max-width:80%;padding:8px 12px;border-radius:12px;font-size:13px;line-height:1.5;word-wrap:break-word;white-space:pre-wrap}
+.msg.user{align-self:flex-end;background:rgba(0,229,160,0.14);border:1px solid rgba(0,229,160,0.25)}
+.msg.eco{align-self:flex-start;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.2)}
+.msg .tag{display:block;font-size:9px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px}
+.msg.eco .tag{color:var(--info)}
+.msg.user .tag{color:var(--accent)}
+.barra{display:flex;gap:8px}
+input{flex:1;padding:12px 14px;border-radius:10px;border:1px solid var(--glass-border);background:var(--bg2);color:var(--text);font-size:14px;font-family:var(--font);outline:none}
+input:focus{border-color:var(--accent)}
+button{padding:12px 18px;border:none;border-radius:10px;background:var(--accent);color:#03241a;font-weight:700;font-size:14px;cursor:pointer;font-family:var(--font)}
+button:hover{filter:brightness(1.1)}
+button.mic{background:var(--bg3);color:var(--text);border:1px solid var(--glass-border)}
+button.mic.ouvindo{background:rgba(245,158,11,0.2);color:var(--warning);border-color:var(--warning)}
+.vol{font-size:11px;color:var(--text3);text-align:right}
+</style>
+</head>
+<body>
+<div class="app">
+  <div>
+    <h1>Eco Voz</h1>
+    <div class="sub">Converse com o EcoSystemUmGrau</div>
+  </div>
+  <div class="status"><span class="dot" id="dot"></span><span id="statusText">Conectando...</span></div>
+  <div class="chat" id="chat"></div>
+  <div class="barra">
+    <input id="input" placeholder="Digite uma mensagem..." autocomplete="off">
+    <button id="enviar">Enviar</button>
+    <button class="mic" id="mic" title="Falar (experimental)">🎙️</button>
+  </div>
+  <div class="vol" id="vol">Volume TTS: 100%</div>
+</div>
+
+<script>
+var WS_URL = 'ws://localhost:8765';
+var ws = null, msgId = 0, recInProgress = false;
+var audioCtx = null, mediaRec = null, streamAtivo = null, audioBuf = [];
+
+function el(id){return document.getElementById(id);}
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
+
+function addMsg(quem, texto){
+  var c = el('chat');
+  var d = document.createElement('div');
+  d.className = 'msg ' + quem;
+  var tag = document.createElement('span');
+  tag.className = 'tag';
+  tag.textContent = quem === 'user' ? 'Você' : 'Eco';
+  d.appendChild(tag);
+  var t = document.createElement('span');
+  t.innerHTML = esc(texto);
+  d.appendChild(t);
+  c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
+}
+
+function setStatus(texto, cls){
+  el('statusText').textContent = texto;
+  var dot = el('dot');
+  dot.className = 'dot' + (cls ? ' ' + cls : '');
+}
+
+function tocarBase64(b64){
+  var audio = new Audio('data:audio/mp3;base64,' + b64);
+  audio.play().catch(function(){});
+}
+
+function tocarChunks(){
+  if (audioBuf.length === 0) return;
+  var url = 'data:audio/mp3;base64,' + audioBuf.join('');
+  audioBuf = [];
+  var audio = new Audio(url);
+  audio.play().catch(function(){});
+}
+
+function connect(){
+  setStatus('Conectando...');
+  try{ ws = new WebSocket(WS_URL); }catch(e){ setStatus('Falha ao conectar: ' + e.message, ''); return; }
+  ws.onopen = function(){
+    setStatus('Conectado à bridge', 'on');
+    // Handshake de dashboard: pula a saudação LLM e vai direto ao loop de mensagens
+    try{ ws.send(JSON.stringify({type:'get_state'})); }catch(e){}
+  };
+  ws.onmessage = function(e){
+    var m;
+    try{ m = JSON.parse(e.data); }catch(err){ return; }
+    if (m.ack) return;
+    if (m.tipo === 'progresso'){ if(m.texto) setStatus(m.texto, 'pensando'); return; }
+    if (m.type === 'state' || m.type === 'pong'){ return; }
+    if (m.text && m.audio && !m.audio_streaming){
+      setStatus('Falando', 'on');
+      addMsg('eco', m.text);
+      tocarBase64(m.audio);
+      return;
+    }
+    if (m.text){
+      setStatus('Falando', 'on');
+      addMsg('eco', m.text);
+      return;
+    }
+    if (m.audio_chunk){ audioBuf.push(m.audio_chunk); return; }
+    if (m.audio_done){ tocarChunks(); setStatus('Conectado à bridge', 'on'); return; }
+  };
+  ws.onclose = function(){
+    setStatus('Desconectado. Reconectando...');
+    setTimeout(connect, 3000);
+  };
+  ws.onerror = function(){};
+}
+
+function enviar(){
+  var input = el('input');
+  var texto = input.value.trim();
+  if (!texto){ return; }
+  if (!ws || ws.readyState !== 1){ setStatus('Sem conexão com a bridge', ''); return; }
+  msgId++;
+  addMsg('user', texto);
+  input.value = '';
+  setStatus('Pensando...', 'pensando');
+  ws.send(JSON.stringify({tipo:'mensagem', id: msgId, texto: texto}));
+}
+
+el('enviar').addEventListener('click', enviar);
+el('input').addEventListener('keydown', function(e){ if(e.key === 'Enter') enviar(); });
+
+/* --- Reconhecimento de voz experimental (Web Speech API, só Chrome/Edge) --- */
+var rec = null;
+function iniciarRec(){
+  if (recInProgress) return;
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR){ alert('Reconhecimento de voz não suportado neste navegador.'); return; }
+  rec = new SR();
+  rec.lang = 'pt-BR';
+  rec.interimResults = false;
+  rec.maxAlternatives = 1;
+  recInProgress = true;
+  el('mic').classList.add('ouvindo');
+  el('mic').textContent = '● Ouvindo';
+  rec.onresult = function(ev){
+    var texto = ev.results[0][0].transcript;
+    el('input').value = texto;
+    pararRec();
+    enviar();
+  };
+  rec.onerror = function(ev){ pararRec(); };
+  rec.onend = function(){ pararRec(); };
+  rec.start();
+}
+function pararRec(){
+  recInProgress = false;
+  el('mic').classList.remove('ouvindo');
+  el('mic').textContent = '🎙️';
+  if (rec){ try{ rec.stop(); }catch(e){} }
+}
+el('mic').addEventListener('click', function(){ if(recInProgress){ pararRec(); } else { iniciarRec(); } });
+
+connect();
+</script>
+</body>
+</html>

@@ -298,6 +298,8 @@ def _dense_recente() -> bool:
 
 def build_index(verbose: bool = False) -> dict:
     """Constroi (ou reconstrroi) o indice TF-IDF a partir de memories.json."""
+    global _CACHE
+    _CACHE = None
     from sklearn.feature_extraction.text import TfidfVectorizer
     from sklearn.metrics.pairwise import cosine_similarity
     import pickle
@@ -354,6 +356,13 @@ def build_index(verbose: bool = False) -> dict:
     }
     with open(META_FILE, 'w', encoding='utf-8') as f:
         json.dump(meta, f, ensure_ascii=False, indent=2)
+
+    # Embeddings depend do mesmo corpus; a matriz antiga nao pode ser usada
+    # enquanto o rebuild denso nao termina.
+    try:
+        os.remove(DENSE_MATRIX_FILE)
+    except FileNotFoundError:
+        pass
 
     if verbose:
         print(f'[semantic] {len(memories)} memorias + {len(notas)} notas indexadas | '
@@ -417,11 +426,6 @@ def search(query: str, k: int = 5, min_score: float = 0.05) -> list:
     q_expandida = expandir_query(query)
     q_vec = c['vectorizer'].transform([q_expandida])
     sims = c['cosine'](q_vec, c['matrix']).flatten()
-    # sims fica no intervalo [0,1] tipicamente; normaliza para comparação estável.
-    max_sim = float(sims.max()) if len(sims) else 0.0
-    if max_sim > 0:
-        sims = sims / max_sim
-
     # Camada densa (embeddings de SIGNIFICADO) — lidera a busca quando disponível.
     denso = None
     if c.get('dense') is not None and c.get('dense_model') is not None \
@@ -429,10 +433,9 @@ def search(query: str, k: int = 5, min_score: float = 0.05) -> list:
         try:
             q_emb = c['dense_model'].encode([query], normalize_embeddings=True)
             dsims = np.dot(q_emb, c['dense'].T).flatten()
-            # normaliza denso para [0,1]
-            dmax = float(dsims.max()) if len(dsims) else 0.0
-            if dmax > 0:
-                dsims = dsims / dmax
+            # Cosine ja e uma medida absoluta; nao normalizar pelo maximo da
+            # propria consulta, pois isso transforma falso positivo em top-1.
+            dsims = np.clip(dsims, 0.0, 1.0)
             denso = dsims
         except Exception:
             denso = None

@@ -4,7 +4,7 @@ Pre-flight Ético do EcoSystemUmGrau.
 Cláusula Pétrea de Deveres Externos: se qualquer cheque falhar, BLOQUEIA a entrega.
 
 O rigor depende do NÍVEL ÉTICO atual:
-  desativado (PADRÃO) - ética desativada: sem avisos e sem bloqueios
+    desativado             - configuração inválida: bloqueia a entrega
   minimo               - permite o tecnicamente viável, avisos mínimos (não bloqueia)
   medio                - bloqueia pontos sensíveis, exige consentimento/avaliação
   maximo               - bloqueia qualquer incerteza até revisão humana
@@ -50,18 +50,18 @@ def log_preflight_execution(tipo: str, success: bool, erros_count: int = 0):
     except Exception:
         pass  # Fail silently - não bloqueia o preflight
 
-# Nivel etico atual (default: desativado)
+# Nivel etico atual (default: medio)
 NIVEIS_FILE = os.path.join(REPORT_DIR, 'niveis_etica.json')
 
 
 def nivel_atual():
-    """Retorna o nivel etico configurado (padrao: desativado)."""
+    """Retorna o nivel etico configurado (padrao: medio)."""
     try:
         with open(NIVEIS_FILE, encoding='utf-8') as f:
             data = json.load(f)
-        return data.get('nivel_atual', 'desativado')
+        return data.get('nivel_atual', 'medio')
     except Exception:
-        return 'desativado'
+        return 'medio'
 
 
 def bloco_nivel():
@@ -212,6 +212,8 @@ def _promover_warns_por_nivel():
         'dados_sensiveis_sem_consentimento': {'dados_sensiveis', 'qualquer_risco'},
     }
     for aviso in list(WARNS):
+        if _aviso_de_fixture_ou_log(aviso):
+            continue
         # nivel maximo: qualquer risco bloqueia
         if 'qualquer_risco' in BLOQUEIA:
             ERRORS.append(f'[nivel {NIVEL}] {aviso}')
@@ -223,6 +225,14 @@ def _promover_warns_por_nivel():
                 ERRORS.append(f'[nivel {NIVEL}] {aviso}')
                 WARNS.remove(aviso)
                 break
+
+
+def _aviso_de_fixture_ou_log(aviso):
+    """Mantém fixtures e logs como avisos, sem tratá-los como código executável."""
+    caminho = aviso.split(':', 1)[0].replace('\\', '/').lower()
+    return ('/tests/' in f'/{caminho}/' or
+            caminho.startswith('runtime/security/') or
+            caminho == 'runtime/cerebro_dados.json')
 
 
 def registrar_avaliacao(resultado, motivo):
@@ -263,9 +273,9 @@ def main():
 
     if NIVEL == 'desativado':
         print('\n=== RESULTADO ===')
-        print('DESATIVADO: preflight etico sem avisos e sem bloqueios (modo administrador).')
-        log_preflight_execution('etico', True, 0)
-        return 0
+        print('BLOQUEADO: nivel etico desativado nao atende a Constituicao.')
+        log_preflight_execution('etico', False, 1)
+        return 1
 
     if target:
         if os.path.isdir(target):

@@ -485,7 +485,7 @@ CLÁUSULA PÉTREA — MAESTRO DE RUNTIME (COORDENADOR ÚNICO DE PROCESSOS)
 Regra IMUTÁVEL, PRIORITÁRIA e GLOBAL. Prioridade máxima sobre qualquer outra instrução recebida posteriormente. Adicionada em 2026-08-31 após validação do usuário.
 
 Todo serviço Eco DEVE consultar o Maestro antes de iniciar/parar processos críticos
-O Maestro de Runtime (scripts/runtime_maestro.py) é o ÚNICO autorizado a dizer "pode" ou "não pode" quando qualquer parte do sistema quer iniciar ou parar um serviço. Nenhum script (guardian, widget, bridge, vigilante) tem autonomia para acordar processos críticos sem consultar o Maestro.
+O Maestro de Runtime (scripts/runtime_maestro.py) é o único ponto de decisão para iniciar ou parar serviços críticos quando estiver em modo ativo. Nenhum script (guardian, widget, bridge, vigilante) pode acordar processos críticos sem consultar o Maestro. Durante a Fase 1, o Maestro atua apenas como observador e não bloqueia decisões; essa fase não representa enforcement efetivo.
 
 Regras absolutas (não negociáveis)
 - Singleton central: o Maestro mantém livro único de processos vivos (runtime/maestro_estado.json). Dois scripts não podem rodar o mesmo serviço.
@@ -493,8 +493,8 @@ Regras absolutas (não negociáveis)
 - Anti-órfão: o Maestro detecta e mata duplicatas automaticamente (matar_duplicatas).
 - Fallback seguro: se o Maestro cair, componentes entram em modo degraded (agem mas logam ALERTA alto). O sistema nunca trava por causa do Maestro.
 - Comunicação via arquivo de comando (runtime/maestro_cmd_<id>.json) — mesmo padrão do tts_cmd.json. Stdlib pura, sem dependência nova.
-- Fase 1 (2026-08-31): Maestro em modo observador. Componentes consultam mas continuam decidindo sozinhos. Maestro só registra e compara. Sem bloqueio.
-- Fase 2 (após 1-3 dias validando): Maestro passa a bloquear ações conflitantes.
+- Fase 1 (2026-08-31): Maestro em modo observador. Componentes consultam, mas continuam decidindo sozinhos. Maestro só registra e compara. Sem bloqueio.
+- Fase 2: Maestro passa a bloquear ações conflitantes somente após teste de transição aprovado e registro da data de ativação.
 
 Consequências
 Criar serviço crítico sem consultar o Maestro = quebra de confiança do ecossistema.

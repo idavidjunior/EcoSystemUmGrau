@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-09-03T22:16:59.527699",
+  "last_updated": "2026-09-03T22:56:16.070124",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -3884,10 +3884,10 @@
       "source": "opencode",
       "title": "Correção de métricas de aderência (@sync)",
       "domain": "general",
-      "body": "---\ntipo: erro\ntags: [aderencia, preflight, adherencia-audit, metrica, bug]\ndata: 2026-09-02\ncontexto: O @sync reportava @sync FAIL por metricas de aderencia baixas (inventario 15.8%, preflight 25%). Investigacao revelou bugs reais em duas metricas e um falso positivo no deploy config.\ndecisao: Correcao de 3 frentes para elevar o score geral de aderencia de 69.6 para 93.4/100.\nimpacto: @sync agora PASS (thresholds OK). Score EXCELENTE.\n---\n\n# Correção de métricas de aderência (@sync)\n\n## 1. Bug ",
-      "extracted_at": "2026-09-02T09:04:13.254171",
-      "merged_count": 2,
-      "merged_at": "2026-09-02T09:04:39.539304"
+      "body": "---\ntipo: erro\ntags: [aderencia, preflight, adherencia-audit, metrica, bug]\ndata: 2026-09-02\ncontexto: O @sync reportava @sync FAIL por metricas de aderencia baixas (inventario 15.8%, preflight 25%). Investigacao revelou bugs reais em duas metricas e um falso positivo no deploy config.\ndecisao: Correcao de 3 frentes para elevar o score geral de aderencia de 69.6 para 93.4/100.\nimpacto: @sync agora PASS (thresholds OK). Score EXCELENTE.\n---\n\n# Correção de métricas de aderência (@sync)\n\n## 1. Bug \n\n---\ntipo: erro\ntags: [auditoria, gates, constituicao, enforcement]\ndata: 2026-09-03\ncontexto: Auditoria crítica da Constituição do EcoSystemUmGrau.\n---\n\n# Gates devem medir evidência real\n\n## Decisão\nGates de conformidade devem usar código de saída, execução registrada e critérios bloqueantes. Mensagens de commit, estados administrativos e heurísticas não bastam como prova de execução.\n\n## Implementação\nA Constituição recebeu uma hierarquia explícita. O Kernel passou a chamar o validador de idio",
+      "extracted_at": "2026-09-03T22:55:25.842988",
+      "merged_count": 3,
+      "merged_at": "2026-09-03T22:56:15.721653"
     }
   ],
   "heuristics": [

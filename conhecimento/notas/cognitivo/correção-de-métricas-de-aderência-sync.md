@@ -1,5 +1,5 @@
 ---
-tags: [cognitivo, config, deploy, falso, general, positivo]
+tags: [bloqueantes, cognitivo, config, critérios, deploy, general]
 aliases: [Correção de métricas de aderência (@sync)]
 date: 2026-09-02
 ---
@@ -20,6 +20,21 @@ impacto: @sync agora PASS (thresholds OK). Score EXCELENTE.
 # Correção de métricas de aderência (@sync)
 
 ## 1. Bug 
+
+---
+tipo: erro
+tags: [auditoria, gates, constituicao, enforcement]
+data: 2026-09-03
+contexto: Auditoria crítica da Constituição do EcoSystemUmGrau.
+---
+
+# Gates devem medir evidência real
+
+## Decisão
+Gates de conformidade devem usar código de saída, execução registrada e critérios bloqueantes. Mensagens de commit, estados administrativos e heurísticas não bastam como prova de execução.
+
+## Implementação
+A Constituição recebeu uma hierarquia explícita. O Kernel passou a chamar o validador de idio
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]

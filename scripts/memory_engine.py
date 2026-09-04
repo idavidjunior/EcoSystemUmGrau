@@ -340,7 +340,8 @@ def add_memory(task, summary, kind='episodio', project='', tags=None,
     # semelhante, MESCLA nela (atualiza) em vez de criar lixo redundante.
     if DEDUP_ENABLED and '--no-dedup' not in sys.argv:
         for hit in _buscar_similar(task, summary):
-            if float(hit.get('score', 0.0)) < DEDUP_MIN_SCORE:
+            similarity = float(hit.get('base', hit.get('score', 0.0)))
+            if similarity < DEDUP_MIN_SCORE:
                 continue
             for m in memories:
                 if m.get('id') == hit.get('id'):
