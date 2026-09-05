@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**293 notas** conectadas a este hub.
+**296 notas** conectadas a este hub.
 
 
 ## Notas
@@ -77,6 +77,7 @@
 - [[css-selector-priority-ladder]]
 - [[custom-numpad-pattern]]
 - [[datas-horas-e-fuso-horário-no-brasil-ddmmaaaa-24h-brt]]
+- [[dedup-memorias-index-stale]]
 - [[deduplicacao-memoria-semantica]]
 - [[dependency-inclusion-pattern]]
 - [[design-patterns-anti-patterns-comuns-god-object-service-loca]]
@@ -93,6 +94,7 @@
 - [[dublagem-versão-sincronização-labial-tamanho-da-fala-e-natur]]
 - [[eco-agente-e-comando-global]]
 - [[ecow-e-ecow-abrirfocar-o-cerebro-vivo]]
+- [[edicao-mensagem-vox]]
 - [[edittext-inline-editing-toggle]]
 - [[elementos-culturalmente-intraduzíveis-humor-trocadilhos-prov]]
 - [[encoding-utf-8-explicito-em-python-no-windows]]
@@ -258,6 +260,7 @@
 - [[sub-tab-pattern-nested-tabs]]
 - [[suggestions-hermes-itens-1-3]]
 - [[tab-navigation-pattern]]
+- [[tarefas-assincronas-monitoradas-bridge]]
 - [[taxonomia-correta-de-habilidades-jarvis]]
 - [[template-matching-para-botoes-graficos]]
 - [[terminalwidget-edge]]

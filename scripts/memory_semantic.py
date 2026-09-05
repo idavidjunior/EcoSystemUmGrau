@@ -273,7 +273,9 @@ def _index_fingerprint(mem_count: int | None = None):
                         except Exception:
                             pass
         notas_fp.append(round(newest, 1))
-    return (mem_count, tuple(notas_fp))
+    # Retorna lista (nao tupla): JSON serializa tupla como lista, e a comparacao
+    # em index_stale() falharia sempre (list != tuple), forçando rebuild a cada add.
+    return [mem_count, notas_fp]
 
 
 def index_stale() -> bool:

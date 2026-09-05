@@ -34,3 +34,14 @@ impacto: Teste automatizado do visualizer ficou pendente; corrigidos debitagens 
 - No PowerShell 5.1, `adb exec-out screencap -p > arquivo` corrompe binário; usar `adb shell screencap -p /sdcard/x.png` + `adb pull`.
 - `uiautomator dump` falha com "could not get idle state" quando a tela não fica idle.
 - Comparar frames: amostrar a cada 8px (threshold 24), ignorar bbox do relógio da status bar (~(680,48)-(696,56)).
+
+## Conexoes
+
+- [[album-art-download-com-redirect-loop-manual-instancefollowre]]
+- [[audioprocessorisactive-must-be-dynamic]]
+- [[cluster-hub-mp3player]]
+- [[filename-artist-extraction-two-strategies]]
+- [[itunes-search-with-scoring-thresholds]]
+- [[metadata-busca-em-multi-fontes-acoustid-itunes-br-musicbrain]]
+- [[renderersfactory-for-custom-audioprocessor]]
+- [[searchmodenormal-relaxed-auto-fallback-se-normal-retorna-nul]]

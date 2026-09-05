@@ -1,5 +1,5 @@
 """Memory engine: cross-session memory with Ebbinghaus decay."""
-import json, os, re, sys, time
+import json, os, re, sys, time, unicodedata
 from contextlib import contextmanager
 from functools import wraps
 from datetime import datetime, timedelta
@@ -146,6 +146,16 @@ def _decay_score(memory, now=None):
 def _next_id(memories):
     return max([m['id'] for m in memories], default=0) + 1
 
+def _normalizar_titulo(task):
+    """Normaliza um título para deduplicação determinística.
+
+    Minúsculas, sem acentos, sem pontuação nem espaços. Permite comparar
+    títulos idênticos de forma estável (ex.: 'Preflight Etico: APROVADO').
+    """
+    s = unicodedata.normalize('NFKD', task or '')
+    s = ''.join(c for c in s if not unicodedata.combining(c))
+    return re.sub(r'[^a-z0-9]+', '', s.lower())
+
 # ── Deduplicação por similaridade (2026-09-02) ─────────────────────────────
 # Antes de criar memória nova, busca no índice semântico existente uma memória
 # suficientemente semelhante. Se existir, MESCLA o conteúdo nela (em vez de
@@ -153,7 +163,10 @@ def _next_id(memories):
 # Escopo: global — toda chamada a add_memory fica protegida (evita lixo/redundância).
 # Segurança: desligável via env MEMORY_DEDUP=0 ou flag --no-dedup.
 DEDUP_ENABLED = os.environ.get('MEMORY_DEDUP', '1') == '1'
-DEDUP_MIN_SCORE = float(os.environ.get('MEMORY_DEDUP_MIN_SCORE', '0.80'))
+# Calibrado em 2026-09-05: com TF-IDF, duplicatas reais (título idêntico)
+# medem 0.40–0.54 e não-duplicatas genuínas ≤0.40. 0.80 era inalcançável e
+# a camada semântica nunca disparava; 0.50 captura as duplicatas com folga.
+DEDUP_MIN_SCORE = float(os.environ.get('MEMORY_DEDUP_MIN_SCORE', '0.50'))
 
 
 def _buscar_similar(task, summary, k=3):
@@ -339,6 +352,22 @@ def add_memory(task, summary, kind='episodio', project='', tags=None,
     # Deduplicação global por similaridade (2026-09-02): se já existe memória
     # semelhante, MESCLA nela (atualiza) em vez de criar lixo redundante.
     if DEDUP_ENABLED and '--no-dedup' not in sys.argv:
+        # Camada 1 — determinística por título normalizado (2026-09-05). O
+        # cosseno TF-IDF nunca alcança 0.80 (DEDUP_MIN_SCORE) na prática
+        # mesmo com títulos idênticos, então títulos iguais sempre mesclavam
+        # lixo. Comparar títulos normalizados é estável e não depende do índice.
+        chave_titulo = _normalizar_titulo(task)
+        if chave_titulo:
+            for m in memories:
+                if _normalizar_titulo(m.get('task', '')) == chave_titulo:
+                    _merge_memory(m, task, summary, kind, tags, metadata,
+                                  confidence, source_type, source_anchors,
+                                  solucao_aplicada)
+                    _save_memories(memories)
+                    if reindex:
+                        reindexar_semantico(best_effort=True)
+                    return m['id']
+        # Camada 2 — semântica (fallback para títulos similares, não idênticos).
         for hit in _buscar_similar(task, summary):
             similarity = float(hit.get('base', hit.get('score', 0.0)))
             if similarity < DEDUP_MIN_SCORE:

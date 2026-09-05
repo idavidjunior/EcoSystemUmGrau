@@ -91,6 +91,19 @@ TTS_VOICE = "pt-BR-AntonioNeural"
 TTS_PITCH = "+0Hz"
 TTS_RATE = "+0%"
 
+# Cadeia de voz rápida: modelos NVIDIA direto (sem serve), thinking desligado.
+# Medidos em 04/09/2026 (prompt curto, max_tokens 80): nemotron-lightning ~1-3s,
+# gpt-oss-20b ~3-5s, kimi-k3 ~5s, deepseek-v4-flash ~7-18s (reserva, mesmo do serve).
+# Override via env VOZ_RAPIDA_MODELOS="m1,m2,..." (em scripts/.env).
+_CADEIA_VOZ_RAPIDA = [
+    "nvidia/nemotron-3.5-lightning-30b-a3b",
+    "openai/gpt-oss-20b",
+    "moonshotai/kimi-k3",
+    "deepseek-ai/deepseek-v4-flash-0731",
+]
+if os.environ.get("VOZ_RAPIDA_MODELOS"):
+    _CADEIA_VOZ_RAPIDA = [m.strip() for m in os.environ["VOZ_RAPIDA_MODELOS"].split(",") if m.strip()]
+
 BIN = str(Path(os.environ["APPDATA"]) / r"npm\node_modules\opencode-ai\bin\opencode.exe")
 PORTA_SERVE = int(os.environ.get("OPENCODE_SERVE_PORT", "8767"))
 PORTA_SERVE_RESERVA = int(os.environ.get("OPENCODE_SERVE_PORT_RESERVA", "8768"))
@@ -134,6 +147,215 @@ def _ler_volume_widget() -> int:
 # JANELA_CONVERSA_MIN minutos, NÃO repetir saudação inicial — a conversa
 # continua fluindo (evita o "recomeço" a cada reconexão dentro da mesma sessão).
 JANELA_CONVERSA_MIN = 30
+
+# ============ TAREFAS ASSÍNCRONAS (fila + executor + notificação proativa) ============
+# O usuário pede algo demorado (auditoria, verificação de integridade, preflight);
+# a bridge agenda, executa o script real em background e AVISA o app quando termina.
+# Persistido em runtime/tarefas_async.json — sobrevive a restart (robustez).
+
+_TAREFAS_PATH = ECOSSISTEMA_DIR / "runtime" / "tarefas_async.json"
+_TAREFAS_CACHE = []
+_TAREFAS_LOADED = False
+# Conexões WS "voz" ativas (app Android) para envio proativo sem esperar mensagem.
+_WS_VOZ = set()
+_WS_VOZ_LOCK = asyncio.Lock()
+
+# Mapa de tarefas: intenção do usuário -> script real (via subprocess).
+# Executados SEM janela (CREATE_NO_WINDOW), com timeout e captura de saída.
+TAREFAS_DISPONIVEIS = {
+    "auditoria_codigo": {
+        "nome": "Auditoria de código",
+        "cmd": [sys.executable, str(SCRIPTS_DIR / "audit_eco.py"), "--json"],
+        "timeout": 600,
+        "intencoes": [
+            r"\baudit(a|ado|ando|ar|oria|or)\b", r"\bscan(a)?\s*(proativo|completo)?",
+            r"escanei", r"verific(a|ar)\s+o\s+ecossistema", r"procur(a|ar)\s*erros",
+            r"veja\s*se\s*tudo\s*est[aá]", r"revise\s*o\s*(c[oó]digo|sistema)",
+        ],
+    },
+    "integridade_dados": {
+        "nome": "Verificação de integridade",
+        "cmd": [sys.executable, str(SCRIPTS_DIR / "integrity_guard.py"), "--check", "--json"],
+        "timeout": 600,
+        "intencoes": [
+            r"\bintegridade", r"integridade de dados", r"dados\s+s[ãa]o", r"checar\s+(os\s+)?dados",
+            r"verific.*integ", r"corrompid", r"integridade\s+do\s+ecossistema",
+        ],
+    },
+    "preflight_tecnico": {
+        "nome": "Preflight técnico",
+        "cmd": [sys.executable, str(SCRIPTS_DIR / "preflight_check.py")],
+        "timeout": 600,
+        "intencoes": [
+            r"\bpreflight", r"pre-flight", r"checagem\s+t[ée]cnica", r"valida\s*(o|r)\s*(o\s+)?sistema",
+        ],
+    },
+}
+
+# Última saída da tarefa (para o resumo falado). Chave = tipo de tarefa.
+_TAREFAS_ULTIMALIDA = {}
+
+
+def _tarefas_carregar():
+    """Lê o arquivo de tarefas persistido. Cache em memória com reload sob demanda."""
+    global _TAREFAS_CACHE, _TAREFAS_LOADED
+    if not _TAREFAS_LOADED:
+        try:
+            if _TAREFAS_PATH.exists():
+                d = json.loads(_TAREFAS_PATH.read_text(encoding="utf-8-sig"))
+                _TAREFAS_CACHE = d if isinstance(d, list) else []
+            else:
+                _TAREFAS_CACHE = []
+            _TAREFAS_LOADED = True
+        except Exception as e:
+            logger.warning(f"tarefas carregar: {e}")
+            _TAREFAS_CACHE = []
+    return _TAREFAS_CACHE
+
+
+def _tarefas_salvar():
+    """Persiste o estado da fila (escrita atômica via tmp + os.replace)."""
+    try:
+        _TAREFAS_PATH.parent.mkdir(parents=True, exist_ok=True)
+        tmp = _TAREFAS_PATH.with_suffix(".json.tmp")
+        tmp.write_text(json.dumps(_TAREFAS_CACHE, ensure_ascii=False, indent=2), encoding="utf-8")
+        os.replace(str(tmp), str(_TAREFAS_PATH))
+    except Exception as e:
+        logger.warning(f"tarefas salvar: {e}")
+
+
+def _tarefa_nova(tipo, pedido=""):
+    """Registra uma tarefa nova na fila persistente. Retorna o dict da tarefa."""
+    t = {
+        "id": base64.urlsafe_b64encode(os.urandom(6)).decode().rstrip("="),
+        "tipo": tipo,
+        "nome": TAREFAS_DISPONIVEIS[tipo]["nome"],
+        "status": "queued",
+        "pedido": pedido,
+        "criado": time.time(),
+        "inicio": None,
+        "fim": None,
+        "duracao_s": None,
+        "saida": "",
+        "erro": "",
+        "resumo": "",
+        "intervalo_progresso": None,
+    }
+    fila = _tarefas_carregar()
+    fila.append(t)
+    _TAREFAS_CACHE = fila[-50:]  # mantém apenas as 50 mais recentes
+    _tarefas_salvar()
+    return t
+
+
+def _tarefas_atualizar(task_id, **campos):
+    """Atualiza campos de uma tarefa e persiste."""
+    for t in _TAREFAS_CACHE:
+        if t["id"] == task_id:
+            t.update(campos)
+            break
+    _tarefas_salvar()
+
+
+def _tarefa_ativa(tipo):
+    """True se já existe uma tarefa do mesmo tipo rodando ou na fila."""
+    for t in _tarefas_carregar():
+        if t["tipo"] == tipo and t["status"] in ("queued", "running"):
+            return True
+    return False
+
+
+# ============ AVISO PERIÓDICO DE PROGRESSO ============
+# "Me avise a cada X minutos": extrai o intervalo do pedido, persiste como
+# padrão e dispara notificações periódicas durante tarefas longas. O padrão
+# fica em saudacao_estado.json para sobreviver a restart da bridge.
+_INTERVALO_RE = re.compile(
+    r"cada\s+(?:(?P<n>\d+)\s*(?P<unit>min(?:uto|utos)?|seg(?:undo)?s?|s)\b"
+    r"|(?P<min>minuto|min)\b|(?P<seg>segundo|seg)\b)",
+    re.IGNORECASE,
+)
+_PROGRESSO_RE = re.compile(
+    r"avisa|avise|avisar|informe|informa|notific|progresso|andamento|atualiz|me\s+conte|conte\s*me",
+    re.IGNORECASE,
+)
+
+
+def _detectar_intervalo_progresso(m):
+    """Extrai o intervalo ("a cada X minutos/segundos") de um pedido."""
+    if not m:
+        return None
+    m2 = m.lower().strip()
+    if not _PROGRESSO_RE.search(m2):
+        return None
+    mm = _INTERVALO_RE.search(m2)
+    if not mm:
+        return None
+    if mm.group("n"):
+        n = int(mm.group("n"))
+        seg = n * 60 if (mm.group("unit") or "s").lower().startswith("min") else n
+    elif mm.group("min"):
+        seg = 60
+    else:
+        seg = 30
+    return max(seg, 10)
+
+
+def _intervalo_humano(seg):
+    """Formata 90 -> '1 minuto e 30 segundos', 120 -> '2 minutos'."""
+    seg = int(seg or 0)
+    if seg <= 0:
+        return ""
+    minutos, resto = divmod(seg, 60)
+    partes = []
+    if minutos:
+        partes.append(f"{minutos} minuto{'s' if minutos != 1 else ''}")
+    if resto:
+        partes.append(f"{resto} segundo{'s' if resto != 1 else ''}")
+    return " e ".join(partes)
+
+
+def _intervalo_padrao():
+    """Intervalo de aviso persistido para as próximas tarefas (ou None)."""
+    try:
+        v = _carregar_saudacao_estado().get("intervalo_progresso") or 0
+        return int(v) if int(v) >= 10 else None
+    except Exception:
+        return None
+
+
+def _intervalo_salvar(seg):
+    """Persiste o intervalo de aviso periódico (sobrevive a restart da bridge)."""
+    try:
+        d = _carregar_saudacao_estado()
+        d["intervalo_progresso"] = int(seg)
+        _salvar_saudacao_estado(d)
+    except Exception as e:
+        logger.warning(f"intervalo salvar: {e}")
+
+
+def _historico_payload(limite=600):
+    """Conversa canônica (conversa_unica.json) pronta para o app renderizar.
+
+    O app é apenas a VOZ do ecossistema: ele NÃO mantém histórico próprio.
+    Esta função converte as linhas "Usuário: ..." / "Jarvis: ..." do arquivo
+    único em mensagens estruturadas exibíveis.
+    """
+    try:
+        linhas = json.loads(HIST_PATH.read_text(encoding="utf-8-sig")) if HIST_PATH.exists() else []
+    except Exception:
+        return []
+    if not isinstance(linhas, list):
+        return []
+    out = []
+    for linha in linhas[-limite:]:
+        texto = str(linha).strip()
+        if texto.startswith("Usuário: "):
+            out.append({"de_usuario": True, "texto": texto[len("Usuário: "):]})
+        elif texto.startswith("Jarvis: "):
+            out.append({"de_usuario": False, "texto": texto[len("Jarvis: "):]})
+        else:
+            out.append({"de_usuario": False, "texto": texto})
+    return out
 
 # Retrato vivo do diálogo: quem fala é o bridge (TTS via app), então ele marca
 # "falando" no runtime/dialogo_vivo.json e emite a atividade "fala" — o Cérebro
@@ -1663,10 +1885,15 @@ def caminho_rapido(msg):
        re.search(r'\b(?:clima|tempo|temperatura|chover|chovera|grau|chuva|sol|nublado|vai estar)\b.*\bamanha\b', t) or \
        re.search(r'\bamanha\b.*\b(?:clima|tempo|temperatura|chover|chovera|grau|chuva|sol|nublado|vai estar)\b', t):
         try:
+            # get_forecast_data: indice 0 = hoje, 1 = amanha (forecast_days=2).
+            # Seleciona o dia conforme o pedido ("hoje" vs "amanha"); se a
+            # pergunta nao citar dia, responde HOJE (comportamento natural).
+            idx = 1 if re.search(r'\bamanha\b', t) else 0
             previsao = get_forecast_data(days=2)
-            if "erro" not in previsao and len(previsao["previsoes"]) >= 2:
-                d = previsao["previsoes"][1]
-                txt = f"Amanhã: mínima de {d['tmin']:.0f} e máxima de {d['tmax']:.0f} graus"
+            if "erro" not in previsao and len(previsao["previsoes"]) >= idx + 1:
+                d = previsao["previsoes"][idx]
+                rotulo = "Amanhã" if idx == 1 else "Hoje"
+                txt = f"{rotulo}: mínima de {d['tmin']:.0f} e máxima de {d['tmax']:.0f} graus"
                 if d.get("descricao"):
                     txt += f", {d['descricao']}"
                 if d.get("precip") and d["precip"] > 0:
@@ -1715,6 +1942,150 @@ def _fb_registrar(modelo: str, ok: bool, latencia_ms: int) -> None:
         _mod = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_mod)
         globals()["_llm_feedback_mod"] = _mod
     globals()["_llm_feedback_mod"].registrar(modelo, ok, latencia_ms)
+
+
+# Prompt mínimo do canal de voz (canal "simples": voz entra, resposta sai).
+# A base é curta e fixa (~2KB), mas o contexto REAL do ecossistema (estado,
+# memória semântica e histórico da conversa) é injetado dinamicamente antes da
+# mensagem — o celular é só a voz; o conhecimento vive no EcoSystemUmGrau.
+_SISTEMA_VOZ_RAPIDA = (
+    "Você é o Jarvis, canal de voz do EcoSystemUmGrau rodando no computador. "
+    "Você é uma extensão viva do ecossistema: conhece o estado dele, as memórias "
+    "consolidadas e a conversa atual retomada no PC. "
+    "Responda sempre em Português do Brasil, de forma curta (1 a 3 frases), "
+    "natural e direta, como numa conversa falada. "
+    "Use o contexto do ecossistema fornecido abaixo para responder com verdade. "
+    "Nunca invente fatos: se não souber, diga que não sabe. "
+    "Não faça listas, não use markdown, emojis nem repetições da pergunta."
+)
+
+
+def _normalizar_fala(t: str) -> str:
+    """Normaliza uma fala para comparação na edição: caixa baixa, sem prefixo
+    de Histórico (Usuário:/Jarvis:), espaços colapsados e pontuação final
+    removida. Usada para casar a mensagem a editar de forma tolerante entre o
+    texto pontuado pelo app (fix_punctuation) e o gravado no histórico."""
+    import unicodedata as _ud
+    t = re.sub(r"^(Usu[áa]rio|Jarvis):\s*", "", str(t), flags=re.I)
+    t = _ud.normalize("NFD", t)
+    t = "".join(ch for ch in t if _ud.category(ch) != "Mn")
+    t = re.sub(r"\s+", " ", t).strip().lower()
+    t = re.sub(r"[.!?]+$", "", t)
+    return t
+
+
+def _aplicar_edicao(hist, texto_antigo: str):
+    """Edit-and-resubmit: localiza a mensagem do usuário a editar (última
+    ocorrência casando texto normalizado) e descarta o resto do histórico
+    a partir dela — tudo que vinha depois da mensagem editada é regenerado.
+    Retorna a nova lista (truncada) ou None se a mensagem não for encontrada."""
+    if not texto_antigo.strip():
+        return None
+    alvo = _normalizar_fala(texto_antigo)
+    if not alvo:
+        return None
+    for i in range(len(hist) - 1, -1, -1):
+        if _normalizar_fala(hist[i]) != alvo:
+            continue
+        # Só aceita como alvo uma entrada DE USUÁRIO (começa com "Usuário:"
+        # ou não começa com "Jarvis:" — acomoda histórico legado sem prefixo),
+        # para nunca truncar no meio de uma resposta do Jarvis.
+        entrada = hist[i].strip()
+        if entrada.lower().startswith("jarvis:"):
+            continue
+        return list(hist[:i])
+    return None
+
+
+def _montar_contexto_voz(msg, cliente):
+    """Monta o contexto vivo do ecossistema para o canal de voz rápido:
+    estado atual + memória semântica top-3 + histórico recente da conversa.
+    Espelha o que o _montar (fluxo serve) injeta, em versão curta, para as
+    respostas de voz falarem sobre o ecossistema com conhecimento real."""
+    blocos = []
+    try:
+        estado = _estado_cacheado()
+        if estado:
+            blocos.append("## Estado atual do EcoSystemUmGrau (verdade conhecida):\n" + estado[:2500])
+    except Exception as e:
+        logger.debug(f"ctx voz estado: {e}")
+    try:
+        _rs = _sem_search_cached(msg, k=3, min_score=0.05)
+        if _rs:
+            _lines = [f"- #{r['id']} ({r['kind']}): {r['title']}" for r in _rs]
+            blocos.append("## Contexto relevante da memória do ecossistema:\n" + "\n".join(_lines))
+    except Exception as e:
+        logger.debug(f"ctx voz memoria: {e}")
+    try:
+        hist = cliente._hist if cliente is not None else []
+        if hist:
+            # Últimos ~6 pares (12 entradas) resumidos para manter o fio da conversa
+            recentes = hist[-12:]
+            linhas = []
+            for i in range(0, len(recentes) - 1, 2):
+                u = recentes[i].strip().replace("\n", " ")
+                jr = str(recentes[i + 1]).strip().replace("\n", " ")
+                linhas.append(f"- Usuário: {u[:180]}\n  Jarvis: {jr[:180]}")
+            if linhas:
+                blocos.append("## Conversa recente já retomada no PC (contexto):\n" + "\n".join(linhas))
+    except Exception as e:
+        logger.debug(f"ctx voz historico: {e}")
+    return "\n\n".join(blocos)
+
+
+async def _voz_rapida(msg: str, cliente=None, img_base64=None, img_mime="image/jpeg") -> str | None:
+    """Canal de voz rápido: chama NVIDIA directa (thinking off) com a cadeia de
+    modelos curtos testados, sem passar pelo opencode serve. Injeta o contexto
+    vivo do ecossistema (estado + memória + conversa) e grava a conversa,
+    preservando continuidade. Retorna a primeira resposta válida ou None se
+    todos falharem (aí o fluxo normal segue)."""
+    if img_base64:
+        return None  # cadeia de texto não aceita imagem; deixa o serve tratar
+    if not NVIDIA_QUOTA_AVAILABLE:
+        logger.warning("voz rapida: quota monitor indisponivel")
+        return None
+    try:
+        ctx = _montar_contexto_voz(msg, cliente)
+        sistema = _SISTEMA_VOZ_RAPIDA + "\n\n" + ctx
+        for modelo in _CADEIA_VOZ_RAPIDA:
+            _t0 = time.time()
+            try:
+                resp = nvidia_request_with_quota(
+                    modelo,
+                    [
+                        {"role": "system", "content": sistema},
+                        {"role": "user", "content": msg},
+                    ],
+                    max_tokens=300,
+                    temperature=0.4,
+                    chat_template_kwargs={"thinking": False},
+                    timeout=35,
+                )
+                data = resp.json()
+                saida = (data.get("choices") or [{}])[0].get("message", {}).get("content") or ""
+                saida = saida.strip()
+                _ms = int((time.time() - _t0) * 1000)
+                if saida:
+                    logger.info(f"voz rapida HIT {modelo} ({_ms}ms): {saida[:70]}")
+                    # Persiste o turno na conversa unificada (contexto contínuo),
+                    # no MESMO formato do fluxo serve (perguntar) para manter a
+                    # consistência do histórico e da busca de edição.
+                    try:
+                        if cliente is not None:
+                            cliente._hist = cliente._carregar()
+                            cliente._hist.append(f"Usuário: {msg}")
+                            cliente._hist.append(f"Jarvis: {saida}")
+                            cliente._salvar()
+                    except Exception as e:
+                        logger.warning(f"voz rapida persistir: {e}")
+                    return saida
+                logger.warning(f"voz rapida vazio {modelo} ({_ms}ms)")
+            except Exception as _e:
+                _ms = int((time.time() - _t0) * 1000)
+                logger.warning(f"voz rapida MISS {modelo} ({_ms}ms): {str(_e)[:120]}")
+    except Exception as e:
+        logger.warning(f"voz rapida erro geral: {e}")
+    return None
 
 
 async def _fallback_cadeia_curada(msg: str, img_base64=None, img_mime="image/jpeg") -> str | None:
@@ -2132,6 +2503,359 @@ async def handle_logs(request):
     return web.json_response({"ok": True, "logs": {nome: _log_snapshot(nome, n) for nome in nomes}})
 
 
+# ============ EXECUTOR DE TAREFAS ASSÍNCRONAS ============
+
+def _detectar_tarefa(msg):
+    """Detecta se a mensagem pede uma das tarefas longas conhecidas.
+
+    Retorna o tipo da tarefa (chave de TAREFAS_DISPONIVEIS) ou None.
+    Usa regex simples por intenção; evita disparar em perguntas comuns
+    ("qual é a sua coordenadora" não dispara "auditoria").
+    """
+    t = _sem_acentos(msg).lower()
+    for tipo, cfg in TAREFAS_DISPONIVEIS.items():
+        for padrao in cfg["intencoes"]:
+            # Sempre prefixa palavra/incia; exigir contexto de comando verboso
+            if re.search(padrao.lower(), t):
+                # Evita falso positivo: "quem é o auditor" sem verbo de ação
+                if _tarefa_eh_acao(padrao, msg):
+                    return tipo
+    return None
+
+
+def _tarefa_eh_acao(_padrao_aiagnostic, msg):
+    """Heurística: pedido é ação (fazer/verificar) e não simples pergunta.
+
+    Bloqueia pedidos puramente informativos ("o que é uma auditoria?",
+    "quem audita o sistema?") que não devem disparar execução longa.
+    """
+    t = _sem_acentos(msg).lower()
+    # Pergunta interrogativa iniciada por pronome/adjetivo sem verbo de comando
+    if re.search(r"^(o que|qual|quem|quando|por que|que) ", t):
+        return False
+    if re.search(r"\b(oi|ola|bom dia|boa tarde|boa noite)\b", t):
+        return False
+    return True
+
+
+def _json_extrair(saida):
+    """Tenta parsear JSON da saída, tolerando trailers não-JSON (ex.: 'Tempo: Xs')."""
+    saida = (saida or "").strip()
+    if not saida:
+        return None
+    tentativas = [saida]
+    for ch in ("}", "]"):
+        pos = saida.rfind(ch)
+        if pos > 0:
+            tentativas.append(saida[:pos + 1])
+    for t in tentativas:
+        try:
+            return json.loads(t)
+        except Exception:
+            continue
+    return None
+
+
+def _resumir_auditoria(saida):
+    """Extrai resumo falado da saída JSON/plano do audit_eco."""
+    saida = (saida or "").strip()
+    if not saida:
+        return "A auditoria terminou sem detalhes na saída."
+    try:
+        d = _json_extrair(saida)
+        if isinstance(d, dict):
+            score = d.get("score")
+            findings = d.get("findings") or []
+            erros = [f for f in findings if f.get("severity") == "error"]
+            warns = [f for f in findings if f.get("severity") == "warn"]
+            base = f"A auditoria terminou."
+            if score is not None:
+                base = f"A auditoria terminou com pontuação {score} de cem."
+            if erros:
+                base += f" Encontrei {len(erros)} erro(s)."
+                e0 = erros[0].get("message") or ""
+                if e0:
+                    base += f" Exemplo: {_truncar_fala(e0, 90)}."
+            elif warns:
+                base += f" Nenhum erro crítico, mas {len(warns)} aviso(s)."
+            else:
+                base += " Nenhum erro encontrado."
+            return base
+    except Exception:
+        pass
+    # Fallback: texto corrido
+    linhas = [l for l in saida.splitlines() if l.strip() and not l.strip().startswith("{")]
+    if linhas:
+        primeiras = " ".join(linhas[:3])
+        return f"A tarefa terminou. Resumo: {_truncar_fala(primeiras, 160)}"
+    return "A tarefa terminou." if saida else "A tarefa terminou sem detalhes."
+
+
+def _resumir_integridade(saida):
+    """Resumo falado para integrity_guard (--check --json)."""
+    saida = (saida or "").strip()
+    if not saida:
+        return "A verificação de integridade terminou."
+    try:
+        d = _json_extrair(saida)
+        if isinstance(d, dict):
+            n = d.get("corrompidos")
+            corrigidos = d.get("corrigidos")
+            if isinstance(n, int):
+                if n or corrigidos:
+                    return f"A verificação de integridade terminou. {n} arquivo(s) corrompido(s), {corrigidos} corrigido(s)."
+                return "A verificação de integridade terminou. Todos os arquivos estão íntegros."
+    except Exception:
+        pass
+    # Fallback por heurística de saída
+    s = _sem_acentos(saida)
+    if re.search(r"\d+\s*(corrompid[oa]|problemas?|erros?)", s) or "corrompid" in s:
+        return "A verificação de integridade terminou e encontrou problemas."
+    return "A verificação de integridade terminou. Nenhum problema encontrado."
+
+
+def _resumir_preflight(saida, returncode):
+    """Resumo falado para preflight_check (exit code + saída)."""
+    saida = (saida or "").strip()
+    if returncode == 0:
+        base = "Preflight técnico concluído. Todos os testes passaram."
+    else:
+        base = "Preflight técnico concluído com falhas."
+        # Tenta extrair a primeira linha de erro
+        for l in saida.splitlines():
+            if any(k in l.lower() for k in ("error", "fail", "erro")):
+                if l.strip().lstrip("-").strip():
+                    base += f" Exemplo: {_truncar_fala(l.strip().lstrip('-').strip(), 80)}."
+                break
+    return base
+
+
+def _truncar_fala(texto, maxc):
+    """Corta texto para fala TTS sem quebrar palavra ao meio."""
+    texto = re.sub(r"\s+", " ", (texto or "").strip())
+    if len(texto) <= maxc:
+        return texto
+    return texto[:maxc].rsplit(" ", 1)[0] + "…"
+
+
+def _resumo_tarefa(task):
+    """Monta o resumo falado de uma tarefa conforme o tipo."""
+    if task.get("resumo"):
+        return task["resumo"]
+    tipo = task["tipo"]
+    if tipo == "auditoria_codigo":
+        return _resumir_auditoria(task.get("saida", ""))
+    if tipo == "integridade_dados":
+        return _resumir_integridade(task.get("saida", ""))
+    if tipo == "preflight_tecnico":
+        return _resumir_preflight(task.get("saida", ""), int(task.get("rc") or 0))
+    return f"{task.get('nome','Tarefa')} concluída."
+
+
+async def _executar_subprocess(cmd, timeout):
+    """Roda subprocess assíncrono com timeout e captura stdout/stderr (b64-safe)."""
+    flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.STDOUT,
+            cwd=str(ECOSSISTEMA_DIR),
+            creationflags=flags,
+        )
+        try:
+            saida, _ = await asyncio.wait_for(proc.communicate(), timeout=timeout)
+            return proc.returncode if proc.returncode is not None else 0, (saida or b"").decode("utf-8", "replace")
+        except asyncio.TimeoutError:
+            try:
+                proc.kill()
+            except Exception:
+                pass
+            await proc.wait()
+            return -1, "A tarefa demorou demais e foi interrompida (timeout)."
+    except FileNotFoundError as e:
+        logger.error(f"executar subprocess: cmd não encontrado: {e}")
+        return -2, ""
+    except Exception as e:
+        logger.error(f"executar subprocess: {e}")
+        return -3, ""
+
+
+async def _executar_tarefa(task):
+    """Executa a tarefa de verdade (subprocess), registra resultado e notifica."""
+    tipo = task["tipo"]
+    cfg = TAREFAS_DISPONIVEIS.get(tipo)
+    if not cfg:
+        logger.error(f"tarefa desconhecida: {tipo}")
+        _tarefas_atualizar(task["id"], status="failed", erro="tipo desconhecido", fim=time.time())
+        return
+    _tarefas_atualizar(task["id"], status="running", inicio=time.time())
+    logger.info(f"tarefa iniciada: {tipo} ({task['id']})")
+    await _notificar_progresso("Iniciando " + cfg["nome"].lower())
+
+    # Aviso periódico: roda um ticker em paralelo que informa o progresso a
+    # cada intervalo enquanto o subprocess executa. Cancelado no finally.
+    intervalo = task.get("intervalo_progresso")
+    evento = asyncio.Event() if intervalo else None
+    ticker = None
+    if evento:
+        ticker = asyncio.create_task(_notificar_periodico(task, cfg, evento))
+    try:
+        rc, saida = await _executar_subprocess(cfg["cmd"], cfg.get("timeout", 600))
+    finally:
+        if evento:
+            evento.set()
+        if ticker:
+            ticker.cancel()
+            await asyncio.gather(ticker, return_exceptions=True)
+    fim = time.time()
+    dur = (fim - (task.get("inicio") or fim)) if task.get("inicio") else None
+    _TAREFAS_ULTIMALIDA[tipo] = saida[-3000:]  # guarda fim da saída para conferência
+
+    # rc < 0 => falha de EXECUÇÃO (timeout, comando não encontrado, exceção).
+    # rc >= 0 => o script rodou; exit code 1 comum em scripts de verificação
+    # (achou problemas a reportar), então status=lógica concluída com achados.
+    if rc >= 0:
+        # Resumo falado montado da saída COMPLETA; a persistida é recorte de 3000 chars.
+        t_resumo = dict(task)
+        t_resumo["saida"] = saida
+        mensagem = _resumo_tarefa(t_resumo)
+        _tarefas_atualizar(task["id"], status="done", fim=fim, duracao_s=dur, saida=saida[-3000:], erro="", rc=rc, resumo=mensagem)
+        logger.info(f"tarefa concluída: {tipo} ({dur:.0f}s, rc={rc}, {len(saida)}c saída)")
+        await _notificar_proativo(mensagem, status="done")
+    else:
+        mensagem = f"{cfg['nome']} terminou com problemas na execução."
+        _tarefas_atualizar(task["id"], status="failed", fim=fim, duracao_s=dur, saida=saida[-3000:], erro=str(rc), resumo=mensagem)
+        logger.warning(f"tarefa falhou: {tipo} rc={rc} ({dur:.0f}s)")
+        await _notificar_proativo(mensagem, status="failed")
+
+
+async def _notificar_periodico(task, cfg, evento):
+    """Aviso periódico de progresso enquanto a tarefa roda (a cada N segundos)."""
+    intervalo = int(task.get("intervalo_progresso") or 0)
+    if intervalo <= 0:
+        return
+    inicio = time.time()
+    while True:
+        try:
+            await asyncio.wait_for(evento.wait(), timeout=intervalo)
+            return
+        except asyncio.TimeoutError:
+            pass
+        decorrido = int(time.time() - inicio)
+        await _notificar_progresso(f"{cfg['nome']} em andamento ({_intervalo_humano(decorrido)}).")
+
+
+async def _notificar_progresso(etapa):
+    """Envia {progresso} para TODAS as conexões de voz ativas (não só a origem)."""
+    texto = etapa
+    async with _WS_VOZ_LOCK:
+        alvos = list(_WS_VOZ)
+    for ws in alvos:
+        try:
+            await ws.send(json.dumps({"progresso": texto}))
+        except Exception:
+            pass
+
+
+async def _notificar_proativo(texto, status="done"):
+    """Notificação espontânea (texto + áudio streaming) para todos os apps conectados.
+
+    Se não houver app conectado, deixa a mensagem pendente (persistido) para
+    ser enviada na próxima reconexão — nenhuma promessa se perde.
+    """
+    alcancados = False
+    async with _WS_VOZ_LOCK:
+        alvos = list(_WS_VOZ)
+    for ws in alvos:
+        alcancados = await _enviar_mensagem(ws, texto) or alcancados
+    if not alcancados:
+        try:
+            d = _carregar_saudacao_estado()
+            d["notificacao_pendente"] = {"text": texto, "ts": time.time(), "status": status}
+            _salvar_saudacao_estado(d)
+        except Exception as e:
+            logger.warning(f"pendente: {e}")
+    _marcar_atividade()
+
+
+async def _enviar_mensagem(ws, texto):
+    """Envia texto + áudio streaming para um ws (mesmo formato da resposta normal)."""
+    try:
+        await ws.send(json.dumps({"text": texto, "corrigido": "", "audio_streaming": True, "volume": _ler_volume_widget()}))
+        _marcar_inicio_fala(texto)
+        async for chunk in gerar_audio_stream(texto):
+            await ws.send(json.dumps({"audio_chunk": chunk}))
+        await ws.send(json.dumps({"audio_done": True}))
+        return True
+    except Exception as e:
+        logger.warning(f"enviar mensagem: {e}")
+        return False
+
+
+async def _enviar_pendentes_reconexao(ws):
+    """Envia notificação pendente guardada (se houver) quando o app reconecta."""
+    try:
+        d = _carregar_saudacao_estado()
+        pend = d.get("notificacao_pendente")
+        if not pend:
+            return False
+        texto = pend.get("text", "")
+        ts = pend.get("ts", 0)
+        if not texto or time.time() - float(ts) > 60 * 60:
+            d.pop("notificacao_pendente", None)
+            _salvar_saudacao_estado(d)
+            return False
+        enviado = await _enviar_mensagem(ws, texto)
+        if enviado:
+            d.pop("notificacao_pendente", None)
+            _salvar_saudacao_estado(d)
+        return enviado
+    except Exception as e:
+        logger.warning(f"pendentes reconexao: {e}")
+        return False
+
+
+async def _agendar_e_responder(ws, m):
+    """Agenda a tarefa detectada e responde com a confirmação imediata.
+
+    Retorna True se uma tarefa foi agendada (a resposta é tratada aqui).
+    """
+    tipo = _detectar_tarefa(m)
+    if not tipo:
+        return False
+    if _tarefa_ativa(tipo):
+        r = f"A tarefa de {TAREFAS_DISPONIVEIS[tipo]['nome'].lower()} já está em andamento. Vou informar quando terminar."
+        await _enviar_mensagem(ws, r)
+        return True
+    task = _tarefa_nova(tipo, pedido=m)
+    # Aviso periódico: vindo do próprio pedido ("a cada X") ou do padrão salvo.
+    # Se o pedido pede intervalo, ele vira o novo padrão para as próximas tarefas.
+    interv_msg = _detectar_intervalo_progresso(m)
+    if interv_msg:
+        _intervalo_salvar(interv_msg)
+    interv = interv_msg or _intervalo_padrao()
+    if interv:
+        _tarefas_atualizar(task["id"], intervalo_progresso=interv)
+    r = f"Beleza. Vou iniciar a {TAREFAS_DISPONIVEIS[tipo]['nome'].lower()} agora e te aviso aqui quando terminar."
+    await _enviar_mensagem(ws, r)
+    logger.info(f"tarefa agendada: {tipo}")
+    # Roda em background separado para NÃO bloquear o loop de mensagens desta
+    # (ou outra) conexão; a notificação de conclusão é enviada proativamente.
+    asyncio.create_task(_executar_tarefa(task))
+    return True
+
+
+async def _registrar_ws(ws):
+    async with _WS_VOZ_LOCK:
+        _WS_VOZ.add(ws)
+
+
+async def _remover_ws(ws):
+    async with _WS_VOZ_LOCK:
+        _WS_VOZ.discard(ws)
+
+
 async def lidar(ws):
     try:
         path = getattr(ws.request, "path", "/")
@@ -2164,15 +2888,25 @@ async def lidar(ws):
     # EcoDashboard se identifica por {"type": ...}: responde, pula a saudacao
     # e entra direto no modo snapshot periodico.
     eh_dashboard = False
+    prim_set = False
+    prim_ja_respondido = False
     try:
         prim = await asyncio.wait_for(ws.recv(), timeout=3)
+        prim_set = True
         try:
             obj0 = json.loads(prim)
             if isinstance(obj0, dict):
-                if obj0.get("tipo") == "ping" and obj0.get("origem") == "health-check":
+                # Ping no prim (health-check OU heartbeat do app android):
+                # responde pong j� na classificacao, sem esperar o loop de
+                # mensagens. O app manda o 1o ping aos 15s — se pousar dentro
+                # dos 3s do prim, nao fica preso no buffer do setup (~45s).
+                if obj0.get("tipo") == "ping":
                     await ws.send(json.dumps({"tipo": "pong", "origem": "bridge", "eco": obj0}))
-                    logger.info("health-check atendido (sem saudacao LLM)")
-                    return
+                    logger.info(f"ping prim respondido (origem {obj0.get('origem','?')})")
+                    prim_ja_respondido = True
+                    if obj0.get("origem") == "health-check":
+                        logger.info("health-check atendido (sem saudacao LLM)")
+                        return
                 if obj0.get("type") in ("ping", "pong", "get_state", "command"):
                     eh_dashboard = True
                     if obj0.get("type") == "ping":
@@ -2200,6 +2934,16 @@ async def lidar(ws):
         cx = _classificar_conexao()
         estado_saud = _carregar_saudacao_estado()
     if not eh_dashboard:
+        # Registra a conexão de voz para receber notificações proativas
+        # (auditoria/integridade/preflight concluídos em background).
+        await _registrar_ws(ws)
+        # Histórico ÚNICO: o app é a VOZ do ecossistema — não mantém histórico
+        # próprio. Envia a conversa canônica (conversa_unica.json) para o app
+        # renderizar, sempre na conexão, antes de qualquer saudação.
+        try:
+            await ws.send(json.dumps({"tipo": "historico", "mensagens": _historico_payload()}, ensure_ascii=False))
+        except Exception as e:
+            logger.warning(f"historico push: {e}")
         hoje = datetime.datetime.now().strftime("%Y-%m-%d")
         if estado_saud.get("hoje") != hoje:
             # Novo dia: zera o acumulado de saudações do dia.
@@ -2293,6 +3037,15 @@ async def lidar(ws):
             except Exception as e:
                 logger.warning(f"retomada automatica falhou: {e}")
 
+        # NOTIFICAÇÃO PROATIVA PENDENTE: se uma tarefa terminou sem app conectado,
+        # avisa aqui na primeira conexão — a promessa de "te informo ao terminar"
+        # nunca se perde, mesmo se a ponte caiu no meio.
+        try:
+            if await _enviar_pendentes_reconexao(ws):
+                logger.info("notificacao pendente entregue na reconexao")
+        except Exception as e:
+            logger.warning(f"notificacao pendente: {e}")
+
     # CONTINUIDADE ESPONTÂNEA: a cada ~12h (ou troca de dia) durante conversa ativa,
     # envia uma frase curta de "ainda por aqui" — variada, anti-repetição, sem encher linguiça.
     async def _continuidade_periodica():
@@ -2362,8 +3115,19 @@ async def lidar(ws):
 
     task_dash = asyncio.create_task(_dash_state_pusher())
 
+    # A 1ª mensagem da conexão foi consumida na classificação (prim). Re-injeta
+    # no fluxo para NÃO engolir um pedido imediato (tarefa/aviso periódico).
+    # Só para conexão de voz normal — dashboard/health-check já foram respondidos.
+    async def _fluxo_mensagens():
+        # Ping ja respondido na classificacao nao e re-injetado (evita duplo
+        # pong). Demais prims (pedido imediato) continuam re-injetados.
+        if prim_set and not eh_dashboard and not prim_ja_respondido:
+            yield prim
+        async for mm in ws:
+            yield mm
+
     try:
-        async for m in ws:
+        async for m in _fluxo_mensagens():
             img_atual = None
             img_mime = "image/jpeg"
             try:
@@ -2407,6 +3171,36 @@ async def lidar(ws):
                             await ws.send(json.dumps({"tipo": "quota_status", "error": "nvidia_quota_monitor não disponível"}))
                         logger.info(f"quota status request")
                         continue
+                    if obj.get("tipo") == "editar":
+                        # Edit-and-resubmit (padrão ChatGPT/Claude): usuário edita
+                        # a mensagem já enviada; o resto do histórico é descartado
+                        # a partir dela e a resposta é regenerada do zero.
+                        texto_antigo = obj.get("texto_antigo") or obj.get("antigo") or ""
+                        texto_novo = obj.get("texto_novo") or obj.get("novo") or obj.get("texto") or ""
+                        _ed = _aplicar_edicao(c._hist, texto_antigo)
+                        if _ed is None:
+                            await ws.send(json.dumps({
+                                "text": "Não encontrei essa mensagem para editar.",
+                                "corrigido": texto_antigo,
+                                "edicao_falhou": True,
+                                "volume": _ler_volume_widget(),
+                            }))
+                            logger.warning(f"editar nao encontrou: '{texto_antigo[:60]}'")
+                            msg_id = obj.get("id") if isinstance(obj, dict) else None
+                            if msg_id is not None:
+                                try:
+                                    await ws.send(json.dumps({"ack": int(msg_id)}))
+                                except Exception:
+                                    pass
+                            continue
+                        m = texto_novo
+                        c._hist = _ed
+                        try:
+                            c._salvar()
+                        except Exception as e:
+                            logger.warning(f"editar salvar: {e}")
+                        logger.info(f"editar ok: '{texto_antigo[:40]}' -> '{texto_novo[:40]}' "
+                                    f"(hist={len(c._hist)//2} pares restantes)")
                     if obj.get("tipo") == "mensagem":
                         # App novo envia {"tipo":"mensagem","id":N,"texto":"..."}.
                         # Extrai o texto real e deixa o id para o ACK abaixo.
@@ -2447,6 +3241,37 @@ async def lidar(ws):
                 except:
                     await ws.send(json.dumps({"text": r, "corrigido": m}))
                 continue
+            # TAREFA ASSÍNCRONA: pedido de auditoria/integridade/preflight é
+            # detectado antes do LLM prometer "vou te avisar" — agenda, roda o
+            # script real em background e notifica ao terminar. NÃO cai no LLM.
+            try:
+                if await _agendar_e_responder(ws, m):
+                    continue
+            except Exception as e:
+                logger.warning(f"agendar tarefa: {e}")
+            # AVISO PERIÓDICO SOLTO ("me avise a cada minuto"): sem uma tarefa em
+            # execução não há o que monitorar agora — salva o intervalo como padrão
+            # para as próximas tarefas (e aplica às que já estiverem rodando).
+            try:
+                interv = _detectar_intervalo_progresso(m)
+                if interv is not None:
+                    _intervalo_salvar(interv)
+                    ativas = [t for t in _tarefas_carregar() if t["status"] in ("queued", "running")]
+                    for t in ativas:
+                        _tarefas_atualizar(t["id"], intervalo_progresso=interv)
+                    if ativas:
+                        r_o = f"Combinado. Vou te informar a cada {_intervalo_humano(interv)} sobre o andamento."
+                    else:
+                        r_o = f"Combinado. A partir de agora informo o progresso das próximas tarefas a cada {_intervalo_humano(interv)}."
+                    try:
+                        a = await gerar_audio(r_o)
+                        _marcar_inicio_fala(r_o)
+                        await ws.send(json.dumps({"text": r_o, "audio": a, "corrigido": m, "volume": _ler_volume_widget()}) if a else {"text": r_o, "corrigido": m})
+                    except Exception:
+                        await ws.send(json.dumps({"text": r_o, "corrigido": m}))
+                    continue
+            except Exception as e:
+                logger.warning(f"intervalo progresso: {e}")
             try:
                 r = caminho_rapido(m)
             except Exception as e:
@@ -2466,6 +3291,18 @@ async def lidar(ws):
                         logger.info(f"pronuncia registrada: {palavra} -> {fala}")
                     else:
                         r = "Não consegui salvar essa pronúncia. Tente novamente."
+            if r is None:
+                # ---- Voz rápida: NVIDIA direta (thinking off), sem serve ----
+                # Canal "simples": voz entra, resposta sai em poucos segundos.
+                # Só cai no serve se a cadeia rápida falhar inteira.
+                try:
+                    await _enviar_progresso(ws, "Respondendo rápido")
+                    r = await _voz_rapida(m, cliente=c, img_base64=img_atual, img_mime=img_mime)
+                    if r is not None:
+                        logger.info(f"resposta voz rapida ({len(r)}c): {r[:80]}")
+                except Exception as e:
+                    logger.warning(f"voz rapida geral: {e}")
+                    r = None
             if r is None:
                 # ---- Pipeline multi-LLM curado: opencode serve + fallback cadeia ----
                 import time as _t
@@ -2509,6 +3346,10 @@ async def lidar(ws):
             await task_cont
         except Exception:
             pass
+        try:
+            await _remover_ws(ws)
+        except Exception as e:
+            logger.warning(f"remover ws: {e}")
 
 
 # ============ HTTP ENDPOINTS FOR ECOW ============

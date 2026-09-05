@@ -116,18 +116,18 @@ def memories_to_widget(nodes, links, pos_antigas=None):
         "melhoria": "missoes"
     }
     
-    # Filtra nós válidos
+    # Filtra nós válidos (ids normalizados como str, mesmo formato do payload)
     valid_nodes = [n for n in nodes if n.get("id") is not None]
-    id_to_idx = {n["id"]: i for i, n in enumerate(valid_nodes)}
+    id_to_idx = {str(n["id"]): i for i, n in enumerate(valid_nodes)}
     
-    # Converte arestas (links usam índices no array original)
+    # Converte arestas (ids também normalizados como str; API pode trazer int)
     widget_links = []
     for link in links:
-        src = link.get("source")
-        tgt = link.get("target")
+        src = str(link.get("source"))
+        tgt = str(link.get("target"))
         if src in id_to_idx and tgt in id_to_idx:
-            widget_links.append([valid_nodes[id_to_idx[src]]["id"],
-                                 valid_nodes[id_to_idx[tgt]]["id"]])
+            widget_links.append([str(valid_nodes[id_to_idx[src]]["id"]),
+                                 str(valid_nodes[id_to_idx[tgt]]["id"])])
     
     # Layout 3D reusa posições antigas
     nos_brutos = []
@@ -321,6 +321,9 @@ def layout_3d(nos, arestas, pos_antigas=None, iteracoes=None):
             herdados += 1
         else:
             pos[i] = rng.uniform(-10, 10, 3)
+    # Arestas orfas (ids fora do conjunto de nos) sao descartadas:
+    # nunca derrubam o layout por divergencia de fonte.
+    arestas = [(a, b) for a, b in arestas if a in idx and b in idx]
     ia = np.array([idx[a] for a, b in arestas], dtype=np.int64)
     ib = np.array([idx[b] for a, b in arestas], dtype=np.int64)
     grau = np.zeros(n)

@@ -3,9 +3,30 @@ from pathlib import Path
 
 ADB = r"C:\Users\David Jr\AppData\Local\Android\Sdk\platform-tools\adb.exe"
 PKG = "com.voxumgrau.app"
-DEVICE = "192.168.15.4:5555"
 BRIDGE_HOST = "100.91.141.101"
 BRIDGE_PORT = 8765
+
+def detectar_serial():
+    try:
+        r = subprocess.run([ADB, "devices"], capture_output=True, text=True, timeout=5)
+        for linha in r.stdout.splitlines()[1:]:
+            serial, _, estado = linha.partition("\t")
+            serial = serial.strip()
+            if serial and estado.strip() == "device":
+                return serial
+    except Exception:
+        pass
+    for alvo in ("192.168.15.4:5555", "100.64.71.9:5555"):
+        try:
+            subprocess.run([ADB, "connect", alvo], capture_output=True, text=True, timeout=8)
+            r = subprocess.run([ADB, "devices"], capture_output=True, text=True, timeout=5)
+            if alvo in r.stdout:
+                return alvo
+        except Exception:
+            continue
+    return None
+
+DEVICE = detectar_serial() or "192.168.15.4:5555"
 
 def adb(*args):
     try:
@@ -22,12 +43,13 @@ def adb_shell(cmd):
 async def testar_websocket_async():
     try:
         import websockets
-        async with websockets.connect(f"ws://{BRIDGE_HOST}:{BRIDGE_PORT}", ping_interval=None, open_timeout=5) as ws:
-            await ws.send(json.dumps({"tipo": "ping", "origem": "diagnostico"}))
-            resp = await asyncio.wait_for(ws.recv(), timeout=3)
-            if resp:
+        async with websockets.connect(f"ws://{BRIDGE_HOST}:{BRIDGE_PORT}", ping_interval=None, open_timeout=8) as ws:
+            await ws.send(json.dumps({"tipo": "ping", "origem": "health-check"}))
+            resp = await asyncio.wait_for(ws.recv(), timeout=8)
+            obj = json.loads(resp)
+            if isinstance(obj, dict) and obj.get("tipo") == "pong":
                 return "conectado e respondendo"
-            return "conectado sem resposta"
+            return "conectado com resposta inesperada"
     except asyncio.TimeoutError:
         return "conectado sem resposta"
     except Exception as e:

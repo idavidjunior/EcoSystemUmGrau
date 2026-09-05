@@ -9,6 +9,12 @@ impacto: 5/5 MCP conectados; preflight_check.py passa em todos os testes; modelo
 
 # Servidores MCP Node criados e validados
 
+> **DESCONTINUADO em 2026-09-05.** Os 4 servidores Node (filesystem, search,
+> terminal, github) foram removidos do ecossistema: Node.js não está instalado no
+> PC e todos duplicavam capacidades nativas do opencode ou MCPs Python já ativos.
+> Este registro é histórico da criação; NÃO representa o estado atual do config.
+> Ver [[2026-09-05-remocao-mcps-node-inoperantes]].
+
 ## O problema
 
 1. `config/opencode.jsonc` apontava para `mcp-servers/mcp-servers/{filesystem,search,terminal,github}/index.js` (duplicação `mcp-servers/mcp-servers`), arquivos inexistentes.

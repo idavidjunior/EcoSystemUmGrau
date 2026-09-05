@@ -1,5 +1,5 @@
 ---
-tags: [cognitivo, general, infinita, loop, processing, regenerar]
+tags: [arestas, cognitivo, general, layout, zero, órfãs]
 aliases: [corrigido travamento widget pywebview]
 date: 2026-08-04
 ---
@@ -41,6 +41,14 @@ contexto: >
 decisao: >
   (1) Definir ler_estado_voz() lendo CONTROLE (narracao_estado.json).
   (2) Refatorar estado_ativo() para usar ler_estado_voz(
+
+---
+tipo: erro
+tags: [widget, cerebro, grafo, keyerror, tipos, str-int, payload]
+data: 2026-09-05
+contexto: O widget "Cerebro Vivo" (scripts/widget_grafo.py + www/cerebro.html) exibia canvas em branco e seu log repetia "vigia: KeyError: 162". O grafo nunca recebia payload.
+decisao: Corrigir a inconsistência de tipos de id entre nós e arestas em memories_to_widget e blindar layout_3d contra arestas órfãs.
+impacto: Payload combined passou a ser enviado (1007 nós / 4869 arestas, zero arestas órfãs)
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]

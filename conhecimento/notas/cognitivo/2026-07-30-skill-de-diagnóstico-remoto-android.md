@@ -1,5 +1,5 @@
 ---
-tags: [100, cognitivo, dominio, fuso, general, horário]
+tags: [audiosession, cognitivo, general, próxima, sessão, timing]
 aliases: [# 2026-07-30 - Skill de Diagnóstico Remoto Android]
 date: 2026-07-30
 ---
@@ -29,6 +29,17 @@ date: 2026-07-30
 - Modelo do dispositivo, versão Android, SDK, fuso horário
 - Bateria (nível, temperatura, status de carga)
 - Aplicativo (versãoCode, versionName, PID, memória 
+
+---
+tipo: erro
+tags: [mp3player, visualizer, audit, adb, debug]
+data: 2026-09-04
+contexto: Auditoria Mp3Player — validação do VisualizerView após reescrita (FFT via android.media.audiofx.Visualizer).
+decisao: Manter substituição do VisualizerView (API preservada) e investigar timing da audioSession na próxima sessão.
+impacto: Teste automatizado do visualizer ficou pendente; corrigidos debitagens de processo (input tap bloqueado no device).
+---
+
+# Visualizer Mp3Player — diagnóstico não concluído 
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]

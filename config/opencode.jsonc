@@ -21,29 +21,6 @@
       "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/mcp-knowledge-server.py"],
       "enabled": true
     },
-    "filesystem": {
-      "type": "local",
-      "command": ["node", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp-servers/filesystem/index.js"],
-      "enabled": true
-    },
-    "search": {
-      "type": "local",
-      "command": ["node", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp-servers/search/index.js"],
-      "enabled": true
-    },
-    "terminal": {
-      "type": "local",
-      "command": ["node", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp-servers/terminal/index.js"],
-      "enabled": true
-    },
-    "github": {
-      "type": "local",
-      "command": ["node", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp-servers/github/index.js"],
-      "enabled": true,
-      "environment": {
-        "GITHUB_TOKEN": "{env:GH_TOKEN}"
-      }
-    },
     "eco-obsidian": {
       "type": "local",
       "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/mcp-obsidian-server.py"],

@@ -275,7 +275,6 @@ EcoSystemUmGrau/
 │   └── manifesto_mcp.json #   Catálogo único de habilidades (v2.0)
 ├── Habilidades/         # Legado: comportamentais/, multimidia/
 ├── ler-runtime/         # Runtime do LER — cérebro único (agent/, runtime/, knowledge/, governance/)
-├── mcp-servers/         # Servidores MCP
 ├── scripts/             # Infraestrutura: vigilante, ecosystem, memory_engine, jarvis_bridge...
 ├── estado_atual.md      # Snapshot completo do ecossistema
 ├── INDEX.md             # Mapa vivo do conhecimento (Obsidian)
@@ -301,25 +300,23 @@ EcoSystemUmGrau/
 
 ## MCP Servers
 
-13 servidores MCP locais (Node/Python puros, sem npx) — os Node vivem em `mcp-servers/`,
-os Python vivem em `scripts/` e `mcp/<domínio>/server.py`. Todos habilitados no
-`config/opencode.jsonc`:
+12 servidores MCP locais (todos em Python puro, sem npx) — vivem em `scripts/` e
+`mcp/<domínio>/server.py`. Todos habilitados no `config/opencode.jsonc`:
 
 | Servidor | Função | Status |
 |---|---|---|
 | **eco-knowledge** | Acesso ao knowledge graph (Python, `scripts/mcp-knowledge-server.py`) | ✅ ativo |
 | **eco-obsidian** | Acesso ao vault Obsidian (Python, `scripts/mcp-obsidian-server.py`) | ✅ ativo |
-| **filesystem** | Acesso ao filesystem (Node, `mcp-servers/filesystem/index.js`) | ✅ ativo |
-| **search** | Busca semântica BM25 no conhecimento (Node, `mcp-servers/search/index.js`) | ✅ ativo |
-| **terminal** | Execução de comandos PowerShell com bloqueio de destrutivos (Node, `mcp-servers/terminal/index.js`) | ✅ ativo |
-| **github** | Integração com GitHub via `gh` CLI (Node, `mcp-servers/github/index.js`) | ✅ ativo |
 | **mcp-desenvolvimento** | 30 skills de desenvolvimento (Python, `mcp/desenvolvimento/server.py`) | ✅ ativo |
 | **mcp-android** | Skills Android/Mobile (Python, `mcp/android/server.py`) | ✅ ativo |
 | **mcp-internet** | Busca-web, clima, geolocalização, navegação perita (Python, `mcp/internet/server.py`) | ✅ ativo |
+| **mcp-browser** | Automação de navegador via Playwright (Python, `mcp/internet/habilidades/browser-mcp/server.py`) | ✅ ativo |
+| **mcp-dev-tools** | Ferramentas dev seguras em sandbox (Python, `mcp/desenvolvimento/habilidades/dev-tools/server.py`) | ✅ ativo |
 | **mcp-memoria** | Busca de conhecimento (Python, `mcp/memoria/server.py`) | ✅ ativo |
 | **mcp-multimidia** | Áudio, imagem, vídeo, streaming (Python, `mcp/multimidia/server.py`) | ✅ ativo |
 | **mcp-comportamentais** | Personalidades comportamentais (code-reviewer, conservador, pensador-crítico, ponytail) (Python, `mcp/comportamentais/server.py`) | ✅ ativo |
 | **mcp-compreensao-pedidos** | Compreensão de pedidos antes de executar (Python, `mcp/nucleo/habilidades/compreensao-pedidos/server.py`) | ✅ ativo |
+| **composio** | Integração com 500+ apps externos (Python, `scripts/mcp-composio-server.py`) | ✅ ativo |
 
 ## CI/CD (GitHub Actions)
 

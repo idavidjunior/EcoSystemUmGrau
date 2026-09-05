@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**266 notas** do cluster ecossistema.
+**274 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -87,11 +87,13 @@
 - [[auto-evolution-gate-veto-health]]
 - [[auto-evolution-maestro-radar-relatório-consolidado]]
 - [[backup-de-apks-fontes-no-github]]
+- [[banco-de-ganchos-mindhacksbrasil]]
 - [[botao-importar-unificado]]
 - [[bug-parametro-pid-e-variavel-automatica-do-powershell]]
 - [[build-local-flutter-orquestrador]]
 - [[cadeia-de-provedores-com-failover-inteligente]]
 - [[calculadora-formato-consolidado-do-percentual-restaurado]]
+- [[canal-voz-rapida-nvidia]]
 - [[cerebro-vivo-nos-clicaveis-navegaveis]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]
@@ -119,10 +121,12 @@
 - [[crash-topicindex-version-mismatch]]
 - [[decisão-aprendizado-automático-permanente]]
 - [[decisão-arquitetura-jarvis-app]]
+- [[dedup-memorias-index-stale]]
 - [[deduplicacao-memoria-semantica]]
 - [[desativar-bridge-android]]
 - [[eco-agente-e-comando-global]]
 - [[ecow-e-ecow-abrirfocar-o-cerebro-vivo]]
+- [[edicao-mensagem-vox]]
 - [[engenheiro-criterioso]]
 - [[ensureserve-spawns-opencode-serve-without-passing-env-contex]]
 - [[errado]]
@@ -161,6 +165,7 @@
 - [[habilidade-navegação-perita-internet-pc-e-celular]]
 - [[hora-na-tela-vs-hora-no-áudio-jarvis]]
 - [[http-401-unauthorized-on-session-and-globalsessions]]
+- [[identidade-digital-do-usuario-david]]
 - [[idioma-padrao-pt-br]]
 - [[ilhas-no-grafo-notas-com-grau-0-e-como-conecta-las]]
 - [[importação-de-pasta-preservando-árvore-remoção-de-referência]]
@@ -220,7 +225,9 @@
 - [[protocolo-higiene-repo-streamumgrau]]
 - [[quiet-period-commits-do-vigilante]]
 - [[regra-do-usuário-buildinstalatestavalida-antes-de-commitar-e]]
+- [[reinjecao-primeira-mensagem-bridge]]
 - [[relatório-eco-estático-lições]]
+- [[remocao-mcps-node-inoperantes]]
 - [[renomear-pastas-com-espacos-para-nomes-sem-espaco]]
 - [[reorganização-habilidades-dentro-de-mcp-por-domínio]]
 - [[resiliencia-widget-duplicado]]
@@ -254,6 +261,7 @@
 - [[stt-no-partialstreaming-results]]
 - [[suggestions-hermes-itens-1-3]]
 - [[supermarketcalculator-v157]]
+- [[tarefas-assincronas-monitoradas-bridge]]
 - [[terminalwidget-edge]]
 - [[toast-de-erros-falsos-positivos]]
 - [[tradingagents-integrado-ao-ecossistema]]

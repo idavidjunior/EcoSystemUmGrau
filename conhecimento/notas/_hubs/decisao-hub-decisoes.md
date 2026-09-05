@@ -1,6 +1,6 @@
 # Decisoes
 
-**97 notas** conectadas a este hub.
+**99 notas** conectadas a este hub.
 
 
 ## Notas
@@ -16,6 +16,7 @@
 - [[botao-importar-unificado]]
 - [[calculadora-formato-consolidado-do-percentual-restaurado]]
 - [[calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-]]
+- [[canal-voz-rapida-nvidia]]
 - [[cerebro-vivo-nos-clicaveis-navegaveis]]
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]
 - [[checkpoints-salvos-antes-de-cada-iteracao-sobrevive-a-crash-]]
@@ -69,6 +70,7 @@
 - [[projeto-completo-e-ativo-a-recuperar]]
 - [[protocolo-higiene-repo-streamumgrau]]
 - [[quiet-period-commits-do-vigilante]]
+- [[remocao-mcps-node-inoperantes]]
 - [[renomear-pastas-com-espacos-para-nomes-sem-espaco]]
 - [[reorganização-habilidades-dentro-de-mcp-por-domínio]]
 - [[salvar-cria-novo-arquivo-timestampado-nunca-sobrescreve-exis]]

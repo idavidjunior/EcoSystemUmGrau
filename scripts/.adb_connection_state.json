@@ -2,10 +2,10 @@
   "state": "FAILED",
   "device": null,
   "transport": null,
-  "attempts": 15,
+  "attempts": 25,
   "last_error": "Tailscale não conectou",
   "last_connected_at": null,
   "last_disconnected_at": null,
   "backoff_idx": 0,
-  "timestamp": "2026-09-04T14:22:44"
+  "timestamp": "2026-09-04T23:21:46"
 }

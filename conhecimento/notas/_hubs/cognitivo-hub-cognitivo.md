@@ -1,6 +1,6 @@
 # Padroes Cognitivos
 
-**63 notas** conectadas a este hub.
+**66 notas** conectadas a este hub.
 
 
 ## Notas
@@ -16,6 +16,7 @@
 - [[aprendizado-2026-07-31-pontuação-automática-de-transcrições-]]
 - [[audit-runner-recuperado]]
 - [[auditoria-cerebro-vivo-fix-tema-padrao-e-bugs]]
+- [[banco-de-ganchos-mindhacksbrasil]]
 - [[bug-parametro-pid-e-variavel-automatica-do-powershell]]
 - [[ciclo-ooda-aplicado-a-navegacao]]
 - [[cláusula-pétrea-ativação-de-voz-eco-system]]
@@ -40,6 +41,7 @@
 - [[heuristica-de-densidade-de-informacao]]
 - [[hipotese-falsificacao-terminal]]
 - [[hora-na-tela-vs-hora-no-áudio-jarvis]]
+- [[identidade-digital-do-usuario-david]]
 - [[integracao-completa-mcps-offline-placeholder]]
 - [[lei-de-postel-aplicada-a-engenharia]]
 - [[maestro-fase-ativa-fix-registro-e-stale-pid]]
@@ -59,6 +61,7 @@
 - [[projecao-ortho-nas-transicoes-gl]]
 - [[reconhecimento-de-estado-por-elementos-chave]]
 - [[reconhecimento-instantaneo-de-framework]]
+- [[reinjecao-primeira-mensagem-bridge]]
 - [[respostas-truncadas]]
 - [[saudacao-espontanea-nao-implementada]]
 - [[servidores-mcp-node-criados-e-validados]]

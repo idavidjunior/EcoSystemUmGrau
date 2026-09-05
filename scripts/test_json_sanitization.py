@@ -91,7 +91,10 @@ def scan_file(filepath):
     for pattern, label in HARDCODED_PATTERNS:
         matches = pattern.findall(content)
         if matches:
-            if is_template:
+            if is_data_file:
+                # Data/historical files may contain absolute paths in descriptive text
+                continue
+            elif is_template:
                 # Templates should NOT have hardcoded paths, only template vars
                 issues.append(('FAIL', f'Template has hardcoded path: {filepath} (use template var)'))
             else:
