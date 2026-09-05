@@ -1,4 +1,4 @@
-import asyncio, websockets, edge_tts, base64, json, logging, os, re, time, xml.sax.saxutils, socket, urllib.request, urllib.error, random, datetime, subprocess, sys, unicodedata
+import asyncio, websockets, edge_tts, base64, json, logging, os, re, time, xml.sax.saxutils, socket, urllib.request, urllib.error, random, datetime, shutil, subprocess, sys, unicodedata
 from pathlib import Path
 from aiohttp import web
 
@@ -2856,6 +2856,157 @@ async def _remover_ws(ws):
         _WS_VOZ.discard(ws)
 
 
+# ============ EXIBIR IMAGEM — DIAGRAMAS / MAPAS MENTAIS ============
+# Spec: specs/voxumgrau-exibir-imagem.spec.md
+# A bridge detecta pedidos de representação visual, gera PNG localmente
+# (preferencialmente Graphviz) e envia {"tipo":"imagem","base64_png":...}.
+# A geração roda em asyncio.to_thread para nunca bloquear o event loop.
+_LIMITE_PNG_BYTES = 5 * 1024 * 1024  # 5 MB absoluto; spec sugere ~2 MB de alvo
+
+_STOPWORDS_IMAGEM = {
+    "a", "o", "os", "as", "de", "do", "da", "dos", "das", "e", "em", "no",
+    "na", "nos", "nas", "um", "uma", "uns", "umas", "que", "para", "com",
+    "por", "ao", "aos", "se", "é", "sobre", "como", "mostre", "desenhe",
+}
+
+
+def _dot_escape(s: str) -> str:
+    return s.replace("\\", "\\\\").replace('"', '\\"')
+
+
+def _assunto_para_dot(assunto: str) -> str:
+    """Monta o fonte DOT de um mapa mental (estrela) para o assunto."""
+    tokens = re.findall(r"[\wÀ-ÿ]+", assunto)
+    tokens = [t for t in tokens if t.lower() not in _STOPWORDS_IMAGEM and len(t) >= 3]
+    tokens = tokens[:8]
+    central = _dot_escape((assunto or "Tema")[:60])
+    if not tokens:
+        tokens = ["Conceito principal", "Aplicação", "Exemplo"]
+    linhas = [
+        "digraph MM {",
+        '  graph [rankdir=TB];',
+        '  node [shape=box, style="rounded,filled", fillcolor="#dbeafe", color="#1d4ed8", fontname="Segoe UI", fontsize=12];',
+        '  edge [color="#64748b", arrowsize=0.7];',
+        f'  "{central}" [fillcolor="#bfdbfe", penwidth=2];',
+    ]
+    for tok in tokens:
+        linhas.append(f'  "{_dot_escape(tok)}" -> "{central}";')
+    linhas.append("}")
+    return "\n".join(linhas)
+
+
+class DiagramGenerator:
+    """Contrato de um gerador de diagrama (assunto -> bytes PNG)."""
+
+    def gerar(self, assunto: str) -> bytes:
+        raise NotImplementedError
+
+
+class GraphvizGenerator(DiagramGenerator):
+    """Gera PNG de mapa mental via Graphviz (binário `dot`)."""
+
+    def gerar(self, assunto: str) -> bytes:
+        dot = shutil.which("dot")
+        if not dot:
+            raise RuntimeError("Graphviz (dot) não está instalado")
+        dot_src = _assunto_para_dot(assunto)
+        proc = subprocess.run(
+            [dot, "-Tpng"],
+            input=dot_src.encode("utf-8"),
+            capture_output=True,
+            timeout=20,
+        )
+        if proc.returncode != 0:
+            raise RuntimeError(
+                f"dot falhou: {proc.stderr.decode('utf-8', errors='ignore')[:200]}"
+            )
+        if not proc.stdout:
+            raise RuntimeError("dot retornou PNG vazio")
+        return proc.stdout
+
+
+_GERADORES_DIAGRAMA = [
+    GraphvizGenerator(),
+]
+
+
+def _gerar_diagrama_png(assunto: str):
+    """Gera PNG (bytes) para um assunto usando o primeiro gerador disponível.
+
+    Retorna None quando nenhum gerador está disponível ou todos falham
+    (a resposta textual segue o fluxo normal como fallback).
+    """
+    for gerador in _GERADORES_DIAGRAMA:
+        try:
+            png = gerador.gerar(assunto)
+            if png:
+                return png
+        except Exception as e:
+            logger.warning(f"gerador {gerador.__class__.__name__}: {e}")
+    return None
+
+
+def _detectar_pedido_imagem(texto: str):
+    """Extrai o assunto de um pedido de diagrama/mapa mental; None se não for.
+
+    Exemplos: "mostre um mapa mental do projeto", "faça um diagrama sobre X",
+    "desenha uma árvore de decisão", "represente graficamente a arquitetura".
+    """
+    if not texto:
+        return None
+    t = texto.strip().rstrip("?.,!;: ")
+    m = re.search(
+        r"(?i)(?:mapa mental|mind map|diagrama|fluxograma|árvore|"
+        r"grafo|esquema|linha do tempo|timeline|organograma|"
+        r"represente|representa|desenhe|desenha|"
+        r"mostre (?:um|o|uma) (?:diagrama|grafo|mapa mental|fluxograma)|"
+        r"estrutura de)\s+(?:de |do |da |dos |das |sobre |um |uma )?(.+)$",
+        t,
+    )
+    if not m:
+        return None
+    assunto = re.sub(r"\s{2,}", " ", m.group(1).strip().strip(":.-"))
+    if not assunto or len(assunto) < 2 or len(assunto) > 300:
+        return None
+    return assunto
+
+
+async def _enviar_imagem_se_pedido(ws, m: str):
+    """Detecta pedido de diagrama no texto; gera PNG e envia tipo=imagem.
+
+    Se a geração falhar ou Graphviz não existir, retorna False e o fluxo
+    normal de texto/áudio segue (fallback textual).
+    """
+    try:
+        assunto = _detectar_pedido_imagem(m)
+    except Exception as e:
+        logger.warning(f"detectar pedido imagem: {e}")
+        return False
+    if assunto is None:
+        return False
+    try:
+        png = await asyncio.to_thread(_gerar_diagrama_png, assunto)
+    except Exception as e:
+        logger.warning(f"gerar diagrama: {e}")
+        png = None
+    if png and len(png) <= _LIMITE_PNG_BYTES:
+        b64 = base64.b64encode(png).decode("ascii")
+        await ws.send(json.dumps({
+            "tipo": "imagem",
+            "base64_png": b64,
+            "legenda": assunto,
+        }))
+        logger.info(
+            f"imagem enviada: {len(png)} bytes png / {len(b64)}c base64 "
+            f"(assunto={assunto[:60]})"
+        )
+        return True
+    logger.info(
+        f"imagem: fallback textual ({len(png or b'')} bytes) assunto={assunto[:60]}"
+    )
+    return False
+
+
 async def lidar(ws):
     try:
         path = getattr(ws.request, "path", "/")
@@ -3241,6 +3392,10 @@ async def lidar(ws):
                 except:
                     await ws.send(json.dumps({"text": r, "corrigido": m}))
                 continue
+            # IMAGEM: pedido de diagrama/mapa mental gera PNG (Graphviz) e
+            # envia fora do fluxo textual; a resposta em texto/áudio segue
+            # normal (fallback textual quando a geração não estiver disponível).
+            await _enviar_imagem_se_pedido(ws, m)
             # TAREFA ASSÍNCRONA: pedido de auditoria/integridade/preflight é
             # detectado antes do LLM prometer "vou te avisar" — agenda, roda o
             # script real em background e notifica ao terminar. NÃO cai no LLM.

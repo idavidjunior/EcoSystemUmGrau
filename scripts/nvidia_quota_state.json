@@ -1,10 +1,10 @@
 {
   "rpm_used": 0,
-  "last_reset": 1788646307.4476044,
+  "last_reset": 1788649773.0615263,
   "tokens": 40.0,
   "last_429": null,
   "fallbacks_triggered": 1,
-  "total_requests": 118,
+  "total_requests": 140,
   "total_429": 0,
   "total_5xx": 1
 }
