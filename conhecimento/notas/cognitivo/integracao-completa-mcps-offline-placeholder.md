@@ -1,5 +1,5 @@
 ---
-tags: [cognitivo, deploy, expande, general, list, renderizacao]
+tags: [cognitivo, deploy, expande, general, list, não]
 aliases: [integracao completa mcps offline placeholder]
 date: 2026-08-13
 ---
@@ -7,6 +7,16 @@ date: 2026-08-13
 # integracao completa mcps offline placeholder
 
 **Dominio:** general
+
+Tipo: erro
+
+Tags: [integracao, mcp, opencode, config, placeholder, renderizacao, deploy]
+
+Data: 2026-08-13
+
+contexto: Diagnóstico de integração completa do EcoSystemUmGrau. Todos os 13 MCPs
+
+decisao: A causa raiz era que o opencode.jsonc deployado em ~/.config/opencode
 
 ---
 tipo: erro

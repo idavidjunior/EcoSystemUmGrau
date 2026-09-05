@@ -1,5 +1,5 @@
 ---
-tags: [complexo, lento, opencode, padrao, saudacoes, tts]
+tags: [dinamica, fonte, jarvis, opencode, padrao, saudacao]
 aliases: [saudacao dinamica jarvis]
 date: 2026-08-20
 ---
@@ -8,14 +8,7 @@ date: 2026-08-20
 
 **Fonte:** opencode
 
----
-tipo: padrao
-tags: [saudacao, frases_manager, unified-bridge, personalidade, tts]
-data: 2026-08-18
-contexto: >
-  Usuario queria saudacao mais humana e dinamica para o Jarvis.
-  Sistema atual usava LLM para gerar saudacoes (complexo, lento).
-  Queria algo casual, amigavel, dinamico, contextual, n
+
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

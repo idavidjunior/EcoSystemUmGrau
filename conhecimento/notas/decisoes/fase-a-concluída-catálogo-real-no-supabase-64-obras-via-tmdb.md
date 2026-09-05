@@ -1,5 +1,5 @@
 ---
-tags: [decisao, dentro, multiline, opencode, sessão, strings]
+tags: [decisao, dentro, family, multiline, opencode, strings]
 aliases: [Fase A concluída: catálogo real no Supabase (64 obras via TM]
 date: 2026-08-08
 ---
@@ -7,17 +7,6 @@ date: 2026-08-08
 # Fase A concluída: catálogo real no Supabase (64 obras via TMDB)
 
 **Fonte:** opencode
-
----
-tipo: decisao
-tags: [supabase, tmdb, catalogo, streamumgrau, fase-a, seed]
-data: 2026-08-08
-contexto: Fase A do StreamUmGrau - conectar catalogo real ao Supabase via TMDB
-decisao: Catalogo real no ar com 64 obras (22 filmes, 21 series, 21 doramas) via TMDB -> Supabase -> app
-impacto: App mostra dados reais; repositorio tem schema + script regeneravel + seed versionado
----
-
-# Fase A concluída: catálogo real no Supabase (64 obras via TMDB)
 
 ## O que foi feito
 
@@ -37,28 +26,7 @@ impacto: App mostra dados reais; repositorio tem schema + script regeneravel + s
 
 ## Segurança
 
-- Chave secret (`sb_secret_...`) foi exposta no chat pelo usuário — orientado a rotacionar
-  (Settings -> API -> Recreate secret).
-- Credenciais vão via `--dart-define` no build; NUNCA versionadas no código.
-- A senha do banco tem prefixo `Family/` — armazenada apenas localmente/na sessão.
-
-## Fluxo de build com credenciais
-
-```
-flutter build apk --debug \
-  --dart-define=SUPABASE_URL=https://<ref>.supabase.co \
-  --dart-define=SUPABASE_ANON_KEY=sb_publishable_...
-```
-
-## Validação no dispositivo
-
-- Instalado no Redmi (wireless 100.64.71.9:5555), app rodando (PID 28058), sem FATAL,
-  sem erros de rede no logcat.
-
-## Regra de processo do usuário (novo padrão)
-
-**Sempre** antes de commit/push: compilar -> instalar -> testar -> validar. Só depois subir.
-
+- Chave 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

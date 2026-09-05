@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**274 notas** do cluster ecossistema.
+**273 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -66,6 +66,7 @@
 - [[2026-08-16-detecção-automática-de-inglês-no-tts]]
 - [[2026-08-17-car-bt-controle-total-via-adb-bluetooth-automotiv]]
 - [[2026-08-17-organograma-agrupado-por-livro-técnicas-de-valida]]
+- [[adicionado-passo-79-ao-setupbat-que-cria-a-task-ecosystemvig]]
 - [[aegis-barra-progresso-tempo-real]]
 - [[aegis-registrado-como-projeto-irmao-rust]]
 - [[análise-de-jarvis-opensource-aprendizados-aplicáveis]]
@@ -130,7 +131,7 @@
 - [[engenheiro-criterioso]]
 - [[ensureserve-spawns-opencode-serve-without-passing-env-contex]]
 - [[errado]]
-- [[erro-unicodeencodeerror-no-runtimecontext-cp1252]]
+- [[erro]]
 - [[estilo-de-comunicação-simples-e-direto]]
 - [[estilo-por-pedido-power-bi-implementado]]
 - [[etapa-25-teste-end-to-end]]
@@ -154,12 +155,12 @@
 - [[gate-ponto-unico-compilador]]
 - [[gate-veto-compreensao]]
 - [[gate-veto-kernel]]
+- [[generate-graph-htmlpy-agora-le-o-vault-obsidian-conhecimento]]
 - [[geraraudio-blocks-until-full-tts-generation-no-streaming]]
 - [[governanca-ciclo-jurisprudencia]]
 - [[grafo-movimento-organico-vis-network-usuario-pediu-refinamen]]
 - [[grafo-vis-network-bug-string-js-json-dumps]]
 - [[gramática-do-português-brasileiro-guia-prático-do-dia-a-dia]]
-- [[gui-desktop-desativada-edge-e-cerebro-vivo]]
 - [[gui-remover-chatpanel]]
 - [[guia-controle-total-de-tv-lg-webos-reaproveitável]]
 - [[habilidade-navegação-perita-internet-pc-e-celular]]
@@ -168,6 +169,7 @@
 - [[identidade-digital-do-usuario-david]]
 - [[idioma-padrao-pt-br]]
 - [[ilhas-no-grafo-notas-com-grau-0-e-como-conecta-las]]
+- [[implementados-ambos-1-prosodiafrases-aplica-prosody-por-sent]]
 - [[importação-de-pasta-preservando-árvore-remoção-de-referência]]
 - [[integracao-completa-mcps-offline-placeholder]]
 - [[integracao-contexto-kernel]]
@@ -181,7 +183,6 @@
 - [[limpeza-disco-windows]]
 - [[loop-infinito-de-push-no-vigilante-emails-do-github-a-cada-m]]
 - [[maestro-fase-ativa-fix-registro-e-stale-pid]]
-- [[mcp-obsidian-server-vault-consumido-pelo-llm]]
 - [[mcp-prompt-optimization-não-conectava-transporte-json-por-li]]
 - [[mcp-server-failed-to-get-tools-no-opencode]]
 - [[mcp-server-handshake-obrigatorio]]
@@ -235,6 +236,7 @@
 - [[respostas-truncadas]]
 - [[restauracao-unified-bridge]]
 - [[retencao-opencode-db-vigilante]]
+- [[reverter-as-mudancas-do-cerebro-e-implementar-pausarretomar-]]
 - [[salvar-rustdesk-password-e-id-em-local-permanente-nao-gerar-]]
 - [[saudacao-auto-evolutiva-jarvis]]
 - [[saudacao-dinamica-jarvis]]
@@ -255,7 +257,6 @@
 - [[sistema-de-análise-financeira]]
 - [[smc-ab5-calculadora-simples]]
 - [[smc-ab5-formatacao-brl]]
-- [[smc-acrescimo-resultado-grande]]
 - [[snapshots-corrompidos-do-opencode-referência-no-banco-decide]]
 - [[source-registry-módulo-de-fontes-de-conhecimento-técnico]]
 - [[stt-no-partialstreaming-results]]
@@ -266,7 +267,6 @@
 - [[toast-de-erros-falsos-positivos]]
 - [[tradingagents-integrado-ao-ecossistema]]
 - [[transparencia-execucao-tarefas]]
-- [[triagem-scripts-legado-orgaos-movidos]]
 - [[unificacao-aprendizados-adb-cluster-a]]
 - [[unificacao-de-vigilantes-watchdogps1-rebaixado-a-keeper]]
 - [[vault-obsidian-cerebro-vivo-grafo]]
@@ -277,4 +277,3 @@
 - [[widget-desktop-grafo-tempo-real]]
 - [[widget-edge-estabilizado-fonte-unica-processos]]
 - [[widget-evolucao-3-niveis]]
-- [[widget-jarvis-8-features-implementadas]]

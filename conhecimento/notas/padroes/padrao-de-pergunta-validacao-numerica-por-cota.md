@@ -1,5 +1,5 @@
 ---
-tags: [centavos, lucro, opencode, padrao, qual, reais]
+tags: [copom, cortar, juros, opencode, padrao, queda]
 aliases: [Padrao de pergunta: validacao numerica por cota]
 date: 2026-08-24
 ---
@@ -8,11 +8,17 @@ date: 2026-08-24
 
 **Fonte:** opencode
 
----
-tipo: padrao
-tags: [interacao, estilo-usuario, comunicacao, financas]
-data: 2026-08-24
-contexto: David pediu explicitamente que o ecossistema aprenda com sua forma de fazer perguntas, exemplificando ao reformular a duvida de investimento como "a cada 100 reais qual e meu lucro 90 centavos por me
+## Observado
+David formula duvidas de confirmacao usando numeros arredondados sobre uma unidade base.
+Exemplo real: "a cada 100 reais qual é o meu lucro 90 centavos em media por mes?"
+
+## Como responder (contrato)
+1. Confirmar ou corrigir o numero na primeira frase, sem preambulo
+2. Trabalhar sempre por cota unitaria (por 100 reais), nao por percentual abstrato
+3. Contexto so depois do numero confirmado
+
+## Aplicacao imediata
+Resposta dada nesta sessao: confirmado que 90 centavos/mes por 100 reais e a media conservadora correta (95 centavos no inicio com IR de 22,5%, subindo conforme tabela regressiva ate ~1 real com resgate apos 2 anos, sujeito a queda se Copom cortar juros).
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

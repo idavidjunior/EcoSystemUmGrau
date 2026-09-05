@@ -1,5 +1,5 @@
 ---
-tags: [evolucao, ferro, naturalidade, opencode, padrao, tts]
+tags: [corretamente, faladas, fonte, opencode, padrao, tts]
 aliases: [saudacao jarvis estilo filme]
 date: 2026-08-20
 ---
@@ -8,14 +8,9 @@ date: 2026-08-20
 
 **Fonte:** opencode
 
----
-tipo: padrao
-tags: [saudacao, jarvis, frases_manager, personalidade, tts, evolucao]
-data: 2026-08-18
-contexto: >
-  Sistema de saudacao dinamica precisava de mais variedade e naturalidade.
-  Usuario queria estilo Jarvis do Homem de Ferro: calmo, espontaneo, com
-  personalidade de quem trabalha ju
+## Conexoes
+
+- [[aprendizado-2026-07-31-horas-faladas-corretamente-no-tts-do-]]
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

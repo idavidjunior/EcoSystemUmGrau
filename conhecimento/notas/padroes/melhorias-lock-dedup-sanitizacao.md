@@ -8,12 +8,13 @@ date: 2026-09-04
 
 **Fonte:** opencode
 
----
-tipo: padrao
-tags: [melhoria, lock, sanitizacao, dedup, memoria, resiliencia]
-data: 2026-09-04
-contexto: Durante a consolidação do Cluster A de memórias ADB, três melhorias reais foram detectadas e implementadas com aviso ao usuário (que autorizou implementar melhorias avisando sempre).
-decisao:
+Tipo: padrao
+
+Tags: [melhoria, lock, sanitizacao, dedup, memoria, resiliencia]
+
+Data: 2026-09-04
+
+Contexto: Durante a consolidação do Cluster A de memórias ADB, três melhorias reais foram detectadas e implementadas com aviso ao usuário (que autorizou implementar melhorias avisando sempre).
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

@@ -19,7 +19,7 @@ date: 2026-08-17
 O mapa de referências cruzadas "Eufrates" (30 nós, 0 conexões) renderizava como uma faixa branca
 ## Conexoes
 
-- [[aegis-registrado-como-projeto-irmao-rust]]
+- [[aegis-barra-progresso-tempo-real]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]

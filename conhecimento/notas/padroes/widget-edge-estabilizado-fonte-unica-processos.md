@@ -1,5 +1,5 @@
 ---
-tags: [corrida, killer, opencode, padrao, ram, unica]
+tags: [corrida, killer, log, opencode, padrao, ram]
 aliases: [widget edge estabilizado fonte unica processos]
 date: 2026-08-21
 ---
@@ -8,12 +8,15 @@ date: 2026-08-21
 
 **Fonte:** opencode
 
----
-tipo: padrao
-tags: [widget, guardian, o-excl, psutil, corrida, ram-killer, fonte-unica]
-data: 2026-08-21
-contexto: Widget flutuante widget_edge.py (pywebview) morria silenciosamente em segundos ao rodar em background; loop eterno de reinicio do guardian a cada ~21s no guardian_log.txt.
-decisao: 
+Tipo: padrao
+
+Tags: [widget, guardian, o-excl, psutil, corrida, ram-killer, fonte-unica]
+
+Data: 2026-08-21
+
+Contexto: Widget flutuante widget_edge.py (pywebview) morria silenciosamente em segundos ao rodar em background; loop eterno de reinicio do guardian a cada ~21s no guardian_log.txt.
+
+Decisão: |, system_guardian.py: fonte unica de verdade = tabel
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

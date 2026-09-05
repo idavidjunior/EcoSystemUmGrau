@@ -1,5 +1,5 @@
 ---
-tags: [apertar, botão, cognitivo, general, recalculava, repetidamente]
+tags: [cognitivo, general, int, proprio, quebrando, referenciava]
 aliases: [Bug: parametro Pid e variavel automatica do PowerShell]
 date: 2026-08-06
 ---
@@ -8,26 +8,27 @@ date: 2026-08-06
 
 **Dominio:** general
 
----
-tipo: erro
-tags: [watchdog, powershell, bug, resiliencia]
-data: 2026-08-06
-contexto: Certificacao forense de processos no watchdog.ps1 (Test-ForensicoLixo / Invoke-KillCertificado)
-decisao: Renomear parametro [int]Pid para [int]ProcessId nas funcoes forenses
-impacto: Evita que o watchdog mate o proprio processo (variavel automatica PID read-only)
----
-
-# Bug: parametro Pid e variavel automatica do PowerShell
-
 ## Sintoma
-A funcao `Test-ForensicoLixo` e `Invoke-KillCertificado` declaravam `[int
+A funcao `Test-ForensicoLixo` e `Invoke-KillCertificado` declaravam `[int]$Pid` como
+parametro. No PowerShell, `$PID` e uma variavel AUTOMATICA read-only que contem o PID
+do processo atual. Com `$ErrorActionPreference = "SilentlyContinue"`, a atribuicao do
+parametro falhava em silencio e `$Pid` dentro da funcao referenciava o PID do proprio
+watchdog.
 
----
-tipo: erro
-tags: [calculadora, supermarket, precedencia, bug, idempotencia-igual, android, puresdk]
-data: 2026-09-03
-contexto: Reescrevi a tab Calculadora Simples (setupSimpleCalc da MainActivity.java do SupermarketCalculator, pure SDK) para aceitar expressão completa com precedência matemática e corrigir o bug do botão = que recalculava ao apertar repetidamente.
-decisao: Avalei a expressão tokenizada com precedência ×÷ antes de +− (esquerda-direita) via BigDecimal. O handler op, no caso pós
+## Risco real
+O watchdog poderia certificar e matar a SI MESMO (ou o PID errado), quebrando a
+resiliencia que deveria proteger.
+
+## Correcao aplicada
+- Parametros renomeados para `$ProcessId` em `Test-ForensicoLixo` e `Invoke-KillCertificado`.
+- Todas as chamadas no loop atualizadas (`-ProcessId`).
+- Tambem corrigido `Write-Log "..." + (array)` que virava argumentos posicionais
+  descartados — perdendo a auditoria dos motivos. Agora usa interpolacao.
+
+## Validacao
+- Sintaxe: SINTAXE OK (PSParser).
+- Teste seco: explorer fingindo ser python -> BLOQUEADO com motivos auditaveis.
+- Teste seco: processo supervisionado (pai vivo) -> 
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]

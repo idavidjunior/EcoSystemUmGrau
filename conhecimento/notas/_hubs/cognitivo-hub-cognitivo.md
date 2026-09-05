@@ -1,6 +1,6 @@
 # Padroes Cognitivos
 
-**66 notas** conectadas a este hub.
+**69 notas** conectadas a este hub.
 
 
 ## Notas
@@ -12,6 +12,7 @@
 - [[2026-08-02-ecosystem-sync-1-comando-para-sincronizar-tudo]]
 - [[2026-08-03-scan-proativo-claude-code-extra-agents]]
 - [[2026-08-04-refinamento-do-grafo-zoom-microscópio-expandir-e-]]
+- [[adicionado-passo-79-ao-setupbat-que-cria-a-task-ecosystemvig]]
 - [[antecipacao-de-comportamento-adaptativo]]
 - [[aprendizado-2026-07-31-pontuação-automática-de-transcrições-]]
 - [[audit-runner-recuperado]]
@@ -28,7 +29,7 @@
 - [[encoding-aware-diagnostics]]
 - [[entender-antes-de-criar-ontologia-de-habilidades]]
 - [[errado]]
-- [[erro-unicodeencodeerror-no-runtimecontext-cp1252]]
+- [[erro]]
 - [[espera-adaptativa-por-tipo-de-recurso]]
 - [[estrategia-de-fallback-em-cadeia-chain-of-responsibility]]
 - [[estrategia-de-loop-autonomo-planejar-executar-verificar-corr]]
@@ -36,17 +37,18 @@
 - [[fix-favoritos-tags-e-contagem-por-capitulo]]
 - [[fix-tts-corte-final-textos-longos]]
 - [[gate-hd-externo-e-preflight-repos-nativos]]
+- [[generate-graph-htmlpy-agora-le-o-vault-obsidian-conhecimento]]
 - [[grafo-vis-network-bug-string-js-json-dumps]]
 - [[guia-controle-total-de-tv-lg-webos-reaproveitável]]
 - [[heuristica-de-densidade-de-informacao]]
 - [[hipotese-falsificacao-terminal]]
 - [[hora-na-tela-vs-hora-no-áudio-jarvis]]
 - [[identidade-digital-do-usuario-david]]
+- [[implementados-ambos-1-prosodiafrases-aplica-prosody-por-sent]]
 - [[integracao-completa-mcps-offline-placeholder]]
 - [[lei-de-postel-aplicada-a-engenharia]]
 - [[maestro-fase-ativa-fix-registro-e-stale-pid]]
 - [[mapa-mental-de-navegadores-web]]
-- [[mcp-obsidian-server-vault-consumido-pelo-llm]]
 - [[mcp-prompt-optimization-não-conectava-transporte-json-por-li]]
 - [[modelo-de-scoring-para-busca-multi-resultado]]
 - [[modelo-mental-de-dom-virtual]]
@@ -63,6 +65,7 @@
 - [[reconhecimento-instantaneo-de-framework]]
 - [[reinjecao-primeira-mensagem-bridge]]
 - [[respostas-truncadas]]
+- [[reverter-as-mudancas-do-cerebro-e-implementar-pausarretomar-]]
 - [[saudacao-espontanea-nao-implementada]]
 - [[servidores-mcp-node-criados-e-validados]]
 - [[silêncio-do-narrador-três-causas-empilhadas]]

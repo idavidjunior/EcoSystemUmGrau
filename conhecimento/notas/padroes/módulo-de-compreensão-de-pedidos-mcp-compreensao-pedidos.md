@@ -1,5 +1,5 @@
 ---
-tags: [ação, converte, entende, opencode, padrao, quer]
+tags: [busc, busqu, estruturada, fonte, opencode, padrao]
 aliases: [Módulo de Compreensão de Pedidos (mcp-compreensao-pedidos)]
 date: 2026-08-08
 ---
@@ -8,12 +8,29 @@ date: 2026-08-08
 
 **Fonte:** opencode
 
----
-tipo: padrao
-tags: [compreensao-pedidos, mcp, nucleo, stdlib, llm-fail-soft, litellm, nvidia, kernel]
-data: 2026-08-08
-contexto: Usuário pediu para eliminar o DSPy/prompt-optimization e criar um módulo próprio de compreensão de pedidos, que entende o que o usuário quer e converte em ação
-decisao
+Substitui o pipeline DSPy/PromptWizard de otimização de prompts. Em vez de polir o
+prompt, o ecossistema agora COMPREENDE o pedido e o converte em ação estruturada.
+
+## Estrutura
+
+```
+mcp/nucleo/habilidades/compreensao-pedidos/
+  compreensao.py   # núcleo stdlib, CLI, importável (CPython puro)
+  server.py        # MCP server (5 tools), transporte stdio dual
+  skill.md         # instruções de uso
+```
+
+## O que faz (estático, instantâneo, sem LLM)
+
+- **Ações explícitas** extraídas por radicais de verbo (com variantes c→qu da
+  conjugação: `explic|expliqu`, `verific|verifiqu`, `chec|chequ`, `busc|busqu`)
+  e **ordenadas por posição de aparição no texto** (não por ordem da regex).
+- **Objeto da ação** cortado no próximo verbo e em "e <verbo>" (com split por
+  stopwords: "e me diga", "e faça o backup").
+- **Verbos auxiliares genéricos** ("faça", "faz") descartados quando imediatamente
+  antes de outra ação real.
+- **Conceitos** = entidades conhecidas (projetos/skills/scripts) + termos
+  cap
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

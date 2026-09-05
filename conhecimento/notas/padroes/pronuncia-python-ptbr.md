@@ -1,5 +1,5 @@
 ---
-tags: [opencodeopencode, padrao, portugues, pronunciado, páiton, termo]
+tags: [linguagem, opencodeopencode, padrao, práticas, registro, usar]
 aliases: [pronuncia python ptbr]
 date: 2026-08-20
 ---
@@ -8,17 +8,17 @@ date: 2026-08-20
 
 **Fonte:** opencode+opencode
 
----
-tipo: padrao
-tags: [pronuncia, python, pt-br, tts, pronuncias.json]
-data: 2026-08-18
-contexto: >
-  Usuario pediu que Python seja pronunciado como "páiton" em portugues,
-  nao em ingles. O glossario_tecnico.json listava Python como termo tecnico
-  em ingles, mas o PronunciationEngine do SpeechPip
 ## Conexoes
 
-- [[aegis-registrado-como-projeto-irmao-rust]]
+- [[cluster-hub-programacao]]
+- [[norma-culta-x-coloquial-no-pt-br-quando-usar-cada-registro-n]]
+- [[python-decoradores-e-metaprogramação]]
+- [[python-gil-e-concorrência]]
+- [[python-idioms-e-boas-práticas]]
+- [[python-sintaxe-e-núcleo-da-linguagem]]
+## Conexoes
+
+- [[aegis-barra-progresso-tempo-real]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]

@@ -1,5 +1,5 @@
 ---
-tags: [contribuicao, evolucao, opencode, padrao, precisava, secundario]
+tags: [corretamente, faladas, horas, opencode, padrao, tts]
 aliases: [saudacao llm nvidia api]
 date: 2026-08-20
 ---
@@ -8,14 +8,9 @@ date: 2026-08-20
 
 **Fonte:** opencode
 
----
-tipo: padrao
-tags: [saudacao, jarvis, llm, nvidia, api, auto-evolucao, secundario]
-data: 2026-08-18
-contexto: >
-  Sistema de saudacao auto-evolutiva precisava de contribuicao LLM
-  como fonte secundaria de variedade. Templates sao primarios, LLM
-  complementa com frases mais espontaneas e natura
+## Conexoes
+
+- [[aprendizado-2026-07-31-horas-faladas-corretamente-no-tts-do-]]
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

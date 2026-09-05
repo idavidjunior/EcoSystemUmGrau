@@ -19,7 +19,7 @@ date: 2026-08-17
 O usuário pediu para aprender a controlar o aparelho Bluetooth CAR-BT conectado ao celular (Xiaomi, Android 
 ## Conexoes
 
-- [[aegis-registrado-como-projeto-irmao-rust]]
+- [[aegis-barra-progresso-tempo-real]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]

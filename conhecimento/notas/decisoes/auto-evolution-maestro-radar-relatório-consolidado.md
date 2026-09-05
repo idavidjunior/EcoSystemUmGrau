@@ -1,5 +1,5 @@
 ---
-tags: [consistencia, decisao, load, manter, markdown, opencode]
+tags: [aprendizados, conhecimento, decisao, opencode, orquestram, yyyy]
 aliases: [Auto-Evolution: Maestro + Radar + Relatório Consolidado]
 date: 2026-09-03
 ---
@@ -7,17 +7,6 @@ date: 2026-09-03
 # Auto-Evolution: Maestro + Radar + Relatório Consolidado
 
 **Fonte:** opencode
-
----
-tipo: decisao
-tags: [auto-evolution, maestro, radar, evolucao, gate]
-data: 2026-09-03
-contexto: Fechamento dos 3 gaps pendentes do auto_evolution.py (Maestro, busca externa, relatorio consolidado).
-decisao: Integrar consulta ao Maestro (fail-soft), subcomando radar com coleta externa e relatorio Markdown por ciclo.
-impacto: Motor de auto-evolucao respeita governanca do Maestro, ganha busca externa real e rastreabilidade do ciclo.
----
-
-# Auto-Evolution: Maestro + Radar + Relatório Consolidado
 
 Fecha os 3 itens pendentes do motor de auto-evolução do Ecossistema.
 
@@ -29,20 +18,7 @@ Fecha os 3 itens pendentes do motor de auto-evolução do Ecossistema.
 
 ## Bug corrigido (detecção automática)
 
-`evolution_radar_collect.py` falhava em `save_state` com `TypeError: Object of type set is not JSON serializable` ao coletar itens novos. Causa: `seen_hashes[src]` mantido como `set()` em memoria, mas JSON nao serializa set. Corrigido com `_json_clean` (set->lista na serializacao) e conversao lista->set no `load_state` para manter consistencia em memoria.
-
-## Validacao
-
-- `auto_evolution.py health`: SAUDÁVEL (preflight tecnico, etico, git, memoria, checkpoint OK).
-- `auto_evolution.py radar` (com admin): coleta OK, 6 candidatos, 1 pacote gerado.
-- `_maestro_consulta` fail-soft: retorna offline sem bloquear.
-- `preflight_check.py`: TODOS TESTES PASSARAM.
-
-## Comandos de uso
-
-python scripts/auto_evolution.py health   # diagnostico de saude
-python scripts/auto_evolution.py radar    # busca externa de gaps (requer EVOLUTION_RADAR_ADMIN=1)
-
+`evolution_radar_collect.py` falhava em `save_state` com `TypeError: Object of type set is not JSON serializable` ao coletar itens novos. Causa: `seen_hashes[src
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

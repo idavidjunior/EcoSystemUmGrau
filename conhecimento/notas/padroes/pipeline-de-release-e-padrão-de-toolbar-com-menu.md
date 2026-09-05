@@ -1,24 +1,32 @@
 ---
-tags: [dicionário, notas, opencodeopencode, padrao, recursos, referências]
+tags: [alterado, opencodeopencodeopencode, padrao, quebrou, responsividade, weight]
 aliases: [Pipeline de release e padrão de toolbar com menu]
 date: 2026-08-20
 ---
 
 # Pipeline de release e padrão de toolbar com menu
 
-**Fonte:** opencode+opencode
+**Fonte:** opencode+opencode+opencode
 
----
-tipo: padrao
-tags: [android, layout, toolbar, menu, reordenacao, release]
-data: 2026-08-20
-contexto: Adicionada função "Mover" na Home para personalizar a ordem das seções (atalhos, leitura, versículo, dicionário, notas, referências, recursos).
-decisao: Inicialmente foi adicionado um botão TextV
+## Problema encontrado
+O botão "Mover" adicionado como TextView dentro do Toolbar, com o título alterado para weight=1, quebrou o padrão de responsividade do projeto. Todas as outras telas usam título com `layout_width="match_parent"` + `gravity="center"`.
+
+## Padrão correto para ação no Toolbar
+1. Título permanece `match_parent` + `gravity="center"` (não alterar para weight).
+2. Criar `res/menu/<tela>_menu.xml` com o item e ícone.
+3. Na Activity: `setActionBar(findViewById(R.id.toolbar))` no onCreate.
+4. Implementar `onCreateOptionsMenu` (inflate do menu) e `onOptionsItemSelected`.
+5. Ícone de menu aparece no canto direito do Toolbar, título permanece centralizado.
+
+Referência de padrão no projeto: `ReferenceMapActivity.java` + `res/menu/reference_map_menu.xml`.
+
+## Reordenação das seções da Home
+- Lista fixa de seções em `getHomeSections()` (ids dos views no `homeSectionsContainer`).
+- `showReorderDialog()`: ListView em AlertDialog; toque em item move para cima (troca de posição).
+- 
 ## Conexoes
 
 - [[aegis-registrado-como-projeto-irmao-rust]]
-- [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
+- [[config-2026-07-27-teste-do-vigilante-automático]]
 - [[padrao-hub-padroes]]
-- [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]

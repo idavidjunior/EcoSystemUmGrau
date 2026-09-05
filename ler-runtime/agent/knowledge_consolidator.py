@@ -27,6 +27,23 @@ def _jaccard_sim(a, b):
     return len(tokens_a & tokens_b) / len(tokens_a | tokens_b)
 
 
+def _norm_text(text):
+    """Remove BOM (\\ufeff) e espacos em branco das bordas para comparacao segura."""
+    return (text or "").replace("\ufeff", "").strip()
+
+
+def _clean_markdown_core(text):
+    """Extrai o corpo util de um markdown de aprendizado: remove BOM, frontmatter
+    YAML inicial e o primeiro H1, devolvendo apenas o conteudo real."""
+    text = _norm_text(text)
+    if text.startswith("---"):
+        m = re.match(r"^---\r?\n.*?\r?\n---\r?\n?", text, re.DOTALL)
+        if m:
+            text = text[m.end():].strip()
+    text = re.sub(r"^#\s+[^\n]*\n?", "", text)
+    return _norm_text(text)
+
+
 def _merge_patterns(existing, new):
     """Merge two pattern entries, keeping the best of both."""
     merged = dict(existing)
@@ -94,7 +111,10 @@ def _merge_cognitive(existing, new):
         elif key in ("body", "description"):
             existing_v = existing.get(key, "")
             new_v = new.get(key, "")
-            if new_v and new_v not in existing_v:
+            # compara versoes normalizadas (sem BOM/whitespace) para nao duplicar por BOM
+            en = _norm_text(existing_v)
+            nn = _norm_text(new_v)
+            if nn and new_v and (nn not in en):
                 merged[key] = existing_v + "\n\n" + new_v if existing_v else new_v
         elif not existing.get(key):
             merged[key] = new[key]
@@ -854,6 +874,7 @@ class KnowledgeConsolidator:
                 text = f.read()
         except Exception:
             return
+        text = _norm_text(text)  # remove BOM/whitespace nas bordas
         lines = text.splitlines()
         if not lines:
             return
@@ -896,6 +917,7 @@ class KnowledgeConsolidator:
         cat = meta.get("categoria", "geral")
         context = meta.get("contexto", "")
         source = meta.get("agentes envolvidos", "opencode")
+        core = _clean_markdown_core(text)
 
         # Tags semanticas: extrai conceitos do titulo + contexto + corpo
         # (RAKE leve, local/deterministico) e combina com categoria.
@@ -923,7 +945,7 @@ class KnowledgeConsolidator:
             learning["decisions"].append({
                 "source": source,
                 "decision": title,
-                "rationale": text,
+                "rationale": core[:1000],
                 "extracted_at": ts,
             })
         elif cat == "padrao":
@@ -931,7 +953,7 @@ class KnowledgeConsolidator:
                 "source": source,
                 "title": title,
                 "action": context,
-                "description": text[:300],
+                "description": core[:300],
                 "domain": "general",
                 "extracted_at": ts,
             })
@@ -940,7 +962,7 @@ class KnowledgeConsolidator:
                 "source": source,
                 "issue": title,
                 "root_cause": context,
-                "fix": text[:500],
+                "fix": core[:500],
                 "extracted_at": ts,
             })
         elif cat == "config":
@@ -948,7 +970,7 @@ class KnowledgeConsolidator:
                 "source": source,
                 "title": f"Config: {title}",
                 "action": context,
-                "description": text[:300],
+                "description": core[:300],
                 "domain": "config",
                 "extracted_at": ts,
             })
@@ -956,7 +978,7 @@ class KnowledgeConsolidator:
             learning["heuristics"].append({
                 "source": source,
                 "title": f"Risk: {title}",
-                "description": text[:300],
+                "description": core[:300],
                 "domain": "risk",
                 "extracted_at": ts,
             })
@@ -965,7 +987,7 @@ class KnowledgeConsolidator:
                 "source": source,
                 "title": title,
                 "domain": "general",
-                "body": text[:500],
+                "body": core[:500],
                 "extracted_at": ts,
             })
 

@@ -1,5 +1,5 @@
 ---
-tags: [jsonc opencode, mcp opencode, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, servidor mcp opencode]
+tags: [correto mcp opencode, jsonc opencode, mcp opencode, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao]
 aliases: [Config: # 2026-07-28: Formato correto do MCP no OpenCode 1.1]
 date: 2026-07-28
 ---
@@ -11,7 +11,7 @@ date: 2026-07-28
 # 2026-07-28: Formato correto do MCP no OpenCode 1.18.7
 
 **Categoria:** config
-**Contexto:** Ao adicionar servidor MCP no `opencode.jsonc`, o OpenCode 1.18.7 rejeitava a config com erro `Expected { readonly "type": "local", ... } | { readonly "type": "remote", ... }` e `Missing key mcp.servers.enab; ﻿# 2026-07-28: Formato correto do MCP no OpenCode 1.18.7
+**Contexto:** Ao adicionar servidor MCP no `opencode.jsonc`, o OpenCode 1.18.7 rejeitava a config com erro `Expected { readonly "type": "local", ... } | { readonly "type": "remote", ... }` e `Missing key mcp.servers.enab; # 2026-07-28: Formato correto do MCP no OpenCode 1.18.7
 
 **Categoria:** config
 **Contexto:** Ao adicionar servidor MCP no `opencode.jsonc`, o OpenCode 1.18.7 rejeitava a config com erro `Expected { readonly "type": "local", ... } | { readonly "type": "remote", ... }` e `Missing key mcp.servers.enab

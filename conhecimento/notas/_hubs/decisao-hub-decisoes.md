@@ -1,6 +1,6 @@
 # Decisoes
 
-**99 notas** conectadas a este hub.
+**98 notas** conectadas a este hub.
 
 
 ## Notas
@@ -26,6 +26,7 @@
 - [[decisão-aprendizado-automático-permanente]]
 - [[decisão-arquitetura-jarvis-app]]
 - [[desativar-bridge-android]]
+- [[ecow-e-ecow-abrirfocar-o-cerebro-vivo]]
 - [[encoding-utf-8-in-javac-required-on-windows-to-prevent-corru]]
 - [[engenheiro-criterioso]]
 - [[estado-persiste-em-json-nao-sqlite-legivel-editavel-fora-do-]]
@@ -41,7 +42,6 @@
 - [[gate-veto-compreensao]]
 - [[gate-veto-kernel]]
 - [[governanca-ciclo-jurisprudencia]]
-- [[gui-desktop-desativada-edge-e-cerebro-vivo]]
 - [[gui-remover-chatpanel]]
 - [[habilidades-de-jarvis-seguem-taxonomia-de-3-niveis]]
 - [[idioma-padrao-pt-br]]
@@ -84,7 +84,6 @@
 - [[single-activity-com-framelayout-visibilidade-setvisibility-s]]
 - [[smc-ab5-calculadora-simples]]
 - [[smc-ab5-formatacao-brl]]
-- [[smc-acrescimo-resultado-grande]]
 - [[step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo]]
 - [[stringbuilder-for-price-fine-grained-control-over-display-fo]]
 - [[supermarketcalculator-v157]]

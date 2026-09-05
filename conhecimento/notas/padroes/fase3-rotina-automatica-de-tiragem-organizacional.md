@@ -8,13 +8,15 @@ date: 2026-08-13
 
 **Fonte:** opencode
 
----
-tipo: padrao
-tags: [organizacao, auditoria, rotina, vigilante, orfaos, gitignore, manutencao]
-data: 2026-08-13
-contexto: Fase 3 da organização do EcoSystemUmGrau. Após a limpeza manual
-(fase 1: 30 órfãos para _legado; fase 2: 31 artefatos fora do git), era preciso
-transformar a auditoria em roti
+Tipo: padrao
+
+Tags: [organizacao, auditoria, rotina, vigilante, orfaos, gitignore, manutencao]
+
+Data: 2026-08-13
+
+Contexto: Fase 3 da organização do EcoSystemUmGrau. Após a limpeza manual
+
+Decisão: Criado scripts/audit_triagem.py (100% stdlib) com dois detectores:
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
