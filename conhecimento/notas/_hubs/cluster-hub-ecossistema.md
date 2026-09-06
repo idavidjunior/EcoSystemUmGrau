@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**277 notas** do cluster ecossistema.
+**278 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -237,6 +237,7 @@
 - [[respostas-truncadas]]
 - [[restauracao-unified-bridge]]
 - [[retencao-opencode-db-vigilante]]
+- [[roteamento-busca-web-vox]]
 - [[salvar-rustdesk-password-e-id-em-local-permanente-nao-gerar-]]
 - [[saudacao-auto-evolutiva-jarvis]]
 - [[saudacao-dinamica-jarvis]]
