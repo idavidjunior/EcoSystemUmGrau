@@ -1,12 +1,12 @@
 ---
-tags: [auto, automatico, bluetooth, opencode, padrao, rot]
+tags: [auto, automatico, bluetooth, opencodeopencode, padrao, rot]
 aliases: [padrao organizacao comandos]
 date: 2026-08-17
 ---
 
 # padrao organizacao comandos
 
-**Fonte:** opencode
+**Fonte:** opencode+opencode
 
 ## Conexoes
 
@@ -17,9 +17,9 @@ date: 2026-08-17
 - [[2026-08-17-car-bt-controle-total-via-adb-bluetooth-auto
 ## Conexoes
 
-- [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]
+- [[aegis-registrado-como-projeto-irmao-rust]]
+- [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-5-teste-final-do-vigilante-em-processo-rea]]
-- [[controle-da-tv-lg-webos-via-ssap]]
+- [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
 - [[padrao-hub-padroes]]
-- [[secrets-guard-no-preflightcheck]]
+- [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]

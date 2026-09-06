@@ -123,7 +123,11 @@ def test_remote_mcp_server(server_name, url, headers=None):
         return check(f'MCP {server_name}', False, str(e)[:200])
 
 def test_mcp_server(server_name, command, args):
-    """Test an MCP server: initialize + tools/list must complete in 5s."""
+    """Test an MCP server: initialize + tools/list must complete in 20s.
+    Timeout calibrado em 20s: o browser-mcp importa playwright.async_api no
+    startup (spawn do processo do zero) e, sob carga no Windows, pode levar
+    mais de 5s para responder; o servidor responde corretamente quando recebe
+    tempo (falha era intermitente: Timeout (5s) x PASS nas mesmas condicoes)."""
     print(f'  Testing MCP: {server_name}...')
     try:
         # Expand template vars if present
@@ -135,7 +139,7 @@ def test_mcp_server(server_name, command, args):
             text=True, cwd=BASE, encoding='utf-8', errors='replace')
         init = '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}\n'
         tools = '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}\n'
-        stdout, stderr = proc.communicate(input=init + tools, timeout=5)
+        stdout, stderr = proc.communicate(input=init + tools, timeout=20)
         proc.kill()
         if stderr and 'Error' in stderr:
             return check(f'MCP {server_name}', False, stderr[:200])
@@ -158,7 +162,7 @@ def test_mcp_server(server_name, command, args):
         return check(f'MCP {server_name}', False, 'No valid tools/list response')
     except subprocess.TimeoutExpired:
         proc.kill()
-        return check(f'MCP {server_name}', False, 'Timeout (5s)')
+        return check(f'MCP {server_name}', False, 'Timeout (20s)')
     except Exception as e:
         return check(f'MCP {server_name}', False, str(e)[:200])
 

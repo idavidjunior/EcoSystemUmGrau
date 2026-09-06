@@ -166,7 +166,6 @@ NVIDIA dava timeout (30/60s) e o refino ficava inutil na pratica.
 - [[oficializacao-narrador-edge-cerebro-vivo]]
 - [[otimização-do-reindex-semântico-do-memory-engine]]
 - [[padrao-de-pergunta-validacao-numerica-por-cota]]
-- [[padrao-organizacao-comandos]]
 - [[pais]]
 - [[pausa-total-widget]]
 - [[persistencia-completa-widget-grafo]]

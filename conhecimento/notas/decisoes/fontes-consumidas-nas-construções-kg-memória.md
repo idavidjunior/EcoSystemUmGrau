@@ -1,5 +1,5 @@
 ---
-tags: [decisao, github, opencode, programming, resultados, vim]
+tags: [decisao, github, opencode, python, resultados, vim]
 aliases: [Fontes consumidas nas construções (KG + memória)]
 date: 2026-09-03
 ---

@@ -129,7 +129,6 @@ detalhes: LICAO: no opencode, placeholders suportados sao {env:VAR} (e {{USERPRO
 - [[oficializacao-narrador-edge-cerebro-vivo]]
 - [[otimização-do-reindex-semântico-do-memory-engine]]
 - [[padrao-de-pergunta-validacao-numerica-por-cota]]
-- [[padrao-organizacao-comandos]]
 - [[pais]]
 - [[pausa-total-widget]]
 - [[persistencia-completa-widget-grafo]]

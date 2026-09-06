@@ -2905,8 +2905,18 @@ class DiagramGenerator:
 class GraphvizGenerator(DiagramGenerator):
     """Gera PNG de mapa mental via Graphviz (binário `dot`)."""
 
+    _CAMINHOS_FIXOS_DOT = (
+        r"C:\Program Files\Graphviz\bin\dot.exe",
+        r"C:\Program Files (x86)\Graphviz\bin\dot.exe",
+    )
+
     def gerar(self, assunto: str) -> bytes:
         dot = shutil.which("dot")
+        if not dot:
+            for caminho in self._CAMINHOS_FIXOS_DOT:
+                if Path(caminho).exists():
+                    dot = caminho
+                    break
         if not dot:
             raise RuntimeError("Graphviz (dot) não está instalado")
         dot_src = _assunto_para_dot(assunto)
