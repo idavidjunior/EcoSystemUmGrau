@@ -162,7 +162,6 @@ Probe MCP padrão (framing correto) agora responde:
 - [[idioma-padrao-pt-br]]
 - [[ilhas-no-grafo-notas-com-grau-0-e-como-conecta-las]]
 - [[importação-de-pasta-preservando-árvore-remoção-de-referência]]
-- [[integrity-guard-motor-estrutural]]
 - [[janela-flutuante-para-visuais-sem-navegador]]
 - [[jarvis-do-celular-e-do-pc-um-só-cérebro-arquitetura-sincroni]]
 - [[jarvis-gui-desktop-referencia]]
