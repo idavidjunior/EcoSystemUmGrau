@@ -1,0 +1,7 @@
+---
+tipo: erro
+tags: [preflight, mcp, playwright, timeout, resiliência, gate]
+data: 2026-09-05
+contexto: Durante o @sync, o gate persistencia.ps1 retornou PREFLIGHT_FAIL por 2x (22:37 e 22:43) com "MCP mcp-browser: Timeout (5s)", embora o preflight manual rodasse PASS (22:40) com o mesmo servidor.
+decisao: A causa raiz era o timeout fixo de 5s no test_mcp_server (scripts/preflight_check.py, communicate(timeout=5)). O browser-mcp importa playwright.async_api no startup do processo que o teste spawna do zero; sob carga normal do Windows (12 MCP servers, guardian, maestro, bridge), o spawn+import+initialize+tools/list pode exceder 5s intermitentemente. O servidor responde corretamente quando recebe tempo (prova: PASS nas execuções com menos contenção e tools funcionando na sessão). Calibrado o timeout para 20s (docstring + communicate(timeout=20) + mensagem Timeout (20s)).
+impacto: Preflight voltou a ser estável: rodada de validação COdE=0 com 12/12 MCP PASS e mcp-browser PASS. O commit do eco (9d8ca7f8b) passou pelo gate. A mudança é mínima, localizada e reversível; não mascara falha real do servidor (o teste continua validando initialize+tools/list). Lição: testes de MCP com startup pesado (Playwright) precisam de timeout compatível com o custo de spawn+import no Windows.
