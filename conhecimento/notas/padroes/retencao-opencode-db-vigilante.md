@@ -1,5 +1,5 @@
 ---
-tags: [opencode, opencode não, opencode retencao, opencode vigilante, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao]
+tags: [opencode, opencode não, opencode vigilante, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, retencao opencode]
 aliases: [retencao opencode db vigilante]
 date: 2026-08-27
 ---

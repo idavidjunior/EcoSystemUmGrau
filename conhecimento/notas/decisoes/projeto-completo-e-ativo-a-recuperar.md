@@ -1,5 +1,5 @@
 ---
-tags: [adb, decisao, indicar, opencode, proprio, script]
+tags: [decisao, imediatamente, indicar, opencode, proprio, script]
 aliases: [projeto completo e ativo a recuperar]
 date: 2026-09-03
 ---
