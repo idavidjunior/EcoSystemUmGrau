@@ -1,5 +1,5 @@
 ---
-tags: [build, fonte, manutencao, opencodeopencode, padrao, real]
+tags: [backups, fonte, logs, manutencao, opencodeopencode, padrao]
 aliases: [fase2 limpeza git artefatos rastreados]
 date: 2026-08-13
 ---
@@ -8,18 +8,16 @@ date: 2026-08-13
 
 **Fonte:** opencode+opencode
 
-Tipo: padrao
-
-Tags: [organizacao, git, gitignore, artefatos, build, limpeza, manutencao]
-
-Data: 2026-08-13
-
-Contexto: Fase 2 da organização do EcoSystemUmGrau. O repositório eco tinha 1553
-
-Decisão: (1) git rm (disco + git) para lixo sem uso real: 16 arquivos
+---
+tipo: padrao
+tags: [organizacao, git, gitignore, artefatos, build, limpeza, manutencao]
+data: 2026-08-13
+contexto: Fase 2 da organização do EcoSystemUmGrau. O repositório eco tinha 1553
+arquivos rastreados e o .git já ignorava corretamente target/build/backups/logs
+(*.log). Porém havia lixo rast
 ## Conexoes
 
-- [[aegis-barra-progresso-tempo-real]]
+- [[aegis-registrado-como-projeto-irmao-rust]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]

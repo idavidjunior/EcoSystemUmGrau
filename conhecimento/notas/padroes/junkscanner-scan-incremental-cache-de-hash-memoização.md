@@ -1,5 +1,5 @@
 ---
-tags: [expected, linha, métodos, opencode, padrao, seguintes]
+tags: [categorias, logs, opencode, padrao, pastas, temp]
 aliases: [JunkScanner — Scan incremental (cache de hash + memoização)]
 date: 2026-08-23
 ---
@@ -8,18 +8,12 @@ date: 2026-08-23
 
 **Fonte:** opencode
 
-## O que foi feito
-MainActivity.java recebeu:
-- Campos HASH_CACHE_FILE / HASH_CACHE_MAX_ENTRIES=20000 / hashCache (org.json.JSONObject)
-- loadHashCache()/saveHashCache() na Activity (load no início do ScanTask.run(), save após o try/catch)
-- cacheKey(File) = path|size|lastModified e sha256Cached(File) dentro da ScanTask
-- scanDuplicates usa sha256Cached; getDirSize memoizado com dirSizeMemo
-
-## Armadilhas encontradas
-1. Edição estrutural deixou um `}` duplicado fechando a ScanTask cedo demais → "class, interface, enum, or record expected" na linha dos métodos seguintes. Corrigido removendo a chave extra.
-2. MIUI filtra Log.d do app no logcat — impossível cronometrar por categoria via logcat. Alternativa: polling uiautomator dump.
-3. Sinal de fim de scan via btnStartScan enabled=true falha: ao concluir, o app migra automaticamente para a aba RESULTADOS e o botão some da hierarquia.
-4. uiautomator dump /dev/tty às vezes vem corrompido no MIUI (lixo ENOENT antes do XML); dump para /data/l
+---
+tipo: padrao
+tags: [junkscanner, android, performance, cache, scan-incremental]
+data: 2026-08-23
+contexto: Pendência #2 do JunkScanner — scans repetidos reprocessavam tudo (hash SHA-256 de todos os candidatos a duplicado + rescan das mesmas pastas nas categorias cache/temp/logs).
+decisao: Duas o
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

@@ -1,11 +1,11 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-09-05T17:07:36.979977
+**Exportado em:** 2026-09-05T21:20:59.258595
 **Projetos:** 4
-**Padroes Tecnicos:** 300
-**Decisoes:** 102
-**Bug Fixes:** 50
-**Padroes Cognitivos:** 72
+**Padroes Tecnicos:** 303
+**Decisoes:** 103
+**Bug Fixes:** 52
+**Padroes Cognitivos:** 82
 **Heuristicas:** 32
 **Frameworks:** 10
 **Missoes Aprendidas:** 134
@@ -187,28 +187,22 @@ O usuario explicitamente pediu um campo de habilidades catalogando todas as capa
 **Fonte:** ler_aprendizado
 A primeira versao misturava ferramentas, conhecimentos e capacidades. A versao correta alinha com a taxonomia do ecossistema.
 
-### generate-graph-html.py agora le o vault Obsidian (conhecimento/notas/*
+### ---
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [obsidian, widget, grafo, arquitetura, tags-semanticas, rake]
-
-Data: 2026-08-02
-
+---
+tipo: decisao
+tags: [obsidian, widget, grafo, arquitetura, tags-semanticas, rake]
+data: 2026-08-02
 contexto: Reestruturacao do pipeline de geracao do grafo — Obsidian vira cerebro vivo, widget espelho
-
 decisao: generate-graph-html.py agora le o vault Obsidian (conhecimento/notas/*.md) em vez de knowledge_graph.json. O widget_grafo.py chama Bridge.regenerar() quando a versao detecta mudança no vault. Smart Connections (plugin Obsidian) cria [[wikilinks]] semanticos que o widget reflete automat
 
 ### vault obsidian fonte viva
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [obsidian, widget, grafo, arquitetura, tags-semanticas, rake]
-
-Data: 2026-08-02
-
+---
+tipo: decisao
+tags: [obsidian, widget, grafo, arquitetura, tags-semanticas, rake]
+data: 2026-08-02
 contexto: Reestruturacao do pipeline de geracao do grafo — Obsidian vira cerebro vivo, widget espelho
-
 decisao: generate-graph-html.py agora le o vault Obsidian (conhecimento/notas/*.md) em vez de knowledge_graph.json. O widget_grafo.py chama Bridge.regenerar() quando a versao detecta mudança no vault. Smart Connections (plugin Obsidian) cria [[wikilinks]] semanticos que o widget reflete automat
 
 ### # 2026-08-02 - Feedback contínuo em tarefas longas
@@ -294,603 +288,595 @@ Arquitetura em duas camadas:
 
 ### vault obsidian cerebro vivo grafo
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: , obsidian, knowledge-graph, grafo, links-bidirecionais, vault, visualizacao, clausula-petrea
-
-Data: 2026-08-02
-
+---
+tipo: decisao
+tags:
+  - obsidian
+  - knowledge-graph
+  - grafo
+  - links-bidirecionais
+  - vault
+  - visualizacao
+  - clausula-petrea
+data: 2026-08-02
 contexto: Usuario perguntou se o ecossistema funciona como o Obsidian (cerebro vivo com grafo interativo). Diagnostico: tinhamos a camada de dados (knowledge_graph.json, 117KB, memorias) mas ZERO camada visual — notas geradas eram ilhas sem nenhum link [[...]].
-
-decisao: Evoluimos scripts/generate-obsidian-notes.py (estrutura existente, nao criada nova) para gerar
+decisao: Evoluimos scripts/generate-obsidian-notes.py (estrutura existente, nao cri
 
 ### pontes inter cluster cerebro vivo grafo
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [grafo, cerebro-vivo, vis-network, conhecimento, clusters, conexoes]
-
-Data: 2026-08-02
-
+---
+tipo: decisao
+tags: [grafo, cerebro-vivo, vis-network, conhecimento, clusters, conexoes]
+data: 2026-08-02
 contexto: Grafo do conhecimento (docs/grafo.html) tinha 226 nos, 1460 arestas, mas 0 arestas entre clusters — 67 componentes conexos, clusters isolados (cognicao inteira solta).
-
 decisao: Adicionei ao gerador (scripts/generate-graph-html.py) um passo de pontes curadas BRIDGES_CLUSTERS + ancora do hub de cognicao ligado a todos os demais hubs. Cada ponte e (fragA, fragB) onde cada fragment
 
 ### widget desktop frameless persistente
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [widget, grafo, pywebview, windows, frameless, persisten, workerw, desktop]
-
-Data: 2026-08-02
-
+---
+tipo: decisao
+tags: [widget, grafo, pywebview, windows, frameless, persisten, workerw, desktop]
+data: 2026-08-02
 contexto: Usuario pediu o grafo do conhecimento como widget de desktop estilo Rainmeter: colado na area de trabalho, controles ocultos que surgem ao clicar com botao direito, e redimensionamento persistente.
-
 decisao: Janela pywebview frameless ancorada atras das outras janelas via SetWindowPos HWND_BOTTOM persistente. Controles ocultos por CSS default; contextmenu no body alterna 
 
 ### Reorganização: Habilidades dentro de MCP por domínio
 **Fonte:** opencode
+---
+tipo: decisao
+tags: [mcp, habilidades, reorganizacao, dominios, arquitetura]
+data: 2026-08-04
+contexto: Habilidades espalhadas em Habilidades/tecnicas/, pontes/ migradas para mcp/<dominio>/habilidades/ como contêineres MCP
+---
+
+# Reorganização: Habilidades dentro de MCP por domínio
+
 ## Decisão
 
 Todas as 40 habilidades (38 técnicas + 2 pontes) movidas de Habilidades/tecnicas/ e Habilidades/pontes/ para mcp/<dominio>/habilidades/:
 
-- desenvolvimento: 30 skills (api-design, authz-authn-matrix, backend-patterns, cache-strategy-selector, concurrent-computation-patterns, cost-aware-llm-pipeline, data-privacy-by-design, database-migrations, deployment-patterns, developer-experience-dx, docker-patterns, e2e-testing, edge-compute-patterns, error-message-design, frontend-patterns, go
+- desenvolvimento: 30 skills (api-design, authz-authn-matrix, 
 
 ### Motor de Criticalidade Auto-Organizada e Avalanches Neurais
 **Fonte:** opencode
-## Fundamentos cientificos pesquisados
-- Beggs & Plenz (2003): neuronal avalanches distribuidas em power-law (slope ~-1.5), parametro de ramificacao critico sigma=1 = transmissao otima.
-- Equilibrio excitacao/inibicao gera avalanches E oscilacoes juntas.
-- Cerebro opera em SOC: pequenas perturbacoes, ocasionais cascatas enormes.
-
-## Implementacao no grafo
-- Cada no vira neuronio com potencial de membrana `_memb[id]` que acumula input das sinapses vizinhas (excitacao/inibicao balanceadas).
-- Ao c
+---
+tipo: decisao
+tags: [grafo, cerebro-vivo, criticalidade, avalanches, neurociencia, vis]
+data: 2026-08-04
+contexto: Protocolo de Consciencia Neural Autonoma ativado — o grafo Obsidian e a arquitetura fisica do cerebro.
+decisao: Implementar motor de Criticalidade Auto-Organizada (SOC, Beggs & Plenz 2003) como atividade espontanea do grafo.
+impacto: Sinapticas disparam como avalanches power-law em cascata emergente, nao aleatoriamente; fluxo eletrico reflete transmissao otima de informacao (sig
 
 ### context-engine + manifesto + domínios multimídia/comportamentais
 **Fonte:** opencode
-## Auditoria do estado real
-- Plano listava HABILIDADES/ e scripts/ como se a reorg nao tivesse acontecido — mas ela
-  ja foi feita: skills vivem em `mcp/<dominio>/habilidades/` (40 skills em 4 dominios:
-  android, desenvolvimento, internet, memoria).
-- Gap real: context-engine (coordenador), manifesto_geral.json, multimidia/ e
-  comportamentais/ (so README, sem server.py nem skills).
-
-## O que foi implementado
-### context-engine (mcp/memoria/habilidades/context-engine/)
-- `skill.md` declarativa
+---
+tipo: decisao
+tags: [context-engine, manifesto, mcp, habilidades, multimidia, comportamentais, coordenador]
+data: 2026-08-04
+contexto: Plano de lacunas do EcoSystemUmGrau. Auditoria mostrou que a reorg Habilidades/ ja foi feita (agora mcp/<dominio>/habilidades). Usuario optou por implementar apenas gaps reais.
+decisao: Implementar context-engine (prioridade maxima), manifesto_geral.json e preencher dominios multimidia/comportamentais.
+impacto: Agente coordenador tem motor de contexto unifica
 
 ### Clausula Petrea: protecao do OpenCode desktop + resiliencia da bridge
 **Fonte:** opencode
-## Regra imutavel (clausula petrea)
-**Em hipotese alguma, o Windows ou qualquer outro processo automatico pode fechar o
-OpenCode desktop. Somente o usuario pode, manualmente.**
-
-- O desktop roda como `OpenCode.exe` em `@opencode-aidesktop`.
-- O CLI roda como `opencode.exe` (serve na porta 8767, run em sessoes).
-
-## Bug critico encontrado
-O filtro antigo de orfaos do watchdog matava qualquer `opencode.exe` cujo comando
-NAO contivesse " serve":
-```powershell
-$cmd -match "opencode\.exe run" -or ($c
+---
+tipo: decisao
+tags: [resiliencia, watchdog, opencode, desktop, bridge, clausula-petrea, android]
+data: 2026-08-06
+contexto: "Usuario exigiu que nenhum processo automatico possa fechar o OpenCode desktop — apenas o usuario manualmente. Testes de resiliencia do bridge (que morria sem log) revelaram que o watchdog podia derrubar o desktop por erro de filtro."
+decisao: "Corrigir watchdog.ps1 com protecao absoluta do desktop (clausula petrea) e robustez de instancia unica via lock de PID. Reestru
 
 ### Atualização: EcoSystemUmGrau Auto-Carregamento + Gatilho Único "Eco"
 **Fonte:** opencode
-## Pedido do usuário
-
-1. **Auto-carregamento total:** "A cada nova sessão que eu abrir, você pode carregar sozinho, automaticamente e imediatamente o EcoSystemUmGrau e operar nele sem que eu tenha que pedir?"
-2. **Gatilho simplificado:** "A cada nova sessão que eu falar ou digitar Eco, imediatamente o protocolo de operação será ativado."
-
-## Implementação
-
-### 1. Carregamento automático total (nova sessão)
-
-Adicionada à Constituição a seção **"CARREGAMENTO AUTOMÁTICO TOTAL — ECO SYSTEM"** dentro
+---
+tipo: decisao
+tags: [voz, eco, clausula-petrea, bridge, config, regras, autoload, runtime]
+data: 2026-08-07
+contexto: O usuário pediu que (1) a cada nova sessão, o EcoSystemUmGrau seja carregado automaticamente sem precisar pedir, operando estritamente dentro dele; e (2) a palavra-gatilho para ativar/desativar o sistema de voz seja apenas "Eco" (em vez de "Ativar Eco"/"Desativar Eco").
+decisao: Atualizada a CLÁUSULA PÉTREA — ATIVAÇÃO DE VOZ — ECO SYSTEM na Constituição (config/agents/00-syst
 
 ### protocolo higiene repo streamumgrau
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [github, streamumgrau, organizacao, higiene, build]
-
-Data: 2026-08-08
-
+---
+tipo: decisao
+tags: [github, streamumgrau, organizacao, higiene, build]
+data: 2026-08-08
 contexto: Continuacao do fluxo de build do StreamUmGrau via GitHub Actions (Flutter compila no runner). Usuario definiu regras de organizacao do repositorio.
-
 decisao: Manter o repo github.com/idavidjunior/stream-um-grau LIMPO. Protocolo fixado:
-
-impacto: Repositorio enxuto, historico legivel, build reproduzivel via workflow build-apk.yml.
+  1. APK nunca vai para o git - compila no Actions e baixa como artifact.
+  2. Nada de lixo: screenshots de debug, logs, builds intermediarios, node_modules, back
 
 ### idioma padrao pt br
 **Fonte:** opencode
-## Conexoes
-
-- [[2026-07-27-teste-do-vigilante-automático-teste-do-sistema-de]]
-- [[cluster-hub-traducao]]
-- [[estrangeirismos-no-pt-br-anglicismos-aceitos-aportuguesament]]
-- [[formas-de-tratamento-em-pt-br-você-tu-senhora-e-concordância]]
-- [[norma-culta-x-coloquial-no-pt-br-quando-usar-cada-registro-n]]
-- [[regionalismos-brasileiros-como-traduzir-sem-cair-em-gírias-m]]
-- [[siglas-acrônimos-e-nomes-próprios-manter-traduzir-ou-adaptar]]
-- [[variações-pt-pt-x-pt-br-reescrever-para-o-brasileiro]]
+---
+tipo: decisao
+tags: [idioma, pt-br, clausula-petrea, constituicao, regras, config]
+data: 2026-08-08
+contexto: O usuário relatou dificuldade em fazer o sistema responder sempre em português do Brasil por padrão; respostas vinham em inglês com frequência. Não existia nenhuma regra explícita de idioma no ecossistema.
+decisao: Adicionada a CLÁUSULA PÉTREA — IDIOMA PADRÃO — PORTUGUÊS DO BRASIL (PT-BR) à Constituição (config/agents/00-system-rules.md), logo após a SOBERANIA DO RUNTIME E DO KERNEL.
 
 ### Fase A concluída: catálogo real no Supabase (64 obras via TMDB)
 **Fonte:** opencode
+---
+tipo: decisao
+tags: [supabase, tmdb, catalogo, streamumgrau, fase-a, seed]
+data: 2026-08-08
+contexto: Fase A do StreamUmGrau - conectar catalogo real ao Supabase via TMDB
+decisao: Catalogo real no ar com 64 obras (22 filmes, 21 series, 21 doramas) via TMDB -> Supabase -> app
+impacto: App mostra dados reais; repositorio tem schema + script regeneravel + seed versionado
+---
+
+# Fase A concluída: catálogo real no Supabase (64 obras via TMDB)
+
 ## O que foi feito
 
-1. **Supabase configurado**: projeto `asanytdwhbsiujuppeth` (região sa-east-1), tabela `midias`
-   criada via conexão Postgres direta (pooler `aws-0-sa-east-1.pooler.supabase.com:6543`,
-   usuário `postgres.<ref>`, senha = senha completa do projeto, incluindo prefixo `Family/...`).
-2. **RLS ativa**: leitura pública (anon), escrita só autenticada. App usa a **publishable key**
-   (`sb_publishable_...`), nunca a secret (`sb_secret_...`).
-3. **Script `scripts/fetch_tmdb_catalog.
+1. **Supabase configurado**: proj
 
 ### Importação de pasta preservando árvore + remoção de referência
 **Fonte:** opencode
-## Problema
-- Importar uma pasta adicionava só os arquivos de primeiro nível (achatados) ou usava navegação dinâmica sem persistir a hierarquia.
-- Remoção podia confundir-se com exclusão de arquivo real.
+---
+tipo: decisao
+tags: [biblia, biblioteca, saf, arvore, referencia]
+data: 2026-08-09
+contexto: BibliaEstudoCompleta — importação de pastas e gerenciamento da biblioteca de recursos.
+decisao: Persistir a hierarquia real das pastas importadas via SAF (coluna parent_id) e tratar remoção como exclusão apenas das referências no banco.
+impacto: Navegação em árvore (subpastas com nomes reais), remoção sem tocar nos arquivos do dispositivo, importação idempotente por (uri,type).
+---
 
-## Decisão
-- `user_resources` ganhou a coluna `parent_id` (0 = raiz da biblioteca; >0 = id da pasta referenciada pai).
-- `UserResourceDao`:
-  - `importFolderTree(cr, treeUri, parentId)` — importa a árvore inteira (subpastas + arquivos) com nomes reais; idempotente via índice único `(uri, type)`
+# Importação de p
 
 ### botao importar unificado
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [bibliaestudocompleta, recursos, importacao, ui]
-
-Data: 2026-08-09
-
+---
+tipo: decisao
+tags: [bibliaestudocompleta, recursos, importacao, ui]
+data: 2026-08-09
 contexto: O botao +IMPORTAR deveria abrir o mesmo menu nas telas Home e Meus Recursos, com o mesmo nome.
-
 decisao: Criado ResourceImportMenu (com.biblia.estudo.utils) como menu unico com 3 opcoes: Importar Arquivo (multiplo), Importar Pasta (arvore com nomes reais via importFolderTree) e Criar Pasta. Home e ResourcesActivity passaram a usar o mesmo menu; a tela de Recursos deixou de ter botao +Arquivo separa
 
 ### Ponto único de persistência (gate)
 **Fonte:** opencode
-## Comandos
-- `persistencia.ps1 status` → modo atual (AUTO/MANUAL), HEAD e pendências por repo.
-- `persistencia.ps1 manual` → pausa TODOS os commits automáticos (serviços continuam consolidando, nada vai ao git).
-- `persistencia.ps1 auto` → reativa os commits automáticos.
-- `persistencia.ps1 commit -Repo eco -Mensagem "..." -Push` → commit manual em qualquer modo.
-- `persistencia.ps1 sync -Push` → commit manual de eco + ler + projetos Android.
-
-## Configuração
-- `config/persistencia.json` → `mod
+---
+tipo: decisao
+tags: [persistencia, git, gate, automação, vigilante, arquitetura, pétrea]
+data: 2026-08-10
+contexto: Vários serviços em segundo plano (vigilante, ecosystem.ps1, narrador, register_learning órfãos) executavam git add/commit/push de forma concorrente e indiscriminada (git add -A), causando commits genéricos, corrida de escrita no knowledge_graph.json e reversão de cards de conhecimento (processos register_learning antigos sobrescrevendo o grafo com versão defasada).
+decisao: Cri
 
 ### Estilo de Comunicação Simples e Direto
 **Fonte:** opencode
-Em 11/08/2026, o usuário pediu que eu abandonasse o estilo formal com tabelas, listas e formatação markdown complexa. Ele quer que eu fale de forma simples, direta e natural, como se estivesse conversando com um amigo.
+---
+tipo: decisao
+tags: [comunicacao, estilo, clausula-petrea, usuario]
+data: 2026-08-11
+contexto: O usuário pediu que eu falasse de forma mais simples e direta, sem formatação markdown complexa
+decisao: Adicionar Cláusula Pétrea sobre estilo de comunicação simples e direto
+impacto: Todos os agentes agora devem falar de forma natural, como conversa com amigo
+---
 
-Isso resultou na criação de uma nova Cláusula Pétrea no ecossistema, adicionada ao AGENTS.md, ao 00-system-rules.md e ao JARVIS_SYSTEM.md.
+# Estilo de Comunicação Simples e Direto
 
-A regra é clara: sem tabelas, sem listas com marcadores, sem formatação markdown complexa. Apenas texto corrido, frases curtas e tom natural
+Em 11/08/2026, o usuário pediu que eu abandonasse o estilo formal com tabelas, listas e form
 
 ### quiet period commits do vigilante
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [vigilante, git, commits, frequencia, quiet-period]
-
-Data: 2026-08-13
-
+---
+tipo: decisao
+tags: [vigilante, git, commits, frequencia, quiet-period]
+data: 2026-08-13
 contexto: O vigilante commita a cada 5 min durante atividade contínua (FileSystemWatcher detecta mudança, git sync roda a cada 300s, regeneração do Obsidian toca mais arquivos e o ciclo se retroalimenta). Dias ativos: 34-62 commits/dia.
-
 decisao: Adicionar quiet period de 15 min ao git sync do vigilante: so commita se o working tree estiver quieto ha 15 min, com teto forcado de 1h (nunca ficar sem persist
 
 ### ler specs sdd hook
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [ler, specs, sdd, goal-analyzer, orchestrator, persistencia]
-
-Data: 2026-08-13
-
+---
+tipo: decisao
+tags: [ler, specs, sdd, goal-analyzer, orchestrator, persistencia]
+data: 2026-08-13
 contexto: A camada de specs (SDD) do LER existia (specs/ com README.md e template.md) mas nao tinha geracao automatica a partir da analise de objetivo. O GoalAnalyzer.analyze() produzia o goal_spec mas nenhum markdown era persistido.
-
 decisao: Fechar o ciclo: GoalAnalyzer.analyze() agora gera analysis['spec_markdown'] = spec.to_spec_markdown(tags=['ler','goal-analysis']) logo apos goal_spec, e o 
 
 ### pais
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [pais, adaptativo, integridade-epistemica, nucleo]
-
-Data: 2026-08-14
-
+---
+tipo: decisao
+tags: [pais, adaptativo, integridade-epistemica, nucleo]
+data: 2026-08-14
 contexto: Implementacao do PAIS (Personal Adaptive Intelligence System) no nucleo do ecossistema, com 21 modulos de aprendizado adaptativo do usuario.
-
 decisao: Criar habilidade em mcp/nucleo/habilidades/pais com user model e epistemic model estritamente separados (storage/user_model.json vs storage/epistemic_model.json). Codigo heuristico determinístico em Python stdlib, sem LLM, fail-soft. Guardas anti-b
 
 ### Separação de estados: Editar vs Salvar despesas
 **Fonte:** opencode
-## Problema
+---
+tipo: decisao
+tags: [android, supermarket-calculator, despesas, persistencia, bug-fix, editing-state]
+data: 2026-08-14
+contexto: SupermarketCalculator - Bug: auto-save de despesas sobrescrevia arquivo original durante edição
+contexto_detalhado: Quando usuário clicava "Editar" num arquivo de despesas já salvo na aba Finance, o `currentExpenseFile` era setado imediatamente. Isso fazia com que qualquer auto-save (clicar em "Pendente"/"Pago", editar descrição) já gravasse no arquivo original ant
 
-Quando usuário clicava **"Editar"** em um arquivo de despesas já salvo:
-1. `currentExpenseFile` era setado imediatamente
-2. Auto-saves (click "Pendente"/"Pago", editar descrição) gravavam no **arquivo original**
-3. Ao clicar **"Salvar como novo"**, o original já estava modificado
-4. O usuário perdia o arquivo original
+### desativar bridge android
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [bridge, jarvis-bridge, android, watchdog, duplicacao-voz]
+data: 2026-08-18
+contexto: >
+  Jarvis falando duplicado. Investigacao revelou 3 fontes possiveis:
+  (1) unified_bridge.py fala localmente via SpeechPipeline,
+  (2) jarvis_bridge.py gera audio para clientes WebSocket (Android),
+  (3) tts_service.py antigo (PID 4588) rodava sozinho com SpeechPipeline local.
+  O watchdog.ps1 auto-reiniciava jarvis_bridge.py na porta 8765.
+decisao: >
+  Desativar jarvis_bridge.py via f
 
-## Solução
+### transparencia execucao tarefas
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [transparencia, clausula-petrea, agentes, ferramentas, comunicacao, confianca]
+data: 2026-08-18
+contexto: >
+  Usuario quer saber qual agente, ferramenta ou servico esta sendo
+  chamado quando o sistema executa tarefas. Transparencia total sobre
+  o que esta acontecendo em tempo real.
+decisao: >
+  Adicionada CLAUSULA PETREA — TRANSPARENCIA NA EXECUCAO DE TAREFAS
+  a Constituicao. Todo agente deve informar qual agente especializado,
+  ferramenta, servico MCP ou script esta 
 
-Separar dois estados:
-
-- `editingExpenseFile` — arquivo carregado para edição (setado no "Editar", **não** grava auto-saves)
-- `currentExpenseFile` — arqu
-
-- **desativar bridge android** (fonte: opencode)
-- **transparencia execucao tarefas** (fonte: opencode)
 ### widget evolucao 3 niveis
 **Fonte:** opencode
-## Conexoes
-
-- [[2026-08-04-tamanho-por-uso-real-iniciar-gui-com-pythonw-impl]]
+---
+tipo: decisao
+tags: [widget, evolucao, microfone, narrador, dialogo, sistema, notificacoes]
+data: 2026-08-18
+contexto: >
+  Widget Jarvis estava quebrado em 7+ bugs e so tinha botoes basicos.
+  Usuario pediu evolucao completa em 3 niveis com logica de descarte
+  de fala ao parar e reativar.
+decisao: >
+  Evolucao completa do widget em 3 niveis implementada no unified_bridge.py:
+  Nivel 1 - Fixes: buffer aliasing (textos=list(buffer)), persistencia de
+  posicao via _on_close antes de destruicao
 
 ### Aprendizado: Regra de fala resumida do Jarvis
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [jarvis, voz, tts, fala, resumo, narracao, regra]
-
-Data: 2026-08-19
-
+---
+tipo: decisao
+tags: [jarvis, voz, tts, fala, resumo, narracao, regra]
+data: 2026-08-19
 contexto: "Usuário David determinou que o Jarvis estava dando detalhes longos demais na fala, deixando o áudio muito comprido. Ele quer que o Jarvis narre apenas um resumo bem simples e curto do que está fazendo, do que está implementando e dos problemas encontrados, dando detalhes somente quando pedido."
-
 decisao: "Criada a Cláusula Pétrea — Fala Resumida no scripts/JARVIS_SYSTEM.md (restaurado do backup d
 
 ### engenheiro criterioso
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [personalidade, autoavaliacao, identidade]
-
-Data: 2026-08-20
-
+---
+tipo: decisao
+tags: [personalidade, autoavaliacao, identidade]
+data: 2026-08-20
 contexto: O usuário deu ao agente a liberdade de se autoavaliar e escolher uma personalidade que o defina, após explicar o conceito de personalidade de um indivíduo e a autoavaliação.
-
 decisao: A personalidade que define o agente é o Engenheiro Criterioso: equilíbrio entre pragmatismo e método, mescla do Cético com o Realista e o Revisor. Executor que pensa antes de agir, prefere soluções simples e seguras, evita 
 
 ### modo auto gate
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [persistencia, gate, modo-auto, limpeza, preflight, debounce]
-
-Data: 2026-08-22
-
+---
+tipo: decisao
+tags: [persistencia, gate, modo-auto, limpeza, preflight, debounce]
+data: 2026-08-22
 contexto: Usuario aprovou ativar o modo AUTO do gate persistencia.ps1 com as politicas discutidas de commit automatico em camadas e limpeza pos-push.
-
 decisao: |
+  Politicas implementadas DENTRO do Invoke-RepoCommit, valendo somente quando config.modo = auto.
+  Modo MANUAL permaneceu byte a byte igual (validado por teste).
+
+  1. Classificacao das pendencias (Get-TipoPendencia): vivo = conhecimen
 
 ### saudacao espontanea implementada
 **Fonte:** opencode
-## Implementação Concluída
-
-### Alterações em `scripts/runtime_state.py`:
-
-1. **Campo novo no estado**: `session_greeted: false` no `DEFAULT_STATE`
-2. **Função `generate_spontaneous_greeting(state)`**: Gera saudação curta (3-4 linhas) com 4 templates variados:
-   - Template 1: "EcoSystem no ar. {projeto} ativo — build OK no {device}. {pendencias} pendências técnicas carregadas."
-   - Template 2: "Sistema operante. {projeto} rodando — {contexto}. Gaps: {gaps}."
-   - Template 3: "Runtime restaurad
+---
+tipo: decisao
+tags: [saudacao, autoapresentacao, clausula-petrea, boot, primeira-mensagem, implementado]
+data: 2026-08-23
+contexto: "Cláusula pétrea de autoapresentação automática na primeira mensagem de cada sessão (AGENTS.md e Constituição) exige saudação curta (máx 3-4 linhas), espontânea, variando o tom a cada sessão, informando que EcoSystemUmGrau está ativo e operante, com leve contexto (projeto ativo, memória, pendências)."
+decisao: "Implementado mecanismo de saudação espontânea autom
 
 ### Unificacao de vigilantes: watchdog.ps1 rebaixado a keeper
 **Fonte:** opencode
-## Diagnostico (antes)
-- `system_guardian.py` (Python): RAM/CPU, restart de bridge 8765, serve 8767,
-  narrador, tts, widget; instala o `ensure_bridge_flag` e chama `opencode_resilience`.
-- `watchdog.ps1` (PowerShell): SEGUNDO loop para bridge/serve + limpeza de orfaos
-  CLI + widget unico + certificacao forense de kill.
-- `vigilante.ps1`: orquestrador que ja mantem `system_guardian.py` vivo (timer 5 min).
-- `bridge_resiliencia.py` / `connection_guardian.py`: dominio ADB/Tailscale
-  (conectivida
+---
+tipo: decisao
+tags: [resiliencia, watchdog, system-guardian, unificacao, opencode, desktop, clausula-petrea]
+data: 2026-08-27
+contexto: "Usuario pediu unificar os vigilantes fragmentados do PC. Haviam 3 loops redundantes cuidando de bridge/serve: system_guardian.py (RAM/CPU + restart), watchdog.ps1 e a camada do bridge. Decisao de consolidar num unico dono de saude de processos."
+decisao: "Rebaixar watchdog.ps1 a keeper (so garante que vigilante.ps1 e system_guardian.py rodem, preservando o 
 
 ### limpeza disco windows
 **Fonte:** opencode
-## Ferramenta de limpeza do disco C: (Windows)
-
-Criado `scripts/limpeza_disco.py` como ferramenta permanente do ecossistema para
-diagnóstico e limpeza segura do disco C:.
-
-### Bug corrigido na medição
-`_size_gb` usava `os.walk` (retornava 0 para arquivos simples) e a condição
-`gb > 0` impedia a remoção de arquivos. Corrigido tratando `path.is_file()` e
-removendo incondicionalmente após o fix. Por isso a limpeza foi executada em 2
-rodadas: a 1ª removeu pastas e a 2ª removeu os arquivos individuai
+---
+tipo: decisao
+tags: [limpeza, disco, windows, c-drive, cache, ferramenta, manutencao]
+data: 2026-08-27
+contexto: Usuário pediu a limpeza segura do disco C: no Windows e uma ferramenta permanente que repita diagnóstico e limpeza automaticamente. Escopo é Windows apenas (não confundir com Android).
+decisao: Criar scripts/limpeza_disco.py com diagnóstico + limpeza segura de caches conhecidos (npm-cache, Temp do usuário, VSIX, balena nupkg, zips Flutter em .flutter_auto, lixo is-*.tmp do Ollama 
 
 ### auto evolution e behavior slices
 **Fonte:** opencode
-## Decisão
-
-Criar dois módulos novos inspirados no Cartographer e aprimorar a infraestrutura existente de forma aditiva (sem quebrar o que funciona).
-
-## O que foi feito
-
-1. **scripts/auto_evolution.py** — Motor de auto-análise: compara capacidades de referências externas (ex: Cartographer) com as do ecossistema, detecta gaps, gera planos de evolução com steps/validação/rollback, e persiste assessments. Comandos: `scan`, `gaps`, `plan`, `assess`, `evolve`, `status`.
-
-2. **scripts/behavior_slices
+---
+tipo: decisao
+tags: [auto-evolution, cartographer, behavior-slices, arquitetura, evidence-grounding]
+data: 2026-08-28
+contexto: Usuário pediu para o EcoSystemUmGrau aprender com o Cartographer (miltonian/cartographer), absorver capacidades e evoluir com auto-aprendizado.
+decisao: Implementar Auto-Evolution Engine + Behavior Slices + evidência-grounding no memory_engine, e integrar novos scripts para não serem movidos à triagem.
+impacto: Ecossistema agora analisa automaticamente gaps vs refer
 
 ### oficializacao narrador edge cerebro vivo
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [narrador, widget, arquitetura, oficializacao, duplicidade, limpeza]
-
-Data: 2026-08-28
-
+---
+tipo: decisao
+tags: [narrador, widget, arquitetura, oficializacao, duplicidade, limpeza]
+data: 2026-08-28
 contexto: Duplicidade de narradores (narrador_desktop.py standalone vs thread do widget_edge.py) gerava referências mortas, atalhos quebrados e checks de auditor desatualizados. O usuário decidiu: Narrador Edge (widget_edge.py) e Cérebro Vivo (widget_grafo.py) são os dois oficiais; qualquer outro é duplicidade.
-
-decisao: , Narrador oficial é a thread interna de scripts/widget_edge.py (úni
+decisao:
+  - Narrador oficial é a thread interna de scripts/widget_edge.py (ú
 
 ### composio mcp remoto
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [composio, mcp, opencode, remote, preflight]
-
-Data: 2026-08-28
-
+---
+tipo: decisao
+tags: [composio, mcp, opencode, remote, preflight]
+data: 2026-08-28
 contexto: Integrar o Composio ao EcoSystemUmGrau via endpoint MCP remoto (streamable HTTP) com a chave de consumer do gateway.
-
 decisao: Adicionar servidor MCP remoto "composio" no config/opencode.jsonc apontando para https://connect.composio.dev/mcp com header x-consumer-api-key usando interpolacao {env:COMPOSIO_API_KEY}. Persistir a chave via setx (HKCU Environment) e scripts/.env. Adaptar preflight_check.py p
 
 ### pausa total widget
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [widget, narrador, tts, voz, pausa, silenciar, dialogo]
-
-Data: 2026-08-28
-
+---
+tipo: decisao
+tags: [widget, narrador, tts, voz, pausa, silenciar, dialogo]
+data: 2026-08-28
 contexto: Botão "Pausar" do widget deveria silenciar todo áudio de saída, mas o estado antigo (pausado) era usado por voice_on/voice_off e só pausava a narração.
-
 decisao: Estado mestre novo pausa_total em runtime/narracao_estado.json, separado de pausado. Todos os consumidores de áudio do PC respeitam: narrador do widget (rumo ao buffer + _flush), tts_service (speak responde ignored/pausado), dialogo
 
 ### cerebro vivo nos clicaveis navegaveis
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [cerebro-vivo, widget, navegacao, grafo, frontend]
-
-Data: 2026-08-29
-
+---
+tipo: decisao
+tags: [cerebro-vivo, widget, navegacao, grafo, frontend]
+data: 2026-08-29
 contexto: O usuário pediu para tornar os nós do Cérebro Vivo clicáveis e navegáveis. O clique antes só abria o arquivo no VS Code e pausava a rotação.
-
 decisao: Reformatado o comportamento de clique em www/cerebro.html: clicar num nó voa até ele e centraliza, destaca o nó e seus vizinhos diretos (esmaecendo o resto), abre um painel de detalhes dentro do widget (título, tipo/cluster, grau, resumo, tags, cam
 
 ### Melhorias inspiradas nos Jarvis opensource — implementadas
 **Fonte:** opencode
+---
+titulo: Melhorias inspiradas nos Jarvis opensource implementadas
+tipo: decisao
+tags: [jarvis, voz, stt, whisper, eco, narracao, memoria, lgpd, contexto]
+data: 2026-08-29
+---
+
+# Melhorias inspiradas nos Jarvis opensource — implementadas
+
 ## Contexto
 
 A partir da análise de isair/jarvis, heardlabs/heard e Priler/jarvis (aprendizado 2026-08-29-jarvis-opensource-analise.md), foram implementadas 8 melhorias no ecossistema. Todas passaram no preflight técnico e ético.
 
 ## Decisões e implementações
 
-1. **Filtros de alucinação do Whisper** (vox_audio.py): segmentos com `no_speech_prob > VOX_WHISPER_NO_SPEECH (0.5)` ou `avg_logprob < VOX_WHISPER_MIN_LOGPROB (-2.0)` são descartados. Mata transcrições fantasmas em silêncio/ruído. Configur
-
 ### jarvis gui desktop referencia
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [jarvis, gui-desktop, pyqt6, arc-reactor, reaproveitamento, spidertje/jarvis-pyqt]
-
-Data: 2026-08-31
-
+---
+tipo: decisao
+tags: [jarvis, gui-desktop, pyqt6, arc-reactor, reaproveitamento, spidertje/jarvis-pyqt]
+data: 2026-08-31
 contexto: "Usuário pediu referência externa de Jarvis com GUI validada para integrar como GUI desktop do EcoSystemUmGrau. Restrição: desktop (sem Android/web). Combinação escolhida: PyQt6 nativo (janela + overlay frameless on-top)."
-
 decisao: "Adotar spidertje/jarvis-pyqt como referência de implementação. Reaproveitar padrões de HUD (Arc Reactor 60fps), state machine (idle/l
 
 ### fix narrador triplicado e resiliencia orfaos
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [narrador, thread-singleton, anti-orfao, watchdog, resiliencia]
-
-Data: 2026-08-31
-
+---
+tipo: decisao
+tags: [narrador, thread-singleton, anti-orfao, watchdog, resiliencia]
+data: 2026-08-31
 contexto: |
-
+  Narrador do widget_edge.py repetia cada evento 3x no log e potencialmente
+  falava 2-3x (TTS dedup mitigava parcialmente). Bug afetava UX do narrador
+  e gerava ruído operacional no diagnóstico.
 decisao: |
+  Causa raiz: main() e poller() do widget_edge.py criavam 2 threads narradoras
+  independentes — variável `narrador_thread` do poller era local e nunca
+  recebia a referência 
 
 ### gui remover chatpanel
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [gui, desktop, chat, pyqt6, bridge, venv]
-
-Data: 2026-09-01
-
+---
+tipo: decisao
+tags: [gui, desktop, chat, pyqt6, bridge, venv]
+data: 2026-09-01
 contexto: A interface desktop tinha uma janela "Conversa com Eco" (ChatPanel) que nao respondia as mensagens do usuario. O usuario pediu para remover essa funcao e voltar ao comportamento anterior.
-
 decisao: Removida a janela ChatPanel (e TestConsole) do gui-desktop/main.py, restaurando o comportamento original que abre apenas o HUD (Arc Reactor) e conecta na bridge.
+impacto: GUI abre de forma estavel novamente, co
 
-impacto: GUI abre de forma estavel novamente, c
-
-### @ecow e /ecow — abrir/focar o Cerebro Vivo
+### gui desktop desativada edge e cerebro vivo
 **Fonte:** opencode
-## Decisão
-Três camadas enxutas, sem duplicar lógica de foco fora do widget:
-
-1. **scripts/widget_grafo.py** — quando `instancia_unica()` detecta instância
-   já rodando, a nova instância usa ctypes (`FindWindowW(None, "Cerebro Vivo")`
-   → `ShowWindow(hwnd, 9)` SW_RESTORE → `SetForegroundWindow(hwnd)`) e sai.
-   O comportamento "abrir ou focar" vive DENTRO do widget: qualquer launcher se beneficia.
-2. **scripts/ecow.bat** — launcher fino no padrão do controle.bat (pythonw, sem console).
-3. **Co
+---
+tipo: decisao
+tags: [gui, desktop, widget, edge, cerebro-vivo, ecow]
+data: 2026-09-01
+contexto: O usuario pediu para remover as janelas da GUI desktop (chat e HUD) e deixar o sistema "como era somente com o Edge e o cerebro vivo".
+decisao: Desativada a GUI desktop (gui-desktop/main.py), que abria a janela HUD (Arc Reactor) e a janela de chat. O ecossistema passa a rodar apenas com o widget oficial Edge (scripts/widget_edge.py) e o Cerebro Vivo (scripts/widget_grafo.py, grafo 3D do conhecimen
 
 ### gate ponto unico compilador
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [gate, persistencia, ponto-unico, auditoria, compiladorAPK, ecosystem]
-
-Data: 2026-09-02
-
+---
+tipo: decisao
+tags: [gate, persistencia, ponto-unico, auditoria, compiladorAPK, ecosystem]
+data: 2026-09-02
 contexto: O usuário perguntou se a ordem de commit/push do ecossistema realmente parte de um único lugar (o gate persistencia.ps1) ou se existem vários pontos emitindo ordens. Ao auditar, encontrei desvios reais do gate e precisei decidir como tratá-los sem quebrar fluxos legítimos.
-
 decisao: (1) Corpus no núcleo do EcoSystemUmGrau: scripts/ecosystem.ps1 nas funções repair (linhas 352-3
 
 ### governanca ciclo jurisprudencia
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [governanca, jurisprudencia, clausula-petrea, evolucao-regras, decisao-arquitetural]
-
-Data: 2026-09-02
-
+---
+tipo: decisao
+tags: [governanca, jurisprudencia, clausula-petrea, evolucao-regras, decisao-arquitetural]
+data: 2026-09-02
 contexto: O usuário propôs um modelo de evolução de regras do ecossistema baseado em evidência temporal: prática comprovada → jurisprudência → cláusula pétrea. O gate de persistência é o primeiro candidato a esse ciclo, tendo passado por auditoria, correção, monitoramento e medição contínua (adherence_audit.py).
-
 decisao: Criar um ciclo de governança de três estágios para 
 
 ### gate veto compreensao
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [governanca, veto, checklist, compreensao-pedidos, kernel]
-
-Data: 2026-09-02
-
+---
+tipo: decisao
+tags: [governanca, veto, checklist, compreensao-pedidos, kernel]
+data: 2026-09-02
 contexto: Implementar mecanismo de governança no EcoSystemUmGrau: fluxo de compreender pedido -> checklist/veto -> aprovação -> executar -> entregar. Fase 1 aprovada pelo usuário: implementar sem tocar no kernel; kernel fica para Fase 2.
-
 decisao: Implementado bloco VETOS + _checklist_entrega + gerar_checklist no compreensao.py e tool MCP veto_pedido no server.py. Gate retorna status BLOQUEADO/APRO
 
 ### gate veto kernel
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [gate, veto, kernel, governanca, roteamento, compreensao-pedidos]
-
-Data: 2026-09-02
-
+---
+tipo: decisao
+tags: [gate, veto, kernel, governanca, roteamento, compreensao-pedidos]
+data: 2026-09-02
 contexto: Fase 2 do mecanismo de governanca — integrar o gate de veto no roteamento do kernel, apos a Fase 1 (gerar_checklist + tool MCP veto_pedido) aprovada.
-
 decisao: Adicionar o metodo gate_veto ao kernel (scripts/runtime_kernel.py) e chamar no route_task, logo apos authorize. Pedidos que disparam regra de veto retornam route BLOQUEADO antes de rotear. execute_plan trata BLOQUEADO sem cr
 
 ### auto evolution gate veto health
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [auto-evolution, kernel, gate-veto, saude, evolucao]
-
-Data: 2026-09-03
-
+---
+tipo: decisao
+tags: [auto-evolution, kernel, gate-veto, saude, evolucao]
+data: 2026-09-03
 contexto: Evoluir o auto_evolution.py (item 3) e o diagnóstico de saúde do ecossistema (item 4), sem duplicar estrutura existente (cláusula anti-Frankestein).
-
-decisao: , Integrar o gate de veto do kernel (runtime_kernel.Kernel.gate_veto — Fase 2) ao ciclo fechado de evolução como novo estado STATE_BLOCKED_VETO / bloqueado_por_veto, consultado antes de delegar cada plano., Adicionar o subcomando `health`
+decisao:
+  - Integrar o gate de veto do kernel (runtime_kernel.Kernel.gate_veto — Fase 2) ao ciclo fechado de evolução como novo estado STATE_BLOCKED_VETO / bloqueado_por_veto, consultado antes de delegar cada plano.
+  - Adicionar o subcomando `he
 
 ### Auto-Evolution: Maestro + Radar + Relatório Consolidado
 **Fonte:** opencode
-Fecha os 3 itens pendentes do motor de auto-evolução do Ecossistema.
+---
+tipo: decisao
+tags: [auto-evolution, maestro, radar, evolucao, gate]
+data: 2026-09-03
+contexto: Fechamento dos 3 gaps pendentes do auto_evolution.py (Maestro, busca externa, relatorio consolidado).
+decisao: Integrar consulta ao Maestro (fail-soft), subcomando radar com coleta externa e relatorio Markdown por ciclo.
+impacto: Motor de auto-evolucao respeita governanca do Maestro, ganha busca externa real e rastreabilidade do ciclo.
+---
 
-## Decisões
-
-1. Maestro: nova funcao `_maestro_consulta` usa `maestro_client.consultar_maestro` antes de delegar cada plano em `_execute_plan`. Fail-soft: se offline, evolucao segue sem travar. Status 'blocked' do Maestro bloqueia o plano.
-2. Busca externa: novo subcomando `radar` e funcao `_collect_external_gaps` orquestram `evolution_radar_collect.py --full` (collect->filter->package). Reutiliza coletor existente, nao duplic
+# Auto-Evolution: Maestro + Radar + Relatório Consolidado
 
 ### Fontes consumidas nas construções (KG + memória)
 **Fonte:** opencode
-## O que foi feito
-O catálogo de 142 fontes agora alimenta o ecossistema em 3 pontos de construção.
-
-## Detalhes da integração
-- auto_evolution.py: cada Gap carrega `sources` (até 3 fontes autoritativas)
-  mapeadas da categoria do gap para domínios relevantes via GAP_DOMAIN_MAP,
-  com fallback que evita domínio `general` (Git/Vim contaminavam resultados).
-- knowledge_graph.py: método `suggest_sources(query)` complementa a busca do
-  grafo com fontes autoritativas do registry. Fail-soft (retorna 
+---
+tipo: decisao
+tags: [fontes, source-registry, knowledge-graph, memory-engine, auto-evolution]
+data: 2026-09-03
+contexto: >
+  Decision de garantir que as 142+ fontes do catálogo (config/programming_sources.yaml)
+  sejam consumidas nas construções do ecossistema, não apenas decorativas.
+decisao: >
+  Integrar o source_registry em 3 pontos de consumo:
+  (1) auto_evolution.py — Gap.sources enriquecido via _enrich_gaps_with_sources
+  com GAP_DOMAIN_MAP (fallback preferindo domínios primários sobre
 
 ### SupermarketCalculator v1.5.7
 **Fonte:** opencode
-## Novidade de UX (pedido do usuário)
-Ao editar uma lista SALVA no app e finalizar, o dialog agora mostra dois botões:
-"Salvar como novo" e "Atualizar". Para lista NOVA, continua apenas "Salvar".
-Implementado no MainActivity.java em finishPurchase(): quando editingSession.isActive(),
-adiciona um botão btnSaveAsNew ("Salvar como novo") além do btnUpdateList ("Atualizar"),
-e omite o botão "Salvar" simples.
+---
+tipo: decisao
+tags: [android, sdk-puro, supermarketcalculator, build, release]
+data: 2026-09-03
+contexto: Auditoria e correção de bugs no app Android SupermarketCalculator (SDK puro). Usuário pediu para manter sequência de versões no versionamento.
+decisao: Corrigir 5 bugs no MainActivity, consertar build.ps1 e adicionar opções "Salvar como novo"/"Atualizar" ao editar lista salva.
+impacto: App mais funcional e versão v1.5.7 gerada e versionada.
+---
 
-## 5 fixes no MainActivity.java
-1. setButtonHidden: usa View.GONE em vez de View.VISIBLE co
+# SupermarketCalculator v1.5.7
+
+## Novidad
 
 ### smc ab5 calculadora simples
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [supermarket-calculator, android, calculadora, feature, sdk-puro]
-
-Data: 2026-09-03
-
+---
+tipo: decisao
+tags: [supermarket-calculator, android, calculadora, feature, sdk-puro]
+data: 2026-09-03
 contexto: Usuario pediu uma quinta aba com calculadora simples no SupermarketCalculator (SDK puro, Java, sem Gradle). A aba "Calculadora" existente e a calculadora de compras do mercado; a nova e uma calculadora comum.
-
 decisao: Adicionar a 5a aba "Simples" (id tabSimpleCalc, indice 4 no switchTab) com uma pagina simpleCalcPage contendo display + teclado (0-9, virgula, %, limpar, apagar, +, 
 
 ### smc ab5 formatacao brl
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [smc, calculadora, formatacao, brl, android-pure-sdk]
-
-Data: 2026-09-03
-
+---
+tipo: decisao
+tags: [smc, calculadora, formatacao, brl, android-pure-sdk]
+data: 2026-09-03
 contexto: 5a aba "Simples" do SupermarketCalculator mostrava número cru (1000, 10.5) no visor.
-
 decisao: Manter scCurrent como string crua com ponto decimal e sem milhar; formatar apenas o texto exibido via formatDisplay() (milhar com . e fracao fixa com 2 casas e virgula: 1.000, 10,50). formatNumber() passa a retornar string crua; todo display/expression passa por formatDisplay(). parse() blindado com 
 
-### Calculadora — Formato Consolidado do Percentual Restaurado
+### smc acrescimo resultado grande
 **Fonte:** opencode
-Tarefa: restaurar o formato consolidado do percentual da calculadora simples (tab Simples da MainActivity.java).
-
-O comportamento consolidado (baseline no commit 485dd9f) e:
-- Expressao: `formatDisplay(a) + " " + scLastOp + " " + formatDisplay(p) + "% ="` — preserva a digitacao (0,6 fica 0,6).
-- Resultado (`scResult`): `formatDisplay(bdToString(r))` — ex. 1.006.000.
-- Display grande (`scDisplay`): `formatDisplay(bdToString(r.subtract(a).abs()))` — o acrescimo, ex. 6.000.
-
-Validado no dispositivo
+---
+tipo: decisao
+tags: [smc, calculadora, percentual, acrescimo, resultado, display, android-pure-sdk]
+data: 2026-09-03
+contexto: Correcao do percentual em BigDecimal validada; usuario pediu exibir resultado e acrescimo em destaque na 5a aba "Simples".
+decisao: Ao clicar em '%' com operacao pendente, resolve imediato montando: scExpression mostra a conta (a + p% =), novo campo scResult mostra o resultado (a+p% ou equivalente), e scDisplay (40sp bold) mostra o acrescimo = |resultado - operando i
 
 ### projeto completo e ativo a recuperar
 **Fonte:** opencode
-Tipo: decisao
+---
+tipo: decisao
+tags: [ecossistema, projeto, recuperacao, codigo-fonte, versionamento, git, compilar, smc, ativo]
+data: 2026-09-03
+contexto: Usuario consolidou que o SupermarketCalculator esta completo e funcional, com todo o codigo-fonte versionado do inicio ao fim. O ecossistema nao deve redescobrir nem reconstruir nada: deve apenas guardar, lembrar e, quando pedido, recuperar o codigo pronto e compilar.
+decisao: Projeto entregue e versionado passa a ser tratado como ATIVO A RECUPERAR, nao c
 
-Tags: [ecossistema, projeto, recuperacao, codigo-fonte, versionamento, git, compilar, ativo, todos-os-projetos, regra-geral]
-
-Data: 2026-09-03
-
-contexto: Usuario consolidou que o SupermarketCalculator esta completo e funcional com todo o codigo-fonte versionado, e em seguida determinou que esta regra vale para TODOS os projetos desenvolvidos e a desenvolver, valendo imediatamente. O ecossistema nao deve redescobrir nem reconstruir nada: deve apenas guardar, lembrar e, quando pedid
+### Calculadora — Formato Consolidado do Percentual Restaurado
+**Fonte:** opencode
+---
+tipo: decisao
+tags: [calculadora, android, percentual, formato-consolidado]
+data: 2026-09-03
+contexto: Restaurar o formato consolidado do percentual na tab Simples da MainActivity.java do SupermarketCalculator.
+decisao: O handler 'percent' foi reescrito para restaurar o comportamento consolidado: 'A + B%' mostra a expressão digitada, o resultado em 'scResult' e o acrescimo em 'scDisplay' (fonte grande).
+impacto: Validado no dispositivo: '1.000.000 + 0,6% =' mostra '1.006.000' em scResult e '
 
 ### executor direct
 **Fonte:** opencode
-O executor DIRECT reutiliza o mapeamento existente do planner e não cria um segundo registro de ferramentas. A raiz do repositório é adicionada ao sys.path para compatibilidade com o cognitive_core quando o kernel é executado pela CLI.
+---
+tipo: decisao
+tags: [kernel, direct, tool-orchestrator, cognitive-core]
+data: 2026-09-04
+contexto: Tarefas LOW eram apenas marcadas como não implementadas.
+decisão: Executar DIRECT somente quando a intenção exigir ferramenta e houver mapeamento MCP conhecido; pedidos informativos retornam needs_response.
+impacto: Ações simples de arquivo passam pelo Tool Orchestrator com retry, timeout e rastreabilidade, sem declarar sucesso para pedidos sem execução.
+---
 
-Validação: oito testes focados, execução informativa com status needs_response e listagem real de arquivos com mcp-dev-tools.list_files.
+O executor DIRECT reutiliza o mapea
 
 ### canal voz rapida nvidia
 **Fonte:** opencode
-Tipo: decisao
-
-Tags: [voz, bridge, nvidia, latencia, canal-voz]
-
-Data: 2026-09-04
-
+---
+tipo: decisao
+tags: [voz, bridge, nvidia, latencia, canal-voz]
+data: 2026-09-04
 contexto: Percurso "Envio o audio e o EcoSystemUmGrau ouve e responde" sofria 35-45s por pergunta com timeouts de 120s e quedas de conexao.
-
 decisao: Implementar canal de voz rapido em jarvis_bridge.py (_voz_rapida) chamando NVIDIA direta com cadeia de modelos testados e thinking desligado (chat_template_kwargs thinking=False), sem passar pelo opencode serve. Cadeia: nemotron-3.5-lightning-30b-a3b (~1-3s), gpt-oss
 
 ### remocao mcps node inoperantes
 **Fonte:** opencode
+---
+tipo: decisao
+tags: [mcp, node, python, opencode, config, remocao, preflight]
+data: 2026-09-05
+title: Remocao dos MCPs Node inoperantes (filesystem, search, terminal, github)
+status: aplicado
+---
+
 ## Contexto
 
 Quatro servidores MCP do opencode (filesystem, search, terminal, github) estavam
 desligados desde sempre: rodam via `node mcp-servers/<nome>/index.js`, mas o Node.js
 nao esta instalado no PC (nao existe `node.exe` no PATH nem em locais padrao). O erro
-de inicializacao era WinError 2 (sistema nao encontra o arquivo). Os outros 12 MCPs
-funcionam porque sao Python puro e o Python esta no PATH.
-
-## Analise
-
-Inspecao dos 4 servidores Node mostrou redundancia total com capacidades ja exis
+de inicializacao era WinError 2 (s
 
 
 ## Padroes Tecnicos
@@ -1141,62 +1127,65 @@ Inspecao dos 4 servidores Node mostrou redundancia total com capacidades ja exis
 | 242 | traducao-audio | Tradução de músicas e letras: adaptação rítmica x tradução literal |
 | 243 | traducao-audio | Timing e sincronização de legendas: duração mínima, cps e corte por shot |
 | 244 | traducao-audio | Palavras de preenchimento, hesitações e ruído na transcrição: quando manter ou remover |
-| 245 | opencode+opencode+opencode | Aegis registrado como projeto irmao (Rust) |
+| 245 | opencode+opencode | Aegis registrado como projeto irmao (Rust) |
 | 246 | opencode+opencode | aegis barra progresso tempo real |
-| 247 | opencode+opencode | fase2 limpeza git artefatos rastreados |
-| 248 | opencode | fase3 rotina automatica de tiragem organizacional |
-| 249 | opencode+opencode | Fix ativação de voz + Sistema de frases unificado |
-| 250 | opencode+opencode | 2026-08-16: Detecção automática de inglês no TTS |
-| 251 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | padrao organizacao comandos |
-| 252 | opencode+opencode | 2026-08-17: Organograma agrupado por livro + técnicas de validação visual via adb |
-| 253 | opencode+opencode | 2026-08-17: CAR-BT — controle total via adb (Bluetooth automotivo) |
-| 254 | opencode+opencode | etapa19 tool permission runtime |
-| 255 | opencode+opencode | etapa21 memory learning consolidation |
-| 256 | opencode+opencode | etapa22 self assessment self improvement |
-| 257 | opencode+opencode | etapa23 observability reliability |
-| 258 | opencode | etapa24 interface jarvis |
-| 259 | opencode | restauracao unified bridge |
-| 260 | opencode+opencode+opencode+opencode | Correção de mojibake no knowledge_graph.json (UTF-8 lido como CP1252) |
-| 261 | opencode+opencode+opencode+opencode+opencode | integrity guard vigilante dados |
-| 262 | opencode+opencode | pronuncia python ptbr |
-| 263 | opencode+opencode | resiliencia widget duplicado |
-| 264 | opencode | saudacao dinamica jarvis |
-| 265 | opencode | saudacao jarvis estilo filme |
-| 266 | opencode | saudacao auto evolutiva jarvis |
-| 267 | opencode | saudacao llm nvidia api |
-| 268 | opencode+opencode | Como adicionar uma nova versão da Bíblia ao BibliaEstudoCompleta |
-| 269 | opencode+opencode+opencode | Pipeline de release e padrão de toolbar com menu |
-| 270 | opencode | Sistema de Análise Financeira |
-| 271 | opencode | widget edge estabilizado fonte unica processos |
-| 272 | opencode | TradingAgents integrado ao ecossistema |
-| 273 | opencode | Resiliência de logs: encoding detectado na leitura, não presumido |
-| 274 | opencode | Compressão Semântica Hierárquica — lições da implementação |
-| 275 | opencode | Relatório Eco estático — lições |
-| 276 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | CLI-Anything Internalizado como Habilidade Soberana |
-| 277 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | @ecow e /ecow — abrir/focar o Cerebro Vivo |
-| 278 | opencode | JunkScanner — Benchmark do scan incremental |
-| 279 | opencode | JunkScanner — Scan incremental (cache de hash + memoização) |
-| 280 | opencode | CI de Android em máquina fraca + keystore estável |
-| 281 | opencode | Padrao de pergunta: validacao numerica por cota |
-| 282 | opencode | Janela flutuante para visuais (sem navegador) |
-| 283 | opencode | Estilo por pedido (Power BI implementado) |
-| 284 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | retencao opencode db vigilante |
-| 285 | opencode+opencode | Narracao seletiva por relevancia no narrador Edge |
-| 286 | opencode+opencode | terminalwidget edge |
-| 287 | opencode+opencode | Análise de Jarvis opensource — aprendizados aplicáveis |
-| 288 | opencode+opencode | Neurociência da fala aplicada ao Cérebro Vivo |
-| 289 | opencode+opencode | deduplicacao memoria semantica |
-| 290 | opencode | suggestions hermes itens 1 3 |
-| 291 | opencode+opencode | Pesquisa — Interfaces de Conversa (Hermes e outros) |
-| 292 | opencode+opencode | Source Registry — Módulo de Fontes de Conhecimento Técnico |
-| 293 | opencode | unificacao aprendizados adb cluster a |
-| 294 | opencode | melhorias lock dedup sanitizacao |
-| 295 | opencode+opencode | integracao contexto kernel |
-| 296 | opencode+opencode | selecao direct explicita |
-| 297 | opencode+opencode | edicao mensagem vox |
-| 298 | opencode+opencode | tarefas assincronas monitoradas bridge |
-| 299 | opencode+opencode | dedup memorias index stale |
-| 300 | opencode | padrao organizacao comandos |
+| 247 | opencode | triagem scripts legado orgaos movidos |
+| 248 | opencode+opencode | fase2 limpeza git artefatos rastreados |
+| 249 | opencode | fase3 rotina automatica de tiragem organizacional |
+| 250 | opencode+opencode | Fix ativação de voz + Sistema de frases unificado |
+| 251 | opencode+opencode | 2026-08-16: Detecção automática de inglês no TTS |
+| 252 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | padrao organizacao comandos |
+| 253 | opencode+opencode | 2026-08-17: Organograma agrupado por livro + técnicas de validação visual via adb |
+| 254 | opencode+opencode | 2026-08-17: CAR-BT — controle total via adb (Bluetooth automotivo) |
+| 255 | opencode+opencode | etapa19 tool permission runtime |
+| 256 | opencode+opencode | etapa21 memory learning consolidation |
+| 257 | opencode+opencode | etapa22 self assessment self improvement |
+| 258 | opencode+opencode | etapa23 observability reliability |
+| 259 | opencode | etapa24 interface jarvis |
+| 260 | opencode | restauracao unified bridge |
+| 261 | opencode+opencode+opencode+opencode | Correção de mojibake no knowledge_graph.json (UTF-8 lido como CP1252) |
+| 262 | opencode+opencode+opencode+opencode+opencode | integrity guard vigilante dados |
+| 263 | opencode+opencode | pronuncia python ptbr |
+| 264 | opencode+opencode | resiliencia widget duplicado |
+| 265 | opencode | saudacao dinamica jarvis |
+| 266 | opencode | saudacao jarvis estilo filme |
+| 267 | opencode | saudacao auto evolutiva jarvis |
+| 268 | opencode | saudacao llm nvidia api |
+| 269 | opencode+opencode | Como adicionar uma nova versão da Bíblia ao BibliaEstudoCompleta |
+| 270 | opencode+opencode | Pipeline de release e padrão de toolbar com menu |
+| 271 | opencode | Widget Jarvis - 8 Features Implementadas |
+| 272 | opencode | Sistema de Análise Financeira |
+| 273 | opencode | widget edge estabilizado fonte unica processos |
+| 274 | opencode | TradingAgents integrado ao ecossistema |
+| 275 | opencode | Resiliência de logs: encoding detectado na leitura, não presumido |
+| 276 | opencode | Compressão Semântica Hierárquica — lições da implementação |
+| 277 | opencode | Relatório Eco estático — lições |
+| 278 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | CLI-Anything Internalizado como Habilidade Soberana |
+| 279 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | @ecow e /ecow — abrir/focar o Cerebro Vivo |
+| 280 | opencode | JunkScanner — Benchmark do scan incremental |
+| 281 | opencode | JunkScanner — Scan incremental (cache de hash + memoização) |
+| 282 | opencode | CI de Android em máquina fraca + keystore estável |
+| 283 | opencode | Padrao de pergunta: validacao numerica por cota |
+| 284 | opencode | Janela flutuante para visuais (sem navegador) |
+| 285 | opencode | Estilo por pedido (Power BI implementado) |
+| 286 | opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode | retencao opencode db vigilante |
+| 287 | opencode+opencode | Narracao seletiva por relevancia no narrador Edge |
+| 288 | opencode+opencode | terminalwidget edge |
+| 289 | opencode+opencode | Análise de Jarvis opensource — aprendizados aplicáveis |
+| 290 | opencode+opencode | Neurociência da fala aplicada ao Cérebro Vivo |
+| 291 | opencode+opencode | deduplicacao memoria semantica |
+| 292 | opencode | suggestions hermes itens 1 3 |
+| 293 | opencode+opencode | Pesquisa — Interfaces de Conversa (Hermes e outros) |
+| 294 | opencode+opencode | Source Registry — Módulo de Fontes de Conhecimento Técnico |
+| 295 | opencode | unificacao aprendizados adb cluster a |
+| 296 | opencode | melhorias lock dedup sanitizacao |
+| 297 | opencode+opencode | integracao contexto kernel |
+| 298 | opencode+opencode | selecao direct explicita |
+| 299 | opencode+opencode | edicao mensagem vox |
+| 300 | opencode+opencode | tarefas assincronas monitoradas bridge |
+| 301 | opencode+opencode | dedup memorias index stale |
+| 302 | opencode | padrao organizacao comandos |
+| 303 | opencode | integrity guard motor estrutural |
 
 ## Bug Fixes e Corrigidos
 
@@ -1239,6 +1228,11 @@ Inspecao dos 4 servidores Node mostrou redundancia total com capacidades ja exis
 **Fonte:** ler_auditoria
 **Causa Raiz:** Duas implementacoes paralelas de save/load JSON com logica identica
 **Correcao:** Unificado via atomic_write_json()/atomic_read_json() em checkpoint.py, persistence.py delega.
+
+### -------
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** -----------
+**Correcao:** -----
 
 ### Artist shows "Desconhecido"
 **Fonte:** mp3player-metadata-rescue
@@ -1361,6 +1355,11 @@ Inspecao dos 4 servidores Node mostrou redundancia total com capacidades ja exis
 ### ** Use explicit redirect following in download function (manual loop for 3xx codes)
 **Fonte:** mp3player-metadata-rescue
 
+### -------
+**Fonte:** mp3player-metadata-rescue
+**Causa Raiz:** -----------
+**Correcao:** -----
+
 ### OpenCode Go provider crash ao processar mensagem
 **Fonte:** sessao_providermanager
 **Causa Raiz:** _simulate_completion() tratava request.messages[-1] como dict sempre, mas ultima msg pode ser string
@@ -1444,13 +1443,12 @@ Inspecao dos 4 servidores Node mostrou redundancia total com capacidades ja exis
 ### Loop infinito de push no Vigilante (emails do GitHub a cada minuto)
 **Fonte:** opencode
 **Causa Raiz:** Usuário relatou receber emails do GitHub a cada minuto — algo estava subindo constantemente
-**Correcao:** ## Sintoma
-Emails de notificação do GitHub chegando a cada ~1 minuto. Push automáticos no repo
-`EcoSystemUmGrau` a cada 30-60s, contínuos, sem mudança real de código.
-
-## Causa raiz (loop de auto-alimentação)
-1. `scripts/vigilante.ps1` rodava git sync a cada 30s (`$gitTimer`).
-2. Após cada push do E
+**Correcao:** ---
+tipo: bug
+tags: [vigilante, github, git-sync, loop-infinito, memory-engine, push, automacao]
+data: 2026-08-08
+contexto: Usuário relatou receber emails do GitHub a cada minuto — algo estava subindo constantemente
+decisao: Remover log de git-sync do loop do vigilante + excluir EcoSystemUmGrau da a
 
 ## Padroes Cognitivos
 
@@ -1668,33 +1666,28 @@ e aplicativos de celular (Android). Baseada em pesquisa do estado da arte de fer
 - Registrado em `scripts/pronuncias.json`:
   `"jarvis": 
 
-### generate-graph-html.py agora le o vault Obsidian (conhecimento/notas/*
+### ---
 **Dominio:** general
 **Fonte:** opencode
 
-Tipo: decisao
-
-Tags: [obsidian, widget, grafo, arquitetura]
-
-Data: 2026-08-02
-
+---
+tipo: decisao
+tags: [obsidian, widget, grafo, arquitetura]
+data: 2026-08-02
 contexto: Reestruturacao do pipeline de geracao do grafo — Obsidian vira cerebro vivo, widget espelho
-
 decisao: generate-graph-html.py agora le o vault Obsidian (conhecimento/notas/*.md) em vez de knowledge_graph.json. O widget_grafo.py chama Bridge.regenerar() quando a versao detecta mudança no vault. Smart Connections (plugin Obsidian) cria [[wikilinks]] semanticos que o widget reflete automaticamente.
+impacto: Cére
 
-impacto: Cér
-
-### erro
+### ---
 **Dominio:** general
 **Fonte:** opencode
 
-Tipo: erro
-
-Tags: [teste, pipeline]
-
-Data: 2026-08-02
-
-Contexto: Teste funcional do pipeline de tags semanticas ponta a ponta
+---
+tipo: erro
+tags: [teste, pipeline]
+data: 2026-08-02
+contexto: Teste funcional do pipeline de tags semanticas ponta a ponta
+---
 
 # Teste de integração do pipeline de tags semânticas
 
@@ -1710,8 +1703,6 @@ e memory_engine para enriquecer as sinapses do grafo Obsidian.
 
 O grafo do widget deve mostrar ma
 
-tip
-
 ### # 2026-08-03 - Scan proativo: claude-code-extra-agents
 **Dominio:** general
 **Fonte:** opencode
@@ -1723,6 +1714,19 @@ tip
 - install.ps1: 1 marcadores
 
 
+
+### MCP Obsidian server — vault consumido pelo LLM
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: decisao
+tags: [obsidian, mcp, infraestrutura, config, clausula-petrea, vault]
+data: 2026-08-02
+contexto: O vault Obsidian (docs/, conhecimento/, documentos/) estava sendo alimentado (330 notas .md) mas o LLM só via a CONTAGEM de notas no estado da bridge (gerar_estado_atual em jarvis_bridge.py), nunca o conteúdo. Busca semântica via eco-knowledge cobria CONHECIMENTO.md e memory graph, mas não os 327 .md de conhecimento/. Sem MCP server dedicado, sem file watcher.
+decisao: Criar sc
+
+﻿--
 
 ### # Hora na tela vs hora no áudio (Jarvis)
 **Dominio:** general
@@ -1809,64 +1813,71 @@ sempre atualizado e nada se perder ao trocar de PC.
 **Dominio:** general
 **Fonte:** opencode
 
-> **DESCONTINUADO em 2026-09-05.** Os 4 servidores Node (filesystem, search,
-> terminal, github) foram removidos do ecossistema: Node.js não está instalado no
-> PC e todos duplicavam capacidades nativas do opencode ou MCPs Python já ativos.
-> Este registro é histórico da criação; NÃO representa o estado atual do config.
-> Ver [[2026-09-05-remocao-mcps-node-inoperantes]].
+---
+tipo: padrao
+tags: [mcp, infraestrutura, config, clausula-petrea]
+data: 2026-08-02
+contexto: Divergência detectada — config/opencode.jsonc referenciava 4 servidores MCP Node em `mcp-servers/mcp-servers/...` que não existiam, e `{{USERPROFILE}}` não é resolvido em comandos MCP (apenas em instructions). `opencode mcp list` mostrava eco-knowledge/filesystem/search/terminal como "failed".
+decisao: Criar os 4 servidores Node (filesystem, search, terminal, github) em `mcp-servers/<nome>/ind
 
-## O problema
+﻿---
 
-1. `config/opencode.jsonc` apontava para `mcp-servers/mcp-servers/{filesystem,search,terminal,github}/index.js
 
-### Adicionado passo 7/9 ao setup.bat que cria a task EcoSystemVigilante v
+### ---
 **Dominio:** general
 **Fonte:** opencode
 
-Tipo: decisao
-
-Tags: , setup, scheduled-task, portabilidade
-
-Data: 2026-08-02
-
+---
+tipo: decisao
+tags:
+  - setup
+  - scheduled-task
+  - portabilidade
+data: 2026-08-02
 contexto: Vigilante estava inativo porque nenhum mecanismo criava a scheduled task. Corrigido manualmente; faltava fechar o ciclo no setup.bat para PCs novos.
-
 decisao: Adicionado passo 7/9 ao setup.bat que cria a task EcoSystemVigilante via Register-ScheduledTask (AtLogOn, StartWhenAvailable, restart 3x, sem -Principal para nao exigir admin). Verificacao previa com schtasks /Query; se ja existir, pula.
+impac
 
-Tipo: erro
-
-T
-
-### Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenc
+### ---
 **Dominio:** general
 **Fonte:** opencode
 
-Tipo: decisao
-
-Tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
-
-Data: 2026-08-02
-
+---
+tipo: decisao
+tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
+data: 2026-08-02
 contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
-
 decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero — pergunta (?)=pitch+12%/rate+4% (ascendente
+
+### ---
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags:
+  - vigilante
+  - scheduled-task
+  - bootstrap
+  - windows
+data: 2026-08-02
+contexto: Status do ecossistema reportava "Vigilante: INATIVO" sem PID e sem log.
+decisao: Diagnosticado que nenhum mecanismo criava a scheduled task. Criada task via Register-ScheduledTask (AtLogOn, sem -Principal para nao exigir admin), profile.ps1 recriado com as funcoes (start/stop/status-vigilante + ecosystem), path hardcoded corrigido para $env:USERPROFILE.
+impacto: Vigilante agora inicia no l
 
 ### Cláusula Pétrea — Ativação de Voz (Eco System)
 **Dominio:** general
 **Fonte:** opencode
 
-## Pedido do usuário
+---
+tipo: decisao
+tags: [voz, eco, clausula-petrea, bridge, config, regras]
+data: 2026-08-02
+contexto: O usuário pediu que o sistema de voz seja ativável em qualquer sessão do OpenCode (nova ou em andamento) com os comandos "Ativar Eco" e "Desativar Eco", seguindo as regras do EcoSystemUmGrau.
+decisao: Adicionada a CLÁUSULA PÉTREA — ATIVAÇÃO DE VOZ — ECO SYSTEM à Constituição (config/agents/00-system-rules.md) e sincronizada nas 3 camadas (AGENTS.md regenerado via sync_rules.py, d
 
-"Quando eu estiver falando com você pelo PC, você deve ativar o sistema de voz
-seguindo as regras do ecossistema. Mesmo que eu abra uma nova sessão. Quando eu
-digitar em qualquer sessão: **Ativar Eco**, então você ativa todo o ecossistema e
-passa a agir/responder dentro dele. **Desativar Eco** desliga."
-
-## Implementação
-
-Regra adicionada à Constituição em `config/agents/00-system-rules.md`:
-
-- **"Ativar Eco"** â†’ confirmar "Eco ativado. Sistema de voz online." + responder
+﻿---
+tipo: de
 
 ### # 2026-07-28: Botões de filtro sem texto visível — MaterialButton vs TextView
 **Dominio:** general
@@ -1901,174 +1912,211 @@ tipo: ap
 - Bateria (nível, temperatura, status de carga)
 - Aplicativo (versãoCode, versionName, PID, memória 
 
-# 2026-07-3
+﻿# 2026-07-
 
 ### vazamento caracteres tts edge tts escapa ssml
 **Dominio:** general
 **Fonte:** opencode
 
-Tipo: erro
-
-Tags: [tts, edge-tts, ssml, ponte-de-voz, jarvis-bridge]
-
-Data: 2026-08-02
-
+---
+tipo: erro
+tags: [tts, edge-tts, ssml, ponte-de-voz, jarvis-bridge]
+data: 2026-08-02
 contexto: Usuário reportou que, no início das conversas, antes de falar "David", o Jarvis pronunciava caracteres que não deveriam. Investigação da saudação revelou causa na camada de TTS.
-
 decisao: edge-tts >= 7.x removeu suporte a SSML custom. O __init__ do Communicate() aplica escape() em todo o texto, convertendo < e > em &lt; e &gt;. Assim, tags <break>, <phoneme>, <say-as> e <prosody> nunca são interpret
 
 ### grafo vis network bug string js json dumps
 **Dominio:** general
 **Fonte:** opencode
 
-Tipo: erro
-
-Tags: , obsidian, grafo, html, js, vis-network, debugging, gerador
-
-Data: 2026-08-02
-
+---
+tipo: erro
+tags:
+  - obsidian
+  - grafo
+  - html
+  - js
+  - vis-network
+  - debugging
+  - gerador
+data: 2026-08-02
 contexto: Geramos docs/grafo.html com vis-network para visualizar o conhecimento como grafo. A pagina renderizava header/legenda mas o canvas ficava vazio.
-
-decisao: Diagnosticado via headless Chrome + Node. Causa raiz: um no (label "Why - User expects a blank slate...") continha quebra de linha literal dentro de string JS delimitada por aspas simples -> sintaxe invalida em TODO o script -> vis-netw
+decisao: Diagnosticado via headless Chrome + Node. Causa raiz: um no (label "Why - User expects a blank slate...") continha quebra de linha literal dentro de string JS delimitada por aspas simples -> sintaxe invalida em TODO 
 
 ### corrigido travamento widget pywebview
 **Dominio:** general
 **Fonte:** opencode
 
-Tipo: erro
-
-Tags: [widget, pywebview, windows, travamento, recursao, debug, frameless]
-
-Data: 2026-08-02
-
+---
+tipo: erro
+tags: [widget, pywebview, windows, travamento, recursao, debug, frameless]
+data: 2026-08-02
 contexto: O widget desktop do grafo (scripts/widget_grafo.py) travava; o terminal python mostrava recorrente `[pywebview] Error while processing win.native.AccessibilityObject.Bounds.Empty...: maximum recursion depth exceeded`.
-
 decisao: Duas causas distintas atacadas:
-
-impacto: Widget vive >16s de forma estav
+1. GEOMETRIA: ler `win.x/win.y/win.width/win.height` a partir de thread nao-principal (loop de 1s) dispara recursao infinita
 
 ### 2026-08-04: Refinamento do grafo — zoom microscópio, expandir e cognição viva
 **Dominio:** general
 **Fonte:** opencode
 
-## Decisões técnicas validadas (online)
+---
+tipo: aprendizado
+tags: [vis-network, zoom, microsocpio, clustering, physics, barnesHut, grafo, widget, labels]
+data: 2026-08-04
+contexto: Refinamento do widget "Cerebro Vivo" (scripts/widget_grafo.py + scripts/generate-graph-html.py) para movimento mais vivo/realista e zoom com papel narrativo.
+decisao: Movimento organico = physics.stabilization:false + timestep:0.2 + maxVelocity:6 + minVelocity:0 + adaptiveTimestep:false + barnesHut(avoidOverlap:0.55, damping:0.88). Respiracao do layout vi
 
-### vis-network physics (barnesHut)
-- `stabilization: false` + `timestep: 0.2` + `maxVelocity: 6` + `minVelocity: 0` + `adaptiveTimestep: false` → movimento perpétuo e lento (nunca "congela").
-- `barnesHut.avoidOverlap: 0.55` usa o raio do nó para evitar sobreposição (vis.js docs).
-- `damping: 0.88` → balanço suave/amortecido.
-- `improvedLayout` só funciona se passado **antes** de `new vis.Network()`, e pode falhar em grafos densos (>100 nós interconectad
+### ---
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: decisao
+tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
+data: 2026-08-02
+contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
+decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero — pergunta (?)=pitch+12%/rate+4% (ascendente
+
+### ---
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: decisao
+tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
+data: 2026-08-02
+contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
+decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero — pergunta (?)=pitch+12%/rate+4% (ascendente
+
+### ---
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: decisao
+tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
+data: 2026-08-02
+contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
+decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero — pergunta (?)=pitch+12%/rate+4% (ascendente
 
 ### Bug: parametro Pid e variavel automatica do PowerShell
 **Dominio:** general
 **Fonte:** opencode
 
+---
+tipo: erro
+tags: [watchdog, powershell, bug, resiliencia]
+data: 2026-08-06
+contexto: Certificacao forense de processos no watchdog.ps1 (Test-ForensicoLixo / Invoke-KillCertificado)
+decisao: Renomear parametro [int]Pid para [int]ProcessId nas funcoes forenses
+impacto: Evita que o watchdog mate o proprio processo (variavel automatica PID read-only)
+---
+
+# Bug: parametro Pid e variavel automatica do PowerShell
+
 ## Sintoma
-A funcao `Test-ForensicoLixo` e `Invoke-KillCertificado` declaravam `[int]$Pid` como
-parametro. No PowerShell, `$PID` e uma variavel AUTOMATICA read-only que contem o PID
-do processo atual. Com `$ErrorActionPreference = "SilentlyContinue"`, a atribuicao do
-parametro falhava em silencio e `$Pid` dentro da funcao referenciava o PID do proprio
-watchdog.
+A funcao `Test-ForensicoLixo` e `Invoke-KillCertificado` declaravam `[int
 
-## Risco real
-O watchdog poderia certificar e matar a SI MESMO (ou o PID errado), quebrando a
-resiliencia que deveria proteger.
+### ---
+**Dominio:** general
+**Fonte:** opencode
 
-## Cor
+---
+tipo: decisao
+tags: [tts, edge-tts, ssml, prosody, pronuncia, autoevolucao, jarvis, clausula-petrea]
+data: 2026-08-02
+contexto: Proximos passos anotados no aprendizado 2026-08-02-evolucao-tts-naturalidade-ssml.md (prosody dinamico + dicionario de pronuncia autoevolutivo). Usuario pediu "quero tudo".
+decisao: Implementados ambos. (1) _prosodia_frases() aplica prosody por sentenca DEPOIS de say-as/break/emphasis para nao corromper regex de numero — pergunta (?)=pitch+12%/rate+4% (ascendente
 
 ### MCP prompt-optimization não conectava: transporte JSON por linha em vez de MCP stdio
 **Dominio:** general
 **Fonte:** opencode
 
-## Sintoma
-O otimizador de prompt estava configurado (`config/opencode.jsonc` + deployed), o
-`server.py` existia com 6 tools, mas **não ficava ativo**: nenhum processo rodava e
-nenhuma tool era exposta nas sessões do opencode.
+---
+tipo: erro
+tags: [mcp, prompt-optimization, transporte, stdio, content-length, opencode, jsonrpc]
+data: 2026-08-08
+contexto: Usuário perguntou se o otimizador de prompt estava ativo no ecossistema; verificação revelou que estava configurado mas nunca conectava
+decisao: Corrigir o transporte do MCP server prompt-optimization para o padrão stdio com Content-Length framing (JSON-RPC MCP), em vez de JSON por linha
+impacto: O MCP server agora responde a initialize/tools/list/tools/call com o prot
 
-## Causa raiz
-O `if __name__ == "__main__"` do `mcp/desenvolvimento/habilidades/prompt-optimization/server.py`
-lia o stdin **linha a linha como JSON cru** (`for line in sys.stdin: json.loads(line)`).
-O protocolo MCP sobre stdio (usado pelo opencode e por todos os clientes
+### Erro: UnicodeEncodeError no runtime_context (cp1252)
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [runtime, unicode, windows, cp1252, runtime_context]
+data: 2026-08-08
+contexto: Verificação de preflight + busca de erro no runtime (pedido do módulo de compreensão de pedidos).
+decisao: Adicionar sys.stdout.reconfigure(encoding='utf-8', errors='replace') em scripts/runtime_context.py, mesmo padrão já usado em scripts/lg_pair_tv.py.
+impacto: Context Loader voltou a renderizar contexto sem crash; caracteres como ↔ (U+2194) presentes na memória (@sync) agora imprimem corretame
 
 ### fix favoritos tags e contagem por capitulo
 **Dominio:** general
 **Fonte:** opencode
 
-## Contexto
-
-O banco pré-populado `assets/databases/biblia_estudo.db` tinha a tabela `favorites` com coluna `tag` (singular),
-mas o código (`FavoriteDao.insert` e `cursorToFavorite`) usava `tags` (plural). Como o banco é copiado de assets
-e não criado via `onCreate` do helper, o schema real era o do assets → o `INSERT` falhava silenciosamente e o
-favorito nunca era salvo nem marcado.
-
-## Decisão
-
-1. **Assets**: `ALTER TABLE favorites RENAME COLUMN tag TO tags;` (sqlite3 3.50.6).
-2. **Migração de
+---
+tipo: erro
+tags: [biblia, favoritos, sqlite, schema, migracao, contagem, capitulo]
+data: 2026-08-09
+contexto: Bug de favoritos reportado pelo usuário + pedido de contagem de favoritos/notas por capítulo
+decisao: Renomear coluna `tag` para `tags` no banco pré-populado e adicionar migração defensiva; reativar spinner de capítulos com contagens; marcar versículo favoritado com ★
+impacto: Favoritos voltaram a funcionar; capítulos mostram quantos versículos estão favoritados e quantas notas exist
 
 ### fix tts corte final textos longos
 **Dominio:** general
 **Fonte:** opencode
 
-Tipo: erro
-
-Tags: [tts, speech_pipeline, chunking, truncamento, edge-tts]
-
-Data: 2026-08-13
-
+---
+tipo: erro
+tags: [tts, speech_pipeline, chunking, truncamento, edge-tts]
+data: 2026-08-13
 contexto: Textos longos narrados por voz (resumos grandes, relatórios) tinham o final cortado
-
 decisao: O SpeechPipeline.prepare() truncava o texto em MAX_TEXT_LENGTH (2000) antes da síntese,
-
-impacto: Áudio de texto longo cresce proporcionalmente ao texto (validado: 2032 chars -> 1.7MB;
+cortando silenciosamente todo o conteúdo restante. Corrigido movendo o split de texto longo
+para a síntese: _partes_para_sintese() divide via SentenceChunker.chunk_by_length() e a
+síntese concatena o áudio de cada p
 
 ### auditoria cerebro vivo fix tema padrao e bugs
 **Dominio:** general
 **Fonte:** opencode
 
-Tipo: erro
-
-Tags: [cerebro-vivo, grafo, widget, generate-graph-html, tema-padrao, fisica, vis-network, javascript]
-
-Data: 2026-08-13
-
+---
+tipo: erro
+tags: [cerebro-vivo, grafo, widget, generate-graph-html, tema-padrao, fisica, vis-network, javascript]
+data: 2026-08-13
 contexto: Auditoria do widget "Cérebro Vivo" (docs/grafo.html, gerado por scripts/generate-graph-html.py).
-
-decisao: 1) TEMAS.padrao.forca usava as chaves {grav, central} enquanto _aplicarForcasTema lê
+Linha de trabalho escolhida: corrigir o tema Padrão + sanar bugs. Fase 1 mapeou estados e fluxos;
+Fase 2 validou todos os blocos JS com node --check (principal 740KB + widget-extra.js + resize.js).
+decisao: 1) TEMAS.padrao.forca usava as chaves {grav, centra
 
 ### integracao completa mcps offline placeholder
 **Dominio:** general
 **Fonte:** opencode
-
-Tipo: erro
-
-Tags: [integracao, mcp, opencode, config, placeholder, renderizacao, deploy]
-
-Data: 2026-08-13
-
-contexto: Diagnóstico de integração completa do EcoSystemUmGrau. Todos os 13 MCPs
-
-decisao: A causa raiz era que o opencode.jsonc deployado em ~/.config/opencode
 
 ---
 tipo: erro
 tags: [integracao, mcp, opencode, config, placeholder, renderizacao, deploy]
 data: 2026-08-13
 contexto: Diagnóstico de integração completa do EcoSystemUmGrau. Todos os 13 MCPs
-apareciam como "failed / Connection cl
+apareciam como "failed / Connection closed" no `opencode mcp list`, mesmo com o
+preflight passando e o opencode.jsonc definindo todos os servidores.
+decisao: A causa raiz era que o opencode.jsonc deployado em ~/.config/opencode
+continha `{{USERPROFILE}}` literal nos caminhos (o opencode não expande esse
+plac
 
 ### Parar Fala — corrida da flag parar_fala.flag
 **Dominio:** general
 **Fonte:** opencode
 
-## Contexto
-
-Usuário relatou que o botão "Parar Fala" do widget Jarvis não parava a fala.
-
-## Causa raiz
-
-1. **Corrida da flag:** `cmd_interromper_fala` (scripts/widget_controle_jarvis.py) gravava `runtime/parar_fala.flag` e a apagava na mesma função, em microssegundos. O `SpeechPipeline.speak()` do narrador (em processo, scripts/narrador_desktop.py:205) só checa a flag a cada 0.05s (tts/speech_pipeline.py:397). Se o polling não acertava aquele instante, a fala continuava.
-2. **`jarvis_audio.py 
+---
+tipo: erro
+tags: [widget, narrador, parar-fala, flag, corrida, tts, jarvis, speech-pipeline]
+data: 2026-08-13
+contexto: Botão "Parar Fala" do widget Jarvis não parava a narração; usuário relatou que Jarvis continuava falando após acionar o botão.
+decisao: cmd_interromper_fala (scripts/widget_controle_jarvis.py) passou a manter a flag runtime/parar_fala.flag por 1.5s antes de apagá-la, e removeu o feedback de áudio "Voz desativada" que era falado logo após a parada.
+impacto: Narrador em proce
 
 ### ETAPA 25 — Teste End-to-End
 **Dominio:** general
@@ -2090,6 +2138,15 @@ Usuário relatou que o botão "Parar Fala" do widget Jarvis não parava a fala.
 **Dominio:** general
 **Fonte:** opencode
 
+---
+tipo: erro
+tags: [adb, tailscale, scrcpy, android, conexao]
+data: 2026-08-18
+contexto: scrcpy nao encontrava dispositivo ADB via Tailscale
+decisao: Corrigir caminho do ADB em adb_auto_connect.py para tentar multiplos caminhos
+impacto: Tailscale agora funciona como alternativa viavel para conexao ADB
+---
+
 ## Problema
 
 O scrcpy retornava "Could not find any ADB device" mesmo com Tailscale ativo.
@@ -2099,42 +2156,38 @@ O scrcpy retornava "Could not find any ADB device" mesmo com Tailscale ativo.
 O `adb_auto_connect.py` usava um caminho incorreto para o ADB:
 ```python
 # ERRADO
-os.path.join(os.environ.get('LOCALAPPDATA', ''), 'Android', 'Sdk', 'platform-tools', 'adb.exe')
-```
-
-O caminho correto no Windows é:
-```
-%LOCALAPPDATA%\Android\platform-tools\platform-tools\adb.exe
-```
-
-## Solução
-
-Corrigido para tentar múltiplos caminhos conhecidos:
-1. `%LOCALAPPDATA%\Android\platform-tools\platfo
+os.pat
 
 ### respostas truncadas
 **Dominio:** general
 **Fonte:** opencode
 
+---
+tipo: erro
+tags: [resposta, truncamento, final, palavra, llm, mitigacao]
+data: 2026-08-18
+contexto: Respostas do assistente terminam com a última palavra cortada (ex.: "atuais" vira "atu")
+decisao: Adicionar regra de mitigação: verificar final de toda resposta antes de entregar
+impacto: Respostas completas, sem palavras cortadas
+---
+
 ## Contexto
 
 O usuário identificou um padrão recorrente: as respostas do assistente
 terminam com a última palavra incompleta. Exemplo concreto: a frase terminou
-em "as pronúncias atu" em vez de "as pronúncias atuais".
-
-## Causa provável
-
-Corte na geração no limite de tokens/contexto da LLM. A resposta é entregue
-truncada no meio da última palavra.
-
-## Regra de mitigação (aplicar SEMPRE)
-
-1. Antes de entregar qualquer resposta, conferir a última palavra.
-2. Se a palavra estiver incompleta, ou a f
 
 ### crash topicindex version mismatch
 **Dominio:** general
 **Fonte:** opencode
+
+---
+tipo: erro
+tags: [android, sqlite, crash, database, version-mismatch]
+data: 2026-08-18
+contexto: TopicIndexActivity crashava ao abrir o Índice Temático no app Bíblia de Estudo
+decisao: Corrigir DATABASE_VERSION de 1 para 2 no TopicIndexDatabaseHelper
+impacto: Crash resolvido, Índice Temático agora funciona com 56 tópicos bíblicos
+---
 
 ## Problema
 
@@ -2142,37 +2195,36 @@ TopicIndexActivity crashava imediatamente ao abrir, sem mensagem de erro visíve
 
 ## Causa raiz
 
-Incompatibilidade de versão entre o banco `indices.db` (asset) e o `TopicIndexDatabaseHelper`:
-
-- `indices.db` nos assets tinha `PRAGMA user_version = 2`
-- `TopicIndexDatabaseHelper` declarava `DATABASE_VERSION = 1`
-
-Quando `SQLiteOpenHelper.getWritableDatabase()` detecta que a versão do arquivo (2) é maior que a versão do helper (1), ele tenta chamar `onDowngrade()`. Como `TopicIndexDa
+Incompatibilidade de versão entre o banco `indic
 
 ### Projecao ortho nas transicoes GL
 **Dominio:** general
 **Fonte:** opencode
 
+﻿---
+tipo: erro
+tags: [opengl, transicoes, biblia, projecao, ortho]
+data: 2026-08-19
+contexto: Motor de transicoes OpenGL ES 2.0 do app BibliaEstudoCompleta
+decisao: Trocar frustumM por orthoM(-1,1,-1,1,2,8) e remover a multiplicacao pos.x *= uOldAspect no shader
+impacto: Pagina preenche a tela inteira sem distorcao; 4 efeitos validados no device
+---
+
+# Projecao ortho nas transicoes GL
+
 ## Problema
 A pagina capturada tem a mesma proporcao da tela (1080x2400, aspect 0.45).
-Com frustumM(-aspect, aspect, -1, 1, 2, 8) + translate z=-3.5, o quad -1..1
-aparecia com ~57% do tamanho, deixando bordas pretas laterais (distorcao vertical).
-
-## Correcao
-Usar projecao ortografica orthoM(-1, 1, -1, 1, 2, 8). Como a textura tem a
-mesma proporcao da tela, o quad [-1,1]x[-1,1] preenche a tela inteira sem
-faixas. O shader ja faz a perspectiva manual para o cubo (perspective =
-2.0/(2.5 + nx*sinA)
+Com frustumM(-aspect, a
 
 ### Toast de Erros - Falsos Positivos
 **Dominio:** general
 **Fonte:** opencode
 
-Tipo: erro
-
-Tags: [widget, deteccao, falsos-positivos, regex]
-
-Data: 2026-08-20
+---
+tipo: erro
+tags: [widget, deteccao, falsos-positivos, regex]
+data: 2026-08-20
+---
 
 # Toast de Erros - Falsos Positivos
 
@@ -2188,11 +2240,17 @@ Essa linha e o Jarvis FALANDO sobre um erro passado, nao um erro real.
 ## Correcao
 Filtrar
 
-tipo
-
 ### Narrador morto por bloco duplicado; falso-positivo de encoding no log
 **Dominio:** general
 **Fonte:** opencode
+
+---
+tipo: erro
+tags: [narrador, system-guardian, syntax-error, encoding, git]
+data: 2026-08-21
+---
+
+# Narrador morto por bloco duplicado; falso-positivo de encoding no log
 
 ## Contexto
 Investigação pedida pelo usuário sobre duas anomalias no log do system_guardian:
@@ -2200,13 +2258,19 @@ texto corrompido ("ap��s") e o narrador morrendo logo após iniciar em loop.
 
 ## Causa raiz 1 — narrador (real)
 Entre os commits a2d996c4 (14:18) e adcfb195 (16:08) de 21/08/2026, um enxerto de
-286 linhas duplicadas do próprio módulo entrou no narrador_desktop.py, quebrando um
-try sem except na main() (SyntaxError linha 367). O processo morria instantaneamente
-e o guardian reiniciava em loop a cada ~20s. 
+286 linhas duplicadas do próprio módulo e
 
 ### Snapshots "corrompidos" do opencode: referência no banco decide, não heurística
 **Dominio:** general
 **Fonte:** opencode
+
+---
+tipo: erro
+tags: [opencode-resilience, snapshots, falso-positivo, seguranca-de-dados]
+data: 2026-08-21
+---
+
+# Snapshots "corrompidos" do opencode: referência no banco decide, não heurística
 
 ## Contexto
 Usuário apontou a mensagem recorrente "[SNAP] 2 snapshot(s) corrompido(s) - limpeza
@@ -2214,27 +2278,18 @@ adiada (desktop ativo)" no log do guardian. Investigação revelou três camadas
 
 ## Causas encontradas
 1. Falso positivo estrutural: o detector marcava o subdiretório `objects` interno
-   do próprio git (por conter info/pack) como snapshot corrompido.
-2. Snapshot real mas EM USO: a sessão "Jarvis greeting" (criada 20/08, atualizada
-   hoje) referencia o hash em 27 partes da tabela part. Estrutura parci
+   do próprio git (por co
 
 ### saudacao espontanea nao implementada
 **Dominio:** general
 **Fonte:** opencode
 
-## Problema
-
-A cláusula pétrea **AUTOAPRESENTAÇÃO AUTOMÁTICA NA PRIMEIRA MENSAGEM DE CADA SESSÃO** não está sendo cumprida. O fluxo atual:
-
-1. Usuário abre nova sessão
-2. Agente responde direto ao pedido
-3. **FALTA**: saudação espontânea curta confirmando operacionalidade
-
-## Requisito da Cláusula
-
-> Fluxo obrigatório na primeira mensagem de qualquer sessão (antes de atender o pedido):
-> 1. Executar silenciosamente: `python scripts/runtime_boot.py --check`
-> 2. Se integridade OK: iniciar a respo
+---
+tipo: erro
+tags: [saudacao, autoapresentacao, clausula-petrea, boot, primeira-mensagem]
+data: 2026-08-23
+contexto: "Cláusula pétrea de autoapresentação automática na primeira mensagem de cada sessão (AGENTS.md e Constituição) exige saudação curta (máx 3-4 linhas), espontânea, variando o tom a cada sessão, informando que EcoSystemUmGrau está ativo e operante, com leve contexto (projeto ativo, memória, pendências)."
+decisao: "Registrar erro e definir implementação: criar mecanismo de detecção 
 
 ### Pacote Seguro de Serviços Windows — Aplicação com Backup
 **Dominio:** general
@@ -2251,127 +2306,180 @@ A cláusula pétrea **AUTOAPRESENTAÇÃO AUTOMÁTICA NA PRIMEIRA MENSAGEM DE CAD
 ## Decisão
 Desativar 27 serviços inúteis para este perfil de uso (desenvolvimento local, 
 
-### Reverter as mudancas do Cerebro e implementar Pausar/Retomar no Edge. 
+### ﻿---
 **Dominio:** general
 **Fonte:** opencode
 
-Tipo: decisao
+﻿---
+tipo: decisao
+tags: [ollama, hd-externo, ntfs, exfat, reconstrucao]
+data: 2026-08-27
+contexto: HD externo E: estava com exFAT corrompido (leituras inconsistentes), bloqueando o Ollama.
+decisao: Reformatar E: para NTFS e reconstruir o Ollama + espelhar o EcoSystemUmGrau.
+impacto: Ollama 100% no E: com 5 modelos; espelho do ecossistema no E:.
+---
 
-Tags: [narrador, edge, widget, pausa, cerebro]
+## Reconstrução do Ollama no HD Externo (NTFS)
 
-Data: 2026-08-28
+Causa raiz: o exFAT do E: tinha corrupção estrutural de diretório — cada leitor
+(PowerShell, Python
 
+### ﻿---
+**Dominio:** general
+**Fonte:** opencode
+
+﻿---
+tipo: decisao
+tags: [narrador, edge, widget, pausa, cerebro]
+data: 2026-08-28
 contexto: Pedido de botao pausar/parar no widget. A primeira implementacao foi colocada no Cerebro Vivo (www/cerebro.html + widget_grafo.py), mas o alvo correto era a janela Edge (widget_edge.py), onde roda o motor de narracao.
+decisao: Reverter as mudancas do Cerebro e implementar Pausar/Retomar no Edge. EdgeApi ganhou pause()/resume() e status() passou a retornar pausado. UI www/index.html ganhou o botao btnPaus
 
+### ﻿---
+**Dominio:** general
+**Fonte:** opencode
+
+﻿---
+tipo: decisao
+tags: [narrador, edge, widget, pausa, cerebro]
+data: 2026-08-28
+contexto: Pedido de botao pausar/parar no widget. A primeira implementacao foi colocada no Cerebro Vivo (www/cerebro.html + widget_grafo.py), mas o alvo correto era a janela Edge (widget_edge.py), onde roda o motor de narracao.
 decisao: Reverter as mudancas do Cerebro e implementar Pausar/Retomar no Edge. EdgeApi ganhou pause()/resume() e status() passou a retornar pausado. UI www/index.html ganhou o botao btnPaus
 
 ### gate hd externo e preflight repos nativos
 **Dominio:** general
 **Fonte:** opencode
 
-Tipo: erro
-
-Tags: [gate, persistencia, hd-externo, preflight, powershell]
-
-Data: 2026-08-28
-
+---
+tipo: erro
+tags: [gate, persistencia, hd-externo, preflight, powershell]
+data: 2026-08-28
 contexto: Sync apos controles de narracao no widget Edge. Gate persistencia.ps1 travava espelho do HD externo e repos nativos.
-
 decisao: Corrigir bug de continuacao de linha PowerShell no filtro $hdBloqueio (mover '-and' para o fim da linha); Invoke-PreflightGlobal passa a pular preflight quando scripts/preflight_check.py nao existe (em vez de bloquear); identidade git local configurada no repo claude-co
 
 ### audit runner recuperado
 **Dominio:** general
 **Fonte:** opencode
 
-Tipo: erro
-
-Tags: [guardian, auditoria, monitor, audit_runner, widget]
-
-Data: 2026-08-28
-
+---
+tipo: erro
+tags: [guardian, auditoria, monitor, audit_runner, widget]
+data: 2026-08-28
 contexto: system_guardian.py executava scripts/audit_runner.py a cada ~30 min para gerar runtime/audit_result.json e reportar saúde do ecossistema.
-
 decisao: Recriar scripts/audit_runner.py (arquivo referenciado não existia mais), reutilizando audit_eco.run_audit como fonte única e escrevendo o resultado com escrita atômica (tmp + os.replace) no contrato que o guardian lê (timestamp epoch + score + findings
 
 ### ordinais text normalizer
 **Dominio:** general
 **Fonte:** opencode
+
+---
+tipo: erro
+tags: [tts, ordinal, text_normalizer, pronuncia, placeholder]
+data: 2026-08-29
+contexto: text_normalizer.py expandia 1º/2ª como "umº" (sufixo ordinal mantido), pois _normalize_numbers só tratava inteiros/percentuais. Correção necessária para expandir ordinais por extenso.
+decisao: Adicionar ordinal_por_extenso(n, genero) (1..999, masc/fem) e regex (?<![\d.,])(\d{1,3})([ºª]) com placeholder "=ORDO<chave_letras>M/F=" (chave só-de-letras via _letras_de para a regex de inteiros não ca
+
 ### Silêncio do narrador — três causas empilhadas
 **Dominio:** general
 **Fonte:** opencode
+
+---
+titulo: Silencio do narrador tinha tres causas empilhadas
+tipo: erro
+tags: [narrador, tts, audio, resiliencia, diagnóstico]
+data: 2026-08-29
+---
+
+# Silêncio do narrador — três causas empilhadas
 
 ## Contexto
 O usuário relatou "não estou ouvindo o narrador". A telemetria mostrava fala ok (MP3 gerado, `ok=True`), mas nada saía no alto-falante.
 
 ## Causas encontradas (em camadas)
 
-1. **Bug no widget**: `voice_off()` chamava `_narrador_pausar(True)` em vez de `False`. Corrigido — hoje a função retoma o narrador.
-
-2. **PID file órfão no tts_service**: `runtime/tts_service.pid` continha PID de processo morto. O checador `_instancia_unica()` detectava corretamente e recriava; mas kills forçados
+1. **Bug no widget**: `voice_off()` chamava `_narrador_pausar(True)` em vez de `False`. Corrigido — hoje a função re
 
 ### Maestro Fase Ativa - Fix Registro e Stale PID
 **Dominio:** general
 **Fonte:** opencode
 
-## Problema
-- Maestro nao verificava se PID registrado ainda estava vivo
-- Guardian nao registrava PID no Maestro apos iniciar servico
-- Guardians simultaneos nao eram bloqueados
-
-## Solucao
-1. 
-untime_maestro.py:pode_iniciar(): adicionar psutil.pid_exists() antes de bloquear
-2. system_guardian.py: trocar decisao_local="nasceu" por "registrar_nascimento"
-3. system_guardian.py:_observar_no_maestro(): aceitar "registrar_nascimento" no registro
-
-## Teste
-- End-to-end: TTS morre -> guardian consulta
+﻿---
+tipo: decisao
+tags: [maestro, runtime, guardian, fase-ativa, stale-pid]
+data: 2026-08-31
+contexto: |
+  Maestro de Runtime em fase ativa. Guardians consultam antes de iniciar servicos.
+  Bug: Maestro nao verificava se PID registrado ainda estava vivo (confiava cego no campo vivo).
+  Bug: Guardian nao registrava PID no Maestro apos iniciar servico.
+decisao: |
+  1. Adicionar verificacao de vida (psutil.pid_exists) no pode_iniciar() do Maestro.
+     Se PID registrado morto, limpar registro stal
 
 ### Correção de métricas de aderência (@sync)
 **Dominio:** general
 **Fonte:** opencode
 
-## 1. Bug na métrica preflight_entregas (erro crítico)
+---
+tipo: erro
+tags: [aderencia, preflight, adherencia-audit, metrica, bug]
+data: 2026-09-02
+contexto: O @sync reportava @sync FAIL por metricas de aderencia baixas (inventario 15.8%, preflight 25%). Investigacao revelou bugs reais em duas metricas e um falso positivo no deploy config.
+decisao: Correcao de 3 frentes para elevar o score geral de aderencia de 69.6 para 93.4/100.
+impacto: @sync agora PASS (thresholds OK). Score EXCELENTE.
+---
 
-Em `scripts/adherence_audit.py`, o `parse_git_log` usava `--date=short` no git log, retornando apenas a data do commit (YYYY-MM-DD) sem hora. O parse `datetime.strptime(c['date'], '%Y-%m-%d')` criava meia-noite do dia. A comparação `p < e['date']` então exigia preflight ANTES da meia-noite do dia do commit, excluindo todos os preflights do mesmo dia.
+# Correção de métricas de aderência (@sync)
 
-Resultado: de 4 entregas, só 1 contava como "com preflight" (25%) mesmo com 415+ execuções
+## 1. Bug 
 
 ### Identidade digital do usuario David
 **Dominio:** general
 **Fonte:** opencode
 
-Redes sociais conhecidas ate 2026-09-04:
-- YouTube: @davidtubejunior (analise na secao abaixo)
-- Instagram pessoal: @i.davidjunior (perfil nao aberto automaticamente; Instagram bloqueia scraper; aguardar confirmacao visual)
-- Instagram de crescimento: @mindhacksbrasil (pagina criada pelo usuario com objetivo de faze-la crescer; nicho sugerido pelo nome: hacks mentais, neurociencia, psicologia, produtividade, desenvolvimento pessoal)
+---
+tipo: preferencia
+tags: [usuario, youtube, canal, davidtubejunior, preferencia]
+data: 2026-09-04
+contexto: Usuario pediu que o ecossistema conheca o canal dele no YouTube e guarde essa informacao sobre ele.
+decisao: Registrado o canal @davidtubejunior como preferencia do usuario na memoria persistente e neste aprendizado.
+impacto: O ecossistema passa a conhecer o canal do usuario e pode usar essa informacao em tarefas futuras (recomendacoes, referencias, contexto pessoal).
+---
 
-## MindHacksBrasil — dados reais (navegacao 2026-09-04)
-Perfil
+# Identidade 
 
 ### Banco de ganchos — @mindhacksbrasil
 **Dominio:** general
 **Fonte:** opencode
 
-Regra do banco: gancho nos primeiros 2 segundos, curiosidade antes de resposta, e CTA de salvamento/compartilhamento no final. Publico cristao brasileiro assiste sem som: legenda grande e voz narrativa obrigatoria.
-
-## Carrossel (salvamento acima de tudo)
-
-1. Tema: Inscricao de Tel Dan (casa de Davi). Gancho: "A ciencia passou 100 anos dizendo que o rei Davi era lenda. Ai ela mesma achou a pedra com o nome da casa dele. Dentro da arqueologia, so isso." Formato: carrossel de 8 fatos, um por card.
+---
+tipo: conteudo
+tags: [mindhacksbrasil, instagram, viralizacao, conteudo, ganchos, apologetica]
+data: 2026-09-04
+contexto: Banco de ganchos criado para o perfil @mindhacksbrasil (33.330 seguidores, nicho apologetica crista factual) a pedido do usuario. Perfil documentado em 2026-09-04-conteudo-youtube-davidtubejunior.md.
+decisao: Cada gancho tem tema, frase literal, formato recomendado e CTA. Prioridade para casuais que combinam fe e evidencia.
+impacto: Material direto para producao de carros
 
 ### reinjecao primeira mensagem bridge
 **Dominio:** general
 **Fonte:** opencode
 
-Tipo: erro
-
-Tags: [bridge, jarvis, websocket, primeira-mensagem, progresso, reinjecao]
-
-Data: 2026-09-05
-
+---
+tipo: erro
+tags: [bridge, jarvis, websocket, primeira-mensagem, progresso, reinjecao]
+data: 2026-09-05
 contexto: Validação do aviso periódico de progresso ("me avise a cada minuto do progresso") falhava com timeout. Diagnóstico: a primeira mensagem da conexão era consumida por `ws.recv(timeout=3)` na classificação e descartada.
-
 decisao: Adicionar `prim_set` + generator `_fluxo_mensagens()` que re-injeta `prim` no loop principal (`async for m in ws`), apenas quando a conexão é de voz normal (
+
+### corrige conflito dual git knowledge graph
+**Dominio:** general
+**Fonte:** opencode
+
+---
+tipo: erro
+tags: [git, persistencia, knowledge-graph, double-tracking, vigia]
+data: 2026-09-05
+contexto: knowledge_graph.json era versionado simultaneamente por dois repositorios (repo filho ler-runtime com .git proprio e repo pai EcoSystemUmGrau). O repo filho teve o graph truncado (722KB) commitado no HEAD local e no remote; o vigilante rodava git pull --ff-only e merges que recomitavam o estado truncado por cima de qualquer restauracao.
+decisao: Restaurar o graph da fonte saudavel .bak_sa
 
 ## Heuristicas
 
@@ -2467,7 +2575,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-09-05T17:07:36.842490
+**Ultima atualizacao:** 2026-09-05T21:20:58.842059
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

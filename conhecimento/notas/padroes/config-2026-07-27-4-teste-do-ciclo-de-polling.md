@@ -21,8 +21,8 @@ Criado manualmente enquanto o vigilante está rodando para verificar se o pollin
 ## Conexoes
 
 - [[aegis-barra-progresso-tempo-real]]
+- [[aegis-registrado-como-projeto-irmao-rust]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
-- [[fase2-limpeza-git-artefatos-rastreados]]
 - [[padrao-hub-padroes]]
 - [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]

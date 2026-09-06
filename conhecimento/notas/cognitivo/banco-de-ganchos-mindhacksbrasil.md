@@ -1,5 +1,5 @@
 ---
-tags: [cognitivo, compartilhamento, era, final, general, lenda]
+tags: [cognitivo, estilo, general, nota, precisão, seguindo]
 aliases: [Banco de ganchos — @mindhacksbrasil]
 date: 2026-09-05
 ---
@@ -8,15 +8,20 @@ date: 2026-09-05
 
 **Dominio:** general
 
-Regra do banco: gancho nos primeiros 2 segundos, curiosidade antes de resposta, e CTA de salvamento/compartilhamento no final. Publico cristao brasileiro assiste sem som: legenda grande e voz narrativa obrigatoria.
+---
+tipo: conteudo
+tags: [mindhacksbrasil, instagram, viralizacao, conteudo, ganchos, apologetica]
+data: 2026-09-04
+contexto: Banco de ganchos criado para o perfil @mindhacksbrasil (33.330 seguidores, nicho apologetica crista factual) a pedido do usuario. Perfil documentado em 2026-09-04-conteudo-youtube-davidtubejunior.md.
+decisao: Cada gancho tem tema, frase literal, formato recomendado e CTA. Prioridade para casuais que combinam fe e evidencia.
+impacto: Material direto para producao de carros
 
-## Carrossel (salvamento acima de tudo)
-
-1. Tema: Inscricao de Tel Dan (casa de Davi). Gancho: "A ciencia passou 100 anos dizendo que o rei Davi era lenda. Ai ela mesma achou a pedra com o nome da casa dele. Dentro da arqueologia, so isso." Formato: carrossel de 8 fatos, um por card. CTA: "Salva este post. Essa e a evidencia que voce precisa ter na mao quando questionarem sua fe."
-
-2. Tema: Pedra de Pilatos. Gancho: "Pilatos so existia na Bíblia, diziam os céticos. Uma pedra achada na Cesareia em 1961 gravou o nome dele no imperio. O mesmo nome que a Bíblia registra no interrogatorio de Jesus." Formato: carrossel antes/depois. CTA: "Compartilha com quem acha que Jesus e ficcao."
-
-3. Tema: Rolos do Mar Morto. Gancho: "Copiadas a mão por mil anos, com erros de quem ta copiand
+---
+tipo: conteudo
+tags: [mindhacksbrasil, roteiros, reels, carrossel, instagram, viralizacao, apologetica]
+data: 2026-09-04
+contexto: Roteiros completos dos 4 ganchos principais a pedido do usuario: Pedra de Pilatos (carrossel), jurista de Harvard (reel), Jerico (reel), semana de 7 dias (carrossel). Banco base: 2026-09-04-conteudo-mindhacksbrasil.md.
+decisao: Roteiro no formato cena/beat com narracao completa, texto em tela curto e nota de precisão factual em cada um, seguindo o estilo 'apenas 
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]

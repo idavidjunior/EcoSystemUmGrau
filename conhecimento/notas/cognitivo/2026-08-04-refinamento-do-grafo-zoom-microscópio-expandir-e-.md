@@ -1,5 +1,5 @@
 ---
-tags: [cognitivo, dominio, general, interconectados, nós, viva]
+tags: [clicar, clique, cognitivo, general, persistencia, sumiram]
 aliases: [2026-08-04: Refinamento do grafo — zoom microscópio, expandi]
 date: 2026-08-04
 ---
@@ -8,22 +8,19 @@ date: 2026-08-04
 
 **Dominio:** general
 
-## Decisões técnicas validadas (online)
+---
+tipo: aprendizado
+tags: [vis-network, zoom, microsocpio, clustering, physics, barnesHut, grafo, widget, labels]
+data: 2026-08-04
+contexto: Refinamento do widget "Cerebro Vivo" (scripts/widget_grafo.py + scripts/generate-graph-html.py) para movimento mais vivo/realista e zoom com papel narrativo.
+decisao: Movimento organico = physics.stabilization:false + timestep:0.2 + maxVelocity:6 + minVelocity:0 + adaptiveTimestep:false + barnesHut(avoidOverlap:0.55, damping:0.88). Respiracao do layout vi
 
-### vis-network physics (barnesHut)
-- `stabilization: false` + `timestep: 0.2` + `maxVelocity: 6` + `minVelocity: 0` + `adaptiveTimestep: false` → movimento perpétuo e lento (nunca "congela").
-- `barnesHut.avoidOverlap: 0.55` usa o raio do nó para evitar sobreposição (vis.js docs).
-- `damping: 0.88` → balanço suave/amortecido.
-- `improvedLayout` só funciona se passado **antes** de `new vis.Network()`, e pode falhar em grafos densos (>100 nós interconectados); com stabilization:false deixamos o balanço orgânico espalhar.
-
-### Zoom microscópio (fonte legível ao ampliar)
-- vis.js NÃO tem opção "fix label size" pronta. A compensação validada na comunidade:
-  `font.size = base / scale` (aplica no evento `network.on('zoom')`).
-- Implementado: `font.size = 13 / scale` (clamp 0.4 ≤ scale ≤ 22).
-
-### Expandir (clustering por zoom)
-- vis.js possui `network.cluster({joinCondition, clusterNode})` e `network.openCluster(id)`.
-- Estratégia: em zoom-out, agrup
+---
+tipo: aprendizado
+tags: [vis-network, malha-viva, traveling-wave, profundidade, pseud-3d, giro, canvas, persistencia-clique]
+data: 2026-08-04
+contexto: Usuario pediu para o grafo "girar sozinho em 3d de forma viva e natural" e reclamou que os efeitos ao clicar em um no sumiram. Tambem pediu que eu aprenda continuamente a evoluir esses efeitos de malha viva.
+decisao: (1) Giro via transform CSS no canvas (rotateZ/rotateX) e ARTIFICIAL: gira o rendering 2D inteiro como folha de papel, sem profu
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]

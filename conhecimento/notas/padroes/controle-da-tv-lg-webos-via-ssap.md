@@ -1,5 +1,5 @@
 ---
-tags: [input, opencode, padrao, pointer, remotas, socket]
+tags: [50ut8050psa, nativo, opencode, padrao, ssap wss, wss]
 aliases: [Controle da TV LG webOS via SSAP]
 date: 2026-08-04
 ---
@@ -8,19 +8,13 @@ date: 2026-08-04
 
 **Fonte:** opencode
 
-## Contexto
-
-O usuário pediu um plano e sequência de aprendizado do controle da TV e execução em segundo plano. A infraestrutura existente tinha apenas scripts de pareamento (`lg_pair_tv.py`, `tv_pair_prompt.py`, `device_probe.py`) e uma chave salva em `scripts/keys/lgtv_50UT8050PSA.json`.
-
-## Decisão
-
-Criar `scripts/tv_control.py` — biblioteca SSAP com classe `TvSap` cobrindo: registro, status (poder + volume), volume set/step, mute, power_off, screen on/off, launch_app, get_foreground_app, get_input_list, media control e teclas remotas via pointer input socket.
-
-## Aprendizados técnicos
-
-- A resposta de `register` vem como `{"type":"registered","payload":{"client-key":"..."}}` — **sem** `returnValue`. A verificação inicial errada quebrava a conexão.
-- A chave salva (f61bccaabd247d8ae1702672d3f9c4f5) foi registrada com um manifesto **limitado** (sem `READ_INSTALLED_APPS`). Por isso `listApps` retorna `401 insufficient permissions`, mas volume, tela, launch e teclas funcionam.
-- Para l
+---
+tipo: padrao
+tags: [tv, lg, webos, ssap, tv_control, python]
+data: 2026-08-02
+contexto: Aprendizado do controle nativo da TV LG 50UT8050PSA (webOS) via SSAP wss://192.168.15.6:3001
+decisao: Criar scripts/tv_control.py como biblioteca unica de controle da TV
+impacto: Jarvis agora controla volume,
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

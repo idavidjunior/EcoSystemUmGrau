@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**293 notas** conectadas a este hub.
+**297 notas** conectadas a este hub.
 
 
 ## Notas
@@ -93,6 +93,7 @@
 - [[dual-mode-dialog-pattern]]
 - [[dublagem-versão-sincronização-labial-tamanho-da-fala-e-natur]]
 - [[eco-agente-e-comando-global]]
+- [[ecow-e-ecow-abrirfocar-o-cerebro-vivo]]
 - [[edicao-mensagem-vox]]
 - [[edittext-inline-editing-toggle]]
 - [[elementos-culturalmente-intraduzíveis-humor-trocadilhos-prov]]
@@ -136,6 +137,7 @@
 - [[ilhas-no-grafo-notas-com-grau-0-e-como-conecta-las]]
 - [[inline-editing-pattern]]
 - [[integracao-contexto-kernel]]
+- [[integrity-guard-motor-estrutural]]
 - [[integrity-guard-vigilante-dados]]
 - [[itunes-search-with-scoring-thresholds]]
 - [[janela-flutuante-para-visuais-sem-navegador]]
@@ -283,6 +285,7 @@
 - [[tradução-literária-prosa-e-poesia-ritmo-voz-e-licença-poétic]]
 - [[tradução-para-narração-tts-em-pt-br-pontuação-entonação-e-ss]]
 - [[tradução-técnica-manuais-especificações-e-documentação-de-so]]
+- [[triagem-scripts-legado-orgaos-movidos]]
 - [[typescript-generics-e-tipos-condicionais]]
 - [[typescript-sistema-de-tipos-estrutural]]
 - [[typescript-type-narrowing-guards-e-type-assertions]]
@@ -293,6 +296,7 @@
 - [[wait-strategy-adaptive]]
 - [[widget-desktop-grafo-tempo-real]]
 - [[widget-edge-estabilizado-fonte-unica-processos]]
+- [[widget-jarvis-8-features-implementadas]]
 - [[win32-control-pattern-recognition]]
 - [[windows-notificationballoon-dismissal]]
 - [[windows-ui-element-tree-traversal]]

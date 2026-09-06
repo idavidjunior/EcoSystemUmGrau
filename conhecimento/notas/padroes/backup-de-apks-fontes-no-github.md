@@ -1,5 +1,5 @@
 ---
-tags: [limpos, opencode, padrao, permitir, proj, trackeado]
+tags: [bagunça, ecossistema, gerar, lixo, opencode, padrao]
 aliases: [Backup de APKs + fontes no GitHub]
 date: 2026-08-08
 ---
@@ -8,27 +8,12 @@ date: 2026-08-08
 
 **Fonte:** opencode
 
-## Contexto
-Dos 11 apps em `Projetos/` (submódulos do EcoSystemUmGrau), 9 estavam limpos e 2
-tinham trabalho não commitado: `SupermarketCalculator` (feature v1.5.0 de sons) e
-`VoxUmGrau` (ajustes de áudio/chamada v17). Além disso, **nenhum APK era trackeado**
-em nenhum projeto — `*.apk` estava no `.gitignore` do SupermarketCalculator, e o APK
-do VoxUmGrau ficava em `app/build/` (ignorado). Ou seja: não havia backup dos APKs.
-
-## Decisões e padrão estabelecido
-
-### 1. Backup de APKs: pasta `releases/` versionada
-- **SupermarketCalculator** (build com `build.ps1`, APKs release assinados):
-  - `.gitignore` passou a ter a negação para permitir releases:
-    ```
-    *.apk
-    !releases/
-    !releases/*.apk
-    ```
-  - APK canônico de cada versão fica em `releases/SupermarketCalculator-vX.Y.Z.apk`
-    (já existiam v1.2, v1.3.0, v1.4.0; adicionado v1.5.0).
-  - Duplicatas da raiz (ex.: `...-release.apk`) e APKs debug foram movidos para
-    `build/` (área de artefatos gitignored) — raiz do proj
+---
+tipo: padrao
+tags: [apk, backup, github, submodules, gitignore, release, android]
+data: 2026-08-08
+contexto: Usuário pediu que os apps APK (código-fonte + APKs) fossem atualizados e commitados no GitHub como backup, no lugar correto do Ecossistema, sem gerar bagunça/lixo
+decisao: Padronizar back
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

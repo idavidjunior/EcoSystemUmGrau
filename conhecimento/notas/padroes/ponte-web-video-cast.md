@@ -1,5 +1,5 @@
 ---
-tags: [instantbits, intent, obras, opencode, pacote, padrao]
+tags: [app, assistir, instan, obras, opencode, padrao]
 aliases: [ponte web video cast]
 date: 2026-08-09
 ---
@@ -8,17 +8,12 @@ date: 2026-08-09
 
 **Fonte:** opencode
 
-Tipo: padrao
-
-Tags: [streamumgrau, cast, web-video-cast, tv, url-launcher]
-
-Data: 2026-08-09
-
-Contexto: Usuario pediu ponte do catalogo do StreamUmGrau com o app Web Video Cast para assistir obras na TV.
-
-Decisão: Implementado botao "Assistir na TV" na DetailView que delega ao Web Video Cast (InstantBits). Sem URL de video no catalogo, a ponte abre o app pelo pacote (intent://) para o usuario buscar; com videoUrl futuro, usa o scheme oficial wvc-x-callback://open. Fallback: Play Store.
-
-Impacto: App nao embute reprodutor nem agregador de fontes; WVC faz a ponte com Chromecast/Roku/Fire TV/DLNA. url_launcher ^6.3.0 adicionado.
+---
+tipo: padrao
+tags: [streamumgrau, cast, web-video-cast, tv, url-launcher]
+data: 2026-08-09
+contexto: Usuario pediu ponte do catalogo do StreamUmGrau com o app Web Video Cast para assistir obras na TV.
+decisao: Implementado botao "Assistir na TV" na DetailView que delega ao Web Video Cast (Instan
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

@@ -1,5 +1,5 @@
 ---
-tags: [cobertura, conh, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao, virar]
+tags: [base, descobertas, experiências, opencode, opencodeopencodeopencodeopencodeopencodeopencodeopencodeopen, padrao]
 aliases: [Aprendizado: Jarvis manifesta o que quer aprender]
 date: 2026-08-10
 ---
@@ -8,35 +8,11 @@ date: 2026-08-10
 
 **Fonte:** opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode+opencode
 
-## Resumo
-
-Jarvis agora fala periodicamente o que gostaria de aprender, baseado em
-experiências reais do ecossistema.
-
-## Mecanismo
-
-- `scripts/desejo_aprendizado.py` — coleta 4 sinais, escolhe até 3 (fora da
-  janela das últimas 3 manifestações), persiste histórico e fala via TTS.
-- `scripts/desejos_loop.py` — loop em background (intervalo 45min, janela
-  9h-22h), configurável por env `DESEJOS_INTERVALO/INICIO/FIM`.
-- `scripts/desejos_start.bat` — inicia o loop em background.
-
-## Lições
-
-- Proatividade de voz precisa de base real (memória/recorrências/cobertura) e
-  anti-repetição (assinatura + janela), senão vira ruído.
-- Quiet hours evitam manifestação em horário inoportuno.
-
-## Próximos passos
-
-- Iniciar loop em background quando o usuário quiser voz ativa.
-- Integrar sugestões ao pipeline de aprendizado (o desejo manifestado pode virar
-  uma tarefa de estudo registrada no runtime).
-
-## Conexoes
-
-- [[2026-08-04-foco-vocal-via-jarvis-voz-orienta-o-grafo-do-conh]]
-- [[2026-08-04-labe
+---
+tipo: padrao
+tags: [jarvis, voz, proatividade, aprendizado, autonomia, memoria, ciclo]
+data: 2026-08-10
+contexto: "Usuário pediu que o Jarvis 'dissesse ou manifestasse, de vez em quando, o que gostaria de aprender, com base em suas experiências ou descobertas'. Não existia mecanismo de manifesta
 ## Conexoes
 
 - [[2026-08-03-adb-remoto-via-tailscale-script-automatico-de-rot]]

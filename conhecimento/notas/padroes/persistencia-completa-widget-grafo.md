@@ -1,5 +1,5 @@
 ---
-tags: [extra, fit, nao, opencode, padrao, sobrescrever]
+tags: [execucoes, opencode, padrao, pane, persistam, zoom]
 aliases: [persistencia completa widget grafo]
 date: 2026-08-10
 ---
@@ -8,20 +8,12 @@ date: 2026-08-10
 
 **Fonte:** opencode
 
-## Decisao
-
-Toda personalizacao do widget do grafo persiste em localStorage:
-- `temaGrafo`, `velGrafo`, `orbGrafo`, `labelsOcultos`, `painelGrafoVisivel` (ja existiam no widget-extra.js)
-- `modo3D`, `waveIntensidade`, `flashEnabled` (lado do grafo, gerado por generate-graph-html.py)
-- **NOVOS**: `camGrafo` (camera: x, y, scale) e `destGrafo` (filtro ativo: {f, v})
-
-## Implementacao (generate-graph-html.py)
-
-- `_salvarCamera()` grava view position + scale; disparada por `network.on('zoom')`, `('dragEnd')`, `('animationFinished')` e `beforeunload`.
-- `_restaurarCamera()` aplica via `network.moveTo({position, scale, animation:false})`, clamp scale 0.05..6.
-- `destacar(filtro, valor, corGrupo, semFit)`: parametro novo `semFit` evita fit no restore de boot para nao sobrescrever a camera salva.
-- `limpar()` remove `destGrafo`; `telaInicial()` salva camera apos o moveTo.
-- Restore de boot em setTimeout(2600): reaplica filtro (busca o botao `.lg` pelo data-filter/data-value para pegar a cor) e
+---
+tipo: padrao
+tags: [persistencia, widget, grafo, localStorage, camera, filtro]
+data: 2026-08-09
+contexto: Usuario exigiu que todas as escolhas de personalizacao do widget "Cerebro Vivo" persistam entre execucoes.
+decisao: Persistir tema, velocidade, orbita, etiquetas, painel, camera (zoom/pane) 
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

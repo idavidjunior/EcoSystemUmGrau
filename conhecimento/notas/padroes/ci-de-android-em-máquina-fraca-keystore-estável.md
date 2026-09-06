@@ -1,5 +1,5 @@
 ---
-tags: [dir, gradle, jvm, opencode, padrao, qualquer]
+tags: [chave, estável, fonte, opencode, padrao, ram]
 aliases: [CI de Android em máquina fraca + keystore estável]
 date: 2026-08-23
 ---
@@ -8,32 +8,13 @@ date: 2026-08-23
 
 **Fonte:** opencode
 
-## Problema real
-O PC (3,9GB RAM, OpenCode desktop ocupando ~1GB) mata qualquer JVM do Gradle:
-"daemon disappeared" sem hs_err, sem OOM no log, mesmo com -Xmx768m e --no-daemon.
-Build local inviável durante uso normal do ecossistema.
-
-## Solução adotada
-Workflow mínimo no próprio repositório do app (não no ecossistema):
-
-```yaml
-- Restore debug keystore: echo "$KEYSTORE_B64" | base64 -d > ~/.android/debug.keystore
-- ./gradlew assembleDebug --no-daemon
-- actions/upload-artifact com o APK
-```
-
-Download e install:
-```
-gh run download <run-id> -R idavidjunior/Mp3Player -n mp3player-debug-apk -D dir
-adb uninstall com.mp3player.debug   # apenas na primeira troca de assinatura
-adb install -r app-debug.apk
-```
-
-## Bugs encontrados no caminho
-1. **Gate commitava no repo errado**: `-Repo Mp3Player` caía no `return $ecoDir`
-   porque Test-Path('Mp3Player') falhava fora de Projetos\. O commit manual foi
-   parar no EcoSystemUmGrau com mensagem do Mp3Player (commit 568d479f, já
-   pushado — conteúd
+---
+tipo: padrao
+tags: [ci, android, gradle, assinatura, gate, mp3player]
+data: 2026-08-23
+contexto: Build do Mp3Player impossível no PC local (4GB RAM); deploy ao celular exigia APK assinado com a mesma chave.
+decisao: |
+  1. CI no GitHub Actions (.github/workflows/build.yml) constrói o APK: ubuntu
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

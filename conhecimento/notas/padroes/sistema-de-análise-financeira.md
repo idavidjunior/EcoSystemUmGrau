@@ -1,5 +1,5 @@
 ---
-tags: [fred, local, markets, opencode, padrao, webhook]
+tags: [finanças, independentes, módulos, opencode, padrao, scripts]
 aliases: [Sistema de Análise Financeira]
 date: 2026-08-21
 ---
@@ -8,21 +8,14 @@ date: 2026-08-21
 
 **Fonte:** opencode
 
-## Módulos criados (scripts/financas/)
-| Script | Função | Fontes |
-|---|---|---|
-| market_data.py | Preços OHLCV, funding rate | Yahoo, Binance, Bybit, brapi, TwelveData |
-| onchain.py | TVL, NVT, MVRV, SOPR | CoinGecko, DefiLlama, Glassnode, Blockchain.com |
-| fundamental.py | P/L, ROE, FCF, score 0-100 | yfinance |
-| technical.py | RSI, MACD, Bollinger, VWAP, OBV, ATR, ADX, Wyckoff, S/R | cálculo local |
-| risk.py | VaR/CVaR (hist/param/MC), max DD, Kelly, stress test | cálculo local |
-| portfolio.py | Markowitz, Risk Parity, HRP, Black-Litterman, rebalance | scipy |
-| alerts.py | Breakout Donchian, volume spike, funding extremo, RSI extremo | polling + webhook |
-| crypto_screener.py | Filtro mcap/volume/liquidez/dev/inflação, gems, momentum | CoinGecko markets |
-| macro.py | Selic, IPCA, PTAX, yield curve, VIX | BCB SGS/PTAX, FRED, Yahoo |
-| income_strategies.py | Covered call, CSP, staking, farming, dividendos, arbitragem, projeção | cálculo local |
-
-## Bugs encontrados e corrigid
+---
+tipo: padrao
+tags: [financas, analise-financeira, quant, crypto, risco]
+data: 2026-08-21
+contexto: Sistema completo de análise financeira do ecossistema (/finanças e @finanças)
+decisao: |
+  Criado sistema de análise financeira em 10 módulos independentes em scripts/financas/,
+  cada um com CLI a
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

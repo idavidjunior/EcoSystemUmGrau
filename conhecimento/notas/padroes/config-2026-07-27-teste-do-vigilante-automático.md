@@ -19,7 +19,5 @@ date: 2026-07-27
 Verificar se o vigilante detecta automaticamente novos arquivos em conhecimento/aprendizados/, registra no K
 ## Conexoes
 
-- [[aegis-registrado-como-projeto-irmao-rust]]
 - [[cluster-hub-ecossistema]]
 - [[padrao-hub-padroes]]
-- [[pipeline-de-release-e-padrão-de-toolbar-com-menu]]

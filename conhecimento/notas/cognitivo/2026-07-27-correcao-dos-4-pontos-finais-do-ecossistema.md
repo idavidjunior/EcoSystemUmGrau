@@ -1,5 +1,5 @@
 ---
-tags: [cognitivo, falhas, general, propagar, real, retorno]
+tags: [cognitivo, falhas, general, parsing, propagar, real]
 aliases: [# 2026-07-27 - Correcao dos 4 pontos finais do ecossistema]
 date: 2026-07-27
 ---

@@ -1,5 +1,5 @@
 ---
-tags: [corretamente, faladas, fonte, opencode, padrao, tts]
+tags: [autonoma, conta, llm, opencode, padrao, propria]
 aliases: [saudacao auto evolutiva jarvis]
 date: 2026-08-20
 ---
@@ -8,9 +8,14 @@ date: 2026-08-20
 
 **Fonte:** opencode
 
-## Conexoes
-
-- [[aprendizado-2026-07-31-horas-faladas-corretamente-no-tts-do-]]
+---
+tipo: padrao
+tags: [saudacao, jarvis, auto-evolucao, frases_manager, autonoma]
+data: 2026-08-18
+contexto: >
+  Sistema de saudacao dinamica precisava evoluir sem dependencia de LLM.
+  Usuario queria que Jarvis gerasse novas frases por conta propria,
+  como escolha livre e espontanea, nao por coma
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

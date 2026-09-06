@@ -1,5 +1,5 @@
 ---
-tags: [bloqueia, cognitivo, duplicatas, general, libera, registra]
+tags: [clientes, cognitivo, general, intervenção, manual, recuperam]
 aliases: [Maestro Fase Ativa - Fix Registro e Stale PID]
 date: 2026-08-31
 ---
@@ -8,21 +8,28 @@ date: 2026-08-31
 
 **Dominio:** general
 
-## Problema
-- Maestro nao verificava se PID registrado ainda estava vivo
-- Guardian nao registrava PID no Maestro apos iniciar servico
-- Guardians simultaneos nao eram bloqueados
+﻿---
+tipo: decisao
+tags: [maestro, runtime, guardian, fase-ativa, stale-pid]
+data: 2026-08-31
+contexto: |
+  Maestro de Runtime em fase ativa. Guardians consultam antes de iniciar servicos.
+  Bug: Maestro nao verificava se PID registrado ainda estava vivo (confiava cego no campo vivo).
+  Bug: Guardian nao registrava PID no Maestro apos iniciar servico.
+decisao: |
+  1. Adicionar verificacao de vida (psutil.pid_exists) no pode_iniciar() do Maestro.
+     Se PID registrado morto, limpar registro stal
 
-## Solucao
-1. 
-untime_maestro.py:pode_iniciar(): adicionar psutil.pid_exists() antes de bloquear
-2. system_guardian.py: trocar decisao_local="nasceu" por "registrar_nascimento"
-3. system_guardian.py:_observar_no_maestro(): aceitar "registrar_nascimento" no registro
+---
+tipo: erro
+tags: [maestro, runtime, resiliencia, pid, heartbeat]
+data: 2026-09-04
+contexto: O livro do Maestro mantinha serviços mortos e o PID persistido do daemon apontava para processo inexistente.
+decisão: Reconciliar por PID e heartbeat, iniciar o daemon automaticamente com lock único e executar a autocura no boot completo.
+impacto: Registros órfãos deixam de bloquear reinícios, o status informa a vida real do processo e clientes recuperam o Maestro sem intervenção manual.
+---
 
-## Teste
-- End-to-end: TTS morre -> guardian consulta Maestro -> Maestro libera -> guardian registra -> bloqueia duplicatas
-- Funciona com 4 guardians simultaneos
-- Stale PID (99999) e limpo automaticamente
+O livro 
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]

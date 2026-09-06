@@ -21,6 +21,13 @@ Uso:
   python scripts/integrity_guard.py --check --targets arquivo.json  # alvo único
   Exit: 0 = limpo, 1 = achou corrupção (e corrigiu em --fix, mas ver --json).
 
+Guardião estrutural (knowledge_graph.json):
+  eventos 2026-09-05 (conflito dual-git) provaram que mojibake e JSON inválido
+  não bastam: o gráfico também sofre TRUNCAMENTO (contagens despencam, chaves
+  somem, estado volta a passar). Este guardião agora mantém baseline aprendido
+  (runtime/integrity_guard_state.json), discerne intenção (legítima vs truncamento)
+  e, em --fix, auto-restaura do backup .bak_* mais saudável com rollback.
+
 Saída:
   Em stdout, texto legível (check) ou JSON (--json). O vigilante.ps1 consome
   a saída JSON para registro e comunicação.
@@ -38,6 +45,30 @@ BASE = str(Path(__file__).resolve().parent.parent)
 RUNTIME_DIR = os.path.join(BASE, 'runtime')
 BACKUP_DIR = os.path.join(RUNTIME_DIR, 'backups', 'integrity_guard')
 LOG_FILE = os.path.join(RUNTIME_DIR, 'integrity_guard.log')
+
+# --- Guardião estrutural do knowledge_graph ---------------------------------
+GRAPH_FILENAME = 'knowledge_graph.json'
+GRAPH_SCHEMA_KEYS = [
+    'version', 'last_updated', 'projects', 'patterns', 'decisions',
+    'bug_fixes', 'cognitive_patterns', 'heuristics', 'frameworks',
+    'tool_knowledge', 'skill_references', 'mission_learnings',
+]
+# Mínimos por lista principal (base sanada 05/09: 301/103/52/81/32/10/3/134).
+# Limiares conservadores: acusam truncamento, sem falso positivo em evolução.
+GRAPH_MIN_COUNTS = {
+    'patterns': 250,
+    'decisions': 85,
+    'bug_fixes': 40,
+    'cognitive_patterns': 60,
+    'heuristics': 20,
+    'frameworks': 5,
+    'skill_references': 2,
+    'mission_learnings': 100,
+    'projects': 2,
+}
+GRAPH_STATE_FILE = os.path.join(RUNTIME_DIR, 'integrity_guard_state.json')
+GRAPH_BACKUP_PREFIX = GRAPH_FILENAME + '.bak_'
+# ----------------------------------------------------------------------------
 
 # Pastas/alvos padrão: dados estruturados do ecossistema + fontes de reindex
 # (as notas .md alimentam o índice semântico; mojibake nelas se propaga)
@@ -205,6 +236,184 @@ def _log(msg):
     return linha
 
 
+# ---------------------------------------------------------------------------
+# Guardião estrutural do knowledge_graph
+# ---------------------------------------------------------------------------
+
+def _contagem_listas(dados):
+    """Conta itens por chave-coleção do gráfico (para baseline e comparação)."""
+    return {k: len(v) for k, v in dados.items() if isinstance(v, (list, dict))}
+
+
+def _ler_estado_graph():
+    """Lê o baseline lenrado pelo guardião (contagens por arquivo)."""
+    try:
+        with open(GRAPH_STATE_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def _gravar_estado_graph(estado):
+    """Grava o baseline de forma atômica."""
+    try:
+        os.makedirs(RUNTIME_DIR, exist_ok=True)
+        atomic_write_json(GRAPH_STATE_FILE, estado, indent=2)
+        return True
+    except Exception:
+        return False
+
+
+def _baseline_para(path):
+    """Retorna contagens baseline de um arquivo (sobrescrevendo ruído antigo)."""
+    estado = _ler_estado_graph()
+    rel = os.path.relpath(path, BASE).replace('\\', '/')
+    return estado.get(rel) or {}
+
+
+def _contagem_estrutura_ok(dados):
+    """Valida schema canônico do gráfico. Retorna (ok, erros[])."""
+    erros = []
+    faltando = [k for k in GRAPH_SCHEMA_KEYS if k not in dados]
+    if faltando:
+        erros.append(f'schema: faltam chaves {faltando}')
+    for k, minimo in GRAPH_MIN_COUNTS.items():
+        n = len(dados.get(k, []))
+        if n < minimo:
+            erros.append(f'truncamento: {k} tem {n}, minimo {minimo}')
+    return (not erros), erros
+
+
+def _compara_baseline(dados, baseline_contagens, nome='knowledge'):
+    """Compara contagens atuais vs baseline aprendido.
+
+    Regra (discernimento de intenção):
+      - Atual >= 95% do baseline  -> evolução legítima.
+      - Atual < 95% do baseline   -> queda suspeita (perda/truncamento).
+    Retorna (ok, delta_pct, detalhe).
+    """
+    if not baseline_contagens:
+        return True, 0.0, 'sem baseline'
+    atuais = _contagem_listas(dados)
+    base_total = sum(baseline_contagens.get(k, 0) for k in GRAPH_MIN_COUNTS)
+    atual_total = sum(atuais.get(k, 0) for k in GRAPH_MIN_COUNTS)
+    if base_total == 0:
+        return True, 0.0, 'baseline vazio'
+    porcento = (atual_total / base_total) * 100.0
+    if porcento >= 95.0:
+        return True, porcento, f'{nome}: {atual_total} vs baseline {base_total} ({porcento:.0f}%)'
+    return False, porcento, (
+        f'{nome}: {atual_total} vs baseline {base_total} ({porcento:.0f}%) '
+        f'- perda suspeita, nao parece evolucao legitima')
+
+
+def _atualiza_baseline(path, dados):
+    """Registra contagens atuais como baseline (so apos validacao OK)."""
+    estado = _ler_estado_graph()
+    rel = os.path.relpath(path, BASE).replace('\\', '/')
+    estado[rel] = {
+        'contagens': _contagem_listas(dados),
+        'atualizado': datetime.now().isoformat(timespec='seconds'),
+    }
+    _gravar_estado_graph(estado)
+
+
+def _achou_graph_bak(path):
+    """Procura backups .bak_* do gráfico na mesma pasta. Lista (mais novo 1o)."""
+    d = os.path.dirname(path)
+    try:
+        cands = [os.path.join(d, f) for f in os.listdir(d)
+                 if f.startswith(GRAPH_BACKUP_PREFIX)]
+        return sorted(cands, key=os.path.getmtime, reverse=True)
+    except OSError:
+        return []
+
+
+def _restaura_graph(path, rel_arquivo):
+    """Auto-restaura o gráfico do backup .bak_* mais saudável (com rollback).
+
+    Critério de escolha: o backup que valida o schema canônico com o maior
+    total de contagens. Antes de restaurar, cria backup do estado atual. Após
+    restaurar, re-valida; se falhar, restaura o estado pré-tentativa.
+    Retorna (ok, mensagem).
+    """
+    cands = _achou_graph_bak(path)
+    if not cands:
+        return False, 'nenhum .bak_* do grafico na pasta para auto-restauro'
+    melhor = None
+    melhor_total = -1
+    for cand in cands:
+        try:
+            with open(cand, 'r', encoding='utf-8') as f:
+                dados = json.load(f)
+            ok, _ = _contagem_estrutura_ok(dados)
+            if not ok:
+                continue
+            total = sum(_contagem_listas(dados).values())
+            if total > melhor_total:
+                melhor, melhor_total = cand, total
+        except (OSError, ValueError):
+            continue
+    if not melhor:
+        return False, 'backups .bak_* existem, mas nenhum valida o schema'
+    # backup do estado atual antes de mexer
+    bak_atual = make_backup(path)
+    if not bak_atual:
+        return False, 'falhou ao criar backup do estado atual'
+    try:
+        import shutil
+        shutil.copy2(melhor, path)
+        # pós-validação: se quebrou, rollback imediato
+        with open(path, 'r', encoding='utf-8') as f:
+            dados_pos = json.load(f)
+        ok, _ = _contagem_estrutura_ok(dados_pos)
+        if not ok:
+            src = os.path.join(BASE, bak_atual)
+            if os.path.exists(src):
+                shutil.copy2(src, path)
+            return False, 'pos-validacao falhou, estado anterior restaurado'
+        _atualiza_baseline(path, dados_pos)
+        return True, f'restaurado de {os.path.basename(melhor)}' \
+                     f' (backup do estado truncado: {bak_atual})'
+    except (OSError, ValueError) as e:
+        src = os.path.join(BASE, bak_atual)
+        if os.path.exists(src):
+            try:
+                shutil.copy2(src, path)
+            except OSError:
+                pass
+        return False, f'falhou durante restauro (rollback aplicado): {e}'
+
+
+def _scan_graph_estrutura(path):
+    """Varredura estrutural dedicada ao knowledge_graph.
+
+    Retorna relatório com intencao (legitima/truncamento), contagens e erros.
+    Não altera o arquivo (decisão de restaurar fica no run/fix).
+    """
+    rel = {'arquivo': os.path.relpath(path, BASE), 'ok': True, 'erros': [],
+           'intencao': 'legitima', 'contagens': {}, 'mojibake': False}
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            dados = json.load(f)
+    except (OSError, UnicodeDecodeError, ValueError) as e:
+        rel['ok'] = False
+        rel['erros'].append(f'leitura/parse: {e}')
+        return rel
+    ok, erros = _contagem_estrutura_ok(dados)
+    if not ok:
+        rel['ok'] = False
+        rel['erros'].extend(erros)
+        rel['intencao'] = 'truncamento'
+        # discernimento: compara com baseline aprendido para dar contexto
+        base = _baseline_para(path).get('contagens') or {}
+        _, pct, detalhe = _compara_baseline(dados, base)
+        if detalhe != 'sem baseline':
+            rel['erros'].append(detalhe)
+    rel['contagens'] = _contagem_listas(dados)
+    return rel
+
+
 def detecta_mojibake(s):
     """True se a string tem chance de conter mojibake reversível.
 
@@ -288,7 +497,11 @@ def scan_json(path):
     """Verifica/corrige um arquivo JSON. Retorna relatório.
 
     Relatório: {arquivo, ok, erros[], corrigidos, backup}
+    Para o knowledge_graph delega ao guardião estrutural (_scan_graph_estrutura),
+    que adiciona intencao/contagens e detecta truncamento por schema + baseline.
     """
+    if os.path.basename(path) == GRAPH_FILENAME:
+        return _scan_graph_estrutura(path)
     rel = {'arquivo': os.path.relpath(path, BASE), 'ok': True, 'erros': [],
            'corrigidos': 0, 'backup': None, 'mojibake': False}
     try:
@@ -306,13 +519,6 @@ def scan_json(path):
             n = fix_json(dados)
             if n:
                 rel['corrigidos'] = n
-        # Verificação de estrutura básica
-        if isinstance(dados, dict) and 'last_updated' in dados:
-            # knowledge_graph: verifica presença de listas principais
-            for chave in ('patterns', 'decisions'):
-                if chave not in dados:
-                    rel['ok'] = False
-                    rel['erros'].append(f'estrutura: falta chave "{chave}"')
         return rel
     except OSError as e:
         rel['ok'] = False
@@ -593,6 +799,7 @@ def run(fix=False, targets=None, json_out=False, report_only=False):
         'arquivos': len(arquivos),
         'corrompidos': 0,
         'corrigidos': 0,
+        'restaurados': 0,
         'arquivos_corrigidos': [],
         'relatorios': [],
     }
@@ -601,6 +808,35 @@ def run(fix=False, targets=None, json_out=False, report_only=False):
         ext = os.path.splitext(path)[1].lower()
         if ext == '.json':
             rel = scan_json(path)
+            # Guardião estrutural do graph: aprende baseline de versões sãs
+            if (os.path.basename(path) == GRAPH_FILENAME and rel['ok']
+                    and not rel.get('mojibake')):
+                try:
+                    with open(path, 'r', encoding='utf-8') as f:
+                        dados = json.load(f)
+                    _atualiza_baseline(path, dados)
+                except (OSError, ValueError):
+                    pass
+            # Guardião estrutural do graph: auto-restauro em --fix quando
+            # detectado truncamento (schema + baseline), com rollback.
+            if (fix and os.path.basename(path) == GRAPH_FILENAME
+                    and not rel['ok'] and rel.get('intencao') == 'truncamento'):
+                ok_rest, msg = _restaura_graph(path, rel['arquivo'])
+                if ok_rest:
+                    rel['ok'] = True
+                    rel['erros'] = [f'auto-restauro: {msg}']
+                    rel['backup'] = None  # backup interno do restauro
+                    rel['corrigidos'] = 1
+                    rel['restaurado'] = True
+                    # re-lê contagens para o relatório refletir o estado final
+                    try:
+                        with open(path, 'r', encoding='utf-8') as f:
+                            dados_pos = json.load(f)
+                        rel['contagens'] = _contagem_listas(dados_pos)
+                    except (OSError, ValueError):
+                        pass
+                else:
+                    rel['erros'].append(f'auto-restauro falhou: {msg}')
         elif ext == '.md':
             rel = scan_md(path, fix=fix)
         else:
@@ -609,6 +845,11 @@ def run(fix=False, targets=None, json_out=False, report_only=False):
             # Já corrigido dentro do scan (md) — conta como corrigido
             agregado['corrigidos'] += rel['corrigidos']
             agregado['arquivos_corrigidos'].append(rel['arquivo'])
+        elif rel.get('restaurado'):
+            # Guardião estrutural restaurou o gráfico de um .bak_* saudável
+            agregado['corrigidos'] += rel.get('corrigidos', 0)
+            agregado['arquivos_corrigidos'].append(rel['arquivo'])
+            agregado['restaurados'] = agregado.get('restaurados', 0) + 1
         elif not rel['ok'] or rel['mojibake']:
             agregado['corrompidos'] += 1
             exit_code = 1
@@ -662,16 +903,23 @@ def run(fix=False, targets=None, json_out=False, report_only=False):
         print(f'integrity_guard: {agregado["arquivos"]} arquivo(s) verificado(s)')
         for rel in agregado['relatorios']:
             estado = 'OK' if rel['ok'] and not rel['mojibake'] else 'CORROMPIDO'
-            if rel['corrigidos']:
+            if rel.get('restaurado'):
+                estado = 'RESTAURADO'
+            elif rel.get('corrigidos'):
                 estado = f'CORRIGIDO ({rel["corrigidos"]} strings)'
             print(f'  [{estado}] {rel["arquivo"]}')
+            if rel.get('contagens'):
+                seq = {k: rel['contagens'].get(k, 0) for k in GRAPH_MIN_COUNTS}
+                print(f'      contagens: {seq}')
             for err in rel['erros']:
                 print(f'      {err}')
-            if rel['backup']:
+            if rel.get('backup'):
                 print(f'      backup: {rel["backup"]}')
         if fix:
+            extra = f', {agregado.get("restaurados", 0)} restauro(s) estrutural(ais)' \
+                    if agregado.get('restaurados') else ''
             print(f'RESULTADO: {agregado["corrigidos"]} string(s) corrigida(s) em '
-                  f'{len(agregado["arquivos_corrigidos"])} arquivo(s)')
+                  f'{len(agregado["arquivos_corrigidos"])} arquivo(s){extra}')
         else:
             print(f'RESULTADO: {agregado["corrompidos"]} arquivo(s) com corrupcao '
                   f'(use --fix para corrigir)')

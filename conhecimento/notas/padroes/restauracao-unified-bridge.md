@@ -8,17 +8,13 @@ date: 2026-08-20
 
 **Fonte:** opencode
 
-Tipo: padrao
-
-Tags: [unified-bridge, tts, narrador, widget, singleton]
-
-Data: 2026-08-18
-
-Contexto: unified_bridge.py estava em _legado/ e faltava em scripts/
-
-Decisão: Copiar de _legado/ para scripts/ e validar sintaxe
-
-Impacto: Ponte unica restaurada - narrador + TTS service + widget em processo un
+---
+tipo: padrao
+tags: [unified-bridge, tts, narrador, widget, singleton]
+data: 2026-08-18
+contexto: unified_bridge.py estava em _legado/ e faltava em scripts/
+decisao: Copiar de _legado/ para scripts/ e validar sintaxe
+impacto: Ponte unica restaurada - narrador + TTS service + widget em processo un
 ## Conexoes
 
 - [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]

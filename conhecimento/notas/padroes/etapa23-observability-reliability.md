@@ -1,5 +1,5 @@
 ---
-tags: [certeza, opencodeopencode, padrao, padrões, securityeventrecorder, tipos]
+tags: [incidents, mode, opencodeopencode, padrao, security, watchdog]
 aliases: [etapa23 observability reliability]
 date: 2026-08-20
 ---
@@ -8,18 +8,15 @@ date: 2026-08-20
 
 **Fonte:** opencode+opencode
 
-Tipo: padrao
-
-Tags: [etapa23, observabilidade, reliability, logging, metrics, health, circuit-breaker, retry, recovery, degraded-mode, watchdog, incidents, security]
-
-Data: 2026-08-18
-
-Contexto: Implementação da Etapa 23 — Observability + Reliability no EcoSystemUmGrau
-
-Decisão: Criar módulo unificado observability_reliability.py com: StructuredLogger (JSON, 5 níveis, redação de segredos automática), MetricsCollector (contadores, timers, p50/p95/p99), TraceContext (correlation_id, mission_id, trace_id via thread-local), HealthAggregator (5 níveis, liveness vs readiness, dependências), CircuitBreaker (extraído de tool_orchestrator, generalizado), RetryPolicy (backoff exponencial + jitter + budget per minute), TimeoutManager, Watchdog (heartbeat + stale detection), CrashLoopDetector, DegradedMode (restricções por ação), RecoveryPipeline (detect→classify→diagnose→retry→fallback→recover→validate), IncidentRecorder (causa provável, nunca certeza), SecurityEventRecorder (7 tipos), 10 padrões
+---
+tipo: padrao
+tags: [etapa23, observabilidade, reliability, logging, metrics, health, circuit-breaker, retry, recovery, degraded-mode, watchdog, incidents, security]
+data: 2026-08-18
+contexto: Implementação da Etapa 23 — Observability + Reliability no EcoSystemUmGrau
+decisao: Criar módulo unifica
 ## Conexoes
 
-- [[aegis-barra-progresso-tempo-real]]
+- [[aegis-registrado-como-projeto-irmao-rust]]
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[cluster-hub-ecossistema]]
 - [[config-2026-07-27-4-teste-do-ciclo-de-polling]]
