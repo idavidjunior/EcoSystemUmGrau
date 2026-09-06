@@ -25,7 +25,6 @@ import ctypes
 import json
 import os
 import re
-import subprocess
 import sys
 import threading
 import time
@@ -37,15 +36,13 @@ import sounddevice as sd
 SCRIPTS = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPTS))
 
-from vox_audio import SAMPLE_RATE, _stt_whisper, _stt_google, _tocar_mci, _parar_mci_tudo, _novo_mp3_temp  # noqa: E402
+from vox_audio import SAMPLE_RATE, _stt_whisper, _stt_google, _tocar_mci, _novo_mp3_temp  # noqa: E402
 from jarvis_bridge import (  # noqa: E402
     Cliente,
     briefing_espontaneo,
     caminho_rapido,
     gerar_audio,
-    gerar_audio_stream,
     gerar_status_natural,
-    melhorar_fala,
     normalizar_hora_display,
 )
 from microfone_manager import MicrofoneManager  # noqa: E402
