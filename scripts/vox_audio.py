@@ -399,9 +399,32 @@ async def _tts_salvar(texto, caminho):
 
 
 def _gravar_audio(seconds=RECORD_SECONDS):
-    """Grava microfone e retorna ndarray float32 mono 16kHz.
-    Usa o device escolhido pelo MicrofoneManager (benchmark real + hot-plug),
-    capturando na taxa nativa quando necessário e fazendo downsample p/ 16kHz."""
+    """Captura fala guiada por VAD e retorna ndarray float32 mono 16kHz.
+
+    Com VOX_FORCE_FIXED=1 grava `seconds` secs fixos (modo deterministico p/
+    testes); senao usa o mesmo motor de turno do dialogo (vad_captura: Silero
+    streaming -> bloqueante -> fallback RMS). Se a captura VAD falhar, cai
+    para a gravacao fixa original."""
+    if os.environ.get("VOX_FORCE_FIXED", "0") != "1":
+        try:
+            from vad_captura import capturar_turno
+
+            print("Ouvindo... (fale; o silencio encerra)")
+            audio = capturar_turno()
+            if audio is not None and audio.size > 0:
+                return audio
+        except KeyboardInterrupt:
+            raise
+        except Exception as e:
+            print(f"[vad indisponivel, gravacao fixa: {e}]")
+    return _gravar_fixo(seconds)
+
+
+def _gravar_fixo(seconds=RECORD_SECONDS):
+    """Grava microfone por `seconds` segundos e retorna ndarray float32 mono
+    16kHz. Usa o device escolhido pelo MicrofoneManager (benchmark real +
+    hot-plug), capturando na taxa nativa quando necessario e fazendo downsample
+    p/ 16kHz."""
     import sounddevice as sd
     import numpy as np
     try:

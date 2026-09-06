@@ -13,7 +13,8 @@ Uso:
 Variaveis de ambiente (opcionais):
   VOX_THRESHOLD   RMS p/ considerar voz (default 0.02)
   VOX_SILENCIO    segundos de silencio p/ encerrar fala (default 1.2)
-  VOX_MAX_FALA    segundos maximo de fala (default 15)
+  VOX_MAX_FALA    segundos maximo de fala (default 15; aplicado em vad_captura)
+  VOX_VAD_MIN_SILENCE_MS  silencio min p/ VADIterator (default int(SILENCIO*1000))
   VOX_WHISPER_MODEL  modelo whisper (default base)
 """
 
@@ -47,7 +48,17 @@ from jarvis_bridge import (  # noqa: E402
     melhorar_fala,
     normalizar_hora_display,
 )
-from microfone_manager import MicrofoneManager, SAMPLE_RATE as MM_SAMPLE_RATE  # noqa: E402
+from microfone_manager import MicrofoneManager  # noqa: E402
+
+# Captura VAD compartilhada (fonte única): streaming Silero + fallback RMS.
+# Consolidada aqui a partir das funções locais (vad_captura.py, 2026-09-06).
+# O vox_audio (STT) usa o MESMO módulo — sem caminhos paralelos.
+from vad_captura import Feedback, capturar_turno  # noqa: E402
+from vad_captura import rms as _rms  # noqa: E402
+from vad_captura import device_entrada as _device_entrada  # noqa: E402
+from vad_captura import taxa_nativa as _taxa_nativa  # noqa: E402
+from vad_captura import resample_para_16k as _resample_para_16k  # noqa: E402
+from vad_captura import rec_bloco_f32 as _rec_bloco_f32  # noqa: E402
 
 # Gestor simbiótico de microfone (device persistente, hot-plug, enhancement,
 # wake word, bridge sync e health check) — módulo autoritativo do ecossistema.
@@ -204,10 +215,6 @@ def _beep():
         pass
 
 
-def _rms(x):
-    return float(np.sqrt(np.mean(x * x)))
-
-
 # --- Retrato vivo: estado do diálogo p/ o widget Edge ler em tempo real ---
 
 RETRATO = SCRIPTS.parent / "runtime" / "dialogo_vivo.json"
@@ -254,277 +261,27 @@ def _retrato_loop():
         time.sleep(0.4)
 
 
-# --- Seleção dinâmica de device (via MicrofoneManager) ---
-
-def _device_entrada():
-    """Devolve o device de entrada escolhido pelo MicrofoneManager (benchmark
-    real de abertura + persistência + hot-plug). Fallback: 1 (legado)."""
-    try:
-        dev = manager.device.selecionar()
-        if dev is not None:
-            return dev
-    except Exception:
-        pass
-    return 1
-
-
-def _taxa_nativa(device_id):
-    """Taxa nativa do device (o WDM-KS só aceita a taxa nativa; o VAD faz
-    resample para 16kHz depois)."""
-    try:
-        import sounddevice as sd
-        return int(sd.query_devices(device_id)["default_samplerate"])
-    except Exception:
-        return SAMPLE_RATE
-
-
-def _resample_para_16k(x, sr):
-    """Downsample de `sr` para 16kHz via decimação linear (barata, suficiente
-    para VAD/STT). Se já for 16k, devolve intacto."""
-    if sr == SAMPLE_RATE or x.size == 0:
-        return x
-    step = sr / SAMPLE_RATE
-    idx = np.arange(0, len(x), step).astype(int)
-    idx = idx[idx < len(x)]
-    return x[idx]
-
-
-# --- Silero VAD streaming (oficial: silero-vad + VADIterator) ---
-
-_SILERO = None
-
-
-def _carregar_silero():
-    """Carrega o Silero VAD oficial (ONNX, CPU) e mantem instancia global."""
-    global _SILERO
-    if _SILERO is not None:
-        return _SILERO, True
-    try:
-        from silero_vad import load_silero_vad
-
-        _SILERO = load_silero_vad(onnx=True)
-        return _SILERO, True
-    except Exception as e:
-        print(f"[silero indisponivel: {e}]")
-        _SILERO = False
-        return None, False
-
-
-class VadSileroStream:
-    """Turno de fala usando o VADIterator oficial. Acumula os chunks entre o
-    start e o end que o VADIterator retorna (ele nao guarda o audio)."""
-
-    def __init__(self, model, threshold=0.5, min_silence_ms=800, speech_pad_ms=30):
-        from silero_vad import VADIterator
-
-        self.vad = VADIterator(
-            model,
-            threshold=threshold,
-            sampling_rate=SAMPLE_RATE,
-            min_silence_duration_ms=min_silence_ms,
-            speech_pad_ms=speech_pad_ms,
-        )
-        self.model = model
-        self.min_speech_ms = 250
-        self.ultima_prob = 0.0
-        self.reset()
-
-    def reset(self):
-        self.frames = []
-        self.speech_ms = 0
-        self.ativo = False
-
-    def push(self, chunk_512):
-        """Recebe 512 samples (numpy float32). Devolve o audio do turno ao
-        terminar a fala, ou None."""
-        import torch
-
-        chunk_512 = np.ascontiguousarray(chunk_512, dtype="float32")
-        t = torch.from_numpy(chunk_512)
-        self.ultima_prob = float(self.model(t, SAMPLE_RATE).item())
-        res = self.vad(t)
-        if res is not None and "start" in res:
-            self.reset()
-            self.ativo = True
-            self.frames.append(chunk_512.copy())
-            self.speech_ms += 32
-            return None
-        if self.ativo:
-            self.frames.append(chunk_512.copy())
-            self.speech_ms += 32
-        if res is not None and "end" in res:
-            self.ativo = False
-            audio = np.concatenate(self.frames) if self.frames else np.zeros(0, dtype="float32")
-            if self.speech_ms >= self.min_speech_ms:
-                return audio
-            return None
-        return None
-
-
-def _rec_bloco_f32(dev, taxa, bloco):
-    """Captura um bloco via sd.rec e devolve float32 mono 16kHz.
-
-    Usa int16 (formato nativo estável do WDM-KS) e converte para float32,
-    evitando corrupção observada com float32 no driver Realtek."""
-    try:
-        rec = sd.rec(bloco, samplerate=taxa, channels=1, dtype="int16", device=dev)
-        sd.wait()
-        x = rec.flatten().astype("float32") / 32768.0
-        return _resample_para_16k(x, taxa)
-    except Exception:
-        try:
-            rec = sd.rec(bloco, samplerate=taxa, channels=1, dtype="float32", device=dev)
-            sd.wait()
-            return _resample_para_16k(rec.flatten(), taxa)
-        except Exception:
-            return np.zeros(0, dtype="float32")
-
-
-def _alimentar_vad_bloqueante(vad, taxa, dev, estado):
-    """Captura por blocos bloqueantes (sd.rec int16) e alimenta o Silero VAD.
-
-    Usado quando o device (ex.: WDM-KS) abre mas nao dispara callbacks de
-    streaming. Captura blocos grandes (~1s) para amortizar o overhead de
-    inicializacao do driver WDM-KS e processa em chunks de 512 (32ms).
-    Retorna o turno de fala completo quando detectado."""
-    CHUNK = 512
-    bloco = max(int(taxa * 1.0), 44100)  # ~1s de áudio por captura
-    buf = np.zeros(0, dtype="float32")
-    while True:
-        x = _rec_bloco_f32(dev, taxa, bloco)
-        if x.size == 0:
-            continue
-        buf = np.concatenate([buf, x])
-        while len(buf) >= CHUNK:
-            chunk = buf[:CHUNK]
-            buf = buf[CHUNK:]
-            turno = vad.push(chunk)
-            prob = vad.ultima_prob
-            _retrato_rms(prob)
-            if prob >= 0.5 and not estado["mostrando"]:
-                print(f"{VOZ_COLOR}[ouvindo...]{RESET}", flush=True)
-                estado["mostrando"] = True
-            elif prob < 0.5 and estado["mostrando"]:
-                estado["mostrando"] = False
-            if turno is not None:
-                return turno
-
+# --- Captura VAD delegada ao módulo compartilhado (vad_captura.py, fonte única).
+# O dialogo e o vox_audio (STT) usam o MESMO motor de turno de fala: streaming
+# Silero -> captura bloqueante -> fallback RMS. Nada de caminhos paralelos.
 
 def capturar_vad():
-    """Escuta o microfone e devolve um turno de fala completo usando o Silero VAD
-    oficial (VADIterator). Tenta streaming com callback (rápido); se o device
-    nao entregar callbacks (ex.: WDM-KS), cai para captura bloqueante por blocos
-    com sd.rec int16 (estável no driver Realtek)."""
-    model, ok = _carregar_silero()
-    if not ok:
-        return _capturar_vad_fallback()
-    dev = _device_entrada()
-    taxa = _taxa_nativa(dev)
+    """Escuta o microfone e devolve um turno de fala completo (float32 mono
+    16kHz). Delega ao módulo vad_captura (mesmo motor do vox_audio STT):
+    streaming com callback (rápido); falhando, captura bloqueante por blocos
+    (WDM-KS); Silero ausente, fallback RMS. Feedback visual/local preservado."""
     print(f"{VOZ_COLOR}[escutando] fale naturalmente (Ctrl+C p/ sair){RESET}", flush=True)
     _beep()
-    CHUNK = 512  # amostras a 16kHz exigidas pelo Silero
-    result = {"turno": None, "n": 0}
-    estado = {"mostrando": False}
 
-    def callback(indata, frames, time_info, status):
-        nonlocal result, estado
-        if result["turno"] is not None:
-            return
-        result["n_callbacks"] += 1
-        x = indata[:, 0]
-        if x.dtype == np.int16:
-            x = x.astype("float32") / 32768.0
-        if taxa != SAMPLE_RATE:
-            x = _resample_para_16k(x, taxa)
-        result["buf"] = np.concatenate([result.get("buf", np.zeros(0, dtype="float32")), x])
-        while len(result["buf"]) >= CHUNK:
-            chunk = result["buf"][:CHUNK]
-            result["buf"] = result["buf"][CHUNK:]
-            turno = result["vad"].push(chunk)
-            prob = result["vad"].ultima_prob
-            _retrato_rms(prob)
-            if prob >= 0.5 and not estado["mostrando"]:
-                print(f"{VOZ_COLOR}[ouvindo...]{RESET}", flush=True)
-                estado["mostrando"] = True
-            elif prob < 0.5 and estado["mostrando"]:
-                estado["mostrando"] = False
-            if turno is not None:
-                result["turno"] = turno
-                return
+    def on_mensagem(texto):
+        if texto:
+            print(f"{VOZ_COLOR}{texto}{RESET}", flush=True)
 
-    vad = VadSileroStream(model, threshold=THRESHOLD, min_silence_ms=VAD_MIN_SILENCE_MS)
-    result["vad"] = vad
-    result["buf"] = np.zeros(0, dtype="float32")
-    result["n_callbacks"] = 0
-
-    try:
-        # Modo 1: streaming com callback (rápido, baixa latência)
-        # Se o device nao disparar callbacks em ~1s, cai para o modo bloqueante.
-        stream = sd.InputStream(
-            samplerate=taxa, channels=1, dtype="int16", callback=callback, device=dev
-        )
-        with stream:
-            inicio = time.time()
-            while result["turno"] is None:
-                time.sleep(0.05)
-                # sem nenhum callback em 1.2s => WDM-KS/streaming sem dados
-                if result["n_callbacks"] == 0 and (time.time() - inicio) > 1.2:
-                    break
-        if result["turno"] is not None:
-            return result["turno"]
-        # streaming nao entregou dados -> modo bloqueante
-        return _alimentar_vad_bloqueante(vad, taxa, dev, estado)
-    except KeyboardInterrupt:
-        return np.zeros(0, dtype="float32")
-    except Exception:
-        # Modo 2: bloqueante por blocos (resiliente p/ WDM-KS sem callback)
-        try:
-            return _alimentar_vad_bloqueante(vad, taxa, dev, estado)
-        except KeyboardInterrupt:
-            return np.zeros(0, dtype="float32")
-
-
-def _capturar_vad_fallback():
-    """Fallback por RMS caso o Silero nao carregue."""
-    print(f"{VOZ_COLOR}[vad fallback rms] fale (Ctrl+C p/ sair){RESET}", flush=True)
-    limiar = max(THRESHOLD * 0.02, 0.02)
-    consec = 0
-    falando = False
-    silencio = 0.0
-    frames = []
-    total = 0.0
-    dev = _device_entrada()
-    taxa = _taxa_nativa(dev)
-    bloco = int(taxa * 0.1)
-    while True:
-        x = _rec_bloco_f32(dev, taxa, bloco)
-        if x.size == 0:
-            continue
-        rms = _rms(x)
-        _retrato_rms(rms / 0.08)
-        voz = rms > limiar
-        if not falando:
-            if voz:
-                consec += 1
-                if consec >= 3:
-                    falando = True
-                    silencio = 0.0
-                    frames = [x]
-                    total = 0.1
-            else:
-                consec = 0
-        else:
-            frames.append(x)
-            total += 0.1
-            if not voz:
-                silencio += 0.1
-                if silencio >= SILENCIO:
-                    break
-            else:
-                silencio = 0.0
-            if total >= MAX_FALA:
-                break
-    return np.concatenate(frames) if frames else np.zeros(0, dtype="float32")
+    return capturar_turno(
+        threshold=THRESHOLD,
+        min_silence_ms=VAD_MIN_SILENCE_MS,
+        feedback=Feedback(on_rms=_retrato_rms, on_mensagem=on_mensagem),
+    )
 
 
 def capturar_push():
