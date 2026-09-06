@@ -217,6 +217,7 @@ inexistente e auto-PID sem excecao.
 - [[saudacao-espontanea-implementada]]
 - [[saudacao-jarvis-estilo-filme]]
 - [[saudacao-llm-nvidia-api]]
+- [[saudacao-reconexao-contexto]]
 - [[secrets-guard-no-preflightcheck]]
 - [[separação-de-estados-editar-vs-salvar-despesas]]
 - [[sessao-de-configuracao-do-opencode-com-failover-de-servidor-]]

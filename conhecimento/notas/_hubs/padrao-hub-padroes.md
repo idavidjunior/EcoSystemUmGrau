@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**297 notas** conectadas a este hub.
+**298 notas** conectadas a este hub.
 
 
 ## Notas
@@ -234,6 +234,7 @@
 - [[saudacao-dinamica-jarvis]]
 - [[saudacao-jarvis-estilo-filme]]
 - [[saudacao-llm-nvidia-api]]
+- [[saudacao-reconexao-contexto]]
 - [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]
 - [[saveload-pattern]]
 - [[secrets-guard-no-preflightcheck]]

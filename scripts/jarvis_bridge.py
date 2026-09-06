@@ -1529,7 +1529,7 @@ class Cliente:
             body["parts"].append({"type": "file", "mime": img_mime, "url": f"data:{img_mime};base64,{img_base64}"})
             body["model"] = {"providerID": MODELO_VISION_PROVIDER, "modelID": MODELO_VISION_MODEL}
             logger.info(f"usando modelo vision {MODELO_VISION_PROVIDER}/{MODELO_VISION_MODEL}")
-        result = await _http_async("POST", f"/session/{session_id}/message", body)
+        result = await _http_async("POST", f"/session/{session_id}/message", body, timeout=300)
 
         if not result:
             if tentativa < 2:
@@ -1618,7 +1618,9 @@ class Cliente:
             ultimas_txt = "; ".join(u[:100] for u in ultimas[-3:]) if ultimas else "nenhuma"
             # Memória de curto prazo: últimas interações reais da conversa para o
             # Jarvis identificar SOZINHO onde paramos e continuar, sem perguntar.
-            ctx_recente = self._contexto_recente()
+            # Apenas as últimas 2 trocas: blocos antigos (ex.: tarefas concluídas)
+            # não devem ancorar a saudação, evitando retomar assunto vencido.
+            ctx_recente = self._contexto_recente(pares=2)
             instrucao = (
                 "Você é o Jarvis, assistente de voz do EcoSystemUmGrau, do usuário David. "
                 "ESCREVA sempre o nome como 'David' (com 'v'). Pronuncie como 'Deivid' "
@@ -1632,6 +1634,12 @@ class Cliente:
                 "Identifique por conta própria o que estávamos fazendo e faça uma saudação "
                 "CURTA (1 frase, no máximo 2) de continuidade, retomando naturalmente o "
                 "assunto em curso, como um assistente que estava trabalhando e volta. "
+                "IMPORTANTE: baseie-se APENAS nas últimas interações fornecidas acima. "
+                "Se as últimas interações forem apenas despedida, cumprimento ou pedido "
+                "já FECHADO (ex.: 'boa noite', 'tchau'), NÃO retome nem cite nenhuma tarefa "
+                "antiga ou diagnóstico passado: faça uma saudação simples de prontidão, "
+                "como 'estou aqui, pronto para o que precisar'. "
+                "NUNCA invente assunto em curso que não esteja nas últimas interações. "
                 "Pode ser leve, seca, bem-humorada ou direta — variando. "
                 f"Saudações que você JÁ USOU e NÃO deve repetir: {ultimas_txt}. "
                 "Escolha um tom diferente dos já usados. "
@@ -1956,8 +1964,45 @@ _SISTEMA_VOZ_RAPIDA = (
     "natural e direta, como numa conversa falada. "
     "Use o contexto do ecossistema fornecido abaixo para responder com verdade. "
     "Nunca invente fatos: se não souber, diga que não sabe. "
+    "Nunca alegue limitação de acesso ou de capacidade técnica: o ecossistema "
+    "pesquisa na web quando precisa. Se o pedido exigir informação atual ou "
+    "online (preço, promoção, notícia, cotação, clima, disponibilidade), "
+    "responda apenas 'Vou pesquisar isso para você.' — a busca acontece no "
+    "assistente principal, que tem ferramentas de internet. "
     "Não faça listas, não use markdown, emojis nem repetições da pergunta."
 )
+
+
+# Perguntas que exigem dado atual/online não podem ser respondidas pelo canal
+# rápido (modelo puro NVIDIA sem ferramentas): ele responderia "não sei"/"não
+# tenho acesso" em vez de pesquisar. Estas mensagens são roteadas direto ao
+# canal serve, que tem MCP internet/browser + websearch. Quanto mais ampla a
+# lista, maior a resolução; o custo de falso positivo é apenas cair no serve
+# (mais demorado), o de falso negativo é o bug "não consigo pesquisar".
+_PADROES_BUSCA_WEB = re.compile(
+    r"(?i)"
+    r"(promo[çc][ãa]o|promo[çc][õo]es|pre[çc]o|oferta|cupom|desconto|"
+    r"quanto custa|custa quanto|qual o pre[çc]o|valor de|"
+    r"lan[çc]amento|not[íi]cia|not[íi]cias|cat[áa]logo|card[áa]pio|"
+    r"disponibilidade|tem em estoque|estoque|entrega|frete|prazo de|"
+    r"cota[çc][ãa]o|resultado do jogo|placar|previs[aã]o do tempo|clima|"
+    r"vai chover|vai ter sol|faz calor|faz frio|tempo amanh[ãa]|chover [hóo]je)"
+    r"|"
+    r"(pesquis|procur|busca|busque|olha n[oa] (internet|web|site)|"
+    r"acha a[íi]|encontra|pesquise)"
+    r"|"
+    r"(tixan|tixam|y[ -]?p[eê]|yp[êe])"
+)
+
+
+def _requer_busca_web(msg: str) -> bool:
+    """True se a mensagem pede dado atual/online (promoção, preço, notícia,
+    cotação, clima, disponibilidade, pesquisa explícita, marca com oferta...)
+    que o canal rápido (modelo puro, sem ferramentas) não consegue obter.
+    Essas mensagens devem ir direto ao canal serve (com ferramentas de web)."""
+    if not msg or not isinstance(msg, str):
+        return False
+    return bool(_PADROES_BUSCA_WEB.search(msg))
 
 
 def _normalizar_fala(t: str) -> str:
@@ -3460,14 +3505,21 @@ async def lidar(ws):
                 # ---- Voz rápida: NVIDIA direta (thinking off), sem serve ----
                 # Canal "simples": voz entra, resposta sai em poucos segundos.
                 # Só cai no serve se a cadeia rápida falhar inteira.
-                try:
-                    await _enviar_progresso(ws, "Respondendo rápido")
-                    r = await _voz_rapida(m, cliente=c, img_base64=img_atual, img_mime=img_mime)
-                    if r is not None:
-                        logger.info(f"resposta voz rapida ({len(r)}c): {r[:80]}")
-                except Exception as e:
-                    logger.warning(f"voz rapida geral: {e}")
-                    r = None
+                # Pedidos que exigem dado atual/online (preço, promoção, notícia,
+                # cotação, clima...) NÃO passam por aqui: o modelo puro não tem
+                # ferramentas e responderia "não tenho acesso a pesquisas".
+                # Vão direto ao serve, que tem MCP internet/browser + websearch.
+                if _requer_busca_web(m):
+                    logger.info(f"busca web requerida, roteando direto ao serve: {m[:70]}")
+                else:
+                    try:
+                        await _enviar_progresso(ws, "Respondendo rápido")
+                        r = await _voz_rapida(m, cliente=c, img_base64=img_atual, img_mime=img_mime)
+                        if r is not None:
+                            logger.info(f"resposta voz rapida ({len(r)}c): {r[:80]}")
+                    except Exception as e:
+                        logger.warning(f"voz rapida geral: {e}")
+                        r = None
             if r is None:
                 # ---- Pipeline multi-LLM curado: opencode serve + fallback cadeia ----
                 import time as _t

@@ -255,6 +255,7 @@ aprendizado: >
 - [[saudacao-dinamica-jarvis]]
 - [[saudacao-jarvis-estilo-filme]]
 - [[saudacao-llm-nvidia-api]]
+- [[saudacao-reconexao-contexto]]
 - [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]
 - [[saveload-pattern]]
 - [[secrets-guard-no-preflightcheck]]

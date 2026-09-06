@@ -1,8 +1,8 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-09-05T22:44:11.297609
+**Exportado em:** 2026-09-06T00:47:48.328081
 **Projetos:** 4
-**Padroes Tecnicos:** 303
+**Padroes Tecnicos:** 304
 **Decisoes:** 103
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 82
@@ -1186,6 +1186,7 @@ de inicializacao era WinError 2 (s
 | 301 | opencode+opencode | dedup memorias index stale |
 | 302 | opencode+opencode | padrao organizacao comandos |
 | 303 | opencode+opencode | integrity guard motor estrutural |
+| 304 | opencode | saudacao reconexao contexto |
 
 ## Bug Fixes e Corrigidos
 
@@ -2575,7 +2576,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-09-05T22:44:10.827849
+**Ultima atualizacao:** 2026-09-06T00:47:46.751016
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

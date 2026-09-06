@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**276 notas** do cluster ecossistema.
+**277 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -244,6 +244,7 @@
 - [[saudacao-espontanea-nao-implementada]]
 - [[saudacao-jarvis-estilo-filme]]
 - [[saudacao-llm-nvidia-api]]
+- [[saudacao-reconexao-contexto]]
 - [[saudacoes-inteligentes-reconexao-vs-primeira-vez]]
 - [[secrets-guard-no-preflightcheck]]
 - [[selecao-direct-explicita]]

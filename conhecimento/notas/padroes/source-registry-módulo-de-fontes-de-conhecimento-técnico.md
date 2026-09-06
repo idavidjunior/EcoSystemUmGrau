@@ -1,5 +1,5 @@
 ---
-tags: [engine, graph, knowle, memory, opencodeopencode, padrao]
+tags: [engine, fonte, graph, memory, opencodeopencode, padrao]
 aliases: [Source Registry — Módulo de Fontes de Conhecimento Técnico]
 date: 2026-09-03
 ---

@@ -160,6 +160,7 @@ HKUDS/CLI-Anything (MIT), metodologia GUI-to-CLI em 7 fases: análise do codebas
 - [[saudacao-espontanea-implementada]]
 - [[saudacao-jarvis-estilo-filme]]
 - [[saudacao-llm-nvidia-api]]
+- [[saudacao-reconexao-contexto]]
 - [[secrets-guard-no-preflightcheck]]
 - [[separação-de-estados-editar-vs-salvar-despesas]]
 - [[sessao-de-configuracao-do-opencode-com-failover-de-servidor-]]
