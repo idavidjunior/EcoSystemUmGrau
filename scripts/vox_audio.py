@@ -16,6 +16,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import threading
 from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -49,6 +50,7 @@ WHISPER_MODEL = os.environ.get("VOX_WHISPER_MODEL", "base")
 WHISPER_DEVICE = "cpu"
 WHISPER_COMPUTE = "int8"
 _WHISPER_MODEL = None
+_PLAYBACK_LOCK = threading.RLock()
 
 # Filtros de alucinação (padrão isair/jarvis): segmentos que o próprio Whisper
 # avalia como sem fala (no_speech_prob alto) ou com confiança muito baixa
@@ -141,42 +143,41 @@ def _tocar_mci(mp3, parar_evento=None, stop_flag=None):
     import ctypes
     import time
     from pathlib import Path
-    mci = ctypes.windll.winmm.mciSendStringW
-    alias = f"vox{int(time.time() * 1000)}"
-    ext = Path(str(mp3)).suffix.lower()
-    mci_type = "waveaudio" if ext in (".wav", ".wave") else "mpegvideo"
-    r = mci(f'open "{mp3}" type {mci_type} alias {alias}', None, 0, 0)
-    if r != 0:
-        print(f"[erro mci open: {r}]")
-        return
-    mci(f'play {alias}', None, 0, 0)
-    buf = ctypes.create_unicode_buffer(128)
-    mci(f'status {alias} length', buf, 128, 0)
-    try:
-        duracao_ms = int(buf.value)
-    except ValueError:
-        duracao_ms = 0
-    fim = duracao_ms / 1000 + 0.3 if duracao_ms > 0 else 15.0
-    decorrido = 0.0
-    while decorrido < fim:
-        # Verifica evento de barge-in (teclado/voz)
-        if parar_evento is not None and parar_evento.is_set():
-            mci(f'stop {alias}', None, 0, 0)
-            break
-        # Verifica arquivo-flag global de parada (widget/servicos)
-        if stop_flag is not None and isinstance(stop_flag, Path) and stop_flag.exists():
-            try:
-                stop_flag.unlink(missing_ok=True)
-            except Exception:
-                pass
-            mci(f'stop {alias}', None, 0, 0)
-            break
-        time.sleep(0.05)
-        decorrido += 0.05
-    try:
-        mci(f'close {alias}', None, 0, 0)
-    except Exception:
-        pass
+    with _PLAYBACK_LOCK:
+        mci = ctypes.windll.winmm.mciSendStringW
+        alias = f"vox{int(time.time() * 1000)}"
+        ext = Path(str(mp3)).suffix.lower()
+        mci_type = "waveaudio" if ext in (".wav", ".wave") else "mpegvideo"
+        r = mci(f'open "{mp3}" type {mci_type} alias {alias}', None, 0, 0)
+        if r != 0:
+            print(f"[erro mci open: {r}]")
+            return
+        mci(f'play {alias}', None, 0, 0)
+        buf = ctypes.create_unicode_buffer(128)
+        mci(f"status {alias} length", buf, 128, 0)
+        try:
+            duracao_ms = int(buf.value)
+        except ValueError:
+            duracao_ms = 0
+        fim = duracao_ms / 1000 + 0.3 if duracao_ms > 0 else 15.0
+        decorrido = 0.0
+        while decorrido < fim:
+            if parar_evento is not None and parar_evento.is_set():
+                mci(f'stop {alias}', None, 0, 0)
+                break
+            if stop_flag is not None and isinstance(stop_flag, Path) and stop_flag.exists():
+                try:
+                    stop_flag.unlink(missing_ok=True)
+                except Exception:
+                    pass
+                mci(f'stop {alias}', None, 0, 0)
+                break
+            time.sleep(0.05)
+            decorrido += 0.05
+        try:
+            mci(f'close {alias}', None, 0, 0)
+        except Exception:
+            pass
 
 
 def _parar_mci_tudo():
@@ -301,7 +302,7 @@ def _falar(texto, parar_evento=None, stop_flag=None):
         pass
     
     try:
-        _tocar_e_limpar(mp3, parar_evento)
+        _tocar_e_limpar(mp3, parar_evento, stop_flag)
     except Exception as e:
         print(f"[erro play] {e}")
         try:
@@ -318,8 +319,8 @@ async def _tts_stream_e_tocar(texto, caminho_mp3=None, parar_evento=None, stop_f
     tocar (via buffer) enquanto as demais ainda estão sendo geradas —
     reduzindo o time-to-first-audio.
 
-    Se o chunking não se aplicar (1 chunk), cai no streaming padrão do
-    texto inteiro, preservando o comportamento anterior.
+    Cada sentença é finalizada antes da reprodução. Isso evita tocar um
+    arquivo temporário enquanto ele ainda está sendo sobrescrito.
     """
     import edge_tts
 
@@ -356,48 +357,20 @@ async def _tts_stream_e_tocar(texto, caminho_mp3=None, parar_evento=None, stop_f
         # Arquivo temporário único para esta sentença
         tmp = _novo_mp3_temp("vox_stream")
 
-        # Coleta chunks de áudio da sentença
+        # Coleta todos os chunks antes de tocar a sentença.
         audio_chunks = []
-        total_bytes = 0
-        PREBUFFER_BYTES = 4000  # ~4KB = ~100ms de áudio (início mais rápido)
-        started_playing = False
-        play_thread = None
 
         async for chunk in communicate.stream():
             if parar_evento and parar_evento.is_set():
                 break
             if chunk["type"] == "audio":
                 audio_chunks.append(chunk["data"])
-                total_bytes += len(chunk["data"])
 
-                # Quando tiver buffer suficiente, salva e toca em thread separada
-                if not started_playing and total_bytes >= PREBUFFER_BYTES:
-                    started_playing = True
-                    with open(tmp, "wb") as f:
-                        for c in audio_chunks:
-                            f.write(c)
-                    if play_thread is None or not play_thread.is_alive():
-                        play_thread = threading.Thread(
-                            target=_tocar_mci,
-                            args=(str(tmp),),
-                            kwargs={"parar_evento": parar_evento, "stop_flag": stop_flag},
-                            daemon=True
-                        )
-                        play_thread.start()
-
-        # Salva áudio completo da sentença
         if audio_chunks:
             with open(tmp, "wb") as f:
                 for c in audio_chunks:
                     f.write(c)
-
-        # Se não deu para tocar streaming (sentença muito curta), toca agora
-        if not started_playing and audio_chunks:
             _tocar_mci(str(tmp), parar_evento=parar_evento, stop_flag=stop_flag)
-
-        # Espera thread de reprodução terminar (não sobrepor próxima sentença)
-        if play_thread and play_thread.is_alive():
-            play_thread.join(timeout=10)
 
         tmp.unlink(missing_ok=True)
 
