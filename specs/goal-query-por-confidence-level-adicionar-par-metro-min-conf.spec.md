@@ -16,7 +16,7 @@ data: 2026-09-07
 query por confidence level. adicionar parâmetro min_confidence ao search do knowledge_graph | atualizar bm25 para suportar filtro de confiança | testar busca com min_confidence (respete: ['scripts/knowledge_graph.py'])
 
 ---
-set: 2026-09-07t12:11:11.670057
+set: 2026-09-07t14:33:38.465630
 
 ## Requisitos
 

@@ -1,0 +1,7 @@
+{
+  "action": "initialize_project",
+  "description": "Initialize project structure for: # Goal\n\nQuery por Confidence Level. Adicionar parâmetro min_",
+  "validation": "check_structure",
+  "duration": 0.0,
+  "timestamp": "2026-09-07T14:33:40.807144"
+}

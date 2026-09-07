@@ -1,6 +1,6 @@
 # Goal
 
-Aprendizado com Confidence Tracking. Adicionar campo confidence em aprendizados | Adicionar campo source_evidence[] em aprendizados | Atualizar learning_engine para aceitar confidence (respete: ['scripts/learning_engine.py'])
+Query por Confidence Level. Adicionar parâmetro min_confidence ao search do knowledge_graph | Atualizar BM25 para suportar filtro de confiança | Testar busca com min_confidence (respete: ['scripts/knowledge_graph.py'])
 
 ---
-Set: 2026-09-07T14:31:20.211171
+Set: 2026-09-07T14:33:38.465630
