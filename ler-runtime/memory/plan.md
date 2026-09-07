@@ -7,7 +7,7 @@ Memória com Evidence-Grounding. Adicionar campos source_file, source_line, sour
 ---
 Set: 2026-09-07T14:18:52.389966
 
-**Created:** 2026-09-07T14:19:43.619873
+**Created:** 2026-09-07T14:19:54.921474
 
 **Total Steps:** 5
 
