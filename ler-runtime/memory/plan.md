@@ -7,7 +7,7 @@ Aprendizado com Confidence Tracking. Adicionar campo confidence em aprendizados 
 ---
 Set: 2026-09-07T14:31:20.211171
 
-**Created:** 2026-09-07T14:31:20.733459
+**Created:** 2026-09-07T14:31:48.342271
 
 **Total Steps:** 5
 
