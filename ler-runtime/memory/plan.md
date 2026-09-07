@@ -2,33 +2,33 @@
 
 **Goal:** # Goal
 
-Depth Check. Adicionar check_depth() ao runtime_auditor.py | Validar que grafo tem entidades mínimas antes de sintetizar | Validar que boundaries têm sub-boundaries | Reportar issues[] quando profundidade é insuficiente (respete: ['scripts/runtime_auditor.py'])
+Aprendizado com Confidence Tracking. Adicionar campo confidence em aprendizados | Adicionar campo source_evidence[] em aprendizados | Atualizar learning_engine para aceitar confidence (respete: ['scripts/learning_engine.py'])
 
 ---
-Set: 2026-09-07T12:05:02.040368
+Set: 2026-09-07T12:08:09.174208
 
-**Created:** 2026-09-07T12:06:27.941593
+**Created:** 2026-09-07T12:08:09.546316
 
 **Total Steps:** 5
 
 ---
 
 ### Step 1: SETUP - analyze_environment
-**Description:** Analyze environment for: fix
+**Description:** Analyze environment for: learning
 **Validation:** check_env
 **Status:** pending
 
 ### Step 2: SETUP - initialize_project
 **Description:** Initialize project structure for: # Goal
 
-Depth Check. Adicionar check_depth() ao runtime_audi
+Aprendizado com Confidence Tracking. Adicionar campo
 **Validation:** check_structure
 **Status:** pending
 
-### Step 3: IMPLEMENTATION - fix
-**Description:** Corrigir problema identificado: # Goal
+### Step 3: IMPLEMENTATION - gather_information
+**Description:** Pesquisar e aprender: # Goal
 
-Depth Check. Adicionar check_depth() ao runtime_audi
+Aprendizado com Confidence Tracking. Adicionar campo
 **Validation:** check_output
 **Status:** pending
 

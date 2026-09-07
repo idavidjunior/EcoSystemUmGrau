@@ -1,9 +1,9 @@
 {
   "goal_analysis": {
-    "raw": "# Goal\n\nDepth Check. Adicionar check_depth() ao runtime_auditor.py | Validar que grafo tem entidades mínimas antes de sintetizar | Validar que boundaries têm sub-boundaries | Reportar issues[] quando profundidade é insuficiente (respete: ['scripts/runtime_auditor.py'])\n\n---\nSet: 2026-09-07T12:05:02.040368\n",
-    "objective": "# goal\n\ndepth check. adicionar check_depth() ao runtime_auditor.py | validar que grafo tem entidades mínimas antes de sintetizar | validar que boundaries têm sub-boundaries | reportar issues[] quando profundidade é insuficiente (respete: ['scripts/runtime_auditor.py'])\n\n---\nset: 2026-09-07t12:05:02.040368",
+    "raw": "# Goal\n\nAprendizado com Confidence Tracking. Adicionar campo confidence em aprendizados | Adicionar campo source_evidence[] em aprendizados | Atualizar learning_engine para aceitar confidence (respete: ['scripts/learning_engine.py'])\n\n---\nSet: 2026-09-07T12:08:09.174208\n",
+    "objective": "# goal\n\naprendizado com confidence tracking. adicionar campo confidence em aprendizados | adicionar campo source_evidence[] em aprendizados | atualizar learning_engine para aceitar confidence (respete: ['scripts/learning_engine.py'])\n\n---\nset: 2026-09-07t12:08:09.174208",
     "domain": "python",
-    "task_type": "fix",
+    "task_type": "learning",
     "technologies": [
       "unknown"
     ],
@@ -72,7 +72,7 @@
       "Codigo versionado no Git"
     ],
     "goal_spec": {
-      "objective": "# goal\n\ndepth check. adicionar check_depth() ao runtime_auditor.py | validar que grafo tem entidades mínimas antes de sintetizar | validar que boundaries têm sub-boundaries | reportar issues[] quando profundidade é insuficiente (respete: ['scripts/runtime_auditor.py'])\n\n---\nset: 2026-09-07t12:05:02.040368",
+      "objective": "# goal\n\naprendizado com confidence tracking. adicionar campo confidence em aprendizados | adicionar campo source_evidence[] em aprendizados | atualizar learning_engine para aceitar confidence (respete: ['scripts/learning_engine.py'])\n\n---\nset: 2026-09-07t12:08:09.174208",
       "requirements": [
         "--"
       ],
@@ -104,34 +104,33 @@
         }
       ]
     },
-    "spec_markdown": "---\nid: spec-goal-depth-check-adicionar-check-depth-ao-runtime-auditor-py\nversao: 0.1.0\nstatus: proposta\ncomponente: .\ntags: [ler, goal-analysis]\ndata: 2026-09-07\n---\n\n# Spec — goal-depth-check-adicionar-check-depth-ao-runtime-auditor-py\n\n## Objetivo\n\n# goal\n\ndepth check. adicionar check_depth() ao runtime_auditor.py | validar que grafo tem entidades mínimas antes de sintetizar | validar que boundaries têm sub-boundaries | reportar issues[] quando profundidade é insuficiente (respete: ['scripts/runtime_auditor.py'])\n\n---\nset: 2026-09-07t12:05:02.040368\n\n## Requisitos\n\n1. --\n\n## Restrições\n\n- Must use Git versioning\n\n## Dependências\n\n- _nenhum declarado_\n\n## Premissas\n\n- All dependencies can be installed via standard package managers\n\n## Entradas e Saídas\n\n- Entrada: argumentos de linha de comando, arquivos e dados do usuario.\n- Saída: saída processada em stdout, arquivos ou serviços.\n- Efeito colateral: arquivos alterados ou criados no sistema. E versionado no Git.\n\n## Casos de Borda\n\n- Requisitos ambíguos ou incompletos\n- Entradas vazias ou inválidas\n- Execução repetida (idempotência e estado parcial)\n\n## Critérios de Aceitação\n\n- -- implementado e funcional\n- Nenhum erro critico no funcionamento basico\n- Codigo compila/executa sem erros\n\n## Definition of Done\n\n- [ ] Todos os requisitos implementados\n- [ ] Codigo compila e executa sem erros\n- [ ] Testes basicos aprovados\n- [ ] Evidencias de funcionamento coletadas\n- [ ] Auditoria final aprovada\n- [ ] Relatorio final gerado\n- [ ] Codigo versionado no Git\n\n## Riscos\n\n- Requirements may be incomplete or ambiguous — severidade low\n\n## Testes Relacionados\n\n- Testes unitários em um diretório de testes (unittest/pytest).\n- Teste de regressão: repetir o fluxo principal após alterações\n",
-    "analyzed_at": "2026-09-07T12:05:02.224761"
+    "spec_markdown": "---\nid: spec-goal-aprendizado-com-confidence-tracking-adicionar-campo-con\nversao: 0.1.0\nstatus: proposta\ncomponente: .\ntags: [ler, goal-analysis]\ndata: 2026-09-07\n---\n\n# Spec — goal-aprendizado-com-confidence-tracking-adicionar-campo-con\n\n## Objetivo\n\n# goal\n\naprendizado com confidence tracking. adicionar campo confidence em aprendizados | adicionar campo source_evidence[] em aprendizados | atualizar learning_engine para aceitar confidence (respete: ['scripts/learning_engine.py'])\n\n---\nset: 2026-09-07t12:08:09.174208\n\n## Requisitos\n\n1. --\n\n## Restrições\n\n- Must use Git versioning\n\n## Dependências\n\n- _nenhum declarado_\n\n## Premissas\n\n- All dependencies can be installed via standard package managers\n\n## Entradas e Saídas\n\n- Entrada: argumentos de linha de comando, arquivos e dados do usuario.\n- Saída: saída processada em stdout, arquivos ou serviços.\n- Efeito colateral: arquivos alterados ou criados no sistema. E versionado no Git.\n\n## Casos de Borda\n\n- Requisitos ambíguos ou incompletos\n- Entradas vazias ou inválidas\n- Execução repetida (idempotência e estado parcial)\n\n## Critérios de Aceitação\n\n- -- implementado e funcional\n- Nenhum erro critico no funcionamento basico\n- Codigo compila/executa sem erros\n\n## Definition of Done\n\n- [ ] Todos os requisitos implementados\n- [ ] Codigo compila e executa sem erros\n- [ ] Testes basicos aprovados\n- [ ] Evidencias de funcionamento coletadas\n- [ ] Auditoria final aprovada\n- [ ] Relatorio final gerado\n- [ ] Codigo versionado no Git\n\n## Riscos\n\n- Requirements may be incomplete or ambiguous — severidade low\n\n## Testes Relacionados\n\n- Testes unitários em um diretório de testes (unittest/pytest).\n- Teste de regressão: repetir o fluxo principal após alterações\n",
+    "analyzed_at": "2026-09-07T12:08:09.342187"
   },
   "strategies": [
     {
       "id": "strat_A",
-      "name": "Diagnostico e Correcao Directa (A)",
+      "name": "Aprendizado Directa (A)",
       "approach": "Objetivo direto com implementacao guiada por requisitos",
       "cost": 2,
       "risk": "low",
       "estimated_time": "3-5 iteracoes",
       "complexity": 5,
-      "success_probability": 80,
+      "success_probability": 75,
       "phases": [
-        "Reproduce the issue",
-        "Diagnose root cause",
-        "Research solution",
-        "Apply fix",
-        "Test fix",
-        "Verify no regressions"
+        "Research topic",
+        "Create minimal example",
+        "Experiment with variations",
+        "Document findings",
+        "Create reference implementation"
       ],
       "technologies": [
         "unknown"
       ],
       "parallel_execution": false,
-      "fallback_plan": "Rollback and try alternative fix",
+      "fallback_plan": "Focus on core concepts only",
       "dependencies": [],
-      "score": 85,
+      "score": 84,
       "rank": 1
     },
     {
@@ -277,17 +276,6 @@
         "contingency": "Buscar versao alternativa ou tecnologia substituta."
       },
       {
-        "id": "ext_002",
-        "category": "external",
-        "description": "Causa raiz pode estar em dependencia externa fora do controle",
-        "severity": "high",
-        "likelihood": "medium",
-        "impact": "Impossibilidade de corrigir sem atualizacao de terceiros",
-        "affected_area": "fix",
-        "mitigation_plan": "Implementar fallback local quando possivel. Usar cache de respostas. [ACAO REQUERIDA ANTES DE PROSSEGUIR]",
-        "contingency": "Usar dados mockados ou cached para continuar execucao."
-      },
-      {
         "id": "perm_001",
         "category": "permission",
         "description": "Script pode exigir permissoes administrativas",
@@ -308,36 +296,14 @@
         "affected_area": "output",
         "mitigation_plan": "Verificar permissoes antes de executar. Tentar diretorio alternativo se necessario.",
         "contingency": "Solicitar elevacao de privilegio ou usar diretorio diferente."
-      },
-      {
-        "id": "strat_001",
-        "category": "strategy",
-        "description": "Estrategia 'Execucao Paralela (E)' possui risco high",
-        "severity": "medium",
-        "likelihood": "medium",
-        "impact": "Falha na execucao da estrategia",
-        "affected_area": "strategy",
-        "mitigation_plan": "Ter plano de fallback pronto. Reavaliar apos cada falha. Alternar para estrategia mais segura.",
-        "contingency": "Selecionar proxima melhor estrategia do ranking."
-      },
-      {
-        "id": "strat_002",
-        "category": "strategy",
-        "description": "Execucao paralela aumenta complexidade de coordenacao",
-        "severity": "medium",
-        "likelihood": "high",
-        "impact": "Conflitos entre execucoes paralelas",
-        "affected_area": "coordination",
-        "mitigation_plan": "Ter plano de fallback pronto. Reavaliar apos cada falha. Alternar para estrategia mais segura.",
-        "contingency": "Selecionar proxima melhor estrategia do ranking."
       }
     ],
     "critical_count": 0,
-    "high_count": 2,
-    "total_risks": 9,
+    "high_count": 1,
+    "total_risks": 6,
     "can_proceed": true,
-    "mitigation_plan_count": 9,
-    "assessed_at": "2026-09-07T12:06:27.904131"
+    "mitigation_plan_count": 6,
+    "assessed_at": "2026-09-07T12:08:09.441958"
   },
   "step_1_result": {
     "step_id": 1,
@@ -345,8 +311,8 @@
     "status": "completed",
     "output": "{\n  \"os\": \"nt\",\n  \"cwd\": \"C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\",\n  \"python\": \"C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe\",\n  \"git\": \"C:\\\\Program Files\\\\Git\\\\cmd\\\\git.exe\",\n  \"node\": null,\n  \"shell\": \"powershell\"\n}",
     "error": null,
-    "start_time": 1788793588.096238,
-    "duration": 1.1599349975585938
+    "start_time": 1788793689.690872,
+    "duration": 1.5934789180755615
   },
   "step_2_result": {
     "step_id": 2,
@@ -354,17 +320,17 @@
     "status": "completed",
     "output": "Projects directory ready: C:\\Users\\David Jr\\Documents\\Default Project\\EcoSystemUmGrau\\ler-runtime\\projects",
     "error": null,
-    "start_time": 1788793590.124933,
+    "start_time": 1788793692.1863506,
     "duration": 0.0
   },
   "step_3_result": {
     "step_id": 3,
-    "action": "fix",
+    "action": "gather_information",
     "status": "completed",
-    "output": "Fix applied — 24 arquivo(s) modificados: Corrigir problema identificado: # Goal\n\nDepth Check. Adicionar check_depth() ao runtime_audi",
+    "output": "Research needed: Pesquisar e aprender: # Goal\n\nAprendizado com Confidence Tracking. Adicionar campo",
     "error": null,
-    "start_time": 1788793590.3789706,
-    "duration": 1.4325940608978271
+    "start_time": 1788793692.4752338,
+    "duration": 0.0
   },
   "step_4_result": {
     "step_id": 4,
@@ -372,17 +338,17 @@
     "status": "completed",
     "output": "{\n  \"tests_run\": 5,\n  \"results\": [\n    {\n      \"file\": \"__init__.py\",\n      \"passed\": true,\n      \"output\": \"\"\n    },\n    {\n      \"file\": \"test_basic.py\",\n      \"passed\": true,\n      \"output\": \"unning final audit...\\n[2026-09-07 12:05:08] [INFO] Running final audit...\\n[2026-09-07 12:05:08] [INFO] Final report generated: C:\\\\Users\\\\DAVIDJ~1\\\\AppData\\\\Local\\\\Temp\\\\tmp_uw3tzy9\\\\reports\\\\final_report.md\\n\"\n    },\n    {\n      \"file\": \"test_integration.py\",\n      \"passed\": true,\n      \"output\": \"max_iterations\\n  Steps: 2/5\\n\\n=== Integration Test: Checkpoint Recovery ===\\n\\nCheckpoint saved: 20260907_120523_integration_test\\n\\n[OK] Checkpoint recovery test passed\\n\\n[OK] All integration tests passed\\n\"\n    },\n    {\n      \"file\": \"test_ler_v12.py\",\n      \"passed\": true,\n      \"output\": \"d: 4.5s | Iterations: 10\\n[2026-09-07 12:05:29] [INFO] Steps: 3/5\\n[2026-09-07 12:05:29] [INFO] Security: CLEAN\\n[2026-09-07 12:05:29] [INFO] ============================================================\\n\"\n    },\n    {\n      \"file\": \"test_ler_v20.py\",\n      \"passed\": true,\n      \"output\": \" created with 5 steps\\n[2026-09-07 12:05:31] [INFO] Running final audit...\\n[2026-09-07 12:05:31] [INFO] Final report generated: C:\\\\Users\\\\DAVIDJ~1\\\\AppData\\\\Local\\\\Temp\\\\tmpy48hatlq\\\\reports\\\\final_report.md\\n\"\n    }\n  ]\n}",
     "error": null,
-    "start_time": 1788793591.991626,
-    "duration": 0.016657590866088867
+    "start_time": 1788793602.343919,
+    "duration": 0.004001617431640625
   },
   "step_5_result": {
     "step_id": 5,
     "action": "git_commit",
     "status": "completed",
-    "output": "[opencode/mighty-meadow 4ebb5e281] [LEA] Automated commit\n 44 files changed, 5079 insertions(+), 3318 deletions(-)\n delete mode 100644 ler-runtime/checkpoints/20260907_120540_before_step_5/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_120557_before_step_1/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_120557_planning_done/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_120557_step_5_passed/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_120559_step_1_passed/checkpoint.json\n rename ler-runtime/checkpoints/{20260907_120602_iter_38 => 20260907_120616_iter_52}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120602_before_step_5 => 20260907_120617_step_5_passed}/checkpoint.json (79%)\n rename ler-runtime/checkpoints/{20260907_120600_before_step_3 => 20260907_120618_before_step_1}/checkpoint.json (74%)\n rename ler-runtime/checkpoints/{20260907_120557_iter_28 => 20260907_120618_iter_53}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120557_iter_29 => 20260907_120618_iter_54}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120557_iter_27 => 20260907_120618_iter_55}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120557_iter_30 => 20260907_120618_iter_56}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120602_before_step_4 => 20260907_120618_planning_done}/checkpoint.json (74%)\n rename ler-runtime/checkpoints/{20260907_120558_iter_31 => 20260907_120619_iter_57}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120559_before_step_2 => 20260907_120620_before_step_2}/checkpoint.json (74%)\n create mode 100644 ler-runtime/checkpoints/20260907_120620_before_step_3/checkpoint.json\n rename ler-runtime/checkpoints/{20260907_120559_iter_32 => 20260907_120620_iter_58}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120559_iter_33 => 20260907_120620_iter_59}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120600_iter_34 => 20260907_120620_iter_60}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120602_step_3_passed => 20260907_120620_step_1_passed}/checkpoint.json (74%)\n rename ler-runtime/checkpoints/{20260907_120600_step_2_passed => 20260907_120620_step_2_passed}/checkpoint.json (74%)\n rename ler-runtime/checkpoints/{20260907_120601_iter_35 => 20260907_120621_iter_61}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120602_iter_36 => 20260907_120621_iter_62}/checkpoint.json (57%)\n create mode 100644 ler-runtime/checkpoints/20260907_120621_step_3_passed/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_120622_before_step_4/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_120622_before_step_5/checkpoint.json\n rename ler-runtime/checkpoints/{20260907_120602_iter_37 => 20260907_120622_iter_63}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120554_iter_26 => 20260907_120622_iter_64}/checkpoint.json (57%)\n create mode 100644 ler-runtime/checkpoints/20260907_120622_step_4_passed/checkpoint.json\n create mode 100644 ler-runtime/memory/patterns/successful_20260907_120617.json\n create mode 100644 ler-runtime/memory/patterns/successful_20260907_120620.json\n create mode 100644 ler-runtime/memory/patterns/successful_20260907_120621.json\n create mode 100644 ler-runtime/memory/patterns/successful_20260907_120622.json\n create mode 100644 ler-runtime/memory/technical_history/progress_120617.json\n create mode 100644 ler-runtime/memory/technical_history/progress_120620.json\n create mode 100644 ler-runtime/memory/technical_history/progress_120621.json\n create mode 100644 ler-runtime/memory/technical_history/progress_120622.json\n\n\n[VERIFIED] Last commit: 4ebb5e281 [LEA] Automated commit",
+    "output": "On branch opencode/mighty-meadow\nYour branch is ahead of 'origin/opencode/mighty-meadow' by 29 commits.\n  (use \"git push\" to publish your local commits)\n\nChanges not staged for commit:\n  (use \"git add/rm <file>...\" to update what will be committed)\n  (use \"git restore <file>...\" to discard changes in working directory)\n  (commit or discard the untracked or modified content in submodules)\n\tmodified:   Projetos/VoxUmGrau (modified content, untracked content)\n\tmodified:   conhecimento/memoria/memories.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120611_step_4_passed/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120616_iter_52/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120617_step_5_passed/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120618_before_step_1/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120618_iter_53/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120618_iter_54/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120618_iter_55/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120618_iter_56/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120618_planning_done/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120619_iter_57/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120620_before_step_2/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120620_before_step_3/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120620_iter_58/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120620_iter_59/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120620_iter_60/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120620_step_1_passed/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120620_step_2_passed/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120621_iter_61/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120621_iter_62/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120621_step_3_passed/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120622_before_step_4/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120622_before_step_5/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120622_iter_63/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_120622_iter_64/checkpoint.json\n\tmodified:   ler-runtime/memory/context.json\n\tmodified:   ler-runtime/memory/decisions.md\n\tmodified:   ler-runtime/memory/plan.md\n\tmodified:   ler-runtime/memory/progress.json\n\tmodified:   ler-runtime/memory/successful_patterns.json\n\tmodified:   ler-runtime/memory/tool_statistics.json\n\tmodified:   scripts/nvidia_quota_state.json\n\nUntracked files:\n  (use \"git add <file>...\" to include in what will be committed)\n\tler-runtime/checkpoints/20260907_120635_iter_78/\n\tler-runtime/checkpoints/20260907_120636_before_step_1/\n\tler-runtime/checkpoints/20260907_120636_iter_79/\n\tler-runtime/checkpoints/20260907_120636_iter_80/\n\tler-runtime/checkpoints/20260907_120636_iter_81/\n\tler-runtime/checkpoints/20260907_120636_iter_82/\n\tler-runtime/checkpoints/20260907_120636_planning_done/\n\tler-runtime/checkpoints/20260907_120636_step_5_passed/\n\tler-runtime/checkpoints/20260907_120638_iter_83/\n\tler-runtime/checkpoints/20260907_120640_before_step_2/\n\tler-runtime/checkpoints/20260907_120640_before_step_3/\n\tler-runtime/checkpoints/20260907_120640_iter_84/\n\tler-runtime/checkpoints/20260907_120640_iter_85/\n\tler-runtime/checkpoints/20260907_120640_iter_86/\n\tler-runtime/checkpoints/20260907_120640_step_1_passed/\n\tler-runtime/checkpoints/20260907_120640_step_2_passed/\n\tler-runtime/checkpoints/20260907_120642_before_step_4/\n\tler-runtime/checkpoints/20260907_120642_before_step_5/\n\tler-runtime/checkpoints/20260907_120642_iter_87/\n\tler-runtime/checkpoints/20260907_120642_iter_88/\n\tler-runtime/checkpoints/20260907_120642_iter_89/\n\tler-runtime/checkpoints/20260907_120642_iter_90/\n\tler-runtime/checkpoints/20260907_120642_step_3_passed/\n\tler-runtime/checkpoints/20260907_120642_step_4_passed/\n\tler-runtime/memory/patterns/successful_20260907_120636.json\n\tler-runtime/memory/patterns/successful_20260907_120639.json\n\tler-runtime/memory/patterns/successful_20260907_120640.json\n\tler-runtime/memory/patterns/successful_20260907_120642.json\n\tler-runtime/memory/technical_history/progress_120636.json\n\tler-runtime/memory/technical_history/progress_120639.json\n\tler-runtime/memory/technical_history/progress_120640.json\n\tler-runtime/memory/technical_history/progress_120642.json\n\nno changes added to commit (use \"git add\" and/or \"git commit -a\")\n\n\n[VERIFIED] Last commit: e45d68775 [LEA] Automated commit",
     "error": null,
-    "start_time": 1788793582.3471234,
-    "duration": 3.6304142475128174
+    "start_time": 1788793602.6416647,
+    "duration": 4.777174472808838
   },
   "success_evaluation": {
     "total_score": 90.0,
@@ -401,6 +367,6 @@
     "recommendations": [
       "Melhorar Audit Quality (atual: 0%, desejado: 80%+)"
     ],
-    "evaluated_at": "2026-09-07T12:06:27.841255"
+    "evaluated_at": "2026-09-07T12:06:48.808340"
   }
 }
