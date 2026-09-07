@@ -16,7 +16,7 @@
       "description": "Initialize project structure for: # Goal\n\nDepth Check. Adicionar check_depth() ao runtime_audi",
       "command": null,
       "validation": "check_structure",
-      "status": "completed"
+      "status": "pending"
     },
     {
       "id": 3,
@@ -25,7 +25,7 @@
       "description": "Corrigir problema identificado: # Goal\n\nDepth Check. Adicionar check_depth() ao runtime_audi",
       "command": null,
       "validation": "check_output",
-      "status": "completed"
+      "status": "pending"
     },
     {
       "id": 4,
@@ -34,7 +34,7 @@
       "description": "Run tests to validate implementation",
       "command": null,
       "validation": "test_pass",
-      "status": "completed"
+      "status": "pending"
     },
     {
       "id": 5,
@@ -46,12 +46,9 @@
       "status": "pending"
     }
   ],
-  "current_step": 4,
+  "current_step": 1,
   "completed_steps": [
-    1,
-    2,
-    3,
-    4
+    1
   ],
   "failed_steps": [],
   "total_steps": 5,
