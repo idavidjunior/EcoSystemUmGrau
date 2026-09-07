@@ -1,5 +1,5 @@
 ---
-tags: [ativos, cognitivo, general, local, rdp, sshd]
+tags: [cognitivo, dominio, general, local, rdp, sshd]
 aliases: [Pacote Seguro de Serviços Windows — Aplicação com Backup]
 date: 2026-08-23
 ---
