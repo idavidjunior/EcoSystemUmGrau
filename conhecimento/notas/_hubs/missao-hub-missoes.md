@@ -1,6 +1,6 @@
 # Missoes
 
-**60 notas** conectadas a este hub.
+**61 notas** conectadas a este hub.
 
 
 ## Notas
@@ -58,6 +58,7 @@
 - [[gramática-do-português-brasileiro-guia-prático-do-dia-a-dia]]
 - [[habilidade-navegação-perita-internet-pc-e-celular]]
 - [[jarvis-do-celular-e-do-pc-um-só-cérebro-arquitetura-sincroni]]
+- [[missao-na-status-maxiterations-iteracoes-100-steps-35]]
 - [[política-de-resposta-rápida-caminhos-rápidos-constantes-no-j]]
 - [[pontuação-da-transcrição-voltando-ao-balão-do-app-corrigido]]
 - [[pronúncia-járvis-escrita-sem-acento-fala-com-acento]]

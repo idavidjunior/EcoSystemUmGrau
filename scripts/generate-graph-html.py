@@ -467,8 +467,13 @@ def extrair_nos():
             if link_slug in id_set and slug in id_set:
                 arestas.add(tuple(sorted((slug, link_slug))))
 
-    # ---- nos MCP: um por servidor do opencode.jsonc, ligado as notas que o citam ----
+    # ---- nos MCP: hub central + arestas para as notas que os citam + co-citacao MCP-MCP ----
     corpos_low = {s: b.lower() for s, b in corpo_por_slug.items()}
+    hub_mcp_id = 'cluster-hub-mcp'
+    add_no(hub_mcp_id, 'Servidores MCP', 'hub', ['mcp', 'hub'],
+           'Hub do dominio MCP: todos os servidores do ecossistema.',
+           source='gerado', cluster='mcp')
+    citacoes = {}  # nid mcp -> set de slugs que o citam
     for nome_mcp in _coletar_mcps():
         nid = f'mcp/{nome_mcp}'
         cl_mcp = 'composio' if 'composio' in nome_mcp else 'mcp'
@@ -476,14 +481,24 @@ def extrair_nos():
                f'Servidor MCP configurado no opencode.jsonc (tipo local). '
                f'Clique para focar nas notas que o citam.',
                source='config/opencode.jsonc', cluster=cl_mcp)
+        # ancorar ao hub MCP (todas as ilhas de MCP viram uma constelacao)
+        arestas.add(tuple(sorted((nid, hub_mcp_id))))
         # termos de busca: nome completo + nome curto (eco-obsidian -> obsidian)
         termos = [nome_mcp.lower()]
         sufixo = re.sub(r'^(eco|mcp)-', '', nome_mcp.lower())
         if sufixo != nome_mcp.lower():
             termos.append(sufixo)
-        for slug, low in corpos_low.items():
-            if any(t in low for t in termos):
-                arestas.add(tuple(sorted((nid, slug))))
+        slugs_citando = [slug for slug, low in corpos_low.items()
+                         if any(t in low for t in termos)]
+        citacoes[nid] = set(slugs_citando)
+        for slug in slugs_citando:
+            arestas.add(tuple(sorted((nid, slug))))
+    # MCP-MCP: dois MCPs citados na mesma nota ganham aresta direta
+    mcp_ids = list(citacoes.keys())
+    for i in range(len(mcp_ids)):
+        for j in range(i + 1, len(mcp_ids)):
+            if citacoes[mcp_ids[i]] & citacoes[mcp_ids[j]]:
+                arestas.add(tuple(sorted((mcp_ids[i], mcp_ids[j]))))
 
     # ---- nos de Bibliotecas: uma por pacote Python instalado, ligado as
     # notas que mencionam o nome e a quem a requer (cadeia de dependencia) ----

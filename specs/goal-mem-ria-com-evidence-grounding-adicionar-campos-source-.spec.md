@@ -16,7 +16,7 @@ data: 2026-09-07
 memória com evidence-grounding. adicionar campos source_file, source_line, source_snippet em memórias | atualizar memory_engine add() para aceitar source_anchors | atualizar context() para retornar source_anchors | criar função validate_memory_source() (respete: ['scripts/memory_engine.py'])
 
 ---
-set: 2026-09-07t11:54:53.923728
+set: 2026-09-07t14:18:52.389966
 
 ## Requisitos
 

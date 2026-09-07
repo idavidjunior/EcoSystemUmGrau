@@ -12,3 +12,11 @@ A idempotência cobre sobreposição mas não crash no meio da ação.
 O orchestrator mostra retry com espera e o planner mostra estados.
 A spec nova estende a base sem duplicar o documento anterior.
 Ela prevê processo periódico com prova de vida em log.
+
+## Conexoes
+
+- [[segurança-autenticação-e-gestão-de-sessões-seguras]]
+- [[segurança-controle-de-acesso-rbacabac-e-menor-privilégio]]
+- [[segurança-criptografia-hashing-cifras-tls-e-segredos]]
+- [[segurança-hardening-e-dependências-vulneráveis-sbom-cve-e-su]]
+- [[segurança-owasp-top-10-aplicado-na-prática]]

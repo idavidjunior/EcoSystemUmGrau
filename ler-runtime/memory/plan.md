@@ -2,33 +2,33 @@
 
 **Goal:** # Goal
 
-Query por Confidence Level. Adicionar parâmetro min_confidence ao search do knowledge_graph | Atualizar BM25 para suportar filtro de confiança | Testar busca com min_confidence (respete: ['scripts/knowledge_graph.py'])
+Memória com Evidence-Grounding. Adicionar campos source_file, source_line, source_snippet em memórias | Atualizar memory_engine add() para aceitar source_anchors | Atualizar context() para retornar source_anchors | Criar função validate_memory_source() (respete: ['scripts/memory_engine.py'])
 
 ---
-Set: 2026-09-07T12:11:11.670057
+Set: 2026-09-07T14:18:52.389966
 
-**Created:** 2026-09-07T12:12:43.621001
+**Created:** 2026-09-07T14:18:53.186098
 
 **Total Steps:** 5
 
 ---
 
 ### Step 1: SETUP - analyze_environment
-**Description:** Analyze environment for: validation
+**Description:** Analyze environment for: creation
 **Validation:** check_env
 **Status:** pending
 
 ### Step 2: SETUP - initialize_project
 **Description:** Initialize project structure for: # Goal
 
-Query por Confidence Level. Adicionar parâmetro min_
+Memória com Evidence-Grounding. Adicionar campos sou
 **Validation:** check_structure
 **Status:** pending
 
-### Step 3: IMPLEMENTATION - test
-**Description:** Executar testes de validacao: # Goal
+### Step 3: IMPLEMENTATION - implement
+**Description:** Implementar funcionalidade principal: # Goal
 
-Query por Confidence Level. Adicionar parâmetro min_
+Memória com Evidence-Grounding. Adicionar campos sou
 **Validation:** check_output
 **Status:** pending
 

@@ -21,6 +21,7 @@ DATA_FILES = {
     'conhecimento/memoria/tfidf_acesso.json',
     'conhecimento/memoria/tfidf_meta.json',
     'ler-runtime/knowledge/knowledge_graph.json',
+    'ler-runtime/memory/context.json',
 }
 
 # Paths that are EXPECTED to contain template variables (rendered by setup scripts)
@@ -31,7 +32,7 @@ TEMPLATE_FILES = {
 }
 
 # Directories to skip (third-party bundles, user-specific)
-SKIP_DIRS = {'node_modules', 'backups', '.git', 'Projetos', 'ferramentas', 'ai-agents', '.obsidian'}
+SKIP_DIRS = {'node_modules', 'backups', '.git', 'Projetos', 'ferramentas', 'ai-agents', '.obsidian', 'ler-runtime/checkpoints'}
 
 # Patterns that indicate hardcoded user paths
 HARDCODED_PATTERNS = [

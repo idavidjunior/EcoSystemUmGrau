@@ -227,12 +227,12 @@ def _detectar_oportunidades(padroes, estado):
     return oportunidades[:MAX_ACOES_POR_CICLO]
 
 
-def _executar_acao(oportunidade):
+def _executar_acao(oportunidade, estado=None):
     """Executa uma ação autônoma baseada na oportunidade."""
     acao = oportunidade["tipo"]
     
     if acao == "criar_skill":
-        return _criar_skill_autonoma(oportunidade)
+        return _criar_skill_autonoma(oportunidade, estado)
     elif acao == "corrigir_padrao":
         return _corrigir_padrao_conhecido(oportunidade)
     elif acao == "consolidar_duplicado":
@@ -245,26 +245,352 @@ def _executar_acao(oportunidade):
     return _falha(f"ação desconhecida: {acao}")
 
 
-def _criar_skill_autonoma(oportunidade):
-    """Cria skill baseada em padrão repetido (placeholder - requer análise de código)."""
-    # Por enquanto registra a intenção; implementação completa precisa
-    # de análise de código real (AST, grep, etc.)
-    _log("skill_proposta", oportunidade)
-    return _ok(
-        acao="criar_skill",
-        status="proposta_registrada",
-        detalhe="Requer análise de código para implementação completa"
-    )
+def _criar_skill_autonoma(oportunidade, estado=None):
+    """Cria skill baseada em padrão repetido analisando memórias relacionadas."""
+    padrao = oportunidade["padrao"]
+    _log("skill_analise_iniciada", {"padrao": padrao})
+    
+    # Busca memórias relacionadas a este padrão
+    memorias_relacionadas = _buscar_memorias_por_padrao(padrao)
+    
+    if not memorias_relacionadas:
+        return _ok(
+            acao="criar_skill",
+            status="sem_memorias_relacionadas",
+            detalhe="Nenhuma memória com detalhes técnicos encontrados"
+        )
+    
+    # Extrai informações técnicas das memórias
+    info_tecnica = _extrair_info_tecnica(memorias_relacionadas)
+    
+    # Gera nome da skill baseado no padrão
+    skill_name = _gerar_nome_skill(padrao, info_tecnica)
+    skill_dir = os.path.join(BASE, "mcp", "habilidades", skill_name)
+    
+    # Verifica se skill já existe
+    if os.path.exists(skill_dir):
+        return _ok(
+            acao="criar_skill",
+            status="ja_existe",
+            detalhe=f"Skill {skill_name} já existe em {skill_dir}"
+        )
+    
+    # Cria estrutura da skill
+    try:
+        os.makedirs(skill_dir, exist_ok=True)
+        
+        # Cria skill.md
+        skill_md = _gerar_skill_md(skill_name, padrao, info_tecnica, memorias_relacionadas)
+        with open(os.path.join(skill_dir, "skill.md"), "w", encoding="utf-8") as f:
+            f.write(skill_md)
+        
+        # Cria script base se houver código identificado
+        if info_tecnica.get("codigo_exemplo"):
+            script_path = os.path.join(skill_dir, f"{skill_name}.py")
+            with open(script_path, "w", encoding="utf-8") as f:
+                f.write(info_tecnica["codigo_exemplo"])
+        
+        # Registra no estado
+        if estado is not None:
+            estado["skills_criadas"].append({
+                "nome": skill_name,
+                "padrao_origem": padrao,
+                "timestamp": _iso(_agora()),
+                "memorias_base": [m.get("arquivo", "") for m in memorias_relacionadas[:5]]
+            })
+            _salvar_estado(estado)
+        
+        _log("skill_criada", {"nome": skill_name, "dir": skill_dir, "padrao": padrao})
+        
+        return _ok(
+            acao="criar_skill",
+            status="criada",
+            skill_name=skill_name,
+            path=skill_dir,
+            memorias_usadas=len(memorias_relacionadas)
+        )
+    except Exception as e:
+        return _falha(f"erro ao criar skill: {e}")
+
+
+def _buscar_memorias_por_padrao(padrao):
+    """Busca arquivos de memória relacionados a um padrão."""
+    resultados = []
+    if not os.path.exists(MEMORIA):
+        return resultados
+    
+    for arquivo in Path(MEMORIA).glob("*.md"):
+        try:
+            with open(arquivo, "r", encoding="utf-8") as f:
+                conteudo = f.read()
+            
+            # Verifica se contém o padrão nas tags ou tipo
+            if padrao in conteudo or padrao.replace("tipo:", "") in conteudo:
+                # Extrai frontmatter
+                frontmatter = {}
+                fm_match = re.search(r"^---\n(.*?)\n---", conteudo, re.DOTALL)
+                if fm_match:
+                    for line in fm_match.group(1).split("\n"):
+                        if ":" in line:
+                            k, v = line.split(":", 1)
+                            frontmatter[k.strip()] = v.strip().strip('"\'')
+                
+                resultados.append({
+                    "arquivo": arquivo.name,
+                    "conteudo": conteudo,
+                    "frontmatter": frontmatter,
+                    "caminho": str(arquivo)
+                })
+        except Exception:
+            continue
+    
+    return resultados
+
+
+def _extrair_info_tecnica(memorias):
+    """Extrai informações técnicas consolidadas das memórias."""
+    info = {
+        "comandos": [],
+        "arquivos_mencionados": [],
+        "funcoes": [],
+        "bibliotecas": [],
+        "codigo_exemplo": None,
+        "descricao_consolidada": ""
+    }
+    
+    for m in memorias:
+        conteudo = m.get("conteudo", "")
+        fm = m.get("frontmatter", {})
+        
+        # Extrai comandos (linhas que começam com $, python, bash, etc.)
+        for line in conteudo.split("\n"):
+            line = line.strip()
+            if line.startswith(("$ ", "python ", "bash ", "git ", "npm ", "pip ")):
+                info["comandos"].append(line)
+            # Extrai caminhos de arquivo
+            if ".py" in line or ".js" in line or ".json" in line:
+                matches = re.findall(r'[\w/\\.-]+\.(py|js|json|md|txt)', line)
+                info["arquivos_mencionados"].extend(matches)
+        
+        # Extrai da decisao/contexto do frontmatter
+        if fm.get("decisao"):
+            info["descricao_consolidada"] += fm["decisao"] + " "
+        if fm.get("contexto"):
+            info["descricao_consolidada"] += fm["contexto"] + " "
+    
+    # Remove duplicatas
+    info["comandos"] = list(set(info["comandos"]))[:10]
+    info["arquivos_mencionados"] = list(set(info["arquivos_mencionados"]))[:20]
+    
+    # Gera código exemplo se houver comandos python
+    py_cmds = [c for c in info["comandos"] if c.startswith("python ")]
+    if py_cmds:
+        info["codigo_exemplo"] = _gerar_codigo_exemplo(skill_name="auto", comandos=py_cmds, descricao=info["descricao_consolidada"][:500])
+    
+    return info
+
+
+def _gerar_nome_skill(padrao, info):
+    """Gera nome kebab-case para skill baseado no padrão e info."""
+    # Remove prefixo tipo:
+    base = padrao.replace("tipo:", "").replace("padrao:", "")
+    # Limpa para kebab-case
+    base = re.sub(r'[^a-zA-Z0-9]+', '-', base).strip('-').lower()
+    # Adiciona prefixo auto
+    return f"auto-{base}"
+
+
+def _gerar_skill_md(nome, padrao, info, memorias):
+    """Gera conteúdo do skill.md."""
+    hoje = _agora().strftime("%Y-%m-%d")
+    tags = [padrao.replace("tipo:", ""), "auto-gerada", "autonomia"]
+    
+    md = f"""# {nome} — Skill Auto-Gerada
+
+## Origem
+Padrão detectado automaticamente: `{padrao}` ({len(memorias)} memórias relacionadas)
+Gerado em: {hoje} pelo loop autônomo de melhoria contínua.
+
+## Descrição
+{info.get("descricao_consolidada", "Skill gerada automaticamente a partir de padrões repetidos na memória do ecossistema.")[:500]}
+
+## Uso
+```bash
+# Exemplo de uso (ajustar conforme necessidade)
+python mcp/habilidades/{nome}/{nome}.py
+```
+
+## Comandos Identificados
+"""
+    for cmd in info.get("comandos", [])[:5]:
+        md += f"- `{cmd}`\n"
+    
+    md += f"""
+
+## Arquivos Relacionados
+"""
+    for arq in info.get("arquivos_mencionados", [])[:10]:
+        md += f"- `{arq}`\n"
+    
+    md += f"""
+
+## Memórias Base
+"""
+    for m in memorias[:5]:
+        md += f"- `{m['arquivo']}` ({m['frontmatter'].get('tipo', 'N/A')})\n"
+    
+    md += f"""
+
+## Notas
+- Skill gerada automaticamente — revisar e validar antes de usar em produção
+- Baseada em {len(memorias)} ocorrências do padrão `{padrao}`
+- Requer preflight_check.py antes de deploy
+
+---
+*Auto-gerado pelo autonomous_loop.py em {_iso(_agora())}*
+"""
+    return md
+
+
+def _gerar_codigo_exemplo(skill_name, comandos, descricao):
+    """Gera script Python exemplo baseado nos comandos identificados."""
+    # Escapa aspas nos comandos para evitar erro de sintaxe
+    cmds_escapados = [cmd.replace('"', '\\"').replace("'", "\\'") for cmd in comandos[:5]]
+    
+    return f'''#!/usr/bin/env python3
+"""Skill auto-gerada: {skill_name}
+
+{descricao[:300]}
+
+Gerado automaticamente pelo loop autônomo.
+Revisar e adaptar antes de usar.
+"""
+
+import sys
+import subprocess
+from pathlib import Path
+
+BASE = Path(__file__).resolve().parent.parent.parent.parent
+
+def main():
+    """Ponto de entrada da skill."""
+    print(f"Skill {skill_name} - auto-gerada")
+    print("Comandos base identificados:")
+''' + "\n".join([f'    print("  {cmd}")' for cmd in cmds_escapados]) + '''
+
+if __name__ == "__main__":
+    main()
+'''
 
 
 def _corrigir_padrao_conhecido(oportunidade):
-    """Aplica correção conhecida para padrão de erro recorrente."""
-    _log("correcao_padrao", oportunidade)
-    # Placeholder: integração com memory_engine para buscar correções conhecidas
+    """Aplica correção conhecida para padrão de erro recorrente (auto-healing)."""
+    padrao = oportunidade["padrao"]
+    _log("autohealing_iniciado", {"padrao": padrao})
+    
+    # Busca memórias do tipo "erro" com correções conhecidas
+    correcoes = _buscar_correcoes_conhecidas(padrao)
+    
+    if not correcoes:
+        return _ok(
+            acao="corrigir_padrao",
+            status="sem_correcao_conhecida",
+            detalhe="Nenhuma correção conhecida encontrada na memória"
+        )
+    
+    # Tenta aplicar a correção mais votada/recentes
+    correcao = correcoes[0]
+    resultado = _aplicar_correcao(correcao)
+    
+    if resultado.get("ok"):
+        _log("autohealing_sucesso", {"padrao": padrao, "correcao": correcao.get("arquivo")})
+        return _ok(
+            acao="corrigir_padrao",
+            status="corrigido",
+            detalhe=f"Aplicada correção de {correcao.get('arquivo')}: {resultado.get('detalhe', '')}"
+        )
+    else:
+        _log("autohealing_falhou", {"padrao": padrao, "erro": resultado.get("motivo")})
+        return _falha(f"Falha ao aplicar correção: {resultado.get('motivo')}")
+
+
+def _buscar_correcoes_conhecidas(padrao_erro):
+    """Busca memórias do tipo 'erro' que contenham soluções/correções."""
+    resultados = []
+    if not os.path.exists(MEMORIA):
+        return resultados
+    
+    for arquivo in Path(MEMORIA).glob("*.md"):
+        try:
+            with open(arquivo, "r", encoding="utf-8") as f:
+                conteudo = f.read()
+            
+            # Verifica se é tipo erro e menciona o padrão
+            fm_match = re.search(r"tipo:\s*erro", conteudo)
+            if not fm_match:
+                continue
+            
+            # Verifica se menciona o padrão de erro
+            if padrao_erro.replace("tipo:", "") in conteudo.lower() or "correcao" in conteudo.lower() or "fix" in conteudo.lower() or "solucao" in conteudo.lower():
+                fm = {}
+                fm_block = re.search(r"^---\n(.*?)\n---", conteudo, re.DOTALL)
+                if fm_block:
+                    for line in fm_block.group(1).split("\n"):
+                        if ":" in line:
+                            k, v = line.split(":", 1)
+                            fm[k.strip()] = v.strip().strip('"\'')
+                
+                # Extrai a correção/solução do conteúdo
+                correcao_texto = ""
+                if "correcao" in conteudo.lower() or "solução" in conteudo.lower() or "fix" in conteudo.lower():
+                    # Pega parágrafos após palavras-chave
+                    for kw in ["correcao", "correção", "solução", "solucao", "fix", "resolvido"]:
+                        idx = conteudo.lower().find(kw)
+                        if idx >= 0:
+                            correcao_texto = conteudo[idx:idx+500]
+                            break
+                
+                resultados.append({
+                    "arquivo": arquivo.name,
+                    "caminho": str(arquivo),
+                    "frontmatter": fm,
+                    "correcao": correcao_texto or fm.get("decisao", "") or fm.get("contexto", ""),
+                    "tags": fm.get("tags", "").split(",") if fm.get("tags") else []
+                })
+        except Exception:
+            continue
+    
+    # Ordena por mais recente (nome do arquivo tem data)
+    resultados.sort(key=lambda x: x["arquivo"], reverse=True)
+    return resultados
+
+
+def _aplicar_correcao(correcao):
+    """Tenta aplicar uma correção baseada na memória."""
+    # Por enquanto, registra a correção proposta para execução manual
+    # Futuro: pode executar comandos específicos se a correção for estruturada
+    
+    texto = correcao.get("correcao", "")
+    
+    # Procura por comandos executáveis na correção
+    comandos = []
+    for line in texto.split("\n"):
+        line = line.strip()
+        if line.startswith(("python ", "bash ", "git ", "pip ", "npm ")):
+            comandos.append(line)
+    
+    if comandos:
+        return _ok(
+            status="comandos_identificados",
+            detalhe=f"{len(comandos)} comando(s) encontrado(s) para execução manual",
+            comandos=comandos[:5]
+        )
+    
+    # Se não há comandos, retorna a correção como texto para revisão
     return _ok(
-        acao="corrigir_padrao",
-        status="analise_necessaria",
-        detalhe="Integração com base de correções conhecida pendente"
+        status="correcao_documentada",
+        detalhe=texto[:300] if texto else "Correção documentada sem comandos executáveis",
+        correcao_completa=texto
     )
 
 
@@ -345,7 +671,7 @@ def executar_ciclo_autonomo():
     # 4. Executa ações
     resultados = []
     for opp in oportunidades:
-        resultado = _executar_acao(opp)
+        resultado = _executar_acao(opp, estado)
         resultados.append({**opp, "resultado": resultado})
         
         if resultado.get("ok"):
