@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-09-06T01:31:29.019759",
+  "last_updated": "2026-09-06T22:49:45.273824",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -2946,6 +2946,12 @@
       "extracted_at": "2026-09-05T16:05:25.971554",
       "merged_count": 2,
       "merged_at": "2026-09-05T16:06:16.977612"
+    },
+    {
+      "source": "opencode",
+      "decision": "VAD consolidado em vad_captura + vox_audio VAD-first (2026-09-06)",
+      "rationale": "## Observado\n- `scripts/dialogo.py` tinha VAD completo local (streaming Silero/VADIterator,\n  captura bloqueante int16 p/ WDM-KS, fallback RMS, selecao de device) e\n  `scripts/vox_audio.py` gravava fixo 7s. Duplicacao clara: dois motores de turno.\n\n## Decisao\n1. Novo modulo `scripts/vad_captura.py` = fonte unica: constants (THRESHOLD,\n   SILENCIO, MAX_FALA), `_manager` lazy, `rms`, `device_entrada`, `taxa_nativa`,\n   `resample_para_16k`, `rec_bloco_f32`, `VadSileroStream`, `capturar_turno`\n   (streaming -> bloqueante -> fallback RMS), `capturar_turno_rms_fallback`.\n2. `dialogo.py`: removidas defs locais (_rms, _device_entrada, _taxa_nativa,\n   _resample_para_16k, _SILERO, _carregar_silero, VadSileroStream, _rec_bloco_f32,\n   _alimentar_vad_bloqueante, antigo capturar_vad, _capturar_vad_fallback) e\n   passou a importar alias apenas p/ o que usa no wake word e push-to-talk.\n3. `vox_audio._gravar_audio`: wrapper VAD-first -> capturar_turno() (import local\n   p/ evitar carga no module-leve",
+      "extracted_at": "2026-09-06T22:47:55.232215"
     }
   ],
   "bug_fixes": [

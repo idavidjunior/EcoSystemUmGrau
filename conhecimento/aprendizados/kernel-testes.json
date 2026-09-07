@@ -89,5 +89,232 @@
       "Verificar se jarvis_bridge.py esta rodando: <urlopen error [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente>",
       "Rever script sync_rules.py audit: OK"
     ]
+  },
+  {
+    "timestamp": "2026-09-06T20:49:17.623701",
+    "total_tests": 11,
+    "passed": 6,
+    "failed": 5,
+    "pass_rate": "54.5%",
+    "failures": [
+      {
+        "test": "Bridge HTTP (porta 8766)",
+        "detail": "HTTP Error 404: Not Found",
+        "category": "bridge"
+      },
+      {
+        "test": "Bridge WebSocket (porta 8765)",
+        "detail": "",
+        "category": "bridge"
+      },
+      {
+        "test": "Bridge dados completos",
+        "detail": "",
+        "category": "bridge"
+      },
+      {
+        "test": "preflight_check.py",
+        "detail": "Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\preflight_check.py']' timed out after 30 seconds",
+        "category": "scripts"
+      },
+      {
+        "test": "sync_rules.py audit",
+        "detail": "Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\sync_rules.py', 'audit']' timed out after 15 seconds",
+        "category": "scripts"
+      }
+    ],
+    "slowest_tests": [
+      {
+        "test": "preflight_check.py",
+        "duration": 30.23295760154724
+      },
+      {
+        "test": "sync_rules.py audit",
+        "duration": 15.18501091003418
+      },
+      {
+        "test": "Bridge WebSocket (porta 8765)",
+        "duration": 13.074246168136597
+      }
+    ],
+    "recommendations": [
+      "Verificar se jarvis_bridge.py esta rodando: HTTP Error 404: Not Found",
+      "Verificar se jarvis_bridge.py esta rodando: ",
+      "Verificar se jarvis_bridge.py esta rodando: ",
+      "Rever script preflight_check.py: Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\preflight_check.py']' timed out after 30 seconds",
+      "Rever script sync_rules.py audit: Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\sync_rules.py', 'audit']' timed out after 15 seconds"
+    ]
+  },
+  {
+    "timestamp": "2026-09-06T21:48:36.156271",
+    "total_tests": 11,
+    "passed": 7,
+    "failed": 4,
+    "pass_rate": "63.6%",
+    "failures": [
+      {
+        "test": "Bridge WebSocket (porta 8765)",
+        "detail": "",
+        "category": "bridge"
+      },
+      {
+        "test": "Bridge dados completos",
+        "detail": "",
+        "category": "bridge"
+      },
+      {
+        "test": "preflight_check.py",
+        "detail": "Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\preflight_check.py']' timed out after 30 seconds",
+        "category": "scripts"
+      },
+      {
+        "test": "sync_rules.py audit",
+        "detail": "Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\sync_rules.py', 'audit']' timed out after 15 seconds",
+        "category": "scripts"
+      }
+    ],
+    "slowest_tests": [
+      {
+        "test": "preflight_check.py",
+        "duration": 30.300227880477905
+      },
+      {
+        "test": "Bridge WebSocket (porta 8765)",
+        "duration": 18.4259090423584
+      },
+      {
+        "test": "sync_rules.py audit",
+        "duration": 15.415610551834106
+      }
+    ],
+    "recommendations": [
+      "Verificar se jarvis_bridge.py esta rodando: ",
+      "Verificar se jarvis_bridge.py esta rodando: ",
+      "Rever script preflight_check.py: Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\preflight_check.py']' timed out after 30 seconds",
+      "Rever script sync_rules.py audit: Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\sync_rules.py', 'audit']' timed out after 15 seconds"
+    ]
+  },
+  {
+    "timestamp": "2026-09-06T22:22:22.104509",
+    "total_tests": 11,
+    "passed": 8,
+    "failed": 3,
+    "pass_rate": "72.7%",
+    "failures": [
+      {
+        "test": "Bridge WebSocket (porta 8765)",
+        "detail": "",
+        "category": "bridge"
+      },
+      {
+        "test": "preflight_check.py",
+        "detail": "Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\preflight_check.py']' timed out after 30 seconds",
+        "category": "scripts"
+      },
+      {
+        "test": "sync_rules.py audit",
+        "detail": "Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\sync_rules.py', 'audit']' timed out after 15 seconds",
+        "category": "scripts"
+      }
+    ],
+    "slowest_tests": [
+      {
+        "test": "preflight_check.py",
+        "duration": 30.161455869674683
+      },
+      {
+        "test": "Bridge WebSocket (porta 8765)",
+        "duration": 28.477652072906494
+      },
+      {
+        "test": "Bridge dados completos",
+        "duration": 22.89774799346924
+      }
+    ],
+    "recommendations": [
+      "Verificar se jarvis_bridge.py esta rodando: ",
+      "Rever script preflight_check.py: Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\preflight_check.py']' timed out after 30 seconds",
+      "Rever script sync_rules.py audit: Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\sync_rules.py', 'audit']' timed out after 15 seconds"
+    ]
+  },
+  {
+    "timestamp": "2026-09-06T22:26:24.357949",
+    "total_tests": 11,
+    "passed": 8,
+    "failed": 3,
+    "pass_rate": "72.7%",
+    "failures": [
+      {
+        "test": "Bridge WebSocket (porta 8765)",
+        "detail": "",
+        "category": "bridge"
+      },
+      {
+        "test": "preflight_check.py",
+        "detail": "Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\preflight_check.py']' timed out after 30 seconds",
+        "category": "scripts"
+      },
+      {
+        "test": "sync_rules.py audit",
+        "detail": "Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\sync_rules.py', 'audit']' timed out after 15 seconds",
+        "category": "scripts"
+      }
+    ],
+    "slowest_tests": [
+      {
+        "test": "Bridge WebSocket (porta 8765)",
+        "duration": 33.29308080673218
+      },
+      {
+        "test": "preflight_check.py",
+        "duration": 30.21585202217102
+      },
+      {
+        "test": "Bridge dados completos",
+        "duration": 25.685149908065796
+      }
+    ],
+    "recommendations": [
+      "Verificar se jarvis_bridge.py esta rodando: ",
+      "Rever script preflight_check.py: Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\preflight_check.py']' timed out after 30 seconds",
+      "Rever script sync_rules.py audit: Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\sync_rules.py', 'audit']' timed out after 15 seconds"
+    ]
+  },
+  {
+    "timestamp": "2026-09-06T22:33:05.196606",
+    "total_tests": 11,
+    "passed": 9,
+    "failed": 2,
+    "pass_rate": "81.8%",
+    "failures": [
+      {
+        "test": "preflight_check.py",
+        "detail": "Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\preflight_check.py']' timed out after 30 seconds",
+        "category": "scripts"
+      },
+      {
+        "test": "sync_rules.py audit",
+        "detail": "Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\sync_rules.py', 'audit']' timed out after 15 seconds",
+        "category": "scripts"
+      }
+    ],
+    "slowest_tests": [
+      {
+        "test": "Bridge WebSocket (porta 8765)",
+        "duration": 36.86646366119385
+      },
+      {
+        "test": "preflight_check.py",
+        "duration": 30.313211679458618
+      },
+      {
+        "test": "Bridge dados completos",
+        "duration": 24.343222618103027
+      }
+    ],
+    "recommendations": [
+      "Rever script preflight_check.py: Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\preflight_check.py']' timed out after 30 seconds",
+      "Rever script sync_rules.py audit: Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\sync_rules.py', 'audit']' timed out after 15 seconds"
+    ]
   }
 ]

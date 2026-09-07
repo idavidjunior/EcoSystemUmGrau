@@ -1,6 +1,6 @@
 # Decisoes
 
-**99 notas** conectadas a este hub.
+**100 notas** conectadas a este hub.
 
 
 ## Notas
@@ -96,6 +96,7 @@
 - [[usar-keyboard-shortcuts-como-fallback-universal]]
 - [[usar-ocr-como-fallback-final-nao-primario]]
 - [[user-taps-buscar-na-internet]]
+- [[vad-consolidado-em-vadcaptura-voxaudio-vad-first-2026-09-06]]
 - [[vault-obsidian-cerebro-vivo-grafo]]
 - [[vault-obsidian-fonte-viva]]
 - [[verificar-modais-antes-de-cada-interacao]]

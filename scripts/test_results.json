@@ -1,90 +1,90 @@
 [
   {
     "name": "Bridge HTTP (porta 8766)",
-    "passed": false,
-    "detail": "<urlopen error [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente>",
-    "duration": 4.143214464187622,
+    "passed": true,
+    "detail": "HTTP 200",
+    "duration": 3.519407033920288,
     "category": "bridge",
-    "timestamp": "2026-08-17T22:02:27.041189"
+    "timestamp": "2026-09-06T22:31:15.799561"
   },
   {
     "name": "Bridge WebSocket (porta 8765)",
     "passed": true,
-    "detail": "Memorias=332",
-    "duration": 11.601392984390259,
+    "detail": "Memorias=650",
+    "duration": 36.86646366119385,
     "category": "bridge",
-    "timestamp": "2026-08-17T22:02:38.642582"
+    "timestamp": "2026-09-06T22:31:52.666024"
   },
   {
     "name": "Bridge dados completos",
     "passed": true,
     "detail": "Campos: memory, vigilante, radar, voice, agents, mcp, logs",
-    "duration": 7.845348358154297,
+    "duration": 24.343222618103027,
     "category": "bridge",
-    "timestamp": "2026-08-17T22:02:46.487931"
+    "timestamp": "2026-09-06T22:32:17.009247"
   },
   {
     "name": "memory_engine.py",
     "passed": true,
-    "detail": "Memories: 332 total, 332 active\n  erro: 57\n  decisao: 110\n  padrao: 124\n  episodio: 24\n  Carrinho pe",
-    "duration": 0.21633362770080566,
+    "detail": "Memories: 650 total, 627 active\n  erro: 143\n  decisao: 183\n  padrao: 239\n  episodio: 58\n  preferenci",
+    "duration": 2.454725742340088,
     "category": "scripts",
-    "timestamp": "2026-08-17T22:02:46.705266"
+    "timestamp": "2026-09-06T22:32:19.463973"
   },
   {
     "name": "preflight_check.py",
-    "passed": true,
-    "detail": "Exit=0",
-    "duration": 12.767459869384766,
+    "passed": false,
+    "detail": "Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\preflight_check.py']' timed out after 30 seconds",
+    "duration": 30.313211679458618,
     "category": "scripts",
-    "timestamp": "2026-08-17T22:02:59.472726"
+    "timestamp": "2026-09-06T22:32:49.777185"
   },
   {
     "name": "sync_rules.py audit",
     "passed": false,
-    "detail": "OK",
-    "duration": 2.141263484954834,
+    "detail": "Command '['C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe', 'C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\\\\scripts\\\\sync_rules.py', 'audit']' timed out after 15 seconds",
+    "duration": 15.251270055770874,
     "category": "scripts",
-    "timestamp": "2026-08-17T22:03:01.613989"
+    "timestamp": "2026-09-06T22:33:05.028454"
   },
   {
     "name": "Dashboard HTML features",
     "passed": true,
     "detail": "Features: titlebar, particles, glassmorphism, cmd-palette, sidebar, ws",
-    "duration": 0.14383339881896973,
+    "duration": 0.001993894577026367,
     "category": "dashboard",
-    "timestamp": "2026-08-17T22:03:01.757822"
+    "timestamp": "2026-09-06T22:33:05.030448"
   },
   {
     "name": "Dashboard layout responsivo",
     "passed": true,
     "detail": "Grid + Flexbox",
-    "duration": 0.0009968280792236328,
+    "duration": 0.0,
     "category": "dashboard",
-    "timestamp": "2026-08-17T22:03:01.758819"
+    "timestamp": "2026-09-06T22:33:05.030448"
   },
   {
     "name": "Constituicao existe",
     "passed": true,
-    "detail": "Tamanho=58483",
-    "duration": 0.001004934310913086,
+    "detail": "Tamanho=69946",
+    "duration": 0.0010080337524414062,
     "category": "integrity",
-    "timestamp": "2026-08-17T22:03:01.759824"
+    "timestamp": "2026-09-06T22:33:05.031457"
   },
   {
     "name": "AGENTS.md existe",
     "passed": true,
-    "detail": "Tamanho=60615",
+    "detail": "Tamanho=72657",
     "duration": 0.0,
     "category": "integrity",
-    "timestamp": "2026-08-17T22:03:01.759824"
+    "timestamp": "2026-09-06T22:33:05.031457"
   },
   {
     "name": "memories.json valido",
     "passed": true,
-    "detail": "Entries=332",
-    "duration": 0.01301717758178711,
+    "detail": "Entries=650",
+    "duration": 0.16514945030212402,
     "category": "integrity",
-    "timestamp": "2026-08-17T22:03:01.772841"
+    "timestamp": "2026-09-06T22:33:05.196606"
   }
 ]

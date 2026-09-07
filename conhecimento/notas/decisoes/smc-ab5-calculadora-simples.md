@@ -1,5 +1,5 @@
 ---
-tags: [apagar, decisao, gone, limpar, manipula, opencode]
+tags: [apagar, decisao, limpar, manipula, opencode, virgula]
 aliases: [smc ab5 calculadora simples]
 date: 2026-09-03
 ---

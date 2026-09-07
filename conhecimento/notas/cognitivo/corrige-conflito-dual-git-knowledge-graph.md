@@ -1,5 +1,5 @@
 ---
-tags: [cima, cognitivo, general, qualquer, remote, restauracao]
+tags: [cognitivo, general, qualquer, remote, restauracao, runtime]
 aliases: [corrige conflito dual git knowledge graph]
 date: 2026-09-05
 ---

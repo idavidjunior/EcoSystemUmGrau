@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**278 notas** do cluster ecossistema.
+**279 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -273,6 +273,7 @@
 - [[triagem-scripts-legado-orgaos-movidos]]
 - [[unificacao-aprendizados-adb-cluster-a]]
 - [[unificacao-de-vigilantes-watchdogps1-rebaixado-a-keeper]]
+- [[vad-consolidado-em-vadcaptura-voxaudio-vad-first-2026-09-06]]
 - [[vault-obsidian-cerebro-vivo-grafo]]
 - [[vault-obsidian-fonte-viva]]
 - [[vazamento-caracteres-tts-edge-tts-escapa-ssml]]

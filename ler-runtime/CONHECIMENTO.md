@@ -1,9 +1,9 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-09-06T01:31:29.213785
+**Exportado em:** 2026-09-06T22:49:45.807216
 **Projetos:** 4
 **Padroes Tecnicos:** 304
-**Decisoes:** 103
+**Decisoes:** 104
 **Bug Fixes:** 52
 **Padroes Cognitivos:** 83
 **Heuristicas:** 32
@@ -877,6 +877,19 @@ Quatro servidores MCP do opencode (filesystem, search, terminal, github) estavam
 desligados desde sempre: rodam via `node mcp-servers/<nome>/index.js`, mas o Node.js
 nao esta instalado no PC (nao existe `node.exe` no PATH nem em locais padrao). O erro
 de inicializacao era WinError 2 (s
+
+### VAD consolidado em vad_captura + vox_audio VAD-first (2026-09-06)
+**Fonte:** opencode
+## Observado
+- `scripts/dialogo.py` tinha VAD completo local (streaming Silero/VADIterator,
+  captura bloqueante int16 p/ WDM-KS, fallback RMS, selecao de device) e
+  `scripts/vox_audio.py` gravava fixo 7s. Duplicacao clara: dois motores de turno.
+
+## Decisao
+1. Novo modulo `scripts/vad_captura.py` = fonte unica: constants (THRESHOLD,
+   SILENCIO, MAX_FALA), `_manager` lazy, `rms`, `device_entrada`, `taxa_nativa`,
+   `resample_para_16k`, `rec_bloco_f32`, `VadSileroStream`, `capturar_turno`
+   (s
 
 
 ## Padroes Tecnicos
@@ -2587,7 +2600,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-09-06T01:31:29.019759
+**Ultima atualizacao:** 2026-09-06T22:49:45.273824
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

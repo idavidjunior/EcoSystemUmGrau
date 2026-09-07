@@ -190,6 +190,7 @@ Três camadas enxutas, sem duplicar lógica de foco fora do widget:
 - [[triagem-scripts-legado-orgaos-movidos]]
 - [[unificacao-aprendizados-adb-cluster-a]]
 - [[unificacao-de-vigilantes-watchdogps1-rebaixado-a-keeper]]
+- [[vad-consolidado-em-vadcaptura-voxaudio-vad-first-2026-09-06]]
 - [[vault-obsidian-cerebro-vivo-grafo]]
 - [[vault-obsidian-fonte-viva]]
 - [[widget-desktop-frameless-persistente]]
