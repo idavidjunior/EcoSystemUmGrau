@@ -16,7 +16,7 @@ data: 2026-09-07
 aprendizado com confidence tracking. adicionar campo confidence em aprendizados | adicionar campo source_evidence[] em aprendizados | atualizar learning_engine para aceitar confidence (respete: ['scripts/learning_engine.py'])
 
 ---
-set: 2026-09-07t12:08:09.174208
+set: 2026-09-07t14:31:20.211171
 
 ## Requisitos
 
