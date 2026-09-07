@@ -1,0 +1,10 @@
+{
+  "mission_id": "20260907_121111",
+  "state": {
+    "status": "active",
+    "goal": "Query por Confidence Level. Adicionar parâmetro min_confidence ao search do knowledge_graph | Atualizar BM25 para suportar filtro de confiança | Testar busca com min_confidence (respete: ['scripts/kno",
+    "started_at": "2026-09-07T12:11:11.671056"
+  },
+  "updated_at": "2026-09-07T12:11:11.671056",
+  "version": "2.0"
+}

@@ -1,10 +1,43 @@
 {
   "mission_id": "20260907_120809",
   "state": {
-    "status": "active",
-    "goal": "Aprendizado com Confidence Tracking. Adicionar campo confidence em aprendizados | Adicionar campo source_evidence[] em aprendizados | Atualizar learning_engine para aceitar confidence (respete: ['scri",
-    "started_at": "2026-09-07T12:08:09.174208"
+    "status": "max_iterations",
+    "completed_at": "2026-09-07T12:09:47.890761",
+    "report": {
+      "status": "max_iterations",
+      "mission_id": "20260907_120809",
+      "version": "2.0",
+      "elapsed_seconds": 98.66928362846375,
+      "iterations": 100,
+      "steps": {
+        "total": 5,
+        "completed": 3,
+        "failed": 0
+      },
+      "learning": {
+        "total_learned_rules": 0,
+        "total_successes": 190,
+        "total_failures": 0,
+        "total_tools_tracked": 1,
+        "total_arch_patterns": 0,
+        "total_prev_missions": 0,
+        "success_rate": 100.0
+      },
+      "domain": "python",
+      "complexity": 5,
+      "security": {
+        "violations": [],
+        "total_violations": 0,
+        "safe": true
+      },
+      "_meta": {
+        "id": "20260907_120947_final_max_iterations",
+        "timestamp": "20260907_120947",
+        "label": "final_max_iterations",
+        "version": "2.0"
+      }
+    }
   },
-  "updated_at": "2026-09-07T12:08:09.174208",
+  "updated_at": "2026-09-07T12:09:47.890761",
   "version": "2.0"
 }

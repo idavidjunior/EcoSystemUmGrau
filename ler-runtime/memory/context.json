@@ -1,9 +1,9 @@
 {
   "goal_analysis": {
-    "raw": "# Goal\n\nAprendizado com Confidence Tracking. Adicionar campo confidence em aprendizados | Adicionar campo source_evidence[] em aprendizados | Atualizar learning_engine para aceitar confidence (respete: ['scripts/learning_engine.py'])\n\n---\nSet: 2026-09-07T12:08:09.174208\n",
-    "objective": "# goal\n\naprendizado com confidence tracking. adicionar campo confidence em aprendizados | adicionar campo source_evidence[] em aprendizados | atualizar learning_engine para aceitar confidence (respete: ['scripts/learning_engine.py'])\n\n---\nset: 2026-09-07t12:08:09.174208",
+    "raw": "# Goal\n\nQuery por Confidence Level. Adicionar parâmetro min_confidence ao search do knowledge_graph | Atualizar BM25 para suportar filtro de confiança | Testar busca com min_confidence (respete: ['scripts/knowledge_graph.py'])\n\n---\nSet: 2026-09-07T12:11:11.670057\n",
+    "objective": "# goal\n\nquery por confidence level. adicionar parâmetro min_confidence ao search do knowledge_graph | atualizar bm25 para suportar filtro de confiança | testar busca com min_confidence (respete: ['scripts/knowledge_graph.py'])\n\n---\nset: 2026-09-07t12:11:11.670057",
     "domain": "python",
-    "task_type": "learning",
+    "task_type": "validation",
     "technologies": [
       "unknown"
     ],
@@ -72,7 +72,7 @@
       "Codigo versionado no Git"
     ],
     "goal_spec": {
-      "objective": "# goal\n\naprendizado com confidence tracking. adicionar campo confidence em aprendizados | adicionar campo source_evidence[] em aprendizados | atualizar learning_engine para aceitar confidence (respete: ['scripts/learning_engine.py'])\n\n---\nset: 2026-09-07t12:08:09.174208",
+      "objective": "# goal\n\nquery por confidence level. adicionar parâmetro min_confidence ao search do knowledge_graph | atualizar bm25 para suportar filtro de confiança | testar busca com min_confidence (respete: ['scripts/knowledge_graph.py'])\n\n---\nset: 2026-09-07t12:11:11.670057",
       "requirements": [
         "--"
       ],
@@ -104,33 +104,33 @@
         }
       ]
     },
-    "spec_markdown": "---\nid: spec-goal-aprendizado-com-confidence-tracking-adicionar-campo-con\nversao: 0.1.0\nstatus: proposta\ncomponente: .\ntags: [ler, goal-analysis]\ndata: 2026-09-07\n---\n\n# Spec — goal-aprendizado-com-confidence-tracking-adicionar-campo-con\n\n## Objetivo\n\n# goal\n\naprendizado com confidence tracking. adicionar campo confidence em aprendizados | adicionar campo source_evidence[] em aprendizados | atualizar learning_engine para aceitar confidence (respete: ['scripts/learning_engine.py'])\n\n---\nset: 2026-09-07t12:08:09.174208\n\n## Requisitos\n\n1. --\n\n## Restrições\n\n- Must use Git versioning\n\n## Dependências\n\n- _nenhum declarado_\n\n## Premissas\n\n- All dependencies can be installed via standard package managers\n\n## Entradas e Saídas\n\n- Entrada: argumentos de linha de comando, arquivos e dados do usuario.\n- Saída: saída processada em stdout, arquivos ou serviços.\n- Efeito colateral: arquivos alterados ou criados no sistema. E versionado no Git.\n\n## Casos de Borda\n\n- Requisitos ambíguos ou incompletos\n- Entradas vazias ou inválidas\n- Execução repetida (idempotência e estado parcial)\n\n## Critérios de Aceitação\n\n- -- implementado e funcional\n- Nenhum erro critico no funcionamento basico\n- Codigo compila/executa sem erros\n\n## Definition of Done\n\n- [ ] Todos os requisitos implementados\n- [ ] Codigo compila e executa sem erros\n- [ ] Testes basicos aprovados\n- [ ] Evidencias de funcionamento coletadas\n- [ ] Auditoria final aprovada\n- [ ] Relatorio final gerado\n- [ ] Codigo versionado no Git\n\n## Riscos\n\n- Requirements may be incomplete or ambiguous — severidade low\n\n## Testes Relacionados\n\n- Testes unitários em um diretório de testes (unittest/pytest).\n- Teste de regressão: repetir o fluxo principal após alterações\n",
-    "analyzed_at": "2026-09-07T12:08:09.342187"
+    "spec_markdown": "---\nid: spec-goal-query-por-confidence-level-adicionar-par-metro-min-conf\nversao: 0.1.0\nstatus: proposta\ncomponente: .\ntags: [ler, goal-analysis]\ndata: 2026-09-07\n---\n\n# Spec — goal-query-por-confidence-level-adicionar-par-metro-min-conf\n\n## Objetivo\n\n# goal\n\nquery por confidence level. adicionar parâmetro min_confidence ao search do knowledge_graph | atualizar bm25 para suportar filtro de confiança | testar busca com min_confidence (respete: ['scripts/knowledge_graph.py'])\n\n---\nset: 2026-09-07t12:11:11.670057\n\n## Requisitos\n\n1. --\n\n## Restrições\n\n- Must use Git versioning\n\n## Dependências\n\n- _nenhum declarado_\n\n## Premissas\n\n- All dependencies can be installed via standard package managers\n\n## Entradas e Saídas\n\n- Entrada: argumentos de linha de comando, arquivos e dados do usuario.\n- Saída: saída processada em stdout, arquivos ou serviços.\n- Efeito colateral: arquivos alterados ou criados no sistema. E versionado no Git.\n\n## Casos de Borda\n\n- Requisitos ambíguos ou incompletos\n- Entradas vazias ou inválidas\n- Execução repetida (idempotência e estado parcial)\n\n## Critérios de Aceitação\n\n- -- implementado e funcional\n- Nenhum erro critico no funcionamento basico\n- Codigo compila/executa sem erros\n\n## Definition of Done\n\n- [ ] Todos os requisitos implementados\n- [ ] Codigo compila e executa sem erros\n- [ ] Testes basicos aprovados\n- [ ] Evidencias de funcionamento coletadas\n- [ ] Auditoria final aprovada\n- [ ] Relatorio final gerado\n- [ ] Codigo versionado no Git\n\n## Riscos\n\n- Requirements may be incomplete or ambiguous — severidade low\n\n## Testes Relacionados\n\n- Testes unitários em um diretório de testes (unittest/pytest).\n- Teste de regressão: repetir o fluxo principal após alterações\n",
+    "analyzed_at": "2026-09-07T12:11:11.949829"
   },
   "strategies": [
     {
       "id": "strat_A",
-      "name": "Aprendizado Directa (A)",
+      "name": "Testes Directa (A)",
       "approach": "Objetivo direto com implementacao guiada por requisitos",
       "cost": 2,
       "risk": "low",
-      "estimated_time": "3-5 iteracoes",
+      "estimated_time": "2-4 iteracoes",
       "complexity": 5,
-      "success_probability": 75,
+      "success_probability": 90,
       "phases": [
-        "Research topic",
-        "Create minimal example",
-        "Experiment with variations",
-        "Document findings",
-        "Create reference implementation"
+        "Identify test cases",
+        "Write unit tests",
+        "Write integration tests",
+        "Run full test suite",
+        "Report coverage"
       ],
       "technologies": [
         "unknown"
       ],
-      "parallel_execution": false,
-      "fallback_plan": "Focus on core concepts only",
+      "parallel_execution": true,
+      "fallback_plan": "Priorize critical path tests",
       "dependencies": [],
-      "score": 84,
+      "score": 88,
       "rank": 1
     },
     {
@@ -298,17 +298,6 @@
         "contingency": "Solicitar elevacao de privilegio ou usar diretorio diferente."
       },
       {
-        "id": "strat_001",
-        "category": "strategy",
-        "description": "Estrategia 'Execucao Paralela (E)' possui risco high",
-        "severity": "medium",
-        "likelihood": "medium",
-        "impact": "Falha na execucao da estrategia",
-        "affected_area": "strategy",
-        "mitigation_plan": "Ter plano de fallback pronto. Reavaliar apos cada falha. Alternar para estrategia mais segura.",
-        "contingency": "Selecionar proxima melhor estrategia do ranking."
-      },
-      {
         "id": "strat_002",
         "category": "strategy",
         "description": "Execucao paralela aumenta complexidade de coordenacao",
@@ -322,10 +311,10 @@
     ],
     "critical_count": 0,
     "high_count": 1,
-    "total_risks": 8,
+    "total_risks": 7,
     "can_proceed": true,
-    "mitigation_plan_count": 8,
-    "assessed_at": "2026-09-07T12:09:34.561163"
+    "mitigation_plan_count": 7,
+    "assessed_at": "2026-09-07T12:11:12.171919"
   },
   "step_1_result": {
     "step_id": 1,
@@ -333,8 +322,8 @@
     "status": "completed",
     "output": "{\n  \"os\": \"nt\",\n  \"cwd\": \"C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\",\n  \"python\": \"C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe\",\n  \"git\": \"C:\\\\Program Files\\\\Git\\\\cmd\\\\git.exe\",\n  \"node\": null,\n  \"shell\": \"powershell\"\n}",
     "error": null,
-    "start_time": 1788793774.8675137,
-    "duration": 1.6931660175323486
+    "start_time": 1788793872.6443276,
+    "duration": 1.4768903255462646
   },
   "step_2_result": {
     "step_id": 2,
@@ -342,8 +331,8 @@
     "status": "completed",
     "output": "Projects directory ready: C:\\Users\\David Jr\\Documents\\Default Project\\EcoSystemUmGrau\\ler-runtime\\projects",
     "error": null,
-    "start_time": 1788793777.7832513,
-    "duration": 0.0009930133819580078
+    "start_time": 1788793875.583374,
+    "duration": 0.0
   },
   "step_3_result": {
     "step_id": 3,
@@ -351,7 +340,7 @@
     "status": "completed",
     "output": "Research needed: Pesquisar e aprender: # Goal\n\nAprendizado com Confidence Tracking. Adicionar campo",
     "error": null,
-    "start_time": 1788793778.039165,
+    "start_time": 1788793787.623662,
     "duration": 0.0
   },
   "step_4_result": {
@@ -367,10 +356,10 @@
     "step_id": 5,
     "action": "git_commit",
     "status": "completed",
-    "output": "[opencode/mighty-meadow 25b33658b] [LEA] Automated commit\n 42 files changed, 6503 insertions(+), 4814 deletions(-)\n delete mode 100644 ler-runtime/checkpoints/20260907_120854_step_4_passed/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_120901_step_5_passed/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_120902_before_step_1/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_120902_planning_done/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_120906_before_step_2/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_120906_step_1_passed/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_120906_step_2_passed/checkpoint.json\n rename ler-runtime/checkpoints/{20260907_120907_iter_51 => 20260907_120918_iter_65}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120907_before_step_3 => 20260907_120919_before_step_1}/checkpoint.json (75%)\n rename ler-runtime/checkpoints/{20260907_120901_iter_42 => 20260907_120919_iter_66}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120901_iter_40 => 20260907_120919_iter_67}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120901_iter_41 => 20260907_120919_iter_68}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120902_iter_43 => 20260907_120919_iter_69}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120907_before_step_4 => 20260907_120919_planning_done}/checkpoint.json (75%)\n rename ler-runtime/checkpoints/{20260907_120907_before_step_5 => 20260907_120919_step_5_passed}/checkpoint.json (77%)\n rename ler-runtime/checkpoints/{20260907_120905_iter_44 => 20260907_120921_iter_70}/checkpoint.json (57%)\n create mode 100644 ler-runtime/checkpoints/20260907_120922_before_step_2/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_120922_before_step_3/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_120922_before_step_4/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_120922_before_step_5/checkpoint.json\n rename ler-runtime/checkpoints/{20260907_120906_iter_45 => 20260907_120922_iter_71}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120906_iter_46 => 20260907_120922_iter_72}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120906_iter_47 => 20260907_120922_iter_73}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120907_iter_48 => 20260907_120922_iter_74}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120907_iter_49 => 20260907_120922_iter_75}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120907_iter_50 => 20260907_120922_iter_76}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120859_iter_39 => 20260907_120922_iter_77}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120907_step_3_passed => 20260907_120922_step_1_passed}/checkpoint.json (75%)\n create mode 100644 ler-runtime/checkpoints/20260907_120922_step_2_passed/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_120922_step_3_passed/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_120922_step_4_passed/checkpoint.json\n create mode 100644 ler-runtime/memory/patterns/successful_20260907_120919.json\n create mode 100644 ler-runtime/memory/patterns/successful_20260907_120922.json\n create mode 100644 ler-runtime/memory/technical_history/progress_120919.json\n create mode 100644 ler-runtime/memory/technical_history/progress_120921.json\n create mode 100644 ler-runtime/memory/technical_history/progress_120922.json\n\n\n[VERIFIED] Last commit: 25b33658b [LEA] Automated commit",
+    "output": "[opencode/mighty-meadow 20d36ee42] [LEA] Automated commit\n 45 files changed, 6789 insertions(+), 5283 deletions(-)\n delete mode 100644 ler-runtime/checkpoints/20260907_120907_step_4_passed/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_120912_before_step_1/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_120912_planning_done/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_120912_step_5_passed/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_120914_before_step_2/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_120914_step_1_passed/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_120914_step_2_passed/checkpoint.json\n rename ler-runtime/checkpoints/{20260907_120915_iter_64 => 20260907_120932_iter_78}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120914_before_step_3 => 20260907_120934_before_step_1}/checkpoint.json (80%)\n rename ler-runtime/checkpoints/{20260907_120912_iter_54 => 20260907_120934_iter_79}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120912_iter_55 => 20260907_120934_iter_80}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120912_iter_53 => 20260907_120934_iter_81}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120912_iter_56 => 20260907_120934_iter_82}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120915_before_step_4 => 20260907_120934_planning_done}/checkpoint.json (80%)\n rename ler-runtime/checkpoints/{20260907_120915_before_step_5 => 20260907_120934_step_5_passed}/checkpoint.json (82%)\n rename ler-runtime/checkpoints/{20260907_120913_iter_57 => 20260907_120936_iter_83}/checkpoint.json (57%)\n create mode 100644 ler-runtime/checkpoints/20260907_120937_before_step_2/checkpoint.json\n rename ler-runtime/checkpoints/{20260907_120914_iter_58 => 20260907_120937_iter_84}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120914_iter_59 => 20260907_120937_iter_85}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120914_iter_60 => 20260907_120937_iter_86}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120915_step_3_passed => 20260907_120937_step_1_passed}/checkpoint.json (80%)\n create mode 100644 ler-runtime/checkpoints/20260907_120937_step_2_passed/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_120938_before_step_3/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_120938_before_step_4/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_120938_before_step_5/checkpoint.json\n rename ler-runtime/checkpoints/{20260907_120914_iter_61 => 20260907_120938_iter_87}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120915_iter_62 => 20260907_120938_iter_88}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120915_iter_63 => 20260907_120938_iter_89}/checkpoint.json (57%)\n rename ler-runtime/checkpoints/{20260907_120911_iter_52 => 20260907_120938_iter_90}/checkpoint.json (57%)\n create mode 100644 ler-runtime/checkpoints/20260907_120938_step_3_passed/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_120938_step_4_passed/checkpoint.json\n create mode 100644 ler-runtime/memory/patterns/successful_20260907_120934.json\n create mode 100644 ler-runtime/memory/patterns/successful_20260907_120937.json\n create mode 100644 ler-runtime/memory/patterns/successful_20260907_120938.json\n create mode 100644 ler-runtime/memory/technical_history/progress_120934.json\n create mode 100644 ler-runtime/memory/technical_history/progress_120937.json\n create mode 100644 ler-runtime/memory/technical_history/progress_120938.json\n\n\n[VERIFIED] Last commit: 20d36ee42 [LEA] Automated commit",
     "error": null,
-    "start_time": 1788793763.0028708,
-    "duration": 9.370335102081299
+    "start_time": 1788793778.7708929,
+    "duration": 3.868377208709717
   },
   "success_evaluation": {
     "total_score": 90.0,
@@ -389,6 +378,6 @@
     "recommendations": [
       "Melhorar Audit Quality (atual: 0%, desejado: 80%+)"
     ],
-    "evaluated_at": "2026-09-07T12:09:34.517237"
+    "evaluated_at": "2026-09-07T12:09:44.438538"
   }
 }
