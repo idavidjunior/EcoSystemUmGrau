@@ -28,8 +28,14 @@ def _noop(*args, **kwargs):
     pass
 
 
+async def _fake_tts_salvar(texto, caminho):
+    """Gera um payload mínimo para testar cache sem rede ou áudio."""
+    Path(caminho).write_bytes(b"fake-mp3-payload")
+
+
 with patch.object(vox_audio, "_tocar_mci", side_effect=_noop), \
      patch.object(vox_audio, "_tocar_e_limpar", side_effect=_noop), \
+     patch.object(vox_audio, "_tts_salvar", side_effect=_fake_tts_salvar), \
      patch.object(vox_audio, "_speech_pipeline") as mock_sp, \
      patch.object(vox_audio, "SPEECH_PIPELINE_AVAILABLE", True):
 
