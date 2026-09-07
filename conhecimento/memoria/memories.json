@@ -6583,6 +6583,13 @@
           "summary": "entrega aprovada no nivel medio | 0 bloqueio(s), 26 alerta(s)",
           "confidence": 0.3,
           "source_type": "rascunho"
+        },
+        {
+          "em": "2026-09-07T14:33:52.730148",
+          "task": "Preflight Etico: APROVADO",
+          "summary": "entrega aprovada no nivel medio | 0 bloqueio(s), 26 alerta(s)",
+          "confidence": 0.3,
+          "source_type": "rascunho"
         }
       ],
       "epistemic_status": "OBSERVED",
@@ -6592,9 +6599,9 @@
     "confidence": 1.0,
     "source_type": "rascunho",
     "source_anchors": [],
-    "access_count": 413,
+    "access_count": 414,
     "created_at": "2026-09-05T09:13:34.454044",
-    "last_accessed": "2026-09-07T14:33:06.636882",
+    "last_accessed": "2026-09-07T14:33:52.730148",
     "source_refs": [
       {
         "id": "kernighan-ritchie",
