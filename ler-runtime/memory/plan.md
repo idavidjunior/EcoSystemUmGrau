@@ -7,7 +7,7 @@ Query por Confidence Level. Adicionar parâmetro min_confidence ao search do kno
 ---
 Set: 2026-09-07T12:11:11.670057
 
-**Created:** 2026-09-07T12:11:47.427656
+**Created:** 2026-09-07T12:12:00.242512
 
 **Total Steps:** 5
 
