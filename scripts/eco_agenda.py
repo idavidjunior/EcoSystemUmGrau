@@ -131,8 +131,11 @@ def _proxima(recorrencia, ref=None, intervalo_s=0, hora=""):
         m = re.match(r"^(\d{1,2}):(\d{2})$", (hora or "").strip())
         if not m:
             return ""
-        alvo = ref.replace(hour=int(m.group(1)), minute=int(m.group(2)),
-                           second=0, microsecond=0)
+        h = int(m.group(1))
+        mi = int(m.group(2))
+        if not (0 <= h <= 23 and 0 <= mi <= 59):
+            return ""
+        alvo = ref.replace(hour=h, minute=mi, second=0, microsecond=0)
         if alvo <= ref:
             alvo = alvo + timedelta(days=1)
         return _iso(alvo)
@@ -241,36 +244,40 @@ def cancelar(tarefa_id):
         return _falha(e)
 
 
-def _rodar_acao(tarefa, timeout=None):
-    """Executa uma ação permitida com timeout."""
+def _rodar_acao(tarefa, timeout=None, dispatch_id=None):
+    """Executa uma ação permitida com timeout. Retorna (ok, detalhe, idempotency_key)."""
     from runtime_state import add_note, save_checkpoint, add_pending
     acao = tarefa.get("acao")
     params = tarefa.get("params") or {}
     timeout = TIMEOUT_PADRAO if timeout is None else float(timeout)
     if acao == "nota":
         texto = str(params.get("texto", tarefa.get("nome", "")))
-        return True, add_note(texto)
+        return True, add_note(texto), "nota:%s:%s" % (tarefa.get("id"), dispatch_id)
     if acao == "checkpoint":
         rotulo = str(params.get("rotulo", "agenda"))
-        return True, save_checkpoint(rotulo)
+        return True, save_checkpoint(rotulo), "checkpoint:%s:%s" % (tarefa.get("id"), dispatch_id)
     if acao == "pendencia":
         texto = str(params.get("texto", tarefa.get("nome", "")))
-        return True, add_pending(texto)
+        return True, add_pending(texto), "pendencia:%s:%s" % (tarefa.get("id"), dispatch_id)
     if acao == "script":
         alvo = str(params.get("script", ""))
         ok_caminho, caminho = _caminho_seguro(alvo)
         if not ok_caminho:
-            return False, caminho
+            return False, caminho, None
         try:
             r = subprocess.run([sys.executable, caminho], capture_output=True,
-                               text=True, timeout=timeout, cwd=BASE)
+                               text=True, encoding="utf-8", errors="replace",
+                               timeout=timeout, cwd=BASE)
             saida = (r.stdout or "")[-2000:]
+            err = (r.stderr or "")[-500:]
+            if err:
+                saida = "%s\n[stderr] %s" % (saida, err)
             if r.returncode == 0:
-                return True, saida or "[OK] script executado"
-            return False, saida or ("código %d" % r.returncode)
+                return True, saida or "[OK] script executado", "script:%s:%s" % (tarefa.get("id"), dispatch_id)
+            return False, saida or ("código %d" % r.returncode), "script:%s:%s" % (tarefa.get("id"), dispatch_id)
         except subprocess.TimeoutExpired:
-            return False, "timeout após %ss" % timeout
-    return False, "ação desconhecida: %s" % acao
+            return False, "timeout após %ss" % timeout, "script:%s:%s" % (tarefa.get("id"), dispatch_id)
+    return False, "ação desconhecida: %s" % acao, None
 
 
 def _adquirir_trava(stale_s=300):
@@ -327,6 +334,7 @@ def _recuperar_orfaos(estado, agora):
                 t["proxima"] = _iso(agora + timedelta(seconds=_backoff(t["tentativa"])))
         else:
             t["estado"] = "failed"
+            t["proxima"] = _iso(agora + timedelta(seconds=_backoff(t["tentativa"])))
         recuperadas.append(t.get("id"))
         _auditar({"evento": "orfa-recuperada", "id": t.get("id"),
                   "tentativa": t["tentativa"]})
@@ -354,16 +362,18 @@ def _reagendar(t, agora, sucesso):
 def _disparar(estado, t, agora, timeout):
     """Executa um disparo com estado running persistido antes da ação."""
     dispatch_id = uuid.uuid4().hex[:8]
+    idempotency_key = "dispatch:%s:%s" % (t.get("id"), dispatch_id)
     t["estado"] = "running"
     t["dispatch_id"] = dispatch_id
     t["running_inicio"] = _iso(agora)
     _salvar(estado)
-    ok_acao, detalhe = _rodar_acao(t, timeout=timeout)
+    ok_acao, detalhe, idem_key = _rodar_acao(t, timeout=timeout, dispatch_id=dispatch_id)
     fim = _agora()
     t["ultima"] = _iso(fim)
     t["running_inicio"] = ""
     motivo = str(detalhe)[:500]
     t["disparos"].append({"dispatch_id": dispatch_id,
+                          "idempotency_key": idem_key,
                           "inicio": _iso(agora), "fim": _iso(fim),
                           "ok": ok_acao, "motivo": motivo})
     t["disparos"] = t["disparos"][-10:]
@@ -387,7 +397,7 @@ def _disparar(estado, t, agora, timeout):
               "tentativa": t["tentativa"]})
     return {"id": t.get("id"), "nome": t.get("nome"), "ok": ok_acao,
             "detalhe": motivo, "dispatch": dispatch_id,
-            "tentativa": t["tentativa"]}
+            "idempotency_key": idem_key, "tentativa": t["tentativa"]}
 
 
 def _bater_ponto(executadas):

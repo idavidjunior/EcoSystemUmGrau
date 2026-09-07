@@ -1,0 +1,245 @@
+{
+  "id": "20260907_115454_goal_analyzed",
+  "timestamp": "20260907_115454",
+  "label": "goal_analyzed",
+  "state": {
+    "current": "ANALYZING_GOAL",
+    "history": [
+      {
+        "from": "IDLE",
+        "to": "INIT"
+      },
+      {
+        "from": "INIT",
+        "to": "ANALYZING_GOAL"
+      }
+    ],
+    "metadata": {}
+  },
+  "plan": {
+    "raw": "# Goal\n\nMemória com Evidence-Grounding. Adicionar campos source_file, source_line, source_snippet em memórias | Atualizar memory_engine add() para aceitar source_anchors | Atualizar context() para retornar source_anchors | Criar função validate_memory_source() (respete: ['scripts/memory_engine.py'])\n\n---\nSet: 2026-09-07T11:54:53.923728\n",
+    "objective": "# goal\n\nmemória com evidence-grounding. adicionar campos source_file, source_line, source_snippet em memórias | atualizar memory_engine add() para aceitar source_anchors | atualizar context() para retornar source_anchors | criar função validate_memory_source() (respete: ['scripts/memory_engine.py'])\n\n---\nset: 2026-09-07t11:54:53.923728",
+    "domain": "python",
+    "task_type": "creation",
+    "technologies": [
+      "unknown"
+    ],
+    "requirements": [
+      "--"
+    ],
+    "constraints": [
+      "Must use Git versioning"
+    ],
+    "dependencies": [],
+    "assumptions": [
+      "All dependencies can be installed via standard package managers"
+    ],
+    "success_criteria": [
+      "Script executa sem erros",
+      "Saida esperada gerada",
+      "Codigo versionado no Git",
+      "Documentacao minima gerada"
+    ],
+    "complexity": 5,
+    "estimated_phases": [
+      {
+        "phase": 1,
+        "name": "Analise",
+        "description": "Analisar requisitos e ambiente"
+      },
+      {
+        "phase": 2,
+        "name": "Planejamento",
+        "description": "Criar estrategia e plano de execucao"
+      },
+      {
+        "phase": 3,
+        "name": "Implementacao",
+        "description": "Desenvolver a solucao"
+      },
+      {
+        "phase": 4,
+        "name": "Testes",
+        "description": "Validar funcionamento"
+      },
+      {
+        "phase": 5,
+        "name": "Entrega",
+        "description": "Finalizar e apresentar resultado"
+      }
+    ],
+    "risks": [
+      {
+        "risk": "Requirements may be incomplete or ambiguous",
+        "severity": "low"
+      }
+    ],
+    "acceptance_criteria": [
+      "-- implementado e funcional",
+      "Nenhum erro critico no funcionamento basico",
+      "Codigo compila/executa sem erros"
+    ],
+    "definition_of_done": [
+      "Todos os requisitos implementados",
+      "Codigo compila e executa sem erros",
+      "Testes basicos aprovados",
+      "Evidencias de funcionamento coletadas",
+      "Auditoria final aprovada",
+      "Relatorio final gerado",
+      "Codigo versionado no Git"
+    ],
+    "goal_spec": {
+      "objective": "# goal\n\nmemória com evidence-grounding. adicionar campos source_file, source_line, source_snippet em memórias | atualizar memory_engine add() para aceitar source_anchors | atualizar context() para retornar source_anchors | criar função validate_memory_source() (respete: ['scripts/memory_engine.py'])\n\n---\nset: 2026-09-07t11:54:53.923728",
+      "requirements": [
+        "--"
+      ],
+      "constraints": [
+        "Must use Git versioning"
+      ],
+      "dependencies": [],
+      "assumptions": [
+        "All dependencies can be installed via standard package managers"
+      ],
+      "acceptance_criteria": [
+        "-- implementado e funcional",
+        "Nenhum erro critico no funcionamento basico",
+        "Codigo compila/executa sem erros"
+      ],
+      "definition_of_done": [
+        "Todos os requisitos implementados",
+        "Codigo compila e executa sem erros",
+        "Testes basicos aprovados",
+        "Evidencias de funcionamento coletadas",
+        "Auditoria final aprovada",
+        "Relatorio final gerado",
+        "Codigo versionado no Git"
+      ],
+      "risks": [
+        {
+          "risk": "Requirements may be incomplete or ambiguous",
+          "severity": "low"
+        }
+      ]
+    },
+    "spec_markdown": "---\nid: spec-goal-mem-ria-com-evidence-grounding-adicionar-campos-source-\nversao: 0.1.0\nstatus: proposta\ncomponente: .\ntags: [ler, goal-analysis]\ndata: 2026-09-07\n---\n\n# Spec — goal-mem-ria-com-evidence-grounding-adicionar-campos-source-\n\n## Objetivo\n\n# goal\n\nmemória com evidence-grounding. adicionar campos source_file, source_line, source_snippet em memórias | atualizar memory_engine add() para aceitar source_anchors | atualizar context() para retornar source_anchors | criar função validate_memory_source() (respete: ['scripts/memory_engine.py'])\n\n---\nset: 2026-09-07t11:54:53.923728\n\n## Requisitos\n\n1. --\n\n## Restrições\n\n- Must use Git versioning\n\n## Dependências\n\n- _nenhum declarado_\n\n## Premissas\n\n- All dependencies can be installed via standard package managers\n\n## Entradas e Saídas\n\n- Entrada: argumentos de linha de comando, arquivos e dados do usuario.\n- Saída: saída processada em stdout, arquivos ou serviços.\n- Efeito colateral: arquivos alterados ou criados no sistema. E versionado no Git.\n\n## Casos de Borda\n\n- Requisitos ambíguos ou incompletos\n- Entradas vazias ou inválidas\n- Execução repetida (idempotência e estado parcial)\n\n## Critérios de Aceitação\n\n- -- implementado e funcional\n- Nenhum erro critico no funcionamento basico\n- Codigo compila/executa sem erros\n\n## Definition of Done\n\n- [ ] Todos os requisitos implementados\n- [ ] Codigo compila e executa sem erros\n- [ ] Testes basicos aprovados\n- [ ] Evidencias de funcionamento coletadas\n- [ ] Auditoria final aprovada\n- [ ] Relatorio final gerado\n- [ ] Codigo versionado no Git\n\n## Riscos\n\n- Requirements may be incomplete or ambiguous — severidade low\n\n## Testes Relacionados\n\n- Testes unitários em um diretório de testes (unittest/pytest).\n- Teste de regressão: repetir o fluxo principal após alterações\n",
+    "analyzed_at": "2026-09-07T11:54:54.322587"
+  },
+  "progress": {
+    "steps": [],
+    "current_step": 0,
+    "completed_steps": [],
+    "failed_steps": [],
+    "strategy_used": null,
+    "analysis": null
+  },
+  "context": {
+    "goal_analysis": {
+      "raw": "# Goal\n\nMemória com Evidence-Grounding. Adicionar campos source_file, source_line, source_snippet em memórias | Atualizar memory_engine add() para aceitar source_anchors | Atualizar context() para retornar source_anchors | Criar função validate_memory_source() (respete: ['scripts/memory_engine.py'])\n\n---\nSet: 2026-09-07T11:54:53.923728\n",
+      "objective": "# goal\n\nmemória com evidence-grounding. adicionar campos source_file, source_line, source_snippet em memórias | atualizar memory_engine add() para aceitar source_anchors | atualizar context() para retornar source_anchors | criar função validate_memory_source() (respete: ['scripts/memory_engine.py'])\n\n---\nset: 2026-09-07t11:54:53.923728",
+      "domain": "python",
+      "task_type": "creation",
+      "technologies": [
+        "unknown"
+      ],
+      "requirements": [
+        "--"
+      ],
+      "constraints": [
+        "Must use Git versioning"
+      ],
+      "dependencies": [],
+      "assumptions": [
+        "All dependencies can be installed via standard package managers"
+      ],
+      "success_criteria": [
+        "Script executa sem erros",
+        "Saida esperada gerada",
+        "Codigo versionado no Git",
+        "Documentacao minima gerada"
+      ],
+      "complexity": 5,
+      "estimated_phases": [
+        {
+          "phase": 1,
+          "name": "Analise",
+          "description": "Analisar requisitos e ambiente"
+        },
+        {
+          "phase": 2,
+          "name": "Planejamento",
+          "description": "Criar estrategia e plano de execucao"
+        },
+        {
+          "phase": 3,
+          "name": "Implementacao",
+          "description": "Desenvolver a solucao"
+        },
+        {
+          "phase": 4,
+          "name": "Testes",
+          "description": "Validar funcionamento"
+        },
+        {
+          "phase": 5,
+          "name": "Entrega",
+          "description": "Finalizar e apresentar resultado"
+        }
+      ],
+      "risks": [
+        {
+          "risk": "Requirements may be incomplete or ambiguous",
+          "severity": "low"
+        }
+      ],
+      "acceptance_criteria": [
+        "-- implementado e funcional",
+        "Nenhum erro critico no funcionamento basico",
+        "Codigo compila/executa sem erros"
+      ],
+      "definition_of_done": [
+        "Todos os requisitos implementados",
+        "Codigo compila e executa sem erros",
+        "Testes basicos aprovados",
+        "Evidencias de funcionamento coletadas",
+        "Auditoria final aprovada",
+        "Relatorio final gerado",
+        "Codigo versionado no Git"
+      ],
+      "goal_spec": {
+        "objective": "# goal\n\nmemória com evidence-grounding. adicionar campos source_file, source_line, source_snippet em memórias | atualizar memory_engine add() para aceitar source_anchors | atualizar context() para retornar source_anchors | criar função validate_memory_source() (respete: ['scripts/memory_engine.py'])\n\n---\nset: 2026-09-07t11:54:53.923728",
+        "requirements": [
+          "--"
+        ],
+        "constraints": [
+          "Must use Git versioning"
+        ],
+        "dependencies": [],
+        "assumptions": [
+          "All dependencies can be installed via standard package managers"
+        ],
+        "acceptance_criteria": [
+          "-- implementado e funcional",
+          "Nenhum erro critico no funcionamento basico",
+          "Codigo compila/executa sem erros"
+        ],
+        "definition_of_done": [
+          "Todos os requisitos implementados",
+          "Codigo compila e executa sem erros",
+          "Testes basicos aprovados",
+          "Evidencias de funcionamento coletadas",
+          "Auditoria final aprovada",
+          "Relatorio final gerado",
+          "Codigo versionado no Git"
+        ],
+        "risks": [
+          {
+            "risk": "Requirements may be incomplete or ambiguous",
+            "severity": "low"
+          }
+        ]
+      },
+      "spec_markdown": "---\nid: spec-goal-mem-ria-com-evidence-grounding-adicionar-campos-source-\nversao: 0.1.0\nstatus: proposta\ncomponente: .\ntags: [ler, goal-analysis]\ndata: 2026-09-07\n---\n\n# Spec — goal-mem-ria-com-evidence-grounding-adicionar-campos-source-\n\n## Objetivo\n\n# goal\n\nmemória com evidence-grounding. adicionar campos source_file, source_line, source_snippet em memórias | atualizar memory_engine add() para aceitar source_anchors | atualizar context() para retornar source_anchors | criar função validate_memory_source() (respete: ['scripts/memory_engine.py'])\n\n---\nset: 2026-09-07t11:54:53.923728\n\n## Requisitos\n\n1. --\n\n## Restrições\n\n- Must use Git versioning\n\n## Dependências\n\n- _nenhum declarado_\n\n## Premissas\n\n- All dependencies can be installed via standard package managers\n\n## Entradas e Saídas\n\n- Entrada: argumentos de linha de comando, arquivos e dados do usuario.\n- Saída: saída processada em stdout, arquivos ou serviços.\n- Efeito colateral: arquivos alterados ou criados no sistema. E versionado no Git.\n\n## Casos de Borda\n\n- Requisitos ambíguos ou incompletos\n- Entradas vazias ou inválidas\n- Execução repetida (idempotência e estado parcial)\n\n## Critérios de Aceitação\n\n- -- implementado e funcional\n- Nenhum erro critico no funcionamento basico\n- Codigo compila/executa sem erros\n\n## Definition of Done\n\n- [ ] Todos os requisitos implementados\n- [ ] Codigo compila e executa sem erros\n- [ ] Testes basicos aprovados\n- [ ] Evidencias de funcionamento coletadas\n- [ ] Auditoria final aprovada\n- [ ] Relatorio final gerado\n- [ ] Codigo versionado no Git\n\n## Riscos\n\n- Requirements may be incomplete or ambiguous — severidade low\n\n## Testes Relacionados\n\n- Testes unitários em um diretório de testes (unittest/pytest).\n- Teste de regressão: repetir o fluxo principal após alterações\n",
+      "analyzed_at": "2026-09-07T11:54:54.322587"
+    }
+  }
+}

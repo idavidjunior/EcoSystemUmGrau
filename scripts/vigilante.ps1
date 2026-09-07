@@ -86,6 +86,48 @@ $watcher.Filter = "*.md"
 $watcher.IncludeSubdirectories = $false
 $watcher.EnableRaisingEvents = $true
 
+# ══════════════════════════════════════════════════════════════════════
+# SPECS WATCHER: monitora specs/ e valida automaticamente ao mudar
+# ══════════════════════════════════════════════════════════════════════
+$specsDir = "$ecoDir\specs"
+$specsWatcher = New-Object System.IO.FileSystemWatcher
+$specsWatcher.Path = $specsDir
+$specsWatcher.Filter = "*.spec.md"
+$specsWatcher.IncludeSubdirectories = $false
+$specsWatcher.EnableRaisingEvents = $true
+
+$specsDebounce = New-Object System.Timers.Timer
+$specsDebounce.Interval = 500
+$specsDebounce.AutoReset = $false
+$specsPending = New-Object System.Collections.Generic.List[string]
+
+$onSpecsEvent = {
+    $path = $Event.SourceArgs[1].FullPath
+    $specsPending.Add($path)
+    $specsDebounce.Stop()
+    $specsDebounce.Start()
+}
+
+$onSpecsDebounce = {
+    $specsDebounce.Stop()
+    $unique = $specsPending.ToArray() | Select-Object -Unique
+    $specsPending.Clear()
+    foreach ($file in $unique) {
+        if (-not (Test-Path $file)) { continue }
+        $fileName = Split-Path $file -Leaf
+        Write-Log "Spec alterada: $fileName"
+        try {
+            $result = python "$ecoDir\scripts\valida_specs.py" --spec "specs/$fileName" 2>&1
+            Write-Log "Validação spec: $($result.Trim() -replace '\r?\n', ' | ')"
+        } catch { Write-Log "Validação spec erro: $_" }
+    }
+}
+
+Register-ObjectEvent $specsWatcher "Created" -Action $onSpecsEvent > $null
+Register-ObjectEvent $specsWatcher "Changed" -Action $onSpecsEvent > $null
+Register-ObjectEvent $specsWatcher "Deleted" -Action $onSpecsEvent > $null
+Register-ObjectEvent $specsDebounce "Elapsed" -Action $onSpecsDebounce > $null
+
 # Timer de debounce (300ms) para evitar multiplos eventos no mesmo arquivo
 $debounce = New-Object System.Timers.Timer
 $debounce.Interval = 300
@@ -406,6 +448,23 @@ $onPrefDetect = {
 }
 Register-ObjectEvent $prefDetectTimer "Elapsed" -Action $onPrefDetect > $null
 $prefDetectTimer.Start()
+
+# ══════════════════════════════════════════════════════════════════════
+# SPECS VALIDATION TIMER: valida todas as specs periodicamente (1x/h)
+# ══════════════════════════════════════════════════════════════════════
+$specsValidateTimer = New-Object System.Timers.Timer
+$specsValidateTimer.Interval = 3600000  # 1h
+$specsValidateTimer.AutoReset = $true
+
+$onSpecsValidate = {
+    Write-Log "SPECS VALIDATE: validando todas as specs..."
+    try {
+        $result = python "$ecoDir\scripts\valida_specs.py" 2>&1 | Out-String
+        $result.Trim() | ForEach-Object { Write-Log "  $_" }
+    } catch { Write-Log "SPECS VALIDATE erro: $_" }
+}
+Register-ObjectEvent $specsValidateTimer "Elapsed" -Action $onSpecsValidate > $null
+$specsValidateTimer.Start()
 
 # ══════════════════════════════════════════════════════════════════════
 # RULES TIMER: verifica consistencia das 3 camadas de regras (1x/h)

@@ -134,21 +134,33 @@ def get_weather(city=None):
     return texto
 
 
-def get_forecast(city=None):
-    dados = get_forecast_data(days=2, city=city)
-    if "erro" in dados or len(dados["previsoes"]) < 2:
+def get_forecast(city=None, days=7):
+    """Previsão para os próximos dias (padrão 7 dias)."""
+    dados = get_forecast_data(days=days, city=city)
+    if "erro" in dados or not dados["previsoes"]:
         return ""
-    d = dados["previsoes"][1]
-    partes = []
-    if d.get("tmax") is not None and d.get("tmin") is not None:
-        partes.append(f"mínima de {d['tmin']:.0f} e máxima de {d['tmax']:.0f} graus")
-    if d.get("descricao"):
-        partes.append(d["descricao"])
-    if d.get("precip") and d["precip"] > 0:
-        partes.append(f"chance de chuva de {d['precip']:.0f} por cento")
-    if not partes:
-        return ""
-    return "Previsão para amanhã: " + ", ".join(partes) + "."
+    
+    linhas = []
+    for i, d in enumerate(dados["previsoes"]):
+        if i == 0:
+            label = "Hoje"
+        elif i == 1:
+            label = "Amanhã"
+        else:
+            label = d["data"]
+        
+        partes = []
+        if d.get("tmax") is not None and d.get("tmin") is not None:
+            partes.append(f"mínima {d['tmin']:.0f}° máxima {d['tmax']:.0f}°")
+        if d.get("descricao"):
+            partes.append(d["descricao"])
+        if d.get("precip") and d["precip"] > 0:
+            partes.append(f"chuva {d['precip']:.0f}%")
+        
+        if partes:
+            linhas.append(f"{label}: {', '.join(partes)}")
+    
+    return "Previsão da semana:\n" + "\n".join(linhas)
 
 
 if __name__ == "__main__":

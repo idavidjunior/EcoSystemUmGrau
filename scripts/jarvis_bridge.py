@@ -1893,6 +1893,29 @@ def caminho_rapido(msg):
        re.search(r'\b(?:clima|tempo|temperatura|chover|chovera|grau|chuva|sol|nublado|vai estar)\b.*\bamanha\b', t) or \
        re.search(r'\bamanha\b.*\b(?:clima|tempo|temperatura|chover|chovera|grau|chuva|sol|nublado|vai estar)\b', t):
         try:
+            # Verifica se pediu semana completa
+            if re.search(r'\b(semana|7\s*dias|proximos\s*dias|toda\s*a\s*semana)\b', t):
+                previsao = get_forecast_data(days=7)
+                if "erro" not in previsao and previsao["previsoes"]:
+                    linhas = []
+                    for i, d in enumerate(previsao["previsoes"]):
+                        if i == 0:
+                            rotulo = "Hoje"
+                        elif i == 1:
+                            rotulo = "Amanhã"
+                        else:
+                            rotulo = d["data"]
+                        partes = []
+                        if d.get("tmax") is not None and d.get("tmin") is not None:
+                            partes.append(f"mín {d['tmin']:.0f}° máx {d['tmax']:.0f}°")
+                        if d.get("descricao"):
+                            partes.append(d["descricao"])
+                        if d.get("precip") and d["precip"] > 0:
+                            partes.append(f"chuva {d['precip']:.0f}%")
+                        if partes:
+                            linhas.append(f"{rotulo}: {', '.join(partes)}")
+                    return "Previsão da semana:\n" + "\n".join(linhas) + "."
+            
             # get_forecast_data: indice 0 = hoje, 1 = amanha (forecast_days=2).
             # Seleciona o dia conforme o pedido ("hoje" vs "amanha"); se a
             # pergunta nao citar dia, responde HOJE (comportamento natural).
