@@ -1,10 +1,43 @@
 {
   "mission_id": "20260907_115826",
   "state": {
-    "status": "active",
-    "goal": "Perspectives (Named Lenses). Criar módulo perspectives.py | Implementar create_perspective(name, description) | Implementar switch_perspective(name) | Implementar list_perspectives() | Integrar com kn",
-    "started_at": "2026-09-07T11:58:26.654146"
+    "status": "max_iterations",
+    "completed_at": "2026-09-07T12:00:16.082513",
+    "report": {
+      "status": "max_iterations",
+      "mission_id": "20260907_115826",
+      "version": "2.0",
+      "elapsed_seconds": 109.37341690063477,
+      "iterations": 100,
+      "steps": {
+        "total": 5,
+        "completed": 3,
+        "failed": 0
+      },
+      "learning": {
+        "total_learned_rules": 0,
+        "total_successes": 76,
+        "total_failures": 0,
+        "total_tools_tracked": 1,
+        "total_arch_patterns": 0,
+        "total_prev_missions": 0,
+        "success_rate": 100.0
+      },
+      "domain": "python",
+      "complexity": 5,
+      "security": {
+        "violations": [],
+        "total_violations": 0,
+        "safe": true
+      },
+      "_meta": {
+        "id": "20260907_120016_final_max_iterations",
+        "timestamp": "20260907_120016",
+        "label": "final_max_iterations",
+        "version": "2.0"
+      }
+    }
   },
-  "updated_at": "2026-09-07T11:58:26.654146",
+  "updated_at": "2026-09-07T12:00:16.082513",
   "version": "2.0"
 }
