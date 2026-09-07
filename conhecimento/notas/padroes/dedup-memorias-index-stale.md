@@ -1,5 +1,5 @@
 ---
-tags: [calibracao, consolidacao, opencodeopencode, padrao, summary, tfidf]
+tags: [calibracao, consolidacao, inde, opencodeopencode, padrao, tfidf]
 aliases: [dedup memorias index stale]
 date: 2026-09-05
 ---
