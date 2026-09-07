@@ -2,12 +2,12 @@
 
 **Goal:** # Goal
 
-Perspectives (Named Lenses). Criar módulo perspectives.py | Implementar create_perspective(name, description) | Implementar switch_perspective(name) | Implementar list_perspectives() | Integrar com knowledge_graph para filtrar entidades (respete: ['scripts/perspectives.py'])
+Browser UI (Real-time WebSocket). Adicionar WebSocket server ao widget EcOW | Implementar broadcast() para mudanças no grafo | Conectar WS ao knowledge_graph para updates em tempo real | Manter compatibilidade com versão atual (respete: ['scripts/widget_grafo.py'])
 
 ---
-Set: 2026-09-07T14:21:36.353137
+Set: 2026-09-07T14:26:28.224471
 
-**Created:** 2026-09-07T14:24:11.115447
+**Created:** 2026-09-07T14:26:28.844584
 
 **Total Steps:** 5
 
@@ -21,14 +21,14 @@ Set: 2026-09-07T14:21:36.353137
 ### Step 2: SETUP - initialize_project
 **Description:** Initialize project structure for: # Goal
 
-Perspectives (Named Lenses). Criar módulo perspectiv
+Browser UI (Real-time WebSocket). Adicionar WebSocke
 **Validation:** check_structure
 **Status:** pending
 
 ### Step 3: IMPLEMENTATION - implement
 **Description:** Implementar funcionalidade principal: # Goal
 
-Perspectives (Named Lenses). Criar módulo perspectiv
+Browser UI (Real-time WebSocket). Adicionar WebSocke
 **Validation:** check_output
 **Status:** pending
 

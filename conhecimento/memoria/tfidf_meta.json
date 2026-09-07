@@ -653,6 +653,7 @@
     98308,
     98309,
     98310,
+    98311,
     "nota:conhecimento/notas/bugs/acoustid-always-fails.md",
     "nota:conhecimento/notas/bugs/album-art-not-found.md",
     "nota:conhecimento/notas/bugs/artist-shows-desconhecido.md",
@@ -2363,6 +2364,7 @@
     "erro",
     "decisao",
     "padrao",
+    "decisao",
     "decisao",
     "decisao",
     "nota",
@@ -4077,6 +4079,7 @@
     "corrigidos 5 pontos no eco_agenda.py: 1) validação de hora no _proxima - agora rejeita 99:99, 25:00 etc antes do datetime.replace. 2) backoff para tarefas recorrentes órfãs no _recuperar_orfaos - recalcula proxima com backoff exponencial. 3) idempotência via dispatch_id - _rodar_acao retorna idempotency_key e _disparar armazena no histórico de disparos. 4) encoding utf-8 explícito no subprocess.run. 5) captura de stderr incluída no retorno. rascunho baixa-confianca exponencial disparos pontos histórico corrigidos armazena padrao",
     "o eco_agenda é o gerenciador de tarefas agendadas. 5 correções: 1) hora inválida (99:99) não trava mais. 2) tarefas órfãs (crash no meio) esperam antes de retry (backoff). 3) cada execução tem id único - evita duplicar se cair depois da ação. 4) encoding utf-8 fixo. 5) erros (stderr) agora aparecem no log. rascunho baixa-confianca agendadas gerenciador backoff ação anos retry decisao",
     "criado scripts/autonomous_loop.py - loop autônomo de melhoria contínua que: 1) analisa memória por padrões repetidos (tags, tipos), 2) detecta oportunidades (criar [chave] de padrões, corrigir erros recorrentes, consolidar duplicados), 3) executa com preflight obrigatório, 4) registra ações e estatísticas, 5) roda como tarefa recorrente no eco_agenda (intervalo 6h + janela diária 03:00). integrado e testado. rascunho baixa-confianca diária janela intervalo agenda eco recorrente decisao",
+    "implementado loop autônomo completo (scripts/autonomous_loop.py): 1) analisa memórias por padrões (tags/tipos), 2) detecta oportunidades: criar [chave] de padrões repetidos (>=5 ocorrências), auto-healing de erros recorrentes, consolidar duplicados, limpar temporários, 3) executa com preflight obrigatório, 4) cria [chave] auto-geradas em mcp/habilidades/auto-* com [chave] e script.py, 5) busca correções conhecidas em memórias tipo 'erro' e aplica auto-healing, 6) estado persistido em runtime/autonomia/state.json com stats, 7) agendado no eco_agenda: intervalo 6h + janela diária 03:00, 8) dashboard (scripts/autonomy_dashboard.py) mostra métricas, [chave] criadas, padrões monitorados e log. testado e funcionando. rascunho baixa-confianca script habilidades mcp geradas cria obrigatório decisao",
     "acoustid always fails bug fails itunes mp3player-metadata-rescue musicbrainz projeto \n\n  acoustid always fails\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ninvalid api key  4m9q2k9p  (http 400)\n\n   correcao\naccepted as non-critical; search falls through to itunes/musicbrainz\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "album art not found artwork bug fallback itunes mp3player-metadata-rescue store \n\n  album art not found\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\ncover art archive redirect to archive.org fails\n\n   correcao\nexplicit redirect loop + itunes artwork fallback with us store\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
     "artist shows \"desconhecido\" bug double mp3player-metadata-rescue second segment space \n\n  artist shows \"desconhecido\"\n\n  projeto:   mp3player-metadata-rescue\n\n   causa raiz\nyoutube mp3s have no id3 tags\n\n   correcao\nextract artist from filename (first dash segment or second double-space segment)\n   conexoes\n\n-   bug-hub-bugs  \n-   calls-searchonlinesearchmoderelaxed-uses-relaxed-thresholds-  \n-   cluster-hub-mp3player  \n-   if-relaxed-also-fails-user-sees-tente-editar-manualmente-os-  \n-   step-0-acoustid-fingerprint-acoustidservicesearchbyfile-almo  \n-   user-taps-buscar-na-internet",
@@ -10422,12 +10425,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 134534,
-  "count": 1710,
-  "count_mem": 653,
+  "vocab_size": 134587,
+  "count": 1711,
+  "count_mem": 654,
   "count_notas": 1057,
   "fingerprint": [
-    653,
+    654,
     [
       1788794408.8,
       1788794279.1,

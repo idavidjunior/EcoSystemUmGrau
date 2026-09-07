@@ -16,7 +16,7 @@ data: 2026-09-07
 browser ui (real-time websocket). adicionar websocket server ao widget ecow | implementar broadcast() para mudanças no grafo | conectar ws ao knowledge_graph para updates em tempo real | manter compatibilidade com versão atual (respete: ['scripts/widget_grafo.py'])
 
 ---
-set: 2026-09-07t12:01:25.624097
+set: 2026-09-07t14:26:28.224471
 
 ## Requisitos
 
