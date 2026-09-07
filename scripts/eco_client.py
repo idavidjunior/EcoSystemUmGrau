@@ -248,6 +248,33 @@ class EcoClient:
         except Exception as e:
             return {"ok": False, "motivo": str(e), "modo": "nenhum"}
 
+    # -- agenda ----------------------------------------------------------
+
+    def agenda_agendar(self, nome, acao, params=None, recorrencia="once",
+                       **kwargs):
+        """Agenda tarefa via eco_agenda sem mudar a API existente."""
+        try:
+            from eco_agenda import agendar
+            return agendar(nome, acao, params or {}, recorrencia, **kwargs)
+        except Exception as e:
+            return {"ok": False, "motivo": str(e)}
+
+    def agenda_listar(self, somente_ativas=False):
+        """Lista tarefas agendadas do runtime."""
+        try:
+            from eco_agenda import listar
+            return listar(somente_ativas)
+        except Exception as e:
+            return {"ok": False, "motivo": str(e)}
+
+    def agenda_tick(self):
+        """Executa tarefas vencidas (tick idempotente)."""
+        try:
+            from eco_agenda import executar_vencidas
+            return executar_vencidas()
+        except Exception as e:
+            return {"ok": False, "motivo": str(e)}
+
     # -- maestro --------------------------------------------------------
 
     def maestro(self, cmd, **kwargs):

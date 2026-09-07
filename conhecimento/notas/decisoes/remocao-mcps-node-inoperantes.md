@@ -1,5 +1,5 @@
 ---
-tags: [decisao, evolucao, nativos, obsidian, opencode, paths]
+tags: [auto, decisao, evolucao, nativos, opencode, paths]
 aliases: [remocao mcps node inoperantes]
 date: 2026-09-05
 ---

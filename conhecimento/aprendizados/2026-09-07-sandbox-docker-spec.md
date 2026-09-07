@@ -13,3 +13,11 @@ O security_engine já tem SandboxConfig e validação útil.
 O padrão multi-stage com não-root existe em TradingAgents.
 A spec nova define execução isolada com rede desligada padrão.
 Ela prevê modo degradado quando Docker está ausente.
+
+## Conexoes
+
+- [[segurança-autenticação-e-gestão-de-sessões-seguras]]
+- [[segurança-controle-de-acesso-rbacabac-e-menor-privilégio]]
+- [[segurança-criptografia-hashing-cifras-tls-e-segredos]]
+- [[segurança-hardening-e-dependências-vulneráveis-sbom-cve-e-su]]
+- [[segurança-owasp-top-10-aplicado-na-prática]]

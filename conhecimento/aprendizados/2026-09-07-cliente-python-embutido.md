@@ -13,3 +13,11 @@ A spec nova define EcoClient com boot e estado e memória e contexto.
 Ela exige reuso por import direto e falha suave e sem git direto.
 Ela está bem formada com onze seções e frontmatter válido.
 Falta implementar o módulo e o teste de fumaça.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]
+- [[python-decoradores-e-metaprogramação]]
+- [[python-gil-e-concorrência]]
+- [[python-idioms-e-boas-práticas]]
+- [[python-sintaxe-e-núcleo-da-linguagem]]
