@@ -1,0 +1,10 @@
+{
+  "mission_id": "20260907_142136",
+  "state": {
+    "status": "active",
+    "goal": "Perspectives (Named Lenses). Criar módulo perspectives.py | Implementar create_perspective(name, description) | Implementar switch_perspective(name) | Implementar list_perspectives() | Integrar com kn",
+    "started_at": "2026-09-07T14:21:36.354137"
+  },
+  "updated_at": "2026-09-07T14:21:36.354137",
+  "version": "2.0"
+}

@@ -1,6 +1,6 @@
 # Goal
 
-Memória com Evidence-Grounding. Adicionar campos source_file, source_line, source_snippet em memórias | Atualizar memory_engine add() para aceitar source_anchors | Atualizar context() para retornar source_anchors | Criar função validate_memory_source() (respete: ['scripts/memory_engine.py'])
+Perspectives (Named Lenses). Criar módulo perspectives.py | Implementar create_perspective(name, description) | Implementar switch_perspective(name) | Implementar list_perspectives() | Integrar com knowledge_graph para filtrar entidades (respete: ['scripts/perspectives.py'])
 
 ---
-Set: 2026-09-07T14:18:52.389966
+Set: 2026-09-07T14:21:36.353137

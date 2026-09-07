@@ -16,7 +16,7 @@ data: 2026-09-07
 perspectives (named lenses). criar módulo perspectives.py | implementar create_perspective(name, description) | implementar switch_perspective(name) | implementar list_perspectives() | integrar com knowledge_graph para filtrar entidades (respete: ['scripts/perspectives.py'])
 
 ---
-set: 2026-09-07t11:58:26.653141
+set: 2026-09-07t14:21:36.353137
 
 ## Requisitos
 
