@@ -296,14 +296,36 @@
         "affected_area": "output",
         "mitigation_plan": "Verificar permissoes antes de executar. Tentar diretorio alternativo se necessario.",
         "contingency": "Solicitar elevacao de privilegio ou usar diretorio diferente."
+      },
+      {
+        "id": "strat_001",
+        "category": "strategy",
+        "description": "Estrategia 'Execucao Paralela (E)' possui risco high",
+        "severity": "medium",
+        "likelihood": "medium",
+        "impact": "Falha na execucao da estrategia",
+        "affected_area": "strategy",
+        "mitigation_plan": "Ter plano de fallback pronto. Reavaliar apos cada falha. Alternar para estrategia mais segura.",
+        "contingency": "Selecionar proxima melhor estrategia do ranking."
+      },
+      {
+        "id": "strat_002",
+        "category": "strategy",
+        "description": "Execucao paralela aumenta complexidade de coordenacao",
+        "severity": "medium",
+        "likelihood": "high",
+        "impact": "Conflitos entre execucoes paralelas",
+        "affected_area": "coordination",
+        "mitigation_plan": "Ter plano de fallback pronto. Reavaliar apos cada falha. Alternar para estrategia mais segura.",
+        "contingency": "Selecionar proxima melhor estrategia do ranking."
       }
     ],
     "critical_count": 0,
     "high_count": 1,
-    "total_risks": 6,
+    "total_risks": 8,
     "can_proceed": true,
-    "mitigation_plan_count": 6,
-    "assessed_at": "2026-09-07T14:34:20.638983"
+    "mitigation_plan_count": 8,
+    "assessed_at": "2026-09-07T14:34:55.795941"
   },
   "step_1_result": {
     "step_id": 1,
@@ -311,8 +333,8 @@
     "status": "completed",
     "output": "{\n  \"os\": \"nt\",\n  \"cwd\": \"C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\",\n  \"python\": \"C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe\",\n  \"git\": \"C:\\\\Program Files\\\\Git\\\\cmd\\\\git.exe\",\n  \"node\": null,\n  \"shell\": \"powershell\"\n}",
     "error": null,
-    "start_time": 1788802460.8720348,
-    "duration": 0.9333980083465576
+    "start_time": 1788802496.025418,
+    "duration": 1.410513162612915
   },
   "step_2_result": {
     "step_id": 2,
@@ -320,7 +342,7 @@
     "status": "completed",
     "output": "Projects directory ready: C:\\Users\\David Jr\\Documents\\Default Project\\EcoSystemUmGrau\\ler-runtime\\projects",
     "error": null,
-    "start_time": 1788802462.7237082,
+    "start_time": 1788802498.5177476,
     "duration": 0.0
   },
   "step_3_result": {
@@ -329,8 +351,8 @@
     "status": "completed",
     "output": "{\n  \"tests_run\": 5,\n  \"results\": [\n    {\n      \"file\": \"__init__.py\",\n      \"passed\": true,\n      \"output\": \"\"\n    },\n    {\n      \"file\": \"test_basic.py\",\n      \"passed\": true,\n      \"output\": \"unning final audit...\\n[2026-09-07 14:33:41] [INFO] Running final audit...\\n[2026-09-07 14:33:41] [INFO] Final report generated: C:\\\\Users\\\\DAVIDJ~1\\\\AppData\\\\Local\\\\Temp\\\\tmpn1fb8kbi\\\\reports\\\\final_report.md\\n\"\n    },\n    {\n      \"file\": \"test_integration.py\",\n      \"passed\": true,\n      \"output\": \"max_iterations\\n  Steps: 2/5\\n\\n=== Integration Test: Checkpoint Recovery ===\\n\\nCheckpoint saved: 20260907_143357_integration_test\\n\\n[OK] Checkpoint recovery test passed\\n\\n[OK] All integration tests passed\\n\"\n    },\n    {\n      \"file\": \"test_ler_v12.py\",\n      \"passed\": true,\n      \"output\": \"d: 5.1s | Iterations: 10\\n[2026-09-07 14:34:03] [INFO] Steps: 3/5\\n[2026-09-07 14:34:03] [INFO] Security: CLEAN\\n[2026-09-07 14:34:03] [INFO] ============================================================\\n\"\n    },\n    {\n      \"file\": \"test_ler_v20.py\",\n      \"passed\": true,\n      \"output\": \" created with 5 steps\\n[2026-09-07 14:34:05] [INFO] Running final audit...\\n[2026-09-07 14:34:05] [INFO] Final report generated: C:\\\\Users\\\\DAVIDJ~1\\\\AppData\\\\Local\\\\Temp\\\\tmpwu_u3km8\\\\reports\\\\final_report.md\\n\"\n    }\n  ]\n}",
     "error": null,
-    "start_time": 1788802462.944837,
-    "duration": 0.003000020980834961
+    "start_time": 1788802498.8589227,
+    "duration": 0.031250715255737305
   },
   "step_4_result": {
     "step_id": 4,
@@ -338,17 +360,17 @@
     "status": "completed",
     "output": "{\n  \"tests_run\": 5,\n  \"results\": [\n    {\n      \"file\": \"__init__.py\",\n      \"passed\": true,\n      \"output\": \"\"\n    },\n    {\n      \"file\": \"test_basic.py\",\n      \"passed\": true,\n      \"output\": \"unning final audit...\\n[2026-09-07 14:33:41] [INFO] Running final audit...\\n[2026-09-07 14:33:41] [INFO] Final report generated: C:\\\\Users\\\\DAVIDJ~1\\\\AppData\\\\Local\\\\Temp\\\\tmpn1fb8kbi\\\\reports\\\\final_report.md\\n\"\n    },\n    {\n      \"file\": \"test_integration.py\",\n      \"passed\": true,\n      \"output\": \"max_iterations\\n  Steps: 2/5\\n\\n=== Integration Test: Checkpoint Recovery ===\\n\\nCheckpoint saved: 20260907_143357_integration_test\\n\\n[OK] Checkpoint recovery test passed\\n\\n[OK] All integration tests passed\\n\"\n    },\n    {\n      \"file\": \"test_ler_v12.py\",\n      \"passed\": true,\n      \"output\": \"d: 5.1s | Iterations: 10\\n[2026-09-07 14:34:03] [INFO] Steps: 3/5\\n[2026-09-07 14:34:03] [INFO] Security: CLEAN\\n[2026-09-07 14:34:03] [INFO] ============================================================\\n\"\n    },\n    {\n      \"file\": \"test_ler_v20.py\",\n      \"passed\": true,\n      \"output\": \" created with 5 steps\\n[2026-09-07 14:34:05] [INFO] Running final audit...\\n[2026-09-07 14:34:05] [INFO] Final report generated: C:\\\\Users\\\\DAVIDJ~1\\\\AppData\\\\Local\\\\Temp\\\\tmpwu_u3km8\\\\reports\\\\final_report.md\\n\"\n    }\n  ]\n}",
     "error": null,
-    "start_time": 1788802463.1563687,
-    "duration": 0.0030007362365722656
+    "start_time": 1788802499.1211739,
+    "duration": 0.01562190055847168
   },
   "step_5_result": {
     "step_id": 5,
     "action": "git_commit",
     "status": "completed",
-    "output": "[opencode/mighty-meadow a0c284677] [LEA] Automated commit\n 52 files changed, 2565 insertions(+), 4958 deletions(-)\n delete mode 100644 ler-runtime/checkpoints/20260907_143228_iter_87/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_143228_iter_88/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_143228_iter_89/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_143228_iter_90/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_143233_iter_91/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_143234_iter_92/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_143234_iter_93/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_143234_iter_94/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_143234_iter_95/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_143234_planning_done/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_143235_before_step_1/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_143236_iter_96/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_143237_iter_100/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_143237_iter_97/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_143237_iter_98/checkpoint.json\n delete mode 100644 ler-runtime/checkpoints/20260907_143237_iter_99/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_143409_iter_13/checkpoint.json\n rename ler-runtime/checkpoints/{20260907_143234_step_5_passed => 20260907_143410_step_5_passed}/checkpoint.json (51%)\n create mode 100644 ler-runtime/checkpoints/20260907_143411_before_step_1/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_143411_iter_14/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_143411_iter_15/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_143411_iter_16/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_143411_iter_17/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_143411_planning_done/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_143413_iter_18/checkpoint.json\n rename ler-runtime/checkpoints/{20260907_143237_before_step_2 => 20260907_143415_before_step_2}/checkpoint.json (50%)\n create mode 100644 ler-runtime/checkpoints/20260907_143415_iter_19/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_143415_iter_20/checkpoint.json\n rename ler-runtime/checkpoints/{20260907_143237_step_1_passed => 20260907_143415_step_1_passed}/checkpoint.json (50%)\n rename ler-runtime/checkpoints/{20260907_143237_step_2_passed => 20260907_143415_step_2_passed}/checkpoint.json (50%)\n rename ler-runtime/checkpoints/{20260907_143237_before_step_3 => 20260907_143416_before_step_3}/checkpoint.json (50%)\n rename ler-runtime/checkpoints/{20260907_143237_step_3_passed => 20260907_143416_before_step_4}/checkpoint.json (50%)\n rename ler-runtime/checkpoints/{20260907_143228_step_3_passed => 20260907_143416_before_step_5}/checkpoint.json (52%)\n create mode 100644 ler-runtime/checkpoints/20260907_143416_iter_21/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_143416_iter_22/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_143416_iter_23/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_143416_iter_24/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_143416_iter_25/checkpoint.json\n create mode 100644 ler-runtime/checkpoints/20260907_143416_step_3_passed/checkpoint.json\n rename ler-runtime/checkpoints/{20260907_143228_step_4_passed => 20260907_143416_step_4_passed}/checkpoint.json (52%)\n create mode 100644 ler-runtime/memory/patterns/successful_20260907_143410.json\n create mode 100644 ler-runtime/memory/patterns/successful_20260907_143415.json\n create mode 100644 ler-runtime/memory/patterns/successful_20260907_143416.json\n create mode 100644 ler-runtime/memory/technical_history/progress_143410.json\n create mode 100644 ler-runtime/memory/technical_history/progress_143415.json\n create mode 100644 ler-runtime/memory/technical_history/progress_143416.json\n\n\n[VERIFIED] Last commit: a0c284677 [LEA] Automated commit",
+    "output": "On branch opencode/mighty-meadow\nYour branch is ahead of 'origin/opencode/mighty-meadow' by 88 commits.\n  (use \"git push\" to publish your local commits)\n\nChanges not staged for commit:\n  (use \"git add/rm <file>...\" to update what will be committed)\n  (use \"git restore <file>...\" to discard changes in working directory)\n  (commit or discard the untracked or modified content in submodules)\n\tmodified:   Projetos/VoxUmGrau (modified content, untracked content)\n\tmodified:   conhecimento/aprendizados/cluster_mapper.json\n\tmodified:   conhecimento/memoria/memories.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143405_step_4_passed/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143409_iter_13/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143410_step_5_passed/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143411_before_step_1/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143411_iter_14/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143411_iter_15/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143411_iter_16/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143411_iter_17/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143411_planning_done/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143413_iter_18/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143415_before_step_2/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143415_iter_19/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143415_iter_20/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143415_step_1_passed/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143415_step_2_passed/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143416_before_step_3/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143416_before_step_4/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143416_before_step_5/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143416_iter_21/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143416_iter_22/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143416_iter_23/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143416_iter_24/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143416_iter_25/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143416_step_3_passed/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143416_step_4_passed/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143419_iter_26/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143420_before_step_1/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143420_iter_27/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143420_iter_28/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143420_iter_29/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143420_iter_30/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143420_planning_done/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143420_step_5_passed/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143421_iter_31/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143422_before_step_2/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143422_before_step_3/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143422_iter_32/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143422_iter_33/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143422_iter_34/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143422_iter_35/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143422_step_1_passed/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143422_step_2_passed/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143423_before_step_4/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143423_before_step_5/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143423_iter_36/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143423_iter_37/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143423_iter_38/checkpoint.json\n\tdeleted:    ler-runtime/checkpoints/20260907_143423_step_3_passed/checkpoint.json\n\tmodified:   ler-runtime/memory/context.json\n\tmodified:   ler-runtime/memory/decisions.md\n\tmodified:   ler-runtime/memory/plan.md\n\tmodified:   ler-runtime/memory/progress.json\n\tmodified:   ler-runtime/memory/successful_patterns.json\n\tmodified:   ler-runtime/memory/tool_statistics.json\n\nUntracked files:\n  (use \"git add <file>...\" to include in what will be committed)\n\tler-runtime/checkpoints/20260907_143427_iter_39/\n\tler-runtime/checkpoints/20260907_143428_iter_40/\n\tler-runtime/checkpoints/20260907_143428_iter_41/\n\tler-runtime/checkpoints/20260907_143428_iter_42/\n\tler-runtime/checkpoints/20260907_143428_step_5_passed/\n\tler-runtime/checkpoints/20260907_143429_before_step_1/\n\tler-runtime/checkpoints/20260907_143429_iter_43/\n\tler-runtime/checkpoints/20260907_143429_planning_done/\n\tler-runtime/checkpoints/20260907_143430_iter_44/\n\tler-runtime/checkpoints/20260907_143431_before_step_2/\n\tler-runtime/checkpoints/20260907_143431_before_step_3/\n\tler-runtime/checkpoints/20260907_143431_before_step_4/\n\tler-runtime/checkpoints/20260907_143431_iter_45/\n\tler-runtime/checkpoints/20260907_143431_iter_46/\n\tler-runtime/checkpoints/20260907_143431_iter_47/\n\tler-runtime/checkpoints/20260907_143431_iter_48/\n\tler-runtime/checkpoints/20260907_143431_iter_49/\n\tler-runtime/checkpoints/20260907_143431_step_1_passed/\n\tler-runtime/checkpoints/20260907_143431_step_2_passed/\n\tler-runtime/checkpoints/20260907_143431_step_3_passed/\n\tler-runtime/checkpoints/20260907_143432_before_step_5/\n\tler-runtime/checkpoints/20260907_143432_iter_50/\n\tler-runtime/checkpoints/20260907_143432_iter_51/\n\tler-runtime/checkpoints/20260907_143432_step_4_passed/\n\tler-runtime/checkpoints/20260907_143436_iter_52/\n\tler-runtime/checkpoints/20260907_143439_step_5_passed/\n\tler-runtime/checkpoints/20260907_143440_before_step_1/\n\tler-runtime/checkpoints/20260907_143440_iter_53/\n\tler-runtime/checkpoints/20260907_143440_iter_54/\n\tler-runtime/checkpoints/20260907_143440_iter_55/\n\tler-runtime/checkpoints/20260907_143440_iter_56/\n\tler-runtime/checkpoints/20260907_143440_planning_done/\n\tler-runtime/checkpoints/20260907_143443_iter_57/\n\tler-runtime/checkpoints/20260907_143445_before_step_2/\n\tler-runtime/checkpoints/20260907_143445_before_step_3/\n\tler-runtime/checkpoints/20260907_143445_before_step_4/\n\tler-runtime/checkpoints/20260907_143445_iter_58/\n\tler-runtime/checkpoints/20260907_143445_iter_59/\n\tler-runtime/checkpoints/20260907_143445_iter_60/\n\tler-runtime/checkpoints/20260907_143445_iter_61/\n\tler-runtime/checkpoints/20260907_143445_iter_62/\n\tler-runtime/checkpoints/20260907_143445_iter_63/\n\tler-runtime/checkpoints/20260907_143445_step_1_passed/\n\tler-runtime/checkpoints/20260907_143445_step_2_passed/\n\tler-runtime/checkpoints/20260907_143445_step_3_passed/\n\tler-runtime/checkpoints/20260907_143446_iter_64/\n\tler-runtime/checkpoints/20260907_143446_step_4_passed/\n\tler-runtime/checkpoints/20260907_143447_before_step_5/\n\tler-runtime/memory/patterns/successful_20260907_143428.json\n\tler-runtime/memory/patterns/successful_20260907_143431.json\n\tler-runtime/memory/patterns/successful_20260907_143432.json\n\tler-runtime/memory/patterns/successful_20260907_143439.json\n\tler-runtime/memory/patterns/successful_20260907_143445.json\n\tler-runtime/memory/technical_history/progress_143428.json\n\tler-runtime/memory/technical_history/progress_143431.json\n\tler-runtime/memory/technical_history/progress_143432.json\n\tler-runtime/memory/technical_history/progress_143439.json\n\tler-runtime/memory/technical_history/progress_143444.json\n\tler-runtime/memory/technical_history/progress_143445.json\n\nno changes added to commit (use \"git add\" and/or \"git commit -a\")\n\n\n[VERIFIED] Last commit: dfc2d7c6d [LEA] Automated commit",
     "error": null,
-    "start_time": 1788802456.599553,
-    "duration": 2.796938419342041
+    "start_time": 1788802487.1534579,
+    "duration": 6.450122356414795
   },
   "success_evaluation": {
     "total_score": 90.0,
@@ -367,6 +389,6 @@
     "recommendations": [
       "Melhorar Audit Quality (atual: 0%, desejado: 80%+)"
     ],
-    "evaluated_at": "2026-09-07T14:34:20.606982"
+    "evaluated_at": "2026-09-07T14:34:55.764690"
   }
 }
