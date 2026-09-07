@@ -1343,6 +1343,20 @@
       "validation": "check_structure",
       "duration": 0.0,
       "timestamp": "2026-09-07T12:11:15.661361"
+    },
+    {
+      "action": "test",
+      "description": "Executar testes de validacao: # Goal\n\nQuery por Confidence Level. Adicionar parâmetro min_",
+      "validation": "check_output",
+      "duration": 25.92922353744507,
+      "timestamp": "2026-09-07T12:11:41.828387"
+    },
+    {
+      "action": "run_tests",
+      "description": "Run tests to validate implementation",
+      "validation": "test_pass",
+      "duration": 0.003000497817993164,
+      "timestamp": "2026-09-07T12:11:42.157790"
     }
   ]
 }
