@@ -1,0 +1,10 @@
+{
+  "mission_id": "20260907_142913",
+  "state": {
+    "status": "active",
+    "goal": "Depth Check. Adicionar check_depth() ao runtime_auditor.py | Validar que grafo tem entidades mínimas antes de sintetizar | Validar que boundaries têm sub-boundaries | Reportar issues[] quando profundi",
+    "started_at": "2026-09-07T14:29:13.228179"
+  },
+  "updated_at": "2026-09-07T14:29:13.228179",
+  "version": "2.0"
+}

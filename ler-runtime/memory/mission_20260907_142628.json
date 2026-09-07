@@ -1,10 +1,43 @@
 {
   "mission_id": "20260907_142628",
   "state": {
-    "status": "active",
-    "goal": "Browser UI (Real-time WebSocket). Adicionar WebSocket server ao widget EcOW | Implementar broadcast() para mudanças no grafo | Conectar WS ao knowledge_graph para updates em tempo real | Manter compat",
-    "started_at": "2026-09-07T14:26:28.226472"
+    "status": "max_iterations",
+    "completed_at": "2026-09-07T14:28:21.623840",
+    "report": {
+      "status": "max_iterations",
+      "mission_id": "20260907_142628",
+      "version": "2.0",
+      "elapsed_seconds": 113.38942122459412,
+      "iterations": 100,
+      "steps": {
+        "total": 5,
+        "completed": 3,
+        "failed": 0
+      },
+      "learning": {
+        "total_learned_rules": 0,
+        "total_successes": 342,
+        "total_failures": 0,
+        "total_tools_tracked": 2,
+        "total_arch_patterns": 0,
+        "total_prev_missions": 0,
+        "success_rate": 100.0
+      },
+      "domain": "web",
+      "complexity": 5,
+      "security": {
+        "violations": [],
+        "total_violations": 0,
+        "safe": true
+      },
+      "_meta": {
+        "id": "20260907_142821_final_max_iterations",
+        "timestamp": "20260907_142821",
+        "label": "final_max_iterations",
+        "version": "2.0"
+      }
+    }
   },
-  "updated_at": "2026-09-07T14:26:28.226472",
+  "updated_at": "2026-09-07T14:28:21.623840",
   "version": "2.0"
 }

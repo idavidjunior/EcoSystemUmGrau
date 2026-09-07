@@ -16,7 +16,7 @@ data: 2026-09-07
 depth check. adicionar check_depth() ao runtime_auditor.py | validar que grafo tem entidades mínimas antes de sintetizar | validar que boundaries têm sub-boundaries | reportar issues[] quando profundidade é insuficiente (respete: ['scripts/runtime_auditor.py'])
 
 ---
-set: 2026-09-07t12:05:02.040368
+set: 2026-09-07t14:29:13.227179
 
 ## Requisitos
 
