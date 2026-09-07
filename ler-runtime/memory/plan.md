@@ -2,33 +2,33 @@
 
 **Goal:** # Goal
 
-Browser UI (Real-time WebSocket). Adicionar WebSocket server ao widget EcOW | Implementar broadcast() para mudanças no grafo | Conectar WS ao knowledge_graph para updates em tempo real | Manter compatibilidade com versão atual (respete: ['scripts/widget_grafo.py'])
+Depth Check. Adicionar check_depth() ao runtime_auditor.py | Validar que grafo tem entidades mínimas antes de sintetizar | Validar que boundaries têm sub-boundaries | Reportar issues[] quando profundidade é insuficiente (respete: ['scripts/runtime_auditor.py'])
 
 ---
-Set: 2026-09-07T12:01:25.624097
+Set: 2026-09-07T12:05:02.040368
 
-**Created:** 2026-09-07T12:03:29.121998
+**Created:** 2026-09-07T12:05:02.522596
 
 **Total Steps:** 5
 
 ---
 
 ### Step 1: SETUP - analyze_environment
-**Description:** Analyze environment for: creation
+**Description:** Analyze environment for: fix
 **Validation:** check_env
 **Status:** pending
 
 ### Step 2: SETUP - initialize_project
 **Description:** Initialize project structure for: # Goal
 
-Browser UI (Real-time WebSocket). Adicionar WebSocke
+Depth Check. Adicionar check_depth() ao runtime_audi
 **Validation:** check_structure
 **Status:** pending
 
-### Step 3: IMPLEMENTATION - implement
-**Description:** Implementar funcionalidade principal: # Goal
+### Step 3: IMPLEMENTATION - fix
+**Description:** Corrigir problema identificado: # Goal
 
-Browser UI (Real-time WebSocket). Adicionar WebSocke
+Depth Check. Adicionar check_depth() ao runtime_audi
 **Validation:** check_output
 **Status:** pending
 
