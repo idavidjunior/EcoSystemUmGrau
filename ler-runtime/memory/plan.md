@@ -7,7 +7,7 @@ Perspectives (Named Lenses). Criar módulo perspectives.py | Implementar create_
 ---
 Set: 2026-09-07T14:21:36.353137
 
-**Created:** 2026-09-07T14:22:36.727406
+**Created:** 2026-09-07T14:23:57.382537
 
 **Total Steps:** 5
 
