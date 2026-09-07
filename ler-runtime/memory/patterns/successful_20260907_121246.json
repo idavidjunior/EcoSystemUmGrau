@@ -1,0 +1,7 @@
+{
+  "action": "test",
+  "description": "Executar testes de validacao: # Goal\n\nQuery por Confidence Level. Adicionar parâmetro min_",
+  "validation": "check_output",
+  "duration": 0.00299835205078125,
+  "timestamp": "2026-09-07T12:12:46.803743"
+}
