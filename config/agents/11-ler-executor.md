@@ -52,6 +52,27 @@ ler "OBJETIVO CLARO E COMPLETO AQUI"
 4. Colete o relatório de saída
 5. Reporte ao Maestro com: status, evidências, aprendizados
 
+# FALLBACK INTERNO (quando o LER não está disponível)
+
+Se o comando `ler` falhar ou o LER-runtime estiver indisponível, NÃO trave a
+missão. Use o loop autônomo interno, que mantém a mesma filosofia de "só termina
+quando o DoD for atingido", mas roda com os scripts do próprio ecossistema:
+
+1. Monte o objetivo claro (igual ao passo 1 da delegação).
+2. Delegue ao 09-Executor rodando o mission_loop interno:
+   `python scripts/mission_loop.py "<objetivo>" --name <nome> --context "<ctx>"`
+   com orçamentos `--tool-calls`, `--time`, `--replans`.
+3. Confira a saída. O mission_loop tem estados observáveis
+   (COMPLETED/FAILED/BLOCKED/TIMEOUT) e journal — exija estado COMPLETED com
+   evidência, nunca aceite FAILED/BLOCKED como entrega.
+4. Se precisar de deliberação estratégica antes, use
+   `python scripts/council_orchestrator.py "<pedido>" --rounds 3`.
+5. Se precisar de paralelismo, use `python scripts/parallel_dispatcher.py <tasks.json>`.
+6. Rode a partir da RAIZ do projeto (diretório EcoSystemUmGrau), nunca de outra pasta.
+
+Regra: o fallback interno só substitui o LER quando o `ler` de fato não responde.
+Se o `ler` funciona, prefira-o (é o executor autônomo mais completo).
+
 # GARANTIAS
 
 - **Missão não termina até DoD satisfeita** — score < 95% sempre replaneja

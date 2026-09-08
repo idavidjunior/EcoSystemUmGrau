@@ -193,6 +193,226 @@ MODEL_PROFILES = {
         strength_tags=['coding', 'speed', 'small_tasks'],
         weakness_tags=['reasoning', 'long_context', 'analysis'],
     ),
+    'groq/moonshotai/kimi-k2-instruct': ModelProfile(
+        id='groq/moonshotai/kimi-k2-instruct',
+        name='Kimi K2 (Groq)',
+        capabilities=[
+            Capability.CODE_EXECUTION, Capability.FUNCTION_CALLING,
+            Capability.STRUCTURED_OUTPUT, Capability.SPEED,
+            Capability.LONG_CONTEXT, Capability.REASONING
+        ],
+        cost_per_1m_input_usd=0.0,
+        cost_per_1m_output_usd=0.0,
+        max_context_tokens=131072,
+        avg_latency_ms=800,
+        strength_tags=['coding', 'speed', 'reasoning', 'long_context', 'debugging'],
+        weakness_tags=[],
+    ),
+    'groq/llama-3.3-70b-versatile': ModelProfile(
+        id='groq/llama-3.3-70b-versatile',
+        name='Llama 3.3 70B (Groq)',
+        capabilities=[
+            Capability.CODE_EXECUTION, Capability.FUNCTION_CALLING,
+            Capability.STRUCTURED_OUTPUT, Capability.SPEED,
+            Capability.LONG_CONTEXT, Capability.REASONING
+        ],
+        cost_per_1m_input_usd=0.0,
+        cost_per_1m_output_usd=0.0,
+        max_context_tokens=131072,
+        avg_latency_ms=1000,
+        strength_tags=['coding', 'reasoning', 'analysis', 'long_context'],
+        weakness_tags=['creative'],
+    ),
+    'openrouter/nvidia/nemotron-3-ultra-550b-a55b:free': ModelProfile(
+        id='openrouter/nvidia/nemotron-3-ultra-550b-a55b:free',
+        name='Nemotron 3 Ultra (OpenRouter Free)',
+        capabilities=[
+            Capability.LONG_CONTEXT, Capability.FUNCTION_CALLING,
+            Capability.STRUCTURED_OUTPUT, Capability.REASONING
+        ],
+        cost_per_1m_input_usd=0.0,
+        cost_per_1m_output_usd=0.0,
+        max_context_tokens=1000000,
+        avg_latency_ms=5000,
+        strength_tags=['reasoning', 'coding', 'analysis', 'long_context'],
+        weakness_tags=['creative'],
+    ),
+    'openrouter/poolside/laguna-m.1:free': ModelProfile(
+        id='openrouter/poolside/laguna-m.1:free',
+        name='Laguna M.1 (OpenRouter Free)',
+        capabilities=[
+            Capability.CODE_EXECUTION, Capability.FUNCTION_CALLING,
+            Capability.STRUCTURED_OUTPUT, Capability.SPEED
+        ],
+        cost_per_1m_input_usd=0.0,
+        cost_per_1m_output_usd=0.0,
+        max_context_tokens=262144,
+        avg_latency_ms=3000,
+        strength_tags=['coding', 'speed', 'debugging'],
+        weakness_tags=['long_context', 'creative'],
+    ),
+    'openrouter/nvidia/nemotron-3-super-120b-a12b:free': ModelProfile(
+        id='openrouter/nvidia/nemotron-3-super-120b-a12b:free',
+        name='Nemotron 3 Super (OpenRouter Free)',
+        capabilities=[
+            Capability.LONG_CONTEXT, Capability.FUNCTION_CALLING,
+            Capability.STRUCTURED_OUTPUT, Capability.REASONING
+        ],
+        cost_per_1m_input_usd=0.0,
+        cost_per_1m_output_usd=0.0,
+        max_context_tokens=262144,
+        avg_latency_ms=4000,
+        strength_tags=['reasoning', 'coding', 'analysis'],
+        weakness_tags=['creative'],
+    ),
+    'google/gemini-3.5-flash': ModelProfile(
+        id='google/gemini-3.5-flash',
+        name='Gemini 3.5 Flash',
+        capabilities=[
+            Capability.LONG_CONTEXT, Capability.FUNCTION_CALLING,
+            Capability.STRUCTURED_OUTPUT, Capability.CODE_EXECUTION,
+            Capability.MULTILINGUAL, Capability.REASONING
+        ],
+        cost_per_1m_input_usd=0.0,
+        cost_per_1m_output_usd=0.0,
+        max_context_tokens=1000000,
+        avg_latency_ms=3000,
+        strength_tags=['coding', 'reasoning', 'long_context', 'multilingual', 'speed'],
+        weakness_tags=[],
+    ),
+    'google/gemini-3.5-flash-lite': ModelProfile(
+        id='google/gemini-3.5-flash-lite',
+        name='Gemini 3.5 Flash-Lite',
+        capabilities=[
+            Capability.LONG_CONTEXT, Capability.FUNCTION_CALLING,
+            Capability.STRUCTURED_OUTPUT, Capability.SPEED,
+            Capability.MULTILINGUAL
+        ],
+        cost_per_1m_input_usd=0.0,
+        cost_per_1m_output_usd=0.0,
+        max_context_tokens=1000000,
+        avg_latency_ms=2000,
+        strength_tags=['speed', 'long_context', 'multilingual'],
+        weakness_tags=['reasoning', 'creative'],
+    ),
+    'zai/glm-4.7-flash': ModelProfile(
+        id='zai/glm-4.7-flash',
+        name='GLM-4.7 Flash (Z.AI)',
+        capabilities=[
+            Capability.LONG_CONTEXT, Capability.FUNCTION_CALLING,
+            Capability.STRUCTURED_OUTPUT, Capability.REASONING,
+            Capability.MULTILINGUAL
+        ],
+        cost_per_1m_input_usd=0.0,
+        cost_per_1m_output_usd=0.0,
+        max_context_tokens=200000,
+        avg_latency_ms=4000,
+        strength_tags=['reasoning', 'long_context', 'multilingual'],
+        weakness_tags=['coding', 'creative'],
+    ),
+    'cloudflare/@cf/meta/llama-3.3-70b-instruct-fp8-fast': ModelProfile(
+        id='cloudflare/@cf/meta/llama-3.3-70b-instruct-fp8-fast',
+        name='Llama 3.3 70B (Cloudflare)',
+        capabilities=[
+            Capability.CODE_EXECUTION, Capability.FUNCTION_CALLING,
+            Capability.STRUCTURED_OUTPUT, Capability.LONG_CONTEXT,
+            Capability.REASONING
+        ],
+        cost_per_1m_input_usd=0.0,
+        cost_per_1m_output_usd=0.0,
+        max_context_tokens=131072,
+        avg_latency_ms=2000,
+        strength_tags=['coding', 'reasoning', 'analysis', 'long_context'],
+        weakness_tags=['creative'],
+    ),
+    'cerebras/llama3.1-70b': ModelProfile(
+        id='cerebras/llama3.1-70b',
+        name='Llama 3.1 70B (Cerebras)',
+        capabilities=[
+            Capability.CODE_EXECUTION, Capability.FUNCTION_CALLING,
+            Capability.STRUCTURED_OUTPUT, Capability.SPEED,
+            Capability.REASONING, Capability.LONG_CONTEXT
+        ],
+        cost_per_1m_input_usd=0.0,
+        cost_per_1m_output_usd=0.0,
+        max_context_tokens=131072,
+        avg_latency_ms=500,
+        strength_tags=['speed', 'coding', 'reasoning', 'analysis'],
+        weakness_tags=[],
+    ),
+    'ollama/qwen2.5-coder-7b': ModelProfile(
+        id='ollama/qwen2.5-coder-7b',
+        name='Qwen 2.5 Coder 7B (Local)',
+        capabilities=[
+            Capability.CODE_EXECUTION, Capability.FUNCTION_CALLING,
+            Capability.STRUCTURED_OUTPUT, Capability.SPEED
+        ],
+        cost_per_1m_input_usd=0.0,
+        cost_per_1m_output_usd=0.0,
+        max_context_tokens=32768,
+        avg_latency_ms=1500,
+        strength_tags=['coding', 'speed', 'privacy', 'offline'],
+        weakness_tags=['reasoning', 'long_context', 'creative'],
+    ),
+    'ollama/llama3.1-8b': ModelProfile(
+        id='ollama/llama3.1-8b',
+        name='Llama 3.1 8B (Local)',
+        capabilities=[
+            Capability.CODE_EXECUTION, Capability.FUNCTION_CALLING,
+            Capability.STRUCTURED_OUTPUT, Capability.SPEED,
+            Capability.REASONING
+        ],
+        cost_per_1m_input_usd=0.0,
+        cost_per_1m_output_usd=0.0,
+        max_context_tokens=131072,
+        avg_latency_ms=2000,
+        strength_tags=['reasoning', 'coding', 'privacy', 'offline'],
+        weakness_tags=['long_context', 'creative'],
+    ),
+    'ollama/nemotron-3-ultra': ModelProfile(
+        id='ollama/nemotron-3-ultra',
+        name='Nemotron 3 Ultra (Local)',
+        capabilities=[
+            Capability.LONG_CONTEXT, Capability.FUNCTION_CALLING,
+            Capability.STRUCTURED_OUTPUT, Capability.REASONING
+        ],
+        cost_per_1m_input_usd=0.0,
+        cost_per_1m_output_usd=0.0,
+        max_context_tokens=262144,
+        avg_latency_ms=8000,
+        strength_tags=['reasoning', 'coding', 'analysis', 'long_context', 'privacy'],
+        weakness_tags=['speed'],
+    ),
+    'deepseek/deepseek-chat': ModelProfile(
+        id='deepseek/deepseek-chat',
+        name='DeepSeek V3 (DeepSeek API)',
+        capabilities=[
+            Capability.CODE_EXECUTION, Capability.FUNCTION_CALLING,
+            Capability.STRUCTURED_OUTPUT, Capability.SPEED,
+            Capability.LONG_CONTEXT, Capability.REASONING
+        ],
+        cost_per_1m_input_usd=0.0,
+        cost_per_1m_output_usd=0.0,
+        max_context_tokens=128000,
+        avg_latency_ms=2000,
+        strength_tags=['coding', 'reasoning', 'analysis', 'long_context', 'speed'],
+        weakness_tags=[],
+    ),
+    'deepseek/deepseek-reasoner': ModelProfile(
+        id='deepseek/deepseek-reasoner',
+        name='DeepSeek R1 (DeepSeek API)',
+        capabilities=[
+            Capability.REASONING, Capability.LONG_CONTEXT,
+            Capability.STRUCTURED_OUTPUT, Capability.CODE_EXECUTION,
+            Capability.FUNCTION_CALLING
+        ],
+        cost_per_1m_input_usd=0.0,
+        cost_per_1m_output_usd=0.0,
+        max_context_tokens=128000,
+        avg_latency_ms=5000,
+        strength_tags=['reasoning', 'analysis', 'long_context'],
+        weakness_tags=['speed', 'creative'],
+    ),
 }
 
 

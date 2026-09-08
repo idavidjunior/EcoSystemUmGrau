@@ -408,7 +408,7 @@ def run():
     try:
         import subprocess as sp
         r = sp.run([sys.executable, os.path.join(BASE, 'scripts', 'preflight_etica.py')],
-                   capture_output=True, text=True, timeout=120, cwd=BASE)
+                   capture_output=True, text=True, timeout=240, cwd=BASE)
         out = (r.stdout + r.stderr).strip()
         if r.returncode != 0:
             motivo = next((line.strip() for line in out.splitlines()

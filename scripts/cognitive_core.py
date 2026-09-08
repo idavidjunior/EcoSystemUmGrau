@@ -14,8 +14,12 @@ import sys
 import os
 import time
 
-# Add scripts directory to path for imports
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# Add project root to path so `import scripts.X` resolves regardless of invocation.
+# Antes só se adicionava o diretório scripts/; `import scripts.llm_router` exige a raiz
+# (pai de scripts/). Sem isso, `python scripts/mission_loop.py` quebrava no import.
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _SCRIPT_DIR)
+sys.path.insert(0, os.path.dirname(_SCRIPT_DIR))
 
 # ──────────────────────────────────────────────────────────────────
 # Import dos módulos existentes (via namespace do pacote scripts)

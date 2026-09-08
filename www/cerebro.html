@@ -27,7 +27,8 @@ canvas.girando{cursor:grabbing;}
   background:rgba(24,24,37,.95);border:1px solid var(--bdr);border-radius:5px;
   padding:6px 9px;font-size:11px;color:var(--tx);box-shadow:0 4px 14px rgba(0,0,0,.5);}
 #hover .cl{font-size:9px;margin-top:2px;}
-.painel{position:fixed;top:34px;right:8px;width:200px;background:rgba(17,17,27,.97);
+.painel{position:fixed;top:34px;right:8px;width:200px;max-height:calc(100vh - 42px);
+  overflow-y:auto;background:rgba(17,17,27,.97);
   border:1px solid var(--bdr);border-radius:6px;padding:10px;z-index:15;display:none;
   box-shadow:0 10px 26px rgba(0,0,0,.55);font-size:11px;}
 .ptitulo{font-size:10px;color:var(--tx3);text-transform:uppercase;
@@ -41,6 +42,9 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:2px 0 8px;}
 .foco-btn.on{border-color:var(--acc);color:var(--acc);background:rgba(137,180,250,.12);}
 .foco-btn span{color:var(--tx3);}
 #listaFoco{max-height:320px;overflow-y:auto;}
+.painel::-webkit-scrollbar{width:4px;}
+.painel::-webkit-scrollbar-track{background:transparent;}
+.painel::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px;}
 #barraInfo{position:fixed;left:8px;right:8px;bottom:8px;height:26px;display:none;
   align-items:center;gap:6px;padding:0 8px;background:rgba(13,14,22,.82);
   border:1px solid var(--bdr);border-radius:4px;backdrop-filter:blur(6px);
@@ -92,6 +96,26 @@ input[type=range]{width:100%;accent-color:var(--acc);margin:2px 0 8px;}
     <button class="foco-btn efeito-btn" data-efeito="espiculas">Espiculas sinapticas <span class="estEfeito"></span></button>
     <button class="foco-btn efeito-btn" data-efeito="ondasHub">Ondas do hub <span class="estEfeito"></span></button>
   </div>
+  <div style="border-top:1px solid var(--bdr);margin:8px 0;"></div>
+  <div class="ptitulo">Sons</div>
+  <label class="linha">Volume <span id="valVolume"></span></label>
+  <input id="rgVolume" type="range" min="0" max="1" step="0.05">
+  <button id="btMudo" class="foco-btn">Som <span id="estMudo"></span></button>
+  <label class="linha">Estilo do pulso</label>
+  <div id="listaSons">
+    <button class="foco-btn som-btn" data-som="eletrico">Eletrico <span class="estSom"></span></button>
+    <button class="foco-btn som-btn" data-som="onda">Onda <span class="estSom"></span></button>
+    <button class="foco-btn som-btn" data-som="cristal">Cristal <span class="estSom"></span></button>
+  </div>
+  <button id="btSomSel" class="foco-btn">Selecao <span id="estSomSel"></span></button>
+  <button id="btSomCasc" class="foco-btn">Cascata <span id="estSomCasc"></span></button>
+  <button id="btSomRamo" class="foco-btn">Ramo <span id="estSomRamo"></span></button>
+  <label class="linha">Brilho dos efeitos <span id="valBrilho"></span></label>
+  <input id="rgBrilho" type="range" min="0" max="1" step="0.05">
+  <label class="linha">Raio do pulso <span id="valRaio"></span></label>
+  <input id="rgRaio" type="range" min="0.2" max="3" step="0.1">
+  <label class="linha">Contraste <span id="valContraste"></span></label>
+  <input id="rgContraste" type="range" min="0.1" max="2" step="0.05">
 </div>
 <div id="painelFoco" class="painel">
   <div class="ptitulo">Mostrar apenas</div>
@@ -204,7 +228,9 @@ let JULT_ONDA = 0;
 
 let EXCITA = null;               // Float32Array por no
 let sprites = {};                // chave cor+foco -> canvas
-let AJUSTES = {foco:0.55, viva:0.65, decor:true, movimento:0.65, rotacao:0.6, efeitos:{espiculas:true, ondasHub:true}};
+let AJUSTES = {foco:0.55, viva:0.65, decor:true, movimento:0.65, rotacao:0.6,
+  efeitos:{espiculas:true, ondasHub:true},
+  sons:{volume:0.4, mudo:false, tipoCascata:'eletrico', selecionar:true, cascata:true, ramo:true, brilho:1.0, raio:1.0, contraste:1.0}};
 try{ Object.assign(AJUSTES,
   JSON.parse(localStorage.getItem('cerebroAjustes')||'{}')); }catch(e){}
 function salvarAjustes(){
@@ -261,7 +287,10 @@ let pausaGiroAte = 0, cliqueNoX = 0, cliqueNoY = 0;
 let arrastando = false, mx0 = 0, my0 = 0, ultToque = 0;
 let mouseMX = -999, mouseMY = -999, hoverId = -1;
 let selNo = -1, selViz = new Set();   // no selecionado e vizinhos diretos
-let RAMO_ATIVO = new Set(), RAMO_DESDE = 0;  // ramificacao brilhando por 16s
+let RAMO_ATIVO = new Set(), RAMO_DESDE = 0;  // ramificacao brilhando
+let CORRENTE_TMR = 0;  // timer para gerar pulsos da cascata continua
+let FRONTIER = new Set();  // nós que acabaram de receber pulso e precisam propagar
+let VISITADOS_CASCATA = new Set();  // todos os nós já alcançados pela cascata (impede loops)
 let W = 0, H = 0, T0 = performance.now();
 
 function hashFase(s){
@@ -289,6 +318,91 @@ function sprite(cor){
   g.fillRect(0,0,64,64);
   sprites[chave] = c;
   return c;
+}
+
+// --- Web Audio: sistema de sons procedimentais ---
+let _audioCtx = null;
+function audioCtx(){
+  if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (_audioCtx.state === 'suspended') _audioCtx.resume();
+  return _audioCtx;
+}
+
+function _envolve(gain, vol, now, dur){
+  gain.gain.setValueAtTime(vol, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+}
+
+function _somSelecionar(){
+  // click limpo: sine curto 1200Hz, 30ms
+  const ctx=audioCtx(), now=ctx.currentTime;
+  const o=ctx.createOscillator(), g=ctx.createGain();
+  o.type='sine';
+  o.frequency.setValueAtTime(1200, now);
+  o.frequency.exponentialRampToValueAtTime(800, now+0.03);
+  _envolve(g, 0.07, now, 0.04);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(now); o.stop(now+0.05);
+}
+
+function _somCascataEletrico(){
+  // faísca: sawtooth agudo 1800→200Hz, 40ms
+  const ctx=audioCtx(), now=ctx.currentTime;
+  const o=ctx.createOscillator(), g=ctx.createGain();
+  o.type='sawtooth';
+  o.frequency.setValueAtTime(1800+Math.random()*400, now);
+  o.frequency.exponentialRampToValueAtTime(200, now+0.04);
+  _envolve(g, 0.035, now, 0.05);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(now); o.stop(now+0.06);
+}
+
+function _somCascataOnda(){
+  // onda grave: sine profundo 180→60Hz, 120ms, sem FM
+  const ctx=audioCtx(), now=ctx.currentTime;
+  const o=ctx.createOscillator(), g=ctx.createGain();
+  o.type='sine';
+  o.frequency.setValueAtTime(180, now);
+  o.frequency.exponentialRampToValueAtTime(60, now+0.12);
+  _envolve(g, 0.06, now, 0.14);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(now); o.stop(now+0.15);
+}
+
+function _somCascataCristal(){
+  // cristal: triangle agudo 2400→600Hz, 25ms, bem curto e brilhante
+  const ctx=audioCtx(), now=ctx.currentTime;
+  const o=ctx.createOscillator(), g=ctx.createGain();
+  o.type='triangle';
+  o.frequency.setValueAtTime(2400+Math.random()*600, now);
+  o.frequency.exponentialRampToValueAtTime(600, now+0.025);
+  _envolve(g, 0.03, now, 0.035);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(now); o.stop(now+0.04);
+}
+
+function _somRamo(){
+  // pop suave: sine médio 500→250Hz, 60ms
+  const ctx=audioCtx(), now=ctx.currentTime;
+  const o=ctx.createOscillator(), g=ctx.createGain();
+  o.type='sine';
+  o.frequency.setValueAtTime(500, now);
+  o.frequency.exponentialRampToValueAtTime(250, now+0.06);
+  _envolve(g, 0.04, now, 0.08);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(now); o.stop(now+0.09);
+}
+
+const SOM_CASCATA = {eletrico:_somCascataEletrico, onda:_somCascataOnda, cristal:_somCascataCristal};
+
+function tocarSom(tipo){
+  try {
+    const s = AJUSTES.sons;
+    if (s.mudo || s.volume <= 0) return;
+    if (tipo==='selecionar' && s.selecionar){ _somSelecionar(); return; }
+    if (tipo==='cascata' && s.cascata){ const fn=SOM_CASCATA[s.tipoCascata]||_somCascataEletrico; fn(); return; }
+    if (tipo==='ramo' && s.ramo){ _somRamo(); return; }
+  } catch(e){}
 }
 
 function redimensionar(){
@@ -481,6 +595,8 @@ function abrirArquivo(fp){
 function limparSelecao(){
   selNo = -1; selViz.clear();
   RAMO_ATIVO.clear(); RAMO_DESDE = 0;
+  CORRENTE_TMR = 0;
+  FRONTIER.clear(); VISITADOS_CASCATA.clear();
   painelInfo.style.display = 'none';
   document.getElementById('barraInfo').style.display = 'none';
 }
@@ -566,16 +682,20 @@ function selecionarNo(i){
   selNo = i;
   const n = NOS[i];
   selViz = vizinhosDe(i);
-  // ramificacao (no + vizinhos) brilha por 16s
+  // ramificacao (no + vizinhos) brilha
   RAMO_ATIVO = new Set([i]);
   for (const j of selViz) RAMO_ATIVO.add(j);
   RAMO_DESDE = performance.now();
+  CORRENTE_TMR = 0;  // inicia cascata imediatamente
+  // wavefront: cascata parte do nó selecionado
+  FRONTIER = new Set([i]);
+  VISITADOS_CASCATA = new Set([i]);
+  tocarSom('selecionar');
   disparoNeural(i, 1.1, corDe(n.cl), 0);
   // voa ate o no e centraliza
   const cxT = cv.width/2, cyT = cv.height/2 + 12*devicePixelRatio;
   alvoPanX += cxT - SX[i];
   alvoPanY += cyT - SY[i];
-  alvoZoom = Math.max(alvoZoom, 2.4);
   pausaGiroAte = performance.now() + 8000;
   // barra fina recolhivel no rodape
   const estavaExpandido = painelInfo.style.display === 'block';
@@ -930,6 +1050,31 @@ function dispararPulsos(t){
       }
     }
   }
+  // cascata continua: wavefront BFS — pulsos nascem dos nós FRONTIER e avançam pelas conexões reais
+  if (selNo >= 0 && t - CORRENTE_TMR > 180) {
+    CORRENTE_TMR = t;
+    garantirIncidencia();
+    // se FRONTIER esvaziou, reinicia do nó selecionado (ciclo contínuo)
+    if (!FRONTIER.size) {
+      FRONTIER = new Set([selNo]);
+      VISITADOS_CASCATA = new Set([selNo]);
+    }
+    const novosFrontier = new Set();
+    for (const idx of FRONTIER) {
+      const ks = INCIDENCIA.get(idx) || [];
+      for (const e of ks) {
+        const [a, b] = ARVIS[e % ARVIS.length];
+        const destino = (a === idx) ? b : a;
+        if (VISITADOS_CASCATA.has(destino)) continue;
+        // pulso segue a conexão real: do nó fonte para o destino não visitado
+        PULSOS.push({e, t: -0.05, v: 1.2 + Math.random() * 0.6, tr: true, cascata: true, cor: '#00e5ff',
+                      cascataDest: destino});
+        VISITADOS_CASCATA.add(destino);
+        novosFrontier.add(destino);
+      }
+    }
+    FRONTIER = novosFrontier;
+  }
   let amb=0;
   for (const p of PULSOS) if (!p.tr) amb++;
   // decorativos desligados: os vivos terminam a viagem e nao nascem outros
@@ -1076,7 +1221,12 @@ function desenhar(t, dt){
     p.t+=p.v*dt/1000;
     if (p.t>=1){
       const [a,b]=ARVIS[p.e%ARVIS.length];
-      EXCITA[b]=Math.min(1,EXCITA[b]+0.85);
+      const dest = p.cascataDest != null ? p.cascataDest : b;
+      EXCITA[dest]=Math.min(1,EXCITA[dest]+0.85);
+      if (p.cascata && selNo >= 0){
+        RAMO_ATIVO.add(dest);
+        tocarSom('cascata');
+      }
       if (p.tr || !AJUSTES.decor){ PULSOS.splice(pi,1); continue; }
       p.e=(Math.random()*ARVIS.length)|0;p.t=-0.15-Math.random()*0.5;
       continue;
@@ -1084,12 +1234,41 @@ function desenhar(t, dt){
     if (p.t<0) continue;
     const [ai,bi]=ARVIS[p.e%ARVIS.length];
     const na=NOS[ai],nb=NOS[bi];
-    const ca=corDe(na.cl);
+    const ca=p.cascata ? '#00e5ff' : corDe(na.cl);
     const tt=p.t, tt2=tt*tt;
     const x=SX[ai]+(SX[bi]-SX[ai])*tt, y=SY[ai]+(SY[bi]-SY[ai])*tt;
     const s=(SS[ai]+(SS[bi]-SS[ai])*tt)*(2.6+EXCITA[bi]*2);
-    ctx.globalAlpha=Math.min(1,0.85*(1-tt2*0.25));
-    ctx.drawImage(sprite(ca),x-s*8,y-s*8,s*16,s*16);
+    if (p.cascata){
+      const br = AJUSTES.sons ? AJUSTES.sons.brilho : 1.0;
+      const ra = AJUSTES.sons ? AJUSTES.sons.raio : 1.0;
+      const co = AJUSTES.sons ? AJUSTES.sons.contraste : 1.0;
+      // trilha: linha que segue o pulso
+      const tailLen = Math.min(tt, 0.3);
+      const tx = SX[ai]+(SX[bi]-SX[ai])*(tt-tailLen), ty = SY[ai]+(SY[bi]-SY[ai])*(tt-tailLen);
+      ctx.save();
+      ctx.globalAlpha = 0.3*br*co*(1-tt2*0.4);
+      ctx.strokeStyle = ca;
+      ctx.lineWidth = (1.8*ra + s*0.5*ra) * devicePixelRatio;
+      ctx.shadowColor = ca;
+      ctx.shadowBlur = 6*br*devicePixelRatio;
+      ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(x,y); ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.restore();
+      // cabeça: glow controlado
+      const headR = s * 8 * ra;
+      ctx.save();
+      ctx.globalAlpha = Math.min(0.6*br*co, 0.5*br*co*(1-tt2*0.3));
+      const grd = ctx.createRadialGradient(x,y,0, x,y,headR);
+      grd.addColorStop(0, ca);
+      grd.addColorStop(0.4, ca+'66');
+      grd.addColorStop(1, ca+'00');
+      ctx.fillStyle = grd;
+      ctx.beginPath(); ctx.arc(x,y,headR,0,6.283); ctx.fill();
+      ctx.restore();
+    } else {
+      ctx.globalAlpha=Math.min(1,0.85*(1-tt2*0.25));
+      ctx.drawImage(sprite(ca),x-s*8,y-s*8,s*16,s*16);
+    }
     ctx.globalAlpha=1;
   }
 
@@ -1100,10 +1279,11 @@ function desenhar(t, dt){
     const n=NOS[i];
     if (VIS && !VIS[i]){ EXCITA[i]*=0.955; continue; }
     EXCITA[i]*=0.955;
-    // ramificacao do no selecionado brilha por 16s apos o clique
-    if (RAMO_ATIVO.size && RAMO_ATIVO.has(i)
-        && performance.now()-RAMO_DESDE < 16000){
-      EXCITA[i] = Math.max(EXCITA[i], 0.5 + 0.28*Math.sin(t*0.005 + i));
+    // ramificacao do no selecionado brilha sutilmente enquanto selecionado
+    if (RAMO_ATIVO.size && RAMO_ATIVO.has(i) && selNo >= 0){
+      const br = AJUSTES.sons ? AJUSTES.sons.brilho : 1.0;
+      const co = AJUSTES.sons ? AJUSTES.sons.contraste : 1.0;
+      EXCITA[i] = Math.max(EXCITA[i], (0.3 + 0.15*Math.sin(t*0.005 + i)) * br * co);
     }
     if (foraTela(SX[i],SY[i])) continue;
     const prof=Math.max(0,Math.min(1,(SZ[i]+900)/1800));
@@ -1555,6 +1735,101 @@ document.querySelectorAll('.efeito-btn').forEach(bt=>{
 });
 pintarEfeitos();
 
+// --- Sons: controles ---
+const rgVolume=document.getElementById('rgVolume');
+const valVolume=document.getElementById('valVolume');
+const btMudo=document.getElementById('btMudo');
+const estMudo=document.getElementById('estMudo');
+const btSomSel=document.getElementById('btSomSel');
+const estSomSel=document.getElementById('estSomSel');
+const btSomCasc=document.getElementById('btSomCasc');
+const estSomCasc=document.getElementById('estSomCasc');
+const btSomRamo=document.getElementById('btSomRamo');
+const estSomRamo=document.getElementById('estSomRamo');
+const rgBrilho=document.getElementById('rgBrilho');
+const valBrilho=document.getElementById('valBrilho');
+const rgRaio=document.getElementById('rgRaio');
+const valRaio=document.getElementById('valRaio');
+const rgContraste=document.getElementById('rgContraste');
+const valContraste=document.getElementById('valContraste');
+
+function initSons(){
+  if (!AJUSTES.sons) AJUSTES.sons={volume:0.4,mudo:false,tipoCascata:'eletrico',selecionar:true,cascata:true,ramo:true,brilho:1.0,raio:1.0,contraste:1.0};
+  if (AJUSTES.sons.brilho===undefined) AJUSTES.sons.brilho=1.0;
+  if (AJUSTES.sons.raio===undefined) AJUSTES.sons.raio=1.0;
+  if (AJUSTES.sons.contraste===undefined) AJUSTES.sons.contraste=1.0;
+  const s=AJUSTES.sons;
+  rgVolume.value=s.volume; valVolume.textContent=Math.round(s.volume*100)+'%';
+  rgBrilho.value=s.brilho; valBrilho.textContent=Math.round(s.brilho*100)+'%';
+  rgRaio.value=s.raio; valRaio.textContent=Math.round(s.raio*100)+'%';
+  rgContraste.value=s.contraste; valContraste.textContent=Math.round(s.contraste*100)+'%';
+  estMudo.textContent=s.mudo?'mudo':'ligado'; btMudo.classList.toggle('on',!s.mudo);
+  estSomSel.textContent=s.selecionar?'ligado':'desligado'; btSomSel.classList.toggle('on',s.selecionar);
+  estSomCasc.textContent=s.cascata?'ligado':'desligado'; btSomCasc.classList.toggle('on',s.cascata);
+  estSomRamo.textContent=s.ramo?'ligado':'desligado'; btSomRamo.classList.toggle('on',s.ramo);
+  document.querySelectorAll('.som-btn').forEach(bt=>{
+    bt.classList.toggle('on',bt.dataset.som===s.tipoCascata);
+    const sp=bt.querySelector('.estSom');
+    if(sp) sp.textContent=bt.dataset.som===s.tipoCascata?'ativo':'';
+  });
+}
+rgVolume.addEventListener('input',()=>{
+  AJUSTES.sons.volume=+rgVolume.value;
+  valVolume.textContent=Math.round(AJUSTES.sons.volume*100)+'%';
+  salvarAjustes();
+});
+rgBrilho.addEventListener('input',()=>{
+  AJUSTES.sons.brilho=+rgBrilho.value;
+  valBrilho.textContent=Math.round(AJUSTES.sons.brilho*100)+'%';
+  salvarAjustes();
+});
+rgRaio.addEventListener('input',()=>{
+  AJUSTES.sons.raio=+rgRaio.value;
+  valRaio.textContent=Math.round(AJUSTES.sons.raio*100)+'%';
+  salvarAjustes();
+});
+rgContraste.addEventListener('input',()=>{
+  AJUSTES.sons.contraste=+rgContraste.value;
+  valContraste.textContent=Math.round(AJUSTES.sons.contraste*100)+'%';
+  salvarAjustes();
+});
+btMudo.addEventListener('click',()=>{
+  AJUSTES.sons.mudo=!AJUSTES.sons.mudo;
+  estMudo.textContent=AJUSTES.sons.mudo?'mudo':'ligado';
+  btMudo.classList.toggle('on',!AJUSTES.sons.mudo);
+  salvarAjustes();
+});
+btSomSel.addEventListener('click',()=>{
+  AJUSTES.sons.selecionar=!AJUSTES.sons.selecionar;
+  estSomSel.textContent=AJUSTES.sons.selecionar?'ligado':'desligado';
+  btSomSel.classList.toggle('on',AJUSTES.sons.selecionar);
+  salvarAjustes();
+});
+btSomCasc.addEventListener('click',()=>{
+  AJUSTES.sons.cascata=!AJUSTES.sons.cascata;
+  estSomCasc.textContent=AJUSTES.sons.cascata?'ligado':'desligado';
+  btSomCasc.classList.toggle('on',AJUSTES.sons.cascata);
+  salvarAjustes();
+});
+btSomRamo.addEventListener('click',()=>{
+  AJUSTES.sons.ramo=!AJUSTES.sons.ramo;
+  estSomRamo.textContent=AJUSTES.sons.ramo?'ligado':'desligado';
+  btSomRamo.classList.toggle('on',AJUSTES.sons.ramo);
+  salvarAjustes();
+});
+document.querySelectorAll('.som-btn').forEach(bt=>{
+  bt.addEventListener('click',()=>{
+    AJUSTES.sons.tipoCascata=bt.dataset.som;
+    document.querySelectorAll('.som-btn').forEach(b=>{
+      b.classList.toggle('on',b.dataset.som===AJUSTES.sons.tipoCascata);
+      const sp=b.querySelector('.estSom');
+      if(sp) sp.textContent=b.dataset.som===AJUSTES.sons.tipoCascata?'ativo':'';
+    });
+    salvarAjustes();
+  });
+});
+initSons();
+
 const btTopo=document.getElementById('btTopo');
 btTopo.addEventListener('click',()=>{
   try{
@@ -1591,6 +1866,17 @@ window.cerebroAjustesAplicar = function(txt){
     if (!AJUSTES.efeitos || typeof AJUSTES.efeitos!=='object') AJUSTES.efeitos={};
     if (AJUSTES.efeitos.espiculas===undefined) AJUSTES.efeitos.espiculas=true;
     if (AJUSTES.efeitos.ondasHub===undefined) AJUSTES.efeitos.ondasHub=true;
+    if (!AJUSTES.sons || typeof AJUSTES.sons!=='object') AJUSTES.sons={};
+    if (AJUSTES.sons.volume===undefined) AJUSTES.sons.volume=0.4;
+    if (AJUSTES.sons.mudo===undefined) AJUSTES.sons.mudo=false;
+    if (AJUSTES.sons.tipoCascata===undefined) AJUSTES.sons.tipoCascata='eletrico';
+    if (AJUSTES.sons.selecionar===undefined) AJUSTES.sons.selecionar=true;
+    if (AJUSTES.sons.cascata===undefined) AJUSTES.sons.cascata=true;
+    if (AJUSTES.sons.ramo===undefined) AJUSTES.sons.ramo=true;
+    if (AJUSTES.sons.brilho===undefined) AJUSTES.sons.brilho=1.0;
+    if (AJUSTES.sons.raio===undefined) AJUSTES.sons.raio=1.0;
+    if (AJUSTES.sons.contraste===undefined) AJUSTES.sons.contraste=1.0;
+    initSons();
     pintarDecor();
     pintarEfeitos();
     construirMenuFoco();

@@ -1,4 +1,4 @@
-import asyncio, websockets, edge_tts, base64, json, logging, os, re, time, xml.sax.saxutils, socket, urllib.request, urllib.error, random, datetime, shutil, subprocess, sys, unicodedata
+import asyncio, websockets, edge_tts, base64, json, logging, os, re, time, xml.sax.saxutils, socket, urllib.request, urllib.error, urllib.parse, random, datetime, shutil, subprocess, sys, unicodedata, html
 from pathlib import Path
 from aiohttp import web
 
@@ -1385,9 +1385,12 @@ class Cliente:
                 ctx_mem = digest_contexto(ctx_mem, max_chars=_teto)
         except Exception:
             pass
+        ctx_web = ""
+        if _requer_busca_web(msg):
+            ctx_web = _montar_bloco_web(msg)
         sufixo = f"Usuario: {msg}\nJarvis:"
-        livre = MAX_PROMPT - len(SISTEMA) - len(estado) - len(ctx_mem) - 4 - len(sufixo)
-        p = SISTEMA + "\n\n" + estado + "\n\n" + ctx_mem
+        livre = MAX_PROMPT - len(SISTEMA) - len(estado) - len(ctx_mem) - len(ctx_web) - 4 - len(sufixo)
+        p = SISTEMA + "\n\n" + estado + "\n\n" + ctx_mem + ctx_web
         hist = self._hist[-(MAX_HIST*2):]
         for i in range(0, len(hist), 2):
             if i+1 >= len(hist): break
@@ -2009,7 +2012,10 @@ _PADROES_BUSCA_WEB = re.compile(
     r"lan[çc]amento|not[íi]cia|not[íi]cias|cat[áa]logo|card[áa]pio|"
     r"disponibilidade|tem em estoque|estoque|entrega|frete|prazo de|"
     r"cota[çc][ãa]o|resultado do jogo|placar|previs[aã]o do tempo|clima|"
-    r"vai chover|vai ter sol|faz calor|faz frio|tempo amanh[ãa]|chover [hóo]je)"
+    r"vai chover|vai ter sol|faz calor|faz frio|tempo amanh[ãa]|chover [hóo]je|"
+    r"tr[aâ]nsito|tr[aá]fego|transporte(s)?|congestionamento|engarrafamento|"
+    r"lentid[aã]o|ao vivo|em tempo real|tempo real|"
+    r"quanto tempo (falta|demora)|est[aá] liberad[oa]|est[aá] parad[oa])"
     r"|"
     r"(pesquis|procur|busca|busque|olha n[oa] (internet|web|site)|"
     r"acha a[íi]|encontra|pesquise)"
@@ -2020,12 +2026,182 @@ _PADROES_BUSCA_WEB = re.compile(
 
 def _requer_busca_web(msg: str) -> bool:
     """True se a mensagem pede dado atual/online (promoção, preço, notícia,
-    cotação, clima, disponibilidade, pesquisa explícita, marca com oferta...)
-    que o canal rápido (modelo puro, sem ferramentas) não consegue obter.
-    Essas mensagens devem ir direto ao canal serve (com ferramentas de web)."""
+    cotação, clima, trânsito, disponibilidade, pesquisa explícita, marca com
+    oferta...) que o canal rápido (modelo puro, sem ferramentas) não consegue
+    obter. Essas mensagens devem ir direto ao canal serve (com dados web)."""
     if not msg or not isinstance(msg, str):
         return False
     return bool(_PADROES_BUSCA_WEB.search(msg))
+
+
+# ---- Busca web determinística (DuckDuckGo lite, stdlib) ----
+# O modelo do serve não chama ferramentas de web por conta própria (verificado
+# no campo: responde "não consigo consultar/tenho acesso" sem tool_use). Para
+# perguntas que exigem dado atual/online, a bridge busca e injeta o resultado
+# no prompt; o modelo responde COM BASE nos dados reais em vez de alegar falta
+# de acesso. Fonte: https://lite.duckduckgo.com/lite/?q= (sem chave).
+_BUSCA_WEB_DDG = "https://lite.duckduckgo.com/lite/?q="
+_BUSCA_WEB_BING = "https://www.bing.com/search?q="
+_BUSCA_WEB_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+_BUSCA_WEB_MAX = 6
+_BUSCA_WEB_TTL = 600   # cache de sucesso (segundos)
+_BUSCA_WEB_FALHA_TTL = 30  # cache de falha (evita martelar o motor em rate-limit)
+_BUSCA_WEB_PAUSA = 1.5  # pausa entre tentativas (anti rate-limit)
+_BUSCA_WEB_CACHE = {}
+_BUSCA_WEB_STOP = {
+    "qual", "quais", "quanto", "quanta", "quantos", "quantas", "como",
+    "estao", "estava", "estavam", "onde", "quando", "porque", "para", "pra",
+    "da", "de", "do", "dos", "das", "o", "a", "os", "as", "em", "no", "na",
+    "nos", "nas", "hoje", "agora", "tem", "ter", "ver", "sobre", "voce", "vc",
+    "me", "um", "uma", "uns", "umas", "isso", "aquele", "aquilo", "e", "ou",
+    "se", "mas", "ja", "ai", "ser", "esta", "ha", "com",
+}
+
+
+def _query_web_enxuta(query: str) -> str:
+    """Remove stopwords de pergunta e tokens curtos, mantendo termos de busca."""
+    toks = [t for t in re.findall(r"[\wáàâãéèêíìîóòôõúùûç]+", query.lower())
+            if t not in _BUSCA_WEB_STOP and len(t) >= 3]
+    vistos, unicos = set(), []
+    for t in toks:
+        if t not in vistos:
+            vistos.add(t)
+            unicos.append(t)
+    return " ".join(unicos[:8])
+
+
+def _decodifica_url_bing(u: str) -> str:
+    """Extrai a URL real de um redirect do Bing (`u=` em base64). O valor
+    começa com prefixo tipo 'a1a1'/'a1a'/'a1' seguido do base64 url-safe do
+    destino; a cadeia vem sem padding e pode ser truncada. Para cada prefixo
+    tenta múltiplos paddings e valida que o resultado é uma URL http(s)."""
+    if not u:
+        return ""
+    for pfx in ("a1a1", "a1a", "a1"):
+        if not u.startswith(pfx):
+            continue
+        cand = u[len(pfx):]
+        for i in range(4):
+            c = cand + "=" * i
+            if len(c) % 4:
+                continue
+            try:
+                b = base64.urlsafe_b64decode(c)
+                s = b.decode("utf-8")
+            except Exception:
+                continue
+            if re.match(r"^https?://", s, re.I):
+                return s
+    return ""
+
+
+def _parse_ddg_lite(pag: str, max_n: int) -> list:
+    links = re.findall(r'<a rel="nofollow" href="([^"]+)"[^>]*>(.*?)</a>', pag, re.S)
+    trechos = re.findall(r"<td class=['\"]result-snippet['\"][^>]*>(.*?)</td>", pag, re.S)
+    saida = []
+    for i, (href, titulo) in enumerate(links[:max_n]):
+        t = re.sub(r"<[^>]+>", "", titulo).strip()
+        t = html.unescape(t)
+        if not t:
+            continue
+        u = href
+        mo = re.search(r"uddg=([^&]+)", href)
+        if mo:
+            u = urllib.parse.unquote(mo.group(1))
+        s = ""
+        if i < len(trechos):
+            s = re.sub(r"<[^>]+>", "", trechos[i]).strip().replace("\xa0", " ")
+            s = html.unescape(s)
+        saida.append(f"- {t} — {u}" + (f"\n  {s[:180]}" if s else ""))
+    return saida
+
+
+def _parse_bing(pag: str, max_n: int) -> list:
+    blocos = re.split(r'<li class="b_algo', pag)[1:]
+    saida = []
+    for bloco in blocos:
+        if len(saida) >= max_n:
+            break
+        m = re.search(r'<h2[^>]*><a[^>]*href="([^"]+)"[^>]*>(.*?)</a>', bloco, re.S)
+        if not m:
+            continue
+        href, tit = m.group(1), re.sub(r"<[^>]+>", "", m.group(2)).strip()
+        tit = html.unescape(tit)
+        if not tit:
+            continue
+        u = href
+        if "bing.com/ck/" in href:
+            um = re.search(r"[?&](?:amp;)?u=([^&]+)", href)
+            if um:
+                u = _decodifica_url_bing(um.group(1)) or href
+        sn = re.search(r'<p[^>]*>(.*?)</p>', bloco, re.S)
+        s = ""
+        if sn:
+            s = html.unescape(re.sub(r"<[^>]+>", "", sn.group(1)).strip())
+        saida.append(f"- {tit} — {u}" + (f"\n  {s[:180]}" if s else ""))
+    return saida
+
+
+def _buscar_web(query: str, max_n: int = _BUSCA_WEB_MAX) -> str:
+    """Busca na web sem chave (DuckDuckGo lite, com fallback para Bing) e
+    devolve bloco de texto com resultados reais (título + URL + trecho).
+    Nunca levanta exceção: retorna '' quando a busca falha. Tenta a frase
+    original e uma variante enxuta (sem stopwords) com pausa anti rate-limit."""
+    if not query or not isinstance(query, str):
+        return ""
+    chave = re.sub(r"\W+", " ", query.lower()).strip()[:60]
+    agora = time.time()
+    hit = _BUSCA_WEB_CACHE.get(chave)
+    if hit:
+        _ok, _ts, _bloco = hit
+        if agora - _ts < (_BUSCA_WEB_TTL if _ok else _BUSCA_WEB_FALHA_TTL):
+            return _bloco
+    consultas = []
+    for qq in (_query_web_enxuta(query), query):
+        qq = re.sub(r"\s+", " ", qq).strip()
+        if qq and qq not in consultas:
+            consultas.append(qq)
+    if not consultas:
+        consultas = [query]
+    motores = ("ddg", "bing")
+    for motor in motores:
+        parsedores = {"ddg": _parse_ddg_lite, "bing": _parse_bing}[motor]
+        base = _BUSCA_WEB_DDG if motor == "ddg" else _BUSCA_WEB_BING
+        for qq in consultas:
+            try:
+                url = base + urllib.parse.quote(qq)
+                req = urllib.request.Request(url, headers={
+                    "User-Agent": _BUSCA_WEB_UA,
+                    "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
+                })
+                with urllib.request.urlopen(req, timeout=15) as r:
+                    pag = r.read().decode("utf-8", "ignore")
+                saida = parsedores(pag, max_n)
+                if saida:
+                    bloco = "\n".join(saida) + "\n"
+                    _BUSCA_WEB_CACHE[chave] = (True, agora, bloco)
+                    logger.info(f"busca web [{motor}]: {len(saida)} resultados "
+                                f"para '{query[:50]}'")
+                    return bloco
+            except Exception as e:
+                logger.warning(f"busca web [{motor}] falhou ({qq[:60]}): {e}")
+            time.sleep(_BUSCA_WEB_PAUSA)
+        if 1 < len(motores) and motor != motores[-1]:
+            # entre motores um pouco mais de folga
+            time.sleep(_BUSCA_WEB_PAUSA)
+    _BUSCA_WEB_CACHE[chave] = (False, agora, "")
+    return ""
+
+
+def _montar_bloco_web(msg: str) -> str:
+    """Bloco de contexto web para injetar no prompt quando há busca. Sempre
+    retorna texto ('' se a busca falhar); nunca permite dupla pergunta
+    ('Não consigo' + busca) — a base de dados é o que o modelo tem."""
+    bloco = _buscar_web(msg)
+    if not bloco:
+        return ""
+    return ("## Dados atuais obtidos da web (base para sua resposta; "
+            "cite a fonte quando usar):\n" + bloco + "\n")
 
 
 def _normalizar_fala(t: str) -> str:
@@ -2173,6 +2349,14 @@ async def _fallback_cadeia_curada(msg: str, img_base64=None, img_mime="image/jpe
         globals()["_llm_feedback_mod"] = _mod
     _mod = globals()["_llm_feedback_mod"]
     cadeia = _mod.cadeia_ordenada()
+    _msg_uso = msg
+    if _requer_busca_web(msg):
+        try:
+            _bloco = _montar_bloco_web(msg)
+            if _bloco:
+                _msg_uso = _bloco + "Pergunta do usuario: " + msg
+        except Exception as _e:
+            logger.debug(f"fallback: injecao de busca ignorada ({_e})")
     for modelo in cadeia:
         _t0 = _t.time()
         try:
@@ -2180,7 +2364,7 @@ async def _fallback_cadeia_curada(msg: str, img_base64=None, img_mime="image/jpe
                 "https://opencode.ai/api/v1/chat/completions",
                 data=json.dumps({
                     "model": modelo,
-                    "messages": [{"role": "user", "content": msg}],
+                    "messages": [{"role": "user", "content": _msg_uso}],
                     "max_tokens": 256,
                 }).encode("utf-8"),
                 headers={"Content-Type": "application/json"},

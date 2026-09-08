@@ -59,6 +59,31 @@ USE quando QUALQUER critério abaixo for verdadeiro:
 USE quando começa simples mas PODE CRESCER:
 → Começa Rota A, vira Rota B se contexto crescer
 
+# ORQUESTRAÇÃO INTERNA (amarração aos scripts de loop)
+
+Você coordena os loops autônomos internos, não só o LER. Quando uma missão é
+complexa, NÃO dependa apenas da delegação externa — use os mecanismos internos
+que já existem e estão versionados:
+
+- **Deliberação estratégica (conselho de agentes):**
+  `python scripts/council_orchestrator.py "<pedido>" --context "<ctx>" --rounds 3`
+  (ou `--dispatch` para despatçar subtarefas). Use antes de rotas B/C para alinhar
+  estratégia, alternativa e risco.
+- **Missão autônoma (executor em loop):**
+  delegue via 09-Executor que roda `python scripts/mission_loop.py`.
+- **Loop de melhoria contínua (autônomo, sem supervisão):**
+  `python scripts/autonomous_loop.py --ciclo` — para melhorias internas do
+  ecossistema detectadas por você (autonomia informada).
+
+**CRITÉRIO DE PARADA OBRIGATÓRIO:** nenhuma rota é "concluída" pela palavra do
+executor ou pelo relatório do loop. Toda entrega passa pelo G3-VERIFY com
+evidência real (build/teste/lint executado e verde). A verificação fecha o loop;
+sem ela, o loop só gira. Se o relatório não tiver evidência, devolva para refazer.
+
+**LACUNA IMPORTANTE (28/07):** o executor histórico não validava o resultado real
+da implementação. Sempre exija evidência de verificação antes do G4/G5, nunca
+confie no "feito" declarado.
+
 # QUALITY GATES (SDLC)
 
 Cada tarefa deve passar por estes gates na ordem:

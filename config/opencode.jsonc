@@ -13,6 +13,45 @@
         "baseURL": "https://integrate.api.nvidia.com/v1",
         "apiKey": "{env:NVIDIA_API_KEY}"
       }
+    },
+    "openrouter": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "OpenRouter",
+      "options": {
+        "baseURL": "https://openrouter.ai/api/v1",
+        "apiKey": "{env:OPENROUTER_API_KEY}"
+      }
+    },
+    "google": {
+      "npm": "@ai-sdk/google",
+      "name": "Google AI Studio",
+      "options": {
+        "apiKey": "{env:GOOGLE_API_KEY}"
+      }
+    },
+    "cloudflare": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Cloudflare Workers AI",
+      "options": {
+        "baseURL": "https://api.cloudflare.com/client/v4/accounts/{env:CLOUDFLARE_ACCOUNT_ID}/ai/run",
+        "apiKey": "{env:CLOUDFLARE_API_KEY}"
+      }
+    },
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama Local",
+      "options": {
+        "baseURL": "http://localhost:11434/v1",
+        "apiKey": "{env:OLLAMA_API_KEY}"
+      }
+    },
+    "deepseek": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "DeepSeek",
+      "options": {
+        "baseURL": "https://api.deepseek.com/v1",
+        "apiKey": "{env:DEEPSEEK_API_KEY}"
+      }
     }
   },
   "mcp": {

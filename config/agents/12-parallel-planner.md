@@ -38,6 +38,11 @@ Papéis dos agents envolvidos:
 ]
 ```
 
+**IMPORTANTE (encoding):** grave o tasks.json em UTF-8 SEM BOM. O PowerShell
+grava BOM por padrão e o `parallel_dispatcher` quebra no `json.load`. Use
+`python -c` ou um editor que grave sem BOM, nunca `Set-Content` do PowerShell para
+este arquivo.
+
 # REGRAS DE PARALELISMO
 
 1. **Nunca** coloque duas subtarefas que escrevem no mesmo arquivo no mesmo nível
