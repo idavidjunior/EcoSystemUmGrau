@@ -18,8 +18,8 @@ Trilha em ciclos curtos, cada um com entrega validada (teste real) e registro em
 ### Ciclo 1 — Fundamentos (A/F) — concluído (2026-09-08)
 Micro-labs: servidor HTTP stdlib, HTML semântico + CSS dark, JSON, DOM. Entrega: página servida por http.server com /api/health, validada por teste httpx real em labs/ciclo-1-fundamentos (test_server.py PASSANDO; mapa bloco A = VALIDATED/3).
 
-### Ciclo 2 — Backend estruturado (F/L)
-Micro-labs: rotas múltiplas, parâmetros, status codes corretos, eros JSON (404/405/500), servidores concorrentes (ThreadingHTTPServer vs uvicorn). ADR-003 (stack web core): decisão entre uvicorn puro vs FastAPI. Entrega: mini-API com 3+ rotas + teste de integração.
+### Ciclo 2 — Backend estruturado (F/L) — concluído (2026-09-08)
+Mini-API Python stdlib com rotas múltiplas (/api/health, /api/soma, /api/items, /api/explode), parâmetros via query string, status codes corretos (200/201/400/404/405/500) e erros JSON, validada por teste de integração em labs/ciclo-2-backend-estruturado (STATUS OK, 14 checks, 0 falhas; adversarial incluído). ADR-003 decidiu: manter/estender ThreadingHTTPServer stdlib; uvicorn puro documentado para Ciclos 4+; FastAPI fora.
 
 ### Ciclo 3 — Realtime WebSocket (F/H)
 Micro-labs: WebSocket com aiohttp/websockets; broadcast; heartbeat. Integração com o runtime persistente (estado eco). Entrega: endpoint WS eco validado com cliente de teste.

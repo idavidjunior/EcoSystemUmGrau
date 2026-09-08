@@ -141,7 +141,8 @@ def scan_repo():
     total = 0
     # Pastas ignoradas: terceiros, cache, backups e estados efemeros
     skip_dirs = {'.git', 'node_modules', '__pycache__', '.venv', 'health', 'logs',
-                 'backups', '.obsidian', 'vendor', 'dist', 'build', 'site-packages'}
+                 'backups', '.obsidian', 'vendor', 'dist', 'build', 'site-packages',
+                 'OpenManus'}
     skip_files = {
         'preflight_etica.py',      # contem os padroes de busca em texto literal
         'inventario_dados.json',   # output do proprio inventario
@@ -162,7 +163,8 @@ def data_inventory():
     print('[INVENTARIO] Mapeando dados sensiveis no repo...')
     inventory = {}
     skip = {'.git', 'node_modules', '__pycache__', '.venv', 'health',
-            'backups', '.obsidian', 'vendor', 'dist', 'build', 'site-packages'}
+            'backups', '.obsidian', 'vendor', 'dist', 'build', 'site-packages',
+            'OpenManus'}
     skip_files = {'preflight_etica.py', 'niveis_etica.py', 'inventario_dados.json',
                   'niveis_etica.json'}
     for root, dirs, files in os.walk(BASE):

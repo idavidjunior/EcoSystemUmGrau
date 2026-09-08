@@ -1311,6 +1311,21 @@ Resolução de conceitos — termos do pedido são resolvidos contra o acervo re
 
 Detecção de desperdício — pedido repetido (última tarefa), escopo creep, sem entregável claro.
 
+**OBRIGATORIEDADE DE TOOL-CALLING IMEDIATO**
+Para CADA mensagem do usuário, a PRIMEIRA ação do agente DEVE ser invocar a tool MCP:
+`mcp-compreensao-pedidos:compreender_pedido` com o parâmetro `pedido` contendo o texto integral da mensagem do usuário.
+Isso não é opcional, não é sugestão — é a ação #1 de toda resposta. Só após receber o resultado estruturado
+(objetivo, ações, score, plano, criterios_sucesso) o agente prossegue. Se score < 60 ou julgamento == AMBIGUO:
+esclarece com o usuário. Se ≥ 60: executa o plano usando tool_orchestrator + skills MCP.
+
+**INTEGRAÇÃO COM ANTI-BAJULADOR**
+A comunicação do resultado da compreensão DEVE seguir a CLÁUSULA PÉTREA — ANTIBAJULAÇÃO:
+- Se score < 60 ou AMBIGUO: reportar direto as ambiguidades e seu custo, sem "boa pergunta" nem "entendi".
+- Se `detectar_desperdicio` apontar repetição/escopo creep: informar objetivamente, sem suavizar.
+- Se `resolver_conceitos` achar termos desconhecidos: listar o que não sabe, não fingir que sabe.
+- Score ≥ 60: confirmar execução curta ("Executando."), sem "excelente ideia".
+- Sempre neutro, técnico, direto ao ponto.
+
 Pipeline de execução (ordem obrigatória)
 Receber pedido (do usuário, de uma skill, de um agente especializado ou da voz)
 

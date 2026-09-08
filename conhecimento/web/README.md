@@ -38,7 +38,7 @@ Nível: 0–8. MASTERED exige nível 8 com evidência documentada.
 | C | TypeScript | DISCOVERED | 1 | Padrões TS no vault; runtime Node ausente |
 | D | UI/UX (usabilidade, sistemas de design) | DISCOVERED | 1 | EcoDashboard, WindowGUI, www/; sem labs |
 | E | Animação/Gráficos WebGL/Three.js/WebGPU | DISCOVERED | 1 | docs/grafo.html existe; WebGPU não testado |
-| F | Backend Web (servidores, rotas, APIs) | UNDERSTOOD | 2 | uvicorn/httpx/websockets/aiohttp/playwright instalados; FastAPI não; micro-lab Ciclo 1 (servidor stdlib + JSON) validado |
+| F | Backend Web (servidores, rotas, APIs) | VALIDATED | 3 | micro-lab Ciclo 2 validado (14 checks OK, labs/ciclo-2-backend-estruturado); ADR-003; Ciclo 1 (servidor stdlib + JSON) validado |
 | G | Banco (PostgreSQL/Redis) | UNKNOWN | 0 | Não verificado; sqlite3 disponível via stdlib |
 | H | IA/LLM/RAG aplicada em web | VALIDATED | 3 | Ecossistema usa IA real (cognitive_core, agents, MCP); web como interface pendente |
 | I | Segurança OWASP | UNDERSTOOD | 2 | Skills mcp-desenvolvimento (secure-coding, threat-modeling, security-review); sem labs |

@@ -26,6 +26,13 @@ impacto: Buscas de trânsito, promoção e clima agora devolvem dados reais com 
 - `test_parse_bing_dbg.py`: URLs reais decodificadas (tiendeo.com.br, promocaoype.com.br, uol.com.br, magazineluiza.com.br).
 - `test_busca_web_final2.py` (cache limpo): trânsito → G1 e Waze; tixan ype → promocaoype; clima → climatempo/UOL/INMET.
 
+## Validação em produção (2026-09-08, 15/15 testes PASS)
+- Unidade: decoders para a1, a1a, a1a1, truncamento, ausência de padding e lixo não-URL — todos ok.
+- Integração real: "como está o trânsito" → CET; "melhor promoção" → Portal da Promo; "clima" → Climatempo. Saídas com 6 resultados, URLs http reais, zero `bing.com/ck/` presos (12 linhas de saída, 6 URLs).
+- Fallback: com DuckDuckGo forçado a falhar, Bing assumiu em 3,2s e entregou resultado.
+- Cache: segunda chamada idêntica respondeu em 0,0s (TTL 600s).
+- Commit `77ef5ae77` ("fix(busca-web): decoder do redirect Bing (prefixo correto a1) e prioridade da query enxuta"), pusheado e espelhado no HD externo.
+
 ## Aprendizado
 - Ao testar fallback de buscadores, validar com páginas HTML reais salvas localmente.
 - Testes devem rodar via arquivos .py temporários: PowerShell inline destrói `$`, `&` e `"`.
