@@ -30,8 +30,8 @@ Endpoint POST que conversa com o cognitive_core real (`process_user_input`), cha
 ### Ciclo 5 — Persistência web (G) — concluído (2026-09-09)
 Micro-labs: sqlite3 em servidor HTTP; tabelas, queries, migrations simples; ponto único de persistência (gate). Entrega: app web que persiste estado local real. Validado em labs/ciclo-5-persistencia-web (STATUS OK, 25 checks, 0 falhas; CRUD + arquivar + excluir + persistência real entre reinícios). ADR-005 decidiu: sqlite3 stdlib como camada de banco (bloco G VALIDATED/3); ThreadingHTTPServer mantido (ADR-003); PostgreSQL/Redis só se o produto exigir.
 
-### Ciclo 6 — Segurança OWASP (I)
-Micro-labs: validação de entrada, headers seguros, CORS, sanitização, rate limit. Auditoria com skill security-review nos labs anteriores. Entrega: checklist de segurança aplicado ao conjunto.
+### Ciclo 6 — Segurança OWASP (I) — concluído (2026-09-09)
+SecurityMiddleware com headers OWASP (X-Content-Type-Options, X-Frame-Options, X-XSS-Protection, Referrer-Policy, CSP), rate limit token bucket (50/min por IP), limite de body (1MB), validação de Content-Type (JSON only), sanitização de strings, tratamento de erros sem leak de internals, SQL injection blocking, endpoint /api/explode para teste de erro 500. Validado em labs/ciclo-6-seguranca-owasp (STATUS OK, 34 checks, 0 falhas). ADR-006 pendente.
 
 ### Ciclo 7 — Performance e acessibilidade (J/D)
 Micro-labs: medição de LCP/CLS/INP com playwright; correção de acesso (WCAG básico). Entrega: relatório de Core Web Vitals de uma página real + correções.

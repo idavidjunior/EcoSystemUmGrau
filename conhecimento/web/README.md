@@ -41,7 +41,7 @@ Nível: 0–8. MASTERED exige nível 8 com evidência documentada.
 | F | Backend Web (servidores, rotas, APIs) | VALIDATED | 3 | micro-lab Ciclo 2 validado (14 checks OK, labs/ciclo-2-backend-estruturado); ADR-003; micro-lab Ciclo 3 WS (6 checks OK, labs/ciclo-3-websocket); ADR-004; Ciclo 1 (servidor stdlib + JSON) validado |
 | G | Banco (PostgreSQL/Redis) | VALIDATED | 3 | sqlite3 stdlib com CRUD HTTP, migrations v1→v2 e persistência real entre reinícios validado (25 checks OK, labs/ciclo-5-persistencia-web); ADR-005; PostgreSQL/Redis só se o produto exigir |
 | H | IA/LLM/RAG aplicada em web | VALIDATED | 3 | Ecossistema usa IA real (cognitive_core, agents, MCP); realtime web com estado do runtime validado (Ciclo 3, /estado); chat web ligado ao cognitive_core validado (Ciclo 4, 11 checks OK, labs/ciclo-4-ia-chat); timeout da busca MCP corrigido (09/09, -32603 eliminado; add-memory 120s, get-memory-context 30s, lock 120s); RAG segue como trabalho em aberto, sem blocker técnico |
-| I | Segurança OWASP | UNDERSTOOD | 2 | Skills mcp-desenvolvimento (secure-coding, threat-modeling, security-review); sem labs |
+| I | Segurança OWASP | VALIDATED | 3 | SecurityMiddleware OWASP (headers, rate limit, body limit, content-type check, sanitização, error handling, SQL injection blocking) validado (34 checks OK, labs/ciclo-6-seguranca-owasp); ADR-006 pendente |
 | J | Performance / Core Web Vitals | DISCOVERED | 1 | Skill performance-testing existe; nenhuma métrica medida |
 | K | DevOps (deploy, CI/CD, Docker) | UNDERSTOOD | 2 | Docker ausente; CI via GitHub Actions em uso; skill ci-cd-pipeline |
 | L | Arquitetura (SOLID, Clean, event-driven) | UNDERSTOOD | 3 | ADRs prévios da missão (ADR-001..005, decisões web registradas); decisões web pendentes |

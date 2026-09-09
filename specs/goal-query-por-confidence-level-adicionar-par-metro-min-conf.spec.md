@@ -4,7 +4,7 @@ versao: 0.1.0
 status: proposta
 componente: .
 tags: [ler, goal-analysis]
-data: 2026-09-07
+data: 2026-09-09
 ---
 
 # Spec — goal-query-por-confidence-level-adicionar-par-metro-min-conf
@@ -16,7 +16,7 @@ data: 2026-09-07
 query por confidence level. adicionar parâmetro min_confidence ao search do knowledge_graph | atualizar bm25 para suportar filtro de confiança | testar busca com min_confidence (respete: ['scripts/knowledge_graph.py'])
 
 ---
-set: 2026-09-07t14:33:38.465630
+set: 2026-09-09t14:30:30.674067
 
 ## Requisitos
 

@@ -2,33 +2,33 @@
 
 **Goal:** # Goal
 
-Aprendizado com Confidence Tracking. Adicionar campo confidence em aprendizados | Adicionar campo source_evidence[] em aprendizados | Atualizar learning_engine para aceitar confidence (respete: ['scripts/learning_engine.py'])
+Query por Confidence Level. Adicionar parâmetro min_confidence ao search do knowledge_graph | Atualizar BM25 para suportar filtro de confiança | Testar busca com min_confidence (respete: ['scripts/knowledge_graph.py'])
 
 ---
-Set: 2026-09-09T14:20:23.778300
+Set: 2026-09-09T14:30:30.674067
 
-**Created:** 2026-09-09T14:25:08.963482
+**Created:** 2026-09-09T14:30:32.119193
 
 **Total Steps:** 5
 
 ---
 
 ### Step 1: SETUP - analyze_environment
-**Description:** Analyze environment for: learning
+**Description:** Analyze environment for: validation
 **Validation:** check_env
 **Status:** pending
 
 ### Step 2: SETUP - initialize_project
 **Description:** Initialize project structure for: # Goal
 
-Aprendizado com Confidence Tracking. Adicionar campo
+Query por Confidence Level. Adicionar parâmetro min_
 **Validation:** check_structure
 **Status:** pending
 
-### Step 3: IMPLEMENTATION - gather_information
-**Description:** Pesquisar e aprender: # Goal
+### Step 3: IMPLEMENTATION - test
+**Description:** Executar testes de validacao: # Goal
 
-Aprendizado com Confidence Tracking. Adicionar campo
+Query por Confidence Level. Adicionar parâmetro min_
 **Validation:** check_output
 **Status:** pending
 

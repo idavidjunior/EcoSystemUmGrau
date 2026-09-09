@@ -43316,5 +43316,105 @@
         "reliability": 0.96
       }
     ]
+  },
+  {
+    "id": 98327,
+    "kind": "decisao",
+    "task": "Ciclo 6 Seguranca OWASP Validado",
+    "summary": "SecurityMiddleware com headers OWASP, rate limit token bucket 50/min, body limit 1MB, content-type check JSON, sanitizacao, error handling sem leak, SQL injection blocking. 34 checks OK. Bug: rate limit so funciona se bucket e dict simples (nao defaultdict) e bucket inicializado por request (nao por __init__ do handler pois BaseHTTPRequestHandler processa request ANTES do __init__). Bug: GET handlers precisam de rate limit (nao so POST/PUT/PATCH). Bug: body limit de 2MB fecha conexao antes de enviar 413, teste precisa tratar ConnectionAbortedError.",
+    "project": "",
+    "tags": [
+      "rascunho",
+      "baixa-confianca",
+      "blocking",
+      "injection",
+      "sql",
+      "leak",
+      "handling",
+      "error"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.3,
+    "source_type": "rascunho",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-09-09T14:28:28.454182",
+    "last_accessed": "2026-09-09T14:28:28.454182",
+    "source_refs": [
+      {
+        "id": "owasp-top10",
+        "name": "OWASP Top 10",
+        "url": "https://owasp.org/www-project-top-ten/",
+        "authority_level": "A",
+        "reliability": 0.96
+      },
+      {
+        "id": "python-requests",
+        "name": "Requests Library",
+        "url": "https://requests.readthedocs.io/",
+        "authority_level": "A",
+        "reliability": 0.95
+      },
+      {
+        "id": "crates-io",
+        "name": "crates.io",
+        "url": "https://crates.io/",
+        "authority_level": "C",
+        "reliability": 0.9
+      }
+    ]
+  },
+  {
+    "id": 98328,
+    "kind": "erro",
+    "task": "Timeout na evolução: Aprendizado com Confidence Tracking",
+    "summary": "Subagente excedeu 300s.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "ciclo-fechado",
+      "rascunho",
+      "baixa-confianca",
+      "300s",
+      "excedeu",
+      "subagente",
+      "tracking",
+      "confidence",
+      "aprendizado"
+    ],
+    "metadata": {
+      "gap": "learning:confidence_tracking"
+    },
+    "strength": 1.0,
+    "confidence": 0.3,
+    "source_type": "inferido",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-09-09T14:30:19.777984",
+    "last_accessed": "2026-09-09T14:30:19.777984",
+    "source_refs": [
+      {
+        "id": "cppreference",
+        "name": "cppreference",
+        "url": "https://en.cppreference.com/",
+        "authority_level": "A",
+        "reliability": 0.96
+      },
+      {
+        "id": "kernighan-ritchie",
+        "name": "The C Programming Language (K&R)",
+        "url": "https://en.wikipedia.org/wiki/The_C_Programming_Language",
+        "authority_level": "B",
+        "reliability": 0.98
+      },
+      {
+        "id": "apue",
+        "name": "Advanced Programming in the Unix Environment",
+        "url": "https://www.apuebook.com/",
+        "authority_level": "B",
+        "reliability": 0.97
+      }
+    ]
   }
 ]
