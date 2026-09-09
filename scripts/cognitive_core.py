@@ -753,7 +753,13 @@ def _execute_conversation_flow(
 
     # Adicionar memórias relevantes
     if memories:
-        mem_summaries = [m.get("conteudo", "")[:80] for m in memories]
+        mem_summaries = []
+        for m in memories:
+            if isinstance(m, dict):
+                conteudo = m.get("conteudo", "")
+            else:
+                conteudo = str(m)
+            mem_summaries.append(conteudo[:80])
         context_parts.append("Relevant memories: " + " | ".join(mem_summaries))
 
     # Montar resposta

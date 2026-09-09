@@ -38,9 +38,9 @@ Nível: 0–8. MASTERED exige nível 8 com evidência documentada.
 | C | TypeScript | DISCOVERED | 1 | Padrões TS no vault; runtime Node ausente |
 | D | UI/UX (usabilidade, sistemas de design) | DISCOVERED | 1 | EcoDashboard, WindowGUI, www/; sem labs |
 | E | Animação/Gráficos WebGL/Three.js/WebGPU | DISCOVERED | 1 | docs/grafo.html existe; WebGPU não testado |
-| F | Backend Web (servidores, rotas, APIs) | VALIDATED | 3 | micro-lab Ciclo 2 validado (14 checks OK, labs/ciclo-2-backend-estruturado); ADR-003; Ciclo 1 (servidor stdlib + JSON) validado |
+| F | Backend Web (servidores, rotas, APIs) | VALIDATED | 3 | micro-lab Ciclo 2 validado (14 checks OK, labs/ciclo-2-backend-estruturado); ADR-003; micro-lab Ciclo 3 WS (6 checks OK, labs/ciclo-3-websocket); ADR-004; Ciclo 1 (servidor stdlib + JSON) validado |
 | G | Banco (PostgreSQL/Redis) | UNKNOWN | 0 | Não verificado; sqlite3 disponível via stdlib |
-| H | IA/LLM/RAG aplicada em web | VALIDATED | 3 | Ecossistema usa IA real (cognitive_core, agents, MCP); web como interface pendente |
+| H | IA/LLM/RAG aplicada em web | VALIDATED | 3 | Ecossistema usa IA real (cognitive_core, agents, MCP); realtime web com estado do runtime validado (Ciclo 3, /estado); web como interface pendente |
 | I | Segurança OWASP | UNDERSTOOD | 2 | Skills mcp-desenvolvimento (secure-coding, threat-modeling, security-review); sem labs |
 | J | Performance / Core Web Vitals | DISCOVERED | 1 | Skill performance-testing existe; nenhuma métrica medida |
 | K | DevOps (deploy, CI/CD, Docker) | UNDERSTOOD | 2 | Docker ausente; CI via GitHub Actions em uso; skill ci-cd-pipeline |
@@ -56,7 +56,7 @@ Nível: 0–8. MASTERED exige nível 8 com evidência documentada.
 ## Pendências conhecidas
 
 - Node.js/npm ausentes — bloqueia B, C, Next, runtimes TS (decisão externa ao ecossistema).
-- FastAPI/Flask não instalados — F usa stdlib+uvicorn por ora.
+- FastAPI/Flask não instalados — F usa stdlib+websockets por ora (ADR-003/004); uvicorn puro adiado para Ciclos 4+.
 - Docker ausente — K por ora via GitHub Actions.
 - Busca MCP mcp-memoria com timeout (-32603) em `mcp-memoria buscar`; usar read direto.
 - software de memoria `memory_engine.py add` com hang latente (>120s) — registrar via arquivos.

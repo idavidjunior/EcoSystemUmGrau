@@ -21,8 +21,8 @@ Micro-labs: servidor HTTP stdlib, HTML semântico + CSS dark, JSON, DOM. Entrega
 ### Ciclo 2 — Backend estruturado (F/L) — concluído (2026-09-08)
 Mini-API Python stdlib com rotas múltiplas (/api/health, /api/soma, /api/items, /api/explode), parâmetros via query string, status codes corretos (200/201/400/404/405/500) e erros JSON, validada por teste de integração em labs/ciclo-2-backend-estruturado (STATUS OK, 14 checks, 0 falhas; adversarial incluído). ADR-003 decidiu: manter/estender ThreadingHTTPServer stdlib; uvicorn puro documentado para Ciclos 4+; FastAPI fora.
 
-### Ciclo 3 — Realtime WebSocket (F/H)
-Micro-labs: WebSocket com aiohttp/websockets; broadcast; heartbeat. Integração com o runtime persistente (estado eco). Entrega: endpoint WS eco validado com cliente de teste.
+### Ciclo 3 — Realtime WebSocket (F/H) — concluído (2026-09-08)
+Servidor WebSocket (websockets 17, asyncio) com eco, broadcast, heartbeat e integração com o estado persistente do runtime (rota /estado), validado por cliente de teste real em labs/ciclo-3-websocket (STATUS OK, 6 checks, 0 falhas). ADR-004 decidiu: websockets 17 como camada WS; aiohttp como alternativa de HTTP+WS; uvicorn puro adiado para Ciclos 4+.
 
 ### Ciclo 4 — IA como interface web (H/A)
 Micro-labs: endpoint POST que conversa com cognitive_core/agents; chat simples; JS do lado cliente consumindo fetch. PRÉ-REQUISITO: corrigir timeout da busca MCP (-32603) antes de RAG. Entrega: chat web básico ligado a um agente real.

@@ -1,11 +1,11 @@
 {
-  "state": "CONNECTED",
+  "state": "FAILED",
   "device": "6d92eed7",
   "transport": null,
-  "attempts": 25,
+  "attempts": 30,
   "last_error": "Tailscale não conectou",
   "last_connected_at": null,
   "last_disconnected_at": null,
   "backoff_idx": 0,
-  "timestamp": "2026-09-07T08:20:20"
+  "timestamp": "2026-09-09T05:26:28"
 }
