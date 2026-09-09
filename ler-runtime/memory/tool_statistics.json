@@ -1,16 +1,15 @@
 {
   "tools": {
     "opencode": {
-      "total_calls": 529,
-      "successes": 529,
+      "total_calls": 530,
+      "successes": 530,
       "failures": 0,
-      "total_duration": 1564.1982581615448,
+      "total_duration": 1659.1318488121033,
       "total_cost": 0.0,
-      "avg_duration": 2.957,
+      "avg_duration": 3.13,
       "avg_cost": 0.0,
       "success_rate": 100.0,
       "latency_samples": [
-        6.45,
         1.411,
         0.0,
         0.016,
@@ -109,7 +108,8 @@
         8.174,
         6.998,
         0.003,
-        10.267
+        10.267,
+        94.934
       ]
     },
     "python": {
