@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciclo 6 — Segurança OWASP</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, sans-serif; background: #0a0a0a; color: #e0e0e0; padding: 2rem; }
+        h1 { color: #ff6b35; margin-bottom: 1rem; }
+        .status { background: #1a1a2e; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #00ff88; }
+        .status.error { border-left-color: #ff4444; }
+        .check { padding: 0.5rem 0; border-bottom: 1px solid #222; }
+        .check .label { color: #888; }
+        .check .value { color: #00ff88; font-weight: bold; }
+        button { background: #ff6b35; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 6px; cursor: pointer; margin: 0.5rem; font-size: 1rem; }
+        button:hover { background: #e55a2b; }
+        button.danger { background: #ff4444; }
+        #results { margin-top: 1rem; }
+        pre { background: #111; padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <h1>Ciclo 6 — Segurança OWASP</h1>
+    <p>Micro-lab: middleware de segurança reutilizável para BaseHTTPRequestHandler.</p>
+
+    <div class="status" id="health-status">
+        <span class="label">Verificando segurança...</span>
+    </div>
+
+    <div style="margin-top: 1.5rem;">
+        <h3>Testes de Segurança</h3>
+        <button onclick="testHeaders()">1. Verificar Headers</button>
+        <button onclick="testContentType()">2. Content-Type Inválido</button>
+        <button onclick="testBodyLimit()">3. Body Grande</button>
+        <button onclick="testRateLimit()">4. Rate Limit</button>
+        <button onclick="testSanitization()">5. Sanitização XSS</button>
+        <button onclick="testCORS()">6. CORS</button>
+        <button onclick="testMethodNotAllowed()">7. Método Inválido</button>
+        <button class="danger" onclick="testExplode()">8. Erro Interno (sem leak)</button>
+        <button onclick="testAll()">Rodar Todos</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        const BASE = '';
+        const results = document.getElementById('results');
+
+        function log(msg, ok = null) {
+            const div = document.createElement('div');
+            div.className = 'check';
+            const color = ok === true ? '#00ff88' : ok === false ? '#ff4444' : '#ffaa00';
+            div.innerHTML = `<span class="value" style="color:${color}">${ok === true ? 'PASS' : ok === false ? 'FAIL' : 'INFO'}</span> <span class="label">${msg}</span>`;
+            results.appendChild(div);
+        }
+
+        async function healthCheck() {
+            try {
+                const r = await fetch(`${BASE}/api/health`);
+                const d = await r.json();
+                const hdrs = r.headers;
+                const sec = d.seguranca || [];
+                document.getElementById('health-status').innerHTML =
+                    `<strong>Status:</strong> ${d.status} | <strong>Bloco:</strong> ${d.bloco} | <strong>Segurança:</strong> ${sec.join(', ')}`;
+                return { ok: true, headers: hdrs, data: d };
+            } catch(e) {
+                document.getElementById('health-status').className = 'status error';
+                document.getElementById('health-status').innerHTML = `<strong>Erro:</strong> ${e.message}`;
+                return { ok: false };
+            }
+        }
+
+        async function testHeaders() {
+            const { ok, headers } = await healthCheck();
+            if (!ok) return log('Health check falhou', false);
+            const required = ['X-Content-Type-Options', 'X-Frame-Options', 'X-XSS-Protection', 'Referrer-Policy', 'Content-Security-Policy'];
+            for (const h of required) {
+                const v = headers.get(h);
+                log(`${h}: ${v || 'AUSENTE'}`, !!v);
+            }
+        }
+
+        async function testContentType() {
+            try {
+                const r = await fetch(`${BASE}/api/notas`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: 'injection attempt'
+                });
+                log(`Content-Type text/plain → ${r.status}`, r.status === 415);
+            } catch(e) { log(`Content-Type test error: ${e.message}`, false); }
+        }
+
+        async function testBodyLimit() {
+            try {
+                const big = 'x'.repeat(2_000_000);
+                const r = await fetch(`${BASE}/api/notas`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ titulo: big })
+                });
+                log(`Body 2MB → ${r.status}`, r.status === 413);
+            } catch(e) { log(`Body limit test: ${e.message}`, false); }
+        }
+
+        async function testRateLimit() {
+            log('Enviando 65 requests rápidos...');
+            let blocked = 0;
+            for (let i = 0; i < 65; i++) {
+                try {
+                    const r = await fetch(`${BASE}/api/health`);
+                    if (r.status === 429) blocked++;
+                } catch(e) { break; }
+            }
+            log(`Rate limit bloqueou ${blocked}/65 requests`, blocked > 0);
+        }
+
+        async function testSanitization() {
+            try {
+                const r = await fetch(`${BASE}/api/notas`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ titulo: '<script>alert("xss")</script>' })
+                });
+                const d = await r.json();
+                const hasScript = d.titulo && d.titulo.includes('<script>');
+                log(`XSS no título: sanitizado = ${!hasScript}`, !hasScript);
+            } catch(e) { log(`Sanitization test: ${e.message}`, false); }
+        }
+
+        async function testCORS() {
+            try {
+                const r = await fetch(`${BASE}/api/health`);
+                const cors = r.headers.get('Access-Control-Allow-Origin');
+                log(`CORS header: ${cors || 'ausente (OK se não configurado)'}`, true);
+            } catch(e) { log(`CORS test: ${e.message}`, false); }
+        }
+
+        async function testMethodNotAllowed() {
+            try {
+                const r = await fetch(`${BASE}/api/notas`, { method: 'DELETE' });
+                log(`DELETE /api/notas → ${r.status}`, r.status === 404 || r.status === 405);
+            } catch(e) { log(`Method test: ${e.message}`, false); }
+        }
+
+        async function testExplode() {
+            try {
+                const r = await fetch(`${BASE}/api/explode`);
+                const d = await r.json();
+                const hasInternal = JSON.stringify(d).includes('Traceback') || JSON.stringify(d).includes('File "');
+                log(`Erro /explode não vaza internals: ${!hasInternal}`, !hasInternal);
+            } catch(e) { log(`Explode test: ${e.message}`, false); }
+        }
+
+        async function testAll() {
+            results.innerHTML = '';
+            await testHeaders();
+            await testContentType();
+            await testBodyLimit();
+            await testRateLimit();
+            await testSanitization();
+            await testCORS();
+            await testMethodNotAllowed();
+            await testExplode();
+            log('--- Todos os testes concluídos ---', null);
+        }
+
+        healthCheck();
+    </script>
+</body>
+</html>

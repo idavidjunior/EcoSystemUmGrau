@@ -4,7 +4,7 @@ versao: 0.1.0
 status: proposta
 componente: .
 tags: [ler, goal-analysis]
-data: 2026-09-07
+data: 2026-09-09
 ---
 
 # Spec — goal-mem-ria-com-evidence-grounding-adicionar-campos-source-
@@ -16,7 +16,7 @@ data: 2026-09-07
 memória com evidence-grounding. adicionar campos source_file, source_line, source_snippet em memórias | atualizar memory_engine add() para aceitar source_anchors | atualizar context() para retornar source_anchors | criar função validate_memory_source() (respete: ['scripts/memory_engine.py'])
 
 ---
-set: 2026-09-07t14:18:52.389966
+set: 2026-09-09t13:50:37.091135
 
 ## Requisitos
 
