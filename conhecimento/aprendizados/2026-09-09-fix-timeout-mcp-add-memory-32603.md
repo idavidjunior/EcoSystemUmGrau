@@ -32,3 +32,7 @@ impacto: add-memory via MCP passou a responder em ~60s (antes estourava timeout 
 - Cold start de `memory_semantic.search` continua ~37-78s por causa do pickle TF-IDF grande (ngram 1-2 sobre corpus extenso). Hot <50ms. Para o RAG, reusar o caminho rápido: `search_knowledge` via MCP (BM25, ~13s) ou cache quente por processo.
 - `dense_matrix.npy` não foi gerado (modelo MiniLM sem cache local, `local_files_only`). O rebuild em background tenta e sai rápido; sem impacto na busca TF-IDF.
 - Não há comando de remoção no memory_engine (add/query/context/reinforce/destroy no CLI) — testes geram memórias rascunho que só o decay arquiva.
+
+## Conexoes
+
+- [[2026-08-04-foco-vocal-via-jarvis-voz-orienta-o-grafo-do-conh]]

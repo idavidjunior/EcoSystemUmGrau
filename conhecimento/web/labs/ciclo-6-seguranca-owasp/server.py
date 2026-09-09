@@ -50,7 +50,7 @@ class SecurityMiddleware:
     }
     MAX_BODY_BYTES = 1_048_576  # 1 MB
     RATE_LIMIT_WINDOW_S = 60
-    RATE_LIMIT_MAX = 200  # requests por janela por IP
+    RATE_LIMIT_MAX = 10  # requests por janela por IP
     ALLOWED_CONTENT_TYPES = {"application/json"}
     CORS_ALLOW_ORIGIN = None  # None = sem CORS; "*" = aberto; ou string exata
     CORS_ALLOW_METHODS = "GET, POST, PUT, PATCH, DELETE, OPTIONS"

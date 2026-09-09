@@ -25,3 +25,12 @@ impacto: Bloco A do mapa = VALIDATED/3; ADR-001 registrado (backend stdlib + jin
 ## Próximo
 
 Ciclo 2 — Backend estruturado: rotas múltiplas, parâmetros, status codes correto (404/405/500), ThreadingHTTPServer vs uvicorn, ADR-003 (uvicorn puro vs FastAPI) e mini-API com 3+ rotas + teste de integração.
+
+## Conexoes
+
+- [[cluster-hub-programacao]]
+- [[fundamentos-algoritmos-de-ordenação-e-busca]]
+- [[fundamentos-análise-de-complexidade-assintótica-big-o]]
+- [[fundamentos-estruturas-de-dados-essenciais-e-quando-usar-cad]]
+- [[fundamentos-programação-dinâmica-e-algoritmos-greedy]]
+- [[fundamentos-recursão-e-técnicas-de-divisão-e-conquista]]

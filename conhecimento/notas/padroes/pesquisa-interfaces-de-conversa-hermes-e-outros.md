@@ -1,5 +1,5 @@
 ---
-tags: [arquitetura, chat, nous, opencodeopencode, openwebui, padrao]
+tags: [arquitetura, chat, nous, opencodeopencode, padrao, plano]
 aliases: [Pesquisa — Interfaces de Conversa (Hermes e outros)]
 date: 2026-09-03
 ---
