@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Ciclo 5 — Persistência Web</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+    h1 { font-size: 1.4rem; }
+    code { background: #f0f0f0; padding: .1em .3em; border-radius: 4px; }
+    input, textarea { width: 100%; box-sizing: border-box; margin-bottom: .5rem; padding: .4rem; }
+    button { padding: .4rem .8rem; margin-right: .4rem; }
+    ul { list-style: none; padding: 0; }
+    li { border: 1px solid #ddd; border-radius: 6px; padding: .6rem; margin-bottom: .5rem; }
+    .muted { color: #666; font-size: .85rem; }
+    #status { font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <h1>Ciclo 5 — Persistência Web (sqlite3)</h1>
+  <p class="muted" id="status">conectando ao servidor…</p>
+
+  <form id="nova">
+    <input id="titulo" placeholder="Título da nota" required>
+    <textarea id="conteudo" placeholder="Conteúdo (opcional)" rows="3"></textarea>
+    <button type="submit">Criar nota</button>
+  </form>
+
+  <ul id="notas"></ul>
+
+  <script>
+    async function api(path, options) {
+      const res = await fetch(path, options);
+      return res.json();
+    }
+
+    async function carregar() {
+      const data = await api("/api/notas");
+      const ul = document.getElementById("notas");
+      ul.innerHTML = "";
+      for (const n of data.notas) {
+        const li = document.createElement("li");
+        li.innerHTML = `<strong>${escapeHtml(n.titulo)}</strong>
+          <div>${escapeHtml(n.conteudo)}</div>
+          <div class="muted">${n.criada_em}</div>`;
+        const arq = document.createElement("button");
+        arq.textContent = "Arquivar";
+        arq.onclick = async () => { await api(`/api/notas/${n.id}`, { method: "PATCH" }); carregar(); };
+        const del = document.createElement("button");
+        del.textContent = "Excluir";
+        del.onclick = async () => { await api(`/api/notas/${n.id}`, { method: "DELETE" }); carregar(); };
+        li.appendChild(arq);
+        li.appendChild(del);
+        ul.appendChild(li);
+      }
+    }
+
+    function escapeHtml(s) {
+      return String(s || "").replace(/[&<>"']/g, c => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[c]));
+    }
+
+    document.getElementById("nova").onsubmit = async (e) => {
+      e.preventDefault();
+      await api("/api/notas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          titulo: document.getElementById("titulo").value,
+          conteudo: document.getElementById("conteudo").value,
+        }),
+      });
+      document.getElementById("titulo").value = "";
+      document.getElementById("conteudo").value = "";
+      carregar();
+    };
+
+    fetch("/api/health").then(r => r.json()).then(h => {
+      document.getElementById("status").textContent =
+        `db=${h.db.banco} | schema v${h.db.schema_version} | ${h.db.notas} notas |
+         ${h.db.arquivo}`;
+    });
+    carregar();
+  </script>
+</body>
+</html>

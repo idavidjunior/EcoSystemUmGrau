@@ -27,8 +27,8 @@ Servidor WebSocket (websockets 17, asyncio) com eco, broadcast, heartbeat e inte
 ### Ciclo 4 — IA como interface web (H/A) — concluído (2026-09-09)
 Endpoint POST que conversa com o cognitive_core real (`process_user_input`), chat HTML/JS consumindo fetch, validado por teste de integração em labs/ciclo-4-ia-chat (STATUS OK, 11 checks, 0 falhas). ADR-003 mantido (stdlib HTTP). RAG pendente de implementação — timeout de busca MCP (-32603) corrigido em 09/09 (timeouts realinhados e lock concorrente de memória com espera 120s; add-memory validado, memória 98318).
 
-### Ciclo 5 — Persistência web (G)
-Micro-labs: sqlite3 em servidor HTTP; tabelas, queries, migrations simples; ponto único de persistência (gate). Entrega: app web que persiste estado local real.
+### Ciclo 5 — Persistência web (G) — concluído (2026-09-09)
+Micro-labs: sqlite3 em servidor HTTP; tabelas, queries, migrations simples; ponto único de persistência (gate). Entrega: app web que persiste estado local real. Validado em labs/ciclo-5-persistencia-web (STATUS OK, 25 checks, 0 falhas; CRUD + arquivar + excluir + persistência real entre reinícios). ADR-005 decidiu: sqlite3 stdlib como camada de banco (bloco G VALIDATED/3); ThreadingHTTPServer mantido (ADR-003); PostgreSQL/Redis só se o produto exigir.
 
 ### Ciclo 6 — Segurança OWASP (I)
 Micro-labs: validação de entrada, headers seguros, CORS, sanitização, rate limit. Auditoria com skill security-review nos labs anteriores. Entrega: checklist de segurança aplicado ao conjunto.

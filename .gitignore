@@ -45,6 +45,7 @@ scripts/test_greeting.json
 *.pid
 conhecimento/memoria/.dense_rebuild.lock
 conhecimento/memoria/memories.json.lock
+conhecimento/web/labs/ciclo-5-persistencia-web/data/
 
 # Debug/probe temporarios (nao sobem)
 scripts/_*.py
