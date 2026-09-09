@@ -1,0 +1,10 @@
+{
+  "mission_id": "20260909_142023",
+  "state": {
+    "status": "active",
+    "goal": "Aprendizado com Confidence Tracking. Adicionar campo confidence em aprendizados | Adicionar campo source_evidence[] em aprendizados | Atualizar learning_engine para aceitar confidence (respete: ['scri",
+    "started_at": "2026-09-09T14:20:23.779301"
+  },
+  "updated_at": "2026-09-09T14:20:23.779301",
+  "version": "2.0"
+}

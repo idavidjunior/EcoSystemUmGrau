@@ -1,0 +1,7 @@
+{
+  "action": "gather_information",
+  "description": "Pesquisar e aprender: # Goal\n\nAprendizado com Confidence Tracking. Adicionar campo",
+  "validation": "check_output",
+  "duration": 0.0,
+  "timestamp": "2026-09-09T14:20:44.028458"
+}
