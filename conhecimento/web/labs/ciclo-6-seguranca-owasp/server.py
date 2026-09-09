@@ -313,6 +313,7 @@ class SecureHandler(SecurityMiddleware, BaseHTTPRequestHandler):
                     "max": SecurityMiddleware.RATE_LIMIT_MAX,
                     "window": SecurityMiddleware.RATE_LIMIT_WINDOW_S,
                     "all_ips": list(SecurityMiddleware._sec_bucket.keys()),
+                    "client_address": str(self.client_address),
                 })
             if path == "/api/explode":
                 raise RuntimeError("erro interno forcado")
