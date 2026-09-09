@@ -336,21 +336,21 @@
   },
   "step_3_result": {
     "step_id": 3,
-    "action": "gather_information",
+    "action": "test",
     "status": "completed",
-    "output": "Research needed: Pesquisar e aprender: # Goal\n\nAprendizado com Confidence Tracking. Adicionar campo",
+    "output": "[Tests: 4/5 passed]\n{\n  \"tests_run\": 5,\n  \"results\": [\n    {\n      \"file\": \"__init__.py\",\n      \"passed\": true,\n      \"output\": \"\"\n    },\n    {\n      \"file\": \"test_basic.py\",\n      \"passed\": true,\n      \"output\": \"unning final audit...\\n[2026-09-09 14:31:00] [INFO] Running final audit...\\n[2026-09-09 14:31:01] [INFO] Final report generated: C:\\\\Users\\\\DAVIDJ~1\\\\AppData\\\\Local\\\\Temp\\\\tmpgqlt455o\\\\reports\\\\final_report.md\\n\"\n    },\n    {\n      \"file\": \"test_integration.py\",\n      \"passed\": false,\n      \"output\": \"Command '['python', 'C:\\\\\\\\Users\\\\\\\\David Jr\\\\\\\\Documents\\\\\\\\Default Project\\\\\\\\EcoSystemUmGrau\\\\\\\\ler-runtime\\\\\\\\tests\\\\\\\\test_integration.py']' timed out after 60 seconds\"\n    },\n    {\n      \"file\": \"test_ler_v12.py\",\n      \"passed\": true,\n      \"output\": \": 29.2s | Iterations: 10\\n[2026-09-09 14:32:37] [INFO] Steps: 3/5\\n[2026-09-09 14:32:37] [INFO] Security: CLEAN\\n[2026-09-09 14:32:37] [INFO] ============================================================\\n\"\n    },\n    {\n      \"file\": \"test_ler_v20.py\",\n      \"passed\": true,\n      \"output\": \" created with 5 steps\\n[2026-09-09 14:32:42] [INFO] Running final audit...\\n[2026-09-09 14:32:42] [INFO] Final report generated: C:\\\\Users\\\\DAVIDJ~1\\\\AppData\\\\Local\\\\Temp\\\\tmpoxm_hqd8\\\\reports\\\\final_report.md\\n\"\n    }\n  ],\n  \"all_passed\": false\n}",
     "error": null,
-    "start_time": 1788974815.9457002,
-    "duration": 0.0
+    "start_time": 1788975052.3560436,
+    "duration": 110.06366658210754
   },
   "step_4_result": {
     "step_id": 4,
     "action": "run_tests",
     "status": "completed",
-    "output": "{\n  \"tests_run\": 5,\n  \"results\": [\n    {\n      \"file\": \"__init__.py\",\n      \"passed\": true,\n      \"output\": \"\"\n    },\n    {\n      \"file\": \"test_basic.py\",\n      \"passed\": true,\n      \"output\": \"unning final audit...\\n[2026-09-09 14:20:48] [INFO] Running final audit...\\n[2026-09-09 14:20:48] [INFO] Final report generated: C:\\\\Users\\\\DAVIDJ~1\\\\AppData\\\\Local\\\\Temp\\\\tmpck9g7ba6\\\\reports\\\\final_report.md\\n\"\n    },\n    {\n      \"file\": \"test_integration.py\",\n      \"passed\": true,\n      \"output\": \"max_iterations\\n  Steps: 2/5\\n\\n=== Integration Test: Checkpoint Recovery ===\\n\\nCheckpoint saved: 20260909_142148_integration_test\\n\\n[OK] Checkpoint recovery test passed\\n\\n[OK] All integration tests passed\\n\"\n    },\n    {\n      \"file\": \"test_ler_v12.py\",\n      \"passed\": true,\n      \"output\": \": 14.5s | Iterations: 10\\n[2026-09-09 14:22:05] [INFO] Steps: 3/5\\n[2026-09-09 14:22:05] [INFO] Security: CLEAN\\n[2026-09-09 14:22:05] [INFO] ============================================================\\n\"\n    },\n    {\n      \"file\": \"test_ler_v20.py\",\n      \"passed\": true,\n      \"output\": \" created with 5 steps\\n[2026-09-09 14:22:10] [INFO] Running final audit...\\n[2026-09-09 14:22:11] [INFO] Final report generated: C:\\\\Users\\\\DAVIDJ~1\\\\AppData\\\\Local\\\\Temp\\\\tmpbi_w4914\\\\reports\\\\final_report.md\\n\"\n    }\n  ]\n}",
+    "output": "{\n  \"tests_run\": 5,\n  \"results\": [\n    {\n      \"file\": \"__init__.py\",\n      \"passed\": true,\n      \"output\": \"\"\n    },\n    {\n      \"file\": \"test_basic.py\",\n      \"passed\": true,\n      \"output\": \"unning final audit...\\n[2026-09-09 14:31:00] [INFO] Running final audit...\\n[2026-09-09 14:31:01] [INFO] Final report generated: C:\\\\Users\\\\DAVIDJ~1\\\\AppData\\\\Local\\\\Temp\\\\tmpgqlt455o\\\\reports\\\\final_report.md\\n\"\n    },\n    {\n      \"file\": \"test_integration.py\",\n      \"passed\": false,\n      \"output\": \"Command '['python', 'C:\\\\\\\\Users\\\\\\\\David Jr\\\\\\\\Documents\\\\\\\\Default Project\\\\\\\\EcoSystemUmGrau\\\\\\\\ler-runtime\\\\\\\\tests\\\\\\\\test_integration.py']' timed out after 60 seconds\"\n    },\n    {\n      \"file\": \"test_ler_v12.py\",\n      \"passed\": true,\n      \"output\": \": 29.2s | Iterations: 10\\n[2026-09-09 14:32:37] [INFO] Steps: 3/5\\n[2026-09-09 14:32:37] [INFO] Security: CLEAN\\n[2026-09-09 14:32:37] [INFO] ============================================================\\n\"\n    },\n    {\n      \"file\": \"test_ler_v20.py\",\n      \"passed\": true,\n      \"output\": \" created with 5 steps\\n[2026-09-09 14:32:42] [INFO] Running final audit...\\n[2026-09-09 14:32:42] [INFO] Final report generated: C:\\\\Users\\\\DAVIDJ~1\\\\AppData\\\\Local\\\\Temp\\\\tmpoxm_hqd8\\\\reports\\\\final_report.md\\n\"\n    }\n  ]\n}",
     "error": null,
-    "start_time": 1788974773.2216048,
-    "duration": 0.0029993057250976562
+    "start_time": 1788975163.3435261,
+    "duration": 0.0
   },
   "step_5_result": {
     "step_id": 5,
