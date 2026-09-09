@@ -298,6 +298,26 @@ def _dense_recente() -> bool:
         return False
 
 
+def _spawn_dense_background() -> None:
+    """Dispara o rebuild denso em background (nunca bloqueia a busca).
+
+    Padrão idêntico ao memory_engine.reindexar_semantico: roda
+    `memory_semantic.py build-dense` em subprocesso destacado. Se já houver
+    rebuild em andamento (lock recente), não duplica.
+    """
+    if _dense_lock_held():
+        return
+    try:
+        import subprocess
+        script = os.path.join(BASE, 'scripts', 'memory_semantic.py')
+        flags = getattr(subprocess, 'DETACHED_PROCESS', 0) if os.name == 'nt' else 0
+        subprocess.Popen([sys.executable, script, 'build-dense'],
+                         creationflags=flags, close_fds=True,
+                         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception:
+        pass
+
+
 def build_index(verbose: bool = False) -> dict:
     """Constroi (ou reconstrroi) o indice TF-IDF a partir de memories.json."""
     global _CACHE
@@ -401,10 +421,11 @@ def search(query: str, k: int = 5, min_score: float = 0.05) -> list:
         dense = None
         dense_model = None
         if not os.path.exists(DENSE_MATRIX_FILE):
-            # Tenta construir a camada densa uma vez (best-effort, nunca bloqueia
-            # a busca se o modelo estiver indisponível). Tempo total de download
-            # NUNCA é forçado: build_dense() só usa modelo em cache.
-            build_dense(verbose=False)
+            # Camada densa (MiniLM) NUNCA bloqueia a busca. Se ausente, dispara o
+            # rebuild em subprocesso destacado (background) e segue só com TF-IDF.
+            # Fix 2026-09-09: build_dense() síncrono via search() causava timeout
+            # (-32603) no MCP search-knowledge (30s) com ~54s cold em CPU.
+            _spawn_dense_background()
         if os.path.exists(DENSE_MATRIX_FILE):
             try:
                 dense = np.load(DENSE_MATRIX_FILE)

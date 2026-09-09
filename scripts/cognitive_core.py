@@ -546,6 +546,8 @@ def execute_cognitive_cycle(
     try:
         # Contexto base híbrido (ETAPA 21) com fallback para memory_engine
         base_context = _get_memory_context(user_input) or {}
+        if isinstance(base_context, str):
+            base_context = {"memory_context": base_context}
         if contexto_override:
             base_context.update(contexto_override)
         state["context"] = base_context
@@ -736,7 +738,10 @@ def _execute_conversation_flow(
     try:
         # Contexto híbrido (ETAPA 21) com fallback para memory_engine
         relevant = _get_memory_context(state["user_input"], limit=3)
-        memories = relevant[:3]  # Limitar a 3 para não poluir
+        if isinstance(relevant, str):
+            memories = [{"conteudo": relevant}]
+        else:
+            memories = relevant[:3]  # Limitar a 3 para não poluir
     except Exception:
         pass
 

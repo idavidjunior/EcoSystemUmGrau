@@ -872,6 +872,29 @@ $archIntegrityTimer.AutoReset = $true
 Register-ObjectEvent $archIntegrityTimer "Elapsed" -Action $onArchIntegrity > $null
 $archIntegrityTimer.Start()
 
+# HD EXTERNO SYNC TIMER: espelha EcoSystemUmGrau para E:\ (1x/30min)
+# Só roda se HD estiver montado. Usa robocopy mirror eficiente.
+$hdSyncInterval = 1800000  # 30min
+$hdSyncTimer = New-Object System.Timers.Timer
+$hdSyncTimer.Interval = $hdSyncInterval
+$hdSyncTimer.AutoReset = $true
+
+$onHdSync = {
+    $scriptPath = "$PSScriptRoot\sync_hd_externo.ps1"
+    if (Test-Path $scriptPath) {
+        Write-Log "HD EXTERNO SYNC: iniciando mirror para E:\..."
+        try {
+            $out = & powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath 2>&1 | Out-String
+            $out.Trim() | ForEach-Object { Write-Log "  $_" }
+        } catch { Write-Log "HD EXTERNO SYNC erro: $_" }
+    } else {
+        Write-Log "HD EXTERNO SYNC: script não encontrado: $scriptPath" "WARN"
+    }
+}
+Register-ObjectEvent $hdSyncTimer "Elapsed" -Action $onHdSync > $null
+$hdSyncTimer.Start()
+Write-Log "HD EXTERNO SYNC timer iniciado (intervalo: 30min)"
+
 # SINAPSES VIVAS: molde canonico do vigilante (mesmo padrao comprovado do
 # LEARN TIMER): timer de evento + flag de data. Gate 24h persistido no
 # marcador runtime/sinapses/ultimo_ciclo.txt.

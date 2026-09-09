@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ciclo 4 — Chat IA (cognitive_core)</title>
+<style>
+  :root { --bg: #0f1117; --card: #161a23; --text: #d7dde8; --accent: #4f8cff; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); }
+  #app { max-width: 680px; margin: 0 auto; padding: 24px 16px 40px; }
+  h1 { font-size: 1.25rem; }
+  #log { background: var(--card); border-radius: 10px; padding: 16px; min-height: 320px; margin: 16px 0; }
+  .msg { margin: 10px 0; padding: 10px 12px; border-radius: 8px; white-space: pre-wrap; }
+  .user { background: #22314f; text-align: right; }
+  .ia { background: #20242e; }
+  .meta { font-size: .78rem; opacity: .65; margin-top: 4px; }
+  #form { display: flex; gap: 8px; }
+  #input { flex: 1; padding: 10px 12px; border-radius: 8px; border: 1px solid #333; background: #12151d; color: var(--text); }
+  button { padding: 10px 16px; border: 0; border-radius: 8px; background: var(--accent); color: white; cursor: pointer; }
+  button:disabled { opacity: .5; cursor: wait; }
+</style>
+</head>
+<body>
+<div id="app">
+  <h1>Ciclo 4 — Chat ligado ao cognitive_core</h1>
+  <div id="log"><div class="msg ia">Olá. Escreva uma mensagem e veja a resposta do agente real do ecossistema.</div></div>
+  <form id="form">
+    <input id="input" placeholder="Digite sua mensagem..." autocomplete="off">
+    <button id="btn" type="submit">Enviar</button>
+  </form>
+</div>
+<script>
+  const log = document.getElementById('log');
+  const form = document.getElementById('form');
+  const input = document.getElementById('input');
+  const btn = document.getElementById('btn');
+
+  function add(texto, classe) {
+    const div = document.createElement('div');
+    div.className = 'msg ' + classe;
+    div.textContent = texto;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+    return div;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const mensagem = input.value.trim();
+    if (!mensagem) return;
+    add(mensagem, 'user');
+    input.value = '';
+    btn.disabled = true;
+    try {
+      const resp = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mensagem, session_id: 'ciclo4-web' }),
+      });
+      const dados = await resp.json();
+      if (!resp.ok) { add('Erro: ' + (dados.erro || resp.status), 'ia'); return; }
+      const meta = [];
+      if (dados.intent) meta.push('intent: ' + dados.intent);
+      if (dados.summary && dados.summary.model_used) meta.push('modelo: ' + dados.summary.model_used);
+      add(dados.resposta || '(vazio)', 'ia');
+      if (meta.length) add(meta.join(' • '), 'meta');
+    } catch (err) {
+      add('Falha de conexão: ' + err.message, 'ia');
+    } finally {
+      btn.disabled = false;
+      input.focus();
+    }
+  });
+
+  input.focus();
+</script>
+</body>
+</html>

@@ -1998,6 +1998,14 @@ _SISTEMA_VOZ_RAPIDA = (
     "Não faça listas, não use markdown, emojis nem repetições da pergunta."
 )
 
+# Contexto conversacional do canal de voz rápido.
+# _PARES_CTX_VOZ: quantos pares (Usuário+Jarvis) entram no contexto recente,
+# com a última troca sempre por inteiro (âncora) e as anteriores resumidas.
+# _TETO_CTX_VOZ: orçamento máximo de caracteres para a seção de conversa.
+# Calibrado para os modelos curtos NVIDIA (janela pequena) sem perder o fio.
+_PARES_CTX_VOZ = 8
+_TETO_CTX_VOZ = 6000
+
 
 # Perguntas que exigem dado atual/online não podem ser respondidas pelo canal
 # rápido (modelo puro NVIDIA sem ferramentas): ele responderia "não sei"/"não
@@ -2245,7 +2253,13 @@ def _montar_contexto_voz(msg, cliente):
     """Monta o contexto vivo do ecossistema para o canal de voz rápido:
     estado atual + memória semântica top-3 + histórico recente da conversa.
     Espelha o que o _montar (fluxo serve) injeta, em versão curta, para as
-    respostas de voz falarem sobre o ecossistema com conhecimento real."""
+    respostas de voz falarem sobre o ecossistema com conhecimento real.
+
+    Âncora conversacional: a ÚLTIMA troca (Usuário+Jarvis) entra SEMPRE por
+    inteiro — é sobre ela que o usuário continua falando. As trocas anteriores
+    entram resumidas (180 chars por lado) para manter o fio. Sem a âncora, a
+    resposta longa anterior era cortada em 180 chars e o modelo "esquecia" o
+    que ele mesmo tinha acabado de dizer (ex.: oferta de retomar um mapeamento)."""
     blocos = []
     try:
         estado = _estado_cacheado()
@@ -2263,13 +2277,40 @@ def _montar_contexto_voz(msg, cliente):
     try:
         hist = cliente._hist if cliente is not None else []
         if hist:
-            # Últimos ~6 pares (12 entradas) resumidos para manter o fio da conversa
-            recentes = hist[-12:]
+            # Últimos N pares (2N entradas) mantêm o fio; a última troca é âncora
+            recentes = hist[-(_PARES_CTX_VOZ * 2):]
             linhas = []
-            for i in range(0, len(recentes) - 1, 2):
-                u = recentes[i].strip().replace("\n", " ")
-                jr = str(recentes[i + 1]).strip().replace("\n", " ")
-                linhas.append(f"- Usuário: {u[:180]}\n  Jarvis: {jr[:180]}")
+            total = 0
+            n = len(recentes)
+            for i in range(0, n - 1, 2):
+                u = recentes[i]
+                jr = recentes[i + 1]
+                if u is None:
+                    u = ""
+                if jr is None:
+                    jr = ""
+                u = str(u).strip().replace("\n", " ")
+                jr = str(jr).strip().replace("\n", " ")
+                if u.lower().startswith("usuário:"):
+                    u = u[len("Usuário:"):].strip()
+                if jr.lower().startswith("jarvis:"):
+                    jr = jr[len("Jarvis:"):].strip()
+                eh_ultima = (i + 2 >= n)
+                if eh_ultima:
+                    # âncora: última troca inteira. Se a resposta do Jarvis for
+                    # longa, preserva o começo E o fim ([...]) — ofertas,
+                    # perguntas e o fechamento do raciocínio costumam ficar no
+                    # final da resposta e eram perdidos no corte simples.
+                    jr_ancora = jr
+                    if len(jr) > 1600:
+                        jr_ancora = jr[:1000] + " [...] " + jr[-600:]
+                    entrada = f"- Usuário: {u[-1600:]}\n  Jarvis: {jr_ancora}"
+                else:
+                    entrada = f"- Usuário: {u[:180]}\n  Jarvis: {jr[:180]}"
+                if total + len(entrada) > _TETO_CTX_VOZ and not eh_ultima:
+                    break
+                linhas.append(entrada)
+                total += len(entrada)
             if linhas:
                 blocos.append("## Conversa recente já retomada no PC (contexto):\n" + "\n".join(linhas))
     except Exception as e:

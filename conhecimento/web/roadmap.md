@@ -24,8 +24,8 @@ Mini-API Python stdlib com rotas múltiplas (/api/health, /api/soma, /api/items,
 ### Ciclo 3 — Realtime WebSocket (F/H) — concluído (2026-09-08)
 Servidor WebSocket (websockets 17, asyncio) com eco, broadcast, heartbeat e integração com o estado persistente do runtime (rota /estado), validado por cliente de teste real em labs/ciclo-3-websocket (STATUS OK, 6 checks, 0 falhas). ADR-004 decidiu: websockets 17 como camada WS; aiohttp como alternativa de HTTP+WS; uvicorn puro adiado para Ciclos 4+.
 
-### Ciclo 4 — IA como interface web (H/A)
-Micro-labs: endpoint POST que conversa com cognitive_core/agents; chat simples; JS do lado cliente consumindo fetch. PRÉ-REQUISITO: corrigir timeout da busca MCP (-32603) antes de RAG. Entrega: chat web básico ligado a um agente real.
+### Ciclo 4 — IA como interface web (H/A) — concluído (2026-09-09)
+Endpoint POST que conversa com o cognitive_core real (`process_user_input`), chat HTML/JS consumindo fetch, validado por teste de integração em labs/ciclo-4-ia-chat (STATUS OK, 11 checks, 0 falhas). ADR-003 mantido (stdlib HTTP). RAG pendente de implementação — timeout de busca MCP (-32603) corrigido em 09/09 (timeouts realinhados e lock concorrente de memória com espera 120s; add-memory validado, memória 98318).
 
 ### Ciclo 5 — Persistência web (G)
 Micro-labs: sqlite3 em servidor HTTP; tabelas, queries, migrations simples; ponto único de persistência (gate). Entrega: app web que persiste estado local real.
