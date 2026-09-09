@@ -1,5 +1,5 @@
 ---
-tags: [decisao, declarar, dev, opencode, sucesso, tools]
+tags: [arquivos, decisao, dev, opencode, sucesso, tools]
 aliases: [executor direct]
 date: 2026-09-04
 ---

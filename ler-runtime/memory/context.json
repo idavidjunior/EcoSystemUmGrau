@@ -356,10 +356,10 @@
     "step_id": 5,
     "action": "git_commit",
     "status": "completed",
-    "output": "Git commit skipped: Command 'git add -A' timed out after 15 seconds",
+    "output": "Git commit skipped: Command 'git commit -m \"[LEA] Automated commit\"' timed out after 15 seconds",
     "error": null,
-    "start_time": 1788974774.0312455,
-    "duration": 15.095783472061157
+    "start_time": 1788975163.6308203,
+    "duration": 37.04094624519348
   },
   "success_evaluation": {
     "total_score": 90.0,
