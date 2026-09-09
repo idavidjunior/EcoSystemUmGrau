@@ -1,0 +1,17 @@
+{
+  "mission_id": "20260909_135918",
+  "iteration": 8,
+  "state": {
+    "session_id": "20260909_135918",
+    "iteration": 8,
+    "completed": 2,
+    "failed": 0,
+    "total": 5
+  },
+  "_meta": {
+    "id": "20260909_135934_iter_8",
+    "timestamp": "20260909_135934",
+    "label": "iter_8",
+    "version": "2.0"
+  }
+}

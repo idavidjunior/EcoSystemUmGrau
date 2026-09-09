@@ -43139,5 +43139,57 @@
         "reliability": 0.96
       }
     ]
+  },
+  {
+    "id": 98324,
+    "kind": "erro",
+    "task": "Timeout na evolução: Memória com Evidence-Grounding",
+    "summary": "Subagente excedeu 300s.",
+    "project": "",
+    "tags": [
+      "auto-evolution",
+      "ciclo-fechado",
+      "rascunho",
+      "baixa-confianca",
+      "300s",
+      "excedeu",
+      "subagente",
+      "grounding",
+      "evidence",
+      "memória"
+    ],
+    "metadata": {
+      "gap": "memory:evidence_consolidation"
+    },
+    "strength": 1.0,
+    "confidence": 0.3,
+    "source_type": "inferido",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-09-09T13:58:47.681511",
+    "last_accessed": "2026-09-09T13:58:47.681511",
+    "source_refs": [
+      {
+        "id": "cppreference",
+        "name": "cppreference",
+        "url": "https://en.cppreference.com/",
+        "authority_level": "A",
+        "reliability": 0.96
+      },
+      {
+        "id": "kernighan-ritchie",
+        "name": "The C Programming Language (K&R)",
+        "url": "https://en.wikipedia.org/wiki/The_C_Programming_Language",
+        "authority_level": "B",
+        "reliability": 0.98
+      },
+      {
+        "id": "apue",
+        "name": "Advanced Programming in the Unix Environment",
+        "url": "https://www.apuebook.com/",
+        "authority_level": "B",
+        "reliability": 0.97
+      }
+    ]
   }
 ]
