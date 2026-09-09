@@ -325,7 +325,7 @@
     "total_risks": 8,
     "can_proceed": true,
     "mitigation_plan_count": 8,
-    "assessed_at": "2026-09-09T13:54:51.683197"
+    "assessed_at": "2026-09-09T13:55:33.675084"
   },
   "step_1_result": {
     "step_id": 1,
@@ -333,8 +333,8 @@
     "status": "completed",
     "output": "{\n  \"os\": \"nt\",\n  \"cwd\": \"C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\",\n  \"python\": \"C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe\",\n  \"git\": \"C:\\\\Program Files\\\\Git\\\\cmd\\\\git.exe\",\n  \"node\": null,\n  \"shell\": \"powershell\"\n}",
     "error": null,
-    "start_time": 1788972892.3944263,
-    "duration": 4.959145784378052
+    "start_time": 1788972934.0352795,
+    "duration": 2.8361637592315674
   },
   "step_2_result": {
     "step_id": 2,
@@ -342,8 +342,8 @@
     "status": "completed",
     "output": "Projects directory ready: C:\\Users\\David Jr\\Documents\\Default Project\\EcoSystemUmGrau\\ler-runtime\\projects",
     "error": null,
-    "start_time": 1788972899.3521988,
-    "duration": 0.0009989738464355469
+    "start_time": 1788972938.7204661,
+    "duration": 0.0009996891021728516
   },
   "step_3_result": {
     "step_id": 3,
@@ -351,8 +351,8 @@
     "status": "completed",
     "output": "Implementation completed — 24 arquivo(s) modificados: Implementar funcionalidade principal: # Goal\n\nMemória com Evidence-Grounding. Adicionar campos sou",
     "error": null,
-    "start_time": 1788972899.8475933,
-    "duration": 4.445563316345215
+    "start_time": 1788972939.6890054,
+    "duration": 9.496835470199585
   },
   "step_4_result": {
     "step_id": 4,
@@ -360,8 +360,8 @@
     "status": "completed",
     "output": "{\n  \"tests_run\": 5,\n  \"results\": [\n    {\n      \"file\": \"__init__.py\",\n      \"passed\": true,\n      \"output\": \"\"\n    },\n    {\n      \"file\": \"test_basic.py\",\n      \"passed\": true,\n      \"output\": \"unning final audit...\\n[2026-09-09 13:50:51] [INFO] Running final audit...\\n[2026-09-09 13:50:51] [INFO] Final report generated: C:\\\\Users\\\\DAVIDJ~1\\\\AppData\\\\Local\\\\Temp\\\\tmpzvf5_bz5\\\\reports\\\\final_report.md\\n\"\n    },\n    {\n      \"file\": \"test_integration.py\",\n      \"passed\": true,\n      \"output\": \"max_iterations\\n  Steps: 2/5\\n\\n=== Integration Test: Checkpoint Recovery ===\\n\\nCheckpoint saved: 20260909_135131_integration_test\\n\\n[OK] Checkpoint recovery test passed\\n\\n[OK] All integration tests passed\\n\"\n    },\n    {\n      \"file\": \"test_ler_v12.py\",\n      \"passed\": true,\n      \"output\": \": 21.0s | Iterations: 10\\n[2026-09-09 13:51:55] [INFO] Steps: 3/5\\n[2026-09-09 13:51:55] [INFO] Security: CLEAN\\n[2026-09-09 13:51:55] [INFO] ============================================================\\n\"\n    },\n    {\n      \"file\": \"test_ler_v20.py\",\n      \"passed\": true,\n      \"output\": \" created with 5 steps\\n[2026-09-09 13:51:59] [INFO] Running final audit...\\n[2026-09-09 13:51:59] [INFO] Final report generated: C:\\\\Users\\\\DAVIDJ~1\\\\AppData\\\\Local\\\\Temp\\\\tmpto5f1v4t\\\\reports\\\\final_report.md\\n\"\n    }\n  ]\n}",
     "error": null,
-    "start_time": 1788972905.1534739,
-    "duration": 0.003999233245849609
+    "start_time": 1788972949.7987173,
+    "duration": 0.003997325897216797
   },
   "step_5_result": {
     "step_id": 5,
@@ -369,8 +369,8 @@
     "status": "completed",
     "output": "Git commit skipped: Command 'git commit -m \"[LEA] Automated commit\"' timed out after 15 seconds",
     "error": null,
-    "start_time": 1788972849.3645604,
-    "duration": 35.2253315448761
+    "start_time": 1788972905.6825395,
+    "duration": 23.359421968460083
   },
   "success_evaluation": {
     "total_score": 90.0,
@@ -389,6 +389,6 @@
     "recommendations": [
       "Melhorar Audit Quality (atual: 0%, desejado: 80%+)"
     ],
-    "evaluated_at": "2026-09-09T13:54:51.621192"
+    "evaluated_at": "2026-09-09T13:55:33.604673"
   }
 }
