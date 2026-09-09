@@ -101,8 +101,9 @@ def test_body_limit():
 def test_rate_limit():
     """4. Rate limit bloqueia após threshold."""
     print("\n[4] Rate limit (token bucket)")
-    # Primeiro reseta o bucket fazendo requests até esvaziar
-    # RATE_LIMIT_MAX=200, então precisa de ≥201 requests
+    # Reseta o bucket para controle total do teste
+    req("GET", "/api/debug/reset-ratelimit")
+    time.sleep(1)  # espera 1s para bucket estabilizar
     blocked = 0
     ok_count = 0
     for i in range(250):

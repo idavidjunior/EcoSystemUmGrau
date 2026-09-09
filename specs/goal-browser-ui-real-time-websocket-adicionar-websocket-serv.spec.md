@@ -4,7 +4,7 @@ versao: 0.1.0
 status: proposta
 componente: .
 tags: [ler, goal-analysis]
-data: 2026-09-07
+data: 2026-09-09
 ---
 
 # Spec — goal-browser-ui-real-time-websocket-adicionar-websocket-serv
@@ -16,7 +16,7 @@ data: 2026-09-07
 browser ui (real-time websocket). adicionar websocket server ao widget ecow | implementar broadcast() para mudanças no grafo | conectar ws ao knowledge_graph para updates em tempo real | manter compatibilidade com versão atual (respete: ['scripts/widget_grafo.py'])
 
 ---
-set: 2026-09-07t14:26:28.224471
+set: 2026-09-09t14:04:56.521594
 
 ## Requisitos
 
