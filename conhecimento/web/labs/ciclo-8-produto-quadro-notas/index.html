@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadro de Notas — Ciclo 8</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, sans-serif; background: #0a0a0a; color: #e0e0e0; display: flex; min-height: 100vh; }
+        aside { width: 300px; background: #111; padding: 1.5rem; border-right: 1px solid #222; display: flex; flex-direction: column; gap: 1rem; }
+        main { flex: 1; padding: 1.5rem; overflow-y: auto; }
+        h1 { color: #ff6b35; font-size: 1.3rem; margin-bottom: 0.4rem; }
+        .sub { color: #888; font-size: 0.8rem; }
+        .status { font-size: 0.75rem; display: flex; align-items: center; gap: 0.4rem; }
+        .dot { width: 9px; height: 9px; border-radius: 50%; background: #666; }
+        .dot.ok { background: #00ff88; }
+        .dot.err { background: #ff4444; }
+        .campo { width: 100%; padding: 0.6rem; margin-top: 0.3rem; border-radius: 6px; border: 1px solid #333; background: #1a1a1a; color: #e0e0e0; }
+        textarea.campo { min-height: 70px; resize: vertical; }
+        button { background: #ff6b35; color: white; border: none; padding: 0.6rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        button:hover { background: #e55a2b; }
+        button.ghost { background: transparent; color: #ff6b35; border: 1px solid #ff6b35; }
+        button.danger { background: #ff4444; }
+        .nota { background: #141414; border: 1px solid #262626; border-left: 3px solid #ff6b35; border-radius: 8px; padding: 1rem; margin-bottom: 0.8rem; }
+        .nota h3 { color: #00ff88; font-size: 1rem; margin-bottom: 0.3rem; }
+        .nota p { color: #bbb; font-size: 0.9rem; white-space: pre-wrap; }
+        .nota .meta { color: #666; font-size: 0.7rem; margin-top: 0.5rem; }
+        .acoes { display: flex; gap: 0.5rem; margin-top: 0.6rem; }
+        .chat { background: #0f0f0f; border: 1px solid #222; border-radius: 8px; padding: 1rem; height: 100%; display: flex; flex-direction: column; }
+        .chat h2 { color: #ff6b35; font-size: 1rem; margin-bottom: 0.5rem; }
+        #chat-log { flex: 1; overflow-y: auto; margin-bottom: 0.6rem; display: flex; flex-direction: column; gap: 0.4rem; }
+        .msg { padding: 0.5rem 0.7rem; border-radius: 8px; font-size: 0.85rem; max-width: 90%; }
+        .msg.user { align-self: flex-end; background: #2a2a18; color: #d9d9a8; }
+        .msg.ia { align-self: flex-start; background: #1a2a1a; color: #a8d9a8; }
+        .chat-input { display: flex; gap: 0.4rem; }
+        .chat-input input { flex: 1; }
+        #vazio { color: #555; text-align: center; margin-top: 2rem; font-size: 0.9rem; }
+        .colunas { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        @media (max-width: 900px) { .colunas { grid-template-columns: 1fr; } body { flex-direction: column; } aside { width: 100%; border-right: none; border-bottom: 1px solid #222; } }
+    </style>
+</head>
+<body>
+    <aside>
+        <div>
+            <h1>Quadro de Notas</h1>
+            <div class="sub">Produto integrado — Ciclo 8 (N1-N5)</div>
+        </div>
+        <div class="status"><span class="dot err" id="dot"></span><span id="st">conectando...</span></div>
+        <div id="form-nota">
+            <input class="campo" type="text" id="titulo" placeholder="Título da nota" maxlength="200" aria-label="Título da nota">
+            <textarea class="campo" id="conteudo" placeholder="Conteúdo..." aria-label="Conteúdo da nota"></textarea>
+            <button id="criar" type="button" onclick="criarNota()">Criar nota</button>
+        </div>
+        <div class="status" id="cap">servidor / API / WS / sqlite / IA / segurança / performance</div>
+    </aside>
+    <main>
+        <div class="colunas">
+            <section id="quadro" aria-label="Quadro de notas">
+                <div id="vazio">Nenhuma nota ainda. Crie a primeira ao lado.</div>
+            </section>
+            <section class="chat" aria-label="Chat com IA">
+                <h2>Assistente IA (cognitive_core)</h2>
+                <div id="chat-log">
+                    <div class="msg ia">Olá! Sou o assistente do quadro. Pergunte qualquer coisa.</div>
+                </div>
+                <div class="chat-input">
+                    <input class="campo" type="text" id="chat-texto" placeholder="Mensagem..." aria-label="Mensagem para a IA">
+                    <button type="button" onclick="enviarChat()">Enviar</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        const EO = document.getElementById;
+        let ws = null;
+
+        function conectarWS() {
+            const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+            ws = new WebSocket(`${proto}://${location.host}/ws`);
+            ws.onopen = () => { EO('dot').className = 'dot ok'; EO('st').textContent = 'realtime online'; };
+            ws.onclose = () => { EO('dot').className = 'dot err'; EO('st').textContent = 'realtime offline'; setTimeout(conectarWS, 2000); };
+            ws.onerror = () => ws.close();
+            ws.onmessage = (e) => {
+                try {
+                    const d = JSON.parse(e.data);
+                    if (d.tipo && d.tipo.startsWith('nota_')) { carregarNotas(); }
+                } catch (_) {}
+            };
+        }
+
+        async function req(url, opt = {}) {
+            const r = await fetch(url, {
+                headers: { 'Content-Type': 'application/json' },
+                ...opt,
+            });
+            const ct = r.headers.get('Content-Type') || '';
+            const body = ct.includes('application/json') ? await r.json() : await r.text();
+            return { status: r.status, body };
+        }
+
+        async function carregarNotas() {
+            const { body } = await req('/api/notas');
+            const el = EO('quadro');
+            const notas = body.notas || [];
+            EO('vazio').style.display = notas.length ? 'none' : 'block';
+            if (!notas.length) { el.innerHTML = '<div id="vazio">Nenhuma nota ainda. Crie a primeira ao lado.</div>'; return; }
+            el.innerHTML = notas.map(n => `
+                <div class="nota" data-id="${n.id}">
+                    <h3>${escapeHtml(n.titulo)}</h3>
+                    <p>${escapeHtml(n.conteudo || '')}</p>
+                    <div class="meta">id ${n.id} · atualizada ${n.atualizada_em}</div>
+                    <div class="acoes">
+                        <button class="ghost" onclick="arquivarNota(${n.id})">Arquivar</button>
+                        <button class="danger" onclick="excluirNota(${n.id})">Excluir</button>
+                    </div>
+                </div>`).join('');
+        }
+
+        function escapeHtml(s) {
+            const div = document.createElement('div');
+            div.textContent = s == null ? '' : String(s);
+            return div.innerHTML;
+        }
+
+        async function criarNota() {
+            const t = EO('titulo').value.trim();
+            if (!t) return;
+            await req('/api/notas', { method: 'POST', body: JSON.stringify({ titulo: t, conteudo: EO('conteudo').value }) });
+            EO('titulo').value = ''; EO('conteudo').value = '';
+            carregarNotas();
+        }
+
+        async function arquivarNota(id) {
+            await req(`/api/notas/${id}`, { method: 'PATCH' });
+            carregarNotas();
+        }
+
+        async function excluirNota(id) {
+            await req(`/api/notas/${id}`, { method: 'DELETE' });
+            carregarNotas();
+        }
+
+        async function enviarChat() {
+            const t = EO('chat-texto');
+            const msg = t.value.trim();
+            if (!msg) return;
+            t.value = '';
+            const log = EO('chat-log');
+            log.insertAdjacentHTML('beforeend', `<div class="msg user">${escapeHtml(msg)}</div>`);
+            const r = await req('/api/chat', { method: 'POST', body: JSON.stringify({ mensagem: msg, session_id: 'ciclo8-web' }) });
+            const resposta = r.body && (r.body.resposta || r.body.erro) || 'sem resposta';
+            log.insertAdjacentHTML('beforeend', `<div class="msg ia">${escapeHtml(resposta)}</div>`);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        EO('chat-texto').addEventListener('keydown', (e) => { if (e.key === 'Enter') enviarChat(); });
+
+        (async () => {
+            await carregarNotas();
+            conectarWS();
+        })();
+    </script>
+</body>
+</html>

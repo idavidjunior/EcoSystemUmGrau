@@ -1,0 +1,7 @@
+---
+tipo: erro
+tags: [memoria, tfidf, indexacao-semantica, corrupcao, integridade]
+data: 2026-09-10
+contexto: O gate de persistencia bloqueou o commit do Ciclo 8 com PREFLIGHT_FAIL no bloco [10] Integridade de dados. O integrity_guard --check apontava 1 arquivo corrompido: conhecimento/memoria/tfidf_meta.json (JSON invalido: Expecting property name enclosed in double quotes: line 9543 col 7). O preflight_check.py parseava a saida e contava todos os arquivos (1094) como "corrompidos", mas so 1 era real — falso positivo de leitura do report.
+decisao: (1) diagnostico: rodar integrity_guard --check direto para ver a linha [CORROMPIDO] real, que era tfidf_meta.json. (2) integridade --fix nao corrige JSON invalido (so mojibake) — retornou 0 correcoes. (3) o arquivo e artefato derivado do indice semanticmo: regenerar com python scripts/memory_semantic.py build (676 memorias + 1078 notas, 1754 docs, vocab 137726). (4) revalidar com integrity_guard --check (0 corrupcoes) e preflight_check.py (TODOS TESTES PASSARAM).
+impacto: Indice TF-IDF reconstruido e saudavel; gate desbloqueado para o commit do Ciclo 8. Licao: preflight_check.py lista todos os arquivos na mensagem de erro quando ha qualquer corrupcao — ler a saida crua do integrity_guard para achar a linha [CORROMPIDO] exata em vez de confiar no count. Arquivos derivados (tfidf_meta) nao devem ser corrigidos manualmente; regenerar via memory_semantic.py build.

@@ -45,6 +45,7 @@ Nível: 0–8. MASTERED exige nível 8 com evidência documentada.
 | J | Performance / Core Web Vitals | VALIDATED | 3 | CWV (LCP/CLS/INP) medidos com Playwright de página real antes/depois — CLS 0.127>0.000, LCP 764>528ms, INP 48ms (Good); benchmarks/ciclo-7-cwv.json; labs/ciclo-7-performance-acessibilidade |
 | K | DevOps (deploy, CI/CD, Docker) | UNDERSTOOD | 2 | Docker ausente; CI via GitHub Actions em uso; skill ci-cd-pipeline |
 | L | Arquitetura (SOLID, Clean, event-driven) | UNDERSTOOD | 3 | ADRs prévios da missão (ADR-001..005, decisões web registradas); decisões web pendentes |
+| N | Produto Integrado (projeto real com servidor+API+WS+sqlite+IA+segurança+performance) | MASTERED | 8 | Quadro de Notas com IA validado (27 checks OK, labs/ciclo-8-produto-quadro-notas); 20+ demonstrações mapeadas em 7 integrações (N1 servidor-http, N2 api-rest, N3 websocket-realtime, N4 sqlite-persistente, N5 ia-cognitive-core, N6 seguranca-owasp, N7 performance-cwv); CWV Good (LCP 692ms, CLS 0.000, INP 0ms); benchmarks/ciclo-8-cwv.json |
 
 ## Regras de atualização
 

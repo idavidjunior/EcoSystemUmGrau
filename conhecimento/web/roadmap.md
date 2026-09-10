@@ -36,8 +36,8 @@ SecurityMiddleware com headers OWASP (X-Content-Type-Options, X-Frame-Options, X
 ### Ciclo 7 — Performance e acessibilidade (J/D) — concluído (2026-09-09)
 Micro-labs: medição de LCP/CLS/INP com Playwright; correção de acesso (WCAG básico). Entrega validada em labs/ciclo-7-performance-acessibilidade (STATUS OK, 18 checks, 0 falhas; CWV de página real antes/depois + a11y). ADR-007 decidiu: Playwright sync + PerformanceObserver para medir CWV; atraso artificial no asset permite medir em loopback.
 
-### Ciclo 8 — Produto web integrado (projeto N1–N5)
-Construção de um micro-produto web real que usa: servidor, API, WS, sqlite, IA, segurança e performance. Critério de conclusão: 20 demonstrações (conforme missão). Entrega: produto + 20 evidências no mapa.
+### Ciclo 8 — Produto web integrado (projeto N1–N5) — concluído (2026-09-10)
+Construção de um micro-produto web real que usa: servidor, API, WS, sqlite, IA, segurança e performance. Produto entregue: Quadro de Notas com IA (painel de notas em sqlite + chat com cognitive_core + atualização em tempo real via WebSocket + SecurityMiddleware OWASP + CWV dentro do padrão). Validado em labs/ciclo-8-produto-quadro-notas (STATUS OK, 27 checks, 0 falhas). Evidência CWV em benchmarks/ciclo-8-cwv.json (LCP 692ms, CLS 0.000, INP 0ms, TTFB 875ms — bandas Good). Bloco N mapeado no README com 7 integrações (N1 servidor-http, N2 api-rest, N3 websocket-realtime, N4 sqlite-persistente, N5 ia-cognitive-core, N6 seguranca-owasp, N7 performance-cwv).
 
 ### Ciclo 9 — Padronização e publicação (K)
 Micro-labs: build/run script reproduzível, documentação de operação, deploy via GitHub Pages ou pipe existente. Entrega: runbook de operação web.

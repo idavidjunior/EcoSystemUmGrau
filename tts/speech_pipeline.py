@@ -282,6 +282,60 @@ class SpeechPipeline:
         async for chunk in tts.stream_base64(texto):
             yield chunk
 
+    async def stream_sentencas(self, text: str) -> AsyncGenerator[str, None]:
+        """Gera áudio por sentença — streaming progressivo tocável.
+
+        Diferente de stream(): aqui cada yield é uma sentença completa
+        sintetizada individualmente (MP3 completo e tocável, em ordem),
+        permitindo que o consumidor reproduza cada chunk assim que chega,
+        sem esperar o fim do texto inteiro. Ideal para conversa por voz.
+
+        Consumidor (gerar_audio_stream da bridge):
+            1. Bridge envia {text, corrigido, audio_streaming: True}
+            2. Bridge envia {audio_chunk} por sentença (MP3 tocável)
+            3. Bridge envia {audio_done: True}
+
+        Yields:
+            Strings base64 do MP3 completo de cada sentença.
+
+        Raises:
+            TextTooShortError: Se texto vazio após processamento.
+        """
+        texto, metadata = self.prepare(text)
+        if not texto:
+            return
+
+        # Divide em sentenças/cláusulas menores (metade do limite de palavras)
+        # para latência menor no playback progressivo.
+        partes = self._chunker.chunk_for_streaming(texto)
+        if not partes:
+            partes = [texto]
+
+        # Agrupa partes curtas (< MIN_TEXT_LENGTH) à parte seguinte, senão a
+        # síntese individual lançaria TextTooShortError por sentença.
+        agrupadas: List[str] = []
+        buffer = ""
+        for parte in partes:
+            if buffer:
+                buffer += " " + parte
+                agrupadas.append(buffer)
+                buffer = ""
+            elif len(parte.strip()) < MIN_TEXT_LENGTH:
+                buffer = parte
+            else:
+                agrupadas.append(parte)
+        if buffer:
+            agrupadas.append(buffer)
+
+        for parte in agrupadas:
+            try:
+                audio = await self._synthesize_async(parte)
+            except TTSynthesisError:
+                logger.warning(f"stream_sentencas: sentença falhou, pulando: {parte[:60]}")
+                continue
+            if audio:
+                yield base64.b64encode(audio).decode()
+
     def synthesize_sync(self, text: str) -> str:
         """Versão síncrona de synthesize (bloqueante).
 

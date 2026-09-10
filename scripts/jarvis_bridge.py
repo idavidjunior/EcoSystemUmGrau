@@ -1132,11 +1132,19 @@ async def gerar_audio_stream(texto):
         1. Bridge envia {text, corrigido, audio_streaming: True}  (texto imediato)
         2. Bridge envia {audio_chunk: <b64>} para cada chunk (play imediato)
         3. Bridge envia {audio_done: True}  (finaliza playback)
+
+    Quando o pipeline está disponível, usa stream_sentencas: cada chunk é
+    uma sentença completa (MP3 tocável isoladamente), permitindo que o app
+    reproduza progressivamente sem esperar o texto inteiro.
     """
     if not texto:
         return
     if SPEECH_PIPELINE_AVAILABLE and _speech_pipeline:
         try:
+            if hasattr(_speech_pipeline, "stream_sentencas"):
+                async for chunk in _speech_pipeline.stream_sentencas(texto):
+                    yield chunk
+                return
             async for chunk in _speech_pipeline.stream(texto):
                 yield chunk
             return
@@ -3681,112 +3689,19 @@ async def lidar(ws):
         async for mm in ws:
             yield mm
 
-    try:
-        async for m in _fluxo_mensagens():
-            img_atual = None
-            img_mime = "image/jpeg"
-            try:
-                obj = json.loads(m)
-                if isinstance(obj, dict):
-                    # ---- Protocolo EcoDashboard (type) ----
-                    if obj.get("type") in ("ping", "pong"):
-                        if obj.get("type") == "ping":
-                            await ws.send(json.dumps({"type": "pong", "origem": "bridge", "eco": obj}))
-                        continue
-                    if obj.get("type") == "get_state":
-                        eh_dashboard = True
-                        try:
-                            payload = await asyncio.to_thread(_snapshot_estado_ecossistema)
-                            await ws.send(json.dumps({"type": "state", "payload": payload}))
-                            logger.info("dashboard: snapshot de estado enviado")
-                        except Exception as e:
-                            logger.warning(f"dashboard: get_state falhou: {e}")
-                        continue
-                    if obj.get("type") == "command":
-                        cmd = obj.get("command", "")
-                        if cmd in ("get_state", "state"):
-                            eh_dashboard = True
-                            try:
-                                payload = await asyncio.to_thread(_snapshot_estado_ecossistema)
-                                await ws.send(json.dumps({"type": "state", "payload": payload}))
-                            except Exception as e:
-                                logger.warning(f"dashboard: command get_state falhou: {e}")
-                        continue
-                    # ---- Protocolo legado (tipo) — app Android ----
-                    if obj.get("tipo") == "ping":
-                        await ws.send(json.dumps({"tipo": "pong", "origem": "bridge", "eco": obj}))
-                        logger.info(f"ping-pong de {obj.get('origem','desconhecido')}")
-                        continue
-                    if obj.get("tipo") == "quota":
-                        if NVIDIA_QUOTA_AVAILABLE:
-                            monitor = get_monitor()
-                            status = monitor.get_status()
-                            await ws.send(json.dumps({"tipo": "quota_status", "status": status}))
-                        else:
-                            await ws.send(json.dumps({"tipo": "quota_status", "error": "nvidia_quota_monitor não disponível"}))
-                        logger.info(f"quota status request")
-                        continue
-                    if obj.get("tipo") == "editar":
-                        # Edit-and-resubmit (padrão ChatGPT/Claude): usuário edita
-                        # a mensagem já enviada; o resto do histórico é descartado
-                        # a partir dela e a resposta é regenerada do zero.
-                        texto_antigo = obj.get("texto_antigo") or obj.get("antigo") or ""
-                        texto_novo = obj.get("texto_novo") or obj.get("novo") or obj.get("texto") or ""
-                        _ed = _aplicar_edicao(c._hist, texto_antigo)
-                        if _ed is None:
-                            await ws.send(json.dumps({
-                                "text": "Não encontrei essa mensagem para editar.",
-                                "corrigido": texto_antigo,
-                                "edicao_falhou": True,
-                                "volume": _ler_volume_widget(),
-                            }))
-                            logger.warning(f"editar nao encontrou: '{texto_antigo[:60]}'")
-                            msg_id = obj.get("id") if isinstance(obj, dict) else None
-                            if msg_id is not None:
-                                try:
-                                    await ws.send(json.dumps({"ack": int(msg_id)}))
-                                except Exception:
-                                    pass
-                            continue
-                        m = texto_novo
-                        c._hist = _ed
-                        try:
-                            c._salvar()
-                        except Exception as e:
-                            logger.warning(f"editar salvar: {e}")
-                        logger.info(f"editar ok: '{texto_antigo[:40]}' -> '{texto_novo[:40]}' "
-                                    f"(hist={len(c._hist)//2} pares restantes)")
-                    if obj.get("tipo") == "mensagem":
-                        # App novo envia {"tipo":"mensagem","id":N,"texto":"..."}.
-                        # Extrai o texto real e deixa o id para o ACK abaixo.
-                        m = obj.get("texto") or ""
-                        logger.info(f"mensagem com id={obj.get('id')} extraida ({len(m)} chars)")
-                    elif obj.get("tipo") == "imagem":
-                        m = obj.get("texto") or "O que você vê nesta imagem?"
-                        img_atual = obj.get("imagem", "")
-                        img_mime = obj.get("mime", "image/jpeg")
-                        logger.info(f"imagem recebida: {len(img_atual)} chars base64")
-                    # Fase 3 - ACK-based: confirma recebimento para o app remover da fila.
-                    # O app enfileira mensagens com {"id": N} e so descarta apos receber {"ack": N}.
-                    # Se a conexao cair antes do ACK, o app reenvia ao reconectar.
-                    msg_id = obj.get("id") if isinstance(obj, dict) else None
-                    if msg_id is not None:
-                        try:
-                            await ws.send(json.dumps({"ack": int(msg_id)}))
-                            logger.info(f"ack enviado para msg {msg_id}")
-                        except Exception as e:
-                            logger.warning(f"ack falhou para msg {msg_id}: {e}")
-            except json.JSONDecodeError:
-                pass
+    # RESPOSTA EM TASK CANCELÁVEL (barge-in): cada fala do usuário dispara uma
+    # task própria. O loop principal continua lendo o socket — assim consegue
+    # receber {"tipo":"cancelar"} e cancelar a task em pleno voo. Nova fala
+    # também cancela a resposta anterior (interrupção natural por voz).
+    async def _responder_fala(m, img_atual, img_mime):
+        try:
             msg_fix = fix_punctuation(m)
             if msg_fix != m:
                 logger.info(f"pontuacao corrigida: {m[:80]} -> {msg_fix[:80]}")
                 m = msg_fix
             if not m.strip():
                 logger.info("mensagem vazia ignorada")
-                continue
-            _marcar_atividade()
-            logger.info(f"msg({len(m)}): {m[:120]}")
+                return
             if len(m.strip()) <= 24 and INTERRUPCAO.match(m.strip()):
                 r = "Interrompido. Pode falar quando quiser."
                 try:
@@ -3795,7 +3710,7 @@ async def lidar(ws):
                     await ws.send(json.dumps({"text": r, "audio": a, "corrigido": m, "volume": _ler_volume_widget()}) if a else {"text": r, "corrigido": m})
                 except:
                     await ws.send(json.dumps({"text": r, "corrigido": m}))
-                continue
+                return
             # IMAGEM: pedido de diagrama/mapa mental gera PNG (Graphviz) e
             # envia fora do fluxo textual; a resposta em texto/áudio segue
             # normal (fallback textual quando a geração não estiver disponível).
@@ -3805,7 +3720,7 @@ async def lidar(ws):
             # script real em background e notifica ao terminar. NÃO cai no LLM.
             try:
                 if await _agendar_e_responder(ws, m):
-                    continue
+                    return
             except Exception as e:
                 logger.warning(f"agendar tarefa: {e}")
             # AVISO PERIÓDICO SOLTO ("me avise a cada minuto"): sem uma tarefa em
@@ -3828,7 +3743,7 @@ async def lidar(ws):
                         await ws.send(json.dumps({"text": r_o, "audio": a, "corrigido": m, "volume": _ler_volume_widget()}) if a else {"text": r_o, "corrigido": m})
                     except Exception:
                         await ws.send(json.dumps({"text": r_o, "corrigido": m}))
-                    continue
+                    return
             except Exception as e:
                 logger.warning(f"intervalo progresso: {e}")
             try:
@@ -3901,13 +3816,170 @@ async def lidar(ws):
                     bytes_enviados += len(chunk_b64)
                 await ws.send(json.dumps({"audio_done": True}))
                 logger.info(f"resp stream: {len(r_tela)}c / {bytes_enviados}c de audio")
+            except asyncio.CancelledError:
+                # Barge-in: task cancelada durante o stream. Garante que o app
+                # receba audio_done para destravar o protocolo de playback.
+                try:
+                    await ws.send(json.dumps({"audio_done": True}))
+                except Exception:
+                    pass
+                raise
             except Exception as e:
                 logger.warning(f"audio stream: {e}")
                 await ws.send(json.dumps({"text": r_tela, "corrigido": m}))
+        except asyncio.CancelledError:
+            raise
+        except Exception as e:
+            logger.warning(f"responder_fala: {e}")
+
+    task_resposta = None
+    try:
+        async for m in _fluxo_mensagens():
+            img_atual = None
+            img_mime = "image/jpeg"
+            try:
+                obj = json.loads(m)
+                if isinstance(obj, dict):
+                    # ---- Protocolo EcoDashboard (type) ----
+                    if obj.get("type") in ("ping", "pong"):
+                        if obj.get("type") == "ping":
+                            await ws.send(json.dumps({"type": "pong", "origem": "bridge", "eco": obj}))
+                        continue
+                    if obj.get("type") == "get_state":
+                        eh_dashboard = True
+                        try:
+                            payload = await asyncio.to_thread(_snapshot_estado_ecossistema)
+                            await ws.send(json.dumps({"type": "state", "payload": payload}))
+                            logger.info("dashboard: snapshot de estado enviado")
+                        except Exception as e:
+                            logger.warning(f"dashboard: get_state falhou: {e}")
+                        continue
+                    if obj.get("type") == "command":
+                        cmd = obj.get("command", "")
+                        if cmd in ("get_state", "state"):
+                            eh_dashboard = True
+                            try:
+                                payload = await asyncio.to_thread(_snapshot_estado_ecossistema)
+                                await ws.send(json.dumps({"type": "state", "payload": payload}))
+                            except Exception as e:
+                                logger.warning(f"dashboard: command get_state falhou: {e}")
+                        continue
+                    # ---- Protocolo legado (tipo) — app Android ----
+                    if obj.get("tipo") == "ping":
+                        await ws.send(json.dumps({"tipo": "pong", "origem": "bridge", "eco": obj}))
+                        logger.info(f"ping-pong de {obj.get('origem','desconhecido')}")
+                        continue
+                    if obj.get("tipo") == "quota":
+                        if NVIDIA_QUOTA_AVAILABLE:
+                            monitor = get_monitor()
+                            status = monitor.get_status()
+                            await ws.send(json.dumps({"tipo": "quota_status", "status": status}))
+                        else:
+                            await ws.send(json.dumps({"tipo": "quota_status", "error": "nvidia_quota_monitor não disponível"}))
+                        logger.info(f"quota status request")
+                        continue
+                    if obj.get("tipo") == "cancelar":
+                        # BARGE-IN: usuário interrompeu a resposta em andamento.
+                        # Cancela a task do turno corrente e volta à escuta. O app
+                        # para a fila de reprodução assim que recebe o "cancelado".
+                        if task_resposta is not None and not task_resposta.done():
+                            logger.info("barge-in: cancelando resposta em andamento")
+                            task_resposta.cancel()
+                            try:
+                                await task_resposta
+                            except (asyncio.CancelledError, Exception):
+                                pass
+                            try:
+                                await ws.send(json.dumps({
+                                    "tipo": "cancelado",
+                                    "text": "Interrompido. Pode falar quando quiser.",
+                                    "audio_done": True,
+                                    "volume": _ler_volume_widget(),
+                                }))
+                            except Exception as e:
+                                logger.warning(f"barge-in: envio de cancelado falhou: {e}")
+                        continue
+                    if obj.get("tipo") == "editar":
+                        # Edit-and-resubmit (padrão ChatGPT/Claude): usuário edita
+                        # a mensagem já enviada; o resto do histórico é descartado
+                        # a partir dela e a resposta é regenerada do zero.
+                        texto_antigo = obj.get("texto_antigo") or obj.get("antigo") or ""
+                        texto_novo = obj.get("texto_novo") or obj.get("novo") or obj.get("texto") or ""
+                        _ed = _aplicar_edicao(c._hist, texto_antigo)
+                        if _ed is None:
+                            await ws.send(json.dumps({
+                                "text": "Não encontrei essa mensagem para editar.",
+                                "corrigido": texto_antigo,
+                                "edicao_falhou": True,
+                                "volume": _ler_volume_widget(),
+                            }))
+                            logger.warning(f"editar nao encontrou: '{texto_antigo[:60]}'")
+                            msg_id = obj.get("id") if isinstance(obj, dict) else None
+                            if msg_id is not None:
+                                try:
+                                    await ws.send(json.dumps({"ack": int(msg_id)}))
+                                except Exception:
+                                    pass
+                            continue
+                        m = texto_novo
+                        c._hist = _ed
+                        try:
+                            c._salvar()
+                        except Exception as e:
+                            logger.warning(f"editar salvar: {e}")
+                        logger.info(f"editar ok: '{texto_antigo[:40]}' -> '{texto_novo[:40]}' "
+                                    f"(hist={len(c._hist)//2} pares restantes)")
+                    if obj.get("tipo") == "mensagem":
+                        # App novo envia {"tipo":"mensagem","id":N,"texto":"..."}.
+                        # Extrai o texto real e deixa o id para o ACK abaixo.
+                        m = obj.get("texto") or ""
+                        logger.info(f"mensagem com id={obj.get('id')} extraida ({len(m)} chars)")
+                    elif obj.get("tipo") == "imagem":
+                        m = obj.get("texto") or "O que você vê nesta imagem?"
+                        img_atual = obj.get("imagem", "")
+                        img_mime = obj.get("mime", "image/jpeg")
+                        logger.info(f"imagem recebida: {len(img_atual)} chars base64")
+                    # Fase 3 - ACK-based: confirma recebimento para o app remover da fila.
+                    # O app enfileira mensagens com {"id": N} e so descarta apos receber {"ack": N}.
+                    # Se a conexao cair antes do ACK, o app reenvia ao reconectar.
+                    msg_id = obj.get("id") if isinstance(obj, dict) else None
+                    if msg_id is not None:
+                        try:
+                            await ws.send(json.dumps({"ack": int(msg_id)}))
+                            logger.info(f"ack enviado para msg {msg_id}")
+                        except Exception as e:
+                            logger.warning(f"ack falhou para msg {msg_id}: {e}")
+            except json.JSONDecodeError:
+                pass
+            msg_fix = fix_punctuation(m)
+            if msg_fix != m:
+                logger.info(f"pontuacao corrigida: {m[:80]} -> {msg_fix[:80]}")
+                m = msg_fix
+            if not m.strip():
+                logger.info("mensagem vazia ignorada")
+                continue
+            _marcar_atividade()
+            logger.info(f"msg({len(m)}): {m[:120]}")
+            # Barge-in por nova fala: se já existe uma resposta rodando, cancela
+            # e dispara a nova (fala do usuário interrompe a resposta anterior).
+            if task_resposta is not None and not task_resposta.done():
+                logger.info("nova fala interrompe resposta anterior (barge-in)")
+                task_resposta.cancel()
+                try:
+                    await task_resposta
+                except (asyncio.CancelledError, Exception):
+                    pass
+            task_resposta = asyncio.create_task(_responder_fala(m, img_atual, img_mime))
     except websockets.exceptions.ConnectionClosed:
         logger.info("fim")
     finally:
         try:
+            if task_resposta is not None and not task_resposta.done():
+                task_resposta.cancel()
+                try:
+                    await task_resposta
+                except (asyncio.CancelledError, Exception):
+                    pass
             task_cont.cancel()
             await task_cont
         except Exception:

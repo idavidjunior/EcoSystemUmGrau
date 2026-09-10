@@ -1,0 +1,9 @@
+{
+  "pagina": "/",
+  "browser": "chromium",
+  "metrica": "ms / ratio",
+  "lcp": 692,
+  "cls": 0,
+  "inp": 0,
+  "ttfb_ms": 875.0
+}
