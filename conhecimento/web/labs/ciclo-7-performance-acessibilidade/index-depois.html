@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Um Grau — Engenharia Web</title>
+    <link rel="preload" href="/assets/hero.svg" as="image">
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f5; color: #262626; margin: 0; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; padding: 1rem; }
+        h1 { font-size: 2.2rem; color: #111111; }
+        h2 { color: #111111; }
+        h3 { color: #1f1f1f; }
+        p { color: #333333; }
+        .category { color: #5a5a5a; font-size: 0.85rem; }
+        .hero-image { width: 100%; height: auto; display: block; }
+        .card { width: 100%; background: #ffffff; }
+        .card img { width: 100%; height: auto; display: block; }
+        .cta { padding: 1rem; background: #ffffff; border: 1px solid #dddddd; border-radius: 6px; }
+        .cta label { display: block; font-weight: bold; color: #111111; margin-bottom: 0.4rem; }
+        .cta input { padding: 0.5rem; width: 70%; border: 1px solid #888888; border-radius: 4px; }
+        .cta button { background: #1a4f8b; color: #ffffff; border: 0; padding: 0.6rem 1.2rem; margin-left: 0.4rem; border-radius: 4px; font-size: 1rem; cursor: pointer; }
+        .cta button:focus { outline: 3px solid #ffbf00; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>A sua jornada de engenharia web</h1>
+        <p class="category">Quarta, 09 de setembro de 2026 · Categoria: Engenharia</p>
+    </header>
+    <img class="hero-image" src="/assets/hero.svg" width="1200" height="400" alt="Banner do blog Um Grau com título Um Grau a Mais e a frase Engenharia web, um ciclo de cada vez.">
+    <main>
+        <h2>Construir com método</h2>
+        <p>Construir software correto, seguro e verificável exige método. Uma melhoria pequena por dia, validada por teste real, transforma saber em possuir engenharia.</p>
+        <h3>Performance importa</h3>
+        <p>Core Web Vitals medem a experiência real de quem visita. LCP, CLS e INP contam a história de quão rápido e estável uma página é para a pessoa que a usa.</p>
+        <h3>Estabilidade visual</h3>
+        <p>Com dimensões reservadas via atributos <code>width</code> e <code>height</code>, a imagem não empurra o conteúdo ao carregar. Zero CLS por imagem.</p>
+    </main>
+    <div class="card">
+        <img class="card-image" src="/assets/hero.svg" width="1200" height="400" loading="lazy" alt="Banner repetido do blog como exemplo de armazenamento de imagem com dimensões explícitas.">
+    </div>
+    <section class="cta" aria-labelledby="titulo-news">
+        <h2 id="titulo-news">Assine a newsletter</h2>
+        <form>
+            <label for="email-news">Seu email</label>
+            <input type="email" id="email-news" name="email" placeholder="voce@exemplo.com.br" autocomplete="email">
+            <button type="button" id="botao-cadastrar">Cadastrar</button>
+        </form>
+    </section>
+</div>
+</body>
+</html>

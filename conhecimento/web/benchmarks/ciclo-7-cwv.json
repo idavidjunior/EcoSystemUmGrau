@@ -1,0 +1,13 @@
+{
+  "antes": {
+    "lcp": 844,
+    "cls": 0.12650346247355146,
+    "inp": 0
+  },
+  "depois": {
+    "lcp": 408,
+    "cls": 0,
+    "inp": 16
+  },
+  "metrica": "ms / ratio"
+}

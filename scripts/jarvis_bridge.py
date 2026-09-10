@@ -1328,6 +1328,40 @@ class Cliente:
                 json.dump(self._hist[-MAX_HIST:], f, ensure_ascii=False, indent=2)
         except Exception as e: logger.error(f"salvar: {e}")
 
+    def _gravar_fala_usuario(self, msg: str):
+        """Persiste a fala do usuário IMEDIATAMENTE ao chegar, ANTES de
+        processar. Se a conexão cair no meio do processamento (LLM lento,
+        queda de rede), a solicitação fica salva no histórico como
+        'Usuário: ...' sem resposta — a reconexão detecta e retoma.
+
+        Idempotente: se a última entrada já é exatamente esta fala, não
+        duplica (protege retries e reenvios com ACK)."""
+        fala = f"Usuário: {msg}"
+        try:
+            self._hist = self._carregar()
+            if self._hist and self._hist[-1] == fala:
+                return
+            self._hist.append(fala)
+            self._salvar()
+        except Exception as e:
+            logger.warning(f"gravar fala usuario: {e}")
+
+    def _gravar_turno(self, msg: str, resp: str):
+        """Grava o par Usuário+Jarvis de forma idempotente. Se a fala do
+        usuário já foi persistida precocemente (para sobreviver a quedas),
+        apenas anexa a resposta; senão grava o par completo."""
+        try:
+            self._hist = self._carregar()
+            fala = f"Usuário: {msg}"
+            if self._hist and self._hist[-1] == fala:
+                self._hist.append(f"Jarvis: {resp}")
+            else:
+                self._hist.append(fala)
+                self._hist.append(f"Jarvis: {resp}")
+            self._salvar()
+        except Exception as e:
+            logger.warning(f"gravar turno: {e}")
+
     def _init_estado(self):
         if not TMP_ESTADO.exists():
             try:
@@ -1517,6 +1551,12 @@ class Cliente:
         if await self._processar_comando_eco(msg):
             return ""  # Comando processado, não envia para LLM
 
+        # Persistir a fala do usuário IMEDIATAMENTE (antes da chamada LLM):
+        # se a conexão cair durante o processamento, a solicitação fica no
+        # histórico como "Usuário: ..." sem resposta e a reconexão retoma.
+        # Idempotente: não duplica em retry/reenvio.
+        self._gravar_fala_usuario(msg)
+
         prompt = self._montar(msg)
         logger.info(f"hist={len(self._hist)//2} prompt={len(prompt)}b tentativa={tentativa}: {msg[:80]}")
 
@@ -1552,9 +1592,7 @@ class Cliente:
                 return await self.perguntar(msg, img_base64=img_base64, tentativa=2)
             resp = "Sem resposta."
 
-        self._hist.append(f"Usuário: {msg}")
-        self._hist.append(f"Jarvis: {resp}")
-        self._salvar()
+        self._gravar_turno(msg, resp)
         return resp
 
     async def _processar_comando_eco(self, msg: str) -> bool:
@@ -2329,6 +2367,14 @@ async def _voz_rapida(msg: str, cliente=None, img_base64=None, img_mime="image/j
     if not NVIDIA_QUOTA_AVAILABLE:
         logger.warning("voz rapida: quota monitor indisponivel")
         return None
+    # Persistir a fala do usuário IMEDIATAMENTE (antes do LLM) para que uma
+    # queda de conexão durante o processamento não perca a solicitação; a
+    # reconexão detecta "Usuário: ..." sem resposta e retoma. Idempotente.
+    try:
+        if cliente is not None:
+            cliente._gravar_fala_usuario(msg)
+    except Exception as e:
+        logger.warning(f"voz rapida gravar fala: {e}")
     try:
         ctx = _montar_contexto_voz(msg, cliente)
         sistema = _SISTEMA_VOZ_RAPIDA + "\n\n" + ctx
@@ -2357,10 +2403,7 @@ async def _voz_rapida(msg: str, cliente=None, img_base64=None, img_mime="image/j
                     # consistência do histórico e da busca de edição.
                     try:
                         if cliente is not None:
-                            cliente._hist = cliente._carregar()
-                            cliente._hist.append(f"Usuário: {msg}")
-                            cliente._hist.append(f"Jarvis: {saida}")
-                            cliente._salvar()
+                            cliente._gravar_turno(msg, saida)
                     except Exception as e:
                         logger.warning(f"voz rapida persistir: {e}")
                     return saida
@@ -2556,48 +2599,106 @@ def _ultima_msg_sem_resposta():
 
 
 async def _retomar_ultima_tarefa(ws, c):
-    """Retoma automaticamente a última tarefa que ficou sem resposta.
+    """Retoma automaticamente a última tarefa que ficou pendente na reconexão.
+
+    Detecta duas situações:
+    1) 'sem_resposta': a última fala do usuário ficou sem resposta no histórico
+       (a conexão caiu durante o processamento — a fala agora é persistida
+       precocemente, então este caso é detectado com segurança).
+    2) 'esclarecimento': o Jarvis respondeu à solicitação do usuário apenas com
+       uma pergunta de volta (ex.: "Qual mapeamento você gostaria que eu faça?")
+       — sinal de que a solicitação de ação não foi concluída.
+
     Retorna True se retomou alguma tarefa, False caso contrário."""
-    msg = _ultima_msg_sem_resposta()
-    if not msg:
-        return False
-
-    logger.info(f"RETOMADA AUTOMATICA: '{msg[:80]}' — reenviando sem pedir ao usuário")
-
-    # Avisa o usuário que está retomando
-    aviso = f"Conexão restabelecida. Retomando automaticamente: {msg[:50]}{'...' if len(msg) > 50 else ''}"
     try:
-        a = await gerar_audio(aviso)
-        _marcar_inicio_fala(aviso)
-        await ws.send(json.dumps({"audio": a, "text": aviso, "retomada": True, "volume": _ler_volume_widget()}))
-    except Exception as e:
-        logger.warning(f"aviso retomada: {e}")
-        await ws.send(json.dumps({"text": aviso, "retomada": True}))
+        if not HIST_PATH.exists():
+            return False
+        with open(HIST_PATH, "r", encoding="utf-8-sig") as f:
+            d = json.load(f)
+        if not isinstance(d, list) or len(d) == 0:
+            return False
 
-    # Reenvia a mensagem para o LLM processar
-    try:
-        r = await c.perguntar(msg)
-        if r:
-            r_tela = normalizar_hora_display(r)
-            try:
-                a = await gerar_audio(r_tela)
-                if a:
-                    _marcar_inicio_fala(r_tela)
-                    await ws.send(json.dumps({"text": r_tela, "audio": a, "retomada": True, "volume": _ler_volume_widget()}))
-                    logger.info(f"retomada resp: {len(r_tela)}c / audio {len(a)}c")
-                else:
-                    await ws.send(json.dumps({"text": r_tela, "retomada": True}))
-            except Exception as e:
-                logger.warning(f"audio retomada: {e}")
-                await ws.send(json.dumps({"text": r_tela, "retomada": True}))
+        # Encontra o último par (Usuário -> Jarvis) ou só a última fala sem resposta.
+        idx_ultima_user = None
+        for i in range(len(d) - 1, -1, -1):
+            s = d[i]
+            if isinstance(s, str) and s.startswith("Usuário:"):
+                idx_ultima_user = i
+                break
+        if idx_ultima_user is None:
+            return False
+        msg = d[idx_ultima_user][len("Usuário:"):].strip()
+
+        razao = None
+        tem_jarvis_depois = False
+        for i in range(idx_ultima_user + 1, len(d)):
+            s = d[i]
+            if isinstance(s, str) and s.startswith("Jarvis:"):
+                tem_jarvis_depois = True
+                resposta = s[len("Jarvis:"):].strip()
+                # Esclarecimento em aberto = resposta que é APENAS uma pergunta de
+                # volta (ex.: "Qual mapeamento você gostaria que eu faça?"), sem
+                # ponto final informativo antes — sinal que o Jarvis não cumpriu
+                # a solicitação anterior. Respostas com frase afirmativa seguida de
+                # pergunta (ex.: "fiz X. Quer detalhes?") NÃO contam.
+                if (resposta.endswith("?")
+                        and len(resposta) <= 200
+                        and "." not in resposta[:-1]
+                        and "!" not in resposta[:-1]):
+                    razao = "esclarecimento"
+                break
+        if not razao and not tem_jarvis_depois:
+            razao = "sem_resposta"
+        if not razao:
+            return False  # conversa resolvida; nada a retomar
+
+        # No caso 'esclarecimento', mantemos o par no histórico de propósito:
+        # a LLM enxerga que já perguntou de volta e que a solicitação continua
+        # pendente — contexto que a ajuda a EXECUTAR desta vez. O reenvio produz
+        # um novo par [Usuário: msg, Jarvis: ...], equivalente ao usuário
+        # repetindo a ordem (comportamento natural apoiado pelo ACK do app).
+        logger.info(f"RETOMADA AUTOMATICA ({razao}): '{msg[:80]}' — reenviando sem pedir ao usuário")
+
+        # Avisa o usuário que está retomando
+        if razao == "esclarecimento":
+            aviso = f"Conexão restabelecida. A solicitação anterior ainda não foi concluída, retomando agora."
         else:
-            await ws.send(json.dumps({"text": "Não consegui processar a retomada. Pode repetir?", "retomada": True}))
-    except Exception as e:
-        logger.error(f"erro retomada: {e}")
-        await ws.send(json.dumps({"text": f"Erro ao retomar: {e}", "retomada": True}))
+            aviso = f"Conexão restabelecida. Retomando automaticamente: {msg[:50]}{'...' if len(msg) > 50 else ''}"
+        try:
+            a = await gerar_audio(aviso)
+            _marcar_inicio_fala(aviso)
+            await ws.send(json.dumps({"audio": a, "text": aviso, "retomada": True, "volume": _ler_volume_widget()}))
+        except Exception as e:
+            logger.warning(f"aviso retomada: {e}")
+            await ws.send(json.dumps({"text": aviso, "retomada": True}))
 
-    _marcar_atividade()
-    return True
+        # Reenvia a mensagem para o LLM processar
+        try:
+            r = await c.perguntar(msg)
+            if r:
+                r_tela = normalizar_hora_display(r)
+                try:
+                    a = await gerar_audio(r_tela)
+                    if a:
+                        _marcar_inicio_fala(r_tela)
+                        await ws.send(json.dumps({"text": r_tela, "audio": a, "retomada": True, "volume": _ler_volume_widget()}))
+                        logger.info(f"retomada resp: {len(r_tela)}c / audio {len(a)}c")
+                    else:
+                        await ws.send(json.dumps({"text": r_tela, "retomada": True}))
+                except Exception as e:
+                    logger.warning(f"audio retomada: {e}")
+                    await ws.send(json.dumps({"text": r_tela, "retomada": True}))
+            else:
+                await ws.send(json.dumps({"text": "Não consegui processar a retomada. Pode repetir?", "retomada": True}))
+        except Exception as e:
+            logger.error(f"erro retomada: {e}")
+            await ws.send(json.dumps({"text": f"Erro ao retomar: {e}", "retomada": True}))
+
+        _marcar_atividade()
+        return True
+    except Exception as e:
+        logger.warning(f"retomada automatica erro geral: {e}")
+        return False
 
 
 async def _enviar_progresso(ws, etapa: str):

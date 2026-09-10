@@ -88,7 +88,7 @@ function Get-Pendentes {
     param([string]$Path)
     if (-not (Test-Path "$Path\.git")) { return '' }
     Push-Location $Path
-    $s = git status --porcelain 2>&1 | Out-String
+    $s = git -c core.quotePath=false status --porcelain --no-renames 2>&1 | Out-String
     Pop-Location
     return $s.Trim()
 }
@@ -289,7 +289,7 @@ function Invoke-RepoCommit {
             }
             if ($pullOut -match 'Fast-forward|Updating') { Write-Log "PULL ${RepoKey}: OK" }
         }
-        $status = git status --porcelain 2>&1 | Out-String
+        $status = git -c core.quotePath=false status --porcelain --no-renames 2>&1 | Out-String
         if (-not $status.Trim()) {
             $rPush = Invoke-PushELimpeza -Path $path -RepoKey $RepoKey -DoPush:$DoPush -Cfg $cfg
             Pop-Location; Remove-Item $lock -Force -ErrorAction SilentlyContinue

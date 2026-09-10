@@ -36,13 +36,13 @@ Nível: 0–8. MASTERED exige nível 8 com evidência documentada.
 | A | Fundamentos (HTML, CSS, HTTP, JSON, DOM, acessibilidade) | VALIDATED | 3 | www/ estático + micro-lab Ciclo 1 validado (labs/ciclo-1-fundamentos) |
 | B | Frontend React/Next/PWA | DISCOVERED | 1 | Projetos/Rob-Trader usa React 19+Vite 7+TS 5.9; Node ausente (bloqueio) |
 | C | TypeScript | DISCOVERED | 1 | Padrões TS no vault; runtime Node ausente |
-| D | UI/UX (usabilidade, sistemas de design) | DISCOVERED | 1 | EcoDashboard, WindowGUI, www/; sem labs |
+| D | UI/UX (usabilidade, sistemas de design) | VALIDATED | 3 | micro-lab Ciclo 7 validado (18 checks OK, a11y WCAG básico: lang, h1 único, alt, label for/id, contraste AA, botão clicável; labs/ciclo-7-performance-acessibilidade) |
 | E | Animação/Gráficos WebGL/Three.js/WebGPU | DISCOVERED | 1 | docs/grafo.html existe; WebGPU não testado |
 | F | Backend Web (servidores, rotas, APIs) | VALIDATED | 3 | micro-lab Ciclo 2 validado (14 checks OK, labs/ciclo-2-backend-estruturado); ADR-003; micro-lab Ciclo 3 WS (6 checks OK, labs/ciclo-3-websocket); ADR-004; Ciclo 1 (servidor stdlib + JSON) validado |
 | G | Banco (PostgreSQL/Redis) | VALIDATED | 3 | sqlite3 stdlib com CRUD HTTP, migrations v1→v2 e persistência real entre reinícios validado (25 checks OK, labs/ciclo-5-persistencia-web); ADR-005; PostgreSQL/Redis só se o produto exigir |
 | H | IA/LLM/RAG aplicada em web | VALIDATED | 3 | Ecossistema usa IA real (cognitive_core, agents, MCP); realtime web com estado do runtime validado (Ciclo 3, /estado); chat web ligado ao cognitive_core validado (Ciclo 4, 11 checks OK, labs/ciclo-4-ia-chat); timeout da busca MCP corrigido (09/09, -32603 eliminado; add-memory 120s, get-memory-context 30s, lock 120s); RAG segue como trabalho em aberto, sem blocker técnico |
-| I | Segurança OWASP | VALIDATED | 3 | SecurityMiddleware OWASP (headers, rate limit, body limit, content-type check, sanitização, error handling, SQL injection blocking) validado (34 checks OK, labs/ciclo-6-seguranca-owasp); ADR-006 pendente |
-| J | Performance / Core Web Vitals | DISCOVERED | 1 | Skill performance-testing existe; nenhuma métrica medida |
+| I | Segurança OWASP | VALIDATED | 3 | SecurityMiddleware OWASP (headers, rate limit, body limit, content-type check, sanitização, error handling, SQL injection blocking) validado (34 checks OK, labs/ciclo-6-seguranca-owasp); ADR-006 |
+| J | Performance / Core Web Vitals | VALIDATED | 3 | CWV (LCP/CLS/INP) medidos com Playwright de página real antes/depois — CLS 0.127>0.000, LCP 764>528ms, INP 48ms (Good); benchmarks/ciclo-7-cwv.json; labs/ciclo-7-performance-acessibilidade |
 | K | DevOps (deploy, CI/CD, Docker) | UNDERSTOOD | 2 | Docker ausente; CI via GitHub Actions em uso; skill ci-cd-pipeline |
 | L | Arquitetura (SOLID, Clean, event-driven) | UNDERSTOOD | 3 | ADRs prévios da missão (ADR-001..005, decisões web registradas); decisões web pendentes |
 
