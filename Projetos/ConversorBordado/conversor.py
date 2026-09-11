@@ -13,6 +13,8 @@ from skimage import measure, morphology
 import os
 from pathlib import Path
 import math
+from editor_bordado import EmbroideryEditor, StitchRegion, StitchType
+from embroidery_visualizer import EmbroideryVisualizer, StitchSimulator
 
 
 class ConversorBordado:
@@ -20,6 +22,14 @@ class ConversorBordado:
         self.root = root
         self.root.title("Conversor de Imagem para Bordado")
         self.root.geometry("1000x700")
+        
+        # Tentar definir ícone
+        try:
+            icon_path = os.path.join(os.path.dirname(__file__), 'icon.ico')
+            if os.path.exists(icon_path):
+                self.root.iconbitmap(icon_path)
+        except:
+            pass
         
         # Variáveis
         self.image_path = None
@@ -245,7 +255,7 @@ class ConversorBordado:
             self.manual_frame.pack_forget()
     
     def generate_preview(self):
-        """Gera prévia do bordado antes de salvar."""
+        """Gera prévia automática do bordado com as configurações escolhidas."""
         if not self.image_path:
             messagebox.showwarning("Aviso", "Selecione uma imagem primeiro!")
             return
@@ -254,58 +264,452 @@ class ConversorBordado:
             self.status_var.set("Gerando prévia...")
             self.root.update()
             
+            # Carregar imagem original
+            original_image = Image.open(self.image_path)
+            
+            # Converter para RGB se necessário
+            if original_image.mode != 'RGB':
+                original_image = original_image.convert('RGB')
+            
+            # Criar regiões a partir da imagem
+            self.current_regions = self.extract_regions_from_image(original_image)
+            self.current_preview_image = original_image
+            
+            # Criar visualizador
+            self.visualizer = EmbroideryVisualizer()
+            
             # Criar janela de prévia
             preview_window = tk.Toplevel(self.root)
             preview_window.title("Prévia do Bordado")
-            preview_window.geometry("800x600")
+            preview_window.geometry("1000x750")
             
-            # Frame principal da prévia
+            # Frame principal
             preview_frame = ttk.Frame(preview_window, padding="10")
             preview_frame.pack(fill=tk.BOTH, expand=True)
             
             # Título
-            title = ttk.Label(preview_frame, text="Prévia do Bordado", 
-                             font=("Arial", 14, "bold"))
-            title.pack(pady=(0, 10))
+            title_frame = ttk.Frame(preview_frame)
+            title_frame.pack(fill=tk.X, pady=(0, 10))
             
-            # Frame para as duas prévias
-            previews_frame = ttk.Frame(preview_frame)
-            previews_frame.pack(fill=tk.BOTH, expand=True)
+            ttk.Label(title_frame, text="Prévia do Bordado", 
+                     font=("Arial", 14, "bold")).pack(side=tk.LEFT)
             
-            # Prévia 1: Realista (simulando tecido)
-            realistic_frame = ttk.LabelFrame(previews_frame, text="Prévia Realista (Simulação de Tecido)", padding="5")
-            realistic_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 5))
+            # Info de pontos
+            total_points = sum(len(r.points) for r in self.current_regions)
+            self.stitch_info_var = tk.StringVar(value=f"Regiões: {len(self.current_regions)} | Total de pontos: {total_points}")
+            ttk.Label(title_frame, textvariable=self.stitch_info_var, 
+                     font=("Arial", 10)).pack(side=tk.RIGHT, padx=10)
             
-            # Gerar prévia realista
-            realistic_preview = self.generate_realistic_preview()
-            realistic_photo = ImageTk.PhotoImage(realistic_preview)
+            # Frame de zoom
+            zoom_frame = ttk.Frame(preview_frame)
+            zoom_frame.pack(fill=tk.X, pady=(0, 10))
             
-            realistic_label = ttk.Label(realistic_frame, image=realistic_photo)
-            realistic_label.image = realistic_photo  # Manter referência
-            realistic_label.pack(fill=tk.BOTH, expand=True)
+            ttk.Label(zoom_frame, text="Zoom:").pack(side=tk.LEFT, padx=5)
+            ttk.Button(zoom_frame, text="-", width=3, 
+                      command=lambda: self.adjust_preview_zoom(-0.25)).pack(side=tk.LEFT)
             
-            # Prévia 2: Wireframe (caminhos dos pontos)
-            wireframe_frame = ttk.LabelFrame(previews_frame, text="Prévia Wireframe (Caminhos dos Pontos)", padding="5")
-            wireframe_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(5, 0))
+            self.zoom_var = tk.StringVar(value="100%")
+            ttk.Label(zoom_frame, textvariable=self.zoom_var, width=6).pack(side=tk.LEFT, padx=5)
             
-            # Gerar prévia wireframe
-            wireframe_preview = self.generate_wireframe_preview()
-            wireframe_photo = ImageTk.PhotoImage(wireframe_preview)
+            ttk.Button(zoom_frame, text="+", width=3, 
+                      command=lambda: self.adjust_preview_zoom(0.25)).pack(side=tk.LEFT)
+            ttk.Button(zoom_frame, text="Ajustar", 
+                      command=lambda: self.set_preview_zoom(1.0)).pack(side=tk.LEFT, padx=10)
             
-            wireframe_label = ttk.Label(wireframe_frame, image=wireframe_photo)
-            wireframe_label.image = wireframe_photo  # Manter referência
-            wireframe_label.pack(fill=tk.BOTH, expand=True)
+            # Modos de visualização
+            view_frame = ttk.Frame(preview_frame)
+            view_frame.pack(fill=tk.X, pady=(0, 5))
             
-            # Botão de fechar
-            close_btn = ttk.Button(preview_frame, text="Fechar", 
-                                  command=preview_window.destroy)
-            close_btn.pack(pady=(10, 0))
+            ttk.Label(view_frame, text="Modo:").pack(side=tk.LEFT, padx=5)
+            
+            self.preview_type_var = tk.StringVar(value="realistic")
+            
+            modes = [
+                ("Realista", "realistic"),
+                ("Pontos", "stitch"),
+                ("Sólido", "solid"),
+                ("Original", "original")
+            ]
+            
+            for text, value in modes:
+                ttk.Radiobutton(view_frame, text=text, variable=self.preview_type_var, 
+                              value=value, command=self.update_preview_display).pack(side=tk.LEFT, padx=5)
+            
+            # Separador
+            ttk.Separator(view_frame, orient=tk.VERTICAL).pack(side=tk.LEFT, padx=5, fill=tk.Y)
+            
+            # Grade
+            self.show_grid_var = tk.BooleanVar(value=False)
+            ttk.Checkbutton(view_frame, text="Grade", variable=self.show_grid_var,
+                           command=self.update_preview_display).pack(side=tk.LEFT, padx=5)
+            
+            # Canvas para prévia com fundo branco
+            self.preview_canvas = tk.Canvas(preview_window, bg='white', width=900, height=550)
+            self.preview_canvas.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+            
+            # Variáveis
+            self.preview_zoom_level = 1.0
+            self.current_preview_images = {}
+            
+            # Gerar prévias com tamanho fixo
+            self.generate_all_previews()
+            self.update_preview_display()
+            
+            # Botões de ação
+            btn_frame = ttk.Frame(preview_frame)
+            btn_frame.pack(fill=tk.X, pady=(10, 0))
+            
+            ttk.Button(btn_frame, text="Editar Bordado", 
+                      command=lambda: self.open_editor(preview_window)).pack(side=tk.LEFT, padx=(0, 10))
+            
+            ttk.Button(btn_frame, text="Salvar", 
+                      command=lambda: self.save_from_preview()).pack(side=tk.LEFT, padx=(0, 10))
+            
+            # Simulador
+            self.simulator = StitchSimulator(self.current_regions, original_image)
+            ttk.Label(btn_frame, text="Simulador:").pack(side=tk.LEFT, padx=(20, 5))
+            
+            ttk.Button(btn_frame, text="<<", width=3,
+                      command=lambda: self.simulate_stitch(-10)).pack(side=tk.LEFT)
+            ttk.Button(btn_frame, text=">", width=3,
+                      command=lambda: self.simulate_stitch(1)).pack(side=tk.LEFT)
+            ttk.Button(btn_frame, text=">>", width=3,
+                      command=lambda: self.simulate_stitch(10)).pack(side=tk.LEFT)
+            
+            self.sim_stitch_var = tk.StringVar(value=f"0/{self.simulator.get_total_stitches()}")
+            ttk.Label(btn_frame, textvariable=self.sim_stitch_var).pack(side=tk.LEFT, padx=5)
+            
+            ttk.Button(btn_frame, text="Fechar", 
+                      command=preview_window.destroy).pack(side=tk.RIGHT)
             
             self.status_var.set("Prévia gerada com sucesso")
             
         except Exception as e:
             messagebox.showerror("Erro", f"Erro ao gerar prévia: {str(e)}")
             self.status_var.set("Erro ao gerar prévia")
+    
+    def toggle_stitch_order_panel(self):
+        """Mostra/esconde painel de ordem de costura."""
+        if self.show_stitch_order_var.get():
+            self._show_stitch_order_panel()
+        else:
+            self._hide_stitch_order_panel()
+    
+    def _show_stitch_order_panel(self):
+        """Mostra painel de ordem de costura."""
+        if hasattr(self, 'stitch_order_frame') and self.stitch_order_frame.winfo_exists():
+            self.stitch_order_frame.pack(side=tk.RIGHT, fill=tk.Y, before=self.preview_canvas)
+            
+            # Limpar e preencher
+            for widget in self.stitch_order_frame.winfo_children():
+                widget.destroy()
+            
+            ttk.Label(self.stitch_order_frame, text="Ordem de Costura", 
+                     font=("Arial", 10, "bold")).pack(pady=5)
+            
+            # Lista de regiões na ordem de costura
+            listbox = tk.Listbox(self.stitch_order_frame, width=25)
+            listbox.pack(fill=tk.BOTH, expand=True, padx=5)
+            
+            for i, region in enumerate(self.current_regions):
+                color_hex = f'#{region.color[0]:02x}{region.color[1]:02x}{region.color[2]:02x}'
+                listbox.insert(tk.END, f"{i+1}. {region.name or f'Região {region.id}'}")
+                listbox.itemconfig(i, fg=color_hex)
+    
+    def _hide_stitch_order_panel(self):
+        """Esconde painel de ordem de costura."""
+        if hasattr(self, 'stitch_order_frame') and self.stitch_order_frame.winfo_exists():
+            self.stitch_order_frame.pack_forget()
+    
+    def simulate_stitch(self, delta):
+        """Avança/retrocede na simulação de costura."""
+        if not hasattr(self, 'simulator'):
+            return
+        
+        new_idx = self.simulator.current_stitch + delta
+        new_idx = max(0, min(new_idx, self.simulator.get_total_stitches()))
+        self.simulator.current_stitch = new_idx
+        
+        # Gerar frame da simulação
+        canvas_w = self.preview_canvas.winfo_width() or 800
+        canvas_h = self.preview_canvas.winfo_height() or 600
+        
+        frame = self.simulator.get_frame(new_idx, canvas_w, canvas_h)
+        
+        # Aplicar zoom
+        new_size = (int(frame.width * self.preview_zoom_level), 
+                   int(frame.height * self.preview_zoom_level))
+        frame_zoomed = frame.resize(new_size, Image.Resampling.LANCZOS)
+        
+        # Mostrar
+        photo = ImageTk.PhotoImage(frame_zoomed)
+        self.preview_canvas.delete("all")
+        self.preview_canvas.create_image(10, 10, anchor=tk.NW, image=photo)
+        self.preview_canvas.image = photo
+        
+        self.sim_stitch_var.set(f"{new_idx}/{self.simulator.get_total_stitches()}")
+    
+    def open_editor(self, preview_window):
+        """Abre o editor com as regiões geradas automaticamente."""
+        try:
+            # Fechar janela de prévia
+            preview_window.destroy()
+            
+            # Abrir editor
+            editor_window = tk.Toplevel(self.root)
+            editor = EmbroideryEditor(editor_window, self.current_preview_image, self.current_regions)
+            
+            self.status_var.set("Editor aberto - Edite o bordado conforme necessário")
+            
+        except Exception as e:
+            messagebox.showerror("Erro", f"Erro ao abrir editor: {str(e)}")
+            self.status_var.set("Erro ao abrir editor")
+    
+    def save_from_preview(self):
+        """Salva o bordado diretamente da prévia."""
+        formato = self.format_var.get()
+        
+        pattern = pyembroidery.EmbPattern()
+        
+        for region in self.current_regions:
+            # Adicionar cor
+            pattern.add_stitch_absolute(pyembroidery.COLOR_CHANGE, 0, 0)
+            
+            # Adicionar pontos
+            for x, y in region.points:
+                pattern.add_stitch_absolute(pyembroidery.STITCH, x, y)
+        
+        # Solicitar arquivo de saída
+        filetypes = [(f"Arquivo {formato}", f"*.{formato.lower()}")]
+        output_path = filedialog.asksaveasfilename(
+            title=f"Salvar como {formato}",
+            defaultextension=f".{formato.lower()}",
+            filetypes=filetypes
+        )
+        
+        if output_path:
+            write_func = getattr(pyembroidery, f"write_{formato.lower()}")
+            write_func(pattern, output_path)
+            self.status_var.set(f"Salvo: {output_path}")
+            messagebox.showinfo("Sucesso", f"Arquivo {formato} salvo com sucesso!")
+    
+    def adjust_preview_zoom(self, delta):
+        """Ajusta o zoom da prévia."""
+        self.preview_zoom_level = max(0.25, min(4.0, self.preview_zoom_level + delta))
+        self.zoom_var.set(f"{int(self.preview_zoom_level * 100)}%")
+        self.update_preview_display()
+    
+    def set_preview_zoom(self, level):
+        """Define zoom específico da prévia."""
+        self.preview_zoom_level = level
+        self.zoom_var.set(f"{int(self.preview_zoom_level * 100)}%")
+        self.update_preview_display()
+    
+    def on_preview_mouse_wheel(self, event):
+        """Lida com scroll do mouse para zoom na prévia."""
+        if event.delta > 0:
+            self.adjust_preview_zoom(0.1)
+        else:
+            self.adjust_preview_zoom(-0.1)
+    
+    def generate_all_previews(self):
+        """Gera todos os tipos de prévia."""
+        # Usar tamanho fixo para garantir que funcione
+        w, h = 900, 550
+        
+        self.current_preview_images = {
+            "realistic": self.visualizer.render_realistic(
+                self.current_regions, self.current_preview_image, w, h),
+            "stitch": self.visualizer.render_stitch_view(
+                self.current_regions, self.current_preview_image, w, h),
+            "solid": self.visualizer.render_solid_view(
+                self.current_regions, self.current_preview_image, w, h),
+            "original": self.current_preview_image.copy()
+        }
+    
+    def update_preview_display(self):
+        """Atualiza a exibição da prévia no canvas."""
+        # Limpar canvas
+        self.preview_canvas.delete("all")
+        
+        # Obter tipo selecionado
+        preview_type = self.preview_type_var.get()
+        
+        # Regenerar se necessário
+        if preview_type not in self.current_preview_images:
+            self.generate_all_previews()
+        
+        if preview_type in self.current_preview_images:
+            img = self.current_preview_images[preview_type]
+            
+            # Aplicar zoom
+            new_size = (int(img.width * self.preview_zoom_level), 
+                       int(img.height * self.preview_zoom_level))
+            img_zoomed = img.resize(new_size, Image.Resampling.LANCZOS)
+            
+            # Converter para PhotoImage
+            photo = ImageTk.PhotoImage(img_zoomed)
+            
+            # Centralizar no canvas
+            canvas_width = max(self.preview_canvas.winfo_width(), 900)
+            canvas_height = max(self.preview_canvas.winfo_height(), 550)
+            
+            x = max(0, (canvas_width - new_size[0]) // 2)
+            y = max(0, (canvas_height - new_size[1]) // 2)
+            
+            # Desenhar imagem
+            self.preview_canvas.create_image(x, y, anchor=tk.NW, image=photo, tags="preview")
+            self.preview_canvas.image = photo  # Manter referência
+            
+            # Desenhar grade se ativada
+            if self.show_grid_var.get():
+                self._draw_preview_grid()
+    
+    def _draw_preview_grid(self):
+        """Desenha grade de referência."""
+        canvas_width = max(self.preview_canvas.winfo_width(), 900)
+        canvas_height = max(self.preview_canvas.winfo_height(), 550)
+        
+        spacing = 30
+        
+        for x in range(0, canvas_width, spacing):
+            self.preview_canvas.create_line([(x, 0), (x, canvas_height)], 
+                                          fill='#cccccc', width=1, tags="grid")
+        
+        for y in range(0, canvas_height, spacing):
+            self.preview_canvas.create_line([(0, y), (canvas_width, y)], 
+                                          fill='#cccccc', width=1, tags="grid")
+    
+    def generate_contours_preview(self):
+        """Gera prévia mostrando contornos detectados."""
+        width, height = self.current_preview_image.size
+        preview_size = (400, 400)
+        
+        # Criar imagem branca
+        preview = Image.new('RGB', preview_size, (255, 255, 255))
+        draw = ImageDraw.Draw(preview)
+        
+        # Converter para escala de cinza
+        if self.current_preview_image.mode != 'L':
+            gray_img = self.current_preview_image.convert('L')
+        else:
+            gray_img = self.current_preview_image.copy()
+        
+        gray_img.thumbnail(preview_size, Image.Resampling.LANCZOS)
+        img_array = np.array(gray_img)
+        
+        # Detectar bordas usando gradiente
+        from skimage import feature
+        edges = feature.canny(img_array, sigma=2)
+        
+        # Converter coordenadas
+        scale_x = preview_size[0] / gray_img.width
+        scale_y = preview_size[1] / gray_img.height
+        
+        # Desenhar contornos
+        for y in range(edges.shape[0]):
+            for x in range(edges.shape[1]):
+                if edges[y, x]:
+                    px = int(x * scale_x)
+                    py = int(y * scale_y)
+                    draw.point((px, py), fill=(0, 100, 200))
+        
+        # Adicionar legenda
+        draw.text((10, 10), "Azul: Contornos detectados", fill=(0, 100, 200))
+        
+        return preview
+    
+    def generate_quantized_preview(self):
+        """Gera prévia com cores quantizadas."""
+        width, height = self.current_preview_image.size
+        preview_size = (400, 400)
+        
+        # Criar imagem
+        preview = Image.new('RGB', preview_size, (255, 255, 255))
+        
+        # Copiar e redimensionar imagem
+        img = self.current_preview_image.copy()
+        if img.mode != 'RGB':
+            img = img.convert('RGB')
+        
+        img.thumbnail(preview_size, Image.Resampling.LANCZOS)
+        
+        # Quantizar cores
+        img_quantized = img.quantize(colors=6, method=Image.Quantize.MEDIANCUT)
+        img_quantized_rgb = img_quantized.convert('RGB')
+        
+        # Colocar no centro da preview
+        position = ((preview_size[0] - img_quantized_rgb.width) // 2,
+                   (preview_size[1] - img_quantized_rgb.height) // 2)
+        
+        preview.paste(img_quantized_rgb, position)
+        
+        # Adicionar legenda
+        draw = ImageDraw.Draw(preview)
+        draw.text((10, 10), "6 cores (quantização median cut)", fill=(0, 0, 0))
+        
+        return preview
+    
+    def extract_regions_from_image(self, image: Image.Image):
+        """Extrai regiões de bordado a partir da imagem."""
+        from skimage import measure
+        import numpy as np
+        
+        # Quantizar cores
+        img_quantized = image.quantize(colors=6, method=Image.Quantize.MEDIANCUT)
+        img_quantized_array = np.array(img_quantized)
+        palette = img_quantized.getpalette()
+        
+        regions = []
+        region_id = 0
+        
+        colors = np.unique(img_quantized_array)
+        
+        for color_idx in colors:
+            # Criar máscara para esta cor
+            mask = (img_quantized_array == color_idx)
+            
+            # Detectar componentes conectados
+            labeled = measure.label(mask)
+            region_props = measure.regionprops(labeled)
+            
+            # Obter cor RGB
+            r = palette[color_idx * 3]
+            g = palette[color_idx * 3 + 1]
+            b = palette[color_idx * 3 + 2]
+            
+            for prop in region_props:
+                minr, minc, maxr, maxc = prop.bbox
+                
+                # Ignorar regiões muito pequenas
+                if (maxr - minr) < 5 or (maxc - minc) < 5:
+                    continue
+                
+                region_mask = mask[minr:maxr, minc:maxc].copy()
+                
+                # Criar lista de pontos
+                points = []
+                for y in range(minr, maxr, 4):
+                    for x in range(minc, maxc, 4):
+                        if region_mask[y - minr, x - minc]:
+                            points.append((x, y))
+                
+                region = StitchRegion(
+                    id=region_id,
+                    color=(r, g, b),
+                    stitch_type=StitchType.FILL,
+                    density=0.5,
+                    angle=0,
+                    mask=region_mask,
+                    bounds=(minr, minc, maxr, maxc),
+                    points=points,
+                    name=f"Cor {color_idx}"
+                )
+                
+                regions.append(region)
+                region_id += 1
+        
+        return regions
     
     def generate_realistic_preview(self):
         """Gera prévia realista simulando bordado em tecido com cores."""
