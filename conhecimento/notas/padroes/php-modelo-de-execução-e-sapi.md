@@ -1,5 +1,5 @@
 ---
-tags: [desenvolvimento, justa, padrao, php, produção, tolerante]
+tags: [desenvolvimento, justa, padrao, php, reaproveita, tolerante]
 aliases: [PHP: modelo de execução e SAPI]
 date: 2026-08-10
 ---

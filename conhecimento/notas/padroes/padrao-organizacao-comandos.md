@@ -1,12 +1,12 @@
 ---
-tags: [auto, automatico, bluetooth, opencodeopencodeopencode, padrao, rot]
+tags: [auto, automatico, bluetooth, opencodeopencodeopencodeopencode, padrao, rot]
 aliases: [padrao organizacao comandos]
 date: 2026-08-17
 ---
 
 # padrao organizacao comandos
 
-**Fonte:** opencode+opencode+opencode
+**Fonte:** opencode+opencode+opencode+opencode
 
 ## Conexoes
 
@@ -18,5 +18,5 @@ date: 2026-08-17
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]
-- [[config-2026-07-27-teste-do-vigilante-automático]]
+- [[correção-de-mojibake-no-knowledgegraphjson-utf-8-lido-como-c]]
 - [[padrao-hub-padroes]]
