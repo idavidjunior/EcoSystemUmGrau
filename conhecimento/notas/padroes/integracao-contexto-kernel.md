@@ -1,5 +1,5 @@
 ---
-tags: [autorização, chamadas, incompatíveis, integração, opencodeopencode, padrao]
+tags: [chamadas, corrigir, incompatíveis, integração, opencodeopencode, padrao]
 aliases: [integracao contexto kernel]
 date: 2026-09-04
 ---

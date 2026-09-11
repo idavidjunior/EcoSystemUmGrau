@@ -23,3 +23,11 @@ licoes:
   - Ao filtrar escopo determinístico, excluir por requisito (IA/playwright), não
     por "tem servidor": Ciclo 6 tem servidor mas roda no CI com orquestração.
 ---
+
+## Conexoes
+
+- [[devops-containers-camadas-imagens-mínimas-e-non-root]]
+- [[devops-infraestrutura-como-código-terraform-e-imutabilidade]]
+- [[devops-observabilidade-logs-estruturados-métricas-e-tracing-]]
+- [[devops-pipelines-de-cicd-artefatos-ambientes-e-promoção]]
+- [[treinamento-especializado-em-navegacao-multi-plataforma-reco]]

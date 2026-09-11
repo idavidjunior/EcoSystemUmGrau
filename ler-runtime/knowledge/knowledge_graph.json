@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-09-09T14:40:44.965480",
+  "last_updated": "2026-09-10T23:25:56.246849",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -4056,9 +4056,9 @@
       "title": "roteamento busca web vox",
       "domain": "general",
       "body": "---\ntipo: erro\ntags: [jarvis, vox, roteamento, busca-web, voz-rapida, opencode-serve]\ndata: 2026-09-06\ncontexto: Usuário perguntou ao Vox sobre a promoção \"tixan ypê\" e o assistente respondeu \"Desculpe, não tenho informações\" e \"Não tenho acesso a novas pesquisas online\". O usuário apontou que deveria pesquisar na web, com razão.\ndecisao: Roteamento por intenção de busca no fluxo lidar(ws) do jarvis_bridge.py. Pedidos que exigem dado atual/online (promoção, preço, notícia, cotação, clima, etc.) ",
-      "extracted_at": "2026-09-06T01:29:08.134675",
-      "merged_count": 2,
-      "merged_at": "2026-09-06T01:29:55.116463"
+      "extracted_at": "2026-09-10T23:24:31.517462",
+      "merged_count": 3,
+      "merged_at": "2026-09-10T23:25:52.080272"
     }
   ],
   "heuristics": [

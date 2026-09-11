@@ -20,3 +20,11 @@ impacto: Define stack tecnológica e escopo inicial do projeto.
 - Implementar upload de imagem
 - Implementar ajustes automáticos e manuais
 - Implementar exportação nos formatos principais
+
+## Conexoes
+
+- [[python-decoradores-e-metaprogramação]]
+- [[python-gil-e-concorrência]]
+- [[python-idioms-e-boas-práticas]]
+- [[python-sintaxe-e-núcleo-da-linguagem]]
+- [[treinamento-especializado-em-navegacao-multi-plataforma-reco]]

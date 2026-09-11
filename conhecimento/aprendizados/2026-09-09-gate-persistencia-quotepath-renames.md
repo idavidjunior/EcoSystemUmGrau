@@ -6,3 +6,10 @@ contexto: Gate de persistência (scripts/persistencia.ps1) travava commits com "
 decisao: Causa: git status --porcelain escapa caminhos não-ASCII com aspas + octais (`"...\303\255..."`) por padrão (core.quotePath=true), e renames saem como `R old -> new` gerando caminho inválido no parsing Substring(3). Correção mínima segura: `git -c core.quotePath=false status --porcelain --no-renames` nas linhas 91 e 292 do gate.
 impacto: Gate destravado; commits do Ciclo 6/7 voltaram a fluir. Nenhum caminho de dado afetado.
 evidencia: Diagnóstico iterou Test-Path linha a linha; `--no-renames` faz rename virar duas linhas simples (D + A) com caminhos válidos.
+
+## Conexoes
+
+- [[git-conventional-commits-e-versionamento-semântico]]
+- [[git-fluxos-de-trabalho-trunk-based-e-git-flow-e-quando-usar-]]
+- [[git-rebase-vs-merge-e-históricos-limpos]]
+- [[git-resolver-conflitos-e-reverter-com-segurança-revert-reset]]

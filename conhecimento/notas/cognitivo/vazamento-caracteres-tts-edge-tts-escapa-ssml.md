@@ -1,5 +1,5 @@
 ---
-tags: [cognitivo, deveriam, errors, general, ler, recent]
+tags: [cognitivo, errors, falados, general, ler, recent]
 aliases: [vazamento caracteres tts edge tts escapa ssml]
 date: 2026-08-04
 ---
