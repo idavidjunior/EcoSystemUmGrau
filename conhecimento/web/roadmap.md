@@ -39,8 +39,8 @@ Micro-labs: medição de LCP/CLS/INP com Playwright; correção de acesso (WCAG 
 ### Ciclo 8 — Produto web integrado (projeto N1–N5) — concluído (2026-09-10)
 Construção de um micro-produto web real que usa: servidor, API, WS, sqlite, IA, segurança e performance. Produto entregue: Quadro de Notas com IA (painel de notas em sqlite + chat com cognitive_core + atualização em tempo real via WebSocket + SecurityMiddleware OWASP + CWV dentro do padrão). Validado em labs/ciclo-8-produto-quadro-notas (STATUS OK, 27 checks, 0 falhas). Evidência CWV em benchmarks/ciclo-8-cwv.json (LCP 692ms, CLS 0.000, INP 0ms, TTFB 875ms — bandas Good). Bloco N mapeado no README com 7 integrações (N1 servidor-http, N2 api-rest, N3 websocket-realtime, N4 sqlite-persistente, N5 ia-cognitive-core, N6 seguranca-owasp, N7 performance-cwv).
 
-### Ciclo 9 — Padronização e publicação (K)
-Micro-labs: build/run script reproduzível, documentação de operação, deploy via GitHub Pages ou pipe existente. Entrega: runbook de operação web.
+### Ciclo 9 — Padronização e publicação (K) — concluído (2026-09-10)
+Build/run script reproduzível (conhecimento/web/run_suite.py: roda os 5 labs determinísticos em 1 comando, orquestra o servidor do Ciclo 6, grava benchmarks/ciclo-9-run-suite.json), documentação de operação (RUNBOOK-OPERACAO-WEB.md: stack, comandos por lab, produto do Ciclo 8, CWV, troubleshooting) e deploy via pipe existente (web-ci.yml no GitHub Actions, determinístico). Validado localmente: STATUS OK (5 labs, 0 falhas). ADR-009 decidiu: orquestrador único + runbook + CI no pipe existente; GitHub Pages registrado como opção futura (produto exige backend); Docker fora.
 
 ## Decisões externas pendentes (não bloqueiam o início)
 
