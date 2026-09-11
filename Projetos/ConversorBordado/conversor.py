@@ -286,8 +286,7 @@ class ConversorBordado:
                     py = y * scale
                     pattern.add_stitch_absolute(stitch_cmd, px, py)
         
-        # Adicionar finalização
-        pattern.add_command(pyembroidery.COMMAND_STOP)
+        # Finalizar padrão
 
 
 def main():
