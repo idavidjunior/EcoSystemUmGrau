@@ -2088,6 +2088,31 @@ def _requer_busca_web(msg: str) -> bool:
     return bool(_PADROES_BUSCA_WEB.search(msg))
 
 
+# Padrões de promessa que o canal rápido emite mas não cumpre (sem ferramentas)
+_PADROES_PROMESSA = re.compile(
+    r"(?i)"
+    r"(vou\s+(pesquisar|procurar|buscar|verificar|checar|olhar|ver|consultar|"
+    r"encontrar|descobrir|informar)\b|"
+    r"deixa\s+eu\s+(ver|olhar|pesquisar|procurar|buscar|checar)\b|"
+    r"vou\s+olhar\s+isso\b|"
+    r"um\s+momento\s+(que\s+)?(vou|enquanto\s+eu)\s+(pesquiso|procuro|busco|verifico|olho)\b|"
+    r"estou\s+procurando\b|"
+    r"pesquisando\s+isso\b|"
+    r"vou\s+trazer\s+(o\s+)?resultado\b)"
+)
+
+
+def _eh_promessa_vazia(resp: str) -> bool:
+    """True se a resposta é apenas uma promessa de ação sem execução real."""
+    if not resp or not isinstance(resp, str):
+        return False
+    t = resp.strip().lower()
+    # Frases muito curtas que são só promessa
+    if len(t) < 120 and _PADROES_PROMESSA.search(t):
+        return True
+    return False
+
+
 # ---- Busca web determinística (DuckDuckGo lite, stdlib) ----
 # O modelo do serve não chama ferramentas de web por conta própria (verificado
 # no campo: responde "não consigo consultar/tenho acesso" sem tool_use). Para
@@ -3768,7 +3793,8 @@ async def lidar(ws):
             if r is None:
                 # ---- Voz rápida: NVIDIA direta (thinking off), sem serve ----
                 # Canal "simples": voz entra, resposta sai em poucos segundos.
-                # Só cai no serve se a cadeia rápida falhar inteira.
+                # Só cai no serve se a cadeia rápida falhar inteira OU se
+                # a resposta for apenas uma promessa vazia ("vou pesquisar...").
                 # Pedidos que exigem dado atual/online (preço, promoção, notícia,
                 # cotação, clima...) NÃO passam por aqui: o modelo puro não tem
                 # ferramentas e responderia "não tenho acesso a pesquisas".
@@ -3779,7 +3805,10 @@ async def lidar(ws):
                     try:
                         await _enviar_progresso(ws, "Respondendo rápido")
                         r = await _voz_rapida(m, cliente=c, img_base64=img_atual, img_mime=img_mime)
-                        if r is not None:
+                        if r is not None and _eh_promessa_vazia(r):
+                            logger.info(f"voz rapida retornou promessa vazia, re-roteando ao serve: {r[:80]}")
+                            r = None
+                        elif r is not None:
                             logger.info(f"resposta voz rapida ({len(r)}c): {r[:80]}")
                     except Exception as e:
                         logger.warning(f"voz rapida geral: {e}")

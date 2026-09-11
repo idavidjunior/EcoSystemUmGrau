@@ -41,9 +41,10 @@ class QualityEngine:
     """Motor de análise de qualidade de bordado."""
 
     def __init__(self):
-        self.min_stitch_length = 0.5
+        self.min_stitch_length = 0.3
         self.max_stitch_length = 12.0
         self.max_jump_distance = 10.0
+        self.max_issues_per_category = 10
         self.issues: List[QualityIssue] = []
 
     def analyze(self, design: EmbroideryDesign) -> Dict:
@@ -89,48 +90,72 @@ class QualityEngine:
             if not obj.generated_stitches:
                 continue
 
+            short_count = 0
+            long_count = 0
+            worst_short = 0.0
+            worst_long = 0.0
+            last_stitch = None
+
             for i, pt in enumerate(obj.generated_stitches.points):
-                if pt.command != StitchCommand.STITCH or i == 0:
-                    continue
+                if pt.command == StitchCommand.STITCH:
+                    if last_stitch is not None:
+                        dist = math.sqrt((pt.x - last_stitch.x) ** 2 + (pt.y - last_stitch.y) ** 2)
 
-                prev = obj.generated_stitches.points[i - 1]
-                dist = math.sqrt((pt.x - prev.x) ** 2 + (pt.y - prev.y) ** 2)
+                        if dist > 0 and dist < self.min_stitch_length:
+                            short_count += 1
+                            worst_short = max(worst_short, dist)
 
-                if dist < self.min_stitch_length and dist > 0:
-                    self.issues.append(QualityIssue(
-                        QualityIssue.SEVERITY_WARNING,
-                        "stitch_length",
-                        f"Stitch muito curto: {dist:.2f}mm em {obj.name}",
-                        (pt.x, pt.y), obj.name
-                    ))
+                        if dist > self.max_stitch_length:
+                            long_count += 1
+                            worst_long = max(worst_long, dist)
 
-                if dist > self.max_stitch_length:
-                    self.issues.append(QualityIssue(
-                        QualityIssue.SEVERITY_WARNING,
-                        "stitch_length",
-                        f"Stitch muito longo: {dist:.2f}mm em {obj.name}",
-                        (pt.x, pt.y), obj.name
-                    ))
+                    last_stitch = pt
+                elif pt.command in (StitchCommand.TIE_OFF, StitchCommand.TIE_IN):
+                    last_stitch = pt
+                else:
+                    last_stitch = None
+
+            if short_count > 5:
+                self.issues.append(QualityIssue(
+                    QualityIssue.SEVERITY_WARNING,
+                    "stitch_length",
+                    f"{short_count} stitches curtos (< {self.min_stitch_length}mm) em {obj.name} (pior: {worst_short:.2f}mm)",
+                    obj.center, obj.name
+                ))
+
+            if long_count > 0:
+                self.issues.append(QualityIssue(
+                    QualityIssue.SEVERITY_WARNING,
+                    "stitch_length",
+                    f"{long_count} stitches longos (> {self.max_stitch_length}mm) em {obj.name} (pior: {worst_long:.1f}mm)",
+                    obj.center, obj.name
+                ))
 
     def _check_long_jumps(self, design: EmbroideryDesign):
         for obj in design.objects:
             if not obj.generated_stitches:
                 continue
 
+            long_jumps = 0
+            worst_jump = 0.0
+            last_anchor = None
             for i, pt in enumerate(obj.generated_stitches.points):
-                if i == 0 or pt.command != StitchCommand.JUMP:
-                    continue
+                if pt.command in (StitchCommand.STITCH, StitchCommand.TIE_OFF, StitchCommand.TIE_IN):
+                    last_anchor = pt
+                elif pt.command == StitchCommand.JUMP and last_anchor is not None:
+                    dist = math.sqrt((pt.x - last_anchor.x) ** 2 + (pt.y - last_anchor.y) ** 2)
 
-                prev = obj.generated_stitches.points[i - 1]
-                dist = math.sqrt((pt.x - prev.x) ** 2 + (pt.y - prev.y) ** 2)
+                    if dist > self.max_jump_distance:
+                        long_jumps += 1
+                        worst_jump = max(worst_jump, dist)
 
-                if dist > self.max_jump_distance:
-                    self.issues.append(QualityIssue(
-                        QualityIssue.SEVERITY_INFO,
-                        "jump",
-                        f"Salto longo: {dist:.1f}mm em {obj.name}",
-                        (pt.x, pt.y), obj.name
-                    ))
+            if long_jumps > 0:
+                self.issues.append(QualityIssue(
+                    QualityIssue.SEVERITY_INFO,
+                    "jump",
+                    f"{long_jumps} saltos longos em {obj.name} (pior: {worst_jump:.1f}mm)",
+                    obj.center, obj.name
+                ))
 
     def _check_stitch_density(self, design: EmbroideryDesign):
         for obj in design.objects:
@@ -218,23 +243,31 @@ class QualityEngine:
         """Calcula score de 0-100."""
         base_score = 100.0
 
-        penalty = 0
+        category_penalties = {}
         for issue in self.issues:
+            cat = issue.category
+            if cat not in category_penalties:
+                category_penalties[cat] = 0
+
             if issue.severity == QualityIssue.SEVERITY_CRITICAL:
-                penalty += 25
+                category_penalties[cat] += 25
             elif issue.severity == QualityIssue.SEVERITY_ERROR:
-                penalty += 15
+                category_penalties[cat] += 15
             elif issue.severity == QualityIssue.SEVERITY_WARNING:
-                penalty += 5
+                category_penalties[cat] += 3
             else:
-                penalty += 1
+                category_penalties[cat] += 0.5
+
+        penalty = sum(min(v, 30) for v in category_penalties.values())
 
         score = max(0, base_score - penalty)
 
         total_stitches = design.total_stitches
         if total_stitches > 0:
-            if total_stitches < 1000:
-                score *= 0.8
+            if total_stitches < 100:
+                score *= 0.5
+            elif total_stitches < 500:
+                score *= 0.7
             elif total_stitches > 500000:
                 score *= 0.9
 

@@ -162,6 +162,8 @@ class StitchPlanner:
             obj.stitch_type, self.fabric
         )
 
+        path = self.tatami_engine._enforce_max_stitch_length(path)
+
         obj.generated_stitches = path
         return obj
 

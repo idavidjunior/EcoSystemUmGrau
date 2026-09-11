@@ -91,7 +91,7 @@ class SegmentationEngine:
                 (np.abs(img_rgb[:, :, 2].astype(int) - b) < tolerance)
             )
 
-            mask_cleaned = morphology.remove_small_objects(mask, min_size=self.min_region_area)
+            mask_cleaned = morphology.remove_small_objects(mask, max_size=self.min_region_area)
             labeled = measure.label(mask_cleaned.astype(int))
 
             for region_id in range(1, labeled.max() + 1):

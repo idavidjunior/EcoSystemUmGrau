@@ -35,7 +35,8 @@ class TatamiEngine:
         elif stitch_type == StitchType.PROGRAM_SPLIT:
             return self._program_split_fill(contour, density, angle, color_index)
         else:
-            return self._tatami_fill(contour, density, angle, color_index, holes)
+            path = self._tatami_fill(contour, density, angle, color_index, holes)
+            return self._enforce_max_stitch_length(path)
 
     def _tatami_fill(self, contour: List[Tuple[float, float]],
                      density: float, angle: float,
@@ -86,24 +87,83 @@ class TatamiEngine:
                     else:
                         pts = [(x2, y), (x1, y)]
 
-                    for px, py in pts:
-                        orig_x = px * cos_a + py * sin_a
-                        orig_y = -px * sin_a + py * cos_a
+                    seg_len = abs(pts[1][0] - pts[0][0])
 
-                        if first_stitch:
-                            result.add_stitch_absolute(orig_x, orig_y, StitchCommand.STITCH)
-                            first_stitch = False
-                        else:
-                            last = result.points[-1]
-                            dist = math.sqrt((orig_x - last.x) ** 2 + (orig_y - last.y) ** 2)
-                            if dist > self.max_stitch_length:
-                                result.add_stitch_absolute(orig_x, orig_y, StitchCommand.JUMP)
-                            result.add_stitch_absolute(orig_x, orig_y, StitchCommand.STITCH)
+                    if seg_len <= self.max_stitch_length:
+                        for px, py in pts:
+                            orig_x = px * cos_a + py * sin_a
+                            orig_y = -px * sin_a + py * cos_a
+                            if first_stitch:
+                                result.add_stitch_absolute(orig_x, orig_y, StitchCommand.STITCH)
+                                first_stitch = False
+                            else:
+                                last = result.points[-1]
+                                dist = math.sqrt((orig_x - last.x) ** 2 + (orig_y - last.y) ** 2)
+                                if dist > self.max_stitch_length:
+                                    result.add_stitch_absolute(orig_x, orig_y, StitchCommand.JUMP)
+                                result.add_stitch_absolute(orig_x, orig_y, StitchCommand.STITCH)
+                    else:
+                        num_segments = max(2, int(math.ceil(seg_len / self.max_stitch_length)))
+                        for s in range(num_segments + 1):
+                            t = s / num_segments
+                            px = pts[0][0] + t * (pts[1][0] - pts[0][0])
+                            py = y
+                            orig_x = px * cos_a + py * sin_a
+                            orig_y = -px * sin_a + py * cos_a
+                            if first_stitch:
+                                result.add_stitch_absolute(orig_x, orig_y, StitchCommand.STITCH)
+                                first_stitch = False
+                            else:
+                                last = result.points[-1]
+                                dist = math.sqrt((orig_x - last.x) ** 2 + (orig_y - last.y) ** 2)
+                                if dist > self.max_stitch_length:
+                                    result.add_stitch_absolute(orig_x, orig_y, StitchCommand.JUMP)
+                                result.add_stitch_absolute(orig_x, orig_y, StitchCommand.STITCH)
 
             direction *= -1
             y += density
 
         return result
+
+    def _enforce_max_stitch_length(self, path: StitchPath) -> StitchPath:
+        """Pós-processamento: garante que nenhum par de STITCHes consecutivos
+        ultrapasse max_stitch_length. Interpola pontos intermediários quando necessário."""
+        if not path.points:
+            return path
+
+        new_path = StitchPath()
+        last_x = None
+        last_y = None
+
+        for pt in path.points:
+            if pt.command == StitchCommand.STITCH:
+                if last_x is None:
+                    new_path.add_stitch_absolute(pt.x, pt.y, StitchCommand.STITCH)
+                    last_x, last_y = pt.x, pt.y
+                else:
+                    dist = math.sqrt((pt.x - last_x) ** 2 + (pt.y - last_y) ** 2)
+                    if dist <= self.max_stitch_length:
+                        new_path.add_stitch_absolute(pt.x, pt.y, StitchCommand.STITCH)
+                        last_x, last_y = pt.x, pt.y
+                    else:
+                        num_segs = max(2, int(math.ceil(dist / self.max_stitch_length)))
+                        for s in range(1, num_segs + 1):
+                            t = s / num_segs
+                            ix = last_x + t * (pt.x - last_x)
+                            iy = last_y + t * (pt.y - last_y)
+                            new_path.add_stitch_absolute(ix, iy, StitchCommand.STITCH)
+                        last_x, last_y = pt.x, pt.y
+            elif pt.command == StitchCommand.JUMP:
+                new_path.add_stitch_absolute(pt.x, pt.y, StitchCommand.JUMP)
+                last_x, last_y = None, None
+            else:
+                new_path.add_stitch_absolute(pt.x, pt.y, pt.command)
+                if pt.command in (StitchCommand.TIE_OFF, StitchCommand.TIE_IN):
+                    last_x, last_y = pt.x, pt.y
+                else:
+                    last_x, last_y = None, None
+
+        return new_path
 
     def _program_split_fill(self, contour: List[Tuple[float, float]],
                             density: float, angle: float,
@@ -142,19 +202,38 @@ class TatamiEngine:
                     else:
                         pts = [(x2, y), (x1, y)]
 
-                    for px, py in pts:
-                        orig_x = px * cos_a + py * sin_a
-                        orig_y = -px * sin_a + py * cos_a
+                    seg_len = abs(pts[1][0] - pts[0][0])
 
-                        if first_stitch:
-                            result.add_stitch_absolute(orig_x, orig_y, StitchCommand.STITCH)
-                            first_stitch = False
-                        else:
-                            last = result.points[-1]
-                            dist = math.sqrt((orig_x - last.x) ** 2 + (orig_y - last.y) ** 2)
-                            if dist > self.max_stitch_length:
-                                result.add_stitch_absolute(orig_x, orig_y, StitchCommand.JUMP)
-                            result.add_stitch_absolute(orig_x, orig_y, StitchCommand.STITCH)
+                    if seg_len <= self.max_stitch_length:
+                        for px, py in pts:
+                            orig_x = px * cos_a + py * sin_a
+                            orig_y = -px * sin_a + py * cos_a
+                            if first_stitch:
+                                result.add_stitch_absolute(orig_x, orig_y, StitchCommand.STITCH)
+                                first_stitch = False
+                            else:
+                                last = result.points[-1]
+                                dist = math.sqrt((orig_x - last.x) ** 2 + (orig_y - last.y) ** 2)
+                                if dist > self.max_stitch_length:
+                                    result.add_stitch_absolute(orig_x, orig_y, StitchCommand.JUMP)
+                                result.add_stitch_absolute(orig_x, orig_y, StitchCommand.STITCH)
+                    else:
+                        num_segments = max(2, int(math.ceil(seg_len / self.max_stitch_length)))
+                        for s in range(num_segments + 1):
+                            t = s / num_segments
+                            px = pts[0][0] + t * (pts[1][0] - pts[0][0])
+                            py = y
+                            orig_x = px * cos_a + py * sin_a
+                            orig_y = -px * sin_a + py * cos_a
+                            if first_stitch:
+                                result.add_stitch_absolute(orig_x, orig_y, StitchCommand.STITCH)
+                                first_stitch = False
+                            else:
+                                last = result.points[-1]
+                                dist = math.sqrt((orig_x - last.x) ** 2 + (orig_y - last.y) ** 2)
+                                if dist > self.max_stitch_length:
+                                    result.add_stitch_absolute(orig_x, orig_y, StitchCommand.JUMP)
+                                result.add_stitch_absolute(orig_x, orig_y, StitchCommand.STITCH)
 
                     i += 2
 
