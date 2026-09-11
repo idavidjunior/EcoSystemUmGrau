@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "last_updated": "2026-09-10T23:43:57.712112",
+  "last_updated": "2026-09-10T23:50:11.906562",
   "projects": {
     "android-pure-sdk": {},
     "ler": {},
@@ -2220,14 +2220,14 @@
       "merged_at": "2026-09-05T14:49:14.289943"
     },
     {
-      "source": "opencode+opencode+opencode",
+      "source": "opencode+opencode+opencode+opencode",
       "title": "padrao organizacao comandos",
       "action": ">",
       "description": "## Conexoes\n\n- [[2026-08-02-aprendizado-da-tv-lg-50ut8050psa-webos]]\n- [[2026-08-03-adb-remoto-via-tailscale-script-automatico-de-rot]]\n- [[2026-08-04-persistencia-da-conexao-do-jarvis]]\n- [[2026-08-16-detecção-automática-de-inglês-no-tts]]\n- [[2026-08-17-car-bt-controle-total-via-adb-bluetooth-auto",
       "domain": "general",
-      "extracted_at": "2026-09-06T01:24:31.520096",
-      "merged_count": 3,
-      "merged_at": "2026-09-06T01:25:15.318246"
+      "extracted_at": "2026-09-10T23:49:10.506650",
+      "merged_count": 4,
+      "merged_at": "2026-09-10T23:50:10.445062"
     },
     {
       "source": "opencode+opencode",
@@ -3870,9 +3870,9 @@
       "title": "fix favoritos tags e contagem por capitulo",
       "domain": "general",
       "body": "---\ntipo: erro\ntags: [biblia, favoritos, sqlite, schema, migracao, contagem, capitulo]\ndata: 2026-08-09\ncontexto: Bug de favoritos reportado pelo usuário + pedido de contagem de favoritos/notas por capítulo\ndecisao: Renomear coluna `tag` para `tags` no banco pré-populado e adicionar migração defensiva; reativar spinner de capítulos com contagens; marcar versículo favoritado com ★\nimpacto: Favoritos voltaram a funcionar; capítulos mostram quantos versículos estão favoritados e quantas notas exist\n\n---\ntipo: erro\ntags: [opencode, config, llm, placeholder, model_not_found, eco-system, sync]\ndata: 2026-08-09\ncontexto: Ao trocar de LLM, contextos, tarefas e projetos deixaram de ser reconhecidos em sessoes novas. Investigacao revelou que o placeholder {{LLM_MODEL}} no config de opencode NAO e substituido pelo opencode, gerando model_not_found que quebrava o boot das sessoes novas (sem fallback em vigor).\ndecisao: Substituir o placeholder nao-resolvivel por {env:LLM_MODEL} (mecanismo nativo de \n\n---\ntipo: erro\ntags: [config, opencode, preflight, llm_model, template]\ndata: 2026-08-09\ncontexto: \"@sync - preflight falhou com 'Secrets: env LLM_MODEL AUSENTE'\"\ndecisao: >\n  O commit 323a3879 trocou o placeholder \"{{LLM_MODEL}}\" por \"{env:LLM_MODEL}\"\n  no template config/opencode.jsonc, MAS o setup-auto.ps1 continua renderizando\n  \"{{LLM_MODEL}}\" (Replace com chaves duplas). Como nunca houve match, o deployed\n  manteve \"{env:LLM_MODEL}\" literal e o preflight passou a exigir a env var\n  LLM_MOD\n\n---\ntipo: erro\ntags: [preflight, gate, etica, performance, scan-repo]\ndata: 2026-09-09\ncontexto: O gate de persistencia (persistencia.ps1) quedava preso sem commit/sem push durante horas. O preflight técnico (preflight_check.py) rodava mas o bloco [7] Preflight Etico estourava timeout de 240s, bloqueando cada commit.\ndecisao: Adicionar 'Projetos' (apps Android externos, ~29k arquivos) aos skip_dirs dos scans scan_repo() e data_inventory() de scripts/preflight_etica.py. Projetos é código de APP, ",
-      "extracted_at": "2026-09-10T23:31:30.321893",
-      "merged_count": 786,
-      "merged_at": "2026-09-10T23:32:10.198514"
+      "extracted_at": "2026-09-10T23:46:33.718541",
+      "merged_count": 788,
+      "merged_at": "2026-09-10T23:47:56.064173"
     },
     {
       "source": "opencode",
@@ -3895,9 +3895,9 @@
       "title": "integracao completa mcps offline placeholder",
       "domain": "general",
       "body": "---\ntipo: erro\ntags: [integracao, mcp, opencode, config, placeholder, renderizacao, deploy]\ndata: 2026-08-13\ncontexto: Diagnóstico de integração completa do EcoSystemUmGrau. Todos os 13 MCPs\napareciam como \"failed / Connection closed\" no `opencode mcp list`, mesmo com o\npreflight passando e o opencode.jsonc definindo todos os servidores.\ndecisao: A causa raiz era que o opencode.jsonc deployado em ~/.config/opencode\ncontinha `{{USERPROFILE}}` literal nos caminhos (o opencode não expande esse\nplac",
-      "extracted_at": "2026-09-07T08:50:08.228287",
-      "merged_count": 70,
-      "merged_at": "2026-09-07T08:51:19.417456"
+      "extracted_at": "2026-09-10T23:47:57.335826",
+      "merged_count": 71,
+      "merged_at": "2026-09-10T23:49:09.397879"
     },
     {
       "source": "opencode",

@@ -1,6 +1,6 @@
 # Base de Conhecimento — Exportacao Completa
 
-**Exportado em:** 2026-09-10T23:43:58.349925
+**Exportado em:** 2026-09-10T23:50:12.169880
 **Projetos:** 4
 **Padroes Tecnicos:** 308
 **Decisoes:** 106
@@ -1225,7 +1225,7 @@ decisao: Medir LCP/CLS/INP com Playwright sync + PerformanceObserver injetado vi
 | 299 | opencode+opencode | edicao mensagem vox |
 | 300 | opencode+opencode | tarefas assincronas monitoradas bridge |
 | 301 | opencode+opencode | dedup memorias index stale |
-| 302 | opencode+opencode+opencode | padrao organizacao comandos |
+| 302 | opencode+opencode+opencode+opencode | padrao organizacao comandos |
 | 303 | opencode+opencode | integrity guard motor estrutural |
 | 304 | opencode | saudacao reconexao contexto |
 | 305 | opencode | fix esquecimento vox reconexao |
@@ -2642,7 +2642,7 @@ Protocolo de 3 scans antes de cada acao para garantir contexto completo e evitar
 ## Meta-Informacao
 
 **Versao do grafo:** 2
-**Ultima atualizacao:** 2026-09-10T23:43:57.712112
+**Ultima atualizacao:** 2026-09-10T23:50:11.906562
 **Proposito:** Base de conhecimento universal e auto-melhoravel para engenharia de software
 
 *Fim da exportacao. Este arquivo MARKDOWN pode ser fornecido como contexto para QUALQUER IA.*

@@ -308,7 +308,7 @@ class ConversorBordado:
             self.status_var.set("Erro ao gerar prévia")
     
     def generate_realistic_preview(self):
-        """Gera prévia realista simulando bordado em tecido."""
+        """Gera prévia realista simulando bordado em tecido com cores."""
         # Criar imagem de tecido
         width, height = self.current_image.size
         fabric_size = (400, 400)
@@ -323,21 +323,31 @@ class ConversorBordado:
                 if (i + j) % 8 == 0:
                     draw.point((i, j), fill=(235, 225, 215))
         
-        # Redimensionar imagem original para o tamanho do bordado
+        # Redimensionar imagem original
         embroidered_size = (min(300, width), min(300, height))
         embroidered_img = self.current_image.copy()
         embroidered_img.thumbnail(embroidered_size, Image.Resampling.LANCZOS)
         
-        # Converter para escala de cinza se necessário
-        if embroidered_img.mode != 'L':
-            embroidered_img = embroidered_img.convert('L')
+        # Converter para RGB se necessário
+        if embroidered_img.mode != 'RGB':
+            embroidered_img = embroidered_img.convert('RGB')
         
-        # Criar máscara do bordado
-        mask = embroidered_img.point(lambda p: 255 if p < 128 else 0)
+        # Quantizar cores para simular bordado com fios
+        img_quantized = embroidered_img.quantize(colors=6, method=Image.Quantize.MEDIANCUT)
+        img_quantized_rgb = img_quantized.convert('RGB')
         
-        # Aplicar efeito de bordado na imagem
-        embroidered_rgb = Image.new('RGB', embroidered_img.size, (0, 100, 200))  # Cor do fio
-        embroidered_rgb.putalpha(mask)
+        # Criar máscara de transparência (fundo branco = transparente)
+        img_array = np.array(img_quantized_rgb)
+        luminance = 0.299 * img_array[:,:,0] + 0.587 * img_array[:,:,1] + 0.114 * img_array[:,:,2]
+        mask = (luminance > 240)  # Fundo branco
+        
+        # Criar imagem com transparência
+        embroidered_rgba = img_quantized_rgb.copy()
+        embroidered_array = np.array(embroidered_rgba)
+        embroidered_array[mask] = [240, 230, 220]  # Cor do tecido onde transparente
+        
+        # Converter de volta para PIL
+        embroidered_final = Image.fromarray(embroidered_array)
         
         # Colocar o bordado no tecido
         position = ((fabric_size[0] - embroidered_size[0]) // 2,
@@ -345,7 +355,7 @@ class ConversorBordado:
         
         # Criar imagem final
         result = fabric.copy()
-        result.paste(embroidered_rgb, position, embroidered_rgb)
+        result.paste(embroidered_final, position)
         
         # Adicionar sombra para efeito 3D
         shadow = result.copy()
@@ -475,13 +485,15 @@ class ConversorBordado:
             self.status_var.set("Erro na conversão")
     
     def auto_convert(self, image, pattern):
-        """Conversão automática usando configurações de qualidade."""
-        width, height = image.size
-        pixels = image.load()
+        """Conversão automática usando quantização de cores e componentes conectados."""
+        # Converter imagem para RGB se necessário
+        if image.mode != 'RGB':
+            img_rgb = image.convert('RGB')
+        else:
+            img_rgb = image.copy()
         
         # Obter configurações de qualidade
         quality_settings = self.qualidades[self.quality_var.get()]
-        density = quality_settings["density"]
         step = quality_settings["step"]
         
         # Configurar precisão
@@ -493,21 +505,76 @@ class ConversorBordado:
         }
         precision = precision_settings[self.precision_var.get()]
         
-        # Escala para mm (assumindo 72 DPI para simplificação)
+        # Escala para mm (assumindo 72 DPI)
         scale = (25.4 / 72.0) * precision
         
-        # Criar pontos de bordado baseados nos pixels escuros
-        for y in range(0, height, step):
-            for x in range(0, width, step):
-                pixel = pixels[x, y]
-                # Se pixel escuro, adicionar ponto
-                if pixel < 128:
-                    # Converter coordenadas para mm
-                    px = x * scale
-                    py = y * scale
-                    pattern.add_stitch_absolute(pyembroidery.STITCH, px, py)
+        # 1. Quantização de cores: reduzir paleta para 6 cores
+        img_quantized = img_rgb.quantize(colors=6, method=Image.Quantize.MEDIANCUT)
         
-        # Finalizar padrão
+        # Converter para array numpy
+        img_array = np.array(img_quantized)
+        
+        # Obter paleta de cores
+        palette = img_quantized.getpalette()
+        
+        # 2. Para cada cor, criar regiões e gerar fill stitches
+        for color_idx in range(6):
+            # Criar máscara para esta cor
+            mask = (img_array == color_idx)
+            
+            # 3. Detectar componentes conectados
+            labeled = measure.label(mask)
+            regions = measure.regionprops(labeled)
+            
+            # 4. Para cada região, gerar preenchimento
+            for region in regions:
+                # Obter bounding box
+                minr, minc, maxr, maxc = region.bbox
+                
+                # Ignorar regiões muito pequenas
+                if (maxr - minr) < 2 or (maxc - minc) < 2:
+                    continue
+                
+                # Gerar preenchimento horizontal
+                self.generate_fill_stitch(pattern, mask, minr, minc, maxr, maxc, 
+                                        scale, step, color_idx, palette)
+    
+    def generate_fill_stitch(self, pattern, mask, minr, minc, maxr, maxc, scale, step, color_idx, palette):
+        """Gera preenchimento horizontal para uma região."""
+        # Converter cor RGB da paleta
+        r = palette[color_idx * 3]
+        g = palette[color_idx * 3 + 1]
+        b = palette[color_idx * 3 + 2]
+        
+        # Adicionar mudança de cor
+        pattern.add_stitch_absolute(pyembroidery.COLOR_CHANGE, 0, 0)
+        
+        # Gerar linhas horizontais de preenchimento
+        for y in range(minr, maxr, step):
+            # Encontrar início e fim da linha nesta regiõ
+            x_start = minc
+            x_end = maxc
+            
+            # Ajustar para pixels da cor atual
+            while x_start < x_end and not mask[y, x_start]:
+                x_start += 1
+            while x_end > x_start and not mask[y, x_end - 1]:
+                x_end -= 1
+            
+            if x_start < x_end:
+                # Converter coordenadas para mm
+                px_start = x_start * scale
+                px_end = (x_end - 1) * scale
+                py = y * scale
+                
+                # Adicionar ponto inicial
+                pattern.add_stitch_absolute(pyembroidery.STITCH, px_start, py)
+                
+                # Adicionar pontos intermediários
+                num_stitches = max(1, int((px_end - px_start) / scale))
+                for i in range(1, num_stitches):
+                    px = px_start + (px_end - px_start) * i / num_stitches
+                    pattern.add_stitch_absolute(pyembroidery.STITCH, px, py)
     
     def manual_convert(self, image, pattern):
         """Conversão manual usando configurações do usuário."""
