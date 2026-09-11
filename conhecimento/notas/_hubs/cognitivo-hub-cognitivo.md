@@ -1,6 +1,6 @@
 # Padroes Cognitivos
 
-**68 notas** conectadas a este hub.
+**69 notas** conectadas a este hub.
 
 
 ## Notas
@@ -69,6 +69,7 @@
 - [[servidores-mcp-node-criados-e-validados]]
 - [[silêncio-do-narrador-três-causas-empilhadas]]
 - [[snapshots-corrompidos-do-opencode-referência-no-banco-decide]]
+- [[tfidf-meta-corrompido-regenerado]]
 - [[toast-de-erros-falsos-positivos]]
 - [[validacao-contra-intuitiva-teste-o-erro-nao-o-acerto]]
 - [[vazamento-caracteres-tts-edge-tts-escapa-ssml]]

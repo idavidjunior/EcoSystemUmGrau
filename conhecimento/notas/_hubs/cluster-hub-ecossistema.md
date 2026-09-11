@@ -1,6 +1,6 @@
 # Cluster: Ecossistema OpenCode
 
-**279 notas** do cluster ecossistema.
+**286 notas** do cluster ecossistema.
 
 
 ## Notas
@@ -66,6 +66,7 @@
 - [[2026-08-16-detecção-automática-de-inglês-no-tts]]
 - [[2026-08-17-car-bt-controle-total-via-adb-bluetooth-automotiv]]
 - [[2026-08-17-organograma-agrupado-por-livro-técnicas-de-valida]]
+- [[2026-09-10-ciclo-8-aprendizado-produto-integrado-com-ws-sqli]]
 - [[aegis-barra-progresso-tempo-real]]
 - [[aegis-registrado-como-projeto-irmao-rust]]
 - [[análise-de-jarvis-opensource-aprendizados-aplicáveis]]
@@ -98,6 +99,7 @@
 - [[certificacao-forense-de-processos-boot-do-watchdog]]
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]
 - [[ci-de-android-em-máquina-fraca-keystore-estável]]
+- [[ciclo7-performance-acessibilidade]]
 - [[clausula-petrea-protecao-do-opencode-desktop-resiliencia-da-]]
 - [[cli-anything-internalizado-como-habilidade-soberana]]
 - [[cláusula-pétrea-ativação-de-voz-eco-system]]
@@ -115,6 +117,7 @@
 - [[context-engine-manifesto-domínios-multimídiacomportamentais]]
 - [[controle-da-tv-lg-webos-via-ssap]]
 - [[controle-de-tv-lg-01082026]]
+- [[conversão-de-imagem-para-arquivo-de-bordado]]
 - [[correção-de-mojibake-no-knowledgegraphjson-utf-8-lido-como-c]]
 - [[correção-de-métricas-de-aderência-sync]]
 - [[corrige-conflito-dual-git-knowledge-graph]]
@@ -146,6 +149,7 @@
 - [[fase2-limpeza-git-artefatos-rastreados]]
 - [[fase3-rotina-automatica-de-tiragem-organizacional]]
 - [[fix-ativação-de-voz-sistema-de-frases-unificado]]
+- [[fix-esquecimento-vox-reconexao]]
 - [[fix-favoritos-tags-e-contagem-por-capitulo]]
 - [[fix-narrador-triplicado-e-resiliencia-orfaos]]
 - [[fix-tts-corte-final-textos-longos]]
@@ -234,6 +238,7 @@
 - [[reorganização-habilidades-dentro-de-mcp-por-domínio]]
 - [[resiliencia-widget-duplicado]]
 - [[resiliência-de-logs-encoding-detectado-na-leitura-não-presum]]
+- [[respostas-do-usuário-sobre-interface-de-bordado]]
 - [[respostas-truncadas]]
 - [[restauracao-unified-bridge]]
 - [[retencao-opencode-db-vigilante]]
@@ -267,6 +272,7 @@
 - [[supermarketcalculator-v157]]
 - [[tarefas-assincronas-monitoradas-bridge]]
 - [[terminalwidget-edge]]
+- [[tfidf-meta-corrompido-regenerado]]
 - [[toast-de-erros-falsos-positivos]]
 - [[tradingagents-integrado-ao-ecossistema]]
 - [[transparencia-execucao-tarefas]]
@@ -278,6 +284,7 @@
 - [[vault-obsidian-fonte-viva]]
 - [[vazamento-caracteres-tts-edge-tts-escapa-ssml]]
 - [[voxaudioplayer-temp-file-leak-on-exception]]
+- [[voz-fluida-streaming-bargein]]
 - [[widget-desktop-frameless-persistente]]
 - [[widget-desktop-grafo-tempo-real]]
 - [[widget-edge-estabilizado-fonte-unica-processos]]

@@ -1,5 +1,5 @@
 ---
-tags: [cabo, cognitivo, general, novamente, reconectar, reconhecer]
+tags: [cognitivo, general, novamente, parsing, reconhecer, substring]
 aliases: [gate hd externo e preflight repos nativos]
 date: 2026-08-28
 ---
@@ -22,6 +22,13 @@ data: 2026-09-03
 contexto: O usuário relatou que o HD externo cai e some esporadicamente, obrigando desconectar e reconectar o cabo USB para o PC reconhecer novamente.
 decisao: Diagnosticado via Get-PnpDevice, powercfg e Event Log. Causa de software corrigida: suspensão seletiva USB estava ATIVADA (AC e DC). Desabilitada via powercfg (indice 0). Causas físicas apontadas mas não resolvidas.
 impacto: Redução da causa mais p
+
+---
+tipo: erro
+tags: [git, persistencia, gate, ps1, rename, quotePath]
+data: 2026-09-09
+contexto: Gate de persistência (scripts/persistencia.ps1) travava commits com "Test-Path : Caracteres inválidos no caminho" na linha 311, bloqueando Ciclo 6 e Ciclo 7.
+decisao: Causa: git status --porcelain escapa caminhos não-ASCII com aspas + octais (`"...\303\255..."`) por padrão (core.quotePath=true), e renames saem como `R old -> new` gerando caminho inválido no parsing Substring(3). Correção mínima segu
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]

@@ -14,6 +14,14 @@ tags: [jarvis, vox, roteamento, busca-web, voz-rapida, opencode-serve]
 data: 2026-09-06
 contexto: Usuário perguntou ao Vox sobre a promoção "tixan ypê" e o assistente respondeu "Desculpe, não tenho informações" e "Não tenho acesso a novas pesquisas online". O usuário apontou que deveria pesquisar na web, com razão.
 decisao: Roteamento por intenção de busca no fluxo lidar(ws) do jarvis_bridge.py. Pedidos que exigem dado atual/online (promoção, preço, notícia, cotação, clima, etc.) 
+
+## Conexoes
+
+- [[devops-containers-camadas-imagens-mínimas-e-non-root]]
+- [[devops-infraestrutura-como-código-terraform-e-imutabilidade]]
+- [[devops-observabilidade-logs-estruturados-métricas-e-tracing-]]
+- [[devops-pipelines-de-cicd-artefatos-ambientes-e-promoção]]
+- [[treinamento-especializado-em-navegacao-multi-plataforma-reco]]
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]

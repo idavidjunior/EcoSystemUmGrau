@@ -1,6 +1,6 @@
 # Padroes Tecnicos
 
-**298 notas** conectadas a este hub.
+**302 notas** conectadas a este hub.
 
 
 ## Notas
@@ -10,6 +10,7 @@
 - [[2026-08-16-detecção-automática-de-inglês-no-tts]]
 - [[2026-08-17-car-bt-controle-total-via-adb-bluetooth-automotiv]]
 - [[2026-08-17-organograma-agrupado-por-livro-técnicas-de-valida]]
+- [[2026-09-10-ciclo-8-aprendizado-produto-integrado-com-ws-sqli]]
 - [[aapt-javac-d8-apksigner]]
 - [[adb-workflow]]
 - [[aegis-barra-progresso-tempo-real]]
@@ -73,6 +74,7 @@
 - [[config-opencode-v11714-schema]]
 - [[contagem-subpastas-arquivos-pastas]]
 - [[controle-da-tv-lg-webos-via-ssap]]
+- [[conversão-de-imagem-para-arquivo-de-bordado]]
 - [[correção-de-mojibake-no-knowledgegraphjson-utf-8-lido-como-c]]
 - [[css-selector-priority-ladder]]
 - [[custom-numpad-pattern]]
@@ -117,6 +119,7 @@
 - [[fidelidade-x-naturalidade-quando-priorizar-cada-um]]
 - [[filename-artist-extraction-two-strategies]]
 - [[fix-ativação-de-voz-sistema-de-frases-unificado]]
+- [[fix-esquecimento-vox-reconexao]]
 - [[fix-widget-grafo-desktop]]
 - [[form-starts-empty-pattern]]
 - [[formas-de-tratamento-em-pt-br-você-tu-senhora-e-concordância]]
@@ -294,6 +297,7 @@
 - [[unificacao-aprendizados-adb-cluster-a]]
 - [[variações-pt-pt-x-pt-br-reescrever-para-o-brasileiro]]
 - [[vibration-pattern]]
+- [[voz-fluida-streaming-bargein]]
 - [[wait-strategy-adaptive]]
 - [[widget-desktop-grafo-tempo-real]]
 - [[widget-edge-estabilizado-fonte-unica-processos]]

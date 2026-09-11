@@ -1,29 +1,48 @@
-name: Web CI — Run Suite Labs
+# Ciclo 9 — CI da trilha web (publicação via pipe existente)
+# Roda a suíte determinística (Ciclos 1, 2, 3, 5, 6) em todo push/PR.
+# Não executa labs de IA/playwright (--tudo) porque exigem chaves e browser.
+# Referência: ADR-009, RUNBOOK-OPERACAO-WEB.md, run_suite.py
+
+name: web-ci
+
 on:
   push:
-    paths:
-      - 'conhecimento/web/**'
+    branches: [main, opencode/*]
   pull_request:
-    paths:
-      - 'conhecimento/web/**'
-  workflow_dispatch:
+    branches: [main, opencode/*]
 
 jobs:
-  run-suite:
+  web-suite:
+    name: Web Suite (determinística)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with: { python-version: '3.12' }
-      - name: Install deps
-        run: pip install httpx websockets
-      - name: Run suite (deterministic labs)
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install deps (determinístico)
         run: |
-          python conhecimento/web/run_suite.py
-      - name: Upload suite benchmark
+          pip install --upgrade pip
+          pip install httpx websockets
+
+      - name: Run web suite (determinística)
+        run: python conhecimento/web/run_suite.py
+        working-directory: ${{ github.workspace }}
+        timeout-minutes: 12
+
+      - name: Upload benchmark evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ciclo-9-run-suite
           path: conhecimento/web/benchmarks/ciclo-9-run-suite.json
-          if-no-files-found: ignore
+          retention-days: 14
+
+  # Lab IA/playwright só local (--tudo) — CI não executa por exigir secrets/browser.
+  # Para validar completo: `python conhecimento/web/run_suite.py --tudo` na máquina.

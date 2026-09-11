@@ -1,8 +1,8 @@
 {
   "ciclo": 9,
-  "escopo": "deterministico",
-  "data_iso": "2026-09-10T23:23:17",
-  "labs_ok": 5,
+  "escopo": "tudo",
+  "data_iso": "2026-09-10T23:41:19",
+  "labs_ok": 8,
   "labs_fail": 0,
   "labs_skip": 0,
   "status": "OK"

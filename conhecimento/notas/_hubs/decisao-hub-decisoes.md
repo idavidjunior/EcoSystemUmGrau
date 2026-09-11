@@ -1,6 +1,6 @@
 # Decisoes
 
-**100 notas** conectadas a este hub.
+**102 notas** conectadas a este hub.
 
 
 ## Notas
@@ -20,6 +20,7 @@
 - [[cerebro-vivo-nos-clicaveis-navegaveis]]
 - [[chaves-api-exclusivamente-em-env-vars-nvidiaapikey-openaiapi]]
 - [[checkpoints-salvos-antes-de-cada-iteracao-sobrevive-a-crash-]]
+- [[ciclo7-performance-acessibilidade]]
 - [[clausula-petrea-protecao-do-opencode-desktop-resiliencia-da-]]
 - [[composio-mcp-remoto]]
 - [[context-engine-manifesto-domínios-multimídiacomportamentais]]
@@ -73,6 +74,7 @@
 - [[remocao-mcps-node-inoperantes]]
 - [[renomear-pastas-com-espacos-para-nomes-sem-espaco]]
 - [[reorganização-habilidades-dentro-de-mcp-por-domínio]]
+- [[respostas-do-usuário-sobre-interface-de-bordado]]
 - [[salvar-cria-novo-arquivo-timestampado-nunca-sobrescreve-exis]]
 - [[salvar-new-file-explicit-save-creates-timestamped-snapshot-n]]
 - [[salvar-rustdesk-password-e-id-em-local-permanente-nao-gerar-]]

@@ -34,6 +34,13 @@ decisao: >
   "{{LLM_MODEL}}" (Replace com chaves duplas). Como nunca houve match, o deployed
   manteve "{env:LLM_MODEL}" literal e o preflight passou a exigir a env var
   LLM_MOD
+
+---
+tipo: erro
+tags: [preflight, gate, etica, performance, scan-repo]
+data: 2026-09-09
+contexto: O gate de persistencia (persistencia.ps1) quedava preso sem commit/sem push durante horas. O preflight técnico (preflight_check.py) rodava mas o bloco [7] Preflight Etico estourava timeout de 240s, bloqueando cada commit.
+decisao: Adicionar 'Projetos' (apps Android externos, ~29k arquivos) aos skip_dirs dos scans scan_repo() e data_inventory() de scripts/preflight_etica.py. Projetos é código de APP, 
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]

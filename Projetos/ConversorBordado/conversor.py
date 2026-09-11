@@ -8,6 +8,8 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 from PIL import Image, ImageTk, ImageDraw, ImageFilter
 import pyembroidery
+import numpy as np
+from skimage import measure, morphology
 import os
 from pathlib import Path
 import math
