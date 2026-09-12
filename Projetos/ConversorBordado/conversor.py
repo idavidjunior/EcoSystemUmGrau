@@ -651,49 +651,67 @@ class ConversorBordado:
         return preview
     
     def extract_regions_from_image(self, image: Image.Image):
-        """Extrai regiões de bordado a partir da imagem."""
+        """Extrai regiões de bordado usando o motor profissional do EmbroideryEngine."""
+        if not self.image_path:
+            return []
+
+        try:
+            from motor_bordado import digitizar
+            regioes = digitizar(
+                self.image_path,
+                max_colors=6,
+                density=self.density_var.get() if hasattr(self, 'density_var') else 0.4,
+            )
+            return regioes
+        except Exception as e:
+            print(f"[motor_bordado] erro ao digitalizar: {e}")
+            # Fallback para o método antigo em caso de falha
+            return self._extract_regions_legacy(image)
+
+    def _extract_regions_legacy(self, image: Image.Image):
+        """Método antigo de extração de regiões (fallback)."""
         from skimage import measure
         import numpy as np
-        
+
         # Quantizar cores
         img_quantized = image.quantize(colors=6, method=Image.Quantize.MEDIANCUT)
         img_quantized_array = np.array(img_quantized)
         palette = img_quantized.getpalette()
-        
+
         regions = []
         region_id = 0
-        
+
         colors = np.unique(img_quantized_array)
-        
+
         for color_idx in colors:
             # Criar máscara para esta cor
             mask = (img_quantized_array == color_idx)
-            
+
             # Detectar componentes conectados
             labeled = measure.label(mask)
             region_props = measure.regionprops(labeled)
-            
+
             # Obter cor RGB
             r = palette[color_idx * 3]
             g = palette[color_idx * 3 + 1]
             b = palette[color_idx * 3 + 2]
-            
+
             for prop in region_props:
                 minr, minc, maxr, maxc = prop.bbox
-                
+
                 # Ignorar regiões muito pequenas
                 if (maxr - minr) < 5 or (maxc - minc) < 5:
                     continue
-                
+
                 region_mask = mask[minr:maxr, minc:maxc].copy()
-                
+
                 # Criar lista de pontos
                 points = []
                 for y in range(minr, maxr, 4):
                     for x in range(minc, maxc, 4):
                         if region_mask[y - minr, x - minc]:
                             points.append((x, y))
-                
+
                 region = StitchRegion(
                     id=region_id,
                     color=(r, g, b),
@@ -705,10 +723,10 @@ class ConversorBordado:
                     points=points,
                     name=f"Cor {color_idx}"
                 )
-                
+
                 regions.append(region)
                 region_id += 1
-        
+
         return regions
     
     def generate_realistic_preview(self):
@@ -851,8 +869,8 @@ class ConversorBordado:
             
             # Configurar baseado no modo
             if self.mode_var.get() == "auto":
-                # Modo automático: usar configurações de qualidade
-                self.auto_convert(original_image, pattern)
+                # Modo automático: usar o motor profissional do EmbroideryEngine
+                self.auto_convert_profissional(pattern)
             else:
                 # Modo manual: usar configurações do usuário
                 self.manual_convert(original_image, pattern)
@@ -888,6 +906,23 @@ class ConversorBordado:
             messagebox.showerror("Erro", f"Erro na conversão: {str(e)}")
             self.status_var.set("Erro na conversão")
     
+    def auto_convert_profissional(self, pattern):
+        """Conversão automática usando o motor profissional do EmbroideryEngine."""
+        from motor_bordado import digitizar
+
+        regioes = digitizar(
+            self.image_path,
+            max_colors=6,
+            density=self.density_var.get() if hasattr(self, 'density_var') else 0.4,
+        )
+
+        for region in regioes:
+            # Mudança de cor
+            pattern.add_stitch_absolute(pyembroidery.COLOR_CHANGE, 0, 0)
+            # Pontos reais otimizados
+            for x, y in region.points:
+                pattern.add_stitch_absolute(pyembroidery.STITCH, x, y)
+
     def auto_convert(self, image, pattern):
         """Conversão automática usando quantização de cores e componentes conectados."""
         # Converter imagem para RGB se necessário

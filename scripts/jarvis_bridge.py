@@ -3807,6 +3807,21 @@ async def lidar(ws):
                         r = await _voz_rapida(m, cliente=c, img_base64=img_atual, img_mime=img_mime)
                         if r is not None and _eh_promessa_vazia(r):
                             logger.info(f"voz rapida retornou promessa vazia, re-roteando ao serve: {r[:80]}")
+                            # Registrar compromisso para execução autônoma
+                            try:
+                                from runtime_state import adicionar_compromisso
+                                # Detectar intervalo se usuário pediu "minuto a minuto", "a cada X", etc.
+                                intervalo = 0
+                                if re.search(r"(?i)(minuto a minuto|cada minuto|a cada \d+\s*min)", m):
+                                    intervalo = 1
+                                elif re.search(r"(?i)(a cada (\d+)\s*min)", m):
+                                    mm = re.search(r"a cada (\d+)\s*min", m, re.I)
+                                    if mm:
+                                        intervalo = int(mm.group(1))
+                                adicionar_compromisso(m, r, intervalo_min=intervalo, tipo='pesquisa')
+                                logger.info(f"Compromisso registrado para promessa: intervalo={intervalo}min")
+                            except Exception as e:
+                                logger.warning(f"Falha ao registrar compromisso: {e}")
                             r = None
                         elif r is not None:
                             logger.info(f"resposta voz rapida ({len(r)}c): {r[:80]}")
@@ -3927,6 +3942,27 @@ async def lidar(ws):
                                 }))
                             except Exception as e:
                                 logger.warning(f"barge-in: envio de cancelado falhou: {e}")
+                        continue
+                    # ---- Push Proativo (do monitor de compromissos) ----
+                    if obj.get("tipo") == "push":
+                        push_tipo = obj.get("push_tipo", "info")
+                        texto = obj.get("texto", "")
+                        if texto:
+                            logger.info(f"push proativo recebido: {push_tipo} ({len(texto)} chars)")
+                            await ws.send(json.dumps({
+                                "tipo": "push",
+                                "push_tipo": push_tipo,
+                                "text": texto,
+                                "audio_streaming": True,
+                                "volume": _ler_volume_widget(),
+                            }))
+                            # Também dispara TTS streaming para o texto do push
+                            try:
+                                async for chunk_b64 in gerar_audio_stream(texto):
+                                    await ws.send(json.dumps({"audio_chunk": chunk_b64}))
+                                await ws.send(json.dumps({"audio_done": True}))
+                            except Exception as e:
+                                logger.warning(f"push TTS falhou: {e}")
                         continue
                     if obj.get("tipo") == "editar":
                         # Edit-and-resubmit (padrão ChatGPT/Claude): usuário edita

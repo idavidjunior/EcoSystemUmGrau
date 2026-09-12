@@ -41,6 +41,7 @@ DEFAULT_STATE = {
     'active_agents': [],
     'loaded_memory': [],
     'pending': [],
+    'compromissos': [],
     'history': [],
     'last_checkpoint': None,
     'session_greeted': False,
@@ -199,6 +200,108 @@ def _cleanup_old():
         os.remove(os.path.join(CHECKPOINTS_DIR, f))
 
 
+# ---- Compromissos Autônomos (promessas do Jarvis que devem ser cumpridas) ----
+def adicionar_compromisso(texto_pedido, resposta_promessa, intervalo_min=0, tipo='pesquisa'):
+    """Registra um compromisso do Jarvis para execução posterior.
+    
+    Args:
+        texto_pedido: o que o usuário pediu originalmente
+        resposta_promessa: a promessa que o Jarvis fez (ex: "Vou pesquisar isso")
+        intervalo_min: intervalo em minutos para re-verificação (0 = uma vez)
+        tipo: 'pesquisa', 'execucao', 'monitoramento', 'verificacao'
+    """
+    state = load_state()
+    cid = max([c.get('id', 0) for c in state.get('compromissos', [])], default=0) + 1
+    agora = _now()
+    compromisso = {
+        'id': cid,
+        'pedido_original': texto_pedido,
+        'promessa': resposta_promessa,
+        'tipo': tipo,
+        'intervalo_min': int(intervalo_min),
+        'proxima_execucao': agora if intervalo_min == 0 else None,
+        'ultima_execucao': None,
+        'resultado': None,
+        'status': 'pendente',  # pendente, executando, concluido, falhou
+        'tentativas': 0,
+        'criado': agora,
+    }
+    if intervalo_min > 0:
+        from datetime import timedelta
+        proxima = datetime.now() + timedelta(minutes=intervalo_min)
+        compromisso['proxima_execucao'] = proxima.isoformat(timespec='seconds')
+    state.setdefault('compromissos', []).append(compromisso)
+    save_state(state)
+    return f'[OK] compromisso #{cid} registrado: {tipo} — próxima: {compromisso.get("proxima_execucao", "agora")}'
+
+
+def listar_compromissos(apenas_pendentes=True):
+    """Lista compromissos registrados."""
+    state = load_state()
+    compromissos = state.get('compromissos', [])
+    if apenas_pendentes:
+        compromissos = [c for c in compromissos if c.get('status') in ('pendente', 'executando')]
+    return compromissos
+
+
+def atualizar_compromisso(cid, **campos):
+    """Atualiza campos de um compromisso."""
+    state = load_state()
+    for c in state.get('compromissos', []):
+        if c['id'] == cid:
+            c.update(campos)
+            save_state(state)
+            return f'[OK] compromisso #{cid} atualizado'
+    return f'[ERR] compromisso #{cid} não encontrado'
+
+
+def concluir_compromisso(cid, resultado):
+    """Marca compromisso como concluído com resultado."""
+    return atualizar_compromisso(cid, status='concluido', resultado=resultado, ultima_execucao=_now())
+
+
+def falhar_compromisso(cid, erro):
+    """Marca compromisso como falhou."""
+    state = load_state()
+    for c in state.get('compromissos', []):
+        if c['id'] == cid:
+            c['status'] = 'falhou'
+            c['erro'] = str(erro)
+            c['tentativas'] = c.get('tentativas', 0) + 1
+            c['ultima_execucao'] = _now()
+            # Reagenda se for recorrente
+            if c.get('intervalo_min', 0) > 0:
+                from datetime import timedelta
+                proxima = datetime.now() + timedelta(minutes=c['intervalo_min'])
+                c['proxima_execucao'] = proxima.isoformat(timespec='seconds')
+                c['status'] = 'pendente'
+            save_state(state)
+            return f'[OK] compromisso #{cid} marcado como falhou (tentativa {c["tentativas"]})'
+    return f'[ERR] compromisso #{cid} não encontrado'
+
+
+def compromissos_vencidos():
+    """Retorna compromissos que devem ser executados agora."""
+    state = load_state()
+    agora = datetime.now()
+    vencidos = []
+    for c in state.get('compromissos', []):
+        if c.get('status') not in ('pendente', 'executando'):
+            continue
+        prox = c.get('proxima_execucao')
+        if prox:
+            try:
+                dt = datetime.fromisoformat(prox)
+                if dt <= agora:
+                    vencidos.append(c)
+            except Exception:
+                pass
+        elif c.get('intervalo_min', 0) == 0:
+            # Sem próxima execução definida mas intervalo 0 = executar uma vez
+            vencidos.append(c)
+    return vencidos
+
+
 def reset():
     state = dict(DEFAULT_STATE)
     state['updated_at'] = _now()
@@ -208,6 +311,7 @@ def reset():
 
 def render_status(state):
     pending_open = [p for p in state['pending'] if not p['done']]
+    compromissos_abertos = [c for c in state.get('compromissos', []) if c.get('status') in ('pendente', 'executando')]
     lines = [
         '=== RUNTIME STATE ===',
         f"Projeto ativo:  {state['active_project'] or '(nenhum)'}",
@@ -215,6 +319,7 @@ def render_status(state):
         f"Última tarefa:  {state['last_task'] or '(nenhuma)'}",
         f"Agentes ativos: {', '.join(state['active_agents']) or '(nenhum)'}",
         f"Pendências:     {len(pending_open)} aberta(s)",
+        f"Compromissos:   {len(compromissos_abertos)} pendente(s)",
     ]
     if state['operational_context']:
         lines.append(f"Contexto:       {state['operational_context']}")
@@ -224,6 +329,11 @@ def render_status(state):
         lines.append('')
         for p in pending_open:
             lines.append(f"  [#{p['id']}] {p['text']}")
+    if compromissos_abertos:
+        lines.append('')
+        for c in compromissos_abertos:
+            prox = c.get('proxima_execucao', 'agora')
+            lines.append(f"  [#{c['id']}] {c['tipo']}: {c['pedido_original'][:50]} — próxima: {prox}")
     if state['history']:
         lines.append('')
         for h in state['history'][-5:]:
@@ -393,6 +503,9 @@ def main():
     sub.add_parser('greeting')
     sub.add_parser('reset-greeting')
     sub.add_parser('catchup')
+    p_comp = sub.add_parser('compromisso')
+    p_comp.add_argument('action', choices=['add', 'list', 'done', 'fail', 'update'])
+    p_comp.add_argument('value', nargs='*')
 
     args = parser.parse_args()
     cmd = args.cmd or 'status'
@@ -411,6 +524,46 @@ def main():
             print(add_pending(text))
         else:
             print(done_pending(int(text)))
+    elif cmd == 'compromisso':
+        action = args.action
+        vals = args.value
+        if action == 'add':
+            # compromisso add "pedido" "promessa" [intervalo_min] [tipo]
+            if len(vals) < 2:
+                print('[ERR] uso: compromisso add "pedido" "promessa" [intervalo_min] [tipo]')
+            else:
+                intervalo = int(vals[2]) if len(vals) > 2 else 0
+                tipo = vals[3] if len(vals) > 3 else 'pesquisa'
+                print(adicionar_compromisso(vals[0], vals[1], intervalo, tipo))
+        elif action == 'list':
+            comps = listar_compromissos(apenas_pendentes=True)
+            if comps:
+                for c in comps:
+                    prox = c.get('proxima_execucao', 'agora')
+                    print(f"#{c['id']} [{c['tipo']}] {c['pedido_original'][:60]} — próxima: {prox} — {c['status']}")
+            else:
+                print('(nenhum compromisso pendente)')
+        elif action == 'done':
+            if len(vals) < 2:
+                print('[ERR] uso: compromisso done <id> "resultado"')
+            else:
+                print(concluir_compromisso(int(vals[0]), ' '.join(vals[1:])))
+        elif action == 'fail':
+            if len(vals) < 2:
+                print('[ERR] uso: compromisso fail <id> "erro"')
+            else:
+                print(falhar_compromisso(int(vals[0]), ' '.join(vals[1:])))
+        elif action == 'update':
+            if len(vals) < 2:
+                print('[ERR] uso: compromisso update <id> key=value ...')
+            else:
+                cid = int(vals[0])
+                campos = {}
+                for v in vals[1:]:
+                    if '=' in v:
+                        k, val = v.split('=', 1)
+                        campos[k] = val
+                print(atualizar_compromisso(cid, **campos))
     elif cmd == 'checkpoint':
         cid = save_checkpoint(args.label)
         print(f'[OK] checkpoint salvo: {cid}')
