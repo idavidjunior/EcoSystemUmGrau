@@ -370,6 +370,23 @@ def layout_3d(nos, arestas, pos_antigas=None, iteracoes=None):
         for i in fala_i:
             pos[i] = cf + (pos[i] - cf) * comp
 
+    # afasta o cluster "agentes" do centro: empurra para fora radialmente,
+    # tornando-o visualmente separado como uma região periférica do grafo.
+    agentes_i = [i for i in range(n) if nos[i].get('cl') == 'agentes']
+    if len(agentes_i) >= 3:
+        ca = pos[agentes_i].mean(axis=0)
+        # centroide global (após centralização pos -= pos.mean)
+        cg = pos.mean(axis=0)
+        # vetor do centro para o cluster
+        vec = ca - cg
+        dist = np.linalg.norm(vec)
+        if dist > 1e-6:
+            dir_unit = vec / dist
+            # empurra 1.8x mais longe do centro (expansão radial)
+            for i in agentes_i:
+                # mantém estrutura interna: desloca cada nó na direção radial
+                pos[i] = pos[i] + dir_unit * (np.linalg.norm(pos[i] - cg) * 0.8)
+
     return {nid: [round(float(v), 2) for v in pos[idx[nid]]] for nid in ids}, herdados
 
 

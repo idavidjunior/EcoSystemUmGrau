@@ -50,6 +50,7 @@ class ConversorBordado:
         self.qualidades = {
             "Normal": {"density": 0.3, "step": 4, "thickness": 1},
             "Média": {"density": 0.5, "step": 3, "thickness": 2},
+            "Alta": {"density": 0.7, "step": 2, "thickness": 2},
             "Super Alta": {"density": 0.8, "step": 2, "thickness": 3}
         }
         
@@ -59,6 +60,8 @@ class ConversorBordado:
         """Configura a interface do usuário."""
         # Frame principal
         main_frame = ttk.Frame(self.root, padding="10")
+        main_frame = main_frame[0]  # Desempacotar tupla, pois ttk.Frame retorna uma tupla
+        main_frame.pack(fill=tk.BOTH, expand=True)
         main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
         # Configurar grid

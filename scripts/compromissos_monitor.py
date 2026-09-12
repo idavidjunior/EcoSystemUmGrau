@@ -211,11 +211,23 @@ async def executar_compromisso(compromisso: dict) -> tuple[bool, str]:
 
 # ---- Push WebSocket pro Vox ----
 async def push_para_vox(mensagem: str, tipo: str = "compromisso_resultado"):
-    """Envia mensagem proativa pro Vox via WebSocket da bridge."""
+    """Envia mensagem proativa pro Vox via WebSocket da bridge.
+    
+    Envia ping primeiro para estabelecer conexão corretamente na bridge,
+    aguarda pong, depois envia o push para o loop principal.
+    """
     try:
         import websockets
         uri = f"ws://127.0.0.1:{PORTA_WS}"
         async with websockets.connect(uri, ping_timeout=None) as ws:
+            # 1. Envia ping para classificação de conexão na bridge
+            await ws.send(json.dumps({"tipo": "ping", "origem": "compromissos_monitor"}))
+            # Aguarda pong
+            pong = await ws.recv()
+            pong_data = json.loads(pong)
+            if pong_data.get("tipo") != "pong":
+                logger.warning(f"Push Vox: pong inesperado: {pong_data}")
+            # 2. Envia push pro loop principal
             payload = {
                 "tipo": "push",
                 "push_tipo": tipo,

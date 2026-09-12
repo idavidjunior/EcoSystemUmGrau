@@ -3484,17 +3484,21 @@ async def lidar(ws):
         try:
             obj0 = json.loads(prim)
             if isinstance(obj0, dict):
-                # Ping no prim (health-check OU heartbeat do app android):
-                # responde pong j� na classificacao, sem esperar o loop de
+                # Ping no prim (health-check OU heartbeat do app android OU monitor):
+                # responde pong já na classificacao, sem esperar o loop de
                 # mensagens. O app manda o 1o ping aos 15s — se pousar dentro
-                # dos 3s do prim, nao fica preso no buffer do setup (~45s).
+                # dos 3s do prim, não fica preso no buffer do setup (~45s).
                 if obj0.get("tipo") == "ping":
+                    origem = obj0.get("origem", "?")
                     await ws.send(json.dumps({"tipo": "pong", "origem": "bridge", "eco": obj0}))
-                    logger.info(f"ping prim respondido (origem {obj0.get('origem','?')})")
+                    logger.info(f"ping prim respondido (origem {origem})")
                     prim_ja_respondido = True
-                    if obj0.get("origem") == "health-check":
+                    if origem == "health-check":
                         logger.info("health-check atendido (sem saudacao LLM)")
                         return
+                    if origem == "compromissos_monitor":
+                        logger.info("monitor de compromissos detectado — modo push only")
+                        eh_dashboard = True  # pula saudacao/registro Vox
                 if obj0.get("type") in ("ping", "pong", "get_state", "command"):
                     eh_dashboard = True
                     if obj0.get("type") == "ping":
@@ -3948,21 +3952,29 @@ async def lidar(ws):
                         push_tipo = obj.get("push_tipo", "info")
                         texto = obj.get("texto", "")
                         if texto:
-                            logger.info(f"push proativo recebido: {push_tipo} ({len(texto)} chars)")
-                            await ws.send(json.dumps({
+                            logger.info(f"push proativo recebido: {push_tipo} ({len(texto)} chars) -> broadcast para {len(_WS_VOZ)} cliente(s) Vox")
+                            # Broadcast para todos os clientes Vox conectados
+                            payload_base = {
                                 "tipo": "push",
                                 "push_tipo": push_tipo,
                                 "text": texto,
                                 "audio_streaming": True,
                                 "volume": _ler_volume_widget(),
-                            }))
-                            # Também dispara TTS streaming para o texto do push
-                            try:
-                                async for chunk_b64 in gerar_audio_stream(texto):
-                                    await ws.send(json.dumps({"audio_chunk": chunk_b64}))
-                                await ws.send(json.dumps({"audio_done": True}))
-                            except Exception as e:
-                                logger.warning(f"push TTS falhou: {e}")
+                            }
+                            for ws_vox in list(_WS_VOZ):
+                                try:
+                                    await ws_vox.send(json.dumps(payload_base))
+                                    # TTS streaming para cada cliente
+                                    async for chunk_b64 in gerar_audio_stream(texto):
+                                        await ws_vox.send(json.dumps({"audio_chunk": chunk_b64}))
+                                    await ws_vox.send(json.dumps({"audio_done": True}))
+                                except Exception as e:
+                                    logger.warning(f"push broadcast falhou para cliente: {e}")
+                                    # Remove cliente morto
+                                    async with _WS_VOZ_LOCK:
+                                        _WS_VOZ.discard(ws_vox)
+                            # Responde ao monitor confirmando
+                            await ws.send(json.dumps({"tipo": "push_ack", "clientes_notificados": len(_WS_VOZ)}))
                         continue
                     if obj.get("tipo") == "editar":
                         # Edit-and-resubmit (padrão ChatGPT/Claude): usuário edita

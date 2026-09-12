@@ -73,11 +73,17 @@ CLUSTERS = {
     'cognicao': ['meta_cognition'],
     'composio': ['composio', 'composio-mcp-remoto', 'composio_mcp_remoto',
                  'composiomcp', 'composiomcpremoto', 'composioremoto'],
+    'agentes': ['maestro', 'estrategista', 'cetico', 'realista', 'etica', 'futuro', 'recursos', 'criativo', 'revisor',
+                'executor', 'aprendizado', 'ler-executor', 'parallel-planner', 'flutter-orquestrador', 'gerador-de-agentes',
+                'compreender', 'eco', 'ecocell', 'ecomodelo', 'ecow', 'sync',
+                '00-maestro', '01-estrategista', '02-cetico', '03-realista', '04-etica', '05-futuro', '06-recursos',
+                '07-criativo', '08-revisor', '09-executor', '10-aprendizado', '11-ler-executor',
+                '12-parallel-planner', '13-flutter-orquestrador', '99-gerador-de-agentes'],
 }
 CLUSTER_COR = {
     'android': '#8dd3c7', 'mp3player': '#ffffb3', 'ler': '#bebada',
     'navegacao': '#fb8072', 'ecossistema': '#80b1d3', 'cognicao': '#fdb462', 'geral': '#b3b3b3',
-    'composio': '#fccde5',
+    'composio': '#fccde5', 'agentes': '#e066ff',
 }
 # Descricoes curtas para os tooltips dos botoes de cluster
 CLUSTER_DESC = {
@@ -89,6 +95,7 @@ CLUSTER_DESC = {
     'cognicao': 'Notas de meta-cognicao e raciocinio',
     'composio': 'MCP remoto Composio e notas relacionadas',
     'geral': 'Notas sem cluster especifico ou de escopo geral',
+    'agentes': 'Agentes do Conselho e especializados do ecossistema',
 }
 
 
@@ -174,6 +181,9 @@ def _resolver_cluster(tags, fonte='', mapper=None, categoria='', slug=''):
     Usa o ClusterMapper quando disponível (aprendizado + ousadia);
     senão, faz o match exato/substring com o mapeamento estático.
     Retorna o cluster ou 'geral'."""
+    # Força cluster 'agentes' para notas da pasta agentes/
+    if categoria == 'agentes':
+        return 'agentes'
     if mapper is not None:
         return mapper.resolver(tags, fonte, categoria, slug)
     for t in tags:

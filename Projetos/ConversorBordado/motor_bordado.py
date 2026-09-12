@@ -61,20 +61,17 @@ def _point_in_polygon(x: float, y: float,
     return inside
 
 
-def _rasterize_contour(contour: List[Tuple[float, float]],
-                       scale_px: float,
+def _rasterize_contour(pts_px: List[Tuple[float, float]],
                        width_px: int,
                        height_px: int) -> np.ndarray:
-    """Rasteriza um contorno (em mm) em uma máscara binária (pixels)."""
+    """Rasteriza um polígono (pontos já em pixels) em uma máscara binária."""
     mask = np.zeros((height_px, width_px), dtype=bool)
 
-    pts = [(p[0] * scale_px, p[1] * scale_px) for p in contour]
-    if len(pts) < 3:
+    if len(pts_px) < 3:
         return mask
 
-    # Usar ponto-em-polígono sobre a bbox do contorno
-    xs = [p[0] for p in pts]
-    ys = [p[1] for p in pts]
+    xs = [p[0] for p in pts_px]
+    ys = [p[1] for p in pts_px]
     min_x = max(0, int(min(xs)))
     max_x = min(width_px - 1, int(max(xs)))
     min_y = max(0, int(min(ys)))
@@ -83,7 +80,7 @@ def _rasterize_contour(contour: List[Tuple[float, float]],
     # Amostragem com ponto-em-polígono (contornos podem ser concavos)
     for py in range(min_y, max_y + 1):
         for px in range(min_x, max_x + 1):
-            if _point_in_polygon(px + 0.5, py + 0.5, pts):
+            if _point_in_polygon(px + 0.5, py + 0.5, pts_px):
                 mask[py, px] = True
 
     return mask
@@ -100,6 +97,51 @@ def _stitches_to_points(generated_stitches) -> List[Tuple[float, float]]:
         if name == 'STITCH':
             points.append((pt.x, pt.y))
     return points
+
+
+def _build_transform(design, img_w: int, img_h: int):
+    """Cria funções mm->px e px->mm a partir da bbox total do design.
+
+    O pipeline centraliza o design no canvas (coords mm centradas na origem).
+    Este mapeia a bbox do design ao espaço da imagem (0..img_w, 0..img_h),
+    preservando proporção e invertendo o eixo Y (imagem cresce para baixo).
+    """
+    all_x = []
+    all_y = []
+    for obj in design.objects:
+        for px, py in obj.contour:
+            all_x.append(px)
+            all_y.append(py)
+
+    if not all_x:
+        return None
+
+    min_x, max_x = min(all_x), max(all_x)
+    min_y, max_y = min(all_y), max(all_y)
+    design_w_mm = max(max_x - min_x, 1e-6)
+    design_h_mm = max(max_y - min_y, 1e-6)
+
+    # Escala para caber na imagem preservando proporção
+    scale = min(img_w / design_w_mm, img_h / design_h_mm)
+    out_w = design_w_mm * scale
+    out_h = design_h_mm * scale
+    # Centralizar
+    off_x = (img_w - out_w) / 2
+    off_y = (img_h - out_h) / 2
+
+    def mm_to_px(mx, my):
+        fx = (mx - min_x) / design_w_mm
+        fy = (my - min_y) / design_h_mm
+        px = off_x + fx * out_w
+        py = off_y + (1.0 - fy) * out_h  # inverte Y
+        return (px, py)
+
+    def px_to_mm(px, py):
+        fx = (px - off_x) / out_w
+        fy = 1.0 - (py - off_y) / out_h
+        return (min_x + fx * design_w_mm, min_y + fy * design_h_mm)
+
+    return mm_to_px, px_to_mm
 
 
 def digitizar(path_imagem: str,
@@ -121,10 +163,11 @@ def digitizar(path_imagem: str,
     # Tamanho em pixels da imagem original (para conversão mm -> px)
     img = Image.open(path_imagem)
     img_w, img_h = img.size
-    img_rgb = img.convert('RGB')
 
-    # scale_px = pixels por mm (inverso de scale_mm)
-    scale_px = 1.0 / scale_mm
+    transform = _build_transform(design, img_w, img_h)
+    if transform is None:
+        return []
+    mm_to_px, px_to_mm = transform
 
     regions = []
     for idx, obj in enumerate(design.objects):
@@ -134,8 +177,11 @@ def digitizar(path_imagem: str,
         g = int(getattr(color, 'g', 0))
         b = int(getattr(color, 'b', 0))
 
+        # Contorno (mm -> px)
+        contour_px = [mm_to_px(mx, my) for mx, my in obj.contour]
+
         # Rasterizar contorno em máscara
-        mask = _rasterize_contour(obj.contour, scale_px, img_w, img_h)
+        mask = _rasterize_contour(contour_px, img_w, img_h)
 
         # Bounds da máscara
         rows = np.any(mask, axis=1)
@@ -148,9 +194,12 @@ def digitizar(path_imagem: str,
         # Recortar máscara para a bbox (formato usado pelo visualizador)
         mask_crop = mask[minr:maxr + 1, minc:maxc + 1]
 
-        # Pontos reais do motor (em mm) convertidos para pixels globais
+        # Pontos reais do motor (mm -> px)
         raw_points = _stitches_to_points(obj.generated_stitches)
-        points = [(p[0] * scale_px, p[1] * scale_px) for p in raw_points]
+        points = [mm_to_px(mx, my) for mx, my in raw_points]
+        # Garantir pontos dentro da imagem (clamp de borda)
+        points = [(max(0.0, min(img_w - 1, x)), max(0.0, min(img_h - 1, y)))
+                  for x, y in points]
         if not points:
             # Fallback: amostrar a máscara
             ys, xs = np.where(mask_crop)

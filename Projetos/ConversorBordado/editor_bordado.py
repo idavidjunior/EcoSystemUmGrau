@@ -86,6 +86,7 @@ class EmbroideryEditor:
         self.pan_offset = [0, 0]
         self.is_panning = False
         self.pan_start = [0, 0]
+        self._auto_fitted = False
         
         # Undo/Redo
         self.undo_stack = []
@@ -207,14 +208,26 @@ class EmbroideryEditor:
         self.canvas.bind("<Button-4>", lambda e: self.adjust_zoom(0.1))
         self.canvas.bind("<Button-5>", lambda e: self.adjust_zoom(-0.1))
         self.canvas.bind("<Motion>", self.on_mouse_move)
+        self.canvas.bind("<Configure>", self.on_canvas_configure)
         
         # Atalhos de teclado
         self.root.bind("<Control-z>", lambda e: self.undo())
         self.root.bind("<Control-y>", lambda e: self.redo())
+        self.root.bind("<Control-m>", lambda e: self.center_selected())
+        self.root.bind("<Control-M>", lambda e: self.center_selected())
+        self.root.bind("<Control-0>", lambda e: self.fit_to_window())
+        self.root.bind("<Control-1>", lambda e: self.set_zoom(1.0))
+        self.root.bind("<Control-d>", lambda e: self.duplicate_selected())
+        self.root.bind("<Control-a>", lambda e: self.select_all())
         self.root.bind("<Delete>", lambda e: self.delete_selected())
         self.root.bind("<Escape>", lambda e: self.deselect_all())
         self.root.bind("<plus>", lambda e: self.adjust_zoom(0.25))
+        self.root.bind("<equal>", lambda e: self.adjust_zoom(0.25))
         self.root.bind("<minus>", lambda e: self.adjust_zoom(-0.25))
+        self.root.bind("<Left>", lambda e: self.nudge_selected(-1, 0))
+        self.root.bind("<Right>", lambda e: self.nudge_selected(1, 0))
+        self.root.bind("<Up>", lambda e: self.nudge_selected(0, -1))
+        self.root.bind("<Down>", lambda e: self.nudge_selected(0, 1))
         
         # Painel direito - Lista de Camadas
         layers_frame = ttk.LabelFrame(main_frame, text="Camadas", padding=5)
@@ -353,42 +366,52 @@ class EmbroideryEditor:
                                            fill=color, outline='')
     
     def draw_region(self, region: StitchRegion, center_x, center_y):
-        """Desenha uma região de bordado."""
-        if region.mask is None:
-            return
-        
-        # Converter máscara para pontos
-        minr, minc, maxr, maxc = region.bounds
-        
-        # Calcular posição no canvas
+        """Desenha uma região de bordado usando os pontos reais otimizados."""
         img_w = self.original_image.width
         img_h = self.original_image.height
         
         start_x = center_x - (img_w * self.zoom) / 2
         start_y = center_y - (img_h * self.zoom) / 2
         
-        # Desenhar pontos de bordado
-        step = max(1, int(4 / region.density))
+        color = f'#{region.color[0]:02x}{region.color[1]:02x}{region.color[2]:02x}'
         
-        for y in range(minr, maxr, step):
-            for x in range(minc, maxc, step):
-                if region.mask[y - minr, x - minc]:
-                    # Converter coordenada
-                    px = start_x + x * self.zoom
-                    py = start_y + y * self.zoom
-                    
-                    # Tamanho do ponto baseado no tipo
-                    if region.stitch_type == StitchType.SATIN:
-                        size = 2
-                    elif region.stitch_type == StitchType.RUNNING:
-                        size = 1
-                    else:
-                        size = 1.5
-                    
-                    # Desenhar ponto
-                    color = f'#{region.color[0]:02x}{region.color[1]:02x}{region.color[2]:02x}'
-                    self.canvas.create_oval(px - size, py - size, px + size, py + size,
-                                          fill=color, outline='')
+        # Tamanho do ponto baseado no tipo
+        if region.stitch_type == StitchType.SATIN:
+            size = 2
+        elif region.stitch_type == StitchType.RUNNING:
+            size = 1
+        else:
+            size = 1.5
+        
+        # Usar os pontos reais do motor quando disponíveis (mais fiel)
+        if region.points:
+            # Amostrar para performance (não desenhar 1000+ ovals)
+            pts = region.points
+            if len(pts) > 800:
+                step_pts = max(1, len(pts) // 800)
+                pts = pts[::step_pts]
+            for x, y in pts:
+                px = start_x + x * self.zoom
+                py = start_y + y * self.zoom
+                self.canvas.create_oval(px - size, py - size, px + size, py + size,
+                                        fill=color, outline='', tags=f'pt_{region.id}')
+        else:
+            # Fallback: amostrar a máscara
+            if region.mask is None:
+                return
+            minr, minc, maxr, maxc = region.bounds
+            step = max(1, int(4 / region.density))
+            for y in range(minr, maxr, step):
+                for x in range(minc, maxc, step):
+                    if region.mask[y - minr, x - minc]:
+                        px = start_x + x * self.zoom
+                        py = start_y + y * self.zoom
+                        self.canvas.create_oval(px - size, py - size, px + size, py + size,
+                                                fill=color, outline='', tags=f'pt_{region.id}')
+        
+        # Desenhar contorno se selecionado
+        if region.id == self.selected_region_id:
+            self.draw_region_contour(region, center_x, center_y)
         
         # Desenhar contorno se selecionado
         if region.id == self.selected_region_id:
@@ -560,6 +583,16 @@ class EmbroideryEditor:
         if 0 <= img_x < img_w and 0 <= img_y < img_h:
             self.status_var.set(f"Coordenadas: ({img_x:.0f}, {img_y:.0f}) | Zoom: {self.zoom*100:.0f}%")
     
+    def on_canvas_configure(self, event=None):
+        """Re-renderiza quando o canvas ganha/muda de tamanho."""
+        if self.canvas.winfo_width() <= 1 or self.canvas.winfo_height() <= 1:
+            return
+        if not self._auto_fitted:
+            self._auto_fitted = True
+            self.fit_to_window()
+        else:
+            self.refresh_canvas()
+    
     def on_layer_select(self, event):
         """Lida com seleção na lista de camadas."""
         selection = self.layers_listbox.curselection()
@@ -683,6 +716,76 @@ class EmbroideryEditor:
         self.zoom_label.config(text=f"{self.zoom*100:.0f}%")
         self.refresh_canvas()
     
+    def center_selected(self):
+        """Centraliza o objeto selecionado no centro da tela (Ctrl+M)."""
+        canvas_width = self.canvas.winfo_width()
+        canvas_height = self.canvas.winfo_height()
+        if canvas_width <= 1 or canvas_height <= 1:
+            return
+        
+        # Ponto alvo: centro da região selecionada (ou da imagem, se nada selecionado)
+        if self.selected_region_id is not None:
+            region = next((r for r in self.regions if r.id == self.selected_region_id), None)
+            if region is None:
+                return
+            minr, minc, maxr, maxc = region.bounds
+            target_cx = (minc + maxc) / 2
+            target_cy = (minr + maxr) / 2
+            label = region.name or f"Região {region.id}"
+        else:
+            target_cx = self.original_image.width / 2
+            target_cy = self.original_image.height / 2
+            label = "imagem"
+        
+        # Converter centro do objeto (imagem coords) para coordenada canvas
+        # canvas_x = center_x + (img_x - img_w/2) * zoom
+        # queremos canvas_x = canvas_width/2  =>  pan_offset = - (target_cx - img_w/2) * zoom
+        img_w = self.original_image.width
+        img_h = self.original_image.height
+        self.pan_offset = [
+            -(target_cx - img_w / 2) * self.zoom,
+            -(target_cy - img_h / 2) * self.zoom,
+        ]
+        
+        self.status_var.set(f"Centralizado: {label}")
+        self.refresh_canvas()
+    
+    def duplicate_selected(self):
+        """Duplica a região selecionada (Ctrl+D)."""
+        if self.selected_region_id is None:
+            self.status_var.set("Selecione uma região para duplicar")
+            return
+        for region in self.regions:
+            if region.id == self.selected_region_id:
+                import copy
+                new_region = copy.deepcopy(region)
+                new_region.id = max((r.id for r in self.regions), default=0) + 1
+                new_region.name = f"{region.name or 'Região'} (cópia)"
+                # Deslocar levemente para não ficar exatamente sobre a original
+                offset = 5
+                new_region.bounds = (region.bounds[0] + offset, region.bounds[1] + offset,
+                                     region.bounds[2] + offset, region.bounds[3] + offset)
+                new_region.points = [(x + offset, y + offset) for x, y in region.points]
+                self.regions.append(new_region)
+                self.selected_region_id = new_region.id
+                self.update_layers_list()
+                self.refresh_canvas()
+                self.status_var.set(f"Duplicada: {new_region.name}")
+                return
+    
+    def nudge_selected(self, dx, dy):
+        """Move a região selecionada em pequenos passos (setas)."""
+        if self.selected_region_id is None:
+            return
+        step = 1.0 / self.zoom
+        for region in self.regions:
+            if region.id == self.selected_region_id:
+                region.bounds = (region.bounds[0] + dx * step, region.bounds[1] + dy * step,
+                                 region.bounds[2] + dx * step, region.bounds[3] + dy * step)
+                region.points = [(x + dx * step, y + dy * step) for x, y in region.points]
+                self.refresh_canvas()
+                break
+    
     def save_state(self):
         """Salva estado para undo."""
         # TODO: Implementar undo/redo completo
@@ -700,8 +803,12 @@ class EmbroideryEditor:
     
     def select_all(self):
         """Seleciona todas as regiões."""
-        # TODO: Implementar
-        pass
+        if not self.regions:
+            return
+        self.selected_region_id = self.regions[0].id
+        self.update_layers_list()
+        self.refresh_canvas()
+        self.status_var.set(f"{len(self.regions)} regiões (grupo selecionado)")
     
     def deselect_all(self):
         """Desseleciona tudo."""
@@ -828,62 +935,63 @@ class EmbroideryEditor:
 
 
 def create_editor_from_image(image_path: str) -> EmbroideryEditor:
-    """Cria editor a partir de uma imagem."""
-    # Carregar imagem
+    """Cria editor a partir de uma imagem usando o motor profissional."""
     img = Image.open(image_path)
-    
-    # Converter para escala de cinza para detecção
-    if img.mode != 'L':
-        gray = img.convert('L')
-    else:
-        gray = img
-    
-    # Detectar regiões
-    img_array = np.array(gray)
-    
-    # Quantizar cores
+
+    # Usar o motor profissional do EmbroideryEngine
+    try:
+        from motor_bordado import digitizar
+        regions = digitizar(image_path)
+    except Exception as e:
+        print(f"[motor_bordado] erro ao digitalizar: {e}")
+        regions = _create_regions_legacy(img)
+
+    # Criar editor
+    root = tk.Tk()
+    editor = EmbroideryEditor(root, img, regions)
+
+    return editor
+
+
+def _create_regions_legacy(img: Image.Image):
+    """Método legado de criação de regiões (fallback)."""
+    import numpy as np
+
     if img.mode != 'RGB':
         img_rgb = img.convert('RGB')
     else:
         img_rgb = img
-    
+
     img_quantized = img_rgb.quantize(colors=6, method=Image.Quantize.MEDIANCUT)
     img_quantized_array = np.array(img_quantized)
-    
-    # Criar regiões para cada cor
+    palette = img_quantized.getpalette()
+
     regions = []
     region_id = 0
-    
     colors = np.unique(img_quantized_array)
-    palette = img_quantized.getpalette()
-    
+
     for color_idx in colors:
         mask = (img_quantized_array == color_idx)
         labeled = measure.label(mask)
         region_props = measure.regionprops(labeled)
-        
-        # Obter cor RGB
+
         r = palette[color_idx * 3]
         g = palette[color_idx * 3 + 1]
         b = palette[color_idx * 3 + 2]
-        
+
         for prop in region_props:
             minr, minc, maxr, maxc = prop.bbox
-            
-            # Ignorar regiões muito pequenas
             if (maxr - minr) < 5 or (maxc - minc) < 5:
                 continue
-            
+
             region_mask = mask[minr:maxr, minc:maxc].copy()
-            
-            # Criar lista de pontos
             points = []
             for y in range(minr, maxr, 4):
                 for x in range(minc, maxc, 4):
                     if region_mask[y - minr, x - minc]:
                         points.append((x, y))
-            
-            region = StitchRegion(
+
+            regions.append(StitchRegion(
                 id=region_id,
                 color=(r, g, b),
                 stitch_type=StitchType.FILL,
@@ -893,16 +1001,10 @@ def create_editor_from_image(image_path: str) -> EmbroideryEditor:
                 bounds=(minr, minc, maxr, maxc),
                 points=points,
                 name=f"Cor {color_idx}"
-            )
-            
-            regions.append(region)
+            ))
             region_id += 1
-    
-    # Criar editor
-    root = tk.Tk()
-    editor = EmbroideryEditor(root, img, regions)
-    
-    return editor
+
+    return regions
 
 
 if __name__ == "__main__":
