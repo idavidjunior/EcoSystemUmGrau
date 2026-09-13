@@ -139,6 +139,11 @@
       "agent": "eco",
       "template": "Ative ou verifique o EcoSystemUmGrau seguindo o protocolo do agente eco (responda sempre em pt-BR).\n\n1. Verifique a integridade (silencioso): `python scripts/runtime_boot.py --greeting`\n2. Se INTEGRIDADE: OK -> responda com saudaÃ§Ã£o ESPONTÃ‚NEA e CURTA (mÃ¡x 3-4 linhas), variando o tom cada vez. Nunca repita a mesma frase. Inclua leve contexto (projeto ativo, memÃ³ria, pendÃªncias).\n3. Se houver problema -> reporte brevemente o que deu errado e o que foi corrigido.\n4. Se o argumento for 'relatorio' ou o usuÃ¡rio pedir detalhes -> faÃ§a o relatÃ³rio COMPLETO (integridade, estado, model monitor, correÃ§Ãµes).\n5. Abrir widget: `start \"\" pythonw scripts/widget_edge.py`\n\nComando recebido: $ARGUMENTS"
     },
+    "executor": {
+      "description": "Executor Governado — execução completa com governança (5 fases + 8 conselheiros). Uso: /executor \"sua demanda\"",
+      "agent": "executor-governado",
+      "template": "Execute a demanda abaixo usando o Executor Governado (governança rigorosa: 5 fases, 8 conselheiros, validação obrigatória, evidências). Responda sempre em pt-BR.\n\nDemanda: $ARGUMENTS"
+    },
     "sync": {
       "description": "Sincronizar EcoSystemUmGrau: Local PC + GitHub, 3 camadas, MCPs, secrets, memÃ³ria e runtime. Corrige e commite automaticamente.",
       "agent": "sync",
@@ -181,8 +186,16 @@
     }
   },
   "agent": {
+    "executor-governado": {
+      "description": "Executor Governado — execução completa com governança (5 fases + 8 conselheiros obrigatórios). Carregado automaticamente como executor padrão.",
+      "mode": "primary",
+      "temperature": 0.3,
+      "permission": {
+        "*": "allow"
+      }
+    },
     "compreensao-refino": {
-      "description": "Refinador de compreensao de pedidos â€” responde apenas em texto, sem ferramentas (usado pelo mcp-compreensao-pedidos como LLM primaria do refino)",
+      "description": "Refinador de compreensao de pedidos — responde apenas em texto, sem ferramentas (usado pelo mcp-compreensao-pedidos como LLM primaria do refino)",
       "mode": "primary",
       "temperature": 0.2,
       "permission": {

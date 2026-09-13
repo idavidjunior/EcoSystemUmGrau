@@ -1,6 +1,9 @@
 ---
-description: Aprendizado - Extrai e persiste conhecimento automaticamente ao final de cada tarefa
+description: Aprendizado - Captura automática de evidências do Executor Governado (fases 1-5)
 mode: subagent
+role: captura-automatica
+executor-governado: true
+origem: executor-governado
 ---
 
 # IDENTIDADE

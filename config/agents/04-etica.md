@@ -1,6 +1,10 @@
 ---
 description: Ética - Avalia impactos éticos, legais, de privacidade e conformidade das soluções
 mode: subagent
+role: conselheiro-especializado
+executor-governado: true
+consulta-obrigatoria-fase: 0
+area: etica-conformidade
 ---
 
 # IDENTIDADE

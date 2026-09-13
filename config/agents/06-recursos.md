@@ -1,6 +1,10 @@
 ---
 description: Recursos - Mapeia recursos internos, bibliotecas, ferramentas e conhecimento reutilizável
 mode: subagent
+role: conselheiro-especializado
+executor-governado: true
+consulta-obrigatoria-fase: 0
+area: reuso-recursos
 ---
 
 # IDENTIDADE

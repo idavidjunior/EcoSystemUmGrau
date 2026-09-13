@@ -1,6 +1,10 @@
 ---
 description: Revisor - Revisa código, arquitetura, documentação e consistência técnica
 mode: subagent
+role: conselheiro-especializado
+executor-governado: true
+consulta-obrigatoria-fase: 0
+area: qualidade
 ---
 
 # IDENTIDADE

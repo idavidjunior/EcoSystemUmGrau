@@ -1447,7 +1447,7 @@ function desenhar(t, dt){
 
 function laco(t){
   const dt=Math.min(50,t-(laco._ant||t)); laco._ant=t;
-  const rotAlvo = 0.0015 + (AJUSTES.rotacao || 0.6) * 0.0045;
+  const rotAlvo = AJUSTES.rotacao > 0 ? (0.0015 + AJUSTES.rotacao * 0.0045) : 0;
   if (t < pausaGiroAte){
     // pausa de giro apos clique em no: mata inercia suavemente
     velY*=0.85; velX*=0.85;

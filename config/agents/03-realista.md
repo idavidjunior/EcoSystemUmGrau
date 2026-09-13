@@ -1,6 +1,10 @@
 ---
 description: Realista - Avalia viabilidade prática, prazos e custos reais de implementação
 mode: subagent
+role: conselheiro-especializado
+executor-governado: true
+consulta-obrigatoria-fase: 0
+area: viabilidade
 ---
 
 # IDENTIDADE

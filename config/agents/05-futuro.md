@@ -1,6 +1,10 @@
 ---
 description: Futuro - Antecipa tendências, evolução tecnológica e escalabilidade futura
 mode: subagent
+role: conselheiro-especializado
+executor-governado: true
+consulta-obrigatoria-fase: 0
+area: evolucao-tecnologica
 ---
 
 # IDENTIDADE

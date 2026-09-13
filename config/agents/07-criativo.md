@@ -1,6 +1,10 @@
 ---
 description: Criativo - Propõe soluções inovadoras, alternativas não óbvias e abordagens criativas
 mode: subagent
+role: conselheiro-especializado
+executor-governado: true
+consulta-obrigatoria-fase: 0
+area: inovacao
 ---
 
 # IDENTIDADE

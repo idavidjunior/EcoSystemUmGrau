@@ -60,7 +60,6 @@ class ConversorBordado:
         """Configura a interface do usuário."""
         # Frame principal
         main_frame = ttk.Frame(self.root, padding="10")
-        main_frame = main_frame[0]  # Desempacotar tupla, pois ttk.Frame retorna uma tupla
         main_frame.pack(fill=tk.BOTH, expand=True)
         main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
