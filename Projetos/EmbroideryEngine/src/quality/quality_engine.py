@@ -8,12 +8,14 @@ Analisa e valida qualidade de um design de bordado:
 - Densidade inadequada
 - Bugs de geometria
 - Número de pontos vs área
+- Limites de máquina (máx. pontos, cores, dimensões, comprimento ponto/salto)
 """
 
 import math
 from typing import List, Dict, Tuple, Optional
 from ..core.design.embroidery_design import EmbroideryDesign, StitchType
 from ..core.stitches.stitch_primitives import StitchCommand
+from ..config.config_loader import get_machine_profile
 
 
 class QualityIssue:
@@ -40,32 +42,65 @@ class QualityIssue:
 class QualityEngine:
     """Motor de análise de qualidade de bordado."""
 
-    def __init__(self):
-        self.min_stitch_length = 0.3
-        self.max_stitch_length = 12.0
-        self.max_jump_distance = 10.0
+    def __init__(self, machine_profile: Optional[str] = None):
+        """
+        Initialize QualityEngine.
+
+        Args:
+            machine_profile: Machine profile key (e.g., 'generic', 'brother_pe800', 'janome_mb7')
+                            If None, uses default machine from config.
+        """
+        machine = get_machine_profile(machine_profile) if machine_profile else get_machine_profile("generic")
+
+        # Load limits from machine profile
+        self.min_stitch_length = machine.get("min_stitch_length_mm", 0.3)
+        self.max_stitch_length = machine.get("max_stitch_length_mm", 12.0)
+        self.max_jump_distance = machine.get("max_jump_length_mm", 10.0)
+        self.max_stitches = machine.get("max_stitches", 500000)
+        self.max_colors = machine.get("max_colors", 65)
+        self.max_width_mm = machine.get("hoop_width_mm", 200.0)
+        self.max_height_mm = machine.get("hoop_height_mm", 200.0)
+
+        # Quality thresholds
         self.max_issues_per_category = 10
         self.issues: List[QualityIssue] = []
+
+        # Store machine info for reporting
+        self.machine_name = machine.get("name", "Unknown")
+        self.machine_format = machine.get("format", "unknown")
 
     def analyze(self, design: EmbroideryDesign) -> Dict:
         """Analisa o design e retorna relatório de qualidade."""
         self.issues = []
 
+        # Structural checks
         self._check_empty_design(design)
+
+        # Machine limit checks
+        self._check_machine_limits(design)
+
+        # Stitch quality checks
         self._check_stitch_lengths(design)
         self._check_long_jumps(design)
         self._check_stitch_density(design)
+
+        # Geometry checks
         self._check_geometric_consistency(design)
+
+        # Sequencing checks
         self._check_sequencing(design)
 
         score = self._calculate_score(design)
 
         return {
             "score": score,
+            "machine": self.machine_name,
+            "format": self.machine_format,
             "total_issues": len(self.issues),
             "critical": len([i for i in self.issues if i.severity == QualityIssue.SEVERITY_CRITICAL]),
             "errors": len([i for i in self.issues if i.severity == QualityIssue.SEVERITY_ERROR]),
             "warnings": len([i for i in self.issues if i.severity == QualityIssue.SEVERITY_WARNING]),
+            "info": len([i for i in self.issues if i.severity == QualityIssue.SEVERITY_INFO]),
             "issues": self.issues
         }
 
@@ -84,6 +119,69 @@ class QualityEngine:
                 "stitches",
                 "Design não contém pontos"
             ))
+
+    def _check_machine_limits(self, design: EmbroideryDesign):
+        """Check design against machine limits."""
+
+        # Total stitches
+        total_stitches = design.total_stitches
+        if total_stitches > self.max_stitches:
+            self.issues.append(QualityIssue(
+                QualityIssue.SEVERITY_ERROR,
+                "machine_limits",
+                f"Total de pontos ({total_stitches}) excede limite da máquina ({self.max_stitches})"
+            ))
+        elif total_stitches > self.max_stitches * 0.8:
+            self.issues.append(QualityIssue(
+                QualityIssue.SEVERITY_WARNING,
+                "machine_limits",
+                f"Total de pontos ({total_stitches}) próximo ao limite da máquina ({self.max_stitches})"
+            ))
+
+        # Total colors
+        total_colors = design.total_colors
+        if total_colors > self.max_colors:
+            self.issues.append(QualityIssue(
+                QualityIssue.SEVERITY_ERROR,
+                "machine_limits",
+                f"Número de cores ({total_colors}) excede limite da máquina ({self.max_colors})"
+            ))
+
+        # Design dimensions
+        bbox = design.bounding_box
+        design_width = bbox[2] - bbox[0]
+        design_height = bbox[3] - bbox[1]
+
+        if design_width > self.max_width_mm:
+            self.issues.append(QualityIssue(
+                QualityIssue.SEVERITY_ERROR,
+                "machine_limits",
+                f"Largura do design ({design_width:.1f}mm) excede bastidor ({self.max_width_mm}mm)"
+            ))
+
+        if design_height > self.max_height_mm:
+            self.issues.append(QualityIssue(
+                QualityIssue.SEVERITY_ERROR,
+                "machine_limits",
+                f"Altura do design ({design_height:.1f}mm) excede bastidor ({self.max_height_mm}mm)"
+            ))
+
+        # Check individual objects
+        for obj in design.objects:
+            if not obj.visible or not obj.generated_stitches:
+                continue
+
+            obj_bbox = obj.bounds
+            obj_width = obj_bbox[2] - obj_bbox[0]
+            obj_height = obj_bbox[3] - obj_bbox[1]
+
+            if obj_width > self.max_width_mm or obj_height > self.max_height_mm:
+                self.issues.append(QualityIssue(
+                    QualityIssue.SEVERITY_WARNING,
+                    "machine_limits",
+                    f"Objeto {obj.name} maior que bastidor ({obj_width:.1f}x{obj_height:.1f}mm)",
+                    obj.center, obj.name
+                ))
 
     def _check_stitch_lengths(self, design: EmbroideryDesign):
         for obj in design.objects:
@@ -150,10 +248,11 @@ class QualityEngine:
                         worst_jump = max(worst_jump, dist)
 
             if long_jumps > 0:
+                severity = QualityIssue.SEVERITY_WARNING if worst_jump > self.max_jump_distance * 2 else QualityIssue.SEVERITY_INFO
                 self.issues.append(QualityIssue(
-                    QualityIssue.SEVERITY_INFO,
+                    severity,
                     "jump",
-                    f"{long_jumps} saltos longos em {obj.name} (pior: {worst_jump:.1f}mm)",
+                    f"{long_jumps} saltos longos em {obj.name} (pior: {worst_jump:.1f}mm, limite: {self.max_jump_distance}mm)",
                     obj.center, obj.name
                 ))
 
@@ -181,7 +280,14 @@ class QualityEngine:
                     self.issues.append(QualityIssue(
                         QualityIssue.SEVERITY_WARNING,
                         "density",
-                        f"Densidade muito baixa em {obj.name}",
+                        f"Densidade muito baixa em {obj.name} ({density_ratio:.3f} mm/mm²)",
+                        obj.center, obj.name
+                    ))
+                elif density_ratio > 5.0:
+                    self.issues.append(QualityIssue(
+                        QualityIssue.SEVERITY_WARNING,
+                        "density",
+                        f"Densidade muito alta em {obj.name} ({density_ratio:.3f} mm/mm²)",
                         obj.center, obj.name
                     ))
 
@@ -195,7 +301,7 @@ class QualityEngine:
                 self.issues.append(QualityIssue(
                     QualityIssue.SEVERITY_ERROR,
                     "geometry",
-                    f"Objeto {obj.name} com área inválida",
+                    f"Objeto {obj.name} com área inválida ({area:.3f}mm²)",
                     obj.center, obj.name
                 ))
 
@@ -203,9 +309,53 @@ class QualityEngine:
                 self.issues.append(QualityIssue(
                     QualityIssue.SEVERITY_ERROR,
                     "geometry",
-                    f"Objeto {obj.name} com contorno inválido",
+                    f"Objeto {obj.name} com contorno inválido ({len(obj.contour)} pontos)",
                     obj.center, obj.name
                 ))
+
+            # Check for self-intersections (simplified)
+            if self._has_self_intersection(obj.contour):
+                self.issues.append(QualityIssue(
+                    QualityIssue.SEVERITY_WARNING,
+                    "geometry",
+                    f"Objeto {obj.name} pode ter auto-interseção no contorno",
+                    obj.center, obj.name
+                ))
+
+    def _has_self_intersection(self, points: List[Tuple[float, float]]) -> bool:
+        """Simple self-intersection check."""
+        n = len(points)
+        if n < 4:
+            return False
+
+        for i in range(n):
+            j = (i + 1) % n
+            for k in range(i + 2, n):
+                if k == (i - 1) % n:
+                    continue
+                l = (k + 1) % n
+                if l == i or l == j:
+                    continue
+
+                if self._segments_intersect(points[i], points[j], points[k], points[l]):
+                    return True
+        return False
+
+    def _segments_intersect(self, p1, p2, q1, q2) -> bool:
+        """Check if two segments intersect."""
+        x1, y1 = p1
+        x2, y2 = p2
+        x3, y3 = q1
+        x4, y4 = q2
+
+        denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
+        if abs(denom) < 1e-10:
+            return False
+
+        t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / denom
+        u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / denom
+
+        return 0 < t < 1 and 0 < u < 1
 
     def _check_sequencing(self, design: EmbroideryDesign):
         for i, obj in enumerate(design.objects):
@@ -268,7 +418,7 @@ class QualityEngine:
                 score *= 0.5
             elif total_stitches < 500:
                 score *= 0.7
-            elif total_stitches > 500000:
+            elif total_stitches > self.max_stitches * 0.8:
                 score *= 0.9
 
         return round(score, 1)
@@ -277,10 +427,12 @@ class QualityEngine:
         """Gera resumo legível do relatório."""
         lines = [
             f"Score de Qualidade: {report['score']}/100",
+            f"Máquina: {report.get('machine', 'N/A')} ({report.get('format', 'N/A')})",
             f"Total de Issues: {report['total_issues']}",
             f"  Critical: {report['critical']}",
             f"  Error: {report['errors']}",
-            f"  Warning: {report['warnings']}"
+            f"  Warning: {report['warnings']}",
+            f"  Info: {report.get('info', 0)}"
         ]
 
         if report['score'] >= 90:
@@ -293,3 +445,31 @@ class QualityEngine:
             lines.append("Status: RUIM - Revisar antes de exportar")
 
         return "\n".join(lines)
+
+
+if __name__ == "__main__":
+    # Quick test
+    from ..core.design.embroidery_design import EmbroideryDesign, EmbroideryObject, ThreadColor, StitchType
+    from ..core.stitches.stitch_primitives import StitchPath, StitchPoint, StitchCommand
+
+    design = EmbroideryDesign(name="Test", width_mm=200, height_mm=200)
+
+    obj = EmbroideryObject(
+        name="TestObj",
+        contour=[(0, 0), (10, 0), (10, 10), (0, 10)],
+        color=ThreadColor("Red", r=255, g=0, b=0),
+        color_index=0,
+        stitch_type=StitchType.TATAMI,
+        density=0.4
+    )
+    path = StitchPath()
+    for x in range(0, 11):
+        for y in range(0, 11):
+            path.add_stitch_absolute(x, y, StitchCommand.STITCH)
+    obj.generated_stitches = path
+
+    design.objects.append(obj)
+
+    qe = QualityEngine("brother_pe800")
+    report = qe.analyze(design)
+    print(qe.summary(report))

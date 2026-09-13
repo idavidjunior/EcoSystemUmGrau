@@ -15,7 +15,7 @@ from ..image.segmentation.segmentation_engine import (
     SegmentationEngine, ColorReductionEngine
 )
 from ..image.vectorization.vectorization_engine import VectorizationEngine
-from ..embroidery.classifier.object_classifier import ObjectClassifier
+from ..embroidery.classifier.improved_classifier import ImprovedStitchClassifier
 from ..embroidery.planning.stitch_planner import StitchPlanner
 from ..embroidery.sequencing.sequence_optimizer import SequenceOptimizer
 from ..quality.quality_engine import QualityEngine
@@ -51,7 +51,7 @@ class DigitizerPipeline:
         vec_engine = VectorizationEngine(scale_mm=self.scale_mm)
         regions_mm = vec_engine.vectorize_all(regions)
 
-        classifier = ObjectClassifier()
+        classifier = ImprovedStitchClassifier()
         regions_classified = classifier.assign_all(regions_mm)
 
         planner = StitchPlanner(density=self.density, fabric=self.fabric)

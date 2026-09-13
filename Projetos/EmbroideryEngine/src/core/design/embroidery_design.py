@@ -202,6 +202,19 @@ class EmbroideryObject:
     visible: bool = True
     locked: bool = False
 
+    def __post_init__(self):
+        """Calcula bounds a partir do contorno se não definido."""
+        if self.contour and self.bounds == (0, 0, 0, 0):
+            self._recalculate_bounds()
+
+    def _recalculate_bounds(self):
+        """Recalcula bounds a partir do contorno."""
+        if not self.contour:
+            return
+        xs = [p[0] for p in self.contour]
+        ys = [p[1] for p in self.contour]
+        self.bounds = (min(xs), min(ys), max(xs), max(ys))
+
     @property
     def width(self) -> float:
         return self.bounds[2] - self.bounds[0]

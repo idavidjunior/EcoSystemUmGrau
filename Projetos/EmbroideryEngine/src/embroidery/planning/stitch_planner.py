@@ -88,6 +88,7 @@ class StitchPlanner:
             contour=contour_mm,
             bounds=region.get('bounds_mm', (0, 0, 0, 0)),
             density=self.density,
+            direction_angle=region.get('direction_angle', 0.0),
         )
 
         obj = self._assign_parameters(obj, region)
@@ -187,7 +188,7 @@ class DigitizerPipeline:
             SegmentationEngine, ColorReductionEngine
         )
         from ...image.vectorization.vectorization_engine import VectorizationEngine
-        from ..classifier.object_classifier import ObjectClassifier
+        from ..classifier.improved_classifier import ImprovedStitchClassifier
 
         pil_image = None
         try:
@@ -205,7 +206,7 @@ class DigitizerPipeline:
         vec_engine = VectorizationEngine(scale_mm=self.scale_mm)
         regions_mm = vec_engine.vectorize_all(regions)
 
-        classifier = ObjectClassifier()
+        classifier = ImprovedStitchClassifier()
         regions_classified = classifier.assign_all(regions_mm)
 
         design = self.planner.plan(
