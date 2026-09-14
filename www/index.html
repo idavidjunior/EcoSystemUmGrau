@@ -27,6 +27,7 @@ select:focus{border-color:var(--acc);}
 button#btnVoz{font-size:11px;padding:5px 10px;border:1px solid var(--bdr);border-radius:4px;
   background:var(--in);color:var(--tx);cursor:pointer;width:90px;}
 button#btnVoz.on{background:#1d3a26;border-color:var(--on);color:var(--on);}
+button#btnVoz.off{background:#3d1d1d;border-color:#f38ba8;color:#f38ba8;}
 .linhaBotoes{display:flex;gap:8px;align-items:center;}
 button#btnPausa{font-size:11px;padding:5px 10px;border:1px solid var(--bdr);border-radius:4px;
   background:transparent;color:var(--tx3);cursor:pointer;width:90px;}
@@ -139,6 +140,7 @@ function edgeAtualizar(st){
   btTopo.textContent = st.frente ? 'Fundo' : 'Frente';
   var b = document.getElementById('btnVoz');
   b.classList.toggle('on', !!st.voz);
+  b.classList.toggle('off', !st.voz);
   b.textContent = st.voz ? '\u25CF Voz ligada' : 'Ligar voz';
   var p = document.getElementById('btnParar');
   p.classList.toggle('falando', !!st.falando);
@@ -201,15 +203,14 @@ window.addEventListener('pywebviewready', async function(){
       edgeAtualizar({voz: r.voz});
     }catch(e){}
   });
-  document.getElementById('btnParar').addEventListener('click', function(){
-    try{ window.pywebview.api.parar(); }catch(e){}
+  document.getElementById('btnParar').addEventListener('click', async function(){
+    try{ var r = await window.pywebview.api.parar(); edgeAtualizar({pausado: r.pausado}); }catch(e){}
   });
   document.getElementById('btnPausa').addEventListener('click', async function(){
     try{
       var st = await window.pywebview.api.status();
-      if (st.pausado){ await window.pywebview.api.resume(); }
-      else{ await window.pywebview.api.pause(); }
-      edgeAtualizar({pausado: !st.pausado});
+      if (st.pausado){ var r = await window.pywebview.api.resume(); edgeAtualizar({pausado: r.pausado}); }
+      else{ var r = await window.pywebview.api.pause(); edgeAtualizar({pausado: r.pausado}); }
     }catch(e){}
   });
 });

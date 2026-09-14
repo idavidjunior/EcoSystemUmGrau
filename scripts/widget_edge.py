@@ -116,6 +116,8 @@ _Arquivos = re.compile(r"\b\w+\.(?:py|js|ts|json|jsonc|md|html|css|ps1|bat|sh)\b
 
 
 _ESTADO_LOCK = threading.Lock()
+_NARRACAO_LOCK = threading.Lock()
+_DEFAULT_NARRACAO = {"ativo": True, "pausado": False, "pausa_total": False}
 
 
 def ler_estado():
@@ -269,12 +271,12 @@ def _estado_narrador_ativo():
     try:
         if NARRACAO_CONTROLE.exists():
             estado = json.loads(NARRACAO_CONTROLE.read_text(encoding="utf-8"))
-            return (bool(estado.get("ativo", True))
-                    and not bool(estado.get("pausado", False))
+            return (bool(estado.get("ativo", False))
+                    and not bool(estado.get("pausado", True))
                     and not bool(estado.get("pausa_total", False)))
     except Exception:
         pass
-    return True
+    return False
 
 
 def _ler_pausa_total():
@@ -294,26 +296,27 @@ def _gravar_pausa_total(pausar: bool):
     pausa_total=true silencia todo áudio de saída (narração, TTS e voz
     Jarvis) até voltar a false. É separado de `pausado`, que o
     voice_on/voice_off usa para pausar o narrador durante a fala do Jarvis
-    (não toca na pausa total). Escrita atômica.
+    (não toca na pausa total). Escrita atômica com lock.
     """
-    try:
-        estado = {"ativo": True, "pausado": False, "pausa_total": False}
-        if NARRACAO_CONTROLE.exists():
-            try:
-                estado = json.loads(NARRACAO_CONTROLE.read_text(encoding="utf-8"))
-            except Exception:
-                pass
-        estado["pausa_total"] = bool(pausar)
-        tmp = NARRACAO_CONTROLE.with_suffix(".tmp")
-        tmp.write_text(json.dumps(estado), encoding="utf-8")
-        tmp.replace(NARRACAO_CONTROLE)
-    except Exception:
-        pass
-    if pausar:
+    with _NARRACAO_LOCK:
         try:
-            STOP_FLAG.write_text(str(int(time.time())), encoding="utf-8")
+            estado = dict(_DEFAULT_NARRACAO)
+            if NARRACAO_CONTROLE.exists():
+                try:
+                    estado = json.loads(NARRACAO_CONTROLE.read_text(encoding="utf-8"))
+                except Exception:
+                    pass
+            estado["pausa_total"] = bool(pausar)
+            tmp = NARRACAO_CONTROLE.with_suffix(".tmp")
+            tmp.write_text(json.dumps(estado), encoding="utf-8")
+            tmp.replace(NARRACAO_CONTROLE)
         except Exception:
             pass
+        if pausar and _estado_narrador_ativo():
+            try:
+                STOP_FLAG.write_text(str(int(time.time())), encoding="utf-8")
+            except Exception:
+                pass
 
 
 def _ler_narracao_pausada():
@@ -800,7 +803,10 @@ def _narrador_loop():
                     narrador = _Narrador("assistant")
             except Exception:
                 pass
-            time.sleep(0.5)
+            if _ler_pausa_total():
+                time.sleep(5)
+            else:
+                time.sleep(0.5)
     except Exception:
         _log_narr("narrador thread encerrada")
     finally:
@@ -934,14 +940,14 @@ class EdgeApi:
             STOP_FLAG.write_text(str(int(time.time())), encoding="utf-8")
         except Exception:
             pass
-        return True
+        return {"pausado": _ler_pausa_total()}
 
     def pause(self):
         """Pausa total: silencia todo áudio de saída (narração, TTS e voz
         Jarvis) até Retomar. Estado mestre separado do `pausado` do narrador,
         que o voice_on/voice_off usam sem tocar na pausa total."""
         _gravar_pausa_total(True)
-        return True
+        return {"pausado": True}
 
     def resume(self):
         """Retoma todo o áudio e limpa a bandeira de parada pendente."""
@@ -950,7 +956,7 @@ class EdgeApi:
             STOP_FLAG.unlink(missing_ok=True)
         except Exception:
             pass
-        return True
+        return {"pausado": False}
 
     def set_volume(self, valor):
         salvar_estado({"volume": max(0, min(100, int(valor)))})
@@ -974,46 +980,48 @@ class EdgeApi:
 
     def _narrador_desativar(self):
         """Desliga o narrador completamente (ativo=false, pausado=true)."""
-        try:
-            estado = {"ativo": False, "pausado": True}
-            if NARRACAO_CONTROLE.exists():
-                try:
-                    estado = json.loads(NARRACAO_CONTROLE.read_text(encoding="utf-8"))
-                except Exception:
-                    pass
-            estado["ativo"] = False
-            estado["pausado"] = True
-            # Para fala atual via flag
+        with _NARRACAO_LOCK:
             try:
-                STOP_FLAG.write_text(str(int(time.time())), encoding="utf-8")
-            except Exception:
-                pass
-            tmp = NARRACAO_CONTROLE.with_suffix(".tmp")
-            tmp.write_text(json.dumps(estado), encoding="utf-8")
-            tmp.replace(NARRACAO_CONTROLE)
-        except Exception:
-            pass
-
-    def _narrador_pausar(self, pausar: bool):
-        """Pausa/retoma o narrador (mantém ativo=true). Usado quando widget fala."""
-        try:
-            estado = {"ativo": True, "pausado": False}
-            if NARRACAO_CONTROLE.exists():
-                try:
-                    estado = json.loads(NARRACAO_CONTROLE.read_text(encoding="utf-8"))
-                except Exception:
-                    pass
-            estado["pausado"] = bool(pausar)
-            if pausar:
+                estado = dict(_DEFAULT_NARRACAO)
+                if NARRACAO_CONTROLE.exists():
+                    try:
+                        estado = json.loads(NARRACAO_CONTROLE.read_text(encoding="utf-8"))
+                    except Exception:
+                        pass
+                estado["ativo"] = False
+                estado["pausado"] = True
+                # Para fala atual via flag
                 try:
                     STOP_FLAG.write_text(str(int(time.time())), encoding="utf-8")
                 except Exception:
                     pass
-            tmp = NARRACAO_CONTROLE.with_suffix(".tmp")
-            tmp.write_text(json.dumps(estado), encoding="utf-8")
-            tmp.replace(NARRACAO_CONTROLE)
-        except Exception:
-            pass
+                tmp = NARRACAO_CONTROLE.with_suffix(".tmp")
+                tmp.write_text(json.dumps(estado), encoding="utf-8")
+                tmp.replace(NARRACAO_CONTROLE)
+            except Exception:
+                pass
+
+    def _narrador_pausar(self, pausar: bool):
+        """Pausa/retoma o narrador (mantém ativo=true). Usado quando widget fala."""
+        with _NARRACAO_LOCK:
+            try:
+                estado = dict(_DEFAULT_NARRACAO)
+                if NARRACAO_CONTROLE.exists():
+                    try:
+                        estado = json.loads(NARRACAO_CONTROLE.read_text(encoding="utf-8"))
+                    except Exception:
+                        pass
+                estado["pausado"] = bool(pausar)
+                if pausar and _estado_narrador_ativo():
+                    try:
+                        STOP_FLAG.write_text(str(int(time.time())), encoding="utf-8")
+                    except Exception:
+                        pass
+                tmp = NARRACAO_CONTROLE.with_suffix(".tmp")
+                tmp.write_text(json.dumps(estado), encoding="utf-8")
+                tmp.replace(NARRACAO_CONTROLE)
+            except Exception:
+                pass
 
     def voice_on(self):
         # Pausa narrador enquanto widget está falando (evita dupla fala)
@@ -1039,6 +1047,13 @@ class EdgeApi:
                 stderr=subprocess.STDOUT,
                 creationflags=flags,
             )
+            # Grava estado compartilhado para supervisao
+            try:
+                tmp = (RUNTIME / "voz_estado.json").with_suffix(".tmp")
+                tmp.write_text(json.dumps({"ligada": True, "pid": self._voz_proc.pid, "atualizado": time.time()}), encoding="utf-8")
+                tmp.replace(RUNTIME / "voz_estado.json")
+            except Exception:
+                pass
         return True
 
     def voice_off(self):
@@ -1049,6 +1064,13 @@ class EdgeApi:
                 except Exception:
                     pass
             self._voz_proc = None
+        # Grava estado compartilhado para supervisao
+        try:
+            tmp = (RUNTIME / "voz_estado.json").with_suffix(".tmp")
+            tmp.write_text(json.dumps({"ligada": False, "pid": 0, "atualizado": time.time()}), encoding="utf-8")
+            tmp.replace(RUNTIME / "voz_estado.json")
+        except Exception:
+            pass
         # Retoma narrador (mantém ativo=true, pausado=false)
         self._narrador_pausar(False)
         return True
@@ -1058,8 +1080,10 @@ class EdgeApi:
             ligada = self._voz_proc is not None and self._voz_proc.poll() is None
         if ligada:
             self.voice_off()
+            salvar_estado({"voz_preferida": False})
             return {"voz": False}
         self.voice_on()
+        salvar_estado({"voz_preferida": True})
         return {"voz": True}
 
     def logs_toggle(self):
@@ -1268,26 +1292,27 @@ def _posicao_inferior_esquerda(largura, altura):
 
 def _normalizar_narrador_boot():
     """Garante narrador ativo e desbloqueado no boot do widget."""
-    try:
-        estado = {"ativo": True, "pausado": False, "pausa_total": False}
-        if NARRACAO_CONTROLE.exists():
-            try:
-                estado = json.loads(NARRACAO_CONTROLE.read_text(encoding="utf-8"))
-            except Exception:
-                pass
-        estado["ativo"] = True
-        estado["pausado"] = False
-        estado["pausa_total"] = False
-        tmp = NARRACAO_CONTROLE.with_suffix(".tmp")
-        tmp.write_text(json.dumps(estado), encoding="utf-8")
-        tmp.replace(NARRACAO_CONTROLE)
-    except Exception:
-        pass
-    # Limpa flag de parada residual
-    try:
-        STOP_FLAG.unlink(missing_ok=True)
-    except Exception:
-        pass
+    with _NARRACAO_LOCK:
+        try:
+            estado = dict(_DEFAULT_NARRACAO)
+            if NARRACAO_CONTROLE.exists():
+                try:
+                    estado = json.loads(NARRACAO_CONTROLE.read_text(encoding="utf-8"))
+                except Exception:
+                    pass
+            estado["ativo"] = True
+            estado["pausado"] = False
+            estado["pausa_total"] = False
+            tmp = NARRACAO_CONTROLE.with_suffix(".tmp")
+            tmp.write_text(json.dumps(estado), encoding="utf-8")
+            tmp.replace(NARRACAO_CONTROLE)
+        except Exception:
+            pass
+        # Limpa flag de parada residual
+        try:
+            STOP_FLAG.unlink(missing_ok=True)
+        except Exception:
+            pass
 
 
 def main():
@@ -1311,9 +1336,50 @@ def main():
         return
     print("trava ok", flush=True)
 
+    # Mata dialogo.py orfao de sessao anterior (voice_off so mata self._voz_proc)
+    try:
+        import subprocess as _sp
+        r = _sp.run(["tasklist", "/FI", "IMAGENAME eq pythonw.exe", "/FO", "CSV", "/NH"],
+                     capture_output=True, text=True, timeout=5)
+        for line in r.stdout.strip().split("\n"):
+            if not line.strip():
+                continue
+            parts = line.strip('"').split('","')
+            if len(parts) >= 2:
+                pid = int(parts[1])
+                if pid == os.getpid():
+                    continue
+                try:
+                    pr = _sp.run(["wmic", "process", "where", f"ProcessId={pid}",
+                                  "get", "CommandLine", "/VALUE"],
+                                 capture_output=True, text=True, timeout=3)
+                    if "dialogo.py" in pr.stdout:
+                        _sp.run(["taskkill", "/F", "/PID", str(pid)], timeout=3)
+                        print(f"dialogo orfao morto: PID {pid}", flush=True)
+                except Exception:
+                    pass
+    except Exception:
+        pass
+
+    # Normaliza estado da voz (dialogo.py morto no boot = voz desligada)
+    try:
+        tmp = (RUNTIME / "voz_estado.json").with_suffix(".tmp")
+        tmp.write_text(json.dumps({"ligada": False, "pid": 0, "atualizado": time.time()}), encoding="utf-8")
+        tmp.replace(RUNTIME / "voz_estado.json")
+    except Exception:
+        pass
+
     import webview
 
     api = EdgeApi()
+
+    # Restaura voz se preferida no boot anterior
+    if bool(ler_estado().get("voz_preferida", False)):
+        try:
+            api.voice_on()
+            print("voz restaurada (voz_preferida=true)", flush=True)
+        except Exception:
+            pass
     altura = ALTURA_LOG if bool(ler_estado().get("logs_aberto", False)) else ALTURA_BASE
     px, py = _posicao_restaurada(LARGURA, altura) or _posicao_inferior_esquerda(LARGURA, altura)
     print(f"posicao inicial: {px},{py} altura={altura}", flush=True)

@@ -1,0 +1,64 @@
+{
+  "design": {
+    "name": "Untitled",
+    "width_mm": 32.0375,
+    "height_mm": 32.6,
+    "total_objects": 4,
+    "total_stitches": 631,
+    "total_colors": 4
+  },
+  "metrics": {
+    "ssim": 0.6238,
+    "dice_by_color": [
+      {
+        "color": [
+          29,
+          80,
+          199
+        ],
+        "label": "Color_0",
+        "dice": 0.8744,
+        "area_original_px": 4399,
+        "area_render_px": 4787
+      },
+      {
+        "color": [
+          200,
+          40,
+          39
+        ],
+        "label": "Color_1",
+        "dice": 0.3731,
+        "area_original_px": 3136,
+        "area_render_px": 841
+      },
+      {
+        "color": [
+          39,
+          159,
+          59
+        ],
+        "label": "Color_2",
+        "dice": 0.7626,
+        "area_original_px": 2610,
+        "area_render_px": 2100
+      },
+      {
+        "color": [
+          240,
+          199,
+          29
+        ],
+        "label": "Color_3",
+        "dice": 0.7906,
+        "area_original_px": 1124,
+        "area_render_px": 1312
+      }
+    ],
+    "avg_stitch_length_mm": 5.783
+  },
+  "warnings": [],
+  "artifacts": {
+    "composite_png": "C:\\Users\\David Jr\\Documents\\Default Project\\EcoSystemUmGrau\\Temp\\fidelity_report.png"
+  }
+}

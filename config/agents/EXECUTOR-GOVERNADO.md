@@ -1,4 +1,8 @@
-```markdown
+---
+description: Executor Governado — execução completa com governança (5 fases + 8 conselheiros obrigatórios). Fusão de AIG + 09-executor + 11-ler-executor + 12-parallel-planner.
+mode: subagent
+---
+
 # EXECUTOR GOVERNADO — FUSÃO INTELIGENTE (AIG + 09 + 11 + 12)
 
 ## ORIGEM DA FUSÃO
@@ -67,8 +71,8 @@
 │  ├── Contratos congelados (mudança = revalidação)               │
 │  ├── Testes primeiro (TDD obrigatório por módulo)               │
 │  ├── Evidência contínua (cada commit = validadores passam)      │
-│  ├── Paralelismo seguro (delega ao LER via 11-ler-executor)     │
-│  │   └── Planner paralelo (12-parallel-planner) decompõe tarefas│
+│  ├── Paralelismo seguro (delega ao LER)                         │
+│  │   └── Planner paralelo decompõe tarefas independentes        │
 │  └── Zero supressão (falha = correção ou escalação)             │
 ├─────────────────────────────────────────────────────────────────┤
 │  FASE 5 — VALIDAÇÃO FINAL E ENTREGA                              │
@@ -104,19 +108,19 @@
   - Cat 11 (Gov) + Estratégico + Ético
   - Cat 12 (Entrega) + Qualidade + Viabilidade
 
-### 3. Execução Paralela Segura (herdada do 12 + 11)
+### 3. Execução Paralela Segura
 - Planner paralelo decompõe tarefas independentes (DAG de dependências)
-- LER-Executor executa missões complexas autônomas
+- LER executa missões complexas autônomas
 - Executor Governado monitora, valida, agrega evidências
 - Paralelismo só para tarefas independentes (sem dependência de contrato)
 
-### 4. Aprendizado Automático (herdado do 10, sem agente separado)
+### 4. Aprendizado Automático
 - Cada fase produz evidências → capturadas automaticamente
 - `memory_engine.py add` invocado ao final de cada fase
 - Artefatos (mapeamento, validação, plano, contratos, testes, runbook, relatório) → aprendizados
 - Índice semântico atualizado automaticamente
 
-### 5. Regras de Parada/Escalação (AIG mantidas)
+### 5. Regras de Parada/Escalação
 - Bloqueio normativo, decisão, recurso, conflito → BLOQUEIO.md + pergunta estruturada
 - **NÃO PARA** exceto nos 4 casos — itera até entrega completa
 - Fail closed: validação falha = negação, nunca permissão
@@ -134,33 +138,6 @@
 | Governança/Validação | ✓ | | | | **Núcleo do Executor** |
 | Checklist entrega | ✓ | | | | **Fase 5 do Executor** |
 | Bloqueios/escalation | ✓ | | | | **Regras do Executor** |
-
-| Funcionalidade | 01-Estrategista | 02-Cético | 03-Realista | 04-Ética | 05-Futuro | 06-Recursos | 07-Criativo | 08-Revisor | **Fusão** |
-|---|---|---|---|---|---|---|---|---|---|
-| Especialização | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Mantidos como Conselheiros** |
-| Duplicação com AIG | Parcial | Parcial | Parcial | Parcial | Parcial | Parcial | Parcial | Parcial | **Eliminada (consulta obrigatória)** |
-
----
-
-## ARQUIVOS RESULTANTES
-
-### 1. Novo agente: `config/agents/EXECUTOR-GOVERNADO.md`
-- Define o agente unificado com todas as fases, regras, conselheiros
-- Substitui AIG, 09, 11, 12
-
-### 2. Atualizações nos Conselheiros
-- Cada conselheiro mantém seu arquivo mas header atualizado:
-  - `role: conselheiro-especializado`
-  - `executor-governado: true` (marca integração)
-  - `consulta-obrigatoria-fase: 0`
-
-### 3. Atualizações de configuração
-- `config/agents/00-system-rules.md` — adiciona seção "EXECUTOR GOVERNADO"
-- `config/opencode.jsonc` — registra executor-governado como agent principal
-
-### 4. Documentação
-- `conhecimento/aprendizados/2026-09-12-fusao-executor-governado.md` (este arquivo)
-- `docs/agentes/EXECUTOR-GOVERNADO.md` — documentação operacional
 
 ---
 
@@ -192,20 +169,8 @@
 1. **Zero duplicação** — execução, planejamento, paralelismo, LER unificados
 2. **Governança centralizada** — um único executor com rigor total
 3. **Especialização preservada** — 8 conselheiros trazem visão única sem sobreposição
-3. **Aprendizado automático** — evidências → memória sem agente separado
-4. **Rastreabilidade total** — cada fase produz artefato rastreável
-5. **Fail-closed real** — validação falha = parada, nunca supressão
-6. **Conselheiros obrigatórios** — evita viés único, força visão 360°
-7. **Ortogonalidade mantida** — Maestro, Flutter, Gerador, CLI agents intactos
-
----
-
-## PRÓXIMOS PASSOS PARA IMPLEMENTAÇÃO
-
-1. Criar `config/agents/EXECUTOR-GOVERNADO.md` (baseado neste documento)
-2. Atualizar 8 conselheiros com header `executor-governado: true`
-3. Atualizar `config/opencode.jsonc` com novo agent
-4. Remover `AGENTE IMPLEMENTADOR GOVERNADO.MD` (fundido)
-5. Remover/arquivar 09-executor.md, 11-ler-executor.md, 12-parallel-planner.md (ou marcar como legacy)
-6. Testar invocação completa com projeto real
-7. Registrar aprendizado da fusão
+4. **Aprendizado automático** — evidências → memória sem agente separado
+5. **Rastreabilidade total** — cada fase produz artefato rastreável
+6. **Fail-closed real** — validação falha = parada, nunca supressão
+7. **Conselheiros obrigatórios** — evita viés único, força visão 360°
+8. **Ortogonalidade mantida** — Maestro, Flutter, Gerador, CLI agents intactos

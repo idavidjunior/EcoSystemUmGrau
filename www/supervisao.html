@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadeia de Supervisao</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#080b12;--surface:#0e1218;--card:#111620;--border:#1e2636;--border-h:#2a3650;--accent:#38bdf8;--accent2:#22d3ee;--accent3:#a78bfa;--ok:#22c55e;--warn:#f59e0b;--err:#ef4444;--dim:#475569;--text:#f0f4f8;--text2:#94a3b8;--text3:#64748b}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;padding:20px 28px;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+.header{text-align:center;width:100%;max-width:1060px;margin-bottom:20px}
+.header h1{font-size:20px;font-weight:600;letter-spacing:.3px;margin-bottom:2px}
+.header .pid{font-size:24px;color:var(--accent);font-family:'Courier New',monospace;opacity:.7}
+.header .sub{font-size:12px;color:var(--text3);margin-top:2px}
+.narrativa{width:100%;max-width:1060px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 18px;margin-bottom:16px;display:flex;align-items:center;gap:10px;font-size:13px;line-height:1.5;min-height:42px}
+.narrativa .pulse{width:9px;height:9px;border-radius:50%;flex-shrink:0;transition:all .3s}
+.narrativa .pulse.ok{background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.narrativa .pulse.warn{background:var(--warn);box-shadow:0 0 8px var(--warn)}
+.narrativa .pulse.err{background:var(--err);box-shadow:0 0 8px var(--err)}
+.narrativa .msg{flex:1}.narrativa .tempo{font-size:10px;color:var(--text3);white-space:nowrap}
+.gc-section{width:100%;max-width:1060px;margin-bottom:20px}
+.gc-section h3{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:500}
+.gc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gc-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;transition:border-color .2s}
+.gc-card:hover{border-color:var(--border-h)}
+.gc-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.gc-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;transition:all .3s}
+.gc-dot.ok{background:var(--ok);box-shadow:0 0 8px var(--ok)}.gc-dot.err{background:var(--err);box-shadow:0 0 8px var(--err)}.gc-dot.warn{background:var(--warn);box-shadow:0 0 8px var(--warn)}
+.gc-title{font-size:13px;font-weight:500;flex:1}
+.gc-badge{font-size:10px;padding:2px 7px;border-radius:4px;font-weight:500}
+.gc-badge.ok{background:rgba(34,197,94,.15);color:var(--ok)}.gc-badge.warn{background:rgba(245,158,11,.15);color:var(--warn)}.gc-badge.err{background:rgba(239,68,68,.15);color:var(--err)}
+.gc-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px}
+.gc-metric{text-align:center}.gc-metric .val{font-size:16px;font-weight:600;color:var(--accent)}.gc-metric .lbl{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
+.gc-actions{border-top:1px solid var(--border);padding-top:6px;max-height:120px;overflow-y:auto}
+.gc-actions .act{font-size:10px;color:var(--text2);padding:2px 0;border-bottom:1px solid rgba(255,255,255,.03);line-height:1.4;word-break:break-all}
+.gc-actions .act:last-child{border-bottom:none}
+.servicos{width:100%;max-width:1060px;margin-bottom:20px}
+.servicos h3{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:500}
+.svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.svc{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 12px;transition:border-color .2s}
+.svc:hover{border-color:var(--border-h)}
+.svc-top{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.svc-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;transition:all .3s}
+.svc-dot.vivo{background:var(--ok);box-shadow:0 0 6px var(--ok)}.svc-dot.morto{background:var(--err);box-shadow:0 0 6px var(--err)}
+.svc-name{font-size:11px;color:var(--text2);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.svc-status{font-size:10px;color:var(--text3)}
+.svc-pid{font-size:12px;font-family:'Courier New',monospace;color:var(--accent)}
+.svc-owner{font-size:10px;color:var(--text3)}
+.svc-heart{font-size:9px;color:var(--dim);margin-top:3px}
+.svc-mem{font-size:9px;color:var(--accent3);margin-top:1px}
+.flow{width:100%;max-width:1060px;margin-bottom:20px}
+.flow h3{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;font-weight:500}
+.chain{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;padding:14px 10px;background:var(--surface);border:1px solid var(--border);border-radius:12px}
+.node{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 16px;text-align:center;min-width:100px;transition:border-color .2s}
+.node:hover{border-color:var(--accent)}
+.node .n-label{font-size:10px;color:var(--text2);margin-bottom:2px}.node .n-freq{font-size:13px;font-weight:600;color:var(--accent)}.node .n-pid{font-size:10px;color:var(--text3);font-family:'Courier New',monospace}
+.arrow{color:var(--accent);font-size:16px;opacity:.4;margin:0 2px}
+.guerra{width:100%;max-width:1060px;margin-bottom:24px}
+.guerra h3{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;font-weight:500}
+.shields{display:flex;justify-content:center;gap:18px;flex-wrap:wrap}
+.s-card{width:145px;text-align:center;position:relative;cursor:pointer}.s-card:hover .s-ring{border-color:var(--accent)}
+.s-ring{width:88px;height:88px;border-radius:50%;border:2px solid var(--border);margin:0 auto 4px;display:flex;align-items:center;justify-content:center;background:var(--bg);transition:border-color .2s}
+.s-ring svg{width:40px;height:40px}
+.s-name{font-size:12px;color:var(--text2);font-weight:500}.s-status{font-size:10px;margin-top:1px}.s-status.ok{color:var(--ok)}.s-status.off{color:var(--err)}
+.s-pid{font-size:10px;color:var(--text3);font-family:'Courier New',monospace;margin-top:1px}
+.s-menu{display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border-h);border-radius:8px;padding:6px 0;min-width:160px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,.5);margin-top:4px}
+.s-menu.show{display:block}
+.s-menu-item{padding:7px 14px;font-size:11px;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .15s}
+.s-menu-item:hover{background:rgba(56,189,248,.1);color:var(--text)}
+.s-menu-item svg{width:14px;height:14px;flex-shrink:0;opacity:.6}
+.s-menu-sep{height:1px;background:var(--border);margin:4px 8px}
+.log{width:100%;max-width:1060px;margin-bottom:24px}
+.log h3{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:500}
+.log-box{background:#06080d;border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:'Courier New',monospace;font-size:10px;line-height:1.7;max-height:120px;overflow-y:auto;color:var(--text2)}
+.log-box .info{color:var(--text3)}.log-box .alerta{color:var(--err)}.log-box .warn{color:var(--warn)}.log-box .ok{color:var(--ok)}
+.log-box .ts{color:var(--dim)}.log-box .hl{color:var(--accent)}
+.glossario{width:100%;max-width:1060px}
+.gloss-toggle{background:none;border:1px solid var(--border);border-radius:8px;padding:8px 14px;width:100%;text-align:left;font-size:12px;color:var(--text3);cursor:pointer;display:flex;align-items:center;gap:8px;transition:border-color .2s}
+.gloss-toggle:hover{border-color:var(--border-h)}
+.gloss-toggle .arr{transition:transform .2s;color:var(--dim)}.gloss-toggle .arr.open{transform:rotate(90deg)}
+.gloss-list{display:none;margin-top:8px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;font-size:11px;color:var(--text2);line-height:1.8}
+.gloss-list.show{display:block}.gloss-list strong{color:var(--text);font-weight:500}
+.tooltip{position:fixed;max-width:240px;background:var(--card);border:1px solid var(--border-h);border-radius:8px;padding:7px 10px;font-size:12px;color:var(--text);line-height:1.4;pointer-events:none;opacity:0;transition:opacity .12s;z-index:1000;box-shadow:0 4px 20px rgba(0,0,0,.6)}
+.tooltip.visible{opacity:1}
+.tooltip .arr{position:absolute;width:8px;height:8px;background:var(--card);border:1px solid var(--border-h);transform:rotate(45deg)}
+.tooltip .arr.above{bottom:-5px;left:calc(50% - 4px);border-top:none;border-left:none}
+.tooltip .arr.below{top:-5px;left:calc(50% - 4px);border-bottom:none;border-right:none}
+.heartbeat-bar{width:100%;max-width:1060px;height:2px;background:var(--border);border-radius:1px;margin-bottom:16px;overflow:hidden}
+.heartbeat-bar .fill{height:100%;background:var(--accent);width:0%;transition:width .3s}
+.titlebar{display:flex;align-items:center;justify-content:space-between;padding:6px 12px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;-webkit-app-region:drag}
+.titlebar .tb-title{font-size:11px;color:var(--text3);font-weight:500;letter-spacing:.3px}
+.titlebar .tb-btns{display:flex;gap:4px;-webkit-app-region:no-drag}
+.titlebar .tb-btn{width:28px;height:22px;border:none;border-radius:4px;background:transparent;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s}
+.titlebar .tb-btn:hover{background:rgba(255,255,255,.08);color:var(--text)}
+.titlebar .tb-btn.close:hover{background:var(--err);color:#fff}
+@media(max-width:1100px){.svc-grid{grid-template-columns:repeat(2,1fr)}.gc-grid{grid-template-columns:1fr}.shields{gap:12px}.s-card{width:130px}}
+@media(max-width:600px){body{padding:12px}.svc-grid{grid-template-columns:1fr}.gc-grid{grid-template-columns:1fr}.shields{gap:8px}.s-card{width:115px}.chain{flex-direction:column}.arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<div class="titlebar"><div class="tb-title">Cadeia de Supervisao</div><div class="tb-btns">
+<button class="tb-btn" id="btnTopo" onclick="toggleTopo()" title="Frente/Fundo"><svg width="10" height="10" viewBox="0 0 10 10"><rect x="0.5" y="0.5" width="9" height="9" rx="1" fill="none" stroke="currentColor"/></svg></button>
+<button class="tb-btn" onclick="pywebview.api.minimizar()" title="Minimizar"><svg width="10" height="1" viewBox="0 0 10 1"><rect width="10" height="1" fill="currentColor"/></svg></button>
+<button class="tb-btn" id="btnMax" onclick="toggleMax()" title="Maximizar"><svg width="10" height="10" viewBox="0 0 10 10"><rect x="0.5" y="0.5" width="9" height="9" rx="1" fill="none" stroke="currentColor"/></svg></button>
+<button class="tb-btn close" onclick="pywebview.api.fechar()" title="Fechar"><svg width="10" height="10" viewBox="0 0 10 10"><line x1="1" y1="1" x2="9" y2="9" stroke="currentColor" stroke-width="1.3"/><line x1="9" y1="1" x2="1" y2="9" stroke="currentColor" stroke-width="1.3"/></svg></button>
+</div></div>
+<div class="heartbeat-bar"><div class="fill" id="hbFill"></div></div>
+<div class="header">
+  <div class="pid" data-tip="Process ID do maestro no sistema operacional">PID do Processo</div>
+  <h1>Cadeia de Supervisao</h1>
+  <div class="sub">Watchdog &#8594; Vigilante &#8594; Guardian &#8594; Maestro</div>
+</div>
+<div class="guerra"><h3>Escudo do Sistema</h3><div class="shields" id="shields"></div></div>
+<div class="narrativa"><div class="pulse ok" id="nP"></div><div class="msg" id="nM"></div><div class="tempo" id="nT"></div></div>
+<div class="gc-section"><h3>Guardian &#8212; Motor de Correcao Automatica</h3><div class="gc-grid">
+  <div class="gc-card" data-tip="Vigia processos, mata duplicatas e reinicia servicos mortos. Consulta o Maestro antes de cada acao.">
+    <div class="gc-top"><div class="gc-dot ok" id="gcDot"></div><div class="gc-title">Status do Guardian</div><div class="gc-badge ok" id="gcBadge">MONITORANDO</div></div>
+    <div class="gc-metrics"><div class="gc-metric"><div class="val" id="gcRam">&#8212;</div><div class="lbl">RAM Livre</div></div><div class="gc-metric"><div class="val" id="gcDisk">&#8212;</div><div class="lbl">Disco Livre</div></div><div class="gc-metric"><div class="val" id="gcAcoes">0</div><div class="lbl">Acoes</div></div></div>
+    <div class="gc-actions" id="gcAct"></div>
+  </div>
+  <div class="gc-card" data-tip="Servicos que o Guardian protege automaticamente.">
+    <div class="gc-top"><div class="gc-dot" style="background:var(--accent)"></div><div class="gc-title">Servicos Protegidos</div></div>
+    <div id="gcProt" style="font-size:11px;color:var(--text2);line-height:1.8"></div>
+  </div>
+</div></div>
+<div class="servicos" id="sSec"><h3>Servicos Registrados</h3><div class="svc-grid" id="sGrid"></div></div>
+<div class="flow"><h3>Cadeia de Execucao</h3><div class="chain">
+  <div class="node" data-tip="Mantem o Vigilante vivo. Reabre em 20s se morrer."><div class="n-label">Keeper</div><div class="n-freq">20s</div><div class="n-pid" id="pK">watchdog</div></div>
+  <div class="arrow">&#8594;</div>
+  <div class="node" data-tip="Orquestra timers, vigia arquivos, sync git."><div class="n-label">Vigilante</div><div class="n-freq">5min</div><div class="n-pid" id="pV">vigilante</div></div>
+  <div class="arrow">&#8594;</div>
+  <div class="node" data-tip="Protege, mata duplicatas, reinicia servicos mortos."><div class="n-label">Guardian</div><div class="n-freq">20s</div><div class="n-pid" id="pG">&#8212;</div></div>
+  <div class="arrow">&#8594;</div>
+  <div class="node" data-tip="Ponto unico de decisao: singleton, cooldown 15s."><div class="n-label">Maestro</div><div class="n-freq">Fase 2</div><div class="n-pid" id="pM">&#8212;</div></div>
+</div></div>
+<div class="log"><h3>Log do Guardian</h3><div class="log-box" id="logG"></div></div>
+<div class="log"><h3>Log do Maestro</h3><div class="log-box" id="logM"></div></div>
+<div class="glossario"><button class="gloss-toggle" onclick="glossToggle()"><span class="arr" id="gA">&#9654;</span> Glossario</button>
+<div class="gloss-list" id="gL"><strong>Watchdog</strong> &#8212; Vigia o Vigilante. Reabre em 20s.<br><strong>Vigilante</strong> &#8212; Orquestra timers e sync git.<br><strong>Guardian</strong> &#8212; Motor de correcao: vigia, mata, reinicia. Consulta o Maestro.<br><strong>Maestro</strong> &#8212; Decisao unica: singleton, cooldown, inventario.<br><strong>Singleton</strong> &#8212; Apenas 1 instancia por servico.<br><strong>Cooldown</strong> &#8212; 15s minimo entre reinicios.<br><strong>Heartbeat</strong> &#8212; Sinal de vida periodico.<br><strong>Degraded</strong> &#8212; Funciona mas com alerta.<br><strong>Orfao</strong> &#8212; Processo sobrado de sessao anterior.<br><strong>Fallback</strong> &#8212; Plano B se Maestro cair.<br><strong>PID</strong> &#8212; Numero unico do processo no OS.<br><strong>FileSystemWatcher</strong> &#8212; Vigia mudancas em arquivos.</div></div>
+<div class="tooltip" id="tip"><div class="arrow" id="tA"></div><span id="tT"></span></div>
+<script>
+var D={servicos:{},guardian:{status:'ok',ram_mb:0,disk_gb:0,actions:[]},log_guardian:[],log_maestro:[]};
+
+window.atualizar=function(dados){
+  D=dados;
+  render();
+  var fill=document.getElementById('hbFill');
+  fill.style.width='0%';
+  setTimeout(function(){fill.style.width='100%'},50);
+};
+
+function render(){
+  var sv=D.servicos;
+  var vivos=Object.values(sv).filter(function(v){return v.vivo});
+  var mortos=Object.entries(sv).filter(function(e){return !e[1].vivo});
+  var np=document.getElementById('nP'),nm=document.getElementById('nM'),nt=document.getElementById('nT');
+  if(vivos.length===0){np.className='pulse err';nm.textContent='Nenhum servico ativo.'}
+  else if(mortos.length>0){np.className='pulse warn';nm.textContent=vivos.length+' vivo(s). Mortos: '+mortos.map(function(e){return e[1].display}).join(', ')}
+  else{np.className='pulse ok';nm.textContent='Todos os '+vivos.length+' servicos ativos.'}
+  nt.textContent='atualizado '+new Date().toLocaleTimeString('pt-BR');
+  var gc=D.guardian;
+  var gd=document.getElementById('gcDot'),gb=document.getElementById('gcBadge');
+  if(gc.status==='ok'){gd.className='gc-dot ok';gb.className='gc-badge ok';gb.textContent='MONITORANDO'}
+  else if(gc.status==='degraded'){gd.className='gc-dot warn';gb.className='gc-badge warn';gb.textContent='DEGRADED'}
+  else{gd.className='gc-dot err';gb.className='gc-badge err';gb.textContent='OFFLINE'}
+  document.getElementById('gcRam').textContent=gc.ram_mb?Math.round(gc.ram_mb)+'MB':'\u2014';
+  document.getElementById('gcDisk').textContent=gc.disk_gb?gc.disk_gb.toFixed(1)+'GB':'\u2014';
+  document.getElementById('gcAcoes').textContent=gc.actions?gc.actions.length:0;
+  var ga=document.getElementById('gcAct');ga.innerHTML='';
+  (gc.actions||[]).forEach(function(a){var m=typeof a==='string'?a:JSON.stringify(a);ga.innerHTML+='<div class="act">'+m+'</div>'});
+  if(!gc.actions||gc.actions.length===0)ga.innerHTML='<div class="act" style="color:var(--text3)">Sem acoes corretivas</div>';
+  var gp=document.getElementById('gcProt');gp.innerHTML='';
+  ['tts_service.py','widget_edge.py','dialogo.py','jarvis_bridge.py'].forEach(function(p){var svc=sv[p];var vivo=svc&&svc.vivo;var st=vivo?'<span style="color:var(--ok)">&#9679; vivo</span>':'<span style="color:var(--err)">&#9679; morto</span>';var pid=svc?' \u2014 PID '+svc.pid:'';gp.innerHTML+='<div>'+(svc?svc.display:p.replace('.py',''))+': '+st+pid+'</div>'});
+  var sg=document.getElementById('sGrid');sg.innerHTML='';
+  Object.entries(sv).forEach(function(pair){var k=pair[0],v=pair[1];var d=document.createElement('div');d.className='svc';d.innerHTML='<div class="svc-top"><div class="svc-dot '+(v.vivo?'vivo':'morto')+'"></div><div class="svc-name">'+v.display+'</div><div class="svc-status">'+(v.vivo?'VIVO':'MORTO')+'</div></div><div class="svc-pid">PID '+v.pid+'</div><div class="svc-owner">owner: '+v.owner+'</div>'+(v.mem_mb?'<div class="svc-mem">'+v.mem_mb+'MB RAM</div>':'')+(v.motivo?'<div class="svc-heart">'+v.motivo+'</div>':'');sg.appendChild(d)});
+  var pm=sv['runtime_maestro.py'];
+  document.getElementById('pM').textContent=pm?'PID '+pm.pid:'\u2012';
+  document.getElementById('pG').textContent=sv['system_guardian.py']?'PID '+sv['system_guardian.py'].pid:'guardian';
+  var sh=document.getElementById('shields');sh.innerHTML='';
+  var shieldMap=[
+    {k:'widget_edge.py',n:'Widget',src:'scripts/widget_edge.py'},
+    {k:'jarvis_bridge.py',n:'Bridge',src:'scripts/jarvis_bridge.py'},
+    {k:'tts_service.py',n:'TTS',src:'scripts/tts_service.py'},
+    {k:'dialogo.py',n:'Dialogo',src:'scripts/dialogo.py'}
+  ];
+  shieldMap.forEach(function(item){var svc=sv[item.k];var vivo=svc&&svc.vivo;
+  var menuId='menu-'+item.k.replace('.','_');
+  var isDialogo=item.k==='dialogo.py';
+  var dialogoOn=isDialogo?D.voz_ligada:vivo;
+  var cor=dialogoOn?'var(--ok)':'var(--err)';
+  var svgIcon;
+  if(isDialogo){
+    svgIcon='<svg viewBox="0 0 24 24" fill="none" stroke="'+cor+'" stroke-width="1.8"><rect x="9" y="2" width="6" height="11" rx="3"/>'+(dialogoOn?'<path d="M5 10a7 7 0 0014 0"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="8" y1="21" x2="16" y2="21"/>':'<line x1="12" y1="17" x2="12" y2="21"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="3" y1="3" x2="21" y2="21" stroke-width="2"/>')+'</svg>';
+  }else{
+    svgIcon='<svg viewBox="0 0 24 24" fill="none" stroke="'+cor+'" stroke-width="1.8"><path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z"/>'+(vivo?'<path d="M9 12l2 2 4-4"/>':'<path d="M15 9l-6 6m0-6l6 6"/>')+'</svg>';
+  }
+  sh.innerHTML+='<div class="s-card" onclick="toggleMenu(\''+menuId+'\',event)"><div class="s-ring">'+svgIcon+'</div><div class="s-name">'+item.n+'</div><div class="s-status '+(dialogoOn?'ok':'off')+'">'+(dialogoOn?'ONLINE':'OFFLINE')+'</div><div class="s-pid">'+(svc?'PID '+svc.pid:'')+'</div><div class="s-menu" id="'+menuId+'"><div class="s-menu-item" onclick="abrirCodigo(\''+item.src+'\',event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>Codigo fonte</div><div class="s-menu-sep"></div><div class="s-menu-item" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>Reiniciar</div></div></div>'});
+  renderLog(D.log_guardian||[],'logG');renderLog(D.log_maestro||[],'logM');
+}
+
+function renderLog(lines,boxId){
+  var b=document.getElementById(boxId);b.innerHTML='';
+  lines.forEach(function(l){var cls=l.raw.indexOf('ALERTA')>=0?'alerta':l.raw.indexOf('WARNING')>=0||l.raw.indexOf('warn')>=0?'warn':l.raw.indexOf('reiniciando')>=0||l.raw.indexOf('Morto')>=0?'ok':'info';
+  var m=l.raw.replace(/(pid=\d+)/g,'<span class="hl">$1</span>');
+  b.innerHTML+='<div><span class="ts">'+l.ts+'</span> <span class="'+cls+'">'+m+'</span></div>'});
+  b.scrollTop=b.scrollHeight;
+}
+
+function toggleMenu(id,e){
+  e.stopPropagation();
+  var m=document.getElementById(id);
+  var wasOpen=m.classList.contains('show');
+  document.querySelectorAll('.s-menu').forEach(function(x){x.classList.remove('show')});
+  if(!wasOpen)m.classList.add('show');
+}
+
+document.addEventListener('click',function(){document.querySelectorAll('.s-menu').forEach(function(x){x.classList.remove('show')})});
+
+function abrirCodigo(caminho,e){
+  e.stopPropagation();
+  document.querySelectorAll('.s-menu').forEach(function(x){x.classList.remove('show')});
+  if(window.pywebview&&window.pywebview.api)window.pywebview.api.abrir_codigo(caminho);
+}
+
+var _maximizado=false;
+function toggleMax(){pywebview.api.maximizar().then(function(){_maximizado=!_maximizado;var b=document.getElementById('btnMax');b.innerHTML=_maximizado?'<svg width="10" height="10" viewBox="0 0 10 10"><rect x="1.5" y="1.5" width="7" height="7" rx="1" fill="none" stroke="currentColor"/><rect x="3" y="0" width="7" height="7" rx="1" fill="var(--bg)" stroke="currentColor"/></svg>':'<svg width="10" height="10" viewBox="0 0 10 10"><rect x="0.5" y="0.5" width="9" height="9" rx="1" fill="none" stroke="currentColor"/></svg>'})}
+
+var _frente=D.frente!==false;
+function toggleTopo(){pywebview.api.toggle_topo().then(function(v){_frente=!!v;var b=document.getElementById('btnTopo');b.title=_frente?'Fundo':'Frente';b.style.color=_frente?'var(--accent)':'var(--text3)'})}
+function topoInit(){var b=document.getElementById('btnTopo');if(!b)return;b.title=_frente?'Fundo':'Frente';b.style.color=_frente?'var(--accent)':'var(--text3)'}
+
+var _glossOpen=D.glossario_aberto||false;
+function glossToggle(){pywebview.api.glossario_toggle().then(function(r){_glossOpen=!!r.glossario_aberto;var g=document.getElementById('gL'),a=document.getElementById('gA');g.classList.toggle('show',_glossOpen);a.classList.toggle('open',_glossOpen)})}
+function glossInit(){var g=document.getElementById('gL'),a=document.getElementById('gA');g.classList.toggle('show',_glossOpen);a.classList.toggle('open',_glossOpen)}
+
+var _hbTimer=setInterval(function(){document.getElementById('hbFill').style.width='0%'},3500);
+
+var tip=document.getElementById('tip'),tT=document.getElementById('tT'),tA=document.getElementById('tA');var tTgt=null;
+document.querySelectorAll('[data-tip]').forEach(function(el){el.onmouseenter=function(e){tTgt=e.target;tT.textContent=e.target.getAttribute('data-tip');tip.classList.add('visible');pT(e.target)};el.onmouseleave=function(){tip.classList.remove('visible');tTgt=null}});
+function pT(t){if(!tTgt)return;var r=t.getBoundingClientRect(),tw=240,th=tip.offsetHeight,vw=window.innerWidth,vh=window.innerHeight;var tl,tt,pos;var cx=r.left+r.width/2;
+if(r.top>=th+14){tt=r.top-th-10;pos='above'}else if(vh-r.bottom>=th+14){tt=r.bottom+10;pos='below'}else{tt=Math.max(8,Math.min(r.top,vh-th-8));pos='above'}
+tl=Math.max(8,Math.min(cx-tw/2,vw-tw-8));tip.style.left=tl+'px';tip.style.top=tt+'px';
+tA.className='arrow';if(pos==='above')tA.classList.add('above');else if(pos==='below')tA.classList.add('below')}
+window.addEventListener('scroll',function(){if(tTgt)pT(tTgt)},{passive:true});
+
+window.pywebview&&window.pywebview.api&&window.pywebview.api.status().then(function(d){window.atualizar(d);if(typeof topoInit==='function')topoInit();if(typeof glossInit==='function')glossInit()});
+</script>
+</body></html>

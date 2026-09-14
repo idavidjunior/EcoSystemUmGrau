@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 """runtime_maestro.py — ÚNICO chefe de processos do EcoSystemUmGrau.
 
-Fase 1 (observador): detecta, registra e compara decisões.
-NÃO bloqueia nenhum componente. Após validação (1-3 dias), vira fase 2 (ativo).
+FASE 2 ATIVA (2026-09-13): detecta, registra, compara e BLOQUEIA
+decisões conflitantes. Componentes DEVEM consultar antes de iniciar
+serviços singleton. Fallback degraded permite operação sem maestro
+com alerta registrado.
 
-Comunicação: arquivo de comando (runtime/maestro_cmd.json) mesmo padrão
-do tts_cmd.json. Componentes escrevem, maestro lê e responde em
-runtime/maestro_resp_<request_id>.json.
+Comunicação: mailbox atômica com nomes únicos (maestro_cmd_<uuid>.json).
+Componentes escrevem, maestro lê e responde em
+runtime/maestro_resp_<uuid>.json.
 
 Comandos suportados:
   pode_iniciar       script=X     -> pode? True/False + motivo
@@ -237,8 +239,8 @@ def _limpar_cooldowns_vencidos(estado):
 def pode_iniciar(script: str) -> dict:
     """Decide se um script pode ser iniciado agora.
 
-    Retorna dict {pode: bool, motivo: str}. NAO bloqueia nada na fase 1:
-    o caller decide se obedece ou so registra.
+    Retorna dict {pode: bool, motivo: str}. Fase 2: o caller DEVE
+    respeitar a decisão — singleton e cooldown são enforced pelo maestro.
     """
     estado, _ = reconciliar_estado()
     _limpar_cooldowns_vencidos(estado)

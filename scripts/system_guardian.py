@@ -126,7 +126,7 @@ def is_narrador_up():
         if estado_file.exists():
             import json
             estado = json.loads(estado_file.read_text(encoding="utf-8"))
-            return bool(estado.get("ativo", True))
+            return bool(estado.get("ativo", False))
     except Exception:
         pass
     return False

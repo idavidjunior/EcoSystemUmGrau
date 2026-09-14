@@ -155,21 +155,26 @@ def maestro_disponivel() -> bool:
 
 
 def fallback_degraded(owner: str, motivo: str = "") -> bool:
-    """Chamado quando o maestro nao respondeu. Retorna True (permite + alerta).
+    """Chamado quando o maestro nao respondeu. Modo degraded: permite + alerta.
+
+    Fase 2: se o maestro estiver offline, o componente pode operar mas
+    DEVE logar alerta alto. O maestro é opcional para disponibilidade
+    (fallback seguro), mas sua ausência é um incidente.
 
     Args:
         owner: quem esta pedindo (guardian, widget, bridge, etc)
         motivo: o que tentou fazer
 
     Returns:
-        sempre True na fase 1. Caller deve agir normalmente mas logar alerta.
+        sempre True (fallback seguro — sistema nunca trava por causa do maestro).
+        Caller deve agir normalmente mas logar alerta.
     """
     log_file = RUNTIME / "maestro.log"
     try:
         with open(log_file, "a", encoding="utf-8") as f:
             f.write(
                 f"[{time.strftime('%Y-%m-%dT%H:%M:%S')}] [ALERTA] "
-                f"[MAESTRO_OFFLINE] {owner} agiu sem maestro. motivo={motivo}\n"
+                f"[MAESTRO_OFFLINE] {owner} agiu em modo DEGRADED. motivo={motivo}\n"
             )
     except Exception:
         pass

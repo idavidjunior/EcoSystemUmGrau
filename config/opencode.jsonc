@@ -114,6 +114,16 @@
       "type": "local",
       "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/mcp-composio-server.py"],
       "enabled": true
+    },
+    "context7": {
+      "type": "local",
+      "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/internet/habilidades/context7-mcp/server.py"],
+      "enabled": true
+    },
+    "chrome-devtools": {
+      "type": "local",
+      "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/internet/habilidades/chrome-devtools-mcp/server.py"],
+      "enabled": true
     }
   },
   "command": {
