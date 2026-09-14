@@ -156,6 +156,42 @@ def _write_atomic_text(path: str, text: str) -> str:
 # build_report
 # ------------------------------------------------------------
 
+class _ThreadView:
+    """Vista mínima de um fio (name, r, g, b) — aceita palette ou derivada."""
+
+    __slots__ = ("name", "r", "g", "b")
+
+    def __init__(self, name, r, g, b):
+        self.name = name
+        self.r = r
+        self.g = g
+        self.b = b
+
+
+def _effective_threads(design) -> list:
+    """Threads da paleta; se vazia, deriva das cores dos objetos visíveis.
+
+    Designs criados manualmente (sem digitizer) podem não popular a palette;
+    fallback garante DICE por cor e round-trip funcionando nesses casos.
+    """
+    if design.palette.threads:
+        return list(design.palette.threads)
+    seen = []
+    for obj in design.objects:
+        if not obj.visible:
+            continue
+        color = getattr(obj, "color", None)
+        if color is None:
+            continue
+        rgb = (int(color.r), int(color.g), int(color.b))
+        if rgb not in seen:
+            seen.append(rgb)
+    return [
+        _ThreadView(f"cor_{i}", r, g, b)
+        for i, (r, g, b) in enumerate(seen)
+    ]
+
+
 def build_report(
     design: EmbroideryDesign,
     original_image_path: str,
@@ -180,9 +216,10 @@ def build_report(
     # --- SSIM global (em gray, mesma geometria) ---------------------
     ssim_val = ssim_gray(original_aligned, render.convert("RGBA"))
 
-    # --- DICE por cor da paleta --------------------------------------
+    # --- DICE por cor da paleta (ou cores derivadas dos objetos) -------
+    threads = _effective_threads(design)
     dice_by_color = []
-    for idx, thread in enumerate(design.palette.threads):
+    for idx, thread in enumerate(threads):
         rgb = (thread.r, thread.g, thread.b)
         m_orig = color_mask(original_aligned, rgb)
         m_render = color_mask(render, rgb)
@@ -205,7 +242,7 @@ def build_report(
             "height_mm": float(design.height_mm),
             "total_objects": int(len(design.objects)),
             "total_stitches": int(design.total_stitches),
-            "total_colors": int(len(design.palette.threads)),
+            "total_colors": int(len(_effective_threads(design))),
         },
         "metrics": {
             "ssim": float(round(ssim_val, 4)),
@@ -282,7 +319,7 @@ def _design_to_pyembroidery_pattern(design: EmbroideryDesign):
     if not HAS_PYEMBROIDERY:
         raise ImportError("pyembroidery necessário para round-trip")
     pattern = pyembroidery.EmbPattern()
-    for thread in design.palette.threads:
+    for thread in _effective_threads(design):
         th = pyembroidery.EmbThread(description=thread.name)
         th.set_color(thread.r, thread.g, thread.b)
         pattern.add_thread(th)

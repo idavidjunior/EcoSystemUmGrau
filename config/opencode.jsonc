@@ -110,6 +110,11 @@
       "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/nucleo/habilidades/compreensao-pedidos/server.py"],
       "enabled": true
     },
+    "mirofish-offline": {
+      "type": "local",
+      "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/mcp/mirofish-offline/server.py"],
+      "enabled": true
+    },
     "composio": {
       "type": "local",
       "command": ["python", "{{USERPROFILE}}/Documents/Default Project/EcoSystemUmGrau/scripts/mcp-composio-server.py"],

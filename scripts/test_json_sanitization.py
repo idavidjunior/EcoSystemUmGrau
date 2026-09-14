@@ -22,6 +22,7 @@ DATA_FILES = {
     'conhecimento/memoria/tfidf_meta.json',
     'ler-runtime/knowledge/knowledge_graph.json',
     'ler-runtime/memory/context.json',
+    'Temp/fidelity_report.json',
 }
 
 # Paths that are EXPECTED to contain template variables (rendered by setup scripts)

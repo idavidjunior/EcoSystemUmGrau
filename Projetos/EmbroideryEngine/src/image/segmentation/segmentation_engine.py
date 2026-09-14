@@ -79,14 +79,13 @@ class SegmentationEngine:
         
         regions = []
 
-        # Identificar cor de fundo (a mais frequente/maior área)
-        bg_idx = self._identify_background_color(image, palette)
+        # Identificar a cor de fundo e gerar a máscara APENAS das partes
+        # conectadas à moldura da imagem. Elementos internos que usam a
+        # mesma cor do fundo são preservados (ex.: letras brancas no interior
+        # de um brasão sobre fundo branco).
+        bg_mask = self._compute_background_mask(image, palette)
 
         for idx, color in enumerate(palette):
-            # Pular cor de fundo
-            if idx == bg_idx:
-                continue
-                
             r, g, b = color
             tolerance = 30
             mask = (
@@ -97,6 +96,10 @@ class SegmentationEngine:
 
             # Refinar máscara com bordas
             mask = self._refine_mask_with_edges(mask, edges, img_rgb, (r, g, b))
+
+            # Subtrair apenas o fundo conectado à moldura
+            if bg_mask is not None:
+                mask = mask & ~bg_mask
 
             mask_cleaned = morphology.remove_small_objects(mask, max_size=self.min_region_area)
             labeled = measure.label(mask_cleaned.astype(int))
@@ -135,11 +138,41 @@ class SegmentationEngine:
         regions.sort(key=lambda r: r['area'], reverse=True)
         return regions
 
-    def _identify_background_color(self, image: 'Image.Image', 
+    def _identify_background_color(self, image: 'Image.Image',
                                     palette: List[Tuple[int, int, int]]) -> int:
-        """Identifica a cor de fundo (a mais frequente)."""
+        """Identifica a cor de fundo.
+
+        Prioriza a cor dominante na moldura (anel externo) da imagem, pois
+        imagens com borda uniforme (foto/logo/recorte) quase sempre têm o
+        fundo na moldura — mesmo quando não é a cor mais frequente no total
+        (ex.: brasão escuro ocupando a maior área sobre fundo branco).
+        Sem moldura dominante, usa a cor mais frequente (comportamento antigo).
+        """
         arr = np.array(image)
-        # Contar pixels por cor da paleta
+        h, w = arr.shape[:2]
+        ring = max(1, min(h, w) // 50)
+
+        border_px = np.concatenate([
+            arr[:ring].reshape(-1, 3),
+            arr[h - ring:].reshape(-1, 3),
+            arr[:, :ring].reshape(-1, 3),
+            arr[:, w - ring:].reshape(-1, 3),
+        ])
+
+        border_counts = []
+        for idx, (r, g, b) in enumerate(palette):
+            mask = (
+                (np.abs(border_px[:, 0].astype(int) - r) < 30) &
+                (np.abs(border_px[:, 1].astype(int) - g) < 30) &
+                (np.abs(border_px[:, 2].astype(int) - b) < 30)
+            )
+            border_counts.append((int(mask.sum()), idx))
+
+        border_counts.sort(reverse=True)
+        top_border_count, top_border_idx = border_counts[0]
+        if top_border_count >= 0.55 * max(1, len(border_px)):
+            return top_border_idx
+
         counts = []
         for idx, (r, g, b) in enumerate(palette):
             mask = (
@@ -147,11 +180,50 @@ class SegmentationEngine:
                 (np.abs(arr[:, :, 1].astype(int) - g) < 30) &
                 (np.abs(arr[:, :, 2].astype(int) - b) < 30)
             )
-            counts.append((mask.sum(), idx))
-        
-        # Retornar índice da cor mais frequente
+            counts.append((int(mask.sum()), idx))
+
         counts.sort(reverse=True)
         return counts[0][1]
+
+    def _compute_background_mask(self, image: 'Image.Image',
+                                  palette: List[Tuple[int, int, int]]) -> Optional[np.ndarray]:
+        """Máscara booleana do fundo conectado à moldura da imagem.
+
+        Elimina apenas os pixels da cor de fundo ligados à borda externa,
+        preservando elementos dessa mesma cor totalmente contidos no interior
+        (letras/detalhes vazados). Retorna None quando não há fundo detectado.
+        """
+        arr = np.array(image)
+        bg_idx = self._identify_background_color(image, palette)
+        r, g, b = palette[bg_idx]
+
+        color_mask = (
+            (np.abs(arr[:, :, 0].astype(int) - r) < 30) &
+            (np.abs(arr[:, :, 1].astype(int) - g) < 30) &
+            (np.abs(arr[:, :, 2].astype(int) - b) < 30)
+        )
+        if color_mask.sum() == 0:
+            return None
+
+        connected = self._border_connected(color_mask)
+        if connected.sum() < max(8, 0.01 * color_mask.sum()):
+            return None
+        return connected
+
+    def _border_connected(self, mask: np.ndarray) -> np.ndarray:
+        """Mantém apenas os componentes de uma máscara que tocam a moldura."""
+        labeled = measure.label(mask.astype(int))
+        h, w = labeled.shape
+        border_labels = set()
+        border_labels.update(labeled[0].tolist())
+        border_labels.update(labeled[h - 1].tolist())
+        border_labels.update(labeled[:, 0].tolist())
+        border_labels.update(labeled[:, w - 1].tolist())
+        border_labels.discard(0)
+        if not border_labels:
+            return np.zeros_like(mask, dtype=bool)
+        selected = np.isin(labeled, list(border_labels))
+        return selected
 
     def _refine_mask_with_edges(self, mask: np.ndarray, edges: np.ndarray, 
                                  img_rgb: np.ndarray, target_color: Tuple[int, int, int]) -> np.ndarray:
