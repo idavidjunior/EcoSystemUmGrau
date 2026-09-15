@@ -698,6 +698,7 @@
     98353,
     98354,
     98355,
+    98356,
     "nota:conhecimento/notas/agentes/00-maestro.md",
     "nota:conhecimento/notas/agentes/01-estrategista.md",
     "nota:conhecimento/notas/agentes/02-cetico.md",
@@ -2521,6 +2522,7 @@
     "episodio",
     "erro",
     "decisao",
+    "padrao",
     "nota",
     "nota",
     "nota",
@@ -4344,6 +4346,7 @@
     "missões ler 1-3 concluídas: (1) embroidery_renderer.py criado com renderização realista de bordado costurado, 12 testes; (2) improved_classifier.py detecta contorno/texto/ângulo dominante via pca, 80 testes, commit ab61c48d1 com push pendente por rede; (3) fidelity_report.py criado com ssim/dice e verify_roundtrip — provou que o encoder nativo .pes do projeto está quebrado (erro 1.6m), pyembroidery é o gold standard (0 erro). suíte total 92 testes verdes. programa aberto para teste do usuário. pendências: commit missão 3 ainda não feito, push travado, encoder nativo precisa correção. rascunho baixa-confianca rede pendente ab61c48d1 concluídas correção ler episodio",
     "o pipeline não removia o fundo conectado à moldura nem filtava speckles: antibranding de fotos gerava 42-108 regiões lixo. corrigido no segmentationengine (máscara de fundo conectado à borda preservando internos) + digitizerpipeline (_prepare_image rgba->branco, _filter_noise_objects piso 5pts/0.8%) + removida classe digitizerpipeline duplicada em stitch_planner.py. logo: 42->10 regiões, screenshot: 108->2. 92 testes verdes. rascunho baixa-confianca 5pts piso objects noise filter branco erro",
     "análise de riscos e benefícios éticos de formalizar conselheiros como capability seams: transparência, responsabilidade, auditoria, lgpd/gdpr, acessibilidade, viés. preflight aprovado com 19 alertas de revisão. rascunho baixa-confianca formalizar seams éticos benefícios capability conselheiros decisao",
+    "auditoria completa de codigo do conversorbordado encontrou 7 bugs reais (6 corrigidos, 1 inexistente): (1) draw_region_contour chamado 2x duplicado - removido bloco extra. (2) _rasterize_contour o(n2) por ray-casting substituido por [chave] o(n). (3) faltavam end stitches em save_from_preview, convert_image, manual_convert e editor.save - arquivos ficavam corrompidos sem terminal. (4) auto_convert usava range(6) fixo causando indexerror quando quantize gera menos cores - corrigido para range(num_colors). (5) obter_score foi validado (retorna 67.0, nao 0.0) - bug inexistente. (6) ferramentas move/resize faziam pass (silencioso) - implementadas com drag via anchor/delta, mascaras redimensionadas com pil.nearest. (7) current_tool era plain string em vez de stringvar, causando radiobuttons quebrados - corrigido para tk.stringvar; on_tool_change nao muta mais; redundancias hasattr removidas. (8) on_mouse_move sobrescrevia status bar a cada pixel - so atualiza quando status ja comeca com coordenadas:. py_compile ok, digitizar 15 regioes/9798pts validado, 18 testes embroideryengine passando. rascunho baixa-confianca colors num pil redimensionadas cores mascaras padrao",
     "00-maestro — maestro do runtime agente nucleo maestro runtime \n\n  00-maestro — maestro do runtime\n\n  categoria:   agentes\n  fonte:   config/agents/00-maestro.md\n\n   papel\n\ncoordenador único de processos críticos do ecossistema. mantém livro único de processos vivos ( runtime/maestro_estado.json ), cooldown global (15s), anti-órfão automático. comunicação via arquivos de comando  runtime/maestro_cmd_<id>.json .\n\n   responsabilidades\n\n- singleton central: evita duplicatas de serviços\n- cooldown central: reinícios respeitam 15s global\n- anti-órfão: detecta e mata duplicatas automaticamente\n- fallback seguro: modo degraded se cair, sistema nunca trava\n- fase 1 (observador): registra e compara, não bloqueia\n\n   conexões\n\n-   cluster-hub-ecossistema   — hub do cluster ecossistema\n-   ponto-unico-de-persistencia-gate   — gate de persistência que o maestro respeita\n-   maestro-fase-ativa-fix-registro-e-stale-pid   — aprendizado sobre ativação do maestro\n-   00-system-rules   — constituição que o maestro faz cumprir\n-   11-ler-executor   — executor ler que consulta o maestro\n\n   ver também\n\n-   01-estrategista   — define direção, o maestro executa\n-   09-executor   — executores sob coordenação do maestro",
     "01-estrategista — estrategista do conselho agente conselho estrategista planejamento \n\n  01-estrategista — estrategista do conselho\n\n  categoria:   agentes\n  fonte:   config/agents/01-estrategista.md\n\n   papel\n\ndefine direção, objetivos e estratégia de alto nível das soluções. primeira camada do conselho permanente.\n\n   responsabilidades\n\n- visão de longo prazo e roadmap\n- priorização de iniciativas\n- alinhamento com missão do ecossistema\n- decisões arquiteturais de alto nível\n\n   conexões\n\n-   cluster-hub-ecossistema   — hub do cluster ecossistema\n-   00-maestro   — coordena execução da estratégia\n-   02-cetico   — desafia hipóteses da estratégia\n-   03-realista   — avalia viabilidade prática\n-   04-etica   — valida impacto ético\n-   05-futuro   — antecipa tendências\n-   06-recursos   — mapeia recursos disponíveis\n-   07-criativo   — propõe alternativas inovadoras\n-   roadmap.md   — roadmap de engenharia web\n-   missao-permanente   — missão do ecossistema",
     "02-cetico — cético do conselho agente conselho cetico validacao \n\n  02-cetico — cético do conselho\n\n  categoria:   agentes\n  fonte:   config/agents/02-cetico.md\n\n   papel\n\ndesafia hipóteses, identifica riscos e evita conclusões precipitadas. segunda camada do conselho permanente.\n\n   responsabilidades\n\n- questionar premissas não validadas\n- identificar riscos técnicos e operacionais\n- exigir evidência antes de aceitar soluções\n- prevenir viés de confirmação\n\n   conexões\n\n-   cluster-hub-ecossistema   — hub do cluster ecossistema\n-   01-estrategista   — desafia a estratégia proposta\n-   pensador-critico   — skill de pensamento crítico\n-   auditoria-de-codigo   — auditoria que valida ceticismo\n-   03-realista   — colabora na avaliação de risco",
@@ -11085,12 +11088,12 @@
       "dominio": "docs"
     }
   },
-  "vocab_size": 142390,
-  "count": 1821,
-  "count_mem": 698,
+  "vocab_size": 142521,
+  "count": 1822,
+  "count_mem": 699,
   "count_notas": 1123,
   "fingerprint": [
-    698,
+    699,
     [
       1789211207.7,
       1789352044.1,

@@ -451,13 +451,15 @@ def validate_capability_definitions() -> tuple[bool, list[str]]:
             errors.append(f"Seam '{name}' falha na serialização: {e}")
         
         # Valida schema input/output
-        for schema_name, schema in [("input", definition.input_schema), ("output", definition.output_schema)]:
+for schema_name, schema in [("input", definition.input_schema), ("output", definition.output_schema)]:
             if not isinstance(schema, dict):
                 errors.append(f"Seam '{definition.name}': {schema_name}_schema deve ser dict")
             elif 'type' not in schema:
                 errors.append(f"Seam '{definition.name}': {schema_name}_schema sem campo 'type'")
     
-    # =============================================================================
+    return len(errors) == 0, errors
+
+# =============================================================================
 # DEFINITIONS DOS 5 CONSELHEIROS FASE 2
 # =============================================================================
 

@@ -4,7 +4,7 @@ versao: 0.1.0
 status: proposta
 componente: .
 tags: [ler, goal-analysis]
-data: 2026-09-09
+data: 2026-09-15
 ---
 
 # Spec — goal-perspectives-named-lenses-criar-m-dulo-perspectives-py-
@@ -16,7 +16,7 @@ data: 2026-09-09
 perspectives (named lenses). criar módulo perspectives.py | implementar create_perspective(name, description) | implementar switch_perspective(name) | implementar list_perspectives() | integrar com knowledge_graph para filtrar entidades (respete: ['scripts/perspectives.py'])
 
 ---
-set: 2026-09-09t13:59:18.429561
+set: 2026-09-15t06:02:20.646185
 
 ## Requisitos
 

@@ -3675,7 +3675,7 @@
     "id": 98291,
     "kind": "decisao",
     "task": "Preflight Etico: APROVADO",
-    "summary": "entrega aprovada no nivel medio | 0 bloqueio(s), 24 alerta(s) | entrega aprovada no preflight etico | 0 bloqueio(s), 17 alerta(s) | entrega aprovada no preflight etico | 0 bloqueio(s), 6 alerta(s) | entrega aprovada no nivel minimo | 0 bloqueio(s), 6 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 6 alerta(s) | entrega aprovada no nivel maximo | 0 bloqueio(s), 6 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 23 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 25 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 26 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 27 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 28 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 30 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 29 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 19 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 18 alerta(s)",
+    "summary": "entrega aprovada no nivel medio | 0 bloqueio(s), 24 alerta(s) | entrega aprovada no preflight etico | 0 bloqueio(s), 17 alerta(s) | entrega aprovada no preflight etico | 0 bloqueio(s), 6 alerta(s) | entrega aprovada no nivel minimo | 0 bloqueio(s), 6 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 6 alerta(s) | entrega aprovada no nivel maximo | 0 bloqueio(s), 6 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 23 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 25 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 26 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 27 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 28 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 30 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 29 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 19 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 18 alerta(s) | entrega aprovada no nivel medio | 0 bloqueio(s), 20 alerta(s)",
     "project": "",
     "tags": [
       "rascunho",
@@ -100425,6 +100425,13 @@
           "summary": "entrega aprovada no nivel medio | 0 bloqueio(s), 19 alerta(s)",
           "confidence": 0.3,
           "source_type": "rascunho"
+        },
+        {
+          "em": "2026-09-15T06:02:39.427327",
+          "task": "Preflight Etico: APROVADO",
+          "summary": "entrega aprovada no nivel medio | 0 bloqueio(s), 20 alerta(s)",
+          "confidence": 0.3,
+          "source_type": "rascunho"
         }
       ],
       "epistemic_status": "OBSERVED",
@@ -100434,9 +100441,9 @@
     "confidence": 1.0,
     "source_type": "rascunho",
     "source_anchors": [],
-    "access_count": 13819,
+    "access_count": 13820,
     "created_at": "2026-09-05T09:13:34.454044",
-    "last_accessed": "2026-09-15T05:41:09.092693",
+    "last_accessed": "2026-09-15T06:02:39.427327",
     "source_refs": [
       {
         "id": "kernighan-ritchie",
@@ -115528,6 +115535,13 @@
           "summary": "Exit 1. ",
           "confidence": 0.3,
           "source_type": "inferido"
+        },
+        {
+          "em": "2026-09-15T06:02:15.416608",
+          "task": "Falha na execução: Memória com Evidence-Grounding",
+          "summary": "Exit 1. ",
+          "confidence": 0.3,
+          "source_type": "inferido"
         }
       ]
     },
@@ -115535,9 +115549,9 @@
     "confidence": 0.3,
     "source_type": "inferido",
     "source_anchors": [],
-    "access_count": 4,
+    "access_count": 5,
     "created_at": "2026-09-05T00:18:25.208074",
-    "last_accessed": "2026-09-07T14:21:34.724845",
+    "last_accessed": "2026-09-15T06:02:15.416608",
     "source_refs": [
       {
         "id": "dragon-book",
@@ -118959,6 +118973,54 @@
         "url": "https://www.apuebook.com/",
         "authority_level": "B",
         "reliability": 0.97
+      }
+    ]
+  },
+  {
+    "id": 98356,
+    "kind": "padrao",
+    "task": "Auditoria 7 bugs ConversorBordado",
+    "summary": "Auditoria completa de codigo do ConversorBordado encontrou 7 bugs reais (6 corrigidos, 1 inexistente): (1) draw_region_contour chamado 2x duplicado - removido bloco extra. (2) _rasterize_contour O(n2) por ray-casting substituido por [chave] O(n). (3) Faltavam END stitches em save_from_preview, convert_image, manual_convert e editor.save - arquivos ficavam corrompidos sem terminal. (4) auto_convert usava range(6) fixo causando IndexError quando quantize gera menos cores - corrigido para range(num_colors). (5) obter_score foi validado (retorna 67.0, NAO 0.0) - bug inexistente. (6) ferramentas move/resize faziam pass (silencioso) - implementadas com drag via anchor/delta, mascaras redimensionadas com PIL.NEAREST. (7) current_tool era plain string em vez de StringVar, causando radiobuttons quebrados - corrigido para tk.StringVar; on_tool_change nao muta mais; redundancias hasattr removidas. (8) on_mouse_move sobrescrevia status bar a cada pixel - so atualiza quando status ja comeca com Coordenadas:. py_compile OK, digitizar 15 regioes/9798pts validado, 18 testes EmbroideryEngine passando.",
+    "project": "",
+    "tags": [
+      "rascunho",
+      "baixa-confianca",
+      "colors",
+      "num",
+      "pil",
+      "redimensionadas",
+      "cores",
+      "mascaras"
+    ],
+    "metadata": {},
+    "strength": 1.0,
+    "confidence": 0.3,
+    "source_type": "rascunho",
+    "source_anchors": [],
+    "access_count": 0,
+    "created_at": "2026-09-15T06:01:29.285268",
+    "last_accessed": "2026-09-15T06:01:29.285268",
+    "source_refs": [
+      {
+        "id": "cppreference",
+        "name": "cppreference",
+        "url": "https://en.cppreference.com/",
+        "authority_level": "A",
+        "reliability": 0.96
+      },
+      {
+        "id": "dragon-book",
+        "name": "Compilers: Principles, Techniques, and Tools",
+        "url": "https://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools",
+        "authority_level": "B",
+        "reliability": 0.97
+      },
+      {
+        "id": "real-python",
+        "name": "Real Python",
+        "url": "https://realpython.com/",
+        "authority_level": "D",
+        "reliability": 0.75
       }
     ]
   }

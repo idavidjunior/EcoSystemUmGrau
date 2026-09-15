@@ -2,12 +2,12 @@
 
 **Goal:** # Goal
 
-Memória com Evidence-Grounding. Adicionar campos source_file, source_line, source_snippet em memórias | Atualizar memory_engine add() para aceitar source_anchors | Atualizar context() para retornar source_anchors | Criar função validate_memory_source() (respete: ['scripts/memory_engine.py'])
+Perspectives (Named Lenses). Criar módulo perspectives.py | Implementar create_perspective(name, description) | Implementar switch_perspective(name) | Implementar list_perspectives() | Integrar com knowledge_graph para filtrar entidades (respete: ['scripts/perspectives.py'])
 
 ---
-Set: 2026-09-15T05:58:58.758149
+Set: 2026-09-15T06:02:20.646185
 
-**Created:** 2026-09-15T06:00:43.073880
+**Created:** 2026-09-15T06:02:21.469500
 
 **Total Steps:** 5
 
@@ -21,14 +21,14 @@ Set: 2026-09-15T05:58:58.758149
 ### Step 2: SETUP - initialize_project
 **Description:** Initialize project structure for: # Goal
 
-Memória com Evidence-Grounding. Adicionar campos sou
+Perspectives (Named Lenses). Criar módulo perspectiv
 **Validation:** check_structure
 **Status:** pending
 
 ### Step 3: IMPLEMENTATION - implement
 **Description:** Implementar funcionalidade principal: # Goal
 
-Memória com Evidence-Grounding. Adicionar campos sou
+Perspectives (Named Lenses). Criar módulo perspectiv
 **Validation:** check_output
 **Status:** pending
 
