@@ -1,4 +1,4 @@
-import psutil, time, logging, json, os, sys, signal, subprocess
+import psutil, time, logging, json, os, sys, signal, subprocess, tempfile
 from pathlib import Path
 from datetime import datetime
 
@@ -373,11 +373,33 @@ def start_tts_service():
 
 def pause_narrador(reason):
     try:
-        state = {"ativo": False, "pausado": True, "motivo": reason}
         NARRACAO_FILE.parent.mkdir(parents=True, exist_ok=True)
-        tmp = NARRACAO_FILE.with_suffix(".tmp")
-        tmp.write_text(json.dumps(state, ensure_ascii=False), encoding="utf-8")
-        tmp.replace(NARRACAO_FILE)
+        estado = {}
+        if NARRACAO_FILE.exists():
+            try:
+                estado = json.loads(NARRACAO_FILE.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+        estado["ativo"] = False
+        estado["pausado"] = True
+        estado["motivo"] = reason
+        fd, tmp_path = tempfile.mkstemp(
+            suffix=".tmp", prefix="narr_", dir=str(NARRACAO_FILE.parent)
+        )
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as f:
+                json.dump(estado, f, ensure_ascii=False)
+            for _ in range(5):
+                try:
+                    os.replace(tmp_path, NARRACAO_FILE)
+                    break
+                except OSError:
+                    time.sleep(0.05)
+        finally:
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                pass
         log.warning(f"Narrador pausado: {reason}")
     except Exception as e:
         log.error(f"Erro ao pausar narrador: {e}")

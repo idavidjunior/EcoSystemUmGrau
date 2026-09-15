@@ -1,9 +1,9 @@
 {
   "goal_analysis": {
-    "raw": "# Goal\n\nQuery por Confidence Level. Adicionar parâmetro min_confidence ao search do knowledge_graph | Atualizar BM25 para suportar filtro de confiança | Testar busca com min_confidence (respete: ['scripts/knowledge_graph.py'])\n\n---\nSet: 2026-09-09T14:30:30.674067\n",
-    "objective": "# goal\n\nquery por confidence level. adicionar parâmetro min_confidence ao search do knowledge_graph | atualizar bm25 para suportar filtro de confiança | testar busca com min_confidence (respete: ['scripts/knowledge_graph.py'])\n\n---\nset: 2026-09-09t14:30:30.674067",
+    "raw": "# Goal\n\nMemória com Evidence-Grounding. Adicionar campos source_file, source_line, source_snippet em memórias | Atualizar memory_engine add() para aceitar source_anchors | Atualizar context() para retornar source_anchors | Criar função validate_memory_source() (respete: ['scripts/memory_engine.py'])\n\n---\nSet: 2026-09-15T05:58:58.758149\n",
+    "objective": "# goal\n\nmemória com evidence-grounding. adicionar campos source_file, source_line, source_snippet em memórias | atualizar memory_engine add() para aceitar source_anchors | atualizar context() para retornar source_anchors | criar função validate_memory_source() (respete: ['scripts/memory_engine.py'])\n\n---\nset: 2026-09-15t05:58:58.758149",
     "domain": "python",
-    "task_type": "validation",
+    "task_type": "creation",
     "technologies": [
       "unknown"
     ],
@@ -72,7 +72,7 @@
       "Codigo versionado no Git"
     ],
     "goal_spec": {
-      "objective": "# goal\n\nquery por confidence level. adicionar parâmetro min_confidence ao search do knowledge_graph | atualizar bm25 para suportar filtro de confiança | testar busca com min_confidence (respete: ['scripts/knowledge_graph.py'])\n\n---\nset: 2026-09-09t14:30:30.674067",
+      "objective": "# goal\n\nmemória com evidence-grounding. adicionar campos source_file, source_line, source_snippet em memórias | atualizar memory_engine add() para aceitar source_anchors | atualizar context() para retornar source_anchors | criar função validate_memory_source() (respete: ['scripts/memory_engine.py'])\n\n---\nset: 2026-09-15t05:58:58.758149",
       "requirements": [
         "--"
       ],
@@ -104,33 +104,33 @@
         }
       ]
     },
-    "spec_markdown": "---\nid: spec-goal-query-por-confidence-level-adicionar-par-metro-min-conf\nversao: 0.1.0\nstatus: proposta\ncomponente: .\ntags: [ler, goal-analysis]\ndata: 2026-09-09\n---\n\n# Spec — goal-query-por-confidence-level-adicionar-par-metro-min-conf\n\n## Objetivo\n\n# goal\n\nquery por confidence level. adicionar parâmetro min_confidence ao search do knowledge_graph | atualizar bm25 para suportar filtro de confiança | testar busca com min_confidence (respete: ['scripts/knowledge_graph.py'])\n\n---\nset: 2026-09-09t14:30:30.674067\n\n## Requisitos\n\n1. --\n\n## Restrições\n\n- Must use Git versioning\n\n## Dependências\n\n- _nenhum declarado_\n\n## Premissas\n\n- All dependencies can be installed via standard package managers\n\n## Entradas e Saídas\n\n- Entrada: argumentos de linha de comando, arquivos e dados do usuario.\n- Saída: saída processada em stdout, arquivos ou serviços.\n- Efeito colateral: arquivos alterados ou criados no sistema. E versionado no Git.\n\n## Casos de Borda\n\n- Requisitos ambíguos ou incompletos\n- Entradas vazias ou inválidas\n- Execução repetida (idempotência e estado parcial)\n\n## Critérios de Aceitação\n\n- -- implementado e funcional\n- Nenhum erro critico no funcionamento basico\n- Codigo compila/executa sem erros\n\n## Definition of Done\n\n- [ ] Todos os requisitos implementados\n- [ ] Codigo compila e executa sem erros\n- [ ] Testes basicos aprovados\n- [ ] Evidencias de funcionamento coletadas\n- [ ] Auditoria final aprovada\n- [ ] Relatorio final gerado\n- [ ] Codigo versionado no Git\n\n## Riscos\n\n- Requirements may be incomplete or ambiguous — severidade low\n\n## Testes Relacionados\n\n- Testes unitários em um diretório de testes (unittest/pytest).\n- Teste de regressão: repetir o fluxo principal após alterações\n",
-    "analyzed_at": "2026-09-09T14:30:31.178639"
+    "spec_markdown": "---\nid: spec-goal-mem-ria-com-evidence-grounding-adicionar-campos-source-\nversao: 0.1.0\nstatus: proposta\ncomponente: .\ntags: [ler, goal-analysis]\ndata: 2026-09-15\n---\n\n# Spec — goal-mem-ria-com-evidence-grounding-adicionar-campos-source-\n\n## Objetivo\n\n# goal\n\nmemória com evidence-grounding. adicionar campos source_file, source_line, source_snippet em memórias | atualizar memory_engine add() para aceitar source_anchors | atualizar context() para retornar source_anchors | criar função validate_memory_source() (respete: ['scripts/memory_engine.py'])\n\n---\nset: 2026-09-15t05:58:58.758149\n\n## Requisitos\n\n1. --\n\n## Restrições\n\n- Must use Git versioning\n\n## Dependências\n\n- _nenhum declarado_\n\n## Premissas\n\n- All dependencies can be installed via standard package managers\n\n## Entradas e Saídas\n\n- Entrada: argumentos de linha de comando, arquivos e dados do usuario.\n- Saída: saída processada em stdout, arquivos ou serviços.\n- Efeito colateral: arquivos alterados ou criados no sistema. E versionado no Git.\n\n## Casos de Borda\n\n- Requisitos ambíguos ou incompletos\n- Entradas vazias ou inválidas\n- Execução repetida (idempotência e estado parcial)\n\n## Critérios de Aceitação\n\n- -- implementado e funcional\n- Nenhum erro critico no funcionamento basico\n- Codigo compila/executa sem erros\n\n## Definition of Done\n\n- [ ] Todos os requisitos implementados\n- [ ] Codigo compila e executa sem erros\n- [ ] Testes basicos aprovados\n- [ ] Evidencias de funcionamento coletadas\n- [ ] Auditoria final aprovada\n- [ ] Relatorio final gerado\n- [ ] Codigo versionado no Git\n\n## Riscos\n\n- Requirements may be incomplete or ambiguous — severidade low\n\n## Testes Relacionados\n\n- Testes unitários em um diretório de testes (unittest/pytest).\n- Teste de regressão: repetir o fluxo principal após alterações\n",
+    "analyzed_at": "2026-09-15T05:58:59.121845"
   },
   "strategies": [
     {
       "id": "strat_A",
-      "name": "Testes Directa (A)",
+      "name": "Implementacao Directa (A)",
       "approach": "Objetivo direto com implementacao guiada por requisitos",
-      "cost": 2,
-      "risk": "low",
-      "estimated_time": "2-4 iteracoes",
+      "cost": 5,
+      "risk": "medium",
+      "estimated_time": "10 iteracoes",
       "complexity": 5,
-      "success_probability": 90,
+      "success_probability": 75,
       "phases": [
-        "Identify test cases",
-        "Write unit tests",
-        "Write integration tests",
-        "Run full test suite",
-        "Report coverage"
+        "Setup environment",
+        "Implement core structure",
+        "Implement features incrementalmente",
+        "Test each feature",
+        "Integrate and validate"
       ],
       "technologies": [
         "unknown"
       ],
-      "parallel_execution": true,
-      "fallback_plan": "Priorize critical path tests",
+      "parallel_execution": false,
+      "fallback_plan": "Replan with simpler scope if stuck",
       "dependencies": [],
-      "score": 88,
+      "score": 72,
       "rank": 1
     },
     {
@@ -296,25 +296,14 @@
         "affected_area": "output",
         "mitigation_plan": "Verificar permissoes antes de executar. Tentar diretorio alternativo se necessario.",
         "contingency": "Solicitar elevacao de privilegio ou usar diretorio diferente."
-      },
-      {
-        "id": "strat_002",
-        "category": "strategy",
-        "description": "Execucao paralela aumenta complexidade de coordenacao",
-        "severity": "medium",
-        "likelihood": "high",
-        "impact": "Conflitos entre execucoes paralelas",
-        "affected_area": "coordination",
-        "mitigation_plan": "Ter plano de fallback pronto. Reavaliar apos cada falha. Alternar para estrategia mais segura.",
-        "contingency": "Selecionar proxima melhor estrategia do ranking."
       }
     ],
     "critical_count": 0,
     "high_count": 1,
-    "total_risks": 7,
+    "total_risks": 6,
     "can_proceed": true,
-    "mitigation_plan_count": 7,
-    "assessed_at": "2026-09-09T14:30:31.787745"
+    "mitigation_plan_count": 6,
+    "assessed_at": "2026-09-15T05:58:59.212848"
   },
   "step_1_result": {
     "step_id": 1,
@@ -322,8 +311,8 @@
     "status": "completed",
     "output": "{\n  \"os\": \"nt\",\n  \"cwd\": \"C:\\\\Users\\\\David Jr\\\\Documents\\\\Default Project\\\\EcoSystemUmGrau\",\n  \"python\": \"C:\\\\Users\\\\David Jr\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe\",\n  \"git\": \"C:\\\\Program Files\\\\Git\\\\cmd\\\\git.exe\",\n  \"node\": null,\n  \"shell\": \"powershell\"\n}",
     "error": null,
-    "start_time": 1788975032.4888918,
-    "duration": 9.091354131698608
+    "start_time": 1789462739.4699142,
+    "duration": 1.4765868186950684
   },
   "step_2_result": {
     "step_id": 2,
@@ -331,17 +320,17 @@
     "status": "completed",
     "output": "Projects directory ready: C:\\Users\\David Jr\\Documents\\Default Project\\EcoSystemUmGrau\\ler-runtime\\projects",
     "error": null,
-    "start_time": 1788975051.4014628,
-    "duration": 0.0010004043579101562
+    "start_time": 1789462742.5099509,
+    "duration": 0.0020003318786621094
   },
   "step_3_result": {
     "step_id": 3,
-    "action": "test",
+    "action": "implement",
     "status": "completed",
-    "output": "[Tests: 4/5 passed]\n{\n  \"tests_run\": 5,\n  \"results\": [\n    {\n      \"file\": \"__init__.py\",\n      \"passed\": true,\n      \"output\": \"\"\n    },\n    {\n      \"file\": \"test_basic.py\",\n      \"passed\": true,\n      \"output\": \"unning final audit...\\n[2026-09-09 14:31:00] [INFO] Running final audit...\\n[2026-09-09 14:31:01] [INFO] Final report generated: C:\\\\Users\\\\DAVIDJ~1\\\\AppData\\\\Local\\\\Temp\\\\tmpgqlt455o\\\\reports\\\\final_report.md\\n\"\n    },\n    {\n      \"file\": \"test_integration.py\",\n      \"passed\": false,\n      \"output\": \"Command '['python', 'C:\\\\\\\\Users\\\\\\\\David Jr\\\\\\\\Documents\\\\\\\\Default Project\\\\\\\\EcoSystemUmGrau\\\\\\\\ler-runtime\\\\\\\\tests\\\\\\\\test_integration.py']' timed out after 60 seconds\"\n    },\n    {\n      \"file\": \"test_ler_v12.py\",\n      \"passed\": true,\n      \"output\": \": 29.2s | Iterations: 10\\n[2026-09-09 14:32:37] [INFO] Steps: 3/5\\n[2026-09-09 14:32:37] [INFO] Security: CLEAN\\n[2026-09-09 14:32:37] [INFO] ============================================================\\n\"\n    },\n    {\n      \"file\": \"test_ler_v20.py\",\n      \"passed\": true,\n      \"output\": \" created with 5 steps\\n[2026-09-09 14:32:42] [INFO] Running final audit...\\n[2026-09-09 14:32:42] [INFO] Final report generated: C:\\\\Users\\\\DAVIDJ~1\\\\AppData\\\\Local\\\\Temp\\\\tmpoxm_hqd8\\\\reports\\\\final_report.md\\n\"\n    }\n  ],\n  \"all_passed\": false\n}",
+    "output": "Implementation completed — 43 arquivo(s) modificados: Implementar funcionalidade principal: # Goal\n\nMemória com Evidence-Grounding. Adicionar campos sou",
     "error": null,
-    "start_time": 1788975052.3560436,
-    "duration": 110.06366658210754
+    "start_time": 1789462742.9587572,
+    "duration": 3.10245943069458
   },
   "step_4_result": {
     "step_id": 4,

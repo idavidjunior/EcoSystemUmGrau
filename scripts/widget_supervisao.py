@@ -13,6 +13,7 @@ import os
 import re
 import socket
 import sys
+import tempfile
 import threading
 import time
 from datetime import datetime
@@ -75,14 +76,23 @@ def _salvar_estado(update):
     with _estado_lock:
         estado = _ler_estado()
         estado.update(update)
-        tmp = STATE_FILE.with_suffix(".tmp")
-        tmp.write_text(json.dumps(estado, ensure_ascii=False), encoding="utf-8")
-        for _ in range(3):
+        fd, tmp_path = tempfile.mkstemp(
+            suffix=".tmp", prefix="svstate_", dir=str(STATE_FILE.parent)
+        )
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as f:
+                json.dump(estado, f, ensure_ascii=False)
+            for _ in range(5):
+                try:
+                    os.replace(tmp_path, STATE_FILE)
+                    return
+                except OSError:
+                    time.sleep(0.05)
+        finally:
             try:
-                os.replace(tmp, STATE_FILE)
-                return
+                os.unlink(tmp_path)
             except OSError:
-                time.sleep(0.05)
+                pass
 
 
 # ---------------------------------------------------------------------------

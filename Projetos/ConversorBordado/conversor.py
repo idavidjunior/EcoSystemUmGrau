@@ -481,6 +481,8 @@ class ConversorBordado:
             for x, y in region.points:
                 pattern.add_stitch_absolute(pyembroidery.STITCH, x, y)
         
+        pattern.add_stitch_absolute(pyembroidery.END, 0, 0)
+        
         # Solicitar arquivo de saída
         filetypes = [(f"Arquivo {formato}", f"*.{formato.lower()}")]
         output_path = filedialog.asksaveasfilename(
@@ -881,6 +883,8 @@ class ConversorBordado:
             if self.reinforcement_var.get():
                 self.apply_reinforcement(pattern)
             
+            pattern.add_stitch_absolute(pyembroidery.END, 0, 0)
+            
             # Solicitar arquivo de saída
             formato = self.format_var.get()
             filetypes = [(f"Arquivo de bordado (*.{formato.lower()})", f"*.{formato.lower()}")]
@@ -955,11 +959,12 @@ class ConversorBordado:
         # Converter para array numpy
         img_array = np.array(img_quantized)
         
-        # Obter paleta de cores
+        # Obter paleta de cores e número real de cores
         palette = img_quantized.getpalette()
+        num_colors = len(img_quantized.getcolors())
         
         # 2. Para cada cor, criar regiões e gerar fill stitches
-        for color_idx in range(6):
+        for color_idx in range(num_colors):
             # Criar máscara para esta cor
             mask = (img_array == color_idx)
             
@@ -1051,7 +1056,7 @@ class ConversorBordado:
                     py = y * scale
                     pattern.add_stitch_absolute(stitch_cmd, px, py)
         
-        # Finalizar padrão
+        pattern.add_stitch_absolute(pyembroidery.END, 0, 0)
     
     def apply_reinforcement(self, pattern):
         """Aplica reforço ao bordado para torná-lo mais cheio e com relevo grosso."""

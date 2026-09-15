@@ -1,0 +1,10 @@
+{
+  "mission_id": "20260915_055858",
+  "state": {
+    "status": "active",
+    "goal": "Memória com Evidence-Grounding. Adicionar campos source_file, source_line, source_snippet em memórias | Atualizar memory_engine add() para aceitar source_anchors | Atualizar context() para retornar so",
+    "started_at": "2026-09-15T05:58:58.759150"
+  },
+  "updated_at": "2026-09-15T05:58:58.759150",
+  "version": "2.0"
+}

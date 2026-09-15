@@ -21,6 +21,7 @@ import socket
 import sqlite3
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 import unicodedata
@@ -130,21 +131,29 @@ def ler_estado():
 def salvar_estado(update):
     """Persiste widget_state.json com escrita atômica serializada.
 
-    O handler de `moved` da janela (pywebview) pode disparar em threads
-    concorrentes; sem lock, duas threads gravam o mesmo .tmp e o
-    os.replace falha com PermissionError (WinError 32).
+    Usa nome de .tmp único por chamada (tempfile) para evitar colisão
+    quando o handler `moved` dispara em threads concorrentes.
     """
     with _ESTADO_LOCK:
         estado = ler_estado()
         estado.update(update)
-        tmp = STATE_FILE.with_suffix(".tmp")
-        tmp.write_text(json.dumps(estado, ensure_ascii=False), encoding="utf-8")
-        for _ in range(3):
+        fd, tmp_path = tempfile.mkstemp(
+            suffix=".tmp", prefix="wstate_", dir=str(STATE_FILE.parent)
+        )
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as f:
+                json.dump(estado, f, ensure_ascii=False)
+            for _ in range(5):
+                try:
+                    os.replace(tmp_path, STATE_FILE)
+                    return
+                except OSError:
+                    time.sleep(0.05)
+        finally:
             try:
-                os.replace(tmp, STATE_FILE)
-                return
+                os.unlink(tmp_path)
             except OSError:
-                time.sleep(0.05)
+                pass
 
 
 def servico_no_ar(frag, excluir=None):
@@ -290,6 +299,27 @@ def _ler_pausa_total():
     return False
 
 
+def _gravar_narracao_atomico(estado: dict):
+    """Escrita atômica de narracao_estado.json com tmp único (sem colisão)."""
+    fd, tmp_path = tempfile.mkstemp(
+        suffix=".tmp", prefix="narr_", dir=str(NARRACAO_CONTROLE.parent)
+    )
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            json.dump(estado, f, ensure_ascii=False)
+        for _ in range(5):
+            try:
+                os.replace(tmp_path, NARRACAO_CONTROLE)
+                return
+            except OSError:
+                time.sleep(0.05)
+    finally:
+        try:
+            os.unlink(tmp_path)
+        except OSError:
+            pass
+
+
 def _gravar_pausa_total(pausar: bool):
     """Estado mestre do botão Pausar.
 
@@ -307,9 +337,7 @@ def _gravar_pausa_total(pausar: bool):
                 except Exception:
                     pass
             estado["pausa_total"] = bool(pausar)
-            tmp = NARRACAO_CONTROLE.with_suffix(".tmp")
-            tmp.write_text(json.dumps(estado), encoding="utf-8")
-            tmp.replace(NARRACAO_CONTROLE)
+            _gravar_narracao_atomico(estado)
         except Exception:
             pass
         if pausar and _estado_narrador_ativo():
@@ -995,9 +1023,7 @@ class EdgeApi:
                     STOP_FLAG.write_text(str(int(time.time())), encoding="utf-8")
                 except Exception:
                     pass
-                tmp = NARRACAO_CONTROLE.with_suffix(".tmp")
-                tmp.write_text(json.dumps(estado), encoding="utf-8")
-                tmp.replace(NARRACAO_CONTROLE)
+                _gravar_narracao_atomico(estado)
             except Exception:
                 pass
 
@@ -1017,9 +1043,7 @@ class EdgeApi:
                         STOP_FLAG.write_text(str(int(time.time())), encoding="utf-8")
                     except Exception:
                         pass
-                tmp = NARRACAO_CONTROLE.with_suffix(".tmp")
-                tmp.write_text(json.dumps(estado), encoding="utf-8")
-                tmp.replace(NARRACAO_CONTROLE)
+                _gravar_narracao_atomico(estado)
             except Exception:
                 pass
 
@@ -1303,9 +1327,7 @@ def _normalizar_narrador_boot():
             estado["ativo"] = True
             estado["pausado"] = False
             estado["pausa_total"] = False
-            tmp = NARRACAO_CONTROLE.with_suffix(".tmp")
-            tmp.write_text(json.dumps(estado), encoding="utf-8")
-            tmp.replace(NARRACAO_CONTROLE)
+            _gravar_narracao_atomico(estado)
         except Exception:
             pass
         # Limpa flag de parada residual

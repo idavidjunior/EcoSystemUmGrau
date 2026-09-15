@@ -81,12 +81,17 @@ class EmbroideryEditor:
         self.original_image = image
         self.regions = regions if regions else []
         self.selected_region_id = None
-        self.current_tool = "select"
+        self.current_tool = tk.StringVar(value="select")
         self.zoom = 1.0
         self.pan_offset = [0, 0]
         self.is_panning = False
         self.pan_start = [0, 0]
         self._auto_fitted = False
+        
+        # Drag state (move/resize)
+        self._drag_anchor_img = None
+        self._drag_initial_bounds = None
+        self._drag_initial_points = None
         
         # Undo/Redo
         self.undo_stack = []
@@ -412,10 +417,6 @@ class EmbroideryEditor:
         # Desenhar contorno se selecionado
         if region.id == self.selected_region_id:
             self.draw_region_contour(region, center_x, center_y)
-        
-        # Desenhar contorno se selecionado
-        if region.id == self.selected_region_id:
-            self.draw_region_contour(region, center_x, center_y)
     
     def draw_region_contour(self, region: StitchRegion, center_x, center_y):
         """Desenha o contorno de uma região."""
@@ -475,8 +476,7 @@ class EmbroideryEditor:
     
     def on_tool_change(self):
         """Lida com mudança de ferramenta."""
-        self.current_tool = self.current_tool.get() if hasattr(self.current_tool, 'get') else self.current_tool
-        self.status_var.set(f"Ferramenta: {self.current_tool}")
+        self.status_var.set(f"Ferramenta: {self.current_tool.get()}")
     
     def on_left_click(self, event):
         """Lida com clique esquerdo."""
@@ -496,7 +496,9 @@ class EmbroideryEditor:
         img_x = (event.x - start_x) / self.zoom
         img_y = (event.y - start_y) / self.zoom
         
-        if self.current_tool.get() == "select" if hasattr(self.current_tool, 'get') else self.current_tool == "select":
+        tool = self.current_tool.get()
+        
+        if tool == "select":
             # Encontrar região sob o cursor
             clicked_region = None
             for region in reversed(self.regions):  # Inverter para priorizar camadas superiores
@@ -522,13 +524,29 @@ class EmbroideryEditor:
             self.update_layers_list()
             self.refresh_canvas()
         
-        elif self.current_tool.get() == "pan" if hasattr(self.current_tool, 'get') else self.current_tool == "pan":
+        elif tool == "move" and self.selected_region_id is not None:
+            for region in self.regions:
+                if region.id == self.selected_region_id:
+                    self._drag_anchor_img = (img_x, img_y)
+                    self._drag_initial_bounds = region.bounds
+                    self._drag_initial_points = list(region.points)
+                    break
+        
+        elif tool == "resize" and self.selected_region_id is not None:
+            for region in self.regions:
+                if region.id == self.selected_region_id:
+                    self._drag_anchor_img = (img_x, img_y)
+                    self._drag_initial_bounds = region.bounds
+                    self._drag_initial_points = list(region.points)
+                    break
+        
+        elif tool == "pan":
             self.is_panning = True
             self.pan_start = [event.x, event.y]
     
     def on_left_drag(self, event):
         """Lida com arrasto do botão esquerdo."""
-        tool = self.current_tool.get() if hasattr(self.current_tool, 'get') else self.current_tool
+        tool = self.current_tool.get()
         
         if tool == "pan" and self.is_panning:
             dx = event.x - self.pan_start[0]
@@ -538,17 +556,88 @@ class EmbroideryEditor:
             self.pan_start = [event.x, event.y]
             self.refresh_canvas()
         
-        elif tool == "move" and self.selected_region_id is not None:
-            # Mover região
-            pass  # Implementar movimentação
+        elif tool == "move" and self.selected_region_id is not None and self._drag_anchor_img is not None:
+            canvas_width = self.canvas.winfo_width()
+            canvas_height = self.canvas.winfo_height()
+            center_x = canvas_width / 2 + self.pan_offset[0]
+            center_y = canvas_height / 2 + self.pan_offset[1]
+            img_w = self.original_image.width
+            img_h = self.original_image.height
+            start_x = center_x - (img_w * self.zoom) / 2
+            start_y = center_y - (img_h * self.zoom) / 2
+            img_x = (event.x - start_x) / self.zoom
+            img_y = (event.y - start_y) / self.zoom
+            dx = img_x - self._drag_anchor_img[0]
+            dy = img_y - self._drag_anchor_img[1]
+            
+            for region in self.regions:
+                if region.id == self.selected_region_id:
+                    region.bounds = (self._drag_initial_bounds[0] + dy,
+                                     self._drag_initial_bounds[1] + dx,
+                                     self._drag_initial_bounds[2] + dy,
+                                     self._drag_initial_bounds[3] + dx)
+                    region.points = [(x + dx, y + dy) for x, y in self._drag_initial_points]
+                    self.refresh_canvas()
+                    self.status_var.set(f"Movendo: Δ({dx:+.0f}, {dy:+.0f})")
+                    break
         
-        elif tool == "resize" and self.selected_region_id is not None:
-            # Redimensionar região
-            pass  # Implementar redimensionamento
+        elif tool == "resize" and self.selected_region_id is not None and self._drag_anchor_img is not None:
+            canvas_width = self.canvas.winfo_width()
+            canvas_height = self.canvas.winfo_height()
+            center_x = canvas_width / 2 + self.pan_offset[0]
+            center_y = canvas_height / 2 + self.pan_offset[1]
+            img_w = self.original_image.width
+            img_h = self.original_image.height
+            start_x = center_x - (img_w * self.zoom) / 2
+            start_y = center_y - (img_h * self.zoom) / 2
+            img_x = (event.x - start_x) / self.zoom
+            img_y = (event.y - start_y) / self.zoom
+            dx = img_x - self._drag_anchor_img[0]
+            dy = img_y - self._drag_anchor_img[1]
+            
+            init_bounds = self._drag_initial_bounds
+            init_points = self._drag_initial_points
+            minr0, minc0, maxr0, maxc0 = init_bounds
+            h0 = maxr0 - minr0
+            w0 = maxc0 - minc0
+            if h0 < 1 or w0 < 1:
+                return
+            
+            scale_x = max(0.3, min(4.0, 1.0 + dx / w0))
+            scale_y = max(0.3, min(4.0, 1.0 + dy / h0))
+            
+            for region in self.regions:
+                if region.id == self.selected_region_id:
+                    cx = minc0 + (w0 - 1) / 2.0
+                    cy = minr0 + (h0 - 1) / 2.0
+                    nw = max(1, int(round(w0 * scale_x)))
+                    nh = max(1, int(round(h0 * scale_y)))
+                    nminc = int(round(cx - (nw - 1) / 2.0))
+                    nminr = int(round(cy - (nh - 1) / 2.0))
+                    nmaxc = nminc + nw - 1
+                    nmaxr = nminr + nh - 1
+                    
+                    region.bounds = (nminr, nminc, nmaxr, nmaxc)
+                    region.points = [(
+                        nminc + (x - minc0) * scale_x,
+                        nminr + (y - minr0) * scale_y
+                    ) for x, y in init_points]
+                    
+                    if region.mask is not None and nw > 0 and nh > 0:
+                        img_mask = Image.fromarray((region.mask.astype(np.uint8) * 255))
+                        img_mask = img_mask.resize((max(1, nw), max(1, nh)), Image.NEAREST)
+                        region.mask = np.array(img_mask) > 127
+                    
+                    self.refresh_canvas()
+                    self.status_var.set(f"Redimensionando: ({scale_x:.2f}x, {scale_y:.2f}y)")
+                    break
     
     def on_left_release(self, event):
         """Lida com soltar botão esquerdo."""
         self.is_panning = False
+        self._drag_anchor_img = None
+        self._drag_initial_bounds = None
+        self._drag_initial_points = None
     
     def on_right_click(self, event):
         """Lida com clique direito - menu de contexto."""
@@ -564,7 +653,10 @@ class EmbroideryEditor:
     
     def on_mouse_move(self, event):
         """Lida com movimento do mouse."""
-        # Atualizar coordenadas na barra de status
+        current = self.status_var.get()
+        if current and not current.startswith("Coordenadas:"):
+            return
+        
         canvas_width = self.canvas.winfo_width()
         canvas_height = self.canvas.winfo_height()
         
@@ -884,6 +976,8 @@ class EmbroideryEditor:
             # Adicionar pontos
             for x, y in region.points:
                 pattern.add_stitch_absolute(pyembroidery.STITCH, x, y)
+        
+        pattern.add_stitch_absolute(pyembroidery.END, 0, 0)
         
         # Salvar
         filetypes = [(f"Arquivo {formato}", f"*.{formato.lower()}")]

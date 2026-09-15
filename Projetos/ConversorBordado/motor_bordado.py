@@ -45,22 +45,6 @@ def _map_stitch_type(engine_type) -> EdStitchType:
     return EdStitchType.FILL
 
 
-def _point_in_polygon(x: float, y: float,
-                      poly: List[Tuple[float, float]]) -> bool:
-    """Testa se um ponto está dentro de um polígono (ray casting)."""
-    n = len(poly)
-    inside = False
-    j = n - 1
-    for i in range(n):
-        xi, yi = poly[i]
-        xj, yj = poly[j]
-        if ((yi > y) != (yj > y)) and \
-           (x < (xj - xi) * (y - yi) / (yj - yi) + xi):
-            inside = not inside
-        j = i
-    return inside
-
-
 def _rasterize_contour(pts_px: List[Tuple[float, float]],
                        width_px: int,
                        height_px: int) -> np.ndarray:
@@ -70,18 +54,14 @@ def _rasterize_contour(pts_px: List[Tuple[float, float]],
     if len(pts_px) < 3:
         return mask
 
-    xs = [p[0] for p in pts_px]
     ys = [p[1] for p in pts_px]
-    min_x = max(0, int(min(xs)))
-    max_x = min(width_px - 1, int(max(xs)))
-    min_y = max(0, int(min(ys)))
-    max_y = min(height_px - 1, int(max(ys)))
+    xs = [p[0] for p in pts_px]
 
-    # Amostragem com ponto-em-polígono (contornos podem ser concavos)
-    for py in range(min_y, max_y + 1):
-        for px in range(min_x, max_x + 1):
-            if _point_in_polygon(px + 0.5, py + 0.5, pts_px):
-                mask[py, px] = True
+    try:
+        rr, cc = sk_polygon(ys, xs, shape=(height_px, width_px))
+        mask[rr, cc] = True
+    except Exception:
+        pass
 
     return mask
 
