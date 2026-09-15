@@ -847,6 +847,13 @@ def register_phase2_providers():
     return True
 
 
+# Auto-registro Fase 1 ao importar
+if __name__ != "__main__":
+    try:
+        register_phase1_providers()
+    except Exception as e:
+        print(f"[CAPABILITY_SEAMS] Erro no auto-registro Fase 1: {e}")
+
 # Auto-registro Fase 2 ao importar
 if __name__ != "__main__":
     try:
