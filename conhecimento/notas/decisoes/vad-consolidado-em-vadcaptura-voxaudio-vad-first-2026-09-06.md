@@ -1,5 +1,5 @@
 ---
-tags: [2026, decisao, entrada, nativa, opencode, taxa]
+tags: [2026, decisao, nativa, opencode, talk, taxa]
 aliases: [VAD consolidado em vad_captura + vox_audio VAD-first (2026-0]
 date: 2026-09-06
 ---

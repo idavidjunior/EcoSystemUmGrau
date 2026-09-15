@@ -1,5 +1,5 @@
 ---
-tags: [decisao, fonte, multi, opencode, reco, source]
+tags: [decisao, jef, multi, opencode, reco, source]
 aliases: [Respostas do Usuário sobre Interface de Bordado]
 date: 2026-09-10
 ---

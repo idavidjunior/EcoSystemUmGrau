@@ -1,5 +1,5 @@
 ---
-tags: [opencode, padrao, progressivo, todo, tts, áudio]
+tags: [fala, opencode, padrao, progressivo, todo, áudio]
 aliases: [voz fluida streaming bargein]
 date: 2026-09-10
 ---

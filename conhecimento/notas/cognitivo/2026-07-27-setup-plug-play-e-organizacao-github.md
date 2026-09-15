@@ -1160,6 +1160,23 @@ Rodou `python tests/test_integration.py` no `ler-runtime/`.
 - patch_flutter_orchestrator_final.py: 2 marcadores
 - test_imports.py: 2 marcadores
 - test_smo
+
+## Marcadores encontrados
+- server.py: 18 marcadores
+- ws_server.py: 1 marcadores
+- test_ia_chat.py: 1 marcadores
+- test_seguranca.py: 3 marcadores
+- ws_broadcast.py: 2 marcadores
+- run_suite.py: 10 marcadores
+- core.py: 41 marcadores
+- universal_bridge.py: 3 marcadores
+- bridge_resiliencia.py: 11 marcadores
+- app.py: 8 marcadores
+- checklist.py: 4 marcadores
+- knowledge_base.py: 4 marcadores
+- __init__.py: 72 marcadores
+- fix_encoding_and_build.py: 12 marcadores
+- patch_flutter_orchestrator_fin
 ## Conexoes
 
 - [[cluster-hub-ecossistema]]

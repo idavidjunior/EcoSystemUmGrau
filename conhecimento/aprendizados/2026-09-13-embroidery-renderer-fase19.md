@@ -54,3 +54,11 @@ impacto: Suite 12/12 PASSED; demo CLI gera imagem 406x366px correta.
 - O teste de underlay antigo era malformado: o "main" tinha passos de 40mm, então
   a heurística não detectava joelho → split=0 → imagens iguais. Path de teste:
   underlay com stitches longos (~10mm) + main com zigue-zague curto (~2mm).
+
+## Conexoes
+
+- [[testes-cobertura-de-código-como-métrica-o-que-ela-mostra-e-o]]
+- [[testes-mocks-fakes-e-stubs-e-quando-evitar-mockar]]
+- [[testes-pirâmide-de-testes-e-o-que-testar-em-cada-camada]]
+- [[testes-tdd-e-quando-ele-compensa]]
+- [[testes-testes-de-contrato-e-testes-de-api]]
