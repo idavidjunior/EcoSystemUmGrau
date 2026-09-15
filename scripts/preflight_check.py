@@ -448,8 +448,28 @@ def run():
     except Exception as e:
         check('JSON sanitization', False, str(e)[:200])
 
-    # 9. Voz Guarda (fixed temp audio paths regression)
-    print('\n[9] Voz Guarda (temp audio paths)')
+    # 9. Capability Definitions Validation (Capability Seams gate)
+    print('\n[9] Capability Definitions (Capability Seams gate)')
+    try:
+        # Adiciona BASE ao path para import (scripts é package)
+        sys.path.insert(0, BASE)
+        from scripts.capability_seams.providers_phase1 import validate_capability_definitions
+        ok, errors = validate_capability_definitions()
+        if ok:
+            check('Capability Definitions (3 seams Fase 1)', True)
+        else:
+            check('Capability Definitions', False, f'{len(errors)} erro(s): {"; ".join(errors)}')
+    except ImportError as e:
+        check('Capability Definitions', False, f'módulo capability_seams não disponível: {e}')
+    except Exception as e:
+        check('Capability Definitions', False, str(e)[:200])
+    finally:
+        # Remove do path após uso
+        if BASE in sys.path:
+            sys.path.remove(BASE)
+
+    # 10. Voz Guarda (fixed temp audio paths regression)
+    print('\n[10] Voz Guarda (temp audio paths)')
     try:
         r = sp.run([sys.executable, os.path.join(BASE, 'scripts', 'voz_guarda.py'), '--check'],
                    capture_output=True, text=True, timeout=60, cwd=BASE)
@@ -474,8 +494,8 @@ def run():
     except Exception as e:
         check('Voz Guarda', False, str(e)[:200])
 
-    # 10. Integridade de dados (mojibake/truncamento em JSON de conhecimento)
-    print('\n[10] Integridade de dados (mojibake/truncamento)')
+    # 11. Integridade de dados (mojibake/truncamento em JSON de conhecimento)
+    print('\n[11] Integridade de dados (mojibake/truncamento)')
     try:
         r = sp.run([sys.executable, os.path.join(BASE, 'scripts', 'integrity_guard.py'), '--check'],
                    capture_output=True, text=True, timeout=60, cwd=BASE)
