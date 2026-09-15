@@ -1,10 +1,43 @@
 {
   "mission_id": "20260915_061515",
   "state": {
-    "status": "active",
-    "goal": "Query por Confidence Level. Adicionar parâmetro min_confidence ao search do knowledge_graph | Atualizar BM25 para suportar filtro de confiança | Testar busca com min_confidence (respete: ['scripts/kno",
-    "started_at": "2026-09-15T06:15:15.460702"
+    "status": "max_iterations",
+    "completed_at": "2026-09-15T06:17:04.782517",
+    "report": {
+      "status": "max_iterations",
+      "mission_id": "20260915_061515",
+      "version": "2.0",
+      "elapsed_seconds": 109.2219169139862,
+      "iterations": 100,
+      "steps": {
+        "total": 5,
+        "completed": 3,
+        "failed": 0
+      },
+      "learning": {
+        "total_learned_rules": 1,
+        "total_successes": 820,
+        "total_failures": 3,
+        "total_tools_tracked": 2,
+        "total_arch_patterns": 0,
+        "total_prev_missions": 0,
+        "success_rate": 99.6
+      },
+      "domain": "python",
+      "complexity": 5,
+      "security": {
+        "violations": [],
+        "total_violations": 0,
+        "safe": true
+      },
+      "_meta": {
+        "id": "20260915_061704_final_max_iterations",
+        "timestamp": "20260915_061704",
+        "label": "final_max_iterations",
+        "version": "2.0"
+      }
+    }
   },
-  "updated_at": "2026-09-15T06:15:15.460702",
+  "updated_at": "2026-09-15T06:17:04.782517",
   "version": "2.0"
 }
