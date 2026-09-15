@@ -4,7 +4,7 @@ versao: 0.1.0
 status: proposta
 componente: .
 tags: [ler, goal-analysis]
-data: 2026-09-09
+data: 2026-09-15
 ---
 
 # Spec — goal-depth-check-adicionar-check-depth-ao-runtime-auditor-py
@@ -16,7 +16,7 @@ data: 2026-09-09
 depth check. adicionar check_depth() ao runtime_auditor.py | validar que grafo tem entidades mínimas antes de sintetizar | validar que boundaries têm sub-boundaries | reportar issues[] quando profundidade é insuficiente (respete: ['scripts/runtime_auditor.py'])
 
 ---
-set: 2026-09-09t14:14:03.969752
+set: 2026-09-15t06:10:04.170573
 
 ## Requisitos
 
