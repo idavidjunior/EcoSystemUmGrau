@@ -4,7 +4,7 @@ versao: 0.1.0
 status: proposta
 componente: .
 tags: [ler, goal-analysis]
-data: 2026-09-09
+data: 2026-09-15
 ---
 
 # Spec — goal-aprendizado-com-confidence-tracking-adicionar-campo-con
@@ -16,7 +16,7 @@ data: 2026-09-09
 aprendizado com confidence tracking. adicionar campo confidence em aprendizados | adicionar campo source_evidence[] em aprendizados | atualizar learning_engine para aceitar confidence (respete: ['scripts/learning_engine.py'])
 
 ---
-set: 2026-09-09t14:20:23.778300
+set: 2026-09-15t06:12:34.626594
 
 ## Requisitos
 
