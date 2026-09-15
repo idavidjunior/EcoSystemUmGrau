@@ -7,7 +7,7 @@ Browser UI (Real-time WebSocket). Adicionar WebSocket server ao widget EcOW | Im
 ---
 Set: 2026-09-15T06:07:47.018398
 
-**Created:** 2026-09-15T06:08:20.522970
+**Created:** 2026-09-15T06:08:30.477731
 
 **Total Steps:** 5
 
