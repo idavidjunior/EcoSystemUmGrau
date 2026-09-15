@@ -1,19 +1,15 @@
 {
   "tools": {
     "opencode": {
-      "total_calls": 791,
-      "successes": 791,
+      "total_calls": 795,
+      "successes": 795,
       "failures": 0,
-      "total_duration": 2471.9339401721954,
+      "total_duration": 2477.7359907627106,
       "total_cost": 0.0,
-      "avg_duration": 3.125,
+      "avg_duration": 3.117,
       "avg_cost": 0.0,
       "success_rate": 100.0,
       "latency_samples": [
-        0.975,
-        0.727,
-        0.003,
-        1.485,
         22.648,
         2.387,
         0.91,
@@ -109,16 +105,20 @@
         3.627,
         1.822,
         0.005,
-        0.022
+        0.022,
+        4.453,
+        1.33,
+        0.003,
+        0.017
       ]
     },
     "python": {
-      "total_calls": 23,
-      "successes": 23,
+      "total_calls": 24,
+      "successes": 24,
       "failures": 0,
-      "total_duration": 181.3417317867279,
+      "total_duration": 181.3520827293396,
       "total_cost": 0.0,
-      "avg_duration": 7.884,
+      "avg_duration": 7.556,
       "avg_cost": 0.0,
       "success_rate": 100.0,
       "latency_samples": [
@@ -144,7 +144,8 @@
         0.01,
         0.008,
         0.01,
-        0.014
+        0.014,
+        0.01
       ]
     }
   }
