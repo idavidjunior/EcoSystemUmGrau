@@ -100474,6 +100474,13 @@
           "summary": "entrega aprovada no nivel medio | 0 bloqueio(s), 20 alerta(s)",
           "confidence": 0.3,
           "source_type": "rascunho"
+        },
+        {
+          "em": "2026-09-15T06:14:06.100349",
+          "task": "Preflight Etico: APROVADO",
+          "summary": "entrega aprovada no nivel medio | 0 bloqueio(s), 20 alerta(s)",
+          "confidence": 0.3,
+          "source_type": "rascunho"
         }
       ],
       "epistemic_status": "OBSERVED",
@@ -100483,9 +100490,9 @@
     "confidence": 1.0,
     "source_type": "rascunho",
     "source_anchors": [],
-    "access_count": 13826,
+    "access_count": 13827,
     "created_at": "2026-09-05T09:13:34.454044",
-    "last_accessed": "2026-09-15T06:09:45.492528",
+    "last_accessed": "2026-09-15T06:14:06.100349",
     "source_refs": [
       {
         "id": "kernighan-ritchie",
@@ -114148,6 +114155,13 @@
           "summary": "Exit 1. ",
           "confidence": 0.3,
           "source_type": "inferido"
+        },
+        {
+          "em": "2026-09-15T06:15:13.094561",
+          "task": "Falha na execução: Aprendizado com Confidence Tracking",
+          "summary": "Exit 1. ",
+          "confidence": 0.3,
+          "source_type": "inferido"
         }
       ]
     },
@@ -114155,9 +114169,9 @@
     "confidence": 0.3,
     "source_type": "inferido",
     "source_anchors": [],
-    "access_count": 6,
+    "access_count": 7,
     "created_at": "2026-09-05T00:22:40.129589",
-    "last_accessed": "2026-09-07T14:33:37.362085",
+    "last_accessed": "2026-09-15T06:15:13.094561",
     "source_refs": [
       {
         "id": "dragon-book",
