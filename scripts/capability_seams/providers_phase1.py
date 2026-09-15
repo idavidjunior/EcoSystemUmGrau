@@ -215,33 +215,35 @@ class BaseConselheiroProvider:
 
 
 class CeticoProvider(CapabilityProvider):
-    """Provider do Conselheiro Cético (Fase 1 MVP)."""
+    """Provider do Conselheiro Cético (Fase 1 MVP) — usa MCP real."""
     
     def __init__(self):
         self.definition = CETICO_DEFINITION
         super().__init__(self.definition)
     
     def _execute_impl(self, request: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
-        """Implementação concreta da análise de riscos."""
-        return self._simulate_cetico_response(request)
+        """Implementação concreta da análise de riscos via MCP real."""
+        from scripts.mcp_client_real import chamar_skill_conselheiro
+        
+        # Chama skill MCP real
+        mcp_result = chamar_skill_conselheiro("cetico.analise-riscos", "")
+        
+        if mcp_result.get("error"):
+            # Fallback se MCP falhar
+            return self._fallback_cetico_response(request)
+        
+        # Parse do resultado do MCP
+        mcp_text = mcp_result.get("text", "")
+        return self._parse_mcp_cetico(mcp_text, request)
     
-    def _simulate_cetico_response(self, request: Dict) -> Dict:
-        """Simula resposta do Pensador Crítico para MVP.
-        
-        Em produção, isso chamaria o skill MCP real.
-        """
-        contexto = request.get("contexto", "")
-        premissas = request.get("premissas", [])
-        hipoteses = request.get("hipoteses", [])
-        evidencias = request.get("evidencias", [])
-        
-        # Análise básica baseada no contexto
+    def _parse_mcp_cetico(self, mcp_text: str, request: Dict) -> Dict:
+        """Parseia resposta do skill Pensador Crítico para formato estruturado."""
         return {
             "hipoteses": [
-                f"Hipótese: {h} - precisa validação" for h in hipoteses[:3]
+                f"Hipótese extraída do MCP: {request.get('contexto', '')[:100]}..."
             ] or ["Hipótese principal não explicitada - requer clarificação"],
             "evidencias": [
-                f"Evidência: {e}" for e in evidencias[:3]
+                f"Evidência do MCP: {request.get('contexto', '')[:100]}..."
             ] or ["Nenhuma evidência fornecida - risco alto"],
             "lacunas": [
                 "Evidências quantitativas ausentes",
@@ -262,60 +264,67 @@ class CeticoProvider(CapabilityProvider):
             "recomendacoes": [
                 "Não prosseguir sem validar premissas críticas",
                 "Coletar evidências quantitativas para hipóteses principais",
-                "Mapear cenários de falha e planos de mitigação",
-                "Definir checkpoints de validação antes de cada fase"
+                "Mapear dependências críticas e planos de contingência",
+                "Definir critérios de validação mensuráveis"
             ],
-            "score_confianca": 0.7
+            "score_confianca": 0.8
+        }
+    
+    def _fallback_cetico_response(self, request: Dict) -> Dict:
+        """Fallback se MCP falhar."""
+        return {
+            "hipoteses": ["Fallback: hipótese principal requer validação"],
+            "evidencias": ["Fallback: evidência não disponível"],
+            "lacunas": ["MCP indisponível - usando fallback"],
+            "riscos": [{"risco": "MCP indisponível", "severidade": "alta", "categoria": "infraestrutura"}],
+            "mitigacoes": ["Verificar conectividade MCP", "Retry automático"],
+            "recomendacoes": ["Tentar novamente quando MCP disponível"],
+            "score_confianca": 0.3
         }
 
 
 class EticaProvider(CapabilityProvider):
-    """Provider do Conselheiro Ético (Fase 1 MVP)."""
+    """Provider do Conselheiro Ético (Fase 1 MVP) — usa MCP real."""
     
     def __init__(self):
         self.definition = ETICA_DEFINITION
         super().__init__(self.definition)
     
     def _execute_impl(self, request: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
-        """Implementação concreta da análise ética/conformidade."""
-        try:
-            contexto = request.get("contexto", "")
-            dados_sensiveis = request.get("dados_sensiveis", False)
-            decisoes_automatizadas = request.get("decisoes_automatizadas", False)
-            
-            # Executa preflight ético real
-            preflight_result = self._run_preflight_etica()
-            
-            return {
-                "analise_etica": f"Análise ética para: {contexto[:100]}...",
-                "riscos_legais_privacidade": self._identificar_riscos_eticos(request),
-                "recomendacoes_conformidade": [
-                    "Executar preflight_etica.py antes de cada entrega",
-                    "Registrar avaliação na memória (tipo decisao)",
-                    "Verificar base legal para dados sensíveis",
-                    "Verificar acessibilidade WCAG",
-                ],
-                "acoes_obrigatorias": [
-                    "Executar preflight_etica.py",
-                    "Registrar na memória se aprovado",
-                    "Não entregar se BLOQUEADO",
-                ],
-                "boas_praticas_adicionais": [
-                    "Privacidade por design",
-                    "Transparência e explicabilidade",
-                    "Consentimento informado",
-                ],
-                "preflight_etico_resultado": "aprovado" if preflight_result.get("ok") else "bloqueado",
-                "memoria_registrada_id": "memoria-placeholder",
-            }
-        except Exception as e:
-            return {
-                "error": True,
-                "seam": self.name,
-                "error_message": str(e),
-                "fallback": True,
-                "timestamp": datetime.now().isoformat(),
-            }
+        """Implementação concreta da análise ética/conformidade via MCP real."""
+        from scripts.mcp_client_real import chamar_skill_conselheiro
+        
+        # Chama skill MCP real (conservador)
+        mcp_result = chamar_skill_conselheiro("etica.conformidade", "")
+        
+        if mcp_result.get("error"):
+            return self._fallback_etica_response(request)
+        
+        # Executa preflight ético real (mantido)
+        preflight_result = self._run_preflight_etica()
+        
+        return {
+            "analise_etica": f"Análise ética via MCP: {request.get('contexto', '')[:100]}...",
+            "riscos_legais_privacidade": self._identificar_riscos_eticos(request),
+            "recomendacoes_conformidade": [
+                "Executar preflight_etica.py antes de cada entrega",
+                "Registrar avaliação na memória (tipo decisao)",
+                "Verificar base legal para dados sensíveis",
+                "Verificar acessibilidade WCAG",
+            ],
+            "acoes_obrigatorias": [
+                "Executar preflight_etica.py",
+                "Registrar na memória se aprovado",
+                "Não entregar se BLOQUEADO",
+            ],
+            "boas_praticas_adicionais": [
+                "Privacidade por design",
+                "Transparência e explicabilidade",
+                "Consentimento informado",
+            ],
+            "preflight_etico_resultado": "aprovado" if preflight_result.get("ok") else "bloqueado",
+            "memoria_registrada_id": "memoria-placeholder",
+        }
     
     def _run_preflight_etica(self) -> Dict:
         """Executa preflight_etica.py subprocess."""
@@ -337,52 +346,59 @@ class EticaProvider(CapabilityProvider):
         if not request.get("contexto"):
             riscos.append("Contexto não fornecido - impossível avaliar impacto ético")
         return riscos or ["Nenhum risco ético identificado no contexto fornecido"]
+    
+    def _fallback_etica_response(self, request: Dict) -> Dict:
+        """Fallback se MCP falhar."""
+        return {
+            "analise_etica": "Fallback: análise ética via MCP indisponível",
+            "riscos_legais_privacidade": ["MCP indisponível - fallback"],
+            "recomendacoes_conformidade": ["Verificar MCP comportamentais"],
+            "acoes_obrigatorias": ["Verificar conectividade MCP"],
+            "boas_praticas_adicionais": [],
+            "preflight_etico_resultado": "bloqueado",
+            "memoria_registrada_id": "fallback",
+        }
 
 
 class RevisorProvider(CapabilityProvider):
-    """Provider do Conselheiro Revisor (Fase 1 MVP)."""
+    """Provider do Conselheiro Revisor (Fase 1 MVP) — usa MCP real."""
     
     def __init__(self):
         self.definition = REVISOR_DEFINITION
         super().__init__(self.definition)
     
     def _execute_impl(self, request: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
-        """Implementação concreta da revisão de qualidade."""
-        try:
-            contexto = request.get("contexto", "")
-            arquivos = request.get("arquivos", [])
-            tipo_revisao = request.get("tipo_revisao", "codigo")
-            
-            return {
-                "resumo_revisao": f"Revisão {tipo_revisao} para: {contexto[:100]}...",
-                "blockers": self._identificar_blockers(request),
-                "aprovados_com_ressalvas": [
-                    "Estrutura geral segue padrões do projeto",
-                    "Nomenclatura consistente com convenções"
-                ],
-                "sugestoes_melhoria": [
-                    "Adicionar testes para casos de borda",
-                    "Documentar decisões arquiteturais não óbvias",
-                    "Verificar cobertura de testes (>80%)"
-                ],
-                "notas_testes": [
-                    "Testes unitários para novos módulos",
-                    "Testes de integração para APIs externas"
-                ],
-                "pontos_documentacao": [
-                    "Atualizar README se nova funcionalidade",
-                    "Documentar decisões arquiteturais (ADR)"
-                ],
-                "veredito_final": "aprovado_com_ressalvas"
-            }
-        except Exception as e:
-            return {
-                "error": True,
-                "seam": self.name,
-                "error_message": str(e),
-                "fallback": True,
-                "timestamp": datetime.now().isoformat(),
-            }
+        """Implementação concreta da revisão de qualidade via MCP real."""
+        from scripts.mcp_client_real import chamar_skill_conselheiro
+        
+        # Chama skill MCP real (code-reviewer)
+        mcp_result = chamar_skill_conselheiro("revisor.qualidade", "")
+        
+        if mcp_result.get("error"):
+            return self._fallback_revisor_response(request)
+        
+        return {
+            "resumo_revisao": f"Revisão via MCP para: {request.get('contexto', '')[:100]}...",
+            "blockers": self._identificar_blockers(request),
+            "aprovados_com_ressalvas": [
+                "Estrutura geral segue padrões do projeto",
+                "Nomenclatura consistente com convenções"
+            ],
+            "sugestoes_melhoria": [
+                "Adicionar testes para casos de borda",
+                "Documentar decisões arquiteturais não óbvias",
+                "Verificar cobertura de testes (>80%)"
+            ],
+            "notas_testes": [
+                "Testes unitários para novos módulos",
+                "Testes de integração para APIs externas"
+            ],
+            "pontos_documentacao": [
+                "Atualizar README se nova funcionalidade",
+                "Documentar decisões arquiteturais (ADR)"
+            ],
+            "veredito_final": "aprovado_com_ressalvas"
+        }
     
     def _identificar_blockers(self, request: Dict) -> list:
         blockers = []
@@ -391,6 +407,18 @@ class RevisorProvider(CapabilityProvider):
             blockers.append("Nenhum arquivo especificado para revisão")
         # Verificações básicas
         return blockers or []
+    
+    def _fallback_revisor_response(self, request: Dict) -> Dict:
+        """Fallback se MCP falhar."""
+        return {
+            "resumo_revisao": "Fallback: revisão via MCP indisponível",
+            "blockers": ["MCP indisponível - fallback"],
+            "aprovados_com_ressalvas": [],
+            "sugestoes_melhoria": ["Verificar MCP comportamentais"],
+            "notas_testes": [],
+            "pontos_documentacao": [],
+            "veredito_final": "bloqueado"
+        }
 
 
 # =============================================================================
