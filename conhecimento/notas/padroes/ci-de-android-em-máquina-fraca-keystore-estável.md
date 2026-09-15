@@ -1,5 +1,5 @@
 ---
-tags: [assinado, chave, fonte, opencode, padrao, ram]
+tags: [4gb, chave, fonte, opencode, padrao, ram]
 aliases: [CI de Android em máquina fraca + keystore estável]
 date: 2026-08-23
 ---

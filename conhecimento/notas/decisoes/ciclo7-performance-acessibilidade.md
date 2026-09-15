@@ -1,5 +1,5 @@
 ---
-tags: [clicável, contraste, decisao, opencode, tamanho, texto]
+tags: [campo, clicável, decisao, opencode, tamanho, texto]
 aliases: [ciclo7 performance acessibilidade]
 date: 2026-09-10
 ---

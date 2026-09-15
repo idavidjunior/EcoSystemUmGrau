@@ -1,5 +1,5 @@
 ---
-tags: [jarvis, longo, opencodeopencode, padrao, selecao, tts]
+tags: [jarvis, longo, opencodeopencode, padrao, texto, tts]
 aliases: [Narracao seletiva por relevancia no narrador Edge]
 date: 2026-08-28
 ---
