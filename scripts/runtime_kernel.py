@@ -37,6 +37,13 @@ try:
 except ImportError:
     LLM_ROUTER_AVAILABLE = False
 
+try:
+    from response_normalizer import normalizar_resposta as _normalizar_resposta
+    RESPONSE_NORMALIZER_AVAILABLE = True
+except ImportError:
+    _normalizar_resposta = None
+    RESPONSE_NORMALIZER_AVAILABLE = False
+
 # Sequência obrigatória de execução (nenhuma etapa pode ser pulada)
 PIPELINE = [
     'Bootloader (restaura estado + verifica integridade)',
@@ -570,6 +577,58 @@ class Kernel:
             return False, failures
         return True, ['todas as regras absolutas respeitadas']
 
+    def normalize_response(self, text, goal='', tipo=None):
+        """Normaliza a resposta final com o ResponseNormalizer (fail-soft).
+
+        Reutiliza scripts/response_normalizer.py (camada única da SPEC 1.0).
+        Nunca derruba a resposta: se o normalizador estiver indisponível ou
+        falhar, retorna o texto original com um aviso.
+
+        Returns:
+            dict com 'texto' (normalizado ou original), 'normalizado' (bool),
+            'relatorio' (dict do normalizador ou None), 'falha' (str ou None).
+        """
+        texto_final = text or ''
+        if not RESPONSE_NORMALIZER_AVAILABLE or _normalizar_resposta is None:
+            return {'texto': texto_final, 'normalizado': False,
+                    'relatorio': None,
+                    'falha': 'ResponseNormalizer indisponível'}
+        try:
+            relatorio = _normalizar_resposta(texto_final, tipo=tipo)
+            novo = (relatorio or {}).get('texto', texto_final)
+            return {'texto': novo, 'normalizado': novo != texto_final,
+                    'relatorio': relatorio, 'falha': None}
+        except Exception as e:
+            return {'texto': texto_final, 'normalizado': False,
+                    'relatorio': None, 'falha': str(e)}
+
+    def concluir_resposta(self, text, goal='', tipo=None):
+        """Etapa 'Resposta Final': valida a resposta e aplica normalização.
+
+        Pipeline: contrato de saída (validate_output) -> normalização.
+        Retorna contrato completo de saída conforme SAIDA_CONTRATO.
+        """
+        ok, failures = self.validate_output(text, goal)
+        normalizacao = self.normalize_response(text, goal, tipo=tipo)
+        resultado = {
+            'resultado': normalizacao.get('texto', text or ''),
+            'justificativa': 'Resposta validada contra as regras absolutas do Kernel',
+            'verificacoes': failures if failures else ['validate_output OK'],
+            'pendencias': [],
+            'proximos_passos': [],
+            'validacao_ok': ok,
+            'normalizacao': {
+                'aplicada': normalizacao.get('normalizado', False),
+                'disponivel': RESPONSE_NORMALIZER_AVAILABLE,
+                'falha': normalizacao.get('falha'),
+                'tipo': normalizacao.get('relatorio', {}).get('tipo') if normalizacao.get('relatorio') else None,
+            },
+        }
+        if normalizacao.get('falha'):
+            resultado['pendencias'].append(
+                f'Normalizacao indisponivel: {normalizacao["falha"]}')
+        return resultado
+
     def render_status(self):
         lines = ['=== KERNEL PERMANENTE ===', f'Status: {self.status}',
                  f'Regras absolutas: {len(self.rules)}']
@@ -984,6 +1043,16 @@ def main():
     p_check = sub.add_parser('check')
     p_check.add_argument('texto', nargs='*', default=[])
 
+    p_norm = sub.add_parser('normalize')
+    p_norm.add_argument('texto', nargs='*', default=[])
+    p_norm.add_argument('--json', action='store_true', help='Saída em JSON')
+    p_norm.add_argument('--tipo', default=None, help='Tipo da interação (erro, implementacao, ...)')
+
+    p_resp = sub.add_parser('resposta')
+    p_resp.add_argument('texto', nargs='*', default=[])
+    p_resp.add_argument('--json', action='store_true', help='Saída em JSON')
+    p_resp.add_argument('--tipo', default=None, help='Tipo da interação (erro, implementacao, ...)')
+
     # Novos comandos Fase 1
     p_complexity = sub.add_parser('complexity')
     p_complexity.add_argument('pedido', nargs='*', default=[])
@@ -1046,6 +1115,24 @@ def main():
             for f in failures:
                 print(f'  - {f}')
             sys.exit(1)
+    elif cmd == 'normalize':
+        text = ' '.join(args.texto)
+        result = kernel.normalize_response(text, tipo=getattr(args, 'tipo', None))
+        if args.json:
+            print(json.dumps(result, ensure_ascii=False))
+        else:
+            print('NORMALIZADO' if result['normalizado'] else 'INALTERADO', f"({result['falha'] or 'sem falha'})")
+            print(result['texto'])
+    elif cmd == 'resposta':
+        text = ' '.join(args.texto)
+        result = kernel.concluir_resposta(text, tipo=getattr(args, 'tipo', None))
+        if args.json:
+            print(json.dumps(result, ensure_ascii=False))
+        else:
+            print(f"Validacao: {'OK' if result['validacao_ok'] else 'FALHOU'}")
+            print(f"Normalizacao: {'aplicada' if result['normalizacao']['aplicada'] else 'nao aplicada'}")
+            print('---')
+            print(result['resultado'])
     elif cmd == 'complexity':
         if not args.pedido:
             print('Uso: kernel complexity "<pedido>" [--json]')

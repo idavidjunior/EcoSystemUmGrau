@@ -74,6 +74,14 @@ PREAMBULOS = re.compile(
     re.IGNORECASE,
 )
 
+# Preâmbulo artificial no início da frase (só enchimentos pontuados, em cadeia)
+INICIO_ARTIFICIAL = re.compile(
+    r'^\s*(?:claro!|claro\.|claro que sim!?|com certeza!?|certo!|certo\.|'
+    r'perfeito!|vou te ajudar!|vou ajudar!|deixa eu ver!|deixa eu analisar!|'
+    r'deixa eu pensar!|ok!|ok\.|sem problemas!|vamos lá!|vamos logo!)\s*',
+    re.IGNORECASE,
+)
+
 
 def detectar_tipo(texto: str) -> str:
     """Infere o tipo da interação por heurísticas simples."""
@@ -110,6 +118,18 @@ def remover_redundancia(texto: str) -> tuple:
     acoes = []
     # Remove linhas úteis de preâmbulo ('Claro!', 'Vou ajudar.', etc.)
     linhas = [PREAMBULOS.sub("", ln).rstrip() for ln in texto.splitlines()]
+    # Remove preâmbulos artificiais isolados no início da primeira linha (em cadeia)
+    if linhas:
+        primeira = linhas[0]
+        while INICIO_ARTIFICIAL.match(primeira):
+            nova = INICIO_ARTIFICIAL.sub("", primeira, count=1).strip()
+            if nova == primeira or not nova:
+                break
+            primeira = nova
+        if primeira != linhas[0]:
+            linhas[0] = primeira
+            acoes.append("preambulo artificial removido")
+            return re.sub(r"[ \t]{2,}", " ", "\n".join(linhas).strip()), acoes
     # Remove linhas vazias duplicadas (máx 1)
     limpo = []
     vazio_pre = False
