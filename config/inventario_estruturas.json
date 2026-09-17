@@ -1,6 +1,6 @@
 {
   "versao": "1.1",
-  "atualizado_em": "2026-09-17T09:59:14.685215",
+  "atualizado_em": "2026-09-17T13:34:41",
   "descricao": "Inventário oficial de estruturas ativas do EcoSystemUmGrau. Consulte antes de criar qualquer estrutura nova (cláusula anti-duplicação).",
   "agentes": [
     {
@@ -1224,6 +1224,16 @@
       "id": "capability_seams_providers_phase1",
       "arquivo": "scripts/capability_seams/providers_phase1.py",
       "funcao": "Providers conselheiros Fase 1 + validacao de capability definitions"
+    },
+    {
+      "id": "response_normalizer",
+      "arquivo": "scripts/response_normalizer.py",
+      "funcao": "Camada final de normalizacao de resposta (SPEC 1.0): tipo de interacao, complexidade, estrutura adaptativa, evidencia, redundancia; reusa validar_idioma/validar_resposta/validar_bajulacao"
+    },
+    {
+      "id": "validar_bajulacao",
+      "arquivo": "scripts/validar_bajulacao.py",
+      "funcao": "Detecta bajulacao/sycophancy em respostas do agente; restaurado do _legado e agora importado pelo response_normalizer"
     }
   ],
   "scripts_android": [
