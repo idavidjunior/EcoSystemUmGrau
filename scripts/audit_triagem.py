@@ -187,11 +187,84 @@ def mover_para_legado(orfaos):
     return movidos
 
 
+def gerar_mapa_dependencias(saida=None):
+    """Gera mapa de dependências scripts -> referenciadores (grafo direcionado).
+
+    Reutiliza collect_reference_map (mesma heurística dos órfãos) e produz
+    um JSON com nós (scripts) e arestas (quem referenciado por quem). É o
+    espelho positivo do espelho reverso do inventory_manager: aqui vemos a
+    malha viva de acoplamento entre os scripts do ecossistema.
+
+    Escopo restrito aos diretórios vivos do eco (SCRIPTS + config + mcp) para
+    que a varredura seja rápida e fiel (sub-repos e _legado ficam de fora)."""
+    import time
+    escopos = []
+    for sub in ("scripts", "config", "mcp"):
+        p = os.path.join(BASE, sub)
+        if os.path.isdir(p):
+            escopos.append(p)
+    script_names = [
+        f for f in sorted(os.listdir(SCRIPTS))
+        if os.path.isfile(os.path.join(SCRIPTS, f)) and f != "_legado"
+    ]
+    refs = {s: [] for s in script_names}
+    EXPLICITOS = {"scripts/_legado", "scripts/__pycache__"}
+    for raiz in escopos:
+        for dirpath, dirnames, filenames in os.walk(raiz):
+            dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
+            for fn in filenames:
+                if fn in LOG_NAMES:
+                    continue
+                ext = os.path.splitext(fn)[1].lower()
+                if ext in SKIP_SUFFIX:
+                    continue
+                fp = os.path.join(dirpath, fn)
+                try:
+                    if os.path.getsize(fp) > 4_000_000:
+                        continue
+                    with open(fp, encoding="utf-8", errors="replace") as fh:
+                        txt = fh.read()
+                except Exception:
+                    continue
+                base = os.path.basename(fp)
+                rel = os.path.relpath(fp, BASE).replace("\\", "/")
+                if any(d in rel for d in EXPLICITOS):
+                    continue
+                for s in script_names:
+                    if s in txt and base != s:
+                        refs[s].append(rel)
+    nos = []
+    arestas = []
+    for s in script_names:
+        uniq = sorted(set(refs[s]))
+        nos.append({"arquivo": s, "referenciadores": len(uniq), "tamanho": os.path.getsize(os.path.join(SCRIPTS, s))})
+        for r in uniq:
+            arestas.append({"alvo": s, "origem": r, "tipo": "referencia"})
+    mapa = {
+        "gerado_em": time.strftime("%Y-%m-%d %H:%M:%S"),
+        "total_nos": len(nos),
+        "total_arestas": len(arestas),
+        "modo": "scripts",
+        "nos": nos,
+        "arestas": arestas,
+    }
+    if saida:
+        with open(saida, "w", encoding="utf-8") as fh:
+            json.dump(mapa, fh, ensure_ascii=False, indent=2)
+    return mapa
+
+
 def main():
     parser = argparse.ArgumentParser(description="Triagem periódica de organização")
     parser.add_argument("--fix", action="store_true", help="move órfãos confirmados para _legado")
+    parser.add_argument("--deps", metavar="ARQUIVO", help="gera mapa de dependências de scripts em JSON")
     parser.add_argument("--text", action="store_true", help="saída legível")
     args = parser.parse_args()
+
+    if args.deps:
+        mapa = gerar_mapa_dependencias(args.deps)
+        print(json.dumps(mapa, ensure_ascii=False, indent=2))
+        return
 
     orfaos = find_orfans()
     artefatos = find_artefatos_git()

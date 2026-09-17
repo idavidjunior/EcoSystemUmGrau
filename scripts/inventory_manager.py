@@ -9,6 +9,7 @@ Uso:
   python scripts/inventory_manager.py remove --tipo agentes --id 00-novo-agente
   python scripts/inventory_manager.py verify                  # verifica integridade (arquivos existem)
   python scripts/inventory_manager.py sync                    # sincroniza com realidade do disco (scan)
+  python scripts/inventory_manager.py orphans                 # espelho reverso: detecta estruturas do inventario sumidas do disco
 """
 import json
 import sys
@@ -264,6 +265,64 @@ def sincronizar_disco() -> int:
         print('[OK] Inventário já reflete o disco (nenhuma estrutura nova)')
     return 0
 
+def detectar_sumidos() -> int:
+    """Espelho reverso: detecta estruturas do inventário que sumiram do disco.
+
+    O sync adiciona o que é novo no disco; este comando encontra o caminho
+    inverso — entradas do inventário cujos arquivos/diretórios não existem mais —
+    para que a descontinuação seja proposta e nunca conviva indefinidamente.
+    """
+    data = carregar()
+    sumidos = []
+
+    def verificar(caminho_rel: str, descricao: str, onde: str, id_item: str) -> None:
+        nonlocal sumidos
+        if caminho_rel.startswith('~'):
+            path = Path.home() / caminho_rel[2:]
+        else:
+            path = BASE / caminho_rel
+        if not path.exists():
+            sumidos.append({'onde': onde, 'id': id_item, 'arquivo': caminho_rel, 'descricao': descricao})
+
+    for ag in data.get('agentes', []):
+        verificar(ag['arquivo'], f"Agente {ag['id']}", 'agentes', ag['id'])
+    for sk in data.get('skills_opencode', []):
+        if sk.get('status') == 'externo_opencode':
+            continue
+        verificar(sk.get('diretorio', ''), f"Skill {sk['id']}", 'skills_opencode', sk['id'])
+    for mcp in data.get('mcp_servidores', []):
+        verificar(mcp['arquivo'], f"MCP Server {mcp['id']}", 'mcp_servidores', mcp['id'])
+    for sc in data.get('scripts_core', []):
+        verificar(sc.get('arquivo', ''), f"Script core {sc['id']}", 'scripts_core', sc['id'])
+    for cfg in data.get('configuracoes', []):
+        verificar(cfg['arquivo'], f"Config {cfg['id']}", 'configuracoes', cfg['id'])
+    for mem in data.get('memoria_persistente', []):
+        if 'arquivo' in mem:
+            verificar(mem['arquivo'], f"Memória {mem['id']}", 'memoria_persistente', mem['id'])
+        if 'diretorio' in mem:
+            verificar(mem['diretorio'], f"Dir memória {mem['id']}", 'memoria_persistente', mem['id'])
+    for rt in data.get('runtime_estado', []):
+        if 'arquivo' in rt:
+            verificar(rt['arquivo'], f"Runtime {rt['id']}", 'runtime_estado', rt['id'])
+        if 'diretorio' in rt:
+            verificar(rt['diretorio'], f"Dir runtime {rt['id']}", 'runtime_estado', rt['id'])
+    for doc in data.get('documentacao', []):
+        if 'arquivo' in doc:
+            verificar(doc['arquivo'], f"Doc {doc['id']}", 'documentacao', doc['id'])
+        if 'diretorio' in doc:
+            verificar(doc['diretorio'], f"Dir doc {doc['id']}", 'documentacao', doc['id'])
+
+    if not sumidos:
+        print('[OK] Inventário íntegro: nenhuma estrutura sumida do disco.')
+        return 0
+
+    print(f'[ORPHAN] {len(sumidos)} estrutura(s) no inventário sem arquivo no disco:')
+    for item in sumidos:
+        print(f'  [{item["onde"]}] {item["id"]} -> {item["arquivo"]} ({item["descricao"]})')
+    print('Use: python scripts/inventory_manager.py remove --tipo <onde> --id <id> para remover.')
+    return 1
+
+
 def main():
     if len(sys.argv) < 2:
         print(__doc__)
@@ -305,6 +364,9 @@ def main():
 
     elif cmd == 'sync':
         sys.exit(sincronizar_disco())
+
+    elif cmd in ('orphans', 'descontinuados'):
+        sys.exit(detectar_sumidos())
 
     else:
         print(f'[ERRO] Comando desconhecido: {cmd}')

@@ -519,6 +519,20 @@ $onTriage = {
             } else {
                 Write-Log "TRIAGEM: saida inesperada: $($out.Trim())"
             }
+            # Espelho reverso: estruturas do inventario que sumiram do disco
+            python "$ecoDir\scripts\inventory_manager.py" orphans 2>&1 | Out-Null
+            if ($LASTEXITCODE -eq 1) {
+                Write-Log "TRIAGEM: WARN inventario tem estruturas sumidas do disco (rodar inventory_manager.py orphans)"
+            }
+            # Mapa de dependencias dos scripts (atualiza runtime/dependencias_scripts.json)
+            python "$ecoDir\scripts\audit_triagem.py" --deps "$ecoDir\runtime\dependencias_scripts.json" 2>&1 | Out-Null
+            $depsJson = $null
+            if (Test-Path "$ecoDir\runtime\dependencias_scripts.json") {
+                try { $depsJson = Get-Content "$ecoDir\runtime\dependencias_scripts.json" -Raw | ConvertFrom-Json -ErrorAction Stop } catch {}
+            }
+            if ($depsJson) {
+                Write-Log "TRIAGEM: mapa de dependencias atualizado ($($depsJson.total_nos) nos / $($depsJson.total_arestas) arestas)"
+            }
         } catch { Write-Log "Triagem ignorada: $_" }
     }
 }

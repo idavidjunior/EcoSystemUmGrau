@@ -1,6 +1,6 @@
 {
   "versao": "1.1",
-  "atualizado_em": "2026-09-16T08:07:08.109355",
+  "atualizado_em": "2026-09-17T09:59:14.685215",
   "descricao": "Inventário oficial de estruturas ativas do EcoSystemUmGrau. Consulte antes de criar qualquer estrutura nova (cláusula anti-duplicação).",
   "agentes": [
     {
@@ -743,7 +743,7 @@
     {
       "id": "adherence_audit",
       "arquivo": "scripts/adherence_audit.py",
-      "funcao": "PENDENTE: descrever função"
+      "funcao": "Mide aderencia da LLM as clausulas petreas (gate, pt-BR, preflight, boot) via git log e preflight log; gera metricas com thresholds"
     },
     {
       "id": "adb-tailscale-connect",
@@ -793,7 +793,7 @@
     {
       "id": "architecture_integrity_monitor",
       "arquivo": "scripts/architecture_integrity_monitor.py",
-      "funcao": "PENDENTE: descrever função"
+      "funcao": "Verifica saude estrutural em 5 camadas (estrutura, sincronizacao, servicos, fluxo, limpeza); consumido pelo vigilante a cada 4h via --json"
     },
     {
       "id": "atividade_emit",
@@ -803,17 +803,17 @@
     {
       "id": "audit_eco",
       "arquivo": "scripts/audit_eco.py",
-      "funcao": "PENDENTE: descrever função"
+      "funcao": "Escaneamento amplo do ecossistema (servicos, integracoes, sintaxe, conhecimento); fonte unica da auditoria periodica (run_audit) usada por audit_runner e jarvis_bridge"
     },
     {
       "id": "audit_engine",
       "arquivo": "scripts/audit_engine.py",
-      "funcao": "PENDENTE: descrever função"
+      "funcao": "Trilha de evidencias estruturada por decisao; registra auditorias audiveis; importado por cognitive_core e runtime_boot"
     },
     {
       "id": "audit_runner",
       "arquivo": "scripts/audit_runner.py",
-      "funcao": "PENDENTE: descrever função"
+      "funcao": "Orquestra a auditoria periodica: executa audit_eco.run_audit e grava runtime/audit_result.json consumido pelo system_guardian"
     },
     {
       "id": "auto_evolution",
@@ -1028,7 +1028,7 @@
     {
       "id": "self_assessment_engine",
       "arquivo": "scripts/self_assessment_engine.py",
-      "funcao": "PENDENTE: descrever função"
+      "funcao": "Autoavaliacao continua: metricas, baselines, deteccao de drift e scorecard; importado por observability_reliability e jarvis_interface"
     },
     {
       "id": "setup-auto",
