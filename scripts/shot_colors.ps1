@@ -7,7 +7,7 @@ for ($y=0; $y -lt $h; $y+=$step) {
   for ($x=0; $x -lt $w; $x+=$step) {
     $px = $img.GetPixel($x, $y)
     $c = "{0:x2}{1:x2}{2:x2}" -f $px.R, $px.G, $px.B
-    $colors[$c] = ($colors[$c] ?? 0) + 1
+    if ($colors.ContainsKey($c)) { $colors[$c]++ } else { $colors[$c] = 1 }
   }
 }
 # top colors
@@ -15,5 +15,6 @@ $top = $colors.GetEnumerator() | Sort-Object Value -Descending | Select-Object -
 Write-Output ("pixels(sampled step=$step): w=$w h=$h total_amostrado=" + ($colors.Values | Measure-Object -Sum).Sum)
 Write-Output "Top cores:"
 foreach ($e in $top) {
-  Write-Output ("  $({0:x6} -f [int]0x$($e.Name))  -> $($e.Value)  (#$($e.Name))")
+  $hex = "{0:x6}" -f [int]("0x" + $e.Name)
+  Write-Output ("  $hex  -> $($e.Value)  (#$($e.Name))")
 }

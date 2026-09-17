@@ -356,7 +356,12 @@ function Invoke-RepoCommit {
         $msg = ''
         if ($UserMsg) { $msg = $UserMsg }
         else { $msg = "[gate] $MsgLabel - $(Get-Date -Format 'yyyy-MM-dd HH:mm')" }
+        # CLÁUSULA PÉTREA — PONTO ÚNICO DE PERSISTÊNCIA
+        # Sinaliza ao pre-commit hook que este commit passa pelo gate
+        $gateMarker = Join-Path $path '.git\.gate_commit_active'
+        New-Item -ItemType File -Path $gateMarker -Force | Out-Null
         $commitOut = git commit -m $msg 2>&1 | Out-String
+        Remove-Item $gateMarker -Force -ErrorAction SilentlyContinue
         if ($LASTEXITCODE -ne 0) {
             Write-Log "COMMIT ${RepoKey}: FALHOU - $($commitOut.Trim())"
             Pop-Location; Remove-Item $lock -Force -ErrorAction SilentlyContinue
@@ -375,6 +380,7 @@ function Invoke-RepoCommit {
     } catch {
         Write-Log "ERRO ${RepoKey}: $_"
         Pop-Location
+        Remove-Item "$path\.git\.gate_commit_active" -Force -ErrorAction SilentlyContinue
         Remove-Item $lock -Force -ErrorAction SilentlyContinue
         return 'ERROR'
     }

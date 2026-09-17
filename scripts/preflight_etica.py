@@ -84,7 +84,7 @@ SEG_PATTERNS = [
      'campo de dado pessoal/identificacao detectado'),
     (r'(?i)\b(password|senha)\b\s*[=:]\s*["\'][^"\']+["\']',
      'credencial hardcoded'),
-    (r'(?i)\b(api[_-]?key|secret|token)\b\s*[=:]\s*["\'][^"\']+["\']',
+    (r'(?i)\b(api[_-]?key|secret|token)\b\s*[=:]\s*["\']([^"\']+)["\']',
      'segredo hardcoded'),
     (r'(?i)\b(credit|debit).{0,20}(card|number|n[uú]mero)\b',
      'numero de cartao de pagamento'),
@@ -93,6 +93,13 @@ SEG_PATTERNS = [
     (r'(?i)\b(gps|location|localiza[çc][ãa]o)\b.*\b(track|rastre)\b',
      'rastreamento de localizacao'),
 ]
+
+# Valores que NAO sao segredos reais (placeholders de documentacao/exemplo)
+PLACEHOLDER_VALUES = (
+    'YOUR_', 'your_', 'YOUR-', 'your-', 'EXEMPLO', 'EXAMPLE', 'placeholder',
+    'CHANGE', 'change', 'XXX', 'xxx', '<', '>', 'SEU_', 'SUA_', 'NONE',
+    'nenhum', 'N/A', 'NAO', 'my_secret', 'my_key', 'teste', '123456',
+)
 
 # Categorias de dados sensiveis para inventario (Lacuna 4 - retencao)
 CATEGORIAS_SENSIVEIS = {
@@ -127,8 +134,10 @@ def scan_file(path):
     hits = 0
     rel = os.path.relpath(path, BASE)
     for pat, desc in SEG_PATTERNS:
-        m = re.search(pat, content)
-        if m:
+        for m in re.finditer(pat, content):
+            valor = m.group(m.lastindex) if m.lastindex else None
+            if valor and any(p in valor for p in PLACEHOLDER_VALUES):
+                continue
             hits += 1
             WARNS.append(f'{rel}: {desc}')
             print(f'  [WARN] {rel}: {desc}')

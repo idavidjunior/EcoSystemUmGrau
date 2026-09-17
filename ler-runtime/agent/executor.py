@@ -171,19 +171,20 @@ class StepRunner:
         return h.hexdigest()
 
     def _action_git_commit(self, desc):
+        # CLÁUSULA PÉTREA — PONTO ÚNICO DE PERSISTÊNCIA: todo commit/push
+        # passa exclusivamente pelo gate scripts/persistencia.ps1.
         try:
-            subprocess.run(
-                "git add -A", shell=True, capture_output=True, text=True, timeout=15
-            )
+            base = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            gate = os.path.join(base, "scripts", "persistencia.ps1")
             proc = subprocess.run(
-                "git commit -m \"[LEA] Automated commit\"",
-                shell=True, capture_output=True, text=True, timeout=15
+                ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", gate,
+                 "run-sync", "-Repo", "eco", "-Label", "LER executor", "-Push"],
+                capture_output=True, text=True, timeout=120
             )
             output = proc.stdout + "\n" + proc.stderr
-            # Verify commit was created
             verify = subprocess.run(
-                "git log -1 --oneline",
-                shell=True, capture_output=True, text=True, timeout=10
+                ["git", "log", "-1", "--oneline"],
+                capture_output=True, text=True, timeout=10
             )
             if verify.returncode == 0:
                 output += f"\n[VERIFIED] Last commit: {verify.stdout.strip()}"

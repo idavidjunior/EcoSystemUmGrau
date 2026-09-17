@@ -1,6 +1,6 @@
 {
   "versao": "1.1",
-  "atualizado_em": "2026-09-04T10:06:19.260951",
+  "atualizado_em": "2026-09-16T08:07:08.109355",
   "descricao": "Inventário oficial de estruturas ativas do EcoSystemUmGrau. Consulte antes de criar qualquer estrutura nova (cláusula anti-duplicação).",
   "agentes": [
     {
@@ -70,28 +70,10 @@
       "responsabilidade": "Revisa código, arquitetura, documentação, consistência"
     },
     {
-      "id": "09-executor",
-      "arquivo": "config/agents/09-executor.md",
-      "tipo": "executor",
-      "responsabilidade": "Executa tarefas operacionais delegadas"
-    },
-    {
       "id": "10-aprendizado",
       "arquivo": "config/agents/10-aprendizado.md",
       "tipo": "transversal",
       "responsabilidade": "Extrai e persiste conhecimento ao final de cada tarefa"
-    },
-    {
-      "id": "11-ler-executor",
-      "arquivo": "config/agents/11-ler-executor.md",
-      "tipo": "executor",
-      "responsabilidade": "Delega tarefas complexas ao LER"
-    },
-    {
-      "id": "12-parallel-planner",
-      "arquivo": "config/agents/12-parallel-planner.md",
-      "tipo": "planejamento",
-      "responsabilidade": "Divide tarefas grandes em subtarefas paralelas"
     },
     {
       "id": "13-flutter-orquestrador",
@@ -138,6 +120,12 @@
     {
       "id": "ecow",
       "arquivo": "config/agents/ecow.md",
+      "tipo": "desconhecido",
+      "responsabilidade": "PENDENTE: classificar responsabilidade"
+    },
+    {
+      "id": "EXECUTOR-GOVERNADO",
+      "arquivo": "config/agents/EXECUTOR-GOVERNADO.md",
       "tipo": "desconhecido",
       "responsabilidade": "PENDENTE: classificar responsabilidade"
     }
@@ -280,7 +268,9 @@
       "navegacao-perita",
       "browser-mcp",
       "google-drive",
-      "scrape-md"
+      "scrape-md",
+      "chrome-devtools-mcp",
+      "context7-mcp"
     ],
     "memoria": [
       "busca-conhecimento",
@@ -306,6 +296,12 @@
     "os": [
       "os-automation",
       "os_maintenance"
+    ],
+    "google": [
+      "google-agent-skills",
+      "gemini-api-dev",
+      "gemini-live-api-dev",
+      "gemini-omni-flash-api"
     ]
   },
   "scripts_core": [
@@ -1103,6 +1099,131 @@
       "id": "ver_log",
       "arquivo": "scripts/ver_log.py",
       "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "autonomous_loop",
+      "arquivo": "scripts/autonomous_loop.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "autonomy_dashboard",
+      "arquivo": "scripts/autonomy_dashboard.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "compromissos_monitor",
+      "arquivo": "scripts/compromissos_monitor.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "dashboard_generator",
+      "arquivo": "scripts/dashboard_generator.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "eco_agenda",
+      "arquivo": "scripts/eco_agenda.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "eco_client",
+      "arquivo": "scripts/eco_client.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "eco_sandbox",
+      "arquivo": "scripts/eco_sandbox.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "eco_trace",
+      "arquivo": "scripts/eco_trace.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "executor_fase0",
+      "arquivo": "scripts/executor_fase0.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "health_aggregator",
+      "arquivo": "scripts/health_aggregator.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "mcp_client_real",
+      "arquivo": "scripts/mcp_client_real.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "refresh_cerebro_cache",
+      "arquivo": "scripts/refresh_cerebro_cache.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "sync_hd_externo",
+      "arquivo": "scripts/sync_hd_externo.ps1",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "test_adb_connection_manager",
+      "arquivo": "scripts/test_adb_connection_manager.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "test_eco_agenda",
+      "arquivo": "scripts/test_eco_agenda.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "test_eco_client",
+      "arquivo": "scripts/test_eco_client.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "test_mcp_skills",
+      "arquivo": "scripts/test_mcp_skills.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "test_providers_real_mcp",
+      "arquivo": "scripts/test_providers_real_mcp.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "test_voz_fluida",
+      "arquivo": "scripts/test_voz_fluida.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "vad_captura",
+      "arquivo": "scripts/vad_captura.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "widget_supervisao",
+      "arquivo": "scripts/widget_supervisao.py",
+      "funcao": "PENDENTE: descrever função"
+    },
+    {
+      "id": "capability_seams",
+      "arquivo": "scripts/capability_seams/__init__.py",
+      "funcao": "Package de Capability Seams (inicializacao)"
+    },
+    {
+      "id": "capability_seams_definition",
+      "arquivo": "scripts/capability_seams/definition.py",
+      "funcao": "Definition Schema + Registry de Capabilities"
+    },
+    {
+      "id": "capability_seams_provider",
+      "arquivo": "scripts/capability_seams/provider.py",
+      "funcao": "Base Provider + Circuit Breaker + Metricas de seams"
+    },
+    {
+      "id": "capability_seams_providers_phase1",
+      "arquivo": "scripts/capability_seams/providers_phase1.py",
+      "funcao": "Providers conselheiros Fase 1 + validacao de capability definitions"
     }
   ],
   "scripts_android": [

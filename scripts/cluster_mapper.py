@@ -101,6 +101,10 @@ class ClusterMapper:
         'cognicao': ['meta_cognition', 'metacognicao', 'metacognition'],
         'composio': ['composio', 'composio-mcp-remoto', 'composio_mcp_remoto',
                      'composiomcp', 'composiomcpremoto', 'composioremoto'],
+        'google-skills': ['google-skills', 'googleskills', 'google-agent-skills',
+                          'google_agent_skills', 'agent-skills', 'agentskills',
+                          'gemini-api-dev', 'gemini-live-api-dev',
+                          'gemini-omni-flash-api'],
     }
 
     def __init__(self, extra_clusters=None):

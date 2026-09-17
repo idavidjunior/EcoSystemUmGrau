@@ -79,11 +79,13 @@ CLUSTERS = {
                 '00-maestro', '01-estrategista', '02-cetico', '03-realista', '04-etica', '05-futuro', '06-recursos',
                 '07-criativo', '08-revisor', '09-executor', '10-aprendizado', '11-ler-executor',
                 '12-parallel-planner', '13-flutter-orquestrador', '99-gerador-de-agentes'],
+    'google-skills': ['google-skills', 'google-agent-skills', 'google_agent_skills', 'googleskills',
+                      'gemini-api-dev', 'gemini-live-api-dev', 'gemini-omni-flash-api'],
 }
 CLUSTER_COR = {
     'android': '#8dd3c7', 'mp3player': '#ffffb3', 'ler': '#bebada',
     'navegacao': '#fb8072', 'ecossistema': '#80b1d3', 'cognicao': '#fdb462', 'geral': '#b3b3b3',
-    'composio': '#fccde5', 'agentes': '#e066ff',
+    'composio': '#fccde5', 'agentes': '#e066ff', 'google-skills': '#4285f4',
 }
 # Descricoes curtas para os tooltips dos botoes de cluster
 CLUSTER_DESC = {
@@ -96,6 +98,7 @@ CLUSTER_DESC = {
     'composio': 'MCP remoto Composio e notas relacionadas',
     'geral': 'Notas sem cluster especifico ou de escopo geral',
     'agentes': 'Agentes do Conselho e especializados do ecossistema',
+    'google-skills': 'Skills oficiais do Google (Agent Skills: Gemini API, Live API e Omni Flash)',
 }
 
 
@@ -184,6 +187,9 @@ def _resolver_cluster(tags, fonte='', mapper=None, categoria='', slug=''):
     # Força cluster 'agentes' para notas da pasta agentes/
     if categoria == 'agentes':
         return 'agentes'
+    # Força cluster 'google-skills' para notas da pasta google-skills/
+    if categoria == 'google-skills':
+        return 'google-skills'
     if mapper is not None:
         return mapper.resolver(tags, fonte, categoria, slug)
     for t in tags:

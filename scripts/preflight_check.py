@@ -509,6 +509,29 @@ def run():
     except Exception as e:
         check('Integridade de dados', False, str(e)[:200])
 
+    # 12. Detector passivo: commits fora do gate (cláusula pétrea — ponto único de persistência)
+    print('\n[12] Gate de Persistência (detector passivo)')
+    try:
+        r = sp.run(['git', 'log', '--format=%h|%s', '--since=3 days ago'],
+                   capture_output=True, text=True, timeout=15, cwd=BASE)
+        if r.returncode == 0:
+            lines = [l for l in r.stdout.strip().splitlines() if l.strip()]
+            total = len(lines)
+            via_gate = sum(1 for l in lines if '[gate]' in l or '[gate' in l.split('|', 1)[-1])
+            fora = total - via_gate
+            pct = (via_gate / total * 100) if total > 0 else 100
+            if total == 0:
+                check('Gate de Persistência (sem commits nos últimos 3 dias)', True)
+            elif pct >= 90:
+                check(f'Gate de Persistência ({pct:.0f}%, {via_gate}/{total} via gate)', True)
+            else:
+                WARNS.append(f'Gate de Persistência: {pct:.0f}% ({via_gate}/{total} via gate, min 90%)')
+                print(f'  [WARN] Gate de Persistência: {pct:.0f}% ({via_gate}/{total} via gate, min 90%)')
+        else:
+            print('  [INFO] Não foi possível verificar commits (git não disponível)')
+    except Exception as e:
+        print(f'  [INFO] Detector de gate indisponível: {e}')
+
     # Summary
     print('\n========================================')
     if not ERRORS:
