@@ -603,13 +603,126 @@ def get_context(project=None, tags=None, text=None, limit=8):
         return ''
     lines = ['## Memory Context (from previous sessions)']
     for m in memories:
-        kind = m['kind']
+        kind = m.get('kind', '?')
         task = m['task'][:80]
         score = _decay_score(m)
         pct = f'{int(score*100)}%'
         lines.append(f'- [{kind}] {task} (relevance: {pct})')
         lines.append(f'  {m["summary"][:120]}')
     return '\n'.join(lines)
+
+
+def recent(kind='episodio', limit=5):
+    """Retorna as N memórias mais recentes de um tipo, SEM filtro de decay.
+
+    Útil para acessar episódios recentes que o decay (meia-vida 7d) já
+    derrubou abaixo do limiar. Ordena por created_at decrescente.
+    """
+    memories = _load_memories()
+    now = datetime.now()
+    filtered = []
+    for m in memories:
+        if m.get('archived', False):
+            continue
+        if kind and m.get('kind') != kind:
+            continue
+        filtered.append(m)
+
+    def _ts(m):
+        stamp = m.get('created_at') or m.get('last_accessed') or ''
+        try:
+            return datetime.fromisoformat(stamp)
+        except Exception:
+            return datetime.min
+
+    filtered.sort(key=_ts, reverse=True)
+    return filtered[:limit]
+
+
+def recover_knowledge(text, limit=5):
+    """Busca unificada: memória + notas + knowledge_graph (BM25).
+
+    Combina resultados de 3 fontes em uma única lista ranqueada.
+    Não exige projeto. Fail-soft: se uma fonte falhar, retorna as outras.
+    """
+    resultados = []
+
+    # 1. Memórias (query por texto)
+    try:
+        mems = query(text=text, limit=limit)
+        for m in mems:
+            resultados.append({
+                'fonte': 'memoria',
+                'tipo': m.get('kind', '?'),
+                'titulo': m.get('task', '')[:100],
+                'resumo': m.get('summary', '')[:200],
+                'score': _decay_score(m),
+                'id': m.get('id'),
+            })
+    except Exception:
+        pass
+
+    # 2. Notas Obsidian (busca textual simples)
+    notas_dir = os.path.join(BASE, 'conhecimento', 'notas')
+    if os.path.isdir(notas_dir):
+        try:
+            text_lower = text.lower()
+            for root, dirs, files in os.walk(notas_dir):
+                for fname in files:
+                    if not fname.endswith('.md'):
+                        continue
+                    fpath = os.path.join(root, fname)
+                    try:
+                        with open(fpath, encoding='utf-8') as f:
+                            conteudo = f.read(4000)
+                        if text_lower in conteudo.lower():
+                            titulo = fname.replace('.md', '')
+                            # Score simples: contagem de ocorrências
+                            score = conteudo.lower().count(text_lower) * 0.1
+                            resultados.append({
+                                'fonte': 'nota',
+                                'tipo': 'md',
+                                'titulo': titulo,
+                                'resumo': conteudo[:200],
+                                'score': min(score, 1.0),
+                                'id': fpath,
+                            })
+                            if len(resultados) >= limit * 3:
+                                break
+                    except Exception:
+                        continue
+                if len(resultados) >= limit * 3:
+                    break
+        except Exception:
+            pass
+
+    # 3. Knowledge graph (LER)
+    kg_path = os.path.join(BASE, 'ler-runtime', 'knowledge', 'knowledge_graph.json')
+    if os.path.exists(kg_path):
+        try:
+            with open(kg_path, encoding='utf-8') as f:
+                kg = json.load(f)
+            text_lower = text.lower()
+            for cat in ['patterns', 'decisions', 'bug_fixes', 'cognitive_patterns']:
+                for item in kg.get(cat, []):
+                    item_text = json.dumps(item, ensure_ascii=False).lower()
+                    if text_lower in item_text:
+                        titulo = item.get('title', item.get('decision', item.get('name', '?')))
+                        score = item_text.count(text_lower) * 0.05
+                        resultados.append({
+                            'fonte': 'grafo',
+                            'tipo': cat,
+                            'titulo': titulo[:100],
+                            'resumo': json.dumps(item, ensure_ascii=False)[:200],
+                            'score': min(score, 1.0),
+                            'id': f'kg:{cat}/{titulo[:40]}',
+                        })
+        except Exception:
+            pass
+
+    # Ordena por score e retorna top N
+    resultados.sort(key=lambda x: -x['score'])
+    return resultados[:limit]
 
 def stats():
     """Return memory statistics."""
@@ -736,6 +849,23 @@ if __name__ == '__main__':
             print(f'Busca semantica: "{query_text}" -> {len(results)} resultados')
             for r in results:
                 print(f'  [{r["score"]:.4f}] #{r["id"]} ({r["kind"]}) {r["title"][:90]}')
+    elif cmd == 'recent':
+        kind = sys.argv[2] if len(sys.argv) > 2 else 'episodio'
+        limit = int(sys.argv[3]) if len(sys.argv) > 3 else 5
+        results = recent(kind=kind, limit=limit)
+        print(f'Ultimos {len(results)} {kind}(s):')
+        for m in results:
+            ts = m.get('created_at', '?')[:16]
+            print(f'  [{ts}] #{m["id"]} {m["task"][:70]}')
+    elif cmd == 'recover':
+        if len(sys.argv) < 3:
+            print('uso: memory_engine.py recover <query>')
+            sys.exit(1)
+        text = ' '.join(sys.argv[2:])
+        results = recover_knowledge(text, limit=5)
+        print(f'Busca unificada "{text}": {len(results)} resultados')
+        for r in results:
+            print(f'  [{r["fonte"]}] {r["tipo"]}: {r["titulo"][:70]} (score={r["score"]:.2f})')
     elif cmd == 'decay':
         dry = '--dry-run' in sys.argv
         r = decay_pass(dry_run=dry)

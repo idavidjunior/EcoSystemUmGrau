@@ -477,12 +477,239 @@ def reset_session_greeting():
     return '[OK] saudação de sessão resetada'
 
 
+def checar_dessincronizacao():
+    """Detecta se state.json está desatualizado em relação à atividade real.
+
+    Compara updated_at do state com:
+      1. Memória mais recente (memories.json)
+      2. Último commit do repositório (git log)
+
+    Retorna dict com resultado do diagnóstico.
+    """
+    from datetime import timedelta, timezone
+
+    def _parse_ts(s):
+        """Parse ISO timestamp, strip timezone for naive comparison."""
+        if not s:
+            return None
+        try:
+            dt = datetime.fromisoformat(s)
+            if dt.tzinfo is not None:
+                dt = dt.replace(tzinfo=None)
+            return dt
+        except Exception:
+            return None
+
+    state = load_state()
+    state_dt = _parse_ts(state.get('updated_at', ''))
+    if state_dt is None:
+        return {'stale': True, 'delta_horas': -1, 'motivo': 'updated_at inválido ou ausente'}
+
+    agora = datetime.now()
+    fontes = []
+
+    # 1. Memória mais recente
+    mem_path = os.path.join(BASE, 'conhecimento', 'memoria', 'memories.json')
+    mem_dt = None
+    try:
+        with open(mem_path, encoding='utf-8') as f:
+            mems = json.load(f)
+        if isinstance(mems, list) and mems:
+            datas = []
+            for m in mems:
+                ts = _parse_ts(m.get('created_at', ''))
+                if ts:
+                    datas.append(ts)
+            if datas:
+                mem_dt = max(datas)
+                fontes.append(('memoria', mem_dt))
+    except Exception:
+        pass
+
+    # 2. Último commit do repositório
+    git_dt = None
+    try:
+        import subprocess as _sp
+        r = _sp.run(
+            ['git', 'log', '-1', '--format=%cI'],
+            capture_output=True, text=True, timeout=10, cwd=BASE
+        )
+        if r.returncode == 0 and r.stdout.strip():
+            git_dt = _parse_ts(r.stdout.strip())
+            if git_dt:
+                fontes.append(('git', git_dt))
+    except Exception:
+        pass
+
+    # Determinar a atividade mais recente
+    atividade_dt = None
+    atividade_fonte = ''
+    for nome, dt in fontes:
+        if atividade_dt is None or dt > atividade_dt:
+            atividade_dt = dt
+            atividade_fonte = nome
+
+    if atividade_dt is None:
+        return {'stale': False, 'delta_horas': 0, 'motivo': 'sem fontes de atividade para comparar'}
+
+    delta = atividade_dt - state_dt
+    delta_horas = delta.total_seconds() / 3600
+
+    # Tolerância: 2 horas para memória, 6 horas para git (commits automáticos)
+    limite_horas = 2 if atividade_fonte == 'memoria' else 6
+    stale = delta_horas > limite_horas
+
+    return {
+        'stale': stale,
+        'delta_horas': round(delta_horas, 1),
+        'motivo': f'atividade {atividade_fonte} ({atividade_dt.isoformat(timespec="minutes")}) mais recente que state ({state_dt.isoformat(timespec="minutes")})',
+        'state_dt': state_dt.isoformat(),
+        'atividade_dt': atividade_dt.isoformat(),
+        'atividade_fonte': atividade_fonte,
+    }
+
+
+def render_dessincronizacao(resultado):
+    """Renderiza diagnóstico de dessincronização."""
+    if resultado.get('motivo', '').startswith('updated_at'):
+        return (f'[STALE] state.json {resultado["motivo"]}\n'
+                f'  Correção: python scripts/runtime_state.py set <key> <value>')
+    if resultado['stale']:
+        return (f'[STALE] state.json dessincronizado — {resultado["delta_horas"]}h de atraso\n'
+                f'  Motivo: {resultado["motivo"]}\n'
+                f'  Correção: python scripts/runtime_state.py set <key> <value>')
+    delta = resultado['delta_horas']
+    if delta < 0:
+        return f'[OK] state.json sincronizado (estado à frente em {abs(delta)}h — normal após atualização)'
+    return f'[OK] state.json sincronizado (delta: {delta}h dentro da tolerância)'
+
+
+def health_check():
+    """Diagnóstico automático de saúde do ecossistema.
+
+    Executa 5 verificações e retorna dict com resultado de cada uma.
+    Pode ser chamado pelo vigilante, preflight ou manualmente.
+    """
+    import subprocess as _sp
+    checklists = []
+
+    # 1. State.json: dessincronização
+    try:
+        resultado = checar_dessincronizacao()
+        checklists.append({
+            'nome': 'Runtime State',
+            'ok': not resultado['stale'],
+            'detalhes': resultado.get('motivo', ''),
+            'severidade': 'alta' if resultado['stale'] else 'ok',
+        })
+    except Exception as e:
+        checklists.append({'nome': 'Runtime State', 'ok': False, 'detalhes': str(e)[:100], 'severidade': 'alta'})
+
+    # 2. Memórias: integridade
+    try:
+        mem_path = os.path.join(BASE, 'conhecimento', 'memoria', 'memories.json')
+        with open(mem_path, encoding='utf-8') as f:
+            mems = json.load(f)
+        total = len(mems)
+        sem_kind = sum(1 for m in mems if not m.get('kind'))
+        sem_task = sum(1 for m in mems if not m.get('task'))
+        ok = total > 0 and sem_kind < total * 0.1 and sem_task < total * 0.1
+        checklists.append({
+            'nome': 'Memórias',
+            'ok': ok,
+            'detalhes': f'{total} total, {sem_kind} sem kind, {sem_task} sem task',
+            'severidade': 'ok' if ok else 'media',
+        })
+    except Exception as e:
+        checklists.append({'nome': 'Memórias', 'ok': False, 'detalhes': str(e)[:100], 'severidade': 'alta'})
+
+    # 3. Vault Obsidian: notas
+    try:
+        notas_dir = os.path.join(BASE, 'conhecimento', 'notas')
+        count = 0
+        if os.path.isdir(notas_dir):
+            for root, dirs, files in os.walk(notas_dir):
+                count += sum(1 for f in files if f.endswith('.md'))
+        ok = count > 100
+        checklists.append({
+            'nome': 'Vault Obsidian',
+            'ok': ok,
+            'detalhes': f'{count} notas',
+            'severidade': 'ok' if ok else 'baixa',
+        })
+    except Exception as e:
+        checklists.append({'nome': 'Vault Obsidian', 'ok': False, 'detalhes': str(e)[:100], 'severidade': 'baixa'})
+
+    # 4. Git: commits fora do gate (últimos 7 dias)
+    try:
+        r = _sp.run(
+            ['git', 'log', '--oneline', '--since=7 days ago'],
+            capture_output=True, text=True, timeout=15, cwd=BASE
+        )
+        if r.returncode == 0:
+            lines = [l for l in r.stdout.strip().splitlines() if l.strip()]
+            total = len(lines)
+            via_gate = sum(1 for l in lines if '[gate' in l)
+            pct = (via_gate / total * 100) if total > 0 else 100
+            ok = pct >= 90 or total == 0
+            checklists.append({
+                'nome': 'Gate de Persistência',
+                'ok': ok,
+                'detalhes': f'{pct:.0f}% via gate ({via_gate}/{total} nos últimos 7d)',
+                'severidade': 'ok' if ok else 'alta',
+            })
+        else:
+            checklists.append({'nome': 'Gate de Persistência', 'ok': True, 'detalhes': 'git indisponível', 'severidade': 'ok'})
+    except Exception as e:
+        checklists.append({'nome': 'Gate de Persistência', 'ok': False, 'detalhes': str(e)[:100], 'severidade': 'media'})
+
+    # 5. Pendências abertas
+    try:
+        state = load_state()
+        pend = [p for p in state.get('pending', []) if not p.get('done')]
+        ok = len(pend) <= 10
+        checklists.append({
+            'nome': 'Pendências',
+            'ok': ok,
+            'detalhes': f'{len(pend)} aberta(s)',
+            'severidade': 'ok' if ok else 'baixa',
+        })
+    except Exception as e:
+        checklists.append({'nome': 'Pendências', 'ok': False, 'detalhes': str(e)[:100], 'severidade': 'baixa'})
+
+    # Resumo
+    total_checks = len(checklists)
+    ok_count = sum(1 for c in checklists if c['ok'])
+    return {
+        'score': round(ok_count / total_checks * 100) if total_checks > 0 else 0,
+        'checks': checklists,
+        'timestamp': _now(),
+    }
+
+
+def render_health_check(resultado):
+    """Renderiza diagnóstico de saúde em texto legível."""
+    lines = [f"=== HEALTH CHECK ({resultado['timestamp'][:16]}) ==="]
+    lines.append(f"Score: {resultado['score']}/100")
+    for c in resultado['checks']:
+        icon = '✓' if c['ok'] else '✗'
+        lines.append(f"  {icon} {c['nome']}: {c['detalhes']}")
+    problemas = [c for c in resultado['checks'] if not c['ok']]
+    if problemas:
+        lines.append(f"\n{len(problemas)} problema(s) detectado(s):")
+        for p in problemas:
+            lines.append(f"  [{p['severidade']}] {p['nome']}: {p['detalhes']}")
+    return '\n'.join(lines)
+
+
 def main():
     parser = argparse.ArgumentParser(description='Runtime State — estado persistente do Ecossistema')
     sub = parser.add_subparsers(dest='cmd')
 
     sub.add_parser('status')
     sub.add_parser('reset')
+    sub.add_parser('dessincronizado')
+    sub.add_parser('health-check')
     p_set = sub.add_parser('set')
     p_set.add_argument('key')
     p_set.add_argument('value')
@@ -587,6 +814,14 @@ def main():
         print(gerar_catch_up(load_state()) or '(nada a reportar desde a última sessão)')
     elif cmd == 'reset':
         print(reset())
+    elif cmd == 'dessincronizado':
+        resultado = checar_dessincronizacao()
+        print(render_dessincronizacao(resultado))
+        sys.exit(1 if resultado['stale'] else 0)
+    elif cmd == 'health-check':
+        resultado = health_check()
+        print(render_health_check(resultado))
+        sys.exit(0 if resultado['score'] >= 80 else 1)
     return 0
 
 

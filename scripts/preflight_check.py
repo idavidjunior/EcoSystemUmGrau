@@ -532,6 +532,26 @@ def run():
     except Exception as e:
         print(f'  [INFO] Detector de gate indisponível: {e}')
 
+    # 13. Estado do Runtime: detecta dessincronização automática
+    print('\n[13] Estado do Runtime (dessincronização)')
+    try:
+        r = sp.run([sys.executable, os.path.join(BASE, 'scripts', 'runtime_state.py'), 'dessincronizado'],
+                   capture_output=True, text=True, timeout=30, cwd=BASE)
+        out = (r.stdout + r.stderr).strip()
+        if r.returncode == 0:
+            check('Runtime State sincronizado', True)
+        else:
+            # Extrai detalhes do output para o warn
+            detalhes = ''
+            for line in out.splitlines():
+                if 'Motivo' in line or 'motivo' in line:
+                    detalhes = line.strip()
+                    break
+            WARNS.append(f'Runtime State dessincronizado: {detalhes or "state.json desatualizado"}')
+            print(f'  [WARN] Runtime State dessincronizado — {detalhes}')
+    except Exception as e:
+        print(f'  [INFO] Detector de dessincronização indisponível: {e}')
+
     # Summary
     print('\n========================================')
     if not ERRORS:

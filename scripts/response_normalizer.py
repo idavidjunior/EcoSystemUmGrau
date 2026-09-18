@@ -10,19 +10,26 @@ Reuso (import direto, nunca subprocess duplicado):
   - validar_bajulacao.detectar_bajulacao      -> antibajulação
 
 Etapas próprias:
+  - INTENT DETECTION (detecção de intenção do usuário)
+  - TASK CLASSIFICATION (classificação da tarefa)
   - tipo de interação (pergunta, implementação, erro, investigação, ...)
   - complexidade (tamanho + frases longas)
   - estrutura adaptativa (resumo -> entendimento -> técnico)
   - remoção de redundância (frases repetidas, espaços duplos)
   - estados de evidência (CONFIRMADO / PROVÁVEL / HIPÓTESE / NÃO VERIFICADO)
   - verificação de transparência (marcadores de incerteza)
+  - FACT & STATE VALIDATION (validação de fatos e estados)
+  - UNCERTAINTY DETECTION (detecção sistemática de incerteza)
+  - LANGUAGE SIMPLIFICATION (simplificação de linguagem ativa)
+  - TRUTHFULNESS CHECK (verificação de veracidade)
+  - CHECKLIST FINAL (verificação sistemática antes da entrega)
 
 Uso:
   python scripts/response_normalizer.py "texto"
   echo "texto" | python scripts/response_normalizer.py --stdin
   python scripts/response_normalizer.py --json '{"texto": "...", "tipo": "erro"}'
 
-Saída JSON: {ok, texto, score_pt, tipo, complexidade, estrutura, acoes, ...}
+Saída JSON: {ok, texto, score_pt, tipo, complexidade, estrutura, acoes, checklist, ...}
 Exit: 0 = normalizado/ok, 1 = houve correção aplicada, 2 = erro
 """
 import io
@@ -81,6 +88,86 @@ INICIO_ARTIFICIAL = re.compile(
     r'deixa eu pensar!|ok!|ok\.|sem problemas!|vamos lá!|vamos logo!)\s*',
     re.IGNORECASE,
 )
+
+# Padrões de intenção do usuário (INTENT DETECTION)
+INTENT_PADROES = [
+    ("informacao", re.compile(r'\b(como|o que|onde|quando|por que|qual|quem|explique|descreva|mostre)\b', re.IGNORECASE)),
+    ("acao", re.compile(r'\b(faca|crie|execute|rode|instale|configure|altere|modifique|delete|remova)\b', re.IGNORECASE)),
+    ("diagnostico", re.compile(r'\b(diagnosticar|investigar|debug|erro|problema|falha|quebrou|nao funciona)\b', re.IGNORECASE)),
+    ("decisao", re.compile(r'\b(decidir|escolher|optar|recomendar|melhor|comparar)\b', re.IGNORECASE)),
+    ("validacao", re.compile(r'\b(testar|validar|verificar|confirmar|checar|revisar)\b', re.IGNORECASE)),
+]
+
+# Classificação de tarefa (TASK CLASSIFICATION)
+TAREFA_PADROES = [
+    ("micro", re.compile(r'\b(corrigir|ajustar|pequeno|simples|rapido)\b', re.IGNORECASE)),
+    ("pequena", re.compile(r'\b(funcao|metodo|classe|arquivo|integracao)\b', re.IGNORECASE)),
+    ("media", re.compile(r'\b(recurso|modulo|feature|alteracao|refatoracao)\b', re.IGNORECASE)),
+    ("grande", re.compile(r'\b(subsistema|arquitetura|banco de dados|autenticacao|comunicacao|migracao)\b', re.IGNORECASE)),
+    ("critica", re.compile(r'\b(seguranca|dados sensíveis|pagamento|autenticacao|autorizacao|infraestrutura|irreversivel|destrutivo)\b', re.IGNORECASE)),
+]
+
+# Marcadores de afirmação vs hipótese (FACT & STATE VALIDATION)
+FATO_INDICADORES = re.compile(
+    r'\b(confirmei|verifiquei|testei|executei|funciona|esta funcionando|foi criado|foi alterado|'
+    r'implementado|validado|concluido|finalizado|pronto|sucesso)\b',
+    re.IGNORECASE,
+)
+
+HIPOSE_INDICADORES = re.compile(
+    r'\b(provavelmente|talvez|possivelmente|deve ser|deveria|parece|aparenta|'
+    r'acho que|suspeito|hipotese|teoria|especulacao)\b',
+    re.IGNORECASE,
+)
+
+# Termos técnicos que precisam de explicação (LANGUAGE SIMPLIFICATION)
+TERMOS_TECNICOS = {
+    "api": "interface de programação",
+    "endpoint": "ponto de acesso",
+    "deployment": "implantação",
+    "commit": "versão salva",
+    "merge": "junção de código",
+    "pull request": "solicitação de alteração",
+    "branch": "ramo de trabalho",
+    "docker": "ambiente virtual",
+    "container": "recipiente virtual",
+    "pipeline": "fluxo automático",
+    "build": "construção",
+    "runtime": "tempo de execução",
+    "framework": "estrutura de trabalho",
+    "middleware": "camada intermediária",
+    "cache": "armazenamento temporário",
+    "callback": "função de retorno",
+    "async": "assíncrono",
+    "sync": "síncrono",
+}
+
+# Marcadores de falsidade potencial (TRUTHFULNESS CHECK)
+FALSIDADE_INDICADORES = re.compile(
+    r'\b(sempre|nunca|todos|ninguem|jamais|absolutamente|garantidamente|'
+    r'sem falhas|perfeito|impossivel falhar)\b',
+    re.IGNORECASE,
+)
+
+
+def detectar_intencao(texto: str) -> str:
+    """Detecta a intenção do usuário (INTENT DETECTION)."""
+    if not texto or not texto.strip():
+        return "desconhecido"
+    for intent, padrao in INTENT_PADROES:
+        if padrao.search(texto):
+            return intent
+    return "geral"
+
+
+def classificar_tarefa(texto: str) -> str:
+    """Classifica a complexidade/risco da tarefa (TASK CLASSIFICATION)."""
+    if not texto or not texto.strip():
+        return "desconhecido"
+    for classe, padrao in TAREFA_PADROES:
+        if padrao.search(texto):
+            return classe
+    return "media"
 
 
 def detectar_tipo(texto: str) -> str:
@@ -175,12 +262,157 @@ def selecionar_estrutura(tipo: str, complexidade: str) -> str:
     return "resumo/o_que_aconteceu/o_que_foi_feito/resultado/proximo_passo"
 
 
+def validar_fatos_estados(texto: str) -> dict:
+    """Separa fatos de hipóteses (FACT & STATE VALIDATION)."""
+    if not texto or not texto.strip():
+        return {"fatos": [], "hipoteses": [], "estado": "vazio"}
+    
+    fatos = []
+    hipoteses = []
+    
+    # Detecta afirmações de fato
+    if FATO_INDICADORES.search(texto):
+        fatos.append("indicadores de fato presentes")
+    
+    # Detecta hipóteses
+    if HIPOSE_INDICADORES.search(texto):
+        hipoteses.append("indicadores de hipótese presentes")
+    
+    # Classifica o estado geral
+    if fatos and not hipoteses:
+        estado = "predominantemente_fato"
+    elif hipoteses and not fatos:
+        estado = "predominantemente_hipotese"
+    elif fatos and hipoteses:
+        estado = "misto"
+    else:
+        estado = "neutro"
+    
+    return {"fatos": fatos, "hipoteses": hipoteses, "estado": estado}
+
+
+def detectar_incerteza_sistemica(texto: str) -> dict:
+    """Detecção sistemática de incerteza (UNCERTAINTY DETECTION)."""
+    if not texto or not texto.strip():
+        return {"nivel": "nenhuma", "marcadores": [], "alertas": []}
+    
+    marcadores = INCERTEZA.findall(texto)
+    alertas = []
+    
+    # Classifica nível de incerteza
+    if len(marcadores) == 0:
+        nivel = "nenhuma"
+    elif len(marcadores) <= 2:
+        nivel = "baixa"
+    elif len(marcadores) <= 5:
+        nivel = "media"
+    else:
+        nivel = "alta"
+        alertas.append("alto nível de incerteza detectado")
+    
+    return {"nivel": nivel, "marcadores": sorted(set(m.lower() for m in marcadores)), "alertas": alertas}
+
+
+def simplificar_linguagem(texto: str) -> tuple:
+    """Simplifica termos técnicos complexos (LANGUAGE SIMPLIFICATION)."""
+    if not texto or not texto.strip():
+        return texto, []
+    
+    acoes = []
+    novo_texto = texto
+    
+    # Explica termos técnicos conhecidos
+    for termo, explicacao in TERMOS_TECNICOS.items():
+        padrao = re.compile(rf'\b{re.escape(termo)}\b', re.IGNORECASE)
+        # Verifica se o termo aparece e não está explicado logo em seguida
+        if padrao.search(novo_texto):
+            # Adiciona explicação apenas se não houver parênteses explicativo
+            if not re.search(rf'{re.escape(termo)}\s*\([^)]*\)', novo_texto, re.IGNORECASE):
+                novo_texto = padrao.sub(f'{termo} ({explicacao})', novo_texto, count=1)
+                acoes.append(f"termo técnico explicado: {termo}")
+    
+    return novo_texto, acoes
+
+
+def verificar_veracidade(texto: str) -> dict:
+    """Verifica indicadores de falsidade potencial (TRUTHFULNESS CHECK)."""
+    if not texto or not texto.strip():
+        return {"ok": True, "alertas": []}
+    
+    alertas = []
+    
+    # Detecta absolutismos
+    absolutismos = FALSIDADE_INDICADORES.findall(texto)
+    if absolutismos:
+        alertas.append(f"absolutismos detectados: {', '.join(set(absolutismos))}")
+    
+    # Detecta contradições simples
+    if re.search(r'\b(sim|nao)\b.*\b(nao|sim)\b', texto, re.IGNORECASE):
+        alertas.append("possível contradição detectada")
+    
+    return {"ok": len(alertas) == 0, "alertas": alertas}
+
+
+def executar_checklist_final(texto: str, relatorio: dict) -> dict:
+    """Executa checklist final sistemático (CHECKLIST FINAL)."""
+    checklist = {
+        "clareza": {"ok": True, "itens": []},
+        "conteudo": {"ok": True, "itens": []},
+        "verdade": {"ok": True, "itens": []},
+        "operacao": {"ok": True, "itens": []},
+        "comunicacao": {"ok": True, "itens": []},
+    }
+    
+    if not texto or not texto.strip():
+        checklist["conteudo"]["ok"] = False
+        checklist["conteudo"]["itens"].append("resposta vazia")
+        return checklist
+    
+    # Clareza
+    if relatorio.get("complexidade", {}).get("frase_media", 0) > 25:
+        checklist["clareza"]["ok"] = False
+        checklist["clareza"]["itens"].append("frases muito longas")
+    
+    # Conteúdo
+    if relatorio.get("score_pt", 0) < 30:
+        checklist["conteudo"]["ok"] = False
+        checklist["conteudo"]["itens"].append("idioma não validado")
+    
+    # Verdade
+    if relatorio.get("fatos_estados", {}).get("estado") == "predominantemente_hipotese":
+        checklist["verdade"]["ok"] = False
+        checklist["verdade"]["itens"].append("predominância de hipóteses")
+    
+    if relatorio.get("veracidade", {}).get("alertas"):
+        checklist["verdade"]["ok"] = False
+        checklist["verdade"]["itens"].extend(relatorio["veracidade"]["alertas"])
+    
+    # Comunicação
+    if relatorio.get("bajulacao", {}).get("encontrados"):
+        checklist["comunicacao"]["ok"] = False
+        checklist["comunicacao"]["itens"].append("bajulação detectada")
+    
+    if relatorio.get("acoes"):
+        # Se houve ações de normalização, verificar se foi bem-sucedido
+        if "preambulo artificial removido" in relatorio["acoes"]:
+            checklist["comunicacao"]["itens"].append("preâmbulo removido")
+    
+    return checklist
+
+
 def normalizar_resposta(texto: str, tipo: str | None = None) -> dict:
-    """Pipeline final de normalização: reusa peças + etapas próprias.
+    """Pipeline final de normalização: reusa peças + etapas próprias (SPEC 1.0 completo).
+
+    Pipeline completo:
+    INPUT -> INTENT DETECTION -> TASK CLASSIFICATION -> VALIDAÇÃO PT-BR ->
+    TIPO/COMPLEXIDADE -> ANTIBAJULAÇÃO -> REDUNDÂNCIA -> EVIDÊNCIA ->
+    FATOS/ESTADOS -> INCERTEZA -> LINGUAGEM -> VERACIDADE -> ESTRUTURA ->
+    CHECKLIST FINAL -> FINAL RESPONSE
 
     Returns:
         dict com ok, texto, score_pt, tipo, complexidade, estrutura,
-        evidencia, acoes, bajulacao, validacao.
+        evidencia, acoes, bajulacao, validacao, intencao, tarefa,
+        fatos_estados, incerteza, linguagem, veracidade, checklist.
     """
     original = texto or ""
     texto_final = original
@@ -201,11 +433,17 @@ def normalizar_resposta(texto: str, tipo: str | None = None) -> dict:
         score_pt = 0
         acoes.append(f"validador indisponivel ({e})")
 
-    # 2. Tipo de interação e complexidade
+    # 2. INTENT DETECTION (intenção do usuário)
+    intencao = detectar_intencao(texto_final or original)
+
+    # 3. TASK CLASSIFICATION (classificação da tarefa)
+    tarefa = classificar_tarefa(texto_final or original)
+
+    # 4. Tipo de interação e complexidade
     tipo_final = tipo or detectar_tipo(texto_final or original)
     complexidade = medir_complexidade(texto_final or original)
 
-    # 3. Antibajulação (reuso do detector existente)
+    # 5. Antibajulação (reuso do detector existente)
     try:
         bajulacao = detectar_bajulacao(texto_final or original)
         if not bajulacao.get("ok", True):
@@ -213,15 +451,43 @@ def normalizar_resposta(texto: str, tipo: str | None = None) -> dict:
     except Exception:
         bajulacao = {"ok": True, "encontrados": [], "score": 0}
 
-    # 4. Remoção de redundância
+    # 6. Remoção de redundância
     texto_final, acoes_red = remover_redundancia(texto_final or original)
     acoes.extend(acoes_red)
 
-    # 5. Evidência e transparência (detecção, nunca altera fatos)
+    # 7. Evidência e transparência (detecção, nunca altera fatos)
     evidencia = detectar_evidencia(texto_final)
 
-    # 6. Estrutura adaptativa
+    # 8. FACT & STATE VALIDATION (validação de fatos e estados)
+    fatos_estados = validar_fatos_estados(texto_final)
+
+    # 9. UNCERTAINTY DETECTION (detecção sistemática de incerteza)
+    incerteza = detectar_incerteza_sistemica(texto_final)
+    if incerteza["alertas"]:
+        acoes.extend(incerteza["alertas"])
+
+    # 10. LANGUAGE SIMPLIFICATION (simplificação de linguagem ativa)
+    texto_final, acoes_lang = simplificar_linguagem(texto_final)
+    acoes.extend(acoes_lang)
+
+    # 11. TRUTHFULNESS CHECK (verificação de veracidade)
+    veracidade = verificar_veracidade(texto_final)
+    if veracidade["alertas"]:
+        acoes.extend(veracidade["alertas"])
+
+    # 12. Estrutura adaptativa
     estrutura = selecionar_estrutura(tipo_final, complexidade["nivel"])
+
+    # 13. CHECKLIST FINAL (verificação sistemática)
+    relatorio_parcial = {
+        "complexidade": complexidade,
+        "score_pt": score_pt,
+        "fatos_estados": fatos_estados,
+        "veracidade": veracidade,
+        "bajulacao": bajulacao,
+        "acoes": acoes,
+    }
+    checklist = executar_checklist_final(texto_final, relatorio_parcial)
 
     return {
         "ok": True,
@@ -229,12 +495,18 @@ def normalizar_resposta(texto: str, tipo: str | None = None) -> dict:
         "original": original,
         "score_pt": round(float(score_pt), 2) if score_pt else 0.0,
         "tipo": tipo_final,
+        "intencao": intencao,
+        "tarefa": tarefa,
         "complexidade": complexidade,
         "estrutura": estrutura,
         "evidencia": evidencia,
+        "fatos_estados": fatos_estados,
+        "incerteza": incerteza,
         "bajulacao": bajulacao,
+        "veracidade": veracidade,
         "acoes": acoes,
         "validacao": validacao,
+        "checklist": checklist,
     }
 
 
