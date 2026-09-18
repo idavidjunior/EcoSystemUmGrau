@@ -48,6 +48,15 @@ try:
 except ImportError:
     pass
 
+# ResponseNormalizer - SPEC Padrão Universal de Resposta v1.0
+try:
+    from response_normalizer import normalizar_resposta as _normalizar_resposta
+    RESPONSE_NORMALIZER_AVAILABLE = True
+except ImportError as e:
+    logging.warning(f"ResponseNormalizer não disponível: {e}")
+    RESPONSE_NORMALIZER_AVAILABLE = False
+    _normalizar_resposta = None
+
 # Frases manager unificado (saudacoes, classificacao conexao, anti-repeticao)
 try:
     from frases_manager import (
@@ -1601,6 +1610,23 @@ class Cliente:
             resp = "Sem resposta."
 
         self._gravar_turno(msg, resp)
+        
+        # Normalizar resposta com ResponseNormalizer (SPEC v1.0)
+        if RESPONSE_NORMALIZER_AVAILABLE and _normalizar_resposta:
+            try:
+                resultado = _normalizar_resposta(resp)
+                resp_normalizada = resultado.get("texto", resp)
+                if resultado.get("acoes"):
+                    logger.info(f"ResponseNormalizer ações: {resultado.get('acoes')}")
+                if resultado.get("checklist"):
+                    checklist = resultado.get("checklist", {})
+                    problemas = [cat for cat, dados in checklist.items() if not dados.get("ok", True)]
+                    if problemas:
+                        logger.warning(f"ResponseNormalizer problemas: {problemas}")
+                resp = resp_normalizada
+            except Exception as e:
+                logger.warning(f"ResponseNormalizer falhou: {e}")
+        
         return resp
 
     async def _processar_comando_eco(self, msg: str) -> bool:
@@ -2431,6 +2457,18 @@ async def _voz_rapida(msg: str, cliente=None, img_base64=None, img_mime="image/j
                 _ms = int((time.time() - _t0) * 1000)
                 if saida:
                     logger.info(f"voz rapida HIT {modelo} ({_ms}ms): {saida[:70]}")
+                    
+                    # Normalizar resposta com ResponseNormalizer (SPEC v1.0)
+                    if RESPONSE_NORMALIZER_AVAILABLE and _normalizar_resposta:
+                        try:
+                            resultado = _normalizar_resposta(saida)
+                            saida_normalizada = resultado.get("texto", saida)
+                            if resultado.get("acoes"):
+                                logger.info(f"ResponseNormalizer (voz rápida) ações: {resultado.get('acoes')}")
+                            saida = saida_normalizada
+                        except Exception as e:
+                            logger.warning(f"ResponseNormalizer (voz rápida) falhou: {e}")
+                    
                     # Persiste o turno na conversa unificada (contexto contínuo),
                     # no MESMO formato do fluxo serve (perguntar) para manter a
                     # consistência do histórico e da busca de edição.

@@ -45,6 +45,15 @@ from jarvis_bridge import (  # noqa: E402
     gerar_status_natural,
     normalizar_hora_display,
 )
+
+# ResponseNormalizer - SPEC Padrão Universal de Resposta v1.0
+try:
+    from response_normalizer import normalizar_resposta as _normalizar_resposta
+    RESPONSE_NORMALIZER_AVAILABLE = True
+except ImportError as e:
+    print(f"[ResponseNormalizer indisponível: {e}]")
+    RESPONSE_NORMALIZER_AVAILABLE = False
+    _normalizar_resposta = None
 from microfone_manager import MicrofoneManager  # noqa: E402
 
 # Captura VAD compartilhada (fonte única): streaming Silero + fallback RMS.
@@ -493,6 +502,17 @@ async def responder(cliente, texto, interrompivel=True):
             r = f"Erro no processamento: {e}"
     if not r:
         r = "Não consegui gerar uma resposta."
+    
+    # Normalizar resposta com ResponseNormalizer (SPEC v1.0)
+    if RESPONSE_NORMALIZER_AVAILABLE and _normalizar_resposta:
+        try:
+            resultado = _normalizar_resposta(r)
+            r = resultado.get("texto", r)
+            if resultado.get("acoes"):
+                print(f"[ResponseNormalizer: {resultado.get('acoes')}]", flush=True)
+        except Exception as e:
+            print(f"[ResponseNormalizer falhou: {e}]", flush=True)
+    
     r_tela = normalizar_hora_display(r)
     _registrar_fala_jarvis(r_tela)
     print(f"{FALAR_COLOR}[jarvis]{RESET} {r_tela}", flush=True)

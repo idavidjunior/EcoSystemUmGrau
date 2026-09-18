@@ -936,6 +936,26 @@ $onSinapsesCiclo = {
 
 # SINAPSES roda no loop principal (padrao comprovado): Timer+Register-ObjectEvent
 # nao entrega eventos com Start-Sleep bloqueando o runspace. Gate de 24h no if.
+
+# ECOSYSTEM HEALTH TIMER: diagnóstico automático a cada 4h
+$healthCheckDir = "$ecoDir\runtime\health"
+$onEcoHealth = {
+    $healthCheckDir = "$ecoDir\runtime\health"
+    if (-not (Test-Path $healthCheckDir)) { New-Item -ItemType Directory -Path $healthCheckDir -Force | Out-Null }
+    $ts = Get-Date -Format "yyyyMMdd_HHmmss"
+    try {
+        python "$ecoDir\scripts\health_check_save.py" 2>&1 | Out-Null
+        Write-Log "HEALTH CHECK: salvo"
+        # Cleanup: mantém apenas os 30 mais recentes
+        Get-ChildItem "$healthCheckDir\health_*.txt" | Sort-Object Name -Descending | Select-Object -Skip 30 | Remove-Item -Force -ErrorAction SilentlyContinue
+    } catch { Write-Log "HEALTH CHECK: erro: $_" }
+}
+$healthCheckTimer = New-Object System.Timers.Timer
+$healthCheckTimer.Interval = 3 * 60 * 60 * 1000  # 3 horas
+$healthCheckTimer.AutoReset = $true
+Register-ObjectEvent $healthCheckTimer "Elapsed" -Action $onEcoHealth > $null
+$healthCheckTimer.Start()
+
 while ($true) {
     try {
         $ultimaSinapses = if (Test-Path $sinapsesMarcador) { (Get-Item $sinapsesMarcador).LastWriteTime } else { [datetime]::MinValue }

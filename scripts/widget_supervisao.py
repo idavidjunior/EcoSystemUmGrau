@@ -171,6 +171,40 @@ def _parse_log(line):
         return {"ts": "", "raw": line}
 
 
+def _ler_health_check():
+    """Lê o último health check salvo no runtime/health/."""
+    health_dir = RUNTIME / "health"
+    if not health_dir.exists():
+        return {"score": 0, "checks": [], "timestamp": ""}
+    arquivos = sorted(health_dir.glob("health_*.txt"), reverse=True)
+    if not arquivos:
+        return {"score": 0, "checks": [], "timestamp": ""}
+    try:
+        conteudo = arquivos[0].read_text(encoding="utf-8")
+        score_match = re.search(r'Score:\s*(\d+)', conteudo)
+        score = int(score_match.group(1)) if score_match else 0
+        checks = []
+        for linha in conteudo.splitlines():
+            stripped = linha.strip()
+            # Detecta check marks (UTF-8 puro ou mojibake do PowerShell)
+            is_ok = (stripped.startswith('\u2713') or stripped.startswith('\u2717') or
+                     stripped.startswith('\xc3\xa2\xc5\x93\xe2\x80\x9c') or
+                     stripped.startswith('\xc3\xa2\xc5\x93\xe2\x80\x9d'))
+            if not is_ok:
+                continue
+            ok = stripped.startswith('\u2713') or stripped.startswith('\xc3\xa2\xc5\x93\xe2\x80\x9c')
+            # Remove o check mark e espaços
+            texto = re.sub(r'^[\u2713\u2717\xc3\xa2\xc5\x93\xe2\x80\x9c\xe2\x80\x9d\s]+', '', stripped)
+            parts = texto.split(':', 1)
+            nome = parts[0].strip() if len(parts) > 0 else ''
+            detalhes = parts[1].strip() if len(parts) > 1 else ''
+            checks.append({"ok": ok, "nome": nome, "detalhes": detalhes})
+        ts = arquivos[0].stem.replace("health_", "")
+        return {"score": score, "checks": checks, "timestamp": ts}
+    except Exception:
+        return {"score": 0, "checks": [], "timestamp": ""}
+
+
 def montar_estado():
     maestro = _ler_json(MAESTRO_STATE)
     guardian = _ler_json(GUARDIAN_STATE)
@@ -229,6 +263,7 @@ def montar_estado():
         },
         "log_guardian": log_parsed,
         "log_maestro": maestro_log_parsed,
+        "health": _ler_health_check(),
         "timestamp": datetime.now().isoformat(),
     }
 
@@ -344,6 +379,15 @@ class SupervisaoApi:
         aberto = not bool(_ler_estado().get("glossario_aberto", False))
         _salvar_estado({"glossario_aberto": aberto})
         return {"glossario_aberto": aberto}
+
+    def health_check(self):
+        """Executa health check sob demanda e retorna o resultado."""
+        import subprocess
+        r = subprocess.run(
+            [sys.executable, str(SCRIPTS / "runtime_state.py"), "health-check"],
+            capture_output=True, text=True, cwd=str(BASE), timeout=30,
+            creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+        return {"output": r.stdout[:3000], "exit_code": r.returncode}
 
 
 # ---------------------------------------------------------------------------

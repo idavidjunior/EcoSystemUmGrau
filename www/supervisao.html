@@ -112,6 +112,20 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 </div>
 <div class="guerra"><h3>Escudo do Sistema</h3><div class="shields" id="shields"></div></div>
 <div class="narrativa"><div class="pulse ok" id="nP"></div><div class="msg" id="nM"></div><div class="tempo" id="nT"></div></div>
+<div class="gc-section"><h3>Saude do Ecossistema</h3><div class="gc-grid">
+  <div class="gc-card" data-tip="Diagnostico automatico do ecossistema. Atualizado a cada 3h pelo Vigilante.">
+    <div class="gc-top"><div class="gc-dot" style="background:var(--accent)"></div><div class="gc-title">Health Check</div><div class="gc-badge ok" id="hcBadge">&#8212;</div></div>
+    <div class="gc-metrics"><div class="gc-metric"><div class="val" id="hcScore">&#8212;</div><div class="lbl">Score</div></div><div class="gc-metric"><div class="val" id="hcChecks">&#8212;</div><div class="lbl">Checks</div></div><div class="gc-metric"><div class="val" id="hcTime">&#8212;</div><div class="lbl">Ultimo</div></div></div>
+    <div id="hcDetails" style="font-size:10px;color:var(--text2);line-height:1.6;margin-top:6px"></div>
+    <div style="border-top:1px solid var(--border);padding-top:8px;margin-top:8px;display:flex;gap:6px">
+      <button onclick="runHealthCheck()" style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--accent);cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">Executar Agora</button>
+    </div>
+  </div>
+  <div class="gc-card" data-tip="metricas e health checks do ecossistema.">
+    <div class="gc-top"><div class="gc-dot" style="background:var(--accent3)"></div><div class="gc-title">Metricas</div></div>
+    <div id="hcMetrics" style="font-size:11px;color:var(--text2);line-height:1.8"></div>
+  </div>
+</div></div>
 <div class="gc-section"><h3>Guardian &#8212; Motor de Correcao Automatica</h3><div class="gc-grid">
   <div class="gc-card" data-tip="Vigia processos, mata duplicatas e reinicia servicos mortos. Consulta o Maestro antes de cada acao.">
     <div class="gc-top"><div class="gc-dot ok" id="gcDot"></div><div class="gc-title">Status do Guardian</div><div class="gc-badge ok" id="gcBadge">MONITORANDO</div></div>
@@ -144,6 +158,7 @@ var D={servicos:{},guardian:{status:'ok',ram_mb:0,disk_gb:0,actions:[]},log_guar
 window.atualizar=function(dados){
   D=dados;
   render();
+  if(dados.health)renderHealth(dados.health);
   var fill=document.getElementById('hbFill');
   fill.style.width='0%';
   setTimeout(function(){fill.style.width='100%'},50);
@@ -234,6 +249,61 @@ function glossToggle(){pywebview.api.glossario_toggle().then(function(r){_glossO
 function glossInit(){var g=document.getElementById('gL'),a=document.getElementById('gA');g.classList.toggle('show',_glossOpen);a.classList.toggle('open',_glossOpen)}
 
 var _hbTimer=setInterval(function(){document.getElementById('hbFill').style.width='0%'},3500);
+
+function renderHealth(health){
+  if(!health||!health.score&&health.score!==0)return;
+  var sc=document.getElementById('hcScore');
+  var ck=document.getElementById('hcChecks');
+  var tm=document.getElementById('hcTime');
+  var bd=document.getElementById('hcBadge');
+  var dt=document.getElementById('hcDetails');
+  var mt=document.getElementById('hcMetrics');
+  sc.textContent=health.score+'/100';
+  sc.style.color=health.score>=80?'var(--ok)':health.score>=60?'var(--warn)':'var(--err)';
+  var okCount=health.checks?health.checks.filter(function(c){return c.ok}).length:0;
+  var total=health.checks?health.checks.length:0;
+  ck.textContent=okCount+'/'+total;
+  tm.textContent=health.timestamp||'\u2014';
+  if(health.score>=80){bd.className='gc-badge ok';bd.textContent='SAUDAVEL'}
+  else if(health.score>=60){bd.className='gc-badge warn';bd.textContent='ATENCAO'}
+  else{bd.className='gc-badge err';bd.textContent='PROBLEMA'}
+  dt.innerHTML='';
+  if(health.checks){health.checks.forEach(function(c){
+    var icon=c.ok?'<span style="color:var(--ok)">&#10003;</span>':'<span style="color:var(--err)">&#10007;</span>';
+    dt.innerHTML+='<div>'+icon+' '+c.nome+': '+c.detalhes+'</div>';
+  })}
+  if(mt){
+    var probs=health.checks?health.checks.filter(function(c){return !c.ok}):[];
+    if(probs.length>0){
+      mt.innerHTML='<div style="color:var(--warn);font-weight:500;margin-bottom:4px">'+probs.length+' problema(s)</div>';
+      probs.forEach(function(p){mt.innerHTML+='<div style="color:var(--err)">• '+p.nome+': '+p.detalhes+'</div>'});
+    }else{
+      mt.innerHTML='<div style="color:var(--ok)">Todos os checks OK</div>';
+    }
+  }
+}
+
+function runHealthCheck(){
+  if(!window.pywebview||!window.pywebview.api)return;
+  var btn=event.target;btn.textContent='Executando...';btn.disabled=true;
+  window.pywebview.api.health_check().then(function(r){
+    btn.textContent='Executar Agora';btn.disabled=false;
+    if(r&&r.output){
+      var scoreMatch=r.output.match(/Score:\s*(\d+)/);
+      var score=scoreMatch?parseInt(scoreMatch[1]):0;
+      var checks=[];
+      r.output.split('\n').forEach(function(l){
+        l=l.trim();
+        if(l.startsWith('\u2713')||l.startsWith('\u2717')){
+          var ok=l.startsWith('\u2713');
+          var parts=l.substring(2).split(':',2);
+          checks.push({ok:ok,nome:parts[0]?parts[0].trim():'',detalhes:parts[1]?parts[1].trim():''});
+        }
+      });
+      renderHealth({score:score,checks:checks,timestamp:new Date().toLocaleTimeString('pt-BR')});
+    }
+  }).catch(function(){btn.textContent='Executar Agora';btn.disabled=false});
+}
 
 var tip=document.getElementById('tip'),tT=document.getElementById('tT'),tA=document.getElementById('tA');var tTgt=null;
 document.querySelectorAll('[data-tip]').forEach(function(el){el.onmouseenter=function(e){tTgt=e.target;tT.textContent=e.target.getAttribute('data-tip');tip.classList.add('visible');pT(e.target)};el.onmouseleave=function(){tip.classList.remove('visible');tTgt=null}});

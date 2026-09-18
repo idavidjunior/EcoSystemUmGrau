@@ -354,7 +354,7 @@ function Invoke-RepoCommit {
             if ($ex) { git reset -q -- "$ex" 2>&1 | Out-Null }
         }
         $msg = ''
-        if ($UserMsg) { $msg = $UserMsg }
+        if ($UserMsg) { $msg = "[gate] $UserMsg" }
         else { $msg = "[gate] $MsgLabel - $(Get-Date -Format 'yyyy-MM-dd HH:mm')" }
         # CLÁUSULA PÉTREA — PONTO ÚNICO DE PERSISTÊNCIA
         # Sinaliza ao pre-commit hook que este commit passa pelo gate

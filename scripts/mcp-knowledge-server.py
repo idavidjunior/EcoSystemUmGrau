@@ -39,6 +39,26 @@ TOOLS = [
         'name': 'read-conhecimento',
         'description': 'Read the CONHECIMENTO.md base (full knowledge dump, ~46KB).',
         'inputSchema': {'type': 'object', 'properties': {}}
+    },
+    {
+        'name': 'recover-knowledge',
+        'description': 'Busca unificada de conhecimento: memória + notas + knowledge_graph (BM25). Não precisa de projeto.',
+        'inputSchema': {
+            'type': 'object',
+            'properties': {'query': {'type': 'string', 'description': 'Termo de busca'}},
+            'required': ['query']
+        }
+    },
+    {
+        'name': 'recent-memories',
+        'description': 'Lista as N memórias mais recentes de um tipo, sem filtro de decay (Ebbinghaus).',
+        'inputSchema': {
+            'type': 'object',
+            'properties': {
+                'kind': {'type': 'string', 'description': 'Tipo: episodio, decisao, padrao, erro (default: episodio)'},
+                'limit': {'type': 'integer', 'description': 'Quantidade (default: 5)'}
+            }
+        }
     }
 ]
 
@@ -110,6 +130,27 @@ def handle_tool(tool, args, rid):
                 text = f.read()[:30000]
         except FileNotFoundError:
             text = 'CONHECIMENTO.md not found. Run ecosystem sync first.'
+        return {'jsonrpc': '2.0', 'id': rid, 'result': {'content': [{'type': 'text', 'text': text}]}}
+
+    if tool == 'recover-knowledge':
+        q = args.get('query', '')
+        if not q:
+            return {'jsonrpc': '2.0', 'id': rid, 'result': {'content': [{'type': 'text', 'text': 'No query'}]}}
+        r = subprocess.run(
+            [sys.executable, os.path.join(BASE, 'scripts', 'memory_engine.py'), 'recover', q],
+            capture_output=True, text=True, cwd=BASE, timeout=30,
+            creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+        text = (r.stdout or r.stderr or f'No results for: {q}')[:10000]
+        return {'jsonrpc': '2.0', 'id': rid, 'result': {'content': [{'type': 'text', 'text': text}]}}
+
+    if tool == 'recent-memories':
+        kind = args.get('kind', 'episodio')
+        limit = args.get('limit', 5)
+        r = subprocess.run(
+            [sys.executable, os.path.join(BASE, 'scripts', 'memory_engine.py'), 'recent', str(kind), str(limit)],
+            capture_output=True, text=True, cwd=BASE, timeout=30,
+            creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+        text = (r.stdout or r.stderr or 'No results')[:10000]
         return {'jsonrpc': '2.0', 'id': rid, 'result': {'content': [{'type': 'text', 'text': text}]}}
 
     return {'jsonrpc': '2.0', 'id': rid, 'error': {'code': -32601, 'message': f'Tool not found: {tool}'}}
